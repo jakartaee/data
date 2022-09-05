@@ -1,24 +1,23 @@
-# Contributing to Jakarta Concurrency
+# Contributing to Jakarta Data
 
 Thanks for your interest in this project.
 
 ## Project description
 
-Jakarta Concurrency provides a specification document, API and TCK for using concurrency from application components without compromising container integrity while still preserving the Jakarta EE platform's fundamental benefits.
+Jakarta Data provides a specification document, API and TCK for allowing applications and other Jakarta EE components to explore the benefits of easy access to data technologies such as relational and non-relational databases, cloud-based data services, and so on.
 
- * https://projects.eclipse.org/projects/ee4j.cu
+ * https://projects.eclipse.org/projects/ee4j.data
 
 ## Developer resources
 
 Information regarding source code management, builds, coding standards, and
 more.
 
- * https://projects.eclipse.org/projects/ee4j.cu/developer
+ * https://projects.eclipse.org/projects/ee4j.data/developer
 
 The project maintains the following source code repositories
 
- * https://github.com/jakartaee/concurrency
- * https://github.com/eclipse-ee4j/concurrency-ri
+ * https://github.com/jakartaee/data-api
 
 ## Eclipse Contributor Agreement
 
@@ -55,4 +54,4 @@ Jakarta EE specification projects.
 
 Contact the project developers via the project's "dev" list.
 
- * https://accounts.eclipse.org/mailing-list/cu-dev
+ * https://accounts.eclipse.org/mailing-list/data-dev
