@@ -1,4 +1,4 @@
-# Notices for Jakarta Contexts and Dependency Injection
+# Notices for Jakarta Data
 
 This content is produced and maintained by the Jakarta Data
 project.
