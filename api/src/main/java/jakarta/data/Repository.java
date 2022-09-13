@@ -31,7 +31,7 @@ import java.lang.annotation.Target;
  * For example,<p>
  *
  * <pre>
- * &#64;Repository(Product.class)
+ * &#64;Repository
  * public interface Products extends DataRepository<Product, Long> {
  *     List&lt;Product&gt; findByNameLike(String namePattern);
  *     ...
@@ -322,8 +322,4 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface Repository {
-    /**
-     * Entity class. By default, detect automatically.
-     */
-    Class<?> value() default void.class;
 }
