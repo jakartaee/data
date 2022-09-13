@@ -1,9 +1,0 @@
-=========================================================================
-==  NOTICE file corresponding to section 4(d) of the Apache License,   ==
-==  Version 2.0, in this case for Microprofile Config                  ==
-=========================================================================
-
-SPDXVersion: SPDX-2.1
-PackageName: Jakarta Data
-PackageHomePage: https://projects.eclipse.org/projects/ee4j.data
-PackageLicenseDeclared: Apache-2.0
