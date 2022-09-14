@@ -1,5 +1,6 @@
 # Jakarta data
 
-
-
-Jakarta Data is an API to allow easy data access technologies. Thus, a Java developer can split the persistence and the model with several features, such as a Repository interface with the method by query, where the framework will implement it.
+Jakarta Data provides an API that makes data access easy. A
+Java developer can split the persistence from the model with several features,
+such as the ability to compose custom query methods on a Repository interface where the framework
+will implement it.
