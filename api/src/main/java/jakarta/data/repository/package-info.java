@@ -16,7 +16,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 /**
- * In DDD, a repository is an object that participates in the domain but abstracts away storage
+ * In Domain-driven design, DDD, a repository is an object that participates in the domain but abstracts away storage
  * and infrastructure details. Most systems have persistent storage,
  * like a database, for its full functioning. Applying repositories happens
  * by integrating and synchronizing with existing aggregate objects in the system.

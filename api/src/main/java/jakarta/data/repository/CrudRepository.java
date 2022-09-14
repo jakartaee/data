@@ -19,10 +19,10 @@ package jakarta.data.repository;
 
 
 /**
- * <p>Interface to generic CRUD operations on a repository for a specific type.</p>
+ * <p>Interface for generic CRUD operations on a repository for a specific type.</p>
  *
  * @param <T> the bean type
- * @param <K> the K type
+ * @param <K> the key type
  */
 public interface CrudRepository<T, K> extends DataRepository<T, K> {
 
