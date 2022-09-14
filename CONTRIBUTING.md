@@ -4,16 +4,18 @@ Thanks for your interest in this project.
 
 ## Project description
 
-Jakarta Data provides an API to allow easy data access technologies. Thus, a
-Java developer can split the persistence and the model with several features
-such as a Repository interface with the method by query, where the framework
-will implement it.   References:
-https://github.com/eclipse-ee4j/jpa-api/issues/294
-https://spring.io/projects/spring-data
-https://deltaspike.apache.org/documentation/jpa.html
-https://github.com/eclipse-ee4j/nosql/blob/master/spec/src/main/asciidoc/repository.adoc
-https://micronaut-projects.github.io/micronaut-data/latest/guide/index.html
-Google Docs proposal
+Jakarta Data provides an API that makes data access easy. A
+Java developer can split the persistence from the model with several features,
+such as the ability to compose custom query methods on a Repository interface where the framework
+will implement it.
+
+References:
+* https://github.com/eclipse-ee4j/jpa-api/issues/294
+* https://spring.io/projects/spring-data
+* https://deltaspike.apache.org/documentation/jpa.html
+* https://github.com/eclipse-ee4j/nosql/blob/master/spec/src/main/asciidoc/repository.adoc
+* https://micronaut-projects.github.io/micronaut-data/latest/guide/index.html
+
 
 * https://projects.eclipse.org/projects/ee4j.data
 
