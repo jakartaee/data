@@ -24,9 +24,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- *This isn't a mandatory field,  but when it define this field is a key.
- *  That gonna be used mainly for key-value operations.
- *  @see Entity
+ * Specifies the primary key of an entity.
+ * '"ID" is a short form for "identity" or "identification".
+ *
+ * @see Entity
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
