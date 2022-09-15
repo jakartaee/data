@@ -1,7 +1,6 @@
 # Notices for Jakarta Data
 
-This content is produced and maintained by the Jakarta Data
-project.
+This content is produced and maintained by the Jakarta Data project.
 
 * Project home: https://projects.eclipse.org/projects/ee4j.data
 
@@ -18,8 +17,8 @@ source code repository logs.
 ## Declared Project Licenses
 
 This program and the accompanying materials are made available under the terms
-of the Apache License v. 2.0 which is available at
-http://www.apache.org/licenses/LICENSE-2.0
+of the Apache License, Version 2.0 which is available at
+https://www.apache.org/licenses/LICENSE-2.0.
 
 SPDX-License-Identifier: Apache-2.0
 
@@ -30,6 +29,10 @@ The project maintains the following source code repositories:
 * https://github.com/jakartaee/data-api
 
 ## Third-party Content
+
+This project leverages the following third party content.
+
+None
 
 ## Cryptography
 

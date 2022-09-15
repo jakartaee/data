@@ -1,0 +1,27 @@
+= Jakarta Data
+:authors:
+:email:
+:version-label!:
+:sectanchors:
+:doctype: book
+:license: Eclipse Foundation Specification License v1.0
+:source-highlighter: coderay
+:toc: left
+:toclevels: 4
+:sectnumlevels: 4
+ifdef::backend-pdf[]
+:pagenums:
+endif::[]
+
+// == License
+:sectnums!:
+include::license-efsl.adoc[]
+
+:sectnums:
+
+== Jakarta Data
+
+
+include::architecture.asciidoc[]
+
+include::repository.asciidoc[]

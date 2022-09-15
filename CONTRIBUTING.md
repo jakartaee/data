@@ -4,33 +4,37 @@ Thanks for your interest in this project.
 
 ## Project description
 
-Jakarta Data provides a specification document, API and TCK for allowing applications and other Jakarta EE components to explore the benefits of easy access to data technologies such as relational and non-relational databases, cloud-based data services, and so on.
+Jakarta Data provides an API that makes data access easy. A
+Java developer can split the persistence from the model with several features,
+such as the ability to compose custom query methods on a Repository interface where the framework
+will implement it.
 
- * https://projects.eclipse.org/projects/ee4j.data
+References:
+* https://github.com/eclipse-ee4j/jpa-api/issues/294
+* https://spring.io/projects/spring-data
+* https://deltaspike.apache.org/documentation/jpa.html
+* https://github.com/eclipse-ee4j/nosql/blob/master/spec/src/main/asciidoc/repository.adoc
+* https://micronaut-projects.github.io/micronaut-data/latest/guide/index.html
+
+
+* https://projects.eclipse.org/projects/ee4j.data
+
+## Terms of Use
+
+This repository is subject to the Terms of Use of the Eclipse Foundation
+
+* http://www.eclipse.org/legal/termsofuse.php
 
 ## Developer resources
 
 Information regarding source code management, builds, coding standards, and
 more.
 
- * https://projects.eclipse.org/projects/ee4j.data/developer
+* https://projects.eclipse.org/projects/ee4j.data/developer
 
 The project maintains the following source code repositories
 
- * https://github.com/jakartaee/data-api
-
-## Eclipse Contributor Agreement
-
-Before your contribution can be accepted by the project team contributors must
-electronically sign the Eclipse Contributor Agreement (ECA).
-
- * http://www.eclipse.org/legal/ECA.php
-
-The non-committer must have an Eclipse Foundation account and must have a signed Eclipse
-Contributor Agreement (ECA) on file.
-
-For more information, please see the Eclipse Committer Handbook:
-https://www.eclipse.org/projects/handbook/#resources-commit
+* https://github.com/jakartaee/data-api
 
 ## Eclipse Development Process
 
@@ -47,8 +51,24 @@ Jakarta EE specification projects.
 * https://jakarta.ee/about/jesp/
 * https://www.eclipse.org/legal/efsp_non_assert.php
 
+## Eclipse Contributor Agreement
+
+In order to be able to contribute to Eclipse Foundation projects you must
+electronically sign the Eclipse Contributor Agreement (ECA).
+
+* http://www.eclipse.org/legal/ECA.php
+
+The ECA provides the Eclipse Foundation with a permanent record that you agree
+that each of your contributions will comply with the commitments documented in
+the Developer Certificate of Origin (DCO). Having an ECA on file associated with
+the email address matching the "Author" field of your contribution's Git commits
+fulfills the DCO's requirement that you sign-off on your contributions.
+
+For more information, please see the Eclipse Committer Handbook:
+https://www.eclipse.org/projects/handbook/#resources-commit
+
 ## Contact
 
 Contact the project developers via the project's "dev" list.
 
- * https://accounts.eclipse.org/mailing-list/data-dev
+* https://accounts.eclipse.org/mailing-list/data-dev
