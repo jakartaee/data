@@ -1,10 +1,9 @@
-= Jakarta Data
+:sectanchors:
+:doctype: book
+:license: Apache License v2.0
 :authors:
 :email:
 :version-label!:
-:sectanchors:
-:doctype: book
-:license: Eclipse Foundation Specification License v1.0
 :source-highlighter: coderay
 :toc: left
 :toclevels: 4
@@ -12,16 +11,16 @@
 ifdef::backend-pdf[]
 :pagenums:
 endif::[]
-
-// == License
+:doctype: book
+ifndef::imagesdir[:imagesdir: images]
+ifndef::sourcedir[:sourcedir: ../../main/java]
+:leveloffset: 1
 :sectnums!:
 include::license-efsl.adoc[]
 
 :sectnums:
 
-== Jakarta Data
+= Jakarta Data
 
-
-include::architecture.asciidoc[]
-
+include::jakarta-data-introduction.asciidoc[]
 include::repository.asciidoc[]
