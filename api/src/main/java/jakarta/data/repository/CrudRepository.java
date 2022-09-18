@@ -18,6 +18,9 @@
 package jakarta.data.repository;
 
 
+import java.util.Optional;
+import java.util.stream.Stream;
+
 /**
  * <p>Interface for generic CRUD operations on a repository for a specific type.</p>
  *
@@ -26,5 +29,110 @@ package jakarta.data.repository;
  */
 public interface CrudRepository<T, K> extends DataRepository<T, K> {
 
+    /**
+     * Saves a given entity. Use the returned instance for further operations as the save operation might have changed the
+     * entity instance completely.
+     *
+     * @param entity the entity to be saved
+     * @return the saved entity; will never be {@literal null}.
+     * @throws NullPointerException when the entity is null
+     */
+    <S extends T> S save(S entity);
+
+    /**
+     * Saves all given entities.
+     *
+     * @param entities an iterable of entities
+     * @return the saved entities;
+     * @throws NullPointerException if either the iterable is null or any element is null
+     */
+    <S extends T> Iterable<S> saveAll(Iterable<S> entities);
+
+    /**
+     * Retrieves an entity by its id.
+     *
+     * @param id must not be {@literal null}.
+     * @return the entity with the given id or {@literal Optional#empty()} if none found.
+     * @throws NullPointerException when the id is null
+     */
+    Optional<T> findById(K id);
+
+    /**
+     * Returns whether an entity with the given id exists.
+     *
+     * @param id must not be {@literal null}.
+     * @return {@literal true} if an entity with the given id exists, {@literal false} otherwise.
+     * @throws NullPointerException when the ID is null
+     */
+    boolean existsById(K id);
+
+    /**
+     * Returns all instances of the type.
+     *
+     * @return all entities
+     */
+    Stream<T> findAll();
+
+    /**
+     * Returns all instances of the type {@code T} with the given IDs.
+     * <p>
+     * If some or all ids are not found, no entities are returned for these IDs.
+     * <p>
+     * Note that the order of elements in the result is not guaranteed.
+     *
+     * @param ids must not be {@literal null} nor contain any {@literal null} values.
+     * @return guaranteed to be not {@literal null}. The size can be equal or less than the number of given
+     * {@literal ids}.
+     * @throws NullPointerException in case the given {@link Iterable ids} or one of its items is {@literal null}.
+     */
+    Stream<T> findAllById(Iterable<K> ids);
+
+    /**
+     * Returns the number of entities available.
+     *
+     * @return the number of entities.
+     */
+    long count();
+
+    /**
+     * Deletes the entity with the given id.
+     * <p>
+     * If the entity is not found in the persistence store it is silently ignored.
+     *
+     * @param id must not be {@literal null}.
+     * @throws NullPointerException when the id is null
+     */
+    void deleteById(K id);
+
+    /**
+     * Deletes a given entity.
+     *
+     * @param entity must not be {@literal null}.
+     * @throws NullPointerException when the entity is null
+     */
+    void delete(T entity);
+
+    /**
+     * Deletes all instances of the type {@code T} with the given IDs.
+     * <p>
+     * Entities that aren't found in the persistence store are silently ignored.
+     *
+     * @param ids must not be {@literal null}. Must not contain {@literal null} elements.
+     * @throws NullPointerException when either the iterable is null or contains null elements
+     */
+    void deleteAllById(Iterable<? extends K> ids);
+
+    /**
+     * Deletes the given entities.
+     *
+     * @param entities must not be {@literal null}. Must not contain {@literal null} elements.
+     * @throws NullPointerException when either the iterable is null or contains null elements
+     */
+    void deleteAll(Iterable<? extends T> entities);
+
+    /**
+     * Deletes all entities managed by the repository.
+     */
+    void deleteAll();
 
 }
