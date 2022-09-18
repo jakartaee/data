@@ -1,2 +1,217 @@
-[[repository]]
-== Repository
+
+= Repository
+
+In DDD, the repository pattern encapsulates the logic required to access data sources. They consolidate data access functionality, providing better maintainability and decoupling the infrastructure or technology used to access databases from the domain model layer.
+
+image::01-repository.png[alt=repository structure, width=70%, height=70%]
+
+This pattern focuses on the closest proximity of entities and hides where the data comes from.
+
+The Repository pattern is a well-documented way of working with a data source. In the book https://www.amazon.com/dp/0321127420/[Patterns of Enterprise Application] Architecture, Martin Fowler describes a repository as follows:
+
+> A repository performs the tasks of an intermediary between the domain model layers and data mapping, acting in a similar way to a set of domain objects in memory. Client objects declaratively build queries and send them to the repositories for answers. Conceptually, a repository encapsulates a set of objects stored in the database and operations that can be performed on them, providing a way that is closer to the persistence layer. Repositories, also, support the purpose of separating, clearly and in one direction, the dependency between the work domain and the data allocation or mapping.
+
+It also becomes very famous in https://www.amazon.com/dp/0321125215/[Domain-Driven Design: Tackling Complexity in the Heart of Software] by Eric Evans.
+
+== Repositories on Jakarta Data
+
+A repository abstraction aims to significantly reduce the boilerplate code required to implement data access layers for various persistence stores.
+
+The parent interface in Jakarta Data repository abstraction is DataRepository.
+
+By default, Jakarta Data has support for three interfaces. However, the core is extensible. Therefore, a provider might extend one or more interfaces to a specific data target as th
+
+image::02-repositories.png[alt=Repositories types]
+
+* Interface to generic CRUD operations on a repository for a specific type. This one we can see more often on several Java implementations.
+* Interface with generic CRUD operations using the pagination feature.
+* Interface for generic CRUD operations on a repository for a specific type. This repository follows reactive paradigms.
+
+From the Java developer perspective, create an interface that extends one of those interfaces besides the Repository annotation.
+
+So, given a ```Product``` entity where the ID is a ```long``` type, the repository would be:
+
+[source,java]
+----
+@Repository
+public interface ProductRepository extends CrudRepository<Product, Long> {
+
+}
+----
+
+
+There is no nomenclature restriction to make mandatory the ```Repository``` suffix. Such as, you might represent the repository of the Car's entity as a ```Garage``` instead of ```CarRepository```.
+
+[source,java]
+----
+@Repository
+public interface Garage extends CrudRepository<Car, String> {
+
+}
+----
+
+=== Queries methods
+
+On Jakarta Data, besides finding by an ID, it provides custom queries on two modes:
+
+* Through Query annotation: It will create a method annotated with the @Query with the query.
+* Using method by query convention: Using some pattern vocabulary will provide a query.
+
+WARNING: Due to the variety of data sources, those resources might not work; it varies on the Jakarta Data implementation and the database engine, which can provide queries more than a Key or ID or not such as a Key-value database.
+
+==== Using the Query annotation
+
+The Query's annotation will define a search expression as a String. The specification won't support the query syntax, which might vary to any vendor and data source, such as SQL, JPA-QL, Cypher, CQL, etc.
+
+[source,java]
+----
+@Repository
+public interface ProductRepository extends CrudRepository<Product, Long> {
+ @Query("THE QUERY EXPRESSION")
+ Optional<Product> findByName(String name);
+}
+----
+
+Jakarta Data also brings ```Param``` annotation to define a binder annotation, where such as the query expression, each vendor will express the syntax freely such as ```?```, ```@```, etc..
+
+[source,java]
+----
+@Repository
+public interface ProductRepository extends CrudRepository<Product, Long> {
+@Query("THE QUERY EXPRESSION")
+Optional<Product> findByName(@Param("name") String name);
+}
+----
+
+
+==== Query by Method
+
+The Query by method mechanism allows for creating query commands by conventions.
+
+E.g.:
+
+[source,java]
+----
+@Repository
+public interface ProductRepository extends CrudRepository<Product, Long> {
+
+  List<Product> findByName(String name);
+
+  List<Person> findByNameOrderByNameAsc(String name);
+
+  List<Person> findByNameOrderByNameDesc(String name);
+
+}
+----
+
+The parsing query method name has two parts: the subject and the property.
+
+The first part defines the query's subject or condition, and the second the condition value; both forms the predicate.
+
+A predicate can refer only to a direct property of the managed entity. We also have the option to handle entities with another class on them.
+
+Assume an Order entity has an Address with a Zipcode. In that case, the access is ```order.address.zipCode```.
+
+The resolution algorithm starts by interpreting the whole part (AddressZipCode) as the property and checks the domain class for a property with that name (uncapitalized). If the algorithm succeeds, it uses that property.
+
+[source,java]
+----
+@Repository
+public interface OrderRepository extends CrudRepository<Order, Long> {
+
+  Stream<Order> findByAddressZipCode(ZipCode zipCode);
+
+}
+----
+
+
+Although this should work for most cases, to resolve this ambiguity, you can use ```_``` inside your method name to manually define traversal points.
+
+[source,java]
+----
+@Repository
+public interface OrderRepository extends CrudRepository<Order, Long> {
+
+  Stream<Order> findByAddress_ZipCode(ZipCode zipCode);
+
+}
+----
+
+WARNING: Define as a priority following standard Java naming conventions, camel case,  using underscore as the last instance resource.
+
+===== Query methods Keywords
+
+The following table lists the subject keywords generally supported by Jakarta Data.
+
+|===
+|Keyword |Description
+
+|findBy
+|General query method returning the repository type.
+
+|deleteBy
+|Delete query method returning either no result (void) or the delete count.
+
+|countBy
+|Count projection returning a numeric result.
+
+|existsBy
+|Exists projection, returning typically a ```boolean``` result.
+|===
+
+Jakarta Data often support the following list of predicate keywords. It might not work because some keywords listed here might not be supported in a particular store.
+
+|===
+|Keyword |Description | Method signature Sample
+
+|And
+|The ```and``` operator.
+|findByNameAndYear
+
+|Or
+|The ```or``` operator.
+|findByNameOrYear
+
+|Between
+|Find results where the property is between the given values
+|findByDateBetween
+
+|LessThan
+|Find results where the property is less than the given value
+|findByAgeLessThan
+
+|GreaterThan
+|Find results where the property is greater than the given value
+|findByAgeGreaterThan
+
+|LessThanEqual
+|Find results where the property is less than or equal to the given value
+|findByAgeLessThanEqual
+
+|GreaterThanEqual
+|Find results where the property is greater than or equal to the given value
+|findByAgeGreaterThanEqual
+
+|Like
+|Finds string values "like" the given expression
+|findByTitleLike
+
+|In
+|Find results where the property is that are contained within the given list
+|findByIdIn
+
+|OrderBy
+|Specify a static sorting order followed by the property path and direction on ascending.
+|findByNameOrderByAge
+
+|OrderBy____Desc
+|Specify a static sorting order followed by the property path and direction on descending.
+|findByNameOrderByAgeDesc
+
+|OrderBy____Asc
+|Specify a static sorting order followed by the property path and direction on ascending.
+|findByNameOrderByAgeAsc
+
+|===
+
+
