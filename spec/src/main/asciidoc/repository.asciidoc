@@ -159,7 +159,7 @@ The following table lists the subject keywords generally supported by Jakarta Da
 |Exists projection, returning typically a ```boolean``` result.
 |===
 
-Jakarta Data often support the following list of predicate keywords. It might not work because some keywords listed here might not be supported in a particular store.
+Jakarta Data implementations often support the following list of predicate keywords. It might not work because some keywords listed here might not be supported in a particular store.
 
 |===
 |Keyword |Description | Method signature Sample
