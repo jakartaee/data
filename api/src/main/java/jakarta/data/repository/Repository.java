@@ -35,6 +35,7 @@ import java.lang.annotation.Target;
  * <pre>
  * &#64;Repository
  * public interface Products extends DataRepository&lt;Product, Long&gt; {
+ *     &#64;OrderBy("price")
  *     List&lt;Product&gt; findByNameLike(String namePattern);
  *     ...
  * </pre>
@@ -128,11 +129,6 @@ import java.lang.annotation.Target;
  * TODO Or should we enforce a particular precedence?</td>
  * <td><code>findByNameLikeAndPriceLessThanEqual(namePattern, maxPrice)</code></td></tr>
  *
- * <tr style="vertical-align: top"><td><code>Asc</code></td>
- * <td>sorting</td>
- * <td>Specifies ascending sort order for <code>findBy</code> queries</td>
- * <td><code>findByAgeOrderByFirstNameAsc(age)</code></td></tr>
- *
  * <tr style="vertical-align: top"><td><code>Between</code></td>
  * <td>numeric, strings, time</td>
  * <td>Requires that the entity's attribute value be within the range specified by two parameters.
@@ -148,11 +144,6 @@ import java.lang.annotation.Target;
  * match the entity's attribute value. which can be a pattern</td>
  * <td><code>findByRecipientsContains(email)</code>
  * <br><code>findByDescriptionNotContains("refurbished")</code></td></tr>
- *
- * <tr style="vertical-align: top"><td><code>Desc</code></td>
- * <td>sorting</td>
- * <td>Specifies descending sort order for <code>findBy</code> queries</td>
- * <td><code>findByAuthorLastNameOrderByYearPublishedDesc(surname)</code></td></tr>
  *
  * <tr style="vertical-align: top"><td><code>EndsWith</code></td>
  * <td>strings</td>
@@ -202,15 +193,6 @@ import java.lang.annotation.Target;
  * Precedence is determined by the data access provider.
  * TODO Or should we enforce a particular precedence?</td>
  * <td><code>findByPriceLessThanEqualOrDiscountGreaterThanEqual(maxPrice, minDiscount)</code></td></tr>
- *
- * <tr style="vertical-align: top"><td><code>OrderBy</code></td>
- * <td>sorting</td>
- * <td>Sorts results of a <code>findBy</code> query according to one or more entity attributes.
- * Multiple attributes are delimited by <code>Asc</code> and <code>Desc</code>,
- * which indicate ascending and descending sort direction.
- * Precedence in sorting is determined by the order in which attributes are listed.
- * TODO could OrderBy be specified annotatively instead?</td>
- * <td><code>findByStatusOrderByYearHiredDescLastNameAsc(empStatus)</code></td></tr>
  *
  * <tr style="vertical-align: top"><td><code>StartsWith</code></td>
  * <td>strings</td>
