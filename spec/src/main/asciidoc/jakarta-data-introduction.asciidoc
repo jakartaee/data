@@ -7,23 +7,23 @@ will implement it.
 
 == Introduction
 
-There is no doubt about the importance of data around the application. We often talk about a stateless application, the data where we delegate the application's state. If the architecture is the mind, the information is the heart.
+There is no doubt about the importance of data around the application. We often talk about a stateless application, where we delegate the application's state to the database.
 
-Dealing with a database is one of the biggest challenges within a software architecture. In addition to choosing one of several options on the market, it is necessary to consider the persistence integrations. Jakarta Data claims to make life easier for developers with Java.
+Dealing with a database is one of the biggest challenges within a software architecture. In addition to choosing one of several options on the market, it is necessary to consider the persistence integrations. Jakarta Data makes life easier for Java developers.
 
 === Goals
 
-Jakarta Data works in a tight integration between Java and a persistence layer, where it has those goals of the specification:
+Jakarta Data works in a tight integration between Java and a persistence layer, where it has the following specification goals:
 
 * Be a persistence agnostic API; therefore, through abstractions, it will connect different types of databases and storage sources.
 * Be a pluggable and extensible API; even when the API won't support a particular behavior of a storage engine, it might provide an extensible API to make it possible.
 
 === Non-Goals
 
-As with any software component, those decision brings trade-offs and bring those points as a non-goal:
+As with any software component, these decisions come with trade-offs and the following non-goals:
 
 * Have specific features of JPA, NoSQL, and so on. Those APIs have their specifications.
-* Replace the Jakarta JPA or NoSQL specification. Indeed, the API will work as a component to be an agnostic API.
+* Replace the Jakarta JPA or NoSQL specification. Indeed, the API will work as a complement to Jakarta Persistence and NoSQL specifications as an agnostic API.
 
 == Conventions
 
