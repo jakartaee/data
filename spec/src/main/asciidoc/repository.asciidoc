@@ -216,7 +216,4 @@ Jakarta Data implementations often support the following list of predicate keywo
 |Specify a static several sorting orders
 |findByNameOrderByAgeAscNameDescYearAsc
 
-
 |===
-
-
