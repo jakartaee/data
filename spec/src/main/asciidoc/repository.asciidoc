@@ -1,17 +1,17 @@
 
 = Repository
 
-In DDD, the repository pattern encapsulates the logic required to access data sources. They consolidate data access functionality, providing better maintainability and decoupling the infrastructure or technology used to access databases from the domain model layer.
+In Domain-driven design, DDD, the repository pattern encapsulates the logic required to access data sources. The repository pattern consolidates data access functionality, providing better maintainability and decoupling the infrastructure or technology used to access databases from the domain model layer.
 
 image::01-repository.png[alt=repository structure, width=70%, height=70%]
 
 This pattern focuses on the closest proximity of entities and hides where the data comes from.
 
-The Repository pattern is a well-documented way of working with a data source. In the book https://www.amazon.com/dp/0321127420/[Patterns of Enterprise Application] Architecture, Martin Fowler describes a repository as follows:
+The Repository pattern is a well-documented way of working with a data source. In the book Patterns of Enterprise Application Architecture, Martin Fowler describes a repository as follows:
 
-> A repository performs the tasks of an intermediary between the domain model layers and data mapping, acting in a similar way to a set of domain objects in memory. Client objects declaratively build queries and send them to the repositories for answers. Conceptually, a repository encapsulates a set of objects stored in the database and operations that can be performed on them, providing a way that is closer to the persistence layer. Repositories, also, support the purpose of separating, clearly and in one direction, the dependency between the work domain and the data allocation or mapping.
+> A repository performs the tasks of an intermediary between the domain model layers and data mapping, acting in a similar way to a set of domain objects in memory. Client objects declaratively build queries and send them to the repositories for answers. Conceptually, a repository encapsulates a set of objects stored in the database and operations that can be performed on them, providing a way that is closer to the persistence layer. Repositories also support the purpose of separating, clearly and in one direction, the dependency between the work domain and the data allocation or mapping.
 
-It also becomes very famous in https://www.amazon.com/dp/0321125215/[Domain-Driven Design: Tackling Complexity in the Heart of Software] by Eric Evans.
+It also becomes very famous in Domain-Driven Design: Tackling Complexity in the Heart of Software by Eric Evans.
 
 == Repositories on Jakarta Data
 
@@ -19,7 +19,7 @@ A repository abstraction aims to significantly reduce the boilerplate code requi
 
 The parent interface in Jakarta Data repository abstraction is DataRepository.
 
-By default, Jakarta Data has support for three interfaces. However, the core is extensible. Therefore, a provider might extend one or more interfaces to a specific data target as th
+By default, Jakarta Data has support for three interfaces. However, the core is extensible. Therefore, a provider might extend one or more interfaces to a specific data target.
 
 image::02-repositories.png[alt=Repositories types]
 
@@ -27,7 +27,7 @@ image::02-repositories.png[alt=Repositories types]
 * Interface with generic CRUD operations using the pagination feature.
 * Interface for generic CRUD operations on a repository for a specific type. This repository follows reactive paradigms.
 
-From the Java developer perspective, create an interface that extends one of those interfaces besides the Repository annotation.
+From the Java developer perspective, create an interface that is annotated with the Repository annotation and optionally extends one of the built-in repository interfaces.
 
 So, given a ```Product``` entity where the ID is a ```long``` type, the repository would be:
 
@@ -52,33 +52,33 @@ public interface Garage extends CrudRepository<Car, String> {
 
 === Queries methods
 
-On Jakarta Data, besides finding by an ID, it provides custom queries on two modes:
+In Jakarta Data, besides finding by an ID, custom queries can be written in two ways:
 
 * Through Query annotation: It will create a method annotated with the @Query with the query.
 * Using method by query convention: Using some pattern vocabulary will provide a query.
 
-WARNING: Due to the variety of data sources, those resources might not work; it varies on the Jakarta Data implementation and the database engine, which can provide queries more than a Key or ID or not such as a Key-value database.
+WARNING: Due to the variety of data sources, those resources might not work; it varies based on the Jakarta Data implementation and the database engine, which can provide queries on more than a Key or ID or not, such as a Key-value database.
 
 ==== Using the Query annotation
 
-The Query's annotation will define a search expression as a String. The specification won't support the query syntax, which might vary to any vendor and data source, such as SQL, JPA-QL, Cypher, CQL, etc.
+The Query's annotation will support a search expression as a String. The specification won't support the query syntax, which might vary between vendors and data sources, such as SQL, JPA-QL, Cypher, CQL, etc.
 
 [source,java]
 ----
 @Repository
 public interface ProductRepository extends CrudRepository<Product, Long> {
- @Query("THE QUERY EXPRESSION")
+ @Query("SELECT p FROM Products p WHERE p.name=?1")  // example in JPQL
  Optional<Product> findByName(String name);
 }
 ----
 
-Jakarta Data also brings ```Param``` annotation to define a binder annotation, where such as the query expression, each vendor will express the syntax freely such as ```?```, ```@```, etc..
+Jakarta Data also includes the ```Param``` annotation to define a binder annotation, where as with the query expression, each vendor will express the syntax freely such as ```?```, ```@```, etc..
 
 [source,java]
 ----
 @Repository
 public interface ProductRepository extends CrudRepository<Product, Long> {
-@Query("THE QUERY EXPRESSION")
+@Query("SELECT p FROM Products p WHERE p.name=:name")  // example in JPQL
 Optional<Product> findByName(@Param("name") String name);
 }
 ----
@@ -113,7 +113,7 @@ A predicate can refer only to a direct property of the managed entity. We also h
 Assume an Order entity has an Address with a Zipcode. In that case, the access is ```order.address.zipCode```.
 
 The resolution algorithm starts by interpreting the whole part (AddressZipCode) as the property and checks the domain class for a property with that name (uncapitalized). If the algorithm succeeds, it uses that property.
-
+//Jakarta Persistence @Embeddable might be an exception to this pattern, allowing the embeddable's attributes to be used directly as attributes of the main entity. Let's make a TODO note here to check on that and update if necessary at a later point. This doesn't need to be a part of this initial pull.
 [source,java]
 ----
 @Repository
@@ -197,7 +197,7 @@ Jakarta Data often support the following list of predicate keywords. It might no
 |findByTitleLike
 
 |In
-|Find results where the property is that are contained within the given list
+|Find results where the property is one of the values that are contained within the given list
 |findByIdIn
 
 |OrderBy
