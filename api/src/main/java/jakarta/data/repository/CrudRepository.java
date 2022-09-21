@@ -120,7 +120,7 @@ public interface CrudRepository<T, K> extends DataRepository<T, K> {
      * @param ids must not be {@literal null}. Must not contain {@literal null} elements.
      * @throws NullPointerException when either the iterable is null or contains null elements
      */
-    void deleteAllById(Iterable<? extends K> ids);
+    void deleteAllById(Iterable<K> ids);
 
     /**
      * Deletes the given entities.
