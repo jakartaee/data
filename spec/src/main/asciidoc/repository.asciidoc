@@ -212,6 +212,11 @@ Jakarta Data implementations often support the following list of predicate keywo
 |Specify a static sorting order followed by the property path and direction on ascending.
 |findByNameOrderByAgeAsc
 
+|OrderBy____(Asc\|Desc)*(Asc\|Desc)
+|Specify a static several sorting orders
+|findByNameOrderByAgeAscNameDescYearAsc
+
+
 |===
 
 
