@@ -61,14 +61,14 @@ WARNING: Due to the variety of data sources, those resources might not work; it 
 
 ==== Using the Query annotation
 
-The Query's annotation will support a search expression as a String. The specification won't support the query syntax, which might vary between vendors and data sources, such as SQL, JPA-QL, Cypher, CQL, etc.
+The Query's annotation will support a search expression as a String. The specification won't define the query syntax, which might vary between vendors and data sources, such as SQL, JPA-QL, Cypher, CQL, etc.
 
 [source,java]
 ----
 @Repository
 public interface ProductRepository extends CrudRepository<Product, Long> {
- @Query("SELECT p FROM Products p WHERE p.name=?1")  // example in JPQL
- Optional<Product> findByName(String name);
+  @Query("SELECT p FROM Products p WHERE p.name=?1")  // example in JPQL
+  Optional<Product> findByName(String name);
 }
 ----
 
@@ -78,8 +78,8 @@ Jakarta Data also includes the ```Param``` annotation to define a binder annotat
 ----
 @Repository
 public interface ProductRepository extends CrudRepository<Product, Long> {
-@Query("SELECT p FROM Products p WHERE p.name=:name")  // example in JPQL
-Optional<Product> findByName(@Param("name") String name);
+  @Query("SELECT p FROM Products p WHERE p.name=:name")  // example in JPQL
+  Optional<Product> findByName(@Param("name") String name);
 }
 ----
 
@@ -97,9 +97,11 @@ public interface ProductRepository extends CrudRepository<Product, Long> {
 
   List<Product> findByName(String name);
 
-  List<Person> findByNameOrderByNameAsc(String name);
+  @OrderBy("price")
+  List<Product> findByNameLike(String namePattern);
 
-  List<Person> findByNameOrderByNameDesc(String name);
+  @OrderBy(value = "price", descending = true)
+  List<Product> findByNameLikeAndPriceLessThan(String namePattern, float priceBelow);
 
 }
 ----
@@ -201,19 +203,19 @@ Jakarta Data implementations often support the following list of predicate keywo
 |findByIdIn
 
 |OrderBy
-|Specify a static sorting order followed by the property path and direction on ascending.
+|Specify a static sorting order followed by the property path and direction of ascending.
 |findByNameOrderByAge
 
 |OrderBy____Desc
-|Specify a static sorting order followed by the property path and direction on descending.
+|Specify a static sorting order followed by the property path and direction of descending.
 |findByNameOrderByAgeDesc
 
 |OrderBy____Asc
-|Specify a static sorting order followed by the property path and direction on ascending.
+|Specify a static sorting order followed by the property path and direction of ascending.
 |findByNameOrderByAgeAsc
 
 |OrderBy____(Asc\|Desc)*(Asc\|Desc)
-|Specify a static several sorting orders
+|Specify several static sorting orders
 |findByNameOrderByAgeAscNameDescYearAsc
 
 |===

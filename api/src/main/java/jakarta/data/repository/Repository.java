@@ -35,6 +35,7 @@ import java.lang.annotation.Target;
  * <pre>
  * &#64;Repository
  * public interface Products extends DataRepository&lt;Product, Long&gt; {
+ *     &#64;OrderBy("price")
  *     List&lt;Product&gt; findByNameLike(String namePattern);
  *     ...
  * </pre>
@@ -208,8 +209,7 @@ import java.lang.annotation.Target;
  * <td>Sorts results of a <code>findBy</code> query according to one or more entity attributes.
  * Multiple attributes are delimited by <code>Asc</code> and <code>Desc</code>,
  * which indicate ascending and descending sort direction.
- * Precedence in sorting is determined by the order in which attributes are listed.
- * TODO could OrderBy be specified annotatively instead?</td>
+ * Precedence in sorting is determined by the order in which attributes are listed.</td>
  * <td><code>findByStatusOrderByYearHiredDescLastNameAsc(empStatus)</code></td></tr>
  *
  * <tr style="vertical-align: top"><td><code>StartsWith</code></td>
