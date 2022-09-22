@@ -202,4 +202,20 @@ Jakarta Data implementations often support the following list of predicate keywo
 |Find results where the property is one of the values that are contained within the given list
 |findByIdIn
 
+|OrderBy
+|Specify a static sorting order followed by the property path and direction of ascending.
+|findByNameOrderByAge
+
+|OrderBy____Desc
+|Specify a static sorting order followed by the property path and direction of descending.
+|findByNameOrderByAgeDesc
+
+|OrderBy____Asc
+|Specify a static sorting order followed by the property path and direction of ascending.
+|findByNameOrderByAgeAsc
+
+|OrderBy____(Asc\|Desc)*(Asc\|Desc)
+|Specify several static sorting orders
+|findByNameOrderByAgeAscNameDescYearAsc
+
 |===
