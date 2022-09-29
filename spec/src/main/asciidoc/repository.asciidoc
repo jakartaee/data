@@ -219,3 +219,37 @@ Jakarta Data implementations often support the following list of predicate keywo
 |findByNameOrderByAgeAscNameDescYearAsc
 
 |===
+
+===== Special parameter handling
+
+Jakarta Data also supports particular parameters to define either sort or sort.
+
+Jakarta Data recognizes, by default, specific types, like ```Pageable``` and ```Sort```, to dynamically apply pagination and sorting to queries. The following example demonstrates these features:
+
+[source,java]
+----
+@Repository
+public interface ProductRepository extends CrudRepository<Product, Long> {
+
+  List<Product> findByName(String name, Pageable pageable);
+
+  List<Product> findByName(String name, Sort sort);
+
+}
+----
+
+You can define simple sorting expressions by using property names.
+
+[source,java]
+----
+Sort name = Sort.asc("name");
+Sort nameAge = Sort.desc("name").add(Sort.asc("age"));
+----
+
+You can combine sorting with start and size by using property names.
+
+[source,java]
+----
+Pageable pageable = Pageable.of(1, 20);
+Pageable pageableSort = Pageable.of(1, 20, Sort.asc("name"));
+----
