@@ -25,7 +25,7 @@ public class DataException extends RuntimeException {
 
 
     /**
-     * Constructs a new PersistenceException exception with the specified detail message.
+     * Constructs a new DataException exception with the specified detail message.
      *
      * @param message the detail message.
      */
@@ -34,7 +34,7 @@ public class DataException extends RuntimeException {
     }
 
     /**
-     * Constructs a new PersistenceException exception with the specified detail message and cause.
+     * Constructs a new DataException exception with the specified detail message and cause.
      *
      * @param message the detail message.
      * @param cause   the cause.
@@ -44,7 +44,7 @@ public class DataException extends RuntimeException {
     }
 
     /**
-     * Constructs a new PersistenceException exception with the specified cause.
+     * Constructs a new DataException exception with the specified cause.
      *
      * @param cause the cause.
      */
