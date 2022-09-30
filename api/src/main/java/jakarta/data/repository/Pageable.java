@@ -53,13 +53,6 @@ public interface Pageable {
     Pageable next();
 
     /**
-     * Returns the previous Pageable or the first Pageable if the current one already is the first one.
-     *
-     * @return The previous pageable
-     */
-    Pageable previous();
-
-    /**
      * Returns the sorting parameters.
      *
      * @return The sort definition to use.
