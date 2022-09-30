@@ -25,7 +25,7 @@ import java.util.ServiceLoader;
 import java.util.function.BiFunction;
 
 /**
- * PropertyPath implements the pairing of an {@link Direction} and a property. It is used to provide input for Sort
+ * Order implements the pairing of an {@link Direction} and a property. It is used to provide input for Sort
  */
 public interface Order {
 
