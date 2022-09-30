@@ -29,10 +29,6 @@ import java.util.function.BiFunction;
  */
 public interface Order {
 
-    /**
-     * @return The direction order by
-     */
-    Direction getDirection();
 
     /**
      * @return The property name to order by
