@@ -15,58 +15,85 @@
  *
  *  SPDX-License-Identifier: Apache-2.0
  */
-
 package jakarta.data.repository;
 
-import jakarta.data.DataException;
-
 import java.util.Objects;
-import java.util.ServiceLoader;
 
 /**
  * Abstract interface for pagination information.
  */
-public interface Pageable {
+public class Pageable {
 
-    long DEFAULT_SIZE = 10;
-    Sort EMPTY_SORT = Sort.of();
+    private static final long DEFAULT_SIZE = 10;
+
+    private final long size;
+
+    private final long page;
+
+    private Pageable(long size, long page) {
+        this.size = size;
+        this.page = page;
+    }
 
     /**
      * Returns the size of each page
      *
      * @return the size of each page
      */
-    long getSize();
+    public long getSize() {
+        return size;
+    }
 
     /**
      * Returns the page to be returned.
      *
      * @return the page to be returned.
      */
-    long getPageNumber();
+    public long getPage() {
+        return page;
+    }
 
     /**
      * Returns the Pageable requesting the next Page.
      *
      * @return The next pageable.
      */
-    Pageable next();
+    public Pageable next() {
+        return new Pageable(this.size, (page + 1));
+    }
 
-    /**
-     * Returns the sorting parameters.
-     *
-     * @return The sort definition to use.
-     */
-    Sort getSort();
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Pageable pageable = (Pageable) o;
+        return size == pageable.size && page == pageable.page;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(size, page);
+    }
+
+    @Override
+    public String toString() {
+        return "Pageable{" +
+                "size=" + size +
+                ", page=" + page +
+                '}';
+    }
 
     /**
      * Creates a new Pageable at the given size with a default size of 10.
      *
      * @param page The page
-     * @param <P>  page type
      * @return The pageable
      */
-    static <P extends Pageable> P page(long page) {
+    public static Pageable page(long page) {
         return of(page, DEFAULT_SIZE);
     }
 
@@ -75,48 +102,15 @@ public interface Pageable {
      *
      * @param page The page
      * @param size The size
-     * @param <P>  page type
      * @return The pageable
      */
-    static <P extends Pageable> P of(long page, long size) {
-        return of(page, size, EMPTY_SORT);
+    public static Pageable of(long page, long size) {
+        if (page < 1) {
+            throw new IllegalArgumentException("page: " + page);
+        } else if (size < 1) {
+            throw new IllegalArgumentException("size: " + size);
+        }
+        return new Pageable(size, page);
     }
 
-    /**
-     * Creates a new Pageable at the given size with a default size of 10.
-     *
-     * @param page The page
-     * @param size The size
-     * @param sort the sort
-     * @param <P>  page type
-     * @return The pageable
-     */
-    static <P extends Pageable> P of(long page, long size, Sort sort) {
-        Objects.requireNonNull(sort, "sort is required");
-        PageableSupplier<P> supplier =
-                ServiceLoader.load(PageableSupplier.class)
-                        .findFirst()
-                        .orElseThrow(() -> new DataException("There is no implementation of PageableSupplier" +
-                                " on the Class Loader"));
-        return supplier.apply(page, size, sort);
-    }
-
-
-    /**
-     * The {@link Pageable} supplier that the API will use on the method {@link Pageable#of(long, long, Sort)}
-     *
-     * @param <P> the {@link  Pageable}  implementation
-     */
-    interface PageableSupplier<P extends Pageable> {
-        /**
-         * Applies this function to the given argument.
-         *
-         * @param page the page
-         * @param size the size
-         * @param sort the sort
-         * @return a {@link Pageable} instance
-         * @throws NullPointerException when sort is null
-         */
-        P apply(long page, long size, Sort sort);
-    }
 }
