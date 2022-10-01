@@ -243,7 +243,7 @@ You can define simple sorting expressions by using property names.
 [source,java]
 ----
 Sort name = Sort.asc("name");
-Sort nameAge = Sort.desc("name").add(Sort.asc("age"));
+Sorts nameAge = Sorts.desc("name").add(Sort.asc("age"));
 ----
 
 You can combine sorting with start and size by using property names.
@@ -251,8 +251,6 @@ You can combine sorting with start and size by using property names.
 [source,java]
 ----
 Pageable pageable = Pageable.of(1, 20);
-Pageable pageableSort = Pageable.of(1, 20, Sort.asc("name"));
-first20 = products.findByNameLike(name,
-                     Pageable.of(1, 20), Sort.desc("price"));
+first20 = products.findByNameLike(name, pageable, Sort.desc("price"));
 
 ----
