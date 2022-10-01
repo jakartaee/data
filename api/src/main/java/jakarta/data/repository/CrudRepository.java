@@ -34,6 +34,7 @@ public interface CrudRepository<T, K> extends DataRepository<T, K> {
      * entity instance completely.
      *
      * @param entity the entity to be saved
+     * @param <S> type of entity to save
      * @return the saved entity; will never be {@literal null}.
      * @throws NullPointerException when the entity is null
      */
@@ -43,7 +44,8 @@ public interface CrudRepository<T, K> extends DataRepository<T, K> {
      * Saves all given entities.
      *
      * @param entities an iterable of entities
-     * @return the saved entities;
+     * @param <S> type of entity to save
+     * @return the saved entities
      * @throws NullPointerException if either the iterable is null or any element is null
      */
     <S extends T> Iterable<S> saveAll(Iterable<S> entities);

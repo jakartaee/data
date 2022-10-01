@@ -67,7 +67,7 @@ public @interface OrderBy {
     boolean descending() default false;
 
     /**
-     * <p>Entity attribute name to sort by.<p>
+     * <p>Entity attribute name to sort by.</p>
      *
      * <p>For example,</p>
      *
@@ -75,6 +75,8 @@ public @interface OrderBy {
      * &#64;OrderBy("age")
      * Stream&lt;Person&gt; findByLastName(String lastName);
      * </pre>
+     *
+     * @return entity attribute name.
      */
     String value();
 

@@ -86,7 +86,7 @@ import java.lang.annotation.Target;
  * <td style="vertical-align: top"><b>Example</b></td>
  * </tr>
  *
- * <tr style="vertical-align: top"><td><code>countBy</code> or just <code>count</code>?</td>
+ * <tr style="vertical-align: top"><td><code>countBy</code></td>
  * <td>counts the number of entities</td>
  * <td><code>countByAgeGreaterThanEqual(ageLimit)</code></td></tr>
  *
@@ -98,7 +98,7 @@ import java.lang.annotation.Target;
  * <td>for determining existence</td>
  * <td><code>existsByYearHiredAndWageLessThan(2022, 60000)</code></td></tr>
  *
- * <tr style="vertical-align: top"><td><code>findBy</code></td>
+ * <tr style="vertical-align: top"><td><code>find...By</code></td>
  * <td>for find operations</td>
  * <td><code>findByHeightBetween(minHeight, maxHeight)</code></td></tr>
  *
@@ -160,6 +160,14 @@ import java.lang.annotation.Target;
  * <td>Requires that the characters at the end of the entity's attribute value
  * match the parameter value, which can be a pattern.</td>
  * <td><code>findByNameEndsWith(surname)</code></td></tr>
+ *
+ * <tr style="vertical-align: top"><td><code>First</code></td>
+ * <td>find...By</td>
+ * <td>Limits the amount of results that can be returned by the query
+ * to the number that is specified after <code>First</code>,
+ * or absent that to a single result.</td>
+ * <td><code>findFirst25ByYearHiredOrderBySalaryDesc(int yearHired)</code>
+ * <br><code>findFirstByYearHiredOrderBySalaryDesc(int yearHired)</code></td></tr>
  *
  * <tr style="vertical-align: top"><td><code>GreaterThan</code></td>
  * <td>numeric, strings, time</td>
@@ -260,27 +268,27 @@ import java.lang.annotation.Target;
  * <td><code>boolean</code>, <code>Boolean</code></td>
  * <td></td></tr>
  *
- * <tr style="vertical-align: top"><td><code>findBy...</code></td>
+ * <tr style="vertical-align: top"><td><code>find...By...</code></td>
  * <td><code>E</code>,
  * <br><code>Optional&lt;E&gt;</code></td>
  * <td>For queries returning a single item (or none)</td></tr>
  *
- * <tr style="vertical-align: top"><td><code>findBy...</code></td>
+ * <tr style="vertical-align: top"><td><code>find...By...</code></td>
  * <td><code>E[]</code>,
  * <br><code>Iterable&lt;E&gt;</code>,
  * <br><code>Stream&lt;E&gt;</code>,
  * <br><code>Collection&lt;E&gt;</code></td>
  * <td></td></tr>
  *
- * <tr style="vertical-align: top"><td><code>findBy...</code></td>
+ * <tr style="vertical-align: top"><td><code>find...By...</code></td>
  * <td><code>Collection</code> subtypes</td>
  * <td>The subtype must have a public default constructor and support <code>addAll</code> or <code>add</code></td></tr>
  *
- * <tr style="vertical-align: top"><td><code>findBy...</code></td>
+ * <tr style="vertical-align: top"><td><code>find...By...</code></td>
  * <td><code>Page&lt;E&gt;</code>, <code>Iterator&lt;E&gt;</code></td>
  * <td>For use with pagination</td></tr>
  *
- * <tr style="vertical-align: top"><td><code>findBy...</code></td>
+ * <tr style="vertical-align: top"><td><code>find...By...</code></td>
  * <td><code>LinkedHashMap&lt;K, E&gt;</code></td>
  * <td>Ordered map of Id attribute value to entity</td></tr>
  *
@@ -314,7 +322,21 @@ import java.lang.annotation.Target;
  *
  * After all conditions are matched up with the corresponding parameters,
  * the remaining repository method parameters are used to enable other
- * capabilities such as pagination and sorting.<p>
+ * capabilities such as pagination, limits, and sorting.</p>
+ *
+ * <h3>Limits</h3>
+ *
+ * <p>You can cap the number of results that can be returned by a single
+ * invocation of a repository method by adding a <code>Limit</code> parameter.
+ * For example,</p>
+ *
+ * <pre>
+ * &#64;Query("SELECT o FROM Products o WHERE (o.fullPrice - o.salePrice) / o.fullPrice &gt;= ?1 ORDER BY o.salePrice DESC")
+ * Product[] highlyDiscounted(float minPercentOff, Limit maxResults);
+ *
+ * ...
+ * found = products.highlyDiscounted(0.30, Limit.of(50));
+ * </pre>
  *
  * TODO write this section after pagination and sorting and other aspects
  * are discussed and defined.
