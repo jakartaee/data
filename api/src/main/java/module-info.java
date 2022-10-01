@@ -18,4 +18,5 @@
 module jakarta.data.api {
     exports jakarta.data;
     exports jakarta.data.repository;
+    opens jakarta.data.repository;
 }
