@@ -15,100 +15,93 @@
  *
  *  SPDX-License-Identifier: Apache-2.0
  */
-
 package jakarta.data.repository;
 
-import jakarta.data.DataException;
-
-import java.util.List;
 import java.util.Objects;
-import java.util.ServiceLoader;
-import java.util.function.Function;
 
 /**
- * Sort option for queries.
- * Sorted instances are immutable and all mutating operations on this interface return a new instance.
+ * Order implements the pairing of an {@link Direction} and a property. It is used to provide input for Sort
  */
-public interface Sort {
+public class Sort {
+
+    private final String property;
+
+    private final Direction direction;
+
+    private Sort(String property, Direction direction) {
+        this.property = property;
+        this.direction = direction;
+    }
 
     /**
-     * Adds an order object.
-     *
-     * @param order The order object
-     * @return A new sort with the order applied
-     * @throws NullPointerException when order is null
+     * @return The property name to order by
      */
-    Sort order(Order order);
+    public String getProperty() {
+        return this.property;
+    }
 
     /**
-     * Returns a new Sort consisting of the Sort.Orders of the current Sort combined with the given ones.
-     *
-     * @param sort The sort
-     * @return A new sort with the order applied
-     * @throws NullPointerException when sort is null
+     * @return Returns whether sorting for this property shall be ascending.
      */
-    Sort add(Sort sort);
+    public boolean isAscending() {
+        return Direction.ASC.equals(direction);
+    }
 
     /**
-     * Orders by the specified property name (defaults to ascending) {@link Direction#ASC}.
-     *
-     * @param property The property name to order by
-     * @return A new sort with the order applied
-     * @throws NullPointerException when property is null
+     * @return Returns whether sorting for this property shall be descending.
      */
-    Sort order(String property);
+    public boolean isDescending() {
+        return Direction.DESC.equals(direction);
+    }
 
-    /**
-     * Orders by the specified property name and direction.
-     *
-     * @param property  The property name to order by
-     * @param direction Either "asc" for ascending or "desc" for descending
-     * @return A new sort with the order applied
-     * @throws NullPointerException when there is null parameter
-     */
-    Sort order(String property, Direction direction);
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Sort sort = (Sort) o;
+        return Objects.equals(property, sort.property) && direction == sort.direction;
+    }
 
-    /**
-     * @return The order definitions for this sort.
-     */
-    List<Order> getOrderBy();
+    @Override
+    public int hashCode() {
+        return Objects.hash(property, direction);
+    }
 
-    /**
-     * Returns whether the current {@link Sort#getOrderBy()} is empty.
-     *
-     * @return the  {@link Sort#getOrderBy()} is empty.
-     */
-    boolean isEmpty();
+    @Override
+    public String toString() {
+        return "Sort{" +
+                "property='" + property + '\'' +
+                ", direction=" + direction +
+                '}';
+    }
 
     /**
      * Create a {@link Sort} instance
      *
      * @param property  the property name to order by
      * @param direction The direction order by
-     * @param <S>       the Sort type
      * @return an {@link Sort} instance
      * @throws NullPointerException when there are null parameter
      */
-    static <S extends Sort> S of(String property, Direction direction) {
+    public static Sort of(String property, Direction direction) {
         Objects.requireNonNull(property, "property is required");
         Objects.requireNonNull(direction, "direction is required");
-
-        SortSupplier<S> supplier =
-                ServiceLoader.load(SortSupplier.class)
-                        .findFirst()
-                        .orElseThrow(() -> new DataException("There is no implementation of SortSupplier on the Class Loader"));
-        return supplier.apply(Order.of(property, direction));
+        return new Sort(property, direction);
     }
 
     /**
      * Create a {@link Sort} instance on ascending direction {@link  Direction#ASC}
      *
      * @param property the property name to order by
-     * @param <S>      the Sort type
+     * @return the Order type
      * @return an {@link Sort} instance
-     * @throws NullPointerException when property is null
+     * @throws NullPointerException when there property is null
      */
-    static <S extends Sort> S asc(String property) {
+    public static Sort asc(String property) {
         return of(property, Direction.ASC);
     }
 
@@ -116,56 +109,12 @@ public interface Sort {
      * Create a {@link Sort} instance on descending direction {@link  Direction#DESC}
      *
      * @param property the property name to order by
-     * @param <S>      the Sort type
+     * @return the Order type
      * @return an {@link Sort} instance
-     * @throws NullPointerException when property is null
+     * @throws NullPointerException when there property is null
      */
-    static <S extends Sort> S desc(String property) {
+    public static Sort desc(String property) {
         return of(property, Direction.DESC);
     }
 
-    /**
-     * Creates a new Sort for the given Orders
-     *
-     * @param orders an order list
-     * @param <S> the Sort type
-     * @return The sort
-     * @throws NullPointerException when orders is null
-     */
-    static <S extends Sort> S of(Iterable<Order> orders) {
-        Objects.requireNonNull(orders, "orders is required");
-        IterableSortSupplier<S> supplier =
-                ServiceLoader.load(IterableSortSupplier.class)
-                        .findFirst()
-                        .orElseThrow(() -> new DataException("There is no implementation of IterableSortSupplier" +
-                                " on the Class Loader"));
-        return supplier.apply(orders);
-    }
-
-    /**
-     * Creates a new Sort for the given Orders
-     *
-     * @param orders an order list
-     * @param <S> the Sort type
-     * @return The sort
-     */
-    static <S extends Sort> S of(Order... orders) {
-        return of(List.of(orders));
-    }
-
-    /**
-     * The {@link Sort} supplier that the API will use on the method {@link Sort#of(String, Direction)}
-     *
-     * @param <S> the {@link  Sort}  implementation
-     */
-    interface SortSupplier<S extends Sort> extends Function<Order, S> {
-    }
-
-    /**
-     * The {@link Sort} supplier that the API will use on the method {@link Sort#of(String, Direction)}
-     *
-     * @param <S> the {@link  Sort}  implementation
-     */
-    interface IterableSortSupplier<S extends Sort> extends Function<Iterable<Order>, S> {
-    }
 }
