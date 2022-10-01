@@ -253,6 +253,6 @@ You can combine sorting with start and size by using property names.
 Pageable pageable = Pageable.of(1, 20);
 Pageable pageableSort = Pageable.of(1, 20, Sort.asc("name"));
 first20 = products.findByNameLike(name,
-                     Pageable.of(1, 20, Order.desc("price")));
+                     Pageable.of(1, 20), Sort.desc("price"));
 
 ----
