@@ -243,7 +243,6 @@ You can define simple sorting expressions by using property names.
 [source,java]
 ----
 Sort name = Sort.asc("name");
-Sorts nameAge = Sorts.desc("name").add(Sort.asc("age"));
 ----
 
 You can combine sorting with start and size by using property names.
