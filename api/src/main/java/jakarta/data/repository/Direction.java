@@ -13,10 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * SPDX-License-Identifier: Apache-2.0
+ *  SPDX-License-Identifier: Apache-2.0
  */
-module jakarta.data.api {
-    exports jakarta.data;
-    exports jakarta.data.repository;
-    opens jakarta.data.repository;
+
+package jakarta.data.repository;
+
+/**
+ * Represents the direction of the ordering.
+ */
+public enum Direction {
+    /**
+     * Ascending direction
+     */
+    ASC,
+    /**
+     * Descending direction
+     */
+    DESC;
 }
