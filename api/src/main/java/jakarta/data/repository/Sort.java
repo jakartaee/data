@@ -20,7 +20,7 @@ package jakarta.data.repository;
 import java.util.Objects;
 
 /**
- * Order implements the pairing of an {@link Direction} and a property. It is used to provide input for Sort
+ * Order implements the pairing of a {@link Direction} and a property. It is used to provide input for Sort
  */
 public class Sort {
 
@@ -85,7 +85,7 @@ public class Sort {
      * @param property  the property name to order by
      * @param direction The direction order by
      * @return an {@link Sort} instance
-     * @throws NullPointerException when there are null parameter
+     * @throws NullPointerException when there is a null parameter
      */
     public static Sort of(String property, Direction direction) {
         Objects.requireNonNull(property, "property is required");
@@ -94,12 +94,12 @@ public class Sort {
     }
 
     /**
-     * Create a {@link Sort} instance on ascending direction {@link  Direction#ASC}
+     * Create a {@link Sort} instance with ascending direction {@link  Direction#ASC}
      *
      * @param property the property name to order by
      * @return the Order type
      * @return an {@link Sort} instance
-     * @throws NullPointerException when there property is null
+     * @throws NullPointerException when the property is null
      */
     public static Sort asc(String property) {
         return of(property, Direction.ASC);
@@ -111,7 +111,7 @@ public class Sort {
      * @param property the property name to order by
      * @return the Order type
      * @return an {@link Sort} instance
-     * @throws NullPointerException when there property is null
+     * @throws NullPointerException when the property is null
      */
     public static Sort desc(String property) {
         return of(property, Direction.DESC);
