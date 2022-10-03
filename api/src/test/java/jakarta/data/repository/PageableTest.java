@@ -17,41 +17,45 @@
  */
 package jakarta.data.repository;
 
-import org.junit.jupiter.api.Assertions;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
+
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class PageableTest {
 
     @Test
-    public void shouldCreatePageable(){
+    @DisplayName("Should correctly paginate")
+    public void shouldCreatePageable() {
         Pageable pageable = Pageable.of(2, 6);
-        Assertions.assertEquals(6L, pageable.getSize());
-        Assertions.assertEquals(2L, pageable.getPage());
+
+        assertSoftly(softly -> {
+            softly.assertThat(pageable.getSize()).isEqualTo(6L);
+            softly.assertThat(pageable.getPage()).isEqualTo(2L);
+        });
     }
 
     @Test
-    public void shouldNext(){
+    @DisplayName("Should navigate next")
+    public void shouldNext() {
         Pageable pageable = Pageable.of(2, 1);
         Pageable next = pageable.next();
-        Assertions.assertEquals(1L, pageable.getSize());
-        Assertions.assertEquals(2L, pageable.getPage());
-        Assertions.assertEquals(3L, next.getPage());
-        Assertions.assertEquals(1L, next.getSize());
+
+        assertSoftly(softly -> {
+            softly.assertThat(pageable.getSize()).isEqualTo(1L);
+            softly.assertThat(pageable.getPage()).isEqualTo(2L);
+            softly.assertThat(next.getPage()).isEqualTo(3L);
+            softly.assertThat(next.getSize()).isEqualTo(1L);
+        });
     }
 
     @Test
+    @DisplayName("Should throw IllegalArgumentException when page is not present")
     public void shouldReturnErrorWhenThereIsIllegalArgument() {
-        Assertions.assertThrows(IllegalArgumentException.class, ()->
-                Pageable.page(0));
-
-        Assertions.assertThrows(IllegalArgumentException.class, ()->
-                Pageable.page(-1));
-
-        Assertions.assertThrows(IllegalArgumentException.class, ()->
-                Pageable.of(1, -1));
-
-        Assertions.assertThrows(IllegalArgumentException.class, ()->
-                Pageable.of(1, 0));
+        assertThatIllegalArgumentException().isThrownBy(() -> Pageable.page(0));
+        assertThatIllegalArgumentException().isThrownBy(() -> Pageable.page(-1));
+        assertThatIllegalArgumentException().isThrownBy(() -> Pageable.of(1, -1));
+        assertThatIllegalArgumentException().isThrownBy(() -> Pageable.of(1, 0));
     }
-
 }
