@@ -17,70 +17,73 @@
  */
 package jakarta.data.repository;
 
-import org.junit.jupiter.api.Assertions;
+import static org.assertj.core.api.Assertions.assertThatNullPointerException;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
+
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class SortTest {
 
+    public static final String NAME = "name";
+
     @Test
-    public void shouldReturnErrorWhenPropertyDirectionNull() {
-        Assertions.assertThrows(NullPointerException.class, () ->
-                Sort.of(null, null));
-
-        Assertions.assertThrows(NullPointerException.class, () ->
-                Sort.of("name", null));
-
-        Assertions.assertThrows(NullPointerException.class, () ->
-                Sort.of(null, Direction.ASC));
+    @DisplayName("Should throw NullPointerException when one of the properties are null")
+    void shouldReturnErrorWhenPropertyDirectionNull() {
+        assertThatNullPointerException().isThrownBy(() -> Sort.of(null, null));
+        assertThatNullPointerException().isThrownBy(() -> Sort.of(NAME, null));
+        assertThatNullPointerException().isThrownBy(() -> Sort.of(null, Direction.ASC));
     }
 
     @Test
-    public void shouldCreateSort() {
-        Sort order = Sort.of("name", Direction.ASC);
-        Assertions.assertNotNull(order);
-        Assertions.assertEquals("name", order.getProperty());
-        Assertions.assertTrue(order.isAscending());
-        Assertions.assertFalse(order.isDescending());
+    @DisplayName("Should ascending short when direction is ASC")
+    void shouldCreateAscendingSort() {
+        Sort order = Sort.of(NAME, Direction.ASC);
+
+        assertSoftly(softly -> {
+            softly.assertThat(order).isNotNull();
+            softly.assertThat(order.getProperty()).isEqualTo(NAME);
+            softly.assertThat(order.isAscending()).isTrue();
+            softly.assertThat(order.isDescending()).isFalse();
+        });
     }
 
     @Test
-    public void shouldCreateAsc(){
+    @DisplayName("Should descending short when direction is DESC")
+    void shouldCreateDescendingSort() {
+        Sort order = Sort.of(NAME, Direction.DESC);
+
+        assertSoftly(softly -> {
+            softly.assertThat(order).isNotNull();
+            softly.assertThat(order.getProperty()).isEqualTo(NAME);
+            softly.assertThat(order.isAscending()).isFalse();
+            softly.assertThat(order.isDescending()).isTrue();
+        });
+    }
+
+    @Test
+    @DisplayName("Should ascending sort when Sort.asc method is used")
+    void shouldCreateAsc() {
         Sort order = Sort.asc("name");
-        Assertions.assertNotNull(order);
-        Assertions.assertEquals("name", order.getProperty());
-        Assertions.assertTrue(order.isAscending());
-        Assertions.assertFalse(order.isDescending());
+
+        assertSoftly(softly -> {
+            softly.assertThat(order).isNotNull();
+            softly.assertThat(order.getProperty()).isEqualTo(NAME);
+            softly.assertThat(order.isAscending()).isTrue();
+            softly.assertThat(order.isDescending()).isFalse();
+        });
     }
 
     @Test
-    public void shouldCreateDesc(){
-        Sort order = Sort.desc("name");
-        Assertions.assertNotNull(order);
-        Assertions.assertEquals("name", order.getProperty());
-        Assertions.assertTrue(order.isDescending());
-        Assertions.assertFalse(order.isAscending());
-    }
+    @DisplayName("Should descending sort when Sort.desc method is used")
+    public void shouldCreateDesc() {
+        Sort order = Sort.desc(NAME);
 
-    @Test
-    public void shouldCreateOrder() {
-        Sort order = Sort.of("name",Direction.ASC);
-        Assertions.assertNotNull(order);
-        Assertions.assertEquals("name", order.getProperty());
-    }
-
-    @Test
-    public void shouldAscending(){
-        Sort order = Sort.of("name",Direction.ASC);
-        Assertions.assertEquals("name", order.getProperty());
-        Assertions.assertTrue(order.isAscending());
-        Assertions.assertFalse(order.isDescending());
-    }
-
-    @Test
-    public void shouldDescending(){
-        Sort order = Sort.of("name",Direction.DESC);
-        Assertions.assertEquals("name", order.getProperty());
-        Assertions.assertFalse(order.isAscending());
-        Assertions.assertTrue(order.isDescending());
+        assertSoftly(softly -> {
+            softly.assertThat(order).isNotNull();
+            softly.assertThat(order.getProperty()).isEqualTo(NAME);
+            softly.assertThat(order.isAscending()).isFalse();
+            softly.assertThat(order.isDescending()).isTrue();
+        });
     }
 }
