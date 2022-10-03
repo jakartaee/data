@@ -327,7 +327,7 @@ import java.lang.annotation.Target;
  * <h3>Limits</h3>
  *
  * <p>You can cap the number of results that can be returned by a single
- * invocation of a repository method by adding a <code>Limit</code> parameter.
+ * invocation of a repository find method by adding a {@link Limit} parameter.
  * For example,</p>
  *
  * <pre>
@@ -338,8 +338,34 @@ import java.lang.annotation.Target;
  * found = products.highlyDiscounted(0.30, Limit.of(50));
  * </pre>
  *
- * TODO write this section after pagination and sorting and other aspects
- * are discussed and defined.
+ * <h3>Pagination</h3>
+ *
+ * <p>You can request that results be paginated by adding a {@link Pageable}
+ * parameter to a repository find method. For example,</p>
+ *
+ * <pre>
+ * Product[] findByNameLikeOrderByAmountSoldDescNameAsc(
+ *           String pattern, Pageable pagination);
+ * ...
+ * page1 = products.findByNameLikeOrderByAmountSoldDescNameAsc(
+ *                  "%phone%", Pageable.of(1, 20));
+ * </pre>
+ *
+ * <h3>Sorting</h3>
+ *
+ * <p>You can dynamically supply sorting criteria by adding one or more
+ * {@link Sort} parameters (or <code>Sort...</code>)
+ * to a repository find method. For example,</p>
+ *
+ * <pre>
+ * Product[] findByNameLike(String pattern, Limit max, Sort... sortBy);
+ *
+ * ...
+ * page1 = products.findByNameLike(namePattern, Pagination.of(1, 25),
+ *                                 Sort.desc("price"),
+ *                                 Sort.desc("amountSold"),
+ *                                 Sort.asc("name"));
+ * </pre>
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
