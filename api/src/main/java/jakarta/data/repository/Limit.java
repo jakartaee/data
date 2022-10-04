@@ -44,6 +44,7 @@ package jakarta.data.repository;
  * </ul>
  */
 public class Limit {
+    private static final long DEFAULT_START_AT = 1L;
     private final long maxResults;
     private final long startAt;
 
@@ -85,7 +86,7 @@ public class Limit {
      * @throws IllegalArgumentException if maxResults is less than 1.
      */
     public static Limit of(long maxResults) {
-        return new Limit(maxResults, 1L);
+        return new Limit(maxResults, DEFAULT_START_AT);
     }
 
     /**
