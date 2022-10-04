@@ -37,6 +37,8 @@ package jakarta.data.repository;
  * <ul>
  * <li>multiple <code>Limit</code> parameters are specified on the
  *     same method.</li>
+ * <li><code>Limit</code> and {@link Pageable} parameters are specified on the
+ *     same method.</li>
  * <li>a <code>Limit</code> parameter is specified in combination
  *     with the <code>First</code> keyword.</li>
  * </ul>

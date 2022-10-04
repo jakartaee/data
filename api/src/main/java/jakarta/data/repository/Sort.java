@@ -20,7 +20,31 @@ package jakarta.data.repository;
 import java.util.Objects;
 
 /**
- * Order implements the pairing of a {@link Direction} and a property. It is used to provide input for Sort
+ * <p><code>Sort</code> implements the pairing of a {@link Direction} and a property.</p>
+ *
+ * <p>Dynamic <code>Sort</code> criteria are optionally specified as
+ * parameters to a repository method in any of the positions that are after
+ * the query parameters. You can use <code>Sort...</code> to allow a variable
+ * number of <code>Sort</code> criteria. For example,</p>
+ *
+ * <pre>
+ * Employee[] findByYearHired(int yearYired, Limit maxResults, Sort... sortBy);
+ * ...
+ * highestPaidNewHires = employees.findByYearHired(Year.now(),
+ *                                                 Limit.of(10),
+ *                                                 Sort.desc("salary"),
+ *                                                 Sort.asc("lastName"),
+ *                                                 Sort.asc("firstName"));
+ * </pre>
+ *
+ * <p>It is preferable to use static sorting criteria
+ * (<code>OrderBy</code> keyword or {@link Query} or {@link OrderBy} annotation)
+ * where possible to better allow for optimizations by the provider.</p>
+ *
+ * <p>A repository method will raise {@link IllegalArgumentException} if
+ * a <code>Sort</code> parameter is specified in combination
+ * with an <code>OrderBy</code> keyword or {@link Query} or
+ * {@link OrderBy} annotation.</p>
  */
 public class Sort {
 
@@ -97,8 +121,7 @@ public class Sort {
      * Create a {@link Sort} instance with ascending direction {@link  Direction#ASC}
      *
      * @param property the property name to order by
-     * @return the Order type
-     * @return an {@link Sort} instance
+     * @return a {@link Sort} instance
      * @throws NullPointerException when the property is null
      */
     public static Sort asc(String property) {
@@ -109,8 +132,7 @@ public class Sort {
      * Create a {@link Sort} instance on descending direction {@link  Direction#DESC}
      *
      * @param property the property name to order by
-     * @return the Order type
-     * @return an {@link Sort} instance
+     * @return a {@link Sort} instance
      * @throws NullPointerException when the property is null
      */
     public static Sort desc(String property) {

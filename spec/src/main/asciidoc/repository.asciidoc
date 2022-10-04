@@ -224,7 +224,7 @@ Jakarta Data implementations often support the following list of predicate keywo
 
 Jakarta Data also supports particular parameters to define pagination and sorting.
 
-Jakarta Data recognizes, when specified on a repository method after the query parameters, specific types, like ```Pageable``` and ```Sort```, to dynamically apply pagination and sorting to queries. The following example demonstrates these features:
+Jakarta Data recognizes, when specified on a repository method after the query parameters, specific types, like ```Limit```, ```Pageable```, and ```Sort```, to dynamically apply limits, pagination, and sorting to queries. The following example demonstrates these features:
 
 [source,java]
 ----
@@ -233,7 +233,7 @@ public interface ProductRepository extends CrudRepository<Product, Long> {
 
   List<Product> findByName(String name, Pageable pageable);
 
-  List<Product> findByName(String name, Sort sort);
+  List<Product> findByNameLike(String pattern, Limit max, Sort sort);
 
 }
 ----
