@@ -328,14 +328,16 @@ import java.lang.annotation.Target;
  *
  * <p>You can cap the number of results that can be returned by a single
  * invocation of a repository find method by adding a {@link Limit} parameter.
- * For example,</p>
+ * You can also limit the results to a positional range. For example,</p>
  *
  * <pre>
  * &#64;Query("SELECT o FROM Products o WHERE (o.fullPrice - o.salePrice) / o.fullPrice &gt;= ?1 ORDER BY o.salePrice DESC")
- * Product[] highlyDiscounted(float minPercentOff, Limit maxResults);
+ * Product[] highlyDiscounted(float minPercentOff, Limit limit);
  *
  * ...
- * found = products.highlyDiscounted(0.30, Limit.of(50));
+ * first50 = products.highlyDiscounted(0.30, Limit.of(50));
+ * ...
+ * second50 = products.highlyDiscounted(0.30, Limit.range(51, 100));
  * </pre>
  *
  * <h3>Pagination</h3>

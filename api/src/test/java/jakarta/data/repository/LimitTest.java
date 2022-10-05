@@ -23,6 +23,11 @@ import org.junit.jupiter.api.Test;
 class LimitTest {
 
     @Test
+    public void shouldRaiseErrorWhenEndAtIsLessThanStartAt() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> Limit.range(10, 1));
+    }
+
+    @Test
     public void shouldReturnErrorWhenMaxResultsIsNegative() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> Limit.of(-1));
     }
@@ -34,12 +39,12 @@ class LimitTest {
 
     @Test
     public void shouldReturnErrorWhenStartAtIsNegative(){
-        Assertions.assertThrows(IllegalArgumentException.class, () -> Limit.of(1, -1));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> Limit.range(-1, 10));
     }
 
     @Test
     public void shouldReturnErrorWhenStartAtIsZero(){
-        Assertions.assertThrows(IllegalArgumentException.class, () -> Limit.of(1, 0));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> Limit.range(0, 100));
     }
     @Test
     public void shouldCreateLimitWithDefaultStartAt() {
@@ -50,8 +55,8 @@ class LimitTest {
     }
 
     @Test
-    public void shouldCreateLimit() {
-        Limit limit = Limit.of(10, 2);
+    public void shouldCreateLimitWithRange() {
+        Limit limit = Limit.range(2, 11);
         Assertions.assertNotNull(limit);
         Assertions.assertEquals(10L, limit.maxResults());
         Assertions.assertEquals(2L, limit.startAt());
