@@ -17,7 +17,7 @@
  */
 package jakarta.data.repository;
 
-import java.util.stream.Stream;
+import java.util.List;
 
 
 /**
@@ -25,16 +25,23 @@ import java.util.stream.Stream;
  *
  * @param <T> the entity type
  */
-public interface Page<T> {
+public interface Page<T> extends Streamable<T> {
 
 
     /**
-     * Returns the page content as {@link Stream}
+     * Returns the page content as {@link List}
      *
-     * @return the page content as {@link Stream}.
+     * @return the page content as {@link List}.
      */
-    Stream<T> getContent();
+    List<T> getContent();
 
+
+    /**
+     * Returns the total amount of elements.
+     *
+     * @return the total amount of elements
+     */
+    long size();
 
     /**
      * Returns the current page {@link Pageable#getPage()} of the page
@@ -44,9 +51,16 @@ public interface Page<T> {
     long getPage();
 
     /**
-     * Returns the next page
+     * Returns the current {@link Pageable}
      *
-     * @return the next page that can return a Page with {@link Stream} or {@link Stream#empty()}
+     * @return the current Pageable
      */
-    Page<T> next();
+    Pageable getPageable();
+
+    /**
+     * Returns the next {@link Pageable#next()}
+     *
+     * @return the next pageable
+     */
+    Pageable next();
 }
