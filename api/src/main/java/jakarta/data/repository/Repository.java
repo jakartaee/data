@@ -350,7 +350,7 @@ import java.lang.annotation.Target;
  *           String pattern, Pageable pagination);
  * ...
  * page1 = products.findByNameLikeOrderByAmountSoldDescNameAsc(
- *                  "%phone%", Pageable.of(1, 20));
+ *                  "%phone%", Pageable.size(20));
  * </pre>
  *
  * <h3>Sorting</h3>
@@ -363,7 +363,7 @@ import java.lang.annotation.Target;
  * Product[] findByNameLike(String pattern, Limit max, Sort... sortBy);
  *
  * ...
- * page1 = products.findByNameLike(namePattern, Pagination.of(1, 25),
+ * page1 = products.findByNameLike(namePattern, Pageable.of(1, 25),
  *                                 Sort.desc("price"),
  *                                 Sort.desc("amountSold"),
  *                                 Sort.asc("name"));

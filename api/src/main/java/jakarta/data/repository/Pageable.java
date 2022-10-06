@@ -114,7 +114,7 @@ public class Pageable {
     }
 
     /**
-     * Creates a new Pageable at the given size with a default size of 10.
+     * Creates a new Pageable at the given page with a default size of 10.
      *
      * @param page The page
      * @return The pageable
@@ -139,4 +139,14 @@ public class Pageable {
         return new Pageable(size, page);
     }
 
+    /**
+     * Creates a new <code>Pageable</code> for requesting pages of the
+     * specified size, starting with the first page number, which is 1.
+     *
+     * @param pageSize number of query results in a full page.
+     * @return The pageable.
+     */
+    public static Pageable size(long pageSize) {
+        return of(1, pageSize);
+    }
 }
