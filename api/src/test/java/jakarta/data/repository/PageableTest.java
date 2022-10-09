@@ -37,6 +37,17 @@ class PageableTest {
     }
 
     @Test
+    @DisplayName("Should create pageable with size")
+    void shouldCreatePageableWithSize() {
+        Pageable pageable = Pageable.size(50);
+
+        assertSoftly(softly -> {
+            softly.assertThat(pageable.getSize()).isEqualTo(50);
+            softly.assertThat(pageable.getPage()).isEqualTo(1);
+        });
+    }
+
+    @Test
     @DisplayName("Should navigate next")
     void shouldNext() {
         Pageable pageable = Pageable.of(2, 1);
@@ -57,5 +68,8 @@ class PageableTest {
         assertThatIllegalArgumentException().isThrownBy(() -> Pageable.page(-1));
         assertThatIllegalArgumentException().isThrownBy(() -> Pageable.of(1, -1));
         assertThatIllegalArgumentException().isThrownBy(() -> Pageable.of(1, 0));
+        assertThatIllegalArgumentException().isThrownBy(() -> Pageable.size(0));
+        assertThatIllegalArgumentException().isThrownBy(() -> Pageable.size(-1));
     }
 }
+
