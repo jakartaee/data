@@ -20,7 +20,33 @@ package jakarta.data.repository;
 import java.util.Objects;
 
 /**
- * Abstract interface for pagination information.
+ * <p>Abstract interface for pagination information.</p>
+ *
+ * <p><code>Pageable</code> is optionally specified as a parameter to a
+ * repository method in one of the parameter positions after the
+ * query parameters. For example,</p>
+ *
+ * <pre>
+ * &#64;OrderBy("age")
+ * &#64;OrderBy("ssn")
+ * Person[] findByAgeBetween(int minAge, int maxAge, Pageable pagination);
+ *
+ * ...
+ * for (Pageable p = Pageable.of(1, 100); p != null; p = page.length == 0 ? null : p.next()) {
+ *   page = people.findByAgeBetween(35, 59, p);
+ *   ...
+ * }
+ * </pre>
+ *
+ * <p>A repository method will raise {@link IllegalArgumentException} if</p>
+ * <ul>
+ * <li>multiple <code>Pageable</code> parameters are specified on the
+ *     same method.</li>
+ * <li><code>Pageable</code> and {@link Limit} parameters are specified on the
+ *     same method.</li>
+ * <li>a <code>Pageable</code> parameter is specified in combination
+ *     with the <code>First</code> keyword.</li>
+ * </ul>
  */
 public class Pageable {
 
@@ -88,7 +114,7 @@ public class Pageable {
     }
 
     /**
-     * Creates a new Pageable at the given size with a default size of 10.
+     * Creates a new Pageable at the given page with a default size of 10.
      *
      * @param page The page
      * @return The pageable
@@ -113,4 +139,14 @@ public class Pageable {
         return new Pageable(size, page);
     }
 
+    /**
+     * Creates a new <code>Pageable</code> for requesting pages of the
+     * specified size, starting with the first page number, which is 1.
+     *
+     * @param pageSize number of query results in a full page.
+     * @return The pageable.
+     */
+    public static Pageable size(long pageSize) {
+        return of(1, pageSize);
+    }
 }
