@@ -75,7 +75,6 @@
         <maven.checkstyle.plugin.version>3.1.2</maven.checkstyle.plugin.version>
         <maven.compile.version>3.10.1</maven.compile.version>
         <maven.compiler.release>11</maven.compiler.release>
-        <maven.compiler.source>11</maven.compiler.source>
         <maven.surefire.plugin.version>2.22.2</maven.surefire.plugin.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <sonar.jacoco.reportPath>../target/jacoco.exec</sonar.jacoco.reportPath>
@@ -136,9 +135,6 @@
                         </goals>
                     </execution>
                 </executions>
-                <configuration>
-                    <source>${maven.compiler.source}</source>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
