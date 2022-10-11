@@ -78,6 +78,7 @@
                     </execution>
                 </executions>
                 <configuration>
+                    <sourceDirectory>src/main/asciidoc</sourceDirectory>
                     <sourceDocumentName>jakarta-data.asciidoc</sourceDocumentName>
                     <sourceHighlighter>coderay</sourceHighlighter>
                     <embedAssets>true</embedAssets>
