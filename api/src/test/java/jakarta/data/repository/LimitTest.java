@@ -17,48 +17,51 @@
  */
 package jakarta.data.repository;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
 
 class LimitTest {
 
     @Test
     public void shouldRaiseErrorWhenEndAtIsLessThanStartAt() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> Limit.range(10, 1));
+        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> Limit.range(10, 1));
     }
 
     @Test
     public void shouldReturnErrorWhenMaxResultsIsNegative() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> Limit.of(-1));
+        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> Limit.of(-1));
     }
 
     @Test
     public void shouldReturnErrorWhenMaxResultsIsZero() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> Limit.of(0));
+        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> Limit.of(0));
     }
 
     @Test
     public void shouldReturnErrorWhenStartAtIsNegative(){
-        Assertions.assertThrows(IllegalArgumentException.class, () -> Limit.range(-1, 10));
+        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> Limit.range(-1, 10));
     }
 
     @Test
     public void shouldReturnErrorWhenStartAtIsZero(){
-        Assertions.assertThrows(IllegalArgumentException.class, () -> Limit.range(0, 100));
+        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> Limit.range(0, 100));
     }
+
     @Test
     public void shouldCreateLimitWithDefaultStartAt() {
         Limit limit = Limit.of(10);
-        Assertions.assertNotNull(limit);
-        Assertions.assertEquals(10L, limit.maxResults());
-        Assertions.assertEquals(1L, limit.startAt());
+        assertThat(limit).isNotNull();
+        assertThat(limit.maxResults()).isEqualTo(10L);
+        assertThat(limit.startAt()).isEqualTo(1L);
     }
 
     @Test
     public void shouldCreateLimitWithRange() {
         Limit limit = Limit.range(2, 11);
-        Assertions.assertNotNull(limit);
-        Assertions.assertEquals(10L, limit.maxResults());
-        Assertions.assertEquals(2L, limit.startAt());
+        assertThat(limit).isNotNull();
+        assertThat(limit.maxResults()).isEqualTo(10L);
+        assertThat(limit.startAt()).isEqualTo(2L);
     }
 }
