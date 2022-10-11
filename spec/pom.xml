@@ -80,13 +80,13 @@
                 <configuration>
                     <sourceDirectory>src/main/asciidoc</sourceDirectory>
                     <sourceDocumentName>jakarta-data.asciidoc</sourceDocumentName>
-                    <sourceHighlighter>coderay</sourceHighlighter>
                     <embedAssets>true</embedAssets>
                     <attributes>
                         <license>Apache License v2.0</license>
                         <revnumber>${project.version}</revnumber>
                         <revremark>${revremark}</revremark>
                         <revdate>${revisiondate}</revdate>
+                        <sourceHighlighter>coderay</sourceHighlighter>
                         <doctitle>Jakarta Data</doctitle>
                     </attributes>
                 </configuration>
