@@ -35,9 +35,15 @@ import java.lang.annotation.Target;
  * <pre>
  * &#64;Repository
  * public interface Products extends DataRepository&lt;Product, Long&gt; {
+ *
  *     &#64;OrderBy("price")
  *     List&lt;Product&gt; findByNameLike(String namePattern);
+ *
+ *     &#64;Query("UPDATE Product o SET o.price = o.price - (o.price * ?1) WHERE o.price * ?1 &lt;= ?2")
+ *     int putOnSale(float rateOfDiscount, float maxDiscount);
+ *
  *     ...
+ * }
  * </pre>
  *
  * <pre>
@@ -46,25 +52,41 @@ import java.lang.annotation.Target;
  *
  * ...
  * found = products.findByNameLike("%Printer%");
+ * numUpdated = products.putOnSale(0.15f, 20.0f);
  * </pre>
  *
- * TODO Also show Query(...) annotation example if that gets brought over?
+ * <p>An interface that is annotated with <code>&#64;Repository</code>
+ * defines methods that perform queries and other operations on entities.
+ * Entities are simple Java objects with fields or accessor methods
+ * designating each entity property. Jakarta Persistence and
+ * Jakarta NoSQL define entity models that are used by Jakarta Data.
+ * TODO update here after better figuring out how these entity models
+ * fit into Jakarta Data.
+ * The entity type is specified by the first parameter to the {@link DataRepository}
+ * or other repository supertype of the interface that is
+ * annotated with <code>&#64;Repository</code>.</p>
  *
- * Methods of repository interfaces must be styled according to a
+ * <p>Methods of repository interfaces must be styled according to a
  * defined set of conventions, which instruct the container/runtime
  * about the desired data access operation to perform.
  * These conventions consist of
  * patterns of reserved keywords within the method name, as well as
- * annotations that are placed upon the method and its parameters.<p>
+ * annotations that are placed upon the method and its parameters.</p>
  *
- * Built-in repository interfaces such as {@link DataRepository}
+ * <p>Built-in repository interfaces such as {@link CrudRepository}
  * provide a base set of predefined repository methods
  * which serve as an optional starting point.
  * You can extend these built-in interfaces to add your own custom methods.
  * You can also copy individual method signatures from the
  * built-in repository methods onto your own, which is possible
  * because the built-in repository methods are consistent with the
- * same set of conventions that you use to write custom repository methods.
+ * same set of conventions that you use to write custom repository methods.</p>
+ *
+ * <p>Entity property names are determined from the entity model's
+ * <code>&#64;Id</code> and <code>&#64;Column</code> annotations,
+ * or otherwise from the the fields and accessor methods of the entity class.
+ * These property names must not contain reserved words if used within
+ * name-pattern based repository query methods.</p>
  *
  * <h2>Reserved Keywords for Name-Pattern-Based Repository Methods</h2>
  *
