@@ -50,6 +50,16 @@ public interface Garage extends CrudRepository<Car, String> {
 }
 ----
 
+=== Entity classes
+
+Entity classes are simple Java objects with fields or accessor methods designating each entity property.
+
+TODO Write the remainder of this section after we determine if a common entity model can be created, or if Jakarta Data will define its own entity model, or if we will reuse the entity models from Jakarta Persistence and Jakarta NoSQL.
+
+==== Entity property names
+
+Within an entity, property names must be unique ignoring case and are either computed from the field or accessor method name or by other means defined by the entity model, such as through the `@Id` or `@Column` annotations, which take precedence if present on the field or accessor method. The entity property that is chosen as the id is referred to in repository methods by the name `Id` or optionally by its other designated name, for example if one is is assigned by an `@Id` or `@Column` annotation, with the latter being used to refer to the id property in query language. Entity properties which are not the id give precedence to the `@Column` name if specified or otherwise the field or accessor method name in both name-pattern based repository query methods and query language. Entity property names that are used in composing name-pattern based repository query methods must not contain reserved words.
+
 === Queries methods
 
 In Jakarta Data, besides finding by an ID, custom queries can be written in two ways:
