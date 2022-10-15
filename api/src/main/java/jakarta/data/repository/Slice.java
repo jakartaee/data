@@ -44,4 +44,18 @@ public interface Slice<T> extends Streamable<T> {
      * @return the number of elements currently on this Slice.
      */
     int getNumberOfElements();
+
+    /**
+     * Returns the current {@link Pageable}
+     *
+     * @return the current Pageable
+     */
+    Pageable getPageable();
+
+    /**
+     * Returns the next {@link Pageable#next()}
+     *
+     * @return the next pageable
+     */
+    Pageable next();
 }

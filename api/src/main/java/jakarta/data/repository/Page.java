@@ -27,29 +27,13 @@ public interface Page<T> extends Slice<T> {
 
     /**
      * Returns the total amount of elements.
-     *
      * @return the total amount of elements
      */
-    long size();
+    long getTotalElements();
 
     /**
-     * Returns the current page {@link Pageable#getPage()} of the page
-     *
-     * @return the current page
+     * Returns the number of total pages.
+     * @return the number of total pages
      */
-    long getPage();
-
-    /**
-     * Returns the current {@link Pageable}
-     *
-     * @return the current Pageable
-     */
-    Pageable getPageable();
-
-    /**
-     * Returns the next {@link Pageable#next()}
-     *
-     * @return the next pageable
-     */
-    Pageable next();
+    long getTotalPages();
 }
