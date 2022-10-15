@@ -17,39 +17,31 @@
  */
 package jakarta.data.repository;
 
+import java.util.List;
 
 /**
- * A page is a sublist of a list of objects. It allows gain information about the position of it in the containing entire list.
- *
- * @param <T> the entity type
+ * A slice of data that indicates whether there's a next or previous slice available.
  */
-public interface Page<T> extends Slice<T> {
+public interface Slice<T> extends Streamable<T> {
 
     /**
-     * Returns the total amount of elements.
+     * Returns the page content as {@link List}.
      *
-     * @return the total amount of elements
+     * @return the page content as {@link List}.
      */
-    long size();
+    List<T> getContent();
 
     /**
-     * Returns the current page {@link Pageable#getPage()} of the page
+     * Returns whether the {@link Slice} has content at all.
      *
-     * @return the current page
+     * @return whether the {@link Slice} has content at all.
      */
-    long getPage();
+    boolean hasContent();
 
     /**
-     * Returns the current {@link Pageable}
+     * Returns the number of elements currently on this Slice.
      *
-     * @return the current Pageable
+     * @return the number of elements currently on this Slice.
      */
-    Pageable getPageable();
-
-    /**
-     * Returns the next {@link Pageable#next()}
-     *
-     * @return the next pageable
-     */
-    Pageable next();
+    int getNumberOfElements();
 }

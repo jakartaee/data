@@ -56,7 +56,7 @@ public interface Streamable<T> extends Iterable<T>, Supplier<Stream<T>> {
     /**
      * Returns whether the current {@link Streamable} is empty.
      *
-     * @return
+     * @return whether the current {@link Streamable} is empty.
      */
     default boolean isEmpty() {
         return !iterator().hasNext();
@@ -66,7 +66,6 @@ public interface Streamable<T> extends Iterable<T>, Supplier<Stream<T>> {
      * Creates a new, unmodifiable {@link List}.
      *
      * @return will never be {@literal null}.
-     * @since 2.2
      */
     default List<T> toList() {
         return stream().collect(Collectors.toUnmodifiableList());
