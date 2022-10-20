@@ -47,10 +47,13 @@ import java.lang.annotation.Target;
  * numeric values means smaller numbers before larger numbers and for
  * string values means <code>A</code> before <code>Z</code>.</p>
  *
- * <p>Do not specify this annotation on a repository method with the
- * <code>OrderBy</code> keyword in its name or that already includes a
- * sorting parameter (TODO add link once added).
- * This will cause an exception to be raised by the repository method.</p>
+ * <p>A repository method will fail if an <code>OrderBy</code> annotation is
+ * specified in combination with any of:</p>
+ * <ul>
+ * <li>an <code>OrderBy</code> keyword</li>
+ * <li>a <code>Sort</code> parameter</li>
+ * <li>a {@link Query} annotation that contains an <code>ORDER BY</code> clause.</li>
+ * </ul>
  */
 @Repeatable(OrderBy.List.class)
 @Retention(RetentionPolicy.RUNTIME)

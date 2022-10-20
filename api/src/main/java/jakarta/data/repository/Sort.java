@@ -41,10 +41,13 @@ import java.util.Objects;
  * (<code>OrderBy</code> keyword or {@link Query} or {@link OrderBy} annotation)
  * where possible to better allow for optimizations by the provider.</p>
  *
- * <p>A repository method will raise {@link IllegalArgumentException} if
- * a <code>Sort</code> parameter is specified in combination
- * with an <code>OrderBy</code> keyword or {@link Query} or
- * {@link OrderBy} annotation.</p>
+ * <p>A repository method will fail if a <code>Sort</code> parameter is
+ * specified in combination with any of:</p>
+ * <ul>
+ * <li>an <code>OrderBy</code> keyword</li>
+ * <li>an {@link OrderBy} annotation</li>
+ * <li>a {@link Query} annotation that contains an <code>ORDER BY</code> clause.</li>
+ * </ul>
  */
 public class Sort {
 

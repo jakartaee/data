@@ -243,7 +243,7 @@ Jakarta Data implementations often support the following list of predicate keywo
 
 |===
 
-===== Special Parameter Handling
+=== Special Parameter Handling
 
 Jakarta Data also supports particular parameters to define pagination and sorting.
 
@@ -275,4 +275,38 @@ You can combine sorting with start and size by using property names.
 Pageable pageable = Pageable.of(1, 20);
 first20 = products.findByNameLike(name, pageable, Sort.desc("price"));
 
+----
+
+=== Keyset Pagination
+
+Keyset pagination aims to reduce missed and duplicate results across pages by querying relative to the observed values of entity properties that constitute the sorting criteria. A Jakarta Data provider appends additional conditions to the query and tracks keyset values automatically when `KeysetAwareSlice` or `KeysetAwarePage` are used as the repository method return type, and `getNextPageable` is invoked on the keyset aware slice or page to obtain a `KeysetPageable` which keeps track of the keyset values.
+
+For example,
+
+[source,java]
+----
+@Repository
+public interface CustomerRepository extends CrudRepository<Customer, Long> {
+  KeysetAwareSlice<Customer> findByZipcodeOrderByLastNameAscFirstNameAscIdAsc(
+                                 int zipcode, Pageable pageable);
+}
+----
+
+You can obtain the next page with,
+
+[source,java]
+----
+for (Pageable p = Pageable.size(50); p != null; ) {
+  page = customers.findByZipcodeOrderByLastNameAscFirstNameAscIdAsc(55901, p);
+  p = page.nextPageable();
+}
+----
+
+Or you can obtain the next (or previous) page relative to a known entity,
+
+[source,java]
+----
+Customer c = ...
+KeysetPageable p = Pageable.size(50).afterKeyset(c.lastName, c.firstName, c.id);
+page = customers.findByZipcodeOrderByLastNameAscFirstNameAscIdAsc(55902, p);
 ----

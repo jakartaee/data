@@ -56,16 +56,46 @@ public class Pageable {
 
     private static final long DEFAULT_SIZE = 10;
 
-    private final long page;
+    final long page;
 
-    private final long size;
+    final long size;
 
-    private final List<Sort> sorts;
+    final List<Sort> sorts;
 
-    private Pageable(long page, long size, List<Sort> sorts) {
+    Pageable(long page, long size, List<Sort> sorts) {
         this.page = page;
         this.size = size;
         this.sorts = sorts;
+    }
+
+    /**
+     * <p>Requests {@link KeysetPageable keyset pagination} in the forward direction,
+     * starting after the specified keyset values.</p>
+     *
+     * @param keyset keyset values, the order and number of which must match the
+     *        {@link OrderBy} annotations, {@link Sort} parameters, or
+     *        <code>OrderBy</code> name pattern of the repository method to which
+     *        this pagination will be supplied.
+     * @return forward keyset pagination.
+     * @throws IllegalArgumentException if no keyset values are provided.
+     */
+    public KeysetPageable afterKeyset(Object... keyset) {
+        return new KeysetPageable(this, KeysetPageable.Mode.NEXT, keyset);
+    }
+
+    /**
+     * <p>Requests {@link KeysetPageable keyset pagination} in the reverse direction,
+     * starting after the specified keyset values.</p>
+     *
+     * @param keyset keyset values, the order and number of which must match the
+     *        {@link OrderBy} annotations, {@link Sort} parameters, or
+     *        <code>OrderBy</code> name pattern of the repository method to which
+     *        this pagination will be supplied.
+     * @return reverse keyset pagination.
+     * @throws IllegalArgumentException if no keyset values are provided.
+     */
+    public KeysetPageable beforeKeyset(Object... keyset) {
+        return new KeysetPageable(this, KeysetPageable.Mode.PREVIOUS, keyset);
     }
 
     /**
