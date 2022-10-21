@@ -22,7 +22,7 @@ import java.util.List;
 /**
  * A slice of data that indicates whether there's a next or previous slice available.
  */
-public interface Slice<T> extends Streamable<T> {
+public interface Slice<T>  {
 
     /**
      * Returns the page content as {@link List}.
