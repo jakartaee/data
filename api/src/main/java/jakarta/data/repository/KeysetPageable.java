@@ -17,6 +17,8 @@
  */
 package jakarta.data.repository;
 
+import java.util.Objects;
+
 /**
  * <p>Keyset pagination is a form of pagination that aims to reduce the
  * possibility of missed or duplicate results by making the request for
@@ -158,6 +160,19 @@ public class KeysetPageable extends Pageable {
         public int size() {
             return keyset.length;
         }
+
+        /**
+         * String representation of the keyset cursor, including the number of
+         * key values in the cursor but not the values themselves.
+         *
+         * @return String representation of the keyset cursor.
+         */
+        @Override
+        public String toString() {
+            return new StringBuilder("Cursor@").append(Integer.toHexString(hashCode())) //
+                            .append(" with ").append(keyset.length).append(" keys") //
+                            .toString();
+        }
     }
 
     private final Cursor cursor;
@@ -171,6 +186,25 @@ public class KeysetPageable extends Pageable {
 
         this.cursor = new Cursor(keyset);
         this.mode = mode;
+    }
+
+    /**
+     * Indicates if this keyset pagination information is equal to other
+     * keyset pagination information. The comparison includes keyset cursor
+     * instances but does not do a deep comparison of keyset values within
+     * the cursor instance.
+     *
+     * @return true if equal. Otherwise false.
+     */
+    @Override
+    public boolean equals(Object o) {
+        KeysetPageable p;
+        return this == o || o != null
+                && o.getClass() == getClass()
+                && (p = (KeysetPageable) o).size == size
+                && p.page == page
+                && p.mode == mode
+                && p.cursor == cursor;
     }
 
     /**
@@ -190,5 +224,37 @@ public class KeysetPageable extends Pageable {
      */
     public Mode getMode() {
         return mode;
+    }
+
+    /**
+     * <p>Returns a hash code based upon:</p>
+     * <ul>
+     * <li>page number</li>
+     * <li>maximum page size</li>
+     * <li>mode</li>
+     * <li>keyset cursor</li>
+     * </ul>
+     *
+     * @return a hash code for the pagination information.
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(size, page, mode, cursor);
+    }
+
+    /**
+     * Returns a string representation of the pagination information.
+     *
+     * @return a string representation of the pagination information.
+     */
+    @Override
+    public String toString() {
+        return new StringBuilder(100)
+                .append("KeysetPageable{size=")
+                .append(getSize()).append(", page=")
+                .append(getPage()).append(", mode=")
+                .append(mode).append(", cursor=")
+                .append(cursor).append("}")
+                .toString();
     }
 }
