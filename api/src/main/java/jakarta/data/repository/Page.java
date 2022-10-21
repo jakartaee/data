@@ -19,7 +19,7 @@ package jakarta.data.repository;
 
 
 /**
- * A page is a sublist of a list of objects. It allows gain information about the position of it in the containing entire list.
+ * A page is a sublist of a list of objects. It provides information about its position relative to the entire list.
  *
  * @param <T> the entity type
  */
