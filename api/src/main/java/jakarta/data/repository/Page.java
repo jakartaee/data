@@ -32,7 +32,7 @@ public interface Page<T> extends Slice<T> {
     long getTotalElements();
 
     /**
-     * Returns the number of total pages.
+     * Returns the total number of pages.
      * @return the total number of pages
      */
     long getTotalPages();
