@@ -57,5 +57,5 @@ public interface Slice<T>  {
      *
      * @return the next pageable
      */
-    Pageable next();
+  Pageable nextPageable();
 }
