@@ -92,7 +92,7 @@ public class Pageable {
      * @return the order collection
      */
     public List<Sort> getSorts() {
-        return Collections.unmodifiableList(sorts);
+        return sorts;
     }
 
     /**
