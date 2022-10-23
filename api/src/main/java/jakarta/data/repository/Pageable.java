@@ -158,7 +158,7 @@ public class Pageable {
      * @param size The size
      * @param sort the sort
      * @return The pageable
-     * @throws IllegalArgumentException when page or size are negative
+     * @throws IllegalArgumentException when page or size are negative or zero
      */
     public static Pageable of(long page, long size, Sort sort) {
         Objects.requireNonNull(sort, "sort is required");
