@@ -145,7 +145,7 @@ public class Pageable {
      * @param page The page
      * @param size The size
      * @return The pageable
-     * @throws IllegalArgumentException when page or size are negative
+     * @throws IllegalArgumentException when page or size are negative or zero
      */
     public static Pageable of(long page, long size) {
         return of(page, size, Collections.emptyList());
