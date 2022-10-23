@@ -87,7 +87,7 @@ public class Pageable {
     }
 
     /**
-     * Return the order collection
+     * Return the order collection if it was specified on this <code>Pageable</code>, otherwise an empty list.
      *
      * @return the order collection
      */
