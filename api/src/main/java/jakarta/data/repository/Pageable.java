@@ -172,7 +172,7 @@ public class Pageable {
      * @param size  The size
      * @param sorts the sorts
      * @return The pageable
-     * @throws IllegalArgumentException when page or size are negative
+     * @throws IllegalArgumentException when page or size are negative or zero
      */
     public static Pageable of(long page, long size, Sort... sorts) {
         return of(page, size, List.of(sorts));
