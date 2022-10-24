@@ -53,7 +53,7 @@ public interface Slice<T>  {
     Pageable getPageable();
 
     /**
-     * Returns the next {@link Pageable#next()}
+     * Returns the next {@link Pageable#next()}, or <code>null</code> if it is known that there is no next page.
      *
      * @return the next pageable
      */
