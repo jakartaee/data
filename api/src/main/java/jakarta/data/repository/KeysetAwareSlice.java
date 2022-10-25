@@ -46,7 +46,9 @@ public interface KeysetAwareSlice<T> /** TODO extends Slice<T> */ {
      * obtain results in a forward direction according to the sort criteria
      * and relative to that entity.</p>
      *
-     * @return pagination information for requesting the next page.
+     * @return pagination information for requesting the next page, or
+     *         <code>null</code> if the current page is empty
+     *         or if it is known that there is not a next page.
      */
     // TODO @Override once Slice is added to the spec
     KeysetPageable nextPageable();
@@ -71,7 +73,9 @@ public interface KeysetAwareSlice<T> /** TODO extends Slice<T> */ {
      * cannot be relied upon to return a page number that is equal to the
      * current page number.</p>
      *
-     * @return pagination information for requesting the previous page.
+     * @return pagination information for requesting the previous page, or
+     *         <code>null</code> if the current page is empty
+     *         or if it is known that there is not a previous page.
      */
     // TODO @Override once Slice is added to the spec
     KeysetPageable previousPageable();
