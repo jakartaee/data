@@ -153,10 +153,13 @@ public class Pageable {
 
     @Override
     public String toString() {
-        return "Pageable{" +
-                "page=" + page +
-                ", size=" + size +
-                '}';
+        StringBuilder s = new StringBuilder(100)
+                .append("Pageable{page=").append(page)
+                .append(", size=").append(size);
+        for (Sort sort : sorts) {
+            s.append(", ").append(sort.getProperty()).append(sort.isAscending() ? " ASC" : " DESC");
+        }
+        return s.append("}").toString();
     }
 
     /**

@@ -63,8 +63,9 @@ import java.util.Objects;
  * <p>You can also construct a <code>KeysetPageable</code> directly, which
  * allows you to make it relative to a specific list of values. The number and
  * order of values must match that of the {@link OrderBy} annotations,
- * {@link Sort} parameters, or <code>OrderBy</code> name pattern of the
- * repository method. For example,</p>
+ * <code>Pageable</code> {@link Pageable#of(long, long, Sort...) Sort} parameters,
+ * or <code>OrderBy</code> name pattern of the repository method.
+ * For example,</p>
  *
  * <pre>
  * Employee emp = ...
@@ -90,7 +91,8 @@ import java.util.Objects;
  * Enclose the entire conditional expression of the <code>WHERE</code> clause
  * in parenthesis.
  * Sort criteria must be specified independently from the user-provided query,
- * either with the {@link OrderBy} annotation or {@link Sort} parameters.
+ * either with the {@link OrderBy} annotation or
+ * <code>Pageable</code> {@link Pageable#of(long, long, Sort...) Sort} parameters.
  * For example,</p>
  *
  * <pre>
@@ -114,17 +116,17 @@ public class KeysetPageable extends Pageable {
     public static enum Mode {
         /**
          * Indicates forward keyset pagination, which follows the
-         * direction of the {@link OrderBy} annotations,
-         * {@link Sort} parameters, or <code>OrderBy</code> name pattern
-         * of the repository method.
+         * direction of the {@link OrderBy} annotations, <code>Pageable</code>
+         * {@link Pageable#of(long, long, Sort...) Sort} parameters,
+         * or <code>OrderBy</code> name pattern of the repository method.
          */
         NEXT,
 
         /**
-         * Indicates reverse keyset pagination. which follows the
-         * opposite direction of the {@link OrderBy} annotations,
-         * {@link Sort} parameters, or <code>OrderBy</code> name pattern
-         * of the repository method.
+         * Indicates reverse keyset pagination. which follows the opposite
+         * direction of the {@link OrderBy} annotations, <code>Pageable</code>
+         * {@link Pageable#of(long, long, Sort...) Sort} parameters,
+         * or <code>OrderBy</code> name pattern of the repository method.
          */
         PREVIOUS
     }
@@ -204,7 +206,8 @@ public class KeysetPageable extends Pageable {
                 && (p = (KeysetPageable) o).size == size
                 && p.page == page
                 && p.mode == mode
-                && p.cursor == cursor;
+                && p.cursor == cursor
+                && p.sorts.equals(sorts);
     }
 
     /**
@@ -239,7 +242,7 @@ public class KeysetPageable extends Pageable {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(size, page, mode, cursor);
+        return Objects.hash(size, page, sorts, mode, cursor);
     }
 
     /**
@@ -249,12 +252,14 @@ public class KeysetPageable extends Pageable {
      */
     @Override
     public String toString() {
-        return new StringBuilder(100)
-                .append("KeysetPageable{size=")
-                .append(getSize()).append(", page=")
-                .append(getPage()).append(", mode=")
-                .append(mode).append(", cursor=")
-                .append(cursor).append("}")
-                .toString();
+        StringBuilder s = new StringBuilder(150)
+                .append("KeysetPageable{page=").append(page)
+                .append(", size=").append(size)
+                .append(", mode=").append(mode)
+                .append(", ").append(cursor.keyset.length).append(" keys");
+        for (Sort sort : sorts) {
+            s.append(", ").append(sort.getProperty()).append(sort.isAscending() ? " ASC" : " DESC");
+        }
+        return s.append("}").toString();
     }
 }

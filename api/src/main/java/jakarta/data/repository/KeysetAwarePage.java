@@ -21,5 +21,5 @@ package jakarta.data.repository;
  * <p>A page of results from a repository query that performs
  * {@link KeysetPageable keyset pagination}.</p>
  */
-public interface KeysetAwarePage<T> extends KeysetAwareSlice<T> /* TODO Page<T> */ {
+public interface KeysetAwarePage<T> extends KeysetAwareSlice<T>, Page<T> {
 }

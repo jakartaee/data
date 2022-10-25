@@ -21,14 +21,13 @@ package jakarta.data.repository;
  * <p>A page of results from a repository query that performs
  * {@link KeysetPageable keyset pagination}.</p>
  *
- * TODO switch code to link once #37 is merged.
- * <p>The concept of <code>Slice</code> differs from <code>Page</code> in that slices
+ * <p>The concept of {@link Slice} differs from {@link Page} in that slices
  * do not have awareness of a total number of pages or results. This fits well
  * with keyset pagination, which allows entities to be added and removed
  * in between traversal of slices or pages and makes estimates of a total
  * inaccurate.</p>
  */
-public interface KeysetAwareSlice<T> /** TODO extends Slice<T> */ {
+public interface KeysetAwareSlice<T> extends Slice<T> {
     /**
      * Returns a {@link KeysetPageable.Cursor Cursor} for keyset values at the
      * specified position.
@@ -41,25 +40,26 @@ public interface KeysetAwareSlice<T> /** TODO extends Slice<T> */ {
     /**
      * <p>Returns pagination information for requesting the next page
      * in a forward direction from the current page. This method computes a
-     * keyset from the last entity of the current page, including that
+     * keyset from the last entity of the current page and includes the
      * keyset in the pagination information so that it can be used to
-     * obtain results in a forward direction according to the sort criteria
-     * and relative to that entity.</p>
+     * obtain the next slice in a forward direction according to the
+     * sort criteria and relative to that entity.</p>
      *
      * @return pagination information for requesting the next page, or
      *         <code>null</code> if the current page is empty
      *         or if it is known that there is not a next page.
      */
-    // TODO @Override once Slice is added to the spec
+    @Override
     KeysetPageable nextPageable();
 
     /**
      * <p>Returns pagination information for requesting the previous page
      * in a reverse direction from the current page. This method computes a
-     * keyset from the first entity of the current page, including that
+     * keyset from the first entity of the current page and includes the
      * keyset in the pagination information so that it can be used to
-     * obtain results in a reverse direction to the sort criteria
-     * and relative to that entity.</p>
+     * obtain the previous slice in a reverse direction to the sort criteria
+     * and relative to that entity. Within a single page, results are not
+     * reversed and remain ordered according to the sort criteria.</p>
      *
      * <p>Page numbers are not accurate and should not be relied upon when
      * using keyset pagination. Jakarta Data providers should aim to at least
@@ -77,6 +77,5 @@ public interface KeysetAwareSlice<T> /** TODO extends Slice<T> */ {
      *         <code>null</code> if the current page is empty
      *         or if it is known that there is not a previous page.
      */
-    // TODO @Override once Slice is added to the spec
     KeysetPageable previousPageable();
 }

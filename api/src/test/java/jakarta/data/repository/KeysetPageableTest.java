@@ -17,6 +17,7 @@
  */
 package jakarta.data.repository;
 
+import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -47,14 +48,15 @@ class KeysetPageableTest {
     @Test
     @DisplayName("Should include keyset values in previous KeysetPageable")
     void shouldCreateKeysetPageableBeforeKeyset() {
-        KeysetPageable pageable = Pageable.of(10, 30).beforeKeyset(100, "123-45-6789");
+        KeysetPageable pageable = Pageable.of(10, 30, Sort.desc("yearBorn"), Sort.asc("ssn")).beforeKeyset(1991, "123-45-6789");
 
         assertSoftly(softly -> {
             softly.assertThat(pageable.getSize()).isEqualTo(30L);
             softly.assertThat(pageable.getPage()).isEqualTo(10L);
+            softly.assertThat(pageable.getSorts()).isEqualTo(List.of(Sort.desc("yearBorn"), Sort.asc("ssn")));
             softly.assertThat(pageable.getMode()).isEqualTo(KeysetPageable.Mode.PREVIOUS);
             softly.assertThat(pageable.getCursor().size()).isEqualTo(2);
-            softly.assertThat(pageable.getCursor().getKeysetElement(0)).isEqualTo(100);
+            softly.assertThat(pageable.getCursor().getKeysetElement(0)).isEqualTo(1991);
             softly.assertThat(pageable.getCursor().getKeysetElement(1)).isEqualTo("123-45-6789");
         });
     }
@@ -62,7 +64,8 @@ class KeysetPageableTest {
     @Test
     @DisplayName("Should be usable in a hashing structure")
     void shouldHash() {
-        KeysetPageable pageable1 = Pageable.size(15).afterKeyset(1, '1', "1");
+        KeysetPageable pageable1 = Pageable.of(1, 15, Sort.desc("yearHired"), Sort.asc("lastName"), Sort.asc("id"))
+                                           .afterKeyset(1, '1', "1");
         KeysetPageable pageable2a = Pageable.size(15).afterKeyset(2, '2', "2");
         KeysetPageable pageable2b = Pageable.size(15).afterKeyset(2, '2', "2");
         Map<KeysetPageable, Integer> map = new HashMap<>();
@@ -80,16 +83,20 @@ class KeysetPageableTest {
 
     @Test
     @DisplayName("Should be displayable as String with toString")
-    void shouldKeysetDisplayAsString() {
+    void shouldKeysetPageableDisplayAsString() {
         KeysetPageable pageable = Pageable.size(200).afterKeyset("value1", 1);
 
         assertSoftly(softly -> {
-            softly.assertThat(pageable.toString()).isNotNull();
-            softly.assertThat(pageable.toString()).isEqualTo(pageable.toString());
-            softly.assertThat(pageable.toString()).isNotEqualTo(Pageable.size(100).afterKeyset("value1", 1));
-            softly.assertThat(pageable.toString()).isNotEqualTo(Pageable.size(200).afterKeyset("value1", 1, 20));
-            softly.assertThat(pageable.toString().contains("200")).isTrue();
-            softly.assertThat(pageable.toString().contains("value1")).isFalse();
+            softly.assertThat(pageable.toString())
+                  .isEqualTo("KeysetPageable{page=1, size=200, mode=NEXT, 2 keys}");
+        });
+
+        KeysetPageable pageableWithSorts = Pageable.of(1, 100, Sort.desc("name"), Sort.asc("id"))
+                                                   .beforeKeyset("Item1", 3456);
+
+        assertSoftly(softly -> {
+            softly.assertThat(pageableWithSorts.toString())
+                  .isEqualTo("KeysetPageable{page=1, size=100, mode=PREVIOUS, 2 keys, name DESC, id ASC}");
         });
     }
 
