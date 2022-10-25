@@ -130,7 +130,7 @@ public class Pageable {
     }
 
     /**
-     * Creates a new Pageable at the given size with a default size of 10.
+     * Creates a new Pageable at the given page with a default size of 10.
      *
      * @param page The page
      * @return The pageable
