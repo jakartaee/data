@@ -30,5 +30,9 @@ import java.lang.annotation.Target;
 @Target(ElementType.PARAMETER)
 public @interface Param {
 
+    /**
+     * Returns The parameter name
+     * @return the parameter name
+     */
     String value();
 }
