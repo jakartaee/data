@@ -1,5 +1,3 @@
-:doctype: book
-
 [subs="normal"]
 ....
 Specification: {doctitle}
@@ -11,11 +9,11 @@ Status: {revremark}
 Release: {revdate}
 ....
 
-= Copyright
+== Copyright
 
 Copyright (c) {inceptionYear} , {currentYear} Eclipse Foundation.
 
-== Eclipse Foundation Specification License
+=== Eclipse Foundation Specification License
 
 By using and/or copying this document, or the Eclipse Foundation
 document from which this statement is linked, you (the licensee) agree
@@ -55,7 +53,7 @@ The notice is:
 document includes material copied from or derived from [title and URI
 of the Eclipse Foundation specification document]."
 
-== Disclaimers
+=== Disclaimers
 
 THIS DOCUMENT IS PROVIDED &quot;AS IS,&quot; AND THE COPYRIGHT
 HOLDERS AND THE ECLIPSE FOUNDATION MAKE NO REPRESENTATIONS OR

@@ -1,28 +1,44 @@
-:sectanchors:
-:doctype: book
-:license: Apache License v2.0
+// Copyright (c) 2022 Nathan Rauh, Otavio Santana (project leads)
+//
+// This program and the accompanying materials are made available under the
+// terms of the Eclipse Public License v. 2.0 which is available at
+// http://www.eclipse.org/legal/epl-2.0.
+//
+// This Source Code may also be made available under the following Secondary
+// Licenses when the conditions for such availability set forth in the Eclipse
+// Public License v. 2.0 are satisfied: GNU General Public License, version 2
+// with the GNU Classpath Exception which is available at
+// https://www.gnu.org/software/classpath/license.html.
+//
+// SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
+
+= Jakarta Data
 :authors:
 :email:
 :version-label!:
+:doctype: book
+:license: Apache License v2.0
 :source-highlighter: coderay
 :toc: left
-:toclevels: 4
+:toclevels: 3
 :sectnumlevels: 4
+:setanchors:
+:stem:
 ifdef::backend-pdf[]
 :pagenums:
 :numbered:
 :title-logo-image: image:jakarta_ee_logo_schooner_color_stacked_default.png[pdfwidth=4.25in,align=right]
 endif::[]
-:doctype: book
+:icons: font
 ifndef::imagesdir[:imagesdir: images]
 ifndef::sourcedir[:sourcedir: ../../main/java]
-:leveloffset: 1
+
 :sectnums!:
-include::license-efsl.adoc[]
+include::chapters/license/license-efsl.adoc[]
 
 :sectnums:
 
 = Jakarta Data
 
-include::jakarta-data-introduction.asciidoc[]
+include::chapters/introduction/introduction.asciidoc[]
 include::repository.asciidoc[]

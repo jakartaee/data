@@ -1,7 +1,20 @@
+// Copyright (c) 2022 Nathan Rauh, Otavio Santana (project leads)
+//
+// This program and the accompanying materials are made available under the
+// terms of the Eclipse Public License v. 2.0 which is available at
+// http://www.eclipse.org/legal/epl-2.0.
+//
+// This Source Code may also be made available under the following Secondary
+// Licenses when the conditions for such availability set forth in the Eclipse
+// Public License v. 2.0 are satisfied: GNU General Public License, version 2
+// with the GNU Classpath Exception which is available at
+// https://www.gnu.org/software/classpath/license.html.
+//
+// SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
 
-= Repository
+== Repository
 
-In Domain-driven design, DDD, the repository pattern encapsulates the logic required to access data sources. The repository pattern consolidates data access functionality, providing better maintainability and decoupling the infrastructure or technology used to access databases from the domain model layer.
+In Domain-Driven Design (DDD) the repository pattern encapsulates the logic required to access data sources. The repository pattern consolidates data access functionality, providing better maintainability and decoupling the infrastructure or technology used to access databases from the domain model layer.
 
 image::01-repository.png[alt=repository structure, width=70%, height=70%]
 
@@ -13,7 +26,7 @@ The Repository pattern is a well-documented way of working with a data source. I
 
 It also becomes very famous in Domain-Driven Design: Tackling Complexity in the Heart of Software by Eric Evans.
 
-== Repositories on Jakarta Data
+=== Repositories on Jakarta Data
 
 A repository abstraction aims to significantly reduce the boilerplate code required to implement data access layers for various persistence stores.
 
@@ -50,17 +63,17 @@ public interface Garage extends CrudRepository<Car, String> {
 }
 ----
 
-=== Entity classes
+=== Entity Classes
 
 Entity classes are simple Java objects with fields or accessor methods designating each entity property.
 
 TODO Write the remainder of this section after we determine if a common entity model can be created, or if Jakarta Data will define its own entity model, or if we will reuse the entity models from Jakarta Persistence and Jakarta NoSQL.
 
-==== Entity property names
+==== Entity Property Names
 
 Within an entity, property names must be unique ignoring case and are either computed from the field or accessor method name or by other means defined by the entity model, such as through the `@Id` or `@Column` annotations, which take precedence if present on the field or accessor method. The entity property that is chosen as the id is referred to in repository methods by the name `Id` or optionally by its other designated name, for example if one is is assigned by an `@Id` or `@Column` annotation, with the latter being used to refer to the id property in query language. Entity properties which are not the id give precedence to the `@Column` name if specified or otherwise the field or accessor method name in both name-pattern based repository query methods and query language. Entity property names that are used in composing name-pattern based repository query methods must not contain reserved words.
 
-=== Queries methods
+=== Queries Methods
 
 In Jakarta Data, besides finding by an ID, custom queries can be written in two ways:
 
@@ -69,7 +82,7 @@ In Jakarta Data, besides finding by an ID, custom queries can be written in two 
 
 WARNING: Due to the variety of data sources, those resources might not work; it varies based on the Jakarta Data implementation and the database engine, which can provide queries on more than a Key or ID or not, such as a Key-value database.
 
-==== Using the Query annotation
+==== Using the Query Annotation
 
 The Query's annotation will support a search expression as a String. The specification won't define the query syntax, which might vary between vendors and data sources, such as SQL, JPA-QL, Cypher, CQL, etc.
 
@@ -151,7 +164,7 @@ public interface OrderRepository extends CrudRepository<Order, Long> {
 
 WARNING: Define as a priority following standard Java naming conventions, camel case,  using underscore as the last instance resource.
 
-===== Query methods Keywords
+===== Query Methods Keywords
 
 The following table lists the subject keywords generally supported by Jakarta Data.
 
@@ -230,7 +243,7 @@ Jakarta Data implementations often support the following list of predicate keywo
 
 |===
 
-===== Special parameter handling
+===== Special Parameter Handling
 
 Jakarta Data also supports particular parameters to define pagination and sorting.
 
