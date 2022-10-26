@@ -42,8 +42,8 @@ class PageableTest {
         Pageable pageable = Pageable.size(50);
 
         assertSoftly(softly -> {
-            softly.assertThat(pageable.getSize()).isEqualTo(50);
-            softly.assertThat(pageable.getPage()).isEqualTo(1);
+            softly.assertThat(pageable.getSize()).isEqualTo(50L);
+            softly.assertThat(pageable.getPage()).isEqualTo(1L);
         });
     }
 
@@ -58,6 +58,17 @@ class PageableTest {
             softly.assertThat(pageable.getPage()).isEqualTo(2L);
             softly.assertThat(next.getPage()).isEqualTo(3L);
             softly.assertThat(next.getSize()).isEqualTo(1L);
+        });
+    }
+
+    @Test
+    @DisplayName("Should create a new Pageable at the given page with a default size of 10")
+    void shouldCreatePage() {
+        Pageable pageable = Pageable.page(5);
+
+        assertSoftly(softly -> {
+            softly.assertThat(pageable.getSize()).isEqualTo(10L);
+            softly.assertThat(pageable.getPage()).isEqualTo(5L);
         });
     }
 
