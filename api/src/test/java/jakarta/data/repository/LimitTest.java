@@ -17,48 +17,95 @@
  */
 package jakarta.data.repository;
 
-import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 class LimitTest {
 
     @Test
-    public void shouldRaiseErrorWhenEndAtIsLessThanStartAt() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> Limit.range(10, 1));
+    @DisplayName(("Should return exception when limit maxResults is negative"))
+    void shouldReturnErrorWhenMaxResultsIsNegative() {
+        assertThatIllegalArgumentException().isThrownBy(() -> Limit.of(-1));
     }
 
     @Test
-    public void shouldReturnErrorWhenMaxResultsIsNegative() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> Limit.of(-1));
+    @DisplayName(("Should return exception when limit maxResults is zero"))
+    void shouldReturnErrorWhenMaxResultsIsZero() {
+        assertThatIllegalArgumentException().isThrownBy(() -> Limit.of(0));
     }
 
     @Test
-    public void shouldReturnErrorWhenMaxResultsIsZero() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> Limit.of(0));
+    @DisplayName(("Should return an exception when startAt is greater than endAt"))
+    void shouldReturnErrorWhenStartAtIsGreaterThanEndAt() {
+        assertThatIllegalArgumentException().isThrownBy(() -> Limit.range(2, 1));
     }
 
     @Test
-    public void shouldReturnErrorWhenStartAtIsNegative(){
-        Assertions.assertThrows(IllegalArgumentException.class, () -> Limit.range(-1, 10));
+    @DisplayName(("Should return exception when limit ends less than its start"))
+    void shouldRaiseErrorWhenEndAtIsLessThanStartAt() {
+        assertThatIllegalArgumentException().isThrownBy(() -> Limit.range(10, 1));
     }
 
     @Test
-    public void shouldReturnErrorWhenStartAtIsZero(){
-        Assertions.assertThrows(IllegalArgumentException.class, () -> Limit.range(0, 100));
+    @DisplayName(("Should return exception when limit startAt is negative"))
+    void shouldReturnErrorWhenStartAtIsNegative() {
+        assertThatIllegalArgumentException().isThrownBy(() -> Limit.range(-1, 10));
     }
+
     @Test
-    public void shouldCreateLimitWithDefaultStartAt() {
+    @DisplayName(("Should return exception when limit startAt is zero"))
+    void shouldReturnErrorWhenStartAtIsZero() {
+        assertThatIllegalArgumentException().isThrownBy(() -> Limit.range(0, 100));
+    }
+
+    @Test
+    @DisplayName(("Should create limit with default maxResults"))
+    void shouldCreateLimitWithDefaultMaxResults() {
+        Limit limit = Limit.of(1);
+
+        assertSoftly(soft -> {
+            soft.assertThat(limit).isNotNull();
+            soft.assertThat(limit.maxResults()).isEqualTo(1L);
+            soft.assertThat(limit.startAt()).isEqualTo(1L);
+        });
+    }
+
+    @Test
+    @DisplayName(("Should create limit with default startAt"))
+    void shouldCreateLimitWithDefaultStartAt() {
         Limit limit = Limit.of(10);
-        Assertions.assertNotNull(limit);
-        Assertions.assertEquals(10L, limit.maxResults());
-        Assertions.assertEquals(1L, limit.startAt());
+
+        assertSoftly(soft -> {
+            soft.assertThat(limit).isNotNull();
+            soft.assertThat(limit.maxResults()).isEqualTo(10L);
+            soft.assertThat(limit.startAt()).isEqualTo(1L);
+        });
     }
 
     @Test
-    public void shouldCreateLimitWithRange() {
+    @DisplayName(("Should create limit with equals range"))
+    void shouldCreateLimitWithEqualsRange() {
+        Limit limit = Limit.range(1, 1);
+
+        assertSoftly(soft -> {
+            soft.assertThat(limit).isNotNull();
+            soft.assertThat(limit.maxResults()).isEqualTo(1L);
+            soft.assertThat(limit.startAt()).isEqualTo(1L);
+        });
+    }
+
+    @Test
+    @DisplayName(("Should create limit with a range"))
+    void shouldCreateLimitWithRange() {
         Limit limit = Limit.range(2, 11);
-        Assertions.assertNotNull(limit);
-        Assertions.assertEquals(10L, limit.maxResults());
-        Assertions.assertEquals(2L, limit.startAt());
+
+        assertSoftly(soft -> {
+            soft.assertThat(limit).isNotNull();
+            soft.assertThat(limit.maxResults()).isEqualTo(10L);
+            soft.assertThat(limit.startAt()).isEqualTo(2L);
+        });
     }
 }
