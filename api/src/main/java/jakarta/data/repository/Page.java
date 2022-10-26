@@ -13,28 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- *  SPDX-License-Identifier: Apache-2.0
+ * SPDX-License-Identifier: Apache-2.0
  */
 package jakarta.data.repository;
 
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 /**
- * Defines the query string such as SQL, JPA-QL, Cypher etc. that should be executed.
+ * A page is a sublist of a list of objects. It provides information about its position relative to the entire list.
+ *
+ * @param <T> the entity type
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
-public @interface Query {
+public interface Page<T> extends Slice<T> {
 
     /**
-     * Defines the query to be executed when the annotated method is called.
-     *
-     * @return the query to be executed when the annotated method is called.
+     * Returns the total amount of elements.
+     * @return the total amount of elements
      */
-    String value();
-}
+    long getTotalElements();
 
+    /**
+     * Returns the total number of pages.
+     * @return the total number of pages
+     */
+    long getTotalPages();
+}
