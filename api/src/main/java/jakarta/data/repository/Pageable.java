@@ -23,6 +23,8 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import jakarta.data.repository.KeysetPageable.Cursor;
+
 /**
  * <p>This class represents pagination information.</p>
  *
@@ -80,7 +82,7 @@ public class Pageable {
      * @throws IllegalArgumentException if no keyset values are provided.
      */
     public KeysetPageable afterKeyset(Object... keyset) {
-        return new KeysetPageable(this, KeysetPageable.Mode.NEXT, keyset);
+        return new KeysetPageable(this, KeysetPageable.Mode.NEXT, new KeysetPageable.Cursor(keyset));
     }
 
     /**
@@ -95,7 +97,37 @@ public class Pageable {
      * @throws IllegalArgumentException if no keyset values are provided.
      */
     public KeysetPageable beforeKeyset(Object... keyset) {
-        return new KeysetPageable(this, KeysetPageable.Mode.PREVIOUS, keyset);
+        return new KeysetPageable(this, KeysetPageable.Mode.PREVIOUS, new KeysetPageable.Cursor(keyset));
+    }
+
+    /**
+     * <p>Requests {@link KeysetPageable keyset pagination} in the forward direction,
+     * starting after the specified keyset values.</p>
+     *
+     * @param keysetCursor cursor with keyset values, the order and number of which must match the
+     *        {@link OrderBy} annotations, {@link Sort} parameters, or
+     *        <code>OrderBy</code> name pattern of the repository method to which
+     *        this pagination will be supplied.
+     * @return forward keyset pagination.
+     * @throws IllegalArgumentException if no keyset values are provided.
+     */
+    public KeysetPageable afterKeysetCursor(Cursor keysetCursor) {
+        return new KeysetPageable(this, KeysetPageable.Mode.NEXT, keysetCursor);
+    }
+
+    /**
+     * <p>Requests {@link KeysetPageable keyset pagination} in the reverse direction,
+     * starting after the specified keyset values.</p>
+     *
+     * @param keysetCursor cursor with keyset values, the order and number of which must match the
+     *        {@link OrderBy} annotations, {@link Sort} parameters, or
+     *        <code>OrderBy</code> name pattern of the repository method to which
+     *        this pagination will be supplied.
+     * @return reverse keyset pagination.
+     * @throws IllegalArgumentException if no keyset values are provided.
+     */
+    public KeysetPageable beforeKeysetCursor(Cursor keysetCursor) {
+        return new KeysetPageable(this, KeysetPageable.Mode.PREVIOUS, keysetCursor);
     }
 
     /**

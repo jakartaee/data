@@ -17,6 +17,7 @@
  */
 package jakarta.data.repository;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -25,10 +26,14 @@ import java.util.Objects;
  * each subsequent page relative to the observed values of entity properties
  * from the current page. This list of values is referred to as the keyset
  * and only includes values of entity properties that are in the sort criteria
- * of the repository method. The values can be from the last entity (for
- * forward direction) or first entity (for reverse direction) on the page,
+ * of the repository method. The combination of sort criteria must uniquely
+ * identify each entity. The keyset values can be from the last entity
+ * (for pagination in a forward direction) or first entity on the page
+ * (if requesting pages in a reverse direction),
  * or can be any other desired list of values which serve as a new starting
- * point.</p>
+ * point. Keyset pagination also has the potential to improve performance
+ * by avoiding the fetching and ordering of results from prior pages
+ * because these become non-matching.</p>
  *
  * <p>To use keyset pagination, define a repository method with return value of
  * {@link KeysetAwareSlice} or {@link KeysetAwarePage} and which accepts a
@@ -86,7 +91,9 @@ import java.util.Objects;
  *
  * <p>Keyset pagination involves generating and appending to the query
  * additional query conditions for the keyset properties. In order for that to
- * be possible, the user-provided JPQL query must end with a
+ * be possible, a user-provided
+ * <a href="https://eclipse-ee4j.github.io/jakartaee-tutorial/#full-query-language-syntax">JPQL</a>
+ * query must end with a
  * <code>WHERE</code> clause to which additional conditions can be appended.
  * Enclose the entire conditional expression of the <code>WHERE</code> clause
  * in parenthesis.
@@ -123,10 +130,12 @@ public class KeysetPageable extends Pageable {
         NEXT,
 
         /**
-         * Indicates reverse keyset pagination. which follows the opposite
-         * direction of the {@link OrderBy} annotations, <code>Pageable</code>
+         * Indicates a request for a page in the reverse direction of
+         * the {@link OrderBy} annotations, <code>Pageable</code>
          * {@link Pageable#of(long, long, Sort...) Sort} parameters,
          * or <code>OrderBy</code> name pattern of the repository method.
+         * The order of results on each page follows the sort criteria
+         * and is not reversed.
          */
         PREVIOUS
     }
@@ -136,10 +145,33 @@ public class KeysetPageable extends Pageable {
      * requesting a next or previous page.
      */
     public static class Cursor {
-        private final Object[] keyset;
+        /**
+         * Keyset values.
+         */
+        protected final Object[] keyset;
 
-        private Cursor(Object[] keyset) {
+        /**
+         * Constructs a keyset cursor with the specified values.
+         *
+         * @param keyset keyset values.
+         * @throws IllegalArgumentException if no keyset values are provided.
+         */
+        public Cursor(Object... keyset) {
             this.keyset = keyset;
+            if (keyset == null || keyset.length == 0)
+                throw new IllegalArgumentException("No keyset values were provided.");
+        }
+
+        /**
+         * Returns whether or not the keyset values of this instance
+         * are equal to those of the supplied <code>Cursor</code> instance.
+         *
+         * @return true if the supplied <code>Cursor</code> is equal, otherwise false.
+         */
+        public boolean equals(Object o) {
+            return this == o || o != null
+                    && o.getClass() == getClass()
+                    && Arrays.equals(keyset, ((Cursor) o).keyset);
         }
 
         /**
@@ -152,6 +184,15 @@ public class KeysetPageable extends Pageable {
          */
         public Object getKeysetElement(int index) {
             return keyset[index];
+        }
+
+        /**
+         * Returns a hash code based on the keyset values.
+         *
+         * @return a hash code based on the keyset values.
+         */
+        public int hashCode() {
+            return Objects.hash(keyset);
         }
 
         /**
@@ -171,8 +212,9 @@ public class KeysetPageable extends Pageable {
          */
         @Override
         public String toString() {
-            return new StringBuilder("Cursor@").append(Integer.toHexString(hashCode())) //
-                            .append(" with ").append(keyset.length).append(" keys") //
+            return new StringBuilder(getClass().getSimpleName())
+                            .append('@').append(Integer.toHexString(hashCode()))
+                            .append(" with ").append(keyset.length).append(" keys")
                             .toString();
         }
     }
@@ -180,15 +222,16 @@ public class KeysetPageable extends Pageable {
     private final Cursor cursor;
     private final Mode mode;
 
-    KeysetPageable(Pageable copyFrom, Mode mode, Object... keyset) {
+    KeysetPageable(Pageable copyFrom, Mode mode, Cursor cursor) {
         super(copyFrom.size, copyFrom.page, copyFrom.sorts);
 
-        if (keyset == null || keyset.length == 0)
+        if (cursor.keyset == null || cursor.keyset.length == 0)
             throw new IllegalArgumentException("No keyset values were provided.");
 
-        this.cursor = new Cursor(keyset);
+        this.cursor = cursor;
         this.mode = mode;
     }
+
 
     /**
      * Indicates if this keyset pagination information is equal to other
@@ -206,7 +249,7 @@ public class KeysetPageable extends Pageable {
                 && (p = (KeysetPageable) o).size == size
                 && p.page == page
                 && p.mode == mode
-                && p.cursor == cursor
+                && p.cursor.equals(cursor)
                 && p.sorts.equals(sorts);
     }
 

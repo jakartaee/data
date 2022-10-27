@@ -279,7 +279,7 @@ first20 = products.findByNameLike(name, pageable, Sort.desc("price"));
 
 === Keyset Pagination
 
-Keyset pagination aims to reduce missed and duplicate results across pages by querying relative to the observed values of entity properties that constitute the sorting criteria. A Jakarta Data provider appends additional conditions to the query and tracks keyset values automatically when `KeysetAwareSlice` or `KeysetAwarePage` are used as the repository method return type. The application invokes `nextPageable` or `previousPageable` on the keyset aware slice or page to obtain a `KeysetPageable` which keeps track of the keyset values.
+Keyset pagination aims to reduce missed and duplicate results across pages by querying relative to the observed values of entity properties that constitute the sorting criteria. Keyset pagination can also offer an improvement in performance because it avoids fetching and ordering results from prior pages by causing those results to be non-matching. A Jakarta Data provider appends additional conditions to the query and tracks keyset values automatically when `KeysetAwareSlice` or `KeysetAwarePage` are used as the repository method return type. The application invokes `nextPageable` or `previousPageable` on the keyset aware slice or page to obtain a `KeysetPageable` which keeps track of the keyset values.
 
 For example,
 
@@ -312,7 +312,7 @@ KeysetPageable p = Pageable.size(50).afterKeyset(c.lastName, c.firstName, c.id);
 page = customers.findByZipcodeOrderByLastNameAscFirstNameAscIdAsc(55902, p);
 ----
 
-The sort criteria for a repository method that performs keyset pagination must be provided by one of:
+The sort criteria for a repository method that performs keyset pagination must uniquely identify each entity and must be provided by one of:
 
 * `OrderBy` name pattern of the repository method (as in the examples above).
 * `@OrderBy` annotation(s) on the repository method.
