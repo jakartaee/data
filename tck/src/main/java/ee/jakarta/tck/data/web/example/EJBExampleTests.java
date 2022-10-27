@@ -19,19 +19,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
+import ee.jakarta.tck.data.framework.junit.anno.Assertion;
+import ee.jakarta.tck.data.framework.junit.anno.Web;
 import jakarta.ejb.EJB;
 
-@Tag("web")
-@ExtendWith(ArquillianExtension.class)
+@Web
 public class EJBExampleTests {
     
     @Deployment
@@ -45,7 +42,7 @@ public class EJBExampleTests {
     EJBExampleInterface testBean;
     
     @Test
-    @DisplayName("ASSERTION ID: 4.0")
+    @Assertion(id = "EXAMPLE", strategy = "Deploy an EJB to the server, and make sure we can inject and test it.")
     public void serviceAlwaysReturnsTrue() {
         assertNotNull(testBean, "TestBean was not correctly injected.");
         assertEquals(EJBExampleBean.EXPECTED_MESSAGE, testBean.getMessage(), "Got wrong message from testBean.");

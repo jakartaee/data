@@ -79,7 +79,7 @@ public class DataSignatureTestRunner extends SigTestEE {
         }
 
         // The Jakarta artifacts we want added to our classpath
-        String[] classes = new String[] { "jakarta.data.Entity", // For jakarta.enterprise.concurrent-api-3.0.0.jar
+        String[] classes = new String[] { "jakarta.data.Entity", // For jakarta-data-api.jar
         };
 
         // The JDK modules we want added to our classpath
@@ -193,7 +193,7 @@ public class DataSignatureTestRunner extends SigTestEE {
     // signature tests need. Please do not use both comments.
 
     public void signatureTest() throws Fault {
-        log.info("ConcurrencySigTest.signatureTest() called");
+        log.info("DataSignatureTestRunner.signatureTest() called");
         SigTestResult results = null;
         String mapFile = null;
         String packageListFile = null;
@@ -287,13 +287,13 @@ public class DataSignatureTestRunner extends SigTestEE {
                 throw new Exception();
             }
 
-            log.info("$$$ ConcurrencySigTest.signatureTest() returning");
+            log.info("$$$ DataSignatureTestRunner.signatureTest() returning");
         } catch (Exception e) {
             if (results != null && !results.passed()) {
-                throw new Fault("ConcurrencySigTest.signatureTest() failed!, diffs found");
+                throw new Fault("DataSignatureTestRunner.signatureTest() failed!, diffs found");
             } else {
                 log.info("Unexpected exception " + e.getMessage());
-                throw new Fault("ConcurrencySigTest.signatureTest() failed with an unexpected exception", e);
+                throw new Fault("DataSignatureTestRunner.signatureTest() failed with an unexpected exception", e);
             }
         }
     }

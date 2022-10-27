@@ -19,38 +19,34 @@ import java.net.URL;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
-import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
-import org.junit.jupiter.api.extension.ExtendWith;
 
+import ee.jakarta.tck.data.framework.junit.anno.Assertion;
+import ee.jakarta.tck.data.framework.junit.anno.Web;
 import ee.jakarta.tck.data.framework.servlet.TestClient;
-import ee.jakarta.tck.data.framework.servlet.TestServlet;
 import ee.jakarta.tck.data.framework.servlet.URLBuilder;
 
-@Tag("web")
+
+@Web
 @RunAsClient //These tests will run on the client JVM and make calls to a servlet running on a web container.
-@ExtendWith(ArquillianExtension.class)
 public class ComplexServletTests extends TestClient {
     
     @Deployment
     public static WebArchive createDeployment() {
         return ShrinkWrap.create(WebArchive.class)
-                .addClass(ComplexServlet.class)
-                .addPackage(TestServlet.class.getPackage());
+                .addClass(ComplexServlet.class);
     } 
     
     @ArquillianResource
     URL baseURL;
     
     @Test
-    @DisplayName("ASSERTION ID: 3.0")
+    @Assertion(id = "EXAMPLE", strategy = "Run server side tests that will succeed and fail and assert the results.")
     public void testSuccessAndFailure(TestInfo testInfo) {
         URL requestURL = URLBuilder.fromURL(baseURL)
                 .withPath(ComplexServlet.URL_PATTERN)
@@ -70,7 +66,7 @@ public class ComplexServletTests extends TestClient {
     }
     
     @Test
-    @DisplayName("ASSERTION ID: 3.1")
+    @Assertion(id = "EXAMPLE", strategy = "Run server side test with a method name that matches the client side test.")
     public void testMatchServletSideMethodName(TestInfo testInfo) {
         URL requestURL = URLBuilder.fromURL(baseURL)
                 .withPath(ComplexServlet.URL_PATTERN)
@@ -81,7 +77,7 @@ public class ComplexServletTests extends TestClient {
     }
     
     @Test
-    @DisplayName("ASSERTION ID: 3.2")
+    @Assertion(id = "EXAMPLE", strategy = "Run server side test that append a unique string to the response body and make sure it is returned.")
     public void testServletSideCustomResponse(TestInfo testInfo) {
         URL requestURL = URLBuilder.fromURL(baseURL)
                 .withPath(ComplexServlet.URL_PATTERN)

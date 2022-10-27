@@ -91,7 +91,7 @@ public class TestClient {
             con.setDoInput(true);
             con.setDoOutput(true);
             con.setUseCaches(false);
-            con.setConnectTimeout((int) Duration.ofSeconds(30).toMillis());
+            con.setConnectTimeout((int) Duration.ofMinutes(1).toMillis());
             
             if(withProps) {
                 con.setRequestMethod("POST");

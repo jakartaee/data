@@ -16,16 +16,14 @@
 package ee.jakarta.tck.data.web.example;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
-@Tag("web")
-@ExtendWith(ArquillianExtension.class)
+import ee.jakarta.tck.data.framework.junit.anno.Assertion;
+import ee.jakarta.tck.data.framework.junit.anno.Web;
+
+@Web
 public class SimpleServletExampleTests {
     
     @Deployment
@@ -35,7 +33,7 @@ public class SimpleServletExampleTests {
     } 
     
     @Test
-    @DisplayName("ASSERTION ID: 5.0")
+    @Assertion(id = "EXAMPLE", strategy = "Run a test directly on a servlet and make sure it works.")
     public void testRunOnServletUsingArquillian() {
         
     }
