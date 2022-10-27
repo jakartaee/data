@@ -41,9 +41,14 @@ import org.junit.jupiter.api.extension.TestExecutionExceptionHandler;
 public class StandaloneExtension extends ArquillianExtension implements BeforeAllCallback, AfterAllCallback,
         BeforeEachCallback, AfterEachCallback, InvocationInterceptor, TestExecutionExceptionHandler {
     
+    /**
+     * Required property that will prevent us from attempting to run a Standalone test on a server.
+     */
+    public static final String isStandaloneProperty = "jakarta.tck.standalone.test";
+    
     private static final Logger log = Logger.getLogger(StandaloneExtension.class.getCanonicalName());
 
-    private static boolean isStandalone = Boolean.getBoolean("jakarta.standalone.test");
+    private static boolean isStandalone = Boolean.getBoolean(isStandaloneProperty);
 
     @Override
     public void beforeAll(ExtensionContext context) throws Exception {

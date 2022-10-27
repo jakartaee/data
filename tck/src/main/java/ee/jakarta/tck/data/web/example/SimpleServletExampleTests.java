@@ -15,6 +15,8 @@
  */
 package ee.jakarta.tck.data.web.example;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
@@ -35,6 +37,6 @@ public class SimpleServletExampleTests {
     @Test
     @Assertion(id = "EXAMPLE", strategy = "Run a test directly on a servlet and make sure it works.")
     public void testRunOnServletUsingArquillian() {
-        
+        assertTrue(true, "Do something you could only do in a Web Container here!");
     }
 }

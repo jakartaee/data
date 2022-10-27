@@ -19,7 +19,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -56,7 +58,11 @@ public class TestServlet extends HttpServlet {
             throws ServletException, IOException {
         String method = request.getParameter(TEST_METHOD_PARAM);
         
-        log.info("Received request to run test " + method + " with parameters " + request.getParameterMap().toString());
+        String requestParams = request.getParameterMap().keySet().stream()
+                .map(key -> key + "=" + Arrays.asList(request.getParameterMap().get(key)))
+                .collect(Collectors.joining(", ", "{", "}"));
+        
+        log.info("Received request to run test " + method + " with parameters " + requestParams);
 
         if (runBeforeClass) {
             try {

@@ -20,11 +20,13 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.lang.annotation.RetentionPolicy;
 
+import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Tags;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import ee.jakarta.tck.data.framework.junit.extensions.AssertionExtension;
+import ee.jakarta.tck.data.framework.junit.extensions.AssertionNameGenerator;
 import ee.jakarta.tck.data.framework.junit.extensions.StandaloneExtension;
 
 /**
@@ -36,16 +38,17 @@ import ee.jakarta.tck.data.framework.junit.extensions.StandaloneExtension;
  * 
  * The dynamic method in which we achieve the ability to run these tests either
  * on the client JVM or server JVM depends on both the JUnit5 tag AND a system
- * property: jakarta.standalone.test
+ * property: {@link ee.jakarta.tck.data.framework.junit.extensions.StandaloneExtension#isStandaloneProperty}
  * 
- * If jakarta.standalone.test=true the Arquillian extension will be ignore,
+ * If this property is true the Arquillian extension will be ignore,
  * otherwise we will attempt to deploy the test using Arquillian.
  * 
  * @see ee.jakarta.tck.data.framework.junit.extensions.StandaloneExtension
  */
-@Target({ ElementType.TYPE, ElementType.METHOD })
+@Target({ ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 @Tags({ @Tag("standalone"), @Tag("core"), @Tag("web"), @Tag("full") })
 @ExtendWith({ StandaloneExtension.class, AssertionExtension.class })
+@DisplayNameGeneration(AssertionNameGenerator.class)
 public @interface Standalone {
 }

@@ -27,6 +27,7 @@ import org.junit.jupiter.api.Test;
 import ee.jakarta.tck.data.framework.junit.anno.Assertion;
 import ee.jakarta.tck.data.framework.junit.anno.Signature;
 import ee.jakarta.tck.data.framework.junit.anno.Standalone;
+import ee.jakarta.tck.data.framework.junit.extensions.StandaloneExtension;
 import ee.jakarta.tck.data.framework.signature.DataSignatureTestRunner;
 import ee.jakarta.tck.data.framework.signature.SigTestEE.Fault;
 import jakarta.inject.Inject;
@@ -50,7 +51,7 @@ public class SignatureTests {
     public void testSignaturesStandalone() throws Exception {
 
         try {
-            if (testBean == null && Boolean.getBoolean("jakarta.standalone.test")) {
+            if (testBean == null && Boolean.getBoolean(StandaloneExtension.isStandaloneProperty)) {
                 log.info("Signature test running in standalone mode");
                 DataSignatureTestRunner.assertProjectSetup(true);
                 DataSignatureTestRunner runner = new DataSignatureTestRunner();

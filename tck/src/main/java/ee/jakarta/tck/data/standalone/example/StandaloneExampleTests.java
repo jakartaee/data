@@ -37,7 +37,6 @@ public class StandaloneExampleTests {
                 .addClass(StandaloneExampleTests.class);
     }  
     
-    
     @Test
     @Assertion(id = "EXAMPLE", strategy = "Test runs on client JVM when running in standalone mode, otherwise gets deployed to server and run.")
     public void testStandaloneFunction() {

@@ -31,7 +31,7 @@ import org.junit.jupiter.api.Tag;
  * 
  * @see ee.jakarta.tck.data.framework.arquillian.extensions.TCKArchiveProcessor
  */
-@Target({ ElementType.TYPE, ElementType.METHOD })
+@Target({ ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 @Tag("signature")
 public @interface Signature {

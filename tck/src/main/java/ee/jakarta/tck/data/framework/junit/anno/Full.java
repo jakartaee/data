@@ -21,10 +21,12 @@ import java.lang.annotation.Target;
 import java.lang.annotation.RetentionPolicy;
 
 import org.jboss.arquillian.junit5.ArquillianExtension;
+import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import ee.jakarta.tck.data.framework.junit.extensions.AssertionExtension;
+import ee.jakarta.tck.data.framework.junit.extensions.AssertionNameGenerator;
 
 /**
  * These are test classes that REQUIRE full profile to be executed. For these
@@ -43,5 +45,6 @@ import ee.jakarta.tck.data.framework.junit.extensions.AssertionExtension;
 @Retention(RetentionPolicy.RUNTIME)
 @Tag("full")
 @ExtendWith({ ArquillianExtension.class, AssertionExtension.class })
+@DisplayNameGeneration(AssertionNameGenerator.class)
 public @interface Full {
 }
