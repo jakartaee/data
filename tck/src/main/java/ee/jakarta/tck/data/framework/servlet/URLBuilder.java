@@ -112,7 +112,7 @@ public class URLBuilder {
         if (this.paths == null) {
             this.paths = new ArrayList<>(Arrays.asList(path));
         } else {
-            this.paths.addAll(Arrays.asList(path));
+            this.paths.add(path);
         }
         return this;
     }

@@ -30,7 +30,7 @@ import ee.jakarta.tck.data.framework.junit.extensions.AssertionNameGenerator;
 import ee.jakarta.tck.data.framework.junit.extensions.StandaloneExtension;
 
 /**
- * These are test classes that can DO NOT depend on any Jakarta EE server
+ * These are test classes that DO NOT depend on any Jakarta EE server
  * technologies.
  * 
  * However, when running the TCK against a core/web/full profile server these
@@ -40,7 +40,7 @@ import ee.jakarta.tck.data.framework.junit.extensions.StandaloneExtension;
  * on the client JVM or server JVM depends on both the JUnit5 tag AND a system
  * property: {@link ee.jakarta.tck.data.framework.junit.extensions.StandaloneExtension#isStandaloneProperty}
  * 
- * If this property is true the Arquillian extension will be ignore,
+ * If this property is true the Arquillian extension will be ignored,
  * otherwise we will attempt to deploy the test using Arquillian.
  * 
  * @see ee.jakarta.tck.data.framework.junit.extensions.StandaloneExtension

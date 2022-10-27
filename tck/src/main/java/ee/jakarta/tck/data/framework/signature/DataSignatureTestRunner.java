@@ -34,7 +34,6 @@ import java.nio.file.Paths;
 import java.security.CodeSource;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Logger;
 
@@ -235,38 +234,33 @@ public class DataSignatureTestRunner extends SigTestEE {
         // optional technology which were not declared
         ArrayList<String> unlistedTechnologyPkgs = getUnlistedOptionalPackages();
 
-        // If testing with Java 9+, extract the JDK's modules so they can be used
-        // on the testcase's classpath.
-        Properties sysProps = System.getProperties();
-        String version = (String) sysProps.get("java.version");
-        if (!version.startsWith("1.")) {
-            String jimageDir = testInfo.getJImageDir();
-            File f = new File(jimageDir);
-            f.mkdirs();
+        // Need to extract java modules into classes
+        String jimageDir = testInfo.getJImageDir();
+        File f = new File(jimageDir);
+        f.mkdirs();
 
-            String javaHome = (String) sysProps.get("java.home");
-            log.info("Executing JImage");
+        String javaHome = System.getProperty("java.home");
+        log.info("Executing JImage");
 
-            try {
-                ProcessBuilder pb = new ProcessBuilder(javaHome + "/bin/jimage", "extract", "--dir=" + jimageDir,
-                        javaHome + "/lib/modules");
-                System.out
-                        .println(javaHome + "/bin/jimage extract --dir=" + jimageDir + " " + javaHome + "/lib/modules");
-                pb.redirectErrorStream(true);
-                Process proc = pb.start();
-                BufferedReader out = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-                String line = null;
-                while ((line = out.readLine()) != null) {
-                    log.info(line);
-                }
-
-                int rc = proc.waitFor();
-                log.info("JImage RC = " + rc);
-                out.close();
-            } catch (Exception e) {
-                log.info("Exception while executing JImage!  Some tests may fail.");
-                e.printStackTrace();
+        try {
+            ProcessBuilder pb = new ProcessBuilder(javaHome + "/bin/jimage", "extract", "--dir=" + jimageDir,
+                    javaHome + "/lib/modules");
+            System.out
+                    .println(javaHome + "/bin/jimage extract --dir=" + jimageDir + " " + javaHome + "/lib/modules");
+            pb.redirectErrorStream(true);
+            Process proc = pb.start();
+            BufferedReader out = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+            String line = null;
+            while ((line = out.readLine()) != null) {
+                log.info(line);
             }
+
+            int rc = proc.waitFor();
+            log.info("JImage RC = " + rc);
+            out.close();
+        } catch (Exception e) {
+            log.info("Exception while executing JImage!  Some tests may fail.");
+            e.printStackTrace();
         }
 
         String classpath = getClasspath();
