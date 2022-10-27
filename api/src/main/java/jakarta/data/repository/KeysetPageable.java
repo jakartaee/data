@@ -144,35 +144,16 @@ public class KeysetPageable extends Pageable {
      * Represents keyset values, which can be a starting point for
      * requesting a next or previous page.
      */
-    public static class Cursor {
-        /**
-         * Keyset values.
-         */
-        protected final Object[] keyset;
-
-        /**
-         * Constructs a keyset cursor with the specified values.
-         *
-         * @param keyset keyset values.
-         * @throws IllegalArgumentException if no keyset values are provided.
-         */
-        public Cursor(Object... keyset) {
-            this.keyset = keyset;
-            if (keyset == null || keyset.length == 0)
-                throw new IllegalArgumentException("No keyset values were provided.");
-        }
-
+    public interface Cursor {
         /**
          * Returns whether or not the keyset values of this instance
-         * are equal to those of the supplied <code>Cursor</code> instance.
+         * are equal to those of the supplied instance.
+         * Cursor implementation classes must also match to be equal.
          *
-         * @return true if the supplied <code>Cursor</code> is equal, otherwise false.
+         * @return true or false.
          */
-        public boolean equals(Object o) {
-            return this == o || o != null
-                    && o.getClass() == getClass()
-                    && Arrays.equals(keyset, ((Cursor) o).keyset);
-        }
+        @Override
+        public boolean equals(Object o);
 
         /**
          * Returns the keyset value at the specified position.
@@ -182,27 +163,22 @@ public class KeysetPageable extends Pageable {
          * @throws IndexOutOfBoundsException if the index is negative
          *         or greater than or equal to the {@link #size}.
          */
-        public Object getKeysetElement(int index) {
-            return keyset[index];
-        }
+        public Object getKeysetElement(int index);
 
         /**
          * Returns a hash code based on the keyset values.
          *
          * @return a hash code based on the keyset values.
          */
-        public int hashCode() {
-            return Objects.hash(keyset);
-        }
+        @Override
+        public int hashCode();
 
         /**
          * Returns the number of values in the keyset.
          *
          * @return the number of values in the keyset.
          */
-        public int size() {
-            return keyset.length;
-        }
+        public int size();
 
         /**
          * String representation of the keyset cursor, including the number of
@@ -211,9 +187,53 @@ public class KeysetPageable extends Pageable {
          * @return String representation of the keyset cursor.
          */
         @Override
+        public String toString();
+    }
+
+    /**
+     * Built-in implementation of Cursor.
+     */
+    static class CursorImpl implements Cursor {
+        /**
+         * Keyset values.
+         */
+        private final Object[] keyset;
+
+        /**
+         * Constructs a keyset cursor with the specified values.
+         *
+         * @param keyset keyset values.
+         * @throws IllegalArgumentException if no keyset values are provided.
+         */
+        CursorImpl(Object... keyset) {
+            this.keyset = keyset;
+            if (keyset == null || keyset.length == 0)
+                throw new IllegalArgumentException("No keyset values were provided.");
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            return this == o || o != null
+                    && o.getClass() == getClass()
+                    && Arrays.equals(keyset, ((CursorImpl) o).keyset);
+        }
+
+        public Object getKeysetElement(int index) {
+            return keyset[index];
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(keyset);
+        }
+
+        public int size() {
+            return keyset.length;
+        }
+
+        @Override
         public String toString() {
-            return new StringBuilder(getClass().getSimpleName())
-                            .append('@').append(Integer.toHexString(hashCode()))
+            return new StringBuilder(27).append("Cursor@").append(Integer.toHexString(hashCode()))
                             .append(" with ").append(keyset.length).append(" keys")
                             .toString();
         }
@@ -225,7 +245,7 @@ public class KeysetPageable extends Pageable {
     KeysetPageable(Pageable copyFrom, Mode mode, Cursor cursor) {
         super(copyFrom.size, copyFrom.page, copyFrom.sorts);
 
-        if (cursor.keyset == null || cursor.keyset.length == 0)
+        if (cursor == null || cursor.size() == 0)
             throw new IllegalArgumentException("No keyset values were provided.");
 
         this.cursor = cursor;
@@ -299,7 +319,7 @@ public class KeysetPageable extends Pageable {
                 .append("KeysetPageable{page=").append(page)
                 .append(", size=").append(size)
                 .append(", mode=").append(mode)
-                .append(", ").append(cursor.keyset.length).append(" keys");
+                .append(", ").append(cursor.size()).append(" keys");
         for (Sort sort : sorts) {
             s.append(", ").append(sort.getProperty()).append(sort.isAscending() ? " ASC" : " DESC");
         }
