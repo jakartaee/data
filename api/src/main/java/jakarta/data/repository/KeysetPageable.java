@@ -224,7 +224,7 @@ public class KeysetPageable extends Pageable {
 
         @Override
         public int hashCode() {
-            return Objects.hash(keyset);
+            return Arrays.hashCode(keyset);
         }
 
         public int size() {

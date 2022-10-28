@@ -346,13 +346,14 @@ SELECT o FROM Customer o WHERE (o.zipCode = ?1)
 
 Because searching for the next page of results is relative to a last known position, it is possible with keyset pagination to allow some types of updates to data while pages are being traversed without causing missed results or duplicates to appear. If you add entities to a prior position in the traversal of pages, the shift forward of numerical position of existing entities will not cause duplicates entities to appear in your continued traversal of subsequent pages because keyset pagination does not query based on a numerical position. If you remove entities from a prior position in the traversal of pages, the shift backward of numerical position of existing entities will not cause missed entities in your continued traversal of subsequent pages because keyset pagination does not query based on a numerical position.
 
-Other types of updates to data, however, will cause duplicate or missed results. If you modify entity properties which are used as the sort criteria, keyset pagination cannot prevent the same entity from appearing again or never appearing do to the altered values. If you add an entity that you previously removed, whether with different values or the same values, keyset pagination cannot prevent the entity from being missed or possibly appearing a second time due to its changed values.
+Other types of updates to data, however, will cause duplicate or missed results. If you modify entity properties which are used as the sort criteria, keyset pagination cannot prevent the same entity from appearing again or never appearing due to the altered values. If you add an entity that you previously removed, whether with different values or the same values, keyset pagination cannot prevent the entity from being missed or possibly appearing a second time due to its changed values.
 
 ==== Restrictions on use of Keyset Pagination
 
-* The repository method must return `KeysetAwareSlice` or `KeysetAwarePage`.
-* The repository method must accept a `Pageable` or `KeysetPageable` parameter.
+* The repository method signature must return `KeysetAwareSlice` or `KeysetAwarePage`.
+* The repository method signature must accept a `Pageable` or `KeysetPageable` parameter.
 * Sort criteria must be provided and should be minimal.
+* The combination of provided sort criteria must uniquely identify each entity.
 * Page numbers for keyset pagination are estimated relative to prior page requests or the observed absence of further results and are not accurate. Page numbers must not be relied upon when using keyset pagination.
 * Page totals and result totals are not accurate for keyset pagination and must not be relied upon.
 * A next or previous page can end up being empty. You cannot obtain a next or previous `KeysetPageable` from an empty page because there are no keyset values relative to which to query.
@@ -360,7 +361,7 @@ Other types of updates to data, however, will cause duplicate or missed results.
 
 ==== Keyset Pagination Example with Sorts
 
-Here is an example where an application code uses `@Query` to provide a partial query to which the Jakarta Data provider can generate and append additional query conditions and an `ORDER BY` clause.
+Here is an example where an application uses `@Query` to provide a partial query to which the Jakarta Data provider can generate and append additional query conditions and an `ORDER BY` clause.
 
 [source,java]
 ----
