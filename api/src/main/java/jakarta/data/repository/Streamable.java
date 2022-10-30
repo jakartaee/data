@@ -25,6 +25,7 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 /**
+ * Simple interface to ease streamability of {@link Iterable}s.
  * This is interface and can therefore be used as the assignment target for a lambda expression or method reference.
  */
 @FunctionalInterface
