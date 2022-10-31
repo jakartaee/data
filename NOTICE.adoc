@@ -1,20 +1,20 @@
-# Notices for Jakarta Data
+= Notices for Jakarta Data
 
 This content is produced and maintained by the Jakarta Data project.
 
 * Project home: https://projects.eclipse.org/projects/ee4j.data
 
-## Trademarks
+== Trademarks
 
 Jakarta Data is a trademark of the Eclipse Foundation.
 
-## Copyright
+== Copyright
 
 All content is the property of the respective authors or their employers. For
 more information regarding authorship of content, please consult the listed
 source code repository logs.
 
-## Declared Project Licenses
+== Declared Project Licenses
 
 This program and the accompanying materials are made available under the terms
 of the Apache License, Version 2.0 which is available at
@@ -22,19 +22,19 @@ https://www.apache.org/licenses/LICENSE-2.0.
 
 SPDX-License-Identifier: Apache-2.0
 
-## Source Code
+== Source Code
 
 The project maintains the following source code repositories:
 
 * https://github.com/jakartaee/data-api
 
-## Third-party Content
+== Third-party Content
 
 This project leverages the following third party content.
 
 None
 
-## Cryptography
+== Cryptography
 
 Content may contain encryption software. The country in which you are currently
 may have restrictions on the import, possession, and use, and/or re-export to

@@ -1,8 +1,9 @@
-# Contributing to Jakarta Data
+= Contributing to Jakarta Data
+:toc: auto
 
 Thanks for your interest in this project.
 
-## Project description
+== Project description
 
 Jakarta Data provides an API that makes data access easy. A
 Java developer can split the persistence from the model with several features,
@@ -10,6 +11,7 @@ such as the ability to compose custom query methods on a Repository interface wh
 will implement it.
 
 References:
+
 * https://github.com/eclipse-ee4j/jpa-api/issues/294
 * https://spring.io/projects/spring-data
 * https://deltaspike.apache.org/documentation/jpa.html
@@ -19,13 +21,13 @@ References:
 
 * https://projects.eclipse.org/projects/ee4j.data
 
-## Terms of Use
+== Terms of Use
 
 This repository is subject to the Terms of Use of the Eclipse Foundation
 
 * http://www.eclipse.org/legal/termsofuse.php
 
-## Developer resources
+== Developer resources
 
 Information regarding source code management, builds, coding standards, and
 more.
@@ -36,7 +38,7 @@ The project maintains the following source code repositories
 
 * https://github.com/jakartaee/data-api
 
-## Eclipse Development Process
+== Eclipse Development Process
 
 This Eclipse Foundation open project is governed by the Eclipse Foundation
 Development Process and operates under the terms of the Eclipse IP Policy.
@@ -51,7 +53,7 @@ Jakarta EE specification projects.
 * https://jakarta.ee/about/jesp/
 * https://www.eclipse.org/legal/efsp_non_assert.php
 
-## Eclipse Contributor Agreement
+== Eclipse Contributor Agreement
 
 In order to be able to contribute to Eclipse Foundation projects you must
 electronically sign the Eclipse Contributor Agreement (ECA).
@@ -67,7 +69,7 @@ fulfills the DCO's requirement that you sign-off on your contributions.
 For more information, please see the Eclipse Committer Handbook:
 https://www.eclipse.org/projects/handbook/#resources-commit
 
-## Contact
+== Contact
 
 Contact the project developers via the project's "dev" list.
 
