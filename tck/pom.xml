@@ -77,13 +77,6 @@
     </dependency>
 
     <dependency>
-      <groupId>jakarta.ejb</groupId>
-      <artifactId>jakarta.ejb-api</artifactId>
-      <version>${jakarta.ejb.version}</version>
-      <scope>provided</scope>
-    </dependency>
-
-    <dependency>
       <groupId>jakarta.enterprise</groupId>
       <artifactId>jakarta.enterprise.cdi-api</artifactId>
       <version>${jakarta.enterprise.cdi.version}</version>
