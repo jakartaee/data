@@ -16,7 +16,7 @@ A repository abstraction aims to significantly reduce the boilerplate code requi
 @Repository
 public interface CarRepository extends CrudRepository<Car, Long> {
 
-  List<Car> findByType(Type type);
+  List<Car> findByType(CarType type);
 
   Optional<Car> findByName(String name);
 
@@ -27,7 +27,7 @@ public interface CarRepository extends CrudRepository<Car, Long> {
 [source,java]
 ----
 CarRepository repository ==//instance
-Car ferrari = Car.id(10L).name("Ferrari").type(Type.SPORT);
+Car ferrari = Car.id(10L).name("Ferrari").type(CarType.SPORT);
 repository.save(ferrari);
 ----
 
@@ -41,7 +41,7 @@ Jakarta Data also supports particular parameters to define pagination and sortin
 @Repository
 public interface ProductRepository extends PageableRepository<Product, Long> {
 
- Page<Car> findByTypeOrderByName(Type type, Pageable pageable);
+ Page<Car> findByTypeOrderByName(CarType type, Pageable pageable);
 
 }
 ----
