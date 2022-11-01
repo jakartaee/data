@@ -87,12 +87,12 @@ mvn clean install
 * Europe: 
 link:++https://calendar.google.com/calendar/u/0/embed?src=eclipse-foundation.org_e9ki8t2gc75sh07qdh95c8ofvc@group.calendar.google.com&ctz=Europe/Athens++[Eastern],
 link:++https://calendar.google.com/calendar/u/0/embed?src=eclipse-foundation.org_e9ki8t2gc75sh07qdh95c8ofvc@group.calendar.google.com&ctz=Europe/Berlin++[Central],
-link:++https://calendar.google.com/calendar/u/0/embed?src=eclipse-foundation.org_e9ki8t2gc75sh07qdh95c8ofvc@group.calendar.google.com&ctz=Europe/Lisbon++[Mountain]
+link:++https://calendar.google.com/calendar/u/0/embed?src=eclipse-foundation.org_e9ki8t2gc75sh07qdh95c8ofvc@group.calendar.google.com&ctz=Europe/Lisbon++[Western]
 
 * America: 
 link:++https://calendar.google.com/calendar/u/0/embed?src=eclipse-foundation.org_e9ki8t2gc75sh07qdh95c8ofvc@group.calendar.google.com&ctz=America/Toronto++[Eastern],
 link:++https://calendar.google.com/calendar/u/0/embed?src=eclipse-foundation.org_e9ki8t2gc75sh07qdh95c8ofvc@group.calendar.google.com&ctz=America/Chicago++[Central],
-link:++https://calendar.google.com/calendar/u/0/embed?src=eclipse-foundation.org_e9ki8t2gc75sh07qdh95c8ofvc@group.calendar.google.com&ctz=America/Denver++[Western],
+link:++https://calendar.google.com/calendar/u/0/embed?src=eclipse-foundation.org_e9ki8t2gc75sh07qdh95c8ofvc@group.calendar.google.com&ctz=America/Denver++[Mountain],
 link:++https://calendar.google.com/calendar/u/0/embed?src=eclipse-foundation.org_e9ki8t2gc75sh07qdh95c8ofvc@group.calendar.google.com&ctz=America/Los_Angeles++[Pacific]
 
 * https://docs.google.com/document/d/1MQbwPpbEBHiAHes1NaYTJQzEBGUYXxaJYw5K-yj053U/edit[Meetings Notes]
