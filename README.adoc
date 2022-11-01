@@ -3,10 +3,85 @@
 
 == Introduction
 
-The Jakarta Data specification provides an API that allows easy access to database technologies. A
-Java developer can split the persistence from the model with several features,
-such as the ability to compose custom query methods on a `Repository` interface where the framework
-will implement it.
+The Jakarta Data specification provides an API for easier data access. A Java developer can split the persistence from the model with several features, such as the ability to compose custom query methods on a Repository interface.
+
+Jakarta Data’s goal is to provide a familiar and consistent, Jakarta-based programming model for data access while still retaining the particular traits of the underlying data store.
+
+=== Repository
+
+A repository abstraction aims to significantly reduce the boilerplate code required to implement data access layers for various persistence stores.
+
+[source,java]
+----
+@Repository
+public interface CarRepository extends CrudRepository<Car, Long> {
+
+  List<Car> findByType(CarType type);
+
+  Optional<Car> findByName(String name);
+
+}
+----
+
+
+[source,java]
+----
+@Inject
+CarRepository repository;
+...
+Car ferrari = Car.id(10L).name("Ferrari").type(CarType.SPORT);
+repository.save(ferrari);
+----
+
+==== Pagination
+
+Jakarta Data also supports particular parameters to define pagination and sorting.
+
+[source,java]
+----
+
+@Repository
+public interface ProductRepository extends PageableRepository<Product, Long> {
+
+ Page<Car> findByTypeOrderByName(CarType type, Pageable pageable);
+
+}
+----
+
+
+=== Maven
+
+Add the Maven dependency:
+
+[source,xml]
+----
+<dependency>
+  <artifactId>jakarta-data-api</artifactId>
+  <groupId>jakarta.data</groupId>
+  <version>1.0.0-SNAPSHOT</version>
+</dependency>
+----
+
+
+== Code of Conduct
+
+This project is governed by the Eclipse Foundation Community Code of Conduct. By participating, you are expected to uphold this code of conduct. Please report unacceptable behavior to codeofconduct@eclipse.org.
+
+== Getting Help
+
+Having trouble with Jakarta Data? We’d love to help!
+
+Report bugs with Jakarta Data at https://github.com/jakartaee/data/issues.
+
+== Building from Source
+
+You don’t need to build from source to use the project, but you can do so with Maven and Java 11 or higher.
+
+[source, Bash]
+----
+mvn clean install
+----
+
 
 == Meetings
 
