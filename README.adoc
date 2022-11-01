@@ -65,7 +65,7 @@ Add the Maven dependency:
 
 == Code of Conduct
 
-This project is governed by the Eclipse Foundation of Conduct. By participating, you are expected to uphold this code of conduct. Please report unacceptable behavior to codeofconduct@eclipse.org.
+This project is governed by the Eclipse Foundation Community Code of Conduct. By participating, you are expected to uphold this code of conduct. Please report unacceptable behavior to codeofconduct@eclipse.org.
 
 == Getting Help
 
