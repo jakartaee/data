@@ -36,5 +36,24 @@ public @interface Query {
      * @return the query to be executed when the annotated method is called.
      */
     String value();
+
+    /**
+     * <p>Defines an additional query that counts the number of elements that are
+     * returned by the {@link #value() primary} query. This is used to compute
+     * the {@link Page#getTotalElements() total elements}
+     * and {@link Page#getTotalPages() total pages}
+     * for paginated repository queries that are annotated with
+     * <code>@Query</code> and return a {@link Page} or <code>KeysetAwarePage</code>.
+     * Slices do not use a counting query.</p> TODO use link instead of code above once #52 is merged.
+     *
+     * <p>The default value of empty string indicates that no counting query
+     * is provided. A counting query is unnecessary when pagination is
+     * performed with slices instead of pages and when pagination is
+     * not used at all.</p>
+     *
+     * @return a query for counting the number of elements across all pages.
+     *         Empty string indicates that no counting query is provided.
+     */
+    String count() default "";
 }
 
