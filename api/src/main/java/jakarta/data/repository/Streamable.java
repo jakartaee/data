@@ -70,7 +70,8 @@ public interface Streamable<T> extends Iterable<T>, Supplier<Stream<T>> {
     }
 
     /**
-     * Creates a new, unmodifiable {@link List}.
+     * Returns results as a list that is ordered according to the sort criteria if specified.
+     * The default implementation creates a new, unmodifiable {@link List}.
      *
      * @return will never be {@literal null}.
      */
