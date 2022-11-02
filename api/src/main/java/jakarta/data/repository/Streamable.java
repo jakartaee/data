@@ -17,10 +17,7 @@
  */
 package jakarta.data.repository;
 
-import java.util.List;
-import java.util.Set;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -30,7 +27,6 @@ import java.util.stream.StreamSupport;
  */
 @FunctionalInterface
 public interface Streamable<T> extends Iterable<T>, Supplier<Stream<T>> {
-
 
     @Override
     /**
