@@ -31,23 +31,6 @@ import java.util.stream.StreamSupport;
 @FunctionalInterface
 public interface Streamable<T> extends Iterable<T>, Supplier<Stream<T>> {
 
-    /**
-     * Creates a non-parallel {@link Stream} of the underlying {@link Iterable}.
-     *
-     * @return a non-parallel Stream
-     */
-    default Stream<T> stream() {
-        return StreamSupport.stream(spliterator(), false);
-    }
-
-    /**
-     * Creates a new, unmodifiable {@link Set}.
-     *
-     * @return a Set
-     */
-    default Set<T> toSet() {
-        return stream().collect(Collectors.toUnmodifiableSet());
-    }
 
     @Override
     /**
@@ -57,25 +40,8 @@ public interface Streamable<T> extends Iterable<T>, Supplier<Stream<T>> {
      * @returns a stream of results.
      */
     default Stream<T> get() {
-        return stream();
+        return StreamSupport.stream(spliterator(), false);
     }
 
-    /**
-     * Returns whether the current {@link Streamable} is empty.
-     *
-     * @return whether the current {@link Streamable} is empty.
-     */
-    default boolean isEmpty() {
-        return !iterator().hasNext();
-    }
 
-    /**
-     * Returns results as a list that is ordered according to the sort criteria if specified.
-     * The default implementation creates a new, unmodifiable {@link List}.
-     *
-     * @return will never be {@literal null}.
-     */
-    default List<T> toList() {
-        return stream().collect(Collectors.toUnmodifiableList());
-    }
 }
