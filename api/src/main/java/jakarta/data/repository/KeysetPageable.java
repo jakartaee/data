@@ -193,7 +193,7 @@ public class KeysetPageable extends Pageable {
     /**
      * Built-in implementation of Cursor.
      */
-    static class CursorImpl implements Cursor {
+    static final class CursorImpl implements Cursor {
         /**
          * Keyset values.
          */

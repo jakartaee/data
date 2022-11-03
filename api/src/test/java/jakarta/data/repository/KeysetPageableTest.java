@@ -156,7 +156,18 @@ class KeysetPageableTest {
         KeysetPageable.Cursor cursor1 = new KeysetPageable.CursorImpl("keyval1", '2', 3);
         KeysetPageable.Cursor cursor2 = new KeysetPageable.CursorImpl("keyval2", '2', 3);
         KeysetPageable.Cursor cursor3 = new KeysetPageable.CursorImpl("keyval1", '2');
-        KeysetPageable.Cursor cursor4 = new KeysetPageable.CursorImpl("keyval1", '2', 3) {
+        KeysetPageable.Cursor cursor4 = new KeysetPageable.Cursor() {
+            private final Object[] keyset = new Object[] { "keyval1", '2', 3 };
+
+            @Override
+            public Object getKeysetElement(int index) {
+                return keyset[index];
+            }
+
+            @Override
+            public int size() {
+                return keyset.length;
+            }
         };
 
         assertSoftly(softly -> {
