@@ -56,25 +56,16 @@ public class Pageable {
 
     private static final long DEFAULT_SIZE = 10;
 
-    private final long size;
-
     private final long page;
+
+    private final long size;
 
     private final List<Sort> sorts;
 
-    private Pageable(long size, long page, List<Sort> sorts) {
-        this.size = size;
+    private Pageable(long page, long size, List<Sort> sorts) {
         this.page = page;
+        this.size = size;
         this.sorts = sorts;
-    }
-
-    /**
-     * Returns the size of each page
-     *
-     * @return the size of each page
-     */
-    public long getSize() {
-        return size;
     }
 
     /**
@@ -84,6 +75,15 @@ public class Pageable {
      */
     public long getPage() {
         return page;
+    }
+
+    /**
+     * Returns the size of each page
+     *
+     * @return the size of each page
+     */
+    public long getSize() {
+        return size;
     }
 
     /**
@@ -101,7 +101,7 @@ public class Pageable {
      * @return The next pageable.
      */
     public Pageable next() {
-        return new Pageable(this.size, (page + 1), this.sorts);
+        return new Pageable((page + 1), this.size, this.sorts);
     }
 
     @Override
@@ -118,14 +118,14 @@ public class Pageable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(size, page, sorts);
+        return Objects.hash(page, size, sorts);
     }
 
     @Override
     public String toString() {
         return "Pageable{" +
-                "size=" + size +
-                ", page=" + page +
+                "page=" + page +
+                ", size=" + size +
                 '}';
     }
 
@@ -195,7 +195,7 @@ public class Pageable {
             throw new IllegalArgumentException("size: " + size);
         }
         Objects.requireNonNull(sorts, "sorts is required");
-        return new Pageable(size, page, StreamSupport.stream(sorts.spliterator(), false)
+        return new Pageable(page, size, StreamSupport.stream(sorts.spliterator(), false)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toUnmodifiableList()));
     }
