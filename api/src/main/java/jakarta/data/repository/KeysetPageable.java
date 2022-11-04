@@ -144,7 +144,24 @@ public class KeysetPageable extends Pageable {
      * Represents keyset values, which can be a starting point for
      * requesting a next or previous page.
      */
-    public interface Cursor {
+    public static class Cursor {
+        /**
+         * Keyset values.
+         */
+        protected final Object[] keyset;
+
+        /**
+         * Constructs a keyset cursor with the specified values.
+         *
+         * @param keyset keyset values.
+         * @throws IllegalArgumentException if no keyset values are provided.
+         */
+        public Cursor(Object... keyset) {
+            this.keyset = keyset;
+            if (keyset == null || keyset.length == 0)
+                throw new IllegalArgumentException("No keyset values were provided.");
+        }
+
         /**
          * Returns whether or not the keyset values of this instance
          * are equal to those of the supplied instance.
@@ -153,7 +170,11 @@ public class KeysetPageable extends Pageable {
          * @return true or false.
          */
         @Override
-        public boolean equals(Object o);
+        public boolean equals(Object o) {
+            return this == o || o != null
+                    && o.getClass() == getClass()
+                    && Arrays.equals(keyset, ((Cursor) o).keyset);
+        }
 
         /**
          * Returns the keyset value at the specified position.
@@ -163,7 +184,9 @@ public class KeysetPageable extends Pageable {
          * @throws IndexOutOfBoundsException if the index is negative
          *         or greater than or equal to the {@link #size}.
          */
-        public Object getKeysetElement(int index);
+        public Object getKeysetElement(int index) {
+            return keyset[index];
+        }
 
         /**
          * Returns a hash code based on the keyset values.
@@ -171,14 +194,18 @@ public class KeysetPageable extends Pageable {
          * @return a hash code based on the keyset values.
          */
         @Override
-        public int hashCode();
+        public int hashCode() {
+            return Arrays.hashCode(keyset);
+        }
 
         /**
          * Returns the number of values in the keyset.
          *
          * @return the number of values in the keyset.
          */
-        public int size();
+        public int size() {
+            return keyset.length;
+        }
 
         /**
          * String representation of the keyset cursor, including the number of
@@ -187,55 +214,10 @@ public class KeysetPageable extends Pageable {
          * @return String representation of the keyset cursor.
          */
         @Override
-        public String toString();
-    }
-
-    /**
-     * Built-in implementation of Cursor.
-     */
-    static final class CursorImpl implements Cursor {
-        /**
-         * Keyset values.
-         */
-        private final Object[] keyset;
-
-        /**
-         * Constructs a keyset cursor with the specified values.
-         *
-         * @param keyset keyset values.
-         * @throws IllegalArgumentException if no keyset values are provided.
-         */
-        CursorImpl(Object... keyset) {
-            this.keyset = keyset;
-            if (keyset == null || keyset.length == 0)
-                throw new IllegalArgumentException("No keyset values were provided.");
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            return this == o || o != null
-                    && o.getClass() == getClass()
-                    && Arrays.equals(keyset, ((CursorImpl) o).keyset);
-        }
-
-        public Object getKeysetElement(int index) {
-            return keyset[index];
-        }
-
-        @Override
-        public int hashCode() {
-            return Arrays.hashCode(keyset);
-        }
-
-        public int size() {
-            return keyset.length;
-        }
-
-        @Override
         public String toString() {
             return new StringBuilder(27).append("Cursor@").append(Integer.toHexString(hashCode()))
-                            .append(" with ").append(keyset.length).append(" keys")
-                            .toString();
+                    .append(" with ").append(keyset.length).append(" keys")
+                    .toString();
         }
     }
 

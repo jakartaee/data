@@ -82,7 +82,7 @@ public class Pageable {
      * @throws IllegalArgumentException if no keyset values are provided.
      */
     public KeysetPageable afterKeyset(Object... keyset) {
-        return new KeysetPageable(this, KeysetPageable.Mode.NEXT, new KeysetPageable.CursorImpl(keyset));
+        return new KeysetPageable(this, KeysetPageable.Mode.NEXT, new KeysetPageable.Cursor(keyset));
     }
 
     /**
@@ -97,7 +97,7 @@ public class Pageable {
      * @throws IllegalArgumentException if no keyset values are provided.
      */
     public KeysetPageable beforeKeyset(Object... keyset) {
-        return new KeysetPageable(this, KeysetPageable.Mode.PREVIOUS, new KeysetPageable.CursorImpl(keyset));
+        return new KeysetPageable(this, KeysetPageable.Mode.PREVIOUS, new KeysetPageable.Cursor(keyset));
     }
 
     /**

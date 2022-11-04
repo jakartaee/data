@@ -31,6 +31,21 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 class KeysetPageableTest {
 
     @Test
+    @DisplayName("Should create a cursor for the specified values")
+    void shouldCreateCursor() {
+        KeysetPageable.Cursor cursor1 = new KeysetPageable.Cursor(1);
+        KeysetPageable.Cursor cursor2 = new KeysetPageable.Cursor(2, "two");
+
+        assertSoftly(softly -> {
+            softly.assertThat(cursor1.size()).isEqualTo(1);
+            softly.assertThat(cursor1.getKeysetElement(0)).isEqualTo(1);
+            softly.assertThat(cursor2.size()).isEqualTo(2);
+            softly.assertThat(cursor2.getKeysetElement(0)).isEqualTo(2);
+            softly.assertThat(cursor2.getKeysetElement(1)).isEqualTo("two");
+        });
+    }
+
+    @Test
     @DisplayName("Should include keyset values in next KeysetPageable")
     void shouldCreateKeysetPageableAfterKeyset() {
         KeysetPageable pageable = Pageable.size(20).afterKeyset("First", 2L, 3);
@@ -49,7 +64,7 @@ class KeysetPageableTest {
     @Test
     @DisplayName("Should include keyset values in next KeysetPageable from Cursor")
     void shouldCreateKeysetPageableAfterKeysetCursor() {
-        KeysetPageable.Cursor cursor = new KeysetPageable.CursorImpl("me", 200);
+        KeysetPageable.Cursor cursor = new KeysetPageable.Cursor("me", 200);
         KeysetPageable pageable = Pageable.of(1, 35, Sort.asc("name"), Sort.asc("id")).afterKeysetCursor(cursor);
 
         assertSoftly(softly -> {
@@ -82,7 +97,7 @@ class KeysetPageableTest {
     @Test
     @DisplayName("Should include keyset values in previous KeysetPageable from Cursor")
     void shouldCreateKeysetPageableBeforeKeysetCursor() {
-        KeysetPageable.Cursor cursor = new KeysetPageable.CursorImpl(900L, 300, "testing", 120, 'T');
+        KeysetPageable.Cursor cursor = new KeysetPageable.Cursor(900L, 300, "testing", 120, 'T');
         KeysetPageable pageable = Pageable.page(8).beforeKeysetCursor(cursor);
 
         assertSoftly(softly -> {
@@ -147,27 +162,16 @@ class KeysetPageableTest {
     void shouldBeEqualWithSameKeysetValues() {
         KeysetPageable pageable25p1s0a1 = Pageable.size(25).afterKeyset("keyval1", '2', 3);
         KeysetPageable pageable25p1s0b1 = Pageable.size(25).beforeKeyset("keyval1", '2', 3);
-        KeysetPageable pageable25p1s0a1match = Pageable.of(1, 25).afterKeysetCursor(new KeysetPageable.CursorImpl("keyval1", '2', 3));
-        KeysetPageable pageable25p2s0a1 = Pageable.of(2, 25).afterKeysetCursor(new KeysetPageable.CursorImpl("keyval1", '2', 3));
+        KeysetPageable pageable25p1s0a1match = Pageable.of(1, 25).afterKeysetCursor(new KeysetPageable.Cursor("keyval1", '2', 3));
+        KeysetPageable pageable25p2s0a1 = Pageable.of(2, 25).afterKeysetCursor(new KeysetPageable.Cursor("keyval1", '2', 3));
         KeysetPageable pageable25p1s1a1 = Pageable.of(1, 25, Sort.desc("d"), Sort.asc("a"), Sort.asc("id")).afterKeyset("keyval1", '2', 3);
         KeysetPageable pageable25p1s2a1 = Pageable.of(1, 25, Sort.desc("d"), Sort.asc("a"), Sort.desc("id")).afterKeyset("keyval1", '2', 3);
         KeysetPageable pageable25p1s0a2 = Pageable.size(25).afterKeyset("keyval2", '2', 3);
 
-        KeysetPageable.Cursor cursor1 = new KeysetPageable.CursorImpl("keyval1", '2', 3);
-        KeysetPageable.Cursor cursor2 = new KeysetPageable.CursorImpl("keyval2", '2', 3);
-        KeysetPageable.Cursor cursor3 = new KeysetPageable.CursorImpl("keyval1", '2');
-        KeysetPageable.Cursor cursor4 = new KeysetPageable.Cursor() {
-            private final Object[] keyset = new Object[] { "keyval1", '2', 3 };
-
-            @Override
-            public Object getKeysetElement(int index) {
-                return keyset[index];
-            }
-
-            @Override
-            public int size() {
-                return keyset.length;
-            }
+        KeysetPageable.Cursor cursor1 = new KeysetPageable.Cursor("keyval1", '2', 3);
+        KeysetPageable.Cursor cursor2 = new KeysetPageable.Cursor("keyval2", '2', 3);
+        KeysetPageable.Cursor cursor3 = new KeysetPageable.Cursor("keyval1", '2');
+        KeysetPageable.Cursor cursor4 = new KeysetPageable.Cursor("keyval1", '2', 3) {
         };
 
         assertSoftly(softly -> {
