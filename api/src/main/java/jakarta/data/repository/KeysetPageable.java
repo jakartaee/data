@@ -243,7 +243,7 @@ public class KeysetPageable extends Pageable {
     private final Mode mode;
 
     KeysetPageable(Pageable copyFrom, Mode mode, Cursor cursor) {
-        super(copyFrom.size, copyFrom.page, copyFrom.sorts);
+        super(copyFrom.page, copyFrom.size, copyFrom.sorts);
 
         if (cursor == null || cursor.size() == 0)
             throw new IllegalArgumentException("No keyset values were provided.");
