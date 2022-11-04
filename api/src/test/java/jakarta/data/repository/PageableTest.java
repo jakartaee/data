@@ -77,6 +77,21 @@ class PageableTest {
     }
 
     @Test
+    @DisplayName("Should be displayable as String with toString")
+    void shouldPageableDisplayAsString() {
+
+        assertSoftly(softly -> {
+            softly.assertThat(Pageable.size(60).toString())
+                  .isEqualTo("Pageable{page=1, size=60}");
+        });
+
+        assertSoftly(softly -> {
+            softly.assertThat(Pageable.of(1, 80, Sort.desc("yearBorn"), Sort.asc("monthBorn"), Sort.asc("id")).toString())
+                  .isEqualTo("Pageable{page=1, size=80, yearBorn DESC, monthBorn ASC, id ASC}");
+        });
+    }
+
+    @Test
     @DisplayName("Should throw IllegalArgumentException when page is not present")
     void shouldReturnErrorWhenThereIsIllegalArgument() {
         assertThatIllegalArgumentException().isThrownBy(() -> Pageable.page(0));

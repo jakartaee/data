@@ -23,6 +23,8 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import jakarta.data.repository.KeysetPageable.Cursor;
+
 /**
  * <p>This class represents pagination information.</p>
  *
@@ -56,16 +58,76 @@ public class Pageable {
 
     private static final long DEFAULT_SIZE = 10;
 
-    private final long page;
+    final long page;
 
-    private final long size;
+    final long size;
 
-    private final List<Sort> sorts;
+    final List<Sort> sorts;
 
-    private Pageable(long page, long size, List<Sort> sorts) {
+    Pageable(long page, long size, List<Sort> sorts) {
         this.page = page;
         this.size = size;
         this.sorts = sorts;
+    }
+
+    /**
+     * <p>Requests {@link KeysetPageable keyset pagination} in the forward direction,
+     * starting after the specified keyset values.</p>
+     *
+     * @param keyset keyset values, the order and number of which must match the
+     *        {@link OrderBy} annotations, {@link Sort} parameters, or
+     *        <code>OrderBy</code> name pattern of the repository method to which
+     *        this pagination will be supplied.
+     * @return forward keyset pagination.
+     * @throws IllegalArgumentException if no keyset values are provided.
+     */
+    public KeysetPageable afterKeyset(Object... keyset) {
+        return new KeysetPageable(this, KeysetPageable.Mode.NEXT, new KeysetPageable.CursorImpl(keyset));
+    }
+
+    /**
+     * <p>Requests {@link KeysetPageable keyset pagination} in the reverse direction,
+     * starting after the specified keyset values.</p>
+     *
+     * @param keyset keyset values, the order and number of which must match the
+     *        {@link OrderBy} annotations, {@link Sort} parameters, or
+     *        <code>OrderBy</code> name pattern of the repository method to which
+     *        this pagination will be supplied.
+     * @return reverse keyset pagination.
+     * @throws IllegalArgumentException if no keyset values are provided.
+     */
+    public KeysetPageable beforeKeyset(Object... keyset) {
+        return new KeysetPageable(this, KeysetPageable.Mode.PREVIOUS, new KeysetPageable.CursorImpl(keyset));
+    }
+
+    /**
+     * <p>Requests {@link KeysetPageable keyset pagination} in the forward direction,
+     * starting after the specified keyset values.</p>
+     *
+     * @param keysetCursor cursor with keyset values, the order and number of which must match the
+     *        {@link OrderBy} annotations, {@link Sort} parameters, or
+     *        <code>OrderBy</code> name pattern of the repository method to which
+     *        this pagination will be supplied.
+     * @return forward keyset pagination.
+     * @throws IllegalArgumentException if no keyset values are provided.
+     */
+    public KeysetPageable afterKeysetCursor(Cursor keysetCursor) {
+        return new KeysetPageable(this, KeysetPageable.Mode.NEXT, keysetCursor);
+    }
+
+    /**
+     * <p>Requests {@link KeysetPageable keyset pagination} in the reverse direction,
+     * starting after the specified keyset values.</p>
+     *
+     * @param keysetCursor cursor with keyset values, the order and number of which must match the
+     *        {@link OrderBy} annotations, {@link Sort} parameters, or
+     *        <code>OrderBy</code> name pattern of the repository method to which
+     *        this pagination will be supplied.
+     * @return reverse keyset pagination.
+     * @throws IllegalArgumentException if no keyset values are provided.
+     */
+    public KeysetPageable beforeKeysetCursor(Cursor keysetCursor) {
+        return new KeysetPageable(this, KeysetPageable.Mode.PREVIOUS, keysetCursor);
     }
 
     /**
@@ -123,10 +185,13 @@ public class Pageable {
 
     @Override
     public String toString() {
-        return "Pageable{" +
-                "page=" + page +
-                ", size=" + size +
-                '}';
+        StringBuilder s = new StringBuilder(100)
+                .append("Pageable{page=").append(page)
+                .append(", size=").append(size);
+        for (Sort sort : sorts) {
+            s.append(", ").append(sort.getProperty()).append(sort.isAscending() ? " ASC" : " DESC");
+        }
+        return s.append("}").toString();
     }
 
     /**

@@ -243,7 +243,7 @@ Jakarta Data implementations often support the following list of predicate keywo
 
 |===
 
-===== Special Parameter Handling
+=== Special Parameter Handling
 
 Jakarta Data also supports particular parameters to define pagination and sorting.
 
@@ -276,3 +276,111 @@ Pageable pageable = Pageable.of(1, 20);
 first20 = products.findByNameLike(name, pageable, Sort.desc("price"));
 
 ----
+
+=== Keyset Pagination
+
+Keyset pagination aims to reduce missed and duplicate results across pages by querying relative to the observed values of entity properties that constitute the sorting criteria. Keyset pagination can also offer an improvement in performance because it avoids fetching and ordering results from prior pages by causing those results to be non-matching. A Jakarta Data provider appends additional conditions to the query and tracks keyset values automatically when `KeysetAwareSlice` or `KeysetAwarePage` are used as the repository method return type. The application invokes `nextPageable` or `previousPageable` on the keyset aware slice or page to obtain a `KeysetPageable` which keeps track of the keyset values.
+
+For example,
+
+[source,java]
+----
+@Repository
+public interface CustomerRepository extends CrudRepository<Customer, Long> {
+  KeysetAwareSlice<Customer> findByZipcodeOrderByLastNameAscFirstNameAscIdAsc(
+                                 int zipcode, Pageable pageable);
+}
+----
+
+You can obtain the next page with,
+
+[source,java]
+----
+for (Pageable p = Pageable.size(50); p != null; ) {
+  page = customers.findByZipcodeOrderByLastNameAscFirstNameAscIdAsc(55901, p);
+  ...
+  p = page.nextPageable();
+}
+----
+
+Or you can obtain the next (or previous) page relative to a known entity,
+
+[source,java]
+----
+Customer c = ...
+KeysetPageable p = Pageable.size(50).afterKeyset(c.lastName, c.firstName, c.id);
+page = customers.findByZipcodeOrderByLastNameAscFirstNameAscIdAsc(55902, p);
+----
+
+The sort criteria for a repository method that performs keyset pagination must uniquely identify each entity and must be provided by one of:
+
+* `OrderBy` name pattern of the repository method (as in the examples above).
+* `@OrderBy` annotation(s) on the repository method.
+* `Sort` parameters of the `Pageable` that is supplied to the repository method.
+
+If either of the first are specified, the `Sort` list of the `Pageable` must be empty or unspecified.
+
+==== Example of Appending to Queries for Keyset Pagination
+
+Without keyset pagination, a Jakarta Data provider that is based on Jakarta Persistence might compose the following JPQL for the `findByZipcodeOrderByLastNameAscFirstNameAscIdAsc` repository method from the prior example:
+
+[source,jpql]
+----
+SELECT o FROM Customer o WHERE (o.zipCode = ?1)
+                         ORDER BY o.lastName ASC, o.firstName ASC, o.id ASC
+----
+
+When keyset pagination is used, the keyset values from the `KeysetPageable` are available as query parameters, allowing the Jakarta Data provider to append additional query conditions. For example,
+
+[source,jpql]
+----
+SELECT o FROM Customer o WHERE (o.zipCode = ?1)
+                           AND (   (o.lastName > ?2)
+                                OR (o.lastName = ?2 AND o.firstName > ?3)
+                                OR (o.lastName = ?2 AND o.firstName = ?3 AND o.id > ?4)
+                               )
+                         ORDER BY o.lastName ASC, o.firstName ASC, o.id ASC
+----
+
+==== Avoiding Missed and Duplicate Results
+
+Because searching for the next page of results is relative to a last known position, it is possible with keyset pagination to allow some types of updates to data while pages are being traversed without causing missed results or duplicates to appear. If you add entities to a prior position in the traversal of pages, the shift forward of numerical position of existing entities will not cause duplicates entities to appear in your continued traversal of subsequent pages because keyset pagination does not query based on a numerical position. If you remove entities from a prior position in the traversal of pages, the shift backward of numerical position of existing entities will not cause missed entities in your continued traversal of subsequent pages because keyset pagination does not query based on a numerical position.
+
+Other types of updates to data, however, will cause duplicate or missed results. If you modify entity properties which are used as the sort criteria, keyset pagination cannot prevent the same entity from appearing again or never appearing due to the altered values. If you add an entity that you previously removed, whether with different values or the same values, keyset pagination cannot prevent the entity from being missed or possibly appearing a second time due to its changed values.
+
+==== Restrictions on use of Keyset Pagination
+
+* The repository method signature must return `KeysetAwareSlice` or `KeysetAwarePage`.
+* The repository method signature must accept a `Pageable` or `KeysetPageable` parameter.
+* Sort criteria must be provided and should be minimal.
+* The combination of provided sort criteria must uniquely identify each entity.
+* Page numbers for keyset pagination are estimated relative to prior page requests or the observed absence of further results and are not accurate. Page numbers must not be relied upon when using keyset pagination.
+* Page totals and result totals are not accurate for keyset pagination and must not be relied upon.
+* A next or previous page can end up being empty. You cannot obtain a next or previous `KeysetPageable` from an empty page because there are no keyset values relative to which to query.
+* A repository method that is annotated with `@Query` and performs keyset pagination must omit the `ORDER BY` clause from the provided query and instead must supply the sort criteria via `@OrderBy` annotations or `Sort` parameters of `Pageable`. The provided query must end with a `WHERE` clause to which additional conditions can be appended by the Jakarta Data provider. The Jakarta Data provider is not expected to parse query text that is provided by the application.
+
+==== Keyset Pagination Example with Sorts
+
+Here is an example where an application uses `@Query` to provide a partial query to which the Jakarta Data provider can generate and append additional query conditions and an `ORDER BY` clause.
+
+[source,java]
+----
+@Repository
+public interface CustomerRepository extends CrudRepository<Customer, Long> {
+  @Query("SELECT o FROM Customer o WHERE (o.totalSpent / o.totalPurchases > ?1)")
+  KeysetAwareSlice<Customer> withAveragePurchaseAbove(float minimum, Pageable pagination);
+}
+----
+
+Example traversal of pages:
+
+[source,java]
+----
+for (Pageable p = Pageable.of(1, 25, Sort.desc("yearBorn"), Sort.asc("name"), Sort.asc("id"));
+     p != null; ) {
+  page = customers.withAveragePurchaseAbove(50.0f, p);
+  ...
+  p = page.nextPageable();
+}
+----
+
