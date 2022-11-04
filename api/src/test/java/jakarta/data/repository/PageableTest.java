@@ -35,8 +35,8 @@ class PageableTest {
         Pageable pageable = Pageable.of(2, 6);
 
         assertSoftly(softly -> {
-            softly.assertThat(pageable.getSize()).isEqualTo(6L);
             softly.assertThat(pageable.getPage()).isEqualTo(2L);
+            softly.assertThat(pageable.getSize()).isEqualTo(6L);
         });
     }
 
@@ -46,8 +46,8 @@ class PageableTest {
         Pageable pageable = Pageable.size(50);
 
         assertSoftly(softly -> {
-            softly.assertThat(pageable.getSize()).isEqualTo(50L);
             softly.assertThat(pageable.getPage()).isEqualTo(1L);
+            softly.assertThat(pageable.getSize()).isEqualTo(50L);
         });
     }
 
@@ -58,8 +58,8 @@ class PageableTest {
         Pageable next = pageable.next();
 
         assertSoftly(softly -> {
-            softly.assertThat(pageable.getSize()).isEqualTo(1L);
             softly.assertThat(pageable.getPage()).isEqualTo(2L);
+            softly.assertThat(pageable.getSize()).isEqualTo(1L);
             softly.assertThat(next.getPage()).isEqualTo(3L);
             softly.assertThat(next.getSize()).isEqualTo(1L);
         });
@@ -71,8 +71,8 @@ class PageableTest {
         Pageable pageable = Pageable.page(5);
 
         assertSoftly(softly -> {
-            softly.assertThat(pageable.getSize()).isEqualTo(10L);
             softly.assertThat(pageable.getPage()).isEqualTo(5L);
+            softly.assertThat(pageable.getSize()).isEqualTo(10L);
         });
     }
 
@@ -121,8 +121,8 @@ class PageableTest {
     public void shouldNotModifySortOnNextPage() {
         Pageable pageable = Pageable.of(1L, 3L, Sort.asc("name"), Sort.desc("age"));
         Pageable next = pageable.next();
-        Assertions.assertEquals(3L, pageable.getSize());
         Assertions.assertEquals(1L, pageable.getPage());
+        Assertions.assertEquals(3L, pageable.getSize());
         assertThat(pageable.getSorts())
                 .hasSize(2)
                 .contains(Sort.asc("name"), Sort.desc("age"));
