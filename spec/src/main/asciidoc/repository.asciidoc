@@ -256,7 +256,7 @@ public interface ProductRepository extends CrudRepository<Product, Long> {
 
   List<Product> findByName(String name, Pageable pageable);
 
-  List<Product> findByNameLike(String pattern, Limit max, Sort sort);
+  List<Product> findByNameLike(String pattern, Limit max, Sort... sorts);
 
 }
 ----
@@ -268,12 +268,12 @@ You can define simple sorting expressions by using property names.
 Sort name = Sort.asc("name");
 ----
 
-You can combine sorting with start and size by using property names.
+You can combine sorting with a starting page and maximum page size by using property names.
 
 [source,java]
 ----
-Pageable pageable = Pageable.of(1, 20);
-first20 = products.findByNameLike(name, pageable, Sort.desc("price"));
+Pageable pageable = Pageable.ofSize(20).page(1).sortBy(Sort.desc("price"));
+first20 = products.findByNameLike(name, pageable);
 
 ----
 
@@ -296,7 +296,7 @@ You can obtain the next page with,
 
 [source,java]
 ----
-for (Pageable p = Pageable.size(50); p != null; ) {
+for (Pageable p = Pageable.ofSize(50); p != null; ) {
   page = customers.findByZipcodeOrderByLastNameAscFirstNameAscIdAsc(55901, p);
   ...
   p = page.nextPageable();
@@ -308,7 +308,7 @@ Or you can obtain the next (or previous) page relative to a known entity,
 [source,java]
 ----
 Customer c = ...
-KeysetPageable p = Pageable.size(50).afterKeyset(c.lastName, c.firstName, c.id);
+KeysetPageable p = Pageable.ofSize(50).afterKeyset(c.lastName, c.firstName, c.id);
 page = customers.findByZipcodeOrderByLastNameAscFirstNameAscIdAsc(55902, p);
 ----
 
@@ -376,7 +376,7 @@ Example traversal of pages:
 
 [source,java]
 ----
-for (Pageable p = Pageable.of(1, 25, Sort.desc("yearBorn"), Sort.asc("name"), Sort.asc("id"));
+for (Pageable p = Pageable.size(25).sortBy(Sort.desc("yearBorn"), Sort.asc("name"), Sort.asc("id")));
      p != null; ) {
   page = customers.withAveragePurchaseAbove(50.0f, p);
   ...

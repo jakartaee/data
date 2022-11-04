@@ -17,9 +17,6 @@
  */
 package jakarta.data.repository;
 
-import java.util.Arrays;
-import java.util.Objects;
-
 /**
  * <p>Keyset pagination is a form of pagination that aims to reduce the
  * possibility of missed or duplicate results by making the request for
@@ -50,7 +47,7 @@ import java.util.Objects;
  * <p>You can use a normal {@link Pageable} to request an initial page,</p>
  *
  * <pre>
- * page = employees.findByHoursWorkedGreaterThan(1500, Pageable.size(50));
+ * page = employees.findByHoursWorkedGreaterThan(1500, Pageable.ofSize(50));
  * </pre>
  *
  * <p>For subsequent pages, you can request pagination relative to the
@@ -68,13 +65,13 @@ import java.util.Objects;
  * <p>You can also construct a <code>KeysetPageable</code> directly, which
  * allows you to make it relative to a specific list of values. The number and
  * order of values must match that of the {@link OrderBy} annotations,
- * <code>Pageable</code> {@link Pageable#of(long, long, Sort...) Sort} parameters,
+ * {@link Pageable#sortBy(Sort...)} or {@link Pageable#sortBy(Iterable)} parameters,
  * or <code>OrderBy</code> name pattern of the repository method.
  * For example,</p>
  *
  * <pre>
  * Employee emp = ...
- * KeysetPageable pagination = Pageable.size(50).afterKeyset(emp.lastName, emp.firstName, emp.id);
+ * KeysetPageable pagination = Pageable.ofSize(50).afterKeyset(emp.lastName, emp.firstName, emp.id);
  * page = employees.findByHoursWorkedGreaterThan(1500, pagination);
  * </pre>
  *
@@ -99,7 +96,7 @@ import java.util.Objects;
  * in parenthesis.
  * Sort criteria must be specified independently from the user-provided query,
  * either with the {@link OrderBy} annotation or
- * <code>Pageable</code> {@link Pageable#of(long, long, Sort...) Sort} parameters.
+ * {@link Pageable#sortBy(Sort...)} or {@link Pageable#sortBy(Iterable)} parameters.
  * For example,</p>
  *
  * <pre>
@@ -116,23 +113,25 @@ import java.util.Objects;
  * count of pages are not accurate when keyset pagination is used and should
  * not be relied upon.</p>
  */
-public class KeysetPageable extends Pageable {
+public interface KeysetPageable extends Pageable {
     /**
      * Direction of keyset pagination.
      */
     public static enum Mode {
         /**
          * Indicates forward keyset pagination, which follows the
-         * direction of the {@link OrderBy} annotations, <code>Pageable</code>
-         * {@link Pageable#of(long, long, Sort...) Sort} parameters,
+         * direction of the {@link OrderBy} annotations,
+         * {@link Pageable#sortBy(Sort...)} or {@link Pageable#sortBy(Iterable)}
+         * parameters, repository method {@link Sort} parameters,
          * or <code>OrderBy</code> name pattern of the repository method.
          */
         NEXT,
 
         /**
          * Indicates a request for a page in the reverse direction of
-         * the {@link OrderBy} annotations, <code>Pageable</code>
-         * {@link Pageable#of(long, long, Sort...) Sort} parameters,
+         * the {@link OrderBy} annotations,
+         * {@link Pageable#sortBy(Sort...)} or {@link Pageable#sortBy(Iterable)}
+         * parameters, repository method {@link Sort} parameters,
          * or <code>OrderBy</code> name pattern of the repository method.
          * The order of results on each page follows the sort criteria
          * and is not reversed.
@@ -191,138 +190,95 @@ public class KeysetPageable extends Pageable {
     }
 
     /**
-     * Built-in implementation of Cursor.
-     */
-    static final class CursorImpl implements Cursor {
-        /**
-         * Keyset values.
-         */
-        private final Object[] keyset;
-
-        /**
-         * Constructs a keyset cursor with the specified values.
-         *
-         * @param keyset keyset values.
-         * @throws IllegalArgumentException if no keyset values are provided.
-         */
-        CursorImpl(Object... keyset) {
-            this.keyset = keyset;
-            if (keyset == null || keyset.length == 0)
-                throw new IllegalArgumentException("No keyset values were provided.");
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            return this == o || o != null
-                    && o.getClass() == getClass()
-                    && Arrays.equals(keyset, ((CursorImpl) o).keyset);
-        }
-
-        public Object getKeysetElement(int index) {
-            return keyset[index];
-        }
-
-        @Override
-        public int hashCode() {
-            return Arrays.hashCode(keyset);
-        }
-
-        public int size() {
-            return keyset.length;
-        }
-
-        @Override
-        public String toString() {
-            return new StringBuilder(27).append("Cursor@").append(Integer.toHexString(hashCode()))
-                            .append(" with ").append(keyset.length).append(" keys")
-                            .toString();
-        }
-    }
-
-    private final Cursor cursor;
-    private final Mode mode;
-
-    KeysetPageable(Pageable copyFrom, Mode mode, Cursor cursor) {
-        super(copyFrom.page, copyFrom.size, copyFrom.sorts);
-
-        if (cursor == null || cursor.size() == 0)
-            throw new IllegalArgumentException("No keyset values were provided.");
-
-        this.cursor = cursor;
-        this.mode = mode;
-    }
-
-
-    /**
-     * Indicates if this keyset pagination information is equal to other
-     * keyset pagination information. The comparison includes keyset cursor
-     * instances but does not do a deep comparison of keyset values within
-     * the cursor instance.
-     *
-     * @return true if equal. Otherwise false.
-     */
-    @Override
-    public boolean equals(Object o) {
-        KeysetPageable p;
-        return this == o || o != null
-                && o.getClass() == getClass()
-                && (p = (KeysetPageable) o).size == size
-                && p.page == page
-                && p.mode == mode
-                && p.cursor.equals(cursor)
-                && p.sorts.equals(sorts);
-    }
-
-    /**
      * Returns the keyset values which are the starting point for
      * keyset pagination.
      *
      * @return the keyset values.
      */
-    public Cursor getCursor() {
-        return cursor;
-    }
+    public Cursor getCursor();
 
     /**
      * Returns the direction of keyset pagination.
      *
      * @return the direction of keyset pagination.
      */
-    public Mode getMode() {
-        return mode;
-    }
+    public Mode getMode();
 
     /**
-     * <p>Returns a hash code based upon:</p>
+     * Raises an error because traversal of pages with keyset pagination can
+     * only be done via the {@link KeysetAwareSlice#nextPageable()},
+     * {@link KeysetAwareSlice#previousPageable()}, or
+     * {@link KeysetAwareSlice#getKeysetCursor(int) keyset cursor}.
+     *
+     * @return unreachable
+     * @throws UnsupportedOperationException because this operation is not
+     *         supported for keyset pagination.
+     */
+    @Override
+    public KeysetPageable next();
+
+    /**
+     * <p>Creates a new <code>KeysetPageable</code> instance representing the same
+     * pagination information, except with the specified page number.</p>
+     *
+     * @param pageNumber The page number
+     * @return a new instance of <code>KeysetPageable</code>.
+     */
+    @Override
+    public KeysetPageable page(long pageNumber);
+
+    /**
+     * <p>Creates a new <code>KeysetPageable</code> instance representing the same
+     * pagination information, except with the specified maximum page size.</p>
+     *
+     * @param maxPageSize the number of query results in a full page.
+     * @return a new instance of <code>KeysetPageable</code>.
+     */
+    @Override
+    public KeysetPageable size(int maxPageSize);
+
+    /**
+     * <p>Creates a new <code>KeysetPageable</code> instance representing the same
+     * pagination information, except using the specified sort criteria.
+     * The order of precedence of sort criteria is the order of the
+     * {@link Iterable} that is supplied to this method.</p>
+     *
+     * <p>A repository method will fail if a sort criteria is specified on a
+     * <code>KeysetPageable</code> in combination with any of:</p>
      * <ul>
-     * <li>page number</li>
-     * <li>maximum page size</li>
-     * <li>mode</li>
-     * <li>keyset cursor</li>
+     * <li>an <code>OrderBy</code> keyword</li>
+     * <li>an {@link OrderBy} annotation</li>
+     * <li>a {@link Query} annotation that contains an <code>ORDER BY</code> clause.</li>
+     * <li>{@link Sort} parameters that are specified independently of
+     *     <code>KeysetPageable</code> on a repository method</li>
      * </ul>
      *
-     * @return a hash code for the pagination information.
+     * @param sorts sort criteria to use.
+     * @return a new instance of <code>KeysetPageable</code>.
      */
     @Override
-    public int hashCode() {
-        return Objects.hash(size, page, sorts, mode, cursor);
-    }
+    public KeysetPageable sortBy(Iterable<Sort> sorts);
 
     /**
-     * Returns a string representation of the pagination information.
+     * <p>Creates a new <code>KeysetPageable</code> instance representing the same
+     * pagination information, except using the specified sort criteria.
+     * The order of precedence of sort criteria is the order in which the
+     * {@link Sort} parameters to this method are listed.</p>
      *
-     * @return a string representation of the pagination information.
+     * <p>A repository method will fail if a sort criteria is specified on a
+     * <code>KeysetPageable</code> in combination with any of:</p>
+     * <ul>
+     * <li>an <code>OrderBy</code> keyword</li>
+     * <li>an {@link OrderBy} annotation</li>
+     * <li>a {@link Query} annotation that contains an <code>ORDER BY</code> clause.</li>
+     * <li>{@link Sort} parameters that are specified independently of
+     *     <code>KeysetPageable</code> on a repository method</li>
+     * </ul>
+     *
+     * @param sorts sort criteria to use. This method can be invoked without parameters
+     *        to request a <code>KeysetPageable</code> that does not specify sort criteria.
+     * @return a new instance of <code>KeysetPageable</code>.
      */
     @Override
-    public String toString() {
-        StringBuilder s = new StringBuilder(150)
-                .append("KeysetPageable{page=").append(page)
-                .append(", size=").append(size)
-                .append(", mode=").append(mode)
-                .append(", ").append(cursor.size()).append(" keys");
-        for (Sort sort : sorts) {
-            s.append(", ").append(sort.getProperty()).append(sort.isAscending() ? " ASC" : " DESC");
-        }
-        return s.append("}").toString();
-    }
+    public KeysetPageable sortBy(Sort... sorts);
 }

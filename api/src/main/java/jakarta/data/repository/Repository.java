@@ -372,20 +372,35 @@ import java.lang.annotation.Target;
  *           String pattern, Pageable pagination);
  * ...
  * page1 = products.findByNameLikeOrderByAmountSoldDescNameAsc(
- *                  "%phone%", Pageable.size(20));
+ *                  "%phone%", Pageable.ofSize(20));
  * </pre>
  *
- * <h3>Sorting</h3>
+ * <h3>Sorting at Runtime</h3>
  *
- * <p>You can dynamically supply sorting criteria by adding one or more
- * {@link Sort} parameters (or <code>Sort...</code>)
+ * <p>When using pagination, you can dynamically supply sorting criteria
+ * via the {@link Pageable#sortBy(Sort...)} and {@link Pageable#sortBy(Iterable)}
+ * methods. For example,</p>
+ *
+ * <pre>
+ * Product[] findByNameLike(String pattern, Pageable pagination);
+ *
+ * ...
+ * Pageable pagination = Pageable.ofSize(25).sortBy(
+ *                           Sort.desc("price"),
+ *                           Sort.asc("name"));
+ * page1 = products.findByNameLikeAndPriceBetween(
+ *                 namePattern, minPrice, maxPrice, pagination);
+ * </pre>
+ *
+ * <p>To supply sorting criteria dynamically without using pagination,
+ * add one or more {@link Sort} parameters (or <code>Sort...</code>)
  * to a repository find method. For example,</p>
  *
  * <pre>
  * Product[] findByNameLike(String pattern, Limit max, Sort... sortBy);
  *
  * ...
- * page1 = products.findByNameLike(namePattern, Pageable.of(1, 25),
+ * page1 = products.findByNameLike(namePattern, Limit.of(25),
  *                                 Sort.desc("price"),
  *                                 Sort.desc("amountSold"),
  *                                 Sort.asc("name"));
