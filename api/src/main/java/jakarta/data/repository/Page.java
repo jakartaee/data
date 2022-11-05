@@ -21,7 +21,7 @@ package jakarta.data.repository;
 /**
  * A page is a sublist of a list of objects. It provides information about its position relative to the entire list.
  *
- * @param <T> the entity type
+ * @param <T> the type of elements in this page 
  */
 public interface Page<T> extends Slice<T> {
 

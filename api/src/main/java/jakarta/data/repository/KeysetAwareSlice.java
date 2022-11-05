@@ -26,6 +26,8 @@ package jakarta.data.repository;
  * with keyset pagination, which allows entities to be added and removed
  * in between traversal of slices or pages and makes estimates of a total
  * inaccurate.</p>
+ *
+ * @param <T> the type of elements in this slice 
  */
 public interface KeysetAwareSlice<T> extends Slice<T> {
     /**

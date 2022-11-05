@@ -45,7 +45,7 @@ public interface CrudRepository<T, K> extends DataRepository<T, K> {
      *
      * @param entities an iterable of entities
      * @param <S> type of entity to save
-     * @return the saved entities
+     * @return the saved entities; will never be {@literal null}.
      * @throws NullPointerException if either the iterable is null or any element is null
      */
     <S extends T> Iterable<S> saveAll(Iterable<S> entities);
@@ -71,7 +71,7 @@ public interface CrudRepository<T, K> extends DataRepository<T, K> {
     /**
      * Returns all instances of the type.
      *
-     * @return all entities
+     * @return all entities; will never be {@literal null}.
      */
     Stream<T> findAll();
 
@@ -84,7 +84,7 @@ public interface CrudRepository<T, K> extends DataRepository<T, K> {
      *
      * @param ids must not be {@literal null} nor contain any {@literal null} values.
      * @return guaranteed to be not {@literal null}. The size can be equal or less than the number of given
-     * {@literal ids}.
+     * {@literal ids} 
      * @throws NullPointerException in case the given {@link Iterable ids} or one of its items is {@literal null}.
      */
     Stream<T> findAllById(Iterable<K> ids);

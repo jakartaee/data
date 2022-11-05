@@ -32,7 +32,7 @@ public interface PageableRepository<T, K> extends CrudRepository<T, K> {
      * Returns a {@link Page} of entities meeting the paging restriction provided in the {@link Pageable} object.
      *
      * @param pageable the pageable to request a paginated result, must not be null.
-     * @return a page of entities
+     * @return a page of entities; will never be {@literal null}.
      * @throws NullPointerException when pageable is null
      */
     Page<T> findAll(Pageable pageable);

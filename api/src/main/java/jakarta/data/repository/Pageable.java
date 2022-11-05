@@ -198,7 +198,7 @@ public class Pageable {
      * Creates a new Pageable at the given page with a default size of 10.
      *
      * @param page The page
-     * @return The pageable
+     * @return The pageable; will never be {@literal null}.
      */
     public static Pageable page(long page) {
         return of(page, DEFAULT_SIZE);
@@ -209,7 +209,7 @@ public class Pageable {
      *
      * @param page The page
      * @param size The size
-     * @return The pageable
+     * @return The pageable; will never be {@literal null}.
      * @throws IllegalArgumentException when page or size are negative or zero
      */
     public static Pageable of(long page, long size) {
@@ -222,7 +222,7 @@ public class Pageable {
      * @param page The page
      * @param size The size
      * @param sort the sort
-     * @return The pageable
+     * @return The pageable; will never be {@literal null}.
      * @throws IllegalArgumentException when page or size are negative or zero
      */
     public static Pageable of(long page, long size, Sort sort) {
@@ -236,7 +236,7 @@ public class Pageable {
      * @param page  The page
      * @param size  The size
      * @param sorts the sorts
-     * @return The pageable
+     * @return The pageable; will never be {@literal null}.
      * @throws IllegalArgumentException when page or size are negative or zero
      */
     public static Pageable of(long page, long size, Sort... sorts) {
@@ -249,7 +249,7 @@ public class Pageable {
      * @param page  The page
      * @param size  The size
      * @param sorts the sorts
-     * @return The pageable
+     * @return The pageable; will never be {@literal null}.
      * @throws IllegalArgumentException when page or size are negative
      * @throws NullPointerException     when sorts is null
      */
@@ -270,7 +270,7 @@ public class Pageable {
      * specified size, starting with the first page number, which is 1.
      *
      * @param pageSize number of query results in a full page.
-     * @return The pageable.
+     * @return The pageable; will never be {@literal null}.
      */
     public static Pageable size(long pageSize) {
         return of(1, pageSize);

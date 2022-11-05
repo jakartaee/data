@@ -23,11 +23,11 @@ package jakarta.data.repository;
  */
 public enum Direction {
     /**
-     * Ascending direction
+     * Ascending direction.
      */
     ASC,
     /**
-     * Descending direction
+     * Descending direction.
      */
     DESC;
 }

@@ -49,7 +49,7 @@ import java.util.Objects;
  * <li>a {@link Query} annotation that contains an <code>ORDER BY</code> clause.</li>
  * </ul>
  */
-public class Sort {
+public final class Sort {
 
     private final String property;
 
@@ -61,7 +61,7 @@ public class Sort {
     }
 
     /**
-     * @return The property name to order by
+     * @return The property name to order by; will never be {@literal null}.
      */
     public String getProperty() {
         return this.property;
@@ -111,7 +111,7 @@ public class Sort {
      *
      * @param property  the property name to order by
      * @param direction The direction order by
-     * @return an {@link Sort} instance
+     * @return an {@link Sort} instance. Never {@code null}.
      * @throws NullPointerException when there is a null parameter
      */
     public static Sort of(String property, Direction direction) {
@@ -124,7 +124,7 @@ public class Sort {
      * Create a {@link Sort} instance with ascending direction {@link  Direction#ASC}
      *
      * @param property the property name to order by
-     * @return a {@link Sort} instance
+     * @return a {@link Sort} instance. Never {@code null}.
      * @throws NullPointerException when the property is null
      */
     public static Sort asc(String property) {
@@ -135,7 +135,7 @@ public class Sort {
      * Create a {@link Sort} instance on descending direction {@link  Direction#DESC}
      *
      * @param property the property name to order by
-     * @return a {@link Sort} instance
+     * @return a {@link Sort} instance. Never {@code null}.
      * @throws NullPointerException when the property is null
      */
     public static Sort desc(String property) {
