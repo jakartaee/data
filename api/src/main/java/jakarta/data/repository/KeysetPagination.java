@@ -27,7 +27,7 @@ import java.util.stream.StreamSupport;
 /**
  * Built-in implementation of KeysetPageable.
  */
-class KeysetPagination extends Pagination implements KeysetPageable {
+final class KeysetPagination extends Pagination implements KeysetPageable {
 
     private final Cursor cursor;
     private final Mode mode;

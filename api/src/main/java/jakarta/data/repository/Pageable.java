@@ -57,7 +57,7 @@ public interface Pageable {
      * Creates a new <code>Pageable</code> with the given page number and with a default size of 10.
      *
      * @param pageNumber The page number.
-     * @return a new instance of <code>Pageable</code>.
+     * @return a new instance of <code>Pageable</code>. This method never returns <code>null</code>.
      * @throws IllegalArgumentException when the page number is negative or zero.
      */
     public static Pageable ofPage(long pageNumber) {
@@ -69,7 +69,7 @@ public interface Pageable {
      * specified size, starting with the first page number, which is 1.
      *
      * @param maxPageSize The number of query results in a full page.
-     * @return a new instance of <code>Pageable</code>.
+     * @return a new instance of <code>Pageable</code>. This method never returns <code>null</code>.
      * @throws IllegalArgumentException when maximum page size is negative or zero.
      */
     public static Pageable ofSize(int maxPageSize) {
@@ -85,6 +85,7 @@ public interface Pageable {
      *        <code>OrderBy</code> name pattern of the repository method to which
      *        this pagination will be supplied.
      * @return a new instance of <code>KeysetPageable</code> with forward keyset pagination.
+     *         This method never returns <code>null</code>.
      * @throws IllegalArgumentException if no keyset values are provided.
      */
     public KeysetPageable afterKeyset(Object... keyset);
@@ -98,6 +99,7 @@ public interface Pageable {
      *        <code>OrderBy</code> name pattern of the repository method to which
      *        this pagination will be supplied.
      * @return a new instance of <code>KeysetPageable</code> with reverse keyset pagination.
+     *         This method never returns <code>null</code>.
      * @throws IllegalArgumentException if no keyset values are provided.
      */
     public KeysetPageable beforeKeyset(Object... keyset);
@@ -111,6 +113,7 @@ public interface Pageable {
      *        <code>OrderBy</code> name pattern of the repository method to which
      *        this pagination will be supplied.
      * @return a new instance of <code>KeysetPageable</code> with forward keyset pagination.
+     *         This method never returns <code>null</code>.
      * @throws IllegalArgumentException if no keyset values are provided.
      */
     public KeysetPageable afterKeysetCursor(Cursor keysetCursor);
@@ -124,6 +127,7 @@ public interface Pageable {
      *        <code>OrderBy</code> name pattern of the repository method to which
      *        this pagination will be supplied.
      * @return a new instance of <code>KeysetPageable</code> with reverse keyset pagination.
+     *         This method never returns <code>null</code>.
      * @throws IllegalArgumentException if no keyset values are provided.
      */
     public KeysetPageable beforeKeysetCursor(Cursor keysetCursor);
@@ -171,7 +175,7 @@ public interface Pageable {
      * pagination information, except with the specified page number.</p>
      *
      * @param pageNumber The page number
-     * @return a new instance of <code>Pageable</code>.
+     * @return a new instance of <code>Pageable</code>. This method never returns <code>null</code>.
      */
     public Pageable page(long pageNumber);
 
@@ -180,7 +184,7 @@ public interface Pageable {
      * pagination information, except with the specified maximum page size.</p>
      *
      * @param maxPageSize the number of query results in a full page.
-     * @return a new instance of <code>Pageable</code>.
+     * @return a new instance of <code>Pageable</code>. This method never returns <code>null</code>.
      */
     public Pageable size(int maxPageSize);
 
@@ -201,7 +205,7 @@ public interface Pageable {
      * </ul>
      *
      * @param sorts sort criteria to use.
-     * @return a new instance of <code>Pageable</code>.
+     * @return a new instance of <code>Pageable</code>. This method never returns <code>null</code>.
      */
     public Pageable sortBy(Iterable<Sort> sorts);
 
@@ -223,7 +227,7 @@ public interface Pageable {
      *
      * @param sorts sort criteria to use. This method can be invoked without parameters
      *        to request a <code>Pageable</code> that does not specify sort criteria.
-     * @return a new instance of <code>Pageable</code>.
+     * @return a new instance of <code>Pageable</code>. This method never returns <code>null</code>.
      */
     public Pageable sortBy(Sort... sorts);
 }

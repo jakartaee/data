@@ -222,7 +222,7 @@ public interface KeysetPageable extends Pageable {
      * pagination information, except with the specified page number.</p>
      *
      * @param pageNumber The page number
-     * @return a new instance of <code>KeysetPageable</code>.
+     * @return a new instance of <code>KeysetPageable</code>. This method never returns <code>null</code>.
      */
     @Override
     public KeysetPageable page(long pageNumber);
@@ -232,7 +232,7 @@ public interface KeysetPageable extends Pageable {
      * pagination information, except with the specified maximum page size.</p>
      *
      * @param maxPageSize the number of query results in a full page.
-     * @return a new instance of <code>KeysetPageable</code>.
+     * @return a new instance of <code>KeysetPageable</code>. This method never returns <code>null</code>.
      */
     @Override
     public KeysetPageable size(int maxPageSize);
@@ -254,7 +254,7 @@ public interface KeysetPageable extends Pageable {
      * </ul>
      *
      * @param sorts sort criteria to use.
-     * @return a new instance of <code>KeysetPageable</code>.
+     * @return a new instance of <code>KeysetPageable</code>. This method never returns <code>null</code>.
      */
     @Override
     public KeysetPageable sortBy(Iterable<Sort> sorts);
@@ -277,7 +277,7 @@ public interface KeysetPageable extends Pageable {
      *
      * @param sorts sort criteria to use. This method can be invoked without parameters
      *        to request a <code>KeysetPageable</code> that does not specify sort criteria.
-     * @return a new instance of <code>KeysetPageable</code>.
+     * @return a new instance of <code>KeysetPageable</code>. This method never returns <code>null</code>.
      */
     @Override
     public KeysetPageable sortBy(Sort... sorts);
