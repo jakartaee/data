@@ -31,7 +31,7 @@ public interface Streamable<T> extends Iterable<T> {
      * Returns a sequential stream of results, which follow the order of the sort criteria if specified.
      * This method does not cause data to be re-fetched from the database when used with {@link Pageable pagination}.
      *
-     * @returns a stream of results.
+     * @return a stream of results.
      */
     default Stream<T> stream() {
         return StreamSupport.stream(spliterator(), false);
