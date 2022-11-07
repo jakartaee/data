@@ -24,7 +24,7 @@ import java.util.List;
  *
  * @param <T> the type of elements in this slice 
  */
-public interface Slice<T>  {
+public interface Slice<T> extends Streamable<T> {
 
     /**
      * Returns the page content as {@link List}.
