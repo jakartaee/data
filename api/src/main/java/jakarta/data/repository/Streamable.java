@@ -17,7 +17,6 @@
  */
 package jakarta.data.repository;
 
-import java.util.function.Supplier;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
