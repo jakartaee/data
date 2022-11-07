@@ -21,13 +21,15 @@ import java.util.List;
 
 /**
  * A slice of data that indicates whether there's a next or previous slice available.
+ *
+ * @param <T> the type of elements in this slice 
  */
 public interface Slice<T>  {
 
     /**
      * Returns the page content as {@link List}.
      *
-     * @return the page content as {@link List}.
+     * @return the page content as {@link List}; will never be {@literal null}.
      */
     List<T> getContent();
 
@@ -48,14 +50,14 @@ public interface Slice<T>  {
     /**
      * Returns the current {@link Pageable}
      *
-     * @return the current Pageable
+     * @return the current Pageable; will never be {@literal null}.
      */
     Pageable getPageable();
 
     /**
      * Returns the next {@link Pageable#next()}, or <code>null</code> if it is known that there is no next page.
      *
-     * @return the next pageable
+     * @return the next pageable.
      */
-  Pageable nextPageable();
+    Pageable nextPageable();
 }

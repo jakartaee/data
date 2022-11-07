@@ -31,7 +31,7 @@ import java.lang.annotation.Target;
 public @interface Param {
 
     /**
-     * Returns The parameter name
+     * Defines the name of the parameter to bind to.
      * @return the parameter name
      */
     String value();

@@ -46,7 +46,7 @@ package jakarta.data.repository;
  *     with the <code>First</code> keyword.</li>
  * </ul>
  */
-public class Limit {
+public final class Limit {
     private static final long DEFAULT_START_AT = 1L;
     private final long maxResults;
     private final long startAt;
@@ -82,7 +82,7 @@ public class Limit {
      *
      * @param maxResults maximum number of results.
      * @return limit that can be supplied to a <code>find...By</code>
-     *         or <code>&#64;Query</code> method.
+     *         or <code>&#64;Query</code> method; will never be {@literal null}.
      * @throws IllegalArgumentException if maxResults is less than 1.
      */
     public static Limit of(long maxResults) {
@@ -102,7 +102,7 @@ public class Limit {
      *                The first query result is position 1.
      * @param endAt   position after which to cease including results.
      * @return limit that can be supplied to a <code>find...By</code>
-     *         or <code>&#64;Query</code> method.
+     *         or <code>&#64;Query</code> method; will never be {@literal null}.
      * @throws IllegalArgumentException if <code>startAt</code> is less than 1
      *         or <code>endAt</code> is less than <code>startAt</code>.
      */
