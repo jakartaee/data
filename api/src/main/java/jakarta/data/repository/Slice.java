@@ -57,7 +57,7 @@ public interface Slice<T>  {
     /**
      * Returns the next {@link Pageable#next()}, or <code>null</code> if it is known that there is no next page.
      *
-     * @return the next pageable; will never be {@literal null}.
+     * @return the next pageable.
      */
     Pageable nextPageable();
 }

@@ -84,7 +84,7 @@ public interface CrudRepository<T, K> extends DataRepository<T, K> {
      *
      * @param ids must not be {@literal null} nor contain any {@literal null} values.
      * @return guaranteed to be not {@literal null}. The size can be equal or less than the number of given
-     * {@literal ids}. 
+     * {@literal ids}.
      * @throws NullPointerException in case the given {@link Iterable ids} or one of its items is {@literal null}.
      */
     Stream<T> findAllById(Iterable<K> ids);
