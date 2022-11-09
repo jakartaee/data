@@ -19,7 +19,14 @@ package jakarta.data.repository;
 
 /**
  * <p>A page of results from a repository query that performs
- * {@link KeysetPageable keyset pagination}.</p>
+ * {@link KeysetAwareSlice keyset pagination}.</p>
+ *
+ * <p>The concept of {@link Page} differs from {@link Slice} in that slices
+ * do not have awareness of a total number of pages or results. Page numbers
+ * and total numbers of pages and results cannot be accurately known
+ * with keyset pagination, which allows entities to be added and removed
+ * in between traversal of slices or pages. When keyset pagination is used,
+ * these values should not be relied upon.</p>
  *
  * @param <T> the type of elements in this page 
  */

@@ -279,7 +279,7 @@ first20 = products.findByNameLike(name, pageable);
 
 === Keyset Pagination
 
-Keyset pagination aims to reduce missed and duplicate results across pages by querying relative to the observed values of entity properties that constitute the sorting criteria. Keyset pagination can also offer an improvement in performance because it avoids fetching and ordering results from prior pages by causing those results to be non-matching. A Jakarta Data provider appends additional conditions to the query and tracks keyset values automatically when `KeysetAwareSlice` or `KeysetAwarePage` are used as the repository method return type. The application invokes `nextPageable` or `previousPageable` on the keyset aware slice or page to obtain a `KeysetPageable` which keeps track of the keyset values.
+Keyset pagination aims to reduce missed and duplicate results across pages by querying relative to the observed values of entity properties that constitute the sorting criteria. Keyset pagination can also offer an improvement in performance because it avoids fetching and ordering results from prior pages by causing those results to be non-matching. A Jakarta Data provider appends additional conditions to the query and tracks keyset values automatically when `KeysetAwareSlice` or `KeysetAwarePage` are used as the repository method return type. The application invokes `nextPageable` or `previousPageable` on the keyset aware slice or page to obtain a `Pageable` which keeps track of the keyset values.
 
 For example,
 
@@ -308,7 +308,7 @@ Or you can obtain the next (or previous) page relative to a known entity,
 [source,java]
 ----
 Customer c = ...
-KeysetPageable p = Pageable.ofSize(50).afterKeyset(c.lastName, c.firstName, c.id);
+Pageable p = Pageable.ofSize(50).afterKeyset(c.lastName, c.firstName, c.id);
 page = customers.findByZipcodeOrderByLastNameAscFirstNameAscIdAsc(55902, p);
 ----
 
@@ -330,7 +330,7 @@ SELECT o FROM Customer o WHERE (o.zipCode = ?1)
                          ORDER BY o.lastName ASC, o.firstName ASC, o.id ASC
 ----
 
-When keyset pagination is used, the keyset values from the `KeysetPageable` are available as query parameters, allowing the Jakarta Data provider to append additional query conditions. For example,
+When keyset pagination is used, the keyset values from the `Cursor` of the `Pageable` are available as query parameters, allowing the Jakarta Data provider to append additional query conditions. For example,
 
 [source,jpql]
 ----
@@ -351,12 +351,12 @@ Other types of updates to data, however, will cause duplicate or missed results.
 ==== Restrictions on use of Keyset Pagination
 
 * The repository method signature must return `KeysetAwareSlice` or `KeysetAwarePage`.
-* The repository method signature must accept a `Pageable` or `KeysetPageable` parameter.
+* The repository method signature must accept a `Pageable` parameter.
 * Sort criteria must be provided and should be minimal.
 * The combination of provided sort criteria must uniquely identify each entity.
 * Page numbers for keyset pagination are estimated relative to prior page requests or the observed absence of further results and are not accurate. Page numbers must not be relied upon when using keyset pagination.
 * Page totals and result totals are not accurate for keyset pagination and must not be relied upon.
-* A next or previous page can end up being empty. You cannot obtain a next or previous `KeysetPageable` from an empty page because there are no keyset values relative to which to query.
+* A next or previous page can end up being empty. You cannot obtain a next or previous `Pageable` from an empty page because there are no keyset values relative to which to query.
 * A repository method that is annotated with `@Query` and performs keyset pagination must omit the `ORDER BY` clause from the provided query and instead must supply the sort criteria via `@OrderBy` annotations or `Sort` parameters of `Pageable`. The provided query must end with a `WHERE` clause to which additional conditions can be appended by the Jakarta Data provider. The Jakarta Data provider is not expected to parse query text that is provided by the application.
 
 ==== Keyset Pagination Example with Sorts
