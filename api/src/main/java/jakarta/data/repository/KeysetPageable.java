@@ -117,7 +117,7 @@ public interface KeysetPageable extends Pageable {
     /**
      * Direction of keyset pagination.
      */
-    public static enum Mode {
+    enum Mode {
         /**
          * Indicates forward keyset pagination, which follows the
          * direction of the {@link OrderBy} annotations,
@@ -143,7 +143,7 @@ public interface KeysetPageable extends Pageable {
      * Represents keyset values, which can be a starting point for
      * requesting a next or previous page.
      */
-    public interface Cursor {
+    interface Cursor {
         /**
          * Returns whether or not the keyset values of this instance
          * are equal to those of the supplied instance.
@@ -152,7 +152,7 @@ public interface KeysetPageable extends Pageable {
          * @return true or false.
          */
         @Override
-        public boolean equals(Object o);
+        boolean equals(Object o);
 
         /**
          * Returns the keyset value at the specified position.
@@ -162,7 +162,7 @@ public interface KeysetPageable extends Pageable {
          * @throws IndexOutOfBoundsException if the index is negative
          *         or greater than or equal to the {@link #size}.
          */
-        public Object getKeysetElement(int index);
+        Object getKeysetElement(int index);
 
         /**
          * Returns a hash code based on the keyset values.
@@ -170,14 +170,14 @@ public interface KeysetPageable extends Pageable {
          * @return a hash code based on the keyset values.
          */
         @Override
-        public int hashCode();
+        int hashCode();
 
         /**
          * Returns the number of values in the keyset.
          *
          * @return the number of values in the keyset.
          */
-        public int size();
+        int size();
 
         /**
          * String representation of the keyset cursor, including the number of
@@ -186,7 +186,7 @@ public interface KeysetPageable extends Pageable {
          * @return String representation of the keyset cursor.
          */
         @Override
-        public String toString();
+        String toString();
     }
 
     /**
@@ -195,14 +195,14 @@ public interface KeysetPageable extends Pageable {
      *
      * @return the keyset values.
      */
-    public Cursor getCursor();
+    Cursor getCursor();
 
     /**
      * Returns the direction of keyset pagination.
      *
      * @return the direction of keyset pagination.
      */
-    public Mode getMode();
+    Mode getMode();
 
     /**
      * Raises an error because traversal of pages with keyset pagination can
@@ -215,7 +215,7 @@ public interface KeysetPageable extends Pageable {
      *         supported for keyset pagination.
      */
     @Override
-    public KeysetPageable next();
+    KeysetPageable next();
 
     /**
      * <p>Creates a new <code>KeysetPageable</code> instance representing the same
@@ -225,7 +225,7 @@ public interface KeysetPageable extends Pageable {
      * @return a new instance of <code>KeysetPageable</code>. This method never returns <code>null</code>.
      */
     @Override
-    public KeysetPageable page(long pageNumber);
+    KeysetPageable page(long pageNumber);
 
     /**
      * <p>Creates a new <code>KeysetPageable</code> instance representing the same
@@ -235,7 +235,7 @@ public interface KeysetPageable extends Pageable {
      * @return a new instance of <code>KeysetPageable</code>. This method never returns <code>null</code>.
      */
     @Override
-    public KeysetPageable size(int maxPageSize);
+    KeysetPageable size(int maxPageSize);
 
     /**
      * <p>Creates a new <code>KeysetPageable</code> instance representing the same
@@ -257,7 +257,7 @@ public interface KeysetPageable extends Pageable {
      * @return a new instance of <code>KeysetPageable</code>. This method never returns <code>null</code>.
      */
     @Override
-    public KeysetPageable sortBy(Iterable<Sort> sorts);
+    KeysetPageable sortBy(Iterable<Sort> sorts);
 
     /**
      * <p>Creates a new <code>KeysetPageable</code> instance representing the same
@@ -280,5 +280,5 @@ public interface KeysetPageable extends Pageable {
      * @return a new instance of <code>KeysetPageable</code>. This method never returns <code>null</code>.
      */
     @Override
-    public KeysetPageable sortBy(Sort... sorts);
+    KeysetPageable sortBy(Sort... sorts);
 }
