@@ -40,8 +40,8 @@ public @interface Query {
     /**
      * <p>Defines an additional query that counts the number of elements that are
      * returned by the {@link #value() primary} query. This is used to compute
-     * the {@link Page#getTotalElements() total elements}
-     * and {@link Page#getTotalPages() total pages}
+     * the {@link Page#totalElements() total elements}
+     * and {@link Page#totalPages() total pages}
      * for paginated repository queries that are annotated with
      * <code>@Query</code> and return a {@link Page} or <code>KeysetAwarePage</code>.
      * Slices do not use a counting query.</p> TODO use link instead of code above once #52 is merged.

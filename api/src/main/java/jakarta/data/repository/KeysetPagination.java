@@ -55,12 +55,12 @@ final class KeysetPagination extends Pagination implements KeysetPageable {
     }
 
     @Override
-    public Cursor getCursor() {
+    public Cursor cursor() {
         return cursor;
     }
 
     @Override
-    public Mode getMode() {
+    public Mode mode() {
         return mode;
     }
 
@@ -76,12 +76,12 @@ final class KeysetPagination extends Pagination implements KeysetPageable {
     }
 
     @Override
-    public KeysetPageable page(long pageNumber) {
+    public KeysetPageable newPage(long pageNumber) {
         return new KeysetPagination(pageNumber, size, sorts, mode, cursor);
     }
 
     @Override
-    public KeysetPageable size(int maxPageSize) {
+    public KeysetPageable newSize(int maxPageSize) {
         return new KeysetPagination(page, maxPageSize, sorts, mode, cursor);
     }
 
@@ -107,7 +107,7 @@ final class KeysetPagination extends Pagination implements KeysetPageable {
                 .append(", mode=").append(mode)
                 .append(", ").append(cursor.size()).append(" keys");
         for (Sort sort : sorts) {
-            s.append(", ").append(sort.getProperty()).append(sort.isAscending() ? " ASC" : " DESC");
+            s.append(", ").append(sort.property()).append(sort.isAscending() ? " ASC" : " DESC");
         }
         return s.append("}").toString();
     }

@@ -36,13 +36,13 @@ class KeysetPageableTest {
         KeysetPageable pageable = Pageable.ofSize(20).afterKeyset("First", 2L, 3);
 
         assertSoftly(softly -> {
-            softly.assertThat(pageable.getSize()).isEqualTo(20);
-            softly.assertThat(pageable.getPage()).isEqualTo(1L);
-            softly.assertThat(pageable.getMode()).isEqualTo(KeysetPageable.Mode.NEXT);
-            softly.assertThat(pageable.getCursor().size()).isEqualTo(3);
-            softly.assertThat(pageable.getCursor().getKeysetElement(0)).isEqualTo("First");
-            softly.assertThat(pageable.getCursor().getKeysetElement(1)).isEqualTo(2L);
-            softly.assertThat(pageable.getCursor().getKeysetElement(2)).isEqualTo(3);
+            softly.assertThat(pageable.size()).isEqualTo(20);
+            softly.assertThat(pageable.page()).isEqualTo(1L);
+            softly.assertThat(pageable.mode()).isEqualTo(KeysetPageable.Mode.NEXT);
+            softly.assertThat(pageable.cursor().size()).isEqualTo(3);
+            softly.assertThat(pageable.cursor().getKeysetElement(0)).isEqualTo("First");
+            softly.assertThat(pageable.cursor().getKeysetElement(1)).isEqualTo(2L);
+            softly.assertThat(pageable.cursor().getKeysetElement(2)).isEqualTo(3);
         });
     }
 
@@ -53,29 +53,29 @@ class KeysetPageableTest {
         KeysetPageable pageable = Pageable.ofSize(35).sortBy(Sort.asc("name"), Sort.asc("id")).afterKeysetCursor(cursor);
 
         assertSoftly(softly -> {
-            softly.assertThat(pageable.getSize()).isEqualTo(35);
-            softly.assertThat(pageable.getPage()).isEqualTo(1L);
-            softly.assertThat(pageable.getSorts()).isEqualTo(List.of(Sort.asc("name"), Sort.asc("id")));
-            softly.assertThat(pageable.getMode()).isEqualTo(KeysetPageable.Mode.NEXT);
-            softly.assertThat(pageable.getCursor().size()).isEqualTo(2);
-            softly.assertThat(pageable.getCursor().getKeysetElement(0)).isEqualTo("me");
-            softly.assertThat(pageable.getCursor().getKeysetElement(1)).isEqualTo(200);
+            softly.assertThat(pageable.size()).isEqualTo(35);
+            softly.assertThat(pageable.page()).isEqualTo(1L);
+            softly.assertThat(pageable.sorts()).isEqualTo(List.of(Sort.asc("name"), Sort.asc("id")));
+            softly.assertThat(pageable.mode()).isEqualTo(KeysetPageable.Mode.NEXT);
+            softly.assertThat(pageable.cursor().size()).isEqualTo(2);
+            softly.assertThat(pageable.cursor().getKeysetElement(0)).isEqualTo("me");
+            softly.assertThat(pageable.cursor().getKeysetElement(1)).isEqualTo(200);
         });
     }
 
     @Test
     @DisplayName("Should include keyset values in previous KeysetPageable")
     void shouldCreateKeysetPageableBeforeKeyset() {
-        KeysetPageable pageable = Pageable.ofSize(30).sortBy(Sort.desc("yearBorn"), Sort.asc("ssn")).beforeKeyset(1991, "123-45-6789").page(10);
+        KeysetPageable pageable = Pageable.ofSize(30).sortBy(Sort.desc("yearBorn"), Sort.asc("ssn")).beforeKeyset(1991, "123-45-6789").newPage(10);
 
         assertSoftly(softly -> {
-            softly.assertThat(pageable.getSize()).isEqualTo(30);
-            softly.assertThat(pageable.getPage()).isEqualTo(10L);
-            softly.assertThat(pageable.getSorts()).isEqualTo(List.of(Sort.desc("yearBorn"), Sort.asc("ssn")));
-            softly.assertThat(pageable.getMode()).isEqualTo(KeysetPageable.Mode.PREVIOUS);
-            softly.assertThat(pageable.getCursor().size()).isEqualTo(2);
-            softly.assertThat(pageable.getCursor().getKeysetElement(0)).isEqualTo(1991);
-            softly.assertThat(pageable.getCursor().getKeysetElement(1)).isEqualTo("123-45-6789");
+            softly.assertThat(pageable.size()).isEqualTo(30);
+            softly.assertThat(pageable.page()).isEqualTo(10L);
+            softly.assertThat(pageable.sorts()).isEqualTo(List.of(Sort.desc("yearBorn"), Sort.asc("ssn")));
+            softly.assertThat(pageable.mode()).isEqualTo(KeysetPageable.Mode.PREVIOUS);
+            softly.assertThat(pageable.cursor().size()).isEqualTo(2);
+            softly.assertThat(pageable.cursor().getKeysetElement(0)).isEqualTo(1991);
+            softly.assertThat(pageable.cursor().getKeysetElement(1)).isEqualTo("123-45-6789");
         });
     }
 
@@ -86,16 +86,16 @@ class KeysetPageableTest {
         KeysetPageable pageable = Pageable.ofPage(8).beforeKeysetCursor(cursor);
 
         assertSoftly(softly -> {
-            softly.assertThat(pageable.getSize()).isEqualTo(10);
-            softly.assertThat(pageable.getPage()).isEqualTo(8L);
-            softly.assertThat(pageable.getSorts()).isEqualTo(Collections.EMPTY_LIST);
-            softly.assertThat(pageable.getMode()).isEqualTo(KeysetPageable.Mode.PREVIOUS);
-            softly.assertThat(pageable.getCursor().size()).isEqualTo(5);
-            softly.assertThat(pageable.getCursor().getKeysetElement(0)).isEqualTo(900L);
-            softly.assertThat(pageable.getCursor().getKeysetElement(1)).isEqualTo(300);
-            softly.assertThat(pageable.getCursor().getKeysetElement(2)).isEqualTo("testing");
-            softly.assertThat(pageable.getCursor().getKeysetElement(3)).isEqualTo(120);
-            softly.assertThat(pageable.getCursor().getKeysetElement(4)).isEqualTo('T');
+            softly.assertThat(pageable.size()).isEqualTo(10);
+            softly.assertThat(pageable.page()).isEqualTo(8L);
+            softly.assertThat(pageable.sorts()).isEqualTo(Collections.EMPTY_LIST);
+            softly.assertThat(pageable.mode()).isEqualTo(KeysetPageable.Mode.PREVIOUS);
+            softly.assertThat(pageable.cursor().size()).isEqualTo(5);
+            softly.assertThat(pageable.cursor().getKeysetElement(0)).isEqualTo(900L);
+            softly.assertThat(pageable.cursor().getKeysetElement(1)).isEqualTo(300);
+            softly.assertThat(pageable.cursor().getKeysetElement(2)).isEqualTo("testing");
+            softly.assertThat(pageable.cursor().getKeysetElement(3)).isEqualTo(120);
+            softly.assertThat(pageable.cursor().getKeysetElement(4)).isEqualTo('T');
         });
     }
 
@@ -144,7 +144,7 @@ class KeysetPageableTest {
         KeysetPageable pageable25p1s0a1 = Pageable.ofSize(25).afterKeyset("keyval1", '2', 3);
         KeysetPageable pageable25p1s0b1 = Pageable.ofSize(25).beforeKeyset("keyval1", '2', 3);
         KeysetPageable pageable25p1s0a1match = Pageable.ofSize(25).afterKeysetCursor(new KeysetPagination.CursorImpl("keyval1", '2', 3));
-        KeysetPageable pageable25p2s0a1 = Pageable.ofPage(2).size(25).afterKeysetCursor(new KeysetPagination.CursorImpl("keyval1", '2', 3));
+        KeysetPageable pageable25p2s0a1 = Pageable.ofPage(2).newSize(25).afterKeysetCursor(new KeysetPagination.CursorImpl("keyval1", '2', 3));
         KeysetPageable pageable25p1s1a1 = Pageable.ofSize(25).sortBy(Sort.desc("d"), Sort.asc("a"), Sort.asc("id")).afterKeyset("keyval1", '2', 3);
         KeysetPageable pageable25p1s2a1 = Pageable.ofSize(25).sortBy(Sort.desc("d"), Sort.asc("a"), Sort.desc("id")).afterKeyset("keyval1", '2', 3);
         KeysetPageable pageable25p1s0a2 = Pageable.ofSize(25).afterKeyset("keyval2", '2', 3);
@@ -174,8 +174,8 @@ class KeysetPageableTest {
             softly.assertThat(cursor1.equals(cursor4)).isFalse(); // different classes
             softly.assertThat(cursor4.equals(cursor1)).isFalse(); // different classes
 
-            softly.assertThat(pageable25p1s0a1.getCursor()).isEqualTo(cursor1);
-            softly.assertThat(pageable25p1s0a1match.getCursor()).isEqualTo(cursor1);
+            softly.assertThat(pageable25p1s0a1.cursor()).isEqualTo(cursor1);
+            softly.assertThat(pageable25p1s0a1match.cursor()).isEqualTo(cursor1);
 
             softly.assertThat(pageable25p1s0a1.equals(pageable25p1s0a1)).isTrue();
             softly.assertThat(pageable25p1s0a1.equals(null)).isFalse();
@@ -203,26 +203,26 @@ class KeysetPageableTest {
     @DisplayName("Keyset should be replaced on new instance of KeysetPageable")
     public void shouldReplaceKeyset() {
         KeysetPageable p1 = Pageable.ofSize(30).sortBy(Sort.asc("lastName"), Sort.asc("firstName"), Sort.asc("id"))
-                                    .afterKeyset("last1", "fname1", 100).page(12);
+                                    .afterKeyset("last1", "fname1", 100).newPage(12);
         KeysetPageable p2 = p1.beforeKeyset("lname2", "fname2", 200);
 
         assertSoftly(softly -> {
-            softly.assertThat(p1.getMode()).isEqualTo(KeysetPageable.Mode.NEXT);
-            softly.assertThat(p1.getCursor().getKeysetElement(0)).isEqualTo("last1");
-            softly.assertThat(p1.getCursor().getKeysetElement(1)).isEqualTo("fname1");
-            softly.assertThat(p1.getCursor().getKeysetElement(2)).isEqualTo(100);
+            softly.assertThat(p1.mode()).isEqualTo(KeysetPageable.Mode.NEXT);
+            softly.assertThat(p1.cursor().getKeysetElement(0)).isEqualTo("last1");
+            softly.assertThat(p1.cursor().getKeysetElement(1)).isEqualTo("fname1");
+            softly.assertThat(p1.cursor().getKeysetElement(2)).isEqualTo(100);
 
-            softly.assertThat(p2.getMode()).isEqualTo(KeysetPageable.Mode.PREVIOUS);
-            softly.assertThat(p2.getCursor().getKeysetElement(0)).isEqualTo("lname2");
-            softly.assertThat(p2.getCursor().getKeysetElement(1)).isEqualTo("fname2");
-            softly.assertThat(p2.getCursor().getKeysetElement(2)).isEqualTo(200);
+            softly.assertThat(p2.mode()).isEqualTo(KeysetPageable.Mode.PREVIOUS);
+            softly.assertThat(p2.cursor().getKeysetElement(0)).isEqualTo("lname2");
+            softly.assertThat(p2.cursor().getKeysetElement(1)).isEqualTo("fname2");
+            softly.assertThat(p2.cursor().getKeysetElement(2)).isEqualTo(200);
 
-            softly.assertThat(p1.getSorts()).isEqualTo(List.of(Sort.asc("lastName"), Sort.asc("firstName"), Sort.asc("id")));
-            softly.assertThat(p2.getSorts()).isEqualTo(List.of(Sort.asc("lastName"), Sort.asc("firstName"), Sort.asc("id")));
-            softly.assertThat(p1.getPage()).isEqualTo(12L);
-            softly.assertThat(p2.getPage()).isEqualTo(12L);
-            softly.assertThat(p1.getSize()).isEqualTo(30);
-            softly.assertThat(p2.getSize()).isEqualTo(30);
+            softly.assertThat(p1.sorts()).isEqualTo(List.of(Sort.asc("lastName"), Sort.asc("firstName"), Sort.asc("id")));
+            softly.assertThat(p2.sorts()).isEqualTo(List.of(Sort.asc("lastName"), Sort.asc("firstName"), Sort.asc("id")));
+            softly.assertThat(p1.page()).isEqualTo(12L);
+            softly.assertThat(p2.page()).isEqualTo(12L);
+            softly.assertThat(p1.size()).isEqualTo(30);
+            softly.assertThat(p2.size()).isEqualTo(30);
         });
     }
 }

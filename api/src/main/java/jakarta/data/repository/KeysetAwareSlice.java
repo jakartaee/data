@@ -71,7 +71,7 @@ public interface KeysetAwareSlice<T> extends Slice<T> {
      * previous page is requested) by assigning a page number of <code>1</code>
      * to such pages. This means that there can be multiple consecutive pages
      * numbered <code>1</code> and that
-     * <code>currentPage.previousPageable().next().getPage()</code>
+     * <code>currentPage.previousPageable().next().page()</code>
      * cannot be relied upon to return a page number that is equal to the
      * current page number.</p>
      *

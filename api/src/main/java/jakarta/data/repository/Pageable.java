@@ -147,21 +147,21 @@ public interface Pageable {
      *
      * @return the page to be returned.
      */
-    long getPage();
+    long page();
 
     /**
      * Returns the requested size of each page
      *
      * @return the requested size of each page
      */
-    int getSize();
+    int size();
 
     /**
      * Return the order collection if it was specified on this <code>Pageable</code>, otherwise an empty list.
      *
-     * @return the order collection
+     * @return the order collection; will never be {@literal null}.
      */
-    List<Sort> getSorts();
+    List<Sort> sorts();
 
     /**
      * Returns the <code>Pageable</code> requesting the next page.
@@ -177,7 +177,7 @@ public interface Pageable {
      * @param pageNumber The page number
      * @return a new instance of <code>Pageable</code>. This method never returns <code>null</code>.
      */
-    Pageable page(long pageNumber);
+    Pageable newPage(long pageNumber);
 
     /**
      * <p>Creates a new <code>Pageable</code> instance representing the same
@@ -186,7 +186,7 @@ public interface Pageable {
      * @param maxPageSize the number of query results in a full page.
      * @return a new instance of <code>Pageable</code>. This method never returns <code>null</code>.
      */
-    Pageable size(int maxPageSize);
+    Pageable newSize(int maxPageSize);
 
     /**
      * <p>Creates a new <code>Pageable</code> instance representing the same

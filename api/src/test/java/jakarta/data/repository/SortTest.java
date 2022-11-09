@@ -41,7 +41,7 @@ class SortTest {
 
         assertSoftly(softly -> {
             softly.assertThat(order).isNotNull();
-            softly.assertThat(order.getProperty()).isEqualTo(NAME);
+            softly.assertThat(order.property()).isEqualTo(NAME);
             softly.assertThat(order.isAscending()).isTrue();
             softly.assertThat(order.isDescending()).isFalse();
         });
@@ -54,7 +54,7 @@ class SortTest {
 
         assertSoftly(softly -> {
             softly.assertThat(order).isNotNull();
-            softly.assertThat(order.getProperty()).isEqualTo(NAME);
+            softly.assertThat(order.property()).isEqualTo(NAME);
             softly.assertThat(order.isAscending()).isFalse();
             softly.assertThat(order.isDescending()).isTrue();
         });
@@ -67,7 +67,7 @@ class SortTest {
 
         assertSoftly(softly -> {
             softly.assertThat(order).isNotNull();
-            softly.assertThat(order.getProperty()).isEqualTo(NAME);
+            softly.assertThat(order.property()).isEqualTo(NAME);
             softly.assertThat(order.isAscending()).isTrue();
             softly.assertThat(order.isDescending()).isFalse();
         });
@@ -80,7 +80,7 @@ class SortTest {
 
         assertSoftly(softly -> {
             softly.assertThat(order).isNotNull();
-            softly.assertThat(order.getProperty()).isEqualTo(NAME);
+            softly.assertThat(order.property()).isEqualTo(NAME);
             softly.assertThat(order.isAscending()).isFalse();
             softly.assertThat(order.isDescending()).isTrue();
         });
