@@ -128,18 +128,14 @@ class KeysetPageableTest {
     void shouldKeysetPageableDisplayAsString() {
         KeysetPageable pageable = Pageable.ofSize(200).afterKeyset("value1", 1);
 
-        assertSoftly(softly -> {
-            softly.assertThat(pageable.toString())
-                  .isEqualTo("KeysetPageable{page=1, size=200, mode=NEXT, 2 keys}");
-        });
+        assertSoftly(softly -> softly.assertThat(pageable.toString())
+              .isEqualTo("KeysetPageable{page=1, size=200, mode=NEXT, 2 keys}"));
 
         KeysetPageable pageableWithSorts = Pageable.ofSize(100).sortBy(Sort.desc("name"), Sort.asc("id"))
                                                    .beforeKeyset("Item1", 3456);
 
-        assertSoftly(softly -> {
-            softly.assertThat(pageableWithSorts.toString())
-                  .isEqualTo("KeysetPageable{page=1, size=100, mode=PREVIOUS, 2 keys, name DESC, id ASC}");
-        });
+        assertSoftly(softly -> softly.assertThat(pageableWithSorts.toString())
+              .isEqualTo("KeysetPageable{page=1, size=100, mode=PREVIOUS, 2 keys, name DESC, id ASC}"));
     }
 
     @Test
