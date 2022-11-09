@@ -195,14 +195,14 @@ public interface KeysetPageable extends Pageable {
      *
      * @return the keyset values.
      */
-    Cursor getCursor();
+    Cursor cursor();
 
     /**
      * Returns the direction of keyset pagination.
      *
      * @return the direction of keyset pagination.
      */
-    Mode getMode();
+    Mode mode();
 
     /**
      * Raises an error because traversal of pages with keyset pagination can
@@ -225,7 +225,7 @@ public interface KeysetPageable extends Pageable {
      * @return a new instance of <code>KeysetPageable</code>. This method never returns <code>null</code>.
      */
     @Override
-    KeysetPageable page(long pageNumber);
+    KeysetPageable newPage(long pageNumber);
 
     /**
      * <p>Creates a new <code>KeysetPageable</code> instance representing the same
@@ -235,7 +235,7 @@ public interface KeysetPageable extends Pageable {
      * @return a new instance of <code>KeysetPageable</code>. This method never returns <code>null</code>.
      */
     @Override
-    KeysetPageable size(int maxPageSize);
+    KeysetPageable newSize(int maxPageSize);
 
     /**
      * <p>Creates a new <code>KeysetPageable</code> instance representing the same

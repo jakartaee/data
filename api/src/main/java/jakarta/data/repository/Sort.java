@@ -63,7 +63,7 @@ public final class Sort {
     /**
      * @return The property name to order by; will never be {@literal null}.
      */
-    public String getProperty() {
+    public String property() {
         return this.property;
     }
 

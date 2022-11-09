@@ -96,33 +96,33 @@ class Pagination implements Pageable {
                 .append("Pageable{page=").append(page)
                 .append(", size=").append(size);
         for (Sort sort : sorts) {
-            s.append(", ").append(sort.getProperty()).append(sort.isAscending() ? " ASC" : " DESC");
+            s.append(", ").append(sort.property()).append(sort.isAscending() ? " ASC" : " DESC");
         }
         return s.append("}").toString();
     }
 
     @Override
-    public long getPage() {
+    public long page() {
         return page;
     }
 
     @Override
-    public int getSize() {
+    public int size() {
         return size;
     }
 
     @Override
-    public List<Sort> getSorts() {
+    public List<Sort> sorts() {
         return sorts;
     }
 
     @Override
-    public Pageable page(long pageNumber) {
+    public Pageable newPage(long pageNumber) {
         return new Pagination(pageNumber, size, sorts);
     }
 
     @Override
-    public Pageable size(int maxPageSize) {
+    public Pageable newSize(int maxPageSize) {
         return new Pagination(page, maxPageSize, sorts);
     }
 

@@ -33,11 +33,11 @@ class PageableTest {
     @Test
     @DisplayName("Should correctly paginate")
     void shouldCreatePageable() {
-        Pageable pageable = Pageable.ofPage(2).size(6);
+        Pageable pageable = Pageable.ofPage(2).newSize(6);
 
         assertSoftly(softly -> {
-            softly.assertThat(pageable.getPage()).isEqualTo(2L);
-            softly.assertThat(pageable.getSize()).isEqualTo(6);
+            softly.assertThat(pageable.page()).isEqualTo(2L);
+            softly.assertThat(pageable.size()).isEqualTo(6);
         });
     }
 
@@ -47,22 +47,22 @@ class PageableTest {
         Pageable pageable = Pageable.ofSize(50);
 
         assertSoftly(softly -> {
-            softly.assertThat(pageable.getPage()).isEqualTo(1L);
-            softly.assertThat(pageable.getSize()).isEqualTo(50);
+            softly.assertThat(pageable.page()).isEqualTo(1L);
+            softly.assertThat(pageable.size()).isEqualTo(50);
         });
     }
 
     @Test
     @DisplayName("Should navigate next")
     void shouldNext() {
-        Pageable pageable = Pageable.ofSize(1).page(2);
+        Pageable pageable = Pageable.ofSize(1).newPage(2);
         Pageable next = pageable.next();
 
         assertSoftly(softly -> {
-            softly.assertThat(pageable.getPage()).isEqualTo(2L);
-            softly.assertThat(pageable.getSize()).isEqualTo(1);
-            softly.assertThat(next.getPage()).isEqualTo(3L);
-            softly.assertThat(next.getSize()).isEqualTo(1);
+            softly.assertThat(pageable.page()).isEqualTo(2L);
+            softly.assertThat(pageable.size()).isEqualTo(1);
+            softly.assertThat(next.page()).isEqualTo(3L);
+            softly.assertThat(next.size()).isEqualTo(1);
         });
     }
 
@@ -72,8 +72,8 @@ class PageableTest {
         Pageable pageable = Pageable.ofPage(5);
 
         assertSoftly(softly -> {
-            softly.assertThat(pageable.getPage()).isEqualTo(5L);
-            softly.assertThat(pageable.getSize()).isEqualTo(10);
+            softly.assertThat(pageable.page()).isEqualTo(5L);
+            softly.assertThat(pageable.size()).isEqualTo(10);
         });
     }
 
@@ -95,8 +95,8 @@ class PageableTest {
         Pageable p1 = Pageable.ofPage(1);
         assertThatIllegalArgumentException().isThrownBy(() -> Pageable.ofPage(0));
         assertThatIllegalArgumentException().isThrownBy(() -> Pageable.ofPage(-1));
-        assertThatIllegalArgumentException().isThrownBy(() -> p1.size(-1));
-        assertThatIllegalArgumentException().isThrownBy(() -> p1.size(0));
+        assertThatIllegalArgumentException().isThrownBy(() -> p1.newSize(-1));
+        assertThatIllegalArgumentException().isThrownBy(() -> p1.newSize(0));
         assertThatIllegalArgumentException().isThrownBy(() -> Pageable.ofSize(0));
         assertThatIllegalArgumentException().isThrownBy(() -> Pageable.ofSize(-1));
     }
@@ -106,12 +106,12 @@ class PageableTest {
         Pageable p = Pageable.ofSize(2).sortBy(Sort.asc("Id"));
 
         assertSoftly(softly -> {
-            softly.assertThat(p.getSorts()).isEqualTo(List.of(Sort.asc("Id")));
-            softly.assertThat(p.sortBy().getSorts()).isEqualTo(Collections.EMPTY_LIST);
-            softly.assertThat(p.sortBy((Iterable<Sort>) null).getSorts()).isEqualTo(Collections.EMPTY_LIST);
-            softly.assertThat(p.sortBy((Sort[]) null).getSorts()).isEqualTo(Collections.EMPTY_LIST);
-            softly.assertThat(p.sortBy(new Sort[0]).getSorts()).isEqualTo(Collections.EMPTY_LIST);
-            softly.assertThat(p.sortBy(List.of()).getSorts()).isEqualTo(Collections.EMPTY_LIST);
+            softly.assertThat(p.sorts()).isEqualTo(List.of(Sort.asc("Id")));
+            softly.assertThat(p.sortBy().sorts()).isEqualTo(Collections.EMPTY_LIST);
+            softly.assertThat(p.sortBy((Iterable<Sort>) null).sorts()).isEqualTo(Collections.EMPTY_LIST);
+            softly.assertThat(p.sortBy((Sort[]) null).sorts()).isEqualTo(Collections.EMPTY_LIST);
+            softly.assertThat(p.sortBy(new Sort[0]).sorts()).isEqualTo(Collections.EMPTY_LIST);
+            softly.assertThat(p.sortBy(List.of()).sorts()).isEqualTo(Collections.EMPTY_LIST);
         });
     }
 
@@ -119,9 +119,9 @@ class PageableTest {
     public void shouldCreatePageableSort() {
         Pageable pageable = Pageable.ofSize(3).sortBy(Sort.asc("name"));
         Assertions.assertNotNull(pageable);
-        Assertions.assertEquals(1L, pageable.getPage());
-        Assertions.assertEquals(3, pageable.getSize());
-        assertThat(pageable.getSorts())
+        Assertions.assertEquals(1L, pageable.page());
+        Assertions.assertEquals(3, pageable.size());
+        assertThat(pageable.sorts())
                 .hasSize(1)
                 .contains(Sort.asc("name"));
     }
@@ -129,7 +129,7 @@ class PageableTest {
     @Test
     public void shouldNotModifySort() {
         Pageable pageable = Pageable.ofSize(3).sortBy(Sort.asc("name"));
-        List<Sort> sorts = pageable.getSorts();
+        List<Sort> sorts = pageable.sorts();
         Assertions.assertThrows(UnsupportedOperationException.class, sorts::clear);
 
     }
@@ -138,15 +138,15 @@ class PageableTest {
     public void shouldNotModifySortOnNextPage() {
         Pageable pageable = Pageable.ofSize(3).sortBy(Sort.asc("name"), Sort.desc("age"));
         Pageable next = pageable.next();
-        Assertions.assertEquals(1L, pageable.getPage());
-        Assertions.assertEquals(3, pageable.getSize());
-        assertThat(pageable.getSorts())
+        Assertions.assertEquals(1L, pageable.page());
+        Assertions.assertEquals(3, pageable.size());
+        assertThat(pageable.sorts())
                 .hasSize(2)
                 .contains(Sort.asc("name"), Sort.desc("age"));
-        Assertions.assertEquals(2L, next.getPage());
-        Assertions.assertEquals(3, next.getSize());
+        Assertions.assertEquals(2L, next.page());
+        Assertions.assertEquals(3, next.size());
 
-        assertThat(next.getSorts())
+        assertThat(next.sorts())
                 .hasSize(2)
                 .contains(Sort.asc("name"), Sort.desc("age"));
 
@@ -155,30 +155,30 @@ class PageableTest {
     @Test
     @DisplayName("Page number should be replaced on new instance of Pageable")
     public void shouldReplacePage() {
-        Pageable p6 = Pageable.ofSize(75).page(6).sortBy(Sort.desc("price"));
-        Pageable p7 = p6.page(7);
+        Pageable p6 = Pageable.ofSize(75).newPage(6).sortBy(Sort.desc("price"));
+        Pageable p7 = p6.newPage(7);
 
         assertSoftly(softly -> {
-            softly.assertThat(p7.getPage()).isEqualTo(7L);
-            softly.assertThat(p6.getPage()).isEqualTo(6L);
-            softly.assertThat(p7.getSize()).isEqualTo(75);
-            softly.assertThat(p6.getSize()).isEqualTo(75);
-            softly.assertThat(p7.getSorts()).isEqualTo(List.of(Sort.desc("price")));
-            softly.assertThat(p6.getSorts()).isEqualTo(List.of(Sort.desc("price")));
+            softly.assertThat(p7.page()).isEqualTo(7L);
+            softly.assertThat(p6.page()).isEqualTo(6L);
+            softly.assertThat(p7.size()).isEqualTo(75);
+            softly.assertThat(p6.size()).isEqualTo(75);
+            softly.assertThat(p7.sorts()).isEqualTo(List.of(Sort.desc("price")));
+            softly.assertThat(p6.sorts()).isEqualTo(List.of(Sort.desc("price")));
         });
     }
 
     @Test
     @DisplayName("Size should be replaced on new instance of Pageable")
     public void shouldReplaceSize() {
-        Pageable s90 = Pageable.ofPage(4).size(90);
-        Pageable s80 = s90.size(80);
+        Pageable s90 = Pageable.ofPage(4).newSize(90);
+        Pageable s80 = s90.newSize(80);
 
         assertSoftly(softly -> {
-            softly.assertThat(s80.getSize()).isEqualTo(80);
-            softly.assertThat(s90.getSize()).isEqualTo(90);
-            softly.assertThat(s90.getPage()).isEqualTo(4L);
-            softly.assertThat(s80.getPage()).isEqualTo(4L);
+            softly.assertThat(s80.size()).isEqualTo(80);
+            softly.assertThat(s90.size()).isEqualTo(90);
+            softly.assertThat(s90.page()).isEqualTo(4L);
+            softly.assertThat(s80.page()).isEqualTo(4L);
         });
     }
 
@@ -189,12 +189,12 @@ class PageableTest {
         Pageable p2 = p1.sortBy(Sort.asc("firstName"), Sort.asc("lastName"));
 
         assertSoftly(softly -> {
-            softly.assertThat(p1.getSorts()).isEqualTo(List.of(Sort.desc("lastName"), Sort.asc("firstName")));
-            softly.assertThat(p2.getSorts()).isEqualTo(List.of(Sort.asc("firstName"), Sort.asc("lastName")));
-            softly.assertThat(p1.getPage()).isEqualTo(1L);
-            softly.assertThat(p2.getPage()).isEqualTo(1L);
-            softly.assertThat(p1.getSize()).isEqualTo(55);
-            softly.assertThat(p2.getSize()).isEqualTo(55);
+            softly.assertThat(p1.sorts()).isEqualTo(List.of(Sort.desc("lastName"), Sort.asc("firstName")));
+            softly.assertThat(p2.sorts()).isEqualTo(List.of(Sort.asc("firstName"), Sort.asc("lastName")));
+            softly.assertThat(p1.page()).isEqualTo(1L);
+            softly.assertThat(p2.page()).isEqualTo(1L);
+            softly.assertThat(p1.size()).isEqualTo(55);
+            softly.assertThat(p2.size()).isEqualTo(55);
         });
     }
 }
