@@ -60,7 +60,7 @@ public interface Pageable {
      * @return a new instance of <code>Pageable</code>. This method never returns <code>null</code>.
      * @throws IllegalArgumentException when the page number is negative or zero.
      */
-    public static Pageable ofPage(long pageNumber) {
+    static Pageable ofPage(long pageNumber) {
         return new Pagination(pageNumber, 10, Collections.emptyList());
     }
 
@@ -72,7 +72,7 @@ public interface Pageable {
      * @return a new instance of <code>Pageable</code>. This method never returns <code>null</code>.
      * @throws IllegalArgumentException when maximum page size is negative or zero.
      */
-    public static Pageable ofSize(int maxPageSize) {
+    static Pageable ofSize(int maxPageSize) {
         return new Pagination(1, maxPageSize, Collections.emptyList());
     }
 
@@ -88,7 +88,7 @@ public interface Pageable {
      *         This method never returns <code>null</code>.
      * @throws IllegalArgumentException if no keyset values are provided.
      */
-    public KeysetPageable afterKeyset(Object... keyset);
+    KeysetPageable afterKeyset(Object... keyset);
 
     /**
      * <p>Requests {@link KeysetPageable keyset pagination} in the reverse direction,
@@ -102,7 +102,7 @@ public interface Pageable {
      *         This method never returns <code>null</code>.
      * @throws IllegalArgumentException if no keyset values are provided.
      */
-    public KeysetPageable beforeKeyset(Object... keyset);
+    KeysetPageable beforeKeyset(Object... keyset);
 
     /**
      * <p>Requests {@link KeysetPageable keyset pagination} in the forward direction,
@@ -116,7 +116,7 @@ public interface Pageable {
      *         This method never returns <code>null</code>.
      * @throws IllegalArgumentException if no keyset values are provided.
      */
-    public KeysetPageable afterKeysetCursor(Cursor keysetCursor);
+    KeysetPageable afterKeysetCursor(Cursor keysetCursor);
 
     /**
      * <p>Requests {@link KeysetPageable keyset pagination} in the reverse direction,
@@ -130,7 +130,7 @@ public interface Pageable {
      *         This method never returns <code>null</code>.
      * @throws IllegalArgumentException if no keyset values are provided.
      */
-    public KeysetPageable beforeKeysetCursor(Cursor keysetCursor);
+    KeysetPageable beforeKeysetCursor(Cursor keysetCursor);
 
     /**
      * Compares with another instance to determine if both represent the same
@@ -140,35 +140,35 @@ public interface Pageable {
      *         represent the same pagination information. Otherwise false.
      */
     @Override
-    public boolean equals(Object o);
+    boolean equals(Object o);
 
     /**
      * Returns the page to be returned.
      *
      * @return the page to be returned.
      */
-    public long getPage();
+    long getPage();
 
     /**
      * Returns the requested size of each page
      *
      * @return the requested size of each page
      */
-    public int getSize();
+    int getSize();
 
     /**
      * Return the order collection if it was specified on this <code>Pageable</code>, otherwise an empty list.
      *
      * @return the order collection
      */
-    public List<Sort> getSorts();
+    List<Sort> getSorts();
 
     /**
      * Returns the <code>Pageable</code> requesting the next page.
      *
      * @return The next pageable.
      */
-    public Pageable next();
+    Pageable next();
 
     /**
      * <p>Creates a new <code>Pageable</code> instance representing the same
@@ -177,7 +177,7 @@ public interface Pageable {
      * @param pageNumber The page number
      * @return a new instance of <code>Pageable</code>. This method never returns <code>null</code>.
      */
-    public Pageable page(long pageNumber);
+    Pageable page(long pageNumber);
 
     /**
      * <p>Creates a new <code>Pageable</code> instance representing the same
@@ -186,7 +186,7 @@ public interface Pageable {
      * @param maxPageSize the number of query results in a full page.
      * @return a new instance of <code>Pageable</code>. This method never returns <code>null</code>.
      */
-    public Pageable size(int maxPageSize);
+    Pageable size(int maxPageSize);
 
     /**
      * <p>Creates a new <code>Pageable</code> instance representing the same
@@ -207,7 +207,7 @@ public interface Pageable {
      * @param sorts sort criteria to use.
      * @return a new instance of <code>Pageable</code>. This method never returns <code>null</code>.
      */
-    public Pageable sortBy(Iterable<Sort> sorts);
+    Pageable sortBy(Iterable<Sort> sorts);
 
     /**
      * <p>Creates a new <code>Pageable</code> instance representing the same
@@ -229,5 +229,5 @@ public interface Pageable {
      *        to request a <code>Pageable</code> that does not specify sort criteria.
      * @return a new instance of <code>Pageable</code>. This method never returns <code>null</code>.
      */
-    public Pageable sortBy(Sort... sorts);
+    Pageable sortBy(Sort... sorts);
 }

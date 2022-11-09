@@ -29,5 +29,5 @@ public enum Direction {
     /**
      * Descending direction.
      */
-    DESC;
+    DESC
 }

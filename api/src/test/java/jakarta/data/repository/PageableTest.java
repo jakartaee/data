@@ -81,15 +81,12 @@ class PageableTest {
     @DisplayName("Should be displayable as String with toString")
     void shouldPageableDisplayAsString() {
 
-        assertSoftly(softly -> {
-            softly.assertThat(Pageable.ofSize(60).toString())
-                  .isEqualTo("Pageable{page=1, size=60}");
-        });
+        assertSoftly(softly -> softly.assertThat(Pageable.ofSize(60).toString())
+              .isEqualTo("Pageable{page=1, size=60}"));
 
-        assertSoftly(softly -> {
-            softly.assertThat(Pageable.ofSize(80).sortBy(Sort.desc("yearBorn"), Sort.asc("monthBorn"), Sort.asc("id")).toString())
-                  .isEqualTo("Pageable{page=1, size=80, yearBorn DESC, monthBorn ASC, id ASC}");
-        });
+        assertSoftly(softly -> softly.assertThat(Pageable.ofSize(80).sortBy(Sort.desc("yearBorn"), Sort.asc("monthBorn"),
+                        Sort.asc("id")).toString())
+              .isEqualTo("Pageable{page=1, size=80, yearBorn DESC, monthBorn ASC, id ASC}"));
     }
 
     @Test
@@ -133,7 +130,7 @@ class PageableTest {
     public void shouldNotModifySort() {
         Pageable pageable = Pageable.ofSize(3).sortBy(Sort.asc("name"));
         List<Sort> sorts = pageable.getSorts();
-        Assertions.assertThrows(UnsupportedOperationException.class, ()-> sorts.clear());
+        Assertions.assertThrows(UnsupportedOperationException.class, sorts::clear);
 
     }
 

@@ -88,7 +88,7 @@ public @interface OrderBy {
      */
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.METHOD)
-    public @interface List {
+    @interface List {
         OrderBy[] value();
     }
 }
