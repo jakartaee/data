@@ -146,14 +146,14 @@ public interface Pageable {
      *
      * @return the keyset values; <code>null</code> if using offset pagination.
      */
-    public Cursor cursor();
+    Cursor cursor();
 
     /**
      * Returns the type of pagination.
      *
      * @return the type of pagination.
      */
-    public Mode mode();
+    Mode mode();
 
     /**
      * Returns the page to be returned.

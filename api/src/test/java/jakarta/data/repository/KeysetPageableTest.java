@@ -49,7 +49,7 @@ class KeysetPageableTest {
     @Test
     @DisplayName("Should include keyset values in next Pageable from Cursor")
     void shouldCreatePageableAfterKeysetCursor() {
-        Pageable.Cursor cursor = new Pagination.CursorImpl("me", 200);
+        Pageable.Cursor cursor = new KeysetCursor("me", 200);
         Pageable pageable = Pageable.ofSize(35).sortBy(Sort.asc("name"), Sort.asc("id")).afterKeysetCursor(cursor);
 
         assertSoftly(softly -> {
@@ -82,7 +82,7 @@ class KeysetPageableTest {
     @Test
     @DisplayName("Should include keyset values in previous Pageable from Cursor")
     void shouldCreatePageableBeforeKeysetCursor() {
-        Pageable.Cursor cursor = new Pagination.CursorImpl(900L, 300, "testing", 120, 'T');
+        Pageable.Cursor cursor = new KeysetCursor(900L, 300, "testing", 120, 'T');
         Pageable pageable = Pageable.ofPage(8).beforeKeysetCursor(cursor);
 
         assertSoftly(softly -> {
@@ -143,15 +143,15 @@ class KeysetPageableTest {
     void shouldBeEqualWithSameKeysetValues() {
         Pageable pageable25p1s0a1 = Pageable.ofSize(25).afterKeyset("keyval1", '2', 3);
         Pageable pageable25p1s0b1 = Pageable.ofSize(25).beforeKeyset("keyval1", '2', 3);
-        Pageable pageable25p1s0a1match = Pageable.ofSize(25).afterKeysetCursor(new Pagination.CursorImpl("keyval1", '2', 3));
-        Pageable pageable25p2s0a1 = Pageable.ofPage(2).newSize(25).afterKeysetCursor(new Pagination.CursorImpl("keyval1", '2', 3));
+        Pageable pageable25p1s0a1match = Pageable.ofSize(25).afterKeysetCursor(new KeysetCursor("keyval1", '2', 3));
+        Pageable pageable25p2s0a1 = Pageable.ofPage(2).newSize(25).afterKeysetCursor(new KeysetCursor("keyval1", '2', 3));
         Pageable pageable25p1s1a1 = Pageable.ofSize(25).sortBy(Sort.desc("d"), Sort.asc("a"), Sort.asc("id")).afterKeyset("keyval1", '2', 3);
         Pageable pageable25p1s2a1 = Pageable.ofSize(25).sortBy(Sort.desc("d"), Sort.asc("a"), Sort.desc("id")).afterKeyset("keyval1", '2', 3);
         Pageable pageable25p1s0a2 = Pageable.ofSize(25).afterKeyset("keyval2", '2', 3);
 
-        Pageable.Cursor cursor1 = new Pagination.CursorImpl("keyval1", '2', 3);
-        Pageable.Cursor cursor2 = new Pagination.CursorImpl("keyval2", '2', 3);
-        Pageable.Cursor cursor3 = new Pagination.CursorImpl("keyval1", '2');
+        Pageable.Cursor cursor1 = new KeysetCursor("keyval1", '2', 3);
+        Pageable.Cursor cursor2 = new KeysetCursor("keyval2", '2', 3);
+        Pageable.Cursor cursor3 = new KeysetCursor("keyval1", '2');
         Pageable.Cursor cursor4 = new Pagination.Cursor() {
             private final Object[] keyset = new Object[] { "keyval1", '2', 3 };
 

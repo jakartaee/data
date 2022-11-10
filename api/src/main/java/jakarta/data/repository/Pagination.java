@@ -17,7 +17,6 @@
  */
 package jakarta.data.repository;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -59,12 +58,12 @@ final class Pagination implements Pageable {
 
     @Override
     public Pageable afterKeyset(Object... keyset) {
-        return new Pagination(page, size, sorts, Mode.CURSOR_NEXT, new CursorImpl(keyset));
+        return new Pagination(page, size, sorts, Mode.CURSOR_NEXT, new KeysetCursor(keyset));
     }
 
     @Override
     public Pageable beforeKeyset(Object... keyset) {
-        return new Pagination(page, size, sorts, Mode.CURSOR_PREVIOUS, new CursorImpl(keyset));
+        return new Pagination(page, size, sorts, Mode.CURSOR_PREVIOUS, new KeysetCursor(keyset));
     }
 
     @Override
@@ -169,54 +168,5 @@ final class Pagination implements Pageable {
     @Override
     public Pageable sortBy(Sort... sorts) {
         return new Pagination(page, size, sorts == null ? Collections.emptyList() : List.of(sorts), mode, cursor);
-    }
-
-    /**
-     * Built-in implementation of Cursor.
-     */
-    static final class CursorImpl implements Cursor {
-        /**
-         * Keyset values.
-         */
-        private final Object[] keyset;
-
-        /**
-         * Constructs a keyset cursor with the specified values.
-         *
-         * @param keyset keyset values.
-         * @throws IllegalArgumentException if no keyset values are provided.
-         */
-        CursorImpl(Object... keyset) {
-            this.keyset = keyset;
-            if (keyset == null || keyset.length == 0)
-                throw new IllegalArgumentException("No keyset values were provided.");
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            return this == o || o != null
-                    && o.getClass() == getClass()
-                    && Arrays.equals(keyset, ((CursorImpl) o).keyset);
-        }
-
-        public Object getKeysetElement(int index) {
-            return keyset[index];
-        }
-
-        @Override
-        public int hashCode() {
-            return Arrays.hashCode(keyset);
-        }
-
-        public int size() {
-            return keyset.length;
-        }
-
-        @Override
-        public String toString() {
-            return new StringBuilder(27).append("Cursor@").append(Integer.toHexString(hashCode()))
-                            .append(" with ").append(keyset.length).append(" keys")
-                            .toString();
-        }
     }
 }
