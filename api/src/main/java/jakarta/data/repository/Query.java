@@ -43,8 +43,8 @@ public @interface Query {
      * the {@link Page#totalElements() total elements}
      * and {@link Page#totalPages() total pages}
      * for paginated repository queries that are annotated with
-     * <code>@Query</code> and return a {@link Page} or <code>KeysetAwarePage</code>.
-     * Slices do not use a counting query.</p> TODO use link instead of code above once #52 is merged.
+     * <code>@Query</code> and return a {@link Page} or {@link KeysetAwarePage}.
+     * Slices do not use a counting query.</p>
      *
      * <p>The default value of empty string indicates that no counting query
      * is provided. A counting query is unnecessary when pagination is

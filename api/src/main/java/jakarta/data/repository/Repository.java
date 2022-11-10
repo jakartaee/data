@@ -24,13 +24,13 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Designates a data repository interface that will be implemented by the container/runtime.<p>
+ * <p>Annotates a data repository interface that will be implemented by the container/runtime.</p>
  *
- * This class is a CDI bean-defining annotation when CDI is available,
+ * <p>This class is a CDI bean-defining annotation when CDI is available,
  * enabling the container/runtime to the implementation available via the
- * <code>jakarta.inject.Inject</code> annotation.<p>
+ * <code>jakarta.inject.Inject</code> annotation.</p>
  *
- * For example,
+ * <p>For example,</p>
  *
  * <pre>
  * &#64;Repository
@@ -60,8 +60,6 @@ import java.lang.annotation.Target;
  * Entities are simple Java objects with fields or accessor methods
  * designating each entity property. Jakarta Persistence and
  * Jakarta NoSQL define entity models that are used by Jakarta Data.
- * TODO update here after better figuring out how these entity models
- * fit into Jakarta Data.
  * The entity type is specified by the first parameter to the {@link DataRepository}
  * or other repository supertype of the interface that is
  * annotated with <code>&#64;Repository</code>.</p>
@@ -89,16 +87,6 @@ import java.lang.annotation.Target;
  * name-pattern based repository query methods.</p>
  *
  * <h2>Reserved Keywords for Name-Pattern-Based Repository Methods</h2>
- *
- * TODO What follows will neither be correct nor complete in this initial issue/pull.
- * Its purpose is to figure out a structure into which we can document the
- * actual patterns and details that we come up with when consensus is established.
- * For now, I've just take some common aspects from existing solutions and
- * tried to see if I could fit in the sort of detail that I'd want to see
- * as a user. Some of that actual detail is very likely to be wrong, but
- * that's good because it will lead to the opening of issues for
- * clarifications and discussions to come up with a more comprehensive
- * and better documented solution.<br><br>
  *
  * <table style="width: 100%">
  * <caption><b>Reserved Method Name Prefixes</b></caption>
@@ -129,10 +117,10 @@ import java.lang.annotation.Target;
  * <td><code>save(Product newProduct)</code></td></tr>
  *
  * <tr style="vertical-align: top"><td><code>updateBy</code></td>
- * <td>TODO Is there a reason existing solutions don't seem to have this?</td>
+ * <td>for simple update operations</td>
  * <td><code>updateByIdSetModifiedOnAddPrice(productId, now, 10.0)</code></td></tr>
  * </table>
- * TODO When can "By" be omitted and "All" added? Need to document that.
+ *
  * <br><br>
  *
  * <table style="width: 100%">
@@ -147,8 +135,7 @@ import java.lang.annotation.Target;
  * <tr style="vertical-align: top"><td><code>And</code></td>
  * <td>conditions</td>
  * <td>Requires both conditions to be satisfied in order to match an entity.
- * Precedence is determined by the data access provider.
- * TODO Or should we enforce a particular precedence?</td>
+ * Precedence is determined by the data access provider.</td>
  * <td><code>findByNameLikeAndPriceLessThanEqual(namePattern, maxPrice)</code></td></tr>
  *
  * <tr style="vertical-align: top"><td><code>Asc</code></td>
@@ -164,11 +151,10 @@ import java.lang.annotation.Target;
  *
  * <tr style="vertical-align: top"><td><code>Contains</code></td>
  * <td>collections, strings</td>
- * <td> TODO Need to determine if I have a proper understanding of this one.
- * For Collection attributes, requires that the entity's attribute value,
+ * <td>For Collection attributes, requires that the entity's attribute value,
  * which is a collection, includes the parameter value.
  * For String attributes, requires that any substring of the entity's attribute value
- * match the entity's attribute value. which can be a pattern</td>
+ * match the entity's attribute value, which can be a pattern with wildcard characters.</td>
  * <td><code>findByRecipientsContains(email)</code>
  * <br><code>findByDescriptionNotContains("refurbished")</code></td></tr>
  *
@@ -230,8 +216,7 @@ import java.lang.annotation.Target;
  * <tr style="vertical-align: top"><td><code>Or</code></td>
  * <td>conditions</td>
  * <td>Requires at least one of the two conditions to be satisfied in order to match an entity.
- * Precedence is determined by the data access provider.
- * TODO Or should we enforce a particular precedence?</td>
+ * Precedence is determined by the data access provider.</td>
  * <td><code>findByPriceLessThanEqualOrDiscountGreaterThanEqual(maxPrice, minDiscount)</code></td></tr>
  *
  * <tr style="vertical-align: top"><td><code>OrderBy</code></td>
@@ -252,14 +237,7 @@ import java.lang.annotation.Target;
  * Wildcard characters for patterns are determined by the data access provider.
  * For Jakarta Persistence providers, <code>_</code> matches any one character
  * and <code>%</code> matches 0 or more characters.
- * TODO Does Jakarta NoSQL have the same or different wildcard characters?
  * <p>
- *
- * TODO The above list of reserved words is nowhere near complete.
- * Hopefully it was at least varied enough to illustrate the sort of information to document.
- *
- * TODO The following reflects my own guessing about what return types could make sense.
- * Many are missed, including for reactive.
  *
  * <table style="width: 100%">
  * <caption><b>Return Types for Repository Methods</b></caption>
@@ -298,9 +276,14 @@ import java.lang.annotation.Target;
  * <tr style="vertical-align: top"><td><code>find...By...</code></td>
  * <td><code>E[]</code>,
  * <br><code>Iterable&lt;E&gt;</code>,
- * <br><code>Stream&lt;E&gt;</code>,
+ * <br><code>Streamable&lt;E&gt;</code>,
  * <br><code>Collection&lt;E&gt;</code></td>
  * <td></td></tr>
+ *
+ * <tr style="vertical-align: top"><td><code>find...By...</code></td>
+ * <td><code>Stream&lt;E&gt;</code></td>
+ * <td>The caller must arrange to {@link java.util.stream.BaseStream#close() close}
+ * all streams that it obtains from repository methods.</td></tr>
  *
  * <tr style="vertical-align: top"><td><code>find...By...</code></td>
  * <td><code>Collection</code> subtypes</td>
@@ -335,14 +318,14 @@ import java.lang.annotation.Target;
  *
  * <h2>Parameters to Repository Methods</h2>
  *
- * The parameters to a repository method correspond to the conditions that are
+ * <p>The parameters to a repository method correspond to the conditions that are
  * defined within the name of repository method (see reserved keywords above),
  * in the same order specified.
  * Most conditions, such as <code>Like</code> or <code>LessThan</code>,
  * correspond to a single method parameter. The exception to this rule is
- * <code>Between</code>, which corresponds to two method parameters.<p>
+ * <code>Between</code>, which corresponds to two method parameters.</p>
  *
- * After all conditions are matched up with the corresponding parameters,
+ * <p>After all conditions are matched up with the corresponding parameters,
  * the remaining repository method parameters are used to enable other
  * capabilities such as pagination, limits, and sorting.</p>
  *
@@ -406,6 +389,17 @@ import java.lang.annotation.Target;
  *                                 Sort.asc("name"));
  * </pre>
  */
+// TODO after relation to existing entity models is better defined, update the section:
+//       "... Jakarta NoSQL define entity models that are used by Jakarta Data."
+// TODO When can "By" be omitted and "All" added? Need to document that.
+// TODO keywords for update would be needed if included.
+// TODO We stated above that "Precedence is determined by the data access provider" when
+//       combining multiple conditions with AND/OR. Is it consistent between JPA and NoSQL,
+//       and if so, can we document it here?
+// TODO Does Jakarta NoSQL have the same or different wildcard characters? Document this
+//       under: "Wildcard characters for patterns are determined by the data access provider"
+// TODO Ensure we have all reserved words listed, including those we might want to reserve for future use.
+// TODO Ensure we have all required supported return types listed.
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
