@@ -272,7 +272,7 @@ You can combine sorting with a starting page and maximum page size by using prop
 
 [source,java]
 ----
-Pageable pageable = Pageable.ofSize(20).page(1).sortBy(Sort.desc("price"));
+Pageable pageable = Pageable.ofSize(20).newPage(1).sortBy(Sort.desc("price"));
 first20 = products.findByNameLike(name, pageable);
 
 ----
@@ -376,7 +376,7 @@ Example traversal of pages:
 
 [source,java]
 ----
-for (Pageable p = Pageable.size(25).sortBy(Sort.desc("yearBorn"), Sort.asc("name"), Sort.asc("id")));
+for (Pageable p = Pageable.ofSize(25).sortBy(Sort.desc("yearBorn"), Sort.asc("name"), Sort.asc("id")));
      p != null; ) {
   page = customers.withAveragePurchaseAbove(50.0f, p);
   ...

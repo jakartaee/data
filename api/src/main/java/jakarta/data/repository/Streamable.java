@@ -21,15 +21,19 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 /**
- * Simple interface to ease streamability of {@link Iterable}s.
+ * <p>Simple interface to ease streamability of {@link Iterable}s.
  * This is an interface and can therefore be used as the assignment target for a lambda expression or method reference.
+ * </p>
+ *
+ * <p>Data is fetched once per <code>Streamable</code> instance;
+ * it is not re-fetched with each invocation of {@link #stream()}
+ * and {@link #iterator()}.</p>
  */
 @FunctionalInterface
 public interface Streamable<T> extends Iterable<T> {
 
     /**
      * Returns a sequential stream of results, which follow the order of the sort criteria if specified.
-     * This method does not cause data to be re-fetched from the database when used with {@link Pageable pagination}.
      *
      * @return a stream of results.
      */
