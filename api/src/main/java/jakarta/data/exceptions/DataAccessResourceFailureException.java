@@ -18,7 +18,7 @@
 package jakarta.data.exceptions;
 
 /**
- * Exception thrown when the underlying resource fails to connect.
+ * Indicates a connection-related failure that might be intermittent in nature. The operation might succeed if reattempted by the application. If the data access resource is enlisted in a transaction, the application must ensure that the transaction is rolled back before retrying the operation under a new transaction.
  */
 public class DataAccessResourceFailureException extends DataException {
 
