@@ -15,38 +15,34 @@
  *
  *  SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data;
+package jakarta.data.exceptions;
 
-/**
- * Data access exception thrown when a result was expected to have at least one row (or element)
- * but zero rows (or elements) were actually returned.
- */
-public class EmptyResultException extends DataException {
+public class NonUniqueResultException extends DataException {
 
     /**
-     * Constructs a new EmptyResultException exception with the specified detail message.
+     * Constructs a new NonUniqueResultException exception with the specified detail message.
      *
      * @param message the detail message.
      */
-    public EmptyResultException(String message) {
+    public NonUniqueResultException(String message) {
         super(message);
     }
 
     /**
-     * Constructs a new EmptyResultException exception with the specified detail message.
+     * Constructs a new NonUniqueResultException exception with the specified detail message.
      *
      * @param message the detail message.
      */
-    public EmptyResultException(String message, Throwable cause) {
+    public NonUniqueResultException(String message, Throwable cause) {
         super(message, cause);
     }
 
     /**
-     * Constructs a new EmptyResultException exception with the specified cause.
+     * Constructs a new NonUniqueResultException exception with the specified cause.
      *
      * @param cause the cause.
      */
-    public EmptyResultException(Throwable cause) {
+    public NonUniqueResultException(Throwable cause) {
         super(cause);
     }
 }

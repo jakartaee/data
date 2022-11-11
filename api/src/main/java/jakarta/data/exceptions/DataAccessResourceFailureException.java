@@ -15,7 +15,7 @@
  *
  *  SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data;
+package jakarta.data.exceptions;
 
 /**
  * Exception thrown when the underlying resource fails to connect.

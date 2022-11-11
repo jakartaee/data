@@ -16,7 +16,7 @@
  *  SPDX-License-Identifier: Apache-2.0
  */
 
-package jakarta.data;
+package jakarta.data.exceptions;
 
 /**
  * Thrown by the data provider when a problem occurs.

@@ -15,7 +15,7 @@
  *
  *  SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data;
+package jakarta.data.exceptions;
 
 /**
  * A mapping exception is one thrown if an issue exists at runtime or build time in the data mapping.
