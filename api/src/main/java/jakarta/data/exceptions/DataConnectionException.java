@@ -18,34 +18,37 @@
 package jakarta.data.exceptions;
 
 /**
- * Indicates a connection-related failure that might be intermittent in nature. The operation might succeed if reattempted by the application. If the data access resource is enlisted in a transaction, the application must ensure that the transaction is rolled back before retrying the operation under a new transaction.
+ * Indicates a connection-related failure that might be intermittent in nature.
+ * The operation might succeed if reattempted by the application.
+ * If the data access resource is enlisted in a transaction,
+ * the application must ensure that the transaction is rolled back before retrying the operation under a new transaction.
  */
-public class DataAccessResourceFailureException extends DataException {
+public class DataConnectionException extends DataException {
 
     /**
-     * Constructs a new DataAccessResourceFailureException exception with the specified detail message.
+     * Constructs a new DataConnectionException exception with the specified detail message.
      *
      * @param message the detail message.
      */
-    public DataAccessResourceFailureException(String message) {
+    public DataConnectionException(String message) {
         super(message);
     }
 
     /**
-     * Constructs a new DataAccessResourceFailureException exception with the specified detail message.
+     * Constructs a new DataConnectionException exception with the specified detail message.
      *
      * @param message the detail message.
      */
-    public DataAccessResourceFailureException(String message, Throwable cause) {
+    public DataConnectionException(String message, Throwable cause) {
         super(message, cause);
     }
 
     /**
-     * Constructs a new DataAccessResourceFailureException exception with the specified cause.
+     * Constructs a new DataConnectionException exception with the specified cause.
      *
      * @param cause the cause.
      */
-    public DataAccessResourceFailureException(Throwable cause) {
+    public DataConnectionException(Throwable cause) {
         super(cause);
     }
 }
