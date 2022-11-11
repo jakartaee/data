@@ -18,26 +18,112 @@
 package jakarta.data.repository;
 
 /**
- * <p>A page of results from a repository query that performs
- * {@link KeysetPageable keyset pagination}.</p>
+ * <p>Keyset pagination is a form of pagination that aims to reduce the
+ * possibility of missed or duplicate results by making the request for
+ * each subsequent page relative to the observed values of entity properties
+ * from the current page. This list of values is referred to as the keyset
+ * and only includes values of entity properties that are in the sort criteria
+ * of the repository method. The combination of sort criteria must uniquely
+ * identify each entity. The keyset values can be from the last entity
+ * (for pagination in a forward direction) or first entity on the page
+ * (if requesting pages in a reverse direction),
+ * or can be any other desired list of values which serve as a new starting
+ * point. Keyset pagination also has the potential to improve performance
+ * by avoiding the fetching and ordering of results from prior pages
+ * because these become non-matching.</p>
  *
- * <p>The concept of {@link Slice} differs from {@link Page} in that slices
- * do not have awareness of a total number of pages or results. This fits well
- * with keyset pagination, which allows entities to be added and removed
- * in between traversal of slices or pages and makes estimates of a total
- * inaccurate.</p>
+ * <p>To use keyset pagination, define a repository method with return value of
+ * {@link KeysetAwareSlice} or {@link KeysetAwarePage} and which accepts a
+ * special parameter (after the normal query parameters) that is a
+ * {@link Pageable}. For example,</p>
+ *
+ * <pre>
+ * &#64;OrderBy("lastName")
+ * &#64;OrderBy("firstName")
+ * &#64;OrderBy("id")
+ * KeysetAwareSlice&lt;Employee&gt; findByHoursWorkedGreaterThan(int hours, Pageable pagination);
+ * </pre>
+ *
+ * <p>You can use a normal {@link Pageable} to request an initial page,</p>
+ *
+ * <pre>
+ * page = employees.findByHoursWorkedGreaterThan(1500, Pageable.ofSize(50));
+ * </pre>
+ *
+ * <p>For subsequent pages, you can request pagination relative to the
+ * end of the current page as follows,</p>
+ *
+ * <pre>
+ * page = employees.findByHoursWorkedGreaterThan(1500, page.nextPageable());
+ * </pre>
+ *
+ * <p>Because the page is keyset aware, the {@link Pageable}
+ * that it returns from the call to {@link KeysetAwareSlice#nextPageable}
+ * above is based upon a keyset from that page to use as a starting point
+ * after which the results for the next page are to be found.</p>
+ *
+ * <p>You can also construct a {@link Pageable} with a {@link Pageable.Cursor Cursor} directly, which
+ * allows you to make it relative to a specific list of values. The number and
+ * order of values must match that of the {@link OrderBy} annotations,
+ * {@link Pageable#sortBy(Sort...)} or {@link Pageable#sortBy(Iterable)} parameters,
+ * or <code>OrderBy</code> name pattern of the repository method.
+ * For example,</p>
+ *
+ * <pre>
+ * Employee emp = ...
+ * Pageable pagination = Pageable.ofSize(50).afterKeyset(emp.lastName, emp.firstName, emp.id);
+ * page = employees.findByHoursWorkedGreaterThan(1500, pagination);
+ * </pre>
+ *
+ * <p>By making the query for the next page relative to observed values,
+ * not a numerical position, keyset pagination is less vulnerable to changes
+ * that are made to data in between page requests. Adding or removing entities
+ * is possible without causing unexpected missed or duplicate results.
+ * Keyset pagination does not prevent misses and duplicates if the entity
+ * properties which are the sort criteria for existing entities are modified
+ * or if an entity is re-added with different sort criteria after having
+ * previously been removed.</p>
+ *
+ * <h2>Keyset Pagination with &#64;Query</h2>
+ *
+ * <p>Keyset pagination involves generating and appending to the query
+ * additional query conditions for the keyset properties. In order for that to
+ * be possible, a user-provided
+ * <a href="https://eclipse-ee4j.github.io/jakartaee-tutorial/#full-query-language-syntax">JPQL</a>
+ * query must end with a
+ * <code>WHERE</code> clause to which additional conditions can be appended.
+ * Enclose the entire conditional expression of the <code>WHERE</code> clause
+ * in parenthesis.
+ * Sort criteria must be specified independently from the user-provided query,
+ * either with the {@link OrderBy} annotation or
+ * {@link Pageable#sortBy(Sort...)} or {@link Pageable#sortBy(Iterable)} parameters.
+ * For example,</p>
+ *
+ * <pre>
+ * &#64;Query("SELECT o FROM Customer o WHERE (o.ordersPlaced &gt;= ?1 OR o.totalSpent &gt;= ?2)")
+ * &#64;OrderBy("zipcode")
+ * &#64;OrderBy("birthYear")
+ * &#64;OrderBy("id")
+ * KeysetAwareSlice&lt;Customer&gt; getTopBuyers(int minOrders, float minSpent, Pageable pagination);
+ * </pre>
+ *
+ * <h2>Page Numbers and Totals</h2>
+ *
+ * <p>Page numbers, total numbers of elements across all pages, and total
+ * count of pages are not accurate when keyset pagination is used and should
+ * not be relied upon.</p>
  *
  * @param <T> the type of elements in this slice 
  */
 public interface KeysetAwareSlice<T> extends Slice<T> {
     /**
-     * Returns a {@link KeysetPageable.Cursor Cursor} for keyset values at the
+     * Returns a {@link Pageable.Cursor Cursor} for keyset values at the
      * specified position.
      *
      * @param index position (0 is first) of a result on the page.
      * @return cursor for keyset values at the specified position.
      */
-    KeysetPageable.Cursor getKeysetCursor(int index);
+    Pageable.Cursor getKeysetCursor(int index);
 
     /**
      * <p>Returns pagination information for requesting the next page
@@ -52,7 +138,7 @@ public interface KeysetAwareSlice<T> extends Slice<T> {
      *         or if it is known that there is not a next page.
      */
     @Override
-    KeysetPageable nextPageable();
+    Pageable nextPageable();
 
     /**
      * <p>Returns pagination information for requesting the previous page
@@ -79,5 +165,5 @@ public interface KeysetAwareSlice<T> extends Slice<T> {
      *         <code>null</code> if the current page is empty
      *         or if it is known that there is not a previous page.
      */
-    KeysetPageable previousPageable();
+    Pageable previousPageable();
 }
