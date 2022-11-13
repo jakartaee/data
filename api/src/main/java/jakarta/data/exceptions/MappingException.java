@@ -15,40 +15,37 @@
  *
  *  SPDX-License-Identifier: Apache-2.0
  */
-
-package jakarta.data;
+package jakarta.data.exceptions;
 
 /**
- * Thrown by the data provider when a problem occurs.
+ * A mapping exception is one thrown if an issue exists at runtime or build time in the data mapping.
  */
-public class DataException extends RuntimeException {
-
+public class MappingException extends DataException {
 
     /**
-     * Constructs a new DataException exception with the specified detail message.
+     * Constructs a new MappingException exception with the specified detail message.
      *
      * @param message the detail message.
      */
-    public DataException(String message) {
+    public MappingException(String message) {
         super(message);
     }
 
     /**
-     * Constructs a new DataException exception with the specified detail message and cause.
+     * Constructs a new MappingException exception with the specified detail message.
      *
      * @param message the detail message.
-     * @param cause   the cause.
      */
-    public DataException(String message, Throwable cause) {
+    public MappingException(String message, Throwable cause) {
         super(message, cause);
     }
 
     /**
-     * Constructs a new DataException exception with the specified cause.
+     * Constructs a new MappingException exception with the specified cause.
      *
      * @param cause the cause.
      */
-    public DataException(Throwable cause) {
+    public MappingException(Throwable cause) {
         super(cause);
     }
 }
