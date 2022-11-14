@@ -113,6 +113,13 @@ package jakarta.data.repository;
  * count of pages are not accurate when keyset pagination is used and should
  * not be relied upon.</p>
  *
+ * <h2>Database Support for Keyset Pagination</h2>
+ *
+ * <p>A repository method with return type of <code>KeysetAwareSlice</code> or
+ * {@link KeysetAwarePage} must raise {@link UnsupportedOperationException}
+ * if the database is incapable of keyset pagination.
+ * </p>
+ *
  * @param <T> the type of elements in this slice 
  */
 public interface KeysetAwareSlice<T> extends Slice<T> {

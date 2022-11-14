@@ -350,7 +350,7 @@ Other types of updates to data, however, will cause duplicate or missed results.
 
 ==== Restrictions on use of Keyset Pagination
 
-* The repository method signature must return `KeysetAwareSlice` or `KeysetAwarePage`.
+* The repository method signature must return `KeysetAwareSlice` or `KeysetAwarePage`. A repository method with return type of `KeysetAwareSlice` or `KeysetAwarePage` must raise `UnsupportedOperationException` if the database is incapable of keyset pagination.
 * The repository method signature must accept a `Pageable` parameter.
 * Sort criteria must be provided and should be minimal.
 * The combination of provided sort criteria must uniquely identify each entity.
