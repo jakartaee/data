@@ -27,6 +27,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class PageableTest {
 
@@ -196,6 +197,30 @@ class PageableTest {
             softly.assertThat(p1.size()).isEqualTo(55);
             softly.assertThat(p2.size()).isEqualTo(55);
         });
+    }
+
+    @Test
+    public void shouldUseAscAlias() {
+        Pageable pageable = Pageable.ofSize(55).asc("name");
+        Assertions.assertNotNull(pageable);
+        assertSoftly(softly -> {
+            softly.assertThat(pageable.sorts()).hasSize(1).contains(Sort.asc("name"));
+            softly.assertThat(pageable.page()).isEqualTo(1L);
+            softly.assertThat(pageable.size()).isEqualTo(55);
+        });
+        assertThrows(NullPointerException.class, () -> Pageable.ofSize(55).asc(null));
+    }
+
+    @Test
+    public void shouldUseDescAlias() {
+        Pageable pageable = Pageable.ofSize(55).desc("name");
+        Assertions.assertNotNull(pageable);
+        assertSoftly(softly -> {
+            softly.assertThat(pageable.sorts()).hasSize(1).contains(Sort.desc("name"));
+            softly.assertThat(pageable.page()).isEqualTo(1L);
+            softly.assertThat(pageable.size()).isEqualTo(55);
+        });
+        assertThrows(NullPointerException.class, () -> Pageable.ofSize(55).asc(null));
     }
 }
 
