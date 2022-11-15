@@ -384,3 +384,15 @@ for (Pageable p = Pageable.ofSize(25).sortBy(Sort.desc("yearBorn"), Sort.asc("na
 }
 ----
 
+== Jakarta Data Provider Model
+
+Jakarta Data providers make themselves available to Jakarta EE products by registering an implementation of `DataProvider` with the `ServiceLoader`. The `DataProvider` interface enables the Jakarta Data provider to identify itself and the database types that it supports, and has methods for requesting the Jakarta Data Provider to create and dispose of repository implementations. The Jakarta Data provider's implementation of the `DataProvider` interface must be packaged within a JAR file, which must also include a file with the following name and location,
+
+[source]
+----
+META-INF/services/jakarta.data.provider.DataProvider
+----
+
+Contents of the file must be one or more lines, each specifying the fully qualified name of a `DataProvider` implementation that is provided within the JAR file.
+
+The Jakarta EE product provider consults the `ServiceLoader` to identify available Jakarta Data providers. The Jakarta EE product provider delegates to a Jakarta Data provider to obtain repository implementations. The Jakarta EE product provider injects repository implementations into Jakarta EE applications for the application to use. Jakarta EE applications do not access the `ServiceLoader` directly to obtain Jakarta Data providers.

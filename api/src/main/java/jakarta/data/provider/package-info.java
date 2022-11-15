@@ -15,10 +15,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-module jakarta.data.api {
-    exports jakarta.data;
-    exports jakarta.data.provider;
-    exports jakarta.data.repository;
-    exports jakarta.data.exceptions;
-    opens jakarta.data.repository;
-}
+
+/**
+ * Provider model for integration with third-party Jakarta Data providers.
+ */
+package jakarta.data.provider;

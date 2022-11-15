@@ -13,12 +13,38 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * SPDX-License-Identifier: Apache-2.0
+ *  SPDX-License-Identifier: Apache-2.0
  */
-module jakarta.data.api {
-    exports jakarta.data;
-    exports jakarta.data.provider;
-    exports jakarta.data.repository;
-    exports jakarta.data.exceptions;
-    opens jakarta.data.repository;
+package jakarta.data.provider;
+
+/**
+ * <p>Types of databases that might be supported by a Jakarta Data provider.
+ * These types are used by the {@link DataProvider#supportedDatabaseTypes()}
+ * method to indicate which types of databases are supported.</p>
+ */
+public enum DatabaseType {
+    /**
+     * NoSQL column database.
+     */
+    COLUMN,
+
+    /**
+     * NoSQL document database.
+     */
+    DOCUMENT,
+
+    /**
+     * NoSQL graph database.
+     */
+    GRAPH,
+
+    /**
+     * NoSQL key-value database.
+     */
+    KEY_VALUE,
+
+    /**
+     * Relational database.
+     */
+    RELATIONAL
 }
