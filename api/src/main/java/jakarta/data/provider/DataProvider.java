@@ -19,8 +19,6 @@ package jakarta.data.provider;
 
 import java.util.Set;
 
-import jakarta.data.exceptions.MappingException;
-
 /**
  * <p>Providers of Jakarta Data register an implementation of this interface
  * with the {@link java.util.ServiceLoader ServiceLoader} to be made available
@@ -44,35 +42,38 @@ import jakarta.data.exceptions.MappingException;
  * of supplying repository implementations of the desired database type.
  * The Jakarta EE product uses the {@link ClassLoader} of the repository
  * interface to search for Jakarta Data providers, requiring the Jakarta Data
- * provider to be accessible to the application (or part of it). It is also
- * permissible for a Jakarta EE product to be or include a provider of
+ * provider to be accessible to the application (or be part of the application).
+ * It is also permissible for a Jakarta EE product to be or include a provider of
  * Jakarta Data, but precedence must be given to Jakart Data providers
- * that are found on the {@code ServiceLoader}.<p>
+ * that are found on the {@code ServiceLoader}.</p>
  */
 public interface DataProvider {
+    // TODO these constants should be moved elsewhere (jakarta.data.config package?) once config is standardized for Jakarta Data
     /**
-     * <p>Provides implementation of the specified repository interface.</p>
-     *
-     * @param <R>                 interface class that defines the data repository.
-     * @param repositoryInterface the repository interface.
-     * @param entityClass         type of entity that the repository persists.
-     * @return repository instance. Never {@code null}.
-     * @throws MappingException for inconsistencies between the repository or
-     *         entity class and the database.
+     * NoSQL column database.
      */
-    <R> R createRepository(Class<R> repositoryInterface, Class<?> entityClass) throws MappingException;
+    static final String COLUMN_DATABASE = "COLUMN";
 
-    // TODO: should we specify that repository methods raise IllegalStateException after they are disposed?
     /**
-     * <p>Invoked by the Jakarta EE product to notify the the Jakarta Data
-     * provider that a previously-created repository instance has reached the
-     * end of its life cycle as a CDI managed bean and should no longer be
-     * usable.</p>
-     *
-     * @param repository repository instance that was previously returned by
-     *        {@link #createRepository(Class, Class) createRepository}.
+     * NoSQL document database.
      */
-    void disposeRepository(Object repository);
+    static final String DOCUMENT_DATABASE = "DOCUMENT";
+
+    /**
+     * NoSQL graph database.
+     */
+    static final String GRAPH_DATABASE = "GRAPH";
+
+    /**
+     * NoSQL key-value database.
+     */
+    static final String KEY_VALUE_DATABASE = "KEY-VALUE";
+
+    /**
+     * Relational database.
+     */
+    static final String RELATIONAL_DATABASE = "RELATIONAL";
+
 
     /**
      * <p>Returns the name of the Jakarta Data provider. This name can be used
@@ -84,13 +85,32 @@ public interface DataProvider {
     String name();
 
     /**
+     * <p>Returns the provider of repository instances for this
+     * Jakarta Data provider.</p>
+     *
+     * @return the provider of repository instances. Never {@code null}.
+     */
+    RepositoryProvider repositoryProvider();
+
+    /**
      * <p>Indicates which types of databases are supported by this provider.
      * The Jakarta EE product provider uses this information when there are
      * multiple Jakarta Data providers to identify which is capable of
      * supplying implementation for a repository interface based on the
      * type of database.</p>
      *
+     * <p>The set of supported database types that is returned by this method
+     * can include custom database types that are defined by the Jakarta Data
+     * provider as well as built-in database type constants:</p>
+     * <ul>
+     * <li>{@link #COLUMN_DATABASE}</li>
+     * <li>{@link #DOCUMENT_DATABASE}</li>
+     * <li>{@link #GRAPH_DATABASE}</li>
+     * <li>{@link #KEY_VALUE_DATABASE}</li>
+     * <li>{@link #RELATIONAL_DATABASE}</li>
+     * </ul>
+     *
      * @return database types that are supported by this provider. Never {@code null}.
      */
-    Set<DatabaseType> supportedDatabaseTypes();
+    Set<String> supportedDatabaseTypes();
 }
