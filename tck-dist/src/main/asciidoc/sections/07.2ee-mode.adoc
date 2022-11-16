@@ -1,0 +1,129 @@
+:starterLoc: ../../starter
+
+=== EE Mode
+
+==== Test Client Dependencies
+
+The entry point to running the TCK will be on the client-side using {TCKTestPlatform}. 
+The Test Client will need to be configured with the dependencies necessary to run the TCK.
+Some of these dependencies will depend on the application server you are using, and 
+comments have been added to this sample describing the customization necessary.
+
+Example ee-pom.xml:
+
+[source, xml]
+----
+include::{starterLoc}/ee-pom.xml[tag=testClientDep]
+----
+
+Each of these Arquillian tests run within the runtime container, with the help of an Arquillian adapter for that runtime implementation (mentioned as a prerequisite).
+
+==== Test Server Dependencies
+
+If the Test Server is running on a separate JVM (recommended), then the Test Server will also need access to JUnit5 and Signature Test Plugin libraries.
+The Test Server dependencies can be copied over during the build phase.
+
+Example ee-pom.xml:
+
+[source, xml]
+----
+include::{starterLoc}/ee-pom.xml[tag=testServerDep]
+----
+
+Using the maven command:
+
+[source, sh]
+----
+$ mvn dependency:copy
+----
+
+==== Configure {TCKTestPlatform}
+
+{TCKTestPlatform} needs to be configured to know which packages contain tests to run.
+This test discovery is done automatically by configuring a `dependenciesToScan` element.
+
+In order for your maven project to execute these tests the surefire plugin needs to be configured.
+
+Example ee-pom.xml:
+
+[source, xml]
+----
+include::{starterLoc}/ee-pom.xml[tags=configJunit5;!arquillian;!logging;!displayName]
+----
+
+The {APILongName} TCK also includes an extension to {TCKTestPlatform} which will automatically modify the test class with the platform it runs on, and test methods with their Assertion IDs if they exist.
+To enable this extension include the following configuration to your surefire plugin:
+
+[source, xml]
+----
+include::{starterLoc}/ee-pom.xml[tags=displayName]
+----
+
+==== Configure Arquillian
+
+Application Servers that implement the Arquillian SPI use a configuration file to define properties, such as hostname, port, username, password, etc.
+These properties will allow Arquillian to connect to the application server, install applications, and get test responses.
+An example Arquillian configuration file has been provided in the `starter/` directory.
+
+It is possible to configure the surefire plugin to past variables to the Arquillian container:
+
+[source, xml]
+----
+include::{starterLoc}/ee-pom.xml[tags=arquillian]
+----
+
+==== Configure Jakarta EE Platform Server
+
+The {APILongName} TCK requires that your Jakarta EE Platform Server has a valid implementation of the {APILongName} API.
+
+The TCK also requires external libraries at runtime that also need to be available on the Application Server's class path.
+
+- org.junit.jupiter:junit-jupiter - For test assertions
+- org.netbeans.tools:sigtest-maven-plugin - For signature testing
+
+Refer back to <<Test Server Dependencies>> for information on how to make to pull and copy these dependencies.
+
+==== Configure Client and Server Logging
+
+The {APILongName} TCK uses `java.util.logging` for logging debug messages, and to output test results in some cases.
+Registered loggers exist both on the Test Client and Test Server meaning you will need to configure both sides to enable logging.
+This is done by pointing the JVM to the logging configuration file using the property.
+An example logging configuration file has been provided under the `/starter` directory. 
+
+To enable logging for the Client side of tests, add a system property to the surefire plugin:
+
+Example ee-pom.xml:
+
+[source, xml]
+----
+include::{starterLoc}/ee-pom.xml[tag=logging]
+----
+
+To enable logging for the Server side of tests, set the same system property on the JVM running your application server.
+
+==== Advanced Arquillian Configuration
+
+Some application servers may have custom deployment descriptors that they would like to include 
+as part of the applications that are being deployed to their server. 
+The custom deployment descriptors can be included in a programmatic way using ShrinkWrap and the Arquillian SPI.
+
+Example ApplicationArchiveProcessor:
+
+[source, java]
+----
+include::{starterLoc}/src/main/java/ee/jakarta/tck/data/example/extension/MyApplicationArchiveProcessor.java[tags=applicationProcessor]
+----
+
+Example LoadableExtension:
+
+[source, java]
+----
+include::{starterLoc}/src/main/java/ee/jakarta/tck/data/example/extension/MyLoadableExtension.java[tags=loadableExtension]
+----
+
+Example META-INF/services/org.jboss.arquillian.core.spi.LoadableExtension:
+
+[source, txt]
+----
+include::{starterLoc}/src/main/resources/META-INF/services/org.jboss.arquillian.core.spi.LoadableExtension[]
+----

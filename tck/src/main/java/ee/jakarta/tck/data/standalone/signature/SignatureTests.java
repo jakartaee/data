@@ -22,7 +22,6 @@ import java.util.logging.Logger;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.junit.jupiter.api.Test;
 
 import ee.jakarta.tck.data.framework.junit.anno.Assertion;
 import ee.jakarta.tck.data.framework.junit.anno.Signature;
@@ -46,7 +45,6 @@ public class SignatureTests {
     @Inject
     SignatureTestBean testBean;
 
-    @Test
     @Assertion(id = "SIGNATURES", strategy = "Uses the sigtest-maven-plugin to execute signature tests on a Standalone JVM or on a Jakarta EE Server")
     public void testSignaturesStandalone() throws Exception {
 

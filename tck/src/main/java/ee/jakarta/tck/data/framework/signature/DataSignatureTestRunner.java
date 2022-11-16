@@ -68,7 +68,6 @@ public class DataSignatureTestRunner extends SigTestEE {
         return new String[] { "jakarta.data", "jakarta.data.repository" };
     }
 
-
     /**
      * Returns the classpath for the packages we are interested in.
      * @return the classpath as a colon (:) delimited string

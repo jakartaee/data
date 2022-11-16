@@ -1,0 +1,51 @@
+= Jakarta Data TCK Reference Guide
+:author: Kyle Aure
+:email: NONE
+:revnumber: 1.0
+:toc:
+:sectnums:
+
+:APIShortName: Data
+:APILongName: Jakarta Data
+:APIVersion: 1.0.0
+
+:APISpecSite: https://jakarta.ee/specifications/data/
+:APIEclipseSite: https://projects.eclipse.org/projects/ee4j.data
+:APIGitSite: https://github.com/jakartaee/data
+
+:TCKTestPlatform: JUnit5
+:SigPluginGAV: org.netbeans.tools:sigtest-maven-plugin:1.6
+
+:JavaVersion1: 11
+:JavaVersion2: 17
+
+:TCKProcess: 1.3
+:TCKProcessDoc: https://jakarta.ee/committees/specification/tckprocess
+
+include::sections/01preface.adoc[]
+
+include::sections/02changes.adoc[]
+
+include::sections/03compatibility.adoc[]
+
+include::sections/04prereq.adoc[]
+
+include::sections/05inventory.adoc[]
+
+include::sections/06requirements.adoc[]
+
+include::sections/07create-runner.adoc[]
+
+include::sections/08example-runner.adoc[]
+
+include::sections/09running.adoc[]
+
+include::sections/10signature.adoc[]
+
+include::sections/11challenge.adoc[]
+
+include::sections/12certification.adoc[]
+
+include::sections/13rules.adoc[]
+
+include::sections/14links.adoc[]

@@ -1,0 +1,10 @@
+== TCK Test Requirements
+
+There is flexibility regarding how a user could use Maven to configure a TCK execution.
+Therefore, we make a separate, clear note here of the required number of tests needed to be passed in order to claim compliance via this TCK.
+
+=== Expected Output
+
+For the {TCKTestPlatform} runtime tests of the TCK: 
+
+include::generated/runtime-tests.adoc[]

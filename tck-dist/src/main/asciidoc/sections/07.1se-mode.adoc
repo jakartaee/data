@@ -1,0 +1,51 @@
+:starterLoc: ../../starter
+
+=== SE Mode
+
+==== Standalone Dependencies
+
+The runtime will need to be configured with the dependencies necessary to run the TCK.
+
+Example se-pom.xml:
+
+[source, xml]
+----
+include::{starterLoc}/se-pom.xml[tag=runtimeDep]
+----
+
+==== Configure {TCKTestPlatform}
+
+{TCKTestPlatform} needs to be configured to know which packages contain tests to run.
+This test discovery is done automatically by configuring a `dependenciesToScan` element.
+
+In order for your maven project to execute these tests the surefire plugin needs to be configured.
+
+Example se-pom.xml:
+
+[source, xml]
+----
+include::{starterLoc}/se-pom.xml[tags=configJunit5;!logging;!displayName]
+----
+
+The {APILongName} TCK also includes an extension to {TCKTestPlatform} which will automatically modify the test class with the platform it runs on, and test methods with their Assertion IDs if they exist.
+To enable this extension include the following configuration to your surefire plugin:
+
+[source, xml]
+----
+include::{starterLoc}/se-pom.xml[tags=displayName]
+----
+
+==== Standalone Logging
+
+The {APILongName} TCK uses `java.util.logging` for logging debug messages, and to output test results in some cases.
+This is done by pointing the JVM to the logging configuration file using the property.
+An example logging configuration file has been provided under the `/starter` directory. 
+
+To enable logging for the Client side of tests, add a system property to the surefire plugin:
+
+Example se-pom.xml:
+
+[source, xml]
+----
+include::{starterLoc}/se-pom.xml[tags=logging;!ignore]
+----

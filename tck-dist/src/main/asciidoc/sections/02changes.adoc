@@ -1,0 +1,3 @@
+== Major TCK Changes
+
+This is the first release of the {APILongName} TCK.

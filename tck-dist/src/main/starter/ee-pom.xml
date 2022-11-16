@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ ~ Copyright (c) 2022 Contributors to the Eclipse Foundation
+ ~
+ ~ This program and the accompanying materials are made available under the
+ ~ terms of the Eclipse Public License v. 2.0, which is available at
+ ~ http://www.eclipse.org/legal/epl-2.0.
+ ~
+ ~ This Source Code may also be made available under the following Secondary
+ ~ Licenses when the conditions for such availability set forth in the
+ ~ Eclipse Public License v. 2.0 are satisfied: GNU General Public License,
+ ~ version 2 with the GNU Classpath Exception, which is available at
+ ~ https://www.gnu.org/software/classpath/license.html.
+ ~
+ ~ SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
+  -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+ <modelVersion>4.0.0</modelVersion>
+
+ <groupId>[YOUR_GROUP_ID]</groupId>
+ <artifactId>data-tck-runner</artifactId>
+ <version>1.0-SNAPSHOT</version>
+ <name>Jakarta Data TCK Runner for [YOUR_IMPL]</name>
+
+ <properties>
+  <!-- General properties -->
+  <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+  <!-- TODO might need to update to 17 for Jakarta 11 -->
+  <maven.compiler.source>11</maven.compiler.source>
+  <maven.compiler.target>11</maven.compiler.target>
+
+  <!-- Dependency and Plugin Versions -->
+  <jakarta.data.version>1.0.0-SNAPSHOT</jakarta.data.version>
+
+  <arquillian.version>1.7.0.Alpha13</arquillian.version>
+  <junit.version>5.9.0</junit.version>
+  <sigtest.version>1.6</sigtest.version>
+
+  <maven.dep.plugin.version>3.3.0</maven.dep.plugin.version>
+  <maven.comp.plugin.version>3.10.1</maven.comp.plugin.version>
+  <maven.surefire.plugin.version>2.22.2</maven.surefire.plugin.version>
+
+  <!-- Location to copy runtime dependencies to application server -->
+  <application.server.lib>[path/to/appserver/lib]</application.server.lib>
+
+  <!-- Pointer to logging.properties file that has the java.util.logging 
+   configuration -->
+  <logging.config>${project.basedir}/logging.properties</logging.config>
+
+  <!-- Output directory -->
+  <targetDirectory>${project.basedir}/target</targetDirectory>
+ </properties>
+
+ <repositories>
+  <!-- TODO add private repo if your implementation is not public -->
+  <!-- TODO add staging repo if you want to use SNAPSHOT versions of the 
+   API and TCK -->
+ </repositories>
+
+ <!-- tag::testClientDep[] -->
+ <!-- The Arquillian and Junit5 test frameworks -->
+ <dependencyManagement>
+  <dependencies>
+   <dependency>
+    <groupId>org.jboss.arquillian</groupId>
+    <artifactId>arquillian-bom</artifactId>
+    <version>${arquillian.version}</version>
+    <type>pom</type>
+    <scope>import</scope>
+   </dependency>
+   <dependency>
+    <groupId>org.junit</groupId>
+    <artifactId>junit-bom</artifactId>
+    <version>${junit.version}</version>
+    <type>pom</type>
+    <scope>import</scope>
+   </dependency>
+  </dependencies>
+ </dependencyManagement>
+
+ <!-- Client Dependencies -->
+ <dependencies>
+  <!-- The TCK -->
+  <dependency>
+   <groupId>jakarta-data</groupId>
+   <artifactId>jakarta-data-tck</artifactId>
+   <version>${jakarta.data.tck.version}</version>
+  </dependency>
+  <!-- The API -->
+  <dependency>
+   <groupId>jakarta-data</groupId>
+   <artifactId>jakarta-data-api</artifactId>
+   <version>${jakarta.data.version}</version>
+  </dependency>
+  <!-- Arquillian Implementation for JUnit5 -->
+  <dependency>
+   <groupId>org.jboss.arquillian.junit5</groupId>
+   <artifactId>arquillian-junit5-container</artifactId>
+  </dependency>
+  <!-- TODO add Arquillian SPI impl for your Jakarta EE Platform Server -->
+  <!-- Junit5 -->
+  <dependency>
+   <groupId>org.junit.jupiter</groupId>
+   <artifactId>junit-jupiter</artifactId>
+  </dependency>
+  <!-- Signature Test Plugin -->
+  <dependency>
+   <groupId>org.netbeans.tools</groupId>
+   <artifactId>sigtest-maven-plugin</artifactId>
+   <version>${sigtest.version}</version>
+  </dependency>
+  <!-- APIs provided by your Jakarta EE Platform server -->
+  <dependency>
+   <groupId>jakarta.servlet</groupId>
+   <artifactId>jakarta.servlet-api</artifactId>
+   <version>6.0</version>
+  </dependency>
+  <dependency>
+   <groupId>jakarta.enterprise</groupId>
+   <artifactId>jakarta.enterprise.cdi-api</artifactId>
+   <version>4.0</version>
+  </dependency>
+ </dependencies>
+ <!-- end::testClientDep[] -->
+
+ <build>
+  <directory>${targetDirectory}</directory>
+  <defaultGoal>clean test</defaultGoal>
+  <plugins>
+   <!-- tag::testServerDep[] -->
+   <!-- Test Server Dependencies -->
+   <plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-dependency-plugin</artifactId>
+    <version>${maven.dep.plugin.version}</version>
+    <configuration>
+     <artifactItems>
+      <artifactItem>
+       <groupId>org.junit.jupiter</groupId>
+       <artifactId>junit-jupiter</artifactId>
+       <version>${junit.version}</version>
+      </artifactItem>
+      <artifactItem>
+       <groupId>org.netbeans.tools</groupId>
+       <artifactId>sigtest-maven-plugin</artifactId>
+       <version>${sigtest.version}</version>
+      </artifactItem>
+     </artifactItems>
+     <outputDirectory>${application.server.lib}</outputDirectory>
+    </configuration>
+   </plugin>
+   <!-- end::testServerDep[] -->
+   <!-- Compile plugin for any supplemental class files -->
+   <plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-compiler-plugin</artifactId>
+    <version>${maven.comp.plugin.version}</version>
+    <configuration>
+     <source>${maven.compiler.source}</source>
+     <target>${maven.compiler.target}</target>
+    </configuration>
+   </plugin>
+   <!-- TODO: you can include a plugin to start your application server here -->
+   <!-- tag::configJunit5[] -->
+   <!-- Surefire plugin - Entrypoint for Junit5 -->
+   <plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-surefire-plugin</artifactId>
+    <version>${maven.surefire.plugin.version}</version>
+    <configuration>
+     <dependenciesToScan>
+      <dependency>jakarta.data:jakarta-data-tck</dependency>
+     </dependenciesToScan>
+     <!-- tag::displayName[] -->
+     <statelessTestsetReporter
+      implementation="org.apache.maven.plugin.surefire.extensions.junit5.JUnit5Xml30StatelessReporter">
+      <usePhrasedTestCaseMethodName>true</usePhrasedTestCaseMethodName>
+      <usePhrasedTestCaseClassName>true</usePhrasedTestCaseClassName>
+     </statelessTestsetReporter>
+     <!-- end::displayName[] -->
+     <!-- tag::logging[] -->
+     <systemProperties>
+      <property>
+       <name>java.util.logging.config.file</name>
+       <value>${logging.config}</value>
+      </property>
+     </systemProperties>
+     <!-- end::logging[] -->
+     <!-- tag::arquillian[] -->
+     <systemPropertyVariables>
+      <!-- Properties shared with Arquillian -->
+      <tck_server>[TODO]</tck_server>
+      <tck_hostname>[TODO]</tck_hostname>
+      <tck_username>[TODO]</tck_username>
+      <tck_password>[TODO]</tck_password>
+      <tck_port>[TODO]</tck_port>
+      <tck_port>[TODO]</tck_port>
+     </systemPropertyVariables>
+     <!-- end::arquillian[] -->
+     <!-- Tags to include i.e. standalone/core/web/full -->
+     <groups>[TODO]</groups>
+     <!-- Tags to ignore i.e. signature -->
+     <excludedGroups>[TODO]</excludedGroups>
+     <!-- If running back-to-back tests at different levels use this to distinguish 
+      the results -->
+     <reportNameSuffix>[OPTIONAL]</reportNameSuffix>
+     <!-- Ensure surfire plugin looks under src/main/java instead of src/test/java -->
+     <testSourceDirectory>
+      ${basedir}${file.separarator}src${file.separarator}main${file.separarator}java${file.separarator}
+     </testSourceDirectory>
+    </configuration>
+   </plugin>
+   <!-- end::configJunit5[] -->
+  </plugins>
+ </build>
+</project>

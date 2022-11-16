@@ -1,0 +1,20 @@
+== Prerequisites
+
+=== Software To Install
+
+1. **Java/JDK** - Install the JDK you intend to use for this certification request (Java SE Version {JavaVersion1} or Version {JavaVersion2}).
+2. **Maven** - Install Apache Maven 3.6.0 or higher.
+3. **Jakarta EE Platform** (optional) - Jakarta EE Application Server or Container [Glassfish, Open Liberty, JBoss, WebLogic, etc.]
+
+=== Testing Framework
+
+To better understand how this TCK works, knowing what testing frameworks are being utilized is helpful.
+Knowledge of how these frameworks operate and interact will help during the project setup.
+
+1. **Arquillian** - Version 1.7.0.Alpha13 or later - The {APILongName} TCK can run in EE Mode and it uses Arquillian to execute tests within an Arquillian "container" for certifying against an EE Platform. You must configure an https://arquillian.org/guides/developing_a_container_adapter/[Arquillian adapter] for your target runtime.
+2. **JUnit5** - Version 5.9.0 or later - The {APILongName} TCK uses JUnit5 as the entry-point for tests and deployments using Arquillian.
+3. **Signature Test Plugin** - Version 1.6 exactly -  The {APILongName} TCK uses the Signature Test Plugin to verify API signatures used by an implementation and those release by the specification match. 
++
+No action is needed here, but we note that the signature files were built and should be validated with the plugin with group:artifact:version coordinates: **{SigPluginGAV}**, as used by the sample runner included in the TCK zip. 
+This is a more specific direction than in earlier releases of the platform TCK, in which it was left more open for the user to use a compatible tool.
+Since there are small differences in the various signature test tools an exact version is required.
