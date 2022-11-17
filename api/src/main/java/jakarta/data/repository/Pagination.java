@@ -148,12 +148,12 @@ final class Pagination implements Pageable {
     }
 
     @Override
-    public Pageable newPage(long pageNumber) {
+    public Pageable page(long pageNumber) {
         return new Pagination(pageNumber, size, sorts, mode, cursor);
     }
 
     @Override
-    public Pageable newSize(int maxPageSize) {
+    public Pageable size(int maxPageSize) {
         return new Pagination(page, maxPageSize, sorts, mode, cursor);
     }
 

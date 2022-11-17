@@ -66,7 +66,7 @@ class KeysetPageableTest {
     @Test
     @DisplayName("Should include keyset values in previous Pageable")
     void shouldCreatePageableBeforeKeyset() {
-        Pageable pageable = Pageable.ofSize(30).sortBy(Sort.desc("yearBorn"), Sort.asc("ssn")).beforeKeyset(1991, "123-45-6789").newPage(10);
+        Pageable pageable = Pageable.ofSize(30).sortBy(Sort.desc("yearBorn"), Sort.asc("ssn")).beforeKeyset(1991, "123-45-6789").page(10);
 
         assertSoftly(softly -> {
             softly.assertThat(pageable.size()).isEqualTo(30);
@@ -144,7 +144,7 @@ class KeysetPageableTest {
         Pageable pageable25p1s0a1 = Pageable.ofSize(25).afterKeyset("keyval1", '2', 3);
         Pageable pageable25p1s0b1 = Pageable.ofSize(25).beforeKeyset("keyval1", '2', 3);
         Pageable pageable25p1s0a1match = Pageable.ofSize(25).afterKeysetCursor(new KeysetCursor("keyval1", '2', 3));
-        Pageable pageable25p2s0a1 = Pageable.ofPage(2).newSize(25).afterKeysetCursor(new KeysetCursor("keyval1", '2', 3));
+        Pageable pageable25p2s0a1 = Pageable.ofPage(2).size(25).afterKeysetCursor(new KeysetCursor("keyval1", '2', 3));
         Pageable pageable25p1s1a1 = Pageable.ofSize(25).sortBy(Sort.desc("d"), Sort.asc("a"), Sort.asc("id")).afterKeyset("keyval1", '2', 3);
         Pageable pageable25p1s2a1 = Pageable.ofSize(25).sortBy(Sort.desc("d"), Sort.asc("a"), Sort.desc("id")).afterKeyset("keyval1", '2', 3);
         Pageable pageable25p1s0a2 = Pageable.ofSize(25).afterKeyset("keyval2", '2', 3);
@@ -203,7 +203,7 @@ class KeysetPageableTest {
     @DisplayName("Keyset should be replaced on new instance of Pageable")
     public void shouldReplaceKeyset() {
         Pageable p1 = Pageable.ofSize(30).sortBy(Sort.asc("lastName"), Sort.asc("firstName"), Sort.asc("id"))
-                                         .afterKeyset("last1", "fname1", 100).newPage(12);
+                                         .afterKeyset("last1", "fname1", 100).page(12);
         Pageable p2 = p1.beforeKeyset("lname2", "fname2", 200);
 
         assertSoftly(softly -> {

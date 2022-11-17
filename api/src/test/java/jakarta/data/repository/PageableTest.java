@@ -33,7 +33,7 @@ class PageableTest {
     @Test
     @DisplayName("Should correctly paginate")
     void shouldCreatePageable() {
-        Pageable pageable = Pageable.ofPage(2).newSize(6);
+        Pageable pageable = Pageable.ofPage(2).size(6);
 
         assertSoftly(softly -> {
             softly.assertThat(pageable.page()).isEqualTo(2L);
@@ -55,7 +55,7 @@ class PageableTest {
     @Test
     @DisplayName("Should navigate next")
     void shouldNext() {
-        Pageable pageable = Pageable.ofSize(1).newPage(2);
+        Pageable pageable = Pageable.ofSize(1).page(2);
         Pageable next = pageable.next();
 
         assertSoftly(softly -> {
@@ -95,8 +95,8 @@ class PageableTest {
         Pageable p1 = Pageable.ofPage(1);
         assertThatIllegalArgumentException().isThrownBy(() -> Pageable.ofPage(0));
         assertThatIllegalArgumentException().isThrownBy(() -> Pageable.ofPage(-1));
-        assertThatIllegalArgumentException().isThrownBy(() -> p1.newSize(-1));
-        assertThatIllegalArgumentException().isThrownBy(() -> p1.newSize(0));
+        assertThatIllegalArgumentException().isThrownBy(() -> p1.size(-1));
+        assertThatIllegalArgumentException().isThrownBy(() -> p1.size(0));
         assertThatIllegalArgumentException().isThrownBy(() -> Pageable.ofSize(0));
         assertThatIllegalArgumentException().isThrownBy(() -> Pageable.ofSize(-1));
     }
@@ -155,8 +155,8 @@ class PageableTest {
     @Test
     @DisplayName("Page number should be replaced on new instance of Pageable")
     public void shouldReplacePage() {
-        Pageable p6 = Pageable.ofSize(75).newPage(6).sortBy(Sort.desc("price"));
-        Pageable p7 = p6.newPage(7);
+        Pageable p6 = Pageable.ofSize(75).page(6).sortBy(Sort.desc("price"));
+        Pageable p7 = p6.page(7);
 
         assertSoftly(softly -> {
             softly.assertThat(p7.page()).isEqualTo(7L);
@@ -171,8 +171,8 @@ class PageableTest {
     @Test
     @DisplayName("Size should be replaced on new instance of Pageable")
     public void shouldReplaceSize() {
-        Pageable s90 = Pageable.ofPage(4).newSize(90);
-        Pageable s80 = s90.newSize(80);
+        Pageable s90 = Pageable.ofPage(4).size(90);
+        Pageable s80 = s90.size(80);
 
         assertSoftly(softly -> {
             softly.assertThat(s80.size()).isEqualTo(80);
