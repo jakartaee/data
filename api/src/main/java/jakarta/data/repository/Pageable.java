@@ -199,7 +199,7 @@ public interface Pageable {
      * @param pageNumber The page number
      * @return a new instance of <code>Pageable</code>. This method never returns <code>null</code>.
      */
-    Pageable newPage(long pageNumber);
+    Pageable page(long pageNumber);
 
     /**
      * <p>Creates a new <code>Pageable</code> instance representing the same
@@ -208,7 +208,7 @@ public interface Pageable {
      * @param maxPageSize the number of query results in a full page.
      * @return a new instance of <code>Pageable</code>. This method never returns <code>null</code>.
      */
-    Pageable newSize(int maxPageSize);
+    Pageable size(int maxPageSize);
 
     /**
      * <p>Creates a new <code>Pageable</code> instance representing the same
