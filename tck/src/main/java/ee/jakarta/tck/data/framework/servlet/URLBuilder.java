@@ -19,8 +19,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -33,14 +32,16 @@ public class URLBuilder {
     
     private static final Logger log = Logger.getLogger(URLBuilder.class.getCanonicalName());
 
-    private URL baseURL;
-    private List<String> paths;
-    private Map<String, String> queries;
+    private final URL baseURL;
+    
+    //Use list/map that maintains insertion order
+    private final ArrayList<String> paths;
+    private final LinkedHashMap<String, String> queries;
 
     /*
      * Private constructor - builder class
      */
-    private URLBuilder(URL baseURL, List<String> paths, Map<String, String> queries) {
+    private URLBuilder(URL baseURL, ArrayList<String> paths, LinkedHashMap<String, String> queries) {
         this.baseURL = baseURL;
         this.paths = paths;
         this.queries = queries;
@@ -66,23 +67,22 @@ public class URLBuilder {
      * @return an instance of URLBuilder
      */
     public static URLBuilder fromURL(URL url) {
-        List<String> paths = null;
-        Map<String, String> queries = null;
-
-        String strPaths = url.getPath();
-        if (strPaths != null && strPaths != "") {
-            paths = new ArrayList<>();
-            for (String path : strPaths.split("/")) {
-                paths.add(path);
-            }
+        log.finer("Entering URLBuilder.fromURL(" + url.toString() + ")");
+        
+        ArrayList<String> paths = new ArrayList<>(Arrays.asList(url.getPath().split("/")));
+        LinkedHashMap<String, String> queries = new LinkedHashMap<>();
+        
+        while(paths.remove("")) {
+            //Do nothing
         }
 
         String strQueries = url.getQuery();
-        if (strQueries != null && strQueries != "") {
-            queries = new HashMap<>();
+        if (strQueries != null) {
             for (String query : strQueries.split("&")) {
-                int equalIndex = query.indexOf("=");
-                queries.put(query.substring(0, equalIndex), query.substring(equalIndex, query.length()));
+                String[] keyValue = query.split("=");
+                if(keyValue.length == 2) {
+                    queries.put(keyValue[0], keyValue[1]);
+                }
             }
         }
 
@@ -92,8 +92,10 @@ public class URLBuilder {
         } catch (MalformedURLException e) {
             throw new RuntimeException("Unable to create a baseURL", e);
         }
-
-        return new URLBuilder(baseURL, paths, queries);
+        
+        URLBuilder result = new URLBuilder(baseURL, paths, queries);
+        log.finer("Exiting URLBuilder.fromURL " + result.toString());
+        return result;
     }
 
     /**
@@ -105,15 +107,12 @@ public class URLBuilder {
      * 
      * returns: http://localhost:80/servlet/endpoint1/
      * </pre>
-     * @param path - The path to append
+     * 
+     * @param paths - The paths to append
      * @return This URL builder object
      */
-    public URLBuilder withPath(String path) {
-        if (this.paths == null) {
-            this.paths = new ArrayList<>(Arrays.asList(path));
-        } else {
-            this.paths.add(path);
-        }
+    public URLBuilder withPath(String... paths) {
+        this.paths.addAll(Arrays.asList(paths));
         return this;
     }
 
@@ -132,11 +131,7 @@ public class URLBuilder {
      * @return This URL builder object
      */
     public URLBuilder withQuery(String key, String value) {
-        if (this.queries == null) {
-            this.queries = new HashMap<>(Collections.singletonMap(key, value));
-        } else {
-            this.queries.put(key, value);
-        }
+        this.queries.put(key, value);
         return this;
     }
 
@@ -152,7 +147,7 @@ public class URLBuilder {
         extendedURL = extendQuery(extendedURL, queries);
         extendedURL = extendPath(extendedURL, paths);
         
-        log.info("Built extended URL: " + extendedURL.toString());
+        log.info("Built URL: " + extendedURL.toString());
 
         return extendedURL;
     }
@@ -162,8 +157,7 @@ public class URLBuilder {
             return baseURL;
 
         // Get existing query part
-        boolean existingQuery = baseURL.getQuery() != null;
-        String extendedQuery = existingQuery ? "?" + baseURL.getQuery() : "?";
+        String extendedQuery = baseURL.getQuery() != null ? "?" + baseURL.getQuery() : "?";
 
         // Append additional query parts
         for (Map.Entry<String, String> entry : queries.entrySet()) {
@@ -186,18 +180,19 @@ public class URLBuilder {
         if (paths == null)
             return baseURL;
 
-        // Get existing path part
-        boolean existingPath = baseURL.getPath() != null;
-        String extendedPath = existingPath ? baseURL.getPath() : "";
+        // baseURL could have an existing path, typically "/"
+        String extendedPath = baseURL.getPath().isBlank() ? "/" : baseURL.getPath();
 
         // Append additional path parts
         for (String pathPart : paths) {
-            pathPart = pathPart.replace("/", ""); // Remove existing /
+            pathPart = pathPart.replace("/", ""); // Remove existing / if it exists
             extendedPath += pathPart + "/";
         }
 
         // cleanup trailing symbol(s)
-        extendedPath = extendedPath.substring(0, extendedPath.length() - 1);
+        if(extendedPath.lastIndexOf("/") == extendedPath.length() -1 ) {
+            extendedPath = extendedPath.substring(0, extendedPath.length() - 1);
+        }
 
         // Generate and return new URL
         try {
@@ -206,5 +201,18 @@ public class URLBuilder {
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
+    }
+    
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("URLBuilder: ");
+        builder.append(" baseURL:[" + baseURL.toString() + "]");
+        builder.append(", Paths:" + paths.toString());
+        builder.append(", Queries: {");
+        for(String key : queries.keySet()) {
+            builder.append("[" + key + ", " + queries.get(key) + "]");
+        }
+        builder.append("}");
+        return builder.toString();
     }
 }

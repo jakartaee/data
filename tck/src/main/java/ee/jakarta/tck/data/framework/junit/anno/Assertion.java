@@ -30,5 +30,5 @@ import java.lang.annotation.RetentionPolicy;
 public @interface Assertion {
     String id();
 
-    String strategy();
+    String strategy() default "";
 }
