@@ -51,7 +51,8 @@ import java.lang.annotation.Target;
  * specified in combination with any of:</p>
  * <ul>
  * <li>an <code>OrderBy</code> keyword</li>
- * <li>a <code>Sort</code> parameter</li>
+ * <li>a {@link Sort} parameter</li>
+ * <li>a {@link Pageable} parameter with {@link Pageable#sorts()}</li>
  * <li>a {@link Query} annotation that contains an <code>ORDER BY</code> clause.</li>
  * </ul>
  */

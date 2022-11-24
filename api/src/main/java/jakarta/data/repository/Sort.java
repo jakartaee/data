@@ -47,6 +47,7 @@ import java.util.Objects;
  * <li>an <code>OrderBy</code> keyword</li>
  * <li>an {@link OrderBy} annotation</li>
  * <li>a {@link Query} annotation that contains an <code>ORDER BY</code> clause.</li>
+ * <li>a {@link Pageable} parameter with {@link Pageable#sorts()}</li>
  * </ul>
  */
 public final class Sort {
