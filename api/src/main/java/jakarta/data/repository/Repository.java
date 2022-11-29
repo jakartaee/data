@@ -172,7 +172,7 @@ import java.lang.annotation.Target;
  * <tr style="vertical-align: top"><td><code>False</code></td>
  * <td>boolean</td>
  * <td>Requires that the entity's attribute value has a boolean value of false.</td>
- * <td><code>findByIsCanceledFalseAndDurationLessThan(max)</code></td></tr>
+ * <td><code>findByIsCanceledFalse()</code></td></tr>
  *
  * <tr style="vertical-align: top"><td><code>First</code></td>
  * <td>find...By</td>
@@ -221,8 +221,8 @@ import java.lang.annotation.Target;
  * <tr style="vertical-align: top"><td><code>Null</code></td>
  * <td>nullable types</td>
  * <td>Requires that the entity's attribute has a null value.</td>
- * <td><code>findByEndTimeNullAndStartTimeLessThan(maxStartedAt)</code>
- * <br><code>findByAgeNotNullAndAgeBetween(min, max)</code></td></tr>
+ * <td><code>findByEndTimeNull()</code>
+ * <br><code>findByAgeNotNull()</code></td></tr>
  *
  * <tr style="vertical-align: top"><td><code>Or</code></td>
  * <td>conditions</td>
@@ -247,7 +247,7 @@ import java.lang.annotation.Target;
  * <tr style="vertical-align: top"><td><code>True</code></td>
  * <td>boolean</td>
  * <td>Requires that the entity's attribute value has a boolean value of true.</td>
- * <td><code>findByIsAvailableTrueAndPriceLessThan(max)</code></td></tr>
+ * <td><code>findByIsAvailableTrue()</code></td></tr>
  *
  * </table>
  * Wildcard characters for patterns are determined by the data access provider.
