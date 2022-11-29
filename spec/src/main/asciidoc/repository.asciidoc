@@ -231,11 +231,11 @@ Jakarta Data implementations often support the following list of predicate keywo
 
 |True
 |Finds results where the property has a boolean value of true.
-|findByIsSalariedTrue
+|findBySalariedTrue
 
 |False
 |Finds results where the property has a boolean value of false.
-|findByIsCompletedFalse
+|findByCompletedFalse
 
 |OrderBy
 |Specify a static sorting order followed by the property path and direction of ascending.

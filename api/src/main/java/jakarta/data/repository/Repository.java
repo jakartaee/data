@@ -172,7 +172,7 @@ import java.lang.annotation.Target;
  * <tr style="vertical-align: top"><td><code>False</code></td>
  * <td>boolean</td>
  * <td>Requires that the entity's attribute value has a boolean value of false.</td>
- * <td><code>findByIsCanceledFalse()</code></td></tr>
+ * <td><code>findByCanceledFalse()</code></td></tr>
  *
  * <tr style="vertical-align: top"><td><code>First</code></td>
  * <td>find...By</td>
@@ -247,7 +247,7 @@ import java.lang.annotation.Target;
  * <tr style="vertical-align: top"><td><code>True</code></td>
  * <td>boolean</td>
  * <td>Requires that the entity's attribute value has a boolean value of true.</td>
- * <td><code>findByIsAvailableTrue()</code></td></tr>
+ * <td><code>findByAvailableTrue()</code></td></tr>
  *
  * </table>
  * Wildcard characters for patterns are determined by the data access provider.
