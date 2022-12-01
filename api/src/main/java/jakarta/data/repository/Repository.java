@@ -163,6 +163,12 @@ import java.lang.annotation.Target;
  * <td>Specifies descending sort order for <code>findBy</code> queries</td>
  * <td><code>findByAuthorLastNameOrderByYearPublishedDesc(surname)</code></td></tr>
  *
+ * <tr style="vertical-align: top"><td><code>Empty</code></td>
+ * <td>collections</td>
+ * <td>Requires that the entity's attribute is an empty collection or has a null value.</td>
+ * <td><code>countByPhoneNumbersEmpty()</code>
+ * <br><code>findByInviteesNotEmpty()</code></td></tr>
+ *
  * <tr style="vertical-align: top"><td><code>EndsWith</code></td>
  * <td>strings</td>
  * <td>Requires that the characters at the end of the entity's attribute value

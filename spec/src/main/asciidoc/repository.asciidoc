@@ -201,6 +201,10 @@ Jakarta Data implementations often support the following list of predicate keywo
 |Find results where the property is between the given values
 |findByDateBetween
 
+|Empty
+|Find results where the property is an empty collection or has a null value.
+|deleteByPendingTasksEmpty
+
 |LessThan
 |Find results where the property is less than the given value
 |findByAgeLessThan
