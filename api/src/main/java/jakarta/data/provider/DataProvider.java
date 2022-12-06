@@ -20,9 +20,9 @@ package jakarta.data.provider;
 import java.util.Set;
 
 /**
- * <p>Providers of Jakarta Data register an implementation of this interface
- * with the {@link java.util.ServiceLoader ServiceLoader} to be made available
- * to Jakarta EE product providers.</p>
+ * <p>To enable CDI dependency injection of repositories by Jakarta EE products,
+ * providers of Jakarta Data register an implementation of this interface
+ * with the {@link java.util.ServiceLoader ServiceLoader}.</p>
  *
  * <p>The {@code DataProvider} implementation and related classes are packaged
  * within the Jakarta Data provider's JAR file, which must include a file with
@@ -36,7 +36,8 @@ import java.util.Set;
  *
  * <p>Users of Jakarta EE products do not access the {@code ServiceLoader}
  * directly to interact with Jakarta Data providers.
- * Instead, users inject {@link jakarta.data.repository.Repository repositories}
+ * Instead, users can leverage CDI dependency injection to inject
+ * {@link jakarta.data.repository.Repository repositories}
  * into their applications. The Jakarta EE product uses the
  * {@code ServiceLoader} to locate a provider of Jakarta Data that is capable
  * of supplying repository implementations of the desired database type.
@@ -46,6 +47,10 @@ import java.util.Set;
  * It is also permissible for a Jakarta EE product to be or include a provider of
  * Jakarta Data, but precedence must be given to Jakart Data providers
  * that are found on the {@code ServiceLoader}.</p>
+ *
+ * <p>Some Jakarta Data providers have their own vendor-specific dependency
+ * injection models which are outside of the Jakarta Data specification
+ * and do not involve the provision of a <code>DataProvider</code>.</p>
  */
 public interface DataProvider {
     // TODO these constants should be moved elsewhere (jakarta.data.config package?) once config is standardized for Jakarta Data

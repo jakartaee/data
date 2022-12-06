@@ -17,6 +17,7 @@
  */
 
 /**
- * Provider model for integration with third-party Jakarta Data providers.
+ * Provider model for integration of third-party Jakarta Data providers
+ * with Jakarta Contexts and Dependency Injection (CDI).
  */
 package jakarta.data.provider;
