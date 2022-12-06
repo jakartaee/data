@@ -171,13 +171,13 @@ The following table lists the subject keywords generally supported by Jakarta Da
 |===
 |Keyword |Description
 
-|findBy
+|find...By
 |General query method returning the repository type.
 
 |deleteBy
 |Delete query method returning either no result (void) or the delete count.
 
-|countBy
+|count...By
 |Count projection returning a numeric result.
 
 |existsBy
@@ -241,6 +241,35 @@ Jakarta Data implementations often support the following list of predicate keywo
 |Specify several static sorting orders
 |findByNameOrderByAgeAscNameDescYearAsc
 
+|===
+
+Jakarta Data providers support the following list of aggregate keywords (and `Distinct`) to the extent that the backed data store supports the capability.
+
+|===
+|Keyword |Description | Method signature Sample
+
+|Avg
+|Computes the arithmetic mean of values of a numeric entity attribute
+|findAvgPriceByNameLike(namePattern)
+
+|Count
+|Counts the number of entities or counts the number of times the specified attribute is non-null
+|findCountDistinctAgeByStatus("ENROLLED")
+
+|Distinct
+|findDistinctAgeByLastName(surname)
+
+|Max
+|Finds the highest value of an entity attribute
+|findMaxAgeByYearHiredLessThan(2010)
+
+|Min
+|Finds the lowest value of an entity attribute
+|findMinShippingCostByNameLike(namePattern)
+
+|Sum
+|Finds the sum of values for the specified entity attribute
+|findSumSalaryByHoursWorkedLessThan(500)
 |===
 
 === Special Parameter Handling

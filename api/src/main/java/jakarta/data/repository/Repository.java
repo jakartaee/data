@@ -96,7 +96,7 @@ import java.lang.annotation.Target;
  * <td style="vertical-align: top"><b>Example</b></td>
  * </tr>
  *
- * <tr style="vertical-align: top"><td><code>countBy</code></td>
+ * <tr style="vertical-align: top"><td><code>count...By</code></td>
  * <td>counts the number of entities</td>
  * <td><code>countByAgeGreaterThanEqual(ageLimit)</code></td></tr>
  *
@@ -143,6 +143,13 @@ import java.lang.annotation.Target;
  * <td>Specifies ascending sort order for <code>findBy</code> queries</td>
  * <td><code>findByAgeOrderByFirstNameAsc(age)</code></td></tr>
  *
+ * <tr style="vertical-align: top"><td><code>Avg</code></td>
+ * <td>numeric</td>
+ * <td>Computes the average as the arithmetic mean of entity attribute values,
+ * which must be numeric. The result is a double precision value;
+ * <code>null</code> if there are no values to average.</td>
+ * <td><code>findAvgSalaryByPosition(jobType)</code></td></tr>
+ *
  * <tr style="vertical-align: top"><td><code>Between</code></td>
  * <td>numeric, strings, time</td>
  * <td>Requires that the entity's attribute value be within the range specified by two parameters.
@@ -158,10 +165,21 @@ import java.lang.annotation.Target;
  * <td><code>findByRecipientsContains(email)</code>
  * <br><code>findByDescriptionNotContains("refurbished")</code></td></tr>
  *
+ * <tr style="vertical-align: top"><td><code>Count</code></td>
+ * <td>all attribute types, entity</td>
+ * <td>Counts the number of entities or counts the number of times the specified attribute is non-null.</td>
+ * <td><code>findAvgSalaryAndCountSalaryByPosition(jobType)</code></td></tr>
+ *
  * <tr style="vertical-align: top"><td><code>Desc</code></td>
  * <td>sorting</td>
  * <td>Specifies descending sort order for <code>findBy</code> queries</td>
  * <td><code>findByAuthorLastNameOrderByYearPublishedDesc(surname)</code></td></tr>
+ *
+ * <tr style="vertical-align: top"><td><code>Distinct</code></td>
+ * <td>entity, numeric, strings, time</td>
+ * <td>Specifies that only distinct entities or distinct attribute values be returned.</td>
+ * <td><code>countDistinctPositionBySalaryBetween(min, max)</code>
+ * <br><code>findDistinctByYearPublished(2020)</code></td></tr>
  *
  * <tr style="vertical-align: top"><td><code>EndsWith</code></td>
  * <td>strings</td>
@@ -207,6 +225,18 @@ import java.lang.annotation.Target;
  * <td>Requires that the entity's attribute value match the parameter value, which can be a pattern.</td>
  * <td><code>findByNameLike(namePattern)</code></td></tr>
  *
+ * <tr style="vertical-align: top"><td><code>Max</code></td>
+ * <td>numeric, strings, time</td>
+ * <td>Finds the highest value of an entity attribute.
+ * <code>Null</code> if there are no values from which to select a maximum.</td>
+ * <td><code>findMaxDateHiredByPosition(jobType)</code></td></tr>
+ *
+ * <tr style="vertical-align: top"><td><code>Min</code></td>
+ * <td>numeric, strings, time</td>
+ * <td>Finds the lowest value of an entity attribute.
+ * <code>Null</code> if there are no values from which to select a minimum.</td>
+ * <td><code>findMinPriceByNameLike(namePattern)</code></td></tr>
+ *
  * <tr style="vertical-align: top"><td><code>Not</code></td>
  * <td>condition</td>
  * <td>Negates a condition.</td>
@@ -233,6 +263,16 @@ import java.lang.annotation.Target;
  * match the parameter value, which can be a pattern.</td>
  * <td><code>findByNameStartsWith(firstTwoLetters)</code></td></tr>
  *
+ * <tr style="vertical-align: top"><td><code>Sum</code></td>
+ * <td>numeric</td>
+ * <td>Finds the sum of values for the specified entity attribute.
+ * The sum is computed as a {@link Double}, {@link Long},
+ * {@link java.math.BigDecimal BigDecimal}, or
+ * {@link java.math.BigInteger BigInteger},
+ * depending on the entity attribute type.
+ * <code>Null</code> if there are no values to sum.</td>
+ * <td><code>findSumSalaryByYearHired(2022)</code></td></tr>
+ *
  * </table>
  * Wildcard characters for patterns are determined by the data access provider.
  * For Jakarta Persistence providers, <code>_</code> matches any one character
@@ -247,7 +287,7 @@ import java.lang.annotation.Target;
  * <td style="vertical-align: top"><b>Notes</b></td>
  * </tr>
  *
- * <tr style="vertical-align: top"><td><code>countBy...</code></td>
+ * <tr style="vertical-align: top"><td><code>count...By...</code></td>
  * <td><code>long</code>, <code>Long</code>,
  * <br><code>int</code>, <code>Integer</code>,
  * <br><code>short</code>, <code>Short</code>,
@@ -296,6 +336,23 @@ import java.lang.annotation.Target;
  * <tr style="vertical-align: top"><td><code>find...By...</code></td>
  * <td><code>LinkedHashMap&lt;K, E&gt;</code></td>
  * <td>Ordered map of Id attribute value to entity</td></tr>
+ *
+ * <tr style="vertical-align: top"><td><code>find...By...</code></td>
+ * <td><code>long</code>, <code>Long</code>,
+ * <br><code>int</code>, <code>Integer</code>,
+ * <br><code>short</code>, <code>Short</code>,
+ * <br><code>Number</code></td>
+ * <td>For queries that compute a <code>Sum</code> of an integral type or a <code>Count</code></td></tr>
+ *
+ * <tr style="vertical-align: top"><td><code>find...By...</code></td>
+ * <td><code>double</code>, <code>Double</code>,
+ * <br><code>float</code>, <code>Float</code>,
+ * <br><code>Number</code></td>
+ * <td>For queries that compute a <code>Sum</code> of a floating point type or an average (<code>Avg</code>)</td></tr>
+ *
+ * <tr style="vertical-align: top"><td><code>find...By...</code></td>
+ * <td>{@link java.math.BigDecimal BigDecimal}, {@link java.math.BigInteger BigInteger}</td>
+ * <td>For queries that compute a <code>Sum</code> of the respective type</td></tr>
  *
  * <tr style="vertical-align: top"><td><code>save(E)</code></td>
  * <td><code>E</code>,
