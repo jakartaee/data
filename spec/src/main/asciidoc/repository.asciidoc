@@ -221,6 +221,10 @@ Jakarta Data implementations often support the following list of predicate keywo
 |Finds string values "like" the given expression
 |findByTitleLike
 
+|IgnoreCase
+|Requests that string values be compared independent of case for query conditions and ordering.
+|findByStreetNameIgnoreCaseLike
+
 |In
 |Find results where the property is one of the values that are contained within the given list
 |findByIdIn

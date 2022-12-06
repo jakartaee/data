@@ -29,34 +29,36 @@ class SortTest {
     @Test
     @DisplayName("Should throw NullPointerException when one of the properties are null")
     void shouldReturnErrorWhenPropertyDirectionNull() {
-        assertThatNullPointerException().isThrownBy(() -> Sort.of(null, null));
-        assertThatNullPointerException().isThrownBy(() -> Sort.of(NAME, null));
-        assertThatNullPointerException().isThrownBy(() -> Sort.of(null, Direction.ASC));
+        assertThatNullPointerException().isThrownBy(() -> Sort.of(null, null, false));
+        assertThatNullPointerException().isThrownBy(() -> Sort.of(NAME, null, true));
+        assertThatNullPointerException().isThrownBy(() -> Sort.of(null, Direction.ASC, false));
     }
 
     @Test
-    @DisplayName("Should ascending short when direction is ASC")
+    @DisplayName("Should use ascending sort when direction is ASC")
     void shouldCreateAscendingSort() {
-        Sort order = Sort.of(NAME, Direction.ASC);
+        Sort order = Sort.of(NAME, Direction.ASC, false);
 
         assertSoftly(softly -> {
             softly.assertThat(order).isNotNull();
             softly.assertThat(order.property()).isEqualTo(NAME);
             softly.assertThat(order.isAscending()).isTrue();
             softly.assertThat(order.isDescending()).isFalse();
+            softly.assertThat(order.ignoreCase()).isFalse();
         });
     }
 
     @Test
     @DisplayName("Should descending short when direction is DESC")
     void shouldCreateDescendingSort() {
-        Sort order = Sort.of(NAME, Direction.DESC);
+        Sort order = Sort.of(NAME, Direction.DESC, true);
 
         assertSoftly(softly -> {
             softly.assertThat(order).isNotNull();
             softly.assertThat(order.property()).isEqualTo(NAME);
             softly.assertThat(order.isAscending()).isFalse();
             softly.assertThat(order.isDescending()).isTrue();
+            softly.assertThat(order.ignoreCase()).isTrue();
         });
     }
 
@@ -70,6 +72,21 @@ class SortTest {
             softly.assertThat(order.property()).isEqualTo(NAME);
             softly.assertThat(order.isAscending()).isTrue();
             softly.assertThat(order.isDescending()).isFalse();
+            softly.assertThat(order.ignoreCase()).isFalse();
+        });
+    }
+
+    @Test
+    @DisplayName("Should use ascending sort ignoring case when Sort.ascIgnoreCase method is used")
+    void shouldCreateAscIgnoreCase() {
+        Sort order = Sort.ascIgnoreCase("name");
+
+        assertSoftly(softly -> {
+            softly.assertThat(order).isNotNull();
+            softly.assertThat(order.property()).isEqualTo(NAME);
+            softly.assertThat(order.isAscending()).isTrue();
+            softly.assertThat(order.isDescending()).isFalse();
+            softly.assertThat(order.ignoreCase()).isTrue();
         });
     }
 
@@ -83,6 +100,21 @@ class SortTest {
             softly.assertThat(order.property()).isEqualTo(NAME);
             softly.assertThat(order.isAscending()).isFalse();
             softly.assertThat(order.isDescending()).isTrue();
+            softly.assertThat(order.ignoreCase()).isFalse();
+        });
+    }
+
+    @Test
+    @DisplayName("Should use descending sort ignoring case when Sort.descIgnoreCase method is used")
+    void shouldCreateDescIgnoreCase() {
+        Sort order = Sort.descIgnoreCase(NAME);
+
+        assertSoftly(softly -> {
+            softly.assertThat(order).isNotNull();
+            softly.assertThat(order.property()).isEqualTo(NAME);
+            softly.assertThat(order.isAscending()).isFalse();
+            softly.assertThat(order.isDescending()).isTrue();
+            softly.assertThat(order.ignoreCase()).isTrue();
         });
     }
 }
