@@ -36,7 +36,7 @@ Assertions will occur both on the client and server sides.
 
 === Terminology - "Core Profile" vs "Web Profile" vs "Full Profile"
 
-The Jakarta EE platform defines increasing sets of specifications that create the core, web, and full profiles.
+The Jakarta EE platform defines sets of specifications that create the core, web, and full profiles.
 // TODO update this if Jakarta Data ends up being in something other than core profile
 The {APILongName} TCK can run against each of these profiles since {APILongName} is a Core Profile specification.
 
