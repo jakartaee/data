@@ -14,7 +14,7 @@ Once the TCK is extracted, you'll see the following structure:
 
 [source, txt]
 ----
-concurrency-tck-<version>-dist/
+data-tck-<version>-dist/
   artifacts/
   doc/
   starter/
