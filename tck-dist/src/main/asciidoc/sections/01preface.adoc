@@ -23,7 +23,7 @@ The {APILongName} specification has a subset of tests that can run in "SE mode" 
 
 === Terminology - "Standalone TCK"
 
-The community will sometimes refer to this TCK as the "standalone" {APIShortName} TCK.  This usage comes from the fact that {APILongName} is part of the Jakarta EE Platform, which has a platform-level TCK, which we are distinguishing this "standalone" TCK.  
+The community will sometimes refer to this TCK as the "standalone" {APIShortName} TCK.  This usage comes from the fact that {APILongName} is part of the Jakarta EE Platform, which has a platform-level TCK from which we are distinguishing this "standalone" TCK.  
 
 This terminology is confusing, since the term "standalone" is overloaded to also mean that this TCK can be run in SE Mode which it can.
 A better term would be `Specification TCK`, but that terminology is not yet being used.
