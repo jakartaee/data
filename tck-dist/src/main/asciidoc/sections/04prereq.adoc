@@ -4,7 +4,7 @@
 
 1. **Java/JDK** - Install the JDK you intend to use for this certification request (Java SE Version {JavaVersion1} or Version {JavaVersion2}).
 2. **Maven** - Install Apache Maven 3.6.0 or higher.
-3. **Jakarta EE Platform** (optional) - Jakarta EE Application Server or Container [Glassfish, Open Liberty, JBoss, WebLogic, etc.]
+3. **Jakarta EE Platform** (if running in EE Mode) - Jakarta EE Application Server or Container [Glassfish, Open Liberty, JBoss, WebLogic, etc.]
 
 === Testing Framework
 
