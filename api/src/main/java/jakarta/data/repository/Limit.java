@@ -47,11 +47,11 @@ package jakarta.data.repository;
  * </ul>
  */
 public final class Limit {
-    private static final long DEFAULT_START_AT = 1L;
-    private final long maxResults;
-    private final long startAt;
+    private static final int DEFAULT_START_AT = 1;
+    private final int maxResults;
+    private final int startAt;
 
-    private Limit(long maxResults, long startAt) {
+    private Limit(int maxResults, int startAt) {
         this.maxResults = maxResults;
         this.startAt = startAt;
     }
@@ -62,7 +62,7 @@ public final class Limit {
      *
      * @return maximum number of results for a query.
      */
-    public long maxResults() {
+    public int maxResults() {
         return maxResults;
     }
 
@@ -72,7 +72,7 @@ public final class Limit {
      *
      * @return offset of the first result.
      */
-    public long startAt() {
+    public int startAt() {
         return startAt;
     }
 
@@ -85,7 +85,7 @@ public final class Limit {
      *         or <code>&#64;Query</code> method; will never be {@literal null}.
      * @throws IllegalArgumentException if maxResults is less than 1.
      */
-    public static Limit of(long maxResults) {
+    public static Limit of(int maxResults) {
         if (maxResults < 1)
             throw new IllegalArgumentException("maxResults: " + maxResults);
 
@@ -106,7 +106,7 @@ public final class Limit {
      * @throws IllegalArgumentException if <code>startAt</code> is less than 1
      *         or <code>endAt</code> is less than <code>startAt</code>.
      */
-    public static Limit range(long startAt, long endAt) {
+    public static Limit range(int startAt, int endAt) {
         if (startAt < 1)
             throw new IllegalArgumentException("startAt: " + startAt);
 

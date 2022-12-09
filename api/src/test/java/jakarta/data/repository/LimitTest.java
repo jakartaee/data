@@ -68,8 +68,8 @@ class LimitTest {
 
         assertSoftly(soft -> {
             soft.assertThat(limit).isNotNull();
-            soft.assertThat(limit.maxResults()).isEqualTo(1L);
-            soft.assertThat(limit.startAt()).isEqualTo(1L);
+            soft.assertThat(limit.maxResults()).isEqualTo(1);
+            soft.assertThat(limit.startAt()).isEqualTo(1);
         });
     }
 
@@ -80,8 +80,8 @@ class LimitTest {
 
         assertSoftly(soft -> {
             soft.assertThat(limit).isNotNull();
-            soft.assertThat(limit.maxResults()).isEqualTo(10L);
-            soft.assertThat(limit.startAt()).isEqualTo(1L);
+            soft.assertThat(limit.maxResults()).isEqualTo(10);
+            soft.assertThat(limit.startAt()).isEqualTo(1);
         });
     }
 
@@ -92,8 +92,8 @@ class LimitTest {
 
         assertSoftly(soft -> {
             soft.assertThat(limit).isNotNull();
-            soft.assertThat(limit.maxResults()).isEqualTo(1L);
-            soft.assertThat(limit.startAt()).isEqualTo(1L);
+            soft.assertThat(limit.maxResults()).isEqualTo(1);
+            soft.assertThat(limit.startAt()).isEqualTo(1);
         });
     }
 
@@ -104,8 +104,8 @@ class LimitTest {
 
         assertSoftly(soft -> {
             soft.assertThat(limit).isNotNull();
-            soft.assertThat(limit.maxResults()).isEqualTo(10L);
-            soft.assertThat(limit.startAt()).isEqualTo(2L);
+            soft.assertThat(limit.maxResults()).isEqualTo(10);
+            soft.assertThat(limit.startAt()).isEqualTo(2);
         });
     }
 }
