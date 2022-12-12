@@ -184,7 +184,7 @@ The following table lists the subject keywords generally supported by Jakarta Da
 |Exists projection, returning typically a ```boolean``` result.
 |===
 
-Jakarta Data implementations often support the following list of predicate keywords. It might not work because some keywords listed here might not be supported in a particular store.
+The Jakarta Data specification defines reserved keywords for repository method name-based queries. A core set of reserved keywords, enumerated by the ```DataRepository.supportedKeywords()``` Javadoc, are supported for all databases. Subtypes of ```DataRepository```, such as ```SQLRepository```, add requirements on support for reserved keywords beyond the core set. Use the ```DataRepository.supportedKeywords()``` method to identify the complete list that are supported for the database that your repository connects to. The following table contains descriptions and example method names containing reserved keywords.
 
 |===
 |Keyword |Description | Method signature Sample

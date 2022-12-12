@@ -234,10 +234,18 @@ import java.lang.annotation.Target;
  * <td><code>findByNameStartsWith(firstTwoLetters)</code></td></tr>
  *
  * </table>
- * Wildcard characters for patterns are determined by the data access provider.
+ *
+ * <p>Wildcard characters for patterns are determined by the data access provider.
  * For Jakarta Persistence providers, <code>_</code> matches any one character
  * and <code>%</code> matches 0 or more characters.
- * <p>
+ * </p>
+ *
+ * <p>A core set of reserved keywords are supported by all databases.
+ * {@link DataRepository} subtypes, such as {@link SQLRepository}, mandate
+ * support for reserved keywords beyond that.
+ * Use the {@link DataRepository#supportedKeywords()} method to identify the
+ * list of reserved keywords that are supported for the database that your
+ * repository connects to.</p>
  *
  * <table style="width: 100%">
  * <caption><b>Return Types for Repository Methods</b></caption>
