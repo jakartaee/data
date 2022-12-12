@@ -47,11 +47,11 @@ package jakarta.data.repository;
  * </ul>
  */
 public final class Limit {
-    private static final int DEFAULT_START_AT = 1;
+    private static final long DEFAULT_START_AT = 1L;
     private final int maxResults;
-    private final int startAt;
+    private final long startAt;
 
-    private Limit(int maxResults, int startAt) {
+    private Limit(int maxResults, long startAt) {
         this.maxResults = maxResults;
         this.startAt = startAt;
     }
@@ -72,7 +72,7 @@ public final class Limit {
      *
      * @return offset of the first result.
      */
-    public int startAt() {
+    public long startAt() {
         return startAt;
     }
 
@@ -104,15 +104,20 @@ public final class Limit {
      * @return limit that can be supplied to a <code>find...By</code>
      *         or <code>&#64;Query</code> method; will never be {@literal null}.
      * @throws IllegalArgumentException if <code>startAt</code> is less than 1
-     *         or <code>endAt</code> is less than <code>startAt</code>.
+     *         or <code>endAt</code> is less than <code>startAt</code>,
+     *         or the range from <code>startAt</code> to <code>endAt</code>
+     *         exceeds {@link Integer#MAX_VALUE}.
      */
-    public static Limit range(int startAt, int endAt) {
+    public static Limit range(long startAt, long endAt) {
         if (startAt < 1)
             throw new IllegalArgumentException("startAt: " + startAt);
 
         if (endAt < startAt)
             throw new IllegalArgumentException("startAt: " + startAt + ", endAt: " + endAt);
 
-        return new Limit(endAt - startAt + 1, startAt);
+        if (endAt - startAt >= Integer.MAX_VALUE)
+            throw new IllegalArgumentException("startAt: " + startAt + ", endAt: " + endAt + ", maxResults > " + Integer.MAX_VALUE);
+
+        return new Limit((int) (endAt - startAt + 1), startAt);
     }
 }

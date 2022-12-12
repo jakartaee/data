@@ -62,6 +62,12 @@ class LimitTest {
     }
 
     @Test
+    @DisplayName(("Should raise exception when the range from startAt to endAt exceeds Integer.MAX_VALUE."))
+    void shouldReturnErrorWhenStartAtToEndAtExceedsMaxInteger() {
+        assertThatIllegalArgumentException().isThrownBy(() -> Limit.range(3L, 2147483650L));
+    }
+
+    @Test
     @DisplayName(("Should create limit with default maxResults"))
     void shouldCreateLimitWithDefaultMaxResults() {
         Limit limit = Limit.of(1);
@@ -69,7 +75,7 @@ class LimitTest {
         assertSoftly(soft -> {
             soft.assertThat(limit).isNotNull();
             soft.assertThat(limit.maxResults()).isEqualTo(1);
-            soft.assertThat(limit.startAt()).isEqualTo(1);
+            soft.assertThat(limit.startAt()).isEqualTo(1L);
         });
     }
 
@@ -81,7 +87,7 @@ class LimitTest {
         assertSoftly(soft -> {
             soft.assertThat(limit).isNotNull();
             soft.assertThat(limit.maxResults()).isEqualTo(10);
-            soft.assertThat(limit.startAt()).isEqualTo(1);
+            soft.assertThat(limit.startAt()).isEqualTo(1L);
         });
     }
 
@@ -93,7 +99,19 @@ class LimitTest {
         assertSoftly(soft -> {
             soft.assertThat(limit).isNotNull();
             soft.assertThat(limit.maxResults()).isEqualTo(1);
-            soft.assertThat(limit.startAt()).isEqualTo(1);
+            soft.assertThat(limit.startAt()).isEqualTo(1L);
+        });
+    }
+
+    @Test
+    @DisplayName(("Should create limit with the maximum possible range"))
+    void shouldCreateLimitWithMaximumRange() {
+        Limit limit = Limit.range(4L, 2147483650L);
+
+        assertSoftly(soft -> {
+            soft.assertThat(limit).isNotNull();
+            soft.assertThat(limit.maxResults()).isEqualTo(2147483647);
+            soft.assertThat(limit.startAt()).isEqualTo(4L);
         });
     }
 
@@ -105,7 +123,7 @@ class LimitTest {
         assertSoftly(soft -> {
             soft.assertThat(limit).isNotNull();
             soft.assertThat(limit.maxResults()).isEqualTo(10);
-            soft.assertThat(limit.startAt()).isEqualTo(2);
+            soft.assertThat(limit.startAt()).isEqualTo(2L);
         });
     }
 }
