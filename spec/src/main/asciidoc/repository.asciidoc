@@ -229,6 +229,18 @@ Jakarta Data implementations often support the following list of predicate keywo
 |Find results where the property is one of the values that are contained within the given list
 |findByIdIn
 
+|Null
+|Finds results where the property has a null value.
+|findByYearRetiredNull
+
+|True
+|Finds results where the property has a boolean value of true.
+|findBySalariedTrue
+
+|False
+|Finds results where the property has a boolean value of false.
+|findByCompletedFalse
+
 |OrderBy
 |Specify a static sorting order followed by the property path and direction of ascending.
 |findByNameOrderByAge

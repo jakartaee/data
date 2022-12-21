@@ -169,6 +169,11 @@ import java.lang.annotation.Target;
  * match the parameter value, which can be a pattern.</td>
  * <td><code>findByNameEndsWith(surname)</code></td></tr>
  *
+ * <tr style="vertical-align: top"><td><code>False</code></td>
+ * <td>boolean</td>
+ * <td>Requires that the entity's attribute value has a boolean value of false.</td>
+ * <td><code>findByCanceledFalse()</code></td></tr>
+ *
  * <tr style="vertical-align: top"><td><code>First</code></td>
  * <td>find...By</td>
  * <td>Limits the amount of results that can be returned by the query
@@ -221,6 +226,12 @@ import java.lang.annotation.Target;
  * <td><code>deleteByNameNotLike(namePattern)</code>
  * <br><code>findByStatusNot("RUNNING")</code></td></tr>
  *
+ * <tr style="vertical-align: top"><td><code>Null</code></td>
+ * <td>nullable types</td>
+ * <td>Requires that the entity's attribute has a null value.</td>
+ * <td><code>findByEndTimeNull()</code>
+ * <br><code>findByAgeNotNull()</code></td></tr>
+ *
  * <tr style="vertical-align: top"><td><code>Or</code></td>
  * <td>conditions</td>
  * <td>Requires at least one of the two conditions to be satisfied in order to match an entity.
@@ -240,6 +251,11 @@ import java.lang.annotation.Target;
  * <td>Requires that the characters at the beginning of the entity's attribute value
  * match the parameter value, which can be a pattern.</td>
  * <td><code>findByNameStartsWith(firstTwoLetters)</code></td></tr>
+ *
+ * <tr style="vertical-align: top"><td><code>True</code></td>
+ * <td>boolean</td>
+ * <td>Requires that the entity's attribute value has a boolean value of true.</td>
+ * <td><code>findByAvailableTrue()</code></td></tr>
  *
  * </table>
  * Wildcard characters for patterns are determined by the data access provider.
