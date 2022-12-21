@@ -71,6 +71,18 @@ public @interface OrderBy {
     boolean descending() default false;
 
     /**
+     * <p>Indicates whether or not to request case insensitive ordering
+     * from a database with case sensitive collation.
+     * A database with case insensitive collation performs case insensitive
+     * ordering regardless of the requested <code>ignoreCase</code> value.</p>
+     *
+     * <p>The default value is <code>false</code>.</p>
+     *
+     * @return whether or not to request case insensitive sorting for the property.
+     */
+    boolean ignoreCase() default false;
+
+    /**
      * <p>Entity attribute name to sort by.</p>
      *
      * <p>For example,</p>

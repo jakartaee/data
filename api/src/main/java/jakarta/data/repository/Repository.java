@@ -187,6 +187,14 @@ import java.lang.annotation.Target;
  * <td>Requires that the entity's attribute value be at least as big as the parameter value.</td>
  * <td><code>findByAgeGreaterThanEqual(minimumAge)</code></td></tr>
  *
+ * <tr style="vertical-align: top"><td><code>IgnoreCase</code></td>
+ * <td>strings</td>
+ * <td>Requires case insensitive comparison. For query conditions
+ * as well as ordering, the <code>IgnoreCase</code> keyword can be
+ * specified immediately following the entity property name.</td>
+ * <td><code>countByStatusIgnoreCaseNotLike("%Delivered%")</code>
+ * <br><code>findByZipcodeOrderByStreetIgnoreCaseAscHouseNumAsc(55904)</code></td></tr>
+ *
  * <tr style="vertical-align: top"><td><code>In</code></td>
  * <td>all attribute types</td>
  * <td>Requires that the entity's attribute value be within the list that is the parameter value.</td>

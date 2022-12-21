@@ -56,9 +56,12 @@ public final class Sort {
 
     private final Direction direction;
 
-    private Sort(String property, Direction direction) {
+    private final boolean ignoreCase;
+
+    private Sort(String property, Direction direction, boolean ignoreCase) {
         this.property = property;
         this.direction = direction;
+        this.ignoreCase = ignoreCase;
     }
 
     /**
@@ -66,6 +69,18 @@ public final class Sort {
      */
     public String property() {
         return this.property;
+    }
+
+    /**
+     * <p>Indicates whether or not to request case insensitive ordering
+     * from a database with case sensitive collation.
+     * A database with case insensitive collation performs case insensitive
+     * ordering regardless of the requested <code>ignoreCase</code> value.</p>
+     *
+     * @return Returns whether or not to request case insensitive sorting for the property.
+     */
+    public boolean ignoreCase() {
+        return ignoreCase;
     }
 
     /**
@@ -91,56 +106,85 @@ public final class Sort {
             return false;
         }
         Sort sort = (Sort) o;
-        return Objects.equals(property, sort.property) && direction == sort.direction;
+        return Objects.equals(property, sort.property) && direction == sort.direction && ignoreCase == sort.ignoreCase;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(property, direction);
+        return Objects.hash(property, direction, ignoreCase);
     }
 
     @Override
     public String toString() {
-        return "Sort{" +
-                "property='" + property + '\'' +
-                ", direction=" + direction +
-                '}';
+        StringBuilder s = new StringBuilder(property.length() + 32)
+                .append("Sort{property='").append(property)
+                .append("', direction=").append(direction);
+        if (ignoreCase)
+            s.append(", ignore case");
+        s.append('}');
+        return s.toString();
     }
 
     /**
      * Create a {@link Sort} instance
      *
      * @param property  the property name to order by
-     * @param direction The direction order by
+     * @param direction the direction in which to order.
+     * @param ignoreCase whether to request a case insensitive ordering.
      * @return an {@link Sort} instance. Never {@code null}.
      * @throws NullPointerException when there is a null parameter
      */
-    public static Sort of(String property, Direction direction) {
+    public static Sort of(String property, Direction direction, boolean ignoreCase) {
         Objects.requireNonNull(property, "property is required");
         Objects.requireNonNull(direction, "direction is required");
-        return new Sort(property, direction);
+        return new Sort(property, direction, ignoreCase);
     }
 
     /**
      * Create a {@link Sort} instance with ascending direction {@link  Direction#ASC}
+     * that does not request case insensitive ordering.
      *
      * @param property the property name to order by
      * @return a {@link Sort} instance. Never {@code null}.
      * @throws NullPointerException when the property is null
      */
     public static Sort asc(String property) {
-        return of(property, Direction.ASC);
+        return of(property, Direction.ASC, false);
     }
 
     /**
-     * Create a {@link Sort} instance on descending direction {@link  Direction#DESC}
+     * Create a {@link Sort} instance with ascending direction {@link  Direction#ASC}
+     * and case insensitive ordering.
+     *
+     * @param property the property name to order by.
+     * @return a {@link Sort} instance. Never {@code null}.
+     * @throws NullPointerException when the property is null.
+     */
+    public static Sort ascIgnoreCase(String property) {
+        return of(property, Direction.ASC, true);
+    }
+
+    /**
+     * Create a {@link Sort} instance with descending direction {@link  Direction#DESC}
+     * that does not request case insensitive ordering.
      *
      * @param property the property name to order by
      * @return a {@link Sort} instance. Never {@code null}.
      * @throws NullPointerException when the property is null
      */
     public static Sort desc(String property) {
-        return of(property, Direction.DESC);
+        return of(property, Direction.DESC, false);
     }
 
+    /**
+     * Create a {@link Sort} instance with descending direction {@link  Direction#DESC}
+     * and case insensitive ordering.
+     *
+     * @param property the property name to order by.
+     * @return a {@link Sort} instance. Never {@code null}.
+     * @throws NullPointerException when the property is null.
+     */
+    public static Sort descIgnoreCase(String property) {
+        return of(property, Direction.DESC, true);
+    }
 }
