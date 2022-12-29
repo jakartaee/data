@@ -6,16 +6,18 @@ All notable changes to this project will be documented in this file.
 The format is based on https://keepachangelog.com/en/1.0.0/[Keep a Changelog]
 and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Versioning].
 
-== 1.0.0
+== [Unreleased]
 
-=== Changed
+== [1.0.0-b1] - 2022-12-27
+
+
+=== Added
 
 * jakarta-data-api
-    * Removed `hamcrest-all` in favour of `assertj-core`
-    * Changed the assertions in `PageableTest` and `SortTest`
-    * Removed redundant tests on `SortTest`
+** Removed `hamcrest-all` in favour of `assertj-core`
+** Changed the assertions in `PageableTest` and `SortTest`
+** Removed redundant tests on `SortTest`
 * jakarta-data-parent
-    * Updated the following libraries
-        * `mockito`.version` to `4.8.0`
-        * `junit` to `5.9.0`
-    * Fix typo on `mockito.version` 
+** Updated the following libraries
+* Add initial TCK structure
+* Add repository resource
