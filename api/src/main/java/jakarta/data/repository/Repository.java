@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -264,10 +264,12 @@ import java.lang.annotation.Target;
  * <td><code>findByAvailableTrue()</code></td></tr>
  *
  * </table>
+ *
+ * <p>
  * Wildcard characters for patterns are determined by the data access provider.
  * For Jakarta Persistence providers, <code>_</code> matches any one character
  * and <code>%</code> matches 0 or more characters.
- * <p>
+ * </p>
  *
  * <table style="width: 100%">
  * <caption><b>Return Types for Repository Methods</b></caption>

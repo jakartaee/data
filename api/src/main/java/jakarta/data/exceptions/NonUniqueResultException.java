@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@ package jakarta.data.exceptions;
  * <code>Limit.of(1)</code> as a parameter to explicitly request only the first result.
  */
 public class NonUniqueResultException extends DataException {
+    private static final long serialVersionUID = 7742411163016495764L;
 
     /**
      * Constructs a new NonUniqueResultException exception with the specified detail message.
@@ -38,6 +39,8 @@ public class NonUniqueResultException extends DataException {
      * Constructs a new NonUniqueResultException exception with the specified detail message.
      *
      * @param message the detail message.
+     * @param cause another exception or error that caused this exception.
+     *        Null indicates that no other cause is specified.
      */
     public NonUniqueResultException(String message, Throwable cause) {
         super(message, cause);

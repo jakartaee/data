@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ package jakarta.data.exceptions;
  * A mapping exception is one thrown if an issue exists at runtime or build time in the data mapping.
  */
 public class MappingException extends DataException {
+    private static final long serialVersionUID = 6021238091536264838L;
 
     /**
      * Constructs a new MappingException exception with the specified detail message.
@@ -35,6 +36,8 @@ public class MappingException extends DataException {
      * Constructs a new MappingException exception with the specified detail message.
      *
      * @param message the detail message.
+     * @param cause another exception or error that caused this exception.
+     *        Null indicates that no other cause is specified.
      */
     public MappingException(String message, Throwable cause) {
         super(message, cause);
