@@ -1,4 +1,4 @@
-// Copyright (c) 2022 Contributors to the Eclipse Foundation
+// Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
 //
 // This program and the accompanying materials are made available under the
 // terms of the Eclipse Public License v. 2.0 which is available at
@@ -69,10 +69,6 @@ Entity classes are simple Java objects with fields or accessor methods designati
 
 TODO Write the remainder of this section after we determine if a common entity model can be created, or if Jakarta Data will define its own entity model, or if we will reuse the entity models from Jakarta Persistence and Jakarta NoSQL.
 
-==== Entity Property Names
-
-Within an entity, property names must be unique ignoring case and are either computed from the field or accessor method name or by other means defined by the entity model, such as through the `@Id` or `@Column` annotations, which take precedence if present on the field or accessor method. The entity property that is chosen as the id is referred to in repository methods by the name `Id` or optionally by its other designated name, for example if one is is assigned by an `@Id` or `@Column` annotation, with the latter being used to refer to the id property in query language. Entity properties which are not the id give precedence to the `@Column` name if specified or otherwise the field or accessor method name in both name-pattern based repository query methods and query language. Entity property names that are used in composing name-pattern based repository query methods must not contain reserved words.
-
 === Queries Methods
 
 In Jakarta Data, besides finding by an ID, custom queries can be written in two ways:
@@ -135,10 +131,25 @@ The first part defines the query's subject or condition, and the second the cond
 
 A predicate can refer only to a direct property of the managed entity. We also have the option to handle entities with another class on them.
 
-Assume an Order entity has an Address with a Zipcode. In that case, the access is ```order.address.zipCode```.
+==== Entity Property Names
 
-The resolution algorithm starts by interpreting the whole part (AddressZipCode) as the property and checks the domain class for a property with that name (uncapitalized). If the algorithm succeeds, it uses that property.
-//Jakarta Persistence @Embeddable might be an exception to this pattern, allowing the embeddable's attributes to be used directly as attributes of the main entity. Let's make a TODO note here to check on that and update if necessary at a later point. This doesn't need to be a part of this initial pull.
+Within an entity, property names must be unique ignoring case. For simple entity properties, the field or accessor method name serves as the entity property name. In the case of embedded classes, entity property names are computed by concatenating the field or accessor method names at each level.
+
+Assume an Order entity has an Address with a ZipCode. In that case, the access is ```order.address.zipCode```. This form is used within annotations, such as ```@Query```,
+
+[source,java]
+----
+@Repository
+public interface OrderRepository extends CrudRepository<Order, Long> {
+
+  @Query("SELECT order FROM Order order WHERE order.address.zipCode=?1")
+  List<Order> withZipCode(ZipCode zipCode);
+
+}
+----
+
+For queries by method name, the resolution algorithm starts by interpreting the whole part (AddressZipCode) as the property and checks the domain class for a property with that name (uncapitalized). If the algorithm succeeds, it uses that property.
+
 [source,java]
 ----
 @Repository
@@ -162,7 +173,9 @@ public interface OrderRepository extends CrudRepository<Order, Long> {
 }
 ----
 
-WARNING: Define as a priority following standard Java naming conventions, camel case,  using underscore as the last instance resource.
+WARNING: Define as a priority following standard Java naming conventions, camel case,  using underscore as the last resort.
+
+In queries by method name, ```Id``` is an alias for the entity property that is designated as the id. Entity property names that are used in queries by method name must not contain reserved words.
 
 ===== Query Methods Keywords
 
