@@ -80,13 +80,35 @@ import java.lang.annotation.Target;
  * because the built-in repository methods are consistent with the
  * same set of conventions that you use to write custom repository methods.</p>
  *
- * <p>Entity property names are determined from the entity model's
- * <code>&#64;Id</code> and <code>&#64;Column</code> annotations,
- * or otherwise from the the fields and accessor methods of the entity class.
- * These property names must not contain reserved words if used within
- * name-pattern based repository query methods.</p>
+ * <p>Entity property names are computed from the fields and accessor methods
+ * of the entity class and must be unique ignoring case. For simple entity
+ * properties, the field or accessor method name is used as the entity property
+ * name. In the case of embedded classes within entities, entity property names
+ * are computed by concatenating the field or accessor method names at each level,
+ * delimited by <code>_</code> or undelimited for query by method name (such as
+ * <code>findByAddress_ZipCode</code> or <code>findByAddressZipCode</code>)
+ * when referred to within repository method names, and delimited by
+ * <code>.</code> when used within annotation values, such as for
+ * {@link OrderBy#value} and {@link Query#value},</p>
  *
- * <h2>Reserved Keywords for Name-Pattern-Based Repository Methods</h2>
+ * <pre>
+ * &#64;Repository
+ * public interface Orders {
+ *     &#64;OrderBy("address.zipCode")
+ *     List&lt;Order&gt; findByAddressZipCodeIn(List&lt;Integer&gt; zipCodes);
+ *
+ *     &#64;Query("SELECT o FROM Order o WHERE o.address.zipCode=?1")
+ *     List&lt;Order&gt; forZipCode(int zipCode);
+ *
+ *     void save(Order order);
+ * }
+ * </pre>
+ *
+ * <p>In queries by method name, <code>Id</code> is an alias for the entity property
+ * that is designated as the id. Entity property names that are used in queries
+ * by method name must not contain reserved words.</p>
+ *
+ * <h2>Reserved Keywords for Query by Method Name</h2>
  *
  * <table style="width: 100%">
  * <caption><b>Reserved Method Name Prefixes</b></caption>
