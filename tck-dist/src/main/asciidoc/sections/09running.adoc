@@ -1,0 +1,15 @@
+== Running the TCK
+
+Once the TCK Runner project is created and configured the {APILongName} TCK is run as part of the maven test lifecycle.
+
+[source, sh]
+----
+$ cd starter
+$ mvn clean test
+----
+
+=== Expected Output
+
+Here is example output when successfully running the starter project:
+
+include::generated/expected-output.adoc[]

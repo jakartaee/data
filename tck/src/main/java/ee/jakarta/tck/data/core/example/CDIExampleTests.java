@@ -22,7 +22,7 @@ import jakarta.inject.Inject;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Disabled;
 
 import ee.jakarta.tck.data.framework.junit.anno.Assertion;
 import ee.jakarta.tck.data.framework.junit.anno.Core;
@@ -42,9 +42,14 @@ public class CDIExampleTests {
     @Inject
     ExampleService service;
     
-    @Test
     @Assertion(id = "EXAMPLE", strategy = "Deployes a CDI bean to application server, and injects service to be tested")
     public void serviceAlwaysReturnsTrue() {
         assertTrue(service.getMessage(), "Message should have returned true");
+    }
+    
+    @Disabled(value = "Challenge #1")
+    @Assertion(id = "EXAMPLE", strategy = "Uses the disabled annotation to ensure test does not get executed")
+    public void disabledTest() {
+        
     }
 }

@@ -23,4 +23,5 @@
 ##
 
 jakarta.data
+jakarta.data.exceptions
 jakarta.data.repository

@@ -21,12 +21,15 @@ import java.lang.annotation.Target;
 
 import java.lang.annotation.RetentionPolicy;
 
+import org.junit.jupiter.api.Test;
+
 /**
  * Test metadata to track what assertion from the spec is being tested, and the
  * strategy used to test that assertion.
  */
 @Target({ ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
+@Test
 public @interface Assertion {
     String id();
 

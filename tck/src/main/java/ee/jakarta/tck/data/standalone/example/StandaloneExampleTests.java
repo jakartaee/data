@@ -22,7 +22,6 @@ import java.util.logging.Logger;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.junit.jupiter.api.Test;
 
 import ee.jakarta.tck.data.framework.junit.anno.Assertion;
 import ee.jakarta.tck.data.framework.junit.anno.Standalone;
@@ -37,7 +36,6 @@ public class StandaloneExampleTests {
                 .addClass(StandaloneExampleTests.class);
     }  
     
-    @Test
     @Assertion(id = "EXAMPLE", strategy = "Test runs on client JVM when running in standalone mode, otherwise gets deployed to server and run.")
     public void testStandaloneFunction() {
         assertEquals(1, 1, "One did not equal one.");

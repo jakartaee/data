@@ -1,0 +1,65 @@
+:signatureREADME: {APIGitSite}/blob/main/tck/src/main/java/ee/jakarta/tck/data/framework/signature/README.md
+
+== Signature Tests
+
+The signature tests validate the integrity of the `jakarta.data` Java "namespace" (or "package prefix") of the {APIShortName} implementation.
+This would be especially important for an implementation packaging its own API JAR in which the API must be validated in its entirety.
+
+For implementations expecting their users to rely on the API released by the {APILongName} specification project (e.g. to Maven Central) 
+the signature tests are also important to validate that improper (non-spec-defined) 
+extensions have not been added to `jakarta.data.\*` packages/classes/etc.
+
+For more information about generating the signature test file, and how the signature test runs read: 
+{signatureREADME}[ee.jakarta.tck.concurrent.framework.signaturetest/README.md]
+
+=== Running signature tests
+
+The {APILongName} TCK will run signature tests within a standalone or deployed application, 
+and not as part of a separate plugin / execution.
+This means that the signature tests will run during the maven `test` phase.
+
+You need to configure your application server with a JVM property `-Djimage.dir=<path-your-server-has-access-to>`.
+This is because, when running the signature tests on JDK 9+ we need to convert the 
+JDK modules back into class files for signature testing.
+
+The signature test plugin we use will also attempt to perform reflective access of classes, methods, and fields.
+Due to the new module system in JDK 9+ special permissions need to be added in order for these tests to run: 
+
+==== with a Security Manager
+
+If you are using a Security Manager add the following permissions to the 
+`sigtest-maven-plugin` on your Jakarta EE Platform server:
+
+[source, txt]
+----
+permission java.lang.RuntimePermission "accessClassInPackage.jdk.internal";
+permission java.lang.RuntimePermission "accessClassInPackage.jdk.internal.reflect";
+permission java.lang.RuntimePermission "accessClassInPackage.jdk.internal.vm.annotation";
+----
+
+==== with Modules
+
+By default the java.base module only exposes certain classes for reflective access. 
+Therefore, the {APIShortName} TCK test will need access to the `jdk.internal.vm.annotation` class.
+To give the `sigtest-maven-plugin` access to this class set the following JVM properties: 
+
+[source, properties]
+----
+--add-exports java.base/jdk.internal.vm.annotation=ALL-UNNAMED
+--add-opens java.base/jdk.internal.vm.annotation=ALL-UNNAMED
+----
+
+Some JDKs will mistake the space in the prior JVM properties as delimiters between properties
+In this case use:
+
+[source, properties]
+----
+--add-exports=java.base/jdk.internal.vm.annotation=ALL-UNNAMED
+--add-opens=java.base/jdk.internal.vm.annotation=ALL-UNNAMED
+---- 
+
+=== Expected output
+
+Here is example output when successfully running the signature tests: 
+
+include::generated/expected-sig-output.adoc[]

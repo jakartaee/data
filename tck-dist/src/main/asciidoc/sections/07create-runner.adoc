@@ -1,0 +1,11 @@
+== Set up a TCK runner project
+
+A simple maven project is required to control the lifecycle of the {APILongName} TCK.
+Sample pom.xmls has been provided in this distribution under the /starter/ directory.
+
+* se-pom.xml - is used for standalone testing.
+* ee-pom.xml - is used for Jakarta Platform testing.
+
+include::07.1se-mode.adoc[]
+
+include::07.2ee-mode.adoc[]
