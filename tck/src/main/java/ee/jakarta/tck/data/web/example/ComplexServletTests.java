@@ -23,7 +23,6 @@ import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
 
 import ee.jakarta.tck.data.framework.junit.anno.Assertion;
@@ -45,7 +44,6 @@ public class ComplexServletTests extends TestClient {
     @ArquillianResource
     URL baseURL;
     
-    @Test
     @Assertion(id = "EXAMPLE", strategy = "Run server side tests that will succeed and fail and assert the results.")
     public void testSuccessAndFailure(TestInfo testInfo) {
         URL requestURL = URLBuilder.fromURL(baseURL)
@@ -65,7 +63,6 @@ public class ComplexServletTests extends TestClient {
         });
     }
     
-    @Test
     @Assertion(id = "EXAMPLE", strategy = "Run server side test with a method name that matches the client side test.")
     public void testMatchServletSideMethodName(TestInfo testInfo) {
         URL requestURL = URLBuilder.fromURL(baseURL)
@@ -76,7 +73,6 @@ public class ComplexServletTests extends TestClient {
         super.runTest(requestURL);
     }
     
-    @Test
     @Assertion(id = "EXAMPLE", strategy = "Run server side test that append a unique string to the response body and make sure it is returned.")
     public void testServletSideCustomResponse(TestInfo testInfo) {
         URL requestURL = URLBuilder.fromURL(baseURL)

@@ -1,0 +1,7 @@
+== Links
+
+* {APILongName} TCK repository - {APIGitSite}/tree/main/tck
+* {APILongName} API repository - {APIGitSite}/tree/main/api
+* {APILongName} specification repository - {APIGitSite}/tree/main/spec
+* {APILongName} project home page - {APIEclipseSite}
+* Arquillian and ShrinkWrap doc: https://arquillian.org/guides/shrinkwrap_introduction/

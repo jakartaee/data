@@ -1,0 +1,20 @@
+== Certify Compatibility
+
+=== Runtime Tests and Signature Tests Required
+
+To certify compatibility with the entire Jakarta EE Platform (including {APILongName}), you will need to run the TCK against your implementation and pass 100% of both the:
+
+* {TCKTestPlatform} runtime tests
+* Signature tests
+
+The two types of tests are encapsulated in a single execution or configuration.
+This means that the Signature tests will run alongside all other tests and no additional execution or configuration is required.
+
+By "runtime" tests we simply mean tests simulating {APILongName} applications running against the {APIShortName} implementation either in SE Mode (for Jakarta Data providers) or EE Mode (For Jakarta EE product providers).
+These tests verify that the {APIShortName} applications behave according to the details defined in the specification, as validated by the TCK test logic.
+
+=== Java SE level - Java {JavaVersion1} or Java {JavaVersion2}
+
+The Java SE version is important to note, and this version must be used consistently throughout both the {TCKTestPlatform} runtime and Signature tests for a given certification request.
+
+For the current TCK version, this can be done with either Java SE Version {JavaVersion1} or Version {JavaVersion2}.

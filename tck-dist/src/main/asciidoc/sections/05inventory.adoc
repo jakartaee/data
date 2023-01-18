@@ -1,0 +1,77 @@
+== A Guide to the TCK Distribution
+
+This section explains how to obtain the TCK and extract it on your system.
+
+=== Obtaining the Software
+
+The {APILongName} TCK is distributed as a zip file, which contains all the files necessary to use, run, and certify your implementation.
+You can access the current source code from the {APIGitSite}[Git repository].
+
+=== The TCK Environment
+
+The {APILongName} TCK can simply be extracted from the ZIP file.
+Once the TCK is extracted, you'll see the following structure:
+
+[source, txt]
+----
+data-tck-<version>-dist/
+  artifacts/
+  doc/
+  starter/
+  LICENSE
+  README.md
+----
+
+In more detail:
+
+* `artifacts` contains all the test artifacts pertaining to the TCK
+** The TCK test classes and source 
+** The {TCKTestPlatform} configuration file
+** A copy of the SignatureTest file for reference
+** A script to copy the TCK into local maven repository.
+* `doc` contains the documentation for the TCK (i.e. this reference guide)
+* `starter` a very basic starter maven project to get you started.
+
+=== A Quick Tour of the TCK Artifacts
+
+==== What is included
+
+The {APILongName} TCK is a test library that includes four types of packages:
+
+- `ee.jakarta.tck.data.standalone.\*` these are basic API tests, or SPI tests that can run in SE Mode or EE mode.
+- `ee.jakarta.tck.data.core.\*` these are more complex integration tests that must run against at least Core Profile.
+- `ee.jakarta.tck.data.web.\*` these are more complex integration tests that must run against at least Web Profile.
+- `ee.jakarta.tck.data.full.\*` these are more complex integration tests that must run against at least Full Profile.
+- `ee.jakarta.tck.data.framework.\*` these are utility packages that help support the development and execution of the TCK.
+
+Tests that exist at a lower level will run on any level above, for example, all core profile tests will run against web profile.
+Signature tests exist at the standalone level which means they will run in any mode, and any profile.
+
+===== API Signature Files
+
+One signature file exists for both Java {JavaVersion1} and {JavaVersion2}:
+
+1. `artifacts/jakarta.data.sig`
+
+This signature file is for reference only.
+A copy of the signature file is included in the {APILongName} TCK test jar.
+
+==== What is not included
+
+The {APILongName} TCK uses but does not provide the necessary application servers, test frameworks, APIs, SPIs, or implementations required to run.
+It is up to the tester to include those dependencies and set up a test project to run the TCK.
+
+Here is an essential checklist of what you will need per mode, and links to the section that describe how to satisfy these requirements:
+
+SE Mode:
+
+- The {APIShortName} API, JUnit5, and Signature Test Plugin libraries available at runtime | <<Standalone Dependencies>>
+- A logging configuration for TCK logging available at runtime | <<Standalone Logging>>
+
+EE Mode:
+
+- An Application Server to test against | <<Software To Install>>
+- The {APILongName} API, Arquillian SPI, and JUnit5 libraries available to the `Test Client` | <<Test Client Dependencies>>
+- The Arquillian, JUnit5, and Signature Test libraries available to the `Test Server` | <<Test Server Dependencies>>
+- An Arquillian SPI implementation for your Application Server | <<Configure Arquillian>>
+- A logging configuration for TCK logging on `Test Client` and `Test Server` | <<Configure Client and Server Logging>>

@@ -1,0 +1,53 @@
+== Preface
+
+This guide describes how to download, install, configure, and run the Technology Compatibility Kit (TCK) used to verify the compatibility of an implementation of the {APILongName} specification.  
+
+The specification describes the job specification language, Java programming model, and runtime environment for {APILongName} applications.
+
+=== Licensing
+
+The {APILongName} TCK is provided under the https://www.eclipse.org/legal/tck.php[*Eclipse Foundation Technology Compatibility Kit License - v 1.0*].
+
+=== Who Should Use This Guide
+
+This guide will assist in running the test suite, which verifies implementation compatibility for:
+
+* Implementer of {APILongName}.
+
+=== Terminology - "SE mode" vs. "EE mode"
+
+The term "EE mode" when talking about the {APILongName} TCK distinguishes the requirements specifically for implementers running the TCK to certify against a Jakarta EE platform.
+In contrast, the term "SE mode" distinguishes the requirements specifically for implementers running the TCK against a standalone implementation of the {APILongName} specification.
+
+The {APILongName} specification has a subset of tests that can run in "SE mode" without the requirement of running against a Jakarta EE Platform.
+
+=== Terminology - "Standalone TCK"
+
+The community will sometimes refer to this TCK as the "standalone" {APIShortName} TCK.  This usage comes from the fact that {APILongName} is part of the Jakarta EE Platform, which has a platform-level TCK from which we are distinguishing this "standalone" TCK.  
+
+This terminology is confusing, since the term "standalone" is overloaded to also mean that this TCK can be run in SE Mode which it can.
+A better term would be `Specification TCK`, but that terminology is not yet being used.
+
+=== Terminology - "Test Client" vs "Test Server"
+
+When running in EE mode the {APILongName} TCK acts as a `Test Client` that will install test applications onto a Jakarta EE Platform Server.
+The Platform Server will act as a `Test Server` and run tests based on incoming requests from the `Test Client`.
+Assertions will occur both on the client and server sides.
+
+=== Terminology - "Core Profile" vs "Web Profile" vs "Full Profile"
+
+The Jakarta EE platform defines sets of specifications that create the core, web, and full profiles.
+// TODO update this if Jakarta Data ends up being in something other than core profile
+The {APILongName} TCK can run against each of these profiles since {APILongName} is a Core Profile specification.
+
+References:
+
+* Core profile: https://jakarta.ee/specifications/coreprofile/
+* Web profile: https://jakarta.ee/specifications/webprofile/
+* Full profile: https://jakarta.ee/specifications/platform/
+
+=== Before You Read This Guide
+
+Before reading this guide, you should familiarize yourself with {APILongName} {APIVersion} specification, which can be found at {APISpecSite}.
+
+Other useful information and links can be found on the {APIEclipseSite}[eclipse.org project home page for the {APILongName} project] and also at the {APIGitSite}[GitHub repository home for the specification project].
