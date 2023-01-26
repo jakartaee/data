@@ -8,6 +8,10 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 
 == [Unreleased]
 
+=== Removed
+
+* Remove `Id` and `Entity` annotations
+
 == [1.0.0-b1] - 2022-12-27
 
 
