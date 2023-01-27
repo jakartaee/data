@@ -116,10 +116,8 @@ public interface ProductRepository extends CrudRepository<Product, Long> {
 
   List<Product> findByName(String name);
 
-  @OrderBy("price")
   List<Product> findByNameLike(String namePattern);
 
-  @OrderBy(value = "price", descending = true)
   List<Product> findByNameLikeAndPriceLessThan(String namePattern, float priceBelow);
 
 }
@@ -389,7 +387,7 @@ Other types of updates to data, however, will cause duplicate or missed results.
 * Page numbers for keyset pagination are estimated relative to prior page requests or the observed absence of further results and are not accurate. Page numbers must not be relied upon when using keyset pagination.
 * Page totals and result totals are not accurate for keyset pagination and must not be relied upon.
 * A next or previous page can end up being empty. You cannot obtain a next or previous `Pageable` from an empty page because there are no keyset values relative to which to query.
-* A repository method that is annotated with `@Query` and performs keyset pagination must omit the `ORDER BY` clause from the provided query and instead must supply the sort criteria via `@OrderBy` annotations or `Sort` parameters of `Pageable`. The provided query must end with a `WHERE` clause to which additional conditions can be appended by the Jakarta Data provider. The Jakarta Data provider is not expected to parse query text that is provided by the application.
+* A repository method that is annotated with `@Query` and performs keyset pagination must omit the `ORDER BY` clause from the provided query and instead must supply the sort criteria via `Sort` parameters of `Pageable`. The provided query must end with a `WHERE` clause to which additional conditions can be appended by the Jakarta Data provider. The Jakarta Data provider is not expected to parse query text that is provided by the application.
 
 ==== Keyset Pagination Example with Sorts
 

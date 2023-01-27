@@ -38,9 +38,6 @@ package jakarta.data.repository;
  * {@link Pageable}. For example,</p>
  *
  * <pre>
- * &#64;OrderBy("lastName")
- * &#64;OrderBy("firstName")
- * &#64;OrderBy("id")
  * KeysetAwareSlice&lt;Employee&gt; findByHoursWorkedGreaterThan(int hours, Pageable pagination);
  * </pre>
  *
@@ -101,9 +98,6 @@ package jakarta.data.repository;
  *
  * <pre>
  * &#64;Query("SELECT o FROM Customer o WHERE (o.ordersPlaced &gt;= ?1 OR o.totalSpent &gt;= ?2)")
- * &#64;OrderBy("zipcode")
- * &#64;OrderBy("birthYear")
- * &#64;OrderBy("id")
  * KeysetAwareSlice&lt;Customer&gt; getTopBuyers(int minOrders, float minSpent, Pageable pagination);
  * </pre>
  *
