@@ -64,7 +64,7 @@ package jakarta.data.repository;
  *
  * <p>You can also construct a {@link Pageable} with a {@link Pageable.Cursor Cursor} directly, which
  * allows you to make it relative to a specific list of values. The number and
- * order of values must match that of the {@link OrderBy} annotations,
+ * order of values must match that of the
  * {@link Pageable#sortBy(Sort...)} or {@link Pageable#sortBy(Iterable)} parameters,
  * or <code>OrderBy</code> name pattern of the repository method.
  * For example,</p>
@@ -95,7 +95,7 @@ package jakarta.data.repository;
  * Enclose the entire conditional expression of the <code>WHERE</code> clause
  * in parenthesis.
  * Sort criteria must be specified independently from the user-provided query,
- * either with the {@link OrderBy} annotation or
+ * either with the
  * {@link Pageable#sortBy(Sort...)} or {@link Pageable#sortBy(Iterable)} parameters.
  * For example,</p>
  *
