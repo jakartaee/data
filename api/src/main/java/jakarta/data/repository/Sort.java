@@ -38,14 +38,13 @@ import java.util.Objects;
  * </pre>
  *
  * <p>It is preferable to use static sorting criteria
- * (<code>OrderBy</code> keyword or {@link Query} or {@link OrderBy} annotation)
+ * (<code>OrderBy</code> keyword or {@link Query} annotation)
  * where possible to better allow for optimizations by the provider.</p>
  *
  * <p>A repository method will fail if a <code>Sort</code> parameter is
  * specified in combination with any of:</p>
  * <ul>
  * <li>an <code>OrderBy</code> keyword</li>
- * <li>an {@link OrderBy} annotation</li>
  * <li>a {@link Query} annotation that contains an <code>ORDER BY</code> clause.</li>
  * <li>a {@link Pageable} parameter with {@link Pageable#sorts()}</li>
  * </ul>
