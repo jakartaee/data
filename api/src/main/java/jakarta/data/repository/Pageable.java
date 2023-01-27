@@ -79,11 +79,11 @@ public interface Pageable {
      * starting after the specified keyset values.</p>
      *
      * @param keyset keyset values, the order and number of which must match the
-     *        {@link OrderBy} annotations, {@link Sort} parameters, or
-     *        <code>OrderBy</code> name pattern of the repository method to which
-     *        this pagination will be supplied.
+     *               {@link Sort} parameters, or
+     *               <code>OrderBy</code> name pattern of the repository method to which
+     *               this pagination will be supplied.
      * @return a new instance of <code>Pageable</code> with forward keyset pagination.
-     *         This method never returns <code>null</code>.
+     * This method never returns <code>null</code>.
      * @throws IllegalArgumentException if no keyset values are provided.
      */
     Pageable afterKeyset(Object... keyset);
@@ -93,11 +93,11 @@ public interface Pageable {
      * starting after the specified keyset values.</p>
      *
      * @param keyset keyset values, the order and number of which must match the
-     *        {@link OrderBy} annotations, {@link Sort} parameters, or
-     *        <code>OrderBy</code> name pattern of the repository method to which
-     *        this pagination will be supplied.
+     *               {@link Sort} parameters, or
+     *               <code>OrderBy</code> name pattern of the repository method to which
+     *               this pagination will be supplied.
      * @return a new instance of <code>Pageable</code> with reverse keyset pagination.
-     *         This method never returns <code>null</code>.
+     * This method never returns <code>null</code>.
      * @throws IllegalArgumentException if no keyset values are provided.
      */
     Pageable beforeKeyset(Object... keyset);
@@ -107,11 +107,11 @@ public interface Pageable {
      * starting after the specified keyset values.</p>
      *
      * @param keysetCursor cursor with keyset values, the order and number of which must match the
-     *        {@link OrderBy} annotations, {@link Sort} parameters, or
-     *        <code>OrderBy</code> name pattern of the repository method to which
-     *        this pagination will be supplied.
+     *                     {@link Sort} parameters, or
+     *                     <code>OrderBy</code> name pattern of the repository method to which
+     *                     this pagination will be supplied.
      * @return a new instance of <code>Pageable</code> with forward keyset pagination.
-     *         This method never returns <code>null</code>.
+     * This method never returns <code>null</code>.
      * @throws IllegalArgumentException if no keyset values are provided.
      */
     Pageable afterKeysetCursor(Cursor keysetCursor);
@@ -121,11 +121,11 @@ public interface Pageable {
      * starting after the specified keyset values.</p>
      *
      * @param keysetCursor cursor with keyset values, the order and number of which must match the
-     *        {@link OrderBy} annotations, {@link Sort} parameters, or
-     *        <code>OrderBy</code> name pattern of the repository method to which
-     *        this pagination will be supplied.
+     *                     {@link Sort} parameters, or
+     *                     <code>OrderBy</code> name pattern of the repository method to which
+     *                     this pagination will be supplied.
      * @return a new instance of <code>Pageable</code> with reverse keyset pagination.
-     *         This method never returns <code>null</code>.
+     * This method never returns <code>null</code>.
      * @throws IllegalArgumentException if no keyset values are provided.
      */
     Pageable beforeKeysetCursor(Cursor keysetCursor);
@@ -135,7 +135,7 @@ public interface Pageable {
      * pagination information.
      *
      * @return true if both instances are of the same class and
-     *         represent the same pagination information. Otherwise false.
+     * represent the same pagination information. Otherwise false.
      */
     @Override
     boolean equals(Object o);
@@ -188,7 +188,7 @@ public interface Pageable {
      *
      * @return The next pageable.
      * @throws UnsupportedOperationException if this <code>Pageable</code> has a
-     *         {@link Pageable.Cursor Cursor}.
+     *                                       {@link Pageable.Cursor Cursor}.
      */
     Pageable next();
 
@@ -220,7 +220,6 @@ public interface Pageable {
      * <code>Pageable</code> in combination with any of:</p>
      * <ul>
      * <li>an <code>OrderBy</code> keyword</li>
-     * <li>an {@link OrderBy} annotation</li>
      * <li>a {@link Query} annotation that contains an <code>ORDER BY</code> clause.</li>
      * <li>{@link Sort} parameters that are specified independently of
      *     <code>Pageable</code> on a repository method</li>
@@ -241,14 +240,13 @@ public interface Pageable {
      * <code>Pageable</code> in combination with any of:</p>
      * <ul>
      * <li>an <code>OrderBy</code> keyword</li>
-     * <li>an {@link OrderBy} annotation</li>
      * <li>a {@link Query} annotation that contains an <code>ORDER BY</code> clause.</li>
      * <li>{@link Sort} parameters that are specified independently of
      *     <code>Pageable</code> on a repository method</li>
      * </ul>
      *
      * @param sorts sort criteria to use. This method can be invoked without parameters
-     *        to request a <code>Pageable</code> that does not specify sort criteria.
+     *              to request a <code>Pageable</code> that does not specify sort criteria.
      * @return a new instance of <code>Pageable</code>. This method never returns <code>null</code>.
      */
     Pageable sortBy(Sort... sorts);
@@ -260,7 +258,7 @@ public interface Pageable {
     enum Mode {
         /**
          * Indicates forward keyset pagination, which follows the
-         * direction of the {@link OrderBy} annotations,
+         * direction of
          * {@link Pageable#sortBy(Sort...)} or {@link Pageable#sortBy(Iterable)}
          * parameters, repository method {@link Sort} parameters,
          * or <code>OrderBy</code> name pattern of the repository method.
@@ -269,7 +267,7 @@ public interface Pageable {
 
         /**
          * Indicates a request for a page with keyset pagination
-         * in the reverse direction of the {@link OrderBy} annotations,
+         * in the reverse direction
          * {@link Pageable#sortBy(Sort...)} or {@link Pageable#sortBy(Iterable)}
          * parameters, repository method {@link Sort} parameters,
          * or <code>OrderBy</code> name pattern of the repository method.
@@ -305,10 +303,10 @@ public interface Pageable {
         /**
          * Returns the keyset value at the specified position.
          *
-         * @param  index position (0 is first) of the keyset value to obtain.
+         * @param index position (0 is first) of the keyset value to obtain.
          * @return the keyset value at the specified position.
          * @throws IndexOutOfBoundsException if the index is negative
-         *         or greater than or equal to the {@link #size}.
+         *                                   or greater than or equal to the {@link #size}.
          */
         Object getKeysetElement(int index);
 
