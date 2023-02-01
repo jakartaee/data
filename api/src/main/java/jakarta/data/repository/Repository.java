@@ -33,7 +33,7 @@ import java.lang.annotation.Target;
  * designating each entity property.</p>
  *
  * <p>Jakarta Persistence and Jakarta NoSQL define entity models that you
- * can use in Jakarta Data. You may use {@code jakarta.persistence.Entity}
+ * may use in Jakarta Data. You may use {@code jakarta.persistence.Entity}
  * and the corresponding entity-related annotations of the Jakarta Persistence
  * specification to define entities for relational databases.
  * You may use {@code jakarta.nosql.mapping.Entity} and the corresponding
