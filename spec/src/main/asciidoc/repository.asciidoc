@@ -67,7 +67,9 @@ public interface Garage extends CrudRepository<Car, String> {
 
 Entity classes are simple Java objects with fields or accessor methods designating each entity property.
 
-TODO Write the remainder of this section after we determine if a common entity model can be created, or if Jakarta Data will define its own entity model, or if we will reuse the entity models from Jakarta Persistence and Jakarta NoSQL.
+You may use ```jakarta.persistence.Entity``` and the corresponding entity-related annotations of the Jakarta Persistence specification in the same package (such as ```jakarta.persistence.Id``` and ```jakarta.persistence.Column```) to define and customize entities for relational databases.
+
+You may use ```jakarta.nosql.mapping.Entity``` and the corresponding entity-related annotations of the Jakarta NoSQL specification in the same package (such as ```jakarta.nosql.mapping.Id``` and ```jakarta.nosql.mapping.Column```) to define and customize entities for NoSQL databases.
 
 === Queries Methods
 

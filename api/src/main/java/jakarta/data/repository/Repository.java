@@ -26,6 +26,20 @@ import java.lang.annotation.Target;
 /**
  * <p>Annotates a data repository interface that will be implemented by the container/runtime.</p>
  *
+ * <p>The application defines entity classes to represent data in the database
+ * and defines repository interface methods that perform queries and other
+ * operations on entities. Repository interfaces are annotated with this annotation.
+ * Entities are simple Java objects with fields or accessor methods
+ * designating each entity property.</p>
+ *
+ * <p>Jakarta Persistence and Jakarta NoSQL define entity models that you
+ * may use in Jakarta Data. You may use {@code jakarta.persistence.Entity}
+ * and the corresponding entity-related annotations of the Jakarta Persistence
+ * specification to define entities for relational databases.
+ * You may use {@code jakarta.nosql.mapping.Entity} and the corresponding
+ * entity-related annotations of the Jakarta NoSQL specification to define
+ * entities for NoSQL databases.</p>
+ *
  * <p>This class is a CDI bean-defining annotation when CDI is available,
  * enabling the container/runtime to the implementation available via the
  * <code>jakarta.inject.Inject</code> annotation.</p>
@@ -33,6 +47,15 @@ import java.lang.annotation.Target;
  * <p>For example,</p>
  *
  * <pre>
+ * &#64;Entity
+ * public class Product {
+ *     &#64;Id
+ *     public long id;
+ *     public String name;
+ *     public float price;
+ *     ...
+ * }
+ *
  * &#64;Repository
  * public interface Products extends DataRepository&lt;Product, Long&gt; {
  *
@@ -55,15 +78,6 @@ import java.lang.annotation.Target;
  * numUpdated = products.putOnSale(0.15f, 20.0f);
  * </pre>
  *
- * <p>An interface that is annotated with <code>&#64;Repository</code>
- * defines methods that perform queries and other operations on entities.
- * Entities are simple Java objects with fields or accessor methods
- * designating each entity property. Jakarta Persistence and
- * Jakarta NoSQL define entity models that are used by Jakarta Data.
- * The entity type is specified by the first parameter to the {@link DataRepository}
- * or other repository supertype of the interface that is
- * annotated with <code>&#64;Repository</code>.</p>
- *
  * <p>Methods of repository interfaces must be styled according to a
  * defined set of conventions, which instruct the container/runtime
  * about the desired data access operation to perform.
@@ -71,8 +85,11 @@ import java.lang.annotation.Target;
  * patterns of reserved keywords within the method name, as well as
  * annotations that are placed upon the method and its parameters.</p>
  *
- * <p>Built-in repository interfaces such as {@link CrudRepository}
- * provide a base set of predefined repository methods
+ * <p>Built-in repository interfaces, such as {@link DataRepository}, are
+ * parameterized with the entity type and id type. Other built-in repository
+ * interfaces, such as {@link CrudRepository}, can be used in place of
+ * {@link DataRepository}
+ * and provide a base set of predefined repository methods
  * which serve as an optional starting point.
  * You can extend these built-in interfaces to add your own custom methods.
  * You can also copy individual method signatures from the
@@ -92,6 +109,21 @@ import java.lang.annotation.Target;
  * {@link OrderBy#value} and {@link Query#value},</p>
  *
  * <pre>
+ * &#64;Entity
+ * public class Order {
+ *     &#64;Id
+ *     public String orderId;
+ *     &#64;Embedded
+ *     public Address address;
+ *     ...
+ * }
+ *
+ * &#64;Embeddable
+ * public class Address {
+ *     public int zipCode;
+ *     ...
+ * }
+ *
  * &#64;Repository
  * public interface Orders {
  *     &#64;OrderBy("address.zipCode")
@@ -443,8 +475,6 @@ import java.lang.annotation.Target;
  *                                 Sort.asc("name"));
  * </pre>
  */
-// TODO after relation to existing entity models is better defined, update the section:
-//       "... Jakarta NoSQL define entity models that are used by Jakarta Data."
 // TODO When can "By" be omitted and "All" added? Need to document that.
 // TODO keywords for update would be needed if included.
 // TODO We stated above that "Precedence is determined by the data access provider" when
