@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,13 +36,13 @@ package jakarta.data.repository;
  * secondMostExpensive50 = products.freeShippingEligible(6.0f, 360.0f, Limit.range(51, 100));
  * </pre>
  *
- * <p>A repository method will raise {@link IllegalArgumentException} if</p>
+ * <p>A repository method will fail if</p>
  * <ul>
- * <li>multiple <code>Limit</code> parameters are specified on the
+ * <li>multiple <code>Limit</code> parameters are supplied to the
  *     same method.</li>
- * <li><code>Limit</code> and {@link Pageable} parameters are specified on the
+ * <li><code>Limit</code> and {@link Pageable} parameters are supplied to the
  *     same method.</li>
- * <li>a <code>Limit</code> parameter is specified in combination
+ * <li>a <code>Limit</code> parameter is supplied in combination
  *     with the <code>First</code> keyword.</li>
  * </ul>
  */

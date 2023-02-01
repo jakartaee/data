@@ -76,7 +76,7 @@ You may use ```jakarta.nosql.mapping.Entity``` and the corresponding entity-rela
 In Jakarta Data, besides finding by an ID, custom queries can be written in two ways:
 
 * Through Query annotation: It will create a method annotated with the @Query with the query.
-* Using method by query convention: Using some pattern vocabulary will provide a query.
+* Using query by method convention: Using some pattern vocabulary will provide a query.
 
 WARNING: Due to the variety of data sources, those resources might not work; it varies based on the Jakarta Data implementation and the database engine, which can provide queries on more than a Key or ID or not, such as a Key-value database.
 
@@ -347,13 +347,10 @@ Pageable p = Pageable.ofSize(50).afterKeyset(c.lastName, c.firstName, c.id);
 page = customers.findByZipcodeOrderByLastNameAscFirstNameAscIdAsc(55902, p);
 ----
 
-The sort criteria for a repository method that performs keyset pagination must uniquely identify each entity and must be provided by one of:
+The sort criteria for a repository method that performs keyset pagination must uniquely identify each entity and must be provided by:
 
-* `OrderBy` name pattern of the repository method (as in the examples above).
-* `@OrderBy` annotation(s) on the repository method.
+* `OrderBy` name pattern of the repository method (as in the examples above) or `@OrderBy` annotation(s) on the repository method.
 * `Sort` parameters of the `Pageable` that is supplied to the repository method.
-
-If either of the first are specified, the `Sort` list of the `Pageable` must be empty or unspecified.
 
 ==== Example of Appending to Queries for Keyset Pagination
 
