@@ -278,7 +278,7 @@ Jakarta Data implementations often support the following list of predicate keywo
 
 ====== Logical Operator Precedence
 
-For relational databases, the logical operator ```And``` takes precedence over ```Or```, meaning that ```And``` is evaluated on conditions before ```Or``` when both are specified on the same method. For other database types, the precedence is limited by what the database is capable of. For example, some graph databases are limited to precedence in traversal order.
+For relational databases, the logical operator `And` takes precedence over `Or`, meaning that `And` is evaluated on conditions before `Or` when both are specified on the same method. For other database types, the precedence is limited to the capabilities of the database. For example, some graph databases are limited to precedence in traversal order.
 
 === Special Parameter Handling
 

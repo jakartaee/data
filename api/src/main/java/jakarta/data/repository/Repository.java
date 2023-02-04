@@ -297,7 +297,7 @@ import java.lang.annotation.Target;
  * For relational databases, the logical operator <code>And</code>
  * is evaluated on conditions before <code>Or</code> when both are specified
  * on the same method. Precedence for other database types is limited to
- * what the database is capable of.
+ * the capabilities of the database.
  * </p>
  *
  * <table style="width: 100%">
