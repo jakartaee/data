@@ -41,7 +41,7 @@ import java.lang.annotation.Target;
  * entities for NoSQL databases.</p>
  *
  * <p>This class is a CDI bean-defining annotation when CDI is available,
- * enabling the container/runtime to the implementation available via the
+ * enabling the container/runtime to make the implementation available via the
  * <code>jakarta.inject.Inject</code> annotation.</p>
  *
  * <p>For example,</p>
@@ -188,8 +188,7 @@ import java.lang.annotation.Target;
  *
  * <tr style="vertical-align: top"><td><code>And</code></td>
  * <td>conditions</td>
- * <td>Requires both conditions to be satisfied in order to match an entity.
- * Precedence is determined by the data access provider.</td>
+ * <td>Requires both conditions to be satisfied in order to match an entity.</td>
  * <td><code>findByNameLikeAndPriceLessThanEqual(namePattern, maxPrice)</code></td></tr>
  *
  * <tr style="vertical-align: top"><td><code>Asc</code></td>
@@ -294,8 +293,7 @@ import java.lang.annotation.Target;
  *
  * <tr style="vertical-align: top"><td><code>Or</code></td>
  * <td>conditions</td>
- * <td>Requires at least one of the two conditions to be satisfied in order to match an entity.
- * Precedence is determined by the data access provider.</td>
+ * <td>Requires at least one of the two conditions to be satisfied in order to match an entity.</td>
  * <td><code>findByPriceLessThanEqualOrDiscountGreaterThanEqual(maxPrice, minDiscount)</code></td></tr>
  *
  * <tr style="vertical-align: top"><td><code>OrderBy</code></td>
@@ -319,10 +317,19 @@ import java.lang.annotation.Target;
  *
  * </table>
  *
+ * <h3>Wildcard Characters</h3>
  * <p>
  * Wildcard characters for patterns are determined by the data access provider.
  * For Jakarta Persistence providers, <code>_</code> matches any one character
  * and <code>%</code> matches 0 or more characters.
+ * </p>
+ *
+ * <h3>Logical Operator Precedence</h3>
+ * <p>
+ * For relational databases, the logical operator <code>And</code>
+ * is evaluated on conditions before <code>Or</code> when both are specified
+ * on the same method. Precedence for other database types is limited to
+ * the capabilities of the database.
  * </p>
  *
  * <table style="width: 100%">
@@ -477,9 +484,6 @@ import java.lang.annotation.Target;
  */
 // TODO When can "By" be omitted and "All" added? Need to document that.
 // TODO keywords for update would be needed if included.
-// TODO We stated above that "Precedence is determined by the data access provider" when
-//       combining multiple conditions with AND/OR. Is it consistent between JPA and NoSQL,
-//       and if so, can we document it here?
 // TODO Does Jakarta NoSQL have the same or different wildcard characters? Document this
 //       under: "Wildcard characters for patterns are determined by the data access provider"
 // TODO Ensure we have all reserved words listed, including those we might want to reserve for future use.
