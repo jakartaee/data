@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,14 +39,16 @@ import java.util.List;
  * }
  * </pre>
  *
- * <p>A repository method will raise {@link IllegalArgumentException} if</p>
+ * <p>A repository method will fail if</p>
  * <ul>
- * <li>multiple <code>Pageable</code> parameters are specified on the
+ * <li>multiple <code>Pageable</code> parameters are supplied to the
  *     same method.</li>
- * <li><code>Pageable</code> and {@link Limit} parameters are specified on the
+ * <li><code>Pageable</code> and {@link Limit} parameters are supplied to the
  *     same method.</li>
- * <li>a <code>Pageable</code> parameter is specified in combination
+ * <li>a <code>Pageable</code> parameter is supplied in combination
  *     with the <code>First</code> keyword.</li>
+ * <li>a <code>Pageable</code> parameter is supplied and separate
+ *     {@link Sort} parameters are also supplied to the same method.</li>
  * </ul>
  */
 public interface Pageable {
@@ -213,18 +215,11 @@ public interface Pageable {
     /**
      * <p>Creates a new <code>Pageable</code> instance representing the same
      * pagination information, except using the specified sort criteria.
-     * The order of precedence of sort criteria is the order of the
+     * The order of precedence for sort criteria is that of any statically
+     * specified sort criteria (from the <code>OrderBy</code> keyword,
+     * {@link OrderBy} annotation or <code>ORDER BY</code> clause of a the
+     * {@link Query} annotation) followed by the order of the
      * {@link Iterable} that is supplied to this method.</p>
-     *
-     * <p>A repository method will fail if a sort criteria is specified on a
-     * <code>Pageable</code> in combination with any of:</p>
-     * <ul>
-     * <li>an <code>OrderBy</code> keyword</li>
-     * <li>an {@link OrderBy} annotation</li>
-     * <li>a {@link Query} annotation that contains an <code>ORDER BY</code> clause.</li>
-     * <li>{@link Sort} parameters that are specified independently of
-     *     <code>Pageable</code> on a repository method</li>
-     * </ul>
      *
      * @param sorts sort criteria to use.
      * @return a new instance of <code>Pageable</code>. This method never returns <code>null</code>.
@@ -234,18 +229,11 @@ public interface Pageable {
     /**
      * <p>Creates a new <code>Pageable</code> instance representing the same
      * pagination information, except using the specified sort criteria.
-     * The order of precedence of sort criteria is the order in which the
+     * The order of precedence for sort criteria is that of any statically
+     * specified sort criteria (from the <code>OrderBy</code> keyword,
+     * {@link OrderBy} annotation or <code>ORDER BY</code> clause of a the
+     * {@link Query} annotation) followed by the order in which the
      * {@link Sort} parameters to this method are listed.</p>
-     *
-     * <p>A repository method will fail if a sort criteria is specified on a
-     * <code>Pageable</code> in combination with any of:</p>
-     * <ul>
-     * <li>an <code>OrderBy</code> keyword</li>
-     * <li>an {@link OrderBy} annotation</li>
-     * <li>a {@link Query} annotation that contains an <code>ORDER BY</code> clause.</li>
-     * <li>{@link Sort} parameters that are specified independently of
-     *     <code>Pageable</code> on a repository method</li>
-     * </ul>
      *
      * @param sorts sort criteria to use. This method can be invoked without parameters
      *        to request a <code>Pageable</code> that does not specify sort criteria.

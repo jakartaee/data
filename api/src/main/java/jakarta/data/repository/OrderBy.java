@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,18 +28,24 @@ import java.lang.annotation.Target;
  *
  * <p>When multiple <code>OrderBy</code> annotations are specified on a
  * repository method, the precedence for sorting follows the order
- * in which the <code>OrderBy</code> annotations are specified.</p>
+ * in which the <code>OrderBy</code> annotations are specified,
+ * and after that follows any sort criteria that is supplied
+ * dynamically by {@link Sort} parameters or by a
+ * {@link Pageable} parameter with {@link Pageable#sorts()}.</p>
  *
  * <p>For example, the following sorts first by the
  * <code>lastName</code> attribute in ascending order,
  * and secondly, for entities with the same <code>lastName</code>,
  * it then sorts by the <code>firstName</code> attribute,
- * also in ascending order,</p>
+ * also in ascending order. For entities with the same
+ * <code>lastName</code> and <code>firstName</code>,
+ * it then sorts by criteria that is specified in the
+ * {@link Pageable#sorts()}.</p>
  *
  * <pre>
  * &#64;OrderBy("lastName")
  * &#64;OrderBy("firstName")
- * Person[] findByZipCode(int zipCode);
+ * Person[] findByZipCode(int zipCode, Pageable pagination);
  * </pre>
  *
  * <p>The precise meaning of ascending and descending order is
@@ -51,8 +57,6 @@ import java.lang.annotation.Target;
  * specified in combination with any of:</p>
  * <ul>
  * <li>an <code>OrderBy</code> keyword</li>
- * <li>a {@link Sort} parameter</li>
- * <li>a {@link Pageable} parameter with {@link Pageable#sorts()}</li>
  * <li>a {@link Query} annotation that contains an <code>ORDER BY</code> clause.</li>
  * </ul>
  */

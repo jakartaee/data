@@ -31,7 +31,14 @@ import java.lang.annotation.Target;
 public @interface Query {
 
     /**
-     * Defines the query to be executed when the annotated method is called.
+     * <p>Defines the query to be executed when the annotated method is called.</p>
+     *
+     * <p>If an application defines a repository method with <code>&#64;Query</code>
+     * and supplies other forms of sorting (such as {@link Sort}) to that method,
+     * then it is the responsibility of the application to compose the query in
+     * such a way that an <code>ORDER BY</code> clause (or query language equivalent)
+     * can be validly appended. The Jakarta Data provider is not expected to
+     * parse query language that is provided by the application.</p>
      *
      * @return the query to be executed when the annotated method is called.
      */

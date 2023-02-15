@@ -76,7 +76,7 @@ You may use ```jakarta.nosql.mapping.Entity``` and the corresponding entity-rela
 In Jakarta Data, besides finding by an ID, custom queries can be written in two ways:
 
 * Through Query annotation: It will create a method annotated with the @Query with the query.
-* Using method by query convention: Using some pattern vocabulary will provide a query.
+* Using query by method convention: Using some pattern vocabulary will provide a query.
 
 WARNING: Due to the variety of data sources, those resources might not work; it varies based on the Jakarta Data implementation and the database engine, which can provide queries on more than a Key or ID or not, such as a Key-value database.
 
@@ -316,6 +316,50 @@ first20 = products.findByNameLike(name, pageable);
 
 ----
 
+=== Precedence of Sort Criteria
+
+The specification defines different ways of providing sort criteria on queries. This section discusses how these different mechanisms relate to each other.
+
+==== Sort Criteria within Query Language
+
+Sort criteria can be hard-coded directly within query language by making use of the ```@Query``` annotation. A repository method that is annotated with ```@Query``` with a value that contains an ```ORDER BY``` clause (or query language equivalent) must not provide sort criteria via the other mechanisms.
+
+A repository method that is annotated with ```@Query``` with a value that does not contain an ```ORDER BY``` clause and ends with a ```WHERE``` clause (or query language equivalents to these) can use other mechanisms that are defined by this specification for providing sort criteria.
+
+==== Static Mechanisms for Sort Criteria
+
+Sort criteria is provided statically for a repository method by using the ```OrderBy``` keyword or by annotating the method with one or more ```@OrderBy``` annotations. The ```OrderBy``` keyword cannot be intermixed with the ```@OrderBy``` annotation or the ```@Query``` annotation. Static sort criteria takes precedence over dynamic sort criteria in that static sort criteria is evaluated first. When static sort criteria sorts entities to the same position, dynamic sort criteria is applied to further order those entities.
+
+==== Dynamic Mechanisms for Sort Criteria
+
+Sort criteria is provided dynamically to repository methods either via ```Sort``` parameters or via a ```Pageable``` parameter that has one or more ```Sort``` values. ```Sort``` and```Pageable``` containing ```Sort``` must not both be provided to the same method.
+
+==== Examples of Sort Criteria Precedence
+
+The following examples work through scenarios where static and dynamic sort criteria are provided to the same method.
+
+[source,java]
+----
+// Sorts first by type. When type is the same, applies the Pageable's sort criteria
+Page<User> findByNameStartsWithOrderByType(String namePrefix, Pageable pagination);
+
+// Sorts first by type. When type is the same, applies the criteria in the Sorts
+List<User> findByNameStartsWithOrderByType(String namePrefix, Sort... sorts);
+
+// Sorts first by age. When age is the same, applies the Pageable's sort criteria
+@OrderBy("age")
+Page<User> findByNameStartsWith(String namePrefix, Pageable pagination);
+
+// Sorts first by age. When age is the same, applies the criteria in the Sorts
+@OrderBy("age")
+List<User> findByNameStartsWith(String namePrefix, Sort... sorts);
+
+// Sorts first by name. When name is the same, applies the Pageable's sort criteria
+@Query("SELECT u FROM User u WHERE (u.age > ?1)")
+@OrderBy("name")
+KeysetAwarePage<User> olderThan(int age, Pageable pagination);
+----
+
 === Keyset Pagination
 
 Keyset pagination aims to reduce missed and duplicate results across pages by querying relative to the observed values of entity properties that constitute the sorting criteria. Keyset pagination can also offer an improvement in performance because it avoids fetching and ordering results from prior pages by causing those results to be non-matching. A Jakarta Data provider appends additional conditions to the query and tracks keyset values automatically when `KeysetAwareSlice` or `KeysetAwarePage` are used as the repository method return type. The application invokes `nextPageable` or `previousPageable` on the keyset aware slice or page to obtain a `Pageable` which keeps track of the keyset values.
@@ -351,13 +395,10 @@ Pageable p = Pageable.ofSize(50).afterKeyset(c.lastName, c.firstName, c.id);
 page = customers.findByZipcodeOrderByLastNameAscFirstNameAscIdAsc(55902, p);
 ----
 
-The sort criteria for a repository method that performs keyset pagination must uniquely identify each entity and must be provided by one of:
+The sort criteria for a repository method that performs keyset pagination must uniquely identify each entity and must be provided by:
 
-* `OrderBy` name pattern of the repository method (as in the examples above).
-* `@OrderBy` annotation(s) on the repository method.
+* `OrderBy` name pattern of the repository method (as in the examples above) or `@OrderBy` annotation(s) on the repository method.
 * `Sort` parameters of the `Pageable` that is supplied to the repository method.
-
-If either of the first are specified, the `Sort` list of the `Pageable` must be empty or unspecified.
 
 ==== Example of Appending to Queries for Keyset Pagination
 

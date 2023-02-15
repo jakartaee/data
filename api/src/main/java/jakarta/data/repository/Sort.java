@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,9 +20,13 @@ package jakarta.data.repository;
 import java.util.Objects;
 
 /**
- * <p><code>Sort</code> implements the pairing of a {@link Direction} and a property.</p>
+ * <p><code>Sort</code> allows the application to dynamically provide
+ * sort criteria which includes a case sensitivity request,
+ * a {@link Direction} and a property.</p>
  *
- * <p>Dynamic <code>Sort</code> criteria are optionally specified as
+ * <p>Dynamic <code>Sort</code> criteria can be specified when
+ * {@link Pageable#sortBy(Sort[]) requesting a page of results}
+ * or can be optionally specified as
  * parameters to a repository method in any of the positions that are after
  * the query parameters. You can use <code>Sort...</code> to allow a variable
  * number of <code>Sort</code> criteria. For example,</p>
@@ -37,18 +41,15 @@ import java.util.Objects;
  *                                                 Sort.asc("firstName"));
  * </pre>
  *
- * <p>It is preferable to use static sorting criteria
- * (<code>OrderBy</code> keyword or {@link Query} or {@link OrderBy} annotation)
- * where possible to better allow for optimizations by the provider.</p>
+ * <p>When combined on a method with static sort criteria
+ * (<code>OrderBy</code> keyword or {@link OrderBy} annotation or
+ * {@link Query} with an <code>ORDER BY</code> clause), the static
+ * sort criteria is applied first, followed by the dynamic sort criteria
+ * that is defined by <code>Sort</code> instances in the order listed.</p>
  *
  * <p>A repository method will fail if a <code>Sort</code> parameter is
- * specified in combination with any of:</p>
- * <ul>
- * <li>an <code>OrderBy</code> keyword</li>
- * <li>an {@link OrderBy} annotation</li>
- * <li>a {@link Query} annotation that contains an <code>ORDER BY</code> clause.</li>
- * <li>a {@link Pageable} parameter with {@link Pageable#sorts()}</li>
- * </ul>
+ * specified in combination with a {@link Pageable} parameter with
+ * {@link Pageable#sorts()}.</p>
  */
 public final class Sort {
 
