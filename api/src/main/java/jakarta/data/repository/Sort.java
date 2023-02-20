@@ -47,9 +47,16 @@ import java.util.Objects;
  * sort criteria is applied first, followed by the dynamic sort criteria
  * that is defined by <code>Sort</code> instances in the order listed.</p>
  *
- * <p>A repository method will fail if a <code>Sort</code> parameter is
- * specified in combination with a {@link Pageable} parameter with
- * {@link Pageable#sorts()}.</p>
+ * <p>A repository method will fail with a
+ * {@link jakarta.data.exceptions.DataException DataException}
+ * or a more specific subclass if</p>
+ * <ul>
+ * <li>a <code>Sort</code> parameter is
+ *     specified in combination with a {@link Pageable} parameter with
+ *     {@link Pageable#sorts()}.</li>
+ * <li>the database is incapable of ordering with the requested
+ *     sort criteria.</li>
+ * </ul>
  */
 public final class Sort {
 
