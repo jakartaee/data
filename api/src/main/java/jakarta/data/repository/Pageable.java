@@ -39,7 +39,9 @@ import java.util.List;
  * }
  * </pre>
  *
- * <p>A repository method will fail if</p>
+ * <p>A repository method will fail with a
+ * {@link jakarta.data.exceptions.DataException DataException}
+ * or a more specific subclass if</p>
  * <ul>
  * <li>multiple <code>Pageable</code> parameters are supplied to the
  *     same method.</li>
@@ -49,6 +51,8 @@ import java.util.List;
  *     with the <code>First</code> keyword.</li>
  * <li>a <code>Pageable</code> parameter is supplied and separate
  *     {@link Sort} parameters are also supplied to the same method.</li>
+ * <li>the database is incapable of ordering with the requested
+ *     sort criteria.</li>
  * </ul>
  */
 public interface Pageable {

@@ -59,6 +59,11 @@ import java.lang.annotation.Target;
  * <li>an <code>OrderBy</code> keyword</li>
  * <li>a {@link Query} annotation that contains an <code>ORDER BY</code> clause.</li>
  * </ul>
+ *
+ * <p>A repository method will fail with a
+ * {@link jakarta.data.exceptions.DataException DataException}
+ * or a more specific subclass if the database is incapable of
+ * ordering with the requested sort criteria.</p>
  */
 @Repeatable(OrderBy.List.class)
 @Retention(RetentionPolicy.RUNTIME)
