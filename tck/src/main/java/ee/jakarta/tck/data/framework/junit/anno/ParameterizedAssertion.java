@@ -13,20 +13,25 @@
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
-package ee.jakarta.tck.data.framework.arquillian.extensions;
+package ee.jakarta.tck.data.framework.junit.anno;
 
-import org.jboss.arquillian.container.test.spi.client.deployment.ApplicationArchiveProcessor;
-import org.jboss.arquillian.container.test.spi.client.deployment.DeploymentScenarioGenerator;
-import org.jboss.arquillian.core.spi.LoadableExtension;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+
+import java.lang.annotation.RetentionPolicy;
+
+import org.junit.jupiter.params.ParameterizedTest;
 
 /**
- * Extension to Arquillian that adds an Archive Processor
+ * Test metadata to track what assertion from the spec is being tested, and the
+ * strategy used to test that assertion.
  */
-public class TCKLoadableExtension implements LoadableExtension {
+@Target({ ElementType.METHOD })
+@Retention(RetentionPolicy.RUNTIME)
+@ParameterizedTest
+public @interface ParameterizedAssertion {
+    String id();
 
-    @Override
-    public void register(ExtensionBuilder builder) {
-        builder.service(ApplicationArchiveProcessor.class, TCKArchiveProcessor.class);
-        builder.service(DeploymentScenarioGenerator.class, FlexibleEntityDeployment.class);
-    }
+    String strategy() default "";
 }

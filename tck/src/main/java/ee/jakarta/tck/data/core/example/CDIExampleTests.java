@@ -50,6 +50,6 @@ public class CDIExampleTests {
     @Disabled(value = "Challenge #1")
     @Assertion(id = "EXAMPLE", strategy = "Uses the disabled annotation to ensure test does not get executed")
     public void disabledTest() {
-        
+        assertTrue(false);
     }
 }

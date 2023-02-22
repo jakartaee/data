@@ -48,6 +48,14 @@
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
     </dependency>
+    
+    <!-- Data API -->
+    <dependency>
+    	<groupId>jakarta.data</groupId>
+    	<artifactId>jakarta-data-api</artifactId>
+    	<version>${jakarta.data.version}</version>
+    	<scope>provided</scope>
+    </dependency>
 
     <!-- EE Server Integration framework -->
     <dependency>
@@ -82,6 +90,22 @@
       <version>${jakarta.enterprise.cdi.version}</version>
       <scope>provided</scope>
     </dependency>
+    
+    <!-- Provided Entity APIs -->
+    <dependency>
+      <groupId>jakarta.nosql</groupId>
+      <artifactId>nosql-core</artifactId>
+      <version>1.0.0-b6</version>
+      <scope>provided</scope>
+    </dependency>
+    
+    <dependency>
+      <groupId>jakarta.persistence</groupId>
+      <artifactId>jakarta.persistence-api</artifactId>
+      <version>3.1.0</version>
+      <scope>provided</scope>
+    </dependency>
+    
 
   </dependencies>
 
