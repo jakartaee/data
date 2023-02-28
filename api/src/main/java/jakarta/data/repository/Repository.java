@@ -481,6 +481,28 @@ import java.lang.annotation.Target;
  *                                 Sort.desc("amountSold"),
  *                                 Sort.asc("name"));
  * </pre>
+ *
+ * <h2>Jakarta Transactions</h2>
+ *
+ * <p>Repository methods can participate in global transactions.
+ * If a global transaction is active on the thread where a repository method runs
+ * and the data source that backs the repository is capable of transaction enlistment,
+ * then the repository operation runs as part of the transaction.
+ * The repository operation does not commit or roll back a transaction
+ * that was already present on the thread, but it might mark the transaction
+ * for rollback only ({@code jakarta.transaction.Status.STATUS_MARKED_ROLLBACK})
+ * if the repository operation fails.</p>
+ *
+ * <p>When running in an environment where Jakarta Transactions and Jakarta CDI are
+ * available, you can annotate repository methods with {@code jakarta.transaction.Transactional}
+ * to define how the container manages transactions with respect to the repository
+ * method.</p>
+ *
+ * <h2>Interceptor Annotations on Repository Methods</h2>
+ *
+ * <p>Interceptor bindings such as {@code jakarta.transaction.Transactional} can annotate a
+ * repository method. The repository bean honors these annotations when running in an
+ * environment where the Jakarta EE technology that provides the interceptor is available.</p>
  */
 // TODO When can "By" be omitted and "All" added? Need to document that.
 // TODO keywords for update would be needed if included.
