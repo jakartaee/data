@@ -69,7 +69,11 @@ Entity classes are simple Java objects with fields or accessor methods designati
 
 You may use ```jakarta.persistence.Entity``` and the corresponding entity-related annotations of the Jakarta Persistence specification in the same package (such as ```jakarta.persistence.Id``` and ```jakarta.persistence.Column```) to define and customize entities for relational databases.
 
-You may use ```jakarta.nosql.mapping.Entity``` and the corresponding entity-related annotations of the Jakarta NoSQL specification in the same package (such as ```jakarta.nosql.mapping.Id``` and ```jakarta.nosql.mapping.Column```) to define and customize entities for NoSQL databases.
+You may use ```jakarta.nosql.Entity``` and the corresponding entity-related annotations of the Jakarta NoSQL specification in the same package (such as ```jakarta.nosql.Id``` and ```jakarta.nosql.Column```) to define and customize entities for NoSQL databases.
+
+Applications are recommended not to mix Entity annotations from different models for the sake of clarity and to allow for the Entity annotation to identify which provider is desired in cases where multiple types of Jakarta Data providers are available.
+
+Repository implementations will search for the Entity annotation(s) they support and ignore other annotations.
 
 === Queries Methods
 
