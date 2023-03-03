@@ -1,3 +1,18 @@
+/*
+ * Copyright (c) 2022, 2023 Contributors to the Eclipse Foundation
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v. 2.0, which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
+ *
+ * This Source Code may also be made available under the following Secondary
+ * Licenses when the conditions for such availability set forth in the
+ * Eclipse Public License v. 2.0 are satisfied: GNU General Public License,
+ * version 2 with the GNU Classpath Exception, which is available at
+ * https://www.gnu.org/software/classpath/license.html.
+ *
+ * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
+ */
 package ee.jakarta.tck.data.metadata;
 
 import java.io.BufferedWriter;
@@ -10,6 +25,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
 import java.util.stream.Collectors;
@@ -234,21 +250,40 @@ public class CollectMetaData {
      * @throws IOException   - exception if we cannot write to this location
      */
     private static void writeTestCounts(List<TestMetaData> testMetaData, File outputLocation) throws IOException {
-        List<TestMetaData> runnableTestMetaData = testMetaData.stream().filter(TestMetaData::isRunnable).collect(Collectors.toList());
-        final String compatabilityStatement = "* tests must be passed to successfully claim $1 compatibility.";
-        
         StringBufferWrapper runtimeTestsSection = new StringBufferWrapper();
         
+        List<TestMetaData> runnableTestMetaData = testMetaData.stream().filter(TestMetaData::isRunnable).collect(Collectors.toList());
+        
+        List<TestMetaData> standalone = runnableTestMetaData.stream().filter(TestMetaData::isStandalone).collect(Collectors.toList());
+        List<TestMetaData> core = runnableTestMetaData.stream().filter(TestMetaData::isCore).collect(Collectors.toList());
+        List<TestMetaData> web = runnableTestMetaData.stream().filter(TestMetaData::isWeb).collect(Collectors.toList());
+        List<TestMetaData> full = runnableTestMetaData.stream().filter(TestMetaData::isFull).collect(Collectors.toList());
+        
         //TODO replace with testblock if we end up using Java 17
-        runtimeTestsSection.append("* *" + runnableTestMetaData.stream().filter(TestMetaData::isStandalone).count());
-        runtimeTestsSection.appendNewLine(compatabilityStatement.replace("$1", "standalone"));
-        runtimeTestsSection.append("* *" + runnableTestMetaData.stream().filter(TestMetaData::isCore).count());
-        runtimeTestsSection.appendNewLine(compatabilityStatement.replace("$1", "core"));
-        runtimeTestsSection.append("* *" + runnableTestMetaData.stream().filter(TestMetaData::isWeb).count());
-        runtimeTestsSection.appendNewLine(compatabilityStatement.replace("$1", "web"));
-        runtimeTestsSection.append("* *" + runnableTestMetaData.stream().filter(TestMetaData::isFull).count());
-        runtimeTestsSection.appendNewParagraph(compatabilityStatement.replace("$1", "full"));
-        runtimeTestsSection.append("*Note:* This count includes the signature test, but does not include disabled tests");
+        
+        runtimeTestsSection.appendNewLine("|===");
+        
+        runtimeTestsSection.appendNewLine("|entity\\platform |standalone |core |web |full");
+        
+        runtimeTestsSection.appendNewLine("|persistence");
+        runtimeTestsSection.appendNewLine("|" + standalone.stream().filter(Predicate.not(TestMetaData::isNoSQL)).count());
+        runtimeTestsSection.appendNewLine("|" + core.stream().filter(Predicate.not(TestMetaData::isNoSQL)).count());
+        runtimeTestsSection.appendNewLine("|" + web.stream().filter(Predicate.not(TestMetaData::isNoSQL)).count());
+        runtimeTestsSection.appendNewLine("|" + full.stream().filter(Predicate.not(TestMetaData::isNoSQL)).count());
+        
+        runtimeTestsSection.appendNewLine("|nosql");
+        runtimeTestsSection.appendNewLine("|" + standalone.stream().filter(Predicate.not(TestMetaData::isPersistance)).count());
+        runtimeTestsSection.appendNewLine("|" + core.stream().filter(Predicate.not(TestMetaData::isPersistance)).count());
+        runtimeTestsSection.appendNewLine("|" + web.stream().filter(Predicate.not(TestMetaData::isPersistance)).count());
+        runtimeTestsSection.appendNewLine("|" + full.stream().filter(Predicate.not(TestMetaData::isPersistance)).count());
+        
+        runtimeTestsSection.appendNewLine("|BOTH");
+        runtimeTestsSection.appendNewLine("|" + standalone.size());
+        runtimeTestsSection.appendNewLine("|" + core.size());
+        runtimeTestsSection.appendNewLine("|" + web.size());
+        runtimeTestsSection.appendNewLine("|" + full.size());
+        
+        runtimeTestsSection.appendNewLine("|===");
         
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputLocation))) {
             writer.write(runtimeTestsSection.toString());
@@ -286,7 +321,7 @@ public class CollectMetaData {
     private static List<String> findTags(Class<?> clazz) {
         return Arrays.stream(clazz.getAnnotations())
         // Get 1st level nested annotations
-        .flatMap(anno -> Arrays.stream(anno.annotationType().getAnnotations()))
+        .flatMap(anno -> Stream.concat(Arrays.stream(anno.annotationType().getAnnotations()), Stream.of(anno)))
         // Get all tag annotations
         .flatMap(anno -> {
             if(anno instanceof Tag)
@@ -403,6 +438,14 @@ public class CollectMetaData {
         
         boolean isFull() {
             return tags.contains("full");
+        }
+        
+        boolean isPersistance() {
+            return tags.contains("persistence");
+        }
+        
+        boolean isNoSQL() {
+            return tags.contains("nosql");
         }
         
         boolean isDisabled() {

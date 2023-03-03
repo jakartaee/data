@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022, 2023 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -33,7 +33,7 @@ public class SimpleServletExampleTests {
                 .addClass(SimpleServletExampleTests.class);
     } 
     
-    @Assertion(id = "EXAMPLE", strategy = "Run a test directly on a servlet and make sure it works.")
+    @Assertion(id = "26", strategy = "Run a test directly on a servlet and make sure it works.")
     public void testRunOnServletUsingArquillian() {
         assertTrue(true, "Do something you could only do in a Web Container here!");
     }

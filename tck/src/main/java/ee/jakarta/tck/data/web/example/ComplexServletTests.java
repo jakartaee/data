@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022, 2023 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -44,7 +44,7 @@ public class ComplexServletTests extends TestClient {
     @ArquillianResource
     URL baseURL;
     
-    @Assertion(id = "EXAMPLE", strategy = "Run server side tests that will succeed and fail and assert the results.")
+    @Assertion(id = "26", strategy = "Run server side tests that will succeed and fail and assert the results.")
     public void testSuccessAndFailure(TestInfo testInfo) {
         URL requestURL = URLBuilder.fromURL(baseURL)
                 .withPath(ComplexServlet.URL_PATTERN)
@@ -63,7 +63,7 @@ public class ComplexServletTests extends TestClient {
         });
     }
     
-    @Assertion(id = "EXAMPLE", strategy = "Run server side test with a method name that matches the client side test.")
+    @Assertion(id = "26", strategy = "Run server side test with a method name that matches the client side test.")
     public void testMatchServletSideMethodName(TestInfo testInfo) {
         URL requestURL = URLBuilder.fromURL(baseURL)
                 .withPath(ComplexServlet.URL_PATTERN)
@@ -73,7 +73,7 @@ public class ComplexServletTests extends TestClient {
         super.runTest(requestURL);
     }
     
-    @Assertion(id = "EXAMPLE", strategy = "Run server side test that append a unique string to the response body and make sure it is returned.")
+    @Assertion(id = "26", strategy = "Run server side test that append a unique string to the response body and make sure it is returned.")
     public void testServletSideCustomResponse(TestInfo testInfo) {
         URL requestURL = URLBuilder.fromURL(baseURL)
                 .withPath(ComplexServlet.URL_PATTERN)
