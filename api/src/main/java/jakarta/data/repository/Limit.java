@@ -45,17 +45,29 @@ package jakarta.data.repository;
  * <li>a <code>Limit</code> parameter is supplied in combination
  *     with the <code>First</code> keyword.</li>
  * </ul>
+ *
+ * @param maxResults maximum number of results for a query.
+ * @param startAt    starting position for query results (1 is the first result).
  */
-public final class Limit {
-    private static final long DEFAULT_START_AT = 1L;
-    private final int maxResults;
-    private final long startAt;
+public record Limit(int maxResults, long startAt) {
 
-    private Limit(int maxResults, long startAt) {
-        this.maxResults = maxResults;
-        this.startAt = startAt;
+    private static final long DEFAULT_START_AT = 1L;
+
+    /**
+     * Constructs a limit on the amount of query results.
+     *
+     * @param maxResults maximum number of results for a query.
+     * @param startAt    starting position for query results (1 is the first result).
+     */
+    public Limit {
+        if (startAt < 1)
+            throw new IllegalArgumentException("startAt: " + startAt);
+
+        if (maxResults < 1)
+            throw new IllegalArgumentException("maxResults: " + maxResults);
     }
 
+    // Override to provide method documentation:
     /**
      * <p>Maximum number of results that can be returned for a
      * single invocation of the repository method.</p>
@@ -66,9 +78,10 @@ public final class Limit {
         return maxResults;
     }
 
+    // Override to provide method documentation:
     /**
      * <p>Offset at which to start when returning query results.
-     * The first query result is position <code>1</code>.<p>
+     * The first query result is position <code>1</code>.</p>
      *
      * @return offset of the first result.
      */
@@ -86,9 +99,6 @@ public final class Limit {
      * @throws IllegalArgumentException if maxResults is less than 1.
      */
     public static Limit of(int maxResults) {
-        if (maxResults < 1)
-            throw new IllegalArgumentException("maxResults: " + maxResults);
-
         return new Limit(maxResults, DEFAULT_START_AT);
     }
 
@@ -109,9 +119,6 @@ public final class Limit {
      *         exceeds {@link Integer#MAX_VALUE}.
      */
     public static Limit range(long startAt, long endAt) {
-        if (startAt < 1)
-            throw new IllegalArgumentException("startAt: " + startAt);
-
         if (endAt < startAt)
             throw new IllegalArgumentException("startAt: " + startAt + ", endAt: " + endAt);
 

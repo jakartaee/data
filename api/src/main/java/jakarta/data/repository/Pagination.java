@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,41 +19,24 @@ package jakarta.data.repository;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 /**
  * Built-in implementation of Pageable.
  */
-final class Pagination implements Pageable {
+record Pagination(long page, int size, List<Sort> sorts, Mode mode, Cursor cursor) implements Pageable {
 
-    private final Cursor cursor;
-
-    private final Mode mode;
-
-    private final long page;
-
-    private final int size;
-
-    private final List<Sort> sorts;
-
-    Pagination(long pageNumber, int maxPageSize, List<Sort> sorts, Mode mode, Cursor cursor) {
-        if (pageNumber < 1) {
-            throw new IllegalArgumentException("pageNumber: " + pageNumber);
-        } else if (maxPageSize < 1) {
-            throw new IllegalArgumentException("maxPageSize: " + maxPageSize);
+    Pagination {
+        if (page < 1) {
+            throw new IllegalArgumentException("pageNumber: " + page);
+        } else if (size < 1) {
+            throw new IllegalArgumentException("maxPageSize: " + size);
         }
 
         if (mode != Mode.OFFSET && (cursor == null || cursor.size() == 0)) {
             throw new IllegalArgumentException("No keyset values were provided.");
         }
-
-        this.page = pageNumber;
-        this.size = maxPageSize;
-        this.sorts = sorts;
-        this.mode = mode;
-        this.cursor = cursor;
     }
 
     @Override
@@ -77,37 +60,6 @@ final class Pagination implements Pageable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        Pagination pageable = (Pagination) o;
-        return size == pageable.size
-                && page == pageable.page
-                && mode == pageable.mode
-                && Objects.equals(cursor, pageable.cursor)
-                && sorts.equals(pageable.sorts);
-    }
-
-    @Override
-    public Cursor cursor() {
-        return cursor;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(size, page, sorts, mode, cursor);
-    }
-
-    @Override
-    public Mode mode() {
-        return mode;
-    }
-
-    @Override
     public Pageable next() {
         if (mode == Mode.OFFSET) {
             return new Pagination((page + 1), this.size, this.sorts, Mode.OFFSET, null);
@@ -127,24 +79,13 @@ final class Pagination implements Pageable {
             .append(", ").append(cursor.size()).append(" keys");
         }
         for (Sort sort : sorts) {
-            s.append(", ").append(sort.property()).append(sort.isAscending() ? " ASC" : " DESC");
+            s.append(", ").append(sort.property());
+            if (sort.ignoreCase()) {
+                s.append(" IGNORE CASE");
+            }
+            s.append(sort.isAscending() ? " ASC" : " DESC");
         }
         return s.append("}").toString();
-    }
-
-    @Override
-    public long page() {
-        return page;
-    }
-
-    @Override
-    public int size() {
-        return size;
-    }
-
-    @Override
-    public List<Sort> sorts() {
-        return sorts;
     }
 
     @Override
