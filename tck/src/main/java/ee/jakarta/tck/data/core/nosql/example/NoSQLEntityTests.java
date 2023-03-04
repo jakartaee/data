@@ -47,7 +47,7 @@ public class NoSQLEntityTests {
     Order order;
     
     @Assertion(id = "119", strategy = "Ensure that this test is only run when provider supports nosql entities")
-    public void testNotRunOnPersistance() {
+    public void testNotRunOnPersistence() {
         List<Product> products = new ArrayList<>();
         products.add(Product.of(01L, "pen", 2.50, 3.50));
         products.add(Product.of(02L, "pencil", 1.25, 2.00));

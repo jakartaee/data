@@ -272,10 +272,10 @@ public class CollectMetaData {
         runtimeTestsSection.appendNewLine("|" + full.stream().filter(Predicate.not(TestMetaData::isNoSQL)).count());
         
         runtimeTestsSection.appendNewLine("|nosql");
-        runtimeTestsSection.appendNewLine("|" + standalone.stream().filter(Predicate.not(TestMetaData::isPersistance)).count());
-        runtimeTestsSection.appendNewLine("|" + core.stream().filter(Predicate.not(TestMetaData::isPersistance)).count());
-        runtimeTestsSection.appendNewLine("|" + web.stream().filter(Predicate.not(TestMetaData::isPersistance)).count());
-        runtimeTestsSection.appendNewLine("|" + full.stream().filter(Predicate.not(TestMetaData::isPersistance)).count());
+        runtimeTestsSection.appendNewLine("|" + standalone.stream().filter(Predicate.not(TestMetaData::isPersistence)).count());
+        runtimeTestsSection.appendNewLine("|" + core.stream().filter(Predicate.not(TestMetaData::isPersistence)).count());
+        runtimeTestsSection.appendNewLine("|" + web.stream().filter(Predicate.not(TestMetaData::isPersistence)).count());
+        runtimeTestsSection.appendNewLine("|" + full.stream().filter(Predicate.not(TestMetaData::isPersistence)).count());
         
         runtimeTestsSection.appendNewLine("|BOTH");
         runtimeTestsSection.appendNewLine("|" + standalone.size());
@@ -440,7 +440,7 @@ public class CollectMetaData {
             return tags.contains("full");
         }
         
-        boolean isPersistance() {
+        boolean isPersistence() {
             return tags.contains("persistence");
         }
         
