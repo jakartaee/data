@@ -21,7 +21,7 @@ import jakarta.data.repository.DataRepository;
 import jakarta.data.repository.Repository;
 
 @Repository
-public interface Order extends DataRepository<Product, Long> {
+public interface Catalog extends DataRepository<Product, Long> {
     
     void save(Product product);
     void deleteById(Long id);

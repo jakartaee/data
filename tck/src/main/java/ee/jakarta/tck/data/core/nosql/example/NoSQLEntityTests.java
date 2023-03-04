@@ -40,11 +40,11 @@ public class NoSQLEntityTests {
     
     @Deployment
     public static JavaArchive createDeployment() {
-        return ShrinkWrap.create(JavaArchive.class).addClasses(Product.class, Order.class);
+        return ShrinkWrap.create(JavaArchive.class).addClasses(Product.class, Catalog.class);
     }
     
     @Inject
-    Order order;
+    Catalog catalog;
     
     @Assertion(id = "119", strategy = "Ensure that this test is only run when provider supports nosql entities")
     public void testNotRunOnPersistence() {
@@ -55,13 +55,13 @@ public class NoSQLEntityTests {
         products.add(Product.of(04L, "calculator", 15.00, 20.00));
         products.add(Product.of(05L, "ruler", 2.00, 2.15));
         
-        products.stream().forEach(product -> order.save(product));
+        products.stream().forEach(product -> catalog.save(product));
         
-        int countExpensive = order.countByPriceGreaterThanEqual(3.00);
+        int countExpensive = catalog.countByPriceGreaterThanEqual(2.99);
         assertEquals(2, countExpensive, "Expected two products to be more than 3.00");
         
         Assertions.assertThrows(MappingException.class, () -> {
-            order.countBySurgePriceGreaterThanEqual(3.00);
+            catalog.countBySurgePriceGreaterThanEqual(2.99);
         });
         
     }
