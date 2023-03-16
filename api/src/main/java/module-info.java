@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,5 +18,6 @@
 module jakarta.data.api {
     exports jakarta.data.repository;
     exports jakarta.data.exceptions;
+    exports jakarta.data.spi.provider;
     opens jakarta.data.repository;
 }

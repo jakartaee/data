@@ -464,3 +464,28 @@ for (Pageable p = Pageable.ofSize(25).sortBy(Sort.desc("yearBorn"), Sort.asc("na
 }
 ----
 
+== Jakarta Data Providers
+
+=== Modes
+
+Jakarta Data Providers implement the Jakarta Data API and specification requirements for one or more of the following modes.
+
+==== Standalone Mode
+
+Standalone mode means that the Jakarta Data provider is able to run on its own outside of a Jakarta EE platform or profile. Standalone Jakarta Data providers can choose whether or not to provide their own custom dependency injection leveraging `@Inject`, whether or not to provide extensions to tie into dependency injection via Jakarta Contexts and Dependency Injection (CDI) SE, whether or not to tie into the Jakarta Data Provider SPI, and whether or not to define other vendor specific ways of accessing Jakarta Data repositories. The Jakarta Data TCK includes a Standalone mode for validating Jakarta Data Providers that requires at least one of the first three of the aforementioned approaches.
+
+==== Jakarta EE Mode
+
+Jakarta EE mode means that the Jakarta Data provider is able to run within a Jakarta EE product, which is a product that provides a Jakarta EE profile or the full Jakarta EE platform, or a product that is comprised of a subset of Jakarta EE specifications. If the Jakarta EE product is running in a mode that provides Jakarta Contexts and Dependency Injection (CDI), then the Jakarta EE product coordinates CDI dependency injection for all Jakarta Data providers that it discovers via the Jakarta Data Provider SPI. Jakarta Data providers do not need to support CDI. Jakarta Data providers can continue using their own custom dependency injection models without CDI present. The Jakarta Data TCK includes a Jakarta EE mode for validating Jakarta Data Providers that leverages the `@Inject` annotation that is common to both CDI and custom dependency injection models.
+
+==== Both Standalone and Jakarta EE Mode
+
+A Jakarta Data provider can choose to support running in both Standalone and Jakarta EE Modes. In such cases, the Jakarta Data provider can certify with the Jakarta Data TCK in Standalone mode as a compatible Jakarta Data provider, and a Jakarta EE product that supports Jakarta Data will use the Jakarta Data provider to certify with the Jakarta Data TCK in Jakarta EE mode as a compatible Jakarta EE product.
+
+=== Multiple Jakarta Data Providers
+
+Multiple Jakarta Data Providers can coexist, allowing customers to write applications where some repositories are backed by relational databases and others by NoSQL databases, or other combinations. A Jakarta EE product that is aware of multiple Jakarta Data providers directs requests to each based on the type of entity annotations that each supports.
+
+==== Discovery
+
+Jakarta Data providers can make themselves available for discovery by Jakarta EE products via the Jakarta Data Provider SPI. This enables Jakarta EE products with CDI support to provide CDI dependency injection and other integration with CDI for Jakarta Data providers. Jakarta Data providers with their own custom dependency injection or other vendor-specific mechanisms are not required to implement or provide the Jakarta Data Provider SPI.
