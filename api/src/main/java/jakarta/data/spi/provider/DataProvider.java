@@ -72,7 +72,7 @@ public interface DataProvider {
     String name();
 
     /**
-     * <p>Invoked by the Jakarta EE product to notify the the Jakarta Data
+     * <p>Invoked by the Jakarta EE product to notify the Jakarta Data
      * provider that the CDI managed bean for a previously-obtained repository
      * instance has reached the end of its life cycle. If multiple invocations of
      * {@link #getRepository(Class, Class) getRepository} return the same
