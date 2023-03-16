@@ -3,7 +3,7 @@
 
 == Introduction
 
-The Jakarta Data specification provides an API for easier data access to a variety of database types, both relational and NoSQL. A Java developer can access those repositories a number of ways, including the ability to compose custom query methods on a Repository interface.
+The Jakarta Data specification provides an API for easier data access to various database types, such as relational and NoSQL. A Java developer can access those repositories in several ways, including composing custom query methods on a Repository interface.
 
 Jakarta Data’s goal is to provide a familiar and consistent, Jakarta-based programming model for data access while still retaining the particular traits and strengths of the underlying data store.
 
