@@ -25,7 +25,7 @@
  * or other vendor-specific mechanisms can ignore this SPI and do not need
  * to provide or implement it.</p>
  *
- * <p>Jakarta EE applications do not use the Jakarta Data Provider SPI directly.
+ * <p>Jakarta EE applications do not use the Jakarta Data Provider SPI.
  * Jakarta EE products are not required to make this package available to
  * applications.</p>
  */
