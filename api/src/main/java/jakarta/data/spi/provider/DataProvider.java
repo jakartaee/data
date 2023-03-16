@@ -50,7 +50,7 @@ import jakarta.data.exceptions.MappingException;
  */
 public interface DataProvider {
     /**
-     * <p>Provides implementation of the specified repository interface.</p>
+     * <p>Provides an instance that implements the specified repository interface.</p>
      *
      * @param <R>                 interface class that defines the data repository.
      * @param repositoryInterface the repository interface.
