@@ -44,7 +44,7 @@ import jakarta.data.exceptions.MappingException;
  * the fully qualified name of a {@code DataProvider} implementation that is
  * provided within the JAR file.</p>
  *
- * <p>Jakarta EE applications do not use the Jakarta Data Provider SPI directly.
+ * <p>Jakarta EE applications do not use the Jakarta Data Provider SPI.
  * Jakarta EE products are not required to make this class available to
  * applications.</p>
  */
