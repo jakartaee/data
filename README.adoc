@@ -3,13 +3,13 @@
 
 == Introduction
 
-The Jakarta Data specification provides an API for easier data access. A Java developer can split the persistence from the model with several features, such as the ability to compose custom query methods on a Repository interface.
+The Jakarta Data specification provides an API for easier data access to a variety of database types, both relational and NoSQL. A Java developer can access those repositories a number of ways, including the ability to compose custom query methods on a Repository interface.
 
-Jakarta Data’s goal is to provide a familiar and consistent, Jakarta-based programming model for data access while still retaining the particular traits of the underlying data store.
+Jakarta Data’s goal is to provide a familiar and consistent, Jakarta-based programming model for data access while still retaining the particular traits and strengths of the underlying data store.
 
 === Repository
 
-A repository abstraction aims to significantly reduce the boilerplate code required to implement data access layers for various persistence stores.
+A repository abstraction designed to significantly reduce the boilerplate code required to implement data access layers for various types of persistent stores.
 
 [source,java]
 ----
@@ -35,7 +35,7 @@ repository.save(ferrari);
 
 ==== Pagination
 
-Jakarta Data also supports particular parameters to define pagination and sorting.
+Jakarta Data also supports parameters to define pagination and sorting.
 
 [source,java]
 ----
@@ -51,7 +51,7 @@ public interface ProductRepository extends PageableRepository<Product, Long> {
 
 === Maven
 
-Add the Maven dependency:
+To start to use Jakarta Dara, add the API as a Maven dependency:
 
 [source,xml]
 ----
@@ -71,7 +71,7 @@ This project is governed by the Eclipse Foundation Community Code of Conduct. By
 
 Having trouble with Jakarta Data? We’d love to help!
 
-Report bugs with Jakarta Data at https://github.com/jakartaee/data/issues.
+Report Jakarta Data bugs at https://github.com/jakartaee/data/issues.
 
 == Building from Source
 
@@ -97,4 +97,4 @@ link:++https://calendar.google.com/calendar/u/0/embed?src=eclipse-foundation.org
 link:++https://calendar.google.com/calendar/u/0/embed?src=eclipse-foundation.org_e9ki8t2gc75sh07qdh95c8ofvc@group.calendar.google.com&ctz=America/Denver++[Mountain],
 link:++https://calendar.google.com/calendar/u/0/embed?src=eclipse-foundation.org_e9ki8t2gc75sh07qdh95c8ofvc@group.calendar.google.com&ctz=America/Los_Angeles++[Pacific]
 
-* https://docs.google.com/document/d/1MQbwPpbEBHiAHes1NaYTJQzEBGUYXxaJYw5K-yj053U/edit[Meetings Notes]
+* https://docs.google.com/document/d/1MQbwPpbEBHiAHes1NaYTJQzEBGUYXxaJYw5K-yj053U/edit[Meeting Notes]
