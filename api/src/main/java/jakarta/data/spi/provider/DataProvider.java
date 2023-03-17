@@ -23,13 +23,10 @@ import java.util.Set;
 import jakarta.data.exceptions.MappingException;
 
 /**
- * <p>Jakarta Data providers can make themselves discoverable by
- * Jakarta EE products via the Jakarta Data Provider SPI.
- * Jakarta EE products with CDI support are thus able to automatically provide
- * a CDI extension on behalf of the discovered Jakarta Data providers
- * without those Jakarta Data providers themselves needing to depend on CDI.
- * Jakarta Data providers with their own custom dependency injection
- * are not required to implement or provide the Jakarta Data Provider SPI.</p>
+ * <p>In a Jakarta EE profile, Jakarta Data providers can use the
+ * Jakarta Data Provider SPI to register to provide repository instances
+ * to the Jakarta EE product's CDI extension that handles
+ * {@link jakarta.data.repository.Repository Repository} injection points.</p>
  *
  * <p>Jakarta Data providers that implement the Jakarta Data Provider SPI
  * make an implementation of this interface available to the
