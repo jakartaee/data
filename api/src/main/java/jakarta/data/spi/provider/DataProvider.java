@@ -59,7 +59,7 @@ public interface DataProvider {
      * @throws MappingException for inconsistencies between the repository or
      *         entity class and the database.
      */
-    <R> R getRepository(Class<R> repositoryInterface, Class<?> entityClass) throws MappingException;
+<R> R getRepository(Class<R> repository) throws MappingException;
 
 
     /**
