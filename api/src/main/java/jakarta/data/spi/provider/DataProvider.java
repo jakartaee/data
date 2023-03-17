@@ -52,14 +52,13 @@ public interface DataProvider {
     /**
      * <p>Provides an instance that implements the specified repository interface.</p>
      *
-     * @param <R>                 interface class that defines the data repository.
-     * @param repositoryInterface the repository interface.
-     * @param entityClass         type of entity that the repository persists.
+     * @param <R>        interface class that defines the data repository.
+     * @param repository the repository interface.
      * @return repository instance. Never {@code null}.
      * @throws MappingException for inconsistencies between the repository or
      *         entity class and the database.
      */
-<R> R getRepository(Class<R> repository) throws MappingException;
+    <R> R getRepository(Class<R> repository) throws MappingException;
 
 
     /**
@@ -75,12 +74,12 @@ public interface DataProvider {
      * <p>Invoked by the Jakarta EE product to notify the Jakarta Data
      * provider that the CDI managed bean for a previously-obtained repository
      * instance has reached the end of its life cycle. If multiple invocations of
-     * {@link #getRepository(Class, Class) getRepository} return the same
+     * {@link #getRepository(Class) getRepository} return the same
      * repository instance, multiple dispose notifications will be sent for the
      * instance, each corresponding to the disposal of a different CDI managed bean.</p>
      *
      * @param repository instance that was previously returned by
-     *        {@link #getRepository(Class, Class) getRepository}.
+     *        {@link #getRepository(Class) getRepository}.
      */
     void repositoryBeanDisposed(Object repository);
 
