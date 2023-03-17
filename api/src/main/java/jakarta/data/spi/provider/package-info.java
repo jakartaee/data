@@ -18,8 +18,10 @@
 
 /**
  * <p>This package defines the Service Provider Interface (SPI) by which
- * Jakarta Data providers can make themselves discoverable by Jakarta EE products
- * for CDI dependency injection.</p>
+ * Jakarta Data providers can register to provide repository instances
+ * to the Jakarta EE product's CDI extension that handles
+ * {@link jakarta.data.repository.Repository Repository} injection points
+ * when running in a Jakarta EE profile.</p>
  *
  * <p>Jakarta Data providers that provide their own custom dependency injection
  * or other vendor-specific mechanisms can ignore this SPI and do not need
