@@ -464,3 +464,22 @@ for (Pageable p = Pageable.ofSize(25).sortBy(Sort.desc("yearBorn"), Sort.asc("na
 }
 ----
 
+== Jakarta Data CDI Extension
+
+To run in environments with Jakarta Contexts and Dependency Injection (CDI), Jakarta Data providers each register their own CDI extension (`jakarta.enterprise.inject.spi.Extension`) to produce the bean instances that are defined via the `Repository` annotation and injected via the `Inject` annotation. The Jakarta Data specification employs several strategies for reducing and avoiding conflicts between Jakarta Data providers. The entity annotation class is used as the primary strategy. The Jakarta Data provider name serves as a secondary strategy.
+
+=== Entity Annotation Class
+
+The `jakarta.persistence.Entity` annotation from the Jakarta Persistence specification can be used by repository entity classes for Jakarta Data providers that are backed by a Jakarta Persistence provider. Other Jakarta Data providers must not support the `jakarta.persistence.Entity` annotation.
+
+The `jakarta.nosql.Entity` annotation from the Jakarta NoSQL specification can be used by repository entity classes for Jakarta Data providers that are backed by NoSQL databases. Other Jakarta Data providers must not support the `jakarta.nosql.Entity` annotation.
+
+Jakarta Data providers that define custom entity annotations must follow the convention that the class name of all supported entity annotation types ends with `Entity`. This enables Jakarta Data providers to identify if a repository entity class contains entity annotations from different Jakarta Data providers so that the corresponding `Repository` can be ignored by Jakarta Data providers that should not provide it.
+
+Jakarta Data provider CDI Extensions must ignore all `Repository` annotations where annotations for the corresponding entity are available at run time and none of the entity annotations are supported by the Jakarta Data provider. Ignoring these `Repository` annotations allows other Jakarta Data providers to handle them.
+
+=== Jakarta Data Provider Name
+
+The entity annotation class will usually be sufficient to avoid conflicts between Jakarta Data providers, but in cases where the entity annotation class is not sufficient, the application can designate the name of the desired Jakarta Data provider on the optional `provider` attribute of the `Repository` annotation.
+
+Jakarta Data provider CDI Extensions must ignore all `Repository` annotations that designate a different provider's name via the `Repository.provider()` annotation attribute. Ignoring these annotations allows other Jakarta Data providers to handle them.

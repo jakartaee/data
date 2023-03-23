@@ -492,4 +492,29 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface Repository {
+    /**
+     * Value for the {@link provider} attribute that allows the use of any
+     * available Jakarta Data provider that supports the type of entity
+     * annotation that is present on the repository's entity class.
+     */
+    static final String ANY_PROVIDER = "";
+
+    /**
+     * <p>Restricts the repository implementation to that of a specific
+     * Jakarta Data provider.</p>
+     *
+     * <p>This is useful when multiple Jakarta Data providers support the
+     * same type of entity annotation, in which case the provider attribute
+     * clarifies which Jakarta Data provider must be used.
+     * Jakarta Data providers must ignore {@link Repository} annotations
+     * that indicate a different provider's name as the provider.</p>
+     *
+     * <p>The default value of this attribute is {@link #ANY_PROVIDER},
+     * allowing the use of any available Jakarta Data provider that
+     * supports the type of entity annotation that is present on the
+     * repository's entity class.</p>
+     *
+     * @return the name of a Jakarta Data provider or {@link #ANY_PROVIDER}.
+     */
+    String provider() default ANY_PROVIDER;
 }
