@@ -59,6 +59,8 @@ To enable this extension include the following configuration to your surefire pl
 include::{starterLoc}/ee-pom.xml[tags=displayName]
 ----
 
+include::07.aentity-modes.adoc[]
+
 ==== Configure Arquillian
 
 Application Servers that implement the Arquillian SPI use a configuration file to define properties, such as hostname, port, username, password, etc.

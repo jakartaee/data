@@ -201,9 +201,8 @@
       <tck_port>[TODO]</tck_port>
      </systemPropertyVariables>
      <!-- end::arquillian[] -->
-     <!-- Tags to include i.e. standalone/core/web/full -->
+     <!-- Supported tags - Profiles:[core|web|full] Entities:[persistence|nosql] Groups:[signature] -->
      <groups>[TODO]</groups>
-     <!-- Tags to ignore i.e. signature -->
      <excludedGroups>[TODO]</excludedGroups>
      <!-- If running back-to-back tests at different levels use this to distinguish 
       the results -->

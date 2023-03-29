@@ -163,8 +163,8 @@
       <java.util.logging.config.file>${logging.config}</java.util.logging.config.file>
      </systemPropertyVariables>
      <!-- end::logging[] -->
+     <!-- Supported tags - Entities:[persistence|nosql] Groups:[signature] -->
      <groups>standalone</groups>
-     <!-- Tags to ignore i.e. signature -->
      <excludedGroups>[TODO]</excludedGroups>
      <!-- If running back-to-back tests at different levels use this to distinguish 
       the results -->

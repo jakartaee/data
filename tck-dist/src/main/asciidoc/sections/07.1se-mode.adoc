@@ -35,6 +35,8 @@ To enable this extension include the following configuration to your surefire pl
 include::{starterLoc}/se-pom.xml[tags=displayName]
 ----
 
+include::07.aentity-modes.adoc[]
+
 ==== Standalone Logging
 
 The {APILongName} TCK uses `java.util.logging` for logging debug messages, and to output test results in some cases.

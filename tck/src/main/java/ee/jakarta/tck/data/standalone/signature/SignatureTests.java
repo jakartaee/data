@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022, 2023 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -45,7 +45,7 @@ public class SignatureTests {
     @Inject
     SignatureTestBean testBean;
 
-    @Assertion(id = "SIGNATURES", strategy = "Uses the sigtest-maven-plugin to execute signature tests on a Standalone JVM or on a Jakarta EE Server")
+    @Assertion(id = "26", strategy = "Uses the sigtest-maven-plugin to execute signature tests on a Standalone JVM or on a Jakarta EE Server")
     public void testSignaturesStandalone() throws Exception {
 
         try {

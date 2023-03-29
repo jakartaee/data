@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022, 2023 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -31,7 +31,13 @@ import org.junit.jupiter.api.Test;
 @Retention(RetentionPolicy.RUNTIME)
 @Test
 public @interface Assertion {
+    /**
+     * The GitHub issue/PR number that lead to the test being created
+     */
     String id();
 
+    /**
+     * A longer description of the assertion being made to keep method names concise
+     */
     String strategy() default "";
 }

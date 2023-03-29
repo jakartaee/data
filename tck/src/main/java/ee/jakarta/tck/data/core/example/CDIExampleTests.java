@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022, 2023 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -42,14 +42,14 @@ public class CDIExampleTests {
     @Inject
     ExampleService service;
     
-    @Assertion(id = "EXAMPLE", strategy = "Deployes a CDI bean to application server, and injects service to be tested")
+    @Assertion(id = "26", strategy = "Deployes a CDI bean to application server, and injects service to be tested")
     public void serviceAlwaysReturnsTrue() {
         assertTrue(service.getMessage(), "Message should have returned true");
     }
     
     @Disabled(value = "Challenge #1")
-    @Assertion(id = "EXAMPLE", strategy = "Uses the disabled annotation to ensure test does not get executed")
+    @Assertion(id = "26", strategy = "Uses the disabled annotation to ensure test does not get executed")
     public void disabledTest() {
-        
+        assertTrue(false);
     }
 }
