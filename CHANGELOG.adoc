@@ -1,4 +1,4 @@
-w= Changelog
+= Changelog
 :toc: auto
 
 All notable changes to this project will be documented in this file.
