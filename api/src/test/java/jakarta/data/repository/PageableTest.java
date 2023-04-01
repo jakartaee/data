@@ -17,15 +17,14 @@
  */
 package jakarta.data.repository;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 class PageableTest {
@@ -80,7 +79,6 @@ class PageableTest {
     @Test
     @DisplayName("Should be displayable as String with toString")
     void shouldPageableDisplayAsString() {
-
         assertSoftly(softly -> softly.assertThat(Pageable.ofSize(60).toString())
               .isEqualTo("Pageable{page=1, size=60}"));
 
@@ -93,6 +91,7 @@ class PageableTest {
     @DisplayName("Should throw IllegalArgumentException when page is not present")
     void shouldReturnErrorWhenThereIsIllegalArgument() {
         Pageable p1 = Pageable.ofPage(1);
+
         assertThatIllegalArgumentException().isThrownBy(() -> Pageable.ofPage(0));
         assertThatIllegalArgumentException().isThrownBy(() -> Pageable.ofPage(-1));
         assertThatIllegalArgumentException().isThrownBy(() -> p1.size(-1));
@@ -110,51 +109,56 @@ class PageableTest {
             softly.assertThat(p.sortBy().sorts()).isEqualTo(Collections.EMPTY_LIST);
             softly.assertThat(p.sortBy((Iterable<Sort>) null).sorts()).isEqualTo(Collections.EMPTY_LIST);
             softly.assertThat(p.sortBy((Sort[]) null).sorts()).isEqualTo(Collections.EMPTY_LIST);
-            softly.assertThat(p.sortBy(new Sort[0]).sorts()).isEqualTo(Collections.EMPTY_LIST);
+            softly.assertThat(p.sortBy().sorts()).isEqualTo(Collections.EMPTY_LIST);
             softly.assertThat(p.sortBy(List.of()).sorts()).isEqualTo(Collections.EMPTY_LIST);
         });
     }
 
     @Test
-    public void shouldCreatePageableSort() {
+    void shouldCreatePageableSort() {
         Pageable pageable = Pageable.ofSize(3).sortBy(Sort.asc("name"));
-        Assertions.assertNotNull(pageable);
-        Assertions.assertEquals(1L, pageable.page());
-        Assertions.assertEquals(3, pageable.size());
-        assertThat(pageable.sorts())
-                .hasSize(1)
-                .contains(Sort.asc("name"));
+
+        assertSoftly(softly -> {
+            softly.assertThat(pageable).isNotNull();
+            softly.assertThat(pageable.page()).isEqualTo(1);
+            softly.assertThat(pageable.size()).isEqualTo(3);
+            softly.assertThat(pageable.sorts()).hasSize(1).contains(Sort.asc("name"));
+        });
     }
 
     @Test
-    public void shouldNotModifySort() {
-        Pageable pageable = Pageable.ofSize(3).sortBy(Sort.asc("name"));
-        List<Sort> sorts = pageable.sorts();
-        Assertions.assertThrows(UnsupportedOperationException.class, sorts::clear);
+    @DisplayName("Should expect UnsupportedOperationException when sort is modified")
+    void shouldNotModifySort() {
+        assertThatThrownBy( () -> {
+            Pageable pageable = Pageable.ofSize(3).sortBy(Sort.asc("name"));
+            List<Sort> sorts = pageable.sorts();
 
+            sorts.clear();
+        }).isInstanceOf(UnsupportedOperationException.class);
     }
 
     @Test
-    public void shouldNotModifySortOnNextPage() {
+    @DisplayName("Should not modify sort on next pahe")
+    void shouldNotModifySortOnNextPage() {
         Pageable pageable = Pageable.ofSize(3).sortBy(Sort.asc("name"), Sort.desc("age"));
         Pageable next = pageable.next();
-        Assertions.assertEquals(1L, pageable.page());
-        Assertions.assertEquals(3, pageable.size());
-        assertThat(pageable.sorts())
-                .hasSize(2)
-                .contains(Sort.asc("name"), Sort.desc("age"));
-        Assertions.assertEquals(2L, next.page());
-        Assertions.assertEquals(3, next.size());
 
-        assertThat(next.sorts())
-                .hasSize(2)
-                .contains(Sort.asc("name"), Sort.desc("age"));
+        assertSoftly(softly -> {
+            softly.assertThat(pageable.page()).isEqualTo(1);
+            softly.assertThat(pageable.size()).isEqualTo(3);
 
+            softly.assertThat(pageable.sorts()).hasSize(2).contains(Sort.asc("name"), Sort.desc("age"));
+
+            softly.assertThat(next.page()).isEqualTo(2);
+            softly.assertThat(next.size()).isEqualTo(3);
+
+            softly.assertThat(next.sorts()).hasSize(2).contains(Sort.asc("name"), Sort.desc("age"));
+        });
     }
 
     @Test
     @DisplayName("Page number should be replaced on new instance of Pageable")
-    public void shouldReplacePage() {
+    void shouldReplacePage() {
         Pageable p6 = Pageable.ofSize(75).page(6).sortBy(Sort.desc("price"));
         Pageable p7 = p6.page(7);
 
@@ -170,7 +174,7 @@ class PageableTest {
 
     @Test
     @DisplayName("Size should be replaced on new instance of Pageable")
-    public void shouldReplaceSize() {
+    void shouldReplaceSize() {
         Pageable s90 = Pageable.ofPage(4).size(90);
         Pageable s80 = s90.size(80);
 
@@ -184,7 +188,7 @@ class PageableTest {
 
     @Test
     @DisplayName("Sorts should be replaced on new instance of Pageable")
-    public void shouldReplaceSorts() {
+    void shouldReplaceSorts() {
         Pageable p1 = Pageable.ofSize(55).sortBy(Sort.desc("lastName"), Sort.asc("firstName"));
         Pageable p2 = p1.sortBy(Sort.asc("firstName"), Sort.asc("lastName"));
 
@@ -198,4 +202,3 @@ class PageableTest {
         });
     }
 }
-
