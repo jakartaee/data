@@ -62,6 +62,10 @@ To start to use Jakarta Dara, add the API as a Maven dependency:
 </dependency>
 ----
 
+== Testing Guideline
+
+This project has a testing guideline that will help you to understand the testing practices Jakarta Data have.
+Please take a look at the _TESTING-GUIDELINE_ file.
 
 == Code of Conduct
 
