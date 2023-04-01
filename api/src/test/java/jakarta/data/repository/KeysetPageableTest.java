@@ -201,7 +201,7 @@ class KeysetPageableTest {
 
     @Test
     @DisplayName("Keyset should be replaced on new instance of Pageable")
-    public void shouldReplaceKeyset() {
+    void shouldReplaceKeyset() {
         Pageable p1 = Pageable.ofSize(30).sortBy(Sort.asc("lastName"), Sort.asc("firstName"), Sort.asc("id"))
                                          .afterKeyset("last1", "fname1", 100).page(12);
         Pageable p2 = p1.beforeKeyset("lname2", "fname2", 200);

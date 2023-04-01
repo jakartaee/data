@@ -13,6 +13,14 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 === Added
 
 * Increase documentation around Sort annotation
+* Added testing guideline
+* Added `PaginationTest`
+
+=== Changed
+
+* Removed `public` keyword in the `KeysetPageableTest` and `PageableTest` methods
+* Replaced JUnit 5 assertions to the AssertJ in the `PageableTest`
+* Bump AssertJ version
 
 === Removed
 
