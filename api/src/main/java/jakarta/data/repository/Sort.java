@@ -65,7 +65,13 @@ import java.util.Objects;
 public record Sort(String property, boolean isAscending, boolean ignoreCase) {
 
     /**
-     * Defines sort criteria for an entity property.
+     * <p>Defines sort criteria for an entity property. For more descriptive code, use:</p>
+     * <ul>
+     * <li>{@link #asc(String) Sort.asc(propertyName)} for ascending sort on a property.</li>
+     * <li>{@link #ascIgnoreCase(String) Sort.ascIgnoreCase(propertyName)} for case insensitive ascending sort on a property.</li>
+     * <li>{@link #desc(String) Sort.desc(propertyName)} for descending sort on a property.</li>
+     * <li>{@link #descIgnoreCase(String) Sort.descIgnoreCase(propertyName)} for case insensitive descending sort on a property.</li>
+     * </ul>
      *
      * @param property    name of the property to order by.
      * @param isAscending whether ordering for this property is ascending (true) or descending (false).

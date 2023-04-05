@@ -54,7 +54,11 @@ public record Limit(int maxResults, long startAt) {
     private static final long DEFAULT_START_AT = 1L;
 
     /**
-     * Constructs a limit on the amount of query results.
+     * <p>Limits query results. For more descriptive code, use:</p>
+     * <ul>
+     * <li>{@link #of(int) Limit.of(maxResults)} to cap the number of results.</li>
+     * <li>{@link #range(long, long) Limit.range(startAt, endAt)} to limit to a range.</li>
+     * </ul>
      *
      * @param maxResults maximum number of results for a query.
      * @param startAt    starting position for query results (1 is the first result).
