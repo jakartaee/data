@@ -6,7 +6,7 @@ This module contains AsciiDoc sources and configuration to generate Jakarta Data
 
 === Prerequisites:
 
-* JDK 11+
+* JDK 17+
 * Maven 3.0.5+
 
 === Execute the full build:

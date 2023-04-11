@@ -57,28 +57,41 @@ import java.util.Objects;
  * <li>the database is incapable of ordering with the requested
  *     sort criteria.</li>
  * </ul>
+ *
+ * @param property    name of the property to order by.
+ * @param isAscending whether ordering for this property is ascending (true) or descending (false).
+ * @param ignoreCase  whether or not to request case insensitive ordering from a database with case sensitive collation.
  */
-public final class Sort {
-
-    private final String property;
-
-    private final Direction direction;
-
-    private final boolean ignoreCase;
-
-    private Sort(String property, Direction direction, boolean ignoreCase) {
-        this.property = property;
-        this.direction = direction;
-        this.ignoreCase = ignoreCase;
-    }
+public record Sort(String property, boolean isAscending, boolean ignoreCase) {
 
     /**
+     * <p>Defines sort criteria for an entity property. For more descriptive code, use:</p>
+     * <ul>
+     * <li>{@link #asc(String) Sort.asc(propertyName)} for ascending sort on a property.</li>
+     * <li>{@link #ascIgnoreCase(String) Sort.ascIgnoreCase(propertyName)} for case insensitive ascending sort on a property.</li>
+     * <li>{@link #desc(String) Sort.desc(propertyName)} for descending sort on a property.</li>
+     * <li>{@link #descIgnoreCase(String) Sort.descIgnoreCase(propertyName)} for case insensitive descending sort on a property.</li>
+     * </ul>
+     *
+     * @param property    name of the property to order by.
+     * @param isAscending whether ordering for this property is ascending (true) or descending (false).
+     * @param ignoreCase  whether or not to request case insensitive ordering from a database with case sensitive collation.
+     */
+    public Sort {
+        Objects.requireNonNull(property, "property is required");
+    }
+
+    // Override to provide method documentation:
+    /**
+     * Name of the property to order by.
+     *
      * @return The property name to order by; will never be {@literal null}.
      */
     public String property() {
-        return this.property;
+        return property;
     }
 
+    // Override to provide method documentation:
     /**
      * <p>Indicates whether or not to request case insensitive ordering
      * from a database with case sensitive collation.
@@ -91,46 +104,23 @@ public final class Sort {
         return ignoreCase;
     }
 
+    // Override to provide method documentation:
     /**
+     * Indicates whether to sort the property in ascending order (true) or descending order (false).
+     *
      * @return Returns whether sorting for this property shall be ascending.
      */
     public boolean isAscending() {
-        return Direction.ASC.equals(direction);
+        return isAscending;
     }
 
     /**
+     * Indicates whether to sort the property in descending order (true) or ascending order (false).
+     *
      * @return Returns whether sorting for this property shall be descending.
      */
     public boolean isDescending() {
-        return Direction.DESC.equals(direction);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        Sort sort = (Sort) o;
-        return Objects.equals(property, sort.property) && direction == sort.direction && ignoreCase == sort.ignoreCase;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(property, direction, ignoreCase);
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder s = new StringBuilder(property.length() + 32)
-                .append("Sort{property='").append(property)
-                .append("', direction=").append(direction);
-        if (ignoreCase)
-            s.append(", ignore case");
-        s.append('}');
-        return s.toString();
+        return !isAscending;
     }
 
     /**
@@ -143,9 +133,8 @@ public final class Sort {
      * @throws NullPointerException when there is a null parameter
      */
     public static Sort of(String property, Direction direction, boolean ignoreCase) {
-        Objects.requireNonNull(property, "property is required");
         Objects.requireNonNull(direction, "direction is required");
-        return new Sort(property, direction, ignoreCase);
+        return new Sort(property, Direction.ASC.equals(direction), ignoreCase);
     }
 
     /**
@@ -157,7 +146,7 @@ public final class Sort {
      * @throws NullPointerException when the property is null
      */
     public static Sort asc(String property) {
-        return of(property, Direction.ASC, false);
+        return new Sort(property, true, false);
     }
 
     /**
@@ -169,7 +158,7 @@ public final class Sort {
      * @throws NullPointerException when the property is null.
      */
     public static Sort ascIgnoreCase(String property) {
-        return of(property, Direction.ASC, true);
+        return new Sort(property, true, true);
     }
 
     /**
@@ -181,7 +170,7 @@ public final class Sort {
      * @throws NullPointerException when the property is null
      */
     public static Sort desc(String property) {
-        return of(property, Direction.DESC, false);
+        return new Sort(property, false, false);
     }
 
     /**
@@ -193,6 +182,6 @@ public final class Sort {
      * @throws NullPointerException when the property is null.
      */
     public static Sort descIgnoreCase(String property) {
-        return of(property, Direction.DESC, true);
+        return new Sort(property, false, true);
     }
 }
