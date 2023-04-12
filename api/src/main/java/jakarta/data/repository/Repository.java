@@ -317,6 +317,23 @@ import java.lang.annotation.Target;
  *
  * </table>
  *
+ * <h3>Reserved for Future Use</h3>
+ * <p>
+ * The specification does not define behavior for the following keywords, but reserves
+ * them as keywords that must not be used as entity attribute names when using
+ * Query by Method Name. This gives the specification the flexibility to add them in
+ * future releases without introducing breaking changes to applications.
+ * </p>
+ * <p>
+ * Reserved for query conditions: {@code AbsoluteValue}, {@code CharCount}, {@code ElementCount},
+ * {@code Rounded}, {@code RoundedDown}, {@code RoundedUp}, {@code Trimmed},
+ * {@code WithDay}, {@code WithHour}, {@code WithMinute}, {@code WithMonth},
+ * {@code WithQuarter}, {@code WithSecond}, {@code WithWeek}, {@code WithYear}.
+ * </p>
+ * <p>
+ * Reserved for updates: {@code Add}, {@code Divide}, {@code Multiply}, {@code Set}, {@code Subtract}.
+ * </p>
+ *
  * <h3>Wildcard Characters</h3>
  * <p>
  * Wildcard characters for patterns are determined by the data access provider.
@@ -505,10 +522,8 @@ import java.lang.annotation.Target;
  * environment where the Jakarta EE technology that provides the interceptor is available.</p>
  */
 // TODO When can "By" be omitted and "All" added? Need to document that.
-// TODO keywords for update would be needed if included.
 // TODO Does Jakarta NoSQL have the same or different wildcard characters? Document this
 //       under: "Wildcard characters for patterns are determined by the data access provider"
-// TODO Ensure we have all reserved words listed, including those we might want to reserve for future use.
 // TODO Ensure we have all required supported return types listed.
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
