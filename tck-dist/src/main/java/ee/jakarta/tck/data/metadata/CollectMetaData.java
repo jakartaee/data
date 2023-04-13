@@ -21,7 +21,6 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -38,6 +37,7 @@ import org.junit.platform.commons.support.AnnotationSupport;
 import org.junit.platform.commons.support.HierarchyTraversalMode;
 
 import ee.jakarta.tck.data.framework.junit.anno.Assertion;
+import ee.jakarta.tck.data.framework.utilities.TestProperty;
 
 /**
  * This is a utility class that will analyze the TCK and generate documentation for the following information: 
@@ -66,6 +66,7 @@ public class CollectMetaData {
     private static final String CHALLENGED_TESTS_FILE = "successful-challenges.adoc";
     private static final String SIG_OUTPUT_FILE = "expected-sig-output.adoc";
     private static final String EXPECTED_OUTPUT_FILE = "expected-output.adoc";
+    private static final String TEST_PROPERTIES_FILE = "test-properties.adoc";
         
     // Data holders
     private static boolean debug = false;
@@ -100,7 +101,8 @@ public class CollectMetaData {
         writeSuccessfulChallenges(testMetaData, new File(adocGeneratedLocation, CHALLENGED_TESTS_FILE));
         writeSigOutput(apiPackages, new File(adocGeneratedLocation, SIG_OUTPUT_FILE));
         writeOutput(testMetaData, new File(adocGeneratedLocation, EXPECTED_OUTPUT_FILE));
-        writeGitIgnore(new File(adocGeneratedLocation, ".gitignore"), RUNTIME_TESTS_FILE, CHALLENGED_TESTS_FILE, SIG_OUTPUT_FILE, EXPECTED_OUTPUT_FILE);
+        writeGitIgnore(new File(adocGeneratedLocation, ".gitignore"), RUNTIME_TESTS_FILE, CHALLENGED_TESTS_FILE, SIG_OUTPUT_FILE, EXPECTED_OUTPUT_FILE, TEST_PROPERTIES_FILE);
+        writeTestProperties(new File(adocGeneratedLocation, TEST_PROPERTIES_FILE));
     }
 
     /**
@@ -126,62 +128,81 @@ public class CollectMetaData {
      * @throws IOException   - exception if we cannot write to this location
      */
     private static void writeOutput(List<TestMetaData> testMetaData, File outputLocation) throws IOException {
-        //TODO replace with testblock if we end up using Java 17
-        StringBufferWrapper expectOutputSection = new StringBufferWrapper();
+        String output =
+                """
+                [source, txt]
+                ----
+                $ mvn clean test
+                ...
+                [INFO] --- maven-surefire-plugin:3.0.0-M7:test (default-test) @ tck.runner ---
+                [INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+                [INFO]
+                [INFO] -------------------------------------------------------
+                [INFO]  T E S T S
+                [INFO] -------------------------------------------------------
+                $indiviualTests
+                [INFO] Results:
+                [INFO]
+                $totalTests
+                [INFO]
+                [INFO] -------------------------------------------------------
+                [INFO] BUILD SUCCESS
+                [INFO] -------------------------------------------------------
+                [INFO] Total time:  xx.xxx s
+                [INFO] Finished at: yyyy-mm-ddThh:mm:ss.mmmm
+                [INFO] -------------------------------------------------------
+                ----"""
+                .replaceAll("\\$indiviualTests", getIndividualTests(testMetaData))
+                .replaceAll("\\$totalTests", getTotalTests(testMetaData));
         
-        expectOutputSection.appendNewLine("[source, txt]");
-        expectOutputSection.appendNewLine("----");
-        expectOutputSection.appendNewLine("$ mvn clean test");
-        expectOutputSection.appendNewLine("...");
-        
-        expectOutputSection.appendNewLine("[INFO] --- maven-surefire-plugin:3.0.0-M7:test (default-test) @ tck.runner ---");
-        expectOutputSection.appendNewLine("[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider");
-        expectOutputSection.appendNewLine("[INFO]");
-        
-        expectOutputSection.appendNewLine("[INFO] -------------------------------------------------------");
-        expectOutputSection.appendNewLine("[INFO]  T E S T S");
-        expectOutputSection.appendNewLine("[INFO] -------------------------------------------------------");
-        
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputLocation))) {
+            writer.write(output.trim() + System.lineSeparator());
+        }
+    }
+    
+    /**
+     * Collect all distinct test classes, count the number of test classes that should be run, and return to the output 
+     * 
+     * @param testMetaData
+     * @return String output
+     */
+    private static String getIndividualTests(List<TestMetaData> testMetaData) {
+        StringBuffer output = new StringBuffer();
+        final String nl = System.lineSeparator();
         for(String testClass : testMetaData.stream().map(metaData -> metaData.testClass).distinct().collect(Collectors.toList())) {
             List<TestMetaData> theseTests = testMetaData.stream().filter(metaData -> metaData.testClass == testClass).collect(Collectors.toList());
             long testCount = theseTests.stream().filter(metaData -> !metaData.isDisabled).count();
             long disabledCount = theseTests.stream().filter(metaData -> metaData.isDisabled).count();
-            expectOutputSection.appendNewLine("[INFO] Running " + testClass);
+            output.append("[INFO] Running " + testClass + nl);
             
             if(disabledCount > 0) {
-                expectOutputSection.append("[WARNING] Tests run: " + testCount + ", Failures: 0, Errors: 0, Skipped: " + disabledCount + ",");
+                output.append("[WARNING] Tests run: " + testCount + ", Failures: 0, Errors: 0, Skipped: " + disabledCount + ",");
             } else {
-                expectOutputSection.append("[INFO] Tests run: " + testCount + ", Failures: 0, Errors: 0, Skipped: " + disabledCount + ",");    
+                output.append("[INFO] Tests run: " + testCount + ", Failures: 0, Errors: 0, Skipped: " + disabledCount + ",");    
             }
             
-            expectOutputSection.appendNewLine("Time elapsed: y.yy s - in " +  testClass);
-            expectOutputSection.appendNewLine("[INFO]");
+            output.append("Time elapsed: y.yy s - in " +  testClass + nl);
+            output.append("[INFO]" + nl);
         }
-        
-        expectOutputSection.appendNewLine("[INFO] Results:");
-        expectOutputSection.appendNewLine("[INFO]");
-        
+        return output.toString().trim();
+    }
+    
+    /**
+     * Collect the total number of tests, and return the output
+     * 
+     * @param testMetaData
+     * @return String output
+     */
+    private static String getTotalTests(List<TestMetaData> testMetaData) {
         long totalTestCount = testMetaData.stream().filter(metaData -> !metaData.isDisabled).count();
         long totalDisabledCount = testMetaData.stream().filter(metaData -> metaData.isDisabled).count();
         
         if(totalDisabledCount > 0) {
-            expectOutputSection.appendNewLine("[WARNING] Tests run: " + totalTestCount + ", Failures: 0, Errors: 0, Skipped: " + totalDisabledCount);    
+            return "[WARNING] Tests run: " + totalTestCount + ", Failures: 0, Errors: 0, Skipped: " + totalDisabledCount;    
         } else {
-            expectOutputSection.appendNewLine("[INFO] Tests run: " + totalTestCount + ", Failures: 0, Errors: 0, Skipped: " + totalDisabledCount);    
+            return "[INFO] Tests run: " + totalTestCount + ", Failures: 0, Errors: 0, Skipped: " + totalDisabledCount;    
         }
-        
-        expectOutputSection.appendNewLine("[INFO]");
-        expectOutputSection.appendNewLine("[INFO] -------------------------------------------------------");
-        expectOutputSection.appendNewLine("[INFO] BUILD SUCCESS");
-        expectOutputSection.appendNewLine("[INFO] -------------------------------------------------------");
-        expectOutputSection.appendNewLine("[INFO] Total time:  xx.xxx s");
-        expectOutputSection.appendNewLine("[INFO] Finished at: " + LocalDateTime.now().toString());
-        expectOutputSection.appendNewLine("[INFO] -------------------------------------------------------");
-        expectOutputSection.append("----");
-        
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputLocation))) {
-            writer.write(expectOutputSection.toString());
-        }
+
     }
     
     /**
@@ -192,26 +213,38 @@ public class CollectMetaData {
      * @throws IOException   - exception if we cannot write to this location
      */
     private static void writeSigOutput(List<String> apiPackages, File outputLocation) throws IOException {
-        //TODO replace with testblock if we end up using Java 17
-        StringBufferWrapper expectSigOutputSection = new StringBufferWrapper();
-        
-        expectSigOutputSection.appendNewLine("[source, txt]");
-        expectSigOutputSection.appendNewLine("----");
-        expectSigOutputSection.appendNewLine("******************************************************");
-        expectSigOutputSection.appendNewLine("All package signatures passed.");
-        expectSigOutputSection.appendNewLine("\tPassed packages listed below:");
-        
-        for(String apiPackage : apiPackages) {
-            expectSigOutputSection.appendNewLine("\t\t" + apiPackage + "(static mode)");
-            expectSigOutputSection.appendNewLine("\t\t" + apiPackage + "(reflection mode)");
-        }
-        
-        expectSigOutputSection.appendNewLine("******************************************************");
-        expectSigOutputSection.appendNewLine("----");
+        String output = 
+                """
+                [source, txt]
+                ----
+                ******************************************************
+                All package signatures passed.
+                    Passed packages listed below:
+                $packages
+                ******************************************************
+                ----""".replaceAll("\\$packages", getPackages(apiPackages));
         
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputLocation))) {
-            writer.write(expectSigOutputSection.toString());
+            writer.write(output.trim() + System.lineSeparator());
         } 
+    }
+    
+    /**
+     * Collect API packages and return the output
+     * 
+     * @param apiPackages
+     * @return String output
+     */
+    private static String getPackages(List<String> apiPackages) {
+        String output = "";
+        for(String apiPackage : apiPackages) {
+            output += 
+                    """
+                    $package(static mode)
+                    $package(reflection mode)
+                    """.indent(8).replaceAll("\\$package", apiPackage);
+        }
+        return output;
     }
 
     /**
@@ -221,25 +254,31 @@ public class CollectMetaData {
      * @param outputLocation - the output file
      * @throws IOException   - exception if we cannot write to this location
      */
-    private static void writeSuccessfulChallenges(List<TestMetaData> testMetaData, File outputLocation) throws IOException {
-        //TODO replace with testblock if we end up using Java 17
-        StringBufferWrapper exemptTestsSection = new StringBufferWrapper();
-
-        exemptTestsSection.appendNewLine("[cols=\"1,1,1\"]" );
-        exemptTestsSection.appendNewLine("|===" );
-        exemptTestsSection.appendNewParagraph("|Class |Method |Reason"  );
-        testMetaData.stream().filter(TestMetaData::isDisabled).forEach(test -> {
-            exemptTestsSection.appendNewLine("|" + test.testClass );
-            exemptTestsSection.appendNewLine("|" + test.testName );
-            exemptTestsSection.appendNewLine("|" + test.disabledText );
-            exemptTestsSection.appendNewLine("");
-        });
-        exemptTestsSection.append("|===");
+    private static void writeSuccessfulChallenges(List<TestMetaData> testMetaData, File outputLocation) throws IOException {        
+        String output =
+                """
+                |===
+                |Class |Method |Reason
+                $disabledTests
+                |===""".replaceAll("\\$disabledTests", getDisabledTests(testMetaData));
         
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputLocation))) {
-            writer.write(exemptTestsSection.toString() );
+            writer.write(output.trim() + System.lineSeparator());
         }
         
+    }
+    
+    private static String getDisabledTests(List<TestMetaData> testMetaData) {
+        List<TestMetaData> disabledTests = testMetaData.stream().filter(TestMetaData::isDisabled).toList();
+        String output = "";
+        for(TestMetaData disabledTest : disabledTests) {
+            output += 
+                    """
+                    
+                    |%s |%s |%s
+                    """.formatted(disabledTest.testClass, disabledTest.testName, disabledTest.disabledText);
+        }
+        return output;
     }
 
     /**
@@ -250,8 +289,23 @@ public class CollectMetaData {
      * @throws IOException   - exception if we cannot write to this location
      */
     private static void writeTestCounts(List<TestMetaData> testMetaData, File outputLocation) throws IOException {
-        StringBufferWrapper runtimeTestsSection = new StringBufferWrapper();
-        
+        String output =
+                """
+                |===
+                |entity type |standalone |core |web |full
+                
+                |persistence |%d         |%d   |%d  |%d
+                
+                |nosql       |%d         |%d   |%d  |%d
+                
+                |both        |%d         |%d   |%d  |%d
+                |===""".formatted(getTestCounts(testMetaData));
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputLocation))) {
+            writer.write(output.trim() + System.lineSeparator());
+        }
+    }
+    
+    private static Object[] getTestCounts(List<TestMetaData> testMetaData) {
         List<TestMetaData> runnableTestMetaData = testMetaData.stream().filter(TestMetaData::isRunnable).collect(Collectors.toList());
         
         List<TestMetaData> standalone = runnableTestMetaData.stream().filter(TestMetaData::isStandalone).collect(Collectors.toList());
@@ -259,35 +313,57 @@ public class CollectMetaData {
         List<TestMetaData> web = runnableTestMetaData.stream().filter(TestMetaData::isWeb).collect(Collectors.toList());
         List<TestMetaData> full = runnableTestMetaData.stream().filter(TestMetaData::isFull).collect(Collectors.toList());
         
-        //TODO replace with testblock if we end up using Java 17
+        List<Object> results = new ArrayList<>();
         
-        runtimeTestsSection.appendNewLine("|===");
+        //Persistence
+        results.add(standalone.stream().filter(Predicate.not(TestMetaData::isNoSQL)).count());
+        results.add(core.stream().filter(Predicate.not(TestMetaData::isNoSQL)).count());
+        results.add(web.stream().filter(Predicate.not(TestMetaData::isNoSQL)).count());
+        results.add(full.stream().filter(Predicate.not(TestMetaData::isNoSQL)).count());
         
-        runtimeTestsSection.appendNewLine("|entity\\platform |standalone |core |web |full");
+        //NoSQL
+        results.add(standalone.stream().filter(Predicate.not(TestMetaData::isPersistence)).count());
+        results.add(core.stream().filter(Predicate.not(TestMetaData::isPersistence)).count());
+        results.add(web.stream().filter(Predicate.not(TestMetaData::isPersistence)).count());
+        results.add(full.stream().filter(Predicate.not(TestMetaData::isPersistence)).count());
         
-        runtimeTestsSection.appendNewLine("|persistence");
-        runtimeTestsSection.appendNewLine("|" + standalone.stream().filter(Predicate.not(TestMetaData::isNoSQL)).count());
-        runtimeTestsSection.appendNewLine("|" + core.stream().filter(Predicate.not(TestMetaData::isNoSQL)).count());
-        runtimeTestsSection.appendNewLine("|" + web.stream().filter(Predicate.not(TestMetaData::isNoSQL)).count());
-        runtimeTestsSection.appendNewLine("|" + full.stream().filter(Predicate.not(TestMetaData::isNoSQL)).count());
+        //Both
+        results.add(standalone.size());
+        results.add(core.size());
+        results.add(web.size());
+        results.add(full.size());
         
-        runtimeTestsSection.appendNewLine("|nosql");
-        runtimeTestsSection.appendNewLine("|" + standalone.stream().filter(Predicate.not(TestMetaData::isPersistence)).count());
-        runtimeTestsSection.appendNewLine("|" + core.stream().filter(Predicate.not(TestMetaData::isPersistence)).count());
-        runtimeTestsSection.appendNewLine("|" + web.stream().filter(Predicate.not(TestMetaData::isPersistence)).count());
-        runtimeTestsSection.appendNewLine("|" + full.stream().filter(Predicate.not(TestMetaData::isPersistence)).count());
-        
-        runtimeTestsSection.appendNewLine("|BOTH");
-        runtimeTestsSection.appendNewLine("|" + standalone.size());
-        runtimeTestsSection.appendNewLine("|" + core.size());
-        runtimeTestsSection.appendNewLine("|" + web.size());
-        runtimeTestsSection.appendNewLine("|" + full.size());
-        
-        runtimeTestsSection.appendNewLine("|===");
-        
+        return results.toArray();
+    }
+    
+    /**
+     * Compiles a list of all system properties used by the TCK output to the generated adoc folder
+     * 
+     * @param outputLocation - the output file
+     * @throws IOException   - exception if we cannot write to this location
+     */
+    private static void writeTestProperties(File outputLocation) throws IOException {
+        String output = 
+                """
+                |===
+                |Key  |Required  |Description
+                $properties
+                |===""".replaceAll("\\$properties", getTestProperties());
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputLocation))) {
-            writer.write(runtimeTestsSection.toString());
+            writer.write(output.trim() + System.lineSeparator());
         }
+    }
+    
+    private static String getTestProperties() {
+        String output = "";
+        for(TestProperty property : TestProperty.values()) {
+            output += 
+                    """
+                    
+                    |%s |%s |%s
+                    """.formatted(property.getKey(), property.isRequired(), property.getDescription());
+        }
+        return output;
     }
     
     /**
@@ -301,13 +377,15 @@ public class CollectMetaData {
         return testClasses.stream()
                 .flatMap(clazz -> AnnotationSupport.findAnnotatedMethods(clazz, Assertion.class, HierarchyTraversalMode.TOP_DOWN).stream())
                 .map(method -> {
-                    TestMetaData metaData = new TestMetaData();
-                    metaData.testClass = method.getDeclaringClass().getCanonicalName();
-                    metaData.testName = method.getName();
-                    metaData.assertion = method.getAnnotation(Assertion.class).strategy();
-                    metaData.isDisabled = method.isAnnotationPresent(Disabled.class);
-                    metaData.disabledText = metaData.isDisabled ? method.getAnnotation(Disabled.class).value() : "";
-                    metaData.tags = findTags(method.getDeclaringClass());
+                    boolean isDisabled = method.isAnnotationPresent(Disabled.class);
+                    TestMetaData metaData = new TestMetaData(
+                            method.getDeclaringClass().getCanonicalName(),
+                            method.getName(),
+                            method.getAnnotation(Assertion.class).strategy(),
+                            isDisabled,
+                            isDisabled ? method.getAnnotation(Disabled.class).value() : "",
+                            findTags(method.getDeclaringClass())
+                            );
                     return metaData;
                 }).collect(Collectors.toList());
     }
@@ -409,20 +487,7 @@ public class CollectMetaData {
     /**
      * A data structure that represents data associated with test methods.
      */
-    public static class TestMetaData {
-        //TODO replace with record if we end up using Java 17
-        private String testClass;
-        private String testName;
-        private String assertion;
-        private boolean isDisabled;
-        private String disabledText;
-        private List<String> tags;
-        
-        @Override
-        public String toString() {
-            return "TestMetaData [testName=" + testName + ", assertion=" + assertion + ", isDisabled=" + isDisabled
-                    + ", disabledText=" + disabledText + ", tags=" + tags + "]";
-        }
+    public record TestMetaData(String testClass, String testName, String assertion, boolean isDisabled, String disabledText, List<String> tags) {
         
         boolean isStandalone() {
             return tags.contains("standalone");
@@ -433,58 +498,29 @@ public class CollectMetaData {
         }
         
         boolean isWeb() {
-            return tags.contains("web");
+            return tags.contains("web"); 
         }
         
         boolean isFull() {
-            return tags.contains("full");
+            return tags.contains("full"); 
         }
         
         boolean isPersistence() {
-            return tags.contains("persistence");
+            return tags.contains("persistence"); 
         }
         
         boolean isNoSQL() {
-            return tags.contains("nosql");
+            return tags.contains("nosql"); 
         }
-        
-        boolean isDisabled() {
-            return isDisabled;
-        }
-        
-        boolean isRunnable() {
-            return ! isDisabled;
-        }
-    }
     
-    /**
-     * Utility wrapper to append strings with new lines
-     * to make construction of asciidoctor files easier
-     */
-    public static class StringBufferWrapper {
-        private StringBuffer buf;
-        
-        private static final String nl = System.lineSeparator();
-        
-        public StringBufferWrapper() {
-            buf = new StringBuffer();
-        }
-        
-        public void append(String message) {
-            buf.append(message);
-        }
-        
-        public void appendNewLine(String message) {
-            buf.append(message + nl);
-        }
-        
-        public void appendNewParagraph(String message) {
-            buf.append(message + nl + nl);
+        boolean isRunnable() {
+            return ! isDisabled; 
         }
         
         @Override
         public String toString() {
-            return buf.toString();
+            return "TestMetaData [testName=" + testName + ", assertion=" + assertion + ", isDisabled=" + isDisabled
+                    + ", disabledText=" + disabledText + ", tags=" + tags + "]";
         }
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022, 2023 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -28,12 +28,14 @@ import org.junit.jupiter.api.extension.InvocationInterceptor;
 import org.junit.jupiter.api.extension.ReflectiveInvocationContext;
 import org.junit.jupiter.api.extension.TestExecutionExceptionHandler;
 
+import ee.jakarta.tck.data.framework.utilities.TestProperty;
+
 /**
- * This is a Junit5 extension class that extends ArquillianExtension
+ * <p>This is a Junit5 extension class that extends ArquillianExtension</p>
  * 
- * This extension will passthrough to the ArquillianExtension class when running
+ * <p>This extension will passthrough to the ArquillianExtension class when running
  * against a core/web/full profile Jakarta EE server, but will skip Arquillian
- * processing when running against a standalone implementation.
+ * processing when running against a standalone implementation.</p>
  * 
  * @see org.jboss.arquillian.junit5.ArquillianExtension
  *
@@ -41,14 +43,9 @@ import org.junit.jupiter.api.extension.TestExecutionExceptionHandler;
 public class StandaloneExtension extends ArquillianExtension implements BeforeAllCallback, AfterAllCallback,
         BeforeEachCallback, AfterEachCallback, InvocationInterceptor, TestExecutionExceptionHandler {
     
-    /**
-     * Required property that will prevent us from attempting to run a Standalone test on a server.
-     */
-    public static final String isStandaloneProperty = "jakarta.tck.standalone.test";
-    
     private static final Logger log = Logger.getLogger(StandaloneExtension.class.getCanonicalName());
-
-    private static boolean isStandalone = Boolean.getBoolean(isStandaloneProperty);
+    
+    private static boolean isStandalone = TestProperty.standalone.getBoolean();
 
     @Override
     public void beforeAll(ExtensionContext context) throws Exception {

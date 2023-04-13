@@ -24,10 +24,10 @@ import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Tag;
 
 import ee.jakarta.tck.data.framework.junit.anno.Assertion;
 import ee.jakarta.tck.data.framework.junit.anno.Core;
+import ee.jakarta.tck.data.framework.junit.anno.Persistence;
 import jakarta.data.exceptions.MappingException;
 import jakarta.inject.Inject;
 
@@ -35,7 +35,7 @@ import jakarta.inject.Inject;
  * Ensure this test is only run when a persistence provider is being tested. 
  */
 @Core
-@Tag("persistence")
+@Persistence
 public class PersistenceEntityTests {
     
     @Deployment

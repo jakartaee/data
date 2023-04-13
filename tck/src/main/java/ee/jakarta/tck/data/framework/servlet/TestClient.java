@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022, 2023 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -32,10 +32,10 @@ import java.util.Properties;
 import java.util.logging.Logger;
 
 /**
- * This is a superclass that test classes can extend to act as a test client
- * to execute tests that are deployed on a Web Profile Server.
+ * <p>This is a superclass that test classes can extend to act as a test client
+ * to execute tests that are deployed on a Web Profile Server.</p>
  * 
- * This is used for complex test situations where a custom servlet is required.
+ * <p>This is used for complex test situations where a custom servlet is required.</p>
  */
 public class TestClient {
     

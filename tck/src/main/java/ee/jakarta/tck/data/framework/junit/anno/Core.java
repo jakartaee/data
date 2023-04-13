@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022, 2023 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -30,12 +30,12 @@ import ee.jakarta.tck.data.framework.junit.extensions.AssertionExtension;
 import ee.jakarta.tck.data.framework.junit.extensions.AssertionNameGenerator;
 
 /**
- * These are test classes that REQUIRE core profile to be executed. For these
+ * <p>These are test classes that REQUIRE core profile to be executed. For these
  * tests to run they must deploy an application to a Jakarta EE server using the
- * Arquillian {@code @Deployment} annotation.
+ * Arquillian {@code @Deployment} annotation.</p>
  * 
- * At runtime the Arquillian REST protocol must be used for communication with
- * the Jakarta EE server.
+ * <p>At runtime the Arquillian REST protocol must be used for communication with
+ * the Jakarta EE server.</p>
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

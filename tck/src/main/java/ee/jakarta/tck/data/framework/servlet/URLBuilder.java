@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022, 2023 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -25,8 +25,8 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 /**
- * A utility builder class for generating a request URL to a servlet with custom
- * paths and queries.
+ * <p>A utility builder class for generating a request URL to a servlet with custom
+ * paths and queries.</p>
  */
 public class URLBuilder {
     

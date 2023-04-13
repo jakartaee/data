@@ -1,0 +1,9 @@
+=== Test property reference
+
+In the previous sections, there were sample configurations that contained information about
+the different system properties that can be set under the `<systemPropertyVariables>` of the Surefire plugin. 
+This section contains a complete list of the system properties that will be looked up by the TCK
+and a short description of what data each represents. 
+Use this reference as a quick guide for customizing how this TCK is run for your implementation.
+
+include::generated/test-properties.adoc[]

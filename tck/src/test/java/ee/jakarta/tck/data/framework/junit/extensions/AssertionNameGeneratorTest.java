@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022, 2023 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -18,6 +18,7 @@ package ee.jakarta.tck.data.framework.junit.extensions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.Set;
+import java.lang.reflect.Field;
 
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.DisplayNameGenerator.Simple;
@@ -180,13 +181,20 @@ public class AssertionNameGeneratorTest {
     }
     
     private AssertionNameGenerator createNewAssertionNameGenerator(String platform, boolean isStandalone) {
-        if (platform == null) {
-            System.clearProperty(AssertionNameGenerator.platformProperty);
-        } else {
-            System.setProperty(AssertionNameGenerator.platformProperty, platform);    
+        AssertionNameGenerator instance = new AssertionNameGenerator();
+        
+        try {
+            Field platformField = AssertionNameGenerator.class.getDeclaredField("platform");
+            platformField.setAccessible(true);
+            platformField.set(instance, platform);
+            
+            Field standaloneField = AssertionNameGenerator.class.getDeclaredField("isStandalone");
+            standaloneField.setAccessible(true);
+            standaloneField.set(instance, isStandalone);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
         
-        System.setProperty(StandaloneExtension.isStandaloneProperty, Boolean.toString(isStandalone));
-        return new AssertionNameGenerator();
+        return instance;
     }
 }

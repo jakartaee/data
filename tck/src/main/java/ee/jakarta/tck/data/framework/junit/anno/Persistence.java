@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022, 2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2023 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -17,22 +17,21 @@ package ee.jakarta.tck.data.framework.junit.anno;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
 import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.condition.EnabledIf;
+
+import ee.jakarta.tck.data.framework.junit.extensions.EntityFilter;
 
 /**
- * <p>This annotation will allow implementors to run signature tests 
- * separately from all other tests.</p>
+ * <p>These are test classes that REQUIRE a Repository that supports Persistence entities to be executed.</p>
  * 
- * <p>This annotation is also inspected by the TCKArchiveProcessor 
- * to automatically add resources to the application deployed to the server.</p>
- * 
- * @see ee.jakarta.tck.data.framework.arquillian.extensions.TCKArchiveProcessor
+ * <p>At runtime the Junit platform will check the {@link EntityFilter#isPersistenceSupported()} 
+ * method to see if this test should or should not be enabled.</p>
  */
-@Target({ ElementType.TYPE })
+@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Tag("signature")
-public @interface Signature {
+@EnabledIf("ee.jakarta.tck.data.framework.junit.extensions.EntityFilter#isPersistenceSupported")
+public @interface Persistence {
 }

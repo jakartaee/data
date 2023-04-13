@@ -24,7 +24,7 @@ Example se-pom.xml:
 
 [source, xml]
 ----
-include::{starterLoc}/se-pom.xml[tags=configJunit5;!logging;!displayName]
+include::{starterLoc}/se-pom.xml[tags=configJunit5;!logging;!signature;!entity]
 ----
 
 The {APILongName} TCK also includes an extension to {TCKTestPlatform} which will automatically modify the test class with the platform it runs on, and test methods with their Assertion IDs if they exist.
@@ -35,7 +35,21 @@ To enable this extension include the following configuration to your surefire pl
 include::{starterLoc}/se-pom.xml[tags=displayName]
 ----
 
-include::07.aentity-modes.adoc[]
+==== Entity Modes
+
+There are situations where we need to test entities from a specific provider, 
+and other times where the test is generalized to work for any provider.
+
+To accomplish this tests are annotated with either `@Persistence`, `@NoSQL`, or no annotation.
+
+When configuring Junit5 add a System Property for the entity(s) your implementation supports. 
+
+Example se-pom.xml:
+
+[source, xml]
+----
+include::{starterLoc}/se-pom.xml[tags=systemProperties;!signature;!standalone;!logging]
+----
 
 ==== Standalone Logging
 
@@ -49,5 +63,5 @@ Example se-pom.xml:
 
 [source, xml]
 ----
-include::{starterLoc}/se-pom.xml[tags=logging;!ignore]
+include::{starterLoc}/se-pom.xml[tags=systemProperties;!signature;!standalone;!entity]
 ----

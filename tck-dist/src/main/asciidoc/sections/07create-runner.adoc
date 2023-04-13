@@ -9,3 +9,5 @@ Sample pom.xmls has been provided in this distribution under the /starter/ direc
 include::07.1se-mode.adoc[]
 
 include::07.2ee-mode.adoc[]
+
+include::07.3test-properties.adoc[]

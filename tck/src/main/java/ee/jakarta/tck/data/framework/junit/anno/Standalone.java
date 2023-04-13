@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022, 2023 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -30,18 +30,18 @@ import ee.jakarta.tck.data.framework.junit.extensions.AssertionNameGenerator;
 import ee.jakarta.tck.data.framework.junit.extensions.StandaloneExtension;
 
 /**
- * These are test classes that DO NOT depend on any Jakarta EE server
- * technologies.
+ * <p>These are test classes that DO NOT depend on any Jakarta EE server
+ * technologies.</p>
  * 
- * However, when running the TCK against a core/web/full profile server these
- * tests will be deployed and run on the server.
+ * <p>However, when running the TCK against a core/web/full profile server these
+ * tests will be deployed and run on the server.</p>
  * 
- * The dynamic method in which we achieve the ability to run these tests either
+ * <p>The dynamic method in which we achieve the ability to run these tests either
  * on the client JVM or server JVM depends on both the JUnit5 tag AND a system
- * property: {@link ee.jakarta.tck.data.framework.junit.extensions.StandaloneExtension#isStandaloneProperty}
+ * property: {@link ee.jakarta.tck.data.framework.utilities.TestProperty#standalone} </p>
  * 
- * If this property is true the Arquillian extension will be ignored,
- * otherwise we will attempt to deploy the test using Arquillian.
+ * <p>If this property is true the Arquillian extension will be ignored,
+ * otherwise we will attempt to deploy the test using Arquillian.</p>
  * 
  * @see ee.jakarta.tck.data.framework.junit.extensions.StandaloneExtension
  */

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022, 2023 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -31,17 +31,18 @@ import ee.jakarta.tck.data.framework.junit.anno.Web;
 import ee.jakarta.tck.data.framework.junit.extensions.AssertionExtension;
 import ee.jakarta.tck.data.framework.servlet.TestServlet;
 import ee.jakarta.tck.data.framework.signature.DataSignatureTestRunner;
+import ee.jakarta.tck.data.framework.utilities.TestProperty;
 
 /**
- * The ee.jakarta.tck.data.framework.junit.anno and ee.jakarta.tck.data.framework.junit.extensions
- * packages need to be available for all application that are deployed to the server.
+ * <p>The ee.jakarta.tck.data.framework.junit.anno and ee.jakarta.tck.data.framework.junit.extensions
+ * packages need to be available for all application that are deployed to the server.</p>
  * 
- * The web/full profile tests require the ee.jakarta.tck.data.framework.servlet package on the server.
+ * <p>The web/full profile tests require the ee.jakarta.tck.data.framework.servlet package on the server.</p>
  * 
- * The signature tests require the ee.jakarta.tck.data.framework.signature package on the server.
+ * <p>The signature tests require the ee.jakarta.tck.data.framework.signature package on the server.</p>
  * 
- * This processor service will automatically include these packages in the
- * archives based on their requirements before they are deployed to the server.
+ * <p>This processor service will automatically include these packages in the
+ * archives based on their requirements before they are deployed to the server.</p>
  *
  */
 public class TCKArchiveProcessor implements ApplicationArchiveProcessor {
@@ -51,6 +52,7 @@ public class TCKArchiveProcessor implements ApplicationArchiveProcessor {
     private static final Package extensionPackage = AssertionExtension.class.getPackage();
     private static final Package servletPackage = TestServlet.class.getPackage();
     private static final Package signaturePackage = DataSignatureTestRunner.class.getPackage();
+    private static final Package testPropertyPackage = TestProperty.class.getPackage();
 
     @Override
     public void process(Archive<?> applicationArchive, TestClass testClass) {
@@ -60,8 +62,8 @@ public class TCKArchiveProcessor implements ApplicationArchiveProcessor {
         if (applicationArchive instanceof ClassContainer) { 
             
             // Add annotation and extension packages to all archives
-            log.info("Application Archive [" + applicationName + "] is being appended with packages [" + annoPackage + " ," + extensionPackage + "]");
-            ((ClassContainer<?>) applicationArchive).addPackages(false, annoPackage, extensionPackage);
+            log.info("Application Archive [" + applicationName + "] is being appended with packages [" + annoPackage + " ," + extensionPackage + " ," + testPropertyPackage + "]");
+            ((ClassContainer<?>) applicationArchive).addPackages(false, annoPackage, extensionPackage, testPropertyPackage);
 
             // Add servlet packages to web/full profile tests
             if(testClass.isAnnotationPresent(Web.class) || testClass.isAnnotationPresent(Full.class)) {

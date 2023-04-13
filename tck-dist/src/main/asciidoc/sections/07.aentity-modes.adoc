@@ -1,8 +1,0 @@
-===== Entity Modes
-
-There are situations where we need to test entities from a specific provider, 
-and other times where the test is generalized to work for any provider.
-
-To accomplish this tests are tagged with either the `persistence` group, `nosql` group, or no entity group.
-
-When configuring Junit5 exclude the group name for the Entity type your provider does not support.

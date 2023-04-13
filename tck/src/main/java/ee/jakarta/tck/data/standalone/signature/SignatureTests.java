@@ -26,9 +26,9 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import ee.jakarta.tck.data.framework.junit.anno.Assertion;
 import ee.jakarta.tck.data.framework.junit.anno.Signature;
 import ee.jakarta.tck.data.framework.junit.anno.Standalone;
-import ee.jakarta.tck.data.framework.junit.extensions.StandaloneExtension;
 import ee.jakarta.tck.data.framework.signature.DataSignatureTestRunner;
 import ee.jakarta.tck.data.framework.signature.SigTestEE.Fault;
+import ee.jakarta.tck.data.framework.utilities.TestProperty;
 import jakarta.inject.Inject;
 
 @Standalone
@@ -49,7 +49,7 @@ public class SignatureTests {
     public void testSignaturesStandalone() throws Exception {
 
         try {
-            if (testBean == null && Boolean.getBoolean(StandaloneExtension.isStandaloneProperty)) {
+            if (testBean == null && TestProperty.standalone.getBoolean()) {
                 log.info("Signature test running in standalone mode");
                 DataSignatureTestRunner.assertProjectSetup(true);
                 DataSignatureTestRunner runner = new DataSignatureTestRunner();
