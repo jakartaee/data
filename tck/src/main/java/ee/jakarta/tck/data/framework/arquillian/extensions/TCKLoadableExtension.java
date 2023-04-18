@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022, 2023 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -16,15 +16,17 @@
 package ee.jakarta.tck.data.framework.arquillian.extensions;
 
 import org.jboss.arquillian.container.test.spi.client.deployment.ApplicationArchiveProcessor;
+import org.jboss.arquillian.container.test.spi.client.deployment.AuxiliaryArchiveAppender;
 import org.jboss.arquillian.core.spi.LoadableExtension;
 
 /**
- * Extension to Arquillian that adds an Archive Processor
+ * Extension to Arquillian that adds an Archive Processor and Archive Appender
  */
 public class TCKLoadableExtension implements LoadableExtension {
 
     @Override
     public void register(ExtensionBuilder builder) {
         builder.service(ApplicationArchiveProcessor.class, TCKArchiveProcessor.class);
+        builder.service(AuxiliaryArchiveAppender.class, TCKFrameworkAppender.class);
     }
 }

@@ -24,7 +24,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Predicate;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
 import java.util.stream.Collectors;
@@ -94,7 +93,7 @@ public class CollectMetaData {
         }
         
         //Collect test metadata
-        List<TestMetaData> testMetaData = collectMetaData(testClasses);
+        final List<TestMetaData> testMetaData = collectMetaData(testClasses);
         
         //Write the generated asciidoc files
         writeTestCounts(testMetaData, new File(adocGeneratedLocation, RUNTIME_TESTS_FILE));
@@ -297,8 +296,7 @@ public class CollectMetaData {
                 |persistence |%d         |%d   |%d  |%d
                 
                 |nosql       |%d         |%d   |%d  |%d
-                
-                |both        |%d         |%d   |%d  |%d
+
                 |===""".formatted(getTestCounts(testMetaData));
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputLocation))) {
             writer.write(output.trim() + System.lineSeparator());
@@ -316,22 +314,16 @@ public class CollectMetaData {
         List<Object> results = new ArrayList<>();
         
         //Persistence
-        results.add(standalone.stream().filter(Predicate.not(TestMetaData::isNoSQL)).count());
-        results.add(core.stream().filter(Predicate.not(TestMetaData::isNoSQL)).count());
-        results.add(web.stream().filter(Predicate.not(TestMetaData::isNoSQL)).count());
-        results.add(full.stream().filter(Predicate.not(TestMetaData::isNoSQL)).count());
+        results.add(standalone.stream().filter(TestMetaData::isPersistence).count());
+        results.add(core.stream().filter(TestMetaData::isPersistence).count());
+        results.add(web.stream().filter(TestMetaData::isPersistence).count());
+        results.add(full.stream().filter(TestMetaData::isPersistence).count());
         
         //NoSQL
-        results.add(standalone.stream().filter(Predicate.not(TestMetaData::isPersistence)).count());
-        results.add(core.stream().filter(Predicate.not(TestMetaData::isPersistence)).count());
-        results.add(web.stream().filter(Predicate.not(TestMetaData::isPersistence)).count());
-        results.add(full.stream().filter(Predicate.not(TestMetaData::isPersistence)).count());
-        
-        //Both
-        results.add(standalone.size());
-        results.add(core.size());
-        results.add(web.size());
-        results.add(full.size());
+        results.add(standalone.stream().filter(TestMetaData::isNoSQL).count());
+        results.add(core.stream().filter(TestMetaData::isNoSQL).count());
+        results.add(web.stream().filter(TestMetaData::isNoSQL).count());
+        results.add(full.stream().filter(TestMetaData::isNoSQL).count());
         
         return results.toArray();
     }
@@ -410,7 +402,6 @@ public class CollectMetaData {
         })
         .map(anno -> anno.value())
         .collect(Collectors.toList());
-
     }
     
     /**

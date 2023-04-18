@@ -20,13 +20,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.jboss.arquillian.test.spi.TestClass;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.impl.base.path.BasicPath;
 import org.junit.jupiter.api.Test;
 
-import ee.jakarta.tck.data.framework.junit.anno.Core;
-import ee.jakarta.tck.data.framework.junit.anno.Full;
 import ee.jakarta.tck.data.framework.junit.anno.Signature;
 import ee.jakarta.tck.data.framework.junit.anno.Web;
 
@@ -35,26 +32,6 @@ import ee.jakarta.tck.data.framework.junit.anno.Web;
  */
 public class TCKArchiveProcessorTest {
     private static final TCKArchiveProcessor processor = new TCKArchiveProcessor();
-    
-    @Core
-    private static class TestCoreClass {}
-    
-    @Test
-    public void processorShouldAlwaysAppendAnnotationsAndExtensions() {
-        JavaArchive testJar = ShrinkWrap.create(JavaArchive.class);
-        assertTrue(testJar.getContent().isEmpty());
-        
-        processor.process(testJar, new TestClass(TestCoreClass.class));
-        assertFalse(testJar.getContent().isEmpty());
-        
-        // Should append Anno and Extension packages
-        assertTrue(testJar.getContent().containsKey(new BasicPath("/ee/jakarta/tck/data/framework/junit/anno")));    
-        assertTrue(testJar.getContent().containsKey(new BasicPath("/ee/jakarta/tck/data/framework/junit/extensions")));
-        
-        //Should not append servlet or signature packages
-        assertFalse(testJar.getContent().containsKey(new BasicPath("/ee/jakarta/tck/data/framework/servlet")));
-        assertFalse(testJar.getContent().containsKey(new BasicPath("/ee/jakarta/tck/data/framework/signature")));
-    }
     
     @Web
     private static class TestWebClass {}
@@ -67,9 +44,7 @@ public class TCKArchiveProcessorTest {
         processor.process(testWAR, new TestClass(TestWebClass.class));
         assertFalse(testWAR.getContent().isEmpty());
         
-        // Should append Anno, Extension, and Servlet packages
-        assertTrue(testWAR.getContent().containsKey(new BasicPath("/WEB-INF/classes/ee/jakarta/tck/data/framework/junit/anno")));      
-        assertTrue(testWAR.getContent().containsKey(new BasicPath("/WEB-INF/classes/ee/jakarta/tck/data/framework/junit/extensions")));      
+        // Should append servlet packages    
         assertTrue(testWAR.getContent().containsKey(new BasicPath("/WEB-INF/classes/ee/jakarta/tck/data/framework/servlet")));    
         
         // Should not append signature packages
@@ -77,7 +52,6 @@ public class TCKArchiveProcessorTest {
     }
     
     @Signature
-    @Full
     private static class TestSignatureClass {}
     
     @Test
@@ -88,10 +62,10 @@ public class TCKArchiveProcessorTest {
         processor.process(testWAR, new TestClass(TestSignatureClass.class));
         assertFalse(testWAR.getContent().isEmpty());
         
-        // Should append Anno, Extension, and Servlet packages
-        assertTrue(testWAR.getContent().containsKey(new BasicPath("/WEB-INF/classes/ee/jakarta/tck/data/framework/junit/anno")));      
-        assertTrue(testWAR.getContent().containsKey(new BasicPath("/WEB-INF/classes/ee/jakarta/tck/data/framework/junit/extensions")));      
-        assertTrue(testWAR.getContent().containsKey(new BasicPath("/WEB-INF/classes/ee/jakarta/tck/data/framework/servlet"))); 
+        // Should not append servlet packages    
+        assertFalse(testWAR.getContent().containsKey(new BasicPath("/WEB-INF/classes/ee/jakarta/tck/data/framework/servlet")));    
+        
+        // Should append signature packages
         assertTrue(testWAR.getContent().containsKey(new BasicPath("/WEB-INF/classes/ee/jakarta/tck/data/framework/signature")));
     }
     

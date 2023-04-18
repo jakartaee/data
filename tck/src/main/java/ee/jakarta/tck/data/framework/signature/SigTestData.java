@@ -17,11 +17,14 @@ package ee.jakarta.tck.data.framework.signature;
 
 import java.util.Properties;
 
+import ee.jakarta.tck.data.framework.utilities.TestProperty;
+
 /**
  * This class holds the data passed to a signature test invocation during the
  * setup phase. This allows us to keep the passed data separate and reuse the
  * data between the signature test framework base classes.
  */
+@Deprecated //TODO remove and relay on TestProperty class instead.
 public class SigTestData {
 
     private Properties props;
@@ -43,7 +46,7 @@ public class SigTestData {
     }
 
     public String getTestClasspath() {
-        return props.getProperty("sigTestClasspath", "");
+        return TestProperty.signatureClasspath.getValue();
     }
 
     public String getJavaeeLevel() {
@@ -67,6 +70,6 @@ public class SigTestData {
     }
 
     public String getJImageDir() {
-        return props.getProperty("jimage.dir", "");
+        return TestProperty.signatureImageDir.getValue();
     }
 } // end class SigTestData

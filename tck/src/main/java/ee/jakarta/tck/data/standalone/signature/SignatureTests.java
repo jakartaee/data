@@ -23,6 +23,7 @@ import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 
+import ee.jakarta.tck.data.framework.junit.anno.AnyEntity;
 import ee.jakarta.tck.data.framework.junit.anno.Assertion;
 import ee.jakarta.tck.data.framework.junit.anno.Signature;
 import ee.jakarta.tck.data.framework.junit.anno.Standalone;
@@ -32,6 +33,7 @@ import ee.jakarta.tck.data.framework.utilities.TestProperty;
 import jakarta.inject.Inject;
 
 @Standalone
+@AnyEntity
 @Signature
 public class SignatureTests {
     private static final Logger log = Logger.getLogger(SignatureTests.class.getCanonicalName());
@@ -49,7 +51,7 @@ public class SignatureTests {
     public void testSignaturesStandalone() throws Exception {
 
         try {
-            if (testBean == null && TestProperty.standalone.getBoolean()) {
+            if (testBean == null && TestProperty.profile.getValue().toLowerCase().matches("none")) {
                 log.info("Signature test running in standalone mode");
                 DataSignatureTestRunner.assertProjectSetup(true);
                 DataSignatureTestRunner runner = new DataSignatureTestRunner();

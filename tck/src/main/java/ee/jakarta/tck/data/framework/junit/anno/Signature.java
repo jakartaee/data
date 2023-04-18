@@ -17,19 +17,14 @@ package ee.jakarta.tck.data.framework.junit.anno;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
 import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 import org.junit.jupiter.api.Tag;
 
 /**
- * <p>This annotation will allow implementors to run signature tests 
- * separately from all other tests.</p>
- * 
- * <p>This annotation is also inspected by the TCKArchiveProcessor 
- * to automatically add resources to the application deployed to the server.</p>
- * 
- * @see ee.jakarta.tck.data.framework.arquillian.extensions.TCKArchiveProcessor
+ * <p>This annotation will allow vendors to run signature tests 
+ * separately from all other tests, if desired.</p>
  */
 @Target({ ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)

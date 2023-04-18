@@ -24,13 +24,16 @@ import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.jupiter.api.Disabled;
 
+import ee.jakarta.tck.data.framework.junit.anno.AnyEntity;
 import ee.jakarta.tck.data.framework.junit.anno.Assertion;
 import ee.jakarta.tck.data.framework.junit.anno.Core;
 
 /**
  * Example test case where we want to run a test within a CDI Bean
+ * FIXME - This is an example test, remove before the 1.0 release.
  */
 @Core
+@AnyEntity
 public class CDIExampleTests {
     
     @Deployment
@@ -42,7 +45,7 @@ public class CDIExampleTests {
     @Inject
     ExampleService service;
     
-    @Assertion(id = "26", strategy = "Deployes a CDI bean to application server, and injects service to be tested")
+    @Assertion(id = "26", strategy = "Deploys a CDI bean to application server, and injects service to be tested")
     public void serviceAlwaysReturnsTrue() {
         assertTrue(service.getMessage(), "Message should have returned true");
     }

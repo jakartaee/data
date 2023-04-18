@@ -20,18 +20,13 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.junit.jupiter.api.condition.EnabledIf;
-
-import ee.jakarta.tck.data.framework.junit.extensions.EntityFilter;
+import org.junit.jupiter.api.Tag;
 
 /**
- * <p>These are test classes that REQUIRE a Repository that supports Persistence entities to be executed.</p>
- * 
- * <p>At runtime the Junit platform will check the {@link EntityFilter#isPersistenceSupported()} 
- * method to see if this test should or should not be enabled.</p>
+ * <p>These are test classes that REQUIRE Persistence entity support to be executed.</p>
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@EnabledIf("ee.jakarta.tck.data.framework.junit.extensions.EntityFilter#isPersistenceSupported")
+@Tag("persistence")
 public @interface Persistence {
 }

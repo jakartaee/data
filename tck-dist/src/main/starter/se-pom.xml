@@ -147,14 +147,6 @@
      <dependenciesToScan>
       <dependency>jakarta.data:jakarta-data-tck</dependency>
      </dependenciesToScan>
-     <!-- tag::displayName[] -->
-     <statelessTestsetReporter
-      implementation=
-      "org.apache.maven.plugin.surefire.extensions.junit5.JUnit5Xml30StatelessReporter">
-      <usePhrasedTestCaseMethodName>true</usePhrasedTestCaseMethodName>
-      <usePhrasedTestCaseClassName>true</usePhrasedTestCaseClassName>
-     </statelessTestsetReporter>
-     <!-- end::displayName[] -->
      <!-- tag::systemProperties[] -->
      <systemPropertyVariables>
       <!-- tag::signature[] -->
@@ -164,17 +156,12 @@
       <!-- tag::logging[] -->
       <java.util.logging.config.file>${logging.config}</java.util.logging.config.file>
       <!-- end::logging[] -->
-      <!-- tag::standalone[] -->
-      <jakarta.tck.standalone.test>true</jakarta.tck.standalone.test>
-      <!-- end::standalone[] -->
-      <!-- tag::entity[] -->
-      <jakarta.tck.entity>[supported-entity(s)]</jakarta.tck.entity>
-      <!-- end::entity[] -->
      </systemPropertyVariables>
      <!-- end::systemProperties[] -->
-     <!-- Supported tags - Groups:[signature] -->
+     <!-- Supported tags 
+     	Entities:[nosql|persistence] 
+     	Other:   [signature] -->
      <groups>standalone</groups>
-     <excludedGroups>[TODO]</excludedGroups>
      <!-- If running back-to-back tests at different levels
       use this to distinguish the results -->
      <reportNameSuffix>[OPTIONAL]</reportNameSuffix>

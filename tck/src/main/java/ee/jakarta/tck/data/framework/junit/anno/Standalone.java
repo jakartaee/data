@@ -17,38 +17,35 @@ package ee.jakarta.tck.data.framework.junit.anno;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
 import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Tags;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import ee.jakarta.tck.data.framework.junit.extensions.AssertionExtension;
-import ee.jakarta.tck.data.framework.junit.extensions.AssertionNameGenerator;
 import ee.jakarta.tck.data.framework.junit.extensions.StandaloneExtension;
+import ee.jakarta.tck.data.framework.utilities.TestProperty;
 
 /**
- * <p>These are test classes that DO NOT depend on any Jakarta EE server
- * technologies.</p>
+ * <p>These are test classes that DO NOT depend on any Jakarta EE profile technologies.</p>
  * 
- * <p>However, when running the TCK against a core/web/full profile server these
- * tests will be deployed and run on the server.</p>
+ * <p>However, when running the TCK against a core/web/full profile container these
+ * tests will be deployed and run on the container.</p>
  * 
  * <p>The dynamic method in which we achieve the ability to run these tests either
- * on the client JVM or server JVM depends on both the JUnit5 tag AND a system
- * property: {@link ee.jakarta.tck.data.framework.utilities.TestProperty#standalone} </p>
+ * on the client JVM or container JVM depends on both the JUnit5 Standalone tag AND 
+ * the system property: {@link TestProperty#profile}  </p>
  * 
- * <p>If this property is true the Arquillian extension will be ignored,
+ * <p>If this property is "none" the Arquillian extension will be ignored,
  * otherwise we will attempt to deploy the test using Arquillian.</p>
- * 
- * @see ee.jakarta.tck.data.framework.junit.extensions.StandaloneExtension
  */
 @Target({ ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
-@Tags({ @Tag("standalone"), @Tag("core"), @Tag("web"), @Tag("full") })
+@Tag("standalone")
+@Tag("core")
+@Tag("web")
+@Tag("full")
 @ExtendWith({ StandaloneExtension.class, AssertionExtension.class })
-@DisplayNameGeneration(AssertionNameGenerator.class)
 public @interface Standalone {
 }

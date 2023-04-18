@@ -17,16 +17,14 @@ package ee.jakarta.tck.data.framework.junit.anno;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
 import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 import org.jboss.arquillian.junit5.ArquillianExtension;
-import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import ee.jakarta.tck.data.framework.junit.extensions.AssertionExtension;
-import ee.jakarta.tck.data.framework.junit.extensions.AssertionNameGenerator;
 
 /**
  * <p>These are test classes that REQUIRE full profile to be executed. For these
@@ -35,16 +33,10 @@ import ee.jakarta.tck.data.framework.junit.extensions.AssertionNameGenerator;
  * 
  * <p>At runtime the Arquillian Servlet protocol must be used for communication
  * with the Jakarta EE server.</p>
- * 
- * <p>This annotation is also inspected by the TCKArchiveProcessor 
- * to automatically add resources to the application deployed to the server.</p>
- * 
- * @see ee.jakarta.tck.data.framework.arquillian.extensions.TCKArchiveProcessor
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Tag("full")
 @ExtendWith({ ArquillianExtension.class, AssertionExtension.class })
-@DisplayNameGeneration(AssertionNameGenerator.class)
 public @interface Full {
 }

@@ -25,13 +25,19 @@ import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.TestInfo;
 
+import ee.jakarta.tck.data.framework.junit.anno.AnyEntity;
 import ee.jakarta.tck.data.framework.junit.anno.Assertion;
 import ee.jakarta.tck.data.framework.junit.anno.Web;
 import ee.jakarta.tck.data.framework.servlet.TestClient;
 import ee.jakarta.tck.data.framework.servlet.URLBuilder;
 
-
+/**
+ * Example test case where we want to run a test on the client side,
+ * and make assertions in the container.
+ * FIXME - This is an example test, remove before the 1.0 release.
+ */
 @Web
+@AnyEntity
 @RunAsClient //These tests will run on the client JVM and make calls to a servlet running on a web container.
 public class ComplexServletTests extends TestClient {
     

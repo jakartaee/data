@@ -48,32 +48,30 @@ Example ee-pom.xml:
 
 [source, xml]
 ----
-include::{starterLoc}/ee-pom.xml[tags=configJunit5;!arquillian;!logging;!displayName;!entity]
+include::{starterLoc}/ee-pom.xml[tags=configJunit5;!arquillian;!logging;!entity]
 ----
 
-The {APILongName} TCK also includes an extension to {TCKTestPlatform} which will automatically modify the test class with the platform it runs on, and test methods with their Assertion IDs if they exist.
-To enable this extension include the following configuration to your surefire plugin:
+==== Profile Mode
 
-[source, xml]
-----
-include::{starterLoc}/ee-pom.xml[tags=displayName]
-----
+All test classes that require running on a Jakarta profile are annotated with the `@Core`, `@Web`, or `@Full` annotation.
+
+When running against a Jakarta profile, include the group that matches your supported profile. For example: `<groups>core<groups>`.
 
 ==== Entity Modes
 
-There are situations where we need to test entities from a specific provider, 
-and other times where the test is generalized to work for any provider.
+All test classes in the TCK are annotated with `@NoSQL`, `@Persistence`, or `@AnyEntity` annotations.
 
-To accomplish this tests are annotated with either `@Persistence`, `@NoSQL`, or no annotation.
+If your {APILongName} implementation supports NoSQL entities, include the group `<groups>nosql<groups>`.
 
-When configuring Junit5 add a System Property for the entity(s) your implementation supports. 
+If your {APILongName} implementation supports Persistence entities, include the group `<groups>persistence<groups>`.
 
-Example se-pom.xml:
+==== Filtering Tests
+As mentioned in the prior sections tests can be filtered by modifying the `<groups>` element. 
+It is recommended to avoid using `<excludedGroups>` as the surefire plugin has a known issue 
+where excluded groups do not have precedence over included groups. 
 
-[source, xml]
-----
-include::{starterLoc}/ee-pom.xml[tags=systemProperties;!signature;!standalone;!logging;!arquillian]
-----
+Therefore, if you wanted to run core profile tests with a NoSQL entities you would 
+configure `<groups>core & nosql<groups>`.
 
 ==== Configure Arquillian
 

@@ -24,46 +24,32 @@ import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.container.ClassContainer;
 import org.jboss.shrinkwrap.api.container.ResourceContainer;
 
-import ee.jakarta.tck.data.framework.junit.anno.Assertion;
 import ee.jakarta.tck.data.framework.junit.anno.Full;
 import ee.jakarta.tck.data.framework.junit.anno.Signature;
 import ee.jakarta.tck.data.framework.junit.anno.Web;
-import ee.jakarta.tck.data.framework.junit.extensions.AssertionExtension;
 import ee.jakarta.tck.data.framework.servlet.TestServlet;
 import ee.jakarta.tck.data.framework.signature.DataSignatureTestRunner;
-import ee.jakarta.tck.data.framework.utilities.TestProperty;
 
 /**
- * <p>The ee.jakarta.tck.data.framework.junit.anno and ee.jakarta.tck.data.framework.junit.extensions
- * packages need to be available for all application that are deployed to the server.</p>
+ * This extension will intercept archives before they are deployed to the container and append 
+ * the following packages:
  * 
  * <p>The web/full profile tests require the ee.jakarta.tck.data.framework.servlet package on the server.</p>
  * 
  * <p>The signature tests require the ee.jakarta.tck.data.framework.signature package on the server.</p>
- * 
- * <p>This processor service will automatically include these packages in the
- * archives based on their requirements before they are deployed to the server.</p>
- *
  */
 public class TCKArchiveProcessor implements ApplicationArchiveProcessor {
     private static final Logger log = Logger.getLogger(TCKArchiveProcessor.class.getCanonicalName());
 
-    private static final Package annoPackage = Assertion.class.getPackage();
-    private static final Package extensionPackage = AssertionExtension.class.getPackage();
     private static final Package servletPackage = TestServlet.class.getPackage();
     private static final Package signaturePackage = DataSignatureTestRunner.class.getPackage();
-    private static final Package testPropertyPackage = TestProperty.class.getPackage();
-
+    
     @Override
     public void process(Archive<?> applicationArchive, TestClass testClass) {
         String applicationName = applicationArchive.getName() == null ? applicationArchive.getId() : applicationArchive.getName();
         
         // NOTE: ClassContainer is a superclass of ResourceContainer
         if (applicationArchive instanceof ClassContainer) { 
-            
-            // Add annotation and extension packages to all archives
-            log.info("Application Archive [" + applicationName + "] is being appended with packages [" + annoPackage + " ," + extensionPackage + " ," + testPropertyPackage + "]");
-            ((ClassContainer<?>) applicationArchive).addPackages(false, annoPackage, extensionPackage, testPropertyPackage);
 
             // Add servlet packages to web/full profile tests
             if(testClass.isAnnotationPresent(Web.class) || testClass.isAnnotationPresent(Full.class)) {

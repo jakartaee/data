@@ -32,7 +32,7 @@ import jakarta.data.exceptions.MappingException;
 import jakarta.inject.Inject;
 
 /**
- * Ensure this test is only run when a persistence provider is being tested. 
+ * Execute a test with a Persistence specific entity. 
  */
 @Core
 @Persistence
