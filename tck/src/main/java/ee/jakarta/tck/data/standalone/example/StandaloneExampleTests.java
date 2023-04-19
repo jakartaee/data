@@ -23,10 +23,16 @@ import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 
+import ee.jakarta.tck.data.framework.junit.anno.AnyEntity;
 import ee.jakarta.tck.data.framework.junit.anno.Assertion;
 import ee.jakarta.tck.data.framework.junit.anno.Standalone;
 
+/**
+ * Example test case where we want to run a test both in standalone mode, and in a container.
+ * FIXME - This is an example test, remove before the 1.0 release.
+ */
 @Standalone
+@AnyEntity
 public class StandaloneExampleTests {
     public static final Logger log = Logger.getLogger(StandaloneExampleTests.class.getCanonicalName());
     

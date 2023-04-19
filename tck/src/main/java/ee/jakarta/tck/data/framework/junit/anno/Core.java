@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022, 2023 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -17,30 +17,28 @@ package ee.jakarta.tck.data.framework.junit.anno;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
 import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 import org.jboss.arquillian.junit5.ArquillianExtension;
-import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Tags;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import ee.jakarta.tck.data.framework.junit.extensions.AssertionExtension;
-import ee.jakarta.tck.data.framework.junit.extensions.AssertionNameGenerator;
 
 /**
- * These are test classes that REQUIRE core profile to be executed. For these
+ * <p>These are test classes that REQUIRE core profile to be executed. For these
  * tests to run they must deploy an application to a Jakarta EE server using the
- * Arquillian {@code @Deployment} annotation.
+ * Arquillian {@code @Deployment} annotation.</p>
  * 
- * At runtime the Arquillian REST protocol must be used for communication with
- * the Jakarta EE server.
+ * <p>At runtime the Arquillian REST protocol must be used for communication with
+ * the Jakarta EE server.</p>
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Tags({ @Tag("core"), @Tag("web"), @Tag("full") })
+@Tag("core")
+@Tag("web")
+@Tag("full")
 @ExtendWith({ ArquillianExtension.class, AssertionExtension.class })
-@DisplayNameGeneration(AssertionNameGenerator.class)
 public @interface Core {
 }

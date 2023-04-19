@@ -175,42 +175,36 @@
      <dependenciesToScan>
       <dependency>jakarta.data:jakarta-data-tck</dependency>
      </dependenciesToScan>
-     <!-- tag::displayName[] -->
-     <statelessTestsetReporter
-      implementation="org.apache.maven.plugin.surefire.extensions.junit5.JUnit5Xml30StatelessReporter">
-      <usePhrasedTestCaseMethodName>true</usePhrasedTestCaseMethodName>
-      <usePhrasedTestCaseClassName>true</usePhrasedTestCaseClassName>
-     </statelessTestsetReporter>
-     <!-- end::displayName[] -->
-     <!-- tag::logging[] -->
-     <systemProperties>
-      <property>
-       <name>java.util.logging.config.file</name>
-       <value>${logging.config}</value>
-      </property>
-     </systemProperties>
-     <!-- end::logging[] -->
-     <!-- tag::arquillian[] -->
+     <!-- tag::systemProperties[] -->
      <systemPropertyVariables>
-      <!-- Properties shared with Arquillian -->
+      <!-- tag::arquillian[] -->
       <tck_server>[TODO]</tck_server>
       <tck_hostname>[TODO]</tck_hostname>
       <tck_username>[TODO]</tck_username>
       <tck_password>[TODO]</tck_password>
       <tck_port>[TODO]</tck_port>
       <tck_port>[TODO]</tck_port>
+      <!-- end::arquillian[] -->
+      <!-- tag::signature[] -->
+      <jimage.dir>[path-to-extract-jvm-classes]</jimage.dir>
+      <signature.sigTestClasspath>[path-to]/jakarta-data-api.jar:[path-to-jimage]/java.base:[path-to-jimage]/java.rmi:[path-to-jimage]/java.sql:[path-to-jimage]/java.naming</signature.sigTestClasspath>
+      <!-- end::signature[] -->
+      <!-- tag::logging[] -->
+      <java.util.logging.config.file>${basedir}/../logging.properties</java.util.logging.config.file>
+      <!-- end::logging[] -->
      </systemPropertyVariables>
-     <!-- end::arquillian[] -->
-     <!-- Supported tags - Profiles:[core|web|full] Entities:[persistence|nosql] Groups:[signature] -->
+     <!-- end::systemProperties[] -->
+     <!-- Supported tags 
+     	Profiles:[core|web|full] 
+     	Entities:[nosql|persistence] 
+     	Other:   [signature] -->
      <groups>[TODO]</groups>
-     <excludedGroups>[TODO]</excludedGroups>
-     <!-- If running back-to-back tests at different levels use this to distinguish 
-      the results -->
+     <!-- If running back-to-back tests at different levels 
+     use this to distinguish the results -->
      <reportNameSuffix>[OPTIONAL]</reportNameSuffix>
-     <!-- Ensure surfire plugin looks under src/main/java instead of src/test/java -->
-     <testSourceDirectory>
-      ${basedir}${file.separarator}src${file.separarator}main${file.separarator}java${file.separarator}
-     </testSourceDirectory>
+     <!-- Ensure surfire plugin looks under src/main/java 
+     instead of src/test/java -->
+     <testSourceDirectory>${basedir}/src/main/java/</testSourceDirectory>
     </configuration>
    </plugin>
    <!-- end::configJunit5[] -->

@@ -4,7 +4,6 @@ This section is dedicated to listing example runners for other implementations t
 
 Below are links to projects where the {APILongName} TCK is being used and run successfully: 
 
-[cols="1,1,1"]
 |===
 |Project |Link |Profile(s)
 

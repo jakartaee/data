@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022, 2023 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -29,12 +29,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 /**
- * Standard superclass for test servlets that accepts a `testMethod` parameter
- * to the doGet / doPost methods that will attempt to run that method on the
+ * <p>Standard superclass for test servlets that accepts a `testMethod` parameter
+ * to the doGet / doPost methods that will attempt to run that method on the</p>
  * subclass.
  * 
- * The doGet / doPost methods will append `SUCCESS` to the response if the test
- * is successfully. Otherwise, SUCCESS will not be appended to the response.
+ * <p>The doGet / doPost methods will append `SUCCESS` to the response if the test
+ * is successfully. Otherwise, SUCCESS will not be appended to the response.</p>
  */
 public class TestServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;

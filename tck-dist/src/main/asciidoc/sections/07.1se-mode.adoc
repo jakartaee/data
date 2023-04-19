@@ -24,18 +24,31 @@ Example se-pom.xml:
 
 [source, xml]
 ----
-include::{starterLoc}/se-pom.xml[tags=configJunit5;!logging;!displayName]
+include::{starterLoc}/se-pom.xml[tags=configJunit5;!logging;!signature;!entity]
 ----
 
-The {APILongName} TCK also includes an extension to {TCKTestPlatform} which will automatically modify the test class with the platform it runs on, and test methods with their Assertion IDs if they exist.
-To enable this extension include the following configuration to your surefire plugin:
+==== Standalone Mode
 
-[source, xml]
-----
-include::{starterLoc}/se-pom.xml[tags=displayName]
-----
+All test classes that support running in standalone mode are annotated with the `@Standalone` annotation.
 
-include::07.aentity-modes.adoc[]
+When running in standalone mode, include the group `<groups>standalone<groups>`.
+This will ensure that none of the core/web/full profile tests are run.
+
+==== Entity Modes
+
+All test classes in the TCK are annotated with `@NoSQL`, `@Persistence`, or `@AnyEntity` annotations.
+
+If your {APILongName} implementation supports NoSQL entities, include the group `<groups>nosql<groups>`.
+
+If your {APILongName} implementation supports Persistence entities, include the group `<groups>persistence<groups>`.
+
+==== Filtering Tests
+As mentioned in the prior sections tests can be filtered by modifying the `<groups>` element. 
+It is recommended to avoid using `<excludedGroups>` as the surefire plugin has a known issue 
+where excluded groups do not have precedence over included groups. 
+
+Therefore, if you wanted to run standalone tests with a NoSQL entities you would 
+configure `<groups>standalone & nosql<groups>`.
 
 ==== Standalone Logging
 
@@ -49,5 +62,5 @@ Example se-pom.xml:
 
 [source, xml]
 ----
-include::{starterLoc}/se-pom.xml[tags=logging;!ignore]
+include::{starterLoc}/se-pom.xml[tags=systemProperties;!signature;!standalone;!entity]
 ----

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022, 2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2023 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -20,23 +20,13 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.extension.ExtendWith;
-
-import ee.jakarta.tck.data.framework.junit.extensions.AssertionExtension;
 
 /**
- * <p>These are test classes that REQUIRE full profile to be executed. For these
- * tests to run they must deploy an application to a Jakarta EE server using the
- * Arquillian {@code @Deployment} annotation.</p>
- * 
- * <p>At runtime the Arquillian Servlet protocol must be used for communication
- * with the Jakarta EE server.</p>
+ * <p>These are test classes that REQUIRE NoSQL entity support to be executed.</p>
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Tag("full")
-@ExtendWith({ ArquillianExtension.class, AssertionExtension.class })
-public @interface Full {
+@Tag("nosql")
+public @interface NoSQL {
 }

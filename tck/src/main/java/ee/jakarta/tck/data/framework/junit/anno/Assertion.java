@@ -17,14 +17,13 @@ package ee.jakarta.tck.data.framework.junit.anno;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
-
 import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 import org.junit.jupiter.api.Test;
 
 /**
- * Test metadata to track what assertion from the spec is being tested, and the
+ * Test metadata to track what assertion from GitHub is being tested, and the
  * strategy used to test that assertion.
  */
 @Target({ ElementType.METHOD })

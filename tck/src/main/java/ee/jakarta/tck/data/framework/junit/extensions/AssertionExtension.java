@@ -25,9 +25,9 @@ import org.junit.jupiter.api.extension.TestWatcher;
 import ee.jakarta.tck.data.framework.junit.anno.Assertion;
 
 /**
- * If a test fails or is disabled we can warn the implementor of the assertion
+ * If a test fails or is disabled we can warn the vendor of the assertion
  * ID As well as provide test strategy information to aid in resolving the
- * issue. This data is obtained by the {@code @Assertion} annotation
+ * issue. This data is obtained by the {@code @Assertion} annotation.
  * 
  * @see ee.jakarta.tck.data.framework.junit.anno.Assertion
  */

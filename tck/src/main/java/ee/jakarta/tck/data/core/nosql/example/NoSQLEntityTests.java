@@ -24,18 +24,18 @@ import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Tag;
 
 import ee.jakarta.tck.data.framework.junit.anno.Assertion;
 import ee.jakarta.tck.data.framework.junit.anno.Core;
+import ee.jakarta.tck.data.framework.junit.anno.NoSQL;
 import jakarta.data.exceptions.MappingException;
 import jakarta.inject.Inject;
 
 /**
- * Ensure this test is only run when a persistence provider is being tested. 
+ * Execute a test with an NoSQL specific entity.
  */
 @Core
-@Tag("nosql")
+@NoSQL
 public class NoSQLEntityTests {
     
     @Deployment

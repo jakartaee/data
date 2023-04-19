@@ -48,18 +48,30 @@ Example ee-pom.xml:
 
 [source, xml]
 ----
-include::{starterLoc}/ee-pom.xml[tags=configJunit5;!arquillian;!logging;!displayName]
+include::{starterLoc}/ee-pom.xml[tags=configJunit5;!arquillian;!logging;!entity]
 ----
 
-The {APILongName} TCK also includes an extension to {TCKTestPlatform} which will automatically modify the test class with the platform it runs on, and test methods with their Assertion IDs if they exist.
-To enable this extension include the following configuration to your surefire plugin:
+==== Profile Mode
 
-[source, xml]
-----
-include::{starterLoc}/ee-pom.xml[tags=displayName]
-----
+All test classes that require running on a Jakarta profile are annotated with the `@Core`, `@Web`, or `@Full` annotation.
 
-include::07.aentity-modes.adoc[]
+When running against a Jakarta profile, include the group that matches your supported profile. For example: `<groups>core<groups>`.
+
+==== Entity Modes
+
+All test classes in the TCK are annotated with `@NoSQL`, `@Persistence`, or `@AnyEntity` annotations.
+
+If your {APILongName} implementation supports NoSQL entities, include the group `<groups>nosql<groups>`.
+
+If your {APILongName} implementation supports Persistence entities, include the group `<groups>persistence<groups>`.
+
+==== Filtering Tests
+As mentioned in the prior sections tests can be filtered by modifying the `<groups>` element. 
+It is recommended to avoid using `<excludedGroups>` as the surefire plugin has a known issue 
+where excluded groups do not have precedence over included groups. 
+
+Therefore, if you wanted to run core profile tests with a NoSQL entities you would 
+configure `<groups>core & nosql<groups>`.
 
 ==== Configure Arquillian
 
@@ -71,7 +83,7 @@ It is possible to configure the surefire plugin to past variables to the Arquill
 
 [source, xml]
 ----
-include::{starterLoc}/ee-pom.xml[tags=arquillian]
+include::{starterLoc}/ee-pom.xml[tags=systemProperties;!logging;!signature;!standalone;!entity]
 ----
 
 ==== Configure Jakarta EE Platform Server
@@ -98,7 +110,7 @@ Example ee-pom.xml:
 
 [source, xml]
 ----
-include::{starterLoc}/ee-pom.xml[tag=logging]
+include::{starterLoc}/ee-pom.xml[tags=systemProperties;!arquillian;!signature;!standalone;!entity]
 ----
 
 To enable logging for the Server side of tests, set the same system property on the JVM running your application server.

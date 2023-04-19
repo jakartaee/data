@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022, 2023 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -28,12 +28,14 @@ import org.junit.jupiter.api.extension.InvocationInterceptor;
 import org.junit.jupiter.api.extension.ReflectiveInvocationContext;
 import org.junit.jupiter.api.extension.TestExecutionExceptionHandler;
 
+import ee.jakarta.tck.data.framework.utilities.TestProperty;
+
 /**
- * This is a Junit5 extension class that extends ArquillianExtension
+ * <p>This is a Junit5 extension class that extends ArquillianExtension</p>
  * 
- * This extension will passthrough to the ArquillianExtension class when running
- * against a core/web/full profile Jakarta EE server, but will skip Arquillian
- * processing when running against a standalone implementation.
+ * <p>This extension will passthrough to the ArquillianExtension class when running
+ * against a Jakarta EE core/web/full profiles, but will skip Arquillian
+ * processing when running against a standalone implementation.</p>
  * 
  * @see org.jboss.arquillian.junit5.ArquillianExtension
  *
@@ -41,18 +43,11 @@ import org.junit.jupiter.api.extension.TestExecutionExceptionHandler;
 public class StandaloneExtension extends ArquillianExtension implements BeforeAllCallback, AfterAllCallback,
         BeforeEachCallback, AfterEachCallback, InvocationInterceptor, TestExecutionExceptionHandler {
     
-    /**
-     * Required property that will prevent us from attempting to run a Standalone test on a server.
-     */
-    public static final String isStandaloneProperty = "jakarta.tck.standalone.test";
-    
     private static final Logger log = Logger.getLogger(StandaloneExtension.class.getCanonicalName());
-
-    private static boolean isStandalone = Boolean.getBoolean(isStandaloneProperty);
 
     @Override
     public void beforeAll(ExtensionContext context) throws Exception {
-        if (isStandalone) {
+        if (TestProperty.profile.getValue().toLowerCase().matches("none")) {
             log.info("Running tests in standalone mode, arquillian will not create or deploy archives for test class: " + context.getTestClass().get().getCanonicalName());
             return;
         }
@@ -61,7 +56,7 @@ public class StandaloneExtension extends ArquillianExtension implements BeforeAl
 
     @Override
     public void afterAll(ExtensionContext context) throws Exception {
-        if (isStandalone) {
+        if (TestProperty.profile.getValue().toLowerCase().matches("none")) {
             return;
         }
         super.afterAll(context);
@@ -69,7 +64,7 @@ public class StandaloneExtension extends ArquillianExtension implements BeforeAl
 
     @Override
     public void beforeEach(ExtensionContext context) throws Exception {
-        if (isStandalone) {
+        if (TestProperty.profile.getValue().toLowerCase().matches("none")) {
             return;
         }
         super.beforeEach(context);
@@ -77,7 +72,7 @@ public class StandaloneExtension extends ArquillianExtension implements BeforeAl
 
     @Override
     public void afterEach(ExtensionContext context) throws Exception {
-        if (isStandalone) {
+        if (TestProperty.profile.getValue().toLowerCase().matches("none")) {
             return;
         }
         super.afterEach(context);
@@ -86,7 +81,7 @@ public class StandaloneExtension extends ArquillianExtension implements BeforeAl
     @Override
     public void interceptTestTemplateMethod(Invocation<Void> invocation,
             ReflectiveInvocationContext<Method> invocationContext, ExtensionContext extensionContext) throws Throwable {
-        if (isStandalone) {
+        if (TestProperty.profile.getValue().toLowerCase().matches("none")) {
             invocation.proceed();
             return;
         }
@@ -96,7 +91,7 @@ public class StandaloneExtension extends ArquillianExtension implements BeforeAl
     @Override
     public void interceptTestMethod(Invocation<Void> invocation, ReflectiveInvocationContext<Method> invocationContext,
             ExtensionContext extensionContext) throws Throwable {
-        if (isStandalone) {
+        if (TestProperty.profile.getValue().toLowerCase().matches("none")) {
             invocation.proceed();
             return;
         }
@@ -106,7 +101,7 @@ public class StandaloneExtension extends ArquillianExtension implements BeforeAl
     @Override
     public void interceptBeforeEachMethod(Invocation<Void> invocation,
             ReflectiveInvocationContext<Method> invocationContext, ExtensionContext extensionContext) throws Throwable {
-        if (isStandalone) {
+        if (TestProperty.profile.getValue().toLowerCase().matches("none")) {
             invocation.proceed();
             return;
         }
@@ -116,7 +111,7 @@ public class StandaloneExtension extends ArquillianExtension implements BeforeAl
     @Override
     public void interceptAfterEachMethod(Invocation<Void> invocation,
             ReflectiveInvocationContext<Method> invocationContext, ExtensionContext extensionContext) throws Throwable {
-        if (isStandalone) {
+        if (TestProperty.profile.getValue().toLowerCase().matches("none")) {
             invocation.proceed();
             return;
         }
@@ -126,7 +121,7 @@ public class StandaloneExtension extends ArquillianExtension implements BeforeAl
     @Override
     public void interceptBeforeAllMethod(Invocation<Void> invocation,
             ReflectiveInvocationContext<Method> invocationContext, ExtensionContext extensionContext) throws Throwable {
-        if (isStandalone) {
+        if (TestProperty.profile.getValue().toLowerCase().matches("none")) {
             invocation.proceed();
             return;
         }
@@ -136,7 +131,7 @@ public class StandaloneExtension extends ArquillianExtension implements BeforeAl
     @Override
     public void interceptAfterAllMethod(Invocation<Void> invocation,
             ReflectiveInvocationContext<Method> invocationContext, ExtensionContext extensionContext) throws Throwable {
-        if (isStandalone) {
+        if (TestProperty.profile.getValue().toLowerCase().matches("none")) {
             invocation.proceed();
             return;
         }
@@ -145,7 +140,7 @@ public class StandaloneExtension extends ArquillianExtension implements BeforeAl
 
     @Override
     public void handleTestExecutionException(ExtensionContext context, Throwable throwable) throws Throwable {
-        if (isStandalone) {
+        if (TestProperty.profile.getValue().toLowerCase().matches("none")) {
             throw throwable;
         }
         super.handleTestExecutionException(context, throwable);

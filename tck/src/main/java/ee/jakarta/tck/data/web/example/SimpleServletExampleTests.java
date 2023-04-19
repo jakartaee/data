@@ -21,10 +21,16 @@ import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 
+import ee.jakarta.tck.data.framework.junit.anno.AnyEntity;
 import ee.jakarta.tck.data.framework.junit.anno.Assertion;
 import ee.jakarta.tck.data.framework.junit.anno.Web;
 
+/**
+ * Example test case where we want to run a test directly on a servlet
+ * FIXME - This is an example test, remove before the 1.0 release.
+ */
 @Web
+@AnyEntity
 public class SimpleServletExampleTests {
     
     @Deployment

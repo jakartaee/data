@@ -1,6 +1,6 @@
 = Jakarta Data TCK Reference Guide
 :author: Kyle Aure
-:email: NONE
+:email: data-dev@eclipse.org
 :revnumber: 1.0
 :toc:
 :sectnums:

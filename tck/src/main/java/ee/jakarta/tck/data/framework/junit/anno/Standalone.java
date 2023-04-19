@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022, 2023 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -17,38 +17,35 @@ package ee.jakarta.tck.data.framework.junit.anno;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
 import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Tags;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import ee.jakarta.tck.data.framework.junit.extensions.AssertionExtension;
-import ee.jakarta.tck.data.framework.junit.extensions.AssertionNameGenerator;
 import ee.jakarta.tck.data.framework.junit.extensions.StandaloneExtension;
+import ee.jakarta.tck.data.framework.utilities.TestProperty;
 
 /**
- * These are test classes that DO NOT depend on any Jakarta EE server
- * technologies.
+ * <p>These are test classes that DO NOT depend on any Jakarta EE profile technologies.</p>
  * 
- * However, when running the TCK against a core/web/full profile server these
- * tests will be deployed and run on the server.
+ * <p>However, when running the TCK against a core/web/full profile container these
+ * tests will be deployed and run on the container.</p>
  * 
- * The dynamic method in which we achieve the ability to run these tests either
- * on the client JVM or server JVM depends on both the JUnit5 tag AND a system
- * property: {@link ee.jakarta.tck.data.framework.junit.extensions.StandaloneExtension#isStandaloneProperty}
+ * <p>The dynamic method in which we achieve the ability to run these tests either
+ * on the client JVM or container JVM depends on both the JUnit5 Standalone tag AND 
+ * the system property: {@link TestProperty#profile}  </p>
  * 
- * If this property is true the Arquillian extension will be ignored,
- * otherwise we will attempt to deploy the test using Arquillian.
- * 
- * @see ee.jakarta.tck.data.framework.junit.extensions.StandaloneExtension
+ * <p>If this property is "none" the Arquillian extension will be ignored,
+ * otherwise we will attempt to deploy the test using Arquillian.</p>
  */
 @Target({ ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
-@Tags({ @Tag("standalone"), @Tag("core"), @Tag("web"), @Tag("full") })
+@Tag("standalone")
+@Tag("core")
+@Tag("web")
+@Tag("full")
 @ExtendWith({ StandaloneExtension.class, AssertionExtension.class })
-@DisplayNameGeneration(AssertionNameGenerator.class)
 public @interface Standalone {
 }
