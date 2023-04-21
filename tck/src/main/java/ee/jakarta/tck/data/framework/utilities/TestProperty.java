@@ -44,7 +44,13 @@ public enum TestProperty {
     javaVer     (true,  "java.version",               "Full version of the java executable"),
     
     //TCK specific properties
-    profile     (true, "jakarta.tck.profile",        "The profile name which can be appended to the test name for easier reporting"),
+    profile       (true,  "jakarta.tck.profile",           "The profile name which can be appended to the test name for easier reporting"),
+    pollFrequency (false, "jakarta.tck.poll.frequency",    "Time in seconds between polls of the repository to verify read-only data was successfully written. "
+            + "Default: 1 second", "1"),
+    pollTimeout   (false, "jakarta.tck.poll.timeout",      "Time in seconds when we will stop polling to verify read-only data was successfully written. "
+            + "Default: 60 seconds", "60"),
+    delay         (false, "jakarta.tck.consistency.delay", "Time in seconds after verifying read-only data was successfully written to respository "
+            + "for repository to have consistancy. Default: none", ""),
     
     //Signature testing properties
     signatureClasspath (false,  "signature.sigTestClasspath", "The path to the Jakarta Data API JAR used by your implementation. "
@@ -86,6 +92,16 @@ public enum TestProperty {
         return getValue().equalsIgnoreCase(expectedValue);
     }
     
+    public boolean isSet() {
+        String value = getValue(false);
+        if(value == null)
+            return false;
+        if(value.isBlank() || value.isEmpty()) {
+            return false;
+        }
+        return true;
+    }
+    
     /**
      * Get the test property value. 
      * 
@@ -93,6 +109,10 @@ public enum TestProperty {
      * @throws IllegalStateException if required and no property was found
      */
     public String getValue() throws IllegalStateException {
+        return getValue(required);
+    }
+    
+    private String getValue(boolean verify) throws IllegalStateException {
         String value = null;
         log.fine("Searching for property: " + key);
         
@@ -115,7 +135,7 @@ public enum TestProperty {
             log.fine("Defaulting to value: " + value);
         }
         
-        if(required && value == null)
+        if(verify && value == null)
             throw new IllegalStateException("Could not obtain a value for system property: " + key);
         
         return value;
@@ -135,6 +155,8 @@ public enum TestProperty {
             return;
         }
         
+        foundProperites = new Properties();
+        
         //Try to load property file
         InputStream propsStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(PROP_FILE);
         if(propsStream != null) {
@@ -144,10 +166,7 @@ public enum TestProperty {
             } catch (Exception e) {
                 log.info("Attempted to load properties from resource " + PROP_FILE + " but failed. Because: " + e.getLocalizedMessage());
             }
-        }
-        
-        //Otherwise, default to an empty set of properties
-        foundProperites = new Properties();
+        }        
     }
     
     /**

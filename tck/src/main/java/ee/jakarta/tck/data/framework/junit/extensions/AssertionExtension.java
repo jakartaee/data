@@ -19,6 +19,8 @@ import java.lang.reflect.Method;
 import java.util.Optional;
 import java.util.logging.Logger;
 
+import org.junit.jupiter.api.extension.AfterTestExecutionCallback;
+import org.junit.jupiter.api.extension.BeforeTestExecutionCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.TestWatcher;
 
@@ -31,7 +33,7 @@ import ee.jakarta.tck.data.framework.junit.anno.Assertion;
  * 
  * @see ee.jakarta.tck.data.framework.junit.anno.Assertion
  */
-public class AssertionExtension implements TestWatcher {
+public class AssertionExtension implements TestWatcher, BeforeTestExecutionCallback,  AfterTestExecutionCallback{
     private static final Logger log = Logger.getLogger(AssertionExtension.class.getCanonicalName());
     private static final String nl = System.lineSeparator();
 
@@ -70,4 +72,15 @@ public class AssertionExtension implements TestWatcher {
                     + " @Disabled.reason:" + reason.get());
         }
     }
+    
+    @Override
+    public void beforeTestExecution(ExtensionContext context) throws Exception {
+        log.info(">>> Begin test: " + context.getDisplayName());
+    }
+
+    @Override
+    public void afterTestExecution(ExtensionContext context) throws Exception {
+        log.info("<<< End test: " + context.getDisplayName());
+    }
+
 }

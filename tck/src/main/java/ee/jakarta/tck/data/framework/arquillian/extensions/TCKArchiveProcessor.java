@@ -25,10 +25,13 @@ import org.jboss.shrinkwrap.api.container.ClassContainer;
 import org.jboss.shrinkwrap.api.container.ResourceContainer;
 
 import ee.jakarta.tck.data.framework.junit.anno.Full;
+import ee.jakarta.tck.data.framework.junit.anno.ReadOnly;
 import ee.jakarta.tck.data.framework.junit.anno.Signature;
 import ee.jakarta.tck.data.framework.junit.anno.Web;
+import ee.jakarta.tck.data.framework.read.only.Populator;
 import ee.jakarta.tck.data.framework.servlet.TestServlet;
 import ee.jakarta.tck.data.framework.signature.DataSignatureTestRunner;
+
 
 /**
  * This extension will intercept archives before they are deployed to the container and append 
@@ -43,13 +46,20 @@ public class TCKArchiveProcessor implements ApplicationArchiveProcessor {
 
     private static final Package servletPackage = TestServlet.class.getPackage();
     private static final Package signaturePackage = DataSignatureTestRunner.class.getPackage();
+    private static final Package readOnlyPackage = Populator.class.getPackage();
     
     @Override
     public void process(Archive<?> applicationArchive, TestClass testClass) {
         String applicationName = applicationArchive.getName() == null ? applicationArchive.getId() : applicationArchive.getName();
         
         // NOTE: ClassContainer is a superclass of ResourceContainer
-        if (applicationArchive instanceof ClassContainer) { 
+        if (applicationArchive instanceof ClassContainer) {
+            
+            //Add readonly packages to readonly tests
+            if(testClass.isAnnotationPresent(ReadOnly.class)) {
+                log.info("Application Archive [" + applicationName + "] is being appended with packages [" + readOnlyPackage +"]");
+                ((ClassContainer<?>) applicationArchive).addPackage(readOnlyPackage);
+            }
 
             // Add servlet packages to web/full profile tests
             if(testClass.isAnnotationPresent(Web.class) || testClass.isAnnotationPresent(Full.class)) {

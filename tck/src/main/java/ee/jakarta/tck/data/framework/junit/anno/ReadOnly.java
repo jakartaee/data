@@ -13,16 +13,25 @@
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
-package ee.jakarta.tck.data.core.entity;
+package ee.jakarta.tck.data.framework.junit.anno;
 
-import jakarta.data.repository.DataRepository;
-import jakarta.data.repository.Repository;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-@Repository
-public interface StudentDirectory extends DataRepository<Student, Long> {
-    void save(Student student);
-    void deleteById(Long id);
+import org.junit.jupiter.api.extension.ExtendWith;
 
-    int countByAgeGreaterThanEqual(Integer age);
-    int countByNameIgnoreCase(String name);
+import ee.jakarta.tck.data.framework.junit.extensions.PrepopulationExtension;
+
+/**
+ * <p> 
+ * These test classes perform read-only tests on entities.
+ * The repository will be pre-populated prior to the test running.
+ * </p>
+ */
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+@ExtendWith({ PrepopulationExtension.class })
+public @interface ReadOnly {
 }
