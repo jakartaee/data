@@ -331,6 +331,9 @@ import java.lang.annotation.Target;
  * {@code WithQuarter}, {@code WithSecond}, {@code WithWeek}, {@code WithYear}.
  * </p>
  * <p>
+ * Reserved for find...By and count...By: {@code Distinct}.
+ * </p>
+ * <p>
  * Reserved for updates: {@code Add}, {@code Divide}, {@code Multiply}, {@code Set}, {@code Subtract}.
  * </p>
  *
