@@ -26,7 +26,7 @@ import org.junit.jupiter.api.Test;
  * Test metadata to track what assertion from GitHub is being tested, and the
  * strategy used to test that assertion.
  */
-@Target({ ElementType.METHOD })
+@Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 @Test
 public @interface Assertion {

@@ -15,23 +15,27 @@
  */
 package ee.jakarta.tck.data.framework.junit.extensions;
 
-import java.lang.reflect.Constructor;
 import java.time.Duration;
-import java.util.List;
+import java.util.Collections;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.jboss.arquillian.junit5.ArquillianExtension;
+import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 
+import ee.jakarta.tck.data.framework.junit.anno.ReadOnlyTest;
 import ee.jakarta.tck.data.framework.read.only.Populator;
 import ee.jakarta.tck.data.framework.utilities.TestProperty;
 import jakarta.data.repository.CrudRepository;
+import jakarta.enterprise.inject.se.SeContainer;
+import jakarta.enterprise.inject.se.SeContainerInitializer;
 import jakarta.enterprise.inject.spi.CDI;
-import jakarta.inject.Inject;
 
 /**
  * <p>This is an extension to Junit5 that has a beforeAll method that will run before all tests in a test class. </p>
@@ -44,22 +48,24 @@ import jakarta.inject.Inject;
  * 
  * @see ee.jakarta.tck.data.framework.read.only
  */
-public class PrepopulationExtension implements BeforeAllCallback {
+public class PrepopulationExtension implements BeforeAllCallback, AfterAllCallback {
 
     private static final Logger log = Logger.getLogger(PrepopulationExtension.class.getCanonicalName());
 
     private static final Predicate<ExtensionContext> IS_INSIDE_ARQUILLIAN = (context -> Boolean.parseBoolean(
             context.getConfigurationParameter(ArquillianExtension.RUNNING_INSIDE_ARQUILLIAN).orElse("false")));
     
-    /**
-     * A simple test to verify that the data repository is populated or not
-     */
-    public static final Predicate<CrudRepository<?,Long>> isPopulated = (repo -> repo.existsById(01L));
+    private static SeContainer container;
 
     @Override
     public void beforeAll(ExtensionContext context) throws Exception {
-        if (TestProperty.profile.equals("none")) {
+        if (TestProperty.isStandalone()) {
             log.info("Standalone: Pre-populating read-only entities");
+            try {
+                CDI.current();
+            } catch (IllegalStateException e) {
+                container = SeContainerInitializer.newInstance().initialize();
+            }
             prepopulateAndVerify(context);
             return;
         }
@@ -72,6 +78,13 @@ public class PrepopulationExtension implements BeforeAllCallback {
 
         log.info("Client: waiting to pre-populate read-only entities");
     }
+    
+    @Override
+    public void afterAll(ExtensionContext context) throws Exception {
+        if (TestProperty.isStandalone() && container != null) {
+            container.close();
+        }
+    }
 
     /**
      * Populates the repository, verifies repository was populated, and pauses execution for consistency.
@@ -81,86 +94,68 @@ public class PrepopulationExtension implements BeforeAllCallback {
      */
     private void prepopulateAndVerify(ExtensionContext context) throws Exception {    
         // POPULATE
-        Long start = System.currentTimeMillis();
-        
-        List<CrudRepository<?,Long>> unpopulatedRepos = findUnpopulatedRepositories(context);
-        log.info("Unpopulated repositories: " + unpopulatedRepos);
-        
-        List<Populator> populators = findRepositoryPopulators(unpopulatedRepos);
-        log.info("Repository populators: " + populators);
-        
-        populators.stream().forEach(populator -> populator.populate());
-        log.fine("Repositories pre-populated in " + (System.currentTimeMillis() - start) + " ms");
+        Map<CrudRepository<?, Long>, Populator> unpopulatedRepos = findUnpopulatedRepositories(context);
+        log.fine("Found " + unpopulatedRepos.size() + " repository(ies) that needs to be prepopulated");
+        unpopulatedRepos.entrySet().stream().forEach(entry -> {
+            Long start = System.currentTimeMillis();
+            entry.getValue().populate();
+            log.fine("Repository [ " + entry.getKey() + " ] pre-populated in " + (System.currentTimeMillis() - start) + " ms");
+        });
         
         // VERIFY
-        start = System.currentTimeMillis();
-        while(!unpopulatedRepos.isEmpty()) {
-            if(System.currentTimeMillis() - start >= Duration.ofSeconds(Long.valueOf(TestProperty.pollTimeout.getValue())).toMillis()) {
+        Long start = System.currentTimeMillis();
+        while(unpopulatedRepos.size() > 0) {
+            if(System.currentTimeMillis() - start >= Duration.ofSeconds(TestProperty.pollTimeout.getLong()).toMillis()) {
                 throw new RuntimeException("Not all repositories were confirmed to be prepopulated: " + unpopulatedRepos);
             }
             
             log.fine("Repositories still needing verification: " + unpopulatedRepos);
             
-            unpopulatedRepos = unpopulatedRepos.stream()
-                .filter(Predicate.not(isPopulated))
-                .collect(Collectors.toList());
+            unpopulatedRepos = unpopulatedRepos.entrySet().stream()
+                    .filter(Predicate.not(entry -> entry.getKey().existsById(01L)))
+                    .collect(Collectors.toMap(Entry::getKey, Entry::getValue));
             
-            Thread.sleep(Duration.ofSeconds(Long.valueOf(TestProperty.pollFrequency.getValue())).toMillis());
+            Thread.sleep(Duration.ofSeconds(TestProperty.pollFrequency.getLong()).toMillis());
         }
-        log.fine("Repository verified in " + (System.currentTimeMillis() - start) + " ms");
+        log.fine("Repository(ies) verified in " + (System.currentTimeMillis() - start) + " ms");
         
         //CONSISTENCY DELAY
         if(TestProperty.delay.isSet()) {
-            Duration delay = Duration.ofSeconds(Long.valueOf(TestProperty.delay.getValue()));
+            Duration delay = Duration.ofSeconds(TestProperty.delay.getLong());
             log.info("Performing consistency delay for " + delay.getSeconds() + " seconds");
             Thread.sleep(delay.toMillis());
         }
     }
     
     /**
-     * <p>Searches repository class for a constant field named <b>populator</b> which 
-     * contains the class name for that repositories populator.</p>
-     * 
-     * <p>NOTE: This is so complicated because the repository instance we get from CDI
-     * is a proxy class which is stripped of all useful reflective data such as annotations, and nested classes.</p>
-     * 
-     * @param repos - The repositories that need to be populated
-     * @return - A list of populators.
-     */
-    private List<Populator> findRepositoryPopulators(List<CrudRepository<?,Long>> repos) {
-            return repos.stream()
-            .map(repo -> {
-                try {
-                    Class<?> populatorType = (Class<?>) repo.getClass().getField("populator").get(repo);
-                    Constructor<?> struct = populatorType.getConstructor(CrudRepository.class);
-                    Populator instance = (Populator) struct.newInstance(repo);
-                    return instance;
-                } catch (Exception e) {
-                    log.warning("Failed to construct instance of populator for repository: " + repo.getClass().getCanonicalName());
-                    log.warning("Reason: " + e.toString());
-                    return null;
-                }
-            })
-            .filter(populator -> populator != null)
-            .collect(Collectors.toList());
-    }
-    
-    /**
-     * Searches test class for Injected fields that are of type {@code CrudRepository<?,Long> }
-     * Then, checks if they have been populated, if not they are added to the list and returned.
+     * Searches the test class for the ReadOnlyTest annotation(s) and for each annotation we will create
+     * a map between the repository object, and a populator object.
+     * Then, we will check if the repository has already been populated, if not they are added to the map and returned.
      * 
      * @param context - The context of the extension
-     * @return - A list of unpopulated repositories
+     * @return - A list of un-populated repositories
      */
-    private List<CrudRepository<?,Long>> findUnpopulatedRepositories(ExtensionContext context) {
+    @SuppressWarnings("unchecked")
+    private Map<CrudRepository<?,Long>, Populator> findUnpopulatedRepositories(ExtensionContext context) {
         Class<?> testClass = context.getTestClass().orElseThrow();
-        return Stream.of(testClass.getDeclaredFields())
-                .filter(field -> CrudRepository.class.isAssignableFrom(field.getType()))
-                .filter(field -> field.isAnnotationPresent(Inject.class))
-                .map(field -> field.getType())
-                .map(type -> (CrudRepository<?,Long>) CDI.current().select(type).get())
-                .filter(Predicate.not(isPopulated))
-                .collect(Collectors.toList());
+        return Stream.of(testClass.getAnnotationsByType(ReadOnlyTest.class))
+                .flatMap(anno -> Collections.singletonMap(anno.repository(), anno.populator()).entrySet().stream())
+                .flatMap(entry -> {
+                    try {
+                        CrudRepository<?,Long> repo = (CrudRepository<?,Long>) CDI.current().select(entry.getKey()).get();
+                        Populator populator = (Populator) entry.getValue().getConstructor(CrudRepository.class).newInstance(repo);
+                        return Collections.singletonMap(repo, populator).entrySet().stream();
+                    } catch (Throwable t) {
+                        log.warning("Unable to find the repository [ " + entry.getKey() + " ] or instantiate the populator [ " + entry.getValue() + " ]");
+                        do {
+                            log.warning("Reason: " + t.getLocalizedMessage());
+                            t = t.getCause();
+                        } while (t != null);
+                        return null;
+                    }
+                })
+                .filter(Predicate.not(entry -> entry == null))
+                .filter(Predicate.not(entry -> entry.getKey().existsById(01L)))
+                .collect(Collectors.toMap(Entry::getKey, Entry::getValue));
     }
-
 }

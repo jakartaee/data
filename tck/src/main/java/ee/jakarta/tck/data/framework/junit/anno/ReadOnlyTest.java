@@ -16,6 +16,7 @@
 package ee.jakarta.tck.data.framework.junit.anno;
 
 import java.lang.annotation.ElementType;
+import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
@@ -23,15 +24,20 @@ import java.lang.annotation.Target;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import ee.jakarta.tck.data.framework.junit.extensions.PrepopulationExtension;
+import ee.jakarta.tck.data.framework.read.only.Populator;
+import jakarta.data.repository.CrudRepository;
 
 /**
  * <p> 
- * These test classes perform read-only tests on entities.
+ * These are test classes that perform read-only tests on entities.
  * The repository will be pre-populated prior to the test running.
  * </p>
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
+@Repeatable(ReadOnlyTests.class)
 @ExtendWith({ PrepopulationExtension.class })
-public @interface ReadOnly {
+public @interface ReadOnlyTest {
+    Class<? extends CrudRepository<?,?>> repository();
+    Class<? extends Populator> populator();
 }

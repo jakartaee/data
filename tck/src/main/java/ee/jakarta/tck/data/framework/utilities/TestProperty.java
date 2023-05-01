@@ -44,7 +44,7 @@ public enum TestProperty {
     javaVer     (true,  "java.version",               "Full version of the java executable"),
     
     //TCK specific properties
-    profile       (true,  "jakarta.tck.profile",           "The profile name which can be appended to the test name for easier reporting"),
+    profile       (true,  "jakarta.tck.profile",           "The profile name which is used for reporting and determining the run mode."),
     pollFrequency (false, "jakarta.tck.poll.frequency",    "Time in seconds between polls of the repository to verify read-only data was successfully written. "
             + "Default: 1 second", "1"),
     pollTimeout   (false, "jakarta.tck.poll.timeout",      "Time in seconds when we will stop polling to verify read-only data was successfully written. "
@@ -65,6 +65,7 @@ public enum TestProperty {
     private String description;
     private String defaultValue;    
     
+    // CONSTRUCTORS
     private TestProperty(boolean required, String key, String description) {
         this(required, key, description, null);
     }
@@ -76,6 +77,7 @@ public enum TestProperty {
         this.defaultValue = defaultValue;
     }
     
+    // GETTERS
     public boolean isRequired() {
         return required;
     }
@@ -88,6 +90,7 @@ public enum TestProperty {
         return description;
     }
     
+    // COMPARISONS
     public boolean equals(String expectedValue) {
         return getValue().equalsIgnoreCase(expectedValue);
     }
@@ -100,6 +103,15 @@ public enum TestProperty {
             return false;
         }
         return true;
+    }
+    
+    // CONVERTERS
+    public long getLong() throws IllegalStateException, NumberFormatException {
+        return Long.parseLong(getValue());
+    }
+    
+    public int getInt() throws IllegalStateException, NumberFormatException {
+        return Integer.parseInt(getValue());
     }
     
     /**
@@ -145,6 +157,15 @@ public enum TestProperty {
     
     private static final String PROP_FILE = "tck.properties";
     private static Properties foundProperites;
+    
+    /**
+     * Checks the profile property and determine if it is standalone or not.
+     * 
+     * @return - true if TCK is configured in standalone mode, false otherwise. 
+     */
+    public static boolean isStandalone() {
+        return TestProperty.profile.equals("none");
+    }
     
     /**
      * Container: Load properties from the property file, and cache them in the foundProperties object.

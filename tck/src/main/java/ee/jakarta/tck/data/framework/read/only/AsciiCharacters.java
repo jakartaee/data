@@ -15,18 +15,21 @@
  */
 package ee.jakarta.tck.data.framework.read.only;
 
+import java.util.Optional;
+
 import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.Repository;
 
 /**
- * This is a read only repository that represents the set of Natural Numbers from 1-100. 
+ * This is a read only repository that represents the set of AsciiCharacters from 0-256. 
  * This repository will be pre-populated at test startup and verified prior to running tests.
  * 
  * TODO figure out a way to make this a ReadOnlyRepository instead.
  */
 @Repository
-public interface NaturalNumbers extends CrudRepository<NaturalNumber, Long> {
+public interface AsciiCharacters extends CrudRepository<AsciiCharacter, Long> {
     
     // READ - add more read only queries for test cases
+    Optional<AsciiCharacter> findByDecimal(int id);
 
 }

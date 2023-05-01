@@ -13,20 +13,18 @@
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
-package ee.jakarta.tck.data.framework.read.only;
+package ee.jakarta.tck.data.framework.junit.anno;
 
-import jakarta.data.repository.CrudRepository;
-import jakarta.data.repository.Repository;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * This is a read only repository that represents the set of Natural Numbers from 1-100. 
- * This repository will be pre-populated at test startup and verified prior to running tests.
- * 
- * TODO figure out a way to make this a ReadOnlyRepository instead.
+ * @see ReadOnlyTest
  */
-@Repository
-public interface NaturalNumbers extends CrudRepository<NaturalNumber, Long> {
-    
-    // READ - add more read only queries for test cases
-
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface ReadOnlyTests {
+    ReadOnlyTest[] value();
 }

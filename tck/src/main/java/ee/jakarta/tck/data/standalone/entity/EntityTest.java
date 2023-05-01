@@ -17,9 +17,8 @@ package ee.jakarta.tck.data.standalone.entity;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.util.logging.Logger;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -27,9 +26,12 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
 
 import ee.jakarta.tck.data.framework.junit.anno.AnyEntity;
 import ee.jakarta.tck.data.framework.junit.anno.Assertion;
-import ee.jakarta.tck.data.framework.junit.anno.ReadOnly;
+import ee.jakarta.tck.data.framework.junit.anno.ReadOnlyTest;
 import ee.jakarta.tck.data.framework.junit.anno.Standalone;
+import ee.jakarta.tck.data.framework.read.only.AsciiCharacters;
+import ee.jakarta.tck.data.framework.read.only.AsciiCharactersPopulator;
 import ee.jakarta.tck.data.framework.read.only.NaturalNumbers;
+import ee.jakarta.tck.data.framework.read.only.NaturalNumbersPopulator;
 import jakarta.inject.Inject;
 
 /**
@@ -38,11 +40,9 @@ import jakarta.inject.Inject;
  */
 @Standalone
 @AnyEntity
-@ReadOnly
+@ReadOnlyTest(populator = NaturalNumbersPopulator.class, repository = NaturalNumbers.class)
+@ReadOnlyTest(populator = AsciiCharactersPopulator.class, repository = AsciiCharacters.class)
 public class EntityTest {
-    
-    private static final Logger log = Logger.getLogger(EntityTest.class.getCanonicalName());
-
 
     @Deployment
     public static JavaArchive createDeployment() {
@@ -52,12 +52,21 @@ public class EntityTest {
     @Inject
     NaturalNumbers numbers;
     
+    @Inject
+    AsciiCharacters characters;
+    
     @Assertion(id = "136", strategy = "Ensures that the prepopulation step for readonly entities was successful")
-    public void ensurePrepopulation() {
+    public void ensureNaturalNumberPrepopulation() {
+        assertNotNull(numbers);
         assertTrue(numbers.findById(0L).isEmpty(), "Zero should not have been in the set of natural numbers.");
-        
         assertEquals(100L, numbers.count());
-        
-        assertFalse(numbers.findById(10L).orElseThrow().isOdd());
+        assertFalse(numbers.findById(10L).get().isOdd());
+    }
+    
+    @Assertion(id = "136", strategy = "Ensures that multiple readonly entities will be prepopulated before testing")
+    public void ensureCharacterPrepopulation() {
+        assertNotNull(characters);
+        assertEquals('0', characters.findByDecimal(48).get().getThisCharacter());
+        assertTrue(characters.findByDecimal(1).get().isControl());
     }
 }
