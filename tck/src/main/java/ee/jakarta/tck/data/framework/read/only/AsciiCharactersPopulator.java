@@ -37,14 +37,14 @@ public class AsciiCharactersPopulator implements Populator {
         List<AsciiCharacter> dictonary = new ArrayList<>();
         
         IntStream.range(0, 127)
-            .forEach(decimal -> {
+            .forEach(value -> {
                 AsciiCharacter inst = new AsciiCharacter();
                 
-                inst.setId(decimal + 1); //Some JPA providers may not support id's of 0
-                inst.setDecimal(decimal);
-                inst.setHexadecimal(Integer.toHexString(decimal));
-                inst.setThisCharacter((char) decimal);
-                inst.setControl(Character.isISOControl((char) decimal));
+                inst.setId(value + 1); //Some JPA providers may not support id's of 0
+                inst.setNumericValue(value);
+                inst.setHexadecimal(Integer.toHexString(value));
+                inst.setThisCharacter((char) value);
+                inst.setControl(Character.isISOControl((char) value));
                 
                 dictonary.add(inst);
             });

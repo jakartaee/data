@@ -30,6 +30,6 @@ import jakarta.data.repository.Repository;
 public interface AsciiCharacters extends CrudRepository<AsciiCharacter, Long> {
     
     // READ - add more read only queries for test cases
-    Optional<AsciiCharacter> findByDecimal(int id);
+    Optional<AsciiCharacter> findByNumericValue(int id);
 
 }

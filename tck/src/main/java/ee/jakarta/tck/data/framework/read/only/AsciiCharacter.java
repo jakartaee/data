@@ -27,7 +27,7 @@ public class AsciiCharacter implements Serializable {
     private long id;
 
     @jakarta.nosql.Column
-    private int decimal;
+    private int numericValue;
 
     @jakarta.nosql.Column
     private String hexadecimal;
@@ -46,12 +46,12 @@ public class AsciiCharacter implements Serializable {
         this.id = id;
     }
 
-    public int getDecimal() {
-        return decimal;
+    public int getNumericValue() {
+        return numericValue;
     }
 
-    public void setDecimal(int decimal) {
-        this.decimal = decimal;
+    public void setNumericValue(int numericValue) {
+        this.numericValue = numericValue;
     }
 
     public String getHexadecimal() {
