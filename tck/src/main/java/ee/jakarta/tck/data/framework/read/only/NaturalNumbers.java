@@ -13,16 +13,20 @@
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
-package ee.jakarta.tck.data.core.entity;
+package ee.jakarta.tck.data.framework.read.only;
 
-import jakarta.data.repository.DataRepository;
+import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.Repository;
 
+/**
+ * This is a read only repository that represents the set of Natural Numbers from 1-100. 
+ * This repository will be pre-populated at test startup and verified prior to running tests.
+ * 
+ * TODO figure out a way to make this a ReadOnlyRepository instead.
+ */
 @Repository
-public interface StudentDirectory extends DataRepository<Student, Long> {
-    void save(Student student);
-    void deleteById(Long id);
+public interface NaturalNumbers extends CrudRepository<NaturalNumber, Long> {
+    
+    // READ - add more read only queries for test cases
 
-    int countByAgeGreaterThanEqual(Integer age);
-    int countByNameIgnoreCase(String name);
 }

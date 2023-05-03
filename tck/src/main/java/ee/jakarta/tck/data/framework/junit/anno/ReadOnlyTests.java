@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022, 2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2023 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -20,23 +20,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.junit.jupiter.api.Test;
-
 /**
- * Test metadata to track what assertion from GitHub is being tested, and the
- * strategy used to test that assertion.
+ * @see ReadOnlyTest
  */
-@Target(ElementType.METHOD)
+@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Test
-public @interface Assertion {
-    /**
-     * The GitHub issue/PR number that lead to the test being created
-     */
-    String id();
-
-    /**
-     * A longer description of the assertion being made to keep method names concise
-     */
-    String strategy() default "";
+public @interface ReadOnlyTests {
+    ReadOnlyTest[] value();
 }

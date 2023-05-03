@@ -51,7 +51,7 @@ public class SignatureTests {
     public void testSignaturesStandalone() throws Exception {
 
         try {
-            if (testBean == null && TestProperty.profile.getValue().toLowerCase().matches("none")) {
+            if (testBean == null && TestProperty.isStandalone()) {
                 log.info("Signature test running in standalone mode");
                 DataSignatureTestRunner.assertProjectSetup(true);
                 DataSignatureTestRunner runner = new DataSignatureTestRunner();
