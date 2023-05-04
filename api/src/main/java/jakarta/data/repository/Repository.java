@@ -38,10 +38,13 @@ import java.lang.annotation.Target;
  * specification to define entities for relational databases.
  * You may use {@code jakarta.nosql.mapping.Entity} and the corresponding
  * entity-related annotations of the Jakarta NoSQL specification to define
- * entities for NoSQL databases.</p>
+ * entities for NoSQL databases. For other types of data stores, you may use
+ * other entity models that are determined by the Jakarta Data provider
+ * for the respective data store type.</p>
  *
- * <p>This class is a CDI bean-defining annotation when CDI is available,
- * enabling the container/runtime to make the implementation available via the
+ * <p>This class is a CDI bean-defining annotation when CDI is available.
+ * Regardless of whether CDI or custom dependency injection is used, the
+ * repository implementation must be made available to applications via the
  * <code>jakarta.inject.Inject</code> annotation.</p>
  *
  * <p>For example,</p>
