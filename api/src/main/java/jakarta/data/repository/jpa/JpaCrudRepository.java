@@ -23,5 +23,5 @@ import jakarta.data.repository.CrudRepository;
  * JPA specific extension of {@link CrudRepository}.
  *
  */
-public interface JpaRepository<T, K> extends CrudRepository<T, K> {
+public interface JpaCrudRepository<T, K> extends CrudRepository<T, K> {
 }
