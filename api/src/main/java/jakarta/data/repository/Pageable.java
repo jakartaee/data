@@ -17,8 +17,6 @@
  */
 package jakarta.data.repository;
 
-import jakarta.data.repository.jpa.KeysetAwareSlice;
-import jakarta.data.repository.jpa.OrderBy;
 
 import java.util.Collections;
 import java.util.List;
@@ -84,11 +82,11 @@ public interface Pageable {
     }
 
     /**
-     * <p>Requests {@link KeysetAwareSlice keyset pagination} in the forward direction,
+     * <p>Requests {@link jakarta.data.repository.jpa.KeysetAwareSlice keyset pagination} in the forward direction,
      * starting after the specified keyset values.</p>
      *
      * @param keyset keyset values, the order and number of which must match the
-     *        {@link OrderBy} annotations, {@link Sort} parameters, or
+     *        {@link jakarta.data.repository.jpa.OrderBy} annotations, {@link Sort} parameters, or
      *        <code>OrderBy</code> name pattern of the repository method to which
      *        this pagination will be supplied.
      * @return a new instance of <code>Pageable</code> with forward keyset pagination.
@@ -98,11 +96,11 @@ public interface Pageable {
     Pageable afterKeyset(Object... keyset);
 
     /**
-     * <p>Requests {@link KeysetAwareSlice keyset pagination} in the reverse direction,
+     * <p>Requests {@link jakarta.data.repository.jpa.KeysetAwareSlice keyset pagination} in the reverse direction,
      * starting after the specified keyset values.</p>
      *
      * @param keyset keyset values, the order and number of which must match the
-     *        {@link OrderBy} annotations, {@link Sort} parameters, or
+     *        {@link jakarta.data.repository.jpa.OrderBy} annotations, {@link Sort} parameters, or
      *        <code>OrderBy</code> name pattern of the repository method to which
      *        this pagination will be supplied.
      * @return a new instance of <code>Pageable</code> with reverse keyset pagination.
@@ -112,11 +110,11 @@ public interface Pageable {
     Pageable beforeKeyset(Object... keyset);
 
     /**
-     * <p>Requests {@link KeysetAwareSlice keyset pagination} in the forward direction,
+     * <p>Requests {@link jakarta.data.repository.jpa.KeysetAwareSlice keyset pagination} in the forward direction,
      * starting after the specified keyset values.</p>
      *
      * @param keysetCursor cursor with keyset values, the order and number of which must match the
-     *        {@link OrderBy} annotations, {@link Sort} parameters, or
+     *        {@link jakarta.data.repository.jpa.OrderBy} annotations, {@link Sort} parameters, or
      *        <code>OrderBy</code> name pattern of the repository method to which
      *        this pagination will be supplied.
      * @return a new instance of <code>Pageable</code> with forward keyset pagination.
@@ -126,11 +124,11 @@ public interface Pageable {
     Pageable afterKeysetCursor(Cursor keysetCursor);
 
     /**
-     * <p>Requests {@link KeysetAwareSlice keyset pagination} in the reverse direction,
+     * <p>Requests {@link jakarta.data.repository.jpa.KeysetAwareSlice keyset pagination} in the reverse direction,
      * starting after the specified keyset values.</p>
      *
      * @param keysetCursor cursor with keyset values, the order and number of which must match the
-     *        {@link OrderBy} annotations, {@link Sort} parameters, or
+     *        {@link jakarta.data.repository.jpa.OrderBy} annotations, {@link Sort} parameters, or
      *        <code>OrderBy</code> name pattern of the repository method to which
      *        this pagination will be supplied.
      * @return a new instance of <code>Pageable</code> with reverse keyset pagination.
@@ -190,9 +188,9 @@ public interface Pageable {
      * if using offset pagination.</p>
      *
      * <p>If using keyset pagination, traversal of pages must only be done
-     * via the {@link KeysetAwareSlice#nextPageable()},
-     * {@link KeysetAwareSlice#previousPageable()}, or
-     * {@link KeysetAwareSlice#getKeysetCursor(int) keyset cursor},
+     * via the {@link jakarta.data.repository.jpa.KeysetAwareSlice#nextPageable()},
+     * {@link jakarta.data.repository.jpa.KeysetAwareSlice#previousPageable()}, or
+     * {@link jakarta.data.repository.jpa.KeysetAwareSlice#getKeysetCursor(int) keyset cursor},
      * not with this method.</p>
      *
      * @return The next pageable.
@@ -224,7 +222,7 @@ public interface Pageable {
      * pagination information, except using the specified sort criteria.
      * The order of precedence for sort criteria is that of any statically
      * specified sort criteria (from the <code>OrderBy</code> keyword,
-     * {@link OrderBy} annotation or <code>ORDER BY</code> clause of a the
+     * {@link jakarta.data.repository.jpa.OrderBy} annotation or <code>ORDER BY</code> clause of a the
      * {@link Query} annotation) followed by the order of the
      * {@link Iterable} that is supplied to this method.</p>
      *
@@ -238,7 +236,7 @@ public interface Pageable {
      * pagination information, except using the specified sort criteria.
      * The order of precedence for sort criteria is that of any statically
      * specified sort criteria (from the <code>OrderBy</code> keyword,
-     * {@link OrderBy} annotation or <code>ORDER BY</code> clause of a the
+     * {@link jakarta.data.repository.jpa.OrderBy} annotation or <code>ORDER BY</code> clause of a the
      * {@link Query} annotation) followed by the order in which the
      * {@link Sort} parameters to this method are listed.</p>
      *
@@ -255,7 +253,7 @@ public interface Pageable {
     enum Mode {
         /**
          * Indicates forward keyset pagination, which follows the
-         * direction of the {@link OrderBy} annotations,
+         * direction of the {@link jakarta.data.repository.jpa.OrderBy} annotations,
          * {@link Pageable#sortBy(Sort...)} or {@link Pageable#sortBy(Iterable)}
          * parameters, repository method {@link Sort} parameters,
          * or <code>OrderBy</code> name pattern of the repository method.
@@ -264,7 +262,7 @@ public interface Pageable {
 
         /**
          * Indicates a request for a page with keyset pagination
-         * in the reverse direction of the {@link OrderBy} annotations,
+         * in the reverse direction of the {@link jakarta.data.repository.jpa.OrderBy} annotations,
          * {@link Pageable#sortBy(Sort...)} or {@link Pageable#sortBy(Iterable)}
          * parameters, repository method {@link Sort} parameters,
          * or <code>OrderBy</code> name pattern of the repository method.
