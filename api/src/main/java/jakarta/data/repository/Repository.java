@@ -106,7 +106,7 @@ import java.lang.annotation.Target;
  * <code>findByAddress_ZipCode</code> or <code>findByAddressZipCode</code>)
  * when referred to within repository method names, and delimited by
  * <code>.</code> when used within annotation values, such as for
- * {@link OrderBy#value} and {@link Query#value},</p>
+ * {@link jakarta.data.repository.jpa.OrderBy#value} and {@link Query#value},</p>
  *
  * <pre>
  * &#64;Entity
