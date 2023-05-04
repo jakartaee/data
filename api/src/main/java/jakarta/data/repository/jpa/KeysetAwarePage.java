@@ -15,7 +15,11 @@
  *
  *  SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.repository;
+package jakarta.data.repository.jpa;
+
+import jakarta.data.repository.Page;
+import jakarta.data.repository.Slice;
+import jakarta.data.repository.jpa.KeysetAwareSlice;
 
 /**
  * <p>A page of results from a repository query that performs

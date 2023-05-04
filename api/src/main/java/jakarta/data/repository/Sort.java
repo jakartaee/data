@@ -17,6 +17,7 @@
  */
 package jakarta.data.repository;
 
+
 import java.util.Objects;
 
 /**
@@ -42,7 +43,7 @@ import java.util.Objects;
  * </pre>
  *
  * <p>When combined on a method with static sort criteria
- * (<code>OrderBy</code> keyword or {@link OrderBy} annotation or
+ * (<code>OrderBy</code> keyword or {@link jakarta.data.repository.jpa.OrderBy} annotation or
  * {@link Query} with an <code>ORDER BY</code> clause), the static
  * sort criteria is applied first, followed by the dynamic sort criteria
  * that is defined by <code>Sort</code> instances in the order listed.</p>

@@ -18,6 +18,7 @@
 package jakarta.data.repository;
 
 
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -43,24 +44,5 @@ public @interface Query {
      * @return the query to be executed when the annotated method is called.
      */
     String value();
-
-    /**
-     * <p>Defines an additional query that counts the number of elements that are
-     * returned by the {@link #value() primary} query. This is used to compute
-     * the {@link Page#totalElements() total elements}
-     * and {@link Page#totalPages() total pages}
-     * for paginated repository queries that are annotated with
-     * <code>@Query</code> and return a {@link Page} or {@link KeysetAwarePage}.
-     * Slices do not use a counting query.</p>
-     *
-     * <p>The default value of empty string indicates that no counting query
-     * is provided. A counting query is unnecessary when pagination is
-     * performed with slices instead of pages and when pagination is
-     * not used at all.</p>
-     *
-     * @return a query for counting the number of elements across all pages.
-     *         Empty string indicates that no counting query is provided.
-     */
-    String count() default "";
 }
 

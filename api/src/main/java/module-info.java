@@ -19,4 +19,6 @@ module jakarta.data.api {
     exports jakarta.data.repository;
     exports jakarta.data.exceptions;
     opens jakarta.data.repository;
+    exports jakarta.data.repository.jpa;
+    opens jakarta.data.repository.jpa;
 }

@@ -17,6 +17,9 @@
  */
 package jakarta.data.repository;
 
+import jakarta.data.repository.jpa.KeysetAwareSlice;
+import jakarta.data.repository.jpa.OrderBy;
+
 import java.util.Collections;
 import java.util.List;
 
