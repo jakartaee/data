@@ -528,6 +528,7 @@ import java.lang.annotation.Target;
 // TODO Does Jakarta NoSQL have the same or different wildcard characters? Document this
 //       under: "Wildcard characters for patterns are determined by the data access provider"
 // TODO Ensure we have all required supported return types listed.
+//TODO move away all transaction details to keep it more generic as possible
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
@@ -537,38 +538,8 @@ public @interface Repository {
      * available Jakarta Data provider that supports the type of entity
      * annotation that is present on the repository's entity class.
      */
-    static final String ANY_PROVIDER = "";
+    String ANY_PROVIDER = "";
 
-    /**
-     * Value for the {@link dataStore} attribute that indicates that the
-     * Jakarta Data provider should choose a default data store to use.
-     * The default data store might require additional vendor-specific
-     * configuration, depending on the vendor.
-     */
-    static final String DEFAULT_DATA_STORE = "";
-
-    /**
-     * <p>Optionally indicates the data store to use for the repository.</p>
-     *
-     * <p>The Jakarta Data specification does not define a full configuration
-     * model, and relies upon the Jakarta Data providers to provide configuration.
-     * This value serves as an identifier linking to vendor-specific configuration
-     * for each Jakarta Data provider to interpret in a vendor-specific way.</p>
-     *
-     * <p>For some Jakarta Data providers, this value could map directly to an
-     * identifier in vendor-specific configuration. For others, this value could
-     * map to a base configuration path that forms a configuration hierarchy,
-     * such as in MicroProfile Config, or possibly Jakarta Config in a future
-     * version of this specification. For providers backed by Jakarta Persistence,
-     * it might point to a {@code jakarta.annotation.sql.DataSourceDefinition} name
-     * or a {@code javax.sql.DataSource} JNDI name or resource reference,
-     * or other vendor-specific configuration.</p>
-     *
-     * <p>The default value of this attribute is {@link #DEFAULT_DATA_STORE}.</p>
-     *
-     * @return the name of a data store or {@link #DEFAULT_DATA_STORE}.
-     */
-    String dataStore() default DEFAULT_DATA_STORE;
 
     /**
      * <p>Restricts the repository implementation to that of a specific
