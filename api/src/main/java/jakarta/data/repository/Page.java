@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,13 +27,15 @@ public interface Page<T> extends Slice<T> {
 
     /**
      * Returns the total amount of elements.
-     * @return the total amount of elements
+     * @return the total amount of elements.
+     * @throws UnsupportedOperationException when the database is incapable of querying for a total count of results.
      */
     long totalElements();
 
     /**
      * Returns the total number of pages.
-     * @return the total number of pages
+     * @return the total number of pages.
+     * @throws UnsupportedOperationException when the database is incapable of querying for a total count of results.
      */
     long totalPages();
 }
