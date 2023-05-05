@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright (c) 2023 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
@@ -16,17 +16,23 @@
 package ee.jakarta.tck.data.framework.read.only;
 
 import jakarta.data.repository.CrudRepository;
+import jakarta.data.repository.Pageable;
 import jakarta.data.repository.Repository;
+import jakarta.data.repository.Slice;
+
+import ee.jakarta.tck.data.framework.read.only.NaturalNumber.NumberType;
 
 /**
- * This is a read only repository that represents the set of Natural Numbers from 1-100. 
+ * This is a read only repository that represents the set of Natural Numbers from 1-100.
  * This repository will be pre-populated at test startup and verified prior to running tests.
- * 
+ *
  * TODO figure out a way to make this a ReadOnlyRepository instead.
  */
 @Repository
 public interface NaturalNumbers extends CrudRepository<NaturalNumber, Long> {
-    
-    // READ - add more read only queries for test cases
+
+    Slice<NaturalNumber> findByNumTypeAndFloorOfSquareRootLessThanEqual(NumberType type,
+                                                                        long maxSqrtFloor,
+                                                                        Pageable pagination);
 
 }

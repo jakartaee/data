@@ -44,7 +44,7 @@ public class NaturalNumbersPopulator implements Populator {
                 boolean isOne = id == 1;
                 boolean isOdd = id % 2 == 1;
                 long sqrRoot = squareRoot(id);
-                boolean isPrime = isOdd ? isPrime(id, sqrRoot) : false ;
+                boolean isPrime = isOdd ? isPrime(id, sqrRoot) : (id == 2);
                 
                 inst.setId(id);
                 inst.setOdd(isOdd);
@@ -60,7 +60,7 @@ public class NaturalNumbersPopulator implements Populator {
     }
     
     private static Short bitsRequired(int value) {
-        return (short) (Math.floor(Math.log(2 * value)) + 1);
+        return (short) (Math.floor(Math.log(value) / Math.log(2)) + 1);
     }
     
     private static long squareRoot(int value) {
