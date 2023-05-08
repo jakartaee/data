@@ -42,7 +42,7 @@ public class TCKFrameworkAppender implements AuxiliaryArchiveAppender {
 
     @Override
     public Archive<?> createAuxiliaryArchive() {
-        JavaArchive framework = ShrinkWrap.create(JavaArchive.class, "jakarta-tck-framework.jar");
+        JavaArchive framework = ShrinkWrap.create(JavaArchive.class, "jakarta-data-framework.jar");
         framework.addPackages(false, annoPackage, extensionPackage, utilPackage);
         return TestProperty.storeProperties(framework);
     }

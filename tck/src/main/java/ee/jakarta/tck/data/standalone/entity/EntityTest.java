@@ -22,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.logging.Logger;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -48,15 +49,16 @@ import jakarta.inject.Inject;
  */
 @Standalone
 @AnyEntity
-@ReadOnlyTest(populator = NaturalNumbersPopulator.class, repository = NaturalNumbers.class)
-@ReadOnlyTest(populator = AsciiCharactersPopulator.class, repository = AsciiCharacters.class)
+@ReadOnlyTest
 public class EntityTest {
+    
+    public static final Logger log = Logger.getLogger(EntityTest.class.getCanonicalName());
 
     @Deployment
     public static JavaArchive createDeployment() {
         return ShrinkWrap.create(JavaArchive.class).addClasses(EntityTest.class);
     }
-
+    
     @Inject
     NaturalNumbers numbers;
     
@@ -66,16 +68,20 @@ public class EntityTest {
     @Assertion(id = "136", strategy = "Ensures that the prepopulation step for readonly entities was successful")
     public void ensureNaturalNumberPrepopulation() {
         assertNotNull(numbers);
-        assertTrue(numbers.findById(0L).isEmpty(), "Zero should not have been in the set of natural numbers.");
+        NaturalNumbersPopulator.get().populate(numbers);
+        
         assertEquals(100L, numbers.count());
-        assertFalse(numbers.findById(10L).get().isOdd());
+        assertTrue(numbers.findById(0).isEmpty(), "Zero should not have been in the set of natural numbers.");
+        assertFalse(numbers.findById(10).get().isOdd());
     }
     
     @Assertion(id = "136", strategy = "Ensures that multiple readonly entities will be prepopulated before testing")
     public void ensureCharacterPrepopulation() {
         assertNotNull(characters);
-        assertEquals('0', characters.findByNumericValue(48).get().getThisCharacter());
-        assertTrue(characters.findByNumericValue(1).get().isControl());
+        AsciiCharactersPopulator.get().populate(characters);
+        
+        assertEquals('0', characters.findById(48).get().getThisCharacter());
+        assertTrue(characters.findById(1).get().isControl());
     }
 
     @Assertion(id = "136",

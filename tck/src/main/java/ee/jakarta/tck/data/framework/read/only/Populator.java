@@ -15,6 +15,7 @@
  */
 package ee.jakarta.tck.data.framework.read.only;
 
-public interface Populator {
-    public void populate();
+public interface Populator<T> {
+    void populate(T repo);
+    boolean isPopulated(T repo);
 }

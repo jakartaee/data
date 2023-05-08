@@ -21,19 +21,16 @@ import java.util.logging.Logger;
 import java.util.stream.IntStream;
 
 import ee.jakarta.tck.data.framework.read.only.NaturalNumber.NumberType;
-import jakarta.data.repository.CrudRepository;
 
-public class NaturalNumbersPopulator implements Populator {
+public class NaturalNumbersPopulator implements Populator<NaturalNumbers> {
     private static final Logger log = Logger.getLogger(NaturalNumbersPopulator.class.getCanonicalName());
     
-    private NaturalNumbers repo;
-    
-    public NaturalNumbersPopulator(CrudRepository<?,Long> repo) {
-        this.repo = (NaturalNumbers) repo;
+    public static NaturalNumbersPopulator get() {
+        return new NaturalNumbersPopulator();
     }
-
+    
     @Override
-    public void populate() {
+    public void populate(NaturalNumbers repo) {
         log.info("NaturalNumbers creating set");
         List<NaturalNumber> dictonary = new ArrayList<>();
         
@@ -46,7 +43,7 @@ public class NaturalNumbersPopulator implements Populator {
                 long sqrRoot = squareRoot(id);
                 boolean isPrime = isOdd ? isPrime(id, sqrRoot) : (id == 2);
                 
-                inst.setId(id);
+                inst.setNumericValue(id);
                 inst.setOdd(isOdd);
                 inst.setNumBitsRequired(bitsRequired(id));
                 inst.setNumType(isOne ? NumberType.ONE : isPrime ? NumberType.PRIME : NumberType.COMPOSITE);
@@ -57,6 +54,11 @@ public class NaturalNumbersPopulator implements Populator {
         
         repo.saveAll(dictonary);
         log.info("NaturalNumbers populated");
+    }
+    
+    @Override
+    public boolean isPopulated(NaturalNumbers repo) {
+       return repo.count() == 100;
     }
     
     private static Short bitsRequired(int value) {

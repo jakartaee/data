@@ -15,10 +15,6 @@
  */
 package ee.jakarta.tck.data.standalone.signature;
 
-import static org.junit.jupiter.api.Assertions.fail;
-
-import java.util.logging.Logger;
-
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
@@ -28,42 +24,20 @@ import ee.jakarta.tck.data.framework.junit.anno.Assertion;
 import ee.jakarta.tck.data.framework.junit.anno.Signature;
 import ee.jakarta.tck.data.framework.junit.anno.Standalone;
 import ee.jakarta.tck.data.framework.signature.DataSignatureTestRunner;
-import ee.jakarta.tck.data.framework.signature.SigTestEE.Fault;
-import ee.jakarta.tck.data.framework.utilities.TestProperty;
-import jakarta.inject.Inject;
 
 @Standalone
 @AnyEntity
 @Signature
 public class SignatureTests {
-    private static final Logger log = Logger.getLogger(SignatureTests.class.getCanonicalName());
-
     @Deployment
     public static JavaArchive createDeployment() {
-        return ShrinkWrap.create(JavaArchive.class)
-                .addClasses(SignatureTestBean.class);
+        return ShrinkWrap.create(JavaArchive.class);
     }
 
-    @Inject
-    SignatureTestBean testBean;
-
     @Assertion(id = "26", strategy = "Uses the sigtest-maven-plugin to execute signature tests on a Standalone JVM or on a Jakarta EE Server")
-    public void testSignaturesStandalone() throws Exception {
-
-        try {
-            if (testBean == null && TestProperty.isStandalone()) {
-                log.info("Signature test running in standalone mode");
-                DataSignatureTestRunner.assertProjectSetup(true);
-                DataSignatureTestRunner runner = new DataSignatureTestRunner();
-                runner.signatureTest();
-                return;
-            }
-
-            log.info("Signature test running on Jakarta EE Server");
-            testBean.testSignatures(); 
-        } catch (Fault f) {
-            fail("Signature test failed", f);
-        }
-
+    public void testSignatures() throws Exception {
+        DataSignatureTestRunner.assertProjectSetup(true);
+        DataSignatureTestRunner runner = new DataSignatureTestRunner();
+        runner.signatureTest();
     }
 }

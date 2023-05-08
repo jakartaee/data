@@ -46,7 +46,7 @@ public class PersistenceEntityTests {
     @Inject
     Catalog catalog;
     
-    @Assertion(id = "119", strategy = "Ensure that this test is only run when provider supports persistance entities")
+    @Assertion(id = "119", strategy = "Ensure that this test is only run when provider supports persistence entities")
     public void testNotRunOnNOSQL() {
         List<Product> products = new ArrayList<>();
         products.add(Product.of(01L, "pen", 2.50, 3.50));

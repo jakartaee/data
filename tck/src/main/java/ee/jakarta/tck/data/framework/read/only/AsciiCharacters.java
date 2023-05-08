@@ -15,8 +15,6 @@
  */
 package ee.jakarta.tck.data.framework.read.only;
 
-import java.util.Optional;
-
 import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.Repository;
 
@@ -27,9 +25,8 @@ import jakarta.data.repository.Repository;
  * TODO figure out a way to make this a ReadOnlyRepository instead.
  */
 @Repository
-public interface AsciiCharacters extends CrudRepository<AsciiCharacter, Long> {
+public interface AsciiCharacters extends CrudRepository<AsciiCharacter, Integer> {
     
     // READ - add more read only queries for test cases
-    Optional<AsciiCharacter> findByNumericValue(int id);
 
 }

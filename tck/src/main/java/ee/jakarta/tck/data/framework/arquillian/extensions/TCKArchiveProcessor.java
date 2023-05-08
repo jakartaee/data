@@ -25,10 +25,9 @@ import org.jboss.shrinkwrap.api.container.ClassContainer;
 import org.jboss.shrinkwrap.api.container.ResourceContainer;
 
 import ee.jakarta.tck.data.framework.junit.anno.Full;
-import ee.jakarta.tck.data.framework.junit.anno.ReadOnlyTest;
-import ee.jakarta.tck.data.framework.junit.anno.ReadOnlyTests;
 import ee.jakarta.tck.data.framework.junit.anno.Signature;
 import ee.jakarta.tck.data.framework.junit.anno.Web;
+import ee.jakarta.tck.data.framework.junit.anno.ReadOnlyTest;
 import ee.jakarta.tck.data.framework.read.only.Populator;
 import ee.jakarta.tck.data.framework.servlet.TestServlet;
 import ee.jakarta.tck.data.framework.signature.DataSignatureTestRunner;
@@ -38,9 +37,11 @@ import ee.jakarta.tck.data.framework.signature.DataSignatureTestRunner;
  * This extension will intercept archives before they are deployed to the container and append 
  * the following packages:
  * 
- * <p>The web/full profile tests require the ee.jakarta.tck.data.framework.servlet package on the server.</p>
+ * <p>The read-only tests require the ee.jakarta.tck.data.framework.read.only package in the container.</p>
  * 
- * <p>The signature tests require the ee.jakarta.tck.data.framework.signature package on the server.</p>
+ * <p>The web/full profile tests require the ee.jakarta.tck.data.framework.servlet package in the container.</p>
+ * 
+ * <p>The signature tests require the ee.jakarta.tck.data.framework.signature package in the container.</p>
  */
 public class TCKArchiveProcessor implements ApplicationArchiveProcessor {
     private static final Logger log = Logger.getLogger(TCKArchiveProcessor.class.getCanonicalName());
@@ -57,7 +58,7 @@ public class TCKArchiveProcessor implements ApplicationArchiveProcessor {
         if (applicationArchive instanceof ClassContainer) {
             
             //Add readonly packages to readonly tests
-            if(testClass.isAnnotationPresent(ReadOnlyTest.class) || testClass.isAnnotationPresent(ReadOnlyTests.class)) {
+            if(testClass.isAnnotationPresent(ReadOnlyTest.class)) {
                 log.info("Application Archive [" + applicationName + "] is being appended with packages [" + readOnlyPackage +"]");
                 ((ClassContainer<?>) applicationArchive).addPackage(readOnlyPackage);
             }
