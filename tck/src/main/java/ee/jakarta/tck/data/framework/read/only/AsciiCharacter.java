@@ -24,7 +24,10 @@ public class AsciiCharacter implements Serializable {
 
     @jakarta.nosql.Id
     @jakarta.persistence.Id
-    private Integer numericValue;
+    private long id;
+
+    @jakarta.nosql.Column
+    private int numericValue;
 
     @jakarta.nosql.Column
     private String hexadecimal;
@@ -35,11 +38,19 @@ public class AsciiCharacter implements Serializable {
     @jakarta.nosql.Column
     private boolean isControl;
 
-    public Integer getNumericValue() {
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public int getNumericValue() {
         return numericValue;
     }
 
-    public void setNumericValue(Integer numericValue) {
+    public void setNumericValue(int numericValue) {
         this.numericValue = numericValue;
     }
 

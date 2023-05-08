@@ -17,29 +17,23 @@ package ee.jakarta.tck.data.framework.read.only;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 import java.util.stream.IntStream;
 
 public class AsciiCharactersPopulator implements Populator<AsciiCharacters> {
-    private static final Logger log = Logger.getLogger(AsciiCharactersPopulator.class.getCanonicalName());
     
     public static AsciiCharactersPopulator get() {
         return new AsciiCharactersPopulator();
     }
-
+    
     @Override
-    public void populate(AsciiCharacters repo) {
-        if(isPopulated(repo)) {
-            return;
-        }
-        
-        log.info("AsciiCharacters creating set");
+    public void populationLogic(AsciiCharacters repo) {
         List<AsciiCharacter> dictonary = new ArrayList<>();
         
-        IntStream.range(0, 127)
+        IntStream.range(0, 128)
             .forEach(value -> {
                 AsciiCharacter inst = new AsciiCharacter();
                 
+                inst.setId(value + 1); //Some Persistence providers may not support id's of 0
                 inst.setNumericValue(value);
                 inst.setHexadecimal(Integer.toHexString(value));
                 inst.setThisCharacter((char) value);
@@ -49,11 +43,10 @@ public class AsciiCharactersPopulator implements Populator<AsciiCharacters> {
             });
         
         repo.saveAll(dictonary);
-        log.info("AsciiCharacters populated");
     }
 
     @Override
     public boolean isPopulated(AsciiCharacters repo) {
-        return repo.count() == 126;
+        return repo.count() == 128L;
     }
 }

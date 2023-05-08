@@ -28,7 +28,7 @@ public class NaturalNumber implements Serializable {
 
     @jakarta.nosql.Id
     @jakarta.persistence.Id
-    private Integer numericValue;
+    private long id; //AKA the value
 
     @jakarta.nosql.Column
     private boolean isOdd;
@@ -42,12 +42,12 @@ public class NaturalNumber implements Serializable {
     @jakarta.nosql.Column
     private long floorOfSquareRoot;
 
-    public int getNumericValue() {
-        return numericValue;
+    public long getId() {
+        return id;
     }
 
-    public void setNumericValue(int numericValue) {
-        this.numericValue = numericValue;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public boolean isOdd() {

@@ -17,21 +17,23 @@ package ee.jakarta.tck.data.framework.read.only;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 import java.util.stream.IntStream;
 
 import ee.jakarta.tck.data.framework.read.only.NaturalNumber.NumberType;
 
 public class NaturalNumbersPopulator implements Populator<NaturalNumbers> {
-    private static final Logger log = Logger.getLogger(NaturalNumbersPopulator.class.getCanonicalName());
     
     public static NaturalNumbersPopulator get() {
         return new NaturalNumbersPopulator();
     }
     
     @Override
-    public void populate(NaturalNumbers repo) {
-        log.info("NaturalNumbers creating set");
+    public boolean isPopulated(NaturalNumbers repo) {
+       return repo.count() == 100L;
+    }
+    
+    @Override
+    public void populationLogic(NaturalNumbers repo) {
         List<NaturalNumber> dictonary = new ArrayList<>();
         
         IntStream.range(1, 101)
@@ -43,7 +45,7 @@ public class NaturalNumbersPopulator implements Populator<NaturalNumbers> {
                 long sqrRoot = squareRoot(id);
                 boolean isPrime = isOdd ? isPrime(id, sqrRoot) : (id == 2);
                 
-                inst.setNumericValue(id);
+                inst.setId(id);
                 inst.setOdd(isOdd);
                 inst.setNumBitsRequired(bitsRequired(id));
                 inst.setNumType(isOne ? NumberType.ONE : isPrime ? NumberType.PRIME : NumberType.COMPOSITE);
@@ -53,12 +55,6 @@ public class NaturalNumbersPopulator implements Populator<NaturalNumbers> {
             });
         
         repo.saveAll(dictonary);
-        log.info("NaturalNumbers populated");
-    }
-    
-    @Override
-    public boolean isPopulated(NaturalNumbers repo) {
-       return repo.count() == 100;
     }
     
     private static Short bitsRequired(int value) {

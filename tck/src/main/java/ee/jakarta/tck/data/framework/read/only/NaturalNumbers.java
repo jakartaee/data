@@ -29,7 +29,7 @@ import ee.jakarta.tck.data.framework.read.only.NaturalNumber.NumberType;
  * TODO figure out a way to make this a ReadOnlyRepository instead.
  */
 @Repository
-public interface NaturalNumbers extends CrudRepository<NaturalNumber, Integer> {
+public interface NaturalNumbers extends CrudRepository<NaturalNumber, Long> {
 
     Slice<NaturalNumber> findByNumTypeAndFloorOfSquareRootLessThanEqual(NumberType type,
                                                                         long maxSqrtFloor,
