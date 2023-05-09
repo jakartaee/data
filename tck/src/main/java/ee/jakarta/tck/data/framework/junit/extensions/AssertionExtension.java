@@ -43,8 +43,8 @@ public class AssertionExtension implements TestWatcher, BeforeTestExecutionCallb
         Assertion instance = testMethod.getAnnotation(Assertion.class);
         if (instance != null) {
             log.warning(testMethod.getName() + " failed " + nl
-                    + " @Assertion.id:#" + instance.id() + nl
-                    + " @Assertion.strategy: " + instance.strategy()
+                    + " @Assertion.id: #" + instance.id() + nl
+                    + " @Assertion.strategy: " + instance.strategy() + nl
                     + " Throwable.cause: " + cause.getLocalizedMessage());
         }
     }
@@ -55,8 +55,8 @@ public class AssertionExtension implements TestWatcher, BeforeTestExecutionCallb
         Assertion instance = testMethod.getAnnotation(Assertion.class);
         if (instance != null) {
             log.warning(testMethod.getName() + " was aborted " + nl
-                    + " @Assertion.id:#" + instance.id() + nl
-                    + " @Assertion.strategy: " + instance.strategy()
+                    + " @Assertion.id: #" + instance.id() + nl
+                    + " @Assertion.strategy: " + instance.strategy() + nl
                     + " Throwable.cause: " + cause.getLocalizedMessage());
         }
     }
@@ -67,7 +67,7 @@ public class AssertionExtension implements TestWatcher, BeforeTestExecutionCallb
         Assertion instance = testMethod.getAnnotation(Assertion.class);
         if (instance != null) {
             log.warning(testMethod.getName() + " is disabled" + nl
-                    + " @Assertion.id:#" + instance.id() + nl
+                    + " @Assertion.id: #" + instance.id() + nl
                     + " @Assertion.strategy: " + instance.strategy() + nl
                     + " @Disabled.reason:" + reason.get());
         }

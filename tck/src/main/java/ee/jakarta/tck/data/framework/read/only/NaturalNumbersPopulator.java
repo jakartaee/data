@@ -17,24 +17,23 @@ package ee.jakarta.tck.data.framework.read.only;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 import java.util.stream.IntStream;
 
 import ee.jakarta.tck.data.framework.read.only.NaturalNumber.NumberType;
-import jakarta.data.repository.CrudRepository;
 
-public class NaturalNumbersPopulator implements Populator {
-    private static final Logger log = Logger.getLogger(NaturalNumbersPopulator.class.getCanonicalName());
+public class NaturalNumbersPopulator implements Populator<NaturalNumbers> {
     
-    private NaturalNumbers repo;
-    
-    public NaturalNumbersPopulator(CrudRepository<?,Long> repo) {
-        this.repo = (NaturalNumbers) repo;
+    public static NaturalNumbersPopulator get() {
+        return new NaturalNumbersPopulator();
     }
-
+    
     @Override
-    public void populate() {
-        log.info("NaturalNumbers creating set");
+    public boolean isPopulated(NaturalNumbers repo) {
+       return repo.count() == 100L;
+    }
+    
+    @Override
+    public void populationLogic(NaturalNumbers repo) {
         List<NaturalNumber> dictonary = new ArrayList<>();
         
         IntStream.range(1, 101)
@@ -56,7 +55,6 @@ public class NaturalNumbersPopulator implements Populator {
             });
         
         repo.saveAll(dictonary);
-        log.info("NaturalNumbers populated");
     }
     
     private static Short bitsRequired(int value) {
