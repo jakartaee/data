@@ -22,7 +22,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -39,6 +41,8 @@ import ee.jakarta.tck.data.framework.read.only.NaturalNumber;
 import ee.jakarta.tck.data.framework.read.only.NaturalNumbers;
 import ee.jakarta.tck.data.framework.read.only.NaturalNumbersPopulator;
 import ee.jakarta.tck.data.framework.read.only.NaturalNumber.NumberType;
+import jakarta.data.exceptions.MappingException;
+import jakarta.data.repository.KeysetAwareSlice;
 import jakarta.data.repository.Pageable;
 import jakarta.data.repository.Slice;
 import jakarta.data.repository.Sort;
@@ -100,6 +104,16 @@ public class EntityTest {
         assertEquals(false, slice.iterator().hasNext());
     }
 
+    @Assertion(id = "133",
+               strategy = "Use a repository method with one Sort parameter specifying descending order, " +
+                          "and verify all results are returned and are in descending order according to the sort criteria.")
+    public void testDescendingSort() {
+        Stream<NaturalNumber> stream = numbers.findByIdBetween(4, 10, Sort.desc("id"));
+
+        assertEquals(Arrays.toString(new Long[] { 10L, 9L, 8L, 7L, 6L, 5L, 4L }),
+                     Arrays.toString(stream.map(number -> number.getId()).toArray()));
+    }
+
     @Assertion(id = "133", strategy = "Request the last Slice of up to 5 results, expecting to find the final 2.")
     public void testFinalSliceOfUpTo5() {
         Pageable fifth = Pageable.ofSize(5).page(5).sortBy(Sort.desc("id"));
@@ -130,6 +144,54 @@ public class EntityTest {
         assertEquals(Short.valueOf((short) 2), number.getNumBitsRequired());
 
         assertEquals(false, it.hasNext());
+    }
+
+    @Assertion(id = "133",
+               strategy = "Request the first KeysetAwareSlice of 6 results, expecting to find all 6, " +
+                          "then request the next KeysetAwareSlice and the KeysetAwareSlice after that, " +
+                          "expecting to find all results.")
+    public void testFirstKeysetAwareSliceOf6AndNextSlices() {
+        Pageable first6 = Pageable.ofSize(6);
+        KeysetAwareSlice<NaturalNumber> slice;
+
+        try {
+            slice = numbers.findByFloorOfSquareRootOrderByIdAsc(7L, first6);
+        } catch (MappingException x) {
+            // Test passes: Jakarta Data providers must raise MappingException when the database
+            // is not capable of keyset pagination.
+            return;
+        }
+
+        assertEquals(Arrays.toString(new Long[] { 49L, 50L, 51L, 52L, 53L, 54L }),
+                     Arrays.toString(slice.stream().map(number -> number.getId()).toArray()));
+
+        assertEquals(6, slice.numberOfElements());
+
+        try {
+            slice = numbers.findByFloorOfSquareRootOrderByIdAsc(7L, slice.nextPageable());
+        } catch (MappingException x) {
+            // Test passes: Jakarta Data providers must raise MappingException when the database
+            // is not capable of keyset pagination.
+            return;
+        }
+
+        assertEquals(6, slice.numberOfElements());
+
+        assertEquals(Arrays.toString(new Long[] { 55L, 56L, 57L, 58L, 59L, 60L }),
+                     Arrays.toString(slice.stream().map(number -> number.getId()).toArray()));
+
+        try {
+            slice = numbers.findByFloorOfSquareRootOrderByIdAsc(7L, slice.nextPageable());
+        } catch (MappingException x) {
+            // Test passes: Jakarta Data providers must raise MappingException when the database
+            // is not capable of keyset pagination.
+            return;
+        }
+
+        assertEquals(Arrays.toString(new Long[] { 61L, 62L, 63L }),
+                     Arrays.toString(slice.stream().map(number -> number.getId()).toArray()));
+
+        assertEquals(3, slice.numberOfElements());
     }
 
     @Assertion(id = "133", strategy = "Request the first Slice of 5 results, expecting to find all 5.")
@@ -174,6 +236,101 @@ public class EntityTest {
         assertEquals(false, it.hasNext());
     }
 
+    @Assertion(id = "133",
+            strategy = "Request a KeysetAwareSlice of 9 results after the keyset of the 20th result, expecting to find the next 9 results. " +
+                       "Then request the KeysetAwareSlice before the keyset of the first entry of the slice, expecting to find the previous 9 results. " +
+                       "Then request the KeysetAwareSlice after the last entry of the original slice, expecting to find the next 9.")
+    public void testKeysetAwareSliceOf9FromCursor() {
+        // The query for this test returns composite natural numbers under 64 in the following order:
+        //
+        // 49 50 51 52 54 55 56 57 58 60 62 63 36 38 39 40 42 44 45 46 48 25 26 27 28 30 32 33 34 35 16 18 20 21 22 24 09 10 12 14 15 04 06 08
+        //                                                             ^^^^^^^^ slice 1 ^^^^^^^^^
+        //                                  ^^^^^^^^ slice 2 ^^^^^^^^^
+        //                                                                                        ^^^^^^^^ slice 3 ^^^^^^^^^
+
+        Pageable middle9 = Pageable.ofSize(9)
+                             .sortBy(Sort.desc("floorOfSquareRoot"), Sort.asc("id"))
+                             .afterKeyset(6L, 46L); // 20th result is 46; its square root rounds down to 6.
+
+        KeysetAwareSlice<NaturalNumber> slice;
+        try {
+            slice = numbers.findByNumTypeAndNumBitsRequiredLessThan(NumberType.COMPOSITE, (short) 7, middle9);
+        } catch (MappingException x) {
+            // Test passes: Jakarta Data providers must raise MappingException when the database
+            // is not capable of keyset pagination.
+            return;
+        }
+
+        assertEquals(Arrays.toString(new Long[] { 48L, 25L, 26L, 27L, 28L, 30L, 32L, 33L, 34L }),
+                     Arrays.toString(slice.stream().map(number -> number.getId()).toArray()));
+
+        assertEquals(9, slice.numberOfElements());
+
+        KeysetAwareSlice<NaturalNumber> previousSlice;
+        try {
+            previousSlice = numbers.findByNumTypeAndNumBitsRequiredLessThan(NumberType.COMPOSITE,
+                                                                            (short) 7,
+                                                                            slice.previousPageable());
+        } catch (MappingException x) {
+            // Test passes: Jakarta Data providers must raise MappingException when the database
+            // is not capable of keyset pagination.
+            return;
+        }
+
+         assertEquals(Arrays.toString(new Long[] { 63L, 36L, 38L, 39L, 40L, 42L, 44L, 45L, 46L }),
+                      Arrays.toString(previousSlice.stream().map(number -> number.getId()).toArray()));
+
+         assertEquals(9, previousSlice.numberOfElements());
+
+         KeysetAwareSlice<NaturalNumber> nextSlice;
+         try {
+             nextSlice = numbers.findByNumTypeAndNumBitsRequiredLessThan(NumberType.COMPOSITE,
+                                                                         (short) 7,
+                                                                         slice.nextPageable());
+         } catch (MappingException x) {
+             // Test passes: Jakarta Data providers must raise MappingException when the database
+             // is not capable of keyset pagination.
+             return;
+         }
+
+         assertEquals(Arrays.toString(new Long[] { 35L, 16L, 18L, 20L, 21L, 22L, 24L, 9L, 10L }),
+                      Arrays.toString(nextSlice.stream().map(number -> number.getId()).toArray()));
+
+         assertEquals(9, nextSlice.numberOfElements());
+    }
+
+    @Assertion(id = "133", strategy = "Request a KeysetAwareSlice of results where none match the query, expecting an empty KeysetAwareSlice with 0 results.")
+    public void testKeysetAwareSliceOfNothing() {
+        // There are no numbers larger than 30 which have a square root that rounds down to 3.
+        Pageable pagination = Pageable.ofSize(33).afterKeyset(30L);
+
+        KeysetAwareSlice<NaturalNumber> slice;
+        try {
+            slice = numbers.findByFloorOfSquareRootOrderByIdAsc(3L, pagination);
+        } catch (MappingException x) {
+            // Test passes: Jakarta Data providers must raise MappingException when the database
+            // is not capable of keyset pagination.
+            return;
+        }
+
+        assertEquals(false, slice.hasContent());
+        assertEquals(0, slice.content().size());
+        assertEquals(0, slice.numberOfElements());
+    }
+
+    @Assertion(id = "133",
+               strategy = "Use a repository method with two Sort parameters specifying a mixture of ascending and descending order, " +
+                          "and verify all results are returned and are ordered according to the sort criteria.")
+    public void testMixedSort() {
+        NaturalNumber[] nums = numbers.findByIdLessThan(15L, Sort.asc("numBitsRequired"), Sort.desc("id"));
+
+        assertEquals(Arrays.toString(new Long[] { 1L, // 1 bit
+                                                  3L, 2L, // 2 bits
+                                                  7L, 6L, 5L, 4L, // 3 bits
+                                                  14L, 13L, 12L, 11L, 10L, 9L, 8L }), // 4 bits
+                     Arrays.toString(Stream.of(nums).map(number -> number.getId()).toArray()));
+    }
+
     @Assertion(id = "133", strategy = "Request a Slice of results where none match the query, expecting an empty Slice with 0 results.")
     public void testSliceOfNothing() {
         Pageable pagination = Pageable.ofSize(5).sortBy(Sort.desc("id"));
@@ -208,5 +365,22 @@ public class EntityTest {
 
         assertEquals(Arrays.toString(new Long[] { 17L, 13L, 11L, 7L, 5L }),
                 Arrays.toString(slice.stream().map(number -> number.getId()).toArray()));
+    }
+
+    @Assertion(id = "133",
+               strategy = "Use a repository method with varargs Sort... specifying a mixture of ascending and descending order, " +
+                          "and verify all results are returned and are ordered according to the sort criteria.")
+    public void testVarargsSort() {
+        List<NaturalNumber> list = numbers.findByIdLessThanEqual(12L,
+                                                                 Sort.asc("floorOfSquareRoot"),
+                                                                 Sort.desc("numBitsRequired"),
+                                                                 Sort.asc("id"));
+
+        assertEquals(Arrays.toString(new Long[] { 2L, 3L, // square root rounds down to 1; 2 bits
+                                                  1L, // square root rounds down to 1; 1 bit
+                                                  8L, // square root rounds down to 2; 4 bits
+                                                  4L, 5L, 6L, 7L, // square root rounds down to 2; 3 bits
+                                                  9L, 10L, 11L, 12L }), // square root rounds down to 3; 4 bits
+                     Arrays.toString(list.stream().map(number -> number.getId()).toArray()));
     }
 }
