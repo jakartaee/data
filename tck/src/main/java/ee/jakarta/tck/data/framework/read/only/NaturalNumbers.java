@@ -15,10 +15,15 @@
  */
 package ee.jakarta.tck.data.framework.read.only;
 
+import java.util.ArrayList;
+import java.util.stream.Stream;
+
 import jakarta.data.repository.CrudRepository;
+import jakarta.data.repository.KeysetAwareSlice;
 import jakarta.data.repository.Pageable;
 import jakarta.data.repository.Repository;
 import jakarta.data.repository.Slice;
+import jakarta.data.repository.Sort;
 
 import ee.jakarta.tck.data.framework.read.only.NaturalNumber.NumberType;
 
@@ -30,6 +35,19 @@ import ee.jakarta.tck.data.framework.read.only.NaturalNumber.NumberType;
  */
 @Repository
 public interface NaturalNumbers extends CrudRepository<NaturalNumber, Long> {
+
+    KeysetAwareSlice<NaturalNumber> findByFloorOfSquareRootOrderByIdAsc(long sqrtFloor,
+                                                                        Pageable pagination);
+
+    Stream<NaturalNumber> findByIdBetween(long minimum, long maximum, Sort sort);
+
+    NaturalNumber[] findByIdLessThan(long maximum, Sort primarySort, Sort secondarySort);
+
+    ArrayList<NaturalNumber> findByIdLessThanEqual(long maximum, Sort... sorts);
+
+    KeysetAwareSlice<NaturalNumber> findByNumTypeAndNumBitsRequiredLessThan(NumberType type,
+                                                                            short bitsUnder,
+                                                                            Pageable pagination);
 
     Slice<NaturalNumber> findByNumTypeAndFloorOfSquareRootLessThanEqual(NumberType type,
                                                                         long maxSqrtFloor,
