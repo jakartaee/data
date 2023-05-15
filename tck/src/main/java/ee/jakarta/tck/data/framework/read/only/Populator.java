@@ -15,10 +15,9 @@
  */
 package ee.jakarta.tck.data.framework.read.only;
 
-import java.time.Duration;
 import java.util.logging.Logger;
 
-import ee.jakarta.tck.data.framework.utilities.TestProperty;
+import ee.jakarta.tck.data.framework.utilities.TestPropertyUtility;
 
 /**
  * Aids in the population of repositories with entities for read-only testing.
@@ -66,7 +65,7 @@ public interface Populator<T> {
         populationLogic(repo);
 
         log.info(repoName + " waiting for eventual consistency");
-        eventualConsistency();
+        TestPropertyUtility.waitForEventualConsistency();
         
         log.info(repoName + " verifying");
         if(! isPopulated(repo)) {
@@ -76,22 +75,4 @@ public interface Populator<T> {
         log.info(repoName + " populated");
     }
 
-    /**
-     * Waits for a configured eventual consistency delay.
-     * 
-     * This ensures that repositories that are a part of a distribution have all 
-     * been updated before tests are allowed to perform read operations.
-     */
-    public default void eventualConsistency() {
-        if(!TestProperty.delay.isSet()) {
-            return;
-        }
-        Duration delay = Duration.ofSeconds(TestProperty.delay.getLong());
-        try {
-            Thread.sleep(delay.toMillis());
-        } catch (InterruptedException e) {
-            log.warning("Did not wait full duration of " + delay.toMillis() 
-                      + "ms for eventual consistancy due to exception: " + e.getLocalizedMessage());
-        }
-    }
 }

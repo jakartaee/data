@@ -23,6 +23,7 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import ee.jakarta.tck.data.framework.junit.anno.Assertion;
 import ee.jakarta.tck.data.framework.junit.extensions.AssertionExtension;
 import ee.jakarta.tck.data.framework.utilities.TestProperty;
+import ee.jakarta.tck.data.framework.utilities.TestPropertyHandler;
 
 /**
  * This extension will intercept all archives before they are deployed to the container and append 
@@ -44,7 +45,7 @@ public class TCKFrameworkAppender implements AuxiliaryArchiveAppender {
     public Archive<?> createAuxiliaryArchive() {
         JavaArchive framework = ShrinkWrap.create(JavaArchive.class, "jakarta-data-framework.jar");
         framework.addPackages(false, annoPackage, extensionPackage, utilPackage);
-        return TestProperty.storeProperties(framework);
+        return TestPropertyHandler.storeProperties(framework);
     }
 
 }

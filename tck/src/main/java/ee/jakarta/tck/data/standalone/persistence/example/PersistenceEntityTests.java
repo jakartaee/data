@@ -13,7 +13,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
-package ee.jakarta.tck.data.core.persistence.example;
+package ee.jakarta.tck.data.standalone.persistence.example;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -26,15 +26,16 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.jupiter.api.Assertions;
 
 import ee.jakarta.tck.data.framework.junit.anno.Assertion;
-import ee.jakarta.tck.data.framework.junit.anno.Core;
 import ee.jakarta.tck.data.framework.junit.anno.Persistence;
+import ee.jakarta.tck.data.framework.junit.anno.Standalone;
 import jakarta.data.exceptions.MappingException;
 import jakarta.inject.Inject;
 
 /**
- * Execute a test with a Persistence specific entity. 
+ * Example test class:
+ * Execute a test with a Persistence specific entity with a repository that requires read and writes (AKA not read-only) 
  */
-@Core
+@Standalone
 @Persistence
 public class PersistenceEntityTests {
     

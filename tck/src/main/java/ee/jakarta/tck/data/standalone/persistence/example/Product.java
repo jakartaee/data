@@ -13,7 +13,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
-package ee.jakarta.tck.data.core.persistence.example;
+package ee.jakarta.tck.data.standalone.persistence.example;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
