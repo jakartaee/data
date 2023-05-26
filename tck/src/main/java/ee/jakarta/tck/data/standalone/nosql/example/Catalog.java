@@ -13,7 +13,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
-package ee.jakarta.tck.data.core.nosql.example;
+package ee.jakarta.tck.data.standalone.nosql.example;
 
 import java.util.List;
 

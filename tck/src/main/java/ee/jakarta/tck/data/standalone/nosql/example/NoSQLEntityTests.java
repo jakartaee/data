@@ -13,7 +13,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
-package ee.jakarta.tck.data.core.nosql.example;
+package ee.jakarta.tck.data.standalone.nosql.example;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -26,15 +26,17 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.jupiter.api.Assertions;
 
 import ee.jakarta.tck.data.framework.junit.anno.Assertion;
-import ee.jakarta.tck.data.framework.junit.anno.Core;
 import ee.jakarta.tck.data.framework.junit.anno.NoSQL;
+import ee.jakarta.tck.data.framework.junit.anno.Standalone;
+import ee.jakarta.tck.data.framework.utilities.TestPropertyUtility;
 import jakarta.data.exceptions.MappingException;
 import jakarta.inject.Inject;
 
 /**
- * Execute a test with an NoSQL specific entity.
+ * Example test class:
+ * Execute a test with an NoSQL specific entity with a repository that requires read and writes (AKA not read-only)
  */
-@Core
+@Standalone
 @NoSQL
 public class NoSQLEntityTests {
     
@@ -56,6 +58,11 @@ public class NoSQLEntityTests {
         products.add(Product.of(05L, "ruler", 2.00, 2.15));
         
         products.stream().forEach(product -> catalog.save(product));
+        
+        //IMPORTANT - all NoSQL tests need to wait for eventual consistency after a write action
+        //because in a test environment we must be pessimistic and assume some wait is necessary for 
+        //all nodes to get the latest update.
+        TestPropertyUtility.waitForEventualConsistency(); 
         
         int countExpensive = catalog.countByPriceGreaterThanEqual(2.99);
         assertEquals(2, countExpensive, "Expected two products to be more than 3.00");

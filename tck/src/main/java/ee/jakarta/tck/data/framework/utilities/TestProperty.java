@@ -15,19 +15,12 @@
  */
 package ee.jakarta.tck.data.framework.utilities;
 
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.util.Properties;
 import java.util.logging.Logger;
-
-import org.jboss.shrinkwrap.api.Archive;
-import org.jboss.shrinkwrap.api.asset.StringAsset;
-import org.jboss.shrinkwrap.api.container.ResourceContainer;
 
 import ee.jakarta.tck.data.framework.arquillian.extensions.TCKFrameworkAppender;
 
 /**
- * <p> This class represents the different test properties used within this TCK.
+ * <p> This enum represents the different test properties used within this TCK.
  * Each one is given a description and documentation will automatically be created in the TCK distribution. </p>
  * 
  * <p> When a test property is requested from the client, we expect these properties to be available from the system.</p>
@@ -50,7 +43,7 @@ public enum TestProperty {
     pollTimeout   (false, "jakarta.tck.poll.timeout",      "Time in seconds when we will stop polling to verify read-only data was successfully written. "
             + "Default: 60 seconds", "60"),
     delay         (false, "jakarta.tck.consistency.delay", "Time in seconds after verifying read-only data was successfully written to respository "
-            + "for repository to have consistancy. Default: none", ""),
+            + "for repository to have consistency. Default: none", ""),
     
     //Signature testing properties
     signatureClasspath (false,  "signature.sigTestClasspath", "The path to the Jakarta Data API JAR used by your implementation. "
@@ -136,8 +129,7 @@ public enum TestProperty {
         
         //Container: get property from properties file
         if(value == null) {
-            loadProperties();
-            value = foundProperites.getProperty(key);
+            value = TestPropertyHandler.loadProperties().getProperty(key);
             log.fine("Value from resource file: " + value);
         }
         
@@ -151,74 +143,5 @@ public enum TestProperty {
             throw new IllegalStateException("Could not obtain a value for system property: " + key);
         
         return value;
-    }    
-
-    // UTILITY METHODS
-    
-    private static final String PROP_FILE = "tck.properties";
-    private static Properties foundProperites;
-    
-    /**
-     * Checks the profile property and determine if it is standalone or not.
-     * 
-     * @return - true if TCK is configured in standalone mode, false otherwise. 
-     */
-    public static boolean isStandalone() {
-        return TestProperty.profile.equals("none");
-    }
-    
-    /**
-     * Container: Load properties from the property file, and cache them in the foundProperties object.
-     * If any error occurs, log it, and create an empty foundProperties object.
-     */
-    private static void loadProperties() {
-        if(foundProperites != null) {
-            return;
-        }
-        
-        foundProperites = new Properties();
-        
-        //Try to load property file
-        InputStream propsStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(PROP_FILE);
-        if(propsStream != null) {
-            try {
-                foundProperites.load(propsStream);
-                return;
-            } catch (Exception e) {
-                log.info("Attempted to load properties from resource " + PROP_FILE + " but failed. Because: " + e.getLocalizedMessage());
-            }
-        }        
-    }
-    
-    /**
-     * Client: Store system properties from the client to a properties file 
-     * as a resource on the archive sent to the container. 
-     * 
-     * @param archive - The archive going to the container
-     * @return the archive with a resource file attached
-     */
-    public static Archive<?> storeProperties(Archive<?> archive) {
-        if(! (archive instanceof ResourceContainer) ) {
-            throw new RuntimeException("Could not store properties to archive, because it was not a ResourceConatiner. "
-                    + "Please raise an issue with the maintainers of the Jakarta Data TCK.");
-        }
-        
-        Properties filteredProps = new Properties();
-        for(TestProperty prop : TestProperty.values()) {
-            if(prop.getKey().startsWith("java.")) {
-                continue;
-            }
-            filteredProps.put(prop.getKey(), prop.getValue());
-        }
-        
-        try {
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            filteredProps.store(out, "System properties shared with Arquillian container");
-            ((ResourceContainer<?>)archive).addAsResource(new StringAsset(out.toString()), PROP_FILE);
-        } catch (Exception e) {
-            throw new RuntimeException("Could not store properties file to archive", e);
-        }
-        
-        return archive;
     }
 }
