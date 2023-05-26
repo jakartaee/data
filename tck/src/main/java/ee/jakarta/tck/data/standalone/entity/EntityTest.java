@@ -21,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
@@ -43,6 +44,7 @@ import ee.jakarta.tck.data.framework.read.only.NaturalNumbersPopulator;
 import ee.jakarta.tck.data.framework.read.only.NaturalNumber.NumberType;
 import jakarta.data.exceptions.MappingException;
 import jakarta.data.repository.KeysetAwareSlice;
+import jakarta.data.repository.Limit;
 import jakarta.data.repository.Pageable;
 import jakarta.data.repository.Slice;
 import jakarta.data.repository.Sort;
@@ -318,6 +320,51 @@ public class EntityTest {
         assertEquals(0, slice.numberOfElements());
     }
 
+    @Assertion(id = "133", strategy = "Use a repository method with both Sort and Limit, and verify that the Limit caps " +
+                                      "the number of results and that results are ordered according to the sort criteria.")
+    public void testLimit() {
+        Collection<NaturalNumber> nums = numbers.findByIdGreaterThanEqual(60L,
+                                                        Limit.of(10),
+                                                        Sort.asc("floorOfSquareRoot"),
+                                                        Sort.desc("id"));
+
+        assertEquals(Arrays.toString(new Long[] { 63L, 62L, 61L, 60L, // square root rounds down to 7
+                                80L, 79L, 78L, 77L, 76L, 75L }), // square root rounds down to 8
+        Arrays.toString(nums.stream().map(number -> number.getId()).toArray()));
+    }
+
+    @Assertion(id = "133", strategy = "Use a repository method with both Sort and Limit, where the Limit is a range, " +
+                                      " and verify that the Limit range starts in the correct place, caps the number of results, " +
+                                      " and that results are ordered according to the sort criteria.")
+    public void testLimitedRange() {
+        // Primes above 40 are:
+        // 41, 43, 47, 53, 59,
+        // 61, 67, 71, 73, 79,
+        // 83, 89, ...
+
+        Collection<NaturalNumber> nums = numbers.findByIdGreaterThanEqual(40L,
+                                                        Limit.range(6, 10),
+                                                        Sort.asc("numType"), // primes first
+                                                        Sort.asc("id"));
+
+        assertEquals(Arrays.toString(new Long[] { 61L, 67L, 71L, 73L, 79L }),
+        Arrays.toString(nums.stream().map(number -> number.getId()).toArray()));
+    }
+
+    @Assertion(id = "133", strategy = "Use a repository method with Limit and verify that the Limit caps " +
+                                      "the number of results to the amount that is specified.")
+    public void testLimitToOneResult() {
+        Collection<NaturalNumber> nums = numbers.findByIdGreaterThanEqual(80L, Limit.of(1));
+
+        Iterator<NaturalNumber> it = nums.iterator();
+        assertEquals(true, it.hasNext());
+
+        NaturalNumber num = it.next();
+        assertEquals(true, num.getId() >= 80L);
+
+        assertEquals(false, it.hasNext());
+    }
+
     @Assertion(id = "133",
                strategy = "Use a repository method with two Sort parameters specifying a mixture of ascending and descending order, " +
                           "and verify all results are returned and are ordered according to the sort criteria.")
@@ -329,6 +376,60 @@ public class EntityTest {
                                                   7L, 6L, 5L, 4L, // 3 bits
                                                   14L, 13L, 12L, 11L, 10L, 9L, 8L }), // 4 bits
                      Arrays.toString(Stream.of(nums).map(number -> number.getId()).toArray()));
+    }
+
+    @Assertion(id = "133",
+               strategy = "Use a repository method with OrderBy (static) and a Sort parameter (dynamic), " +
+                          "verfying that all results are returned and are ordered first by the static sort criteria, " +
+                          "followed by the dynamic sort criteria when the value(s) being compared by the static criteria match.")
+    public void testOrderByHasPrecedenceOverPageableSorts() {
+        Pageable pagination = Pageable.ofSize(8).sortBy(Sort.asc("numType"), Sort.desc("id"));
+        Slice<NaturalNumber> slice = numbers.findByIdLessThanOrderByFloorOfSquareRootDesc(25L, pagination);
+
+        assertEquals(Arrays.toString(new Long[] { 23L, 19L, 17L, // square root rounds down to 4; prime
+                                                  24L, 22L, 21L, 20L, 18L }), // square root rounds down to 4; composite
+                     Arrays.toString(slice.stream().map(number -> number.getId()).toArray()));
+
+        pagination = slice.nextPageable();
+        slice = numbers.findByIdLessThanOrderByFloorOfSquareRootDesc(25L, pagination);
+
+        assertEquals(Arrays.toString(new Long[] { 16L, // square root rounds down to 4; composite
+                                                  13L, 11L, // square root rounds down to 3; prime
+                                                  15L, 14L, 12L, 10L, 9L }), // square root rounds down to 3; composite
+                     Arrays.toString(slice.stream().map(number -> number.getId()).toArray()));
+
+        pagination = slice.nextPageable();
+        slice = numbers.findByIdLessThanOrderByFloorOfSquareRootDesc(25L, pagination);
+
+        assertEquals(Arrays.toString(new Long[] { 7L, 5L, // square root rounds down to 2; prime
+                                                  8L, 6L, 4L, // square root rounds down to 2; composite
+                                                  1L, // square root rounds down to 1; one
+                                                  3L, 2L }), // square root rounds down to 1; prime
+                     Arrays.toString(slice.stream().map(number -> number.getId()).toArray()));
+
+        pagination = slice.nextPageable();
+        if (pagination != null) {
+            slice = numbers.findByIdLessThanOrderByFloorOfSquareRootDesc(25L, pagination);
+            assertEquals(false, slice.hasContent());
+        }
+    }
+
+    @Assertion(id = "133",
+               strategy = "Use a repository method with OrderBy (static) and a Pageable with a Sort parameter (dynamic), " +
+                          "verfying that all results are returned and are ordered first by the static sort criteria, " +
+                          "followed by the dynamic sort criteria when the value(s) being compared by the static criteria match.")
+    public void testOrderByHasPrecedenceOverSorts() {
+        Stream<NaturalNumber> nums = numbers.findByIdBetweenOrderByNumTypeAsc(5L, 24L,
+                                                                              Sort.desc("floorOfSquareRoot"),
+                                                                              Sort.asc("id"));
+
+        assertEquals(Arrays.toString(new Long[] { 17L, 19L, 23L, // prime; square root rounds down to 4
+                                                  11L, 13L, // prime; square root rounds down to 3
+                                                  5L, 7L, // prime; square root rounds down to 2
+                                                  16L, 18L, 20L, 21L, 22L, 24L, // composite; square root rounds down to 4
+                                                  9L, 10L, 12L, 14L, 15L, // composite; square root rounds down to 3
+                                                  6L, 8L }), // composite; square root rounds down to 2
+                     Arrays.toString(nums.map(number -> number.getId()).toArray()));
     }
 
     @Assertion(id = "133", strategy = "Request a Slice of results where none match the query, expecting an empty Slice with 0 results.")
