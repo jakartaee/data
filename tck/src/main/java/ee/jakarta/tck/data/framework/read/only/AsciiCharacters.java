@@ -17,19 +17,30 @@ package ee.jakarta.tck.data.framework.read.only;
 
 import java.util.Optional;
 
-import jakarta.data.repository.CrudRepository;
+import jakarta.data.repository.DataRepository;
 import jakarta.data.repository.Repository;
+import jakarta.data.repository.Streamable;
 
 /**
- * This is a read only repository that represents the set of AsciiCharacters from 0-256. 
+ * This is a read only repository that represents the set of AsciiCharacters from 0-256.
  * This repository will be pre-populated at test startup and verified prior to running tests.
- * 
- * TODO figure out a way to make this a ReadOnlyRepository instead.
+ * This interface is required to inherit only from DataRepository in order to satisfy a TCK scenario.
  */
 @Repository
-public interface AsciiCharacters extends CrudRepository<AsciiCharacter, Long> {
-    
-    // READ - add more read only queries for test cases
+public interface AsciiCharacters extends DataRepository<AsciiCharacter, Long> {
+
+    int countByHexadecimalNotNull();
+
+    boolean existsByThisCharacter(char ch);
+
+    AsciiCharacter findByHexadecimalIgnoreCase(String hex);
+
+    AsciiCharacter findByIsControlTrueAndNumericValueBetween(int min, int max);
+
     Optional<AsciiCharacter> findByNumericValue(int id);
+
+    Streamable<AsciiCharacter> findByNumericValueLessThanEqualAndNumericValueGreaterThanEqual(int max, int min);
+
+    Iterable<AsciiCharacter> saveAll(Iterable<AsciiCharacter> characters);
 
 }

@@ -47,6 +47,6 @@ public class AsciiCharactersPopulator implements Populator<AsciiCharacters> {
 
     @Override
     public boolean isPopulated(AsciiCharacters repo) {
-        return repo.count() == 128L;
+        return repo.countByHexadecimalNotNull() == 128;
     }
 }

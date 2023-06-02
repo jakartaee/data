@@ -19,11 +19,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 
@@ -36,18 +39,22 @@ import ee.jakarta.tck.data.framework.junit.anno.AnyEntity;
 import ee.jakarta.tck.data.framework.junit.anno.Assertion;
 import ee.jakarta.tck.data.framework.junit.anno.ReadOnlyTest;
 import ee.jakarta.tck.data.framework.junit.anno.Standalone;
+import ee.jakarta.tck.data.framework.read.only.AsciiCharacter;
 import ee.jakarta.tck.data.framework.read.only.AsciiCharacters;
 import ee.jakarta.tck.data.framework.read.only.AsciiCharactersPopulator;
 import ee.jakarta.tck.data.framework.read.only.NaturalNumber;
 import ee.jakarta.tck.data.framework.read.only.NaturalNumbers;
 import ee.jakarta.tck.data.framework.read.only.NaturalNumbersPopulator;
 import ee.jakarta.tck.data.framework.read.only.NaturalNumber.NumberType;
+import jakarta.data.exceptions.EmptyResultException;
 import jakarta.data.exceptions.MappingException;
+import jakarta.data.exceptions.NonUniqueResultException;
 import jakarta.data.repository.KeysetAwareSlice;
 import jakarta.data.repository.Limit;
 import jakarta.data.repository.Pageable;
 import jakarta.data.repository.Slice;
 import jakarta.data.repository.Sort;
+import jakarta.data.repository.Streamable;
 import jakarta.inject.Inject;
 
 /**
@@ -90,9 +97,9 @@ public class EntityTest {
 
     @Assertion(id = "136", strategy = "Ensures that multiple readonly entities will be prepopulated before testing")
     public void ensureCharacterPrepopulation() {
-        assertEquals(128L, characters.count());
+        assertEquals(128, characters.countByHexadecimalNotNull());
         assertEquals('0', characters.findByNumericValue(48).get().getThisCharacter());
-        assertTrue(characters.findById(1L).get().isControl());
+        assertTrue(characters.findByNumericValue(1).get().isControl());
     }
 
     @Assertion(id = "133", strategy = "Request a Slice higher than the final Slice, expecting an empty Slice with 0 results.")
@@ -106,6 +113,28 @@ public class EntityTest {
         assertEquals(false, slice.iterator().hasNext());
     }
 
+    @Assertion(id = "133", strategy = "Use a repository that inherits from DataRepository and defines all of its own methods.")
+    public void testDataRepository() {
+        AsciiCharacter del = characters.findByIsControlTrueAndNumericValueBetween(33, 127);
+        assertEquals(127, del.getNumericValue());
+        assertEquals("7f", del.getHexadecimal());
+        assertEquals(true, del.isControl());
+
+        AsciiCharacter j = characters.findByHexadecimalIgnoreCase("6A");
+        assertEquals("6a", j.getHexadecimal());
+        assertEquals('j', j.getThisCharacter());
+        assertEquals(106, j.getNumericValue());
+        assertEquals(false, j.isControl());
+
+        AsciiCharacter d = characters.findByNumericValue(100).orElseThrow();
+        assertEquals(100, d.getNumericValue());
+        assertEquals('d', d.getThisCharacter());
+        assertEquals("64", d.getHexadecimal());
+        assertEquals(false, d.isControl());
+
+        assertEquals(true, characters.existsByThisCharacter('D'));
+    }
+
     @Assertion(id = "133",
                strategy = "Use a repository method with one Sort parameter specifying descending order, " +
                           "and verify all results are returned and are in descending order according to the sort criteria.")
@@ -114,6 +143,18 @@ public class EntityTest {
 
         assertEquals(Arrays.toString(new Long[] { 10L, 9L, 8L, 7L, 6L, 5L, 4L }),
                      Arrays.toString(stream.map(number -> number.getId()).toArray()));
+    }
+
+    @Assertion(id = "133", strategy = "Use a repository method that returns a single entity value where no result is found. Expect EmptyResultException.")
+    public void testEmptyResultException() {
+        try {
+            AsciiCharacter ch = characters.findByHexadecimalIgnoreCase("2g");
+            fail("Unexpected result of findByHexadecimalIgnoreCase(2g): " + ch.getHexadecimal());
+        } catch (EmptyResultException x) {
+            System.out.println("testEmptyResultException expected to catch exception " + x + ". Printing its stack trace:");
+            x.printStackTrace(System.out);
+            // test passes
+        }
     }
 
     @Assertion(id = "133", strategy = "Request the last Slice of up to 5 results, expecting to find the final 2.")
@@ -379,6 +420,20 @@ public class EntityTest {
     }
 
     @Assertion(id = "133",
+               strategy = "Use a repository method that ought to return a single entity value but where multiple results are found." +
+                          "Expect NonUniqueResultException.")
+    public void testNonUniqueResultException() {
+        try {
+            AsciiCharacter ch = characters.findByIsControlTrueAndNumericValueBetween(10, 15);
+            fail("Unexpected result of findByIsControlTrueAndNumericValueBetween(10, 15): " + ch.getHexadecimal());
+        } catch (NonUniqueResultException x) {
+            System.out.println("testNonUniqueResultException expected to catch exception " + x + ". Printing its stack trace:");
+            x.printStackTrace(System.out);
+            // test passes
+        }
+    }
+
+    @Assertion(id = "133",
                strategy = "Use a repository method with OrderBy (static) and a Sort parameter (dynamic), " +
                           "verfying that all results are returned and are ordered first by the static sort criteria, " +
                           "followed by the dynamic sort criteria when the value(s) being compared by the static criteria match.")
@@ -432,6 +487,15 @@ public class EntityTest {
                      Arrays.toString(nums.map(number -> number.getId()).toArray()));
     }
 
+    @Assertion(id = "133", strategy = "Use a repository method that returns a single entity value where a single result is found.")
+    public void testSingleEntity() {
+        AsciiCharacter ch = characters.findByHexadecimalIgnoreCase("2B");
+        assertEquals('+', ch.getThisCharacter());
+        assertEquals("2b", ch.getHexadecimal());
+        assertEquals(43, ch.getNumericValue());
+        assertEquals(false, ch.isControl());
+    }
+
     @Assertion(id = "133", strategy = "Request a Slice of results where none match the query, expecting an empty Slice with 0 results.")
     public void testSliceOfNothing() {
         Pageable pagination = Pageable.ofSize(5).sortBy(Sort.desc("id"));
@@ -441,6 +505,34 @@ public class EntityTest {
         assertEquals(false, slice.hasContent());
         assertEquals(0, slice.content().size());
         assertEquals(0, slice.numberOfElements());
+    }
+
+    @Assertion(id = "133", strategy = "Use a repository method that returns Streamable and verify the results.")
+    public void testStreamable() {
+        Streamable<AsciiCharacter> chars = characters.findByNumericValueLessThanEqualAndNumericValueGreaterThanEqual(109, 101);
+
+        assertEquals(Arrays.toString(new Character[] { Character.valueOf('e'),
+                                                       Character.valueOf('f'),
+                                                       Character.valueOf('g'),
+                                                       Character.valueOf('h'),
+                                                       Character.valueOf('i'),
+                                                       Character.valueOf('j'),
+                                                       Character.valueOf('k'),
+                                                       Character.valueOf('l'),
+                                                       Character.valueOf('m') }),
+                     Arrays.toString(chars.stream().map(ch -> ch.getThisCharacter()).sorted().toArray()));
+
+        assertEquals(101 + 102 + 103 + 104 + 105 + 106 + 107 + 108 + 109,
+                     chars.stream().mapToInt(AsciiCharacter::getNumericValue).sum());
+
+        Set<String> sorted = new TreeSet<>();
+        chars.forEach(ch -> sorted.add(ch.getHexadecimal()));
+        assertEquals(new TreeSet<>(Set.of("65", "66", "67", "68", "69", "6a", "6b", "6c", "6d")),
+                     sorted);
+
+        Streamable<AsciiCharacter> empty = characters.findByNumericValueLessThanEqualAndNumericValueGreaterThanEqual(115, 120);
+        assertEquals(false, empty.iterator().hasNext());
+        assertEquals(0L, empty.stream().count());
     }
 
     @Assertion(id = "133", 
