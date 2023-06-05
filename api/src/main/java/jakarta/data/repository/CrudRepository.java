@@ -17,7 +17,7 @@
  */
 package jakarta.data.repository;
 
-import jakarta.data.exceptions.DataConsistencyException;
+import jakarta.data.exceptions.OptimisticLockingFailureException;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -36,8 +36,8 @@ public interface CrudRepository<T, K> extends DataRepository<T, K> {
      * @param entity the entity to be saved
      * @param <S> type of entity to save
      * @return the saved entity; will never be {@literal null}.
-     * @throws DataConsistencyException if the entity is versioned and a different version
-     *         is present in the database.
+     * @throws OptimisticLockingFailureException if the entity has a version for optimistic locking
+     *         that differs from the version in the database.
      * @throws NullPointerException when the entity is null
      */
     <S extends T> S save(S entity);
@@ -48,8 +48,8 @@ public interface CrudRepository<T, K> extends DataRepository<T, K> {
      * @param entities an iterable of entities
      * @param <S> type of entity to save
      * @return the saved entities; will never be {@literal null}.
-     * @throws DataConsistencyException if an entity is versioned and a different version
-     *         is present in the database.
+     * @throws OptimisticLockingFailureException if an entity has a version for optimistic locking
+     *         that differs from the version in the database.
      * @throws NullPointerException if either the iterable is null or any element is null
      */
     <S extends T> Iterable<S> saveAll(Iterable<S> entities);
@@ -116,9 +116,8 @@ public interface CrudRepository<T, K> extends DataRepository<T, K> {
      * Other properties of the entity do not need to match.
      *
      * @param entity must not be {@literal null}.
-     * @throws DataConsistencyException if the entity is not found in the database for deletion
-     *         or if the entity is found but is versioned and has a version that is inconsistent
-     *         with the version in the database.
+     * @throws OptimisticLockingFailureException if the entity is not found in the database for deletion
+     *         or has a version for optimistic locking that is inconsistent with the version in the database.
      * @throws NullPointerException when the entity is null
      */
     void delete(T entity);
@@ -139,9 +138,8 @@ public interface CrudRepository<T, K> extends DataRepository<T, K> {
      * Other properties of the entity do not need to match.
      *
      * @param entities must not be {@literal null}. Must not contain {@literal null} elements.
-     * @throws DataConsistencyException if any of the entities are not found in the database for deletion
-     *         or if any of the entities are found but are versioned and has a version that is inconsistent
-     *         with the version in the database.
+     * @throws OptimisticLockingFailureException if an entity is not found in the database for deletion
+     *         or has a version for optimistic locking that is inconsistent with the version in the database.
      * @throws NullPointerException when either the iterable is null or contains null elements
      */
     void deleteAll(Iterable<? extends T> entities);

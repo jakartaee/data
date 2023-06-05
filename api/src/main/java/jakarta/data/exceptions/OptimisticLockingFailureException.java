@@ -24,35 +24,35 @@ package jakarta.data.exceptions;
  * where the entity Id no longer exists in the database or the entity is versioned and the
  * version no longer matches the version in the database.
  */
-public class DataConsistencyException extends DataException {
+public class OptimisticLockingFailureException extends DataException {
     private static final long serialVersionUID = 1982179693469903341L;
 
     /**
-     * Constructs a new DataConsistencyException exception with the specified detail message.
+     * Constructs a new OptimisticLockingFailureException exception with the specified detail message.
      *
      * @param message the detail message.
      */
-    public DataConsistencyException(String message) {
+    public OptimisticLockingFailureException(String message) {
         super(message);
     }
 
     /**
-     * Constructs a new DataConsistencyException exception with the specified detail message.
+     * Constructs a new OptimisticLockingFailureException exception with the specified detail message.
      *
      * @param message the detail message.
      * @param cause another exception or error that caused this exception.
      *        Null indicates that no other cause is specified.
      */
-    public DataConsistencyException(String message, Throwable cause) {
+    public OptimisticLockingFailureException(String message, Throwable cause) {
         super(message, cause);
     }
 
     /**
-     * Constructs a new DataConsistencyException exception with the specified cause.
+     * Constructs a new OptimisticLockingFailureException exception with the specified cause.
      *
      * @param cause the cause.
      */
-    public DataConsistencyException(Throwable cause) {
+    public OptimisticLockingFailureException(Throwable cause) {
         super(cause);
     }
 }
