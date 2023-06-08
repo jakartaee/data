@@ -65,7 +65,7 @@
     <properties>
         <maven.compiler.release>17</maven.compiler.release>
         <maven.compiler.source>17</maven.compiler.source>
-        <maven.compile.version>3.10.1</maven.compile.version>
+        <maven.compile.version>3.11.0</maven.compile.version>
         <maven.surefire.plugin.version>3.0.0-M5</maven.surefire.plugin.version>
         <maven-javadoc-plugin.vesion>3.4.1</maven-javadoc-plugin.vesion>
         <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
