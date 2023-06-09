@@ -82,7 +82,7 @@
         <jakarta.validation.version>2.0.1</jakarta.validation.version>
 
         <apache.rat.version>0.15</apache.rat.version>
-        <commons.io.version>2.11.0</commons.io.version>
+        <commons.io.version>2.13.0</commons.io.version>
 
         <arquillian.version>1.7.0.Alpha13</arquillian.version>
         <junit.version>5.9.1</junit.version>
