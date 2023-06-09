@@ -39,7 +39,7 @@
   <jakarta.data.tck.version>${project.version}</jakarta.data.tck.version>
 
   <maven.site.skip>true</maven.site.skip>
-  <asciidoctor.maven.plugin.version>2.2.2</asciidoctor.maven.plugin.version>
+  <asciidoctor.maven.plugin.version>2.2.4</asciidoctor.maven.plugin.version>
   <asciidoctorj.version>2.5.3</asciidoctorj.version>
   <asciidoctorj.pdf.version>2.3.7</asciidoctorj.pdf.version>
   <jruby.version>9.2.20.1</jruby.version>
