@@ -69,7 +69,7 @@ Please take a look at the link:TESTING-GUIDELINE.adoc[TESTING-GUIDELINE file].
 
 == Code of Conduct
 
-This project is governed by the Eclipse Foundation Community Code of Conduct. By participating, you are expected to uphold this code of conduct. Please report unacceptable behavior to codeofconduct@eclipse.org.
+This project is governed by the Eclipse Foundation Community Code of Conduct. By participating, you are expected to uphold this code of conduct. Please report unacceptable behavior to mailto:codeofconduct@eclipse.org[codeofconduct@eclipse.org].
 
 == Getting Help
 
