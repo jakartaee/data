@@ -17,15 +17,13 @@
  */
 package jakarta.data.repository;
 
-import jakarta.data.exceptions.MappingException;
+import jakarta.data.exceptions.FunctionalityNotSupportedException;
 
 /**
  * <p>A page is a sublist of results. It provides information about its position relative to the entire list.</p>
  *
- * <p>In order for a repository method to return a <code>Page</code>, the database
- * must be capable of counting the total number of results across all pages.
- * Repository methods that are declared to return <code>Page</code> or
- * {@link KeysetAwarePage} must raise {@link MappingException} if the
+ * <p>Repository methods that are declared to return <code>Page</code> or
+ * {@link KeysetAwarePage} must raise {@link FunctionalityNotSupportedException} if the
  * database is incapable of counting the total number of results across all pages,
  * in which case a return type of {@link Slice} or {@link KeysetAwareSlice}
  * should be used instead.</p>
