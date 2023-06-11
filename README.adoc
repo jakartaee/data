@@ -48,7 +48,6 @@ public interface ProductRepository extends PageableRepository<Product, Long> {
 }
 ----
 
-
 === Maven
 
 To start to use Jakarta Dara, add the API as a Maven dependency:
@@ -85,8 +84,6 @@ You don’t need to build from source to use the project, but you can do so with
 ----
 mvn clean install
 ----
-
-
 == Meetings
 
 === Calendar
