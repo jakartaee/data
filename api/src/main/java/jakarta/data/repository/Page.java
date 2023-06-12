@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Contributors to the Eclipse Foundation
+ * Copyright (c) 2023 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,9 +17,14 @@
  */
 package jakarta.data.repository;
 
-
 /**
- * A page is a sublist of a list of objects. It provides information about its position relative to the entire list.
+ * <p>A page is a sublist of results. It provides information about its position relative to the entire list.</p>
+ *
+ * <p>Repository methods that are declared to return <code>Page</code> or
+ * {@link KeysetAwarePage} must raise {@link UnsupportedOperationException} if the
+ * database is incapable of counting the total number of results across all pages,
+ * in which case a return type of {@link Slice} or {@link KeysetAwareSlice}
+ * should be used instead.</p>
  *
  * @param <T> the type of elements in this page 
  */
@@ -27,13 +32,13 @@ public interface Page<T> extends Slice<T> {
 
     /**
      * Returns the total amount of elements.
-     * @return the total amount of elements
+     * @return the total amount of elements.
      */
     long totalElements();
 
     /**
      * Returns the total number of pages.
-     * @return the total number of pages
+     * @return the total number of pages.
      */
     long totalPages();
 }
