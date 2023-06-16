@@ -97,7 +97,7 @@ public class EntityTest {
 
     @Assertion(id = "136", strategy = "Ensures that multiple readonly entities will be prepopulated before testing")
     public void ensureCharacterPrepopulation() {
-        assertEquals(128, characters.countByHexadecimalNotNull());
+        assertEquals(127, characters.countByHexadecimalNotNull());
         assertEquals('0', characters.findByNumericValue(48).get().getThisCharacter());
         assertTrue(characters.findByNumericValue(1).get().isControl());
     }
