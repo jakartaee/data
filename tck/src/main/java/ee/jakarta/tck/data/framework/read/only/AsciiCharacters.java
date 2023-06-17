@@ -18,6 +18,8 @@ package ee.jakarta.tck.data.framework.read.only;
 import java.util.Optional;
 
 import jakarta.data.repository.DataRepository;
+import jakarta.data.repository.Page;
+import jakarta.data.repository.Pageable;
 import jakarta.data.repository.Repository;
 import jakarta.data.repository.Streamable;
 
@@ -38,6 +40,8 @@ public interface AsciiCharacters extends DataRepository<AsciiCharacter, Long> {
     AsciiCharacter findByIsControlTrueAndNumericValueBetween(int min, int max);
 
     Optional<AsciiCharacter> findByNumericValue(int id);
+
+    Page<AsciiCharacter> findByNumericValueBetween(int min, int max, Pageable pagination);
 
     Streamable<AsciiCharacter> findByNumericValueLessThanEqualAndNumericValueGreaterThanEqual(int max, int min);
 

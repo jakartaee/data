@@ -51,6 +51,7 @@ import jakarta.data.exceptions.MappingException;
 import jakarta.data.exceptions.NonUniqueResultException;
 import jakarta.data.repository.KeysetAwareSlice;
 import jakarta.data.repository.Limit;
+import jakarta.data.repository.Page;
 import jakarta.data.repository.Pageable;
 import jakarta.data.repository.Slice;
 import jakarta.data.repository.Sort;
@@ -97,9 +98,28 @@ public class EntityTest {
 
     @Assertion(id = "136", strategy = "Ensures that multiple readonly entities will be prepopulated before testing")
     public void ensureCharacterPrepopulation() {
-        assertEquals(128, characters.countByHexadecimalNotNull());
+        assertEquals(127, characters.countByHexadecimalNotNull());
         assertEquals('0', characters.findByNumericValue(48).get().getThisCharacter());
         assertTrue(characters.findByNumericValue(1).get().isControl());
+    }
+
+    @Assertion(id = "133", strategy = "Request a Page higher than the final Page, expecting an empty Page with 0 results.")
+    public void testBeyondFinalPage() {
+        Pageable sixth = Pageable.ofPage(6).sortBy(Sort.asc("numericValue")).size(10);
+        Page<AsciiCharacter> page;
+        try {
+            page = characters.findByNumericValueBetween(48, 90, sixth);
+        } catch (UnsupportedOperationException x) {
+            // Some NoSQL databases lack the ability to count the total results
+            // and therefore cannot support a return type of Page
+            return;
+        }
+        assertEquals(0, page.numberOfElements());
+        assertEquals(0, page.stream().count());
+        assertEquals(false, page.hasContent());
+        assertEquals(false, page.iterator().hasNext());
+        assertEquals(43L, page.totalElements());
+        assertEquals(5L, page.totalPages());
     }
 
     @Assertion(id = "133", strategy = "Request a Slice higher than the final Slice, expecting an empty Slice with 0 results.")
@@ -155,6 +175,54 @@ public class EntityTest {
             x.printStackTrace(System.out);
             // test passes
         }
+    }
+
+    @Assertion(id = "133", strategy = "Request the last Page of up to 10 results, expecting to find the final 3.")
+    public void testFinalPageOfUpTo10() {
+        Pageable fifthPageRequest = Pageable.ofSize(10).page(5).sortBy(Sort.asc("numericValue"));
+        Page<AsciiCharacter> page;
+        try {
+            page = characters.findByNumericValueBetween(48, 90, fifthPageRequest); // 'X' to 'Z'
+        } catch (UnsupportedOperationException x) {
+            // Some NoSQL databases lack the ability to count the total results
+            // and therefore cannot support a return type of Page
+            return;
+        }
+
+        Iterator<AsciiCharacter> it = page.iterator();
+
+        // first result
+        assertEquals(true, it.hasNext());
+        AsciiCharacter ch = it.next();
+        assertEquals('X', ch.getThisCharacter());
+        assertEquals("58", ch.getHexadecimal());
+        assertEquals(88L, ch.getId());
+        assertEquals(88, ch.getNumericValue());
+        assertEquals(false, ch.isControl());
+
+        // second result
+        ch = it.next();
+        assertEquals('Y', ch.getThisCharacter());
+        assertEquals("59", ch.getHexadecimal());
+        assertEquals(89L, ch.getId());
+        assertEquals(89, ch.getNumericValue());
+        assertEquals(false, ch.isControl());
+
+        // third result
+        ch = it.next();
+        assertEquals('Z', ch.getThisCharacter());
+        assertEquals("5a", ch.getHexadecimal());
+        assertEquals(90L, ch.getId());
+        assertEquals(90, ch.getNumericValue());
+        assertEquals(false, ch.isControl());
+
+        assertEquals(false, it.hasNext());
+
+        assertEquals(5, page.pageable().page());
+        assertEquals(true, page.hasContent());
+        assertEquals(3, page.numberOfElements());
+        assertEquals(43L, page.totalElements());
+        assertEquals(5L, page.totalPages());
     }
 
     @Assertion(id = "133", strategy = "Request the last Slice of up to 5 results, expecting to find the final 2.")
@@ -235,6 +303,32 @@ public class EntityTest {
                      Arrays.toString(slice.stream().map(number -> number.getId()).toArray()));
 
         assertEquals(3, slice.numberOfElements());
+    }
+
+    @Assertion(id = "133",
+               strategy = "Request the first Page of 10 results, expecting to find all 10. " +
+                          "From the Page, verify the totalElements and totalPages expected.")
+    public void testFirstPageOf10() {
+        Pageable first10 = Pageable.ofSize(10).sortBy(Sort.asc("numericValue"));
+        Page<AsciiCharacter> page;
+        try {
+            page = characters.findByNumericValueBetween(48, 90, first10); // '0' to 'Z'
+        } catch (UnsupportedOperationException x) {
+            // Some NoSQL databases lack the ability to count the total results
+            // and therefore cannot support a return type of Page
+            return;
+        }
+
+        assertEquals(1, page.pageable().page());
+        assertEquals(true, page.hasContent());
+        assertEquals(10, page.numberOfElements());
+        assertEquals(43L, page.totalElements());
+        assertEquals(5L, page.totalPages());
+
+        assertEquals("30:0;31:1;32:2;33:3;34:4;35:5;36:6;37:7;38:8;39:9;", // '0' to '9'
+        page.stream()
+                   .map(c -> c.getHexadecimal() + ':' + c.getThisCharacter() + ';')
+                   .reduce("", String::concat));
     }
 
     @Assertion(id = "133", strategy = "Request the first Slice of 5 results, expecting to find all 5.")
@@ -487,6 +581,27 @@ public class EntityTest {
                      Arrays.toString(nums.map(number -> number.getId()).toArray()));
     }
 
+    @Assertion(id = "133", strategy = "Request a Page of results where none match the query, expecting an empty Page with 0 results.")
+    public void testPageOfNothing() {
+        Pageable pagination = Pageable.ofSize(6).sortBy(Sort.asc("id"));
+        Page<AsciiCharacter> page;
+        try {
+            page = characters.findByNumericValueBetween(150, 160, pagination);
+        } catch (UnsupportedOperationException x) {
+            // Some NoSQL databases lack the ability to count the total results
+            // and therefore cannot support a return type of Page
+            return;
+        }
+
+        assertEquals(0, page.numberOfElements());
+        assertEquals(0, page.stream().count());
+        assertEquals(0, page.content().size());
+        assertEquals(false, page.hasContent());
+        assertEquals(false, page.iterator().hasNext());
+        assertEquals(0L, page.totalElements());
+        assertEquals(0L, page.totalPages());
+    }
+
     @Assertion(id = "133", strategy = "Use a repository method that returns a single entity value where a single result is found.")
     public void testSingleEntity() {
         AsciiCharacter ch = characters.findByHexadecimalIgnoreCase("2B");
@@ -533,6 +648,46 @@ public class EntityTest {
         Streamable<AsciiCharacter> empty = characters.findByNumericValueLessThanEqualAndNumericValueGreaterThanEqual(115, 120);
         assertEquals(false, empty.iterator().hasNext());
         assertEquals(0L, empty.stream().count());
+    }
+
+    @Assertion(id = "133",
+               strategy = "Request the third Page of 10 results, expecting to find all 10. " +
+                          "Request the next Page via nextPageable, expecting page number 4 and another 10 results.")
+    public void testThirdAndFourthPagesOf10() {
+        Pageable third10 = Pageable.ofPage(3).size(10).sortBy(Sort.asc("numericValue"));
+        Page<AsciiCharacter> page;
+        try {
+            page = characters.findByNumericValueBetween(48, 90, third10); // 'D' to 'M'
+        } catch (UnsupportedOperationException x) {
+            // Some NoSQL databases lack the ability to count the total results
+            // and therefore cannot support a return type of Page
+            return;
+        }
+
+        assertEquals(3, page.pageable().page());
+        assertEquals(true, page.hasContent());
+        assertEquals(10, page.numberOfElements());
+        assertEquals(43L, page.totalElements());
+        assertEquals(5L, page.totalPages());
+
+        assertEquals("44:D;45:E;46:F;47:G;48:H;49:I;4a:J;4b:K;4c:L;4d:M;",
+                     page.stream()
+                                     .map(c -> c.getHexadecimal() + ':' + c.getThisCharacter() + ';')
+                                     .reduce("", String::concat));
+
+        Pageable fourth10 = third10.next();
+        page = characters.findByNumericValueBetween(48, 90, fourth10); // 'N' to 'W'
+
+        assertEquals(4, page.pageable().page());
+        assertEquals(true, page.hasContent());
+        assertEquals(10, page.numberOfElements());
+        assertEquals(43L, page.totalElements());
+        assertEquals(5L, page.totalPages());
+
+        assertEquals("4e:N;4f:O;50:P;51:Q;52:R;53:S;54:T;55:U;56:V;57:W;",
+                     page.stream()
+                                     .map(c -> c.getHexadecimal() + ':' + c.getThisCharacter() + ';')
+                                     .reduce("", String::concat));
     }
 
     @Assertion(id = "133", 

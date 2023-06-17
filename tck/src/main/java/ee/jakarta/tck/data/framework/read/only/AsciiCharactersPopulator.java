@@ -29,11 +29,11 @@ public class AsciiCharactersPopulator implements Populator<AsciiCharacters> {
     public void populationLogic(AsciiCharacters repo) {
         List<AsciiCharacter> dictonary = new ArrayList<>();
         
-        IntStream.range(0, 128)
+        IntStream.range(1, 128) // Some databases don't support ASCII NULL character (0)
             .forEach(value -> {
                 AsciiCharacter inst = new AsciiCharacter();
                 
-                inst.setId(value + 1); //Some Persistence providers may not support id's of 0
+                inst.setId(value);
                 inst.setNumericValue(value);
                 inst.setHexadecimal(Integer.toHexString(value));
                 inst.setThisCharacter((char) value);
@@ -47,6 +47,6 @@ public class AsciiCharactersPopulator implements Populator<AsciiCharacters> {
 
     @Override
     public boolean isPopulated(AsciiCharacters repo) {
-        return repo.countByHexadecimalNotNull() == 128;
+        return repo.countByHexadecimalNotNull() == 127;
     }
 }
