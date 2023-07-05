@@ -88,7 +88,7 @@
     <dependency>
       <groupId>jakarta.nosql</groupId>
       <artifactId>nosql-core</artifactId>
-      <version>1.0.0-b6</version>
+      <version>1.0.0-b7</version>
       <scope>provided</scope>
     </dependency>
 
