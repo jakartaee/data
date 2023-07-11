@@ -2,7 +2,9 @@
 
 When running within a Jakarta EE product, other Jakarta EE Technologies might be available depending on the profile. This section defines how related technologies from other Jakarta EE Specifications interoperate with Jakarta Data.
 
-=== Jakarta Data CDI Extension
+=== Jakarta Context Dependency Injection
+
+==== CDI Extension
 
 To run in environments with Jakarta Contexts and Dependency Injection (CDI), Jakarta Data providers each register their own CDI extension (`jakarta.enterprise.inject.spi.Extension`) to produce the bean instances that are defined via the `Repository` annotation and injected via the `Inject` annotation. The Jakarta Data specification employs several strategies for reducing and avoiding conflicts between Jakarta Data providers. The entity annotation class is used as the primary strategy. The Jakarta Data provider name serves as a secondary strategy.
 
