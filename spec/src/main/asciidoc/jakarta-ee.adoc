@@ -37,3 +37,5 @@ When a repository method is annotated with an interceptor binding annotation, th
 === Jakarta Persistence
 
 === Jakarta NoSQL
+
+=== Jakarta Validation
