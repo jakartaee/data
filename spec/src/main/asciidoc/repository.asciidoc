@@ -32,15 +32,31 @@ A repository abstraction aims to significantly reduce the boilerplate code requi
 
 The parent interface in Jakarta Data repository abstraction is DataRepository.
 
-By default, Jakarta Data has support for three interfaces. However, the core is extensible. Therefore, a provider might extend one or more interfaces to a specific data target.
+By default, Jakarta Data has support for two interfaces. However, the core is extensible. Therefore, a provider might extend one or more interfaces to a specific data target.
 
-image::02-repositories.png[alt=Repositories types]
+[ditaa]
+....
+                          +----------------+
+                          | DataRepository |
+                          +----------------+
+                                  ^
+                                  |
+                                  |
+                          +----------------+
+                          | CrudRepository | 
+                          +----------------+ 
+                                  ^
+                                  |
+                                  |
+                        +--------------------+
+                        | PageableRepository |
+                        +--------------------+
+....
 
-* Interface to generic CRUD operations on a repository for a specific type. This one we can see more often on several Java implementations.
+* Interface with generic CRUD operations on a repository for a specific type. This one we can see more often on several Java implementations.
 * Interface with generic CRUD operations using the pagination feature.
-* Interface for generic CRUD operations on a repository for a specific type. This repository follows reactive paradigms.
 
-From the Java developer perspective, create an interface that is annotated with the Repository annotation and optionally extends one of the built-in repository interfaces.
+From the Java developer perspective, create an interface that is annotated with the `@Repository` annotation and optionally extends one of the built-in repository interfaces.
 
 So, given a ```Product``` entity where the ID is a ```long``` type, the repository would be:
 
@@ -75,18 +91,18 @@ Applications are recommended not to mix Entity annotations from different models
 
 Repository implementations will search for the Entity annotation(s) they support and ignore other annotations.
 
-=== Queries Methods
+=== Query Methods
 
 In Jakarta Data, besides finding by an ID, custom queries can be written in two ways:
 
-* Through Query annotation: It will create a method annotated with the @Query with the query.
-* Using query by method convention: Using some pattern vocabulary will provide a query.
+* `@Query` annotation: Defines a query string in the annotation.
+* Query by method name: Defines a query based on naming convention used in the method name.
 
 WARNING: Due to the variety of data sources, those resources might not work; it varies based on the Jakarta Data implementation and the database engine, which can provide queries on more than a Key or ID or not, such as a Key-value database.
 
 ==== Using the Query Annotation
 
-The Query's annotation will support a search expression as a String. The specification won't define the query syntax, which might vary between vendors and data sources, such as SQL, JPA-QL, Cypher, CQL, etc.
+The `@Query` annotation supports providing a search expression as a String. The specification does not define the query syntax, which may vary between vendors and data sources, such as SQL, JPQL, Cypher, CQL, etc.
 
 [source,java]
 ----
@@ -97,7 +113,7 @@ public interface ProductRepository extends CrudRepository<Product, Long> {
 }
 ----
 
-Jakarta Data also includes the ```Param``` annotation to define a binder annotation, where as with the query expression, each vendor will express the syntax freely such as ```?```, ```@```, etc..
+Jakarta Data also includes the `@Param` annotation to define a binder annotation, where as with the query expression, each vendor will express the syntax freely such as ```?```, ```@```, etc..
 
 [source,java]
 ----
@@ -111,9 +127,7 @@ public interface ProductRepository extends CrudRepository<Product, Long> {
 
 ==== Query by Method
 
-The Query by method mechanism allows for creating query commands by conventions.
-
-E.g.:
+The Query by method mechanism allows for creating query commands by naming convention.
 
 [source,java]
 ----
@@ -141,7 +155,7 @@ A predicate can refer only to a direct property of the managed entity. We also h
 
 Within an entity, property names must be unique ignoring case. For simple entity properties, the field or accessor method name serves as the entity property name. In the case of embedded classes, entity property names are computed by concatenating the field or accessor method names at each level.
 
-Assume an Order entity has an Address with a ZipCode. In that case, the access is ```order.address.zipCode```. This form is used within annotations, such as ```@Query```,
+Assume an Order entity has an Address with a ZipCode. In that case, the access is ```order.address.zipCode```. This form is used within annotations, such as ```@Query```.
 
 [source,java]
 ----
