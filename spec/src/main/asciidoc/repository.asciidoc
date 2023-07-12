@@ -58,7 +58,7 @@ By default, Jakarta Data has support for two interfaces. However, the core is ex
 
 From the Java developer perspective, create an interface that is annotated with the `@Repository` annotation and optionally extends one of the built-in repository interfaces.
 
-So, given a ```Product``` entity where the ID is a ```long``` type, the repository would be:
+So, given a `Product` entity where the ID is a `long` type, the repository would be:
 
 [source,java]
 ----
@@ -69,7 +69,7 @@ public interface ProductRepository extends CrudRepository<Product, Long> {
 ----
 
 
-There is no nomenclature restriction to make mandatory the ```Repository``` suffix. Such as, you might represent the repository of the Car's entity as a ```Garage``` instead of ```CarRepository```.
+There is no nomenclature restriction to make mandatory the `Repository` suffix. Such as, you might represent the repository of the Car's entity as a `Garage` instead of `CarRepository`.
 
 [source,java]
 ----
@@ -83,9 +83,9 @@ public interface Garage extends CrudRepository<Car, String> {
 
 Entity classes are simple Java objects with fields or accessor methods designating each entity property.
 
-You may use ```jakarta.persistence.Entity``` and the corresponding entity-related annotations of the Jakarta Persistence specification in the same package (such as ```jakarta.persistence.Id``` and ```jakarta.persistence.Column```) to define and customize entities for relational databases.
+You may use `jakarta.persistence.Entity` and the corresponding entity-related annotations of the Jakarta Persistence specification in the same package (such as `jakarta.persistence.Id` and `jakarta.persistence.Column`) to define and customize entities for relational databases.
 
-You may use ```jakarta.nosql.Entity``` and the corresponding entity-related annotations of the Jakarta NoSQL specification in the same package (such as ```jakarta.nosql.Id``` and ```jakarta.nosql.Column```) to define and customize entities for NoSQL databases.
+You may use `jakarta.nosql.Entity` and the corresponding entity-related annotations of the Jakarta NoSQL specification in the same package (such as `jakarta.nosql.Id` and `jakarta.nosql.Column`) to define and customize entities for NoSQL databases.
 
 Applications are recommended not to mix Entity annotations from different models for the sake of clarity and to allow for the Entity annotation to identify which provider is desired in cases where multiple types of Jakarta Data providers are available.
 
@@ -113,7 +113,7 @@ public interface ProductRepository extends CrudRepository<Product, Long> {
 }
 ----
 
-Jakarta Data also includes the `@Param` annotation to define a binder annotation, where as with the query expression, each vendor will express the syntax freely such as ```?```, ```@```, etc..
+Jakarta Data also includes the `@Param` annotation to define a binder annotation, where as with the query expression, each vendor will express the syntax freely such as `?`, `@`, etc..
 
 [source,java]
 ----
@@ -155,7 +155,7 @@ A predicate can refer only to a direct property of the managed entity. We also h
 
 Within an entity, property names must be unique ignoring case. For simple entity properties, the field or accessor method name serves as the entity property name. In the case of embedded classes, entity property names are computed by concatenating the field or accessor method names at each level.
 
-Assume an Order entity has an Address with a ZipCode. In that case, the access is ```order.address.zipCode```. This form is used within annotations, such as ```@Query```.
+Assume an Order entity has an Address with a ZipCode. In that case, the access is `order.address.zipCode`. This form is used within annotations, such as `@Query`.
 
 [source,java]
 ----
@@ -181,7 +181,7 @@ public interface OrderRepository extends CrudRepository<Order, Long> {
 ----
 
 
-Although this should work for most cases, to resolve this ambiguity, you can use ```_``` inside your method name to manually define traversal points.
+Although this should work for most cases, to resolve this ambiguity, you can use `_` inside your method name to manually define traversal points.
 
 [source,java]
 ----
@@ -195,7 +195,7 @@ public interface OrderRepository extends CrudRepository<Order, Long> {
 
 WARNING: Define as a priority following standard Java naming conventions, camel case,  using underscore as the last resort.
 
-In queries by method name, ```Id``` is an alias for the entity property that is designated as the id. Entity property names that are used in queries by method name must not contain reserved words.
+In queries by method name, `Id` is an alias for the entity property that is designated as the id. Entity property names that are used in queries by method name must not contain reserved words.
 
 ===== Query Methods Keywords
 
@@ -214,7 +214,7 @@ The following table lists the subject keywords generally supported by Jakarta Da
 |Count projection returning a numeric result.
 
 |existsBy
-|Exists projection, returning typically a ```boolean``` result.
+|Exists projection, returning typically a `boolean` result.
 |===
 
 Jakarta Data implementations support the following list of predicate keywords to the extent that the database is capable of the behavior. A repository method will raise `jakarta.data.exceptions.DataException` or a more specific subclass of the exception if the database does not provide the requested functionality.
@@ -223,11 +223,11 @@ Jakarta Data implementations support the following list of predicate keywords to
 |Keyword |Description | Method signature Sample
 
 |And
-|The ```and``` operator.
+|The `and` operator.
 |findByNameAndYear
 
 |Or
-|The ```or``` operator.
+|The `or` operator.
 |findByNameOrYear
 
 |Between
@@ -304,7 +304,7 @@ For relational databases, the logical operator `And` takes precedence over `Or`,
 
 Jakarta Data also supports particular parameters to define pagination and sorting.
 
-Jakarta Data recognizes, when specified on a repository method after the query parameters, specific types, like ```Limit```, ```Pageable```, and ```Sort```, to dynamically apply limits, pagination, and sorting to queries. The following example demonstrates these features:
+Jakarta Data recognizes, when specified on a repository method after the query parameters, specific types, like `Limit`, `Pageable`, and `Sort`, to dynamically apply limits, pagination, and sorting to queries. The following example demonstrates these features:
 
 [source,java]
 ----
@@ -340,17 +340,17 @@ The specification defines different ways of providing sort criteria on queries. 
 
 ==== Sort Criteria within Query Language
 
-Sort criteria can be hard-coded directly within query language by making use of the ```@Query``` annotation. A repository method that is annotated with ```@Query``` with a value that contains an ```ORDER BY``` clause (or query language equivalent) must not provide sort criteria via the other mechanisms.
+Sort criteria can be hard-coded directly within query language by making use of the `@Query` annotation. A repository method that is annotated with `@Query` with a value that contains an `ORDER BY` clause (or query language equivalent) must not provide sort criteria via the other mechanisms.
 
-A repository method that is annotated with ```@Query``` with a value that does not contain an ```ORDER BY``` clause and ends with a ```WHERE``` clause (or query language equivalents to these) can use other mechanisms that are defined by this specification for providing sort criteria.
+A repository method that is annotated with `@Query` with a value that does not contain an `ORDER BY` clause and ends with a `WHERE` clause (or query language equivalents to these) can use other mechanisms that are defined by this specification for providing sort criteria.
 
 ==== Static Mechanisms for Sort Criteria
 
-Sort criteria is provided statically for a repository method by using the ```OrderBy``` keyword or by annotating the method with one or more ```@OrderBy``` annotations. The ```OrderBy``` keyword cannot be intermixed with the ```@OrderBy``` annotation or the ```@Query``` annotation. Static sort criteria takes precedence over dynamic sort criteria in that static sort criteria is evaluated first. When static sort criteria sorts entities to the same position, dynamic sort criteria is applied to further order those entities.
+Sort criteria is provided statically for a repository method by using the `OrderBy` keyword or by annotating the method with one or more `@OrderBy` annotations. The `OrderBy` keyword cannot be intermixed with the `@OrderBy` annotation or the `@Query` annotation. Static sort criteria takes precedence over dynamic sort criteria in that static sort criteria is evaluated first. When static sort criteria sorts entities to the same position, dynamic sort criteria is applied to further order those entities.
 
 ==== Dynamic Mechanisms for Sort Criteria
 
-Sort criteria is provided dynamically to repository methods either via ```Sort``` parameters or via a ```Pageable``` parameter that has one or more ```Sort``` values. ```Sort``` and```Pageable``` containing ```Sort``` must not both be provided to the same method.
+Sort criteria is provided dynamically to repository methods either via `Sort` parameters or via a `Pageable` parameter that has one or more `Sort` values. `Sort` and `Pageable` containing `Sort` must not both be provided to the same method.
 
 ==== Examples of Sort Criteria Precedence
 
