@@ -68,8 +68,4 @@ public class SigTestData {
     public String getJtaJarClasspath() {
         return props.getProperty("jtaJarClasspath", "");
     }
-
-    public String getJImageDir() {
-        return TestProperty.signatureImageDir.getValue();
-    }
 } // end class SigTestData

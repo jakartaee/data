@@ -25,18 +25,6 @@ JDK modules back into class files for signature testing.
 The signature test plugin we use will also attempt to perform reflective access of classes, methods, and fields.
 Due to the new module system in JDK 9+ special permissions need to be added in order for these tests to run: 
 
-==== with a Security Manager
-
-If you are using a Security Manager add the following permissions to the 
-`sigtest-maven-plugin` on your Jakarta EE Platform server:
-
-[source, txt]
-----
-permission java.lang.RuntimePermission "accessClassInPackage.jdk.internal";
-permission java.lang.RuntimePermission "accessClassInPackage.jdk.internal.reflect";
-permission java.lang.RuntimePermission "accessClassInPackage.jdk.internal.vm.annotation";
-----
-
 ==== with Modules
 
 By default the java.base module only exposes certain classes for reflective access. 

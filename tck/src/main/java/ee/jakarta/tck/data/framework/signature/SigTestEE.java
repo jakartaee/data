@@ -24,6 +24,8 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Properties;
 
+import ee.jakarta.tck.data.framework.utilities.TestProperty;
+
 /**
  * This class should be extended by TCK developers that wish to create a set of
  * signature tests that run inside all the Java EE containers. Developers must
@@ -251,7 +253,7 @@ public abstract class SigTestEE {
         Properties sysProps = System.getProperties();
         String version = (String) sysProps.get("java.version");
         if (!version.startsWith("1.")) {
-            String jimageDir = testInfo.getJImageDir();
+            String jimageDir = TestProperty.signatureImageDir.getValue();
             File f = new File(jimageDir);
             f.mkdirs();
 

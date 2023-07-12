@@ -1,7 +1,7 @@
 # This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
 # For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
 
-name: Java 17 CI with Maven
+name: Java CI with Maven
 
 on:
   push:
@@ -14,15 +14,18 @@ permissions:
 
 jobs:
   build:
+    strategy:
+      matrix:
+        java-version: [ '17', '21-ea' ]
 
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9 # v3.5.3
-    - name: Set up JDK 17
+    - name: Set up JDK ${{ matrix.java-version }}
       uses: actions/setup-java@5ffc13f4174014e2d4d4572b3d74c3fa61aeb2c2 # v3.11.0
       with:
-        java-version: '17'
+        java-version: ${{ matrix.java-version }}
         distribution: 'temurin'
         cache: maven
     - name: Build with Maven

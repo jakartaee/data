@@ -50,6 +50,8 @@ public class TCKArchiveProcessor implements ApplicationArchiveProcessor {
     private static final Package signaturePackage = DataSignatureTestRunner.class.getPackage();
     private static final Package readOnlyPackage = Populator.class.getPackage();
     
+    boolean isJava21orAbove = Integer.parseInt(System.getProperty("java.specification.version")) >= 21;
+    
     @Override
     public void process(Archive<?> applicationArchive, TestClass testClass) {
         String applicationName = applicationArchive.getName() == null ? applicationArchive.getId() : applicationArchive.getName();
@@ -71,11 +73,19 @@ public class TCKArchiveProcessor implements ApplicationArchiveProcessor {
             
             // Add signature packages to signature tests
             if (testClass.isAnnotationPresent(Signature.class)) {
-                log.info("Application Archive [" + applicationName + "] is being appended with packages [" + signaturePackage +"]");
+                log.info("Application Archive [" + applicationName + "] is being appended with packages [" + signaturePackage +", com.sun.tdk, org.netbeans.apitest]");
                 log.info("Application Archive [" + applicationName + "] is being appended with resources " + Arrays.asList(DataSignatureTestRunner.SIG_RESOURCES));
                 ((ClassContainer<?>) applicationArchive).addPackage(signaturePackage);
+                // These are the packages from the sig-test plugin that are needed to run the test.
+                ((ClassContainer<?>) applicationArchive).addPackages(true, "com.sun.tdk", "org.netbeans.apitest");
                 ((ResourceContainer<?>) applicationArchive).addAsResources(signaturePackage,
-                        DataSignatureTestRunner.SIG_RESOURCES);
+                        DataSignatureTestRunner.SIG_MAP_NAME,
+                        DataSignatureTestRunner.SIG_PKG_NAME);
+                ((ResourceContainer<?>) applicationArchive).addAsResource(signaturePackage,
+                        //Get local resource based on JDK level
+                        isJava21orAbove ? DataSignatureTestRunner.SIG_FILE_NAME + "_21" : DataSignatureTestRunner.SIG_FILE_NAME + "_17",
+                        //Target same package as test
+                        signaturePackage.getName().replace(".", "/") + "/" + DataSignatureTestRunner.SIG_FILE_NAME);
             }
         }
     }

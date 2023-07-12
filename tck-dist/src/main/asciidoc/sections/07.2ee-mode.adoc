@@ -18,25 +18,6 @@ include::{starterLoc}/ee-pom.xml[tag=testClientDep]
 
 Each of these Arquillian tests run within the runtime container, with the help of an Arquillian adapter for that runtime implementation (mentioned as a prerequisite).
 
-==== Test Server Dependencies
-
-If the Test Server is running on a separate JVM (recommended), then the Test Server will also need access to JUnit5 and Signature Test Plugin libraries.
-The Test Server dependencies can be copied over during the build phase.
-
-Example ee-pom.xml:
-
-[source, xml]
-----
-include::{starterLoc}/ee-pom.xml[tag=testServerDep]
-----
-
-Using the maven command:
-
-[source, sh]
-----
-$ mvn dependency:copy
-----
-
 ==== Configure {TCKTestPlatform}
 
 {TCKTestPlatform} needs to be configured to know which packages contain tests to run.
@@ -89,13 +70,6 @@ include::{starterLoc}/ee-pom.xml[tags=systemProperties;!logging;!signature;!stan
 ==== Configure Jakarta EE Platform Server
 
 The {APILongName} TCK requires that your Jakarta EE Platform Server has a valid implementation of the {APILongName} API.
-
-The TCK also requires external libraries at runtime that also need to be available on the Application Server's class path.
-
-- org.junit.jupiter:junit-jupiter - For test assertions
-- org.netbeans.tools:sigtest-maven-plugin - For signature testing
-
-Refer back to <<Test Server Dependencies>> for information on how to make to pull and copy these dependencies.
 
 ==== Configure Client and Server Logging
 

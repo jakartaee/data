@@ -98,7 +98,14 @@
       <version>3.1.0</version>
       <scope>provided</scope>
     </dependency>
-
+    
+    <!-- Test Dependencies -->
+    <dependency>
+      <groupId>org.netbeans.tools</groupId>
+      <artifactId>sigtest-maven-plugin</artifactId>
+      <version>${sigtest.version}</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>
@@ -192,6 +199,7 @@
       </properties>
       <build>
         <plugins>
+          <!-- Extract api into output directory for use by signature plugin -->
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-dependency-plugin</artifactId>
@@ -220,6 +228,32 @@
               </execution>
             </executions>
           </plugin>
+
+          <!-- Extract JDK modules into output directory for use by signature plugin -->
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>3.1.0</version>
+            <executions>
+                <execution>
+                    <id>extractModules</id>
+                    <phase>generate-sources</phase>
+                    <goals>
+                        <goal>exec</goal>
+                    </goals>
+                </execution>
+            </executions>
+            <configuration>
+                <executable>jimage</executable>
+                <arguments>
+                    <argument>extract</argument>
+                    <argument>--dir=${project.build.directory}/jimage</argument>
+                    <argument>${java.home}/lib/modules</argument>
+                </arguments>
+            </configuration>
+          </plugin>
+
+          <!-- Run signature plugin to generate signature file -->
           <plugin>
             <groupId>org.netbeans.tools</groupId>
             <artifactId>sigtest-maven-plugin</artifactId>
@@ -234,6 +268,7 @@
             </executions>
             <configuration>
               <classes>${project.build.directory}/jakarta-data-api</classes>
+              <classes>${project.build.directory}/jimage/java.base</classes><classes>${project.build.directory}/jimage/java.base</classes>
               <packages>
                 jakarta.data,
                 jakarta.data.exceptions,

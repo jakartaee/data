@@ -72,6 +72,5 @@ EE Mode:
 
 - An Application Server to test against | <<Software To Install>>
 - The {APILongName} API, Arquillian SPI, and JUnit5 libraries available to the `Test Client` | <<Test Client Dependencies>>
-- The Arquillian, JUnit5, and Signature Test libraries available to the `Test Server` | <<Test Server Dependencies>>
 - An Arquillian SPI implementation for your Application Server | <<Configure Arquillian>>
 - A logging configuration for TCK logging on `Test Client` and `Test Server` | <<Configure Client and Server Logging>>
