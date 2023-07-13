@@ -131,29 +131,6 @@
   <directory>${targetDirectory}</directory>
   <defaultGoal>clean test</defaultGoal>
   <plugins>
-   <!-- tag::testServerDep[] -->
-   <!-- Test Server Dependencies -->
-   <plugin>
-    <groupId>org.apache.maven.plugins</groupId>
-    <artifactId>maven-dependency-plugin</artifactId>
-    <version>${maven.dep.plugin.version}</version>
-    <configuration>
-     <artifactItems>
-      <artifactItem>
-       <groupId>org.junit.jupiter</groupId>
-       <artifactId>junit-jupiter</artifactId>
-       <version>${junit.version}</version>
-      </artifactItem>
-      <artifactItem>
-       <groupId>org.netbeans.tools</groupId>
-       <artifactId>sigtest-maven-plugin</artifactId>
-       <version>${sigtest.version}</version>
-      </artifactItem>
-     </artifactItems>
-     <outputDirectory>${application.server.lib}</outputDirectory>
-    </configuration>
-   </plugin>
-   <!-- end::testServerDep[] -->
    <!-- Compile plugin for any supplemental class files -->
    <plugin>
     <groupId>org.apache.maven.plugins</groupId>

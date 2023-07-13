@@ -36,11 +36,6 @@
       <source>src/main/readme/README.md</source>
       <destName>README.md</destName>
     </file>
-    <!-- Signature file -->
-    <file>
-      <source>${project.parent.basedir}/tck/src/main/resources/ee/jakarta/tck/data/framework/signature/jakarta.data.sig</source>
-      <outputDirectory>/artifacts</outputDirectory>
-    </file>
   </files>
 
   <fileSets>
@@ -66,6 +61,14 @@
     <fileSet>
       <directory>src/main/starter/</directory>
       <outputDirectory>/starter</outputDirectory>
+    </fileSet>
+    <!-- Signature files -->
+    <fileSet>
+      <directory>${project.parent.basedir}/tck/src/main/resources/ee/jakarta/tck/data/framework/signature/</directory>
+      <outputDirectory>/artifacts</outputDirectory>
+      <includes>
+      	<include>**/*.sig*</include>
+      </includes>
     </fileSet>
   </fileSets>
 

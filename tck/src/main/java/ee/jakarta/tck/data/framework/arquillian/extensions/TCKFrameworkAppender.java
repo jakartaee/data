@@ -15,7 +15,7 @@
  */
 package ee.jakarta.tck.data.framework.arquillian.extensions;
 
-import org.jboss.arquillian.container.test.spi.client.deployment.AuxiliaryArchiveAppender;
+import org.jboss.arquillian.container.test.spi.client.deployment.CachedAuxilliaryArchiveAppender;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
@@ -30,19 +30,19 @@ import ee.jakarta.tck.data.framework.utilities.TestPropertyHandler;
  * a library with the following:
  * 
  * <p>ee.jakarta.tck.data.framework.junit.anno package</p>
- * <p>eee.jakarta.tck.data.framework.junit.extensions package</p>
+ * <p>ee.jakarta.tck.data.framework.junit.extensions package</p>
  * <p>ee.jakarta.tck.data.framework.utilities package</p>
  * <p>A resource file with system properties from the client, that are needed on the container.</p>
  *
  */
-public class TCKFrameworkAppender implements AuxiliaryArchiveAppender {
+public class TCKFrameworkAppender extends CachedAuxilliaryArchiveAppender {
     
     private static final Package annoPackage = Assertion.class.getPackage();
     private static final Package extensionPackage = AssertionExtension.class.getPackage();
     private static final Package utilPackage = TestProperty.class.getPackage();
 
     @Override
-    public Archive<?> createAuxiliaryArchive() {
+    protected Archive<?> buildArchive() {
         JavaArchive framework = ShrinkWrap.create(JavaArchive.class, "jakarta-data-framework.jar");
         framework.addPackages(false, annoPackage, extensionPackage, utilPackage);
         return TestPropertyHandler.storeProperties(framework);

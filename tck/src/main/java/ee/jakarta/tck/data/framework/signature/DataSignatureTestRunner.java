@@ -37,6 +37,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import ee.jakarta.tck.data.framework.utilities.TestProperty;
+
 /**
  * This class performs the interactions between the test client (EE Application
  * or Standalone Test class) and the signature test framework.
@@ -73,13 +75,13 @@ public class DataSignatureTestRunner extends SigTestEE {
      * @return the classpath as a colon (:) delimited string
      */
     protected String getClasspath() {
-        final String defined = System.getProperty("signature.sigTestClasspath");
+        final String defined = TestProperty.signatureClasspath.getValue();
         if (defined != null && !defined.isBlank()) {
             return defined;
         }
 
         // The Jakarta artifacts we want added to our classpath
-        String[] classes = new String[] { "jakarta.data.Entity", // For jakarta-data-api.jar
+        String[] classes = new String[] { "jakarta.data.repository.Repository", // For jakarta-data-api.jar
         };
 
         // The JDK modules we want added to our classpath
@@ -108,7 +110,7 @@ public class DataSignatureTestRunner extends SigTestEE {
 
         // Get JDK modules from jimage
         // Add JDK classes to classpath
-        File jimageOutput = new File(testInfo.getJImageDir());
+        File jimageOutput = new File(TestProperty.signatureImageDir.getValue());
         for (String module : jdkModules) {
             Path modulePath = Paths.get(jimageOutput.getAbsolutePath(), module);
             if (Files.isDirectory(modulePath)) {
@@ -236,7 +238,7 @@ public class DataSignatureTestRunner extends SigTestEE {
         ArrayList<String> unlistedTechnologyPkgs = getUnlistedOptionalPackages();
 
         // Need to extract java modules into classes
-        String jimageDir = testInfo.getJImageDir();
+        String jimageDir = TestProperty.signatureImageDir.getValue();
         File f = new File(jimageDir);
         f.mkdirs();
 
@@ -304,21 +306,21 @@ public class DataSignatureTestRunner extends SigTestEE {
         // Ensure that jimage directory is set.
         // This is where modules will be converted back to .class files for use in
         // signature testing
-        assertNotNull(System.getProperty("jimage.dir"),
+        assertNotNull(TestProperty.signatureImageDir.getValue(),
                 "The system property jimage.dir must be set in order to run the Signature test.");
 
         if (standalone) {
             // Ensure that a test classpath is set
             // The signature test plugin runs tests on a forked JVM that uses a separate
             // classpath.
-            assertNotNull(System.getProperty("signature.sigTestClasspath"),
+            assertNotNull(TestProperty.signatureClasspath.getValue(),
                     "The system property signature.sigTestClasspath must be set in order to run the Signature test.");
         }
 
-        // Ensure user is running on JDK 11 or higher, different JDKs produce different
-        // signatures
+        // Ensure user is running on JDK 17 or higher, different JDKs produce different signatures
+        // TODO update to JDK 21 once it is GA
         int javaSpecVersion = Integer.parseInt(System.getProperty("java.specification.version"));
-        assertTrue(javaSpecVersion >= 11, "The signature tests must be run on a JVM using Java 11 or higher.");
+        assertTrue(javaSpecVersion >= 17, "The signature tests must be run on a JVM using Java 17 or higher.");
 
         // Ensure user has the correct security/JDK settings to allow the plugin access
         // to internal JDK classes.

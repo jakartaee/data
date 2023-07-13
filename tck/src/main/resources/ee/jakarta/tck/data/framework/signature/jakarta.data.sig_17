@@ -1,47 +1,47 @@
 #Signature file v4.1
 #Version 1.0.0-SNAPSHOT
 
-CLSS public abstract interface !annotation jakarta.data.Entity
- anno 0 java.lang.annotation.Retention(java.lang.annotation.RetentionPolicy value=RUNTIME)
- anno 0 java.lang.annotation.Target(java.lang.annotation.ElementType[] value=[TYPE])
-intf java.lang.annotation.Annotation
-meth public abstract !hasdefault java.lang.String value()
-
-CLSS public abstract interface !annotation jakarta.data.Id
- anno 0 java.lang.annotation.Retention(java.lang.annotation.RetentionPolicy value=RUNTIME)
- anno 0 java.lang.annotation.Target(java.lang.annotation.ElementType[] value=[FIELD])
-intf java.lang.annotation.Annotation
-meth public abstract !hasdefault java.lang.String value()
-
 CLSS public jakarta.data.exceptions.DataConnectionException
 cons public init(java.lang.String)
 cons public init(java.lang.String,java.lang.Throwable)
 cons public init(java.lang.Throwable)
 supr jakarta.data.exceptions.DataException
+hfds serialVersionUID
 
 CLSS public jakarta.data.exceptions.DataException
 cons public init(java.lang.String)
 cons public init(java.lang.String,java.lang.Throwable)
 cons public init(java.lang.Throwable)
 supr java.lang.RuntimeException
+hfds serialVersionUID
 
 CLSS public jakarta.data.exceptions.EmptyResultException
 cons public init(java.lang.String)
 cons public init(java.lang.String,java.lang.Throwable)
 cons public init(java.lang.Throwable)
 supr jakarta.data.exceptions.DataException
+hfds serialVersionUID
 
 CLSS public jakarta.data.exceptions.MappingException
 cons public init(java.lang.String)
 cons public init(java.lang.String,java.lang.Throwable)
 cons public init(java.lang.Throwable)
 supr jakarta.data.exceptions.DataException
+hfds serialVersionUID
 
 CLSS public jakarta.data.exceptions.NonUniqueResultException
 cons public init(java.lang.String)
 cons public init(java.lang.String,java.lang.Throwable)
 cons public init(java.lang.Throwable)
 supr jakarta.data.exceptions.DataException
+hfds serialVersionUID
+
+CLSS public jakarta.data.exceptions.OptimisticLockingFailureException
+cons public init(java.lang.String)
+cons public init(java.lang.String,java.lang.Throwable)
+cons public init(java.lang.Throwable)
+supr jakarta.data.exceptions.DataException
+hfds serialVersionUID
 
 CLSS abstract interface jakarta.data.exceptions.package-info
 
@@ -82,11 +82,15 @@ meth public abstract jakarta.data.repository.Pageable previousPageable()
 meth public abstract jakarta.data.repository.Pageable$Cursor getKeysetCursor(int)
 
 CLSS public final jakarta.data.repository.Limit
-meth public long maxResults()
+cons public init(int,long)
+meth public final boolean equals(java.lang.Object)
+meth public final int hashCode()
+meth public final java.lang.String toString()
+meth public int maxResults()
 meth public long startAt()
-meth public static jakarta.data.repository.Limit of(long)
+meth public static jakarta.data.repository.Limit of(int)
 meth public static jakarta.data.repository.Limit range(long,long)
-supr java.lang.Object
+supr java.lang.Record
 hfds DEFAULT_START_AT,maxResults,startAt
 
 CLSS public abstract interface !annotation jakarta.data.repository.OrderBy
@@ -96,6 +100,7 @@ CLSS public abstract interface !annotation jakarta.data.repository.OrderBy
 innr public abstract interface static !annotation List
 intf java.lang.annotation.Annotation
 meth public abstract !hasdefault boolean descending()
+meth public abstract !hasdefault boolean ignoreCase()
 meth public abstract java.lang.String value()
 
 CLSS public abstract interface static !annotation jakarta.data.repository.OrderBy$List
@@ -120,9 +125,9 @@ meth public abstract boolean equals(java.lang.Object)
 meth public abstract int size()
 meth public abstract jakarta.data.repository.Pageable afterKeysetCursor(jakarta.data.repository.Pageable$Cursor)
 meth public abstract jakarta.data.repository.Pageable beforeKeysetCursor(jakarta.data.repository.Pageable$Cursor)
-meth public abstract jakarta.data.repository.Pageable newPage(long)
-meth public abstract jakarta.data.repository.Pageable newSize(int)
 meth public abstract jakarta.data.repository.Pageable next()
+meth public abstract jakarta.data.repository.Pageable page(long)
+meth public abstract jakarta.data.repository.Pageable size(int)
 meth public abstract jakarta.data.repository.Pageable sortBy(java.lang.Iterable<jakarta.data.repository.Sort>)
 meth public abstract jakarta.data.repository.Pageable$Cursor cursor()
 meth public abstract jakarta.data.repository.Pageable$Mode mode()
@@ -165,14 +170,15 @@ intf java.lang.annotation.Annotation
 meth public abstract !hasdefault java.lang.String count()
 meth public abstract java.lang.String value()
 
-CLSS public abstract interface jakarta.data.repository.ReactiveRepository<%0 extends java.lang.Object, %1 extends java.lang.Object>
-intf jakarta.data.repository.DataRepository<{jakarta.data.repository.ReactiveRepository%0},{jakarta.data.repository.ReactiveRepository%1}>
-
 CLSS public abstract interface !annotation jakarta.data.repository.Repository
  anno 0 java.lang.annotation.Documented()
  anno 0 java.lang.annotation.Retention(java.lang.annotation.RetentionPolicy value=RUNTIME)
  anno 0 java.lang.annotation.Target(java.lang.annotation.ElementType[] value=[TYPE])
+fld public final static java.lang.String ANY_PROVIDER = ""
+fld public final static java.lang.String DEFAULT_DATA_STORE = ""
 intf java.lang.annotation.Annotation
+meth public abstract !hasdefault java.lang.String dataStore()
+meth public abstract !hasdefault java.lang.String provider()
 
 CLSS public abstract interface jakarta.data.repository.Slice<%0 extends java.lang.Object>
 intf jakarta.data.repository.Streamable<{jakarta.data.repository.Slice%0}>
@@ -183,17 +189,21 @@ meth public abstract jakarta.data.repository.Pageable pageable()
 meth public abstract java.util.List<{jakarta.data.repository.Slice%0}> content()
 
 CLSS public final jakarta.data.repository.Sort
-meth public boolean equals(java.lang.Object)
+cons public init(java.lang.String,boolean,boolean)
+meth public boolean ignoreCase()
 meth public boolean isAscending()
 meth public boolean isDescending()
-meth public int hashCode()
+meth public final boolean equals(java.lang.Object)
+meth public final int hashCode()
+meth public final java.lang.String toString()
 meth public java.lang.String property()
-meth public java.lang.String toString()
 meth public static jakarta.data.repository.Sort asc(java.lang.String)
+meth public static jakarta.data.repository.Sort ascIgnoreCase(java.lang.String)
 meth public static jakarta.data.repository.Sort desc(java.lang.String)
-meth public static jakarta.data.repository.Sort of(java.lang.String,jakarta.data.repository.Direction)
-supr java.lang.Object
-hfds direction,property
+meth public static jakarta.data.repository.Sort descIgnoreCase(java.lang.String)
+meth public static jakarta.data.repository.Sort of(java.lang.String,jakarta.data.repository.Direction,boolean)
+supr java.lang.Record
+hfds ignoreCase,isAscending,property
 
 CLSS public abstract interface jakarta.data.repository.Streamable<%0 extends java.lang.Object>
  anno 0 java.lang.FunctionalInterface()
@@ -209,8 +219,10 @@ meth public abstract int compareTo({java.lang.Comparable%0})
 
 CLSS public abstract java.lang.Enum<%0 extends java.lang.Enum<{java.lang.Enum%0}>>
 cons protected init(java.lang.String,int)
+innr public final static EnumDesc
 intf java.io.Serializable
 intf java.lang.Comparable<{java.lang.Enum%0}>
+intf java.lang.constant.Constable
 meth protected final java.lang.Object clone() throws java.lang.CloneNotSupportedException
 meth protected final void finalize()
 meth public final boolean equals(java.lang.Object)
@@ -219,9 +231,11 @@ meth public final int hashCode()
 meth public final int ordinal()
 meth public final java.lang.Class<{java.lang.Enum%0}> getDeclaringClass()
 meth public final java.lang.String name()
+meth public final java.util.Optional<java.lang.Enum$EnumDesc<{java.lang.Enum%0}>> describeConstable()
 meth public java.lang.String toString()
 meth public static <%0 extends java.lang.Enum<{%%0}>> {%%0} valueOf(java.lang.Class<{%%0}>,java.lang.String)
 supr java.lang.Object
+hfds name,ordinal
 
 CLSS public java.lang.Exception
 cons protected init(java.lang.String,java.lang.Throwable,boolean,boolean)
@@ -230,6 +244,7 @@ cons public init(java.lang.String)
 cons public init(java.lang.String,java.lang.Throwable)
 cons public init(java.lang.Throwable)
 supr java.lang.Throwable
+hfds serialVersionUID
 
 CLSS public abstract interface !annotation java.lang.FunctionalInterface
  anno 0 java.lang.annotation.Documented()
@@ -257,6 +272,13 @@ meth public final void wait(long,int) throws java.lang.InterruptedException
 meth public int hashCode()
 meth public java.lang.String toString()
 
+CLSS public abstract java.lang.Record
+cons protected init()
+meth public abstract boolean equals(java.lang.Object)
+meth public abstract int hashCode()
+meth public abstract java.lang.String toString()
+supr java.lang.Object
+
 CLSS public java.lang.RuntimeException
 cons protected init(java.lang.String,java.lang.Throwable,boolean,boolean)
 cons public init()
@@ -264,6 +286,7 @@ cons public init(java.lang.String)
 cons public init(java.lang.String,java.lang.Throwable)
 cons public init(java.lang.Throwable)
 supr java.lang.Exception
+hfds serialVersionUID
 
 CLSS public java.lang.Throwable
 cons protected init(java.lang.String,java.lang.Throwable,boolean,boolean)
@@ -286,6 +309,8 @@ meth public void printStackTrace(java.io.PrintStream)
 meth public void printStackTrace(java.io.PrintWriter)
 meth public void setStackTrace(java.lang.StackTraceElement[])
 supr java.lang.Object
+hfds CAUSE_CAPTION,EMPTY_THROWABLE_ARRAY,NULL_CAUSE_MESSAGE,SELF_SUPPRESSION_MESSAGE,SUPPRESSED_CAPTION,SUPPRESSED_SENTINEL,UNASSIGNED_STACK,backtrace,cause,depth,detailMessage,serialVersionUID,stackTrace,suppressedExceptions
+hcls PrintStreamOrWriter,SentinelHolder,WrappedPrintStream,WrappedPrintWriter
 
 CLSS public abstract interface java.lang.annotation.Annotation
 meth public abstract boolean equals(java.lang.Object)
@@ -319,4 +344,7 @@ CLSS public abstract interface !annotation java.lang.annotation.Target
  anno 0 java.lang.annotation.Target(java.lang.annotation.ElementType[] value=[ANNOTATION_TYPE])
 intf java.lang.annotation.Annotation
 meth public abstract java.lang.annotation.ElementType[] value()
+
+CLSS public abstract interface java.lang.constant.Constable
+meth public abstract java.util.Optional<? extends java.lang.constant.ConstantDesc> describeConstable()
 
