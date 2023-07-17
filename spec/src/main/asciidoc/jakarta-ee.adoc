@@ -4,6 +4,22 @@ In this session, we will delve into the robust capabilities of Jakarta EE Data a
 
 === Jakarta Context Dependency Injection
 
+Contexts and Dependency Injection (CDI) is a core specification in Jakarta EE that provides a powerful and flexible dependency injection framework for Java applications. CDI lets you decouple components and manage their lifecycle through dependency injection, enabling loose coupling and promoting modular and reusable code.
+
+One of the critical aspects of CDI integration with Jakarta EE Data is the ability to create repository instances using the `@Inject` annotation effortlessly. Repositories are interfaces that define data access and manipulation operations for a specific domain entity. Let's take an example to illustrate this integration:
+
+[source,java]
+----
+@Repository
+public interface CarRepository extends CrudRepository<Car, Long> {
+
+  List<Car> findByType(CarType type);
+
+  Optional<Car> findByName(String name);
+
+}
+----
+
 ==== CDI Extension
 
 To run in environments with Jakarta Contexts and Dependency Injection (CDI), Jakarta Data providers each register their own CDI extension (`jakarta.enterprise.inject.spi.Extension`) to produce the bean instances that are defined via the `Repository` annotation and injected via the `Inject` annotation. The Jakarta Data specification employs several strategies for reducing and avoiding conflicts between Jakarta Data providers. The entity annotation class is used as the primary strategy. The Jakarta Data provider name serves as a secondary strategy.
