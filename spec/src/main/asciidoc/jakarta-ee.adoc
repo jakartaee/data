@@ -37,6 +37,9 @@ Car ferrari = Car.id(10L).name("Ferrari").type(CarType.SPORT);
 repository.save(ferrari);
 ----
 
+In the above snippet, we inject the `CarRepository` instance into our code using the `@Inject` annotation. Once injected, we can use the repository object to invoke various data access methods provided by the `CarRepository` interface, such as `save()`, `findByType()`, and `findByName()`.
+This integration between CDI and Jakarta EE Data allows for seamless management of repository instances and enables easy data access and manipulation within your Jakarta EE applications.
+
 ==== CDI Extension
 
 To run in environments with Jakarta Contexts and Dependency Injection (CDI), Jakarta Data providers each register their own CDI extension (`jakarta.enterprise.inject.spi.Extension`) to produce the bean instances that are defined via the `Repository` annotation and injected via the `Inject` annotation. The Jakarta Data specification employs several strategies for reducing and avoiding conflicts between Jakarta Data providers. The entity annotation class is used as the primary strategy. The Jakarta Data provider name serves as a secondary strategy.
