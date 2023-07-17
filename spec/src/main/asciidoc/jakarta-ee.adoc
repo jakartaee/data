@@ -107,3 +107,49 @@ A Jakarta Data provider that supports Jakarta NoSQL will scan classes marked wit
 By supporting Jakarta Persistence or Jakarta NoSQL annotations, Jakarta Data providers enable Java developers to utilize familiar and standardized mapping techniques when defining entities in repositories, ensuring compatibility and interoperability with the respective technologies.
 
 === Jakarta Validation
+
+Jakarta Validation is a Jakarta EE specification that provides a standardized approach for validating data in Java applications. It is derived from the former Bean Validation specification, which aimed to define a unified validation model for Java.
+
+Integrating with Jakarta Validation ensures data consistency within the Java layer. By applying validation rules to the data, developers can enforce constraints and business rules, preventing invalid or inconsistent information from being processed or persisted.
+
+In the example, the `Student` entity has validation rules for the `name` and `age` fields. The `@NotBlank` annotation ensures that the `name` field must not be empty or contain only whitespace. The `@Positive` and `@Min(18)` annotations enforce that the `age` field must be a positive value greater than or equal to 18.
+
+Incorporating Jakarta Validation into the integration with Jakarta NoSQL or Jakarta Persistence guarantees data consistency at the Java layer. Whenever data is converted to or from Java objects, the validation rules defined in the entity are automatically executed. For instance, when persisting a `Student` object, the `name` field will be validated to ensure it is not blank.
+
+Using Jakarta Validation brings several advantages. It helps maintain data integrity, improves data quality, and enhances the reliability of the application. Catching validation errors early in the Java layer can identify and resolve potential issues before further processing or persistence occurs. Additionally, Jakarta Validation allows for declarative validation rules, simplifying the validation logic and promoting cleaner and more maintainable code.
+
+The following code snippet demonstrates the usage of Jakarta Validation annotations in the `Student` entity class:
+
+[source,java]
+----
+@Schema(name = "Student")
+@Entity
+public class Student {
+
+    @Id
+    private String id;
+
+    @Column
+    @NotBlank
+    private String name;
+
+    @Positive
+    @Min(18)
+    @Column
+    private int age;
+}
+----
+
+In this example, the `name` field is annotated with `@NotBlank`, indicating that it must not be blank. The `age` field is annotated with both `@Positive` and `@Min(18)`, ensuring it is a positive integer greater than or equal to 18.
+
+The `School` repository interface, shown below, utilizes the validation rules defined in the `Student` entity:
+
+[source,java]
+----
+@Repository
+public interface School extends PageableRepository<Student, String> {
+
+}
+----
+
+When performing operations such as saving or retrieving students through the `School` repository, the validation process is triggered, applying the defined constraints to ensure data consistency and adherence to the specified rules.
