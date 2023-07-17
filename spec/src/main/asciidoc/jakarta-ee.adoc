@@ -62,10 +62,15 @@ By leveraging CDI extensions and the provided strategies, you can effectively in
 
 ==== Entity Annotation Class
 
+A Jakarta Data provider is an implementation of Jakarta Data that can utilize existing or new annotations for mapping entities. An entity refers to a class that is annotated to indicate its ability to represent objects in a storage engine, such as SQL or NoSQL databases.
+
+For instance, a Jakarta Data provider with Jakarta Persistence support will scan Java classes that are annotated with `jakarta.persistence.Entity`. On the other hand, a provider with Jakarta NoSQL integration will scan classes that are annotated with `jakarta.nosql.Entity`.
+
+It is important to note that a provider should ignore any annotations it does not support. For example, Jakarta Data NoSQL will ignore the Jakarta Persistence annotations and vice versa. By disregarding these `Repository` annotations, other Jakarta Data providers can handle them accordingly.
 
 ==== Jakarta Data Provider Name
 
-The entity annotation class will usually be sufficient to avoid conflicts between Jakarta Data providers, but in cases where the entity annotation class is not sufficient, the application can designate the name of the desired Jakarta Data provider on the optional `provider` attribute of the `Repository` annotation.
+The entity annotation class will usually be sufficient to avoid conflicts between Jakarta Data providers. Still, in cases where the entity annotation class is insufficient, the application can designate the name of the desired Jakarta Data provider on the optional `provider` attribute of the `Repository` annotation.
 
 Jakarta Data provider CDI Extensions must ignore all `Repository` annotations that designate a different provider's name via the `Repository.provider()` annotation attribute. Ignoring these annotations allows other Jakarta Data providers to handle them.
 
