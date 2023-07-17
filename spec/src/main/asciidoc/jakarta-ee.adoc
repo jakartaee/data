@@ -42,17 +42,26 @@ This integration between CDI and Jakarta EE Data allows for seamless management 
 
 ==== CDI Extension
 
-To run in environments with Jakarta Contexts and Dependency Injection (CDI), Jakarta Data providers each register their own CDI extension (`jakarta.enterprise.inject.spi.Extension`) to produce the bean instances that are defined via the `Repository` annotation and injected via the `Inject` annotation. The Jakarta Data specification employs several strategies for reducing and avoiding conflicts between Jakarta Data providers. The entity annotation class is used as the primary strategy. The Jakarta Data provider name serves as a secondary strategy.
+Jakarta Data and CDI can integrate through CDI extensions, which provide a mechanism to customize and enhance the behavior of CDI in your Jakarta EE application. Different approaches to integrating CDI with Jakarta EE Data include CDI full and CDI Lite.
+
+*CDI Full Integration*:
+
+In CDI Full integration, you can implement the `jakarta.enterprise.inject.spi.Extension` interface to produce the bean instances defined via the `@Repository` annotation and injected using the `@Inject` annotation. By implementing this interface, you can define custom logic to create and manage the repository instances within the CDI container.
+
+The CDI specification employs strategies to reduce conflicts between Jakarta EE Data providers. The primary approach is based on the entity annotation class, which ensures that different providers can coexist harmoniously within the same application. The secondary strategy is based on the Jakarta EE Data provider name, which further helps avoid conflicts and provides flexibility in choosing the desired provider for a specific repository.
+
+*CDI Lite Integration*:
+
+CDI Lite is a lightweight version of CDI that focuses on compile-time exploration and build-time extensions. In CDI Lite integration, you can implement the `jakarta.enterprise.inject.build.compatible.spi.BuildCompatibleExtension` interface to produce the bean instances defined via the `@Repository` annotation and injected using the `@Inject` annotation.
+
+CDI Lite leverages compile-time and build-time exploration to ensure compatibility and reduce conflicts between Jakarta EE Data providers. The primary strategy for conflict reduction is similar to CDI Full and is based on the entity annotation class. The secondary approach relies on the Jakarta EE Data provider name, providing additional flexibility in choosing the appropriate provider for a given repository.
+
+CDI Full and CDI Lite approaches enable seamless integration between CDI and Jakarta EE Data. They provide mechanisms to produce and manage repository instances, ensuring that the desired implementation is available for injection when using the `@Inject` annotation.
+
+By leveraging CDI extensions and the provided strategies, you can effectively integrate Jakarta EE Data with CDI and take advantage of its powerful dependency injection capabilities, promoting modular and reusable code in y
 
 ==== Entity Annotation Class
 
-The `jakarta.persistence.Entity` annotation from the Jakarta Persistence specification can be used by repository entity classes for Jakarta Data providers that are backed by a Jakarta Persistence provider. Other Jakarta Data providers must not support the `jakarta.persistence.Entity` annotation.
-
-The `jakarta.nosql.Entity` annotation from the Jakarta NoSQL specification can be used by repository entity classes for Jakarta Data providers that are backed by NoSQL databases. Other Jakarta Data providers must not support the `jakarta.nosql.Entity` annotation.
-
-Jakarta Data providers that define custom entity annotations must follow the convention that the class name of all supported entity annotation types ends with `Entity`. This enables Jakarta Data providers to identify if a repository entity class contains entity annotations from different Jakarta Data providers so that the corresponding `Repository` can be ignored by Jakarta Data providers that should not provide it.
-
-Jakarta Data provider CDI Extensions must ignore all `Repository` annotations where annotations for the corresponding entity are available at run time and none of the entity annotations are supported by the Jakarta Data provider. Ignoring these `Repository` annotations allows other Jakarta Data providers to handle them.
 
 ==== Jakarta Data Provider Name
 
