@@ -20,6 +20,23 @@ public interface CarRepository extends CrudRepository<Car, Long> {
 }
 ----
 
+In the above example, we have a `CarRepository` interface that extends the `CrudRepositoryv interface provided by Jakarta EE Data. The `CrudRepository` interface offers a set of generic CRUD (Create, Read, Update, Delete) operations for entities.
+
+By annotating the `CarRepository` interface with `@Repository`, we indicate that it is a repository component managed by the Jakarta EE Data framework. It allows Jakarta EE Data to automatically generate the necessary implementations for the defined methods, saving us from writing boilerplate code.
+
+Now, with CDI and the `@Inject` annotation, we can easily inject the CarRepository instance into our code and utilize its methods:
+
+[source,java]
+----
+@Inject
+CarRepository repository;
+
+// ...
+
+Car ferrari = Car.id(10L).name("Ferrari").type(CarType.SPORT);
+repository.save(ferrari);
+----
+
 ==== CDI Extension
 
 To run in environments with Jakarta Contexts and Dependency Injection (CDI), Jakarta Data providers each register their own CDI extension (`jakarta.enterprise.inject.spi.Extension`) to produce the bean instances that are defined via the `Repository` annotation and injected via the `Inject` annotation. The Jakarta Data specification employs several strategies for reducing and avoiding conflicts between Jakarta Data providers. The entity annotation class is used as the primary strategy. The Jakarta Data provider name serves as a secondary strategy.
