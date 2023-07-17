@@ -84,10 +84,24 @@ When running in an environment where Jakarta Transactions and Jakarta CDI are av
 
 When a repository method is annotated with an interceptor binding annotation, the interceptor is bound to the repository bean according to the interceptor binding annotation of the repository interface method, causing the bound interceptor to be invoked around the repository method when it runs. This enables the use of interceptors such as `jakarta.transaction.Transactional` on repository methods when running in an environment where the Jakarta EE technology that provides the interceptor is available.
 
-=== Mapping an entity
+=== Mapping an Entity
+
+An entity class in Jakarta Data is a regular Java class that is annotated to indicate its ability to represent objects in a database. Jakarta Data itself does not provide specific annotations for mapping entities. Instead, each Jakarta Data provider can create annotations or support existing ones, such as those used in Jakarta Persistence or Jakarta NoSQL.
 
 ==== Jakarta Persistence
 
+Jakarta Persistence is a Jakarta EE specification that provides an object-relational mapping (ORM) framework for Java applications. It aims to simplify the development of Java applications that interact with relational databases.
+
+When integrating Jakarta Data with Jakarta Persistence, developers can leverage the JPA annotations to define the mapping of entities in repositories. Entities in Jakarta Persistence are typically annotated with `jakarta.persistence.Entity` to indicate their persistence capability.
+
+A Jakarta Data provider that supports Jakarta Persistence will scan classes marked with the `jakarta.persistence.Entity` annotation. This scanning process can be facilitated using a CDI extension that interacts with Jakarta Persistence and Jakarta Data to create the necessary mappings between entities and repositories.
+
 ==== Jakarta NoSQL
 
-=== Jakarta Validation
+Jakarta NoSQL is a Jakarta EE specification that provides a standardized API and annotations for Java applications to interact with NoSQL databases. It aims to offer a consistent and portable approach for working with various NoSQL databases.
+
+When integrating Jakarta Data with Jakarta NoSQL, developers can use the NoSQL annotations to define the mapping of entities in repositories. Entities in Jakarta NoSQL are typically annotated with `jakarta.nosql.Entity` to indicate their suitability for persistence in NoSQL databases.
+
+A Jakarta Data provider that supports Jakarta NoSQL will scan classes marked with the `jakarta.nosql.Entity` annotation. This scanning process can be facilitated using a CDI extension that interacts with Jakarta NoSQL and Jakarta Data to establish the mappings between entities and repositories.
+
+By supporting Jakarta Persistence or Jakarta NoSQL annotations, Jakarta Data providers enable Java developers to utilize familiar and standardized mapping techniques when defining entities in repositories, ensuring compatibility and interoperability with the respective technologies.
