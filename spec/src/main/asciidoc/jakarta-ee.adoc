@@ -1,5 +1,7 @@
 == Interoperability with other Jakarta EE Specifications
 
+In this session, we will explore the powerful capabilities of Jakarta EE Data and how it seamlessly integrates with various specifications to provide a comprehensive solution for data persistence and management in Java applications.
+
 When running within a Jakarta EE product, other Jakarta EE Technologies might be available depending on the profile. This section defines how related technologies from other Jakarta EE Specifications interoperate with Jakarta Data.
 
 === Jakarta Context Dependency Injection
