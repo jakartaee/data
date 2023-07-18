@@ -149,5 +149,3 @@ public interface School extends PageableRepository<Student, String> {
 
 }
 ----
-
-When performing operations such as saving or retrieving students through the `School` repository, the validation process is triggered, applying the defined constraints to ensure data consistency and adherence to the specified rules.
