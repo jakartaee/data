@@ -89,8 +89,6 @@ When a repository method is annotated with an interceptor binding annotation, th
 
 === Jakarta Persistence
 
-Jakarta Persistence is a Jakarta EE specification that provides an object-relational mapping (ORM) framework for Java applications. It aims to simplify the development of Java applications that interact with relational databases.
-
 When integrating Jakarta Data with Jakarta Persistence, developers can leverage the JPA annotations to define the mapping of entities in repositories. Entities in Jakarta Persistence are typically annotated with `jakarta.persistence.Entity` to indicate their persistence capability.
 
 A Jakarta Data provider that supports Jakarta Persistence allows you to define repositories for classes marked with the `jakarta.persistence.Entity` annotation.
@@ -99,8 +97,6 @@ By supporting Jakarta Persistence annotations, Jakarta Data providers enable Jav
 
 === Jakarta NoSQL
 
-Jakarta NoSQL is a Jakarta EE specification that provides a standardized API and annotations for Java applications to interact with NoSQL databases. It aims to offer a consistent and portable approach for working with various NoSQL databases.
-
 When integrating Jakarta Data with Jakarta NoSQL, developers can use the NoSQL annotations to define the mapping of entities in repositories. Entities in Jakarta NoSQL are typically annotated with `jakarta.nosql.Entity` to indicate their suitability for persistence in NoSQL databases.
 
 A Jakarta Data provider that supports Jakarta NoSQL will scan classes marked with the `jakarta.nosql.Entity` annotation.
@@ -108,8 +104,6 @@ A Jakarta Data provider that supports Jakarta NoSQL will scan classes marked wit
 By supporting Jakarta NoSQL annotations, Jakarta Data providers enable Java developers to utilize familiar and standardized mapping techniques when defining entities in repositories, ensuring compatibility and interoperability with the respective technologies.
 
 === Jakarta Bean Validation
-
-Jakarta Validation is a Jakarta EE specification that provides a standardized approach for validating data in Java applications. It is derived from the former Bean Validation specification, which aimed to define a unified validation model for Java.
 
 Integrating with Jakarta Validation ensures data consistency within the Java layer. By applying validation rules to the data, developers can enforce constraints and business rules, preventing invalid or inconsistent information from being processed or persisted.
 
