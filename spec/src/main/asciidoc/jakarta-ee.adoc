@@ -96,7 +96,7 @@ When integrating Jakarta Data with Jakarta Persistence, developers can leverage 
 
 A Jakarta Data provider that supports Jakarta Persistence will scan classes marked with the `jakarta.persistence.Entity` annotation. This scanning process can be facilitated using a CDI extension that interacts with Jakarta Persistence and Jakarta Data to create the necessary mappings between entities and repositories.
 
-==== Jakarta NoSQL
+=== Jakarta NoSQL
 
 Jakarta NoSQL is a Jakarta EE specification that provides a standardized API and annotations for Java applications to interact with NoSQL databases. It aims to offer a consistent and portable approach for working with various NoSQL databases.
 
