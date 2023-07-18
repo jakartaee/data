@@ -20,7 +20,7 @@ public interface CarRepository extends CrudRepository<Car, Long> {
 }
 ----
 
-In the above example, we have a `CarRepository` interface that extends the `CrudRepositoryv interface provided by Jakarta EE Data. The `CrudRepository` interface offers a set of generic CRUD (Create, Read, Update, Delete) operations for entities.
+In the above example, we have a `CarRepository` interface that extends the `CrudRepository` interface provided by Jakarta EE Data. The `CrudRepository` interface offers a set of generic CRUD (Create, Read, Update, Delete) operations for entities.
 
 By annotating the `CarRepository` interface with `@Repository`, we indicate that it is a repository component managed by the Jakarta EE Data framework. It allows Jakarta EE Data to automatically generate the necessary implementations for the defined methods, saving us from writing boilerplate code.
 
