@@ -68,8 +68,6 @@ The `jakarta.persistence.Entity` annotation from the Jakarta Persistence specifi
 
 The `jakarta.nosql.Entity` annotation from the Jakarta NoSQL specification can be used by repository entity classes for Jakarta Data providers that are backed by NoSQL databases. Other Jakarta Data providers must not support the `jakarta.nosql.Entity` annotation.
 
-Jakarta Data providers that define custom entity annotations must follow the convention that the class name of all supported entity annotation types ends with `Entity`. This enables Jakarta Data providers to identify if a repository entity class contains entity annotations from different Jakarta Data providers so that the corresponding `Repository` can be ignored by Jakarta Data providers that should not provide it.
-
 Jakarta Data provider CDI Extensions must ignore all `Repository` annotations where annotations for the corresponding entity are available at run time and none of the entity annotations are supported by the Jakarta Data provider. Ignoring these `Repository` annotations allows other Jakarta Data providers to handle them.
 
 ==== Jakarta Data Provider Name
@@ -109,7 +107,7 @@ A Jakarta Data provider that supports Jakarta NoSQL will scan classes marked wit
 
 By supporting Jakarta NoSQL annotations, Jakarta Data providers enable Java developers to utilize familiar and standardized mapping techniques when defining entities in repositories, ensuring compatibility and interoperability with the respective technologies.
 
-=== Jakarta Validation
+=== Jakarta Bean Validation
 
 Jakarta Validation is a Jakarta EE specification that provides a standardized approach for validating data in Java applications. It is derived from the former Bean Validation specification, which aimed to define a unified validation model for Java.
 
