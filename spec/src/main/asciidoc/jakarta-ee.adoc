@@ -70,7 +70,7 @@ It is important to note that a provider should ignore any annotations it does no
 
 ==== Jakarta Data Provider Name
 
-The `entity` annotation class is the primary strategy to avoid conflicts between Jakarta Data providers. In most cases, it is sufficient to differentiate between providers. However, there may be situations where more than the entity annotation class is needed. In such cases, the application can specify the name of the desired Jakarta Data provider using the optional `provider` attribute of the `Repository` annotation.
+The entity annotation class is the primary strategy to avoid conflicts between Jakarta Data providers. In most cases, it is sufficient to differentiate between providers. However, there may be situations where more than the entity annotation class is needed. In such cases, the application can specify the name of the desired Jakarta Data provider using the optional `provider` attribute of the `Repository` annotation.
 
 To ensure compatibility and prevent conflicts, CDI extensions of Jakarta Data providers must disregard any `Repository` annotations that specify a different provider's name through the `Repository.provider()` attribute. By ignoring these annotations, CDI extensions allow other Jakarta Data providers to handle them appropriately and avoid any conflicts that may arise.
 
