@@ -42,7 +42,7 @@ This integration between CDI and Jakarta EE Data allows for seamless management 
 
 ==== CDI Extension
 
-Jakarta Data and CDI can integrate through CDI extensions, which provide a mechanism to customize and enhance the behavior of CDI in your Jakarta EE application. Different approaches to integrating CDI with Jakarta EE Data include CDI full and CDI Lite.
+Jakarta Data and CDI integrate through CDI extensions, which provide a mechanism to customize and enhance the behavior of CDI in your Jakarta EE application. Jakarta Data integration with Jakarta CDI applies to both CDI full and CDI Lite.
 
 *CDI Full Integration*:
 
