@@ -85,7 +85,7 @@ When running in an environment where Jakarta Transactions and Jakarta CDI are av
 When a repository method is annotated with an interceptor binding annotation, the interceptor is bound to the repository bean according to the interceptor binding annotation of the repository interface method, causing the bound interceptor to be invoked around the repository method when it runs. This enables the use of interceptors such as `jakarta.transaction.Transactional` on repository methods when running in an environment where the Jakarta EE technology that provides the interceptor is available.
 
 
-==== Jakarta Persistence
+=== Jakarta Persistence
 
 Jakarta Persistence is a Jakarta EE specification that provides an object-relational mapping (ORM) framework for Java applications. It aims to simplify the development of Java applications that interact with relational databases.
 
