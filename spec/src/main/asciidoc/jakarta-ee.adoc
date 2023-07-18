@@ -112,8 +112,6 @@ Jakarta Validation is a Jakarta EE specification that provides a standardized ap
 
 Integrating with Jakarta Validation ensures data consistency within the Java layer. By applying validation rules to the data, developers can enforce constraints and business rules, preventing invalid or inconsistent information from being processed or persisted.
 
-In the example, the `Student` entity has validation rules for the `name` and `age` fields. The `@NotBlank` annotation ensures that the `name` field must not be empty or contain only whitespace. The `@Positive` and `@Min(18)` annotations enforce that the `age` field must be a positive value greater than or equal to 18.
-
 Incorporating Jakarta Validation into your Jakarta Data applications helps enforce data consistency at the Java layer. Whenever data is converted to or from Java objects, the validation rules defined in the entity are automatically executed. For instance, when persisting a `Student` object, the `name` field will be validated to ensure it is not blank.
 
 Using Jakarta Validation brings several advantages. It helps maintain data integrity, improves data quality, and enhances the reliability of the application. Catching validation errors early in the Java layer can identify and resolve potential issues before further processing or persistence occurs. Additionally, Jakarta Validation allows for declarative validation rules, simplifying the validation logic and promoting cleaner and more maintainable code.
