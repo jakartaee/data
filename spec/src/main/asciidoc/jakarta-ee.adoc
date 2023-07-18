@@ -46,7 +46,7 @@ Jakarta Data and CDI integrate through CDI extensions, which provide a mechanism
 
 *CDI Full Integration*:
 
-In CDI Full integration, you can implement the `jakarta.enterprise.inject.spi.Extension` interface to produce the bean instances defined via the `@Repository` annotation and injected using the `@Inject` annotation. By implementing this interface, you can define custom logic to create and manage the repository instances within the CDI container.
+For CDI Full integration, Jakarta Data providers must implement the `jakarta.enterprise.inject.spi.Extension` interface to produce the bean instances defined via the `@Repository` annotation and injected using the `@Inject` annotation. By implementing this interface, Jakarta Data providers can define custom logic to create and manage the repository instances within the CDI container.
 
 The CDI specification employs strategies to reduce conflicts between Jakarta EE Data providers. The primary approach is based on the entity annotation class, which ensures that different providers can coexist harmoniously within the same application. The secondary strategy is based on the Jakarta EE Data provider name, which further helps avoid conflicts and provides flexibility in choosing the desired provider for a specific repository.
 
