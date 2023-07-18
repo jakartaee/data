@@ -58,7 +58,7 @@ CDI Lite leverages compile-time and build-time exploration to ensure compatibili
 
 CDI Full and CDI Lite approaches enable seamless integration between CDI and Jakarta EE Data. They provide mechanisms to produce and manage repository instances, ensuring that the desired implementation is available for injection when using the `@Inject` annotation.
 
-By leveraging CDI extensions and the provided strategies, you can effectively integrate Jakarta EE Data with CDI and take advantage of its powerful dependency injection capabilities, promoting modular and reusable code in y
+By leveraging CDI extensions and the provided strategies, Jakarta Data providers effectively integrate Jakarta EE Data with CDI and take advantage of its powerful dependency injection capabilities, promoting modular and reusable code.
 
 === Mapping an Entity
 
