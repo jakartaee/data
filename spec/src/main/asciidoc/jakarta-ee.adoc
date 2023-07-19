@@ -146,3 +146,7 @@ public interface School extends PageableRepository<Student, String> {
 
 }
 ----
+
+In the Jakarta Data specification, when integrating with Jakarta Bean Validation, the validation process should occur during the insert and update operations, specifically within the save methods of the Repositories interfaces. It means that when performing an insert or update operation on a database, Jakarta Bean Validation will execute the defined constraints to validate the data being inserted or updated.
+
+Regarding the delete and find operations, the integration with Jakarta Bean Validation can be included or made optional by the provider. It means that the validation process for delete and find operations may or may not be applied, depending on the configuration or implementation of a provider. It is up to the provider to determine whether or not to include validation for these database operations.
