@@ -8,6 +8,14 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 
 == [Unreleased]
 
+=== Added
+
+* Include interoperability with others Jakarta EE specs
+
+=== Changed
+
+* Enhances specification and JavaDoc
+
 == [1.0.0-b2] - 2022-03-1
 
 === Added
