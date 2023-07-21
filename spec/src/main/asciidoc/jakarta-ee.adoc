@@ -1,14 +1,68 @@
 == Interoperability with other Jakarta EE Specifications
 
-When running within a Jakarta EE product, other Jakarta EE Technologies might be available depending on the profile. This section defines how related technologies from other Jakarta EE Specifications interoperate with Jakarta Data.
+In this section, we will delve into the robust capabilities of Jakarta EE Data and its seamless integration with other Jakarta EE specifications. This integration offers a comprehensive data persistence and management solution in Java applications. When operating within a Jakarta EE product, the availability of other Jakarta EE Technologies depends on the profile. This section outlines how related technologies from other Jakarta EE Specifications work together with Jakarta Data to achieve interoperability.
 
 === Jakarta Context Dependency Injection
 
+Contexts and Dependency Injection (CDI) is a core specification in Jakarta EE that provides a powerful and flexible dependency injection framework for Java applications. CDI lets you decouple components and manage their lifecycle through dependency injection, enabling loose coupling and promoting modular and reusable code.
+
+One of the critical aspects of CDI integration with Jakarta EE Data is the ability to create repository instances using the `@Inject` annotation effortlessly. Repositories are interfaces that define data access and manipulation operations for a specific domain entity. Let's take an example to illustrate this integration:
+
+[source,java]
+----
+@Repository
+public interface CarRepository extends CrudRepository<Car, Long> {
+
+  List<Car> findByType(CarType type);
+
+  Optional<Car> findByName(String name);
+
+}
+----
+
+In the above example, we have a `CarRepository` interface that extends the `CrudRepository` interface provided by Jakarta EE Data. The `CrudRepository` interface offers a set of generic CRUD (Create, Read, Update, Delete) operations for entities.
+
+By annotating the `CarRepository` interface with `@Repository`, we indicate that it is a repository component managed by the Jakarta EE Data framework. It allows the Jakarta Data provider to automatically generate the necessary implementations for the defined methods, saving us from writing boilerplate code.
+
+Now, with CDI and the `@Inject` annotation, we can easily inject the CarRepository instance into our code and utilize its methods:
+
+[source,java]
+----
+@Inject
+CarRepository repository;
+
+// ...
+
+Car ferrari = Car.id(10L).name("Ferrari").type(CarType.SPORT);
+repository.save(ferrari);
+----
+
+In the above snippet, we inject the `CarRepository` instance into our code using the `@Inject` annotation. Once injected, we can use the repository object to invoke various data access methods provided by the `CarRepository` interface, such as `save()`, `findByType()`, and `findByName()`.
+This integration between CDI and Jakarta EE Data allows for seamless management of repository instances and enables easy data access and manipulation within your Jakarta EE applications.
+
 ==== CDI Extension
 
-To run in environments with Jakarta Contexts and Dependency Injection (CDI), Jakarta Data providers each register their own CDI extension (`jakarta.enterprise.inject.spi.Extension`) to produce the bean instances that are defined via the `Repository` annotation and injected via the `Inject` annotation. The Jakarta Data specification employs several strategies for reducing and avoiding conflicts between Jakarta Data providers. The entity annotation class is used as the primary strategy. The Jakarta Data provider name serves as a secondary strategy.
+Jakarta Data and CDI integrate through CDI extensions, which provide a mechanism to customize and enhance the behavior of CDI in your Jakarta EE application. Jakarta Data integration with Jakarta CDI applies to both CDI full and CDI Lite.
 
-==== Entity Annotation Class
+*CDI Full Integration*:
+
+For CDI Full integration, Jakarta Data providers must implement the `jakarta.enterprise.inject.spi.Extension` interface to produce the bean instances defined via the `@Repository` annotation and injected using the `@Inject` annotation. By implementing this interface, Jakarta Data providers can define custom logic to create and manage the repository instances within the CDI container.
+
+The CDI specification employs strategies to reduce conflicts between Jakarta EE Data providers. The primary approach is based on the entity annotation class, which ensures that different providers can coexist harmoniously within the same application. The secondary strategy is based on the Jakarta EE Data provider name, which further helps avoid conflicts and provides flexibility in choosing the desired provider for a specific repository.
+
+*CDI Lite Integration*:
+
+CDI Lite is a lightweight version of CDI that focuses on compile-time exploration and build-time extensions. For CDI Lite integration, Jakarta Data providers must implement the `jakarta.enterprise.inject.build.compatible.spi.BuildCompatibleExtension` interface to produce the bean instances defined via the `@Repository` annotation and injected using the `@Inject` annotation.
+
+CDI Lite leverages compile-time and build-time exploration to ensure compatibility and reduce conflicts between Jakarta EE Data providers. The primary strategy for conflict reduction is similar to CDI Full and is based on the entity annotation class. The secondary approach relies on the Jakarta EE Data provider name, providing additional flexibility in choosing the appropriate provider for a given repository.
+
+CDI Full and CDI Lite approaches enable seamless integration between CDI and Jakarta EE Data. They provide mechanisms to produce and manage repository instances, ensuring that the desired implementation is available for injection when using the `@Inject` annotation.
+
+By leveraging CDI extensions and the provided strategies, Jakarta Data providers effectively integrate Jakarta EE Data with CDI and take advantage of its powerful dependency injection capabilities, promoting modular and reusable code.
+
+=== Mapping an Entity
+
+A Jakarta Data provider is an implementation of Jakarta Data for one or more types of entities. An entity refers to a class that represents objects in a storage engine, such as SQL or NoSQL databases.
 
 The `jakarta.persistence.Entity` annotation from the Jakarta Persistence specification can be used by repository entity classes for Jakarta Data providers that are backed by a Jakarta Persistence provider. Other Jakarta Data providers must not support the `jakarta.persistence.Entity` annotation.
 
@@ -20,9 +74,9 @@ Jakarta Data provider CDI Extensions must ignore all `Repository` annotations wh
 
 ==== Jakarta Data Provider Name
 
-The entity annotation class will usually be sufficient to avoid conflicts between Jakarta Data providers, but in cases where the entity annotation class is not sufficient, the application can designate the name of the desired Jakarta Data provider on the optional `provider` attribute of the `Repository` annotation.
+The entity annotation class is the primary strategy to avoid conflicts between Jakarta Data providers. In most cases, it is sufficient to differentiate between providers. However, there may be situations where more than the entity annotation class is needed. In such cases, the application can specify the name of the desired Jakarta Data provider using the optional `provider` attribute of the `Repository` annotation.
 
-Jakarta Data provider CDI Extensions must ignore all `Repository` annotations that designate a different provider's name via the `Repository.provider()` annotation attribute. Ignoring these annotations allows other Jakarta Data providers to handle them.
+To ensure compatibility and prevent conflicts, CDI extensions of Jakarta Data providers must disregard any `Repository` annotations that specify a different provider's name through the `Repository.provider()` attribute. By ignoring these annotations, CDI extensions allow other Jakarta Data providers to handle them appropriately and avoid any conflicts that may arise.
 
 === Jakarta Transactions Usage
 
@@ -34,8 +88,65 @@ When running in an environment where Jakarta Transactions and Jakarta CDI are av
 
 When a repository method is annotated with an interceptor binding annotation, the interceptor is bound to the repository bean according to the interceptor binding annotation of the repository interface method, causing the bound interceptor to be invoked around the repository method when it runs. This enables the use of interceptors such as `jakarta.transaction.Transactional` on repository methods when running in an environment where the Jakarta EE technology that provides the interceptor is available.
 
+
 === Jakarta Persistence
+
+When integrating Jakarta Data with Jakarta Persistence, developers can leverage the JPA annotations to define the mapping of entities in repositories. Entities in Jakarta Persistence are typically annotated with `jakarta.persistence.Entity` to indicate their persistence capability.
+
+A Jakarta Data provider that supports Jakarta Persistence allows you to define repositories for classes marked with the `jakarta.persistence.Entity` annotation.
+
+By supporting Jakarta Persistence annotations, Jakarta Data providers enable Java developers to utilize familiar and standardized mapping techniques when defining entities in repositories, ensuring compatibility and interoperability with the respective technologies.
 
 === Jakarta NoSQL
 
-=== Jakarta Validation
+When integrating Jakarta Data with Jakarta NoSQL, developers can use the NoSQL annotations to define the mapping of entities in repositories. Entities in Jakarta NoSQL are typically annotated with `jakarta.nosql.Entity` to indicate their suitability for persistence in NoSQL databases.
+
+A Jakarta Data provider that supports Jakarta NoSQL will scan classes marked with the `jakarta.nosql.Entity` annotation.
+
+By supporting Jakarta NoSQL annotations, Jakarta Data providers enable Java developers to utilize familiar and standardized mapping techniques when defining entities in repositories, ensuring compatibility and interoperability with the respective technologies.
+
+=== Jakarta Bean Validation
+
+Integrating with Jakarta Validation ensures data consistency within the Java layer. By applying validation rules to the data, developers can enforce constraints and business rules, preventing invalid or inconsistent information from being processed or persisted.
+
+Incorporating Jakarta Validation into your Jakarta Data applications helps enforce data consistency at the Java layer. When you invoke the `save` or `saveAll` method on repositories, the Jakarta Data provider ensures that the validation rules defined in the entity are automatically executed prior to updating the database if a Jakarta Validation provider is present. For instance, when persisting a `Student` object, the `name` field will be validated to ensure it is not blank.
+
+Using Jakarta Validation brings several advantages. It helps maintain data integrity, improves data quality, and enhances the reliability of the application. Catching validation errors early in the Java layer can identify and resolve potential issues before further processing or persistence occurs. Additionally, Jakarta Validation allows for declarative validation rules, simplifying the validation logic and promoting cleaner and more maintainable code.
+
+The following code snippet demonstrates the usage of Jakarta Validation annotations in the `Student` entity class:
+
+[source,java]
+----
+@Schema(name = "Student")
+@Entity
+public class Student {
+
+    @Id
+    private String id;
+
+    @Column
+    @NotBlank
+    private String name;
+
+    @Positive
+    @Min(18)
+    @Column
+    private int age;
+}
+----
+
+In this example, the `name` field is annotated with `@NotBlank`, indicating that it must not be blank. The `age` field is annotated with both `@Positive` and `@Min(18)`, ensuring it is a positive integer greater than or equal to 18.
+
+The `School` repository interface, shown below, utilizes the validation rules defined in the `Student` entity:
+
+[source,java]
+----
+@Repository
+public interface School extends PageableRepository<Student, String> {
+
+}
+----
+
+In the Jakarta Data specification, when integrating with Jakarta Bean Validation, the validation process must occur for `save` and `saveAll` methods of Repository interfaces prior to making inserts or updates in the database. It means that when using the save methods to perform an insert or update operation on a database, Jakarta Bean Validation will execute the defined constraints to validate the data being inserted or updated.
+
+Regarding the delete and find operations, the integration with Jakarta Bean Validation can be included or made optional by the provider. It means that the validation process for delete and find operations may or may not be applied, depending on the configuration or implementation of a provider. It is up to the provider to determine whether or not to include validation for these database operations.
