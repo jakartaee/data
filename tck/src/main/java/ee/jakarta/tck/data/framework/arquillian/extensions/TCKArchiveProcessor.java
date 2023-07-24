@@ -73,7 +73,7 @@ public class TCKArchiveProcessor implements ApplicationArchiveProcessor {
             
             // Add signature packages to signature tests
             if (testClass.isAnnotationPresent(Signature.class)) {
-                log.info("Application Archive [" + applicationName + "] is being appended with packages [" + signaturePackage +", com.sun.tdk, org.netbeans.apitest]");
+                log.info("Application Archive [" + applicationName + "] is being appended with packages [" + signaturePackage + ", com.sun.tdk, org.netbeans.apitest]");
                 log.info("Application Archive [" + applicationName + "] is being appended with resources " + Arrays.asList(DataSignatureTestRunner.SIG_RESOURCES));
                 ((ClassContainer<?>) applicationArchive).addPackage(signaturePackage);
                 // These are the packages from the sig-test plugin that are needed to run the test.

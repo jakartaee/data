@@ -15,8 +15,6 @@
  */
 package ee.jakarta.tck.data.framework.signature;
 
-import java.util.Properties;
-
 import ee.jakarta.tck.data.framework.utilities.TestProperty;
 
 /**
@@ -24,48 +22,41 @@ import ee.jakarta.tck.data.framework.utilities.TestProperty;
  * setup phase. This allows us to keep the passed data separate and reuse the
  * data between the signature test framework base classes.
  */
-@Deprecated //TODO remove and relay on TestProperty class instead.
-public class SigTestData {
+public final class SigTestData {
+	
+	private SigTestData() {
+		//Utility Class
+	}
 
-    private Properties props;
-
-    public SigTestData() {
-        this.props = System.getProperties();
+    public static String getVehicle() {
+    	return "";
     }
 
-    public String getVehicle() {
-        return props.getProperty("vehicle", "");
+    public static String getBinDir() {
+        return "";
     }
 
-    public String getBinDir() {
-        return props.getProperty("bin.dir", "");
+    public static String getTSHome() {
+        return "";
     }
 
-    public String getTSHome() {
-        return props.getProperty("ts_home", "");
+    public static String getJavaeeLevel() {
+        return "";
     }
 
-    public String getTestClasspath() {
-        return TestProperty.signatureClasspath.getValue();
+    public static String getCurrentKeywords() {
+        return "";
     }
 
-    public String getJavaeeLevel() {
-        return props.getProperty("javaee.level", "");
+    public static String getProperty(String prop) {
+        return System.getProperty(prop);
     }
 
-    public String getCurrentKeywords() {
-        return props.getProperty("current.keywords", "");
+    public static String getOptionalTechPackagesToIgnore() {
+        return "";
     }
 
-    public String getProperty(String prop) {
-        return props.getProperty(prop);
-    }
-
-    public String getOptionalTechPackagesToIgnore() {
-        return props.getProperty("optional.tech.packages.to.ignore", "");
-    }
-
-    public String getJtaJarClasspath() {
-        return props.getProperty("jtaJarClasspath", "");
+    public static String getJtaJarClasspath() {
+        return "";
     }
 } // end class SigTestData
