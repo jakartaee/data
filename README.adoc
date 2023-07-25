@@ -57,7 +57,7 @@ To start to use Jakarta Dara, add the API as a Maven dependency:
 <dependency>
     <groupId>jakarta.data</groupId>
     <artifactId>jakarta-data-api</artifactId>
-    <version>1.0.0-b2</version>
+    <version>1.0.0-b3</version>
 </dependency>
 ----
 
