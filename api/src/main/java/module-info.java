@@ -509,6 +509,13 @@ import jakarta.data.repository.Sort;
  *                                 Sort.asc("name"));
  * </pre>
  *
+ * <h2>Jakarta Validation</h2>
+ *
+ * <p>When a Jakarta Validation provider is present, validation constraints that are defined for entities
+ * are automatically applied by the {@code save} and {@code saveAll} repository operations prior to saving
+ * entities to the database. These methods raise {@code jakarta.validation.ConstraintViolationException}
+ * if an entity is in violation of one or more validation constraints.</p>
+ *
  * <h2>Jakarta Transactions</h2>
  *
  * <p>Repository methods can participate in global transactions.
