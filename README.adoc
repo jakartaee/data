@@ -50,7 +50,7 @@ public interface ProductRepository extends PageableRepository<Product, Long> {
 
 === Maven
 
-To start to use Jakarta Dara, add the API as a Maven dependency:
+To start to use Jakarta Data, add the API as a Maven dependency:
 
 [source,xml]
 ----
