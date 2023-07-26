@@ -30,8 +30,11 @@ import java.util.stream.Stream;
 public interface CrudRepository<T, K> extends DataRepository<T, K> {
 
     /**
-     * Saves a given entity. Use the returned instance for further operations as the save operation might have changed the
-     * entity instance completely.
+     * <p>Saves a given entity. Use the returned instance for further operations as the save operation might have changed the
+     * entity instance completely.</p>
+     *
+     * <p>This method raises {@code jakarta.validation.ConstraintViolationException} prior to saving the entity to the database
+     * if a Jakarta Validation provider is present and the entity is in violation of one or more validation constraints.</p>
      *
      * @param entity the entity to be saved
      * @param <S> type of entity to save
@@ -43,7 +46,10 @@ public interface CrudRepository<T, K> extends DataRepository<T, K> {
     <S extends T> S save(S entity);
 
     /**
-     * Saves all given entities.
+     * <p>Saves all given entities.</p>
+     *
+     * <p>This method raises {@code jakarta.validation.ConstraintViolationException} prior to saving the entities to the database
+     * if a Jakarta Validation provider is present and any of the entities are in violation of one or more validation constraints.</p>
      *
      * @param entities an iterable of entities
      * @param <S> type of entity to save
