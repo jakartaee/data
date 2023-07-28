@@ -21,6 +21,7 @@ import jakarta.data.repository.DataRepository;
 import jakarta.data.repository.Page;
 import jakarta.data.repository.Pageable;
 import jakarta.data.repository.Repository;
+import jakarta.data.repository.Sort;
 import jakarta.data.repository.Streamable;
 
 /**
@@ -44,6 +45,10 @@ public interface AsciiCharacters extends DataRepository<AsciiCharacter, Long> {
     Page<AsciiCharacter> findByNumericValueBetween(int min, int max, Pageable pagination);
 
     Streamable<AsciiCharacter> findByNumericValueLessThanEqualAndNumericValueGreaterThanEqual(int max, int min);
+
+    AsciiCharacter[] findFirst3ByNumericValueGreaterThanEqualAndHexadecimalEndsWith(long minValue, String lastHexDigit, Sort sort);
+
+    Optional<AsciiCharacter> findFirstByHexadecimalStartsWithAndIsControlOrderByIdAsc(String firstHexDigit, boolean isControlChar);
 
     Iterable<AsciiCharacter> saveAll(Iterable<AsciiCharacter> characters);
 
