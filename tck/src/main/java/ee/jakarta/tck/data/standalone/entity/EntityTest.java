@@ -25,9 +25,11 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -45,6 +47,7 @@ import ee.jakarta.tck.data.framework.read.only.AsciiCharactersPopulator;
 import ee.jakarta.tck.data.framework.read.only.NaturalNumber;
 import ee.jakarta.tck.data.framework.read.only.NaturalNumbers;
 import ee.jakarta.tck.data.framework.read.only.NaturalNumbersPopulator;
+import ee.jakarta.tck.data.framework.read.only.PositiveIntegers;
 import ee.jakarta.tck.data.framework.read.only.NaturalNumber.NumberType;
 import jakarta.data.exceptions.EmptyResultException;
 import jakarta.data.exceptions.MappingException;
@@ -76,6 +79,9 @@ public class EntityTest {
 
     @Inject
     NaturalNumbers numbers;
+
+    @Inject
+    PositiveIntegers positives; // shares same read-only data with NaturalNumbers
 
     @Inject
     AsciiCharacters characters;
@@ -131,6 +137,26 @@ public class EntityTest {
         assertEquals(0, slice.stream().count());
         assertEquals(false, slice.hasContent());
         assertEquals(false, slice.iterator().hasNext());
+    }
+
+    @Assertion(id = "133",
+               strategy = "Use a repository that inherits from CrudRepository and adds some methods of its own. " +
+                          "Use both built-in methods and the additional methods.")
+    public void testCrudRepository() {
+        assertEquals(false, numbers.existsById(0L));
+        assertEquals(true, numbers.existsById(80L));
+
+        Stream<NaturalNumber> found;
+        found = numbers.findAllById(List.of(70L, 40L, -20L, 10L));
+        assertEquals(List.of(10L, 40L, 70L),
+                     found.map(NaturalNumber::getId).sorted().collect(Collectors.toList()));
+
+        found = numbers.findByIdBetween(50L, 59L, Sort.asc("numType"));
+        List<Long> list = found.map(NaturalNumber::getId).collect(Collectors.toList());
+        assertEquals(Set.of(53L, 59L), // first 2 must be primes
+                     new TreeSet<>(list.subList(0, 2)));
+        assertEquals(Set.of(50L, 51L, 52L, 54L, 55L, 56L, 57L, 58L), // the remaining 8 are composite numbers
+                     new TreeSet<>(list.subList(2, 10)));
     }
 
     @Assertion(id = "133", strategy = "Use a repository that inherits from DataRepository and defines all of its own methods.")
@@ -255,6 +281,47 @@ public class EntityTest {
         assertEquals(Short.valueOf((short) 2), number.getNumBitsRequired());
 
         assertEquals(false, it.hasNext());
+    }
+
+    @Assertion(id = "133",
+               strategy = "Use the findAll method of a repository that inherits from PageableRepository " +
+                          "to request a Page 2 of size 12, specifying a Pageable that requires a mixture of " +
+                          "ascending and descending sort. Verify the page contains all 12 expected entities, " +
+                          "sorted according to the mixture of ascending and descending sort orders specified.")
+    public void testFindAllWithPagination() {
+        Pageable page2request = Pageable.ofPage(2).size(12).sortBy(Sort.asc("floorOfSquareRoot"), Sort.desc("id"));
+        Page<NaturalNumber> page2 = positives.findAll(page2request);
+
+        assertEquals(12, page2.numberOfElements());
+        assertEquals(2, page2.pageable().page());
+
+        assertEquals(List.of(11L, 10L, 9L, // square root rounds down to 3
+                             24L, 23L, 22L, 21L, 20L, 19L, 18L, 17L, 16L), // square root rounds down to 4
+                     page2.stream().map(n -> n.getId()).collect(Collectors.toList()));
+    }
+
+    @Assertion(id = "133",
+               strategy = "Use a repository method with findFirstBy that returns the first entity value " +
+                          "where multiple results would otherwise be found.")
+    public void testFindFirst() {
+        Optional<AsciiCharacter> none = characters.findFirstByHexadecimalStartsWithAndIsControlOrderByIdAsc("h", false);
+        assertEquals(true, none.isEmpty());
+
+        AsciiCharacter ch = characters.findFirstByHexadecimalStartsWithAndIsControlOrderByIdAsc("4", false)
+                        .orElseThrow();
+        assertEquals('@', ch.getThisCharacter());
+        assertEquals("40", ch.getHexadecimal());
+        assertEquals(64, ch.getNumericValue());
+    }
+
+    @Assertion(id = "133",
+               strategy = "Use a repository method with findFirst3By that returns the first 3 results.")
+    public void testFindFirst3() {
+        AsciiCharacter[] found = characters.findFirst3ByNumericValueGreaterThanEqualAndHexadecimalEndsWith(40, "4", Sort.asc("numericValue"));
+        assertEquals(3, found.length);
+        assertEquals('4', found[0].getThisCharacter());
+        assertEquals('D', found[1].getThisCharacter());
+        assertEquals('T', found[2].getThisCharacter());
     }
 
     @Assertion(id = "133",
