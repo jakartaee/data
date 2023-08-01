@@ -67,7 +67,7 @@
       <directory>${project.parent.basedir}/tck/src/main/resources/ee/jakarta/tck/data/framework/signature/</directory>
       <outputDirectory>/artifacts</outputDirectory>
       <includes>
-      	<include>**/*.sig*</include>
+          <include>**/*.sig*</include>
       </includes>
     </fileSet>
   </fileSets>

@@ -23,13 +23,13 @@ import ee.jakarta.tck.data.framework.utilities.TestProperty;
  * data between the signature test framework base classes.
  */
 public final class SigTestData {
-	
-	private SigTestData() {
-		//Utility Class
-	}
+    
+    private SigTestData() {
+        //Utility Class
+    }
 
     public static String getVehicle() {
-    	return "";
+        return "";
     }
 
     public static String getBinDir() {

@@ -159,8 +159,8 @@
      </systemPropertyVariables>
      <!-- end::systemProperties[] -->
      <!-- Supported tags 
-     	Entities:[nosql|persistence] 
-     	Other:   [signature] -->
+         Entities:[nosql|persistence] 
+         Other:   [signature] -->
      <groups>standalone</groups>
      <!-- If running back-to-back tests at different levels
       use this to distinguish the results -->

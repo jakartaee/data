@@ -51,10 +51,10 @@
     
     <!-- Data API -->
     <dependency>
-    	<groupId>jakarta.data</groupId>
-    	<artifactId>jakarta-data-api</artifactId>
-    	<version>${jakarta.data.version}</version>
-    	<scope>provided</scope>
+        <groupId>jakarta.data</groupId>
+        <artifactId>jakarta-data-api</artifactId>
+        <version>${jakarta.data.version}</version>
+        <scope>provided</scope>
     </dependency>
 
     <!-- EE Server Integration framework -->

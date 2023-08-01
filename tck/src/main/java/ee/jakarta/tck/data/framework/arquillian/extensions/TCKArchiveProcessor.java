@@ -55,8 +55,8 @@ public class TCKArchiveProcessor implements ApplicationArchiveProcessor {
     @Override
     public void process(Archive<?> applicationArchive, TestClass testClass) {
         String applicationName = applicationArchive.getName() == null 
-        		? applicationArchive.getId() 
-        		: applicationArchive.getName();
+                ? applicationArchive.getId() 
+                : applicationArchive.getName();
         
         // NOTE: ClassContainer is a superclass of ResourceContainer
         if (applicationArchive instanceof ClassContainer) {
@@ -100,7 +100,7 @@ public class TCKArchiveProcessor implements ApplicationArchiveProcessor {
             log.info("Application Archive [" + applicationName + "] is being appended with resources "
                     + Arrays.asList(DataSignatureTestRunner.SIG_RESOURCES));
             ((ResourceContainer<?>) applicationArchive).addAsResources(signaturePackage,
-            		DataSignatureTestRunner.SIG_MAP_NAME, DataSignatureTestRunner.SIG_PKG_NAME);
+                    DataSignatureTestRunner.SIG_MAP_NAME, DataSignatureTestRunner.SIG_PKG_NAME);
             ((ResourceContainer<?>) applicationArchive).addAsResource(signaturePackage,
                     // Get local resource based on JDK level
                     isJava21orAbove ? DataSignatureTestRunner.SIG_FILE_NAME + "_21"
