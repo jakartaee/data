@@ -23,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
@@ -440,6 +441,26 @@ public class EntityTest {
         assertEquals(false, it.hasNext());
     }
 
+    @Assertion(id = "133", strategy = "Use a repository method existsByIdGreaterThan confirming the correct boolean is returned.")
+    public void testGreaterThanEqualExists() {
+        assertEquals(true, positives.existsByIdGreaterThan(0L));
+        assertEquals(true, positives.existsByIdGreaterThan(99L));
+        assertEquals(false, positives.existsByIdGreaterThan(100L)); // doesn't exist because the table only has 1 to 100
+    }
+
+    @Assertion(id = "133", strategy = "Use a repository method with the In keyword.")
+    public void testIn() {
+        Stream<NaturalNumber> nonPrimes = positives.findByNumTypeInOrderByIdAsc(Set.of(NumberType.COMPOSITE, NumberType.ONE),
+                                                                                Limit.of(9));
+        assertEquals(List.of(1L, 4L, 6L, 8L, 9L, 10L, 12L, 14L, 15L),
+                     nonPrimes.map(NaturalNumber::getId).collect(Collectors.toList()));
+
+        Stream<NaturalNumber> primes = positives.findByNumTypeInOrderByIdAsc(Collections.singleton(NumberType.PRIME),
+                                                                             Limit.of(6));
+        assertEquals(List.of(2L, 3L, 5L, 7L, 11L, 13L),
+                     primes.map(NaturalNumber::getId).collect(Collectors.toList()));
+    }
+
     @Assertion(id = "133",
             strategy = "Request a KeysetAwareSlice of 9 results after the keyset of the 20th result, expecting to find the next 9 results. " +
                        "Then request the KeysetAwareSlice before the keyset of the first entry of the slice, expecting to find the previous 9 results. " +
@@ -522,6 +543,13 @@ public class EntityTest {
         assertEquals(0, slice.numberOfElements());
     }
 
+    @Assertion(id = "133", strategy = "Use a repository method countByIdLessThan confirming the correct count is returned.")
+    public void testLessThanWithCount() {
+        assertEquals(91L, positives.countByIdLessThan(92L));
+
+        assertEquals(0L, positives.countByIdLessThan(1L));
+    }
+
     @Assertion(id = "133", strategy = "Use a repository method with both Sort and Limit, and verify that the Limit caps " +
                                       "the number of results and that results are ordered according to the sort criteria.")
     public void testLimit() {
@@ -592,6 +620,21 @@ public class EntityTest {
             x.printStackTrace(System.out);
             // test passes
         }
+    }
+
+    @Assertion(id = "133", strategy = "Use a repository method with Or, expecting MappingException if the underlying database is not capable.")
+    public void testOr() {
+        Stream<NaturalNumber> found;
+        try {
+            found = positives.findByNumTypeOrFloorOfSquareRoot(NumberType.ONE, 2L);
+        } catch (MappingException x) {
+            // Test passes: Jakarta Data providers must raise MappingException when the database
+            // is not capable of the OR operation.
+            return;
+        }
+
+        assertEquals(List.of(1L, 4L, 5L, 6L, 7L, 8L),
+                     found.map(NaturalNumber::getId).sorted().collect(Collectors.toList()));
     }
 
     @Assertion(id = "133",

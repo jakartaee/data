@@ -15,6 +15,11 @@
  */
 package ee.jakarta.tck.data.framework.read.only;
 
+import java.util.Set;
+import java.util.stream.Stream;
+
+import ee.jakarta.tck.data.framework.read.only.NaturalNumber.NumberType;
+import jakarta.data.repository.Limit;
 import jakarta.data.repository.PageableRepository;
 import jakarta.data.repository.Repository;
 
@@ -25,4 +30,11 @@ import jakarta.data.repository.Repository;
  */
 @Repository
 public interface PositiveIntegers extends PageableRepository<NaturalNumber, Long> {
+    long countByIdLessThan(long number);
+
+    boolean existsByIdGreaterThan(Long number);
+
+    Stream<NaturalNumber> findByNumTypeInOrderByIdAsc(Set<NumberType> types, Limit limit);
+
+    Stream<NaturalNumber> findByNumTypeOrFloorOfSquareRoot(NumberType type, long floor);
 }
