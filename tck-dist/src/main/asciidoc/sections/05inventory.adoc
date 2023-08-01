@@ -49,9 +49,10 @@ Signature tests exist at the standalone level which means they will run in any m
 
 ===== API Signature Files
 
-One signature file exists for both Java {JavaVersion1} and {JavaVersion2}:
+One signature file exists per Java version {JavaVersion1} and {JavaVersion2}:
 
-1. `artifacts/jakarta.data.sig`
+1. `artifacts/jakarta.data.sig_{JavaVersion1}`
+1. `artifacts/jakarta.data.sig_{JavaVersion2}`
 
 This signature file is for reference only.
 A copy of the signature file is included in the {APILongName} TCK test jar.
