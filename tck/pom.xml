@@ -104,7 +104,12 @@
       <groupId>org.netbeans.tools</groupId>
       <artifactId>sigtest-maven-plugin</artifactId>
       <version>${sigtest.version}</version>
-      <scope>test</scope>
+    </dependency>
+    
+     <dependency>
+        <groupId>org.jboss.shrinkwrap.resolver</groupId>
+        <artifactId>shrinkwrap-resolver-impl-maven</artifactId>
+        <version>${shrinkwrap.resolver.version}</version>
     </dependency>
   </dependencies>
 

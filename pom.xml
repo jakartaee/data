@@ -93,6 +93,7 @@
         <checkstyle.excludes></checkstyle.excludes>
         <jacoco.maven.version>0.8.10</jacoco.maven.version>
         <sigtest.version>1.6</sigtest.version> <!-- TODO update to 1.8 once this fix is added https://github.com/jtulach/netbeans-apitest/commit/72a3d3507202357589d77b293cb1e29349a0096e -->
+        <shrinkwrap.resolver.version>3.2.1</shrinkwrap.resolver.version>
         <sonar.jacoco.reportPath>../target/jacoco.exec</sonar.jacoco.reportPath>
         <sonar.maven.version>3.9.1.2184</sonar.maven.version>
     </properties>
