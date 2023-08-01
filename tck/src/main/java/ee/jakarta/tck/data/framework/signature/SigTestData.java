@@ -15,8 +15,6 @@
  */
 package ee.jakarta.tck.data.framework.signature;
 
-import ee.jakarta.tck.data.framework.utilities.TestProperty;
-
 /**
  * This class holds the data passed to a signature test invocation during the
  * setup phase. This allows us to keep the passed data separate and reuse the
