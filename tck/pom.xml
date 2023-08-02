@@ -51,10 +51,10 @@
     
     <!-- Data API -->
     <dependency>
-    	<groupId>jakarta.data</groupId>
-    	<artifactId>jakarta-data-api</artifactId>
-    	<version>${jakarta.data.version}</version>
-    	<scope>provided</scope>
+        <groupId>jakarta.data</groupId>
+        <artifactId>jakarta-data-api</artifactId>
+        <version>${jakarta.data.version}</version>
+        <scope>provided</scope>
     </dependency>
 
     <!-- EE Server Integration framework -->
@@ -104,7 +104,11 @@
       <groupId>org.netbeans.tools</groupId>
       <artifactId>sigtest-maven-plugin</artifactId>
       <version>${sigtest.version}</version>
-      <scope>test</scope>
+    </dependency>
+    
+     <dependency>
+        <groupId>org.jboss.shrinkwrap.resolver</groupId>
+        <artifactId>shrinkwrap-resolver-impl-maven</artifactId>
     </dependency>
   </dependencies>
 

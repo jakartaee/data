@@ -17,7 +17,7 @@ package ee.jakarta.tck.data.standalone.signature;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.spec.JavaArchive;
+import org.jboss.shrinkwrap.api.spec.WebArchive;
 
 import ee.jakarta.tck.data.framework.junit.anno.AnyEntity;
 import ee.jakarta.tck.data.framework.junit.anno.Assertion;
@@ -30,8 +30,8 @@ import ee.jakarta.tck.data.framework.signature.DataSignatureTestRunner;
 @Signature
 public class SignatureTests {
     @Deployment
-    public static JavaArchive createDeployment() {
-        return ShrinkWrap.create(JavaArchive.class);
+    public static WebArchive createDeployment() {
+        return ShrinkWrap.create(WebArchive.class);
     }
 
     @Assertion(id = "26", strategy = "Uses the sigtest-maven-plugin to execute signature tests on a Standalone JVM or on a Jakarta EE Server")

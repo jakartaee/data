@@ -15,6 +15,7 @@
  */
 package ee.jakarta.tck.data.framework.arquillian.extensions;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.logging.Logger;
 
@@ -22,7 +23,9 @@ import org.jboss.arquillian.container.test.spi.client.deployment.ApplicationArch
 import org.jboss.arquillian.test.spi.TestClass;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.container.ClassContainer;
+import org.jboss.shrinkwrap.api.container.LibraryContainer;
 import org.jboss.shrinkwrap.api.container.ResourceContainer;
+import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 
 import ee.jakarta.tck.data.framework.junit.anno.Full;
 import ee.jakarta.tck.data.framework.junit.anno.Signature;
@@ -47,14 +50,13 @@ public class TCKArchiveProcessor implements ApplicationArchiveProcessor {
     private static final Logger log = Logger.getLogger(TCKArchiveProcessor.class.getCanonicalName());
 
     private static final Package servletPackage = TestServlet.class.getPackage();
-    private static final Package signaturePackage = DataSignatureTestRunner.class.getPackage();
     private static final Package readOnlyPackage = Populator.class.getPackage();
-    
-    boolean isJava21orAbove = Integer.parseInt(System.getProperty("java.specification.version")) >= 21;
     
     @Override
     public void process(Archive<?> applicationArchive, TestClass testClass) {
-        String applicationName = applicationArchive.getName() == null ? applicationArchive.getId() : applicationArchive.getName();
+        String applicationName = applicationArchive.getName() == null 
+                ? applicationArchive.getId() 
+                : applicationArchive.getName();
         
         // NOTE: ClassContainer is a superclass of ResourceContainer
         if (applicationArchive instanceof ClassContainer) {
@@ -71,22 +73,40 @@ public class TCKArchiveProcessor implements ApplicationArchiveProcessor {
                 ((ClassContainer<?>) applicationArchive).addPackage(servletPackage);
             }
             
-            // Add signature packages to signature tests
-            if (testClass.isAnnotationPresent(Signature.class)) {
-                log.info("Application Archive [" + applicationName + "] is being appended with packages [" + signaturePackage +", com.sun.tdk, org.netbeans.apitest]");
-                log.info("Application Archive [" + applicationName + "] is being appended with resources " + Arrays.asList(DataSignatureTestRunner.SIG_RESOURCES));
-                ((ClassContainer<?>) applicationArchive).addPackage(signaturePackage);
-                // These are the packages from the sig-test plugin that are needed to run the test.
-                ((ClassContainer<?>) applicationArchive).addPackages(true, "com.sun.tdk", "org.netbeans.apitest");
-                ((ResourceContainer<?>) applicationArchive).addAsResources(signaturePackage,
-                        DataSignatureTestRunner.SIG_MAP_NAME,
-                        DataSignatureTestRunner.SIG_PKG_NAME);
-                ((ResourceContainer<?>) applicationArchive).addAsResource(signaturePackage,
-                        //Get local resource based on JDK level
-                        isJava21orAbove ? DataSignatureTestRunner.SIG_FILE_NAME + "_21" : DataSignatureTestRunner.SIG_FILE_NAME + "_17",
-                        //Target same package as test
-                        signaturePackage.getName().replace(".", "/") + "/" + DataSignatureTestRunner.SIG_FILE_NAME);
-            }
+            appendSignaturePackages(applicationArchive, testClass, applicationName);
+        }
+    }
+    
+    private static void appendSignaturePackages(final Archive<?> applicationArchive, final TestClass testClass, final String applicationName) {
+        if (!testClass.isAnnotationPresent(Signature.class)) {
+            return; //Nothing to append
+        }
+        
+        final boolean isJava21orAbove = Integer.parseInt(System.getProperty("java.specification.version")) >= 21;
+        final Package signaturePackage = DataSignatureTestRunner.class.getPackage();
+
+        if (applicationArchive instanceof ClassContainer) {
+            
+            // Add the Concurrency runner
+            log.info("Application Archive [" + applicationName + "] is being appended with packages [" + signaturePackage + "]");
+            ((ClassContainer<?>) applicationArchive).addPackage(signaturePackage);
+
+            // Add the sigtest plugin library
+            File sigTestDep = Maven.resolver().resolve("org.netbeans.tools:sigtest-maven-plugin:1.6").withoutTransitivity().asSingleFile();
+            log.info("Application Archive [" + applicationName + "] is being appended with library " + sigTestDep.getName());
+            ((LibraryContainer<?>) applicationArchive).addAsLibrary(sigTestDep);
+            
+            // Add signature resources
+            log.info("Application Archive [" + applicationName + "] is being appended with resources "
+                    + Arrays.asList(DataSignatureTestRunner.SIG_RESOURCES));
+            ((ResourceContainer<?>) applicationArchive).addAsResources(signaturePackage,
+                    DataSignatureTestRunner.SIG_MAP_NAME, DataSignatureTestRunner.SIG_PKG_NAME);
+            ((ResourceContainer<?>) applicationArchive).addAsResource(signaturePackage,
+                    // Get local resource based on JDK level
+                    isJava21orAbove ? DataSignatureTestRunner.SIG_FILE_NAME + "_21"
+                            : DataSignatureTestRunner.SIG_FILE_NAME + "_17",
+                    // Target same package as test
+                    signaturePackage.getName().replace(".", "/") + "/" + DataSignatureTestRunner.SIG_FILE_NAME);
         }
     }
 }

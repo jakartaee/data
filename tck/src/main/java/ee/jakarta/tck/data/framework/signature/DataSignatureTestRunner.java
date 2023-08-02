@@ -226,9 +226,9 @@ public class DataSignatureTestRunner extends SigTestEE {
             log.info("Exception while creating temp files :" + ex);
         }
 
-        String[] packagesUnderTest = getPackages(testInfo.getVehicle());
-        String[] classesUnderTest = getClasses(testInfo.getVehicle());
-        String optionalPkgToIgnore = testInfo.getOptionalTechPackagesToIgnore();
+        String[] packagesUnderTest = getPackages(SigTestData.getVehicle());
+        String[] classesUnderTest = getClasses(SigTestData.getVehicle());
+        String optionalPkgToIgnore = SigTestData.getOptionalTechPackagesToIgnore();
 
         // unlisted optional packages are technology packages for those optional
         // technologies (e.g. jsr-88) that might not have been specified by the

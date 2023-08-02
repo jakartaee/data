@@ -172,9 +172,9 @@
      </systemPropertyVariables>
      <!-- end::systemProperties[] -->
      <!-- Supported tags 
-     	Profiles:[core|web|full] 
-     	Entities:[nosql|persistence] 
-     	Other:   [signature] -->
+         Profiles:[core|web|full] 
+         Entities:[nosql|persistence] 
+         Other:   [signature] -->
      <groups>[TODO]</groups>
      <!-- If running back-to-back tests at different levels 
      use this to distinguish the results -->

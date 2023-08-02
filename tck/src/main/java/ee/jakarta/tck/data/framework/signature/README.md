@@ -19,26 +19,26 @@ The plugin that generates the signature file has been copied below for reference
 
 ```xml
 <plugin>
-	<groupId>org.netbeans.tools</groupId>
-	<artifactId>sigtest-maven-plugin</artifactId>
-	<version>${sigtest.version}</version>
-	<executions>
-		<execution>
-			<id>createSigFile</id>
-			<goals>
-				<goal>generate</goal>
-			</goals>
-		</execution>
-	</executions>
-	<configuration>
-		<classes>${project.build.directory}/jakarta-data-api</classes>
-		<packages>
-			jakarta.data,
-			jakarta.data.repository
-		</packages>
-		<attach>false</attach>
-		<sigfile>${project.build.directory}/jakarta.data.sig_${project.version}</sigfile>
-	</configuration>
+    <groupId>org.netbeans.tools</groupId>
+    <artifactId>sigtest-maven-plugin</artifactId>
+    <version>${sigtest.version}</version>
+    <executions>
+        <execution>
+            <id>createSigFile</id>
+            <goals>
+                <goal>generate</goal>
+            </goals>
+        </execution>
+    </executions>
+    <configuration>
+        <classes>${project.build.directory}/jakarta-data-api</classes>
+        <packages>
+            jakarta.data,
+            jakarta.data.repository
+        </packages>
+        <attach>false</attach>
+        <sigfile>${project.build.directory}/jakarta.data.sig_${project.version}</sigfile>
+    </configuration>
 </plugin>
 ```
 

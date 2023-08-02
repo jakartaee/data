@@ -79,7 +79,7 @@ public abstract class SigTestEE {
      * @return String The path and name of the package list file.
      */
     protected String getPackageFile() {
-        return getSigTestDriver().getPackageFileImpl(testInfo.getBinDir());
+        return getSigTestDriver().getPackageFileImpl(SigTestData.getBinDir());
     }
 
     /**
@@ -98,7 +98,7 @@ public abstract class SigTestEE {
      * @return String The path and name of the signature map file.
      */
     protected String getMapFile() {
-        return getSigTestDriver().getMapFileImpl(testInfo.getBinDir());
+        return getSigTestDriver().getMapFileImpl(SigTestData.getBinDir());
     }
 
     /**
@@ -113,7 +113,7 @@ public abstract class SigTestEE {
      * @return String The signature repository directory.
      */
     protected String getRepositoryDir() {
-        return getSigTestDriver().getRepositoryDirImpl(testInfo.getTSHome());
+        return getSigTestDriver().getRepositoryDirImpl(SigTestData.getTSHome());
     }
 
     /**
@@ -204,9 +204,6 @@ public abstract class SigTestEE {
 
     } // END getClasses
 
-
-    protected SigTestData testInfo; // holds the bin.dir and vehicle properties
-
     /**
      * Called by the test framework to initialize this test. The method simply
      * retrieves some state information that is necessary to run the test when when
@@ -215,7 +212,6 @@ public abstract class SigTestEE {
     public void setup() {
         try {
             System.out.println("$$$ SigTestEE.setup() called");
-            this.testInfo = new SigTestData();
             System.out.println("$$$ SigTestEE.setup() complete");
         } catch (Exception e) {
             System.out.println("Unexpected exception " + e.getMessage());
@@ -235,11 +231,11 @@ public abstract class SigTestEE {
         SigTestResult results = null;
         String mapFile = getMapFile();
         String repositoryDir = getRepositoryDir();
-        String[] packages = getPackages(testInfo.getVehicle());
-        String[] classes = getClasses(testInfo.getVehicle());
+        String[] packages = getPackages(SigTestData.getVehicle());
+        String[] classes = getClasses(SigTestData.getVehicle());
         String packageFile = getPackageFile();
-        String testClasspath = testInfo.getTestClasspath();
-        String optionalPkgToIgnore = testInfo.getOptionalTechPackagesToIgnore();
+        String testClasspath = TestProperty.signatureClasspath.getValue();
+        String optionalPkgToIgnore = SigTestData.getOptionalTechPackagesToIgnore();
 
         // unlisted optional packages are technology packages for those optional
         // technologies (e.g. jsr-88) that might not have been specified by the
