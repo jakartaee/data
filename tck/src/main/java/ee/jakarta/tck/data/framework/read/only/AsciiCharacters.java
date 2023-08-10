@@ -15,7 +15,10 @@
  */
 package ee.jakarta.tck.data.framework.read.only;
 
+import java.util.Collection;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Stream;
 
 import jakarta.data.repository.DataRepository;
 import jakarta.data.repository.Page;
@@ -35,6 +38,13 @@ public interface AsciiCharacters extends DataRepository<AsciiCharacter, Long> {
     int countByHexadecimalNotNull();
 
     boolean existsByThisCharacter(char ch);
+
+    Collection<AsciiCharacter> findByHexadecimalContainsAndNotIsControl(String substring);
+
+    Stream<AsciiCharacter> findByHexadecimalIgnoreCaseBetweenAndHexadecimalNotIn(String minHex,
+                                                                                 String maxHex,
+                                                                                 Set<String> excludeHex,
+                                                                                 Sort... sorts);
 
     AsciiCharacter findByHexadecimalIgnoreCase(String hex);
 
