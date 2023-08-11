@@ -22,6 +22,7 @@ import ee.jakarta.tck.data.framework.read.only.NaturalNumber.NumberType;
 import jakarta.data.repository.Limit;
 import jakarta.data.repository.PageableRepository;
 import jakarta.data.repository.Repository;
+import jakarta.data.repository.Streamable;
 
 /**
  * This is a read only repository that shares the same data (and entity type)
@@ -33,6 +34,10 @@ public interface PositiveIntegers extends PageableRepository<NaturalNumber, Long
     long countByIdLessThan(long number);
 
     boolean existsByIdGreaterThan(Long number);
+
+    Iterable<NaturalNumber> findByIsOddTrueAndIdLessThanEqualOrderByIdDesc(long max);
+
+    Streamable<NaturalNumber> findByIsOddFalseAndIdBetween(long min, long max);
 
     Stream<NaturalNumber> findByNumTypeInOrderByIdAsc(Set<NumberType> types, Limit limit);
 

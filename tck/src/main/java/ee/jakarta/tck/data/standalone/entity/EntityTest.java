@@ -140,6 +140,19 @@ public class EntityTest {
         assertEquals(false, slice.iterator().hasNext());
     }
 
+    @Assertion(id = "133", strategy = "Use a repository method with Contains to query for a substring of a String attribute.")
+    public void testContainsInString() {
+        Collection<AsciiCharacter> found = characters.findByHexadecimalContainsAndNotIsControl("4");
+
+        assertEquals(List.of("24", "34",
+                             "40", "41", "42", "43",
+                             "44", "45", "46", "47",
+                             "48", "49", "4a", "4b",
+                             "4c", "4d", "4e", "4f",
+                             "54", "64", "74"),
+                     found.stream().map(AsciiCharacter::getHexadecimal).sorted().toList());
+    }
+
     @Assertion(id = "133",
                strategy = "Use a repository that inherits from CrudRepository and adds some methods of its own. " +
                           "Use both built-in methods and the additional methods.")
@@ -202,6 +215,16 @@ public class EntityTest {
             x.printStackTrace(System.out);
             // test passes
         }
+    }
+
+    @Assertion(id = "133", strategy = "Use a repository method with the False keyword.")
+    public void testFalse() {
+        Streamable<NaturalNumber> even = positives.findByIsOddFalseAndIdBetween(50L, 60L);
+
+        assertEquals(6L, even.stream().count());
+
+        assertEquals(List.of(50L, 52L, 54L, 56L, 58L, 60L),
+                     even.stream().map(NaturalNumber::getId).sorted().collect(Collectors.toList()));
     }
 
     @Assertion(id = "133", strategy = "Request the last Page of up to 10 results, expecting to find the final 3.")
@@ -459,6 +482,30 @@ public class EntityTest {
                                                                              Limit.of(6));
         assertEquals(List.of(2L, 3L, 5L, 7L, 11L, 13L),
                      primes.map(NaturalNumber::getId).collect(Collectors.toList()));
+    }
+
+    @Assertion(id = "133", strategy = "Use a repository method with the IgnoreCase keyword.")
+    public void testIgnoreCase() {
+        Stream<AsciiCharacter> found = characters.findByHexadecimalIgnoreCaseBetweenAndHexadecimalNotIn("4c", "5A",
+                                                                                                        Set.of("5"),
+                                                                                                        Sort.asc("hexadecimal"));
+
+        assertEquals(List.of(Character.valueOf('L'), // 4c
+                             Character.valueOf('M'), // 4d
+                             Character.valueOf('N'), // 4e
+                             Character.valueOf('O'), // 4f
+                             Character.valueOf('P'), // 50
+                             Character.valueOf('Q'), // 51
+                             Character.valueOf('R'), // 52
+                             Character.valueOf('S'), // 53
+                             Character.valueOf('T'), // 54
+                             Character.valueOf('U'), // 55
+                             Character.valueOf('V'), // 56
+                             Character.valueOf('W'), // 57
+                             Character.valueOf('X'), // 58
+                             Character.valueOf('Y'), // 59
+                             Character.valueOf('Z')), // 5a
+                     found.map(AsciiCharacter::getThisCharacter).collect(Collectors.toList()));
     }
 
     @Assertion(id = "133",
@@ -823,6 +870,29 @@ public class EntityTest {
 
         assertEquals(Arrays.toString(new Long[] { 17L, 13L, 11L, 7L, 5L }),
                 Arrays.toString(slice.stream().map(number -> number.getId()).toArray()));
+    }
+
+    @Assertion(id = "133", strategy = "Use a repository method with the True keyword.")
+    public void testTrue() {
+        Iterable<NaturalNumber> odd = positives.findByIsOddTrueAndIdLessThanEqualOrderByIdDesc(10L);
+        Iterator<NaturalNumber> it = odd.iterator();
+
+        assertEquals(true, it.hasNext());
+        assertEquals(9L, it.next().getId());
+
+        assertEquals(true, it.hasNext());
+        assertEquals(7L, it.next().getId());
+
+        assertEquals(true, it.hasNext());
+        assertEquals(5L, it.next().getId());
+
+        assertEquals(true, it.hasNext());
+        assertEquals(3L, it.next().getId());
+
+        assertEquals(true, it.hasNext());
+        assertEquals(1L, it.next().getId());
+
+        assertEquals(false, it.hasNext());
     }
 
     @Assertion(id = "133",
