@@ -481,3 +481,137 @@ for (Pageable p = Pageable.ofSize(25).sortBy(Sort.desc("yearBorn"), Sort.asc("na
   p = page.nextPageable();
 }
 ----
+
+=== Jakarta Data Vendor Extension Features for Java Persistence
+
+When designing and implementing Java persistence solutions, Jakarta Data offers a set of powerful extension features that simplify the development process and enhance the overall code design. These features include Default Methods, Interface Queries, and Custom Repositories, each catering to different needs and scenarios that Java developers commonly encounter.
+
+==== Default Methods
+
+Jakarta Data's Default Methods feature introduces a novel way of enriching repository interfaces with additional functionality. Default methods allow the creation of methods with default implementations directly within the Interface. These methods can be seamlessly integrated into the repository without breaking existing implementations.
+
+For example, consider the following `BookRepository` interface:
+
+[source,java]
+----
+@Repository
+public interface BookRepository extends PageableRepository<Book, String> {
+
+    List<Book> findByCategories(String category);
+
+    List<Book> findByYear(Year year);
+
+    default List<Book> releaseThisYear(){
+        return findByYear(Year.now());
+    }
+
+    default Book register(Book book, Event<Book> event) {
+        event.fire(book);
+        // some logic here
+        return this.save(book);
+    }
+}
+----
+
+In this Interface, the `releaseThisYear` method is a default method that utilizes the `findByYear` method to retrieve books published in the current year. Additionally, the `register` method provides a default implementation for registering a book and an event.
+
+Benefits for Java Developers:
+
+- **Smooth Evolution of Interfaces:** Default Methods enable the seamless addition of new methods to existing repository interfaces. It ensures compatibility with existing implementations while incorporating new features.
+
+- **Enhanced Interface Usability:** Developers can create default implementations for common operations within the Interface itself, enhancing the usability of the repository interface.
+
+- **Standardized Behaviors:** Default methods enable the definition of standardized behaviors across different repository interfaces, simplifying code maintenance.
+
+Combine with Interface Queries:
+You can also combine Default Methods with Interface Queries to create comprehensive and reusable repository interfaces that include common queries and default implementations for common operations.
+
+== Interface Queries
+
+Interface queries are a powerful feature that allows the creation of common queries in separate interfaces, which can then be plugged into repository interfaces. It promotes code reuse and modularity, making it easier to manage and maintain query definitions.
+
+For instance, consider the `PetQueries` interface that defines common queries for pet-related repositories:
+
+[source,java]
+----
+public interface PetQueries<T extends Pet> {
+
+    List<T> findByName(String name);
+
+    List<T> findByBreed(String breed);
+}
+----
+
+These queries can be integrated into repositories for different pet types, such as `DogRepository` and `CatRepository`:
+
+[source,java]
+----
+@Repository
+public interface DogRepository extends PageableRepository<Dog, String>,
+        PetQueries<Dog> {
+}
+
+@Repository
+public interface CatRepository extends PageableRepository<Cat, String>,
+        PetQueries<Cat> {
+}
+----
+
+This approach centralizes common query definitions, making them easily accessible across multiple repository interfaces.
+
+Benefits for Java Developers:
+
+- **Reusability and Modularity:** Interface Queries facilitate the creation of common query definitions in separate interfaces. These queries can be easily reused across different repository implementations, promoting code reusability.
+
+- **Simplified Code Maintenance:** By centralizing query definitions, Java developers can efficiently manage and update queries across multiple repositories, reducing redundancy and minimizing errors.
+
+Combine with Default Methods:
+Combining Interface Queries and Default Methods creates repository interfaces with standardized queries and default implementations for common operations, enhancing code organization and usability.
+
+== Custom Repositories
+
+Custom repositories offer a solution for scenarios demanding advanced and specialized functionality beyond what default methods can provide. These repositories allow the integration of specialized implementation logic with repository interfaces.
+
+Consider the example of a `ProductAuditRepository` interface:
+
+[source,java]
+----
+interface ProductAuditRepository {
+
+    void audit(Product product);
+}
+----
+
+An implementation for this Interface can be provided:
+
+[source,java]
+----
+class ProductAuditRepositoryImpl implements ProductAuditRepository {
+
+    public void audit(Product product) {
+        // Your custom implementation
+    }
+}
+----
+
+This custom repository implementation can then be used in a repository interface, such as `ComputerRepository`:
+
+[source,java]
+----
+public interface ComputerRepository extends CrudRepository<Computer, Long>, ProductAuditRepository {
+}
+----
+
+Custom repositories offer a way to perform more intricate operations than default methods, including the ability to inject objects into the implementation.
+
+Benefits for Java Developers:
+
+- **Advanced Functionality:** Custom Repositories allow Java developers to implement complex and specialized operations beyond the capabilities of default methods. It is precious for handling intricate business logic.
+
+- **Code Separation and Organization:** By implementing custom repository functionality in separate classes, developers can achieve cleaner code organization, making maintenance and debugging more straightforward.
+
+- **Integration Flexibility:** Custom repository implementations can seamlessly integrate with repository interfaces, providing the freedom to incorporate custom logic while adhering to the Interface's contract.
+
+In summary, Jakarta Data's extension features offer a range of benefits for Java developers. These features empower developers to evolve interfaces gracefully, streamline query management, and implement intricate functionality while maintaining code integrity and design principles.
+
+These extension features enhance the capabilities of Jakarta Data repositories, promoting code reusability, modularity, and customization.
