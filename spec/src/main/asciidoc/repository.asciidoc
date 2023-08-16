@@ -513,7 +513,7 @@ public interface BookRepository extends PageableRepository<Book, String> {
 }
 ----
 
-In this Interface, the `releaseThisYear` method is a default method that utilizes the `findByYear` method to retrieve books published in the current year. Additionally, the `register` method provides a default implementation for registering a book and an event.
+In this Interface, the `releasedThisYear` method is a default method that utilizes the `findByYear` method to retrieve books published in the current year. Additionally, the `register` method provides a default implementation for registering a book and an event.
 
 Benefits for Java Developers:
 
