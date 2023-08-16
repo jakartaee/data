@@ -84,7 +84,7 @@
         <apache.rat.version>0.15</apache.rat.version>
         <commons.io.version>2.13.0</commons.io.version>
 
-        <arquillian.version>1.7.0.Final</arquillian.version>
+        <arquillian.version>1.7.1.Final</arquillian.version>
         <junit.version>5.10.0</junit.version>
         <mockito.version>5.4.0</mockito.version>
         <pi-test.version>1.14.3</pi-test.version>
