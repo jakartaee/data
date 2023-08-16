@@ -497,7 +497,7 @@ For example, consider the following `BookRepository` interface:
 @Repository
 public interface BookRepository extends PageableRepository<Book, String> {
 
-    List<Book> findByCategories(String category);
+    List<Book> findByCategory(String category);
 
     List<Book> findByYear(Year year);
 
