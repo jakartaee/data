@@ -501,7 +501,7 @@ public interface BookRepository extends PageableRepository<Book, String> {
 
     List<Book> findByYear(Year year);
 
-    default List<Book> releaseThisYear(){
+    default List<Book> releasedThisYear(){
         return findByYear(Year.now());
     }
 
