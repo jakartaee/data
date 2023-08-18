@@ -15,8 +15,6 @@
  */
 package ee.jakarta.tck.data.framework.read.only;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.stream.Stream;
 
 import jakarta.data.repository.CrudRepository;
@@ -36,24 +34,14 @@ import ee.jakarta.tck.data.framework.read.only.NaturalNumber.NumberType;
  * TODO figure out a way to make this a ReadOnlyRepository instead.
  */
 @Repository
-public interface NaturalNumbers extends CrudRepository<NaturalNumber, Long> {
+public interface NaturalNumbers extends CrudRepository<NaturalNumber, Long>, IdOperations<NaturalNumber> {
 
     KeysetAwareSlice<NaturalNumber> findByFloorOfSquareRootOrderByIdAsc(long sqrtFloor,
                                                                         Pageable pagination);
 
-    Stream<NaturalNumber> findByIdBetween(long minimum, long maximum, Sort sort);
-
     Stream<NaturalNumber> findByIdBetweenOrderByNumTypeAsc(long minimum,
                                                            long maximum,
                                                            Sort... sorts);
-
-    Collection<NaturalNumber> findByIdGreaterThanEqual(long minimum,
-                                                       Limit limit,
-                                                       Sort... sorts);
-
-    NaturalNumber[] findByIdLessThan(long exclusiveMax, Sort primarySort, Sort secondarySort);
-
-    ArrayList<NaturalNumber> findByIdLessThanEqual(long maximum, Sort... sorts);
 
     Slice<NaturalNumber> findByIdLessThanOrderByFloorOfSquareRootDesc(long exclusiveMax,
                                                                       Pageable pagination);
@@ -61,6 +49,8 @@ public interface NaturalNumbers extends CrudRepository<NaturalNumber, Long> {
     KeysetAwareSlice<NaturalNumber> findByNumTypeAndNumBitsRequiredLessThan(NumberType type,
                                                                             short bitsUnder,
                                                                             Pageable pagination);
+
+    NaturalNumber[] findByNumTypeNot(NumberType notThisType, Limit limit, Sort... sorts);
 
     Slice<NaturalNumber> findByNumTypeAndFloorOfSquareRootLessThanEqual(NumberType type,
                                                                         long maxSqrtFloor,

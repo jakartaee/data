@@ -33,13 +33,13 @@ import jakarta.data.repository.Streamable;
  * This interface is required to inherit only from DataRepository in order to satisfy a TCK scenario.
  */
 @Repository
-public interface AsciiCharacters extends DataRepository<AsciiCharacter, Long> {
+public interface AsciiCharacters extends DataRepository<AsciiCharacter, Long>, IdOperations<AsciiCharacter> {
 
     int countByHexadecimalNotNull();
 
     boolean existsByThisCharacter(char ch);
 
-    Collection<AsciiCharacter> findByHexadecimalContainsAndNotIsControl(String substring);
+    Collection<AsciiCharacter> findByHexadecimalContainsAndIsControlNot(String substring, boolean isPrintable);
 
     Stream<AsciiCharacter> findByHexadecimalIgnoreCaseBetweenAndHexadecimalNotIn(String minHex,
                                                                                  String maxHex,
@@ -60,6 +60,10 @@ public interface AsciiCharacters extends DataRepository<AsciiCharacter, Long> {
 
     Optional<AsciiCharacter> findFirstByHexadecimalStartsWithAndIsControlOrderByIdAsc(String firstHexDigit, boolean isControlChar);
 
-    Iterable<AsciiCharacter> saveAll(Iterable<AsciiCharacter> characters);
+    default Stream<AsciiCharacter> retrieveAlphaNumericIn(long minId, long maxId) {
+        return findByIdBetween(minId, maxId, Sort.asc("id"))
+                        .filter(c -> Character.isLetterOrDigit(c.getThisCharacter()));
+    }
 
+    Iterable<AsciiCharacter> saveAll(Iterable<AsciiCharacter> characters);
 }
