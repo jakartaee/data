@@ -140,9 +140,34 @@ public class EntityTest {
         assertEquals(false, slice.iterator().hasNext());
     }
 
+    @Assertion(id = "133", strategy = "Use a repository that inherits some if its methods from another interface.")
+    public void testCommonInterfaceQueries() {
+        assertEquals(List.of('d', 'c', 'b', 'a'),
+                     characters.findByIdBetween(97L, 100L, Sort.desc("thisCharacter"))
+                                     .map(AsciiCharacter::getThisCharacter)
+                                     .collect(Collectors.toList()));
+
+        assertEquals(List.of(87L, 88L, 89L, 90L),
+                     numbers.findByIdBetween(87L, 90L, Sort.asc("id"))
+                                     .map(NaturalNumber::getId)
+                                     .collect(Collectors.toList()));
+
+        assertEquals(List.of('D', 'E', 'F', 'G', 'H'),
+                     characters.findByIdGreaterThanEqual(68L, Limit.of(5), Sort.asc("numericValue"), Sort.asc("id"))
+                                     .stream()
+                                     .map(AsciiCharacter::getThisCharacter)
+                                     .collect(Collectors.toList()));
+
+        assertEquals(List.of(71L, 73L, 79L, 83L, 89L),
+                     numbers.findByIdGreaterThanEqual(68L, Limit.of(5), Sort.asc("numType"), Sort.asc("id"))
+                                     .stream()
+                                     .map(NaturalNumber::getId)
+                                     .collect(Collectors.toList()));
+    }
+
     @Assertion(id = "133", strategy = "Use a repository method with Contains to query for a substring of a String attribute.")
     public void testContainsInString() {
-        Collection<AsciiCharacter> found = characters.findByHexadecimalContainsAndNotIsControl("4");
+        Collection<AsciiCharacter> found = characters.findByHexadecimalContainsAndIsControlNot("4", true);
 
         assertEquals(List.of("24", "34",
                              "40", "41", "42", "43",
@@ -193,6 +218,14 @@ public class EntityTest {
         assertEquals(false, d.isControl());
 
         assertEquals(true, characters.existsByThisCharacter('D'));
+    }
+
+    @Assertion(id = "133", strategy = "Use a default method from a repository interface where the default method invokes other repository methods.")
+    public void testDefaultMethod() {
+        assertEquals(List.of('W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd'),
+                     characters.retrieveAlphaNumericIn(87L, 100L)
+                                     .map(AsciiCharacter::getThisCharacter)
+                                     .collect(Collectors.toList()));
     }
 
     @Assertion(id = "133",
@@ -667,6 +700,20 @@ public class EntityTest {
             x.printStackTrace(System.out);
             // test passes
         }
+    }
+
+    @Assertion(id = "133", strategy = "Use a repository method with the Not keyword.")
+    public void testNot() {
+        NaturalNumber[] n = numbers.findByNumTypeNot(NumberType.COMPOSITE, Limit.of(8), Sort.asc("id"));
+        assertEquals(8, n.length);
+        assertEquals(1L, n[0].getId());
+        assertEquals(2L, n[1].getId());
+        assertEquals(3L, n[2].getId());
+        assertEquals(5L, n[3].getId());
+        assertEquals(7L, n[4].getId());
+        assertEquals(11L, n[5].getId());
+        assertEquals(13L, n[6].getId());
+        assertEquals(17L, n[7].getId());
     }
 
     @Assertion(id = "133", strategy = "Use a repository method with Or, expecting MappingException if the underlying database is not capable.")
