@@ -19,7 +19,9 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 import ee.jakarta.tck.data.framework.read.only.NaturalNumber.NumberType;
+import jakarta.data.repository.KeysetAwarePage;
 import jakarta.data.repository.Limit;
+import jakarta.data.repository.Pageable;
 import jakarta.data.repository.PageableRepository;
 import jakarta.data.repository.Repository;
 import jakarta.data.repository.Streamable;
@@ -34,6 +36,10 @@ public interface PositiveIntegers extends PageableRepository<NaturalNumber, Long
     long countByIdLessThan(long number);
 
     boolean existsByIdGreaterThan(Long number);
+
+    KeysetAwarePage<NaturalNumber> findByFloorOfSquareRootNotAndIdLessThanOrderByBitsRequiredDesc(long excludeSqrt,
+                                                                                                  long eclusiveMax,
+                                                                                                  Pageable pagination);
 
     Iterable<NaturalNumber> findByIsOddTrueAndIdLessThanEqualOrderByIdDesc(long max);
 

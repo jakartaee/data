@@ -53,6 +53,7 @@ import ee.jakarta.tck.data.framework.read.only.NaturalNumber.NumberType;
 import jakarta.data.exceptions.EmptyResultException;
 import jakarta.data.exceptions.MappingException;
 import jakarta.data.exceptions.NonUniqueResultException;
+import jakarta.data.repository.KeysetAwarePage;
 import jakarta.data.repository.KeysetAwareSlice;
 import jakarta.data.repository.Limit;
 import jakarta.data.repository.Page;
@@ -382,6 +383,61 @@ public class EntityTest {
     }
 
     @Assertion(id = "133",
+               strategy = "Request the first KeysetAwarePage of 8 results, expecting to find all 8, " +
+                          "then request the next KeysetAwarePage and the KeysetAwarePage after that, " +
+                          "expecting to find all results.")
+    public void testFirstKeysetAwarePageOf8AndNextPages() {
+        // The query for this test returns 1-15,25-32 in the following order:
+
+        // 25, 26, 27, 28, 29, 30, 31, 32 square root rounds down to 4
+        // 9, 10, 11, 12, 13, 14, 15 square root rounds down to 3
+        // 4, 5, 6, 7, 8 square root rounds down to 2
+        // 1, 2, 3 square root rounds down to 1
+
+        Pageable first8 = Pageable.ofSize(8).sortBy(Sort.asc("id"));
+        KeysetAwarePage<NaturalNumber> page;
+
+        try {
+            page = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByBitsRequiredDesc(4L, 33L, first8);
+        } catch (MappingException x) {
+            // Test passes: Jakarta Data providers must raise MappingException when the database
+            // is not capable of keyset pagination.
+            return;
+        }
+
+        assertEquals(8, page.numberOfElements());
+
+        assertEquals(Arrays.toString(new Long[] { 25L, 26L, 27L, 28L, 29L, 30L, 31L, 32L }),
+                     Arrays.toString(page.stream().map(number -> number.getId()).toArray()));
+
+        try {
+            page = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByBitsRequiredDesc(4L, 33L, page.nextPageable());
+        } catch (MappingException x) {
+            // Test passes: Jakarta Data providers must raise MappingException when the database
+            // is not capable of keyset pagination.
+            return;
+        }
+
+        assertEquals(Arrays.toString(new Long[] { 9L, 10L, 11L, 12L, 13L, 14L, 15L, 4L }),
+                     Arrays.toString(page.stream().map(number -> number.getId()).toArray()));
+
+        assertEquals(8, page.numberOfElements());
+
+        try {
+            page = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByBitsRequiredDesc(4L, 33L, page.nextPageable());
+        } catch (MappingException x) {
+            // Test passes: Jakarta Data providers must raise MappingException when the database
+            // is not capable of keyset pagination.
+            return;
+        }
+
+        assertEquals(7, page.numberOfElements());
+
+        assertEquals(Arrays.toString(new Long[] { 5L, 6L, 7L, 8L, 1L, 2L, 3L }),
+                     Arrays.toString(page.stream().map(number -> number.getId()).toArray()));
+    }
+
+    @Assertion(id = "133",
                strategy = "Request the first KeysetAwareSlice of 6 results, expecting to find all 6, " +
                           "then request the next KeysetAwareSlice and the KeysetAwareSlice after that, " +
                           "expecting to find all results.")
@@ -539,6 +595,93 @@ public class EntityTest {
                              Character.valueOf('Y'), // 59
                              Character.valueOf('Z')), // 5a
                      found.map(AsciiCharacter::getThisCharacter).collect(Collectors.toList()));
+    }
+
+    @Assertion(id = "133",
+               strategy = "Request a KeysetAwarePage of 7 results after the keyset of the 20th result, expecting to find the next 7 results. " +
+                          "Then request the KeysetAwarePage before the keyset of the first entry of the page, expecting to find the previous 7 results. " +
+                          "Then request the KeysetAwarePage after the last entry of the original slice, expecting to find the next 7.")
+    public void testKeysetAwarePageOf7FromCursor() {
+        // The query for this test returns 1-35 and 49 in the following order:
+        //
+        // 35 34 33 32 49 24 23 22 21 20 19 18 17 16 31 30 29 28 27 26 25 08 15 14 13 12 11 10 09 07 06 05 04 03 02 01
+        //                                                             ^^^^^^ page 1 ^^^^^^
+        //                                        ^^^ previous page ^^
+        //                                                                                  ^^^^^ next page ^^^^
+
+        Pageable middle7 = Pageable.ofSize(7)
+                        .sortBy(Sort.asc("floorOfSquareRoot"), Sort.desc("id"))
+                        .afterKeyset((short) 5, 5L, 26L); // 20th result is 26; it requires 5 bits and its square root rounds down to 5.
+
+        KeysetAwarePage<NaturalNumber> page;
+        try {
+            page = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByBitsRequiredDesc(6L, 50L, middle7);
+        } catch (MappingException x) {
+            // Test passes: Jakarta Data providers must raise MappingException when the database
+            // is not capable of keyset pagination.
+            return;
+        }
+
+        assertEquals(Arrays.toString(new Long[] { 25L, // 5 bits required, square root rounds down to 5
+                                                  8L, // 4 bits required, square root rounds down to 2
+                                                  15L, 14L, 13L, 12L, 11L // 4 bits required, square root rounds down to 3
+        }),
+                     Arrays.toString(page.stream().map(number -> number.getId()).toArray()));
+
+        assertEquals(7, page.numberOfElements());
+
+        KeysetAwarePage<NaturalNumber> previousPage;
+        try {
+            previousPage = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByBitsRequiredDesc(6L, 50L,
+                                                                                                    page.previousPageable());
+        } catch (MappingException x) {
+            // Test passes: Jakarta Data providers must raise MappingException when the database
+            // is not capable of keyset pagination.
+            return;
+        }
+
+        assertEquals(Arrays.toString(new Long[] { 16L, // 4 bits required, square root rounds down to 4
+                                                  31L, 30L, 29L, 28L, 27L, 26L // 5 bits required, square root rounds down to 5
+        }),
+                     Arrays.toString(previousPage.stream().map(number -> number.getId()).toArray()));
+
+        assertEquals(7, previousPage.numberOfElements());
+
+        KeysetAwarePage<NaturalNumber> nextPage;
+        try {
+            nextPage = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByBitsRequiredDesc(6L, 50L,
+                                                                                                page.nextPageable());
+        } catch (MappingException x) {
+            // Test passes: Jakarta Data providers must raise MappingException when the database
+            // is not capable of keyset pagination.
+            return;
+        }
+
+        assertEquals(Arrays.toString(new Long[] { 10L, 9L, // 4 bits required, square root rounds down to 3
+                                                  7L, 6L, 5L, 4L, // 3 bits required, square root rounds down to 2
+                                                  3L, 2L // 2 bits required, square root rounds down to 1
+        }),
+                     Arrays.toString(nextPage.stream().map(number -> number.getId()).toArray()));
+
+        assertEquals(7, nextPage.numberOfElements());
+    }
+
+    @Assertion(id = "133", strategy = "Request a KeysetAwarePage of results where none match the query, expecting an empty KeysetAwarePage with 0 results.")
+    public void testKeysetAwarePageOfNothing() {
+
+        KeysetAwarePage<NaturalNumber> page;
+        try {
+            // There are no positive integers less than 4 which have a square root that rounds down to something other than 1.
+            page = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByBitsRequiredDesc(1L, 4L, Pageable.ofPage(1L));
+        } catch (MappingException x) {
+            // Test passes: Jakarta Data providers must raise MappingException when the database
+            // is not capable of keyset pagination.
+            return;
+        }
+
+        assertEquals(false, page.hasContent());
+        assertEquals(0, page.content().size());
+        assertEquals(0, page.numberOfElements());
     }
 
     @Assertion(id = "133",
