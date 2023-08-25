@@ -13,21 +13,44 @@
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
-package ee.jakarta.tck.data.standalone.persistence.example;
+package ee.jakarta.tck.data.standalone.persistence;
 
+import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Stream;
 
 import jakarta.data.repository.DataRepository;
+import jakarta.data.repository.OrderBy;
 import jakarta.data.repository.Repository;
+import jakarta.data.repository.Sort;
+
+import ee.jakarta.tck.data.standalone.persistence.Product.Department;
 
 @Repository
-public interface Catalog extends DataRepository<Product, Long> {
-    
+public interface Catalog extends DataRepository<Product, String> {
+
     void save(Product product);
-    void deleteById(Long id);
-    
+
+    void deleteById(String productNum);
+
+    long deleteByProductNumLike(String pattern);
+
     int countByPriceGreaterThanEqual(Double price);
+
     int countBySurgePriceGreaterThanEqual(Double price);
-    
-    List<Product> findByNameLike(String name); 
+
+    @OrderBy("name")
+    Product[] findByDepartmentsContains(Department department);
+
+    LinkedList<Product> findByDepartmentsEmpty();
+
+    Iterable<Product> findByIdBetween(String first, String last, Sort... sorts);
+
+    List<Product> findByNameLike(String name);
+
+    @OrderBy(value = "price", descending = true)
+    Stream<Product> findByPriceNotNullAndPriceLessThanEqual(double maxPrice);
+
+    Collection<Product> findByPriceNull();
 }
