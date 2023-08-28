@@ -22,9 +22,11 @@ import java.util.stream.Stream;
 
 import jakarta.data.repository.DataRepository;
 import jakarta.data.repository.OrderBy;
+import jakarta.data.repository.Param;
+import jakarta.data.repository.Query;
 import jakarta.data.repository.Repository;
 import jakarta.data.repository.Sort;
-
+import jakarta.data.repository.Streamable;
 import ee.jakarta.tck.data.standalone.persistence.Product.Department;
 
 @Repository
@@ -40,6 +42,9 @@ public interface Catalog extends DataRepository<Product, String> {
 
     int countBySurgePriceGreaterThanEqual(Double price);
 
+    @Query("SELECT p FROM Product p WHERE (SIZE(p.departments) = ?1 AND p.price < ?2) ORDER BY p.name")
+    Streamable<Product> findByDepartmentCountAndPriceBelow(int numDepartments, double maxPrice);
+
     @OrderBy("name")
     Product[] findByDepartmentsContains(Department department);
 
@@ -53,4 +58,9 @@ public interface Catalog extends DataRepository<Product, String> {
     Stream<Product> findByPriceNotNullAndPriceLessThanEqual(double maxPrice);
 
     Collection<Product> findByPriceNull();
+
+    @Query("SELECT o FROM Product o WHERE (:rate * o.price <= :max AND :rate * o.price >= :min) ORDER BY o.name")
+    Stream<Product> withTaxBetween(@Param("min") double mininunTaxAmount,
+                                   @Param("max") double maximumTaxAmount,
+                                   @Param("rate") double taxRate);
 }
