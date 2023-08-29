@@ -23,6 +23,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -36,6 +37,7 @@ import ee.jakarta.tck.data.standalone.persistence.Product.Department;
 
 import jakarta.data.exceptions.MappingException;
 import jakarta.data.repository.Sort;
+import jakarta.data.repository.Streamable;
 import jakarta.inject.Inject;
 
 /**
@@ -173,5 +175,49 @@ public class PersistenceEntityTests {
                                      .collect(Collectors.toList()));
 
         assertEquals(4L, catalog.deleteByProductNumLike("TEST-PROD-%"));
+    }
+
+    @Assertion(id = "133", strategy = "Use a repository method that is annotated with Query and includes JPQL with named parameters.")
+    public void testQueryWithNamedParameters() {
+        catalog.deleteByProductNumLike("TEST-PROD-%");
+
+        catalog.save(Product.of("tape measure", 7.29, "TEST-PROD-61", Department.TOOLS));
+        catalog.save(Product.of("pry bar", 4.39, "TEST-PROD-62", Department.TOOLS));
+        catalog.save(Product.of("hammer", 8.59, "TEST-PROD-63", Department.TOOLS));
+        catalog.save(Product.of("adjustable wrench", 4.99, "TEST-PROD-64", Department.TOOLS));
+        catalog.save(Product.of("framing square", 9.88, "TEST-PROD-65", Department.TOOLS));
+        catalog.save(Product.of("rasp", 6.79, "TEST-PROD-66", Department.TOOLS));
+
+        Stream<Product> found = catalog.withTaxBetween(0.4, 0.6, 0.08125);
+
+        assertEquals(List.of("adjustable wrench", "rasp", "tape measure"),
+                     found.map(Product::getName).collect(Collectors.toList()));
+
+        assertEquals(6L, catalog.deleteByProductNumLike("TEST-PROD-%"));
+    }
+
+    @Assertion(id = "133", strategy = "Use a repository method that is annotated with Query and includes JPQL with positional parameters.")
+    public void testQueryWithPositionalParameters() {
+        catalog.deleteByProductNumLike("TEST-PROD-%");
+
+        catalog.save(Product.of("sweater", 23.88, "TEST-PROD-71", Department.CLOTHING));
+        catalog.save(Product.of("toothpaste", 2.39, "TEST-PROD-72", Department.PHARMACY, Department.GROCERY));
+        catalog.save(Product.of("chisel", 5.99, "TEST-PROD-73", Department.TOOLS));
+        catalog.save(Product.of("computer", 1299.50, "TEST-PROD-74", Department.ELECTRONICS, Department.OFFICE));
+        catalog.save(Product.of("sunblock", 5.98, "TEST-PROD-75", Department.PHARMACY, Department.SPORTING_GOODS, Department.GARDEN));
+        catalog.save(Product.of("basketball", 14.88, "TEST-PROD-76", Department.SPORTING_GOODS));
+        catalog.save(Product.of("baseball cap", 12.99, "TEST-PROD-77", Department.SPORTING_GOODS, Department.CLOTHING));
+
+        Streamable<Product> found = catalog.findByDepartmentCountAndPriceBelow(2, 100.0);
+
+        assertEquals(List.of("baseball cap", "toothpaste"),
+                     found.stream().map(Product::getName).collect(Collectors.toList()));
+
+        found = catalog.findByDepartmentCountAndPriceBelow(3, 10000.0);
+
+        assertEquals(List.of("sunblock"),
+                     found.stream().map(Product::getName).collect(Collectors.toList()));
+
+        assertEquals(7L, catalog.deleteByProductNumLike("TEST-PROD-%"));
     }
 }
