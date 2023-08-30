@@ -147,3 +147,7 @@ public interface School extends DataRepository<Student, String> {
     List<Student> findByAgeLessThanEqual(@Min(18) int age);
 }
 ----
+
+==== Avoiding Overlap with Validation from Jakarta Persistence
+
+Jakarta Data providers that are built using Jakarta Persistence might require the user to define persistence units for repositories or might handle the details of defining the persistence units internally. A user that defines the persistence unit for a Jakarta Data repository specifies the `validation-mode` as `NONE` per the "Enabling Automatic Validation" section of the Jakarta Persistence specification to avoid duplicate validation of entities. Similarly, the Jakarta Data provider uses the `validation-mode` of `NONE` or the `jakarta.persistence.validation.mode` map key with value of `none` that is defined in the "Enabling Automatic Validation" section of the Jakarta Persistence specification to avoid duplicate validation of entities.
