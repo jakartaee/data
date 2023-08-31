@@ -92,14 +92,16 @@ import jakarta.data.repository.Sort;
  * patterns of reserved keywords within the method name, as well as
  * annotations that are placed upon the method and its parameters.</p>
  *
- * <p>Built-in repository interfaces, such as {@link DataRepository}, are
+ * <p>Built-in repository super interfaces, such as {@link DataRepository},
+ * are provided as a convenient way to inherit commonly used methods and are
  * parameterized with the entity type and id type. Other built-in repository
  * interfaces, such as {@link CrudRepository}, can be used in place of
  * {@link DataRepository}
  * and provide a base set of predefined repository methods
  * which serve as an optional starting point.
  * You can extend these built-in interfaces to add your own custom methods.
- * You can also copy individual method signatures from the
+ * You can also define your own repository interface without inheriting from the
+ * built-in super interfaces. You can copy individual method signatures from the
  * built-in repository methods onto your own, which is possible
  * because the built-in repository methods are consistent with the
  * same set of conventions that you use to write custom repository methods.</p>

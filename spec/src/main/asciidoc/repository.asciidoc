@@ -30,9 +30,11 @@ It also becomes very famous in Domain-Driven Design: Tackling Complexity in the 
 
 A repository abstraction aims to significantly reduce the boilerplate code required to implement data access layers for various persistence stores.
 
-The parent interface in Jakarta Data repository abstraction is DataRepository.
+In Jakarta Data, a repository is an interface that is annotated with the `@Repository` annotation.
 
-By default, Jakarta Data has support for two interfaces. However, the core is extensible. Therefore, a provider might extend one or more interfaces to a specific data target.
+The Jakarta Data specification defines several built-in interfaces from which repositories can inherit as a convenient way to include a variety of pre-defined methods for operations that are commonly used and to declare the entity type to use for methods from which the entity type cannot otherwise be inferred.
+
+The parent interface at the root of the hierarchy of built-in interfaces is `DataRepository`. All of the built-in interfaces are extensible. A repository might extend one or more of the built-in interfaces or none of them. Method signatures that are copied from the built-in interfaces to a repository must have the same behavior as defined on the built-in interface.
 
 [ditaa]
 ....
