@@ -220,7 +220,7 @@ class Address {
 - The Property Resolution Algorithm will parse the method name and extract `AddressZipCode`.
 - It will then attempt to resolve the property named `addressZipCode` in the `Person` class, following automatic class splitting by camel case.
 - Since the `Person` class has an `Address` property, it will recursively follow the path to the `Address` class.
-- In the `Address` class, it will identify the `Zipcode` property and filter `Person` records based on the provided `ZipCode` object within the `Address` object.
+- In the `Address` class, it will identify the `zipcode` property and filter `Person` records based on the provided `Zipcode` object within the `Address` object.
 
 *Scenario 2: People Repository with findByAddressZipCode(String addressZipCode)*
 
