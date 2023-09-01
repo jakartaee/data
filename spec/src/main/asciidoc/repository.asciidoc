@@ -257,7 +257,7 @@ class Address {
 }
 ----
 
-- The query method `findByAddress_ZipCode` takes a `ZipCode` object as a parameter.
+- The query method `findByAddress_ZipCode` takes a `Zipcode` object as a parameter.
 - The method name includes an underscore (`_`) indicating manual traversal points.
 - The Property Resolution Algorithm will parse the method name and extract `Address_ZipCode`, recognizing the underscore as a traversal point.
 - It will then attempt to resolve the property named `Address` within the `Order` class, followed by the `ZipCode` property within the `Address` class, following manual traversal points.
