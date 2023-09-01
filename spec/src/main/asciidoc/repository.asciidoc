@@ -199,6 +199,8 @@ The resolution algorithm for identifying properties in query methods by method n
 
 7. *Resolution Outcome*:: If the framework successfully identifies a property in the domain class or along the specified traversal path that matches the extracted property name, it uses that property in the query to filter data.
 
+Users are encouraged to follow Java's naming standards in formalizing Jakarta Data queries using name conventions, avoiding underscores in field names. The resolution algorithm for property identification relies on "findBy[Property]" naming, allowing manual traversal with underscores. Adhering to the camel case for property names ensures consistency and seamless query method naming in Jakarta Data, enabling effective data filtering and retrieval from domain classes.
+
 
 *Scenario 1: Person Repository with findByAddressZipCode(ZipCode zipCode)*
 
