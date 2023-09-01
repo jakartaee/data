@@ -22,41 +22,47 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 /**
- * <p>Interface for generic CRUD operations on a repository for a specific type.</p>
- *
+ * <p>A repository interface for performing CRUD (Create, Read, Update, Delete).</p>
  * @param <T> the bean type
  * @param <K> the key type
  */
 public interface CrudRepository<T, K> extends DataRepository<T, K> {
 
     /**
-     * <p>Saves a given entity. Use the returned instance for further operations as the save operation might have changed the
-     * entity instance completely.</p>
+     * Saves a given entity to the database. If the entity has an ID or key that exists in the database,
+     * the method will update the existing record. Otherwise, it will insert a new record.
      *
-     * <p>This method raises {@code jakarta.validation.ConstraintViolationException} prior to saving the entity to the database
-     * if a Jakarta Validation provider is present and the entity is in violation of one or more validation constraints.</p>
+     * <p>If the entity is already persistent (has a non-null ID or key), the method will attempt to
+     * update the existing record in the database. If the entity is not persistent (has a null ID or key),
+     * the method will insert a new record into the database.</p>
      *
-     * @param entity the entity to be saved
-     * @param <S> type of entity to save
-     * @return the saved entity; will never be {@literal null}.
-     * @throws OptimisticLockingFailureException if the entity has a version for optimistic locking
-     *         that differs from the version in the database.
-     * @throws NullPointerException when the entity is null
+     * <p>If the entity is in violation of any validation constraints, a {@code jakarta.validation.ConstraintViolationException}
+     * will be raised before saving the entity to the database, provided a Jakarta Validation provider is present.</p>
+     *
+     * <p>If the entity uses optimistic locking and the version differs from the version in the database,
+     * an {@link OptimisticLockingFailureException} will be thrown.</p>
+     *
+     * @param entity The entity to be saved. Must not be {@literal null}.
+     * @param <S> Type of the entity to save.
+     * @return The saved entity; never {@literal null}.
+     * @throws OptimisticLockingFailureException If the entity uses optimistic locking and the version in the
+     *         database differs from the version in the entity.
+     * @throws NullPointerException If the provided entity is {@literal null}.
      */
     <S extends T> S save(S entity);
 
     /**
-     * <p>Saves all given entities.</p>
+     * Saves all given entities.
      *
      * <p>This method raises {@code jakarta.validation.ConstraintViolationException} prior to saving the entities to the database
      * if a Jakarta Validation provider is present and any of the entities are in violation of one or more validation constraints.</p>
      *
-     * @param entities an iterable of entities
-     * @param <S> type of entity to save
-     * @return the saved entities; will never be {@literal null}.
-     * @throws OptimisticLockingFailureException if an entity has a version for optimistic locking
+     * @param entities An iterable of entities.
+     * @param <S> Type of entity to save.
+     * @return The saved entities; will never be {@literal null}.
+     * @throws OptimisticLockingFailureException If an entity has a version for optimistic locking
      *         that differs from the version in the database.
-     * @throws NullPointerException if either the iterable is null or any element is null
+     * @throws NullPointerException If either the iterable is null or any element is null.
      */
     <S extends T> Iterable<S> saveAll(Iterable<S> entities);
 
@@ -139,14 +145,14 @@ public interface CrudRepository<T, K> extends DataRepository<T, K> {
     void deleteAllById(Iterable<K> ids);
 
     /**
-     * Deletes the given entities. Deletion of each entity is performed by matching the Id, and if the entity is
+     * Deletes the given entities. Deletion of each entity is performed by matching the ID, and if the entity is
      * versioned (for example, with {@code jakarta.persistence.Version}), then also the version.
      * Other properties of the entity do not need to match.
      *
-     * @param entities must not be {@literal null}. Must not contain {@literal null} elements.
-     * @throws OptimisticLockingFailureException if an entity is not found in the database for deletion
+     * @param entities Must not be {@literal null}. Must not contain {@literal null} elements.
+     * @throws OptimisticLockingFailureException If an entity is not found in the database for deletion
      *         or has a version for optimistic locking that is inconsistent with the version in the database.
-     * @throws NullPointerException when either the iterable is null or contains null elements
+     * @throws NullPointerException If either the iterable is null or contains null elements.
      */
     void deleteAll(Iterable<? extends T> entities);
 
