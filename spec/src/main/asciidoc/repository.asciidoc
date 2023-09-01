@@ -147,11 +147,23 @@ public interface ProductRepository extends CrudRepository<Product, Long> {
 }
 ----
 
-The parsing query method name has two parts: the subject and the property.
+The parsing of query method names follows a specific format:
 
-The first part defines the query's subject or condition, and the second the condition value; both forms the predicate.
+- The method name consists of the subject and the property.
+- The subject defines the query's condition or filtering criteria.
+- The property refers to a direct property of the managed entity.
+- The predicate is formed by combining the subject and property.
 
-A predicate can refer only to a direct property of the managed entity. We also have the option to handle entities with another class on them.
+Queries can also handle entities with related classes by specifying the relationship using dot notation.
+
+Example query methods:
+
+- `findByName(String name)`: Find entities by the 'name' property.
+- `findByAgeGreaterThan(int age)`: Find entities where 'age' is greater than the specified value.
+- `findByAuthorName(String authorName)`: Find entities by the 'authorName' property of a related entity.
+- `findByCategoryNameAndPriceLessThan(String categoryName, double price)`: Find entities by 'categoryName' and 'price' properties, applying an 'AND' condition.
+
+
 
 ==== Entity Property Names
 
