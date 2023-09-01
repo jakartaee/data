@@ -182,30 +182,85 @@ public interface OrderRepository extends CrudRepository<Order, Long> {
 }
 ----
 
-For queries by method name, the resolution algorithm starts by interpreting the whole part (AddressZipCode) as the property and checks the domain class for a property with that name (uncapitalized). If the algorithm succeeds, it uses that property.
+The resolution algorithm for identifying properties in query methods by method name, with manual traversal points, is defined as follows:
+
+1. *Method Name Parsing*:: The query method's name is parsed to identify the property or properties being referenced. Method names in query methods typically follow a pattern of "findBy[Property]", where "[Property]" represents the name of the property you want to query by.
+
+2. *Property Extraction*:: The property name is extracted from the method name by removing the "findBy" prefix. For example, in the query method `findByAddressZipCode`, the property name extracted is `AddressZipCode`.
+
+3. *Property Name Capitalization*:: The extracted property name is treated as is, with its original capitalization. For example, if the property name is `AddressZipCode`, it remains in camel case.
+
+4. *Manual Traversal Points*:: To resolve ambiguity or to specify traversal through nested properties, underscores (`_`) can be used within the method name. Each underscore represents a traversal point to access nested properties. For example, `findByAddress_ZipCode` explicitly indicates traversal to the `Address` object's `ZipCode` property.
+
+5. *Domain Class Property Lookup*:: The framework checks the domain class associated with the repository for a property with the same name as the extracted property name (uncapitalized). If the domain class has a property named `addressZipCode`, this is considered a successful resolution.
+
+6. *Nested Property Handling*:: If the extracted property name includes underscores (`_`) indicating nested traversal, the framework follows the specified path to resolve the property.
+
+7. *Resolution Outcome*:: If the framework successfully identifies a property in the domain class or along the specified traversal path that matches the extracted property name, it uses that property in the query to filter data.
+
+
+*Scenario 1: Person Repository with findByAddressZipCode(ZipCode zipCode)*
+
+In this scenario, we have the following data models:
 
 [source,java]
 ----
-@Repository
-public interface OrderRepository extends CrudRepository<Order, Long> {
+class Person {
+  private Long id;
+  private Address address;
+}
 
-  Stream<Order> findByAddressZipCode(ZipCode zipCode);
-
+class Address {
+  private Zipcode zipcode;
 }
 ----
 
+- The query method `findByAddressZipCode` takes a `ZipCode` object as a parameter.
+- The Property Resolution Algorithm will parse the method name and extract `AddressZipCode`.
+- It will then attempt to resolve the property named `addressZipCode` in the `Person` class, following automatic class splitting by camel case.
+- Since the `Person` class has an `Address` property, it will recursively follow the path to the `Address` class.
+- In the `Address` class, it will identify the `Zipcode` property and filter `Person` records based on the provided `ZipCode` object within the `Address` object.
 
-Although this should work for most cases, to resolve this ambiguity, you can use `_` inside your method name to manually define traversal points.
+*Scenario 2: People Repository with findByAddressZipCode(String addressZipCode)*
+
+
+In this scenario, we have the following data model:
 
 [source,java]
 ----
-@Repository
-public interface OrderRepository extends CrudRepository<Order, Long> {
-
-  Stream<Order> findByAddress_ZipCode(ZipCode zipCode);
-
+class Person {
+  private Long id;
+  private String addressZipCode;
 }
 ----
+
+- The query method `findByAddressZipCode` takes a `String` parameter named `addressZipCode`.
+- The Property Resolution Algorithm will parse the method name and extract `AddressZipCode`.
+- It will then attempt to resolve the property named `addressZipCode` in the `Person` class, following automatic class splitting by camel case.
+- If a property named `addressZipCode` of type `String` exists in the `Person` class or its nested objects, the query will filter `Person` records based on the provided `addressZipCode` string.
+
+*Scenario 3: OrderRepository` Repository with `findByAddress_ZipCode(ZipCode zipCode)*
+
+In this scenario, we have the following data models:
+
+[source,java]
+----
+class Order {
+  private Long id;
+  private String addressZipCode;
+  private Address address;
+}
+
+class Address {
+  private Zipcode zipcode;
+}
+----
+
+- The query method `findByAddress_ZipCode` takes a `ZipCode` object as a parameter.
+- The method name includes an underscore (`_`) indicating manual traversal points.
+- The Property Resolution Algorithm will parse the method name and extract `Address_ZipCode`, recognizing the underscore as a traversal point.
+- It will then attempt to resolve the property named `Address` within the `Order` class, followed by the `ZipCode` property within the `Address` class, following manual traversal points.
+- If properties `Address` and `ZipCode` are found in the appropriate classes or their nested objects, the query will filter `Order` records based on the provided `ZipCode` object within the `Address` object.
 
 WARNING: Define as a priority following standard Java naming conventions, camel case,  using underscore as the last resort.
 
