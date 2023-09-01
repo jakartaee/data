@@ -283,7 +283,7 @@ The following table lists the subject keywords generally supported by Jakarta Da
 |Count projection returning a numeric result.
 
 |existsBy
-|Exists projection, returning typically a `boolean` result.
+|Exists projection, returning as a `boolean` result.
 |===
 
 Jakarta Data implementations support the following list of predicate keywords to the extent that the database is capable of the behavior. A repository method will raise `jakarta.data.exceptions.DataException` or a more specific subclass of the exception if the database does not provide the requested functionality.
