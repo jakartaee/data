@@ -136,7 +136,7 @@ public class Student {
 
 In this example, the `name` field is annotated with `@NotBlank`, indicating that it must not be blank. The `age` field is annotated with both `@Positive` and `@Min(18)`, ensuring it is a positive integer greater than or equal to 18.
 
-The `School` repository interface, shown below, uses the `jakarta.validation.Valid` annotation to cause the constraints from the `Student` entity to be applied to the `save` operation parameter, whereas the validation constraints are not applied to the `Student` entities that are the results of the `findByAgeLessThanEqual` operation because the example does not include any `jakarta.validation.Valid` annotation that applies to the return value.
+The `School` repository interface, shown below, uses the `jakarta.validation.Valid` annotation to cause the constraints from the `Student` entity to be validated during the `save` operation, whereas the validation constraints are not applied to the `Student` entities returned as a result of the `findByAgeLessThanEqual` operation because the `findByAgeLessThanEqual` method does not include a `jakarta.validation.Valid` annotation that applies to the return value.
 
 [source,java]
 ----
