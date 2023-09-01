@@ -261,7 +261,7 @@ class Address {
 - The method name includes an underscore (`_`) indicating manual traversal points.
 - The Property Resolution Algorithm will parse the method name and extract `Address_ZipCode`, recognizing the underscore as a traversal point.
 - It will then attempt to resolve the property named `Address` within the `Order` class, followed by the `zipcode` property within the `Address` class, following manual traversal points.
-- If properties `Address` and `ZipCode` are found in the appropriate classes or their nested objects, the query will filter `Order` records based on the provided `ZipCode` object within the `Address` object.
+- If properties `Address` and `ZipCode` are found in the appropriate classes or their nested objects, the query will filter `Order` records based on the provided `Zipcode` object within the `Address` object.
 
 WARNING: Define as a priority following standard Java naming conventions, camel case,  using underscore as the last resort.
 
