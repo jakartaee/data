@@ -152,7 +152,7 @@ The parsing of query method names follows a specific format:
 - The method name consists of the subject, the predicate, and optionally the order clause.
 - The subject defines the query's condition or filtering criteria.
 - The property refers to a direct property of the managed entity.
-- The predicate is formed by combining the subject and property.
+- The method name is formed by combining the subject, predicate, and order clause, in that order.
 
 Queries can also handle entities with related classes by specifying the relationship using dot notation.
 
