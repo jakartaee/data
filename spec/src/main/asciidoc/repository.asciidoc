@@ -162,7 +162,7 @@ Example query methods:
 - `findByName(String name)`: Find entities by the 'name' property.
 - `findByAgeGreaterThan(int age)`: Find entities where 'age' is greater than the specified value.
 - `findByAuthorName(String authorName)`: Find entities by the 'authorName' property of a related entity.
-- `findByCategoryNameAndPriceLessThan(String categoryName, double price)`: Find entities by 'categoryName' and 'price' properties, applying an 'AND' condition.
+- `findByCategoryNameAndPriceLessThan(String categoryName, double price)`: Find entities by 'categoryName' and 'price' properties, applying an 'And' condition.
 
 
 
