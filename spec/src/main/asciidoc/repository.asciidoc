@@ -150,8 +150,9 @@ public interface ProductRepository extends CrudRepository<Product, Long> {
 The parsing of query method names follows a specific format:
 
 - The method name consists of the subject, the predicate, and optionally the order clause.
-- The subject defines the query's condition or filtering criteria.
-- The property refers to a direct property of the managed entity.
+- The subject, defines the action (such as `find` or `delete`) , optionally followed by an expression (for example, `First10`), followed by `By`
+- The predicate defines the query's condition or filtering criteria, where multiple conditions are delimited by `And` or `Or`. For example, `PriceLessThanAndNameLike`.
+- The order clause, which is optional, begins with `OrderBy` and consists of an ordered collection of entity attributes by which to sort results, delimited by `Asc` or `Desc` to specify the sort direction of the preceding attribute.
 - The method name is formed by combining the subject, predicate, and order clause, in that order.
 
 Queries can also handle entities with related classes by specifying the relationship using dot notation.
