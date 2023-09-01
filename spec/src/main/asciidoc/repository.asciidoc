@@ -149,7 +149,7 @@ public interface ProductRepository extends CrudRepository<Product, Long> {
 
 The parsing of query method names follows a specific format:
 
-- The method name consists of the subject and the property.
+- The method name consists of the subject, the predicate, and optionally the order clause.
 - The subject defines the query's condition or filtering criteria.
 - The property refers to a direct property of the managed entity.
 - The predicate is formed by combining the subject and property.
