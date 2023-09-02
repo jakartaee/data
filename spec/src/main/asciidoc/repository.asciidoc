@@ -265,6 +265,26 @@ class Address {
 - It will then attempt to resolve the property named `Address` within the `Order` class, followed by the `zipcode` property within the `Address` class, following manual traversal points.
 - If properties `Address` and `ZipCode` are found in the appropriate classes or their nested objects, the query will filter `Order` records based on the provided `Zipcode` object within the `Address` object.
 
+
+*Scenario 4: People Repository with findByAddressZipCode(String addressZipCode)*
+
+
+In this scenario, we have the following data model:
+
+[source,java]
+----
+class Person {
+  private Long id;
+  private String addressZipcode;
+}
+----
+
+- The query method `findByAddressZipCode` takes a `String` parameter named `addressZipCode`.
+- The Property Resolution Algorithm will parse the method name and extract `AddressZipCode`.
+- It will then attempt to resolve the property named `addressZipcode` in the `Person` class, following automatic class splitting by case-insensitive.
+- If a property named `addressZipCode` of type `String` exists in the `Person` class or its nested objects, the query will filter `Person` records based on the provided `addressZipCode` string.
+
+
 WARNING: Define as a priority following standard Java naming conventions, camel case,  using underscore as the last resort.
 
 In queries by method name, `Id` is an alias for the entity property that is designated as the id. Entity property names that are used in queries by method name must not contain reserved words.
