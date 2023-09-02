@@ -39,9 +39,18 @@ class ReplaceCamelCaseAndUnderscoreTest {
         String result1 = replaceCamelCaseAndUnderscore.replaceCamelCaseAndUnderscore(input1);
         String input2 = "shouldCreateLimitWithRange";
         String result2 = replaceCamelCaseAndUnderscore.replaceCamelCaseAndUnderscore(input2);
+        String input3 = "shouldReturn5Errors";
+        String result3 = replaceCamelCaseAndUnderscore.replaceCamelCaseAndUnderscore(input3);
+        String input4 = "shouldReturnTheValueOf_maxResults";
+        String result4 = replaceCamelCaseAndUnderscore.replaceCamelCaseAndUnderscore(input4);
+        String input5 = "shouldReturnTheNumberOfErrorsAs_numberOfErrors_InferiorOrEqualTo5";
+        String result5 = replaceCamelCaseAndUnderscore.replaceCamelCaseAndUnderscore(input5);
         assertSoftly(softly -> {
             softly.assertThat(result1).isEqualTo("Should return error when maxResults is negative");
             softly.assertThat(result2).isEqualTo("Should create limit with range");
+            softly.assertThat(result3).isEqualTo("Should return 5 errors");
+            softly.assertThat(result4).isEqualTo("Should return the value of maxResults");
+            softly.assertThat(result5).isEqualTo("Should return the number of errors as numberOfErrors inferior or equal to 5");
         });
     }
 }

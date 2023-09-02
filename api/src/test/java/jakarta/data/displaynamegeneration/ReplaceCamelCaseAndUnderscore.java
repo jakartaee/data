@@ -90,6 +90,6 @@ public class ReplaceCamelCaseAndUnderscore extends DisplayNameGenerator.Standard
                 }
             }
         }
-        return result.toString();
+        return result.toString().replaceAll("(\\d+)", " $1");
     }
 }
