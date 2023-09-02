@@ -90,6 +90,11 @@ public class ReplaceCamelCaseAndUnderscore extends DisplayNameGenerator.Standard
                 }
             }
         }
+
+        /*Add space before all numbers
+        * Nothing is done after number because each number must be followed by an uppercase letter. Thus, there will be space between these two.
+        * In case of a lowercase letter following number, this will be considered as the user's choice. Thus, there will be no space between these two.
+        * */
         return result.toString().replaceAll("(\\d+)", " $1");
     }
 }
