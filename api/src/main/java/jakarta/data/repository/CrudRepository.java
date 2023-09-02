@@ -23,6 +23,7 @@ import java.util.stream.Stream;
 
 /**
  * <p>A repository interface for performing CRUD (Create, Read, Update, Delete).</p>
+ *
  * @param <T> the bean type
  * @param <K> the key type
  */
@@ -32,12 +33,15 @@ public interface CrudRepository<T, K> extends DataRepository<T, K> {
      * Saves a given entity to the database. If the entity has an ID or key that exists in the database,
      * the method will update the existing record. Otherwise, it will insert a new record.
      *
-     * <p>If the entity is already persistent (has a non-null ID or key), the method will attempt to
-     * update the existing record in the database. If the entity is not persistent (has a null ID or key),
-     * the method will insert a new record into the database.</p>
+     * <p>If the entity has a non-null ID, the method will attempt to
+     * update the existing record in the database. If the entity does not exist in the database or has a null ID,
+     * then this method will insert a new record into the database.</p>
      *
-     * <p>If the entity is in violation of any validation constraints, a {@code jakarta.validation.ConstraintViolationException}
-     * will be raised before saving the entity to the database, provided a Jakarta Validation provider is present.</p>
+     * <p>The entity instance that is returned as a result value of this method
+     * must be updated with all automatically generated values and incremented values
+     * that changed due to the save. After invoking this method, do not continue to use
+     * the entity value that is supplied as a parameter. This method makes no guarantees
+     * about the state of the entity value that is supplied as a parameter.</p>
      *
      * <p>If the entity uses optimistic locking and the version differs from the version in the database,
      * an {@link OptimisticLockingFailureException} will be thrown.</p>
@@ -49,13 +53,23 @@ public interface CrudRepository<T, K> extends DataRepository<T, K> {
      *         database differs from the version in the entity.
      * @throws NullPointerException If the provided entity is {@literal null}.
      */
+    // TODO Jakarta Validation-related doc was found to be inconsistent with the Jakarta Validation spec
+    //      so it is removed from the save methods for now. Pull #231 will be making corrections.
     <S extends T> S save(S entity);
 
     /**
-     * Saves all given entities.
+     * Saves all given entities to the database. If an entity has a non-null ID that exists in the database,
+     * the method will update the existing record. Otherwise, it will insert a new record.
      *
-     * <p>This method raises {@code jakarta.validation.ConstraintViolationException} prior to saving the entities to the database
-     * if a Jakarta Validation provider is present and any of the entities are in violation of one or more validation constraints.</p>
+     * <p>If an entity has a non-null ID, this method will attempt to update the
+     * existing record in the database. If an entity does not exist in the database
+     * or has a null ID, then this method inserts a new record into the database.</p>
+     *
+     * <p>The entity instances that are returned as a result of this method
+     * must be updated with all automatically generated values and incremented values
+     * that changed due to the save. After invoking this method, do not continue to use
+     * the entity values that are supplied in the parameter. This method makes no guarantees
+     * about the state of the entity values that are supplied in the parameter.</p>
      *
      * @param entities An iterable of entities.
      * @param <S> Type of entity to save.
