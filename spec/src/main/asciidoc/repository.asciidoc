@@ -193,7 +193,7 @@ The resolution algorithm for identifying properties in query methods by method n
 
 4. *Manual Traversal Points*:: To resolve ambiguity or to specify traversal through nested properties, underscores (`_`) can be used within the method name. Each underscore represents a traversal point to access nested properties. For example, `findByAddress_ZipCode` explicitly indicates traversal to the `Address` object's `ZipCode` property.
 
-5. *Domain Class Property Lookup*:: The framework checks the domain class associated with the repository for a property with the same name as the extracted property name (uncapitalized). If the domain class has a property named `addressZipCode`, this is considered a successful resolution.
+5. **Domain Class Property Lookup**: The framework checks the domain class associated with the repository for a property with the same name as the extracted property name (uncapitalized) in a case-insensitive manner. If the domain class has a property named `addressZipCode` or `addresszipcode`, this is considered a successful resolution.
 
 6. *Nested Property Handling*:: If the extracted property name includes underscores (`_`) indicating nested traversal, the framework follows the specified path to resolve the property.
 
