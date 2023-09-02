@@ -20,7 +20,11 @@ package jakarta.data.displaynamegeneration.test;
 import jakarta.data.displaynamegeneration.ReplaceCamelCaseAndUnderscore;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
@@ -33,24 +37,24 @@ class ReplaceCamelCaseAndUnderscoreTest {
         replaceCamelCaseAndUnderscore = new ReplaceCamelCaseAndUnderscore();
     }
 
-    @Test
-    void shouldManageCamelCaseAndUnderscoreVeryWell() {
-        String input1 = "shouldReturnErrorWhen_maxResults_IsNegative";
-        String result1 = replaceCamelCaseAndUnderscore.replaceCamelCaseAndUnderscore(input1);
-        String input2 = "shouldCreateLimitWithRange";
-        String result2 = replaceCamelCaseAndUnderscore.replaceCamelCaseAndUnderscore(input2);
-        String input3 = "shouldReturn5Errors";
-        String result3 = replaceCamelCaseAndUnderscore.replaceCamelCaseAndUnderscore(input3);
-        String input4 = "shouldReturnTheValueOf_maxResults";
-        String result4 = replaceCamelCaseAndUnderscore.replaceCamelCaseAndUnderscore(input4);
-        String input5 = "shouldReturnTheNumberOfErrorsAs_numberOfErrors_InferiorOrEqualTo5";
-        String result5 = replaceCamelCaseAndUnderscore.replaceCamelCaseAndUnderscore(input5);
+    private static Stream<Arguments> provideInputAndResult() {
+        return Stream.of(
+                Arguments.of("shouldReturnErrorWhen_maxResults_IsNegative", "Should return error when maxResults is negative"),
+                Arguments.of("shouldCreateLimitWithRange", "Should create limit with range"),
+                Arguments.of("shouldReturn5Errors", "Should return 5 errors"),
+                Arguments.of("shouldReturn5errors", "Should return 5errors"),
+                Arguments.of("shouldReturn23Errors", "Should return 23 errors"),
+                Arguments.of("shouldReturnTheValueOf_maxResults", "Should return the value of maxResults"),
+                Arguments.of("shouldReturnTheNumberOfErrorsAs_numberOfErrors_InferiorOrEqualTo5", "Should return the number of errors as numberOfErrors inferior or equal to 5"),
+                Arguments.of("shouldReturnTheNumberOfErrorsAs_numberOfErrors_InferiorOrEqualTo15", "Should return the number of errors as numberOfErrors inferior or equal to 15")
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideInputAndResult")
+    void shouldManageCamelCaseAndUnderscoreVeryWell(final String input, final String result) {
         assertSoftly(softly -> {
-            softly.assertThat(result1).isEqualTo("Should return error when maxResults is negative");
-            softly.assertThat(result2).isEqualTo("Should create limit with range");
-            softly.assertThat(result3).isEqualTo("Should return 5 errors");
-            softly.assertThat(result4).isEqualTo("Should return the value of maxResults");
-            softly.assertThat(result5).isEqualTo("Should return the number of errors as numberOfErrors inferior or equal to 5");
+            softly.assertThat(replaceCamelCaseAndUnderscore.replaceCamelCaseAndUnderscore(input)).isEqualTo(result);
         });
     }
 }
