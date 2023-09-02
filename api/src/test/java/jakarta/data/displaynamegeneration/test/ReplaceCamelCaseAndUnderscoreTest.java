@@ -37,7 +37,7 @@ class ReplaceCamelCaseAndUnderscoreTest {
         replaceCamelCaseAndUnderscore = new ReplaceCamelCaseAndUnderscore();
     }
 
-    private static Stream<Arguments> provideInputAndResult() {
+    private static Stream<Arguments> provideInputAndExpectedResult() {
         return Stream.of(
                 Arguments.of("shouldReturnErrorWhen_maxResults_IsNegative", "Should return error when maxResults is negative"),
                 Arguments.of("shouldCreateLimitWithRange", "Should create limit with range"),
@@ -51,10 +51,10 @@ class ReplaceCamelCaseAndUnderscoreTest {
     }
 
     @ParameterizedTest
-    @MethodSource("provideInputAndResult")
-    void shouldManageCamelCaseAndUnderscoreVeryWell(final String input, final String result) {
+    @MethodSource("provideInputAndExpectedResult")
+    void shouldManageCamelCaseAndUnderscoreVeryWell(final String input, final String expectedResult) {
         assertSoftly(softly -> {
-            softly.assertThat(replaceCamelCaseAndUnderscore.replaceCamelCaseAndUnderscore(input)).isEqualTo(result);
+            softly.assertThat(replaceCamelCaseAndUnderscore.replaceCamelCaseAndUnderscore(input)).isEqualTo(expectedResult);
         });
     }
 }
