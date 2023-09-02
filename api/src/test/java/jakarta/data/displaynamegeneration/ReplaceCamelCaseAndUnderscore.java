@@ -28,16 +28,6 @@ public class ReplaceCamelCaseAndUnderscore extends DisplayNameGenerator.Standard
     }
 
     @Override
-    public String generateDisplayNameForClass(Class<?> testClass) {
-        return replaceCamelCaseAndUnderscore(super.generateDisplayNameForClass(testClass));
-    }
-
-    @Override
-    public String generateDisplayNameForNestedClass(Class<?> nestedClass) {
-        return replaceCamelCaseAndUnderscore(super.generateDisplayNameForNestedClass(nestedClass));
-    }
-
-    @Override
     public String generateDisplayNameForMethod(Class<?> testClass, Method testMethod) {
         return replaceCamelCaseAndUnderscore(testMethod.getName()) + DisplayNameGenerator.parameterTypesAsString(testMethod);
     }
