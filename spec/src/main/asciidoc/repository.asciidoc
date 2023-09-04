@@ -193,7 +193,7 @@ Explanation of the BNF elements:
 - `<find-expression>`: Represents an optional expression for find operations, such as "First10."
 - `<predicate>`: Represents the query's condition or filtering criteria, which can include multiple conditions separated by "And" or "Or."
 - `<condition>`: Specifies a property and an operator for the condition.
-- `<operator>`: Defines the operator for the condition, like "Equals" or "LessThan."
+- `<operator>`: Defines the operator for the condition, like "Between" or "LessThan."
 - `<property>`: Represents a property name, which can include underscores for nested properties.
 - `<identifier>`: Represents a word (e.g., property names, action names, etc.).
 - `<number>`: Represents an integer or float number.
