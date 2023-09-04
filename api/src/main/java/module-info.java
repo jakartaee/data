@@ -513,10 +513,47 @@ import jakarta.data.repository.Sort;
  *
  * <h2>Jakarta Validation</h2>
  *
- * <p>When a Jakarta Validation provider is present, validation constraints that are defined for entities
- * are automatically applied by the {@code save} and {@code saveAll} repository operations prior to saving
- * entities to the database. These methods raise {@code jakarta.validation.ConstraintViolationException}
- * if an entity is in violation of one or more validation constraints.</p>
+ * <p>When a Jakarta Validation provider is present, constraints that are defined on
+ * repository method parameters and return values are validated according to the section,
+ * "Method and constructor validation", of the Jakarta Validation specification.</p>
+ *
+ * <p>The {@code jakarta.validation.Valid} annotation opts in to cascading validation,
+ * causing constraints within the objects that are supplied as parameters
+ * or returned as results to also be validated.</p>
+ *
+ * <p>Repository methods raise {@code jakarta.validation.ConstraintViolationException}
+ * if validation fails.</p>
+ *
+ * <p>The following is an example of method validation, where the
+ * parameter to {@code findByEmailIn} must not be the empty set,
+ * and cascading validation, where the {@code Email} and {@code NotNull} constraints
+ * on the entity that is supplied to {@code save} are validated,</p>
+ *
+ * <pre>
+ * import jakarta.validation.Valid;
+ * import jakarta.validation.constraints.Email;
+ * import jakarta.validation.constraints.NotEmpty;
+ * import jakarta.validation.constraints.NotNull;
+ * ...
+ *
+ * &#64;Repository
+ * public interface AddressBook extends DataRepository&lt;Contact, Long&gt; {
+ *
+ *     List&lt;Contact&gt; findByEmailIn(&#64;NotEmpty Set&lt;String&gt; emails);
+ *
+ *     void save(&#64;Valid Contact c);
+ * }
+ *
+ * &#64;Entity
+ * public class Contact {
+ *     &#64;Email
+ *     &#64;NotNull
+ *     public String email;
+ *     &#64;Id
+ *     public long id;
+ *     ...
+ * }
+ * </pre>
  *
  * <h2>Jakarta Transactions</h2>
  *

@@ -109,15 +109,14 @@ By supporting Jakarta NoSQL annotations, Jakarta Data providers enable Java deve
 
 Integrating with Jakarta Validation ensures data consistency within the Java layer. By applying validation rules to the data, developers can enforce constraints and business rules, preventing invalid or inconsistent information from being processed or persisted.
 
-Incorporating Jakarta Validation into your Jakarta Data applications helps enforce data consistency at the Java layer. When you invoke the `save` or `saveAll` method on repositories, the Jakarta Data provider ensures that the validation rules defined in the entity are automatically executed prior to updating the database if a Jakarta Validation provider is present. For instance, when persisting a `Student` object, the `name` field will be validated to ensure it is not blank.
-
 Using Jakarta Validation brings several advantages. It helps maintain data integrity, improves data quality, and enhances the reliability of the application. Catching validation errors early in the Java layer can identify and resolve potential issues before further processing or persistence occurs. Additionally, Jakarta Validation allows for declarative validation rules, simplifying the validation logic and promoting cleaner and more maintainable code.
+
+In Jakarta Data, repository methods participate in method validation as defined by the section "Method and constructor validation" of the Jakarta Validation specification. Method validation includes validation of constraints on method parameters and results. The `jakarta.validation.Valid` annotation is used to opt in to cascading validation that validates constraints that are found on an object that is supplied as a parameter or returned as a result.
 
 The following code snippet demonstrates the usage of Jakarta Validation annotations in the `Student` entity class:
 
 [source,java]
 ----
-@Schema(name = "Student")
 @Entity
 public class Student {
 
@@ -137,16 +136,18 @@ public class Student {
 
 In this example, the `name` field is annotated with `@NotBlank`, indicating that it must not be blank. The `age` field is annotated with both `@Positive` and `@Min(18)`, ensuring it is a positive integer greater than or equal to 18.
 
-The `School` repository interface, shown below, utilizes the validation rules defined in the `Student` entity:
+The `School` repository interface, shown below, uses the `jakarta.validation.Valid` annotation to cause the constraints from the `Student` entity to be validated during the `save` operation, whereas the validation constraints are not applied to the `Student` entities returned as a result of the `findByAgeLessThanEqual` operation because the `findByAgeLessThanEqual` method does not include a `jakarta.validation.Valid` annotation that applies to the return value.
 
 [source,java]
 ----
 @Repository
-public interface School extends PageableRepository<Student, String> {
+public interface School extends DataRepository<Student, String> {
+    void save(@Valid Student s);
 
+    List<Student> findByAgeLessThanEqual(@Min(18) int age);
 }
 ----
 
-In the Jakarta Data specification, when integrating with Jakarta Bean Validation, the validation process must occur for `save` and `saveAll` methods of Repository interfaces prior to making inserts or updates in the database. It means that when using the save methods to perform an insert or update operation on a database, Jakarta Bean Validation will execute the defined constraints to validate the data being inserted or updated.
+==== Avoiding Overlap with Validation from Jakarta Persistence
 
-Regarding the delete and find operations, the integration with Jakarta Bean Validation can be included or made optional by the provider. It means that the validation process for delete and find operations may or may not be applied, depending on the configuration or implementation of a provider. It is up to the provider to determine whether or not to include validation for these database operations.
+Jakarta Data providers that are built using Jakarta Persistence might require the user to define persistence units for repositories or might handle the details of defining the persistence units internally. A user that defines the persistence unit for a Jakarta Data repository must specify the `validation-mode` as `NONE` per the "Enabling Automatic Validation" section of the Jakarta Persistence specification to avoid duplicate validation of entities. Similarly, the Jakarta Data provider must specify either the `validation-mode` of `NONE` or the `jakarta.persistence.validation.mode` map key with value of `none` that is defined in the "Enabling Automatic Validation" section of the Jakarta Persistence specification to avoid duplicate validation of entities.
