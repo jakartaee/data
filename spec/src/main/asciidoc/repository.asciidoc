@@ -179,7 +179,6 @@ Query methods allow developers to create database queries using method naming co
 <operator> ::= "Contains" | "EndsWith" | "StartsWith" | "LessThan"| "LessThanEqual" | "GreaterThan" | "GreaterThanEqual" | "Between" | "Empty" | "Like" | "In" | "Null" | "True" | "False"
 <property> ::= <identifier> | <identifier> "_" <property>
 <identifier> ::= <word>
-<number> ::= <positive-integer>
 <positive-integer> ::= <digit> { <digit> }
 <order-clause> ::= "OrderBy" { <order-item> } ( <order-item> | <property> )
 <order-item> ::= <property> ("Asc" | "Desc")
