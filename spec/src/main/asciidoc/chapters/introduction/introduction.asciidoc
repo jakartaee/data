@@ -25,10 +25,21 @@ Dealing with a database is one of the biggest challenges within a software archi
 
 === Goals
 
-Jakarta Data works in a tight integration between Java and a persistence layer, where it has the following specification goals:
+Jakarta Data is a pivotal solution that addresses a fundamental challenge in Java application development: the seamless integration of diverse data sources. This integration is crucial for applications with many databases and storage technologies.
 
-* Be a persistence agnostic API. Therefore, through abstractions, it will connect different types of databases and storage sources.
-* Be a pluggable and extensible API. Even when the API won't support a particular behavior of a storage engine, it might provide an extensible API to make it possible.
+The primary problem Jakarta Data sets out to solve is the complexity and inconsistency that arises when Java applications encounter various database systems—some relational, some NoSQL, and others unique. Managing these diverse data sources can be daunting, often requiring developers to write specialized code for each storage technology.
+
+Jakarta Data takes this challenge further by enhancing the concept of a "persistence agnostic API" with a Domain-Driven Design (DDD) approach. This approach enables developers to work with different databases and storage engines and align their data access strategies with the core principles of DDD, where the domain model plays a central role in shaping the application's architecture.
+
+Jakarta Data is guided by a set of clear and well-defined objectives to simplify data integration and enhance data access for Java developers. These objectives serve as the pillars of its design philosophy, ensuring that it addresses real-world challenges and provides concrete advantages to developers. In the following section, we will explore Jakarta Data's core objectives underpinning its functionality and purpose. By understanding these objectives, you'll gain valuable insights into how Jakarta Data aims to streamline data interaction across diverse storage technologies.
+
+* Jakarta Data is engineered to tackle a fundamental problem: simplifying data access and manipulation within Java applications that interact with diverse databases and storage sources.
+* Jakarta Data is designed to be "persistence agnostic." In this context, "agnostic" does not mean "portable" but implies that Jakarta Data is not tied to a specific database technology. It offers a flexible, adaptable framework that allows you to work with the databases and storage sources that best suit your project's needs. This agnostic approach ensures that Jakarta Data can cater to various use cases.
+* Enhancing Domain-Driven Design (DDD): Jakarta Data enhances the concept of a "persistence agnostic API" with a Domain-Driven Design (DDD) approach. It enables developers to align their data access strategies with the core principles of DDD, where the domain model plays a central role in shaping the application's architecture.
+* Unified API: Jakarta Data provides a unified and standardized API for interacting with various data sources. This consistency simplifies development by allowing developers to use the same tools and practices regardless of the underlying database technology.
+* Pluggable and Extensible: Jakarta Data is designed to be pluggable and extensible. Even in cases where the API doesn't directly support a specific behavior of a storage engine, Jakarta Data aims to provide an extensible API to enable developers to customize and adapt as needed.
+* Simplified Querying and Database Operations: Jakarta Data aims to make querying and database operations more accessible and efficient. Whether through annotations, a driver, or query-by-method, it strives to be compatible with several databases, simplifying interacting with different data sources.
+* Seamless Integration: Jakarta Data enables seamless integration between Java applications and various persistence layers, making it easier for developers to work with different databases and storage sources without extensive customization.
 
 === Non-Goals
 
