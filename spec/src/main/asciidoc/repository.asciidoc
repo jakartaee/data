@@ -173,7 +173,7 @@ Query methods allow developers to create database queries using method naming co
 <query-method> ::= <subject> <predicate> [<order-clause>]
 <subject> ::= (<action> | "find" <find-expression>) "By"
 <action> ::= "find" | "delete" | "update" | "count" | "exists"
-<expression> ::= <identifier> | <identifier> <number>
+<find-expression> ::= "First" [<positive-integer>]
 <predicate> ::= <condition> { ("And" | "Or") <condition> }
 <condition> ::= <property> ["IgnoreCase"] ["Not"] [<operator>]
 <operator> ::= "Contains" | "EndsWith" | "StartsWith" | "LessThan"| "LessThanEqual" | "GreaterThan" | "GreaterThanEqual" | "Between" | "Empty" | "Like" | "In" | "Null" | "True" | "False"
