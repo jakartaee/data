@@ -171,7 +171,7 @@ Query methods allow developers to create database queries using method naming co
 [source,bnf]
 ----
 <query-method> ::= <subject> <predicate> [<order-clause>]
-<subject> ::= <action> "By" | <action> <expression> "By"
+<subject> ::= (<action> | "find" <find-expression>) "By"
 <action> ::= "find" | "delete" | "update" | "count" | "exists"
 <expression> ::= <identifier> | <identifier> <number>
 <predicate> ::= <condition> { ("And" | "Or") <condition> }
