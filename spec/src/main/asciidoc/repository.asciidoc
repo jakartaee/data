@@ -196,9 +196,7 @@ Explanation of the BNF elements:
 - `<operator>`: Defines the operator for the condition, like "Between" or "LessThan."
 - `<property>`: Represents a property name, which can include underscores for nested properties.
 - `<identifier>`: Represents a word (e.g., property names, action names, etc.).
-- `<number>`: Represents an integer or float number.
-- `<integer>`: Represents a sequence of digits.
-- `<float>`: Represents a floating-point number.
+- `<positive-integer>`: Represents a whole number greater than zero.
 - `<order-clause>`: Specifies the optional order clause, starting with "OrderBy" and followed by one or more order items.
 - `<order-item>`: Represents an ordered collection of entity attributes by which to sort results, including an optional "Asc" or "Desc" to specify the sort direction.
 
