@@ -175,7 +175,7 @@ Query methods allow developers to create database queries using method naming co
 <action> ::= "find" | "delete" | "update" | "count" | "exists"
 <expression> ::= <identifier> | <identifier> <number>
 <predicate> ::= <condition> { ("And" | "Or") <condition> }
-<condition> ::= <property> <operator>
+<condition> ::= <property> ["IgnoreCase"] ["Not"] [<operator>]
 <operator> ::= "Equals" | "Is" | "LessThan"| "LessThanEqual" | "GreaterThan" | "GreaterThanEqual" | "Between" | "Empty" | "Like" | "IgnoreCase" | "In" | "Null" | "True" | "False"
 <property> ::= <identifier> | <identifier> "_" <property>
 <identifier> ::= <word>
