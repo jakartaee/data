@@ -182,7 +182,7 @@ Query methods allow developers to create database queries using method naming co
 <number> ::= <integer> | <float>
 <integer> ::= <digit> { <digit> }
 <float> ::= <integer> "." <integer>
-<order-clause> ::= "OrderBy" <order-item> { "," <order-item> }
+<order-clause> ::= "OrderBy" { <order-item> } ( <order-item> | <property> )
 <order-item> ::= <property> ["Asc" | "Desc"]
 ----
 
