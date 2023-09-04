@@ -164,7 +164,40 @@ Example query methods:
 - `findByAuthorName(String authorName)`: Find entities by the 'authorName' property of a related entity.
 - `findByCategoryNameAndPriceLessThan(String categoryName, double price)`: Find entities by 'categoryName' and 'price' properties, applying an 'And' condition.
 
+==== BNF Grammar for Query Methods
 
+Query methods allow developers to create database queries using method naming conventions. These methods consist of a subject, predicate, and optional order clause. This BNF notation provides a structured representation for understanding and implementing these powerful querying techniques in your applications.
+
+[source,bnf]
+----
+<query-method> ::= <subject> <predicate> [<order-clause>]
+<subject> ::= (<action> | "find" <find-expression>) "By"
+<action> ::= "find" | "delete" | "update" | "count" | "exists"
+<find-expression> ::= "First" [<positive-integer>]
+<predicate> ::= <condition> { ("And" | "Or") <condition> }
+<condition> ::= <property> ["IgnoreCase"] ["Not"] [<operator>]
+<operator> ::= "Contains" | "EndsWith" | "StartsWith" | "LessThan"| "LessThanEqual" | "GreaterThan" | "GreaterThanEqual" | "Between" | "Empty" | "Like" | "In" | "Null" | "True" | "False"
+<property> ::= <identifier> | <identifier> "_" <property>
+<identifier> ::= <word>
+<positive-integer> ::= <digit> { <digit> }
+<order-clause> ::= "OrderBy" { <order-item> } ( <order-item> | <property> )
+<order-item> ::= <property> ("Asc" | "Desc")
+----
+
+Explanation of the BNF elements:
+
+- `<query-method>`: Represents a query method, which consists of a subject, a predicate, and an optional order clause.
+- `<subject>`: Defines the action (e.g., "find" or "delete") followed by an optional expression and "By."
+- `<action>`: Specifies the action, such as "find" or "delete."
+- `<find-expression>`: Represents an optional expression for find operations, such as "First10."
+- `<predicate>`: Represents the query's condition or filtering criteria, which can include multiple conditions separated by "And" or "Or."
+- `<condition>`: Specifies a property and an operator for the condition.
+- `<operator>`: Defines the operator for the condition, like "Between" or "LessThan."
+- `<property>`: Represents a property name, which can include underscores for nested properties.
+- `<identifier>`: Represents a word (e.g., property names, action names, etc.).
+- `<positive-integer>`: Represents a whole number greater than zero.
+- `<order-clause>`: Specifies the optional order clause, starting with "OrderBy" and followed by one or more order items.
+- `<order-item>`: Represents an ordered collection of entity attributes by which to sort results, including an optional "Asc" or "Desc" to specify the sort direction.
 
 ==== Entity Property Names
 
