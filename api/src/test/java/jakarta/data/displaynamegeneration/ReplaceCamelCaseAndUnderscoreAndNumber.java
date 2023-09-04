@@ -163,7 +163,7 @@ public class ReplaceCamelCaseAndUnderscoreAndNumber extends DisplayNameGenerator
         return result.toString().replaceAll("(\\d+)", " $1");
     }
 
-    private static boolean hasParameters(Method method) {
+    private boolean hasParameters(Method method) {
         return method.getParameterCount() > 0;
     }
 }
