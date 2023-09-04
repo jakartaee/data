@@ -191,7 +191,7 @@ Explanation of the BNF elements:
 - `<query-method>`: Represents a query method, which consists of a subject, a predicate, and an optional order clause.
 - `<subject>`: Defines the action (e.g., "find" or "delete") followed by an optional expression and "By."
 - `<action>`: Specifies the action, such as "find" or "delete."
-- `<expression>`: Represents an optional expression, such as "First10."
+- `<find-expression>`: Represents an optional expression for find operations, such as "First10."
 - `<predicate>`: Represents the query's condition or filtering criteria, which can include multiple conditions separated by "And" or "Or."
 - `<condition>`: Specifies a property and an operator for the condition.
 - `<operator>`: Defines the operator for the condition, like "Equals" or "LessThan."
