@@ -21,18 +21,83 @@ import org.junit.jupiter.api.DisplayNameGenerator;
 
 import java.lang.reflect.Method;
 
-public class ReplaceCamelCaseAndUnderscore extends DisplayNameGenerator.Standard {
+/**
+ * <p>A class extending {@linkplain DisplayNameGenerator.Standard }.</p>
+ *
+ * <p>This extension handles method names with CamelCase, underscore and numbers.</p>
+ *
+ * <p>The aim is to simplify unit test display names. Instead of using this method annotation {@linkplain org.junit.jupiter.api.DisplayName },
+ * we can just use this class annotation {@linkplain org.junit.jupiter.api.DisplayNameGeneration } and use that method annotation if needed.
+ * </p>
+ *
+ * <p>This generator follows 3 rules:</p>
+ *
+ * <ul>
+ *     <li>Each uppercase letter is turned into its lowercase value prepended by space.</li>
+ *     <li>Each underscore is turned into space. Words bounded by underscores or just starting with underscore are not transformed. Usually these words words represent classes, variables....</li>
+ *     <li>Each number is prepended by space.</li>
+ * </ul>
+ *
+ * Usage example:
+ *
+ * <pre>
+ *
+ *     {@code
+ *
+ * @DisplayNameGeneration(ReplaceCamelCaseAndUnderscoreAndNumber.class)
+ * class ExampleTest {
+ *     @Test
+ *     //Equivalent of @DisplayName("Should return error when maxResults is negative")
+ *     void shouldReturnErrorWhen_maxResults_IsNegative() {
+ *       ...
+ *     }
+ *     @Test
+ *     //Equivalent of @DisplayName("Should create limit with range")
+ *     void shouldCreateLimitWithRange() {
+ *       ...
+ *     }
+ *
+ *     @Test
+ *     //Equivalent of @DisplayName("Should return 5 errors")
+ *     void shouldReturn5Errors() {
+ *       ...
+ *     }
+ *
+ *     @Test
+ *     //Equivalent of @DisplayName("Should return the value of maxResults")
+ *     void shouldReturnTheValueOf_maxResults() {
+ *       ...
+ *     }
+ *
+ *     @Test
+ *     //Equivalent of @DisplayName("Should return the number of errors as numberOfErrors inferior or equal to 15")
+ *     void shouldReturnTheNumberOfErrorsAs_numberOfErrors_InferiorOrEqualTo15() {
+ *       ...
+ *     }
+ * }
+ *
+ *     }
+ * </pre>
+ *
+ * */
+public class ReplaceCamelCaseAndUnderscoreAndNumber extends DisplayNameGenerator.Standard {
 
-    public ReplaceCamelCaseAndUnderscore() {
+    //TODO: Use after making String replaceCamelCaseAndUnderscoreAndNumber(String input) private
+    static final DisplayNameGenerator INSTANCE = new ReplaceCamelCaseAndUnderscoreAndNumber();
+
+    public ReplaceCamelCaseAndUnderscoreAndNumber() {
         super();
     }
 
     @Override
     public String generateDisplayNameForMethod(Class<?> testClass, Method testMethod) {
-        return replaceCamelCaseAndUnderscore(testMethod.getName()) + DisplayNameGenerator.parameterTypesAsString(testMethod);
+        if(hasParameters(testMethod)){
+            return replaceCamelCaseAndUnderscoreAndNumber(testMethod.getName()) + DisplayNameGenerator.parameterTypesAsString(testMethod);
+        }
+        return replaceCamelCaseAndUnderscoreAndNumber(testMethod.getName());
     }
 
-    public String replaceCamelCaseAndUnderscore(String input) {
+    public String replaceCamelCaseAndUnderscoreAndNumber(String input) {
         StringBuilder result = new StringBuilder();
         /*
          * Each method name starts with "should" then the displayed name starts with "Should"
@@ -96,5 +161,9 @@ public class ReplaceCamelCaseAndUnderscore extends DisplayNameGenerator.Standard
         * In case of a lowercase letter following number, this will be considered as the user's choice. Thus, there will be no space between these two.
         * */
         return result.toString().replaceAll("(\\d+)", " $1");
+    }
+
+    private static boolean hasParameters(Method method) {
+        return method.getParameterCount() > 0;
     }
 }

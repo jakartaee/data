@@ -17,7 +17,7 @@
  */
 package jakarta.data.displaynamegeneration.test;
 
-import jakarta.data.displaynamegeneration.ReplaceCamelCaseAndUnderscore;
+import jakarta.data.displaynamegeneration.ReplaceCamelCaseAndUnderscoreAndNumber;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -28,13 +28,13 @@ import java.util.stream.Stream;
 
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
-@DisplayNameGeneration(ReplaceCamelCaseAndUnderscore.class)
-class ReplaceCamelCaseAndUnderscoreTest {
-    private ReplaceCamelCaseAndUnderscore replaceCamelCaseAndUnderscore;
+@DisplayNameGeneration(ReplaceCamelCaseAndUnderscoreAndNumber.class)
+class ReplaceCamelCaseAndUnderscoreAndNumberTest {
+    private ReplaceCamelCaseAndUnderscoreAndNumber replaceCamelCaseAndUnderscoreAndNumber;
 
     @BeforeEach
     void setUp() {
-        replaceCamelCaseAndUnderscore = new ReplaceCamelCaseAndUnderscore();
+        replaceCamelCaseAndUnderscoreAndNumber = new ReplaceCamelCaseAndUnderscoreAndNumber();
     }
 
     private static Stream<Arguments> provideInputAndExpectedResult() {
@@ -52,9 +52,9 @@ class ReplaceCamelCaseAndUnderscoreTest {
 
     @ParameterizedTest
     @MethodSource("provideInputAndExpectedResult")
-    void shouldManageCamelCaseAndUnderscoreVeryWell(final String input, final String expectedResult) {
+    void shouldReturnMethodDisplayNamesForCamelCaseAndUnderscoreAndNumber(final String input, final String expectedResult) {
         assertSoftly(softly -> {
-            softly.assertThat(replaceCamelCaseAndUnderscore.replaceCamelCaseAndUnderscore(input)).isEqualTo(expectedResult);
+            softly.assertThat(replaceCamelCaseAndUnderscoreAndNumber.replaceCamelCaseAndUnderscoreAndNumber(input)).isEqualTo(expectedResult);
         });
     }
 }
