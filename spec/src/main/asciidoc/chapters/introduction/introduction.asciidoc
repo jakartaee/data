@@ -33,13 +33,19 @@ Jakarta Data takes this challenge further by enhancing the concept of a "persist
 
 Jakarta Data is guided by a set of clear and well-defined objectives to simplify data integration and enhance data access for Java developers. These objectives serve as the pillars of its design philosophy, ensuring that it addresses real-world challenges and provides concrete advantages to developers:
 
-* *Jakarta Data is engineered to tackle a fundamental problem*: simplifying data access and manipulation within Java applications that interact with diverse databases and storage sources.
-* *Jakarta Data is designed to be "persistence agnostic*." In this context, "agnostic" does not mean "portable" but implies that Jakarta Data is not tied to a specific database technology. It offers a flexible, adaptable framework that allows you to work with the databases and storage sources that best suit your project's needs. This agnostic approach ensures that Jakarta Data can cater to various use cases.
-* *Enhancing Domain-Driven Design (DDD)*: Jakarta Data enhances the concept of a "persistence agnostic API" with a Domain-Driven Design (DDD) approach. It enables developers to align their data access strategies with the core principles of DDD, where the domain model plays a central role in shaping the application's architecture.
-* *Unified API*: Jakarta Data provides a unified and standardized API for interacting with various data sources. This consistency simplifies development by allowing developers to use the same tools and practices regardless of the underlying database technology.
-* *Pluggable and Extensible*: Jakarta Data is designed to be pluggable and extensible. Even in cases where the API doesn't directly support a specific behavior of a storage engine, Jakarta Data aims to provide an extensible API to enable developers to customize and adapt as needed.
-* *Simplified and Domain-Centric Querying and Database Operations*: Jakarta Data strongly emphasizes simplifying and aligning querying and database operations with your application's domain model. By offering domain-centric query capabilities through annotations, a driver, or query-by-method, Jakarta Data strives to be compatible with multiple databases and inherently closer to your application's domain logic. This approach ensures that your queries and operations are more portable among various persistence engines, making working with different data sources easier while maintaining a cohesive and domain-focused codebase.
-* *Seamless Integration*: Jakarta Data enables seamless integration between Java applications and various persistence layers, making it easier for developers to work with different databases and storage sources without extensive customization.
+* **Jakarta Data is engineered to tackle a fundamental problem:** simplifying data access and manipulation within Java applications that interact with diverse databases and storage sources.
+
+* **Jakarta Data is designed to be "persistence agnostic."** In this context, "agnostic" does not mean "transferable" but implies that Jakarta Data is not tied to a specific database technology. It offers a flexible, adaptable framework that allows you to work with the databases and storage sources that best suit your project's needs. This agnostic approach ensures that Jakarta Data can cater to various use cases.
+
+* **Enhancing Domain-Driven Design (DDD):** Jakarta Data enhances the concept of a "persistence agnostic API" with a Domain-Driven Design (DDD) approach. It enables developers to align their data access strategies with the core principles of DDD, where the domain model plays a central role in shaping the application's architecture.
+
+* **Unified API:** Jakarta Data provides a unified and standardized API for interacting with various data sources. This consistency simplifies development by allowing developers to use the same tools and practices regardless of the underlying database technology.
+
+* **Pluggable and Extensible:** Jakarta Data is designed to be pluggable and extensible. Even in cases where the API doesn't directly support a specific behavior of a storage engine, Jakarta Data aims to provide an extensible API to enable developers to customize and adapt as needed.
+
+* **Simplified and Domain-Centric Querying and Database Operations:** Jakarta Data strongly emphasizes simplifying and aligning querying and database operations with your application's domain model. By offering domain-centric query capabilities through annotations, a driver, or query-by-method, Jakarta Data strives to be compatible with multiple databases and inherently closer to your application's domain logic. This approach ensures that your queries and operations are more versatile among various persistence engines, making working with different data sources easier while maintaining a cohesive and domain-focused codebase.
+
+* **Seamless Integration:** Jakarta Data enables seamless integration between Java applications and various persistence layers, making it easier for developers to work with different databases and storage sources without extensive customization.
 
 === Non-Goals
 
