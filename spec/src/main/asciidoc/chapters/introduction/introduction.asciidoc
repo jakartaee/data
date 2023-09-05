@@ -29,7 +29,7 @@ Jakarta Data is a pivotal solution that addresses a fundamental challenge in Jav
 
 The primary problem Jakarta Data sets out to solve is the complexity and inconsistency that arises when Java applications encounter various database systems—some relational, some NoSQL, and others unique. Managing these diverse data sources can be daunting, often requiring developers to write specialized code for each storage technology.
 
-Jakarta Data takes this challenge further by enhancing the concept of a "persistence agnostic API" with a Domain-Driven Design (DDD) approach. This approach enables developers to work with different databases and storage engines and align their data access strategies with the core principles of DDD, where the domain model plays a central role in shaping the application's architecture.
+Jakarta Data combines the concept of a persistence agnostic API with a Domain-Driven Design (DDD) approach. This approach enables developers to work with different databases and storage engines and align their data access strategies with the core principles of DDD, where the domain model plays a central role in shaping the application's architecture.
 
 Jakarta Data is guided by a set of clear and well-defined objectives to simplify data integration and enhance data access for Java developers. These objectives serve as the pillars of its design philosophy, ensuring that it addresses real-world challenges and provides concrete advantages to developers:
 
