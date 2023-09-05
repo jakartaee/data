@@ -30,12 +30,6 @@ As employed in Jakarta Data, the Repository pattern exhibits several key charact
 
 - **Domain-Centric:** Repositories are designed to be domain-centric, aligning with your application's domain model. It means that data access operations are closely tied to your business entities, making your code more intuitive and expressive.
 
-Multiple design patterns are available to Java developers in data access and persistence, each with strengths and trade-offs. When considering the Repository pattern in Jakarta Data, comparing it to other prevalent patterns like Active Record and DAO (Data Access Object) is valuable. By contrasting these patterns, we can better appreciate the advantages and distinctions that make the Repository pattern a compelling choice for many Java projects. This comparison will help you decide which best aligns with your application needs and design goals.
-
-- **Active Record Pattern:** In the Active Record pattern, domain objects are tightly coupled with database operations. Each domain object typically represents a database record, and the object itself handles database CRUD (Create, Read, Update, Delete) operations. It can be simpler for small-scale projects but can lead to a lack of separation of concerns in larger, more complex applications.
-
-- **DAO (Data Access Object) Pattern:** The DAO pattern separates the data access code from domain objects. DAO classes handle database interactions, while domain objects focus solely on representing data. While this separation provides better maintainability and testability, it can lead to more boilerplate code than the Repository pattern.
-
 In summary, the Repository pattern in Jakarta Data offers a structured and domain-centric approach to data access, providing a balance between abstraction and ease of use. It simplifies data access by encapsulating the details of the data source while aligning closely with your application's domain model. It makes it a valuable choice for many Java developers, especially in projects where a clean separation of concerns and maintainable codebase are essential.
 
 === Repositories on Jakarta Data
