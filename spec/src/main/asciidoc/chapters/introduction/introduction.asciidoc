@@ -35,7 +35,7 @@ Jakarta Data is guided by a set of clear and well-defined objectives to simplify
 
 * **Jakarta Data is engineered to tackle a fundamental problem:** simplifying data access and manipulation within Java applications that interact with diverse databases and storage sources.
 
-* **Jakarta Data is designed to be "persistence agnostic."** In this context, "agnostic" does not mean "transferable" but implies that Jakarta Data is not tied to a specific database technology. It offers a flexible, adaptable framework that allows you to work with the databases and storage sources that best suit your project's needs. This agnostic approach ensures that Jakarta Data can cater to various use cases.
+* **Jakarta Data is designed to be persistence agnostic.** In this context, agnostic does not mean that you can switch the underlying persistence without changes but implies that Jakarta Data is not tied to a specific database technology. It offers a flexible, adaptable framework that allows you to work with the databases and storage sources that best suit your project's needs. This agnostic approach ensures that Jakarta Data can cater to various use cases.
 
 * **Enhancing Domain-Driven Design (DDD):** Jakarta Data enhances the concept of a "persistence agnostic API" with a Domain-Driven Design (DDD) approach. It enables developers to align their data access strategies with the core principles of DDD, where the domain model plays a central role in shaping the application's architecture.
 
