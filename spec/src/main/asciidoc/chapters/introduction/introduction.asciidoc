@@ -43,10 +43,13 @@ Jakarta Data is guided by a set of clear and well-defined objectives to simplify
 
 === Non-Goals
 
-As with any software component, these decisions come with trade-offs and the following non-goals:
+In the development of any software component, important decisions are made to strike a balance between various considerations. It's equally important to define what Jakarta Data does not aim to achieve—its non-goals:
 
-* Provide specific features of Jakarta Persistence, Jakarta NoSQL, etc. Those APIs have their own specifications.
-* Replace the Jakarta Persistence or Jakarta NoSQL specifications. Indeed, Jakarta Data will work as a complement to these specifications as an agnostic API.
+1. **Specific Features of Jakarta Persistence, Jakarta NoSQL, etc., and Specializations:** Jakarta Data does not intend to replicate or replace the specific features provided by other Jakarta specifications, such as Jakarta Persistence and Jakarta NoSQL, along with their associated specializations and extensions. These specifications have well-defined scopes and functionalities that cater to specific use cases. Jakarta Data operates with the understanding that it complements these specifications by providing a higher-level, agnostic API. It does not seek to duplicate its capabilities but aims to simplify data access and integration across diverse data sources. The specialized features, specializations, and extensions that address particular behaviors and use cases are crucial within the Jakarta ecosystem but distinct from Jakarta Data's core API. Jakarta Data's core primarily provides a persistence-agnostic data access and integration framework. It establishes a consistent foundation that abstracts the complexities of data sources and storage engines, offering developers a unified approach.
+
+2. **Replacement of Jakarta Persistence or Jakarta NoSQL Specifications:** Jakarta Data's primary goal is not to replace or supersede the Jakarta Persistence or Jakarta NoSQL specifications. Instead, it works in harmony with these specifications, serving as an additional layer that abstracts the complexities of data access. Jakarta Data enhances the developer experience by offering a persistence-agnostic approach while leveraging the capabilities of Jakarta Persistence and Jakarta NoSQL. Its role is to complement and simplify, not replace, these established specifications."
+
+These clarifications emphasize Jakarta Data's role as a complementary and simplifying layer within the Jakarta ecosystem, highlighting that it does not aim to replicate existing functionality or replace established specifications.
 
 === Conventions
 
