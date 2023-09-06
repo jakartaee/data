@@ -36,3 +36,25 @@ Wide-column databases offer more query flexibility, even allowing the use of sec
 Document databases provide query flexibility akin to relational databases, offering robust query capabilities. They encourage denormalization for performance optimization. When interfacing with document databases, Jakarta Data goes a step further by supporting both built-in repositories: CrudRepository and PageableRepository. Additionally, method by query is implemented, though developers should be aware that some keywords may not be universally supported.
 
 These portability considerations reflect Jakarta Data's commitment to providing a consistent data access experience across diverse NoSQL database types. While specific capabilities and query support may vary, Jakarta Data aims to simplify data access, promoting flexibility and compatibility in NoSQL database interactions.
+
+
+=== Jakarta Data Compatibility Across Database Types
+
+Jakarta Data is designed to provide a consistent data access experience across various database types, including relational, key-value, wide-column, and document databases. This compatibility table outlines the support levels for essential Jakarta Data features across these database categories. Key features such as CrudRepository (all methods), PageableRepository, and Query by Method are evaluated to help developers make informed decisions when working with different databases in their applications. Please refer to the table below to understand the compatibility status for each database type.
+
+[cols="2,6,6,6,6"]
+|===
+| Database Type | CrudRepository (partial) | CrudRepository (all methods) | PageableRepository | Query by Method
+
+| Relational Database  | Supported | Supported | Supported | Supported
+| Key-Value Database   | Supported | Not Supported | Not Supported     | Not Supported
+| Wide-Column Database | Supported | Limited Support | Limited Support | Limited Support
+| Document Database    | Supported | Supported | Limited Support | Limited Support
+|===
+
+[NOTE]
+.Compatibility Key
+* Supported: Feature is fully supported and implemented.
+* Limited Support: Feature is partially supported, with potential limitations or restrictions.
+* Not Supported: Feature is not supported for the respective database type.
+* Note: "CrudRepository (partial)" refers to a subset of methods in CrudRepository, excluding deleteAll and count. "CrudRepository (all methods)" refers to all methods in CrudRepository.
