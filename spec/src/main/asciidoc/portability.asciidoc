@@ -1,0 +1,38 @@
+== Portability in Jakarta Data
+
+Portability is a critical aspect of Jakarta Data, ensuring flexibility and adaptability across different data stores while maintaining consistent functionality. To address concerns related to optional functionality, under-specified semantics, and the need for challenging requirements on implementations, Jakarta Data offers a comprehensive approach to portability. This approach is discussed separately for relational databases and NoSQL databases.
+
+=== Portability in Relational Databases
+
+When dealing with relational databases, Jakarta Data aims to achieve maximum portability, especially when the Provider is aligned with the Jakarta Persistence specification (JPA). This commitment to portability includes:
+
+1. **Support for Jakarta Persistence Annotations:** Jakarta Data, when used in conjunction with a Jakarta Provider adhering to JPA, ensures comprehensive support for all Jakarta Persistence annotations. This support covers a wide range of functionality, including entity definitions, primary keys, relationships, and query hints.
+
+2. **Built-In Repositories:** Jakarta Data's built-in repositories, such as `PageableRepository` and `CrudRepository`, are designed to offer consistent and well-defined methods compatible with Jakarta Persistence. It ensures that developers consistently rely on these repositories to perform common data access tasks.
+
+3. **Query Methods:** Jakarta Data's support for query methods, including pagination, ordering, and limiting, is designed to work seamlessly with Jakarta Persistence. It means that developers can utilize query methods to access and manipulate data in a way that is consistent with the Jakarta Persistence specification.
+
+By aligning Jakarta Data closely with Jakarta Persistence, developers can expect high portability and compatibility when working with relational databases. This approach ensures that Jakarta Data remains a powerful tool for simplifying data access, irrespective of the specific relational database used.
+
+Changing a Jakarta Data Provider aligned with Jakarta Persistence (JPA) should seamlessly transition without disrupting other aspects of the application. By closely mirroring annotations with the database schema, Jakarta Data simplifies development while ensuring consistency within the data access layer.
+
+
+=== Portability in NoSQL Databases
+
+Portability in Jakarta Data extends to various NoSQL databases, each presenting unique challenges and capabilities. Jakarta Data aims to provide a consistent experience across these NoSQL database types. Here, we delve into the key portability aspects for three primary NoSQL database categories: key-value, wide-column, and document databases.
+
+==== Key-Value Databases
+
+Key-value databases resemble dictionaries or Maps in Java, where data is primarily accessed using a key. In such databases, queries unrelated to keys are typically limited. To ensure a minimum level of support, Jakarta Data mandates the implementation of CrudRepository built-in methods that require an identifier or a key. However, the deleteAll and count methods are not required. Additionally, methods relying on complex queries, which are defined as queries that do not use the Key or identifier, may be ignored due to the fundamental nature of key-value databases.
+
+IMPORTANT: For any NoSQL database type not covered here, such as Graph and time series databases, the Key-value support serves as the minimum required level of compatibility.
+
+==== Wide-Column Databases
+
+Wide-column databases offer more query flexibility, even allowing the use of secondary indexes, albeit potentially impacting performance. When interacting with wide-column databases, Jakarta Data requires the implementation of the CrudRepository along with all of its methods, including method by query. However, developers should be mindful that certain query keywords, such as "And" or "Or," may not be universally supported in these databases.
+
+==== Document Databases
+
+Document databases provide query flexibility akin to relational databases, offering robust query capabilities. They encourage denormalization for performance optimization. When interfacing with document databases, Jakarta Data goes a step further by supporting both built-in repositories: CrudRepository and PageableRepository. Additionally, method by query is implemented, though developers should be aware that some keywords may not be universally supported.
+
+These portability considerations reflect Jakarta Data's commitment to providing a consistent data access experience across diverse NoSQL database types. While specific capabilities and query support may vary, Jakarta Data aims to simplify data access, promoting flexibility and compatibility in NoSQL database interactions.
