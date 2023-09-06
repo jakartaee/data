@@ -32,7 +32,7 @@ For instance `mvn -Dlicense-file=final` will generate documentation with the lin
 == Working on the Specification
 
 This specification is split among different AsciiDoc files located in `src/main/asciidoc`
-The master document (entry point) is `jakarta-data.asciidoc` that includes all the specification documents.
+The master document (entry point) is `jakarta-data.adoc` that includes all the specification documents.
 
 To work with the specification documents, you may want to install an AsciiDoc plugin in your preferred IDE. You can also use a good text editor that provides an AsciiDoc plugin. The best candidate are:
 
