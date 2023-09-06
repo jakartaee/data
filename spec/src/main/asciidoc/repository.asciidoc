@@ -89,15 +89,17 @@ public interface Garage extends CrudRepository<Car, String> {
 
 === Entity Classes
 
-Entity classes are simple Java objects with fields or accessor methods designating each entity property.
+In Jakarta Data, an entity refers to a fundamental data representation and management building block. It can be conceptually understood in several aspects:
 
-You may use `jakarta.persistence.Entity` and the corresponding entity-related annotations of the Jakarta Persistence specification in the same package (such as `jakarta.persistence.Id` and `jakarta.persistence.Column`) to define and customize entities for relational databases.
+1. *Entity Classes*: Entity classes are simple Java objects equipped with fields or accessor methods that designate each property of the entity. Depending on your data storage needs, you may use annotations from the Jakarta Persistence specification, such as `jakarta.persistence.Entity`, `jakarta.persistence.Id`, and `jakarta.persistence.Column`, to define and customize entities for relational databases. Alternatively, for NoSQL databases, you can use annotations from the Jakarta NoSQL specification, including `jakarta.nosql.Entity`, `jakarta.nosql.Id`, and `jakarta.nosql.Column`.
 
-You may use `jakarta.nosql.Entity` and the corresponding entity-related annotations of the Jakarta NoSQL specification in the same package (such as `jakarta.nosql.Id` and `jakarta.nosql.Column`) to define and customize entities for NoSQL databases.
+2. *Data Schema*: Abstractly, an entity or entity type serves as a schema for data. It defines the structure and properties of the data it represents. This schema can be as simple as a set of typed fields, similar to the relational model, or more structured, as found in document data stores. The schema can be explicitly defined, as in the case of SQL Data Definition Language (DDL) declarations for relational tables, or it can be implicit, common in key/value stores.
 
-Applications are recommended not to mix Entity annotations from different models for the sake of clarity and to allow for the Entity annotation to identify which provider is desired in cases where multiple types of Jakarta Data providers are available.
+3. *Persistence and Representation*: Entities are associated with persistent data, meaning the data outlives any specific Java process utilizing it. Each persistent instantiation of the schema is distinguishable by a unique identifier. For example, a row of a relational database table is identifiable by the value of its primary key. In Java, these entities are represented as classes, referred to as entity classes. It's important to note that multiple instances of the entity class within a Java program can represent a single persistent instance of the schema.
 
-Repository implementations will search for the Entity annotation(s) they support and ignore other annotations.
+4. *Provider Differentiation*: To maintain clarity and specify the desired provider when using Jakarta Data, it's recommended that applications do not mix Entity annotations from different models. This practice allows the Entity annotation to indicate the desired provider, especially in cases where multiple types of Jakarta Data providers are available. Repository implementations are designed to search for and support specific Entity annotations while ignoring others.
+
+An entity within Jakarta Data encompasses the Java class representing the data and the schema, persistence characteristics, and provider-specific annotations, all working together to simplify data access and management within Java applications.
 
 === Query Methods
 
