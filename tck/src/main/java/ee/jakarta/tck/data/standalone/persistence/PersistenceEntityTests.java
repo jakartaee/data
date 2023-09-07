@@ -94,6 +94,20 @@ public class PersistenceEntityTests {
         assertEquals(3L, catalog.deleteByProductNumLike("TEST-PROD-%"));
     }
 
+    @Assertion(id = "133", strategy = "Use a repository method that obtains the Entity Manager.")
+    public void testEntityManager() {
+        catalog.deleteByProductNumLike("TEST-PROD-%");
+
+        catalog.save(Product.of("bicycle", 359.98, "TEST-PROD-81", Department.SPORTING_GOODS));
+        catalog.save(Product.of("shin guards", 8.99, "TEST-PROD-83", Department.SPORTING_GOODS));
+        catalog.save(Product.of("dishwasher", 788.10, "TEST-PROD-86", Department.APPLIANCES));
+        catalog.save(Product.of("socks", 5.99, "TEST-PROD-87", Department.CLOTHING));
+        catalog.save(Product.of("volleyball", 10.99, "TEST-PROD-89", Department.SPORTING_GOODS));
+
+        assertEquals(385.95, catalog.sumPrices(Department.CLOTHING, Department.SPORTING_GOODS), 0.001);
+        assertEquals(794.09, catalog.sumPrices(Department.CLOTHING, Department.APPLIANCES), 0.001);
+    }
+
     @Assertion(id = "133", strategy = "Use a repository method findByIdBetween where the entity's Id attribute is named something other than id.")
     public void testIdAttributeWithDifferentName() {
         catalog.deleteByProductNumLike("TEST-PROD-%");
