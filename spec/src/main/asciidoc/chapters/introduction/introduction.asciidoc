@@ -19,9 +19,11 @@ Java developer can split the persistence from the model with several features,
 such as the ability to compose custom query methods on a Repository interface where the framework
 will implement it.
 
-There is no doubt about the importance of data around the application. We often talk about a stateless application, where we delegate the application's state to the database.
+There is no doubt about the importance of data within the context of an application. We often discuss the concept of a stateless application, where we delegate the management of the application's state to the database.
 
-Dealing with a database is one of the biggest challenges within a software architecture. In addition to choosing one of several options on the market, it is necessary to consider the persistence integrations. Jakarta Data makes life easier for Java developers.
+Dealing with a database presents one of the most significant challenges within software architecture. Beyond selecting from the various database options available in the market, it's essential to consider the intricacies of persistence integrations. Jakarta Data simplifies the lives of Java developers by providing a solution that streamlines data access and manipulation.
+
+In this context, a "domain-centric" approach refers to designing the application's architecture primarily focusing on the domain model. It means that the application's data and logic structure and organization revolve around the core domain concepts and business rules, ensuring that the domain model plays a central role in shaping the application's structure.
 
 === Goals
 
@@ -29,7 +31,7 @@ Jakarta Data is a pivotal solution that addresses a fundamental challenge in Jav
 
 The primary problem Jakarta Data sets out to solve is the complexity and inconsistency that arises when Java applications encounter various database systems—some relational, some NoSQL, and others unique. Managing these diverse data sources can be daunting, often requiring developers to write specialized code for each storage technology.
 
-Jakarta Data combines the concept of a persistence agnostic API with a Domain-Driven Design (DDD) approach. This approach enables developers to work with different databases and storage engines and align their data access strategies with the core principles of DDD, where the domain model plays a central role in shaping the application's architecture.
+Jakarta Data combines the concept of a persistence agnostic API with a domain-centric approach. This approach enables developers to work with different databases and storage engines while aligning their data access strategies with the core principles of a domain-centric architecture, where the domain model plays a central role in shaping the application's structure.
 
 Jakarta Data is guided by a set of clear and well-defined objectives to simplify data integration and enhance data access for Java developers. These objectives serve as the pillars of its design philosophy, ensuring that it addresses real-world challenges and provides concrete advantages to developers:
 
@@ -37,7 +39,7 @@ Jakarta Data is guided by a set of clear and well-defined objectives to simplify
 
 * **Jakarta Data is designed to be persistence agnostic.** In this context, agnostic does not mean that you can switch the underlying persistence without changes but implies that Jakarta Data is not tied to a specific database technology. It offers a flexible, adaptable framework that allows you to work with the databases and storage sources that best suit your project's needs. This agnostic approach ensures that Jakarta Data can cater to various use cases.
 
-* **Enhancing Domain-Driven Design (DDD):** Jakarta Data enhances the concept of a "persistence agnostic API" with a Domain-Driven Design (DDD) approach. It enables developers to align their data access strategies with the core principles of DDD, where the domain model plays a central role in shaping the application's architecture.
+* **Enhancing a Domain-Centric Approach:** Jakarta Data enhances the concept of a "persistence agnostic API" by incorporating a domain-centric approach. It enables developers to align their data access strategies with the core principles of a domain-centric architecture, where the domain model plays a central role in shaping the application's structure.
 
 * **Unified API:** Jakarta Data provides a unified and standardized API for interacting with various data sources. This consistency simplifies development by allowing developers to use the same tools and practices regardless of the underlying database technology.
 
