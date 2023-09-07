@@ -14,7 +14,7 @@
 
 == Repository
 
-In Domain-Driven Design (DDD) the repository pattern encapsulates the logic required to access data sources. The repository pattern consolidates data access functionality, providing better maintainability and decoupling the infrastructure or technology used to access databases from the domain model layer.
+In the realm of software design, the repository pattern encapsulates the logic required to access data sources. This pattern consolidates data access functionality, offering improved maintainability and decoupling the infrastructure or technology used to access databases from the domain model layer.
 
 image::01-repository.png[alt=repository structure, width=70%, height=70%]
 
