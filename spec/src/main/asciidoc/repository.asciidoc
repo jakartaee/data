@@ -663,9 +663,9 @@ for (Pageable p = Pageable.ofSize(25).sortBy(Sort.desc("yearBorn"), Sort.asc("na
 }
 ----
 
-=== Jakarta Data Vendor Extension Features for Java Persistence
+=== Jakarta Data Vendor Extension Features
 
-When designing and implementing Java persistence solutions, Jakarta Data offers a set of powerful extension features that simplify the development process and enhance the overall code design. These features include Default Methods and Interface Queries.
+When designing and implementing persistence solutions, Jakarta Data offers a set of powerful extension features that simplify the development process and enhance the overall code design. These features include Default Methods, Interface Queries, and Resource Accessor Methods.
 
 ==== Default Methods
 
@@ -707,7 +707,7 @@ Benefits for Java Developers:
 Combine with Interface Queries:
 You can also combine Default Methods with Interface Queries to create comprehensive and reusable repository interfaces that include common queries and default implementations for common operations.
 
-== Interface Queries
+==== Interface Queries
 
 Interface queries are a powerful feature that allows the creation of common queries in separate interfaces, which can then be plugged into repository interfaces. It promotes code reuse and modularity, making it easier to manage and maintain query definitions.
 
@@ -748,6 +748,22 @@ Benefits for Java Developers:
 
 Combine with Default Methods:
 Combining Interface Queries and Default Methods creates repository interfaces with standardized queries and default implementations for common operations, enhancing code organization and usability.
+
+==== Resource Accessor Methods
+
+Jakarta Data providers can be built on top of other technologies, such as Jakarta Persistence or JDBC. At times, users might wish to perform advanced operations using these technologies that are outside the scope of Jakarta Data.
+
+To accommodate this, Jakarta Data defines a mechanism for users to obtain resources such as `EntityManager`, `DataSource`, and `Connection` from the Jakarta Data provider.
+
+A user can define a repository interface method with no parameters and one of the following return types:
+
+* `jakarta.persistence.EntityManager` (for a Jakarta Data provider that is backed by Jakarta Persistence)
+* `javax.sql.DataSource` (for a Jakarta Data provider that is backed by JDBC)
+* `java.sql.Connection` (for a Jakarta Data provider that is backed by JDBC)
+
+The Jakarta Data provider implements the method such that it returns an instance of the type of resource. If the resource type implements `java.lang.AutoCloseable` and the resource is obtained within the scope of a default method of the repository, then the Jakarta Data provider automatically closes the resource upon completion of the default method. If the method for obtaining the resource is invoked outside the scope of a default method of the repository, then the user is responsible for closing the resource instance.
+
+==== Extension Features Summary
 
 In summary, Jakarta Data's extension features offer a range of benefits for Java developers. These features empower developers to evolve interfaces gracefully, streamline query management, and implement intricate functionality while maintaining code integrity and design principles.
 

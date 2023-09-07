@@ -511,6 +511,45 @@ import jakarta.data.repository.Sort;
  *                                 Sort.asc("name"));
  * </pre>
  *
+ * <h2>Repository Default Methods</h2>
+ *
+ * <p>You can compose default methods on your repository interface to supply
+ * user-defined implementation.</p>
+ *
+ * <p>For some advanced scenarios, you might need access to an
+ * underlying resource from the Jakarta Data provider, such as a
+ * {@code jakarta.persistence.EntityManager},
+ * {@code javax.sql.DataSource}, or
+ * {@code java.sql.Connection}</p>
+ *
+ * <p>To obtain the above, you can define accessor methods on your repository interface,
+ * where the method has no parameters and its result value is one of the
+ * aforementioned types. When you invoke the method, the Jakarta Data provider
+ * supplies an instance of the requested type of resource.</p>
+ *
+ * <p>For example,</p>
+ *
+ * <pre>
+ * &#64;Repository
+ * public interface Cars extends CrudRepository&lt;Car, Long&gt; {
+ *     ...
+ *
+ *     EntityManager getEntityManager();
+ *
+ *     default Car[] advancedSearch(SearchOptions filter) {
+ *         EntityManager em = getEntityManager();
+ *         ... use entity manager
+ *         return results;
+ *     }
+ * }
+ * </pre>
+ *
+ * <p>If the resource type inherits from {@link AutoCloseable} and you invoke the
+ * accessor method from a repository default method, the Jakarta Data provider
+ * automatically closes the resource after the default method ends.
+ * If you invoke the accessor method from outside the scope of a default method,
+ * you are responsible for closing the resource instance.</p>
+ *
  * <h2>Jakarta Validation</h2>
  *
  * <p>When a Jakarta Validation provider is present, constraints that are defined on
