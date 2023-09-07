@@ -37,20 +37,34 @@ Document databases provide query flexibility akin to relational databases, offer
 
 These portability considerations reflect Jakarta Data's commitment to providing a consistent data access experience across diverse NoSQL database types. While specific capabilities and query support may vary, Jakarta Data aims to simplify data access, promoting flexibility and compatibility in NoSQL database interactions.
 
+==== Graph Database
+
+A Graph database, a specialized NoSQL variant, excels in managing intricate data relationships, rivaling even traditional relational databases. Its unique strength lies in its ability to handle complex relationships, enhanced by including direction and associated properties known as edges.
+
+In Jakarta Data, Graph databases support advanced querying capabilities, akin to relational databases, while providing extensive support for method by query keywords. Additionally, they fully implement CrudRepository and PageableRepository methods, ensuring seamless data access and manipulation within this specialized NoSQL database type.
 
 === Jakarta Data Compatibility Across Database Types
 
 Jakarta Data is designed to provide a consistent data access experience across various database types, including relational, key-value, wide-column, and document databases. This compatibility table outlines the support levels for essential Jakarta Data features across these database categories. Key features such as CrudRepository (all methods), PageableRepository, and Query by Method are evaluated to help developers make informed decisions when working with different databases in their applications. Please refer to the table below to understand the compatibility status for each database type.
 
-[cols="2,6,6,6,6"]
+[cols="2,6,6,6,6,6"]
 |===
 | Database Type | CrudRepository (partial) | CrudRepository (all methods) | PageableRepository | Query by Method
 
-| Relational Database  | Supported | Supported | Supported | Supported
-| Key-Value Database   | Supported | Not Supported | Not Supported     | Not Supported
-| Wide-Column Database | Supported | Limited Support | Limited Support | Limited Support
-| Document Database    | Supported | Supported | Limited Support | Limited Support
+| Relational Database | Supported | Supported | Supported | Supported
+| Key-Value Database | Supported | Not Supported | Not Supported | Limited Support
+| Wide-Column Database | Supported | Not Supported | Limited Support  | Limited Support
+| Document Database | Supported | Supported | Supported  | Limited Support
+| Graph Database | Supported | Supported | Supported | Limited Support
 |===
+
+[NOTE]
+.Compatibility Key
+* Supported: Feature is fully supported and implemented.
+* Limited Support: Feature is partially supported, with potential limitations or restrictions.
+* Not Supported: Feature is not supported for the respective database type.
+* Note: "CrudRepository (partial)" refers to a subset of methods in CrudRepository, excluding deleteAll and count. "CrudRepository (all methods)" refers to all methods in CrudRepository. "Pagination" encompasses both Offset and Keyset Pagination.
+
 
 [NOTE]
 .Compatibility Key
