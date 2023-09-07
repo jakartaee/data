@@ -387,13 +387,29 @@ Jakarta Data implementations support the following list of predicate keywords to
 |The `or` operator.
 |findByNameOrYear
 
+|Not
+|Negates the condition that immediately follows the `Not` keyword. When used without a subsequent keyword, means not equal to.
+|findByNameNotLike
+
 |Between
 |Find results where the property is between the given values
 |findByDateBetween
 
+|Contains
+|For Collection attributes, matches if the collection includes the value. For String attributes, a substring of the String must match the value, which can be a pattern.
+|findByPhoneNumbersContains
+
 |Empty
 |Find results where the property is an empty collection or has a null value.
 |deleteByPendingTasksEmpty
+
+|EndsWith
+|Matches String values with the given ending, which can be a pattern.
+|findByProductNameEndsWith
+
+|First
+|For a query with ordered results, limits the quantity of results to the number following First, or if there is no subsequent number, to a single result.
+|findFirst10By
 
 |LessThan
 |Find results where the property is less than the given value
@@ -412,7 +428,7 @@ Jakarta Data implementations support the following list of predicate keywords to
 |findByAgeGreaterThanEqual
 
 |Like
-|Finds string values "like" the given expression
+|Matches String values against the given pattern.
 |findByTitleLike
 
 |IgnoreCase
@@ -426,6 +442,10 @@ Jakarta Data implementations support the following list of predicate keywords to
 |Null
 |Finds results where the property has a null value.
 |findByYearRetiredNull
+
+|StartsWith
+|Matches String values with the given beginning, which can be a pattern.
+|findByFirstNameStartsWith
 
 |True
 |Finds results where the property has a boolean value of true.
@@ -452,6 +472,10 @@ Jakarta Data implementations support the following list of predicate keywords to
 |findByNameOrderByAgeAscNameDescYearAsc
 
 |===
+
+====== Patterns
+
+Wildcard characters for patterns are determined by the data access provider. For relational databases, `_` matches any one character and `%` matches 0 or more characters.
 
 ====== Logical Operator Precedence
 
