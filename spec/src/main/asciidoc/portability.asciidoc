@@ -16,7 +16,7 @@ By aligning Jakarta Data closely with relational databases, developers can expec
 
 === Portability in NoSQL Databases
 
-Portability in Jakarta Data extends to various NoSQL databases, each presenting unique challenges and capabilities. Jakarta Data aims to provide a consistent experience across these NoSQL database types. Here, we delve into the key portability aspects for three primary NoSQL database categories: key-value, wide-column, and document databases.
+Portability in Jakarta Data extends to various NoSQL databases, each presenting unique challenges and capabilities. Jakarta Data aims to provide a consistent experience across these NoSQL database types. Here, we delve into the key portability aspects for four primary NoSQL database categories: key-value, wide-column, document, and graph databases.
 
 ==== Key-Value Databases
 
