@@ -4,7 +4,7 @@ Portability is a critical aspect of Jakarta Data, ensuring flexibility and adapt
 
 === Portability in Relational Databases
 
-When dealing with relational databases, Jakarta Data aims to achieve maximum portability, especially when the Provider is aligned with the Jakarta Persistence specification (JPA). This commitment to portability includes:
+All functionality defined by Jakarta Data must be supported when using relational databases.
 
 1. **Support for Jakarta Persistence Annotations:** Jakarta Data, when used in conjunction with a Jakarta Provider adhering to JPA, ensures comprehensive support for all Jakarta Persistence annotations. This support covers a wide range of functionality, including entity definitions, primary keys, relationships, and query hints.
 
