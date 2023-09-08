@@ -22,10 +22,13 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 /**
- * <p>A repository interface for performing CRUD (Create, Read, Update, Delete).</p>
+ * <p>A repository interface for performing CRUD (Create, Read, Update, Delete) operations on entities.</p>
  *
- * @param <T> the bean type
- * @param <K> the key type
+ * <p>This repository provides methods to interact with persistent entities of type <code>&lt;T&gt;</code>,
+ * where <code>&lt;T&gt;</code> represents the entity bean type, and <code>&lt;K&gt;</code> represents the key type.</p>
+ *
+ * @param <T> the entity bean type
+ * @param <K> the key type.
  */
 public interface CrudRepository<T, K> extends DataRepository<T, K> {
 
@@ -102,6 +105,7 @@ public interface CrudRepository<T, K> extends DataRepository<T, K> {
      * Returns all instances of the type.
      *
      * @return all entities; will never be {@literal null}.
+     * @throws UnsupportedOperationException If the operation is not supported by the database.
      */
     Stream<T> findAll();
 
