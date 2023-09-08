@@ -31,8 +31,6 @@ public interface PageableRepository<T, K> extends CrudRepository<T, K> {
     /**
      * Returns a {@link Page} of entities meeting the paging restriction provided in the {@link Pageable} object.
      *
-     * <p>The availability of specific paging modes (such as keyset or offset) may vary depending on the underlying database.</p>
-     *
      * @param pageable the pageable to request a paginated result, must not be null.
      * @return a page of entities; will never be {@literal null}.
      * @throws NullPointerException when pageable is null
