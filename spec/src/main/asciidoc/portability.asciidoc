@@ -6,7 +6,7 @@ Portability is a critical aspect of Jakarta Data, ensuring flexibility and adapt
 
 All functionality defined by Jakarta Data must be supported when using relational databases.
 
-1. **Support for Jakarta Persistence Annotations:** Jakarta Data, when used in conjunction with a Jakarta Provider adhering to JPA, ensures comprehensive support for all Jakarta Persistence annotations. This support covers a wide range of functionality, including entity definitions, primary keys, relationships, and query hints.
+1. **Support for Jakarta Persistence Annotations:** Jakarta Data, when used in conjunction with a Jakarta Persistence provider, ensures comprehensive support for all Jakarta Persistence entity annotations. This support covers a wide range of functionality, including entity definitions, primary keys, and relationships.
 
 2. **Built-In Repositories:** Jakarta Data's built-in repositories, such as `PageableRepository` and `CrudRepository`, are designed to offer consistent and well-defined methods compatible with Jakarta Persistence. It ensures that developers consistently rely on these repositories to perform common data access tasks.
 
