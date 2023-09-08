@@ -34,7 +34,7 @@ Document databases provide query flexibility akin to relational databases, offer
 
 These portability considerations reflect Jakarta Data's commitment to providing a consistent data access experience across diverse NoSQL database types. While specific capabilities and query support may vary, Jakarta Data aims to simplify data access, promoting flexibility and compatibility in NoSQL database interactions.
 
-==== Graph Database
+==== Graph Databases
 
 A Graph database, a specialized NoSQL variant, excels in managing intricate data relationships, rivaling even traditional relational databases. Its unique strength lies in its ability to handle both directed and undirected edges  (or relationships) between vertices (or nodes), including the ability to store properties on both vertices and edges.
 
