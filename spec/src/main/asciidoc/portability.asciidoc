@@ -64,11 +64,3 @@ Jakarta Data is designed to provide a consistent data access experience across v
 * Limited Support: Feature is partially supported, with potential limitations or restrictions.
 * Not Supported: Feature is not supported for the respective database type.
 * Note: "CrudRepository (partial)" refers to a subset of methods in CrudRepository, excluding deleteAll and count. "CrudRepository (all methods)" refers to all methods in CrudRepository. "Pagination" encompasses both Offset and Keyset Pagination.
-
-
-[NOTE]
-.Compatibility Key
-* Supported: Feature is fully supported and implemented.
-* Limited Support: Feature is partially supported, with potential limitations or restrictions.
-* Not Supported: Feature is not supported for the respective database type.
-* Note: "CrudRepository (partial)" refers to a subset of methods in CrudRepository, excluding deleteAll and count. "CrudRepository (all methods)" refers to all methods in CrudRepository.
