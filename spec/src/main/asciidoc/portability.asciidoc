@@ -20,7 +20,7 @@ Portability in Jakarta Data extends to various NoSQL databases, each presenting 
 
 ==== Key-Value Databases
 
-Key-value databases resemble dictionaries or Maps in Java, where data is primarily accessed using a key. In such databases, queries unrelated to keys are typically limited. To ensure a minimum level of support, Jakarta Data mandates the implementation of CrudRepository built-in methods that require an identifier or a key. However, the deleteAll and count methods are not required. Additionally, methods relying on complex queries, which are defined as queries that do not use the Key or identifier, may be ignored due to the fundamental nature of key-value databases.
+Key-value databases resemble dictionaries or Maps in Java, where data is primarily accessed using a key. In such databases, queries unrelated to keys are typically limited. To ensure a minimum level of support, Jakarta Data mandates the implementation of CrudRepository built-in methods that require an identifier or a key. However, the deleteAll and count methods are not required. Methods relying on complex queries, which are defined as queries that do not use the Key or identifier, raise `java.lang.UnsupportedOperationException` due to the fundamental nature of key-value databases.
 
 IMPORTANT: For any NoSQL database type not covered here, such as time series databases, the Key-value support serves as the minimum required level of compatibility.
 
