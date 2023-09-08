@@ -178,7 +178,7 @@ public interface CrudRepository<T, K> extends DataRepository<T, K> {
     /**
      * Deletes all persistent entities managed by the repository.
      *
-     * @throws UnsupportedOperationException If the database does not support the operation.
+     * @throws UnsupportedOperationException for Key-Value and Wide-Column databases that are not capable of the {@code deleteAll} operation.
      */
     void deleteAll();
 
