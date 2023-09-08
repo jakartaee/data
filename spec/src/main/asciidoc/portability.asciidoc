@@ -26,7 +26,7 @@ IMPORTANT: For any NoSQL database type not covered here, such as time series dat
 
 ==== Wide-Column Databases
 
-Wide-column databases offer more query flexibility, even allowing the use of secondary indexes, albeit potentially impacting performance. When interacting with wide-column databases, Jakarta Data requires the implementation of the CrudRepository along with all of its methods, including method by query. However, developers should be mindful that certain query keywords, such as "And" or "Or," may not be universally supported in these databases.
+Wide-column databases offer more query flexibility, even allowing the use of secondary indexes, albeit potentially impacting performance. When interacting with wide-column databases, Jakarta Data requires the implementation of the CrudRepository along with all of its methods, including query by method. However, developers should be mindful that certain query keywords, such as "And" or "Or," may not be universally supported in these databases. The full set of required keywords is documented in the section "Query Methods Keywords".
 
 ==== Document Databases
 
