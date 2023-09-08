@@ -10,7 +10,7 @@ All functionality defined by Jakarta Data must be supported when using relationa
 
 2. **Built-In Repositories:** Jakarta Data's built-in repositories, such as `PageableRepository` and `CrudRepository`, are designed to offer consistent and well-defined methods compatible with relational databases. Developers can rely on these repositories to perform common data access tasks.
 
-3. **Query Methods:** Jakarta Data's support for query methods, including pagination, ordering, and limiting, is designed to work seamlessly with Jakarta Persistence. It means that developers can utilize query methods to access and manipulate data in a way that is consistent with the Jakarta Persistence specification.
+3. **Query Methods:** Jakarta Data's support for query methods, including pagination, ordering, and limiting, is designed to work seamlessly with relational databases.
 
 By aligning Jakarta Data closely with Jakarta Persistence, developers can expect high portability and compatibility when working with relational databases. This approach ensures that Jakarta Data remains a powerful tool for simplifying data access, irrespective of the specific relational database used.
 
