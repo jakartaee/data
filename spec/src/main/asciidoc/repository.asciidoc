@@ -382,7 +382,7 @@ The following table lists the actions keywords generally supported by Jakarta Da
 .Note
 * The "Not Required For" column indicates the database types for which the respective keyword is not required or applicable.
 
-Jakarta Data implementations support the following list of predicate keywords to the extent that the database is capable of the behavior. A repository method will raise `jakarta.data.exceptions.DataException` or a more specific subclass of the exception if the database does not provide the requested functionality.
+Jakarta Data implementations support the following list of predicate keywords to the extent that the database is capable of the behavior. A repository method will raise `java.lang.UnsupportedOperationException` or a more specific subclass of the exception if the database does not provide the requested functionality.
 
 |===
 |Keyword |Description | Method signature Sample| Not Required For
