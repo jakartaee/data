@@ -356,7 +356,7 @@ In queries by method name, `Id` is an alias for the entity property that is desi
 
 ===== Query Methods Keywords
 
-The following table lists the actions keywords generally supported by Jakarta Data.
+The following table lists the query-by-method keywords that must be supported by Jakarta Data providers, except where explicitly indicated for a type of database.
 
 |===
 |Keyword |Description| Not Required For
