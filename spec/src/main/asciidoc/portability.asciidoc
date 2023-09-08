@@ -14,9 +14,6 @@ All functionality defined by Jakarta Data must be supported when using relationa
 
 By aligning Jakarta Data closely with relational databases, developers can expect high portability and compatibility. This approach ensures that Jakarta Data remains a powerful tool for simplifying data access, irrespective of the specific relational database used.
 
-Changing a Jakarta Data Provider aligned with Jakarta Persistence (JPA) should seamlessly transition without disrupting other aspects of the application. By closely mirroring annotations with the database schema, Jakarta Data simplifies development while ensuring consistency within the data access layer.
-
-
 === Portability in NoSQL Databases
 
 Portability in Jakarta Data extends to various NoSQL databases, each presenting unique challenges and capabilities. Jakarta Data aims to provide a consistent experience across these NoSQL database types. Here, we delve into the key portability aspects for three primary NoSQL database categories: key-value, wide-column, and document databases.
