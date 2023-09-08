@@ -127,7 +127,7 @@ public interface CrudRepository<T, K> extends DataRepository<T, K> {
      * Retrieves the total number of persistent entities of the specified type in the database.
      *
      * @return the total number of entities.
-     * @throws UnsupportedOperationException If the database does not support the operation.
+     * @throws UnsupportedOperationException for Key-Value and Wide-Column databases that are not capable of the {@code count} operation.
      */
     long count();
 
