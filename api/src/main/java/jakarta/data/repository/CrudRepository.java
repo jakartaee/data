@@ -102,10 +102,10 @@ public interface CrudRepository<T, K> extends DataRepository<T, K> {
     boolean existsById(K id);
 
     /**
-     * Returns all instances of the type.
+     * Retrieves all persistent entities of the specified type from the database.
      *
-     * @return all entities; will never be {@literal null}.
-     * @throws UnsupportedOperationException If the operation is not supported by the database.
+     * @return a stream of all entities; will never be {@literal null}.
+     * @throws UnsupportedOperationException If the database does not support the operation.
      */
     Stream<T> findAll();
 
@@ -124,9 +124,10 @@ public interface CrudRepository<T, K> extends DataRepository<T, K> {
     Stream<T> findAllById(Iterable<K> ids);
 
     /**
-     * Returns the number of entities available.
+     * Retrieves the total number of persistent entities of the specified type in the database.
      *
-     * @return the number of entities.
+     * @return the total number of entities.
+     * @throws UnsupportedOperationException If the database does not support the operation.
      */
     long count();
 
@@ -175,7 +176,9 @@ public interface CrudRepository<T, K> extends DataRepository<T, K> {
     void deleteAll(Iterable<? extends T> entities);
 
     /**
-     * Deletes all entities managed by the repository.
+     * Deletes all persistent entities managed by the repository.
+     *
+     * @throws UnsupportedOperationException If the database does not support the operation.
      */
     void deleteAll();
 
