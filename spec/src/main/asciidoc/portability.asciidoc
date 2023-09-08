@@ -39,7 +39,7 @@ These portability considerations reflect Jakarta Data's commitment to providing 
 
 ==== Graph Database
 
-A Graph database, a specialized NoSQL variant, excels in managing intricate data relationships, rivaling even traditional relational databases. Its unique strength lies in its ability to handle complex relationships, enhanced by including direction and associated properties known as edges.
+A Graph database, a specialized NoSQL variant, excels in managing intricate data relationships, rivaling even traditional relational databases. Its unique strength lies in its ability to handle both directed and undirected edges  (or relationships) between vertices (or nodes), including the ability to store properties on both vertices and edges.```
 
 In Jakarta Data, Graph databases support advanced querying capabilities, akin to relational databases, while providing extensive support for method by query keywords. Additionally, they fully implement CrudRepository and PageableRepository methods, ensuring seamless data access and manipulation within this specialized NoSQL database type.
 
