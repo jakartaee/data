@@ -105,7 +105,8 @@ public interface CrudRepository<T, K> extends DataRepository<T, K> {
      * Retrieves all persistent entities of the specified type from the database.
      *
      * @return a stream of all entities; will never be {@literal null}.
-     * @throws UnsupportedOperationException If the database does not support the operation.
+     * @throws UnsupportedOperationException  for Key-Value and Wide-Column databases that are not capable
+     * of the {@code findAll} operation.
      */
     Stream<T> findAll();
 
