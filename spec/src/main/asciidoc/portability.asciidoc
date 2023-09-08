@@ -12,7 +12,7 @@ All functionality defined by Jakarta Data must be supported when using relationa
 
 3. **Query Methods:** Jakarta Data's support for query methods, including pagination, ordering, and limiting, is designed to work seamlessly with relational databases.
 
-By aligning Jakarta Data closely with Jakarta Persistence, developers can expect high portability and compatibility when working with relational databases. This approach ensures that Jakarta Data remains a powerful tool for simplifying data access, irrespective of the specific relational database used.
+By aligning Jakarta Data closely with relational databases, developers can expect high portability and compatibility. This approach ensures that Jakarta Data remains a powerful tool for simplifying data access, irrespective of the specific relational database used.
 
 Changing a Jakarta Data Provider aligned with Jakarta Persistence (JPA) should seamlessly transition without disrupting other aspects of the application. By closely mirroring annotations with the database schema, Jakarta Data simplifies development while ensuring consistency within the data access layer.
 
