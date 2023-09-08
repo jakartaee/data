@@ -1,6 +1,6 @@
 == Portability in Jakarta Data
 
-Portability is a critical aspect of Jakarta Data, ensuring flexibility and adaptability across different data stores while maintaining consistent functionality. To address concerns related to optional functionality, under-specified semantics, and the need for challenging requirements on implementations, Jakarta Data offers a comprehensive approach to portability. This approach is discussed separately for relational databases and NoSQL databases.
+Portability is a critical aspect of Jakarta Data, ensuring flexibility and adaptability across different data stores while maintaining consistent functionality. Jakarta Data offers a comprehensive approach to portability, which is discussed separately for relational databases and NoSQL databases.
 
 === Portability in Relational Databases
 
