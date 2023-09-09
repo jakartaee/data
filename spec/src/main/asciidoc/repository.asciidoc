@@ -331,6 +331,10 @@ In some scenarios, books can have multiple authors, and authors can contribute t
 
 This N-N relationship typically generates a dedicated table to manage the associations between books and authors in a relational database. However, NoSQL databases may take a different approach, especially in cases where denormalization and data duplication are favored for query-driven designs.
 
+IMPORTANT: The key-value database might support these fields, generating a single BLOB value. However, the serialization process for such fields may vary depending on the Jakarta Data provider and the specific NoSQL database used.
+
+NOTE: The Graph database is not required to support this type, but it might be used for aggregate query returns or as a read-only field.
+
 ===== Recursion at Domain-Relation Fields in Jakarta Data
 
 In the context of Jakarta Data, the term "recursion" pertains to the ability to manage hierarchical or nested relationships between entities. This capability is essential when dealing with complex domain models involving associations, aggregations, or compositions between various entity types. Jakarta Data ensures these relationships are correctly mapped and maintained within the database, enabling consistent data retrieval and manipulation.
