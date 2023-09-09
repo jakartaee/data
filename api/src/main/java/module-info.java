@@ -152,7 +152,7 @@ import jakarta.data.repository.Sort;
  * <h2>Reserved Keywords for Query by Method Name</h2>
  *
  * <table style="width: 100%">
- * <caption><b>Reserved Method Name Prefixes</b></caption>
+ * <caption><b>Reserved for Subject</b></caption>
  * <tr>
  * <td style="vertical-align: top"><b>Prefix</b></td>
  * <td style="vertical-align: top"><b>Description</b></td>
@@ -184,32 +184,31 @@ import jakarta.data.repository.Sort;
  * <td><code>updateByIdSetModifiedOnAddPrice(productId, now, 10.0)</code></td></tr>
  * </table>
  *
- * <br><br>
+ * <p>Key-value and Wide-Column databases raise {@link UnsupportedOperationException}
+ * for queries on attributes other than the identifier/key.</p>
  *
  * <table style="width: 100%">
- * <caption><b>Reserved Keywords</b></caption>
+ * <caption><b>Reserved for Predicate</b></caption>
  * <tr>
  * <td style="vertical-align: top"><b>Keyword</b></td>
  * <td style="vertical-align: top"><b>Applies to</b></td>
  * <td style="vertical-align: top"><b>Description</b></td>
  * <td style="vertical-align: top"><b>Example</b></td>
+ * <td style="vertical-align: top"><b>Unavailable In</b></td>
  * </tr>
  *
  * <tr style="vertical-align: top"><td><code>And</code></td>
  * <td>conditions</td>
  * <td>Requires both conditions to be satisfied in order to match an entity.</td>
- * <td><code>findByNameLikeAndPriceLessThanEqual(namePattern, maxPrice)</code></td></tr>
- *
- * <tr style="vertical-align: top"><td><code>Asc</code></td>
- * <td>sorting</td>
- * <td>Specifies ascending sort order for <code>findBy</code> queries</td>
- * <td><code>findByAgeOrderByFirstNameAsc(age)</code></td></tr>
+ * <td><code>findByNameLikeAndPriceLessThanEqual(namePattern, maxPrice)</code></td>
+ * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column</td></tr>
  *
  * <tr style="vertical-align: top"><td><code>Between</code></td>
  * <td>numeric, strings, time</td>
  * <td>Requires that the entity's attribute value be within the range specified by two parameters.
  * The minimum is listed first, then the maximum.</td>
- * <td><code>findByAgeBetween(minAge, maxAge)</code></td></tr>
+ * <td><code>findByAgeBetween(minAge, maxAge)</code></td>
+ * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column</td></tr>
  *
  * <tr style="vertical-align: top"><td><code>Contains</code></td>
  * <td>collections, strings</td>
@@ -218,29 +217,28 @@ import jakarta.data.repository.Sort;
  * For String attributes, requires that any substring of the entity's attribute value
  * match the entity's attribute value, which can be a pattern with wildcard characters.</td>
  * <td><code>findByRecipientsContains(email)</code>
- * <br><code>findByDescriptionNotContains("refurbished")</code></td></tr>
- *
- * <tr style="vertical-align: top"><td><code>Desc</code></td>
- * <td>sorting</td>
- * <td>Specifies descending sort order for <code>findBy</code> queries</td>
- * <td><code>findByAuthorLastNameOrderByYearPublishedDesc(surname)</code></td></tr>
+ * <br><code>findByDescriptionNotContains("refurbished")</code></td>
+ * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column<br>Document</td></tr>
  *
  * <tr style="vertical-align: top"><td><code>Empty</code></td>
  * <td>collections</td>
  * <td>Requires that the entity's attribute is an empty collection or has a null value.</td>
  * <td><code>countByPhoneNumbersEmpty()</code>
- * <br><code>findByInviteesNotEmpty()</code></td></tr>
+ * <br><code>findByInviteesNotEmpty()</code></td>
+ * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column<br>Document<br>Graph</td></tr>
  *
  * <tr style="vertical-align: top"><td><code>EndsWith</code></td>
  * <td>strings</td>
  * <td>Requires that the characters at the end of the entity's attribute value
  * match the parameter value, which can be a pattern.</td>
- * <td><code>findByNameEndsWith(surname)</code></td></tr>
+ * <td><code>findByNameEndsWith(surname)</code></td>
+ * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column<br>Document<br>Graph</td></tr>
  *
  * <tr style="vertical-align: top"><td><code>False</code></td>
  * <td>boolean</td>
  * <td>Requires that the entity's attribute value has a boolean value of false.</td>
- * <td><code>findByCanceledFalse()</code></td></tr>
+ * <td><code>findByCanceledFalse()</code></td>
+ * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column</td></tr>
  *
  * <tr style="vertical-align: top"><td><code>First</code></td>
  * <td>find...By</td>
@@ -248,17 +246,20 @@ import jakarta.data.repository.Sort;
  * to the number that is specified after <code>First</code>,
  * or absent that to a single result.</td>
  * <td><code>findFirst25ByYearHiredOrderBySalaryDesc(int yearHired)</code>
- * <br><code>findFirstByYearHiredOrderBySalaryDesc(int yearHired)</code></td></tr>
+ * <br><code>findFirstByYearHiredOrderBySalaryDesc(int yearHired)</code></td>
+ * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column<br>Document<br>Graph</td></tr>
  *
  * <tr style="vertical-align: top"><td><code>GreaterThan</code></td>
  * <td>numeric, strings, time</td>
  * <td>Requires that the entity's attribute value be larger than the parameter value.</td>
- * <td><code>findByStartTimeGreaterThan(startedAfter)</code></td></tr>
+ * <td><code>findByStartTimeGreaterThan(startedAfter)</code></td>
+ * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column</td></tr>
  *
  * <tr style="vertical-align: top"><td><code>GreaterThanEqual</code></td>
  * <td>numeric, strings, time</td>
  * <td>Requires that the entity's attribute value be at least as big as the parameter value.</td>
- * <td><code>findByAgeGreaterThanEqual(minimumAge)</code></td></tr>
+ * <td><code>findByAgeGreaterThanEqual(minimumAge)</code></td>
+ * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column</td></tr>
  *
  * <tr style="vertical-align: top"><td><code>IgnoreCase</code></td>
  * <td>strings</td>
@@ -266,65 +267,97 @@ import jakarta.data.repository.Sort;
  * as well as ordering, the <code>IgnoreCase</code> keyword can be
  * specified immediately following the entity property name.</td>
  * <td><code>countByStatusIgnoreCaseNotLike("%Delivered%")</code>
- * <br><code>findByZipcodeOrderByStreetIgnoreCaseAscHouseNumAsc(55904)</code></td></tr>
+ * <br><code>findByZipcodeOrderByStreetIgnoreCaseAscHouseNumAsc(55904)</code></td>
+ * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column<br>Document<br>Graph</td></tr>
  *
  * <tr style="vertical-align: top"><td><code>In</code></td>
  * <td>all attribute types</td>
  * <td>Requires that the entity's attribute value be within the list that is the parameter value.</td>
- * <td><code>findByNameIn(names)</code></td></tr>
+ * <td><code>findByNameIn(names)</code></td>
+ * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column<br>Document<br>Graph</td></tr>
  *
  * <tr style="vertical-align: top"><td><code>LessThan</code></td>
  * <td>numeric, strings, time</td>
  * <td>Requires that the entity's attribute value be less than the parameter value.</td>
- * <td><code>findByStartTimeLessThan(startedBefore)</code></td></tr>
+ * <td><code>findByStartTimeLessThan(startedBefore)</code></td>
+ * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column</td></tr>
  *
  * <tr style="vertical-align: top"><td><code>LessThanEqual</code></td>
  * <td>numeric, strings, time</td>
  * <td>Requires that the entity's attribute value be at least as small as the parameter value.</td>
- * <td><code>findByAgeLessThanEqual(maximumAge)</code></td></tr>
+ * <td><code>findByAgeLessThanEqual(maximumAge)</code></td>
+ * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column</td></tr>
  *
  * <tr style="vertical-align: top"><td><code>Like</code></td>
  * <td>strings</td>
  * <td>Requires that the entity's attribute value match the parameter value, which can be a pattern.</td>
- * <td><code>findByNameLike(namePattern)</code></td></tr>
+ * <td><code>findByNameLike(namePattern)</code></td>
+ * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column<br>Document<br>Graph</td></tr>
  *
  * <tr style="vertical-align: top"><td><code>Not</code></td>
  * <td>condition</td>
  * <td>Negates a condition.</td>
  * <td><code>deleteByNameNotLike(namePattern)</code>
- * <br><code>findByStatusNot("RUNNING")</code></td></tr>
+ * <br><code>findByStatusNot("RUNNING")</code></td>
+ * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column</td></tr>
  *
  * <tr style="vertical-align: top"><td><code>Null</code></td>
  * <td>nullable types</td>
  * <td>Requires that the entity's attribute has a null value.</td>
  * <td><code>findByEndTimeNull()</code>
- * <br><code>findByAgeNotNull()</code></td></tr>
+ * <br><code>findByAgeNotNull()</code></td>
+ * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column<br>Document<br>Graph</td></tr>
  *
  * <tr style="vertical-align: top"><td><code>Or</code></td>
  * <td>conditions</td>
  * <td>Requires at least one of the two conditions to be satisfied in order to match an entity.</td>
- * <td><code>findByPriceLessThanEqualOrDiscountGreaterThanEqual(maxPrice, minDiscount)</code></td></tr>
+ * <td><code>findByPriceLessThanEqualOrDiscountGreaterThanEqual(maxPrice, minDiscount)</code></td>
+ * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column</td></tr>
+ *
+ * <tr style="vertical-align: top"><td><code>StartsWith</code></td>
+ * <td>strings</td>
+ * <td>Requires that the characters at the beginning of the entity's attribute value
+ * match the parameter value, which can be a pattern.</td>
+ * <td><code>findByNameStartsWith(firstTwoLetters)</code></td>
+ * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column<br>Document<br>Graph</td></tr>
+ *
+ * <tr style="vertical-align: top"><td><code>True</code></td>
+ * <td>boolean</td>
+ * <td>Requires that the entity's attribute value has a boolean value of true.</td>
+ * <td><code>findByAvailableTrue()</code></td>
+ * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column</td></tr>
+ *
+ * </table>
+ *
+ * <br><br>
+ *
+ * <table style="width: 100%">
+ * <caption><b>Reserved for Order Clause</b></caption>
+ * <tr>
+ * <td style="vertical-align: top"><b>Keyword</b></td>
+ * <td style="vertical-align: top"><b>Description</b></td>
+ * <td style="vertical-align: top"><b>Example</b></td>
+ * </tr>
+ *
+ * <tr style="vertical-align: top"><td><code>Asc</code></td>
+ * <td>Specifies ascending sort order for <code>findBy</code> queries</td>
+ * <td><code>findByAgeOrderByFirstNameAsc(age)</code></td></tr>
+ *
+ * <tr style="vertical-align: top"><td><code>Desc</code></td>
+ * <td>Specifies descending sort order for <code>findBy</code> queries</td>
+ * <td><code>findByAuthorLastNameOrderByYearPublishedDesc(surname)</code></td></tr>
  *
  * <tr style="vertical-align: top"><td><code>OrderBy</code></td>
- * <td>sorting</td>
  * <td>Sorts results of a <code>findBy</code> query according to one or more entity attributes.
  * Multiple attributes are delimited by <code>Asc</code> and <code>Desc</code>,
  * which indicate ascending and descending sort direction.
  * Precedence in sorting is determined by the order in which attributes are listed.</td>
  * <td><code>findByStatusOrderByYearHiredDescLastNameAsc(empStatus)</code></td></tr>
  *
- * <tr style="vertical-align: top"><td><code>StartsWith</code></td>
- * <td>strings</td>
- * <td>Requires that the characters at the beginning of the entity's attribute value
- * match the parameter value, which can be a pattern.</td>
- * <td><code>findByNameStartsWith(firstTwoLetters)</code></td></tr>
- *
- * <tr style="vertical-align: top"><td><code>True</code></td>
- * <td>boolean</td>
- * <td>Requires that the entity's attribute value has a boolean value of true.</td>
- * <td><code>findByAvailableTrue()</code></td></tr>
- *
  * </table>
+ *
+ * <p>Key-value and Wide-Column databases raise {@link UnsupportedOperationException}
+ * if an order clause is present.</p>
  *
  * <h3>Reserved for Future Use</h3>
  * <p>
