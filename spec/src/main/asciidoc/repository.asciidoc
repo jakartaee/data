@@ -126,6 +126,34 @@ In Jakarta Data, an entity refers to a fundamental data representation and manag
 
 An entity within Jakarta Data encompasses the Java class representing the data and the schema, persistence characteristics, and provider-specific annotations, all working together to simplify data access and management within Java applications.
 
+==== Programming Model for Entity Data in Jakarta Data
+
+In Jakarta Data, the programming model for entity data aims to provide a standardized way to define Java classes that represent data entities. These entities can be stored, retrieved, and manipulated in various databases, including key-value, wide-column, document, and relational databases. The programming model ensures that entity classes are well-defined and can be seamlessly integrated with different database technologies.
+
+This model contemplates two types of fields within entity classes: "basic" fields and "composition" fields. "Basic" fields represent fundamental data types natively supported by Jakarta Data Providers. Support for "basic" types is mandatory for all Jakarta Data providers. On the other hand, "composition" fields allow entities to interact with other domain classes or types, enriching the complexity of data structures. Support for "composition" fields may vary depending on the Jakarta Data implementation and the specific database type. Notably, the Graph database does not require support for "composition" fields.
+
+All Jakarta Data providers should read all declared fields directly in the class or by inheritance. However, reading fields by inheritance is not required for NoSQL databases, where support for field reading is achieved through reading directly in the entity class.
+
+===== Basic Types
+
+Entity data in Jakarta Data can have fields or properties of "simple" or "basic" types. These basic types are fundamental data types that Jakarta Data Providers natively support. The basic types include:
+
+- All Java primitive types, such as int, double, boolean, etc., and their corresponding java.lang wrapper types (e.g., Integer, Double, Boolean).
+- String:: Represents text data.
+- LocalDate, LocalDateTime, LocalTime, Instant:: Represent date and time-related data.
+- UUID:: Universally Unique Identifier for identifying entities.
+- BigInteger, BigDecimal:: Represent large integer and decimal numbers.
+- byte[]:: Represents binary data.
+- Enum types:: Custom enumerated types defined by developers.
+
+Every entity in Jakarta Data must have a unique identifier composed of one or more supported basic types. This unique identifier is crucial for distinguishing individual entities in the database. Developers should define and annotate the identifier fields in their entity classes to ensure proper identification and retrieval of entities.
+
+IMPORTANT: It's important to note that key-value, wide-column, document, and relational databases support Collection specializations and Maps of the basic types. However, these databases may have different serialization processes, impacting performance and impedance mismatch. Developers should consider these considerations when working with collections and maps in their entity models.
+
+In addition to the basic types, Jakarta Data Providers should enable support for custom types. Custom types are user-defined classes that represent data in a domain-specific manner. These custom types may include complex data structures and objects. Jakarta Data Providers should provide a mechanism to convert these custom types to the supported basic types.
+
+One way to achieve this is by using the `Converter` annotation, similar to the one found in Jakarta Persistence (JPA). The `Converter` annotation allows developers to specify how custom types should be converted to and from the basic types. It ensures that custom data structures can be seamlessly integrated into the entity model.
+
 === Query Methods
 
 In Jakarta Data, besides finding by an ID, custom queries can be written in two ways:
