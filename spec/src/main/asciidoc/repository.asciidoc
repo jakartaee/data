@@ -356,122 +356,158 @@ In queries by method name, `Id` is an alias for the entity property that is desi
 
 ===== Query Methods Keywords
 
-The following table lists the subject keywords generally supported by Jakarta Data.
+The following table lists the query-by-method keywords that must be supported by Jakarta Data providers, except where explicitly indicated for a type of database.
 
 |===
-|Keyword |Description
+|Keyword |Description| Not Required For
 
 |findBy
 |General query method returning the repository type.
+|Key-value, Wide-Column
 
 |deleteBy
 |Delete query method returning either no result (void) or the delete count.
+|Key-value, Wide-Column
 
 |countBy
 |Count projection returning a numeric result.
+|Key-value, Wide-Column
 
 |existsBy
 |Exists projection, returning as a `boolean` result.
+|Key-value, Wide-Column
 |===
 
-Jakarta Data implementations support the following list of predicate keywords to the extent that the database is capable of the behavior. A repository method will raise `jakarta.data.exceptions.DataException` or a more specific subclass of the exception if the database does not provide the requested functionality.
+[NOTE]
+.Note
+* The "Not Required For" column indicates the database types for which the respective keyword is not required or applicable.
+
+Jakarta Data implementations must support the following list of query-by-method keywords, except where indicated for a database type. A repository method must raise `java.lang.UnsupportedOperationException` or a more specific subclass of the exception if the database does not provide the requested functionality.
 
 |===
-|Keyword |Description | Method signature Sample
+|Keyword |Description | Method signature Sample| Not Required For
 
 |And
 |The `and` operator.
 |findByNameAndYear
+|Key-value, Wide-Column
 
 |Or
 |The `or` operator.
 |findByNameOrYear
+|Key-value, Wide-Column
 
 |Not
 |Negates the condition that immediately follows the `Not` keyword. When used without a subsequent keyword, means not equal to.
 |findByNameNotLike
+|Key-value, Wide-Column
 
 |Between
 |Find results where the property is between the given values
 |findByDateBetween
+|Key-value, Wide-Column
 
 |Contains
 |For Collection attributes, matches if the collection includes the value. For String attributes, a substring of the String must match the value, which can be a pattern.
 |findByPhoneNumbersContains
+|Key-value, Wide-Column, Document
 
 |Empty
 |Find results where the property is an empty collection or has a null value.
 |deleteByPendingTasksEmpty
+|Key-value, Wide-Column, Document, Graph
 
 |EndsWith
 |Matches String values with the given ending, which can be a pattern.
 |findByProductNameEndsWith
+|Key-value, Wide-Column, Document, Graph
 
 |First
 |For a query with ordered results, limits the quantity of results to the number following First, or if there is no subsequent number, to a single result.
 |findFirst10By
+|Key-value, Wide-Column, Document, Graph
 
 |LessThan
 |Find results where the property is less than the given value
 |findByAgeLessThan
+|Key-value, Wide-Column
 
 |GreaterThan
 |Find results where the property is greater than the given value
 |findByAgeGreaterThan
+|Key-value, Wide-Column
 
 |LessThanEqual
 |Find results where the property is less than or equal to the given value
 |findByAgeLessThanEqual
+|Key-value, Wide-Column
 
 |GreaterThanEqual
 |Find results where the property is greater than or equal to the given value
 |findByAgeGreaterThanEqual
+|Key-value, Wide-Column
 
 |Like
 |Matches String values against the given pattern.
 |findByTitleLike
+|Key-value, Wide-Column, Document, Graph
 
 |IgnoreCase
 |Requests that string values be compared independent of case for query conditions and ordering.
 |findByStreetNameIgnoreCaseLike
+|Key-value, Wide-Column, Document, Graph
 
 |In
 |Find results where the property is one of the values that are contained within the given list
 |findByIdIn
+|Key-value, Wide-Column, Document, Graph
 
 |Null
 |Finds results where the property has a null value.
 |findByYearRetiredNull
+|Key-value, Wide-Column, Document, Graph
 
 |StartsWith
 |Matches String values with the given beginning, which can be a pattern.
 |findByFirstNameStartsWith
+|Key-value, Wide-Column, Document, Graph
 
 |True
 |Finds results where the property has a boolean value of true.
 |findBySalariedTrue
+|Key-value, Wide-Column
 
 |False
 |Finds results where the property has a boolean value of false.
 |findByCompletedFalse
+|Key-value, Wide-Column
 
 |OrderBy
 |Specify a static sorting order followed by the property path and direction of ascending.
 |findByNameOrderByAge
+|Key-value, Wide-Column
 
 |OrderBy____Desc
 |Specify a static sorting order followed by the property path and direction of descending.
 |findByNameOrderByAgeDesc
+|Key-value, Wide-Column
 
 |OrderBy____Asc
 |Specify a static sorting order followed by the property path and direction of ascending.
 |findByNameOrderByAgeAsc
+|Key-value, Wide-Column
 
 |OrderBy____(Asc\|Desc)*(Asc\|Desc)
 |Specify several static sorting orders
 |findByNameOrderByAgeAscNameDescYearAsc
+|Key-value, Wide-Column
 
 |===
+
+[NOTE]
+.Note:
+* The "Not Required For" column indicates the database types for which the respective keyword is not required or applicable.
+
 
 ====== Patterns
 

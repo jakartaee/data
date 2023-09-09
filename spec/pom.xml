@@ -89,7 +89,7 @@
                     <requires>
                         <require>asciidoctor-diagram</require>
                     </requires>
-                    <sourceDocumentName>jakarta-data.asciidoc</sourceDocumentName>
+                    <sourceDocumentName>jakarta-data.adoc</sourceDocumentName>
                     <embedAssets>true</embedAssets>
                     <attributes>
                         <license>Apache License v2.0</license>

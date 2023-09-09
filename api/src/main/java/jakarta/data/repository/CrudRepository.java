@@ -22,10 +22,13 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 /**
- * <p>A repository interface for performing CRUD (Create, Read, Update, Delete).</p>
+ * <p>A repository interface for performing CRUD (Create, Read, Update, Delete) operations on entities.</p>
  *
- * @param <T> the bean type
- * @param <K> the key type
+ * <p>This repository provides methods to interact with persistent entities of type <code>&lt;T&gt;</code>,
+ * where <code>&lt;T&gt;</code> represents the entity bean type, and <code>&lt;K&gt;</code> represents the key type.</p>
+ *
+ * @param <T> the entity bean type
+ * @param <K> the key type.
  */
 public interface CrudRepository<T, K> extends DataRepository<T, K> {
 
@@ -99,9 +102,11 @@ public interface CrudRepository<T, K> extends DataRepository<T, K> {
     boolean existsById(K id);
 
     /**
-     * Returns all instances of the type.
+     * Retrieves all persistent entities of the specified type from the database.
      *
-     * @return all entities; will never be {@literal null}.
+     * @return a stream of all entities; will never be {@literal null}.
+     * @throws UnsupportedOperationException  for Key-Value and Wide-Column databases that are not capable
+     * of the {@code findAll} operation.
      */
     Stream<T> findAll();
 
@@ -120,9 +125,10 @@ public interface CrudRepository<T, K> extends DataRepository<T, K> {
     Stream<T> findAllById(Iterable<K> ids);
 
     /**
-     * Returns the number of entities available.
+     * Retrieves the total number of persistent entities of the specified type in the database.
      *
-     * @return the number of entities.
+     * @return the total number of entities.
+     * @throws UnsupportedOperationException for Key-Value and Wide-Column databases that are not capable of the {@code count} operation.
      */
     long count();
 
@@ -171,7 +177,9 @@ public interface CrudRepository<T, K> extends DataRepository<T, K> {
     void deleteAll(Iterable<? extends T> entities);
 
     /**
-     * Deletes all entities managed by the repository.
+     * Deletes all persistent entities managed by the repository.
+     *
+     * @throws UnsupportedOperationException for Key-Value and Wide-Column databases that are not capable of the {@code deleteAll} operation.
      */
     void deleteAll();
 

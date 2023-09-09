@@ -271,7 +271,7 @@ public interface Pageable {
         CURSOR_PREVIOUS,
 
         /**
-         * Indicates a reqeust for a page using offset pagination.
+         * Indicates a request for a page using offset pagination.
          * The starting position for pages is computed as an offset from
          * the first result based on the page number and maximum page size.
          * Offset pagination is used when a cursor is not supplied.

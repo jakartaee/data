@@ -34,6 +34,9 @@ public interface PageableRepository<T, K> extends CrudRepository<T, K> {
      * @param pageable the pageable to request a paginated result, must not be null.
      * @return a page of entities; will never be {@literal null}.
      * @throws NullPointerException when pageable is null
+     * @throws UnsupportedOperationException for Key-Value and Wide-Column databases when the {@link Pageable.Mode#CURSOR_NEXT}
+     * or {@link Pageable.Mode#CURSOR_PREVIOUS} pagination mode is selected.
+     * @see Pageable.Mode
      */
     Page<T> findAll(Pageable pageable);
 
