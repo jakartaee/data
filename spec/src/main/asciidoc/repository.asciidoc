@@ -75,6 +75,7 @@ The parent interface at the root of the hierarchy of built-in interfaces is `Dat
                         +--------------------+
 ....
 
+
 * Interface with generic CRUD operations on a repository for a specific type. This one we can see more often on several Java implementations.
 * Interface with generic CRUD operations using the pagination feature.
 
@@ -110,6 +111,7 @@ Jakarta Data empowers developers to take control of their data access and manage
 Subsequently, an implementation of Jakarta Data, specifically tailored to the chosen data store, assumes the responsibility of implementing each repository interface. This symbiotic relationship between developers and Jakarta Data ensures that data access and manipulation remain consistent, efficient, and aligned with best practices.
 
 Jakarta Data empowers developers to shape their data access strategies by defining entity classes and repositories, with implementations seamlessly adapting to the chosen data store. This flexibility and Jakarta Data's persistence-agnostic approach promote robust data management within Java applications.
+
 === Entity Classes
 
 In Jakarta Data, an entity refers to a fundamental data representation and management building block. It can be conceptually understood in several aspects:
