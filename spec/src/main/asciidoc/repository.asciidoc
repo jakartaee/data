@@ -232,15 +232,14 @@ public class Passport {
 public class Citizen {
     private Long id;
     private String name;
-    private Passport passport; // One-to-One relationship with Passport
+    private Passport passport; // One-to-One relationship with Passport for relational database
 }
 ----
 
 Here's a representation of the `Citizen` and `Passport` classes in both table and JSON formats:
 
-.Table Representation (Relational Database)
 
-[cols="4,4"]
+[options="header"]
 |===
 | Citizen Table | Passport Table
 | id (Primary Key) | id (Primary Key)
@@ -264,6 +263,70 @@ In a relational database, the `Citizen` and `Passport` entities are stored in se
 }
 ----
 
+Entities in a domain model often have relationships with other entities. In some cases, an entity may have a collection of another type of entity, creating a one-to-many or many-to-many relationship. This scenario explores how such relationships are represented and managed in the context of Jakarta Data.
+
+Consider the example of an `Author` entity associated with multiple `Book` entities. This relationship allows an author to be linked to multiple books they have authored. While this structure remains relatively unchanged for NoSQL databases, it introduces specific considerations in relational databases, where it typically generates auxiliary tables to manage the relationship. We'll explore these representations in both JSON and relational database formats.
+
+
+.Include a code block:: java
+
+[source,java]
+----
+// Entity
+public class Author {
+
+    private UUID id;
+
+    private String name;
+
+    private List<Book> books;
+}
+
+// If in a relational database, Book might also be an entity
+public class Book {
+
+    // This field might not be required for some NoSQL database modeling
+    private Long id;
+
+    private String title;
+
+    private String category;
+
+    // Other fields and methods
+}
+----
+
+
+[source,json]
+----
+{
+  "id": "6f6d665d-5585-46cd-8b9b-61a559de0e13",
+  "name": "John Doe",
+  "books": [
+    {
+      "title": "Sample Book 1",
+      "category": "Fiction"
+    },
+    {
+      "title": "Sample Book 2",
+      "category": "Non-fiction"
+    }
+  ]
+}
+----
+
+In the JSON representation, an `Author` entity can be associated with multiple `Book` entities within an array.
+
+[options="header"]
+|===
+| Author Table | Book Table | Author_Book (Auxiliary) Table
+
+| id (Primary Key) | id (Primary Key) | author_id (Foreign Key)
+| name | title | book_id (Foreign Key)
+
+|===
+
+In a relational database, this relationship typically generates three tables: `Author`, `Book`, and an auxiliary table `Author_Book` to manage the many-to-many relationship between authors and books.
 
 === Query Methods
 
