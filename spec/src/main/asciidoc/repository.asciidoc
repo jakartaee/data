@@ -154,6 +154,18 @@ In addition to the basic types, Jakarta Data Providers should enable support for
 
 One way to achieve this is by using the `Converter` annotation, similar to the one found in Jakarta Persistence (JPA). The `Converter` annotation allows developers to specify how custom types should be converted to and from the basic types. It ensures that custom data structures can be seamlessly integrated into the entity model.
 
+===== Domain-Relation Fields in Jakarta Data
+
+In Jakarta Data, the concept of "Domain-Relation" fields encompasses two distinct types: "component" and "association" fields. These fields enable developers to establish relationships between entities and other domain concepts, enriching the complexity and structure of data entities.
+
+- *Component Fields*: A component field represents a relationship where one entity is treated as a component of another entity. It implies that the component does not have a life cycle outside the entity to which it belongs. It is an embedded object that exists solely within the context of the owning entity.
+
+- *Association Fields*: Association fields represent semantically weak relationships, often called semantic dependencies, between objects that may not have a direct or strong connection. Unlike component fields, association fields may exist between entities that are otherwise unrelated. Associations can further specialize into aggregation, a specific form of association in which each object involved has its life cycle, yet a notion of ownership also exists.
+
+These Domain-Relation fields' specific implementation and definition may vary across different Jakarta Data providers. Providers can create annotations, define conventions, or leverage standards like Jakarta Persistence to establish these relationships effectively.
+
+The topic of serialization of these Domain-Relation fields within databases is crucial for maintaining data consistency and integrity. In the next section, we'll delve into how Jakarta Data providers handle the persistence and serialization of these fields within various database types.
+
 === Query Methods
 
 In Jakarta Data, besides finding by an ID, custom queries can be written in two ways:
