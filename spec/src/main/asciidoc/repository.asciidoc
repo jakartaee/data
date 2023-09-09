@@ -247,8 +247,6 @@ Here's a representation of the `Citizen` and `Passport` classes in both table an
 
 In a relational database, the `Citizen` and `Passport` entities are stored in separate tables, connected by a foreign key relationship.
 
-.JSON Representation (NoSQL Database)
-
 [source,json]
 ----
 {
@@ -264,9 +262,6 @@ In a relational database, the `Citizen` and `Passport` entities are stored in se
 Entities in a domain model often have relationships with other entities. In some cases, an entity may have a collection of another type of entity, creating a one-to-many or many-to-many relationship. This scenario explores how such relationships are represented and managed in the context of Jakarta Data.
 
 Consider the example of an `Author` entity associated with multiple `Book` entities. This relationship allows an author to be linked to multiple books they have authored. While this structure remains relatively unchanged for NoSQL databases, it introduces specific considerations in relational databases, where it typically generates auxiliary tables to manage the relationship. We'll explore these representations in both JSON and relational database formats.
-
-
-.Include a code block:: java
 
 [source,java]
 ----
