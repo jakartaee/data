@@ -124,7 +124,7 @@ In Jakarta Data, an entity refers to a fundamental data representation and manag
 
 4. *Provider Differentiation*: To maintain clarity and specify the desired provider when using Jakarta Data, it's recommended that applications do not mix Entity annotations from different models. This practice allows the Entity annotation to indicate the desired provider, especially in cases where multiple types of Jakarta Data providers are available. A Jakarta Data provider must provide implementation of repositories for Entity types having the Entity annotations that it supports, ignoring Entity types only having identifiable Entity annotations that the Jakarta Data provider does not support. The latter are to be handled by other Jakarta Data providers that do support the other types of Entity annotations.
 
-An entity within Jakarta Data encompasses the Java class representing the data and the schema, persistence characteristics, and provider-specific annotations, all working together to simplify data access and management within Java applications.
+An entity within Jakarta Data encompasses the Java class representing the data and the schema, persistence characteristics, and provider-specific annotations, all working together to simplify data access and management within Java applications. While a Jakarta Data provider might require a default constructor and work primarily with mutable entities, Jakarta Data allows for the use of immutable entity classes, which are best represented as Java records.
 
 ==== Programming Model for Entity Data in Jakarta Data
 
@@ -193,7 +193,6 @@ public class Person {
 ----
 
 The structure of a Document, wide-column, and Graph will be like the JSON representation below. The JSON representation is for illustration; it belongs to the NoSQL database and defines the final serialization structure such as JSON and BSON, including another field such as timestamp for clock-vector, revision, and other internal purposes. The JSON and the following SQL table are representations resulting from the Java classes.
-
 
 [source,json]
 ----
