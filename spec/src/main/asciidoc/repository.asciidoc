@@ -325,7 +325,7 @@ This N-N relationship typically generates a dedicated table to manage the associ
 
 IMPORTANT: The key-value database might support these fields, generating a single BLOB value. However, the serialization process for such fields may vary depending on the Jakarta Data provider and the specific key-value database used.
 
-NOTE: The Graph database is not required to support this type, but it might be used for aggregate query returns or as a read-only field.
+NOTE: The Graph database is not required to support Domain-Relation types, but it might be used for aggregate query returns or as a read-only field.
 
 ===== Recursion at Domain-Relation Fields in Jakarta Data
 
