@@ -136,13 +136,31 @@ Jakarta Data places requirements on two types of fields within entity classes: b
 
 A variety of basic types can be used for fields or properties of entity classes. The basic types include:
 
-- All Java primitive types, such as int, double, boolean, etc., and their corresponding java.lang wrapper types (e.g., Integer, Double, Boolean).
-- String: Represents text data.
-- LocalDate, LocalDateTime, LocalTime, Instant: Represent date and time-related data.
-- UUID: Universally Unique Identifier for identifying entities.
-- BigInteger, BigDecimal: Represent large integer and decimal numbers.
-- byte[]: Represents binary data.
-- Enum types: Custom enumerated types defined by developers.
+|===
+| Basic Data Type | Description
+
+| Primitive Types and Wrappers
+| All Java primitive types, such as int, double, boolean, etc., and their corresponding java.lang wrapper types (e.g., Integer, Double, Boolean).
+
+| String
+| Represents text data.
+
+| LocalDate, LocalDateTime, LocalTime, Instant
+| Represent date and time-related data.
+
+| UUID
+| Universally Unique Identifier for identifying entities.
+
+| BigInteger, BigDecimal
+| Represent large integer and decimal numbers.
+
+| byte[]
+| Represents binary data.
+
+| Enum Types
+| Custom enumerated types defined by developers.
+|===
+
 
 Every entity in Jakarta Data must have a unique identifier composed of one or more supported basic types. This unique identifier is crucial for distinguishing individual entities in the database. Developers should define and annotate the identifier fields in their entity classes to ensure proper identification and retrieval of entities.
 
