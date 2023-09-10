@@ -132,8 +132,6 @@ Jakarta Data does not define an entity model of its own, instead borrowing the e
 
 Jakarta Data places requirements on two types of fields within entity classes: basic fields and relation fields. Basic fields represent fundamental data types natively supported by Jakarta Data Providers. Support for basic types is mandatory for all Jakarta Data providers. On the other hand, Domain-Relation fields allow entities to interact with other domain classes or types, enriching data structures, but also making them more complex. Support for Domain-Relation fields varies depending on the Jakarta Data provider and the database type. Jakarta Data does not require support for Domain-Relation entity fields when using Graph databases.
 
-All Jakarta Data providers should read all declared fields directly in the class or by inheritance. However, reading fields by inheritance is not required for NoSQL databases, where support for field reading is achieved through reading directly in the entity class.
-
 ===== Basic Types
 
 Entity data in Jakarta Data can have fields or properties of "simple" or "basic" types. These basic types are fundamental data types that Jakarta Data Providers natively support. The basic types include:
