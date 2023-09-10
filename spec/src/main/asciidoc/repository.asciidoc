@@ -337,7 +337,7 @@ For relational databases, Jakarta Data requires support of recursive relationshi
 For other types of databases, Jakarta Data does not require explicit support for recursive relationships.  In NoSQL databases, data is often stored in a denormalized or nested document format, making it more challenging to enforce strict hierarchical relationships. Instead, NoSQL databases may emphasize query-driven design rather than explicit mapping or management of recursive relationships.
 
 
-In instances where a Jakarta Data provider for NoSQL databases encounters a recursive relationship that it cannot support due to the specific characteristics of the database, it should throw a `jakarta.data.exceptions.MappingException` or an appropriate specialized exception class. This exception is notified to developers that the Jakarta Data provider does not support this specific use case within the NoSQL database environment.
+In instances where a Jakarta Data provider for NoSQL databases encounters a recursive relationship that it cannot support due to the specific characteristics of the database, it must throw a `jakarta.data.exceptions.MappingException` or an appropriate subclass of `MappingException`. This exception notifies developers that the database does not support the relationship.
 
 === Query Methods
 
