@@ -36,7 +36,8 @@ These portability considerations reflect Jakarta Data's commitment to providing 
 
 ==== Graph Databases
 
-A Graph database, a specialized NoSQL variant, excels in managing intricate data relationships, rivaling even traditional relational databases. Its unique strength lies in its ability to handle both directed and undirected edges  (or relationships) between vertices (or nodes), including the ability to store properties on both vertices and edges.
+A Graph database, a specialized NoSQL variant, excels in managing intricate data relationships, rivaling traditional relational databases. Its unique strength lies in its ability to handle both directed and undirected edges (or relationships) between vertices (or nodes) and store properties on both vertices and edges.
 
-Graph databases can usually answer queries that return rows with flat objects, collections, or mixtures of flat objects and connections. Portability is guaranteed only for the mapping of rows to classes, for the fact that queries specified via annotations or other means are supported and that queries derived from keywords and combinations of mapped classes/properties will be translated into vendor specify query.
+Graph databases excel at answering queries that return rows containing flat objects, collections, or a combination of flat objects and connections. However, portability is only guaranteed when mapping rows to classes, and when queries specified via annotations or other supported means are used. It should be noted that queries derived from keywords and combinations of mapped classes/properties will be translated into vendor-specific queries.
 
+It's important to note that in Jakarta Data the Graph database supports both built-in repositories: CrudRepository and PageableRepository. Additionally, query-by-method is implemented, though developers should be aware that some keywords may not be universally supported. The full set of required keywords is documented in the section "Query Methods Keywords."
