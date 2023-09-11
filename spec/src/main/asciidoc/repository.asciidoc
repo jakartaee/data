@@ -162,7 +162,7 @@ A variety of basic types can be used for fields or properties of entity classes.
 |===
 
 
-Every entity in Jakarta Data must have a unique identifier composed of one or more supported basic types. This unique identifier is crucial for distinguishing individual entities in the database. Developers should define and annotate the identifier fields in their entity classes to ensure proper identification and retrieval of entities.
+Every entity in Jakarta Data must have a unique identifier composed of one or more supported basic types. This unique identifier is crucial for distinguishing individual entities in the database. Entity models that are used with Jakarta Data must define a way for developers to specify the unique identifier. Typically this is done with an `@Id` annotation, but other means are permitted, such as `@EmbeddedId` in Jakarta Persistence which defines a compound unique identifier based on an embeddable class, or by naming convention (for example, considering a property to be the unique identifier if is named id or ends in Id).
 
 IMPORTANT: It's important to note that key-value, wide-column, document, and relational databases support Collection specializations and Maps of the basic types. However, these databases may have different serialization processes, impacting performance and impedance mismatch. Developers should consider these considerations when working with collections and maps in their entity models.
 
