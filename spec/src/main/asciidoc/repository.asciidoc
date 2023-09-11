@@ -168,8 +168,6 @@ IMPORTANT: It's important to note that key-value, wide-column, document, and rel
 
 In addition to the basic types, entity models might also choose to support additional types that represent data in a domain-specific manner. These custom types may include complex data structures and objects. Entity models can choose to provide mechanisms to convert these custom types to the supported basic types.
 
-One way to achieve this is by using the `Converter` annotation, similar to the one found in Jakarta Persistence (JPA). The `Converter` annotation allows developers to specify how custom types should be converted to and from the basic types. It ensures that custom data structures can be seamlessly integrated into the entity model.
-
 ===== Domain-Relation Fields in Jakarta Data
 
 In Jakarta Data, the concept of "Domain-Relation" fields encompasses two distinct types: "component" and "association" fields. These fields enable developers to establish relationships between entities and other domain concepts, enriching the complexity and structure of data entities.
