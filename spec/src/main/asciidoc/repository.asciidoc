@@ -178,7 +178,7 @@ In Jakarta Data, the concept of "Domain-Relation" fields encompasses two distinc
 
 Definition and implementation of Domain-Relation fields may vary across different Jakarta Data providers. Providers can create annotations, define conventions, or leverage standards like Jakarta Persistence to establish these relationships effectively.
 
-The topic of serialization of these Domain-Relation fields within databases is crucial for maintaining data consistency and integrity. In the next section, we'll delve into how Jakarta Data providers handle the persistence and serialization of these fields within various database types.
+The topic of serialization of Domain-Relation fields within databases is crucial for maintaining data consistency and integrity. The next section discussed how Jakarta Data providers handle the persistence and serialization of Domain-Relation fields for various database types.
 
 In Jakarta Data, the serialization of Domain-Relation fields, such as components, can be achieved in two ways.
 
