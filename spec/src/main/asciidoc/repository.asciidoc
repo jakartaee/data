@@ -249,7 +249,7 @@ public class Citizen {
 }
 ----
 
-Here's a representation of the `Citizen` and `Passport` classes in both table and JSON formats:
+Here are some possible representations of the `Citizen` and `Passport` entities in table and JSON formats:
 
 [options="header"]
 |===
