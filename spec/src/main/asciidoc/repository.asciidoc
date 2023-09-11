@@ -251,14 +251,21 @@ public class Citizen {
 
 Here are some possible representations of the `Citizen` and `Passport` entities in table and JSON formats:
 
+.Citizen Table:
 [options="header"]
 |===
-| Citizen Table | Passport Table
-| id (Primary Key) | id (Primary Key)
-| name | passportNumber
-| passport_id (Foreign Key) | expirationDate
+| id (Primary Key) | name | passport_id (Foreign Key)
+| 1                | John Doe | 1
 |===
 
+.Passport Table:
+[options="header"]
+|===
+| id (Primary Key) | passportNumber | expirationDate
+| 1                | A123456        | 2023-12-31
+|===
+
+These tables represent the data from the JSON structure you provided earlier.
 In a relational database, the `Citizen` and `Passport` entities are stored in separate tables, connected by a foreign key relationship.
 
 [source,json]
@@ -324,14 +331,34 @@ public class Book {
 
 In the JSON representation, an `Author` entity can be associated with multiple `Book` entities within an array.
 
+Certainly, here are the tables with content based on the JSON data structure:
+
+.Author Table:
 [options="header"]
 |===
-| Author Table | Book Table | Author_Book (Auxiliary) Table
-
-| id (Primary Key) | id (Primary Key) | author_id (Foreign Key)
-| name | title | book_id (Foreign Key)
-
+| id (Primary Key) | name
+| 1                | John Doe
+| 2                | Jane Smith
 |===
+
+.Book Table:
+[options="header"]
+|===
+| id (Primary Key) | title | category
+| 1                | Book A | Fiction
+| 2                | Book B | Non-fiction
+|===
+
+.Author_Book (Auxiliary) Table:
+[options="header"]
+|===
+| author_id (Foreign Key) | book_id (Foreign Key)
+| 1                       | 1
+| 1                       | 2
+| 2                       | 2
+|===
+
+These tables represent the data from the JSON structure you provided earlier, illustrating a many-to-many relationship between authors and books using an auxiliary table.
 
 In a relational database, this relationship typically generates three tables: `Author`, `Book`, and an auxiliary table `Author_Book` to manage the many-to-many relationship between authors and books.
 
