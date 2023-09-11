@@ -206,7 +206,7 @@ public class Person {
 }
 ----
 
-The structure of a Document, wide-column, and Graph will be like the JSON representation below. The JSON representation is for illustration; it belongs to the NoSQL database and defines the final serialization structure such as JSON and BSON, including another field such as timestamp for clock-vector, revision, and other internal purposes. The JSON and the following SQL table are representations resulting from the Java classes.
+The structure of the entity in a Document, Wide-Column, and Graph database will be like the JSON representation below. The JSON representation is for illustration; the actual representation is an implementation detail of the database. The JSON and the following SQL table are representations resulting from the Java classes.
 
 [source,json]
 ----
