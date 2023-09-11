@@ -166,7 +166,7 @@ Every entity in Jakarta Data must have a unique identifier composed of one or mo
 
 IMPORTANT: It's important to note that key-value, wide-column, document, and relational databases support Collection specializations and Maps of the basic types. However, these databases may have different serialization processes, impacting performance and causing impedance mismatch. Developers should consider these side effects when working with collections and maps in their entity models.
 
-In addition to the basic types, Jakarta Data Providers should enable support for custom types. Custom types are user-defined classes that represent data in a domain-specific manner. These custom types may include complex data structures and objects. Jakarta Data Providers should provide a mechanism to convert these custom types to the supported basic types.
+In addition to the basic types, entity models might also choose to support additional types that represent data in a domain-specific manner. These custom types may include complex data structures and objects. Entity models can choose to provide mechanisms to convert these custom types to the supported basic types.
 
 One way to achieve this is by using the `Converter` annotation, similar to the one found in Jakarta Persistence (JPA). The `Converter` annotation allows developers to specify how custom types should be converted to and from the basic types. It ensures that custom data structures can be seamlessly integrated into the entity model.
 
