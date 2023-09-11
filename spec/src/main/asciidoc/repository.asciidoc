@@ -176,7 +176,7 @@ In Jakarta Data, the concept of "Domain-Relation" fields encompasses two distinc
 
 - *Association Fields*: Association fields represent semantically weak relationships, often called semantic dependencies, between objects that may not have a direct or strong connection. Unlike component fields, association fields may exist between entities that are otherwise unrelated. Associations can further specialize into aggregation, a specific form of association in which each object involved has its life cycle, yet a notion of ownership also exists.
 
-These Domain-Relation fields' specific implementation and definition may vary across different Jakarta Data providers. Providers can create annotations, define conventions, or leverage standards like Jakarta Persistence to establish these relationships effectively.
+Definition and implementation of Domain-Relation fields may vary across different Jakarta Data providers. Providers can create annotations, define conventions, or leverage standards like Jakarta Persistence to establish these relationships effectively.
 
 The topic of serialization of these Domain-Relation fields within databases is crucial for maintaining data consistency and integrity. In the next section, we'll delve into how Jakarta Data providers handle the persistence and serialization of these fields within various database types.
 
