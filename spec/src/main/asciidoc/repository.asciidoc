@@ -225,7 +225,7 @@ The structure of the entity in a Document, Wide-Column, and Graph database will 
 | 1  | John Doe | 123 Main St   | Sampleville  | 12345
 |====
 
-This approach allows for a flat and denormalized structure in the database, making it suitable for certain NoSQL database types.
+This approach allows for a flat and denormalized structure in the database, making it suitable for a variety of database types.
 
 2. * Second Approach: Storing Components in Separate Tables (Relational Databases) or as Subdocuments/UDTs (NoSQL Databases)*
 
