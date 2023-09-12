@@ -44,7 +44,6 @@ Several vital characteristics define repositories:
 
 - **Built-In Interfaces:** The Jakarta Data specification provides a set of built-in interfaces from which repositories can inherit. These built-in interfaces offer a convenient way to include a variety of pre-defined methods for common operations. They also declare the entity type to use for methods where the entity type cannot otherwise be inferred.
 
-
 - **Data Retrieval and Modification:** Repositories facilitate data retrieval and modification operations. This includes querying for persistent instances in the data store, creating new persistent instances in the data store, removing existing persistent instances, and modifying the state of persistent instances. Conventionally, these operations are named insert, delete, and update for modifying operations and find, count, and exists for retrieval operations.
 
 - **Subset of Data:** Repositories may expose only a subset of the full data set available in the data store, providing a focused and controlled access point to the data.
@@ -75,6 +74,7 @@ The parent interface at the root of the hierarchy of built-in interfaces is `Dat
                         | PageableRepository |
                         +--------------------+
 ....
+
 
 * Interface with generic CRUD operations on a repository for a specific type. This one we can see more often on several Java implementations.
 * Interface with generic CRUD operations using the pagination feature.
@@ -111,6 +111,7 @@ Jakarta Data empowers developers to take control of their data access and manage
 Subsequently, an implementation of Jakarta Data, specifically tailored to the chosen data store, assumes the responsibility of implementing each repository interface. This symbiotic relationship between developers and Jakarta Data ensures that data access and manipulation remain consistent, efficient, and aligned with best practices.
 
 Jakarta Data empowers developers to shape their data access strategies by defining entity classes and repositories, with implementations seamlessly adapting to the chosen data store. This flexibility and Jakarta Data's persistence-agnostic approach promote robust data management within Java applications.
+
 === Entity Classes
 
 In Jakarta Data, an entity refers to a fundamental data representation and management building block. It can be conceptually understood in several aspects:
@@ -123,7 +124,263 @@ In Jakarta Data, an entity refers to a fundamental data representation and manag
 
 4. *Provider Differentiation*: To maintain clarity and specify the desired provider when using Jakarta Data, it's recommended that applications do not mix Entity annotations from different models. This practice allows the Entity annotation to indicate the desired provider, especially in cases where multiple types of Jakarta Data providers are available. A Jakarta Data provider must provide implementation of repositories for Entity types having the Entity annotations that it supports, ignoring Entity types only having identifiable Entity annotations that the Jakarta Data provider does not support. The latter are to be handled by other Jakarta Data providers that do support the other types of Entity annotations.
 
-An entity within Jakarta Data encompasses the Java class representing the data and the schema, persistence characteristics, and provider-specific annotations, all working together to simplify data access and management within Java applications.
+An entity within Jakarta Data encompasses the Java class representing the data and the schema, persistence characteristics, and provider-specific annotations, all working together to simplify data access and management within Java applications. While a Jakarta Data provider might require a default constructor and work primarily with mutable entities, Jakarta Data allows for the use of immutable entity classes, which are best represented as Java records.
+
+==== Programming Model for Entity Data in Jakarta Data
+
+Jakarta Data does not define an entity model of its own, instead borrowing the entity models of other Jakarta standards (Jakarta Persistence and Jakarta NoSQL) and allowing for vendor-specific entity models to be used.  This section defines core concepts that entity models must follow in order to be used with Jakarta Data.  The entity model allows the user to define Java classes that represent data entities. These entities can be stored, retrieved, and manipulated in various databases, including key-value, wide-column, document, graph, and relational databases. A programming model for entities ensures that entity classes are well-defined and can be seamlessly integrated with different database technologies.
+
+Jakarta Data places requirements on two types of fields within entity classes: basic fields and relation fields. Basic fields represent fundamental data types natively supported by Jakarta Data Providers. Support for basic types is mandatory for all Jakarta Data providers. On the other hand, Domain-Relation fields allow entities to interact with other domain classes or types, enriching data structures, but also making them more complex. Support for Domain-Relation fields varies depending on the Jakarta Data provider and the database type. Jakarta Data does not require support for Domain-Relation entity fields when using Graph databases.
+
+===== Basic Types
+
+A variety of basic types can be used for fields or properties of entity classes. The basic types include:
+
+|===
+| Basic Data Type | Description
+
+| Primitive Types and Wrappers
+| All Java primitive types, such as int, double, boolean, etc., and their corresponding java.lang wrapper types (e.g., Integer, Double, Boolean).
+
+| String
+| Represents text data.
+
+| LocalDate, LocalDateTime, LocalTime, Instant
+| Represent date and time-related data.
+
+| UUID
+| Universally Unique Identifier for identifying entities.
+
+| BigInteger, BigDecimal
+| Represent large integer and decimal numbers.
+
+| byte[]
+| Represents binary data.
+
+| Enum Types
+| Custom enumerated types defined by developers.
+|===
+
+
+Every entity in Jakarta Data must have a unique identifier composed of one or more supported basic types. This unique identifier is crucial for distinguishing individual entities in the database. Entity models that are used with Jakarta Data must define a way for developers to specify the unique identifier. Typically this is done with an `@Id` annotation, but other means are permitted, such as `@EmbeddedId` in Jakarta Persistence which defines a compound unique identifier based on an embeddable class, or by naming convention (for example, considering a property to be the unique identifier if is named id or ends in Id).
+
+IMPORTANT: It's important to note that key-value, wide-column, document, and relational databases support Collection specializations and Maps of the basic types. However, these databases may have different serialization processes, impacting performance and causing impedance mismatch. Developers should consider these side effects when working with collections and maps in their entity models.
+
+In addition to the basic types, entity models might also choose to support additional types that represent data in a domain-specific manner. These custom types may include complex data structures and objects. Entity models can choose to provide mechanisms to convert these custom types to the supported basic types.
+
+===== Domain-Relation Fields in Jakarta Data
+
+In Jakarta Data, the concept of "Domain-Relation" fields encompasses two distinct types: "component" and "association" fields. These fields enable developers to establish relationships between entities and other domain concepts, enriching the complexity and structure of data entities.
+
+- *Component Fields*: A component field represents a relationship where one entity is treated as a component of another entity. It implies that the component does not have a life cycle outside the entity to which it belongs. It is an embedded object that exists solely within the context of the owning entity.
+
+- *Association Fields*: Association fields represent semantically weak relationships, often called semantic dependencies, between objects that may not have a direct or strong connection. Unlike component fields, association fields may exist between entities that are otherwise unrelated. Associations can further specialize into aggregation, a specific form of association in which each object involved has its life cycle, yet a notion of ownership also exists.
+
+Definition and implementation of Domain-Relation fields may vary across different Jakarta Data providers. Providers can create annotations, define conventions, or leverage standards like Jakarta Persistence to establish these relationships effectively.
+
+The topic of serialization of Domain-Relation fields within databases is crucial for maintaining data consistency and integrity. The next section discussed how Jakarta Data providers handle the persistence and serialization of Domain-Relation fields for various database types.
+
+In Jakarta Data, the serialization of Domain-Relation fields, such as components, can be achieved in two ways.
+
+1. *Merging Fields Directly in the Entity (Component Embedding):*
+
+In this approach, a component merges its fields directly within the entity. From the perspective of the persistence layer, the component itself doesn't exist as a separate table or document. Instead, it becomes part of the entity's structure. This approach leads to a flat representation in the database.
+
+Example:
+
+[source,java]
+----
+public class Address {
+
+    private String street;
+    private String city;
+    private String postalCode;
+}
+
+//the entity
+public class Person {
+    private Long id;
+
+    private String name;
+    private Address address;  // This is a component field
+}
+----
+
+The structure of the entity in a Document, Wide-Column, and Graph database will be like the JSON representation below. The JSON representation is for illustration; the actual representation is an implementation detail of the database. The JSON and the following SQL table are representations resulting from the Java classes.
+
+[source,json]
+----
+{
+  "id": 1,
+  "name": "John Doe",
+  "street": "123 Main St",
+  "city": "Sampleville",
+  "postalCode": "12345"
+}
+----
+
+[options="header"]
+|====
+| id | name     | street        | city         | postalCode
+| 1  | John Doe | 123 Main St   | Sampleville  | 12345
+|====
+
+This approach allows for a flat and denormalized structure in the database, making it suitable for a variety of database types.
+
+2. * Second Approach: Storing Components in Separate Tables (Relational Databases) or as Subdocuments/UDTs (NoSQL Databases)*
+
+This approach is typically employed for more complex relationships and associations within the domain model, allowing for greater flexibility and scalability. It involves storing components, such as the `Passport` in the example, in separate tables for relational databases or as subdocuments or User-Defined Types (UDTs) for NoSQL databases. This method is suitable for scenarios where an association exists between one entity and another.
+
+For instance, consider the `Citizen` and `Passport` classes. In a relational database, this approach results in two separate tables, each representing an entity with its associated persistence context. In contrast, for a NoSQL database like a Document database, the `Passport` can still act as a component within the `Citizen` entity, signifying that a `Passport` is closely tied to a `Citizen`. However, the modeling may vary depending on the specific NoSQL database and its capabilities.
+
+
+[source,java]
+----
+public class Passport {
+    private Long id;
+    private String passportNumber;
+    private LocalDate expirationDate;
+}
+
+public class Citizen {
+    private Long id;
+    private String name;
+    private Passport passport; // One-to-One relationship with Passport for relational database
+}
+----
+
+Here are some possible representations of the `Citizen` and `Passport` entities in table and JSON formats:
+
+.Citizen Table:
+[options="header"]
+|===
+| id (Primary Key) | name | passport_id (Foreign Key)
+| 1                | John Doe | 1
+|===
+
+.Passport Table:
+[options="header"]
+|===
+| id (Primary Key) | passportNumber | expirationDate
+| 1                | A123456        | 2023-12-31
+|===
+
+These tables represent the data from the JSON structure you provided earlier.
+In a relational database, the `Citizen` and `Passport` entities are stored in separate tables, connected by a foreign key relationship.
+
+[source,json]
+----
+{
+  "id": 1,
+  "name": "John Doe",
+  "passport": {
+    "passportNumber": "A123456",
+    "expirationDate": "2023-12-31"
+  }
+}
+----
+
+Entities in a domain model often have relationships with other entities. In some cases, an entity may have a collection of another type of entity, creating a one-to-many or many-to-many relationship. This scenario explores how such relationships are represented and managed in the context of Jakarta Data.
+
+Consider the example of an `Author` entity associated with multiple `Book` entities. This relationship allows an author to be linked to multiple books they have authored. While this structure remains relatively unchanged for NoSQL databases, it introduces specific considerations in relational databases, where it typically generates auxiliary tables to manage the relationship. We'll explore these representations in both JSON and relational database formats.
+
+[source,java]
+----
+// Entity
+public class Author {
+
+    private UUID id;
+
+    private String name;
+
+    private List<Book> books;
+}
+
+// If in a relational database, Book might also be an entity
+public class Book {
+
+    // This field might not be required for some NoSQL database modeling
+    private Long id;
+
+    private String title;
+
+    private String category;
+
+    // Other fields and methods
+}
+----
+
+
+[source,json]
+----
+{
+  "id": "6f6d665d-5585-46cd-8b9b-61a559de0e13",
+  "name": "John Doe",
+  "books": [
+    {
+      "title": "Sample Book 1",
+      "category": "Fiction"
+    },
+    {
+      "title": "Sample Book 2",
+      "category": "Non-fiction"
+    }
+  ]
+}
+----
+
+In the JSON representation, an `Author` entity can be associated with multiple `Book` entities within an array.
+
+Here are the tables with content based on the JSON data structure:
+
+.Author Table:
+[options="header"]
+|===
+| id (Primary Key) | name
+| 1                | John Doe
+| 2                | Jane Smith
+|===
+
+.Book Table:
+[options="header"]
+|===
+| id (Primary Key) | title | category
+| 1                | Sample Book 1 | Fiction
+| 2                | Sample Book 2 | Non-fiction
+|===
+
+.Author_Book (Auxiliary) Table:
+[options="header"]
+|===
+| author_id (Foreign Key) | book_id (Foreign Key)
+| 1                       | 1
+| 1                       | 2
+| 2                       | 2
+|===
+
+These tables represent the data from the JSON structure you provided earlier, illustrating a many-to-many relationship between authors and books using an auxiliary table.
+
+In a relational database, this relationship typically generates three tables: `Author`, `Book`, and an auxiliary table `Author_Book` to manage the many-to-many relationship between authors and books.
+
+In some scenarios, books can have multiple authors, and authors can contribute to several books, resulting in a many-to-many (N-N) cardinality relationship. Jakarta Data offers flexibility in representing and managing such complex relationships.
+
+This N-N relationship typically generates a dedicated table to manage the associations between books and authors in a relational database. However, NoSQL databases may take a different approach, especially in cases where denormalization and data duplication are favored for query-driven designs.
+
+IMPORTANT: The key-value database might support these fields, generating a single BLOB value. However, the serialization process for such fields may vary depending on the Jakarta Data provider and the specific key-value database used.
+
+NOTE: The Graph database is not required to support Domain-Relation types, but it might be used for aggregate query returns or as a read-only field.
+
+===== Recursion at Domain-Relation Fields in Jakarta Data
+
+In the context of Jakarta Data, the term "recursion" pertains to the ability to manage hierarchical or nested relationships between entities. This capability is essential when dealing with complex domain models involving associations, aggregations, or compositions between various entity types. Jakarta Data ensures these relationships are correctly mapped and maintained within the database, enabling consistent data retrieval and manipulation.
+
+
+For relational databases, Jakarta Data requires support of recursive relationships. If one entity type is associated with or contains another entity type, the Jakarta Data provider for relational databases must establish the required table structures and foreign key constraints to uphold these relationships. This approach guarantees data integrity and consistency when working with the database.
+
+For other types of databases, Jakarta Data does not require explicit support for recursive relationships.  In NoSQL databases, data is often stored in a denormalized or nested document format, making it more challenging to enforce strict hierarchical relationships. Instead, NoSQL databases may emphasize query-driven design rather than explicit mapping or management of recursive relationships.
+
+
+In instances where a Jakarta Data provider for NoSQL databases encounters a recursive relationship that it cannot support due to the specific characteristics of the database, it must throw a `jakarta.data.exceptions.MappingException` or an appropriate subclass of `MappingException`. This exception notifies developers that the database does not support the relationship.
 
 === Query Methods
 
