@@ -331,7 +331,7 @@ public class Book {
 
 In the JSON representation, an `Author` entity can be associated with multiple `Book` entities within an array.
 
-Certainly, here are the tables with content based on the JSON data structure:
+Here are the tables with content based on the JSON data structure:
 
 .Author Table:
 [options="header"]
