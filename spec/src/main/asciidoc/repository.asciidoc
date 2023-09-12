@@ -345,8 +345,8 @@ Certainly, here are the tables with content based on the JSON data structure:
 [options="header"]
 |===
 | id (Primary Key) | title | category
-| 1                | Book A | Fiction
-| 2                | Book B | Non-fiction
+| 1                | Sample Book 1 | Fiction
+| 2                | Sample Book 2 | Non-fiction
 |===
 
 .Author_Book (Auxiliary) Table:
