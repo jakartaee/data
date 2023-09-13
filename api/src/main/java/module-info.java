@@ -653,7 +653,7 @@ import jakarta.data.repository.Sort;
 // TODO Does Jakarta NoSQL have the same or different wildcard characters? Document this
 //       under: "Wildcard characters for patterns are determined by the data access provider"
 // TODO Ensure we have all required supported return types listed.
-module jakarta.data.api {
+module jakarta.data {
     exports jakarta.data.repository;
     exports jakarta.data.exceptions;
     opens jakarta.data.repository;
