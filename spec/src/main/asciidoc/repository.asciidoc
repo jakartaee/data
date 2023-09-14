@@ -960,7 +960,7 @@ for (Pageable p = Pageable.ofSize(25).sortBy(Sort.desc("yearBorn"), Sort.asc("na
 
 In Jakarta Data, repository methods define how data is accessed and manipulated. Understanding the precedence of these methods is essential for controlling query execution and customizing data access in your Java applications. It explores the rules governing the precedence of repository methods in Jakarta Data, clarifying how queries are determined and executed.
 
-When working with Jakarta Data repositories, you'll encounter different methods, each with its precedence rules. This guide will help you navigate the hierarchy of these rules, ensuring that your repository methods behave as expected and align with your data access requirements. Whether you're using default method implementations, resource accessor methods, custom queries, or query derivation based on method names and parameters, this section will clarify the order of precedence for each scenario.
+When composing repository methods in Jakarta Data, there are a several different patterns from which to choose. Jakarta Data providers must support all of the patterns that are defined in this specification: default method implementations, resource accessor methods, custom queries, and query derivation based on method names and parameters. This section clarifies the order of precedence for each pattern that must be used when interpreting the meaning of repository methods.
 
 .Precedence Rules for Repository Methods
 [cols="2,1"]
