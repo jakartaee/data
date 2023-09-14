@@ -976,7 +976,7 @@ When composing repository methods in Jakarta Data, there are a several different
 | Otherwise, if the method is annotated with `@Query`, the query from the annotation is used.
 | The `@Query` annotation defines a custom query.
 
-| Otherwise, if the method name contains the By keyword, determine the query according to the BNF for Query by Method Name.
+| Otherwise, if the method name contains the `By` keyword, determine the query according to the BNF for Query by Method Name.
 | Query by method name allows dynamic query generation based on method names and parameters.
 
 | Otherwise, process it as Query by Parameters, determining the query from the supplied parameters and the insert/update/delete/find/... prefix.
