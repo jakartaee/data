@@ -970,7 +970,7 @@ When composing repository methods in Jakarta Data, there are a several different
 | If the method is a default method, the provided implementation takes precedence.
 | The Jakarta Data provider does not replace the implementation that is provided by the user in the default method.
 
-| If the method has no parameters and returns one of (EntityManager/DataSource/Connection) as defined in the spec, then it is a resource accessor method.
+| Otherwise, if the method has no parameters and returns one of (EntityManager/DataSource/Connection), then it is a resource accessor method.
 | Resource accessor methods allow direct access to underlying data source resources.
 
 | Otherwise, if the method is annotated with @Query, use the query from the annotation.
