@@ -979,7 +979,7 @@ When composing repository methods in Jakarta Data, there are a several different
 | Otherwise, if the method name contains the `By` keyword, determine the query according to the BNF for Query by Method Name.
 | Query by method name allows dynamic query generation based on method names and parameters.
 
-| Otherwise, process it as Query by Parameters, determining the query from the supplied parameters and the insert/update/delete/find/... prefix.
+| Otherwise, process it as Query by Parameters, determining the query from the supplied parameters and the `insert`, `update`, `delete`, `find`, `count`, or `exists` prefix.
 | Query by parameters constructs queries based on method parameters and prefixes.
 |===
 
