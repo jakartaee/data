@@ -453,7 +453,7 @@ Example query methods:
 - `findByAuthorName(String authorName)`: Find entities by the 'authorName' property of a related entity.
 - `findByCategoryNameAndPriceLessThan(String categoryName, double price)`: Find entities by 'categoryName' and 'price' properties, applying an 'And' condition.
 
-==== BNF Grammar for Query Methods
+===== BNF Grammar for Query Methods
 
 Query methods allow developers to create database queries using method naming conventions. These methods consist of a subject, predicate, and optional order clause. This BNF notation provides a structured representation for understanding and implementing these powerful querying techniques in your applications.
 
@@ -488,7 +488,7 @@ Explanation of the BNF elements:
 - `<order-clause>`: Specifies the optional order clause, starting with "OrderBy" and followed by one or more order items.
 - `<order-item>`: Represents an ordered collection of entity attributes by which to sort results, including an optional "Asc" or "Desc" to specify the sort direction.
 
-==== Entity Property Names
+===== Entity Property Names
 
 Within an entity, property names must be unique ignoring case. For simple entity properties, the field or accessor method name serves as the entity property name. In the case of embedded classes, entity property names are computed by concatenating the field or accessor method names at each level.
 
@@ -955,6 +955,35 @@ for (Pageable p = Pageable.ofSize(25).sortBy(Sort.desc("yearBorn"), Sort.asc("na
   p = page.nextPageable();
 }
 ----
+
+=== Precedence of Repository Methods in Jakarta Data
+
+In Jakarta Data, repository methods define how data is accessed and manipulated. Understanding the precedence of these methods is essential for controlling query execution and customizing data access in your Java applications. It explores the rules governing the precedence of repository methods in Jakarta Data, clarifying how queries are determined and executed.
+
+When composing repository methods in Jakarta Data, there are a several different patterns from which to choose. Jakarta Data providers must support all of the patterns that are defined in this specification: default method implementations, resource accessor methods, custom queries, and query derivation based on method names and parameters. This section clarifies the order of precedence for each pattern that must be used when interpreting the meaning of repository methods.
+
+.Precedence Rules for Repository Methods
+[cols="2,1"]
+|===
+| Precedence Rule | Description
+
+| If the method is a default method, the provided implementation takes precedence.
+| The Jakarta Data provider does not replace the implementation that is provided by the user in the default method.
+
+| Otherwise, if the method has no parameters and returns one of (EntityManager/DataSource/Connection), then it is a resource accessor method.
+| Resource accessor methods allow direct access to underlying data source resources.
+
+| Otherwise, if the method is annotated with `@Query`, the query from the annotation is used.
+| The `@Query` annotation defines a custom query.
+
+| Otherwise, if the method name contains the `By` keyword, determine the query according to the BNF for Query by Method Name.
+| Query by method name allows dynamic query generation based on method names and parameters.
+
+| Otherwise, process it as Query by Parameters, determining the query from the supplied parameters and the `insert`, `update`, `delete`, `find`, `count`, or `exists` prefix.
+| Query by parameters constructs queries based on method parameters and prefixes.
+|===
+
+These rules define the precedence of repository methods in Jakarta Data, allowing developers to control query execution based on specific method characteristics and annotations. Based on the method type and provided annotations, Jakarta Data determines the appropriate query derivation mechanism for database operations.
 
 === Jakarta Data Vendor Extension Features
 
