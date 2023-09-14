@@ -973,7 +973,7 @@ When composing repository methods in Jakarta Data, there are a several different
 | Otherwise, if the method has no parameters and returns one of (EntityManager/DataSource/Connection), then it is a resource accessor method.
 | Resource accessor methods allow direct access to underlying data source resources.
 
-| Otherwise, if the method is annotated with @Query, use the query from the annotation.
+| Otherwise, if the method is annotated with `@Query`, the query from the annotation is used.
 | Annotated methods provide a custom query defined in the @Query annotation.
 
 | Otherwise, if the method name contains the By keyword, determine the query according to the BNF for Query by Method Name.
