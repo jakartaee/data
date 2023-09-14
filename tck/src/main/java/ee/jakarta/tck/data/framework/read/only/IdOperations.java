@@ -19,8 +19,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.stream.Stream;
 
-import jakarta.data.repository.Limit;
-import jakarta.data.repository.Sort;
+import jakarta.data.Limit;
+import jakarta.data.Sort;
 
 /**
  * This interface contains common operations for the NaturalNumbers and AsciiCharacters repositories.

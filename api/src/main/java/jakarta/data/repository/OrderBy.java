@@ -17,6 +17,8 @@
  */
 package jakarta.data.repository;
 
+import jakarta.data.Sort;
+import jakarta.data.page.Pageable;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;

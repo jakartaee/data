@@ -19,12 +19,12 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 import ee.jakarta.tck.data.framework.read.only.NaturalNumber.NumberType;
-import jakarta.data.repository.KeysetAwarePage;
-import jakarta.data.repository.Limit;
-import jakarta.data.repository.Pageable;
+import jakarta.data.Limit;
+import jakarta.data.Streamable;
+import jakarta.data.page.KeysetAwarePage;
+import jakarta.data.page.Pageable;
 import jakarta.data.repository.PageableRepository;
 import jakarta.data.repository.Repository;
-import jakarta.data.repository.Streamable;
 
 /**
  * This is a read only repository that shares the same data (and entity type)

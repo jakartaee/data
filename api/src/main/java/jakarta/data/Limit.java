@@ -15,7 +15,9 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.repository;
+package jakarta.data;
+
+import jakarta.data.page.Pageable;
 
 /**
  * <p>Limits the number of results of a single invocation of a

@@ -15,7 +15,7 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.repository;
+package jakarta.data.page;
 
 /**
  * <p>A page is a sublist of results. It provides information about its position relative to the entire list.</p>

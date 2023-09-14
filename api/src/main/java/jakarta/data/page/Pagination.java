@@ -15,8 +15,9 @@
  *
  *  SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.repository;
+package jakarta.data.page;
 
+import jakarta.data.Sort;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;

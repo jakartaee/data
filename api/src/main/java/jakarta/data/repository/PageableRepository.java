@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,9 @@
  */
 
 package jakarta.data.repository;
+
+import jakarta.data.page.Page;
+import jakarta.data.page.Pageable;
 
 /**
  * Repository fragment to provide methods to retrieve entities using the pagination and sorting abstraction. In many

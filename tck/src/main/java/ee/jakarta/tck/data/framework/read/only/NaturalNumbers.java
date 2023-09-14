@@ -17,13 +17,13 @@ package ee.jakarta.tck.data.framework.read.only;
 
 import java.util.stream.Stream;
 
+import jakarta.data.Limit;
+import jakarta.data.Sort;
+import jakarta.data.page.KeysetAwareSlice;
+import jakarta.data.page.Pageable;
+import jakarta.data.page.Slice;
 import jakarta.data.repository.CrudRepository;
-import jakarta.data.repository.KeysetAwareSlice;
-import jakarta.data.repository.Limit;
-import jakarta.data.repository.Pageable;
 import jakarta.data.repository.Repository;
-import jakarta.data.repository.Slice;
-import jakarta.data.repository.Sort;
 
 import ee.jakarta.tck.data.framework.read.only.NaturalNumber.NumberType;
 

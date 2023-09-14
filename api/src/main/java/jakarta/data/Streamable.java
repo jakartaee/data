@@ -15,7 +15,7 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.repository;
+package jakarta.data;
 
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;

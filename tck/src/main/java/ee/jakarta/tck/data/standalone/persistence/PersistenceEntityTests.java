@@ -35,9 +35,9 @@ import ee.jakarta.tck.data.framework.junit.anno.Persistence;
 import ee.jakarta.tck.data.framework.junit.anno.Standalone;
 import ee.jakarta.tck.data.standalone.persistence.Product.Department;
 
+import jakarta.data.Sort;
+import jakarta.data.Streamable;
 import jakarta.data.exceptions.MappingException;
-import jakarta.data.repository.Sort;
-import jakarta.data.repository.Streamable;
 import jakarta.inject.Inject;
 
 /**

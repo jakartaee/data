@@ -50,17 +50,17 @@ import ee.jakarta.tck.data.framework.read.only.NaturalNumbers;
 import ee.jakarta.tck.data.framework.read.only.NaturalNumbersPopulator;
 import ee.jakarta.tck.data.framework.read.only.PositiveIntegers;
 import ee.jakarta.tck.data.framework.read.only.NaturalNumber.NumberType;
+import jakarta.data.Limit;
+import jakarta.data.Sort;
+import jakarta.data.Streamable;
 import jakarta.data.exceptions.EmptyResultException;
 import jakarta.data.exceptions.MappingException;
 import jakarta.data.exceptions.NonUniqueResultException;
-import jakarta.data.repository.KeysetAwarePage;
-import jakarta.data.repository.KeysetAwareSlice;
-import jakarta.data.repository.Limit;
-import jakarta.data.repository.Page;
-import jakarta.data.repository.Pageable;
-import jakarta.data.repository.Slice;
-import jakarta.data.repository.Sort;
-import jakarta.data.repository.Streamable;
+import jakarta.data.page.KeysetAwarePage;
+import jakarta.data.page.KeysetAwareSlice;
+import jakarta.data.page.Page;
+import jakarta.data.page.Pageable;
+import jakarta.data.page.Slice;
 import jakarta.inject.Inject;
 
 /**
