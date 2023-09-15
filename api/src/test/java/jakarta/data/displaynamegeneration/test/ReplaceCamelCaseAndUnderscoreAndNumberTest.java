@@ -28,7 +28,7 @@ import java.util.stream.Stream;
 
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
-@DisplayNameGeneration(ReplaceCamelCaseAndUnderscoreAndNumber.class)
+//@DisplayNameGeneration(ReplaceCamelCaseAndUnderscoreAndNumber.class)
 class ReplaceCamelCaseAndUnderscoreAndNumberTest {
     private ReplaceCamelCaseAndUnderscoreAndNumber replaceCamelCaseAndUnderscoreAndNumber;
 
