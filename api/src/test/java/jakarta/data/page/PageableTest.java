@@ -28,7 +28,6 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
-//@DisplayNameGeneration(ReplaceCamelCaseAndUnderscore.class)
 class PageableTest {
 
     @Test
@@ -131,7 +130,7 @@ class PageableTest {
     @Test
     @DisplayName("Should expect UnsupportedOperationException when sort is modified")
     void shouldNotModifySort() {
-        assertThatThrownBy(() -> {
+        assertThatThrownBy( () -> {
             Pageable pageable = Pageable.ofSize(3).sortBy(Sort.asc("name"));
             List<Sort> sorts = pageable.sorts();
 
