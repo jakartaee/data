@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -67,7 +67,12 @@ public class DataSignatureTestRunner extends SigTestEE {
      */
     @Override
     protected String[] getPackages(String vehicleName) {
-        return new String[] { "jakarta.data", "jakarta.data.repository" };
+        return new String[] {
+                "jakarta.data",
+                "jakarta.data.exceptions",
+                "jakarta.data.page",
+                "jakarta.data.repository"
+                };
     }
 
     /**

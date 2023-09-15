@@ -20,13 +20,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Stream;
 
+import jakarta.data.Sort;
+import jakarta.data.Streamable;
 import jakarta.data.repository.DataRepository;
 import jakarta.data.repository.OrderBy;
 import jakarta.data.repository.Param;
 import jakarta.data.repository.Query;
 import jakarta.data.repository.Repository;
-import jakarta.data.repository.Sort;
-import jakarta.data.repository.Streamable;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import ee.jakarta.tck.data.standalone.persistence.Product.Department;
