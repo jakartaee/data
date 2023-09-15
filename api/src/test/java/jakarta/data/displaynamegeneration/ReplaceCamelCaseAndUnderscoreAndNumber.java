@@ -85,10 +85,6 @@ public class ReplaceCamelCaseAndUnderscoreAndNumber extends DisplayNameGenerator
     //TODO: Use after making String replaceCamelCaseAndUnderscoreAndNumber(String input) private
     static final DisplayNameGenerator INSTANCE = new ReplaceCamelCaseAndUnderscoreAndNumber();
 
-    public ReplaceCamelCaseAndUnderscoreAndNumber() {
-        super();
-    }
-
     @Override
     public String generateDisplayNameForMethod(Class<?> testClass, Method testMethod) {
         if(hasParameters(testMethod)){
