@@ -89,7 +89,8 @@ import jakarta.data.repository.Repository;
  * defined set of conventions, which instruct the container/runtime
  * about the desired data access operation to perform.
  * These conventions consist of
- * patterns of reserved keywords within the method name, as well as
+ * patterns of reserved keywords within the method name,
+ * patterns defined by the method parameters and a method name prefix, and
  * annotations that are placed upon the method and its parameters.</p>
  *
  * <p>Built-in repository super interfaces, such as {@link DataRepository},
@@ -145,18 +146,52 @@ import jakarta.data.repository.Repository;
  * }
  * </pre>
  *
- * <p>In queries by method name, <code>Id</code> is an alias for the entity property
+ * <p>When using the <b>Query by Method Name</b> pattern,
+ * <code>Id</code> is an alias for the entity property
  * that is designated as the id. Entity property names that are used in queries
  * by method name must not contain reserved words.</p>
  *
- * <h2>Reserved Keywords for Query by Method Name</h2>
+ * <h2>Reserved Prefixes for Repository Methods</h2>
+ *
+ * <p>Repository methods with the following prefixes must have a single parameter
+ * that is the entity, an array of entities, or an {@link Iterable} of entities.
+ * Subclasses of {@link Iterable} such as {@link java.util.List List} are permitted.</p>
  *
  * <table style="width: 100%">
- * <caption><b>Reserved for Subject</b></caption>
+ * <caption><b>Methods with Entity Parameters</b></caption>
  * <tr>
- * <td style="vertical-align: top"><b>Prefix</b></td>
- * <td style="vertical-align: top"><b>Description</b></td>
- * <td style="vertical-align: top"><b>Example</b></td>
+ * <td style="vertical-align: top; width: 10%"><b>Prefix</b></td>
+ * <td style="vertical-align: top; width: 25%"><b>Description</b></td>
+ * <td style="vertical-align: top; width: 65%"><b>Example</b></td>
+ * </tr>
+ *
+ * <tr style="vertical-align: top"><td><code>delete</code></td>
+ * <td>for delete operations</td>
+ * <td><code>public void delete(person);</code></td></tr>
+ *
+ * <tr style="vertical-align: top"><td><code>insert</code></td>
+ * <td>creates new entities</td>
+ * <td><code>public void insertNewHires(Collection&lt;Employee&gt; newEmployees);</code></td></tr>
+ *
+ * <tr style="vertical-align: top"><td><code>save</code></td>
+ * <td>update if exists, otherwise insert</td>
+ * <td><code>Product[] saveAll(Product... products)</code></td></tr>
+ *
+ * <tr style="vertical-align: top"><td><code>update</code></td>
+ * <td>updates an existing entity</td>
+ * <td><code>public Product update(Product modifiedProduct);</code></td></tr>
+ * </table>
+ *
+ * <p>Repository methods following the <b>Query by Method Name</b> pattern
+ * must include the {@code By} keyword in the method name. Query conditions
+ * are determined by the method name following the {@code By} keyword.</p>
+ *
+ * <table style="width: 100%">
+ * <caption><b>Query By Method Name</b></caption>
+ * <tr>
+ * <td style="vertical-align: top; width: 10%"><b>Prefix</b></td>
+ * <td style="vertical-align: top; width: 25%"><b>Description</b></td>
+ * <td style="vertical-align: top; width: 65%"><b>Example</b></td>
  * </tr>
  *
  * <tr style="vertical-align: top"><td><code>countBy</code></td>
@@ -175,17 +210,47 @@ import jakarta.data.repository.Repository;
  * <td>for find operations</td>
  * <td><code>findByHeightBetween(minHeight, maxHeight)</code></td></tr>
  *
- * <tr style="vertical-align: top"><td><code>save</code></td>
- * <td>for save operations</td>
- * <td><code>save(Product newProduct)</code></td></tr>
- *
  * <tr style="vertical-align: top"><td><code>updateBy</code></td>
  * <td>for simple update operations</td>
  * <td><code>updateByIdSetModifiedOnAddPrice(productId, now, 10.0)</code></td></tr>
  * </table>
  *
+ * <p>Repository methods following the <b>Query by Parameters</b> pattern
+ * are named with the following prefixes but without the {@code By} keyword
+ * in the method name. Query conditions are determined by the method parameter
+ * names, which requires the {@code -parameters} compiler option for preserving
+ * parameter names if the Jakarta Data provider does not process repositories
+ * at build time.</p>
+ *
+ * <table style="width: 100%">
+ * <caption><b>Query By Parameters</b></caption>
+ * <tr>
+ * <td style="vertical-align: top; width: 10%"><b>Prefix</b></td>
+ * <td style="vertical-align: top; width: 25%"><b>Description</b></td>
+ * <td style="vertical-align: top; width: 65%"><b>Example</b></td>
+ * </tr>
+ *
+ * <tr style="vertical-align: top"><td><code>count</code></td>
+ * <td>counts the number of matching entities</td>
+ * <td><code>countWithNameOf(firstName, lastName)</code></td></tr>
+ *
+ * <tr style="vertical-align: top"><td><code>delete</code></td>
+ * <td>for delete operations</td>
+ * <td><code>deleteCompleted(JobStatus.DONE)</code></td></tr>
+ *
+ * <tr style="vertical-align: top"><td><code>exists</code></td>
+ * <td>for determining existence</td>
+ * <td><code>existsForYear(year, productName)</code></td></tr>
+ *
+ * <tr style="vertical-align: top"><td><code>find</code></td>
+ * <td>for find operations</td>
+ * <td><code>findMatches(make, model, Sort.desc("price"))</code></td></tr>
+ * </table>
+ *
  * <p>Key-value and Wide-Column databases raise {@link UnsupportedOperationException}
  * for queries on attributes other than the identifier/key.</p>
+ *
+ * <h2>Reserved Keywords for Query by Method Name</h2>
  *
  * <table style="width: 100%">
  * <caption><b>Reserved for Predicate</b></caption>
@@ -402,7 +467,8 @@ import jakarta.data.repository.Repository;
  * <td style="vertical-align: top"><b>Notes</b></td>
  * </tr>
  *
- * <tr style="vertical-align: top"><td><code>countBy...</code></td>
+ * <tr style="vertical-align: top"><td><code>count...</code>,
+ * <br><code>countBy...</code></td>
  * <td><code>long</code>, <code>Long</code>,
  * <br><code>int</code>, <code>Integer</code>,
  * <br><code>short</code>, <code>Short</code>,
@@ -419,38 +485,69 @@ import jakarta.data.repository.Repository;
  * <br><code>Number</code></td>
  * <td>Jakarta Persistence providers limit the maximum to <code>Integer.MAX_VALUE</code></td></tr>
  *
- * <tr style="vertical-align: top"><td><code>existsBy...</code></td>
- * <td><code>boolean</code>, <code>Boolean</code></td>
- * <td></td></tr>
+ * <tr style="vertical-align: top"><td><code>delete...(E)</code>,
+ * <br><code>delete...(E[])</code>,
+ * <br><code>delete...(Iterable&lt;E&gt;)</code></td>
+ * <td><code>void</code>, <code>Void</code></td>
+ * <td>For deleting entities.</td></tr>
  *
- * <tr style="vertical-align: top"><td><code>find...By...</code></td>
+ * <tr style="vertical-align: top"><td><code>exists...</code>,
+ * <br><code>existsBy...</code></td>
+ * <td><code>boolean</code>, <code>Boolean</code></td>
+ * <td>For determining existence.</td></tr>
+ *
+ * <tr style="vertical-align: top"><td><code>find...</code>,
+ * <br><code>find...By...</code></td>
  * <td><code>E</code>,
  * <br><code>Optional&lt;E&gt;</code></td>
  * <td>For queries returning a single item (or none)</td></tr>
  *
- * <tr style="vertical-align: top"><td><code>find...By...</code></td>
+ * <tr style="vertical-align: top"><td><code>find...</code>,
+ * <br><code>find...By...</code></td>
  * <td><code>E[]</code>,
  * <br><code>Iterable&lt;E&gt;</code>,
  * <br><code>Streamable&lt;E&gt;</code>,
  * <br><code>Collection&lt;E&gt;</code></td>
- * <td></td></tr>
+ * <td>For queries where it is possible to return more than 1 item.</td></tr>
  *
- * <tr style="vertical-align: top"><td><code>find...By...</code></td>
+ * <tr style="vertical-align: top"><td><code>find...</code>,
+ * <br><code>find...By...</code></td>
  * <td><code>Stream&lt;E&gt;</code></td>
  * <td>The caller must arrange to {@link java.util.stream.BaseStream#close() close}
  * all streams that it obtains from repository methods.</td></tr>
  *
- * <tr style="vertical-align: top"><td><code>find...By...</code></td>
+ * <tr style="vertical-align: top"><td><code>find...</code>,
+ * <br><code>find...By...</code></td>
  * <td><code>Collection</code> subtypes</td>
  * <td>The subtype must have a public default constructor and support <code>addAll</code> or <code>add</code></td></tr>
  *
- * <tr style="vertical-align: top"><td><code>find...By...</code></td>
- * <td><code>Page&lt;E&gt;</code>, <code>Iterator&lt;E&gt;</code></td>
+ * <tr style="vertical-align: top"><td><code>find...(..., Pageable)</code>,
+ * <br><code>find...By...(..., Pageable)</code></td>
+ * <td><code>Page&lt;E&gt;</code>, <code>KeysetAwarePage&lt;E&gt;</code>,
+ * <br><code>Slice&lt;E&gt;</code>, <code>KeysetAwareSlice&lt;E&gt;</code></td>
  * <td>For use with pagination</td></tr>
  *
- * <tr style="vertical-align: top"><td><code>find...By...</code></td>
+ * <tr style="vertical-align: top"><td><code>find...By...</code>,
+ * <br><code>find...By...</code></td>
  * <td><code>LinkedHashMap&lt;K, E&gt;</code></td>
  * <td>Ordered map of Id attribute value to entity</td></tr>
+ *
+ * <tr style="vertical-align: top"><td><code>insert(E)</code></td>
+ * <td><code>E</code>,
+ * <br><code>void</code>, <code>Void</code></td>
+ * <td>For inserting a single entity.</td></tr>
+ *
+ * <tr style="vertical-align: top"><td><code>insert(E...)</code>,
+ * <br><code>insert(Iterable&lt;E&gt;)</code></td>
+ * <td><code>void</code>, <code>Void</code>,
+ * <br><code>E[]</code>,
+ * <br><code>Iterable&lt;E&gt;</code>,
+ * <br><code>Stream&lt;E&gt;</code>,
+ * <br><code>Collection&lt;E&gt;</code>
+ * <br><code>Collection</code> subtypes</td>
+ * <td>For inserting multiple entities.
+ * <br>Collection subtypes must have a public default constructor
+ * and support <code>addAll</code> or <code>add</code></td></tr>
  *
  * <tr style="vertical-align: top"><td><code>save(E)</code></td>
  * <td><code>E</code>,
@@ -469,18 +566,62 @@ import jakarta.data.repository.Repository;
  * <td>For saving multiple entities.
  * <br>Collection subtypes must have a public default constructor
  * and support <code>addAll</code> or <code>add</code></td></tr>
+ *
+ * <tr style="vertical-align: top"><td><code>update(E)</code></td>
+ * <td><code>E</code>,
+ * <br><code>void</code>, <code>Void</code></td>
+ * <td>For updating a single entity.</td></tr>
+ *
+ * <tr style="vertical-align: top"><td><code>update(E...)</code>,
+ * <br><code>update(Iterable&lt;E&gt;)</code></td>
+ * <td><code>void</code>, <code>Void</code>,
+ * <br><code>E[]</code>,
+ * <br><code>Iterable&lt;E&gt;</code>,
+ * <br><code>Stream&lt;E&gt;</code>,
+ * <br><code>Collection&lt;E&gt;</code>
+ * <br><code>Collection</code> subtypes</td>
+ * <td>For updating multiple entities.
+ * <br>Collection subtypes must have a public default constructor
+ * and support <code>addAll</code> or <code>add</code></td></tr>
  * </table>
  *
- * <h2>Parameters to Repository Methods</h2>
+ * <h2>Parameters to Repository Query Methods</h2>
  *
- * <p>The parameters to a repository method correspond to the conditions that are
- * defined within the name of repository method (see reserved keywords above),
- * in the same order specified.
+ * <p>The parameters to the {@code find}, {@code exists}, {@code count},
+ * and {@code delete} methods determine the conditions of the query.</p>
+ *
+ * <p>When using the <i>Query By Method Name</i> pattern
+ * (the method name contains the {@code By} keyword),
+ * the conditions are defined by the name of the repository method
+ * (see Reserved for Predicate), in the same order specified.
  * Most conditions, such as <code>Like</code> or <code>LessThan</code>,
  * correspond to a single method parameter. The exception to this rule is
  * <code>Between</code>, which corresponds to two method parameters.</p>
  *
- * <p>After all conditions are matched up with the corresponding parameters,
+ * <p>When using the <i>Query By Parameters</i> pattern
+ * (the method name lacks the {@code By} keyword),
+ * the conditions are defined by the method parameters.
+ * Method parameter names must match the name of an entity attribute.
+ * The {@code _} character can be used in method parameter names to
+ * reference embedded attributes. All conditions are considered to be
+ * the equality condition. All conditions must match.
+ * If the Jakarta Data provider does not offer processing of repositories
+ * at build time, the developer must compile with the {@code -parameters}
+ * compiler option that makes parameter names available at run time.</p>
+ *
+ * <p>The following examples illustrate the difference between
+ * <i>Query By Method Name</i> and <i>Query By Parameters</i> patterns.
+ * Both methods accept the same parameters and have the same behavior.</p>
+ *
+ * <pre>
+ * // Query by Method Name:
+ * Person[] findByCityOfBirthAndLastName(String city, String surname, Sort... sorts);
+ *
+ * // Query by Parameters:
+ * Person[] findBornIn(String cityOfBirth, String lastName, Sort... sorts);
+ * </pre>
+ *
+ * <p>After conditions are determined from the corresponding parameters,
  * the remaining repository method parameters are used to enable other
  * capabilities such as pagination, limits, and sorting.</p>
  *
@@ -649,10 +790,8 @@ import jakarta.data.repository.Repository;
  * repository method. The repository bean honors these annotations when running in an
  * environment where the Jakarta EE technology that provides the interceptor is available.</p>
  */
-// TODO When can "By" be omitted and "All" added? Need to document that.
 // TODO Does Jakarta NoSQL have the same or different wildcard characters? Document this
 //       under: "Wildcard characters for patterns are determined by the data access provider"
-// TODO Ensure we have all required supported return types listed.
 module jakarta.data {
     exports jakarta.data;
     exports jakarta.data.page;
