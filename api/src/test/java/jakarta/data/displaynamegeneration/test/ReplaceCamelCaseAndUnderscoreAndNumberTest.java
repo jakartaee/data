@@ -18,8 +18,7 @@
 package jakarta.data.displaynamegeneration.test;
 
 import jakarta.data.displaynamegeneration.ReplaceCamelCaseAndUnderscoreAndNumber;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayNameGeneration;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -30,14 +29,8 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 //@DisplayNameGeneration(ReplaceCamelCaseAndUnderscoreAndNumber.class)
 class ReplaceCamelCaseAndUnderscoreAndNumberTest {
-    private ReplaceCamelCaseAndUnderscoreAndNumber replaceCamelCaseAndUnderscoreAndNumber;
 
-    @BeforeEach
-    void setUp() {
-        replaceCamelCaseAndUnderscoreAndNumber = new ReplaceCamelCaseAndUnderscoreAndNumber();
-    }
-
-    private static Stream<Arguments> provideInputAndExpectedResult() {
+    private static Stream<Arguments> provideMethodNameAndExpectedDisplayName() {
         return Stream.of(
                 Arguments.of("shouldReturnErrorWhen_maxResults_IsNegative", "Should return error when maxResults is negative"),
                 Arguments.of("shouldCreateLimitWithRange", "Should create limit with range"),
@@ -51,10 +44,46 @@ class ReplaceCamelCaseAndUnderscoreAndNumberTest {
     }
 
     @ParameterizedTest
-    @MethodSource("provideInputAndExpectedResult")
-    void shouldReturnMethodDisplayNamesForCamelCaseAndUnderscoreAndNumber(final String input, final String expectedResult) {
+    @MethodSource("provideMethodNameAndExpectedDisplayName")
+    void shouldReturnMethodDisplayNamesForCamelCaseAndUnderscoreAndNumber(final String methodName, final String expectedDisplayName) {
         assertSoftly(softly -> {
-            softly.assertThat(replaceCamelCaseAndUnderscoreAndNumber.replaceCamelCaseAndUnderscoreAndNumber(input)).isEqualTo(expectedResult);
+            try {
+                softly.assertThat(ReplaceCamelCaseAndUnderscoreAndNumber.INSTANCE.generateDisplayNameForMethod(getClass(), getClass().getDeclaredMethod(methodName))).isEqualTo(expectedDisplayName);
+            } catch (NoSuchMethodException e) {
+                throw new RuntimeException(e);
+            }
         });
+    }
+
+    @Test
+    void shouldReturnErrorWhen_maxResults_IsNegative() {
+    }
+
+    @Test
+    void shouldCreateLimitWithRange() {
+    }
+
+    @Test
+    void shouldReturn5Errors() {
+    }
+
+    @Test
+    void shouldReturn5errors() {
+    }
+
+    @Test
+    void shouldReturn23Errors() {
+    }
+
+    @Test
+    void shouldReturnTheValueOf_maxResults() {
+    }
+
+    @Test
+    void shouldReturnTheNumberOfErrorsAs_numberOfErrors_InferiorOrEqualTo5() {
+    }
+
+    @Test
+    void shouldReturnTheNumberOfErrorsAs_numberOfErrors_InferiorOrEqualTo15() {
     }
 }

@@ -37,7 +37,7 @@ import java.lang.reflect.Method;
  *     <li>Each underscore is turned into space. Words bounded by underscores or just starting with underscore are not transformed. Usually these words words represent classes, variables....</li>
  *     <li>Each number is prepended by space.</li>
  * </ul>
- *
+ * <p>
  * Usage example:
  *
  * <pre>
@@ -78,22 +78,21 @@ import java.lang.reflect.Method;
  *
  *     }
  * </pre>
- *
- * */
+ */
 public class ReplaceCamelCaseAndUnderscoreAndNumber extends DisplayNameGenerator.Standard {
 
     //TODO: Use after making String replaceCamelCaseAndUnderscoreAndNumber(String input) private
-    static final DisplayNameGenerator INSTANCE = new ReplaceCamelCaseAndUnderscoreAndNumber();
+    public static final DisplayNameGenerator INSTANCE = new ReplaceCamelCaseAndUnderscoreAndNumber();
 
     @Override
     public String generateDisplayNameForMethod(Class<?> testClass, Method testMethod) {
-        if(hasParameters(testMethod)){
+        if (hasParameters(testMethod)) {
             return replaceCamelCaseAndUnderscoreAndNumber(testMethod.getName()) + DisplayNameGenerator.parameterTypesAsString(testMethod);
         }
         return replaceCamelCaseAndUnderscoreAndNumber(testMethod.getName());
     }
 
-    public String replaceCamelCaseAndUnderscoreAndNumber(String input) {
+    private String replaceCamelCaseAndUnderscoreAndNumber(String input) {
         StringBuilder result = new StringBuilder();
         /*
          * Each method name starts with "should" then the displayed name starts with "Should"
@@ -153,9 +152,9 @@ public class ReplaceCamelCaseAndUnderscoreAndNumber extends DisplayNameGenerator
         }
 
         /*Add space before all numbers
-        * Nothing is done after number because each number must be followed by an uppercase letter. Thus, there will be space between these two.
-        * In case of a lowercase letter following number, this will be considered as the user's choice. Thus, there will be no space between these two.
-        * */
+         * Nothing is done after number because each number must be followed by an uppercase letter. Thus, there will be space between these two.
+         * In case of a lowercase letter following number, this will be considered as the user's choice. Thus, there will be no space between these two.
+         * */
         return result.toString().replaceAll("(\\d+)", " $1");
     }
 
