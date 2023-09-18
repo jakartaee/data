@@ -162,7 +162,7 @@ A variety of basic types can be used for fields or properties of entity classes.
 |===
 
 
-Every entity in Jakarta Data must have a unique identifier composed of one or more supported basic types. This unique identifier is crucial for distinguishing individual entities in the database. Entity models that are used with Jakarta Data must define a way for developers to specify the unique identifier. Typically this is done with an `@Id` annotation, but other means are permitted, such as `@EmbeddedId` in Jakarta Persistence which defines a compound unique identifier based on an embeddable class, or by naming convention (for example, considering a property to be the unique identifier if is named id or ends in Id).
+Every entity in Jakarta Data must have a unique identifier composed of one or more supported basic types. This unique identifier is crucial for distinguishing individual entities in the database. Entity models that are used with Jakarta Data must define a way for developers to specify the unique identifier. Typically this is done with an `@Id` annotation, but other means are permitted, such as `@EmbeddedId` in Jakarta Persistence which defines a compound unique identifier based on an embeddable class, or by naming convention (for example, considering a property to be the unique identifier if it is named id or ends in Id).
 
 IMPORTANT: It's important to note that key-value, wide-column, document, and relational databases support Collection specializations and Maps of the basic types. However, these databases may have different serialization processes, impacting performance and causing impedance mismatch. Developers should consider these side effects when working with collections and maps in their entity models.
 
@@ -384,10 +384,11 @@ In instances where a Jakarta Data provider for NoSQL databases encounters a recu
 
 === Query Methods
 
-In Jakarta Data, besides finding by an ID, custom queries can be written in two ways:
+In Jakarta Data, besides finding by an ID, custom queries can be written in three ways:
 
 * `@Query` annotation: Defines a query string in the annotation.
-* Query by method name: Defines a query based on naming convention used in the method name.
+* Query by Method Name: Defines a query based on naming conventions used in the method name.
+* Query by Parameters: Defines a query based on the method parameter names and a method name prefix.
 
 WARNING: Due to the variety of data sources, those resources might not work; it varies based on the Jakarta Data implementation and the database engine, which can provide queries on more than a Key or ID or not, such as a Key-value database.
 
@@ -416,7 +417,7 @@ public interface ProductRepository extends CrudRepository<Product, Long> {
 ----
 
 
-==== Query by Method
+==== Query by Method Name
 
 The Query by method mechanism allows for creating query commands by naming convention.
 
@@ -611,7 +612,7 @@ WARNING: Define as a priority following standard Java naming conventions, camel 
 
 In queries by method name, `Id` is an alias for the entity property that is designated as the id. Entity property names that are used in queries by method name must not contain reserved words.
 
-===== Query Methods Keywords
+===== Query by Method Name Keywords
 
 The following table lists the query-by-method keywords that must be supported by Jakarta Data providers, except where explicitly indicated for a type of database.
 
@@ -774,7 +775,37 @@ Wildcard characters for patterns are determined by the data access provider. For
 
 For relational databases, the logical operator `And` takes precedence over `Or`, meaning that `And` is evaluated on conditions before `Or` when both are specified on the same method. For other database types, the precedence is limited to the capabilities of the database. For example, some graph databases are limited to precedence in traversal order.
 
-=== Special Parameter Handling
+==== Query by Parameters
+
+The Query by Parameters pattern determines the query conditions from the names of the method's parameters that are not of type `Limit`, `Sort`, and `Pageable`. Each query condition is an equality comparison, comparing the parameter value against the value of the entity attribute whose name matches the method parameter name. For embedded attributes, the `_` character is used as the delimiter in the method parameter name. All query conditions are implicitly joined by the `And` operator, such that all must match for an entity to be considered matching.
+
+A method name prefix, either `find` or `exists` or `count` or `delete`, specifies the type of query to be performed. The remainder of the method name can be any valid characters, except that it must not include the `By` keyword, which is what distinguishes it from Query by Method Name.
+
+Query by Parameters relies on parameter names that are unavailable at run time unless the developer specifies the `-parameters` compiler option. If the Jakarta Data provider does not process repositories at build time, the developer must specify the compiler option to use Query by Parameters.
+
+Example repository methods that use Query by Parameters:
+
+[source,java]
+----
+@Repository
+public interface ProductRepository extends CrudRepository<Product, Long> {
+
+  // Assumes that the Product entity has attributes: yearProduced
+  List<Product> findMadeIn(int yearProduced, Sort... sorts);
+
+  // Assumes that the Product entity has attributes: name, status.
+  boolean existsWithStatus(String name, Status status);
+
+  // Assumes that the Product entity has attributes: yearProduced
+  void deleteOutdated(int yearProduced);
+}
+----
+
+After the query condition parameters, Query by Parameters `find` methods can include additional parameters of the types listed in the section "Special Parameter Handling".
+
+Refer to the Jakarta Data module JavaDoc section on "Return Types for Repository Methods" for a listing of valid return types for Query by Parameters methods.
+
+==== Special Parameter Handling
 
 Jakarta Data also supports particular parameters to define pagination and sorting.
 
@@ -807,6 +838,54 @@ Pageable pageable = Pageable.ofSize(20).page(1).sortBy(Sort.desc("price"));
 first20 = products.findByNameLike(name, pageable);
 
 ----
+
+=== Methods With Entity Parameters
+
+Repository methods with a name that begins with one of the prefixes, `insert`, `save`, `update`, `delete`, can have a single entity parameter that is one of the following types, where `E` is the entity type:
+
+- `E` - the entity type
+- `E[]` - an array of the entity type
+- `E...` - a variable arguments array of the entity type
+- `Iterable<E>` and subtypes of `Iterable<E>` - a collection of multiple entities
+
+Note: A form of `delete` and `update` can be defined in a different manner under the Query by Parameters and Query by Method Name patterns. In those cases, the method can have multiple parameters, none of which can be the entity type.
+
+==== Insert Methods
+
+Insert methods must create new entity instances in the database. If an entity already exists in the database with the same unique identifier, then the `insert` method must raise `EntityExistsException`.
+
+==== Update Methods
+
+Update methods modify existing entities in the database based on the unique identifier of the entity parameter. If the entity is versioned (for example, with `@code jakarta.persistence.Version` or by another convention from the entity model such as having an attribute named `version`), then the version must also match. When updates are saved to the database, the version is automatically incremented. If a matching entity does not exist in the database, no update is made for that entity. The absence of a matching entity does not cause an error to be raised.
+
+==== Save Methods
+
+Save methods are a combination of `update` and `insert` where entities that are already present in the database are updated and entities that are not present in the database are inserted.
+
+The unique identifier is used to determine if an entity exists in the database. If the entity exists in the database and the entity is versioned (for example, with `@code jakarta.persistence.Version` or by another convention from the entity model such as having an attribute named `version`), then the version must also match. When updates are saved to the database, the version is automatically incremented. If the version does not match, the `save` method must raise `OptimisticLockingFailureException`.
+
+A `save` method parameter that supplies multiple entities might end up updating some and inserting others in the database.
+
+===== Generated Values
+
+When saving to the database, some entity attributes might be automatically generated or automatically incremented in the database. To obtain these values, the user can define the `save` method to return the entity type or a type that is a collection or array of the entity. Entities that are returned by `save` methods must include updates that were made to the entity. Jakarta Data does not require updating instances of entities that are supplied as parameters to the method.
+
+Example usage:
+
+[source,java]
+----
+product.setPrice(15.99);
+product = products.save(product);
+System.out.println("Saved version " + product.getVersion() + " of " + product);
+----
+
+==== Delete Methods
+
+Delete methods remove entities from the database based on the unique identifier of the entity parameter value. If the entity is versioned (for example, with `@code jakarta.persistence.Version` or by another convention from the entity model such as having an attribute named `version`), then the version must also match. Other entity attributes do not need to match. The the unique identifier of an entity is not found in the database or its version does not match, the `delete` method must raise `OptimisticLockingFailureException`.
+
+==== Return Types
+
+Refer to the Jakarta Data module JavaDoc section on "Return Types for Repository Methods" for a listing of valid return types for methods with entity parameters.
 
 === Precedence of Sort Criteria
 
