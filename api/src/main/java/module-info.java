@@ -18,7 +18,6 @@
 
 import jakarta.data.Limit;
 import jakarta.data.Sort;
-import jakarta.data.exceptions.EntityExistsException;
 import jakarta.data.exceptions.OptimisticLockingFailureException;
 import jakarta.data.page.Pageable;
 import jakarta.data.repository.CrudRepository;
@@ -171,17 +170,9 @@ import jakarta.data.repository.Repository;
  * <td>for delete operations</td>
  * <td><code>public void delete(person);</code></td></tr>
  *
- * <tr style="vertical-align: top"><td><code>insert</code></td>
- * <td>creates new entities</td>
- * <td><code>public void insertNewHires(Collection&lt;Employee&gt; newEmployees);</code></td></tr>
- *
  * <tr style="vertical-align: top"><td><code>save</code></td>
  * <td>update if exists, otherwise insert</td>
  * <td><code>Product[] saveAll(Product... products)</code></td></tr>
- *
- * <tr style="vertical-align: top"><td><code>update</code></td>
- * <td>updates an existing entity</td>
- * <td><code>public boolean update(Product modifiedProduct);</code></td></tr>
  * </table>
  *
  * <p>Repository methods following the <b>Query by Method Name</b> pattern
@@ -534,15 +525,6 @@ import jakarta.data.repository.Repository;
  * <td><code>LinkedHashMap&lt;K, E&gt;</code></td>
  * <td>Ordered map of Id attribute value to entity</td></tr>
  *
- * <tr style="vertical-align: top"><td><code>insert(E)</code></td>
- * <td><code>void</code>, <code>Void</code></td>
- * <td>For inserting a single entity.</td></tr>
- *
- * <tr style="vertical-align: top"><td><code>insert(E...)</code>,
- * <br><code>insert(Iterable&lt;E&gt;)</code></td>
- * <td><code>void</code>, <code>Void</code></td>
- * <td>For inserting multiple entities.</td></tr>
- *
  * <tr style="vertical-align: top"><td><code>save(E)</code></td>
  * <td><code>E</code>,
  * <br><code>void</code>, <code>Void</code></td>
@@ -560,52 +542,16 @@ import jakarta.data.repository.Repository;
  * <td>For saving multiple entities.
  * <br>Collection subtypes must have a public default constructor
  * and support <code>addAll</code> or <code>add</code></td></tr>
- *
- * <tr style="vertical-align: top"><td><code>update(E)</code></td>
- * <td><code>void</code>, <code>Void</code>
- * <br><code>boolean</code>, <code>Boolean</code></td>
- * <td>For updating a single entity.
- * <br>A boolean result indicates whether or not the database was updated.</td></tr>
- *
- * <tr style="vertical-align: top"><td><code>update(E...)</code>,
- * <br><code>update(Iterable&lt;E&gt;)</code></td>
- * <td><code>void</code>, <code>Void</code>,
- * <br><code>boolean</code>, <code>Boolean</code>,
- * <br><code>long</code>, <code>Long</code>,
- * <br><code>int</code>, <code>Integer</code>,
- * <br><code>short</code>, <code>Short</code>,
- * <br><code>Number</code></td>
- * <td>For updating multiple entities.
- * <br>A boolean result indicates whether or not the database was updated.
- * <br>A numeric result indicates how many entities were updated in the database.
- * <br>Jakarta Persistence providers limit the maximum to <code>Integer.MAX_VALUE</code></td></tr>
  * </table>
  *
  * <h2>Methods with Entity Parameters</h2>
  *
- * <p>You can define <i>insert</i>, <i>update</i>, <i>save</i>, and <i>delete</i>
+ * <p>You can define <i>save</i> and <i>delete</i>
  * methods that accept entity parameters.</p>
- *
- * <h3>Insert Methods</h3>
- *
- * <p>Insert methods must create new entity instances in the database.
- * If an entity already exists in the database with the same unique identifier,
- * then the <i>insert</i> method raises {@link EntityExistsException}.</p>
- *
- * <h3>Update Methods</h3>
- *
- * <p>Update methods modify existing entities in the database based on the
- * unique identifier of the entity parameter. If the entity is versioned
- * (for example, with {@code @jakarta.persistence.Version} or by another convention
- * from the entity model such as having an attribute named {@code version}),
- * then the version must also match. When updates are saved to the database,
- * the version is automatically incremented. If a matching entity does not exist
- * in the database, no update is made for that entity.
- * The absence of a matching entity does not cause an error to be raised.</p>
  *
  * <h3>Save Methods</h3>
  *
- * <p>Save methods are a combination of <i>update</i> and <i>insert</i>
+ * <p>Save methods are a combination of update and insert
  * where entities that are already present in the database are updated
  * and entities that are not present in the database are inserted.</p>
  *

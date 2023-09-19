@@ -44,7 +44,7 @@ Several vital characteristics define repositories:
 
 - **Built-In Interfaces:** The Jakarta Data specification provides a set of built-in interfaces from which repositories can inherit. These built-in interfaces offer a convenient way to include a variety of pre-defined methods for common operations. They also declare the entity type to use for methods where the entity type cannot otherwise be inferred.
 
-- **Data Retrieval and Modification:** Repositories facilitate data retrieval and modification operations. This includes querying for persistent instances in the data store, creating new persistent instances in the data store, removing existing persistent instances, and modifying the state of persistent instances. Conventionally, these operations are named insert, delete, and update for modifying operations and find, count, and exists for retrieval operations.
+- **Data Retrieval and Modification:** Repositories facilitate data retrieval and modification operations. This includes querying for persistent instances in the data store, creating new persistent instances in the data store, removing existing persistent instances, and modifying the state of persistent instances. Conventionally, these operations are named save and delete for modifying operations and find, count, and exists for retrieval operations.
 
 - **Subset of Data:** Repositories may expose only a subset of the full data set available in the data store, providing a focused and controlled access point to the data.
 
@@ -841,26 +841,18 @@ first20 = products.findByNameLike(name, pageable);
 
 === Methods With Entity Parameters
 
-Repository methods with a name that begins with one of the prefixes, `insert`, `save`, `update`, `delete`, can have a single entity parameter that is one of the following types, where `E` is the entity type:
+Repository methods with a name that begins with one of the prefixes, `save` or `delete`, can have a single entity parameter that is one of the following types, where `E` is the entity type:
 
 - `E` - the entity type
 - `E[]` - an array of the entity type
 - `E...` - a variable arguments array of the entity type
 - `Iterable<E>` and subtypes of `Iterable<E>` - a collection of multiple entities
 
-Note: A form of `delete` and `update` can be defined in a different manner under the Query by Parameters and Query by Method Name patterns. In those cases, the method can have multiple parameters, none of which can be the entity type.
-
-==== Insert Methods
-
-Insert methods must create new entity instances in the database. If an entity already exists in the database with the same unique identifier, then the `insert` method must raise `EntityExistsException`.
-
-==== Update Methods
-
-Update methods modify existing entities in the database based on the unique identifier of the entity parameter. If the entity is versioned (for example, with `@code jakarta.persistence.Version` or by another convention from the entity model such as having an attribute named `version`), then the version must also match. When updates are saved to the database, the version is automatically incremented. If a matching entity does not exist in the database, no update is made for that entity. The absence of a matching entity does not cause an error to be raised.
+Note: A form of `delete` can be defined in a different manner under the Query by Parameters and Query by Method Name patterns. In those cases, the method can have multiple parameters, none of which can be the entity type.
 
 ==== Save Methods
 
-Save methods are a combination of `update` and `insert` where entities that are already present in the database are updated and entities that are not present in the database are inserted.
+Save methods are a combination of update and insert where entities that are already present in the database are updated and entities that are not present in the database are inserted.
 
 The unique identifier is used to determine if an entity exists in the database. If the entity exists in the database and the entity is versioned (for example, with `@code jakarta.persistence.Version` or by another convention from the entity model such as having an attribute named `version`), then the version must also match. When updates are saved to the database, the version is automatically incremented. If the version does not match, the `save` method must raise `OptimisticLockingFailureException`.
 
@@ -881,7 +873,7 @@ System.out.println("Saved version " + product.getVersion() + " of " + product);
 
 ==== Delete Methods
 
-Delete methods remove entities from the database based on the unique identifier of the entity parameter value. If the entity is versioned (for example, with `@code jakarta.persistence.Version` or by another convention from the entity model such as having an attribute named `version`), then the version must also match. Other entity attributes do not need to match. The the unique identifier of an entity is not found in the database or its version does not match, the `delete` method must raise `OptimisticLockingFailureException`.
+Delete methods remove entities from the database based on the unique identifier of the entity parameter value. If the entity is versioned (for example, with `@code jakarta.persistence.Version` or by another convention from the entity model such as having an attribute named `version`), then the version must also match. Other entity attributes do not need to match. The the unique identifier of an entity is not found in the database or its version does not match, a `delete` method with a return type of `void` or `Void` must raise `OptimisticLockingFailureException`.
 
 ==== Return Types
 
@@ -1055,10 +1047,13 @@ When composing repository methods in Jakarta Data, there are a several different
 | Otherwise, if the method is annotated with `@Query`, the query from the annotation is used.
 | The `@Query` annotation defines a custom query.
 
+| Otherwise, if the method has a single parameter with a type that is the entity type or array, Iterable, or Iterable subclass of the entity type, determine the operation according to the method name prefix, which can be `save` or `delete`.
+| Methods with entity parameters define operations on one or more entities.
+
 | Otherwise, if the method name contains the `By` keyword, determine the query according to the BNF for Query by Method Name.
 | Query by method name allows dynamic query generation based on method names and parameters.
 
-| Otherwise, process it as Query by Parameters, determining the query from the supplied parameters and the `save`, `insert`, `update`, `delete`, `find`, `count`, or `exists` prefix.
+| Otherwise, process it as Query by Parameters, determining the query from the supplied parameters and the `delete`, `find`, `count`, or `exists` prefix.
 | Query by parameters constructs queries based on method parameters and prefixes.
 |===
 
