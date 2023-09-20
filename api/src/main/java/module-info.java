@@ -18,6 +18,7 @@
 
 import jakarta.data.Limit;
 import jakarta.data.Sort;
+import jakarta.data.exceptions.OptimisticLockingFailureException;
 import jakarta.data.page.Pageable;
 import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.DataRepository;
@@ -169,17 +170,9 @@ import jakarta.data.repository.Repository;
  * <td>for delete operations</td>
  * <td><code>public void delete(person);</code></td></tr>
  *
- * <tr style="vertical-align: top"><td><code>insert</code></td>
- * <td>creates new entities</td>
- * <td><code>public void insertNewHires(Collection&lt;Employee&gt; newEmployees);</code></td></tr>
- *
  * <tr style="vertical-align: top"><td><code>save</code></td>
  * <td>update if exists, otherwise insert</td>
  * <td><code>Product[] saveAll(Product... products)</code></td></tr>
- *
- * <tr style="vertical-align: top"><td><code>update</code></td>
- * <td>updates an existing entity</td>
- * <td><code>public Product update(Product modifiedProduct);</code></td></tr>
  * </table>
  *
  * <p>Repository methods following the <b>Query by Method Name</b> pattern
@@ -532,23 +525,6 @@ import jakarta.data.repository.Repository;
  * <td><code>LinkedHashMap&lt;K, E&gt;</code></td>
  * <td>Ordered map of Id attribute value to entity</td></tr>
  *
- * <tr style="vertical-align: top"><td><code>insert(E)</code></td>
- * <td><code>E</code>,
- * <br><code>void</code>, <code>Void</code></td>
- * <td>For inserting a single entity.</td></tr>
- *
- * <tr style="vertical-align: top"><td><code>insert(E...)</code>,
- * <br><code>insert(Iterable&lt;E&gt;)</code></td>
- * <td><code>void</code>, <code>Void</code>,
- * <br><code>E[]</code>,
- * <br><code>Iterable&lt;E&gt;</code>,
- * <br><code>Stream&lt;E&gt;</code>,
- * <br><code>Collection&lt;E&gt;</code>
- * <br><code>Collection</code> subtypes</td>
- * <td>For inserting multiple entities.
- * <br>Collection subtypes must have a public default constructor
- * and support <code>addAll</code> or <code>add</code></td></tr>
- *
  * <tr style="vertical-align: top"><td><code>save(E)</code></td>
  * <td><code>E</code>,
  * <br><code>void</code>, <code>Void</code></td>
@@ -566,24 +542,49 @@ import jakarta.data.repository.Repository;
  * <td>For saving multiple entities.
  * <br>Collection subtypes must have a public default constructor
  * and support <code>addAll</code> or <code>add</code></td></tr>
- *
- * <tr style="vertical-align: top"><td><code>update(E)</code></td>
- * <td><code>E</code>,
- * <br><code>void</code>, <code>Void</code></td>
- * <td>For updating a single entity.</td></tr>
- *
- * <tr style="vertical-align: top"><td><code>update(E...)</code>,
- * <br><code>update(Iterable&lt;E&gt;)</code></td>
- * <td><code>void</code>, <code>Void</code>,
- * <br><code>E[]</code>,
- * <br><code>Iterable&lt;E&gt;</code>,
- * <br><code>Stream&lt;E&gt;</code>,
- * <br><code>Collection&lt;E&gt;</code>
- * <br><code>Collection</code> subtypes</td>
- * <td>For updating multiple entities.
- * <br>Collection subtypes must have a public default constructor
- * and support <code>addAll</code> or <code>add</code></td></tr>
  * </table>
+ *
+ * <h2>Methods with Entity Parameters</h2>
+ *
+ * <p>You can define <i>save</i> and <i>delete</i>
+ * methods that accept entity parameters.</p>
+ *
+ * <h3>Save Methods</h3>
+ *
+ * <p>Save methods are a combination of update and insert
+ * where entities that are already present in the database are updated
+ * and entities that are not present in the database are inserted.</p>
+ *
+ * <p>The unique identifier is used to determine if an entity exists in the database.
+ * If the entity exists in the database and the entity is versioned
+ * (for example, with {@code @jakarta.persistence.Version} or by another convention
+ * from the entity model such as having an attribute named {@code version}),
+ * then the version must also match. When updates are saved to the database,
+ * the version is automatically incremented. If the version does not match,
+ * the <i>save</i> method raises {@link OptimisticLockingFailureException}.</p>
+ *
+ * <p>A <i>save</i> method parameter that supplies multiple entities
+ * might end up updating some and inserting others in the database.</p>
+ *
+ * <p><b><i>Generated Values</i></b>
+ * <br>When saving to the database, some entity attributes might be automatically
+ * generated or automatically incremented in the database.
+ * To obtain these values, define the return type of the <i>save</i> method to be
+ * the entity type or a type that is a collection or array of the entity.
+ * Entities that are returned by <i>save</i> methods include updates that
+ * were made to the entity. No guarantees are made regarding the state of entity
+ * instances that are supplied as parameters to the method after the method ends.</p>
+ *
+ * <h3>Delete Methods</h3>
+ *
+ * <p>Delete methods remove entities from the database based on the
+ * unique identifier of the entity parameter value. If the entity is versioned
+ * (for example, with {@code @jakarta.persistence.Version} or by another convention
+ * from the entity model such as having an attribute named {@code version}),
+ * then the version must also match. Other entity attributes do not need to match.
+ * The the unique identifier of an entity is not found in the database or its
+ * version does not match, the <i>delete</i> method raises
+ * {@link OptimisticLockingFailureException}.</p>
  *
  * <h2>Parameters to Repository Query Methods</h2>
  *
