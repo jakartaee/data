@@ -92,6 +92,8 @@ public interface CrudRepository<T, K> extends DataRepository<T, K> {
      * @param entity the entity to insert. Must not be {@code null}.
      * @throws EntityExistsException if the entity is already present in the database.
      * @throws NullPointerException if the entity is null.
+     * @throws UnsupportedOperationException for Key-Value and Wide-Column databases
+     *         that use an append model to write data.
      */
     void insert(T entity);
 
@@ -103,6 +105,8 @@ public interface CrudRepository<T, K> extends DataRepository<T, K> {
      * @param entities entities to insert.
      * @throws EntityExistsException if any of the entities are already present in the database.
      * @throws NullPointerException if either the iterable is null or any element is null.
+     * @throws UnsupportedOperationException for Key-Value and Wide-Column databases
+     *         that use an append model to write data.
      */
     void insertAll(Iterable<T> entities);
 

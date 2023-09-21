@@ -594,6 +594,10 @@ import jakarta.data.repository.Repository;
  * If an entity already exists in the database with the same unique identifier,
  * then the <i>insert</i> method raises {@link EntityExistsException}.</p>
  *
+ * <p>If using a Key-Value or Wide-Column database that uses an append model
+ * to write data such that conflicts on the unique identifier are not rejected,
+ * then the <i>insert</i> method raises {@link UnsupportedOperationException}.</p>
+ *
  * <h3>Update Methods</h3>
  *
  * <p>Update methods modify existing entities in the database based on the

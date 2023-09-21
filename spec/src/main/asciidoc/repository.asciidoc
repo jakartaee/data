@@ -854,6 +854,8 @@ Note: Other forms of `delete` and `update` can be defined in a different manner 
 
 Insert methods must create new entity instances in the database. If an entity already exists in the database with the same unique identifier, then the `insert` method must raise `EntityExistsException`.
 
+If using a Key-Value or Wide-Column database that uses an append model to write data such that conflicts on the unique identifier are not rejected, then the `insert` method must raise `UnsupportedOperationException`.
+
 ==== Update Methods
 
 Update methods modify existing entities in the database based on the unique identifier of the entity parameter. If the entity is versioned (for example, with `@jakarta.persistence.Version` or by another convention from the entity model such as having an attribute named `version`), then the version must also match. When updates are saved to the database, the version is automatically incremented. If a matching entity does not exist in the database, no update is made for that entity. The absence of a matching entity does not cause an error to be raised. Boolean values that are returned by update methods indicate whether any updates were made to the database. Numeric values that are returned by update methods indicate how many entities were updated in the database due to the update method invocation.
