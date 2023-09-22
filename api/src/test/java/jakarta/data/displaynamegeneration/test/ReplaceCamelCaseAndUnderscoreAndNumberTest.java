@@ -23,11 +23,15 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.lang.reflect.Method;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
-//@DisplayNameGeneration(ReplaceCamelCaseAndUnderscoreAndNumber.class)
+//TODO: Solve the module issue related to the usage of @DisplayNameGeneration(ReplaceCamelCaseAndUnderscoreAndNumber.class)
+// and test the display names inside ClassAnnotatedWithReplaceCamelCaseAndUnderscoreAndNumberTest
+// without explicitly calling the method generateDisplayNameForMethod
+// by finding a way to programmatically get these names from JUnit then compare to expected results.
 class ReplaceCamelCaseAndUnderscoreAndNumberTest {
 
     private static Stream<Arguments> provideMethodNameAndExpectedDisplayName() {
@@ -48,42 +52,12 @@ class ReplaceCamelCaseAndUnderscoreAndNumberTest {
     void shouldReturnMethodDisplayNamesForCamelCaseAndUnderscoreAndNumber(final String methodName, final String expectedDisplayName) {
         assertSoftly(softly -> {
             try {
-                softly.assertThat(ReplaceCamelCaseAndUnderscoreAndNumber.INSTANCE.generateDisplayNameForMethod(getClass(), getClass().getDeclaredMethod(methodName))).isEqualTo(expectedDisplayName);
+                Method testMethod = ClassAnnotatedWithReplaceCamelCaseAndUnderscoreAndNumberTest.class.getDeclaredMethod(methodName);
+                if (testMethod.isAnnotationPresent(Test.class) || testMethod.isAnnotationPresent(ParameterizedTest.class))
+                    softly.assertThat(ReplaceCamelCaseAndUnderscoreAndNumber.INSTANCE.generateDisplayNameForMethod(ClassAnnotatedWithReplaceCamelCaseAndUnderscoreAndNumberTest.class, testMethod)).isEqualTo(expectedDisplayName);
             } catch (NoSuchMethodException e) {
                 throw new RuntimeException(e);
             }
         });
-    }
-
-    @Test
-    void shouldReturnErrorWhen_maxResults_IsNegative() {
-    }
-
-    @Test
-    void shouldCreateLimitWithRange() {
-    }
-
-    @Test
-    void shouldReturn5Errors() {
-    }
-
-    @Test
-    void shouldReturn5errors() {
-    }
-
-    @Test
-    void shouldReturn23Errors() {
-    }
-
-    @Test
-    void shouldReturnTheValueOf_maxResults() {
-    }
-
-    @Test
-    void shouldReturnTheNumberOfErrorsAs_numberOfErrors_InferiorOrEqualTo5() {
-    }
-
-    @Test
-    void shouldReturnTheNumberOfErrorsAs_numberOfErrors_InferiorOrEqualTo15() {
     }
 }
