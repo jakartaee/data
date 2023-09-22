@@ -17,6 +17,7 @@
  */
 package jakarta.data.repository;
 
+import jakarta.data.exceptions.EntityExistsException;
 import jakarta.data.exceptions.OptimisticLockingFailureException;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -82,6 +83,66 @@ public interface CrudRepository<T, K> extends DataRepository<T, K> {
      * @throws NullPointerException If either the iterable is null or any element is null.
      */
     <S extends T> Iterable<S> saveAll(Iterable<S> entities);
+
+    /**
+     * <p>Inserts an entity into the database. If an entity of this type with the same
+     * unique identifier already exists in the database, then this method raises
+     * {@link EntityExistsException}.</p>
+     *
+     * @param entity the entity to insert. Must not be {@code null}.
+     * @throws EntityExistsException if the entity is already present in the database.
+     * @throws NullPointerException if the entity is null.
+     */
+    void insert(T entity);
+
+    /**
+     * <p>Inserts multiple entities into the database. If an entity of this type with the same
+     * unique identifier as any of the given entities already exists in the database,
+     * then this method raises {@link EntityExistsException}.</p>
+     *
+     * @param entities entities to insert.
+     * @throws EntityExistsException if any of the entities are already present in the database.
+     * @throws NullPointerException if either the iterable is null or any element is null.
+     */
+    void insertAll(Iterable<T> entities);
+
+    /**
+     * <p>Modifies an entity that already exists in the database.</p>
+     *
+     * <p>For an update to be made, a matching entity with the same unique identifier
+     * must be present in the database.</p>
+     *
+     * <p>If the entity is versioned (for example, with {@code jakarta.persistence.Version} or by
+     * another convention from the entity model such as having an attribute named {@code version}),
+     * then the version must also match. The version is automatically incremented when making
+     * the update.</p>
+     *
+     * <p>Non-matching entities are ignored and do not cause an error to be raised.</p>
+     *
+     * @param entity the entity to update.
+     * @return true if a matching entity was found in the database to update, otherwise false.
+     * @throws NullPointerException if the entity is null.
+     */
+    boolean update(T entity);
+
+    /**
+     * <p>Modifies entities that already exists in the database.</p>
+     *
+     * <p>For an update to be made to an entity, a matching entity with the same unique identifier
+     * must be present in the database.</p>
+     *
+     * <p>If the entity is versioned (for example, with {@code jakarta.persistence.Version} or by
+     * another convention from the entity model such as having an attribute named {@code version}),
+     * then the version must also match. The version is automatically incremented when making
+     * the update.</p>
+     *
+     * <p>Non-matching entities are ignored and do not cause an error to be raised.</p>
+     *
+     * @param entities entities to update.
+     * @return the number of matching entities that were found in the database to update.
+     * @throws NullPointerException if either the iterable is null or any element is null.
+     */
+    int updateAll(Iterable<T> entities);
 
     /**
      * Retrieves an entity by its id.
