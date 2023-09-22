@@ -80,8 +80,6 @@ import java.lang.reflect.Method;
  * </pre>
  */
 public class ReplaceCamelCaseAndUnderscoreAndNumber extends DisplayNameGenerator.Standard {
-
-    //TODO: Use after making String replaceCamelCaseAndUnderscoreAndNumber(String input) private
     public static final DisplayNameGenerator INSTANCE = new ReplaceCamelCaseAndUnderscoreAndNumber();
 
     @Override
