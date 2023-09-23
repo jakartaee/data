@@ -63,9 +63,10 @@ import java.lang.reflect.Method;
  *       ...
  *     }
  *
- *     @Test
- *     //Equivalent of @DisplayName("Should return the value of maxResults")
- *     void shouldReturnTheValueOf_maxResults() {
+ *     @ParameterizedTest
+ *     @ValueSource(strings = {"job", "player"})
+ *     //Equivalent of @DisplayName("Should return the value of maxResults (String)")
+ *     void shouldReturnTheValueOf_maxResults(String input) {
  *       ...
  *     }
  *
