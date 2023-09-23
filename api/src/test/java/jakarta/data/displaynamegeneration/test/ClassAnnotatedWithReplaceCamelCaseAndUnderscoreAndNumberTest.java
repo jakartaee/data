@@ -35,16 +35,16 @@ class ClassAnnotatedWithReplaceCamelCaseAndUnderscoreAndNumberTest {
 
     @ParameterizedTest
     @ValueSource(strings = {"", "  "})
-    void shouldCreateLimitWithRange() {
+    void shouldCreateLimitWithRange(String input) {
         doNothing();
-    }
-
-    @Test
-    void shouldReturn5Errors() {
     }
 
     @ParameterizedTest
     @ValueSource(ints = {5, 23})
+    void shouldReturn5Errors(int input) {
+    }
+
+    @Test
     void shouldReturn5errors() {
         doNothing();
     }
@@ -60,7 +60,7 @@ class ClassAnnotatedWithReplaceCamelCaseAndUnderscoreAndNumberTest {
 
     @ParameterizedTest
     @ValueSource(strings = {"", "  "})
-    void shouldReturnTheNumberOfErrorsAs_numberOfErrors_InferiorOrEqualTo5() {
+    void shouldReturnTheNumberOfErrorsAs_numberOfErrors_InferiorOrEqualTo5(String input) {
     }
 
     @Test

@@ -24,6 +24,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.lang.reflect.Method;
+import java.util.List;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
@@ -37,27 +38,43 @@ class ReplaceCamelCaseAndUnderscoreAndNumberTest {
     private static Stream<Arguments> provideMethodNameAndExpectedDisplayName() {
         return Stream.of(
                 Arguments.of("shouldReturnErrorWhen_maxResults_IsNegative", "Should return error when maxResults is negative"),
-                Arguments.of("shouldCreateLimitWithRange", "Should create limit with range"),
-                Arguments.of("shouldReturn5Errors", "Should return 5 errors"),
+                Arguments.of("shouldCreateLimitWithRange", "Should create limit with range (String)"),
+                Arguments.of("shouldReturn5Errors", "Should return 5 errors (int)"),
                 Arguments.of("shouldReturn5errors", "Should return 5errors"),
                 Arguments.of("shouldReturn23Errors", "Should return 23 errors"),
                 Arguments.of("shouldReturnTheValueOf_maxResults", "Should return the value of maxResults"),
-                Arguments.of("shouldReturnTheNumberOfErrorsAs_numberOfErrors_InferiorOrEqualTo5", "Should return the number of errors as numberOfErrors inferior or equal to 5"),
-                Arguments.of("shouldReturnTheNumberOfErrorsAs_numberOfErrors_InferiorOrEqualTo15", "Should return the number of errors as numberOfErrors inferior or equal to 15")
+                Arguments.of("shouldReturnTheNumberOfErrorsAs_numberOfErrors_InferiorOrEqualTo5", "Should return the number of errors as numberOfErrors inferior or equal to 5 (String)"),
+                Arguments.of("shouldReturnTheNumberOfErrorsAs_numberOfErrors_InferiorOrEqualTo15", "Should return the number of errors as numberOfErrors inferior or equal to 15"),
+                Arguments.of("doNothing", null)
         );
     }
 
     @ParameterizedTest
     @MethodSource("provideMethodNameAndExpectedDisplayName")
     void shouldReturnMethodDisplayNamesForCamelCaseAndUnderscoreAndNumber(final String methodName, final String expectedDisplayName) {
-        assertSoftly(softly -> {
-            try {
-                Method testMethod = ClassAnnotatedWithReplaceCamelCaseAndUnderscoreAndNumberTest.class.getDeclaredMethod(methodName);
-                if (testMethod.isAnnotationPresent(Test.class) || testMethod.isAnnotationPresent(ParameterizedTest.class))
-                    softly.assertThat(ReplaceCamelCaseAndUnderscoreAndNumber.INSTANCE.generateDisplayNameForMethod(ClassAnnotatedWithReplaceCamelCaseAndUnderscoreAndNumberTest.class, testMethod)).isEqualTo(expectedDisplayName);
-            } catch (NoSuchMethodException e) {
-                throw new RuntimeException(e);
+        List<String> methodsWithParameters = List.of("shouldCreateLimitWithRange", "shouldReturn5Errors", "shouldReturnTheNumberOfErrorsAs_numberOfErrors_InferiorOrEqualTo5");
+
+        try {
+            Method method = null;
+            if (!methodsWithParameters.contains(methodName)) {
+                method = ClassAnnotatedWithReplaceCamelCaseAndUnderscoreAndNumberTest.class.getDeclaredMethod(methodName);
             }
-        });
+            if (List.of("shouldCreateLimitWithRange", "shouldReturnTheNumberOfErrorsAs_numberOfErrors_InferiorOrEqualTo5").contains(methodName)) {
+                method = ClassAnnotatedWithReplaceCamelCaseAndUnderscoreAndNumberTest.class.getDeclaredMethod(methodName, String.class);
+            }
+            if ("shouldReturn5Errors".equals(methodName)) {
+                method = ClassAnnotatedWithReplaceCamelCaseAndUnderscoreAndNumberTest.class.getDeclaredMethod(methodName, int.class);
+            }
+            assert method != null;
+
+            if (method.isAnnotationPresent(Test.class) || method.isAnnotationPresent(ParameterizedTest.class)) {
+                Method finalMethod = method;
+                assertSoftly(softly -> {
+                    softly.assertThat(ReplaceCamelCaseAndUnderscoreAndNumber.INSTANCE.generateDisplayNameForMethod(ClassAnnotatedWithReplaceCamelCaseAndUnderscoreAndNumberTest.class, finalMethod)).isEqualTo(expectedDisplayName);
+                });
+            }
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
