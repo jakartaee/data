@@ -23,13 +23,13 @@ import jakarta.data.page.Pageable;
 
 /**
  * Repository fragment to provide methods to retrieve entities using the pagination and sorting abstraction. In many
- * cases this will be combined with {@link CrudRepository} or similar or with manually added methods to provide CRUD
+ * cases this will be combined with {@link BasicRepository} or similar or with manually added methods to provide CRUD
  * functionality.
  * @param <T> the domain type the repository manages
  * @param <K> the type of the id of the entity the repository manages
- * @see CrudRepository
+ * @see BasicRepository
  */
-public interface PageableRepository<T, K> extends CrudRepository<T, K> {
+public interface PageableRepository<T, K> extends BasicRepository<T, K> {
 
     /**
      * Returns a {@link Page} of entities meeting the paging restriction provided in the {@link Pageable} object.
