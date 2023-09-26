@@ -12,6 +12,10 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 
 - Define Jakarta Data extensions
 
+=== Changed
+
+* Rename CrudRepository to BasicRepository
+
 == [1.0.0-b3] - 2022-07-24
 
 === Added
