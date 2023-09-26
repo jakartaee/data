@@ -14,7 +14,7 @@ A repository abstraction designed to significantly reduce the boilerplate code r
 [source,java]
 ----
 @Repository
-public interface CarRepository extends CrudRepository<Car, Long> {
+public interface CarRepository extends BasicRepository<Car, Long> {
 
   List<Car> findByType(CarType type);
 

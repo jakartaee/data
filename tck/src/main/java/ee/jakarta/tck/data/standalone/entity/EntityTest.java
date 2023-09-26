@@ -111,6 +111,26 @@ public class EntityTest {
         assertTrue(characters.findByNumericValue(1).get().isControl());
     }
 
+    @Assertion(id = "133",
+            strategy = "Use a repository that inherits from BasicRepository and adds some methods of its own. " +
+                       "Use both built-in methods and the additional methods.")
+    public void testBasicRepository() {
+        assertEquals(false, numbers.existsById(0L));
+        assertEquals(true, numbers.existsById(80L));
+
+        Stream<NaturalNumber> found;
+        found = numbers.findByIdIn(List.of(70L, 40L, -20L, 10L));
+        assertEquals(List.of(10L, 40L, 70L),
+                     found.map(NaturalNumber::getId).sorted().collect(Collectors.toList()));
+
+        found = numbers.findByIdBetween(50L, 59L, Sort.asc("numType"));
+        List<Long> list = found.map(NaturalNumber::getId).collect(Collectors.toList());
+        assertEquals(Set.of(53L, 59L), // first 2 must be primes
+                     new TreeSet<>(list.subList(0, 2)));
+        assertEquals(Set.of(50L, 51L, 52L, 54L, 55L, 56L, 57L, 58L), // the remaining 8 are composite numbers
+                     new TreeSet<>(list.subList(2, 10)));
+    }
+
     @Assertion(id = "133", strategy = "Request a Page higher than the final Page, expecting an empty Page with 0 results.")
     public void testBeyondFinalPage() {
         Pageable sixth = Pageable.ofPage(6).sortBy(Sort.asc("numericValue")).size(10);
@@ -177,26 +197,6 @@ public class EntityTest {
                              "4c", "4d", "4e", "4f",
                              "54", "64", "74"),
                      found.stream().map(AsciiCharacter::getHexadecimal).sorted().toList());
-    }
-
-    @Assertion(id = "133",
-               strategy = "Use a repository that inherits from CrudRepository and adds some methods of its own. " +
-                          "Use both built-in methods and the additional methods.")
-    public void testCrudRepository() {
-        assertEquals(false, numbers.existsById(0L));
-        assertEquals(true, numbers.existsById(80L));
-
-        Stream<NaturalNumber> found;
-        found = numbers.findByIdIn(List.of(70L, 40L, -20L, 10L));
-        assertEquals(List.of(10L, 40L, 70L),
-                     found.map(NaturalNumber::getId).sorted().collect(Collectors.toList()));
-
-        found = numbers.findByIdBetween(50L, 59L, Sort.asc("numType"));
-        List<Long> list = found.map(NaturalNumber::getId).collect(Collectors.toList());
-        assertEquals(Set.of(53L, 59L), // first 2 must be primes
-                     new TreeSet<>(list.subList(0, 2)));
-        assertEquals(Set.of(50L, 51L, 52L, 54L, 55L, 56L, 57L, 58L), // the remaining 8 are composite numbers
-                     new TreeSet<>(list.subList(2, 10)));
     }
 
     @Assertion(id = "133", strategy = "Use a repository that inherits from DataRepository and defines all of its own methods.")
