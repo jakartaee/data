@@ -51,7 +51,7 @@ import jakarta.data.repository.Repository;
  *
  * <pre>
  * &#64;Repository
- * public interface Products extends CrudRepository&lt;Product, Long&gt; {
+ * public interface Products extends BasicRepository&lt;Product, Long&gt; {
  *
  *     &#64;OrderBy("price")
  *     List&lt;Product&gt; findByNameIgnoreCaseLikeAndPriceLessThan(String namePattern, float max);
@@ -706,7 +706,7 @@ import jakarta.data.repository.Repository;
  *
  * <pre>
  * &#64;Repository
- * public interface Cars extends CrudRepository&lt;Car, Long&gt; {
+ * public interface Cars extends BasicRepository&lt;Car, Long&gt; {
  *     ...
  *
  *     EntityManager getEntityManager();

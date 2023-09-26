@@ -64,9 +64,9 @@ The parent interface at the root of the hierarchy of built-in interfaces is `Dat
                                   ^
                                   |
                                   |
-                          +----------------+
-                          | CrudRepository | 
-                          +----------------+ 
+                          +-----------------+
+                          | BasicRepository |
+                          +-----------------+
                                   ^
                                   |
                                   |
@@ -76,8 +76,8 @@ The parent interface at the root of the hierarchy of built-in interfaces is `Dat
 ....
 
 
-* Interface with generic CRUD operations on a repository for a specific type. This one we can see more often on several Java implementations.
-* Interface with generic CRUD operations using the pagination feature.
+* Interface with basic operations on a repository for a specific type. This one we can see more often on several Java implementations.
+* Interface with basic operations using the pagination feature.
 
 From the Java developer perspective, create an interface that is annotated with the `@Repository` annotation and optionally extends one of the built-in repository interfaces.
 
@@ -86,7 +86,7 @@ So, given a `Product` entity where the ID is a `long` type, the repository would
 [source,java]
 ----
 @Repository
-public interface ProductRepository extends CrudRepository<Product, Long> {
+public interface ProductRepository extends BasicRepository<Product, Long> {
 
 }
 ----
@@ -97,7 +97,7 @@ There is no nomenclature restriction to make mandatory the `Repository` suffix. 
 [source,java]
 ----
 @Repository
-public interface Garage extends CrudRepository<Car, String> {
+public interface Garage extends BasicRepository<Car, String> {
 
 }
 ----
@@ -399,7 +399,7 @@ The `@Query` annotation supports providing a search expression as a String. The 
 [source,java]
 ----
 @Repository
-public interface ProductRepository extends CrudRepository<Product, Long> {
+public interface ProductRepository extends BasicRepository<Product, Long> {
   @Query("SELECT p FROM Products p WHERE p.name=?1")  // example in JPQL
   Optional<Product> findByName(String name);
 }
@@ -410,7 +410,7 @@ Jakarta Data also includes the `@Param` annotation to define a binder annotation
 [source,java]
 ----
 @Repository
-public interface ProductRepository extends CrudRepository<Product, Long> {
+public interface ProductRepository extends BasicRepository<Product, Long> {
   @Query("SELECT p FROM Products p WHERE p.name=:name")  // example in JPQL
   Optional<Product> findByName(@Param("name") String name);
 }
@@ -424,7 +424,7 @@ The Query by method mechanism allows for creating query commands by naming conve
 [source,java]
 ----
 @Repository
-public interface ProductRepository extends CrudRepository<Product, Long> {
+public interface ProductRepository extends BasicRepository<Product, Long> {
 
   List<Product> findByName(String name);
 
@@ -498,7 +498,7 @@ Assume an Order entity has an Address with a ZipCode. In that case, the access i
 [source,java]
 ----
 @Repository
-public interface OrderRepository extends CrudRepository<Order, Long> {
+public interface OrderRepository extends BasicRepository<Order, Long> {
 
   @Query("SELECT order FROM Order order WHERE order.address.zipCode=?1")
   List<Order> withZipCode(ZipCode zipCode);
@@ -788,7 +788,7 @@ Example repository methods that use Query by Parameters:
 [source,java]
 ----
 @Repository
-public interface ProductRepository extends CrudRepository<Product, Long> {
+public interface ProductRepository extends BasicRepository<Product, Long> {
 
   // Assumes that the Product entity has attributes: yearProduced
   List<Product> findMadeIn(int yearProduced, Sort... sorts);
@@ -814,7 +814,7 @@ Jakarta Data recognizes, when specified on a repository method after the query p
 [source,java]
 ----
 @Repository
-public interface ProductRepository extends CrudRepository<Product, Long> {
+public interface ProductRepository extends BasicRepository<Product, Long> {
 
   List<Product> findByName(String name, Pageable pageable);
 
@@ -932,7 +932,7 @@ For example,
 [source,java]
 ----
 @Repository
-public interface CustomerRepository extends CrudRepository<Customer, Long> {
+public interface CustomerRepository extends BasicRepository<Customer, Long> {
   KeysetAwareSlice<Customer> findByZipcodeOrderByLastNameAscFirstNameAscIdAsc(
                                  int zipcode, Pageable pageable);
 }
@@ -1009,7 +1009,7 @@ Here is an example where an application uses `@Query` to provide a partial query
 [source,java]
 ----
 @Repository
-public interface CustomerRepository extends CrudRepository<Customer, Long> {
+public interface CustomerRepository extends BasicRepository<Customer, Long> {
   @Query("SELECT o FROM Customer o WHERE (o.totalSpent / o.totalPurchases > ?1)")
   KeysetAwareSlice<Customer> withAveragePurchaseAbove(float minimum, Pageable pagination);
 }
