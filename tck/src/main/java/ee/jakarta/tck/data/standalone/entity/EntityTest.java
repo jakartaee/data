@@ -187,7 +187,7 @@ public class EntityTest {
         assertEquals(true, numbers.existsById(80L));
 
         Stream<NaturalNumber> found;
-        found = numbers.findAllById(List.of(70L, 40L, -20L, 10L));
+        found = numbers.findByIdIn(List.of(70L, 40L, -20L, 10L));
         assertEquals(List.of(10L, 40L, 70L),
                      found.map(NaturalNumber::getId).sorted().collect(Collectors.toList()));
 

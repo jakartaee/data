@@ -54,13 +54,13 @@ meth public abstract <%0 extends {jakarta.data.repository.BasicRepository%0}> {%
 meth public abstract boolean existsById({jakarta.data.repository.BasicRepository%1})
 meth public abstract java.util.Optional<{jakarta.data.repository.BasicRepository%0}> findById({jakarta.data.repository.BasicRepository%1})
 meth public abstract java.util.stream.Stream<{jakarta.data.repository.BasicRepository%0}> findAll()
-meth public abstract java.util.stream.Stream<{jakarta.data.repository.BasicRepository%0}> findAllById(java.lang.Iterable<{jakarta.data.repository.BasicRepository%1}>)
+meth public abstract java.util.stream.Stream<{jakarta.data.repository.BasicRepository%0}> findByIdIn(java.lang.Iterable<{jakarta.data.repository.BasicRepository%1}>)
 meth public abstract long count()
 meth public abstract void delete({jakarta.data.repository.BasicRepository%0})
 meth public abstract void deleteAll()
 meth public abstract void deleteAll(java.lang.Iterable<? extends {jakarta.data.repository.BasicRepository%0}>)
-meth public abstract void deleteAllById(java.lang.Iterable<{jakarta.data.repository.BasicRepository%1}>)
 meth public abstract void deleteById({jakarta.data.repository.BasicRepository%1})
+meth public abstract void deleteByIdIn(java.lang.Iterable<{jakarta.data.repository.BasicRepository%1}>)
 
 CLSS public abstract interface jakarta.data.repository.DataRepository<%0 extends java.lang.Object, %1 extends java.lang.Object>
 
