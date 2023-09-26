@@ -22,7 +22,7 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 /**
- * <p>A repository interface for performing CRUD (Create, Read, Update, Delete) operations on entities.</p>
+ * <p>A repository interface for performing basic operations on entities.</p>
  *
  * <p>This repository provides methods to interact with persistent entities of type <code>&lt;T&gt;</code>,
  * where <code>&lt;T&gt;</code> represents the entity bean type, and <code>&lt;K&gt;</code> represents the key type.</p>
@@ -30,7 +30,7 @@ import java.util.stream.Stream;
  * @param <T> the entity bean type
  * @param <K> the key type.
  */
-public interface CrudRepository<T, K> extends DataRepository<T, K> {
+public interface BasicRepository<T, K> extends DataRepository<T, K> {
 
     /**
      * Saves a given entity to the database. If the entity has an ID or key that exists in the database,

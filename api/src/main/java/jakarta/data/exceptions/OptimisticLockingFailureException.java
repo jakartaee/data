@@ -17,10 +17,12 @@
  */
 package jakarta.data.exceptions;
 
+import jakarta.data.repository.BasicRepository;
+
 /**
  * Indicates a failure that is due to inconsistent state between the entity and the database.
- * For example, {@link jakarta.data.repository.CrudRepository#delete(Object) delete(entity)}
- * or {@link jakarta.data.repository.CrudRepository#deleteAll(Iterable) deleteAll(entities)}
+ * For example, {@link BasicRepository#delete(Object) delete(entity)}
+ * or {@link BasicRepository#deleteAll(Iterable) deleteAll(entities)}
  * where the entity Id no longer exists in the database or the entity is versioned and the
  * version no longer matches the version in the database.
  */

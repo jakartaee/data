@@ -20,7 +20,7 @@ import jakarta.data.Limit;
 import jakarta.data.Sort;
 import jakarta.data.exceptions.OptimisticLockingFailureException;
 import jakarta.data.page.Pageable;
-import jakarta.data.repository.CrudRepository;
+import jakarta.data.repository.BasicRepository;
 import jakarta.data.repository.DataRepository;
 import jakarta.data.repository.OrderBy;
 import jakarta.data.repository.Query;
@@ -97,7 +97,7 @@ import jakarta.data.repository.Repository;
  * <p>Built-in repository super interfaces, such as {@link DataRepository},
  * are provided as a convenient way to inherit commonly used methods and are
  * parameterized with the entity type and id type. Other built-in repository
- * interfaces, such as {@link CrudRepository}, can be used in place of
+ * interfaces, such as {@link BasicRepository}, can be used in place of
  * {@link DataRepository}
  * and provide a base set of predefined repository methods
  * which serve as an optional starting point.
