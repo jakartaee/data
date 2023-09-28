@@ -15,13 +15,17 @@
  */
 package ee.jakarta.tck.data.framework.read.only;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
 import ee.jakarta.tck.data.framework.read.only.NaturalNumber.NumberType;
 import jakarta.data.Limit;
+import jakarta.data.Sort;
 import jakarta.data.Streamable;
 import jakarta.data.page.KeysetAwarePage;
+import jakarta.data.page.Page;
 import jakarta.data.page.Pageable;
 import jakarta.data.repository.PageableRepository;
 import jakarta.data.repository.Repository;
@@ -48,4 +52,10 @@ public interface PositiveIntegers extends PageableRepository<NaturalNumber, Long
     Stream<NaturalNumber> findByNumTypeInOrderByIdAsc(Set<NumberType> types, Limit limit);
 
     Stream<NaturalNumber> findByNumTypeOrFloorOfSquareRoot(NumberType type, long floor);
+
+    Page<NaturalNumber> findMatching(long floorOfSquareRoot, Short numBitsRequired, NumberType numType, Pageable pagination);
+
+    Optional<NaturalNumber> findNumber(long id);
+
+    List<NaturalNumber> findOdd(boolean isOdd, NumberType numType, Limit limit, Sort... sorts);
 }

@@ -39,6 +39,8 @@ public interface AsciiCharacters extends DataRepository<AsciiCharacter, Long>, I
 
     boolean existsByThisCharacter(char ch);
 
+    AsciiCharacter find(char thisCharacter);
+
     Collection<AsciiCharacter> findByHexadecimalContainsAndIsControlNot(String substring, boolean isPrintable);
 
     Stream<AsciiCharacter> findByHexadecimalIgnoreCaseBetweenAndHexadecimalNotIn(String minHex,
