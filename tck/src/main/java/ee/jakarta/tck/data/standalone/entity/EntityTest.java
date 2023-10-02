@@ -383,6 +383,89 @@ public class EntityTest {
     }
 
     @Assertion(id = "133",
+               strategy = "Find a list of entities, querying by entity attributes with names that match the method parameter names," +
+                          " with results capped by a Limit parameter and sorted according to a variable arguments Sort parameter.")
+    public void testFindList() {
+        List<NaturalNumber> oddCompositeNumbers = positives.findOdd(true, NumberType.COMPOSITE,
+                                                                    Limit.of(10),
+                                                                    Sort.asc("floorOfSquareRoot"),
+                                                                    Sort.desc("numBitsRequired"),
+                                                                    Sort.asc("id"));
+        assertEquals(List.of(9L, 15L,  // 3 <= sqrt < 4, 4 bits
+                             21L,      // 4 <= sqrt < 5, 5 bits
+                             33L, 35L, // 5 <= sqrt < 6, 6 bits
+                             25L, 27L, // 5 <= sqrt < 6, 5 bits
+                             39L, 45L, // 6 <= sqrt < 7, 6 bits
+                             49L),     // 7 <= sqrt < 8, 6 bits
+                     oddCompositeNumbers
+                                     .stream()
+                                     .map(NaturalNumber::getId)
+                                     .collect(Collectors.toList()));
+
+        List<NaturalNumber> evenPrimeNumbers = positives.findOdd(false, NumberType.PRIME, Limit.of(9));
+
+        assertEquals(1, evenPrimeNumbers.size());
+        NaturalNumber num = evenPrimeNumbers.get(0);
+        assertEquals(2L, num.getId());
+        assertEquals(1L, num.getFloorOfSquareRoot());
+        assertEquals(Short.valueOf((short) 2), num.getNumBitsRequired());
+        assertEquals(NumberType.PRIME, num.getNumType());
+        assertEquals(false, num.isOdd());
+    }
+
+    @Assertion(id = "133",
+               strategy = "Find a single entity, querying by entity attributes with names that match the method parameter names.")
+    public void testFindOne() {
+        AsciiCharacter j = characters.find('j');
+
+        assertEquals("6a", j.getHexadecimal());
+        assertEquals(106L, j.getId());
+        assertEquals(106, j.getNumericValue());
+        assertEquals('j', j.getThisCharacter());
+    }
+
+    @Assertion(id = "133",
+               strategy = "Find a single entity that might or might not exist, querying by entity attributes" +
+                          " with names that match the method parameter names.")
+    public void testFindOptional() {
+        NaturalNumber num = positives.findNumber(67L).orElseThrow();
+
+        assertEquals(67L, num.getId());
+        assertEquals(8L, num.getFloorOfSquareRoot());
+        assertEquals(Short.valueOf((short) 7), num.getNumBitsRequired());
+        assertEquals(NumberType.PRIME, num.getNumType());
+        assertEquals(true, num.isOdd());
+
+        Optional<NaturalNumber> opt = positives.findNumber(-40L);
+
+        assertEquals(false, opt.isPresent());
+    }
+
+    @Assertion(id = "133",
+               strategy = "Find a page of entities, with entity attributes identified by the parameter names and matching the parameter values.")
+    public void testFindPage() {
+        Pageable page1Request = Pageable.ofSize(7).sortBy(Sort.desc("id"));
+
+        Page<NaturalNumber> page1 = positives.findMatching(9L, Short.valueOf((short) 7), NumberType.COMPOSITE,
+                                                           page1Request);
+
+        assertEquals(List.of(99L, 98L, 96L, 95L, 94L, 93L, 92L),
+                     page1.stream().map(NaturalNumber::getId).collect(Collectors.toList()));
+
+        Page<NaturalNumber> page2 = positives.findMatching(9L, Short.valueOf((short) 7), NumberType.COMPOSITE,
+                                                           page1.nextPageable());
+
+        assertEquals(List.of(91L, 90L, 88L, 87L, 86L, 85L, 84L),
+                     page2.stream().map(NaturalNumber::getId).collect(Collectors.toList()));
+
+        Page<NaturalNumber> page3 = positives.findMatching(9L, Short.valueOf((short) 7), NumberType.COMPOSITE,
+                                                           page2.nextPageable());
+
+        assertEquals(List.of(82L, 81L),
+                     page3.stream().map(NaturalNumber::getId).collect(Collectors.toList()));
+    }
+
+    @Assertion(id = "133",
                strategy = "Request the first KeysetAwarePage of 8 results, expecting to find all 8, " +
                           "then request the next KeysetAwarePage and the KeysetAwarePage after that, " +
                           "expecting to find all results.")
