@@ -40,25 +40,9 @@ repository.save(ferrari);
 In the above snippet, we inject the `CarRepository` instance into our code using the `@Inject` annotation. Once injected, we can use the repository object to invoke various data access methods provided by the `CarRepository` interface, such as `save()`, `findByType()`, and `findByName()`.
 This integration between CDI and Jakarta EE Data allows for seamless management of repository instances and enables easy data access and manipulation within your Jakarta EE applications.
 
-==== CDI Extension
+=== Jakarta Data Providers
 
-Jakarta Data and CDI integrate through CDI extensions, which provide a mechanism to customize and enhance the behavior of CDI in your Jakarta EE application. Jakarta Data integration with Jakarta CDI applies to both CDI full and CDI Lite.
-
-*CDI Full Integration*:
-
-For CDI Full integration, Jakarta Data providers must implement the `jakarta.enterprise.inject.spi.Extension` interface to produce the bean instances defined via the `@Repository` annotation and injected using the `@Inject` annotation. By implementing this interface, Jakarta Data providers can define custom logic to create and manage the repository instances within the CDI container.
-
-The CDI specification employs strategies to reduce conflicts between Jakarta EE Data providers. The primary approach is based on the entity annotation class, which ensures that different providers can coexist harmoniously within the same application. The secondary strategy is based on the Jakarta EE Data provider name, which further helps avoid conflicts and provides flexibility in choosing the desired provider for a specific repository.
-
-*CDI Lite Integration*:
-
-CDI Lite is a lightweight version of CDI that focuses on compile-time exploration and build-time extensions. For CDI Lite integration, Jakarta Data providers must implement the `jakarta.enterprise.inject.build.compatible.spi.BuildCompatibleExtension` interface to produce the bean instances defined via the `@Repository` annotation and injected using the `@Inject` annotation.
-
-CDI Lite leverages compile-time and build-time exploration to ensure compatibility and reduce conflicts between Jakarta EE Data providers. The primary strategy for conflict reduction is similar to CDI Full and is based on the entity annotation class. The secondary approach relies on the Jakarta EE Data provider name, providing additional flexibility in choosing the appropriate provider for a given repository.
-
-CDI Full and CDI Lite approaches enable seamless integration between CDI and Jakarta EE Data. They provide mechanisms to produce and manage repository instances, ensuring that the desired implementation is available for injection when using the `@Inject` annotation.
-
-By leveraging CDI extensions and the provided strategies, Jakarta Data providers effectively integrate Jakarta EE Data with CDI and take advantage of its powerful dependency injection capabilities, promoting modular and reusable code.
+Jakarta Data providers implement repository interfaces, performing queries and other operations related to entities per the rules of the Jakarta Data specification. A Jakarta Data provider makes the repository implementation available to the application via dependency injection. The Jakarta Data specification defines the rules by which Jakarta Data providers must abide to ensure that multiple Jakarta Data providers are able to coexist in a system without interfering or overlapping on the same injection points.
 
 ==== Mapping an Entity
 
