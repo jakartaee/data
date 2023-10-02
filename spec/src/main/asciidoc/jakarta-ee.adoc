@@ -44,6 +44,14 @@ This integration between CDI and Jakarta EE Data allows for seamless management 
 
 Jakarta Data providers implement repository interfaces, performing queries and other operations related to entities per the rules of the Jakarta Data specification. A Jakarta Data provider makes the repository implementation available to the application via dependency injection. The Jakarta Data specification defines the rules by which Jakarta Data providers must abide to ensure that multiple Jakarta Data providers are able to coexist in a system without interfering or overlapping on the same injection points.
 
+==== Using CDI Extensions
+
+In environments where CDI Full or CDI Lite is available, Jakarta Data providers can make use of CDI extensions - `jakarta.enterprise.inject.spi.Extension` and `jakarta.enterprise.inject.build.compatible.spi.BuildCompatibleExtension` - to discover interfaces that are annotated with `@Repository` and provide their implementations to be injected into injection points within the application. Jakarta Data does not mandate the use of a specific type of CDI extension but places the general requirement on the Jakarta Data provider to arrange for injection of the provided repository implementation into injection points having a type that is the repository interface and having no qualifiers (other than `Default` or `Any`).
+
+NOTE: CDI Lite (corresponding to Jakarta Core profile) does not include a requirement to support `jakarta.enterprise.inject.spi.Extension`, which is part of CDI Full (Jakarta Web profile and Jakarta Platform). The `jakarta.enterprise.inject.build.compatible.spi.BuildCompatibleExtension` applies to both CDI Lite and CDI Full.
+
+NOTE: Jakarta Data providers that wish to provide both extensions can use CDI's `@SkipIfPortableExtensionPresent` to prevent the `BuildCompatibleExtension` from colliding with the portable `Extension` when running in the Jakarta Web Profile or Jakarta Platform where CDI Full is present.
+
 ==== Mapping an Entity
 
 A Jakarta Data provider supplies an implementation of repository interfaces in Jakarta Data for one or more types of entities. An entity refers to a class that represents objects in a storage engine, such as SQL or NoSQL databases.
@@ -61,6 +69,57 @@ Jakarta Data providers must ignore all `Repository` annotations where annotation
 The entity annotation class is the primary strategy to avoid conflicts between Jakarta Data providers. In most cases, it is sufficient to differentiate between providers. In situations where multiple Jakarta Data providers support the same entity annotation class, the application can specify the name of the desired Jakarta Data provider using the optional `provider` attribute of the `Repository` annotation.
 
 To ensure compatibility and prevent conflicts, Jakarta Data providers must disregard all `Repository` annotations that specify a different provider's name through the `Repository.provider()` attribute. By ignoring these annotations, Jakarta Data providers allow other Jakarta Data providers to handle them.
+
+==== Example CDI Extension
+
+The following code snippet illustrates portions of an example `BuildCompatibleExtension` that follows the rules of the Jakarta Data specification to provide repository implementation when explicitly indicated as the provider (`MyExampleProvider`) or when the repository's entity class is annotated with an entity annotation (`org.eclipse.jakarta.example.Entity`) that the provider supports,
+
+[source,java]
+----
+public class MyExampleExtension implements BuildCompatibleExtension {
+   final Map<String, List<String>> repositoryClassNames = new HashMap<>();
+
+   @Enhancement(withAnnotations = Repository.class, types = Object.class, withSubtypes = true)
+   public void enhancement(ClassInfo repositoryClassInfo) {
+      AnnotationInfo repositoryAnnotationInfo =
+         repositoryClassInfo.annotation(Repository.class);
+      String provider = repositoryAnnotationInfo.member("provider").asString();
+      String dataStore = repositoryAnnotationInfo.member("dataStore").asString();
+
+      boolean provide = false;
+      if (Repository.ANY_PROVIDER.equals(provider))
+         for (Type supertype : repositoryClassInfo.superInterfaces())
+            if (supertype.isParameterizedType()) {
+               List<Type> typeVarTypes = supertype.asParameterizedType().typeArguments();
+               if (!typeVarTypes.isEmpty()) {
+                  Type entityType = typeVarTypes.get(0);
+                  if (entityType.isClass()) {
+                     ClassInfo entityTypeInfo = entityType.asClass().declaration();
+                     if (entityTypeInfo.hasAnnotation(anno ->
+                        "org.eclipse.jakarta.example.Entity".equals(anno.name()))) {
+                        provide = true;
+                        break;
+                     }
+                  }
+               }
+            }
+      else
+         provide = "MyExampleProvider".equals(provider)
+
+      if (provide)
+         repositoryClassNames.computeIfAbsent(dataStore, d -> new ArrayList<>())
+                             .add(repositoryClassInfo.name());
+   }
+
+   @Synthesis
+   public void synthesis(Types types, SyntheticComponents synth) {
+      for (String dataStore : repositoryClassNames.keySet())
+         for (String repoClassName : repositoryClassNames.get(dataStore)) {
+            synth.addBean(...);
+         }
+   }
+}
+----
 
 === Jakarta Transactions Usage
 
