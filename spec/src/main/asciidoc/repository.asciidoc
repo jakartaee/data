@@ -218,7 +218,7 @@ Each parameter of an annotated query method must either:
 - have exactly the same type and position within the parameter list of the method as a positional parameter of the query, or
 - be of type `Limit`, `Pageable`, or `Sort`.
 
-A repository with annotated query methods with named parameters should be compiled so that parameter names are preserved in the class file (for example, using `javac -parameters`), or the parameter names must be specified explicitly using the `@Param` annotation.
+A repository with annotated query methods with named parameters must be compiled so that parameter names are preserved in the class file (for example, using `javac -parameters`), or the parameter names must be specified explicitly using the `@Param` annotation.
 
 A parameter of an annotated query method may not be annotated with lifecycle annotation.
 
