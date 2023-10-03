@@ -70,57 +70,6 @@ The entity annotation class is the primary strategy to avoid conflicts between J
 
 To ensure compatibility and prevent conflicts, Jakarta Data providers must disregard all `Repository` annotations that specify a different provider's name through the `Repository.provider()` attribute. By ignoring these annotations, Jakarta Data providers allow other Jakarta Data providers to handle them.
 
-==== Example CDI Extension
-
-The following code snippet illustrates portions of an example `BuildCompatibleExtension` that follows the rules of the Jakarta Data specification to provide repository implementation when explicitly indicated as the provider (`MyExampleProvider`) or when the repository's entity class is annotated with an entity annotation (`org.eclipse.jakarta.example.Entity`) that the provider supports,
-
-[source,java]
-----
-public class MyExampleExtension implements BuildCompatibleExtension {
-   final Map<String, List<String>> repositoryClassNames = new HashMap<>();
-
-   @Enhancement(withAnnotations = Repository.class, types = Object.class, withSubtypes = true)
-   public void enhancement(ClassInfo repositoryClassInfo) {
-      AnnotationInfo repositoryAnnotationInfo =
-         repositoryClassInfo.annotation(Repository.class);
-      String provider = repositoryAnnotationInfo.member("provider").asString();
-      String dataStore = repositoryAnnotationInfo.member("dataStore").asString();
-
-      boolean provide = false;
-      if (Repository.ANY_PROVIDER.equals(provider))
-         for (Type supertype : repositoryClassInfo.superInterfaces())
-            if (supertype.isParameterizedType()) {
-               List<Type> typeVarTypes = supertype.asParameterizedType().typeArguments();
-               if (!typeVarTypes.isEmpty()) {
-                  Type entityType = typeVarTypes.get(0);
-                  if (entityType.isClass()) {
-                     ClassInfo entityTypeInfo = entityType.asClass().declaration();
-                     if (entityTypeInfo.hasAnnotation(anno ->
-                        "org.eclipse.jakarta.example.Entity".equals(anno.name()))) {
-                        provide = true;
-                        break;
-                     }
-                  }
-               }
-            }
-      else
-         provide = "MyExampleProvider".equals(provider)
-
-      if (provide)
-         repositoryClassNames.computeIfAbsent(dataStore, d -> new ArrayList<>())
-                             .add(repositoryClassInfo.name());
-   }
-
-   @Synthesis
-   public void synthesis(Types types, SyntheticComponents synth) {
-      for (String dataStore : repositoryClassNames.keySet())
-         for (String repoClassName : repositoryClassNames.get(dataStore)) {
-            synth.addBean(...);
-         }
-   }
-}
-----
-
 === Jakarta Transactions Usage
 
 When running in an environment where Jakarta Transactions is available and a global transaction is active on the thread of execution for a repository operation and the data source backing the repository is capable of transaction enlistment, the repository operation enlists the data source resource as a participant in the transaction. The repository operation does not commit or roll back the transaction that was already present on the thread, but it might cause the transaction to be marked as rollback only (`jakarta.transaction.Status.STATUS_MARKED_ROLLBACK`) if the repository operation fails.
