@@ -291,7 +291,7 @@ Automatic query methods _are_ portable between providers.
 A _resource accessor method_ is a method with no parameters which returns a type supported by the Jakarta Data provider.
 The purpose of this method is to provide the program with direct access to the data store.
 
-For example, if the Jakarta Data provider is based on JDBC, the return type might be `java.sql.Connection` or `javax.sql.Datasource`.
+For example, if the Jakarta Data provider is based on JDBC, the return type might be `java.sql.Connection` or `javax.sql.DataSource`.
 Or, if the Jakarta Data provider is backed by Jakarta Persistence, the return type might be `jakarta.persistence.EntityManager`.
 
 The Jakarta Data implementation automatically recognizes the connection types it supports.
