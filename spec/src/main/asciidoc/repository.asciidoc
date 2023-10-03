@@ -294,7 +294,7 @@ The purpose of this method is to provide the program with direct access to the d
 For example, if the Jakarta Data provider is based on JDBC, the return type might be `java.sql.Connection` or `javax.sql.DataSource`.
 Or, if the Jakarta Data provider is backed by Jakarta Persistence, the return type might be `jakarta.persistence.EntityManager`.
 
-The Jakarta Data implementation automatically recognizes the connection types it supports.
+The Jakarta Data provider recognizes the connection types it supports and implements the method such that it returns an instance of the type of resource. If the resource type implements `java.lang.AutoCloseable` and the resource is obtained within the scope of a default method of the repository, then the Jakarta Data provider automatically closes the resource upon completion of the default method. If the method for obtaining the resource is invoked outside the scope of a default method of the repository, then the user is responsible for closing the resource instance.
 
 [NOTE]
 A Jakarta Data implementation might allow a resource accessor method to be annotated with additional metadata providing information about the connection.
