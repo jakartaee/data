@@ -322,7 +322,7 @@ The following examples demonstrate the use of annotated and automatic query meth
 ----
 @Repository
 public interface ProductRepository extends CrudRepository<Product, Long> {
-  @Query("SELECT p FROM Products p WHERE p.name=?1")  // example in JPQL
+  @Query("SELECT p FROM Product p WHERE p.name=?1")  // example in JPQL
   Optional<Product> findByName(String name);
 }
 ----
@@ -331,7 +331,7 @@ public interface ProductRepository extends CrudRepository<Product, Long> {
 ----
 @Repository
 public interface ProductRepository extends CrudRepository<Product, Long> {
-  @Query("SELECT p FROM Products p WHERE p.name=:name")  // example in JPQL
+  @Query("SELECT p FROM Product p WHERE p.name=:name")  // example in JPQL
   Optional<Product> findByName(@Param("name") String name);
 }
 ----
@@ -344,10 +344,10 @@ public interface ProductRepository extends CrudRepository<Product, Long> {
   // Assumes that the Product entity has attributes: yearProduced
   List<Product> findMadeIn(int yearProduced, Sort... sorts);
 
-  // Assumes that the Product entity has attributes: name, status.
-  boolean existsWithStatus(String name, Status status);
+  @Query("SELECT count(p) FROM Product p WHERE p.name=?1 AND p.status=?2")
+  int countWithStatus(String name, Status status);
 
-  // Assumes that the Product entity has attributes: yearProduced
+  @Query("DELETE FROM Product p WHERE p.yearProduced=?1")
   void deleteOutdated(int yearProduced);
 }
 ----
