@@ -58,10 +58,6 @@ import java.lang.annotation.Target;
  * a car entity into a database.
  * </p>
  *
- * @throws jakarta.data.exceptions.OptimisticLockingFailureException If the entity uses optimistic locking and the version in the
- *         database differs from the version in the entity.
- * @throws NullPointerException If the provided entity is {@literal null}.
- *
  * @see jakarta.data.exceptions.OptimisticLockingFailureException
  */
 @Documented

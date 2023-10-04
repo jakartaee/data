@@ -40,9 +40,6 @@ import java.lang.annotation.Target;
  * Properties other than the Id and version do not need to match for deletion.
  * </p>
  *
- * @throws jakarta.data.exceptions.OptimisticLockingFailureException if the entity is not found in the database for deletion
- *         or has a version for optimistic locking that is inconsistent with the version in the database.
- * @throws NullPointerException when the entity is null.
  *
  * @see jakarta.data.exceptions.OptimisticLockingFailureException
  */
