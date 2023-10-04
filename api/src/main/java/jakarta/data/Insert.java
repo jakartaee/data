@@ -24,6 +24,40 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * <p>The {@code Insert} annotation indicates to dynamic templates or repositories that the annotated method
+ * will perform an insert operation. This method should have a unique parameter whose type can be one of the following:
+ * </p>
+ * <ul>
+ *     <li>The entity to be inserted.</li>
+ *     <li>An {@code Iterable} of entities to be inserted.</li>
+ *     <li>An array of entities to be inserted.</li>
+ * </ul>
+ * <p>The return type of the annotated method should match the type of the parameter. For example, if the method is
+ * annotated with {@code @Insert} and takes a parameter of type {@code Car car}, the return type should be {@code Car}.
+ * Similarly, if the parameter is an {@code Iterable<Car>} or an array of {@code Car}, the return type should be the
+ * corresponding type.
+ * </p>
+ * <p>After invoking this method, it is recommended not to use the entity value supplied as a parameter, as this method
+ * makes no guarantees about the state of the entity value after insertion.
+ * </p>
+ * <p>If the entity uses optimistic locking, and the version differs from the version in the database, an
+ * {@link OptimisticLockingFailureException} may be thrown.
+ * </p>
+ * <p>For example, consider an interface representing a garage:</p>
+ * <pre>
+ * @Repository
+ * interface Garage {
+ *     {@literal @}Insert
+ *     Car parking(Car car);
+ * }
+ * </pre>
+ * <p>The {@code @Insert} annotation can be used to indicate that the {@code parkCar} method is responsible for inserting
+ * a car entity into a database.
+ * </p>
+ *
+ * @see OptimisticLockingFailureException
+ */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)

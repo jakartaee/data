@@ -24,6 +24,46 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * <p>The {@code Save} annotation indicates to dynamic templates or repositories that the annotated method
+ * will perform a save operation. This method should have a unique parameter whose type can be one of the following:
+ * </p>
+ * <ul>
+ *     <li>The entity to be saved.</li>
+ *     <li>An {@code Iterable} of entities to be saved.</li>
+ *     <li>An array of entities to be saved.</li>
+ * </ul>
+ * <p>The return type of the annotated method should be the same as the parameter type, ensuring consistency
+ * with the saved entity or entities.
+ * </p>
+ * <p>Saving an entity involves persisting it in the database. If the entity has an ID or key that already exists
+ * in the database, the method will update the existing record. If the entity does not exist in the database or has a
+ * null ID, this method will insert a new record. The entity instance returned by this method will be updated with
+ * any automatically generated or incremented values that changed due to the save operation.
+ * </p>
+ * <p>After invoking this method, avoid using the entity value that was supplied as a parameter, as it may not accurately
+ * reflect the changes made during the save process. If the entity uses optimistic locking and its version differs from
+ * the version in the database, an {@link OptimisticLockingFailureException} will be thrown.
+ * </p>
+ *
+ * <p>For example, consider an interface representing a garage:</p>
+ * <pre>
+ * @Repository
+ * interface Garage {
+ *     {@literal @}Save
+ *     Car parking(Car car);
+ * }
+ * </pre>
+ * <p>The {@code @Insert} annotation can be used to indicate that the {@code parkCar} method is responsible for inserting
+ * a car entity into a database.
+ * </p>
+ *
+ * @throws OptimisticLockingFailureException If the entity uses optimistic locking and the version in the
+ *         database differs from the version in the entity.
+ * @throws NullPointerException If the provided entity is {@literal null}.
+ *
+ * @see OptimisticLockingFailureException
+ */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)

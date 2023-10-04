@@ -24,6 +24,43 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+
+/**
+ * <p>The {@code Update} annotation indicates to dynamic templates or repositories that the annotated method
+ * will perform an update operation. This method should have a unique parameter whose type can be one of the following:
+ * </p>
+ * <ul>
+ *     <li>The entity to be updated.</li>
+ *     <li>An {@code Iterable} of entities to be updated.</li>
+ *     <li>An array of entities to be updated.</li>
+ * </ul>
+ * <p>The return type of the annotated method should be the same as the parameter type, ensuring consistency
+ * with the updated entity or entities.
+ * </p>
+ * <p>Updating an entity involves modifying its existing data in the database. The method will search for the entity
+ * in the database using its ID or key, and then update the corresponding record with the new data. After invoking
+ * this method, do not continue to use the entity value that is supplied as a parameter, as it may not accurately
+ * reflect the changes made during the update process.
+ * </p>
+ * <p>If the entity uses optimistic locking and its version differs from the version in the database,
+ * an {@link OptimisticLockingFailureException} will be thrown.
+ * </p>
+ *
+ * <p>For example, consider an interface representing a garage:</p>
+ *  * <pre>
+ *  * @Repository
+ *  * interface Garage {
+ *  *     {@literal @}Update
+ *  *     Car update(Car car);
+ *  * }
+ *  * </pre>
+ * @return The updated entity; never {@literal null}.
+ * @throws OptimisticLockingFailureException If the entity uses optimistic locking and the version in the
+ *         database differs from the version in the entity.
+ * @throws NullPointerException If the provided entity is {@literal null}.
+ *
+ * @see OptimisticLockingFailureException
+ */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)

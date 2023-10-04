@@ -24,6 +24,28 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * <p>The {@code Delete} annotation indicates to dynamic templates or repositories that the annotated method
+ * will perform a delete operation. This method should have a unique parameter whose type can be one of the following:
+ * </p>
+ * <ul>
+ *     <li>The entity to be deleted.</li>
+ *     <li>An {@code Iterable} of entities to be deleted.</li>
+ *     <li>An array of entities to be deleted.</li>
+ * </ul>
+ * <p>The return type of the annotated method should be {@code void}, as the delete operation does not return a value.
+ * </p>
+ * <p>Deletion of a given entity is performed by matching the entity's Id. If the entity is versioned (e.g.,
+ * with {@code jakarta.persistence.Version}), the version is also checked for consistency during deletion.
+ * Properties other than the Id and version do not need to match for deletion.
+ * </p>
+ *
+ * @throws OptimisticLockingFailureException if the entity is not found in the database for deletion
+ *         or has a version for optimistic locking that is inconsistent with the version in the database.
+ * @throws NullPointerException when the entity is null.
+ *
+ * @see OptimisticLockingFailureException
+ */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
