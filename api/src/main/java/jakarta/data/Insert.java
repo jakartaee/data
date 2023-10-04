@@ -42,7 +42,7 @@ import java.lang.annotation.Target;
  * makes no guarantees about the state of the entity value after insertion.
  * </p>
  * <p>If the entity uses optimistic locking, and the version differs from the version in the database, an
- * {@link OptimisticLockingFailureException} may be thrown.
+ * {@link jakarta.data.exceptions.OptimisticLockingFailureException} may be thrown.
  * </p>
  * <p>For example, consider an interface representing a garage:</p>
  * <pre>
@@ -56,7 +56,7 @@ import java.lang.annotation.Target;
  * a car entity into a database.
  * </p>
  *
- * @see OptimisticLockingFailureException
+ * @see jakarta.data.exceptions.OptimisticLockingFailureException
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)

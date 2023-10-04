@@ -43,7 +43,7 @@ import java.lang.annotation.Target;
  * reflect the changes made during the update process.
  * </p>
  * <p>If the entity uses optimistic locking and its version differs from the version in the database,
- * an {@link OptimisticLockingFailureException} will be thrown.
+ * an {@link jakarta.data.exceptions.OptimisticLockingFailureException} will be thrown.
  * </p>
  *
  * <p>For example, consider an interface representing a garage:</p>
@@ -55,11 +55,11 @@ import java.lang.annotation.Target;
  *  * }
  *  * </pre>
  * @return The updated entity; never {@literal null}.
- * @throws OptimisticLockingFailureException If the entity uses optimistic locking and the version in the
+ * @throws jakarta.data.exceptions.OptimisticLockingFailureException If the entity uses optimistic locking and the version in the
  *         database differs from the version in the entity.
  * @throws NullPointerException If the provided entity is {@literal null}.
  *
- * @see OptimisticLockingFailureException
+ * @see jakarta.data.exceptions.OptimisticLockingFailureException
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)

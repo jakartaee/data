@@ -43,7 +43,7 @@ import java.lang.annotation.Target;
  * </p>
  * <p>After invoking this method, avoid using the entity value that was supplied as a parameter, as it may not accurately
  * reflect the changes made during the save process. If the entity uses optimistic locking and its version differs from
- * the version in the database, an {@link OptimisticLockingFailureException} will be thrown.
+ * the version in the database, an {@link jakarta.data.exceptions.OptimisticLockingFailureException} will be thrown.
  * </p>
  *
  * <p>For example, consider an interface representing a garage:</p>
@@ -58,11 +58,11 @@ import java.lang.annotation.Target;
  * a car entity into a database.
  * </p>
  *
- * @throws OptimisticLockingFailureException If the entity uses optimistic locking and the version in the
+ * @throws jakarta.data.exceptions.OptimisticLockingFailureException If the entity uses optimistic locking and the version in the
  *         database differs from the version in the entity.
  * @throws NullPointerException If the provided entity is {@literal null}.
  *
- * @see OptimisticLockingFailureException
+ * @see jakarta.data.exceptions.OptimisticLockingFailureException
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
