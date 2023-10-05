@@ -38,12 +38,14 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
 
     /**
      * <p>Inserts an entity into the database. If an entity of this type with the same
-     * unique identifier already exists in the database, then this method raises
-     * {@link EntityExistsException} for.</p>
+     * unique identifier already exists in the database, then this method may raise
+     * {@link EntityExistsException} for relational databases; however, the behavior
+     * in NoSQL databases may vary depending on the provider, especially in cases where
+     * the provider supports does not implement ACID or doesn't work with an append model.</p>
      *
      * @param entity the entity to insert. Must not be {@code null}.
      * @return the inserted entity.
-     * @throws EntityExistsException if the entity is already present in the database.
+     * @throws EntityExistsException if the entity is already present in the database (relational databases).
      * @throws NullPointerException if the entity is null.
      */
     T insert(T entity);
@@ -51,11 +53,15 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
     /**
      * <p>Inserts multiple entities into the database. If an entity of this type with the same
      * unique identifier as any of the given entities already exists in the database,
-     * then this method raises {@link EntityExistsException}.</p>
+     * then this method raises {@link EntityExistsException} for relational databases;
+     * however, the behavior in NoSQL databases may vary depending on the provider,
+     * especially in cases where the provider supports ACID transactions or doesn't work
+     * with an append model.</p>
      *
      * @param entities entities to insert.
      * @return an iterable containing the inserted entities.
-     * @throws EntityExistsException if any of the entities are already present in the database.
+     * @throws EntityExistsException if any of the entities are already present in the
+     *                              database (relational databases).
      * @throws NullPointerException if either the iterable is null or any element is null.
      */
     Iterable<T> insertAll(Iterable<T> entities);
