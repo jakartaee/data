@@ -37,7 +37,7 @@ import java.lang.annotation.Target;
  * <p>The return type of the annotated method must be {@code void}, {@code boolean}, a numeric primitive type (such as {@code int}), or a corresponding primitive wrapper type (such as {@link Integer}). A boolean return type indicates whether a matching entity was found in the database to update. A numeric return type indicates how many matching entities were found in the database to update.
  * </p>
  * <p>Updating an entity involves modifying its existing data in the database. The method will search for the entity
- * in the database using its ID or key, and then update the corresponding record with the new data. After invoking
+ * in the database using its ID (and version, if versioned) and then update the corresponding record with the new data. After invoking
  * this method, do not continue to use the entity value that is supplied as a parameter, as it may not accurately
  * reflect the changes made during the update process.
  * </p>
