@@ -45,7 +45,6 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
      * @return the inserted entity.
      * @throws EntityExistsException if the entity is already present in the database.
      * @throws NullPointerException if the entity is null.
-     * @throws UnsupportedOperationException for databases that use an append model to write data.
      */
     T insert(T entity);
 
@@ -58,8 +57,6 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
      * @return an iterable containing the inserted entities.
      * @throws EntityExistsException if any of the entities are already present in the database.
      * @throws NullPointerException if either the iterable is null or any element is null.
-     * @throws UnsupportedOperationException for Key-Value and Wide-Column databases
-     *         that use an append model to write data.
      */
     Iterable<T> insertAll(Iterable<T> entities);
 
