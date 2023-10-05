@@ -58,8 +58,6 @@ import java.lang.annotation.Target;
  *
  * <p>If this annotation is combined with other operation annotations (e.g., {@code @Update}, {@code @Delete},
  *  {@code @Save}), it will throw an {@link IllegalStateException} as only one operation type can be specified.</p>
- *
- * @see jakarta.data.exceptions.OptimisticLockingFailureException
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
