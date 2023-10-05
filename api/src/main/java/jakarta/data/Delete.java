@@ -40,7 +40,8 @@ import java.lang.annotation.Target;
  * Properties other than the Id and version do not need to match for deletion.
  * </p>
  *
- *
+ * * <p>If this annotation is combined with other operation annotations (e.g., {@code @Insert}, {@code @Update},
+ *  * {@code @Save}), it will throw an {@link IllegalStateException} as only one operation type can be specified.</p>
  * <p>If the unique identifier of an entity is not found in the database or its version does not match, and the return type of the annotated method is {@code void} or {@code Void}, the method must raise {@link jakarta.data.exceptions.OptimisticLockingFailureException}.
  */
 @Documented

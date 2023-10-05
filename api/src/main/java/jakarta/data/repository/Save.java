@@ -60,6 +60,7 @@ import java.lang.annotation.Target;
  * a car entity into a database.
  * </p>
  *
+ *
  * @see jakarta.data.exceptions.OptimisticLockingFailureException
  */
 @Documented
