@@ -67,15 +67,16 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
     Iterable<T> insertAll(Iterable<T> entities);
 
     /**
-     * <p>Modifies an entity that already exists in the database.</p>
-     *
-     * <p>For an update to be made, a matching entity with the same unique identifier
+     * <p>Modifies an entity that already exists in the database. In relational databases,
+     * for an update to be made, a matching entity with the same unique identifier
      * must be present in the database.</p>
      *
      * <p>If the entity is versioned (for example, with {@code jakarta.persistence.Version} or by
      * another convention from the entity model such as having an attribute named {@code version}),
      * then the version must also match. The version is automatically incremented when making
      * the update.</p>
+     *
+     * <p>In some NoSQL databases, this method might work as an alias to insert, mainly, if the database work in an append model</p>
      *
      * <p>Non-matching entities are ignored and do not cause an error to be raised.</p>
      *
@@ -95,6 +96,8 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
      * another convention from the entity model such as having an attribute named {@code version}),
      * then the version must also match. The version is automatically incremented when making
      * the update.</p>
+     *
+     * <p>In some NoSQL databases, this method might work as an alias to insert, mainly, if the database work in an append model</p>
      *
      * <p>Non-matching entities are ignored and do not cause an error to be raised.</p>
      *
