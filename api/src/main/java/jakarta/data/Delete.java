@@ -42,7 +42,14 @@ import java.lang.annotation.Target;
  * with {@code jakarta.persistence.Version}), the version is also checked for consistency during deletion.
  * Properties other than the Id and version do not need to match for deletion.
  * </p>
- *
+ * <p>For example, consider an interface representing a garage:</p>
+ * <pre>
+ * {@literal @}Repository
+ * interface Garage {
+ *     {@literal @}Save
+ *     Car unpark(Car car);
+ * }
+ * </pre>
  * * <p>If this annotation is combined with other operation annotations (e.g., {@code @Insert}, {@code @Update},
  *  * {@code @Save}), it will throw an {@link IllegalStateException} as only one operation type can be specified.</p>
  * <p>If the unique identifier of an entity is not found in the database or its version does not match, and the return

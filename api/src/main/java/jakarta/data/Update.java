@@ -47,13 +47,13 @@ import java.lang.annotation.Target;
  * </p>
  *
  * <p>For example, consider an interface representing a garage:</p>
- *  * <pre>
- *  * @Repository
- *  * interface Garage {
- *  *     {@literal @}Update
- *  *     Car update(Car car);
- *  * }
- *  * </pre>
+ * <pre>
+ * &#64;Repository
+ * interface Garage {
+ *     {@literal @}Update
+ *     Car update(Car car);
+ * }
+ * </pre>
  * <p>If this annotation is combined with other operation annotations (e.g., {@code @Insert}, {@code @Delete},
  * {@code @Save}), it will throw an {@link IllegalStateException} as only one operation type can be specified.</p>
  * @see jakarta.data.exceptions.OptimisticLockingFailureException
