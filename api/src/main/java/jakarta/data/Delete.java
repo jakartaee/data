@@ -25,8 +25,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * <p>The {@code Delete} annotation indicates to dynamic templates or repositories that the annotated method
- * will perform a delete operation. This method should have a unique parameter whose type can be one of the following:
+ * <p>The {@code Delete} annotation indicates that the annotated repository method requests one or more
+ * entities to be removed from the database. This method must have a single parameter whose type must be one of the following:
  * </p>
  * <ul>
  *     <li>The entity to be deleted.</li>
