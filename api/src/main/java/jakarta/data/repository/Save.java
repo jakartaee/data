@@ -57,7 +57,7 @@ import java.lang.annotation.Target;
  * }
  * </pre>
  * <p>The {@code @Insert} annotation can be used to indicate that the {@code park(Car)} method is responsible
- * for updating the entity in database if it already exists there and otherwise inserting
+ * for updating the entity in the database if it already exists there and otherwise inserting
  * a car entity into a database.
  * </p>
  *
