@@ -35,7 +35,7 @@ import java.lang.annotation.Target;
  *     <li>An {@code Iterable} of entities to be saved.</li>
  *     <li>An array of entities to be saved.</li>
  * </ul>
- * <p>The return type of the annotated method should be the same as the parameter type, ensuring consistency
+ * <p>The return type of the annotated method must be the same as the parameter type, ensuring consistency
  * with the saved entity or entities.
  * </p>
  * <p>Saving an entity involves persisting it in the database. If the entity has an ID or key that already exists
