@@ -26,8 +26,8 @@ import java.lang.annotation.Target;
 
 
 /**
- * <p>The {@code Update} annotation indicates to dynamic templates or repositories that the annotated method
- * will perform an update operation. This method should have a unique parameter whose type can be one of the following:
+ * <p>The {@code Update} annotation indicates that the annotated repository method requests that one or more entities
+ * be updated if found in the database. This method must have a single parameter whose type must be one of the following:
  * </p>
  * <ul>
  *     <li>The entity to be updated.</li>
