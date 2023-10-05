@@ -25,8 +25,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * <p>The {@code Save} annotation indicates to dynamic templates or repositories that the annotated method
- * will perform a save operation. This method should have a unique parameter whose type can be one of the following:
+ * <p>The {@code Save} annotation indicates that the annotated repository method
+ * updates one or more entities if found in the database
+ * and inserts entities into the database that are not found.
+ * This method must have a single parameter whose type must be one of the following:
  * </p>
  * <ul>
  *     <li>The entity to be saved.</li>
