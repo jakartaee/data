@@ -39,13 +39,13 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
     /**
      * <p>Inserts an entity into the database. If an entity of this type with the same
      * unique identifier already exists in the database, then this method raises
-     * {@link EntityExistsException}.</p>
+     * {@link EntityExistsException} for.</p>
      *
      * @param entity the entity to insert. Must not be {@code null}.
+     * @return the inserted entity.
      * @throws EntityExistsException if the entity is already present in the database.
      * @throws NullPointerException if the entity is null.
-     * @throws UnsupportedOperationException for Key-Value and Wide-Column databases
-     *         that use an append model to write data.
+     * @throws UnsupportedOperationException for databases that use an append model to write data.
      */
     T insert(T entity);
 
@@ -55,6 +55,7 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
      * then this method raises {@link EntityExistsException}.</p>
      *
      * @param entities entities to insert.
+     * @return an iterable containing the inserted entities.
      * @throws EntityExistsException if any of the entities are already present in the database.
      * @throws NullPointerException if either the iterable is null or any element is null.
      * @throws UnsupportedOperationException for Key-Value and Wide-Column databases
@@ -76,7 +77,7 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
      * <p>Non-matching entities are ignored and do not cause an error to be raised.</p>
      *
      * @param entity the entity to update.
-     * @return true if a matching entity was found in the database to update, otherwise false.
+     * @return the updated entity.
      * @throws NullPointerException if the entity is null.
      */
     Iterable<T> update(T entity);
@@ -95,7 +96,7 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
      * <p>Non-matching entities are ignored and do not cause an error to be raised.</p>
      *
      * @param entities entities to update.
-     * @return the number of matching entities that were found in the database to update.
+     * @return the updated entities.
      * @throws NullPointerException if either the iterable is null or any element is null.
      */
     Iterable<T> updateAll(Iterable<T> entities);
