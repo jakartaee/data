@@ -17,7 +17,6 @@
  */
 package jakarta.data.repository;
 
-import jakarta.data.exceptions.EntityExistsException;
 import jakarta.data.exceptions.OptimisticLockingFailureException;
 import java.util.Optional;
 import java.util.stream.Stream;
