@@ -46,7 +46,7 @@ import java.lang.annotation.Target;
  * <pre>
  * {@literal @}Repository
  * interface Garage {
- *     {@literal @}Save
+ *     {@literal @}Delete
  *     Car unpark(Car car);
  * }
  * </pre>
