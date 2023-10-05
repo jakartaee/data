@@ -41,7 +41,7 @@ import java.lang.annotation.Target;
  * </p>
  *
  *
- * @see jakarta.data.exceptions.OptimisticLockingFailureException
+ * <p>If the unique identifier of an entity is not found in the database or its version does not match, and the return type of the annotated method is {@code void} or {@code Void}, the method must raise {@link jakarta.data.exceptions.OptimisticLockingFailureException}.
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
