@@ -88,7 +88,7 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
     boolean update(T entity);
 
     /**
-     * <p>Modifies entities that already exists in the database.</p>
+     * <p>Modifies entities that already exist in the database.</p>
      *
      * <p>For an update to be made to an entity, a matching entity with the same unique identifier
      * must be present in the database.</p>
