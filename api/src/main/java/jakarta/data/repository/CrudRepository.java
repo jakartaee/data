@@ -102,8 +102,8 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
      * <p>Non-matching entities are ignored and do not cause an error to be raised.</p>
      *
      * @param entities entities to update.
-     * @return the updated entities.
+     * @return the number of matching entities that were found in the database to update.
      * @throws NullPointerException if either the iterable is null or any element is null.
      */
-    Iterable<T> updateAll(Iterable<T> entities);
+    int updateAll(Iterable<T> entities);
 }
