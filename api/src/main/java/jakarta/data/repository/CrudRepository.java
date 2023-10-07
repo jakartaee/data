@@ -40,7 +40,7 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
      * <p>Inserts an entity into the database. If an entity of this type with the same
      * unique identifier already exists in the database and the database supports ACID transactions,
      * then this method raises {@link EntityExistsException}. In databases that follow the BASE model
-     * or use an append model to write data, this exception may not be thrown.</p>
+     * or use an append model to write data, this exception is not thrown.</p>
      *
      * <p>The entity instance returned as a result of this method may be the same instance as the one
      * supplied as a parameter, especially in non-Java record classes. However, for Jakarta Data providers
