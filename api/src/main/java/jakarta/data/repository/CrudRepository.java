@@ -78,8 +78,8 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
      *
      * <p>For an update to be made, a matching entity with the same unique identifier
      * must be present in the database. In databases that use an append model to write data or
-     * follow the BASE model, this method will work similarly to the {@link #insert} method,
-     * especially if the database does not support ACID transactions.</p>
+     * follow the BASE model, this method behaves similarly to the {@link #insert} method,
+     * particularly in cases where the database does not support ACID transactions.</p>
      *
      * <p>If the entity is versioned (for example, with {@code jakarta.persistence.Version} or by
      * another convention from the entity model such as having an attribute named {@code version}),
@@ -88,7 +88,7 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
      *
      * <p>Non-matching entities are ignored and do not cause an error to be raised.</p>
      *
-     * @param entity the entity to update.
+     * @param entity the entity to update. Must not be {@code null}.
      * @param <S> Type of the entity to update.
      * @return the updated entity. The entity instance returned as a result of this method may be the same
      * instance as the one supplied as a parameter, especially in non-Java record classes. However,
