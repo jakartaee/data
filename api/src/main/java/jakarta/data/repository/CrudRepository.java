@@ -59,7 +59,7 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
      * unique identifier as any of the given entities already exists in the database and the database
      * supports ACID transactions, then this method raises {@link EntityExistsException}.
      * In databases that follow the BASE model or use an append model to write data, this exception
-     * may not be thrown.</p>
+     * is not thrown.</p>
      *
      * <p>The entities within the returned iterable may be the same instances as those supplied
      * as parameters, especially in non-Java record classes. However, for Jakarta Data providers
