@@ -77,7 +77,9 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
      * <p>Modifies an entity that already exists in the database.</p>
      *
      * <p>For an update to be made, a matching entity with the same unique identifier
-     * must be present in the database.</p>
+     * must be present in the database. In databases that use an append model to write data or
+     * follow the BASE model, this method will work similarly to the {@link #insert} method,
+     * especially if the database does not support ACID transactions.</p>
      *
      * <p>If the entity is versioned (for example, with {@code jakarta.persistence.Version} or by
      * another convention from the entity model such as having an attribute named {@code version}),
@@ -87,16 +89,21 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
      * <p>Non-matching entities are ignored and do not cause an error to be raised.</p>
      *
      * @param entity the entity to update.
-     * @return true if a matching entity was found in the database to update, otherwise false.
+     * @param <S> Type of the entity to update.
+     * @return the updated entity. The entity instance returned as a result of this method may be the same
+     * instance as the one supplied as a parameter, especially in non-Java record classes. However,
+     * for Jakarta Data providers that support Java records, a different instance may be returned.
      * @throws NullPointerException if the entity is null.
      */
     <S extends T> S update(S entity);
 
     /**
-     * <p>Modifies entities that already exists in the database.</p>
+     * <p>Modifies entities that already exist in the database.</p>
      *
      * <p>For an update to be made to an entity, a matching entity with the same unique identifier
-     * must be present in the database.</p>
+     * must be present in the database. In databases that use an append model to write data or
+     * follow the BASE model, this method will work similarly to the {@link #insertAll} method,
+     * especially if the database does not support ACID transactions.</p>
      *
      * <p>If the entity is versioned (for example, with {@code jakarta.persistence.Version} or by
      * another convention from the entity model such as having an attribute named {@code version}),
@@ -106,7 +113,10 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
      * <p>Non-matching entities are ignored and do not cause an error to be raised.</p>
      *
      * @param entities entities to update.
-     * @return the number of matching entities that were found in the database to update.
+     * @param <S> Type of the entities to update.
+     * @return an iterable containing the updated entities. In the case of Jakarta Data providers
+     *         that support Java records, this may return a different instance from the input,
+     *         preserving immutability.
      * @throws NullPointerException if either the iterable is null or any element is null.
      */
     <S extends T> Iterable<S> updateAll(Iterable<S> entities);
