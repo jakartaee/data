@@ -183,7 +183,8 @@ For example:
 
 [source,java]
 ----
-void insertBook(@Insert Book book);
+@Insert 
+void insertBook(Book book);
 ----
 
 Lifecycle methods are not guaranteed to be portable between all providers.
