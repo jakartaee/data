@@ -220,7 +220,7 @@ Each parameter of an annotated query method must either:
 
 A repository with annotated query methods with named parameters must be compiled so that parameter names are preserved in the class file (for example, using `javac -parameters`), or the parameter names must be specified explicitly using the `@Param` annotation.
 
-A parameter of an annotated query method may not be annotated with lifecycle annotation.
+An annotated query method must not also be annotated with a lifecycle annotation.
 
 The return type of the annotated query method must be consistent with the result type of the query specified by the query annotation.
 
