@@ -201,7 +201,8 @@ A Jakarta Data provider might extend this specification to define additional lif
 
 [source,java]
 ----
-Book mergeBook(@Merge Book book);
+@Merge
+Book mergeBook(Book book);
 ----
 
 Such lifecycle methods are not portable between Jakarta Data providers.
