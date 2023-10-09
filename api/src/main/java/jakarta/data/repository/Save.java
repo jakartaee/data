@@ -62,7 +62,8 @@ import java.lang.annotation.Target;
  * </p>
  *
  * <p>If this annotation is combined with other operation annotations (e.g., {@code @Update}, {@code @Delete},
- *  {@code @Insert}), it will throw an {@link IllegalStateException} as only one operation type can be specified.</p>
+ *  {@code @Insert}), it will throw an {@link IllegalStateException} as only one operation type can be specified, where
+ *  a Jakarta Data provider implementation choose to detect (and report) this error at compile time or at runtime.</p>
  * @see jakarta.data.exceptions.OptimisticLockingFailureException
  */
 @Documented
