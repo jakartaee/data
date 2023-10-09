@@ -57,7 +57,7 @@ import java.lang.annotation.Target;
  * </p>
  *
  * <p>If this annotation is combined with other operation annotations (e.g., {@code @Update}, {@code @Delete},
- *  {@code @Save}), it will throw an {@link UnsupportedOperationException} as only one operation type can be specified.</p>
+ *  {@code @Save}), it will throw an {@link IllegalStateException} as only one operation type can be specified.</p>
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
