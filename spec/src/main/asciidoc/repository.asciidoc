@@ -189,9 +189,7 @@ void insertBook(Book book);
 
 Lifecycle methods are not guaranteed to be portable between all providers.
 
-[NOTE]
-Any Jakarta Data implementation is strongly encouraged to support lifecycle methods declared using the built-in lifecycle annotations, to enable portability of user code between Jakarta Data providers.
-However, since these lifecycle operations are not universal across all possible data stores, support for `@Insert`, `@Update`, and `@Delete` is not required by this specification.
+Jakarta Data providers must support lifecycle methods to the extent that the data store is capable of the corresponding operation. If the data store is not capable of the operation, the Jakarta Data provider must raise `UnsupportedOperationException` when the operation is attempted, per the requirements of the JavaDoc for the lifecycle annotation, or the Jakarta Data provider must report the error at compile time.
 
 There is no special programming model for lifecycle annotations.
 The Jakarta Data implementation automatically recognizes the lifecycle annotations it supports.
