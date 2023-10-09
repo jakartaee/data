@@ -78,7 +78,7 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
      *
      * <p>For an update to be made, a matching entity with the same unique identifier
      * must be present in the database. In databases that use an append model to write data or
-     * follow the BASE model, this method behaves similarly to the {@link #insert} method,
+     * follow the BASE model, this method behaves as the {@link #insert} method,
      * particularly in cases where the database does not support ACID transactions.</p>
      *
      * <p>If the entity is versioned (for example, with {@code jakarta.persistence.Version} or by
@@ -102,7 +102,7 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
      *
      * <p>For an update to be made to an entity, a matching entity with the same unique identifier
      * must be present in the database. In databases that use an append model to write data or
-     * follow the BASE model, this method will work similarly to the {@link #insertAll} method,
+     * follow the BASE model, this method  behavior as the {@link #insertAll} method,
      * especially if the database does not support ACID transactions.</p>
      *
      * <p>If the entity is versioned (for example, with {@code jakarta.persistence.Version} or by
