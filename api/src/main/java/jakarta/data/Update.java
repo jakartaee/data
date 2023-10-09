@@ -34,7 +34,10 @@ import java.lang.annotation.Target;
  *     <li>An {@code Iterable} of entities to be updated.</li>
  *     <li>An array of entities to be updated.</li>
  * </ul>
- * <p>The return type of the annotated method must be {@code void}, {@code boolean}, a numeric primitive type (such as {@code int}), or a corresponding primitive wrapper type (such as {@link Integer}). A boolean return type indicates whether a matching entity was found in the database to update. A numeric return type indicates how many matching entities were found in the database to update.
+ * <p>The return type of the annotated method must be {@code void}, {@code boolean}, a numeric primitive type
+ * (such as {@code int}), or a corresponding primitive wrapper type (such as {@link Integer}).
+ * A boolean return type indicates whether a matching entity was found in the database to update.
+ * A numeric return type indicates how many matching entities were found in the database to update.
  * </p>
  * <p>Updating an entity involves modifying its existing data in the database. The method will search for the entity
  * in the database using its ID (and version, if versioned) and then update the corresponding record with the new data. After invoking
