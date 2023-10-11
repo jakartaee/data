@@ -63,9 +63,13 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
      * In databases that follow the BASE model or use an append model to write data, this exception
      * is not thrown.</p>
      *
-     * <p>The entities within the returned iterable may be the same instances as those supplied
-     * as parameters, especially in non-Java record classes. However, for Jakarta Data providers
-     * that support Java records, different instances may be returned.</p>
+     * <p>The entities within the returned {@link Iterable} must include all values that were
+     * written to the database, including all automatically generated values and incremented values
+     * that changed due to the insert. After invoking this method, do not continue to use
+     * the entity instances that are supplied in the parameter. This method makes no guarantees
+     * about the state of the entity instances that are supplied in the parameter.
+     * The position of entities within the {@code Iterable} return value must correspond to the
+     * position of entities in the parameter based on the unique identifier of the entity.</p>
      *
      * @param entities entities to insert.
      * @param <S> Type of the entities to insert.
