@@ -49,8 +49,11 @@ import java.lang.annotation.Target;
  * <p>After invoking this method, it is recommended not to use the entity value supplied as a parameter, as this method
  * makes no guarantees about the state of the entity value after insertion.
  * </p>
- * <p>If the entity uses optimistic locking, and the version differs from the version in the database, an
- * {@link jakarta.data.exceptions.OptimisticLockingFailureException} may be thrown.
+ * <p>If an entity of this type with the same unique identifier already exists in the database
+ * and the databases performs ACID (atomic, consistent, isolated, durable) transactions,
+ * then annotated method raises {@link jakarta.data.exceptions.EntityExistsException}.
+ * In databases that follow the BASE model or use an append model to write data,
+ * this exception is not thrown.
  * </p>
  * <p>For example, consider an interface representing a garage:</p>
  * <pre>
