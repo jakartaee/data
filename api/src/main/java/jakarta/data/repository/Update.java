@@ -61,7 +61,10 @@ import java.lang.annotation.Target;
  * <p>If the entity does not exist in the database or it is versioned and its version differs from the version in the database,
  * no update is made and no error is raised.
  * </p>
- *
+ *<p>
+ * In databases that use an append model to write data or follow the BASE model, this method
+ * behaves the same as the {@code @Insert} method.
+ *  </p>
  * <p>For example, consider an interface representing a garage:</p>
  * <pre>
  * &#64;Repository
