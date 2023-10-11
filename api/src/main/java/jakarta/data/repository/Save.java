@@ -35,8 +35,11 @@ import java.lang.annotation.Target;
  *     <li>An {@code Iterable} of entities to be saved.</li>
  *     <li>An array of entities to be saved.</li>
  * </ul>
- * <p>The return type of the annotated method must be the same as the parameter type, ensuring consistency
- * with the saved entity or entities.
+ * <p>The return type of an annotated method that requires a single entity as the parameter
+ * must have a return type that is {@code void}, {@code Void}, or the same type as the parameter.
+ * The return type of an annotated method that accepts an {@code Iterable} or array of entities
+  * as the parameter must have a return type that is {@code void}, {@code Void},
+  * or an {@code Iterable} or array of the entity.
  * </p>
  * <p>Saving an entity involves persisting it in the database. If the entity has an ID or key that already exists
  * in the database, the method will update the existing record. If the entity does not exist in the database or has a
