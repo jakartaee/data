@@ -33,10 +33,12 @@ import java.lang.annotation.Target;
  *     <li>An {@code Iterable} of entities to be inserted.</li>
  *     <li>An array of entities to be inserted.</li>
  * </ul>
- * <p>The return type of an annotated method that requires a single entity as the parameter must have a return type that is {@code void}, {@code Void}, or the same type as the parameter.
- * The return type of an annotated method that accepts an {@code Iterable} or array of entities as the parameter must have a return type that is {@code void}, {@code Void}, or an {@code Iterable} or array of the entity.
- * For example, if the method is
- * annotated with {@code @Insert} and takes a parameter of type {@code Car car}, the return type can be {@code Car}.
+ * <p>The return type of an annotated method that requires a single entity as the parameter must have a return type
+ * that is {@code void}, {@code Void}, or the same type as the parameter.
+ * The return type of an annotated method that accepts an {@code Iterable} or array of entities as the parameter must
+ * have a return type that is {@code void}, {@code Void}, or an {@code Iterable} or array of the entity.
+ * For example, if the method is annotated with {@code @Insert} and takes a parameter of type {@code Car car},
+ * the return type can be {@code Car}.
  * Similarly, if the parameter is an {@code Iterable<Car>} or an array of {@code Car}, the return type can be
  * {@code Iterable<Car>}.
  * Entities that are returned by the annotated method must include all values that were
