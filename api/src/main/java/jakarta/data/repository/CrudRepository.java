@@ -67,7 +67,7 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
      *
      * @param entities entities to insert.
      * @param <S> Type of the entities to insert.
-     * @return an iterable containing the inserted entities, which may or may not be different instances depending on the Jakarta Data provider.
+     * @return an iterable containing the inserted entities, which may or may not be different instances depending on whether the insert caused values to be generated or automatically incremented.
      * @throws EntityExistsException if any of the entities are already present in the database (in ACID-supported databases).
      * @throws NullPointerException if the iterable is null or any element is null.
      */
