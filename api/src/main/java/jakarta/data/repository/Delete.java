@@ -15,7 +15,7 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data;
+package jakarta.data.repository;
 
 
 import java.lang.annotation.Documented;
