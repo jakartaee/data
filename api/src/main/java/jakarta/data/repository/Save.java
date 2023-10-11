@@ -46,7 +46,11 @@ import java.lang.annotation.Target;
  * null ID, this method will insert a new record. The entity instance returned by this method will be updated with
  * any automatically generated or incremented values that changed due to the save operation.
  * </p>
- * <p>After invoking this method, avoid using the entity value that was supplied as a parameter, as it may not accurately
+ * <p>Entities that are returned by the annotated method must include all values that were
+ * written to the database, including all automatically generated values and incremented values
+ * that changed due to the save. The position of entities within an {@code Iterable} or array return value
+ * must correspond to the position of entities in the parameter based on the unique identifier of the entity.</p>
+ * <p>After invoking this method, avoid using the entity value that was supplied as a parameter, because it might not accurately
  * reflect the changes made during the save process. If the entity uses optimistic locking and its version differs from
  * the version in the database, an {@link jakarta.data.exceptions.OptimisticLockingFailureException} will be thrown.
  * </p>
