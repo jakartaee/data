@@ -60,11 +60,11 @@ import java.lang.annotation.Target;
  * {@literal @}Repository
  * interface Garage {
  *     {@literal @}Insert
- *     Car parking(Car car);
+ *     Car park(Car car);
  * }
  * </pre>
- * <p>The {@code @Insert} annotation can be used to indicate that the {@code parkCar} method is responsible for inserting
- * a car entity into a database.
+ * <p>The {@code @Insert} annotation can be used to indicate that the {@code park(Car)} method is responsible for inserting
+ * a {@code Car} entity into a database.
  * </p>
  *
  * <p>If this annotation is combined with other operation annotations (e.g., {@code @Update}, {@code @Delete},
