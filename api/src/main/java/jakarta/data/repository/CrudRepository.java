@@ -42,9 +42,11 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
      * then this method raises {@link EntityExistsException}. In databases that follow the BASE model
      * or use an append model to write data, this exception is not thrown.</p>
      *
-     * <p>The entity instance returned as a result of this method may be the same instance as the one
-     * supplied as a parameter, especially in non-Java record classes. However, for Jakarta Data providers
-     * that support Java records, a different instance may be returned.</p>
+     * <p>The entity instance returned as a result of this method must include all values that were
+     * written to the database, including all automatically generated values and incremented values
+     * that changed due to the insert. After invoking this method, do not continue to use the instance
+     * that is supplied as a parameter. This method makes no guarantees about the state of the
+     * instance that is supplied as a parameter.</p>
      *
      * @param entity the entity to insert. Must not be {@code null}.
      * @param <S> Type of the entity to insert.
