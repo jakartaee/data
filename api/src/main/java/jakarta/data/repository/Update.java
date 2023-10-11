@@ -44,8 +44,8 @@ import java.lang.annotation.Target;
  * this method, do not continue to use the entity value that is supplied as a parameter, as it may not accurately
  * reflect the changes made during the update process.
  * </p>
- * <p>If the entity uses optimistic locking and its version differs from the version in the database,
- * an {@link jakarta.data.exceptions.OptimisticLockingFailureException} will be thrown.
+ * <p>If the entity does not exist in the database or it is versioned and its version differs from the version in the database,
+ * no update is made and no error is raised.
  * </p>
  *
  * <p>For example, consider an interface representing a garage:</p>
