@@ -13,7 +13,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
-package ee.jakarta.tck.data.full.cdi.provider;
+package ee.jakarta.tck.data.core.cdi.provider;
 
 import java.util.Comparator;
 import java.util.HashMap;
@@ -21,8 +21,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import ee.jakarta.tck.data.full.cdi.Directory;
-import ee.jakarta.tck.data.full.cdi.Person;
+import ee.jakarta.tck.data.core.cdi.Directory;
+import ee.jakarta.tck.data.core.cdi.Person;
 
 /**
  * An implementation of the Directory repository interface.

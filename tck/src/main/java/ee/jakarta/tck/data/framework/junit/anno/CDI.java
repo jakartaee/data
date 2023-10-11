@@ -13,32 +13,25 @@
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
-package ee.jakarta.tck.data.full.cdi;
+package ee.jakarta.tck.data.framework.junit.anno;
 
-import ee.jakarta.tck.data.full.cdi.provider.PersonEntity;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+import org.junit.jupiter.api.extension.ExtendWith;
+
+import ee.jakarta.tck.data.framework.junit.extensions.CDIConditionExtension;
 
 /**
- * A test entity that will be persisted to a repository.
- * Uses the custom {@literal @}PersonEntity annotation.
- * 
- * @see ee.jakarta.tck.data.full.cdi.provider.PersonEntity
+ * These are tests that require CDI for testing. 
+ * This annotation will verify that CDI is available.
+ * If CDI is not available, tests are skipped, otherwise, tests are run.
  */
-@PersonEntity
-public class Person {
-    public long id;
-    public String firstName;
-    public String lastName;
-    public int age;
-    
-    public Person() {
-        //blank
-    }
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+@ExtendWith(CDIConditionExtension.class)
+public @interface CDI {
 
-    public Person(long id, String firstName, String lastName, int age) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.age = age;
-    }
-    
 }

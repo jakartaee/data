@@ -13,7 +13,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
-package ee.jakarta.tck.data.full.cdi;
+package ee.jakarta.tck.data.core.cdi;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -24,15 +24,15 @@ import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 
+import ee.jakarta.tck.data.core.cdi.provider.PersonExtension;
 import ee.jakarta.tck.data.framework.junit.anno.AnyEntity;
 import ee.jakarta.tck.data.framework.junit.anno.Assertion;
 import ee.jakarta.tck.data.framework.junit.anno.CDI;
-import ee.jakarta.tck.data.framework.junit.anno.Full;
-import ee.jakarta.tck.data.full.cdi.provider.PersonExtension;
+import ee.jakarta.tck.data.framework.junit.anno.Core;
 import jakarta.enterprise.inject.spi.Extension;
 import jakarta.inject.Inject;
 
-@Full
+@Core
 @AnyEntity
 @CDI
 public class ExtensionTests {
