@@ -43,6 +43,7 @@ import ee.jakarta.tck.data.framework.junit.anno.Assertion;
 import ee.jakarta.tck.data.framework.junit.anno.ReadOnlyTest;
 import ee.jakarta.tck.data.framework.junit.anno.Standalone;
 import ee.jakarta.tck.data.framework.read.only.AsciiCharacter;
+import ee.jakarta.tck.data.framework.read.only.AsciiCharacter_;
 import ee.jakarta.tck.data.framework.read.only.AsciiCharacters;
 import ee.jakarta.tck.data.framework.read.only.AsciiCharactersPopulator;
 import ee.jakarta.tck.data.framework.read.only.NaturalNumber;
@@ -1050,6 +1051,46 @@ public class EntityTest {
         assertEquals(false, slice.hasContent());
         assertEquals(0, slice.content().size());
         assertEquals(0, slice.numberOfElements());
+    }
+
+    @Assertion(id = "133", strategy = "Use the StaticMetamodel to obtain ascending Sorts for an entity attribute a type-safe manner.")
+    public void testStaticMetamodelAscendingSorts() {
+        assertEquals(Sort.asc("id"), AsciiCharacter_.id.asc());
+        assertEquals(Sort.asc("isControl"), AsciiCharacter_.isControl.asc());
+        assertEquals(Sort.ascIgnoreCase("hexadecimal"), AsciiCharacter_.hexadecimal.ascIgnoreCase());
+        assertEquals(Sort.ascIgnoreCase("thisCharacter"), AsciiCharacter_.thisCharacter.ascIgnoreCase());
+
+        Pageable pageRequest = Pageable.ofSize(6).sortBy(AsciiCharacter_.numericValue.asc());
+        Page<AsciiCharacter> page1 = characters.findByNumericValueBetween(68, 90, pageRequest);
+
+        assertEquals(List.of('D', 'E', 'F', 'G', 'H', 'I'),
+                     page1.stream()
+                                     .map(AsciiCharacter::getThisCharacter)
+                                     .collect(Collectors.toList()));
+    }
+
+    @Assertion(id = "133", strategy = "Use the StaticMetamodel to refer to entity attribute names in a type-safe manner.")
+    public void testStaticMetamodelAttributeNames() {
+        assertEquals("hexadecimal", AsciiCharacter_.hexadecimal.name());
+        assertEquals("id", AsciiCharacter_.id.name());
+        assertEquals("isControl", AsciiCharacter_.isControl.name());
+        assertEquals("numericValue", AsciiCharacter_.numericValue.name());
+        assertEquals("thisCharacter", AsciiCharacter_.thisCharacter.name());
+    }
+
+    @Assertion(id = "133", strategy = "Use the StaticMetamodel to obtain descending Sorts for an entity attribute a type-safe manner.")
+    public void testStaticMetamodelDescendingSorts() {
+        assertEquals(Sort.desc("id"), AsciiCharacter_.id.desc());
+        assertEquals(Sort.desc("isControl"), AsciiCharacter_.isControl.desc());
+        assertEquals(Sort.descIgnoreCase("hexadecimal"), AsciiCharacter_.hexadecimal.descIgnoreCase());
+        assertEquals(Sort.descIgnoreCase("thisCharacter"), AsciiCharacter_.thisCharacter.descIgnoreCase());
+
+        Sort sort = AsciiCharacter_.numericValue.desc();
+        AsciiCharacter[] found = characters.findFirst3ByNumericValueGreaterThanEqualAndHexadecimalEndsWith(30, "1", sort);
+        assertEquals(3, found.length);
+        assertEquals('q', found[0].getThisCharacter());
+        assertEquals('a', found[1].getThisCharacter());
+        assertEquals('Q', found[2].getThisCharacter());
     }
 
     @Assertion(id = "133", strategy = "Use a repository method that returns Streamable and verify the results.")

@@ -86,8 +86,8 @@
 
         <arquillian.version>1.7.0.Final</arquillian.version>
         <junit.version>5.10.0</junit.version>
-        <mockito.version>5.5.0</mockito.version>
-        <pi-test.version>1.15.0</pi-test.version>
+        <mockito.version>5.6.0</mockito.version>
+        <pi-test.version>1.15.1</pi-test.version>
         <pitest-junit5-plugin.version>1.2.0</pitest-junit5-plugin.version>
         <checkstyle.version>10.12.4</checkstyle.version>
         <checkstyle.excludes></checkstyle.excludes>

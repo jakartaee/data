@@ -49,7 +49,8 @@
         <module name="ParameterName"/>
         <module name="StaticVariableName"/>
         <module name="TypeName">
-            <property name="format" value="^_?[A-Z][a-zA-Z0-9]*$"/>
+            <!-- The trailing underscore is a common pattern for StaticMetamodel classes -->
+            <property name="format" value="^_?[A-Z][a-zA-Z0-9_]*$"/>
         </module>
 
         <module name="AvoidStarImport">
