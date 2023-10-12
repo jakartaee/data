@@ -50,8 +50,9 @@ import java.lang.annotation.Target;
  * {@code Iterable<Car>}.
  * Entities that are returned by the annotated method must include all values that were
  * written to the database, including all automatically generated values, updated versions and incremented values
- * that changed due to the update. The position of entities within an {@code Iterable} or array return value
- * must correspond to the position of entities in the parameter based on the unique identifier of the entity.
+ * that changed due to the update. The order of entities within an {@code Iterable} or array return value
+ * must correspond to the position of entities in the parameter based on the unique identifier of the entity,
+ * leaving out those that did not match the unique identifier and version that is in the database.
  * </p>
  * <p>Updating an entity involves modifying its existing data in the database. The method will search for the entity
  * in the database using its ID (and version, if versioned) and then update the corresponding record with the new data. After invoking
