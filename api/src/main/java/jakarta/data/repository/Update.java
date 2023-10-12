@@ -49,7 +49,7 @@ import java.lang.annotation.Target;
  * Similarly, if the parameter is an {@code Iterable<Car>} or an array of {@code Car}, the return type can be
  * {@code Iterable<Car>}.
  * Entities that are returned by the annotated method must include all values that were
- * written to the database, including all automatically generated values, update versions and incremented values
+ * written to the database, including all automatically generated values, updated versions and incremented values
  * that changed due to the update. The position of entities within an {@code Iterable} or array return value
  * must correspond to the position of entities in the parameter based on the unique identifier of the entity.
  * </p>
