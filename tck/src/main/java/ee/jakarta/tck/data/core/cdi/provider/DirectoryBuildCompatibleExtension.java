@@ -52,11 +52,7 @@ public class DirectoryBuildCompatibleExtension implements BuildCompatibleExtensi
     public void enhancement(ClassInfo repositoryClassInfo) {
 
         AnnotationInfo repositoryAnnotationInfo = repositoryClassInfo.annotation(Repository.class);
-
-        // First, check for explicit configuration to use this provider:
-        @SuppressWarnings({ "deprecation", "removal" }) // Work around bug where WELD lacks doPrivileged.
-        AnnotationMember providerMember = java.security.AccessController.doPrivileged((java.security.PrivilegedAction<AnnotationMember>) () -> //
-        repositoryAnnotationInfo.member("provider"));
+        AnnotationMember providerMember = repositoryAnnotationInfo.member("provider");
 
         String provider = providerMember.asString();
         boolean providesRepository = Directory.PERSON_PROVIDER.equals(provider);
@@ -79,15 +75,13 @@ public class DirectoryBuildCompatibleExtension implements BuildCompatibleExtensi
         for (String repoClassName : repositoryClassNames) {
             @SuppressWarnings("unchecked")
             Class<Object> repoClass = (Class<Object>) Class.forName(repoClassName);
-            @SuppressWarnings({ "deprecation", "removal" }) // Work around bug where WELD lacks doPrivileged.
-            SyntheticBeanBuilder<Object> builder = java.security.AccessController.doPrivileged((java.security.PrivilegedAction<SyntheticBeanBuilder<Object>>) () -> //
-            synth
+            SyntheticBeanBuilder<Object> builder = synth
                             .addBean(repoClass)
                             .name(repoClassName)
                             .type(types.ofClass(repoClassName))
                             .scope(ApplicationScoped.class)
                             .withParam("provider", Directory.PERSON_PROVIDER)
-                            .createWith(PersonBeanCreator.class));
+                            .createWith(PersonBeanCreator.class);
             
             log.info("Registered " + repoClassName + " bean with " + builder);
         }
