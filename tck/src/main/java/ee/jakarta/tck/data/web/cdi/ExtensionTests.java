@@ -13,7 +13,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
-package ee.jakarta.tck.data.core.cdi;
+package ee.jakarta.tck.data.web.cdi;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -26,23 +26,23 @@ import org.jboss.shrinkwrap.api.spec.WebArchive;
 
 import ee.jakarta.tck.data.common.cdi.Directory;
 import ee.jakarta.tck.data.common.cdi.Person;
-import ee.jakarta.tck.data.core.cdi.provider.DirectoryBuildCompatibleExtension;
 import ee.jakarta.tck.data.framework.junit.anno.AnyEntity;
 import ee.jakarta.tck.data.framework.junit.anno.Assertion;
 import ee.jakarta.tck.data.framework.junit.anno.CDI;
-import ee.jakarta.tck.data.framework.junit.anno.Core;
-import jakarta.enterprise.inject.build.compatible.spi.BuildCompatibleExtension;
+import ee.jakarta.tck.data.framework.junit.anno.Web;
+import ee.jakarta.tck.data.web.cdi.provider.PersonExtension;
+import jakarta.enterprise.inject.spi.Extension;
 import jakarta.inject.Inject;
 
-@Core
+@Web
 @AnyEntity
 @CDI
-public class ExtensionTests {
+public class ExtensionTests { 
     @Deployment
     public static WebArchive createDeployment() {
         JavaArchive provider = ShrinkWrap.create(JavaArchive.class)
-                .addPackage(DirectoryBuildCompatibleExtension.class.getPackage())
-                .addAsServiceProvider(BuildCompatibleExtension.class, DirectoryBuildCompatibleExtension.class);
+                .addPackage(PersonExtension.class.getPackage())
+                .addAsServiceProvider(Extension.class, PersonExtension.class);
                 
         
         return ShrinkWrap.create(WebArchive.class)
@@ -55,8 +55,8 @@ public class ExtensionTests {
     @Inject
     Directory directory;
     
-    @Assertion(id = "133", strategy="Verifies ability for a CDI BuildCompatibleExtension to handle custom entity annotations")
-    public void testDataProviderWithBuildCompatibleExtension() {
+    @Assertion(id = "133", strategy="Verifies ability for a CDI Extension to handle custom entity annotations")
+    public void testDataProviderWithExtension() {
         assertEquals(List.of("Olivia", "Lauren", "Victor"), directory.findFirstNameByIdInOrderByAgeDesc(List.of(04L, 05L, 011L)));
         
     }

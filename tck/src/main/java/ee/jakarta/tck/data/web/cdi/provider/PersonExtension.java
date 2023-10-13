@@ -13,7 +13,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
-package ee.jakarta.tck.data.core.cdi.provider;
+package ee.jakarta.tck.data.web.cdi.provider;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -21,6 +21,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.logging.Logger;
 
+import ee.jakarta.tck.data.common.cdi.Directory;
+import ee.jakarta.tck.data.common.cdi.PersonEntity;
 import jakarta.data.exceptions.MappingException;
 import jakarta.data.repository.DataRepository;
 import jakarta.data.repository.Repository;
@@ -42,8 +44,6 @@ import jakarta.enterprise.inject.spi.WithAnnotations;
  */
 public class PersonExtension implements Extension {
     
-    public static final String PERSON_PROVIDER = "PERSON_PROVIDER";
-    
     private static final Logger log = Logger.getLogger(PersonExtension.class.getCanonicalName());
     
     private final ArrayList<Bean<?>> repositoryBeans = new ArrayList<>();
@@ -55,7 +55,7 @@ public class PersonExtension implements Extension {
 
         Repository repository = type.getAnnotation(Repository.class);
         String provider = repository.provider();
-        if (PERSON_PROVIDER.equals(provider)) {
+        if (Directory.PERSON_PROVIDER.equals(provider)) {
             log.info("Person CDI Extension: adding repository " + repository.toString() + ' ' + type.getJavaClass().getName());
             repositoryTypes.add(type);
         } else {

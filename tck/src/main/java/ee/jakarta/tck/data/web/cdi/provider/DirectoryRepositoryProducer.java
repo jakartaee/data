@@ -13,12 +13,13 @@
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
-package ee.jakarta.tck.data.core.cdi.provider;
+package ee.jakarta.tck.data.web.cdi.provider;
 
 import java.util.Collections;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import ee.jakarta.tck.data.common.cdi.DirectoryRepository;
 import jakarta.enterprise.context.spi.CreationalContext;
 import jakarta.enterprise.inject.spi.Bean;
 import jakarta.enterprise.inject.spi.InjectionPoint;
@@ -26,7 +27,7 @@ import jakarta.enterprise.inject.spi.Producer;
 import jakarta.enterprise.inject.spi.ProducerFactory;
 
 /**
- * A CDI producer for the DictonaryRepository
+ * A CDI producer for the DirectoryRepository
  * 
  * @param <R> The repository producer (i.e. this)
  * @param <P> The type of the bean containing the producer

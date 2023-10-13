@@ -13,32 +13,23 @@
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
-package ee.jakarta.tck.data.core.cdi;
+package ee.jakarta.tck.data.common.cdi;
 
-import ee.jakarta.tck.data.core.cdi.provider.PersonEntity;
+import java.util.List;
+
+import jakarta.data.repository.DataRepository;
+import jakarta.data.repository.Repository;
 
 /**
- * A test entity that will be persisted to a repository.
- * Uses the custom {@literal @}PersonEntity annotation.
+ * A Directory repository for testing.
  * 
- * @see ee.jakarta.tck.data.core.cdi.provider.PersonEntity
+ * @see ee.jakarta.tck.data.common.cdi.DirectoryRepository
  */
-@PersonEntity
-public class Person {
-    public long id;
-    public String firstName;
-    public String lastName;
-    public int age;
+@Repository(provider = Directory.PERSON_PROVIDER)
+public interface Directory extends DataRepository<Person, Long> {
     
-    public Person() {
-        //blank
-    }
-
-    public Person(long id, String firstName, String lastName, int age) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.age = age;
-    }
+    //Self referencing provider so that this repository can be used for both WEB and CORE tests
+    public static final String PERSON_PROVIDER = "PERSON_PROVIDER";
     
+    List<String> findFirstNameByIdInOrderByAgeDesc(List<Long> ids);
 }
