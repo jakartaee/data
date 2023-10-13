@@ -156,7 +156,7 @@ import java.util.List;
  *     List&lt;Order&gt; forZipCode(int zipCode);
  *
  *     &#64;Save
- *     Order save(Order order);
+ *     Order checkout(Order order);
  * }
  * </pre>
  *
