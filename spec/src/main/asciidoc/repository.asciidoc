@@ -112,6 +112,8 @@ Subsequently, an implementation of Jakarta Data, specifically tailored to the ch
 
 Jakarta Data empowers developers to shape their data access strategies by defining entity classes and repositories, with implementations seamlessly adapting to the chosen data store. This flexibility and Jakarta Data's persistence-agnostic approach promote robust data management within Java applications.
 
+Additionally, Jakarta Data allows for custom interfaces that do not extend any built-in interfaces. These non-built-in interfaces enable developers to define their repository structures and behavior.
+
 === Entity Classes
 
 In Jakarta Data, an entity refers to a fundamental data representation and management building block. It can be conceptually understood in several aspects:
