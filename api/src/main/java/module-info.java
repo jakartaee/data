@@ -22,9 +22,16 @@ import jakarta.data.exceptions.OptimisticLockingFailureException;
 import jakarta.data.page.Pageable;
 import jakarta.data.repository.BasicRepository;
 import jakarta.data.repository.DataRepository;
+import jakarta.data.repository.Delete;
+import jakarta.data.repository.Insert;
 import jakarta.data.repository.OrderBy;
 import jakarta.data.repository.Query;
 import jakarta.data.repository.Repository;
+import jakarta.data.repository.Save;
+import jakarta.data.repository.Update;
+
+import java.util.Collection;
+import java.util.List;
 
 /**
  * <p>Jakarta Data standardizes a programming model where data is represented by simple Java classes
@@ -53,6 +60,9 @@ import jakarta.data.repository.Repository;
  * &#64;Repository
  * public interface Products extends BasicRepository&lt;Product, Long&gt; {
  *
+ *     &#64;Insert
+ *     void create(Product prod);
+ *
  *     &#64;OrderBy("price")
  *     List&lt;Product&gt; findByNameIgnoreCaseLikeAndPriceLessThan(String namePattern, float max);
  *
@@ -72,7 +82,10 @@ import jakarta.data.repository.Repository;
  * Products products;
  *
  * ...
+ * products.create(newProduct);
+ *
  * found = products.findByNameIgnoreCaseLikeAndPriceLessThan("%cell%phone%", 900.0f);
+ *
  * numDiscounted = products.discountOldInventory(0.15f, Year.now().getValue() - 1);
  * </pre>
  *
@@ -88,11 +101,10 @@ import jakarta.data.repository.Repository;
  *
  * <p>Methods of repository interfaces must be styled according to a
  * defined set of conventions, which instruct the container/runtime
- * about the desired data access operation to perform.
- * These conventions consist of
- * patterns of reserved keywords within the method name,
- * patterns defined by the method parameters and a method name prefix, and
- * annotations that are placed upon the method and its parameters.</p>
+ * about the desired data access operation to perform. These conventions
+ * consist of patterns of reserved keywords within the method name,
+ * method parameters with special meaning, method return types,
+ * and annotations that are placed upon the method and its parameters.</p>
  *
  * <p>Built-in repository super interfaces, such as {@link DataRepository},
  * are provided as a convenient way to inherit commonly used methods and are
@@ -143,7 +155,8 @@ import jakarta.data.repository.Repository;
  *     &#64;Query("SELECT o FROM Order o WHERE o.address.zipCode=?1")
  *     List&lt;Order&gt; forZipCode(int zipCode);
  *
- *     void save(Order order);
+ *     &#64;Save
+ *     Order checkout(Order order);
  * }
  * </pre>
  *
@@ -152,28 +165,45 @@ import jakarta.data.repository.Repository;
  * that is designated as the id. Entity property names that are used in queries
  * by method name must not contain reserved words.</p>
  *
- * <h2>Reserved Prefixes for Repository Methods</h2>
+ * <h2>Methods with Entity Parameters</h2>
  *
- * <p>Repository methods with the following prefixes must have a single parameter
- * that is the entity, an array of entities, or an {@link Iterable} of entities.
- * Subclasses of {@link Iterable} such as {@link java.util.List List} are permitted.</p>
+ * <p>You can annotate a method with {@link Insert}, {@link Update}, {@link Save},
+ * or {@link Delete} if the method accepts a single parameter, which must be one of:</p>
+ *
+ * <ul>
+ * <li>An entity.</li>
+ * <li>An array of entity (variable arguments array is permitted).</li>
+ * <li>An {@link Iterable} of entity (subclasses such as {@link List} are permitted).</li>
+ * </ul>
  *
  * <table style="width: 100%">
- * <caption><b>Methods with Entity Parameters</b></caption>
+ * <caption><b>Lifecycle Annotations</b></caption>
  * <tr>
- * <td style="vertical-align: top; width: 10%"><b>Prefix</b></td>
+ * <td style="vertical-align: top; width: 10%"><b>Annotation</b></td>
  * <td style="vertical-align: top; width: 25%"><b>Description</b></td>
  * <td style="vertical-align: top; width: 65%"><b>Example</b></td>
  * </tr>
  *
- * <tr style="vertical-align: top"><td><code>delete</code></td>
- * <td>for delete operations</td>
- * <td><code>public void delete(person);</code></td></tr>
+ * <tr style="vertical-align: top"><td>{@link Delete}</td>
+ * <td>deletes entities</td>
+ * <td>{@code @Delete}<br><code>public void remove(person);</code></td></tr>
  *
- * <tr style="vertical-align: top"><td><code>save</code></td>
+ * <tr style="vertical-align: top"><td>{@link Insert}</td>
+ * <td>creates new entities</td>
+ * <td>{@code @Insert}<br><code>public List&lt;Employee&gt; add(List&lt;Employee&gt; newEmployees);</code></td></tr>
+ *
+ * <tr style="vertical-align: top"><td>{@link Save}</td>
  * <td>update if exists, otherwise insert</td>
- * <td><code>Product[] saveAll(Product... products)</code></td></tr>
+ * <td>{@code @Save}<br><code>Product[] saveAll(Product... products)</code></td></tr>
+ *
+ * <tr style="vertical-align: top"><td>{@link Update}</td>
+ * <td>updates an existing entity</td>
+ * <td>{@code @Update}<br><code>public boolean modify(Product modifiedProduct);</code></td></tr>
  * </table>
+ *
+ * <p>Refer to the JavaDoc of each annotation for more information.</p>
+ *
+ * <h2>Query by Method Name</h2>
  *
  * <p>Repository methods following the <b>Query by Method Name</b> pattern
  * must include the {@code By} keyword in the method name. Query conditions
@@ -208,37 +238,13 @@ import jakarta.data.repository.Repository;
  * <td><code>updateByIdSetModifiedOnAddPrice(productId, now, 10.0)</code></td></tr>
  * </table>
  *
- * <p>Repository methods following the <b>Query by Parameters</b> pattern
- * are named with the following prefixes but without the {@code By} keyword
- * in the method name. Query conditions are determined by the method parameter
- * names, which requires the {@code -parameters} compiler option for preserving
- * parameter names if the Jakarta Data provider does not process repositories
- * at build time.</p>
- *
- * <table style="width: 100%">
- * <caption><b>Query By Parameters</b></caption>
- * <tr>
- * <td style="vertical-align: top; width: 10%"><b>Prefix</b></td>
- * <td style="vertical-align: top; width: 25%"><b>Description</b></td>
- * <td style="vertical-align: top; width: 65%"><b>Example</b></td>
- * </tr>
- *
- * <tr style="vertical-align: top"><td><code>count</code></td>
- * <td>counts the number of matching entities</td>
- * <td><code>countWithNameOf(firstName, lastName)</code></td></tr>
- *
- * <tr style="vertical-align: top"><td><code>delete</code></td>
- * <td>for delete operations</td>
- * <td><code>deleteCompleted(JobStatus.DONE)</code></td></tr>
- *
- * <tr style="vertical-align: top"><td><code>exists</code></td>
- * <td>for determining existence</td>
- * <td><code>existsForYear(year, productName)</code></td></tr>
- *
- * <tr style="vertical-align: top"><td><code>find</code></td>
- * <td>for find operations</td>
- * <td><code>findMatches(make, model, Sort.desc("price"))</code></td></tr>
- * </table>
+ * <p>When using the <i>Query By Method Name</i> pattern
+ * the conditions are defined by the portion of the repository method name
+ * (referred to as the Predicate) that follows the {@code By} keyword,
+ * in the same order specified.
+ * Most conditions, such as <code>Like</code> or <code>LessThan</code>,
+ * correspond to a single method parameter. The exception to this rule is
+ * <code>Between</code>, which corresponds to two method parameters.</p>
  *
  * <p>Key-value and Wide-Column databases raise {@link UnsupportedOperationException}
  * for queries on attributes other than the identifier/key.</p>
@@ -297,15 +303,6 @@ import jakarta.data.repository.Repository;
  * <td>Requires that the entity's attribute value has a boolean value of false.</td>
  * <td><code>findByCanceledFalse()</code></td>
  * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column</td></tr>
- *
- * <tr style="vertical-align: top"><td><code>First</code></td>
- * <td>find...By</td>
- * <td>Limits the amount of results that can be returned by the query
- * to the number that is specified after <code>First</code>,
- * or absent that to a single result.</td>
- * <td><code>findFirst25ByYearHiredOrderBySalaryDesc(int yearHired)</code>
- * <br><code>findFirstByYearHiredOrderBySalaryDesc(int yearHired)</code></td>
- * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column<br>Document<br>Graph</td></tr>
  *
  * <tr style="vertical-align: top"><td><code>GreaterThan</code></td>
  * <td>numeric, strings, time</td>
@@ -390,6 +387,28 @@ import jakarta.data.repository.Repository;
  * <br><br>
  *
  * <table style="width: 100%">
+ * <caption><b>Reserved for Subject</b></caption>
+ * <tr>
+ * <td style="vertical-align: top; width: 12%"><b>Keyword</b></td>
+ * <td style="vertical-align: top; width: *%"><b>Applies to</b></td>
+ * <td style="vertical-align: top; width: *"><b>Description</b></td>
+ * <td style="vertical-align: top; width: 48%"><b>Example</b></td>
+ * <td style="vertical-align: top; width: *"><b>Unavailable In</b></td>
+ * </tr>
+ *
+ * <tr style="vertical-align: top"><td><code>First</code></td>
+ * <td>find...By</td>
+ * <td>Limits the amount of results that can be returned by the query
+ * to the number that is specified after <code>First</code>,
+ * or absent that to a single result.</td>
+ * <td><code>findFirst25ByYearHiredOrderBySalaryDesc(int yearHired)</code>
+ * <br><code>findFirstByYearHiredOrderBySalaryDesc(int yearHired)</code></td>
+ * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column<br>Document<br>Graph</td></tr>
+ * </table>
+ *
+ * <br><br>
+ *
+ * <table style="width: 100%">
  * <caption><b>Reserved for Order Clause</b></caption>
  * <tr>
  * <td style="vertical-align: top"><b>Keyword</b></td>
@@ -460,8 +479,7 @@ import jakarta.data.repository.Repository;
  * <td style="vertical-align: top"><b>Notes</b></td>
  * </tr>
  *
- * <tr style="vertical-align: top"><td><code>count...</code>,
- * <br><code>countBy...</code></td>
+ * <tr style="vertical-align: top"><td><code>countBy...</code></td>
  * <td><code>long</code>, <code>Long</code>,
  * <br><code>int</code>, <code>Integer</code>,
  * <br><code>short</code>, <code>Short</code>,
@@ -478,14 +496,7 @@ import jakarta.data.repository.Repository;
  * <br><code>Number</code></td>
  * <td>Jakarta Persistence providers limit the maximum to <code>Integer.MAX_VALUE</code></td></tr>
  *
- * <tr style="vertical-align: top"><td><code>delete...(E)</code>,
- * <br><code>delete...(E[])</code>,
- * <br><code>delete...(Iterable&lt;E&gt;)</code></td>
- * <td><code>void</code>, <code>Void</code></td>
- * <td>For deleting entities.</td></tr>
- *
- * <tr style="vertical-align: top"><td><code>exists...</code>,
- * <br><code>existsBy...</code></td>
+ * <tr style="vertical-align: top"><td><code>existsBy...</code></td>
  * <td><code>boolean</code>, <code>Boolean</code></td>
  * <td>For determining existence.</td></tr>
  *
@@ -520,109 +531,51 @@ import jakarta.data.repository.Repository;
  * <br><code>Slice&lt;E&gt;</code>, <code>KeysetAwareSlice&lt;E&gt;</code></td>
  * <td>For use with pagination</td></tr>
  *
- * <tr style="vertical-align: top"><td><code>find...By...</code>,
+ * <tr style="vertical-align: top"><td><code>find...</code>,
  * <br><code>find...By...</code></td>
  * <td><code>LinkedHashMap&lt;K, E&gt;</code></td>
  * <td>Ordered map of Id attribute value to entity</td></tr>
  *
- * <tr style="vertical-align: top"><td><code>save(E)</code></td>
- * <td><code>E</code>,
- * <br><code>void</code>, <code>Void</code></td>
- * <td>For saving a single entity.</td></tr>
- *
- * <tr style="vertical-align: top"><td><code>save(E...)</code>,
- * <br><code>save(Iterable&lt;E&gt;)</code>,
- * <br><code>save(Stream&lt;E&gt;)</code></td>
- * <td><code>void</code>, <code>Void</code>,
- * <br><code>E[]</code>,
- * <br><code>Iterable&lt;E&gt;</code>,
- * <br><code>Stream&lt;E&gt;</code>,
- * <br><code>Collection&lt;E&gt;</code>
- * <br><code>Collection</code> subtypes</td>
- * <td>For saving multiple entities.
- * <br>Collection subtypes must have a public default constructor
- * and support <code>addAll</code> or <code>add</code></td></tr>
  * </table>
  *
- * <h2>Methods with Entity Parameters</h2>
+ * <p>Refer to the {@link Insert}, {@link Update}, {@link Save}, and {@link Delete}
+ * JavaDoc for valid return types when using those annotations. Whenever the
+ * return type is an {@link Iterable} subtype that is a concrete class,
+ * the class must have a public default constructor and support
+ * {@link Collection#addAll addAll} or {@link Collection#add add}.</p>
  *
- * <p>You can define <i>save</i> and <i>delete</i>
- * methods that accept entity parameters.</p>
+ * <h2>Parameter-based Conditions</h2>
  *
- * <h3>Save Methods</h3>
- *
- * <p>Save methods are a combination of update and insert
- * where entities that are already present in the database are updated
- * and entities that are not present in the database are inserted.</p>
- *
- * <p>The unique identifier is used to determine if an entity exists in the database.
- * If the entity exists in the database and the entity is versioned
- * (for example, with {@code @jakarta.persistence.Version} or by another convention
- * from the entity model such as having an attribute named {@code version}),
- * then the version must also match. When updates are saved to the database,
- * the version is automatically incremented. If the version does not match,
- * the <i>save</i> method raises {@link OptimisticLockingFailureException}.</p>
- *
- * <p>A <i>save</i> method parameter that supplies multiple entities
- * might end up updating some and inserting others in the database.</p>
- *
- * <p><b><i>Generated Values</i></b>
- * <br>When saving to the database, some entity attributes might be automatically
- * generated or automatically incremented in the database.
- * To obtain these values, define the return type of the <i>save</i> method to be
- * the entity type or a type that is a collection or array of the entity.
- * Entities that are returned by <i>save</i> methods include updates that
- * were made to the entity. No guarantees are made regarding the state of entity
- * instances that are supplied as parameters to the method after the method ends.</p>
- *
- * <h3>Delete Methods</h3>
- *
- * <p>Delete methods remove entities from the database based on the
- * unique identifier of the entity parameter value. If the entity is versioned
- * (for example, with {@code @jakarta.persistence.Version} or by another convention
- * from the entity model such as having an attribute named {@code version}),
- * then the version must also match. Other entity attributes do not need to match.
- * The the unique identifier of an entity is not found in the database or its
- * version does not match, the <i>delete</i> method raises
- * {@link OptimisticLockingFailureException}.</p>
- *
- * <h2>Parameters to Repository Query Methods</h2>
- *
- * <p>The parameters to the {@code find}, {@code exists}, {@code count},
- * and {@code delete} methods determine the conditions of the query.</p>
- *
- * <p>When using the <i>Query By Method Name</i> pattern
- * (the method name contains the {@code By} keyword),
- * the conditions are defined by the name of the repository method
- * (see Reserved for Predicate), in the same order specified.
- * Most conditions, such as <code>Like</code> or <code>LessThan</code>,
- * correspond to a single method parameter. The exception to this rule is
- * <code>Between</code>, which corresponds to two method parameters.</p>
- *
- * <p>When using the <i>Query By Parameters</i> pattern
- * (the method name lacks the {@code By} keyword),
- * the conditions are defined by the method parameters.
+ * <p>When using the <i>Parameter-based Conditions</i> pattern,
+ * the method name begins with {@code find}
+ * and must not include the {@code By} keyword.
+ * The query conditions are defined by the method parameters.
  * Method parameter names must match the name of an entity attribute.
  * The {@code _} character can be used in method parameter names to
  * reference embedded attributes. All conditions are considered to be
- * the equality condition. All conditions must match.
- * If the Jakarta Data provider does not offer processing of repositories
- * at build time, the developer must compile with the {@code -parameters}
+ * the equality condition. All conditions must match in order to
+ * retrieve an entity.
+ * The developer must compile with the {@code -parameters}
  * compiler option that makes parameter names available at run time.</p>
  *
  * <p>The following examples illustrate the difference between
- * <i>Query By Method Name</i> and <i>Query By Parameters</i> patterns.
+ * <i>Query By Method Name</i> and <i>Parameter-based Conditions</i> patterns.
  * Both methods accept the same parameters and have the same behavior.</p>
  *
  * <pre>
  * // Query by Method Name:
- * Person[] findByCityOfBirthAndLastName(String city, String surname, Sort... sorts);
+ * Vehicle[] findByMakeAndModelAndYear(String makerName, String model, int year, Sort... sorts);
  *
- * // Query by Parameters:
- * Person[] findBornIn(String cityOfBirth, String lastName, Sort... sorts);
+ * // Parameter-based Conditions:
+ * Vehicle[] find(String make, String model, int year, Sort... sorts);
  * </pre>
  *
- * <p>After conditions are determined from the corresponding parameters,
+ * <h2>Additional Method Parameters</h2>
+ *
+ * <p>When using {@code @Query} or the
+ * <i>Query By Method Name</i> pattern or the
+ * <i>Parameter-based Find</i> pattern,
+ * after conditions are determined from the corresponding parameters,
  * the remaining repository method parameters are used to enable other
  * capabilities such as pagination, limits, and sorting.</p>
  *
@@ -690,6 +643,8 @@ import jakarta.data.repository.Repository;
  *
  * <p>You can compose default methods on your repository interface to supply
  * user-defined implementation.</p>
+ *
+ * <h2>Resource Accessor Methods</h2>
  *
  * <p>For some advanced scenarios, you might need access to an
  * underlying resource from the Jakarta Data provider, such as a

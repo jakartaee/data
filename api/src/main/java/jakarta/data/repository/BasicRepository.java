@@ -56,8 +56,7 @@ public interface BasicRepository<T, K> extends DataRepository<T, K> {
      *         database differs from the version in the entity.
      * @throws NullPointerException If the provided entity is {@literal null}.
      */
-    // TODO Jakarta Validation-related doc was found to be inconsistent with the Jakarta Validation spec
-    //      so it is removed from the save methods for now. Pull #231 will be making corrections.
+    @Save
     <S extends T> S save(S entity);
 
     /**
@@ -81,6 +80,7 @@ public interface BasicRepository<T, K> extends DataRepository<T, K> {
      *         that differs from the version in the database.
      * @throws NullPointerException If either the iterable is null or any element is null.
      */
+    @Save
     <S extends T> Iterable<S> saveAll(Iterable<S> entities);
 
     /**
@@ -152,6 +152,7 @@ public interface BasicRepository<T, K> extends DataRepository<T, K> {
      *         or has a version for optimistic locking that is inconsistent with the version in the database.
      * @throws NullPointerException when the entity is null
      */
+    @Delete
     void delete(T entity);
 
     /**
@@ -174,6 +175,7 @@ public interface BasicRepository<T, K> extends DataRepository<T, K> {
      *         or has a version for optimistic locking that is inconsistent with the version in the database.
      * @throws NullPointerException If either the iterable is null or contains null elements.
      */
+    @Delete
     void deleteAll(Iterable<? extends T> entities);
 
     /**

@@ -54,6 +54,7 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
      * @throws EntityExistsException if the entity is already present in the database (in ACID-supported databases).
      * @throws NullPointerException if the entity is null.
      */
+    @Insert 
     <S extends T> S insert(S entity);
 
     /**
@@ -78,8 +79,8 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
      * @throws EntityExistsException if any of the entities are already present in the database (in ACID-supported databases).
      * @throws NullPointerException if the iterable is null or any element is null.
      */
+    @Insert
     <S extends T> Iterable<S> insertAll(Iterable<S> entities);
-
     /**
      * <p>Modifies an entity that already exists in the database.</p>
      *
@@ -101,6 +102,7 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
      * for Jakarta Data providers that support Java records, a different instance may be returned.
      * @throws NullPointerException if the entity is null.
      */
+    @Update
     <S extends T> S update(S entity);
 
     /**
@@ -124,5 +126,7 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
      *         preserving immutability.
      * @throws NullPointerException if either the iterable is null or any element is null.
      */
+    @Update
     <S extends T> Iterable<S> updateAll(Iterable<S> entities);
+
 }
