@@ -100,7 +100,7 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
      * @throws NullPointerException if the entity is null.
      */
     @Update
-    <S extends T> S update(S entity);
+    boolean update(T entity);
 
     /**
      * <p>Modifies entities that already exist in the database.</p>
