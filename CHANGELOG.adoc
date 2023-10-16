@@ -11,11 +11,13 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 === Added
 
 - Define Jakarta Data extensions
+- Create BasicRepository
+- Include insert and update methods in CrudRepository
 - Create Insert, Update, Delete and Save annotations
 
 === Changed
 
-* Rename CrudRepository to BasicRepository
+* Move the basic repository methods to the `BasicRepository` interface
 
 == [1.0.0-b3] - 2022-07-24
 

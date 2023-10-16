@@ -38,37 +38,55 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
 
     /**
      * <p>Inserts an entity into the database. If an entity of this type with the same
-     * unique identifier already exists in the database, then this method raises
-     * {@link EntityExistsException}.</p>
+     * unique identifier already exists in the database and the database supports ACID transactions,
+     * then this method raises {@link EntityExistsException}. In databases that follow the BASE model
+     * or use an append model to write data, this exception is not thrown.</p>
+     *
+     * <p>The entity instance returned as a result of this method must include all values that were
+     * written to the database, including all automatically generated values and incremented values
+     * that changed due to the insert. After invoking this method, do not continue to use the instance
+     * that is supplied as a parameter. This method makes no guarantees about the state of the
+     * instance that is supplied as a parameter.</p>
      *
      * @param entity the entity to insert. Must not be {@code null}.
-     * @throws EntityExistsException if the entity is already present in the database.
+     * @param <S> Type of the entity to insert.
+     * @return the inserted entity, which may or may not be a different instance depending on whether the insert caused values to be generated or automatically incremented.
+     * @throws EntityExistsException if the entity is already present in the database (in ACID-supported databases).
      * @throws NullPointerException if the entity is null.
-     * @throws UnsupportedOperationException for Key-Value and Wide-Column databases
-     *         that use an append model to write data.
      */
-    @Insert
-    void insert(T entity);
+    @Insert 
+    <S extends T> S insert(S entity);
 
     /**
-     * <p>Inserts multiple entities into the database. If an entity of this type with the same
-     * unique identifier as any of the given entities already exists in the database,
-     * then this method raises {@link EntityExistsException}.</p>
+     * <p>Inserts multiple entities into the database. If any entity of this type with the same
+     * unique identifier as any of the given entities already exists in the database and the database
+     * supports ACID transactions, then this method raises {@link EntityExistsException}.
+     * In databases that follow the BASE model or use an append model to write data, this exception
+     * is not thrown.</p>
+     *
+     * <p>The entities within the returned {@link Iterable} must include all values that were
+     * written to the database, including all automatically generated values and incremented values
+     * that changed due to the insert. After invoking this method, do not continue to use
+     * the entity instances that are supplied in the parameter. This method makes no guarantees
+     * about the state of the entity instances that are supplied in the parameter.
+     * The position of entities within the {@code Iterable} return value must correspond to the
+     * position of entities in the parameter based on the unique identifier of the entity.</p>
      *
      * @param entities entities to insert.
-     * @throws EntityExistsException if any of the entities are already present in the database.
-     * @throws NullPointerException if either the iterable is null or any element is null.
-     * @throws UnsupportedOperationException for Key-Value and Wide-Column databases
-     *         that use an append model to write data.
+     * @param <S> Type of the entities to insert.
+     * @return an iterable containing the inserted entities, which may or may not be different instances depending
+     * on whether the insert caused values to be generated or automatically incremented.
+     * @throws EntityExistsException if any of the entities are already present in the database (in ACID-supported databases).
+     * @throws NullPointerException if the iterable is null or any element is null.
      */
     @Insert
-    void insertAll(Iterable<T> entities);
-
+    <S extends T> Iterable<S> insertAll(Iterable<S> entities);
     /**
      * <p>Modifies an entity that already exists in the database.</p>
      *
      * <p>For an update to be made, a matching entity with the same unique identifier
-     * must be present in the database.</p>
+     * must be present in the database. In databases that use an append model to write data or
+     * follow the BASE model, this method behaves the same as the {@link #insert} method.</p>
      *
      * <p>If the entity is versioned (for example, with {@code jakarta.persistence.Version} or by
      * another convention from the entity model such as having an attribute named {@code version}),
@@ -77,7 +95,7 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
      *
      * <p>Non-matching entities are ignored and do not cause an error to be raised.</p>
      *
-     * @param entity the entity to update.
+     * @param entity the entity to update. Must not be {@code null}.
      * @return true if a matching entity was found in the database to update, otherwise false.
      * @throws NullPointerException if the entity is null.
      */
@@ -85,10 +103,11 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
     boolean update(T entity);
 
     /**
-     * <p>Modifies entities that already exists in the database.</p>
+     * <p>Modifies entities that already exist in the database.</p>
      *
      * <p>For an update to be made to an entity, a matching entity with the same unique identifier
-     * must be present in the database.</p>
+     * must be present in the database. In databases that use an append model to write data or
+     * follow the BASE model, this method behaves the same as the {@link #insertAll} method.</p>
      *
      * <p>If the entity is versioned (for example, with {@code jakarta.persistence.Version} or by
      * another convention from the entity model such as having an attribute named {@code version}),
@@ -103,4 +122,5 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
      */
     @Update
     int updateAll(Iterable<T> entities);
+
 }

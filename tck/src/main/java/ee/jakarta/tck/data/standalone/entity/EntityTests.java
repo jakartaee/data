@@ -71,13 +71,13 @@ import jakarta.inject.Inject;
 @Standalone
 @AnyEntity
 @ReadOnlyTest
-public class EntityTest {
+public class EntityTests {
 
-    public static final Logger log = Logger.getLogger(EntityTest.class.getCanonicalName());
+    public static final Logger log = Logger.getLogger(EntityTests.class.getCanonicalName());
 
     @Deployment
     public static JavaArchive createDeployment() {
-        return ShrinkWrap.create(JavaArchive.class).addClasses(EntityTest.class);
+        return ShrinkWrap.create(JavaArchive.class).addClasses(EntityTests.class);
     }
 
     @Inject
