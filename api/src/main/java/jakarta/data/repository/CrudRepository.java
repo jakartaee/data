@@ -96,10 +96,7 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
      * <p>Non-matching entities are ignored and do not cause an error to be raised.</p>
      *
      * @param entity the entity to update. Must not be {@code null}.
-     * @param <S> Type of the entity to update.
-     * @return the updated entity. The entity instance returned as a result of this method may be the same
-     * instance as the one supplied as a parameter, especially in non-Java record classes. However,
-     * for Jakarta Data providers that support Java records, a different instance may be returned.
+@return true if a matching entity was found in the database to update, otherwise false.
      * @throws NullPointerException if the entity is null.
      */
     @Update
