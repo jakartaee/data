@@ -170,7 +170,7 @@ Lifecycle methods follow the general pattern:
 ReturnType lifecycle(Entity e);
 ----
 
-where `lifecycle` is the arbitrary name of the method, `Entity` is a concrete entity class, `Lifecycle` is a lifecycle annotation, and `ReturnType` is a return type that is permitted by the lifecycle annotation JavaDoc.
+where `lifecycle` is the arbitrary name of the method, `Entity` is a concrete entity class or an `Iterable` or array of this entity, `Lifecycle` is a lifecycle annotation, and `ReturnType` is a return type that is permitted by the lifecycle annotation JavaDoc.
 
 This specification defines four built-in lifecycle annotations: `@Insert`, `@Update`, `@Delete`, and `@Save`.
 
