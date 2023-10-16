@@ -136,6 +136,10 @@ A repository interface may inherit methods from a superinterface.
 A Jakarta Data implementation must treat inherited abstract methods as if they were directly declared by the repository interface.
 For example, a repository interface may inherit the `CrudRepository` interface defined by this specification.
 
+Repositories perform operations on entities. For repository methods that are annotated with `@Insert`, `@Update`, `@Save`, or `@Delete`, the entity type is determined from the method parameter type.  For `find` and `delete` methods where the return type is an entity, array of entity, or parameterized type such as `List<MyEntity>` or `Page<MyEntity>`, the entity type is determined from the method return type.  For `count`, `exists`, and other `delete` methods that do not return the entity or accept the entity as a parameter, the entity type cannot be determined from the method signature and a primary entity type must be defined for the repository.
+
+Users of Jakarta Data declare a primary entity type for a repository by inheriting from a built-in repository super interface, such as `BasicRepository`, and specifying the primary entity type as the first type variable.  The primary entity type is assumed for methods that do not otherwise specify an entity type, such as `countByPriceLessThan`. Methods that require a primary entity type raise `MappingException` if a primary entity type is not provided.
+
 [NOTE]
 A Jakarta Data provider might go beyond what is required by this specification and support abstract methods which do not fall into any of the above categories.
 Such functionality is not defined by this specification, and so programs with repositories which declare such methods are not portable between providers.
