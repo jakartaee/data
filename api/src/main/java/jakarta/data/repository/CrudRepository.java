@@ -120,10 +120,7 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
      * <p>Non-matching entities are ignored and do not cause an error to be raised.</p>
      *
      * @param entities entities to update.
-     * @param <S> Type of the entities to update.
-     * @return an iterable containing the updated entities. In the case of Jakarta Data providers
-     *         that support Java records, this may return a different instance from the input,
-     *         preserving immutability.
+     * @return the number of matching entities that were found in the database to update.
      * @throws NullPointerException if either the iterable is null or any element is null.
      */
     @Update
