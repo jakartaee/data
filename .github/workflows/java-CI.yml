@@ -16,7 +16,7 @@ jobs:
   build:
     strategy:
       matrix:
-        java-version: [ '17', '21-ea' ]
+        java-version: [ '17', '21' ]
 
     runs-on: ubuntu-latest
 
