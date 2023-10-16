@@ -153,7 +153,6 @@ The subsections below specify the rules that an abstract method declaration must
 The portability of a given repository interface between Jakarta Data implementations depends on the portability of the entity types it uses.
 If an entity class is not portable between given implementations, then any repository which uses the entity class is also unportable between those implementations.
 
-[NOTE]
 Additional portability guarantees may be provided by specifications which extend this specification, specializing to a given class of datastore.
 
 ==== Lifecycle methods
