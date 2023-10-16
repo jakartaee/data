@@ -37,6 +37,7 @@
 
  <properties>
   <jakarta.data.tck.version>${project.version}</jakarta.data.tck.version>
+  <jakarta.data.api.version>${project.version}</jakarta.data.api.version>
 
   <maven.site.skip>true</maven.site.skip>
   <asciidoctor.maven.plugin.version>2.2.4</asciidoctor.maven.plugin.version>
@@ -49,10 +50,23 @@
  </properties>
 
  <dependencies>
+  <!-- The TCK, used to auto generate docs -->
   <dependency>
    <groupId>jakarta.data</groupId>
    <artifactId>jakarta-data-tck</artifactId>
    <version>${jakarta.data.tck.version}</version>
+  </dependency>
+    <!-- Provided dependencies for the TCK -->
+  <dependency>
+    <groupId>jakarta.servlet</groupId>
+    <artifactId>jakarta.servlet-api</artifactId>
+    <version>${jakarta.servlet.version}</version>
+  </dependency>
+
+  <dependency>
+    <groupId>jakarta.data</groupId>
+    <artifactId>jakarta-data-api</artifactId>
+    <version>${jakarta.data.api.version}</version>
   </dependency>
  </dependencies>
 
