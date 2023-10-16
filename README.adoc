@@ -42,7 +42,7 @@ repository.save(ferrari);
 @Repository
 public interface Garage {
 
-  @Save
+  @Insert
   Car park(Car car);
 
 }
