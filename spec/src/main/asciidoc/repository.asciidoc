@@ -114,6 +114,27 @@ Jakarta Data empowers developers to shape their data access strategies by defini
 
 Additionally, Jakarta Data allows for custom interfaces that do not extend any built-in interfaces. These non-built-in interfaces enable developers to define their repository structures and behavior.
 
+Non-built-in interfaces play a pivotal role in Jakarta Data, offering a powerful mechanism for creating custom repository interfaces that align seamlessly with your specific domain requirements. These custom interfaces provide a means to define your domain's ubiquitous language precisely.
+
+In this context, database operations involving fundamental data changes, such as insertion, update, and removal, are realized through the strategic utilization of annotations like `Insert`, `Update`, `Delete`, and `Save`. These annotations enable the crafting of expressive and contextually meaningful repository methods, resulting in a repository that closely mirrors the semantics of your domain.
+
+For instance, consider the 'Garage' repository interface below:
+
+[source,java]
+----
+@Repository
+public interface Garage {
+
+    @Save
+    Car park(Car car);
+
+   @Delete
+    void unpark(Car car);
+}
+----
+
+Here, the `@Save` annotation is used for the `park` method, allowing you to design a repository interface that encapsulates the essence of your domain. This approach fosters a shared understanding and more intuitive communication within your development team, ensuring that your database operations are integral to your domain's language.
+
 === Entity Classes
 
 In Jakarta Data, an entity refers to a fundamental data representation and management building block. It can be conceptually understood in several aspects:
