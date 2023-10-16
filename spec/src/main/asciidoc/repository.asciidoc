@@ -160,28 +160,19 @@ Additional portability guarantees may be provided by specifications which extend
 A _lifecycle method_ is an abstract method annotated with a _lifecycle annotation_.
 Lifecycle methods allow the program to make changes to persistent data in the data store.
 
-A lifecycle method must:
+A lifecycle method must be annotated with a lifecycle annotation. The method signature of the lifecycle method, including its return type, must follow the requirements that are specified by the JavaDoc of the lifecycle annotation.
 
-- have a single parameter annotated with a lifecycle annotation, whose type is a concrete entity class `E`, and
-- be declared `void`, or return exactly the same entity type `E`.
-
-That is, its signature must be:
+Lifecycle methods follow the general pattern:
 
 [source,java]
 ----
-void lifecycle(@Lifecycle Entity e);
+@Lifecycle
+ReturnType lifecycle(Entity e);
 ----
 
-or:
+where `lifecycle` is the arbitrary name of the method, `Entity` is a concrete entity class, `Lifecycle` is a lifecycle annotation, and `ReturnType` is a return type that is permitted by the lifecycle annotation JavaDoc.
 
-[source,java]
-----
-Entity lifecycle(@Lifecycle Entity e);
-----
-
-where `lifecycle` is the arbitrary name of the method, `Entity` is a concrete entity class, and `Lifecycle` is a lifecycle annotation.
-
-This specification defines three built-in lifecycle annotations: `@Insert`, `@Update`, and `@Delete`.
+This specification defines four built-in lifecycle annotations: `@Insert`, `@Update`, `@Delete`, and `@Save`.
 
 For example:
 
