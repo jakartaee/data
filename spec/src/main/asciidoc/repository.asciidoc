@@ -157,7 +157,7 @@ Additional portability guarantees may be provided by specifications which extend
 
 ==== Lifecycle methods
 
-A _lifecycle method_ is an abstract method annotated with a _lifecycle annotation_.
+A *lifecycle method* is an abstract method annotated with a _lifecycle annotation_.
 Lifecycle methods allow the program to make changes to persistent data in the data store.
 
 A lifecycle method must be annotated with a lifecycle annotation. The method signature of the lifecycle method, including its return type, must follow the requirements that are specified by the JavaDoc of the lifecycle annotation.
