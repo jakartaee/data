@@ -270,14 +270,12 @@ The Jakarta Data implementation automatically recognizes the query annotations i
 
 ==== Automatic query methods
 
-An _automatic query method_ is an abstract method with return type `E`, `Optional<E>`, `Page<E>`, or `List<E>`, where `E` is an entity class, and where each parameter either:
+An _automatic query method_ is an abstract method that either follows the Query by Method Name pattern where the Jakarta Data provider generates a query based on the name of the method, or follows a pattern for whereby the Jakarta Data provider automatically generates a find query based on the names of parameters that are supplied to the method, where the method has return type that identifies the entity, such as `E`, `Optional<E>`, `Page<E>`, or `List<E>`, where `E` is an entity class. Each parameter must either:
 
-- has exactly the same type and name as a persistent field or property of the entity class, or
-- is of type `Limit`, `Pageable`, or `Sort`.
+- have exactly the same type and name as a persistent field or property of the entity class, or
+- be of type `Limit`, `Pageable`, or `Sort`.
 
-A repository with automatic query methods should be compiled so that parameter names are preserved in the class file (for example, using `javac -parameters`), or the parameter names must be specified explicitly using the `@Param` annotation.
-
-A parameter of an automatic query method may not be annotated with lifecycle annotation.
+A repository with automatic query methods that are based on parameters must either be compiled so that parameter names are preserved in the class file (for example, using `javac -parameters`), or the parameter names must be specified explicitly using the `@Param` annotation.
 
 For example:
 
