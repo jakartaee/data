@@ -121,6 +121,6 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
      * @throws NullPointerException if either the iterable is null or any element is null.
      */
     @Update
-    <S extends T> Iterable<S> updateAll(Iterable<S> entities);
+    int updateAll(Iterable<T> entities);
 
 }
