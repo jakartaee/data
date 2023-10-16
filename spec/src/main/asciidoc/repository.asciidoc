@@ -141,7 +141,8 @@ Repositories perform operations on entities. For repository methods that are ann
 Users of Jakarta Data declare a primary entity type for a repository by inheriting from a built-in repository super interface, such as `BasicRepository`, and specifying the primary entity type as the first type variable.  The primary entity type is assumed for methods that do not otherwise specify an entity type, such as `countByPriceLessThan`. Methods that require a primary entity type raise `MappingException` if a primary entity type is not provided.
 
 [NOTE]
-A Jakarta Data provider might go beyond what is required by this specification and support abstract methods which do not fall into any of the above categories.
+NOTE: A Jakarta Data provider might go beyond what is required by this specification and support abstract methods which do not fall into any of the above categories.
+
 Such functionality is not defined by this specification, and so programs with repositories which declare such methods are not portable between providers.
 
 The subsections below specify the rules that an abstract method declaration must observe so that the Jakarta Data implementation is able to provide an implementation of the abstract method.
