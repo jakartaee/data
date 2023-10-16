@@ -22,7 +22,7 @@ import jakarta.data.Sort;
 import jakarta.data.page.KeysetAwareSlice;
 import jakarta.data.page.Pageable;
 import jakarta.data.page.Slice;
-import jakarta.data.repository.CrudRepository;
+import jakarta.data.repository.BasicRepository;
 import jakarta.data.repository.Repository;
 
 import ee.jakarta.tck.data.framework.read.only.NaturalNumber.NumberType;
@@ -34,7 +34,7 @@ import ee.jakarta.tck.data.framework.read.only.NaturalNumber.NumberType;
  * TODO figure out a way to make this a ReadOnlyRepository instead.
  */
 @Repository
-public interface NaturalNumbers extends CrudRepository<NaturalNumber, Long>, IdOperations<NaturalNumber> {
+public interface NaturalNumbers extends BasicRepository<NaturalNumber, Long>, IdOperations<NaturalNumber> {
 
     KeysetAwareSlice<NaturalNumber> findByFloorOfSquareRootOrderByIdAsc(long sqrtFloor,
                                                                         Pageable pagination);

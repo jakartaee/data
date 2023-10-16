@@ -38,7 +38,7 @@ public interface ReadOnlyRepository<T, K> extends DataRepository<T, K>{
 
     Stream<T> findAll();
 
-    Stream<T> findAllById(Iterable<K> ids);
+    Stream<T> findByIdIn(Iterable<K> ids);
 
     long count();
 

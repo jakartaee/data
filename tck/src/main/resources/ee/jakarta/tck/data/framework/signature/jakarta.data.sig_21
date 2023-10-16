@@ -47,20 +47,20 @@ CLSS abstract interface jakarta.data.exceptions.package-info
 
 CLSS abstract interface jakarta.data.package-info
 
-CLSS public abstract interface jakarta.data.repository.CrudRepository<%0 extends java.lang.Object, %1 extends java.lang.Object>
-intf jakarta.data.repository.DataRepository<{jakarta.data.repository.CrudRepository%0},{jakarta.data.repository.CrudRepository%1}>
-meth public abstract <%0 extends {jakarta.data.repository.CrudRepository%0}> java.lang.Iterable<{%%0}> saveAll(java.lang.Iterable<{%%0}>)
-meth public abstract <%0 extends {jakarta.data.repository.CrudRepository%0}> {%%0} save({%%0})
-meth public abstract boolean existsById({jakarta.data.repository.CrudRepository%1})
-meth public abstract java.util.Optional<{jakarta.data.repository.CrudRepository%0}> findById({jakarta.data.repository.CrudRepository%1})
-meth public abstract java.util.stream.Stream<{jakarta.data.repository.CrudRepository%0}> findAll()
-meth public abstract java.util.stream.Stream<{jakarta.data.repository.CrudRepository%0}> findAllById(java.lang.Iterable<{jakarta.data.repository.CrudRepository%1}>)
+CLSS public abstract interface jakarta.data.repository.BasicRepository<%0 extends java.lang.Object, %1 extends java.lang.Object>
+intf jakarta.data.repository.DataRepository<{jakarta.data.repository.BasicRepository%0},{jakarta.data.repository.BasicRepository%1}>
+meth public abstract <%0 extends {jakarta.data.repository.BasicRepository%0}> java.lang.Iterable<{%%0}> saveAll(java.lang.Iterable<{%%0}>)
+meth public abstract <%0 extends {jakarta.data.repository.BasicRepository%0}> {%%0} save({%%0})
+meth public abstract boolean existsById({jakarta.data.repository.BasicRepository%1})
+meth public abstract java.util.Optional<{jakarta.data.repository.BasicRepository%0}> findById({jakarta.data.repository.BasicRepository%1})
+meth public abstract java.util.stream.Stream<{jakarta.data.repository.BasicRepository%0}> findAll()
+meth public abstract java.util.stream.Stream<{jakarta.data.repository.BasicRepository%0}> findByIdIn(java.lang.Iterable<{jakarta.data.repository.BasicRepository%1}>)
 meth public abstract long count()
-meth public abstract void delete({jakarta.data.repository.CrudRepository%0})
+meth public abstract void delete({jakarta.data.repository.BasicRepository%0})
 meth public abstract void deleteAll()
-meth public abstract void deleteAll(java.lang.Iterable<? extends {jakarta.data.repository.CrudRepository%0}>)
-meth public abstract void deleteAllById(java.lang.Iterable<{jakarta.data.repository.CrudRepository%1}>)
-meth public abstract void deleteById({jakarta.data.repository.CrudRepository%1})
+meth public abstract void deleteAll(java.lang.Iterable<? extends {jakarta.data.repository.BasicRepository%0}>)
+meth public abstract void deleteById({jakarta.data.repository.BasicRepository%1})
+meth public abstract void deleteByIdIn(java.lang.Iterable<{jakarta.data.repository.BasicRepository%1}>)
 
 CLSS public abstract interface jakarta.data.repository.DataRepository<%0 extends java.lang.Object, %1 extends java.lang.Object>
 
@@ -154,7 +154,7 @@ meth public static jakarta.data.page.Pageable$Mode[] values()
 supr java.lang.Enum<jakarta.data.page.Pageable$Mode>
 
 CLSS public abstract interface jakarta.data.repository.PageableRepository<%0 extends java.lang.Object, %1 extends java.lang.Object>
-intf jakarta.data.repository.CrudRepository<{jakarta.data.repository.PageableRepository%0},{jakarta.data.repository.PageableRepository%1}>
+intf jakarta.data.repository.BasicRepository<{jakarta.data.repository.PageableRepository%0},{jakarta.data.repository.PageableRepository%1}>
 meth public abstract jakarta.data.page.Page<{jakarta.data.repository.PageableRepository%0}> findAll(jakarta.data.page.Pageable)
 
 CLSS public abstract interface !annotation jakarta.data.repository.Param

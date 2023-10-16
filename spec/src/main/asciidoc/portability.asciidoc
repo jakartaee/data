@@ -8,7 +8,7 @@ All functionality defined by Jakarta Data must be supported when using relationa
 
 1. **Support for Jakarta Persistence Annotations:** Jakarta Data, when used in conjunction with a Jakarta Persistence provider, ensures comprehensive support for all Jakarta Persistence entity annotations. This support covers a wide range of functionality, including entity definitions, primary keys, and relationships.
 
-2. **Built-In Repositories:** Jakarta Data's built-in repositories, such as `PageableRepository` and `CrudRepository`, are designed to offer consistent and well-defined methods compatible with relational databases. Developers can rely on these repositories to perform common data access tasks.
+2. **Built-In Repositories:** Jakarta Data's built-in repositories, such as `PageableRepository` and `BasicRepository`, are designed to offer consistent and well-defined methods compatible with relational databases. Developers can rely on these repositories to perform common data access tasks.
 
 3. **Query Methods:** Jakarta Data's support for query methods, including pagination, ordering, and limiting, is designed to work seamlessly with relational databases.
 
@@ -20,17 +20,17 @@ Portability in Jakarta Data extends to various NoSQL databases, each presenting 
 
 ==== Key-Value Databases
 
-Key-value databases resemble dictionaries or Maps in Java, where data is primarily accessed using a key. In such databases, queries unrelated to keys are typically limited. To ensure a minimum level of support, Jakarta Data mandates the implementation of CrudRepository built-in methods that require an identifier or a key. However, the deleteAll and count methods are not required. Methods relying on complex queries, which are defined as queries that do not use the Key or identifier, raise `java.lang.UnsupportedOperationException` due to the fundamental nature of key-value databases.
+Key-value databases resemble dictionaries or Maps in Java, where data is primarily accessed using a key. In such databases, queries unrelated to keys are typically limited. To ensure a minimum level of support, Jakarta Data mandates the implementation of `BasicRepository` built-in methods that require an identifier or a key. However, the deleteAll and count methods are not required. Methods relying on complex queries, which are defined as queries that do not use the Key or identifier, raise `java.lang.UnsupportedOperationException` due to the fundamental nature of key-value databases.
 
 IMPORTANT: For any NoSQL database type not covered here, such as time series databases, the Key-value support serves as the minimum required level of compatibility.
 
 ==== Wide-Column Databases
 
-Wide-column databases offer more query flexibility, even allowing the use of secondary indexes, albeit potentially impacting performance. When interacting with wide-column databases, Jakarta Data requires the implementation of the CrudRepository along with all of its methods, including query by method. However, developers should be mindful that certain query keywords, such as "And" or "Or," may not be universally supported in these databases. The full set of required keywords is documented in the section "Query Methods Keywords".
+Wide-column databases offer more query flexibility, even allowing the use of secondary indexes, albeit potentially impacting performance. When interacting with wide-column databases, Jakarta Data requires the implementation of the `BasicRepository` along with all of its methods, including query by method. However, developers should be mindful that certain query keywords, such as "And" or "Or," may not be universally supported in these databases. The full set of required keywords is documented in the section "Query Methods Keywords".
 
 ==== Document Databases
 
-Document databases provide query flexibility akin to relational databases, offering robust query capabilities. They encourage denormalization for performance optimization. When interfacing with document databases, Jakarta Data goes a step further by supporting both built-in repositories: CrudRepository and PageableRepository. Additionally, method by query is implemented, though developers should be aware that some keywords may not be universally supported.  The full set of required keywords is documented in the section "Query Methods Keywords".
+Document databases provide query flexibility akin to relational databases, offering robust query capabilities. They encourage denormalization for performance optimization. When interfacing with document databases, Jakarta Data goes a step further by supporting both built-in repositories: `BasicRepository` and `PageableRepository`. Additionally, method by query is implemented, though developers should be aware that some keywords may not be universally supported.  The full set of required keywords is documented in the section "Query Methods Keywords".
 
 These portability considerations reflect Jakarta Data's commitment to providing a consistent data access experience across diverse NoSQL database types. While specific capabilities and query support may vary, Jakarta Data aims to simplify data access, promoting flexibility and compatibility in NoSQL database interactions.
 
@@ -40,4 +40,4 @@ A Graph database, a specialized NoSQL variant, excels in managing intricate data
 
 Graph databases excel at answering queries that return rows containing flat objects, collections, or a combination of flat objects and connections. However, portability is only guaranteed when mapping rows to classes, and when queries specified via annotations or other supported means are used. It should be noted that queries derived from keywords and combinations of mapped classes/properties will be translated into vendor-specific queries.
 
-It's important to note that in Jakarta Data the Graph database supports both built-in repositories: CrudRepository and PageableRepository. Additionally, query-by-method is implemented, though developers should be aware that some keywords may not be universally supported. The full set of required keywords is documented in the section "Query Methods Keywords."
+It's important to note that in Jakarta Data the Graph database supports both built-in repositories: `BasicRepository` and `PageableRepository`. Additionally, query-by-method is implemented, though developers should be aware that some keywords may not be universally supported. The full set of required keywords is documented in the section "Query Methods Keywords."

@@ -82,14 +82,14 @@
         <jakarta.validation.version>2.0.1</jakarta.validation.version>
 
         <apache.rat.version>0.15</apache.rat.version>
-        <commons.io.version>2.13.0</commons.io.version>
+        <commons.io.version>2.14.0</commons.io.version>
 
         <arquillian.version>1.7.0.Final</arquillian.version>
         <junit.version>5.10.0</junit.version>
-        <mockito.version>5.5.0</mockito.version>
-        <pi-test.version>1.15.0</pi-test.version>
+        <mockito.version>5.6.0</mockito.version>
+        <pi-test.version>1.15.1</pi-test.version>
         <pitest-junit5-plugin.version>1.2.0</pitest-junit5-plugin.version>
-        <checkstyle.version>10.12.3</checkstyle.version>
+        <checkstyle.version>10.12.4</checkstyle.version>
         <checkstyle.excludes></checkstyle.excludes>
         <jacoco.maven.version>0.8.10</jacoco.maven.version>
         <sigtest.version>1.6</sigtest.version> <!-- TODO update to 1.8 once this fix is added https://github.com/jtulach/netbeans-apitest/commit/72a3d3507202357589d77b293cb1e29349a0096e -->

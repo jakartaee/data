@@ -43,6 +43,7 @@ import ee.jakarta.tck.data.framework.junit.anno.Assertion;
 import ee.jakarta.tck.data.framework.junit.anno.ReadOnlyTest;
 import ee.jakarta.tck.data.framework.junit.anno.Standalone;
 import ee.jakarta.tck.data.framework.read.only.AsciiCharacter;
+import ee.jakarta.tck.data.framework.read.only.AsciiCharacter_;
 import ee.jakarta.tck.data.framework.read.only.AsciiCharacters;
 import ee.jakarta.tck.data.framework.read.only.AsciiCharactersPopulator;
 import ee.jakarta.tck.data.framework.read.only.NaturalNumber;
@@ -70,13 +71,13 @@ import jakarta.inject.Inject;
 @Standalone
 @AnyEntity
 @ReadOnlyTest
-public class EntityTest {
+public class EntityTests {
 
-    public static final Logger log = Logger.getLogger(EntityTest.class.getCanonicalName());
+    public static final Logger log = Logger.getLogger(EntityTests.class.getCanonicalName());
 
     @Deployment
     public static JavaArchive createDeployment() {
-        return ShrinkWrap.create(JavaArchive.class).addClasses(EntityTest.class);
+        return ShrinkWrap.create(JavaArchive.class).addClasses(EntityTests.class);
     }
 
     @Inject
@@ -109,6 +110,26 @@ public class EntityTest {
         assertEquals(127, characters.countByHexadecimalNotNull());
         assertEquals('0', characters.findByNumericValue(48).get().getThisCharacter());
         assertTrue(characters.findByNumericValue(1).get().isControl());
+    }
+
+    @Assertion(id = "133",
+            strategy = "Use a repository that inherits from BasicRepository and adds some methods of its own. " +
+                       "Use both built-in methods and the additional methods.")
+    public void testBasicRepository() {
+        assertEquals(false, numbers.existsById(0L));
+        assertEquals(true, numbers.existsById(80L));
+
+        Stream<NaturalNumber> found;
+        found = numbers.findByIdIn(List.of(70L, 40L, -20L, 10L));
+        assertEquals(List.of(10L, 40L, 70L),
+                     found.map(NaturalNumber::getId).sorted().collect(Collectors.toList()));
+
+        found = numbers.findByIdBetween(50L, 59L, Sort.asc("numType"));
+        List<Long> list = found.map(NaturalNumber::getId).collect(Collectors.toList());
+        assertEquals(Set.of(53L, 59L), // first 2 must be primes
+                     new TreeSet<>(list.subList(0, 2)));
+        assertEquals(Set.of(50L, 51L, 52L, 54L, 55L, 56L, 57L, 58L), // the remaining 8 are composite numbers
+                     new TreeSet<>(list.subList(2, 10)));
     }
 
     @Assertion(id = "133", strategy = "Request a Page higher than the final Page, expecting an empty Page with 0 results.")
@@ -177,26 +198,6 @@ public class EntityTest {
                              "4c", "4d", "4e", "4f",
                              "54", "64", "74"),
                      found.stream().map(AsciiCharacter::getHexadecimal).sorted().toList());
-    }
-
-    @Assertion(id = "133",
-               strategy = "Use a repository that inherits from CrudRepository and adds some methods of its own. " +
-                          "Use both built-in methods and the additional methods.")
-    public void testCrudRepository() {
-        assertEquals(false, numbers.existsById(0L));
-        assertEquals(true, numbers.existsById(80L));
-
-        Stream<NaturalNumber> found;
-        found = numbers.findAllById(List.of(70L, 40L, -20L, 10L));
-        assertEquals(List.of(10L, 40L, 70L),
-                     found.map(NaturalNumber::getId).sorted().collect(Collectors.toList()));
-
-        found = numbers.findByIdBetween(50L, 59L, Sort.asc("numType"));
-        List<Long> list = found.map(NaturalNumber::getId).collect(Collectors.toList());
-        assertEquals(Set.of(53L, 59L), // first 2 must be primes
-                     new TreeSet<>(list.subList(0, 2)));
-        assertEquals(Set.of(50L, 51L, 52L, 54L, 55L, 56L, 57L, 58L), // the remaining 8 are composite numbers
-                     new TreeSet<>(list.subList(2, 10)));
     }
 
     @Assertion(id = "133", strategy = "Use a repository that inherits from DataRepository and defines all of its own methods.")
@@ -380,6 +381,89 @@ public class EntityTest {
         assertEquals('4', found[0].getThisCharacter());
         assertEquals('D', found[1].getThisCharacter());
         assertEquals('T', found[2].getThisCharacter());
+    }
+
+    @Assertion(id = "133",
+               strategy = "Find a list of entities, querying by entity attributes with names that match the method parameter names," +
+                          " with results capped by a Limit parameter and sorted according to a variable arguments Sort parameter.")
+    public void testFindList() {
+        List<NaturalNumber> oddCompositeNumbers = positives.findOdd(true, NumberType.COMPOSITE,
+                                                                    Limit.of(10),
+                                                                    Sort.asc("floorOfSquareRoot"),
+                                                                    Sort.desc("numBitsRequired"),
+                                                                    Sort.asc("id"));
+        assertEquals(List.of(9L, 15L,  // 3 <= sqrt < 4, 4 bits
+                             21L,      // 4 <= sqrt < 5, 5 bits
+                             33L, 35L, // 5 <= sqrt < 6, 6 bits
+                             25L, 27L, // 5 <= sqrt < 6, 5 bits
+                             39L, 45L, // 6 <= sqrt < 7, 6 bits
+                             49L),     // 7 <= sqrt < 8, 6 bits
+                     oddCompositeNumbers
+                                     .stream()
+                                     .map(NaturalNumber::getId)
+                                     .collect(Collectors.toList()));
+
+        List<NaturalNumber> evenPrimeNumbers = positives.findOdd(false, NumberType.PRIME, Limit.of(9));
+
+        assertEquals(1, evenPrimeNumbers.size());
+        NaturalNumber num = evenPrimeNumbers.get(0);
+        assertEquals(2L, num.getId());
+        assertEquals(1L, num.getFloorOfSquareRoot());
+        assertEquals(Short.valueOf((short) 2), num.getNumBitsRequired());
+        assertEquals(NumberType.PRIME, num.getNumType());
+        assertEquals(false, num.isOdd());
+    }
+
+    @Assertion(id = "133",
+               strategy = "Find a single entity, querying by entity attributes with names that match the method parameter names.")
+    public void testFindOne() {
+        AsciiCharacter j = characters.find('j');
+
+        assertEquals("6a", j.getHexadecimal());
+        assertEquals(106L, j.getId());
+        assertEquals(106, j.getNumericValue());
+        assertEquals('j', j.getThisCharacter());
+    }
+
+    @Assertion(id = "133",
+               strategy = "Find a single entity that might or might not exist, querying by entity attributes" +
+                          " with names that match the method parameter names.")
+    public void testFindOptional() {
+        NaturalNumber num = positives.findNumber(67L).orElseThrow();
+
+        assertEquals(67L, num.getId());
+        assertEquals(8L, num.getFloorOfSquareRoot());
+        assertEquals(Short.valueOf((short) 7), num.getNumBitsRequired());
+        assertEquals(NumberType.PRIME, num.getNumType());
+        assertEquals(true, num.isOdd());
+
+        Optional<NaturalNumber> opt = positives.findNumber(-40L);
+
+        assertEquals(false, opt.isPresent());
+    }
+
+    @Assertion(id = "133",
+               strategy = "Find a page of entities, with entity attributes identified by the parameter names and matching the parameter values.")
+    public void testFindPage() {
+        Pageable page1Request = Pageable.ofSize(7).sortBy(Sort.desc("id"));
+
+        Page<NaturalNumber> page1 = positives.findMatching(9L, Short.valueOf((short) 7), NumberType.COMPOSITE,
+                                                           page1Request);
+
+        assertEquals(List.of(99L, 98L, 96L, 95L, 94L, 93L, 92L),
+                     page1.stream().map(NaturalNumber::getId).collect(Collectors.toList()));
+
+        Page<NaturalNumber> page2 = positives.findMatching(9L, Short.valueOf((short) 7), NumberType.COMPOSITE,
+                                                           page1.nextPageable());
+
+        assertEquals(List.of(91L, 90L, 88L, 87L, 86L, 85L, 84L),
+                     page2.stream().map(NaturalNumber::getId).collect(Collectors.toList()));
+
+        Page<NaturalNumber> page3 = positives.findMatching(9L, Short.valueOf((short) 7), NumberType.COMPOSITE,
+                                                           page2.nextPageable());
+
+        assertEquals(List.of(82L, 81L),
+                     page3.stream().map(NaturalNumber::getId).collect(Collectors.toList()));
     }
 
     @Assertion(id = "133",
@@ -967,6 +1051,46 @@ public class EntityTest {
         assertEquals(false, slice.hasContent());
         assertEquals(0, slice.content().size());
         assertEquals(0, slice.numberOfElements());
+    }
+
+    @Assertion(id = "133", strategy = "Use the StaticMetamodel to obtain ascending Sorts for an entity attribute a type-safe manner.")
+    public void testStaticMetamodelAscendingSorts() {
+        assertEquals(Sort.asc("id"), AsciiCharacter_.id.asc());
+        assertEquals(Sort.asc("isControl"), AsciiCharacter_.isControl.asc());
+        assertEquals(Sort.ascIgnoreCase("hexadecimal"), AsciiCharacter_.hexadecimal.ascIgnoreCase());
+        assertEquals(Sort.ascIgnoreCase("thisCharacter"), AsciiCharacter_.thisCharacter.ascIgnoreCase());
+
+        Pageable pageRequest = Pageable.ofSize(6).sortBy(AsciiCharacter_.numericValue.asc());
+        Page<AsciiCharacter> page1 = characters.findByNumericValueBetween(68, 90, pageRequest);
+
+        assertEquals(List.of('D', 'E', 'F', 'G', 'H', 'I'),
+                     page1.stream()
+                                     .map(AsciiCharacter::getThisCharacter)
+                                     .collect(Collectors.toList()));
+    }
+
+    @Assertion(id = "133", strategy = "Use the StaticMetamodel to refer to entity attribute names in a type-safe manner.")
+    public void testStaticMetamodelAttributeNames() {
+        assertEquals("hexadecimal", AsciiCharacter_.hexadecimal.name());
+        assertEquals("id", AsciiCharacter_.id.name());
+        assertEquals("isControl", AsciiCharacter_.isControl.name());
+        assertEquals("numericValue", AsciiCharacter_.numericValue.name());
+        assertEquals("thisCharacter", AsciiCharacter_.thisCharacter.name());
+    }
+
+    @Assertion(id = "133", strategy = "Use the StaticMetamodel to obtain descending Sorts for an entity attribute a type-safe manner.")
+    public void testStaticMetamodelDescendingSorts() {
+        assertEquals(Sort.desc("id"), AsciiCharacter_.id.desc());
+        assertEquals(Sort.desc("isControl"), AsciiCharacter_.isControl.desc());
+        assertEquals(Sort.descIgnoreCase("hexadecimal"), AsciiCharacter_.hexadecimal.descIgnoreCase());
+        assertEquals(Sort.descIgnoreCase("thisCharacter"), AsciiCharacter_.thisCharacter.descIgnoreCase());
+
+        Sort sort = AsciiCharacter_.numericValue.desc();
+        AsciiCharacter[] found = characters.findFirst3ByNumericValueGreaterThanEqualAndHexadecimalEndsWith(30, "1", sort);
+        assertEquals(3, found.length);
+        assertEquals('q', found[0].getThisCharacter());
+        assertEquals('a', found[1].getThisCharacter());
+        assertEquals('Q', found[2].getThisCharacter());
     }
 
     @Assertion(id = "133", strategy = "Use a repository method that returns Streamable and verify the results.")

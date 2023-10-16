@@ -17,44 +17,39 @@
  */
 package jakarta.data.exceptions;
 
-import jakarta.data.repository.BasicRepository;
-
 /**
- * Indicates a failure that is due to inconsistent state between the entity and the database.
- * For example, {@link BasicRepository#delete(Object) delete(entity)}
- * or {@link BasicRepository#deleteAll(Iterable) deleteAll(entities)}
- * where the entity Id no longer exists in the database or the entity is versioned and the
- * version no longer matches the version in the database.
+ * Indicates that an entity cannot be inserted into the database
+ * because an entity with same unique identifier already exists in the database.
  */
-public class OptimisticLockingFailureException extends DataException {
-    private static final long serialVersionUID = 1982179693469903341L;
+public class EntityExistsException extends DataException {
+    private static final long serialVersionUID = -7275063477464065015L;
 
     /**
-     * Constructs a new OptimisticLockingFailureException exception with the specified detail message.
+     * Constructs a new {@code EntityExistsException} with the specified detail message.
      *
      * @param message the detail message.
      */
-    public OptimisticLockingFailureException(String message) {
+    public EntityExistsException(String message) {
         super(message);
     }
 
     /**
-     * Constructs a new OptimisticLockingFailureException exception with the specified detail message.
+     * Constructs a new {@code EntityExistsException} with the specified detail message and cause.
      *
      * @param message the detail message.
      * @param cause another exception or error that caused this exception.
      *        Null indicates that no other cause is specified.
      */
-    public OptimisticLockingFailureException(String message, Throwable cause) {
+    public EntityExistsException(String message, Throwable cause) {
         super(message, cause);
     }
 
     /**
-     * Constructs a new OptimisticLockingFailureException exception with the specified cause.
+     * Constructs a new {@code EntityExistsException} with the specified cause.
      *
      * @param cause the cause.
      */
-    public OptimisticLockingFailureException(Throwable cause) {
+    public EntityExistsException(Throwable cause) {
         super(cause);
     }
 }
