@@ -11,7 +11,7 @@ Jakarta Data’s goal is to provide a familiar and consistent, Jakarta-based pro
 
 Jakarta Data provides repository abstractions designed to streamline the development of data access layers for various persistent stores, eliminating the need for extensive boilerplate code. These repository abstractions are broadly classified into two categories:
 
-* *Built-in Repository Interfaces*: Jakarta Data offers a hierarchy of built-in repository interfaces. The root of this hierarchy is the `DataRepository` interface, which includes several specialized interfaces like `CrudRepository`, `KeyValueRepository`, and more. These interfaces are designed to handle common data access operations and provide a solid foundation for your data layer.
+* *Built-in Repository Interfaces*: Jakarta Data offers a hierarchy of built-in repository interfaces. The root of this hierarchy is the `DataRepository` interface, which includes several specialized interfaces like `CrudRepository`, `BasicRepository`, and more. These interfaces are designed to handle common data access operations and provide an extensible foundation for your data layer.
 
 [source,java]
 ----
