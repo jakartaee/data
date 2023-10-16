@@ -95,7 +95,7 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
      *
      * <p>Non-matching entities are ignored and do not cause an error to be raised.</p>
      *
-     * @param entity the entity to update. Must not be {@code null}.
+     * @return true if a matching entity was found in the database to update, otherwise false.
 @return true if a matching entity was found in the database to update, otherwise false.
      * @throws NullPointerException if the entity is null.
      */
