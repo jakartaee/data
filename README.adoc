@@ -11,7 +11,7 @@ Jakarta Data’s goal is to provide a familiar and consistent, Jakarta-based pro
 
 Jakarta Data provides repository abstractions designed to streamline the development of data access layers for various persistent stores, eliminating the need for extensive boilerplate code. These repository abstractions are broadly classified into two categories:
 
-1. Built-in Repository Interfaces: Jakarta Data offers a hierarchy of built-in repository interfaces. The root of this hierarchy is the `DataRepository` interface, which includes several specialized interfaces like `CrudRepository`, `KeyValueRepository`, and more. These interfaces are designed to handle common data access operations and provide a solid foundation for your data layer.
+* *Built-in Repository Interfaces*: Jakarta Data offers a hierarchy of built-in repository interfaces. The root of this hierarchy is the `DataRepository` interface, which includes several specialized interfaces like `CrudRepository`, `KeyValueRepository`, and more. These interfaces are designed to handle common data access operations and provide a solid foundation for your data layer.
 
 [source,java]
 ----
@@ -35,6 +35,30 @@ Car ferrari = Car.id(10L).name("Ferrari").type(CarType.SPORT);
 repository.save(ferrari);
 ----
 
+* *Custom Repository Interfaces*: Besides the built-in repository interfaces, Jakarta Data enables you to create custom repository interfaces tailored to your domain requirements. These custom interfaces serve as a bridge between your domain's semantics and the underlying database operations. With annotations like `Insert`, `Update`, `Delete`, and `Save`, you can define expressive and domain-specific repository methods that align seamlessly with your application's needs.
+
+[source,java]
+----
+@Repository
+public interface Garage {
+
+  @Save
+  Car park(Car car);
+
+}
+----
+
+
+[source,java]
+----
+@Inject
+Garage garage;
+...
+Car ferrari = Car.id(10L).name("Ferrari").type(CarType.SPORT);
+repository.park(ferrari);
+----
+
+Whether you use built-in repository interfaces or create custom repositories, Jakarta Data empowers you to write more concise and expressive data access layers while reducing the need for boilerplate code.
 
 
 ==== Pagination
