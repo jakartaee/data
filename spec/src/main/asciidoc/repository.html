@@ -1,0 +1,2329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.20">
+<title>Repository</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
+<style>
+/*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
+/* Uncomment the following line when using as a custom stylesheet */
+/* @import "https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700"; */
+html{font-family:sans-serif;-webkit-text-size-adjust:100%}
+a{background:none}
+a:focus{outline:thin dotted}
+a:active,a:hover{outline:0}
+h1{font-size:2em;margin:.67em 0}
+b,strong{font-weight:bold}
+abbr{font-size:.9em}
+abbr[title]{cursor:help;border-bottom:1px dotted #dddddf;text-decoration:none}
+dfn{font-style:italic}
+hr{height:0}
+mark{background:#ff0;color:#000}
+code,kbd,pre,samp{font-family:monospace;font-size:1em}
+pre{white-space:pre-wrap}
+q{quotes:"\201C" "\201D" "\2018" "\2019"}
+small{font-size:80%}
+sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}
+sup{top:-.5em}
+sub{bottom:-.25em}
+img{border:0}
+svg:not(:root){overflow:hidden}
+figure{margin:0}
+audio,video{display:inline-block}
+audio:not([controls]){display:none;height:0}
+fieldset{border:1px solid silver;margin:0 2px;padding:.35em .625em .75em}
+legend{border:0;padding:0}
+button,input,select,textarea{font-family:inherit;font-size:100%;margin:0}
+button,input{line-height:normal}
+button,select{text-transform:none}
+button,html input[type=button],input[type=reset],input[type=submit]{-webkit-appearance:button;cursor:pointer}
+button[disabled],html input[disabled]{cursor:default}
+input[type=checkbox],input[type=radio]{padding:0}
+button::-moz-focus-inner,input::-moz-focus-inner{border:0;padding:0}
+textarea{overflow:auto;vertical-align:top}
+table{border-collapse:collapse;border-spacing:0}
+*,::before,::after{box-sizing:border-box}
+html,body{font-size:100%}
+body{background:#fff;color:rgba(0,0,0,.8);padding:0;margin:0;font-family:"Noto Serif","DejaVu Serif",serif;line-height:1;position:relative;cursor:auto;-moz-tab-size:4;-o-tab-size:4;tab-size:4;word-wrap:anywhere;-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased}
+a:hover{cursor:pointer}
+img,object,embed{max-width:100%;height:auto}
+object,embed{height:100%}
+img{-ms-interpolation-mode:bicubic}
+.left{float:left!important}
+.right{float:right!important}
+.text-left{text-align:left!important}
+.text-right{text-align:right!important}
+.text-center{text-align:center!important}
+.text-justify{text-align:justify!important}
+.hide{display:none}
+img,object,svg{display:inline-block;vertical-align:middle}
+textarea{height:auto;min-height:50px}
+select{width:100%}
+.subheader,.admonitionblock td.content>.title,.audioblock>.title,.exampleblock>.title,.imageblock>.title,.listingblock>.title,.literalblock>.title,.stemblock>.title,.openblock>.title,.paragraph>.title,.quoteblock>.title,table.tableblock>.title,.verseblock>.title,.videoblock>.title,.dlist>.title,.olist>.title,.ulist>.title,.qlist>.title,.hdlist>.title{line-height:1.45;color:#7a2518;font-weight:400;margin-top:0;margin-bottom:.25em}
+div,dl,dt,dd,ul,ol,li,h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6,pre,form,p,blockquote,th,td{margin:0;padding:0}
+a{color:#2156a5;text-decoration:underline;line-height:inherit}
+a:hover,a:focus{color:#1d4b8f}
+a img{border:0}
+p{line-height:1.6;margin-bottom:1.25em;text-rendering:optimizeLegibility}
+p aside{font-size:.875em;line-height:1.35;font-style:italic}
+h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6{font-family:"Open Sans","DejaVu Sans",sans-serif;font-weight:300;font-style:normal;color:#ba3925;text-rendering:optimizeLegibility;margin-top:1em;margin-bottom:.5em;line-height:1.0125em}
+h1 small,h2 small,h3 small,#toctitle small,.sidebarblock>.content>.title small,h4 small,h5 small,h6 small{font-size:60%;color:#e99b8f;line-height:0}
+h1{font-size:2.125em}
+h2{font-size:1.6875em}
+h3,#toctitle,.sidebarblock>.content>.title{font-size:1.375em}
+h4,h5{font-size:1.125em}
+h6{font-size:1em}
+hr{border:solid #dddddf;border-width:1px 0 0;clear:both;margin:1.25em 0 1.1875em}
+em,i{font-style:italic;line-height:inherit}
+strong,b{font-weight:bold;line-height:inherit}
+small{font-size:60%;line-height:inherit}
+code{font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;font-weight:400;color:rgba(0,0,0,.9)}
+ul,ol,dl{line-height:1.6;margin-bottom:1.25em;list-style-position:outside;font-family:inherit}
+ul,ol{margin-left:1.5em}
+ul li ul,ul li ol{margin-left:1.25em;margin-bottom:0}
+ul.circle{list-style-type:circle}
+ul.disc{list-style-type:disc}
+ul.square{list-style-type:square}
+ul.circle ul:not([class]),ul.disc ul:not([class]),ul.square ul:not([class]){list-style:inherit}
+ol li ul,ol li ol{margin-left:1.25em;margin-bottom:0}
+dl dt{margin-bottom:.3125em;font-weight:bold}
+dl dd{margin-bottom:1.25em}
+blockquote{margin:0 0 1.25em;padding:.5625em 1.25em 0 1.1875em;border-left:1px solid #ddd}
+blockquote,blockquote p{line-height:1.6;color:rgba(0,0,0,.85)}
+@media screen and (min-width:768px){h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6{line-height:1.2}
+h1{font-size:2.75em}
+h2{font-size:2.3125em}
+h3,#toctitle,.sidebarblock>.content>.title{font-size:1.6875em}
+h4{font-size:1.4375em}}
+table{background:#fff;margin-bottom:1.25em;border:1px solid #dedede;word-wrap:normal}
+table thead,table tfoot{background:#f7f8f7}
+table thead tr th,table thead tr td,table tfoot tr th,table tfoot tr td{padding:.5em .625em .625em;font-size:inherit;color:rgba(0,0,0,.8);text-align:left}
+table tr th,table tr td{padding:.5625em .625em;font-size:inherit;color:rgba(0,0,0,.8)}
+table tr.even,table tr.alt{background:#f8f8f7}
+table thead tr th,table tfoot tr th,table tbody tr td,table tr td,table tfoot tr td{line-height:1.6}
+h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6{line-height:1.2;word-spacing:-.05em}
+h1 strong,h2 strong,h3 strong,#toctitle strong,.sidebarblock>.content>.title strong,h4 strong,h5 strong,h6 strong{font-weight:400}
+.center{margin-left:auto;margin-right:auto}
+.stretch{width:100%}
+.clearfix::before,.clearfix::after,.float-group::before,.float-group::after{content:" ";display:table}
+.clearfix::after,.float-group::after{clear:both}
+:not(pre).nobreak{word-wrap:normal}
+:not(pre).nowrap{white-space:nowrap}
+:not(pre).pre-wrap{white-space:pre-wrap}
+:not(pre):not([class^=L])>code{font-size:.9375em;font-style:normal!important;letter-spacing:0;padding:.1em .5ex;word-spacing:-.15em;background:#f7f7f8;border-radius:4px;line-height:1.45;text-rendering:optimizeSpeed}
+pre{color:rgba(0,0,0,.9);font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;line-height:1.45;text-rendering:optimizeSpeed}
+pre code,pre pre{color:inherit;font-size:inherit;line-height:inherit}
+pre>code{display:block}
+pre.nowrap,pre.nowrap pre{white-space:pre;word-wrap:normal}
+em em{font-style:normal}
+strong strong{font-weight:400}
+.keyseq{color:rgba(51,51,51,.8)}
+kbd{font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;display:inline-block;color:rgba(0,0,0,.8);font-size:.65em;line-height:1.45;background:#f7f7f7;border:1px solid #ccc;border-radius:3px;box-shadow:0 1px 0 rgba(0,0,0,.2),inset 0 0 0 .1em #fff;margin:0 .15em;padding:.2em .5em;vertical-align:middle;position:relative;top:-.1em;white-space:nowrap}
+.keyseq kbd:first-child{margin-left:0}
+.keyseq kbd:last-child{margin-right:0}
+.menuseq,.menuref{color:#000}
+.menuseq b:not(.caret),.menuref{font-weight:inherit}
+.menuseq{word-spacing:-.02em}
+.menuseq b.caret{font-size:1.25em;line-height:.8}
+.menuseq i.caret{font-weight:bold;text-align:center;width:.45em}
+b.button::before,b.button::after{position:relative;top:-1px;font-weight:400}
+b.button::before{content:"[";padding:0 3px 0 2px}
+b.button::after{content:"]";padding:0 2px 0 3px}
+p a>code:hover{color:rgba(0,0,0,.9)}
+#header,#content,#footnotes,#footer{width:100%;margin:0 auto;max-width:62.5em;*zoom:1;position:relative;padding-left:.9375em;padding-right:.9375em}
+#header::before,#header::after,#content::before,#content::after,#footnotes::before,#footnotes::after,#footer::before,#footer::after{content:" ";display:table}
+#header::after,#content::after,#footnotes::after,#footer::after{clear:both}
+#content{margin-top:1.25em}
+#content::before{content:none}
+#header>h1:first-child{color:rgba(0,0,0,.85);margin-top:2.25rem;margin-bottom:0}
+#header>h1:first-child+#toc{margin-top:8px;border-top:1px solid #dddddf}
+#header>h1:only-child,body.toc2 #header>h1:nth-last-child(2){border-bottom:1px solid #dddddf;padding-bottom:8px}
+#header .details{border-bottom:1px solid #dddddf;line-height:1.45;padding-top:.25em;padding-bottom:.25em;padding-left:.25em;color:rgba(0,0,0,.6);display:flex;flex-flow:row wrap}
+#header .details span:first-child{margin-left:-.125em}
+#header .details span.email a{color:rgba(0,0,0,.85)}
+#header .details br{display:none}
+#header .details br+span::before{content:"\00a0\2013\00a0"}
+#header .details br+span.author::before{content:"\00a0\22c5\00a0";color:rgba(0,0,0,.85)}
+#header .details br+span#revremark::before{content:"\00a0|\00a0"}
+#header #revnumber{text-transform:capitalize}
+#header #revnumber::after{content:"\00a0"}
+#content>h1:first-child:not([class]){color:rgba(0,0,0,.85);border-bottom:1px solid #dddddf;padding-bottom:8px;margin-top:0;padding-top:1rem;margin-bottom:1.25rem}
+#toc{border-bottom:1px solid #e7e7e9;padding-bottom:.5em}
+#toc>ul{margin-left:.125em}
+#toc ul.sectlevel0>li>a{font-style:italic}
+#toc ul.sectlevel0 ul.sectlevel1{margin:.5em 0}
+#toc ul{font-family:"Open Sans","DejaVu Sans",sans-serif;list-style-type:none}
+#toc li{line-height:1.3334;margin-top:.3334em}
+#toc a{text-decoration:none}
+#toc a:active{text-decoration:underline}
+#toctitle{color:#7a2518;font-size:1.2em}
+@media screen and (min-width:768px){#toctitle{font-size:1.375em}
+body.toc2{padding-left:15em;padding-right:0}
+#toc.toc2{margin-top:0!important;background:#f8f8f7;position:fixed;width:15em;left:0;top:0;border-right:1px solid #e7e7e9;border-top-width:0!important;border-bottom-width:0!important;z-index:1000;padding:1.25em 1em;height:100%;overflow:auto}
+#toc.toc2 #toctitle{margin-top:0;margin-bottom:.8rem;font-size:1.2em}
+#toc.toc2>ul{font-size:.9em;margin-bottom:0}
+#toc.toc2 ul ul{margin-left:0;padding-left:1em}
+#toc.toc2 ul.sectlevel0 ul.sectlevel1{padding-left:0;margin-top:.5em;margin-bottom:.5em}
+body.toc2.toc-right{padding-left:0;padding-right:15em}
+body.toc2.toc-right #toc.toc2{border-right-width:0;border-left:1px solid #e7e7e9;left:auto;right:0}}
+@media screen and (min-width:1280px){body.toc2{padding-left:20em;padding-right:0}
+#toc.toc2{width:20em}
+#toc.toc2 #toctitle{font-size:1.375em}
+#toc.toc2>ul{font-size:.95em}
+#toc.toc2 ul ul{padding-left:1.25em}
+body.toc2.toc-right{padding-left:0;padding-right:20em}}
+#content #toc{border:1px solid #e0e0dc;margin-bottom:1.25em;padding:1.25em;background:#f8f8f7;border-radius:4px}
+#content #toc>:first-child{margin-top:0}
+#content #toc>:last-child{margin-bottom:0}
+#footer{max-width:none;background:rgba(0,0,0,.8);padding:1.25em}
+#footer-text{color:hsla(0,0%,100%,.8);line-height:1.44}
+#content{margin-bottom:.625em}
+.sect1{padding-bottom:.625em}
+@media screen and (min-width:768px){#content{margin-bottom:1.25em}
+.sect1{padding-bottom:1.25em}}
+.sect1:last-child{padding-bottom:0}
+.sect1+.sect1{border-top:1px solid #e7e7e9}
+#content h1>a.anchor,h2>a.anchor,h3>a.anchor,#toctitle>a.anchor,.sidebarblock>.content>.title>a.anchor,h4>a.anchor,h5>a.anchor,h6>a.anchor{position:absolute;z-index:1001;width:1.5ex;margin-left:-1.5ex;display:block;text-decoration:none!important;visibility:hidden;text-align:center;font-weight:400}
+#content h1>a.anchor::before,h2>a.anchor::before,h3>a.anchor::before,#toctitle>a.anchor::before,.sidebarblock>.content>.title>a.anchor::before,h4>a.anchor::before,h5>a.anchor::before,h6>a.anchor::before{content:"\00A7";font-size:.85em;display:block;padding-top:.1em}
+#content h1:hover>a.anchor,#content h1>a.anchor:hover,h2:hover>a.anchor,h2>a.anchor:hover,h3:hover>a.anchor,#toctitle:hover>a.anchor,.sidebarblock>.content>.title:hover>a.anchor,h3>a.anchor:hover,#toctitle>a.anchor:hover,.sidebarblock>.content>.title>a.anchor:hover,h4:hover>a.anchor,h4>a.anchor:hover,h5:hover>a.anchor,h5>a.anchor:hover,h6:hover>a.anchor,h6>a.anchor:hover{visibility:visible}
+#content h1>a.link,h2>a.link,h3>a.link,#toctitle>a.link,.sidebarblock>.content>.title>a.link,h4>a.link,h5>a.link,h6>a.link{color:#ba3925;text-decoration:none}
+#content h1>a.link:hover,h2>a.link:hover,h3>a.link:hover,#toctitle>a.link:hover,.sidebarblock>.content>.title>a.link:hover,h4>a.link:hover,h5>a.link:hover,h6>a.link:hover{color:#a53221}
+details,.audioblock,.imageblock,.literalblock,.listingblock,.stemblock,.videoblock{margin-bottom:1.25em}
+details{margin-left:1.25rem}
+details>summary{cursor:pointer;display:block;position:relative;line-height:1.6;margin-bottom:.625rem;outline:none;-webkit-tap-highlight-color:transparent}
+details>summary::-webkit-details-marker{display:none}
+details>summary::before{content:"";border:solid transparent;border-left:solid;border-width:.3em 0 .3em .5em;position:absolute;top:.5em;left:-1.25rem;transform:translateX(15%)}
+details[open]>summary::before{border:solid transparent;border-top:solid;border-width:.5em .3em 0;transform:translateY(15%)}
+details>summary::after{content:"";width:1.25rem;height:1em;position:absolute;top:.3em;left:-1.25rem}
+.admonitionblock td.content>.title,.audioblock>.title,.exampleblock>.title,.imageblock>.title,.listingblock>.title,.literalblock>.title,.stemblock>.title,.openblock>.title,.paragraph>.title,.quoteblock>.title,table.tableblock>.title,.verseblock>.title,.videoblock>.title,.dlist>.title,.olist>.title,.ulist>.title,.qlist>.title,.hdlist>.title{text-rendering:optimizeLegibility;text-align:left;font-family:"Noto Serif","DejaVu Serif",serif;font-size:1rem;font-style:italic}
+table.tableblock.fit-content>caption.title{white-space:nowrap;width:0}
+.paragraph.lead>p,#preamble>.sectionbody>[class=paragraph]:first-of-type p{font-size:1.21875em;line-height:1.6;color:rgba(0,0,0,.85)}
+.admonitionblock>table{border-collapse:separate;border:0;background:none;width:100%}
+.admonitionblock>table td.icon{text-align:center;width:80px}
+.admonitionblock>table td.icon img{max-width:none}
+.admonitionblock>table td.icon .title{font-weight:bold;font-family:"Open Sans","DejaVu Sans",sans-serif;text-transform:uppercase}
+.admonitionblock>table td.content{padding-left:1.125em;padding-right:1.25em;border-left:1px solid #dddddf;color:rgba(0,0,0,.6);word-wrap:anywhere}
+.admonitionblock>table td.content>:last-child>:last-child{margin-bottom:0}
+.exampleblock>.content{border:1px solid #e6e6e6;margin-bottom:1.25em;padding:1.25em;background:#fff;border-radius:4px}
+.sidebarblock{border:1px solid #dbdbd6;margin-bottom:1.25em;padding:1.25em;background:#f3f3f2;border-radius:4px}
+.sidebarblock>.content>.title{color:#7a2518;margin-top:0;text-align:center}
+.exampleblock>.content>:first-child,.sidebarblock>.content>:first-child{margin-top:0}
+.exampleblock>.content>:last-child,.exampleblock>.content>:last-child>:last-child,.exampleblock>.content .olist>ol>li:last-child>:last-child,.exampleblock>.content .ulist>ul>li:last-child>:last-child,.exampleblock>.content .qlist>ol>li:last-child>:last-child,.sidebarblock>.content>:last-child,.sidebarblock>.content>:last-child>:last-child,.sidebarblock>.content .olist>ol>li:last-child>:last-child,.sidebarblock>.content .ulist>ul>li:last-child>:last-child,.sidebarblock>.content .qlist>ol>li:last-child>:last-child{margin-bottom:0}
+.literalblock pre,.listingblock>.content>pre{border-radius:4px;overflow-x:auto;padding:1em;font-size:.8125em}
+@media screen and (min-width:768px){.literalblock pre,.listingblock>.content>pre{font-size:.90625em}}
+@media screen and (min-width:1280px){.literalblock pre,.listingblock>.content>pre{font-size:1em}}
+.literalblock pre,.listingblock>.content>pre:not(.highlight),.listingblock>.content>pre[class=highlight],.listingblock>.content>pre[class^="highlight "]{background:#f7f7f8}
+.literalblock.output pre{color:#f7f7f8;background:rgba(0,0,0,.9)}
+.listingblock>.content{position:relative}
+.listingblock code[data-lang]::before{display:none;content:attr(data-lang);position:absolute;font-size:.75em;top:.425rem;right:.5rem;line-height:1;text-transform:uppercase;color:inherit;opacity:.5}
+.listingblock:hover code[data-lang]::before{display:block}
+.listingblock.terminal pre .command::before{content:attr(data-prompt);padding-right:.5em;color:inherit;opacity:.5}
+.listingblock.terminal pre .command:not([data-prompt])::before{content:"$"}
+.listingblock pre.highlightjs{padding:0}
+.listingblock pre.highlightjs>code{padding:1em;border-radius:4px}
+.listingblock pre.prettyprint{border-width:0}
+.prettyprint{background:#f7f7f8}
+pre.prettyprint .linenums{line-height:1.45;margin-left:2em}
+pre.prettyprint li{background:none;list-style-type:inherit;padding-left:0}
+pre.prettyprint li code[data-lang]::before{opacity:1}
+pre.prettyprint li:not(:first-child) code[data-lang]::before{display:none}
+table.linenotable{border-collapse:separate;border:0;margin-bottom:0;background:none}
+table.linenotable td[class]{color:inherit;vertical-align:top;padding:0;line-height:inherit;white-space:normal}
+table.linenotable td.code{padding-left:.75em}
+table.linenotable td.linenos,pre.pygments .linenos{border-right:1px solid;opacity:.35;padding-right:.5em;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
+pre.pygments span.linenos{display:inline-block;margin-right:.75em}
+.quoteblock{margin:0 1em 1.25em 1.5em;display:table}
+.quoteblock:not(.excerpt)>.title{margin-left:-1.5em;margin-bottom:.75em}
+.quoteblock blockquote,.quoteblock p{color:rgba(0,0,0,.85);font-size:1.15rem;line-height:1.75;word-spacing:.1em;letter-spacing:0;font-style:italic;text-align:justify}
+.quoteblock blockquote{margin:0;padding:0;border:0}
+.quoteblock blockquote::before{content:"\201c";float:left;font-size:2.75em;font-weight:bold;line-height:.6em;margin-left:-.6em;color:#7a2518;text-shadow:0 1px 2px rgba(0,0,0,.1)}
+.quoteblock blockquote>.paragraph:last-child p{margin-bottom:0}
+.quoteblock .attribution{margin-top:.75em;margin-right:.5ex;text-align:right}
+.verseblock{margin:0 1em 1.25em}
+.verseblock pre{font-family:"Open Sans","DejaVu Sans",sans-serif;font-size:1.15rem;color:rgba(0,0,0,.85);font-weight:300;text-rendering:optimizeLegibility}
+.verseblock pre strong{font-weight:400}
+.verseblock .attribution{margin-top:1.25rem;margin-left:.5ex}
+.quoteblock .attribution,.verseblock .attribution{font-size:.9375em;line-height:1.45;font-style:italic}
+.quoteblock .attribution br,.verseblock .attribution br{display:none}
+.quoteblock .attribution cite,.verseblock .attribution cite{display:block;letter-spacing:-.025em;color:rgba(0,0,0,.6)}
+.quoteblock.abstract blockquote::before,.quoteblock.excerpt blockquote::before,.quoteblock .quoteblock blockquote::before{display:none}
+.quoteblock.abstract blockquote,.quoteblock.abstract p,.quoteblock.excerpt blockquote,.quoteblock.excerpt p,.quoteblock .quoteblock blockquote,.quoteblock .quoteblock p{line-height:1.6;word-spacing:0}
+.quoteblock.abstract{margin:0 1em 1.25em;display:block}
+.quoteblock.abstract>.title{margin:0 0 .375em;font-size:1.15em;text-align:center}
+.quoteblock.excerpt>blockquote,.quoteblock .quoteblock{padding:0 0 .25em 1em;border-left:.25em solid #dddddf}
+.quoteblock.excerpt,.quoteblock .quoteblock{margin-left:0}
+.quoteblock.excerpt blockquote,.quoteblock.excerpt p,.quoteblock .quoteblock blockquote,.quoteblock .quoteblock p{color:inherit;font-size:1.0625rem}
+.quoteblock.excerpt .attribution,.quoteblock .quoteblock .attribution{color:inherit;font-size:.85rem;text-align:left;margin-right:0}
+p.tableblock:last-child{margin-bottom:0}
+td.tableblock>.content{margin-bottom:1.25em;word-wrap:anywhere}
+td.tableblock>.content>:last-child{margin-bottom:-1.25em}
+table.tableblock,th.tableblock,td.tableblock{border:0 solid #dedede}
+table.grid-all>*>tr>*{border-width:1px}
+table.grid-cols>*>tr>*{border-width:0 1px}
+table.grid-rows>*>tr>*{border-width:1px 0}
+table.frame-all{border-width:1px}
+table.frame-ends{border-width:1px 0}
+table.frame-sides{border-width:0 1px}
+table.frame-none>colgroup+*>:first-child>*,table.frame-sides>colgroup+*>:first-child>*{border-top-width:0}
+table.frame-none>:last-child>:last-child>*,table.frame-sides>:last-child>:last-child>*{border-bottom-width:0}
+table.frame-none>*>tr>:first-child,table.frame-ends>*>tr>:first-child{border-left-width:0}
+table.frame-none>*>tr>:last-child,table.frame-ends>*>tr>:last-child{border-right-width:0}
+table.stripes-all>*>tr,table.stripes-odd>*>tr:nth-of-type(odd),table.stripes-even>*>tr:nth-of-type(even),table.stripes-hover>*>tr:hover{background:#f8f8f7}
+th.halign-left,td.halign-left{text-align:left}
+th.halign-right,td.halign-right{text-align:right}
+th.halign-center,td.halign-center{text-align:center}
+th.valign-top,td.valign-top{vertical-align:top}
+th.valign-bottom,td.valign-bottom{vertical-align:bottom}
+th.valign-middle,td.valign-middle{vertical-align:middle}
+table thead th,table tfoot th{font-weight:bold}
+tbody tr th{background:#f7f8f7}
+tbody tr th,tbody tr th p,tfoot tr th,tfoot tr th p{color:rgba(0,0,0,.8);font-weight:bold}
+p.tableblock>code:only-child{background:none;padding:0}
+p.tableblock{font-size:1em}
+ol{margin-left:1.75em}
+ul li ol{margin-left:1.5em}
+dl dd{margin-left:1.125em}
+dl dd:last-child,dl dd:last-child>:last-child{margin-bottom:0}
+li p,ul dd,ol dd,.olist .olist,.ulist .ulist,.ulist .olist,.olist .ulist{margin-bottom:.625em}
+ul.checklist,ul.none,ol.none,ul.no-bullet,ol.no-bullet,ol.unnumbered,ul.unstyled,ol.unstyled{list-style-type:none}
+ul.no-bullet,ol.no-bullet,ol.unnumbered{margin-left:.625em}
+ul.unstyled,ol.unstyled{margin-left:0}
+li>p:empty:only-child::before{content:"";display:inline-block}
+ul.checklist>li>p:first-child{margin-left:-1em}
+ul.checklist>li>p:first-child>.fa-square-o:first-child,ul.checklist>li>p:first-child>.fa-check-square-o:first-child{width:1.25em;font-size:.8em;position:relative;bottom:.125em}
+ul.checklist>li>p:first-child>input[type=checkbox]:first-child{margin-right:.25em}
+ul.inline{display:flex;flex-flow:row wrap;list-style:none;margin:0 0 .625em -1.25em}
+ul.inline>li{margin-left:1.25em}
+.unstyled dl dt{font-weight:400;font-style:normal}
+ol.arabic{list-style-type:decimal}
+ol.decimal{list-style-type:decimal-leading-zero}
+ol.loweralpha{list-style-type:lower-alpha}
+ol.upperalpha{list-style-type:upper-alpha}
+ol.lowerroman{list-style-type:lower-roman}
+ol.upperroman{list-style-type:upper-roman}
+ol.lowergreek{list-style-type:lower-greek}
+.hdlist>table,.colist>table{border:0;background:none}
+.hdlist>table>tbody>tr,.colist>table>tbody>tr{background:none}
+td.hdlist1,td.hdlist2{vertical-align:top;padding:0 .625em}
+td.hdlist1{font-weight:bold;padding-bottom:1.25em}
+td.hdlist2{word-wrap:anywhere}
+.literalblock+.colist,.listingblock+.colist{margin-top:-.5em}
+.colist td:not([class]):first-child{padding:.4em .75em 0;line-height:1;vertical-align:top}
+.colist td:not([class]):first-child img{max-width:none}
+.colist td:not([class]):last-child{padding:.25em 0}
+.thumb,.th{line-height:0;display:inline-block;border:4px solid #fff;box-shadow:0 0 0 1px #ddd}
+.imageblock.left{margin:.25em .625em 1.25em 0}
+.imageblock.right{margin:.25em 0 1.25em .625em}
+.imageblock>.title{margin-bottom:0}
+.imageblock.thumb,.imageblock.th{border-width:6px}
+.imageblock.thumb>.title,.imageblock.th>.title{padding:0 .125em}
+.image.left,.image.right{margin-top:.25em;margin-bottom:.25em;display:inline-block;line-height:0}
+.image.left{margin-right:.625em}
+.image.right{margin-left:.625em}
+a.image{text-decoration:none;display:inline-block}
+a.image object{pointer-events:none}
+sup.footnote,sup.footnoteref{font-size:.875em;position:static;vertical-align:super}
+sup.footnote a,sup.footnoteref a{text-decoration:none}
+sup.footnote a:active,sup.footnoteref a:active{text-decoration:underline}
+#footnotes{padding-top:.75em;padding-bottom:.75em;margin-bottom:.625em}
+#footnotes hr{width:20%;min-width:6.25em;margin:-.25em 0 .75em;border-width:1px 0 0}
+#footnotes .footnote{padding:0 .375em 0 .225em;line-height:1.3334;font-size:.875em;margin-left:1.2em;margin-bottom:.2em}
+#footnotes .footnote a:first-of-type{font-weight:bold;text-decoration:none;margin-left:-1.05em}
+#footnotes .footnote:last-of-type{margin-bottom:0}
+#content #footnotes{margin-top:-.625em;margin-bottom:0;padding:.75em 0}
+div.unbreakable{page-break-inside:avoid}
+.big{font-size:larger}
+.small{font-size:smaller}
+.underline{text-decoration:underline}
+.overline{text-decoration:overline}
+.line-through{text-decoration:line-through}
+.aqua{color:#00bfbf}
+.aqua-background{background:#00fafa}
+.black{color:#000}
+.black-background{background:#000}
+.blue{color:#0000bf}
+.blue-background{background:#0000fa}
+.fuchsia{color:#bf00bf}
+.fuchsia-background{background:#fa00fa}
+.gray{color:#606060}
+.gray-background{background:#7d7d7d}
+.green{color:#006000}
+.green-background{background:#007d00}
+.lime{color:#00bf00}
+.lime-background{background:#00fa00}
+.maroon{color:#600000}
+.maroon-background{background:#7d0000}
+.navy{color:#000060}
+.navy-background{background:#00007d}
+.olive{color:#606000}
+.olive-background{background:#7d7d00}
+.purple{color:#600060}
+.purple-background{background:#7d007d}
+.red{color:#bf0000}
+.red-background{background:#fa0000}
+.silver{color:#909090}
+.silver-background{background:#bcbcbc}
+.teal{color:#006060}
+.teal-background{background:#007d7d}
+.white{color:#bfbfbf}
+.white-background{background:#fafafa}
+.yellow{color:#bfbf00}
+.yellow-background{background:#fafa00}
+span.icon>.fa{cursor:default}
+a span.icon>.fa{cursor:inherit}
+.admonitionblock td.icon [class^="fa icon-"]{font-size:2.5em;text-shadow:1px 1px 2px rgba(0,0,0,.5);cursor:default}
+.admonitionblock td.icon .icon-note::before{content:"\f05a";color:#19407c}
+.admonitionblock td.icon .icon-tip::before{content:"\f0eb";text-shadow:1px 1px 2px rgba(155,155,0,.8);color:#111}
+.admonitionblock td.icon .icon-warning::before{content:"\f071";color:#bf6900}
+.admonitionblock td.icon .icon-caution::before{content:"\f06d";color:#bf3400}
+.admonitionblock td.icon .icon-important::before{content:"\f06a";color:#bf0000}
+.conum[data-value]{display:inline-block;color:#fff!important;background:rgba(0,0,0,.8);border-radius:50%;text-align:center;font-size:.75em;width:1.67em;height:1.67em;line-height:1.67em;font-family:"Open Sans","DejaVu Sans",sans-serif;font-style:normal;font-weight:bold}
+.conum[data-value] *{color:#fff!important}
+.conum[data-value]+b{display:none}
+.conum[data-value]::after{content:attr(data-value)}
+pre .conum[data-value]{position:relative;top:-.125em}
+b.conum *{color:inherit!important}
+.conum:not([data-value]):empty{display:none}
+dt,th.tableblock,td.content,div.footnote{text-rendering:optimizeLegibility}
+h1,h2,p,td.content,span.alt,summary{letter-spacing:-.01em}
+p strong,td.content strong,div.footnote strong{letter-spacing:-.005em}
+p,blockquote,dt,td.content,td.hdlist1,span.alt,summary{font-size:1.0625rem}
+p{margin-bottom:1.25rem}
+.sidebarblock p,.sidebarblock dt,.sidebarblock td.content,p.tableblock{font-size:1em}
+.exampleblock>.content{background:#fffef7;border-color:#e0e0dc;box-shadow:0 1px 4px #e0e0dc}
+.print-only{display:none!important}
+@page{margin:1.25cm .75cm}
+@media print{*{box-shadow:none!important;text-shadow:none!important}
+html{font-size:80%}
+a{color:inherit!important;text-decoration:underline!important}
+a.bare,a[href^="#"],a[href^="mailto:"]{text-decoration:none!important}
+a[href^="http:"]:not(.bare)::after,a[href^="https:"]:not(.bare)::after{content:"(" attr(href) ")";display:inline-block;font-size:.875em;padding-left:.25em}
+abbr[title]{border-bottom:1px dotted}
+abbr[title]::after{content:" (" attr(title) ")"}
+pre,blockquote,tr,img,object,svg{page-break-inside:avoid}
+thead{display:table-header-group}
+svg{max-width:100%}
+p,blockquote,dt,td.content{font-size:1em;orphans:3;widows:3}
+h2,h3,#toctitle,.sidebarblock>.content>.title{page-break-after:avoid}
+#header,#content,#footnotes,#footer{max-width:none}
+#toc,.sidebarblock,.exampleblock>.content{background:none!important}
+#toc{border-bottom:1px solid #dddddf!important;padding-bottom:0!important}
+body.book #header{text-align:center}
+body.book #header>h1:first-child{border:0!important;margin:2.5em 0 1em}
+body.book #header .details{border:0!important;display:block;padding:0!important}
+body.book #header .details span:first-child{margin-left:0!important}
+body.book #header .details br{display:block}
+body.book #header .details br+span::before{content:none!important}
+body.book #toc{border:0!important;text-align:left!important;padding:0!important;margin:0!important}
+body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-break-before:always}
+.listingblock code[data-lang]::before{display:block}
+#footer{padding:0 .9375em}
+.hide-on-print{display:none!important}
+.print-only{display:block!important}
+.hide-for-print{display:none!important}
+.show-for-print{display:inherit!important}}
+@media amzn-kf8,print{#header>h1:first-child{margin-top:1.25rem}
+.sect1{padding:0!important}
+.sect1+.sect1{border:0}
+#footer{background:none}
+#footer-text{color:rgba(0,0,0,.6);font-size:.9em}}
+@media amzn-kf8{#header,#content,#footnotes,#footer{padding:0}}
+</style>
+</head>
+<body class="article">
+<div id="header">
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="_repository">Repository</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In the realm of software design, the repository pattern encapsulates the logic required to access data sources. This pattern consolidates data access functionality, offering improved maintainability and decoupling the infrastructure or technology used to access databases from the domain model layer.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="01-repository.png" alt="repository structure" width="70%" height="70%">
+</div>
+</div>
+<div class="paragraph">
+<p>The Repository pattern is a fundamental concept within Jakarta Data that plays a central role in data access and management. Essentially, a repository is a mediator between your application&#8217;s domain logic and the underlying data storage, be it a relational database, NoSQL database, or any other data source.</p>
+</div>
+<div class="paragraph">
+<p>In Jakarta Data, a Repository provides a structured and organized way to interact with your data. It abstracts data storage and retrieval complexities, allowing you to work with domain-specific objects and perform everyday data operations without writing low-level database queries.</p>
+</div>
+<div class="paragraph">
+<p>As employed in Jakarta Data, the Repository pattern exhibits several key characteristics that make it a powerful tool for managing data access within your Java applications. These characteristics collectively define how repositories function within Jakarta Data, providing a structured and domain-centric approach to working with data. By understanding these key characteristics, you&#8217;ll gain insight into how repositories simplify data access and enhance the maintainability of your code.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Abstraction:</strong> Repositories abstract the details of how data is stored, enabling you to focus on your application&#8217;s domain logic without being tightly coupled to a specific database technology.</p>
+</li>
+<li>
+<p><strong>Structured Data Access:</strong> Jakarta Data repositories offer a structured and consistent way to perform data access operations. This structured approach ensures that your codebase remains organized and maintainable.</p>
+</li>
+<li>
+<p><strong>Domain-Centric:</strong> Repositories are designed to be domain-centric, aligning with your application&#8217;s domain model. It means that data access operations are closely tied to your business entities, making your code more intuitive and expressive.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>In summary, the Repository pattern in Jakarta Data offers a structured and domain-centric approach to data access, providing a balance between abstraction and ease of use. It simplifies data access by encapsulating the details of the data source while aligning closely with your application&#8217;s domain model. It makes it a valuable choice for many Java developers, especially in projects where a clean separation of concerns and maintainable codebase are essential.</p>
+</div>
+<div class="sect2">
+<h3 id="_repositories_on_jakarta_data">Repositories on Jakarta Data</h3>
+<div class="paragraph">
+<p>Within the context of Jakarta Data, a repository plays a pivotal role in simplifying data access layers for various persistence stores. It is a Java interface that acts as a gateway for accessing persistent data of one or more entity types. Repositories offer a streamlined approach to working with data by exposing operations for querying, retrieving, and modifying entity class instances that represent persistent instances of the entities they are associated with.</p>
+</div>
+<div class="paragraph">
+<p>Several vital characteristics define repositories:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Reduced Boilerplate Code:</strong> One of the primary goals of a repository abstraction is to significantly reduce the boilerplate code required to implement data access layers for diverse persistence stores. This reduction in repetitive code enhances code maintainability and developer productivity.</p>
+</li>
+<li>
+<p><strong>Jakarta Data Annotations:</strong> In Jakarta Data, repositories are defined as interfaces and are annotated with the <code>@Repository</code> annotation. This annotation serves as a marker to indicate that the interface represents a repository.</p>
+</li>
+<li>
+<p><strong>Built-In Interfaces:</strong> The Jakarta Data specification provides a set of built-in interfaces from which repositories can inherit. These built-in interfaces offer a convenient way to include a variety of pre-defined methods for common operations. They also declare the entity type to use for methods where the entity type cannot otherwise be inferred.</p>
+</li>
+<li>
+<p><strong>Data Retrieval and Modification:</strong> Repositories facilitate data retrieval and modification operations. This includes querying for persistent instances in the data store, creating new persistent instances in the data store, removing existing persistent instances, and modifying the state of persistent instances. Conventionally, these operations are named save and delete for modifying operations and find, count, and exists for retrieval operations.</p>
+</li>
+<li>
+<p><strong>Subset of Data:</strong> Repositories may expose only a subset of the full data set available in the data store, providing a focused and controlled access point to the data.</p>
+</li>
+<li>
+<p><strong>Entity Associations:</strong> Entities within a repository may have associations between them, especially in the case of relational data access. However, this specification does not define the semantics of associations between entities belonging to different repositories.</p>
+</li>
+<li>
+<p><strong>Stateless Repositories:</strong> Repositories are typically designed to be stateless. However, it&#8217;s important to note that this specification does not address the definition of repositories backed by Jakarta Persistence-style stateful persistence contexts.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Repositories in Jakarta Data serve as efficient gateways for managing and interacting with persistent data, offering a simplified and consistent approach to data access and modification within Java applications.</p>
+</div>
+<div class="paragraph">
+<p>The parent interface at the root of the hierarchy of built-in interfaces is <code>DataRepository</code>. All of the built-in interfaces are extensible. A repository might extend one or more of the built-in interfaces or none of them. Method signatures that are copied from the built-in interfaces to a repository must have the same behavior as defined on the built-in interface.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="diag-ditaa-md5-31a2b84bb14821a6b73c42811e2a847f.png" alt="Diagram" width="500" height="266">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Interface with basic operations on a repository for a specific type. This one we can see more often on several Java implementations.</p>
+</li>
+<li>
+<p>Interface with basic operations using the pagination feature.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>From the Java developer perspective, create an interface that is annotated with the <code>@Repository</code> annotation and optionally extends one of the built-in repository interfaces.</p>
+</div>
+<div class="paragraph">
+<p>So, given a <code>Product</code> entity where the ID is a <code>long</code> type, the repository would be:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span style="color:#007">@Repository</span>
+<span style="color:#088;font-weight:bold">public</span> <span style="color:#339;font-weight:bold">interface</span> <span style="color:#B06;font-weight:bold">ProductRepository</span> <span style="color:#088;font-weight:bold">extends</span> BasicRepository&lt;Product, <span style="color:#0a8;font-weight:bold">Long</span>&gt; {
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>There is no nomenclature restriction to make mandatory the <code>Repository</code> suffix. Such as, you might represent the repository of the Car&#8217;s entity as a <code>Garage</code> instead of <code>CarRepository</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span style="color:#007">@Repository</span>
+<span style="color:#088;font-weight:bold">public</span> <span style="color:#339;font-weight:bold">interface</span> <span style="color:#B06;font-weight:bold">Garage</span> <span style="color:#088;font-weight:bold">extends</span> BasicRepository&lt;Car, <span style="color:#0a8;font-weight:bold">String</span>&gt; {
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Jakarta Data empowers developers to take control of their data access and management by providing the flexibility to define two essential components:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Entity Classes and Mappings:</strong> Developers can define a set of entity classes and mappings tailored to a specific data store. These entities represent the data structure and schema, offering a powerful means to interact with the underlying data.</p>
+</li>
+<li>
+<p><strong>Repository Interfaces:</strong> Jakarta Data encourages the creation of one or more repository interfaces, following predefined rules that include the guidelines set forth by this specification. These interfaces are the gateways to accessing and manipulating the data, offering a structured and efficient way to perform data operations.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Subsequently, an implementation of Jakarta Data, specifically tailored to the chosen data store, assumes the responsibility of implementing each repository interface. This symbiotic relationship between developers and Jakarta Data ensures that data access and manipulation remain consistent, efficient, and aligned with best practices.</p>
+</div>
+<div class="paragraph">
+<p>Jakarta Data empowers developers to shape their data access strategies by defining entity classes and repositories, with implementations seamlessly adapting to the chosen data store. This flexibility and Jakarta Data&#8217;s persistence-agnostic approach promote robust data management within Java applications.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_entity_classes">Entity Classes</h3>
+<div class="paragraph">
+<p>In Jakarta Data, an entity refers to a fundamental data representation and management building block. It can be conceptually understood in several aspects:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Entity Classes</strong>: Entity classes are simple Java objects equipped with fields or accessor methods that designate each property of the entity. Depending on your data storage needs, you may use annotations from the Jakarta Persistence specification, such as <code>jakarta.persistence.Entity</code>, <code>jakarta.persistence.Id</code>, and <code>jakarta.persistence.Column</code>, to define and customize entities for relational databases. Alternatively, for NoSQL databases, you can use annotations from the Jakarta NoSQL specification, including <code>jakarta.nosql.Entity</code>, <code>jakarta.nosql.Id</code>, and <code>jakarta.nosql.Column</code>.</p>
+</li>
+<li>
+<p><strong>Data Schema</strong>: Abstractly, an entity or entity type serves as a schema for data. It defines the structure and properties of the data it represents. This schema can be as simple as a set of typed fields, similar to the relational model, or more structured, as found in document data stores. The schema can be explicitly defined, as in the case of SQL Data Definition Language (DDL) declarations for relational tables, or it can be implicit, common in key/value stores.</p>
+</li>
+<li>
+<p><strong>Persistence and Representation</strong>: Entities are associated with persistent data, meaning the data outlives any specific Java process utilizing it. Each persistent instantiation of the schema is distinguishable by a unique identifier. For example, a row of a relational database table is identifiable by the value of its primary key. In Java, these entities are represented as classes, referred to as entity classes. It&#8217;s important to note that multiple instances of the entity class within a Java program can represent a single persistent instance of the schema.</p>
+</li>
+<li>
+<p><strong>Provider Differentiation</strong>: To maintain clarity and specify the desired provider when using Jakarta Data, it&#8217;s recommended that applications do not mix Entity annotations from different models. This practice allows the Entity annotation to indicate the desired provider, especially in cases where multiple types of Jakarta Data providers are available. A Jakarta Data provider must provide implementation of repositories for Entity types having the Entity annotations that it supports, ignoring Entity types only having identifiable Entity annotations that the Jakarta Data provider does not support. The latter are to be handled by other Jakarta Data providers that do support the other types of Entity annotations.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>An entity within Jakarta Data encompasses the Java class representing the data and the schema, persistence characteristics, and provider-specific annotations, all working together to simplify data access and management within Java applications. While a Jakarta Data provider might require a default constructor and work primarily with mutable entities, Jakarta Data allows for the use of immutable entity classes, which are best represented as Java records.</p>
+</div>
+<div class="sect3">
+<h4 id="_programming_model_for_entity_data_in_jakarta_data">Programming Model for Entity Data in Jakarta Data</h4>
+<div class="paragraph">
+<p>Jakarta Data does not define an entity model of its own, instead borrowing the entity models of other Jakarta standards (Jakarta Persistence and Jakarta NoSQL) and allowing for vendor-specific entity models to be used.  This section defines core concepts that entity models must follow in order to be used with Jakarta Data.  The entity model allows the user to define Java classes that represent data entities. These entities can be stored, retrieved, and manipulated in various databases, including key-value, wide-column, document, graph, and relational databases. A programming model for entities ensures that entity classes are well-defined and can be seamlessly integrated with different database technologies.</p>
+</div>
+<div class="paragraph">
+<p>Jakarta Data places requirements on two types of fields within entity classes: basic fields and relation fields. Basic fields represent fundamental data types natively supported by Jakarta Data Providers. Support for basic types is mandatory for all Jakarta Data providers. On the other hand, Domain-Relation fields allow entities to interact with other domain classes or types, enriching data structures, but also making them more complex. Support for Domain-Relation fields varies depending on the Jakarta Data provider and the database type. Jakarta Data does not require support for Domain-Relation entity fields when using Graph databases.</p>
+</div>
+<div class="sect4">
+<h5 id="_basic_types">Basic Types</h5>
+<div class="paragraph">
+<p>A variety of basic types can be used for fields or properties of entity classes. The basic types include:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Basic Data Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Primitive Types and Wrappers</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">All Java primitive types, such as int, double, boolean, etc., and their corresponding java.lang wrapper types (e.g., Integer, Double, Boolean).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Represents text data.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">LocalDate, LocalDateTime, LocalTime, Instant</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Represent date and time-related data.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UUID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Universally Unique Identifier for identifying entities.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">BigInteger, BigDecimal</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Represent large integer and decimal numbers.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">byte[]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Represents binary data.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Enum Types</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Custom enumerated types defined by developers.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Every entity in Jakarta Data must have a unique identifier composed of one or more supported basic types. This unique identifier is crucial for distinguishing individual entities in the database. Entity models that are used with Jakarta Data must define a way for developers to specify the unique identifier. Typically this is done with an <code>@Id</code> annotation, but other means are permitted, such as <code>@EmbeddedId</code> in Jakarta Persistence which defines a compound unique identifier based on an embeddable class, or by naming convention (for example, considering a property to be the unique identifier if it is named id or ends in Id).</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Important</div>
+</td>
+<td class="content">
+It&#8217;s important to note that key-value, wide-column, document, and relational databases support Collection specializations and Maps of the basic types. However, these databases may have different serialization processes, impacting performance and causing impedance mismatch. Developers should consider these side effects when working with collections and maps in their entity models.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>In addition to the basic types, entity models might also choose to support additional types that represent data in a domain-specific manner. These custom types may include complex data structures and objects. Entity models can choose to provide mechanisms to convert these custom types to the supported basic types.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_domain_relation_fields_in_jakarta_data">Domain-Relation Fields in Jakarta Data</h5>
+<div class="paragraph">
+<p>In Jakarta Data, the concept of "Domain-Relation" fields encompasses two distinct types: "component" and "association" fields. These fields enable developers to establish relationships between entities and other domain concepts, enriching the complexity and structure of data entities.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Component Fields</strong>: A component field represents a relationship where one entity is treated as a component of another entity. It implies that the component does not have a life cycle outside the entity to which it belongs. It is an embedded object that exists solely within the context of the owning entity.</p>
+</li>
+<li>
+<p><strong>Association Fields</strong>: Association fields represent semantically weak relationships, often called semantic dependencies, between objects that may not have a direct or strong connection. Unlike component fields, association fields may exist between entities that are otherwise unrelated. Associations can further specialize into aggregation, a specific form of association in which each object involved has its life cycle, yet a notion of ownership also exists.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Definition and implementation of Domain-Relation fields may vary across different Jakarta Data providers. Providers can create annotations, define conventions, or leverage standards like Jakarta Persistence to establish these relationships effectively.</p>
+</div>
+<div class="paragraph">
+<p>The topic of serialization of Domain-Relation fields within databases is crucial for maintaining data consistency and integrity. The next section discussed how Jakarta Data providers handle the persistence and serialization of Domain-Relation fields for various database types.</p>
+</div>
+<div class="paragraph">
+<p>In Jakarta Data, the serialization of Domain-Relation fields, such as components, can be achieved in two ways.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Merging Fields Directly in the Entity (Component Embedding):</strong></p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>In this approach, a component merges its fields directly within the entity. From the perspective of the persistence layer, the component itself doesn&#8217;t exist as a separate table or document. Instead, it becomes part of the entity&#8217;s structure. This approach leads to a flat representation in the database.</p>
+</div>
+<div class="paragraph">
+<p>Example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span style="color:#088;font-weight:bold">public</span> <span style="color:#339;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Address</span> {
+
+    <span style="color:#088;font-weight:bold">private</span> <span style="color:#0a8;font-weight:bold">String</span> street;
+    <span style="color:#088;font-weight:bold">private</span> <span style="color:#0a8;font-weight:bold">String</span> city;
+    <span style="color:#088;font-weight:bold">private</span> <span style="color:#0a8;font-weight:bold">String</span> postalCode;
+}
+
+<span style="color:#777">//the entity</span>
+<span style="color:#088;font-weight:bold">public</span> <span style="color:#339;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Person</span> {
+    <span style="color:#088;font-weight:bold">private</span> <span style="color:#0a8;font-weight:bold">Long</span> id;
+
+    <span style="color:#088;font-weight:bold">private</span> <span style="color:#0a8;font-weight:bold">String</span> name;
+    <span style="color:#088;font-weight:bold">private</span> Address address;  <span style="color:#777">// This is a component field</span>
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The structure of the entity in a Document, Wide-Column, and Graph database will be like the JSON representation below. The JSON representation is for illustration; the actual representation is an implementation detail of the database. The JSON and the following SQL table are representations resulting from the Java classes.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="json">{
+  <span style="color:#606"><span style="color:#404">&quot;</span><span>id</span><span style="color:#404">&quot;</span></span>: <span style="color:#00D">1</span>,
+  <span style="color:#606"><span style="color:#404">&quot;</span><span>name</span><span style="color:#404">&quot;</span></span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">John Doe</span><span style="color:#710">&quot;</span></span>,
+  <span style="color:#606"><span style="color:#404">&quot;</span><span>street</span><span style="color:#404">&quot;</span></span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">123 Main St</span><span style="color:#710">&quot;</span></span>,
+  <span style="color:#606"><span style="color:#404">&quot;</span><span>city</span><span style="color:#404">&quot;</span></span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Sampleville</span><span style="color:#710">&quot;</span></span>,
+  <span style="color:#606"><span style="color:#404">&quot;</span><span>postalCode</span><span style="color:#404">&quot;</span></span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">12345</span><span style="color:#710">&quot;</span></span>
+}</code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">id</th>
+<th class="tableblock halign-left valign-top">name</th>
+<th class="tableblock halign-left valign-top">street</th>
+<th class="tableblock halign-left valign-top">city</th>
+<th class="tableblock halign-left valign-top">postalCode</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">John Doe</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">123 Main St</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sampleville</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">12345</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>This approach allows for a flat and denormalized structure in the database, making it suitable for a variety of database types.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>* Second Approach: Storing Components in Separate Tables (Relational Databases) or as Subdocuments/UDTs (NoSQL Databases)*</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>This approach is typically employed for more complex relationships and associations within the domain model, allowing for greater flexibility and scalability. It involves storing components, such as the <code>Passport</code> in the example, in separate tables for relational databases or as subdocuments or User-Defined Types (UDTs) for NoSQL databases. This method is suitable for scenarios where an association exists between one entity and another.</p>
+</div>
+<div class="paragraph">
+<p>For instance, consider the <code>Citizen</code> and <code>Passport</code> classes. In a relational database, this approach results in two separate tables, each representing an entity with its associated persistence context. In contrast, for a NoSQL database like a Document database, the <code>Passport</code> can still act as a component within the <code>Citizen</code> entity, signifying that a <code>Passport</code> is closely tied to a <code>Citizen</code>. However, the modeling may vary depending on the specific NoSQL database and its capabilities.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span style="color:#088;font-weight:bold">public</span> <span style="color:#339;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Passport</span> {
+    <span style="color:#088;font-weight:bold">private</span> <span style="color:#0a8;font-weight:bold">Long</span> id;
+    <span style="color:#088;font-weight:bold">private</span> <span style="color:#0a8;font-weight:bold">String</span> passportNumber;
+    <span style="color:#088;font-weight:bold">private</span> LocalDate expirationDate;
+}
+
+<span style="color:#088;font-weight:bold">public</span> <span style="color:#339;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Citizen</span> {
+    <span style="color:#088;font-weight:bold">private</span> <span style="color:#0a8;font-weight:bold">Long</span> id;
+    <span style="color:#088;font-weight:bold">private</span> <span style="color:#0a8;font-weight:bold">String</span> name;
+    <span style="color:#088;font-weight:bold">private</span> Passport passport; <span style="color:#777">// One-to-One relationship with Passport for relational database</span>
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Here are some possible representations of the <code>Citizen</code> and <code>Passport</code> entities in table and JSON formats:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. Citizen Table:</caption>
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">id (Primary Key)</th>
+<th class="tableblock halign-left valign-top">name</th>
+<th class="tableblock halign-left valign-top">passport_id (Foreign Key)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">John Doe</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 2. Passport Table:</caption>
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">id (Primary Key)</th>
+<th class="tableblock halign-left valign-top">passportNumber</th>
+<th class="tableblock halign-left valign-top">expirationDate</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A123456</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2023-12-31</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>These tables represent the data from the JSON structure you provided earlier.
+In a relational database, the <code>Citizen</code> and <code>Passport</code> entities are stored in separate tables, connected by a foreign key relationship.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="json">{
+  <span style="color:#606"><span style="color:#404">&quot;</span><span>id</span><span style="color:#404">&quot;</span></span>: <span style="color:#00D">1</span>,
+  <span style="color:#606"><span style="color:#404">&quot;</span><span>name</span><span style="color:#404">&quot;</span></span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">John Doe</span><span style="color:#710">&quot;</span></span>,
+  <span style="color:#606"><span style="color:#404">&quot;</span><span>passport</span><span style="color:#404">&quot;</span></span>: {
+    <span style="color:#606"><span style="color:#404">&quot;</span><span>passportNumber</span><span style="color:#404">&quot;</span></span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">A123456</span><span style="color:#710">&quot;</span></span>,
+    <span style="color:#606"><span style="color:#404">&quot;</span><span>expirationDate</span><span style="color:#404">&quot;</span></span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">2023-12-31</span><span style="color:#710">&quot;</span></span>
+  }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Entities in a domain model often have relationships with other entities. In some cases, an entity may have a collection of another type of entity, creating a one-to-many or many-to-many relationship. This scenario explores how such relationships are represented and managed in the context of Jakarta Data.</p>
+</div>
+<div class="paragraph">
+<p>Consider the example of an <code>Author</code> entity associated with multiple <code>Book</code> entities. This relationship allows an author to be linked to multiple books they have authored. While this structure remains relatively unchanged for NoSQL databases, it introduces specific considerations in relational databases, where it typically generates auxiliary tables to manage the relationship. We&#8217;ll explore these representations in both JSON and relational database formats.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span style="color:#777">// Entity</span>
+<span style="color:#088;font-weight:bold">public</span> <span style="color:#339;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Author</span> {
+
+    <span style="color:#088;font-weight:bold">private</span> <span style="color:#0a8;font-weight:bold">UUID</span> id;
+
+    <span style="color:#088;font-weight:bold">private</span> <span style="color:#0a8;font-weight:bold">String</span> name;
+
+    <span style="color:#088;font-weight:bold">private</span> <span style="color:#0a8;font-weight:bold">List</span>&lt;<span style="color:#0a8;font-weight:bold">Book</span>&gt; books;
+}
+
+<span style="color:#777">// If in a relational database, Book might also be an entity</span>
+<span style="color:#088;font-weight:bold">public</span> <span style="color:#339;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Book</span> {
+
+    <span style="color:#777">// This field might not be required for some NoSQL database modeling</span>
+    <span style="color:#088;font-weight:bold">private</span> <span style="color:#0a8;font-weight:bold">Long</span> id;
+
+    <span style="color:#088;font-weight:bold">private</span> <span style="color:#0a8;font-weight:bold">String</span> title;
+
+    <span style="color:#088;font-weight:bold">private</span> <span style="color:#0a8;font-weight:bold">String</span> category;
+
+    <span style="color:#777">// Other fields and methods</span>
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="json">{
+  <span style="color:#606"><span style="color:#404">&quot;</span><span>id</span><span style="color:#404">&quot;</span></span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">6f6d665d-5585-46cd-8b9b-61a559de0e13</span><span style="color:#710">&quot;</span></span>,
+  <span style="color:#606"><span style="color:#404">&quot;</span><span>name</span><span style="color:#404">&quot;</span></span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">John Doe</span><span style="color:#710">&quot;</span></span>,
+  <span style="color:#606"><span style="color:#404">&quot;</span><span>books</span><span style="color:#404">&quot;</span></span>: [
+    {
+      <span style="color:#606"><span style="color:#404">&quot;</span><span>title</span><span style="color:#404">&quot;</span></span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Sample Book 1</span><span style="color:#710">&quot;</span></span>,
+      <span style="color:#606"><span style="color:#404">&quot;</span><span>category</span><span style="color:#404">&quot;</span></span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Fiction</span><span style="color:#710">&quot;</span></span>
+    },
+    {
+      <span style="color:#606"><span style="color:#404">&quot;</span><span>title</span><span style="color:#404">&quot;</span></span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Sample Book 2</span><span style="color:#710">&quot;</span></span>,
+      <span style="color:#606"><span style="color:#404">&quot;</span><span>category</span><span style="color:#404">&quot;</span></span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Non-fiction</span><span style="color:#710">&quot;</span></span>
+    }
+  ]
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In the JSON representation, an <code>Author</code> entity can be associated with multiple <code>Book</code> entities within an array.</p>
+</div>
+<div class="paragraph">
+<p>Here are the tables with content based on the JSON data structure:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 3. Author Table:</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">id (Primary Key)</th>
+<th class="tableblock halign-left valign-top">name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">John Doe</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Jane Smith</p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 4. Book Table:</caption>
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">id (Primary Key)</th>
+<th class="tableblock halign-left valign-top">title</th>
+<th class="tableblock halign-left valign-top">category</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sample Book 1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Fiction</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sample Book 2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Non-fiction</p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 5. Author_Book (Auxiliary) Table:</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">author_id (Foreign Key)</th>
+<th class="tableblock halign-left valign-top">book_id (Foreign Key)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>These tables represent the data from the JSON structure you provided earlier, illustrating a many-to-many relationship between authors and books using an auxiliary table.</p>
+</div>
+<div class="paragraph">
+<p>In a relational database, this relationship typically generates three tables: <code>Author</code>, <code>Book</code>, and an auxiliary table <code>Author_Book</code> to manage the many-to-many relationship between authors and books.</p>
+</div>
+<div class="paragraph">
+<p>In some scenarios, books can have multiple authors, and authors can contribute to several books, resulting in a many-to-many (N-N) cardinality relationship. Jakarta Data offers flexibility in representing and managing such complex relationships.</p>
+</div>
+<div class="paragraph">
+<p>This N-N relationship typically generates a dedicated table to manage the associations between books and authors in a relational database. However, NoSQL databases may take a different approach, especially in cases where denormalization and data duplication are favored for query-driven designs.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Important</div>
+</td>
+<td class="content">
+The key-value database might support these fields, generating a single BLOB value. However, the serialization process for such fields may vary depending on the Jakarta Data provider and the specific key-value database used.
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+The Graph database is not required to support Domain-Relation types, but it might be used for aggregate query returns or as a read-only field.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_recursion_at_domain_relation_fields_in_jakarta_data">Recursion at Domain-Relation Fields in Jakarta Data</h5>
+<div class="paragraph">
+<p>In the context of Jakarta Data, the term "recursion" pertains to the ability to manage hierarchical or nested relationships between entities. This capability is essential when dealing with complex domain models involving associations, aggregations, or compositions between various entity types. Jakarta Data ensures these relationships are correctly mapped and maintained within the database, enabling consistent data retrieval and manipulation.</p>
+</div>
+<div class="paragraph">
+<p>For relational databases, Jakarta Data requires support of recursive relationships. If one entity type is associated with or contains another entity type, the Jakarta Data provider for relational databases must establish the required table structures and foreign key constraints to uphold these relationships. This approach guarantees data integrity and consistency when working with the database.</p>
+</div>
+<div class="paragraph">
+<p>For other types of databases, Jakarta Data does not require explicit support for recursive relationships.  In NoSQL databases, data is often stored in a denormalized or nested document format, making it more challenging to enforce strict hierarchical relationships. Instead, NoSQL databases may emphasize query-driven design rather than explicit mapping or management of recursive relationships.</p>
+</div>
+<div class="paragraph">
+<p>In instances where a Jakarta Data provider for NoSQL databases encounters a recursive relationship that it cannot support due to the specific characteristics of the database, it must throw a <code>jakarta.data.exceptions.MappingException</code> or an appropriate subclass of <code>MappingException</code>. This exception notifies developers that the database does not support the relationship.</p>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_type_safe_access_to_entity_attributes">Type-safe Access to Entity Attributes</h4>
+<div class="paragraph">
+<p>Jakarta Data provides a static metamodel that allows entity attributes to be accessed by applications in a type-safe manner.</p>
+</div>
+<div class="paragraph">
+<p>For each entity class, the application developer can choose to define a separate class, referred to as the metamodel class, following a prescribed set of conventions. The application developer annotates the metamodel class with <code>@StaticMetamodel</code>, specifying the entity class as its <code>value</code>. The metamodel class must contain one or more fields of type <code>jakarta.data.model.Attribute</code> with modifiers <code>public</code>, <code>static</code>, <code>final</code>, with each field named after an entity attribute. The application sets the value of each field to an uninitialized instance obtained from the <code>Attribute.get</code> method. A Jakarta Data provider that provides a repository for the entity class must initialize each <code>Attribute</code> field for which the field name corresponds to an entity attribute name.</p>
+</div>
+<div class="sect4">
+<h5 id="_application_requirements_for_a_metamodel_class">Application Requirements for a Metamodel Class</h5>
+<div class="paragraph">
+<p>For each entity class for which the application wishes to access the metamodel,</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The application defines a class (the metamodel class) and annotates it with the <code>@StaticMetamodel</code> annotation.</p>
+</li>
+<li>
+<p>The application specifies the <code>value</code> of the <code>@StaticMetamodel</code> annotation to be an entity class that the application uses in a repository as the result type of a find method or the parameter type of an insert, update, save, or delete method.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>For each field of the metamodel class,</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The field type must be <code>jakarta.data.model.Attribute</code>.</p>
+</li>
+<li>
+<p>The field must have the <code>public</code> modifier.</p>
+</li>
+<li>
+<p>The field must have the <code>static</code> modifier.</p>
+</li>
+<li>
+<p>The field must have the <code>final</code> modifier.</p>
+</li>
+<li>
+<p>The name of the field, ignoring case, must match the name of an entity attribute, with the <code>_</code> character in the field name delimiting the attribute names of hierarchical structures or relationships, such as embedded classes.</p>
+</li>
+<li>
+<p>The value of the field must be a unique instance obtained from the <code>Attribute.get</code> method.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>If the entity class has a unique identifier that is represented by a single entity attribute, then the application can also include a field that follows the above criteria, except that it has a field name of <code>id</code>.</p>
+</div>
+<div class="paragraph">
+<p>The application is not required to include fields for all entity attributes.</p>
+</div>
+<div class="paragraph">
+<p>The application can use the field values of the metamodel class to obtain artifacts relating to the entity attribute in a type-safe manner, for example, <code>Book_.title.asc()</code> or <code>Sort.asc(Book_.title.name())</code> rather than <code>Sort.asc("title")</code>.</p>
+</div>
+<div class="paragraph">
+<p>If the application defines repositories for the same entity class across multiple Jakarta Data providers, no guarantee is made of the order in which the fields of the metamodel class are assigned by the Jakarta Data providers.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_jakarta_data_provider_requirements_for_a_metamodel_class">Jakarta Data Provider Requirements for a Metamodel Class</h5>
+<div class="paragraph">
+<p>The Jakarta Data provider observes classes that are annotated with the <code>@StaticMetamodel</code> annotation. If the <code>value</code> of the <code>@StaticMetamodel</code> annotation is an entity class for which the Jakarta Data provides a repository implementation, then the Jakarta Data provider must initialize, via the <code>Attribute.init</code> method, the value of each field meeting the criteria that is defined in the "Application Requirements for a Metamodel Class" above with the corresponding entity attribute name. The value of the field that is named <code>id</code>, if present, must be initialized by the Jakarta Data provider with the attribute information for the unique identifier if the unique identifier is a single entity attribute.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_example_metamodel_class_and_usage">Example Metamodel Class and Usage</h5>
+<div class="paragraph">
+<p>Example entity class:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span style="color:#007">@Entity</span>
+<span style="color:#088;font-weight:bold">public</span> <span style="color:#339;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Product</span> {
+  <span style="color:#088;font-weight:bold">public</span> <span style="color:#339;font-weight:bold">long</span> id;
+  <span style="color:#088;font-weight:bold">public</span> <span style="color:#0a8;font-weight:bold">String</span> name;
+  <span style="color:#088;font-weight:bold">public</span> <span style="color:#339;font-weight:bold">float</span> price;
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Example metamodel class for the entity:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span style="color:#007">@StaticMetamodel</span>(Product.class)
+<span style="color:#088;font-weight:bold">public</span> <span style="color:#339;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Product_</span> {
+  <span style="color:#088;font-weight:bold">public</span> <span style="color:#088;font-weight:bold">static</span> <span style="color:#088;font-weight:bold">final</span> <span style="color:#0a8;font-weight:bold">Attribute</span> id = <span style="color:#0a8;font-weight:bold">Attribute</span>.get();
+  <span style="color:#088;font-weight:bold">public</span> <span style="color:#088;font-weight:bold">static</span> <span style="color:#088;font-weight:bold">final</span> <span style="color:#0a8;font-weight:bold">Attribute</span> name = <span style="color:#0a8;font-weight:bold">Attribute</span>.get();
+  <span style="color:#088;font-weight:bold">public</span> <span style="color:#088;font-weight:bold">static</span> <span style="color:#088;font-weight:bold">final</span> <span style="color:#0a8;font-weight:bold">Attribute</span> price = <span style="color:#0a8;font-weight:bold">Attribute</span>.get();
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Example usage:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span style="color:#0a8;font-weight:bold">List</span>&lt;Product&gt; found = products.findByNameContains(searchPattern,
+                                                  Product_.price.desc(),
+                                                  Product_.name.asc(),
+                                                  Product_.id.asc());</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_query_methods">Query Methods</h3>
+<div class="paragraph">
+<p>In Jakarta Data, besides finding by an ID, custom queries can be written in three ways:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>@Query</code> annotation: Defines a query string in the annotation.</p>
+</li>
+<li>
+<p>Query by Method Name: Defines a query based on naming conventions used in the method name.</p>
+</li>
+<li>
+<p>Query by Parameters: Defines a query based on the method parameter names and a method name prefix.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Warning</div>
+</td>
+<td class="content">
+Due to the variety of data sources, those resources might not work; it varies based on the Jakarta Data implementation and the database engine, which can provide queries on more than a Key or ID or not, such as a Key-value database.
+</td>
+</tr>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_using_the_query_annotation">Using the Query Annotation</h4>
+<div class="paragraph">
+<p>The <code>@Query</code> annotation supports providing a search expression as a String. The specification does not define the query syntax, which may vary between vendors and data sources, such as SQL, JPQL, Cypher, CQL, etc.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span style="color:#007">@Repository</span>
+<span style="color:#088;font-weight:bold">public</span> <span style="color:#339;font-weight:bold">interface</span> <span style="color:#B06;font-weight:bold">ProductRepository</span> <span style="color:#088;font-weight:bold">extends</span> BasicRepository&lt;Product, <span style="color:#0a8;font-weight:bold">Long</span>&gt; {
+  <span style="color:#007">@Query</span>(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">SELECT p FROM Products p WHERE p.name=?1</span><span style="color:#710">&quot;</span></span>)  <span style="color:#777">// example in JPQL</span>
+  Optional&lt;Product&gt; findByName(<span style="color:#0a8;font-weight:bold">String</span> name);
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Jakarta Data also includes the <code>@Param</code> annotation to define a binder annotation, where as with the query expression, each vendor will express the syntax freely such as <code>?</code>, <code>@</code>, etc..</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span style="color:#007">@Repository</span>
+<span style="color:#088;font-weight:bold">public</span> <span style="color:#339;font-weight:bold">interface</span> <span style="color:#B06;font-weight:bold">ProductRepository</span> <span style="color:#088;font-weight:bold">extends</span> BasicRepository&lt;Product, <span style="color:#0a8;font-weight:bold">Long</span>&gt; {
+  <span style="color:#007">@Query</span>(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">SELECT p FROM Products p WHERE p.name=:name</span><span style="color:#710">&quot;</span></span>)  <span style="color:#777">// example in JPQL</span>
+  Optional&lt;Product&gt; findByName(<span style="color:#007">@Param</span>(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">name</span><span style="color:#710">&quot;</span></span>) <span style="color:#0a8;font-weight:bold">String</span> name);
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_query_by_method_name">Query by Method Name</h4>
+<div class="paragraph">
+<p>The Query by method mechanism allows for creating query commands by naming convention.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span style="color:#007">@Repository</span>
+<span style="color:#088;font-weight:bold">public</span> <span style="color:#339;font-weight:bold">interface</span> <span style="color:#B06;font-weight:bold">ProductRepository</span> <span style="color:#088;font-weight:bold">extends</span> BasicRepository&lt;Product, <span style="color:#0a8;font-weight:bold">Long</span>&gt; {
+
+  <span style="color:#0a8;font-weight:bold">List</span>&lt;Product&gt; findByName(<span style="color:#0a8;font-weight:bold">String</span> name);
+
+  <span style="color:#007">@OrderBy</span>(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">price</span><span style="color:#710">&quot;</span></span>)
+  <span style="color:#0a8;font-weight:bold">List</span>&lt;Product&gt; findByNameLike(<span style="color:#0a8;font-weight:bold">String</span> namePattern);
+
+  <span style="color:#007">@OrderBy</span>(value = <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">price</span><span style="color:#710">&quot;</span></span>, descending = <span style="color:#069">true</span>)
+  <span style="color:#0a8;font-weight:bold">List</span>&lt;Product&gt; findByNameLikeAndPriceLessThan(<span style="color:#0a8;font-weight:bold">String</span> namePattern, <span style="color:#339;font-weight:bold">float</span> priceBelow);
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The parsing of query method names follows a specific format:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The method name consists of the subject, the predicate, and optionally the order clause.</p>
+</li>
+<li>
+<p>The subject, defines the action (such as <code>find</code> or <code>delete</code>) , optionally followed by an expression (for example, <code>First10</code>), followed by <code>By</code></p>
+</li>
+<li>
+<p>The predicate defines the query&#8217;s condition or filtering criteria, where multiple conditions are delimited by <code>And</code> or <code>Or</code>. For example, <code>PriceLessThanAndNameLike</code>.</p>
+</li>
+<li>
+<p>The order clause, which is optional, begins with <code>OrderBy</code> and consists of an ordered collection of entity attributes by which to sort results, delimited by <code>Asc</code> or <code>Desc</code> to specify the sort direction of the preceding attribute.</p>
+</li>
+<li>
+<p>The method name is formed by combining the subject, predicate, and order clause, in that order.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Queries can also handle entities with related classes by specifying the relationship using dot notation.</p>
+</div>
+<div class="paragraph">
+<p>Example query methods:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>findByName(String name)</code>: Find entities by the 'name' property.</p>
+</li>
+<li>
+<p><code>findByAgeGreaterThan(int age)</code>: Find entities where 'age' is greater than the specified value.</p>
+</li>
+<li>
+<p><code>findByAuthorName(String authorName)</code>: Find entities by the 'authorName' property of a related entity.</p>
+</li>
+<li>
+<p><code>findByCategoryNameAndPriceLessThan(String categoryName, double price)</code>: Find entities by 'categoryName' and 'price' properties, applying an 'And' condition.</p>
+</li>
+</ul>
+</div>
+<div class="sect4">
+<h5 id="_bnf_grammar_for_query_methods">BNF Grammar for Query Methods</h5>
+<div class="paragraph">
+<p>Query methods allow developers to create database queries using method naming conventions. These methods consist of a subject, predicate, and optional order clause. This BNF notation provides a structured representation for understanding and implementing these powerful querying techniques in your applications.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bnf">&lt;query-method&gt; ::= &lt;subject&gt; &lt;predicate&gt; [&lt;order-clause&gt;]
+&lt;subject&gt; ::= (&lt;action&gt; | &quot;find&quot; &lt;find-expression&gt;) &quot;By&quot;
+&lt;action&gt; ::= &quot;find&quot; | &quot;delete&quot; | &quot;update&quot; | &quot;count&quot; | &quot;exists&quot;
+&lt;find-expression&gt; ::= &quot;First&quot; [&lt;positive-integer&gt;]
+&lt;predicate&gt; ::= &lt;condition&gt; { (&quot;And&quot; | &quot;Or&quot;) &lt;condition&gt; }
+&lt;condition&gt; ::= &lt;property&gt; [&quot;IgnoreCase&quot;] [&quot;Not&quot;] [&lt;operator&gt;]
+&lt;operator&gt; ::= &quot;Contains&quot; | &quot;EndsWith&quot; | &quot;StartsWith&quot; | &quot;LessThan&quot;| &quot;LessThanEqual&quot; | &quot;GreaterThan&quot; | &quot;GreaterThanEqual&quot; | &quot;Between&quot; | &quot;Empty&quot; | &quot;Like&quot; | &quot;In&quot; | &quot;Null&quot; | &quot;True&quot; | &quot;False&quot;
+&lt;property&gt; ::= &lt;identifier&gt; | &lt;identifier&gt; &quot;_&quot; &lt;property&gt;
+&lt;identifier&gt; ::= &lt;word&gt;
+&lt;positive-integer&gt; ::= &lt;digit&gt; { &lt;digit&gt; }
+&lt;order-clause&gt; ::= &quot;OrderBy&quot; { &lt;order-item&gt; } ( &lt;order-item&gt; | &lt;property&gt; )
+&lt;order-item&gt; ::= &lt;property&gt; (&quot;Asc&quot; | &quot;Desc&quot;)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Explanation of the BNF elements:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>&lt;query-method&gt;</code>: Represents a query method, which consists of a subject, a predicate, and an optional order clause.</p>
+</li>
+<li>
+<p><code>&lt;subject&gt;</code>: Defines the action (e.g., "find" or "delete") followed by an optional expression and "By."</p>
+</li>
+<li>
+<p><code>&lt;action&gt;</code>: Specifies the action, such as "find" or "delete."</p>
+</li>
+<li>
+<p><code>&lt;find-expression&gt;</code>: Represents an optional expression for find operations, such as "First10."</p>
+</li>
+<li>
+<p><code>&lt;predicate&gt;</code>: Represents the query&#8217;s condition or filtering criteria, which can include multiple conditions separated by "And" or "Or."</p>
+</li>
+<li>
+<p><code>&lt;condition&gt;</code>: Specifies a property and an operator for the condition.</p>
+</li>
+<li>
+<p><code>&lt;operator&gt;</code>: Defines the operator for the condition, like "Between" or "LessThan."</p>
+</li>
+<li>
+<p><code>&lt;property&gt;</code>: Represents a property name, which can include underscores for nested properties.</p>
+</li>
+<li>
+<p><code>&lt;identifier&gt;</code>: Represents a word (e.g., property names, action names, etc.).</p>
+</li>
+<li>
+<p><code>&lt;positive-integer&gt;</code>: Represents a whole number greater than zero.</p>
+</li>
+<li>
+<p><code>&lt;order-clause&gt;</code>: Specifies the optional order clause, starting with "OrderBy" and followed by one or more order items.</p>
+</li>
+<li>
+<p><code>&lt;order-item&gt;</code>: Represents an ordered collection of entity attributes by which to sort results, including an optional "Asc" or "Desc" to specify the sort direction.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_entity_property_names">Entity Property Names</h5>
+<div class="paragraph">
+<p>Within an entity, property names must be unique ignoring case. For simple entity properties, the field or accessor method name serves as the entity property name. In the case of embedded classes, entity property names are computed by concatenating the field or accessor method names at each level.</p>
+</div>
+<div class="paragraph">
+<p>Assume an Order entity has an Address with a ZipCode. In that case, the access is <code>order.address.zipCode</code>. This form is used within annotations, such as <code>@Query</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span style="color:#007">@Repository</span>
+<span style="color:#088;font-weight:bold">public</span> <span style="color:#339;font-weight:bold">interface</span> <span style="color:#B06;font-weight:bold">OrderRepository</span> <span style="color:#088;font-weight:bold">extends</span> BasicRepository&lt;Order, <span style="color:#0a8;font-weight:bold">Long</span>&gt; {
+
+  <span style="color:#007">@Query</span>(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">SELECT order FROM Order order WHERE order.address.zipCode=?1</span><span style="color:#710">&quot;</span></span>)
+  <span style="color:#0a8;font-weight:bold">List</span>&lt;Order&gt; withZipCode(ZipCode zipCode);
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The resolution algorithm for identifying properties in query methods by method name, with manual traversal points, is defined as follows:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Method Name Parsing</strong>:: The query method&#8217;s name is parsed to identify the property or properties being referenced. Method names in query methods typically follow a pattern of "findBy[Property]", where "[Property]" represents the name of the property you want to query by.</p>
+</li>
+<li>
+<p><strong>Property Extraction</strong>:: The property name is extracted from the method name by removing the "findBy" prefix. For example, in the query method <code>findByAddressZipCode</code>, the property name extracted is <code>AddressZipCode</code>.</p>
+</li>
+<li>
+<p><strong>Property Name Capitalization</strong>:: The extracted property name is treated as is, with its original capitalization. For example, if the property name is <code>AddressZipCode</code>, it remains in camel case.</p>
+</li>
+<li>
+<p><strong>Manual Traversal Points</strong>:: To resolve ambiguity or to specify traversal through nested properties, underscores (<code>_</code>) can be used within the method name. Each underscore represents a traversal point to access nested properties. For example, <code>findByAddress_ZipCode</code> explicitly indicates traversal to the <code>Address</code> object&#8217;s <code>ZipCode</code> property.</p>
+</li>
+<li>
+<p><strong>Domain Class Property Lookup</strong>: The framework checks the domain class associated with the repository for a property with the same name as the extracted property name (uncapitalized) in a case-insensitive manner. If the domain class has a property named <code>addressZipCode</code> or <code>addresszipcode</code>, this is considered a successful resolution.</p>
+</li>
+<li>
+<p><strong>Nested Property Handling</strong>:: If the extracted property name includes underscores (<code>_</code>) indicating nested traversal, the framework follows the specified path to resolve the property.</p>
+</li>
+<li>
+<p><strong>Resolution Outcome</strong>:: If the framework successfully identifies a property in the domain class or along the specified traversal path that matches the extracted property name, it uses that property in the query to filter data.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Users are encouraged to follow Java&#8217;s naming standards in formalizing Jakarta Data queries using name conventions, avoiding underscores in field names. The resolution algorithm for property identification relies on "findBy[Property]" naming, allowing manual traversal with underscores. Adhering to the camel case for property names ensures consistency and seamless query method naming in Jakarta Data, enabling effective data filtering and retrieval from domain classes.</p>
+</div>
+<div class="paragraph">
+<p><strong>Scenario 1: Person Repository with findByAddressZipCode(ZipCode zipCode)</strong></p>
+</div>
+<div class="paragraph">
+<p>In this scenario, we have the following data models:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span style="color:#339;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Person</span> {
+  <span style="color:#088;font-weight:bold">private</span> <span style="color:#0a8;font-weight:bold">Long</span> id;
+  <span style="color:#088;font-weight:bold">private</span> Address address;
+}
+
+<span style="color:#339;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Address</span> {
+  <span style="color:#088;font-weight:bold">private</span> Zipcode zipcode;
+}</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The query method <code>findByAddressZipCode</code> takes a <code>ZipCode</code> object as a parameter.</p>
+</li>
+<li>
+<p>The Property Resolution Algorithm will parse the method name and extract <code>AddressZipCode</code>.</p>
+</li>
+<li>
+<p>It will then attempt to resolve the property named <code>addressZipCode</code> in the <code>Person</code> class, following automatic class splitting by camel case.</p>
+</li>
+<li>
+<p>Since the <code>Person</code> class has an <code>Address</code> property, it will recursively follow the path to the <code>Address</code> class.</p>
+</li>
+<li>
+<p>In the <code>Address</code> class, it will identify the <code>zipcode</code> property and filter <code>Person</code> records based on the provided <code>Zipcode</code> object within the <code>Address</code> object.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Scenario 2: People Repository with findByAddressZipCode(String addressZipCode)</strong></p>
+</div>
+<div class="paragraph">
+<p>In this scenario, we have the following data model:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span style="color:#339;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Person</span> {
+  <span style="color:#088;font-weight:bold">private</span> <span style="color:#0a8;font-weight:bold">Long</span> id;
+  <span style="color:#088;font-weight:bold">private</span> <span style="color:#0a8;font-weight:bold">String</span> addressZipCode;
+}</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The query method <code>findByAddressZipCode</code> takes a <code>String</code> parameter named <code>addressZipCode</code>.</p>
+</li>
+<li>
+<p>The Property Resolution Algorithm will parse the method name and extract <code>AddressZipCode</code>.</p>
+</li>
+<li>
+<p>It will then attempt to resolve the property named <code>addressZipCode</code> in the <code>Person</code> class, following automatic class splitting by camel case.</p>
+</li>
+<li>
+<p>If a property named <code>addressZipCode</code> of type <code>String</code> exists in the <code>Person</code> class or its nested objects, the query will filter <code>Person</code> records based on the provided <code>addressZipCode</code> string.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Scenario 3: OrderRepository` Repository with `findByAddress_ZipCode(ZipCode zipCode)</strong></p>
+</div>
+<div class="paragraph">
+<p>In this scenario, we have the following data models:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span style="color:#339;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Order</span> {
+  <span style="color:#088;font-weight:bold">private</span> <span style="color:#0a8;font-weight:bold">Long</span> id;
+  <span style="color:#088;font-weight:bold">private</span> <span style="color:#0a8;font-weight:bold">String</span> addressZipCode;
+  <span style="color:#088;font-weight:bold">private</span> Address address;
+}
+
+<span style="color:#339;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Address</span> {
+  <span style="color:#088;font-weight:bold">private</span> Zipcode zipcode;
+}</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The query method <code>findByAddress_ZipCode</code> takes a <code>Zipcode</code> object as a parameter.</p>
+</li>
+<li>
+<p>The method name includes an underscore (<code>_</code>) indicating manual traversal points.</p>
+</li>
+<li>
+<p>The Property Resolution Algorithm will parse the method name and extract <code>Address_ZipCode</code>, recognizing the underscore as a traversal point.</p>
+</li>
+<li>
+<p>It will then attempt to resolve the property named <code>Address</code> within the <code>Order</code> class, followed by the <code>zipcode</code> property within the <code>Address</code> class, following manual traversal points.</p>
+</li>
+<li>
+<p>If properties <code>Address</code> and <code>ZipCode</code> are found in the appropriate classes or their nested objects, the query will filter <code>Order</code> records based on the provided <code>Zipcode</code> object within the <code>Address</code> object.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Scenario 4: People Repository with findByAddressZipCode(String addressZipCode)</strong></p>
+</div>
+<div class="paragraph">
+<p>In this scenario, we have the following data model:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span style="color:#339;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">Person</span> {
+  <span style="color:#088;font-weight:bold">private</span> <span style="color:#0a8;font-weight:bold">Long</span> id;
+  <span style="color:#088;font-weight:bold">private</span> <span style="color:#0a8;font-weight:bold">String</span> addressZipcode;
+}</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The query method <code>findByAddressZipCode</code> takes a <code>String</code> parameter named <code>addressZipCode</code>.</p>
+</li>
+<li>
+<p>The Property Resolution Algorithm will parse the method name and extract <code>AddressZipCode</code>.</p>
+</li>
+<li>
+<p>It will then attempt to resolve the property named <code>addressZipcode</code> in the <code>Person</code> class, following automatic class splitting by case-insensitive.</p>
+</li>
+<li>
+<p>If a property named <code>addressZipCode</code> of type <code>String</code> exists in the <code>Person</code> class or its nested objects, the query will filter <code>Person</code> records based on the provided <code>addressZipCode</code> string.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Warning</div>
+</td>
+<td class="content">
+Define as a priority following standard Java naming conventions, camel case,  using underscore as the last resort.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>In queries by method name, <code>Id</code> is an alias for the entity property that is designated as the id. Entity property names that are used in queries by method name must not contain reserved words.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_query_by_method_name_keywords">Query by Method Name Keywords</h5>
+<div class="paragraph">
+<p>The following table lists the query-by-method keywords that must be supported by Jakarta Data providers, except where explicitly indicated for a type of database.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Keyword</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Not Required For</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">findBy</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">General query method returning the repository type.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Key-value, Wide-Column</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">deleteBy</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Delete query method returning either no result (void) or the delete count.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Key-value, Wide-Column</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">countBy</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Count projection returning a numeric result.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Key-value, Wide-Column</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">existsBy</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Exists projection, returning as a <code>boolean</code> result.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Key-value, Wide-Column</p></td>
+</tr>
+</tbody>
+</table>
+<div class="ulist NOTE">
+<div class="title">Note</div>
+<ul class="NOTE">
+<li>
+<p>The "Not Required For" column indicates the database types for which the respective keyword is not required or applicable.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Jakarta Data implementations must support the following list of query-by-method keywords, except where indicated for a database type. A repository method must raise <code>java.lang.UnsupportedOperationException</code> or a more specific subclass of the exception if the database does not provide the requested functionality.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Keyword</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Method signature Sample</th>
+<th class="tableblock halign-left valign-top">Not Required For</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">And</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The <code>and</code> operator.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">findByNameAndYear</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Key-value, Wide-Column</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Or</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The <code>or</code> operator.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">findByNameOrYear</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Key-value, Wide-Column</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Not</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Negates the condition that immediately follows the <code>Not</code> keyword. When used without a subsequent keyword, means not equal to.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">findByNameNotLike</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Key-value, Wide-Column</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Between</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Find results where the property is between the given values</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">findByDateBetween</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Key-value, Wide-Column</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Contains</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">For Collection attributes, matches if the collection includes the value. For String attributes, a substring of the String must match the value, which can be a pattern.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">findByPhoneNumbersContains</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Key-value, Wide-Column, Document</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Empty</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Find results where the property is an empty collection or has a null value.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">deleteByPendingTasksEmpty</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Key-value, Wide-Column, Document, Graph</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">EndsWith</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Matches String values with the given ending, which can be a pattern.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">findByProductNameEndsWith</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Key-value, Wide-Column, Document, Graph</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">First</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">For a query with ordered results, limits the quantity of results to the number following First, or if there is no subsequent number, to a single result.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">findFirst10By</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Key-value, Wide-Column, Document, Graph</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">LessThan</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Find results where the property is less than the given value</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">findByAgeLessThan</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Key-value, Wide-Column</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GreaterThan</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Find results where the property is greater than the given value</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">findByAgeGreaterThan</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Key-value, Wide-Column</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">LessThanEqual</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Find results where the property is less than or equal to the given value</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">findByAgeLessThanEqual</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Key-value, Wide-Column</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GreaterThanEqual</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Find results where the property is greater than or equal to the given value</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">findByAgeGreaterThanEqual</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Key-value, Wide-Column</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Like</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Matches String values against the given pattern.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">findByTitleLike</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Key-value, Wide-Column, Document, Graph</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IgnoreCase</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Requests that string values be compared independent of case for query conditions and ordering.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">findByStreetNameIgnoreCaseLike</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Key-value, Wide-Column, Document, Graph</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">In</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Find results where the property is one of the values that are contained within the given list</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">findByIdIn</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Key-value, Wide-Column, Document, Graph</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Null</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Finds results where the property has a null value.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">findByYearRetiredNull</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Key-value, Wide-Column, Document, Graph</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">StartsWith</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Matches String values with the given beginning, which can be a pattern.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">findByFirstNameStartsWith</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Key-value, Wide-Column, Document, Graph</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">True</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Finds results where the property has a boolean value of true.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">findBySalariedTrue</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Key-value, Wide-Column</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">False</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Finds results where the property has a boolean value of false.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">findByCompletedFalse</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Key-value, Wide-Column</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">OrderBy</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specify a static sorting order followed by the property path and direction of ascending.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">findByNameOrderByAge</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Key-value, Wide-Column</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">OrderBy____Desc</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specify a static sorting order followed by the property path and direction of descending.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">findByNameOrderByAgeDesc</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Key-value, Wide-Column</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">OrderBy____Asc</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specify a static sorting order followed by the property path and direction of ascending.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">findByNameOrderByAgeAsc</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Key-value, Wide-Column</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">OrderBy____(Asc|Desc)*(Asc|Desc)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specify several static sorting orders</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">findByNameOrderByAgeAscNameDescYearAsc</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Key-value, Wide-Column</p></td>
+</tr>
+</tbody>
+</table>
+<div class="ulist NOTE">
+<div class="title">Note:</div>
+<ul class="NOTE">
+<li>
+<p>The "Not Required For" column indicates the database types for which the respective keyword is not required or applicable.</p>
+</li>
+</ul>
+</div>
+<div class="sect5">
+<h6 id="_patterns">Patterns</h6>
+<div class="paragraph">
+<p>Wildcard characters for patterns are determined by the data access provider. For relational databases, <code>_</code> matches any one character and <code>%</code> matches 0 or more characters.</p>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_logical_operator_precedence">Logical Operator Precedence</h6>
+<div class="paragraph">
+<p>For relational databases, the logical operator <code>And</code> takes precedence over <code>Or</code>, meaning that <code>And</code> is evaluated on conditions before <code>Or</code> when both are specified on the same method. For other database types, the precedence is limited to the capabilities of the database. For example, some graph databases are limited to precedence in traversal order.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_query_by_parameters">Query by Parameters</h4>
+<div class="paragraph">
+<p>The Query by Parameters pattern determines the query conditions from the names of the method&#8217;s parameters that are not of type <code>Limit</code>, <code>Sort</code>, and <code>Pageable</code>. Each query condition is an equality comparison, comparing the parameter value against the value of the entity attribute whose name matches the method parameter name. For embedded attributes, the <code>_</code> character is used as the delimiter in the method parameter name. All query conditions are implicitly joined by the <code>And</code> operator, such that all must match for an entity to be considered matching.</p>
+</div>
+<div class="paragraph">
+<p>A method name prefix, either <code>find</code> or <code>exists</code> or <code>count</code> or <code>delete</code>, specifies the type of query to be performed. The remainder of the method name can be any valid characters, except that it must not include the <code>By</code> keyword, which is what distinguishes it from Query by Method Name.</p>
+</div>
+<div class="paragraph">
+<p>Query by Parameters relies on parameter names that are unavailable at run time unless the developer specifies the <code>-parameters</code> compiler option. If the Jakarta Data provider does not process repositories at build time, the developer must specify the compiler option to use Query by Parameters.</p>
+</div>
+<div class="paragraph">
+<p>Example repository methods that use Query by Parameters:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span style="color:#007">@Repository</span>
+<span style="color:#088;font-weight:bold">public</span> <span style="color:#339;font-weight:bold">interface</span> <span style="color:#B06;font-weight:bold">ProductRepository</span> <span style="color:#088;font-weight:bold">extends</span> BasicRepository&lt;Product, <span style="color:#0a8;font-weight:bold">Long</span>&gt; {
+
+  <span style="color:#777">// Assumes that the Product entity has attributes: yearProduced</span>
+  <span style="color:#0a8;font-weight:bold">List</span>&lt;Product&gt; findMadeIn(<span style="color:#339;font-weight:bold">int</span> yearProduced, Sort... sorts);
+
+  <span style="color:#777">// Assumes that the Product entity has attributes: name, status.</span>
+  <span style="color:#339;font-weight:bold">boolean</span> existsWithStatus(<span style="color:#0a8;font-weight:bold">String</span> name, Status status);
+
+  <span style="color:#777">// Assumes that the Product entity has attributes: yearProduced</span>
+  <span style="color:#339;font-weight:bold">void</span> deleteOutdated(<span style="color:#339;font-weight:bold">int</span> yearProduced);
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>After the query condition parameters, Query by Parameters <code>find</code> methods can include additional parameters of the types listed in the section "Special Parameter Handling".</p>
+</div>
+<div class="paragraph">
+<p>Refer to the Jakarta Data module JavaDoc section on "Return Types for Repository Methods" for a listing of valid return types for Query by Parameters methods.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_special_parameter_handling">Special Parameter Handling</h4>
+<div class="paragraph">
+<p>Jakarta Data also supports particular parameters to define pagination and sorting.</p>
+</div>
+<div class="paragraph">
+<p>Jakarta Data recognizes, when specified on a repository method after the query parameters, specific types, like <code>Limit</code>, <code>Pageable</code>, and <code>Sort</code>, to dynamically apply limits, pagination, and sorting to queries. The following example demonstrates these features:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span style="color:#007">@Repository</span>
+<span style="color:#088;font-weight:bold">public</span> <span style="color:#339;font-weight:bold">interface</span> <span style="color:#B06;font-weight:bold">ProductRepository</span> <span style="color:#088;font-weight:bold">extends</span> BasicRepository&lt;Product, <span style="color:#0a8;font-weight:bold">Long</span>&gt; {
+
+  <span style="color:#0a8;font-weight:bold">List</span>&lt;Product&gt; findByName(<span style="color:#0a8;font-weight:bold">String</span> name, <span style="color:#0a8;font-weight:bold">Pageable</span> pageable);
+
+  <span style="color:#0a8;font-weight:bold">List</span>&lt;Product&gt; findByNameLike(<span style="color:#0a8;font-weight:bold">String</span> pattern, Limit max, Sort... sorts);
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can define simple sorting expressions by using property names.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">Sort name = Sort.asc(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">name</span><span style="color:#710">&quot;</span></span>);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can combine sorting with a starting page and maximum page size by using property names.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span style="color:#0a8;font-weight:bold">Pageable</span> pageable = <span style="color:#0a8;font-weight:bold">Pageable</span>.ofSize(<span style="color:#00D">20</span>).page(<span style="color:#00D">1</span>).sortBy(Sort.desc(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">price</span><span style="color:#710">&quot;</span></span>));
+first20 = products.findByNameLike(name, pageable);</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_methods_with_entity_parameters">Methods With Entity Parameters</h3>
+<div class="paragraph">
+<p>Repository methods with a name that begins with one of the prefixes, <code>save</code> or <code>delete</code>, can have a single entity parameter that is one of the following types, where <code>E</code> is the entity type:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>E</code> - the entity type</p>
+</li>
+<li>
+<p><code>E[]</code> - an array of the entity type</p>
+</li>
+<li>
+<p><code>E&#8230;&#8203;</code> - a variable arguments array of the entity type</p>
+</li>
+<li>
+<p><code>Iterable&lt;E&gt;</code> and subtypes of <code>Iterable&lt;E&gt;</code> - a collection of multiple entities</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Note: A form of <code>delete</code> can be defined in a different manner under the Query by Parameters and Query by Method Name patterns. In those cases, the method can have multiple parameters, none of which can be the entity type.</p>
+</div>
+<div class="sect3">
+<h4 id="_save_methods">Save Methods</h4>
+<div class="paragraph">
+<p>Save methods are a combination of update and insert where entities that are already present in the database are updated and entities that are not present in the database are inserted.</p>
+</div>
+<div class="paragraph">
+<p>The unique identifier is used to determine if an entity exists in the database. If the entity exists in the database and the entity is versioned (for example, with <code>@code jakarta.persistence.Version</code> or by another convention from the entity model such as having an attribute named <code>version</code>), then the version must also match. When updates are saved to the database, the version is automatically incremented. If the version does not match, the <code>save</code> method must raise <code>OptimisticLockingFailureException</code>.</p>
+</div>
+<div class="paragraph">
+<p>A <code>save</code> method parameter that supplies multiple entities might end up updating some and inserting others in the database.</p>
+</div>
+<div class="sect4">
+<h5 id="_generated_values">Generated Values</h5>
+<div class="paragraph">
+<p>When saving to the database, some entity attributes might be automatically generated or automatically incremented in the database. To obtain these values, the user can define the <code>save</code> method to return the entity type or a type that is a collection or array of the entity. Entities that are returned by <code>save</code> methods must include updates that were made to the entity. Jakarta Data does not require updating instances of entities that are supplied as parameters to the method.</p>
+</div>
+<div class="paragraph">
+<p>Example usage:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">product.setPrice(<span style="color:#60E">15.99</span>);
+product = products.save(product);
+<span style="color:#0a8;font-weight:bold">System</span>.out.println(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Saved version </span><span style="color:#710">&quot;</span></span> + product.getVersion() + <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20"> of </span><span style="color:#710">&quot;</span></span> + product);</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_delete_methods">Delete Methods</h4>
+<div class="paragraph">
+<p>Delete methods remove entities from the database based on the unique identifier of the entity parameter value. If the entity is versioned (for example, with <code>@code jakarta.persistence.Version</code> or by another convention from the entity model such as having an attribute named <code>version</code>), then the version must also match. Other entity attributes do not need to match. The the unique identifier of an entity is not found in the database or its version does not match, a <code>delete</code> method with a return type of <code>void</code> or <code>Void</code> must raise <code>OptimisticLockingFailureException</code>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_return_types">Return Types</h4>
+<div class="paragraph">
+<p>Refer to the Jakarta Data module JavaDoc section on "Return Types for Repository Methods" for a listing of valid return types for methods with entity parameters.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_precedence_of_sort_criteria">Precedence of Sort Criteria</h3>
+<div class="paragraph">
+<p>The specification defines different ways of providing sort criteria on queries. This section discusses how these different mechanisms relate to each other.</p>
+</div>
+<div class="sect3">
+<h4 id="_sort_criteria_within_query_language">Sort Criteria within Query Language</h4>
+<div class="paragraph">
+<p>Sort criteria can be hard-coded directly within query language by making use of the <code>@Query</code> annotation. A repository method that is annotated with <code>@Query</code> with a value that contains an <code>ORDER BY</code> clause (or query language equivalent) must not provide sort criteria via the other mechanisms.</p>
+</div>
+<div class="paragraph">
+<p>A repository method that is annotated with <code>@Query</code> with a value that does not contain an <code>ORDER BY</code> clause and ends with a <code>WHERE</code> clause (or query language equivalents to these) can use other mechanisms that are defined by this specification for providing sort criteria.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_static_mechanisms_for_sort_criteria">Static Mechanisms for Sort Criteria</h4>
+<div class="paragraph">
+<p>Sort criteria is provided statically for a repository method by using the <code>OrderBy</code> keyword or by annotating the method with one or more <code>@OrderBy</code> annotations. The <code>OrderBy</code> keyword cannot be intermixed with the <code>@OrderBy</code> annotation or the <code>@Query</code> annotation. Static sort criteria takes precedence over dynamic sort criteria in that static sort criteria is evaluated first. When static sort criteria sorts entities to the same position, dynamic sort criteria is applied to further order those entities.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_dynamic_mechanisms_for_sort_criteria">Dynamic Mechanisms for Sort Criteria</h4>
+<div class="paragraph">
+<p>Sort criteria is provided dynamically to repository methods either via <code>Sort</code> parameters or via a <code>Pageable</code> parameter that has one or more <code>Sort</code> values. <code>Sort</code> and <code>Pageable</code> containing <code>Sort</code> must not both be provided to the same method.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_examples_of_sort_criteria_precedence">Examples of Sort Criteria Precedence</h4>
+<div class="paragraph">
+<p>The following examples work through scenarios where static and dynamic sort criteria are provided to the same method.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span style="color:#777">// Sorts first by type. When type is the same, applies the Pageable's sort criteria</span>
+Page&lt;User&gt; findByNameStartsWithOrderByType(<span style="color:#0a8;font-weight:bold">String</span> namePrefix, <span style="color:#0a8;font-weight:bold">Pageable</span> pagination);
+
+<span style="color:#777">// Sorts first by type. When type is the same, applies the criteria in the Sorts</span>
+<span style="color:#0a8;font-weight:bold">List</span>&lt;User&gt; findByNameStartsWithOrderByType(<span style="color:#0a8;font-weight:bold">String</span> namePrefix, Sort... sorts);
+
+<span style="color:#777">// Sorts first by age. When age is the same, applies the Pageable's sort criteria</span>
+<span style="color:#007">@OrderBy</span>(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">age</span><span style="color:#710">&quot;</span></span>)
+Page&lt;User&gt; findByNameStartsWith(<span style="color:#0a8;font-weight:bold">String</span> namePrefix, <span style="color:#0a8;font-weight:bold">Pageable</span> pagination);
+
+<span style="color:#777">// Sorts first by age. When age is the same, applies the criteria in the Sorts</span>
+<span style="color:#007">@OrderBy</span>(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">age</span><span style="color:#710">&quot;</span></span>)
+<span style="color:#0a8;font-weight:bold">List</span>&lt;User&gt; findByNameStartsWith(<span style="color:#0a8;font-weight:bold">String</span> namePrefix, Sort... sorts);
+
+<span style="color:#777">// Sorts first by name. When name is the same, applies the Pageable's sort criteria</span>
+<span style="color:#007">@Query</span>(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">SELECT u FROM User u WHERE (u.age &gt; ?1)</span><span style="color:#710">&quot;</span></span>)
+<span style="color:#007">@OrderBy</span>(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">name</span><span style="color:#710">&quot;</span></span>)
+KeysetAwarePage&lt;User&gt; olderThan(<span style="color:#339;font-weight:bold">int</span> age, <span style="color:#0a8;font-weight:bold">Pageable</span> pagination);</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_keyset_pagination">Keyset Pagination</h3>
+<div class="paragraph">
+<p>Keyset pagination aims to reduce missed and duplicate results across pages by querying relative to the observed values of entity properties that constitute the sorting criteria. Keyset pagination can also offer an improvement in performance because it avoids fetching and ordering results from prior pages by causing those results to be non-matching. A Jakarta Data provider appends additional conditions to the query and tracks keyset values automatically when <code>KeysetAwareSlice</code> or <code>KeysetAwarePage</code> are used as the repository method return type. The application invokes <code>nextPageable</code> or <code>previousPageable</code> on the keyset aware slice or page to obtain a <code>Pageable</code> which keeps track of the keyset values.</p>
+</div>
+<div class="paragraph">
+<p>For example,</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span style="color:#007">@Repository</span>
+<span style="color:#088;font-weight:bold">public</span> <span style="color:#339;font-weight:bold">interface</span> <span style="color:#B06;font-weight:bold">CustomerRepository</span> <span style="color:#088;font-weight:bold">extends</span> BasicRepository&lt;Customer, <span style="color:#0a8;font-weight:bold">Long</span>&gt; {
+  KeysetAwareSlice&lt;Customer&gt; findByZipcodeOrderByLastNameAscFirstNameAscIdAsc(
+                                 <span style="color:#339;font-weight:bold">int</span> zipcode, <span style="color:#0a8;font-weight:bold">Pageable</span> pageable);
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can obtain the next page with,</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span style="color:#080;font-weight:bold">for</span> (<span style="color:#0a8;font-weight:bold">Pageable</span> p = <span style="color:#0a8;font-weight:bold">Pageable</span>.ofSize(<span style="color:#00D">50</span>); p != <span style="color:#069">null</span>; ) {
+  page = customers.findByZipcodeOrderByLastNameAscFirstNameAscIdAsc(<span style="color:#00D">55901</span>, p);
+  ...
+  p = page.nextPageable();
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Or you can obtain the next (or previous) page relative to a known entity,</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">Customer c = ...
+Pageable p = <span style="color:#0a8;font-weight:bold">Pageable</span>.ofSize(<span style="color:#00D">50</span>).afterKeyset(c.lastName, c.firstName, c.id);
+page = customers.findByZipcodeOrderByLastNameAscFirstNameAscIdAsc(<span style="color:#00D">55902</span>, p);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The sort criteria for a repository method that performs keyset pagination must uniquely identify each entity and must be provided by:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>OrderBy</code> name pattern of the repository method (as in the examples above) or <code>@OrderBy</code> annotation(s) on the repository method.</p>
+</li>
+<li>
+<p><code>Sort</code> parameters of the <code>Pageable</code> that is supplied to the repository method.</p>
+</li>
+</ul>
+</div>
+<div class="sect3">
+<h4 id="_example_of_appending_to_queries_for_keyset_pagination">Example of Appending to Queries for Keyset Pagination</h4>
+<div class="paragraph">
+<p>Without keyset pagination, a Jakarta Data provider that is based on Jakarta Persistence might compose the following JPQL for the <code>findByZipcodeOrderByLastNameAscFirstNameAscIdAsc</code> repository method from the prior example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="jpql">SELECT o FROM Customer o WHERE (o.zipCode = ?1)
+                         ORDER BY o.lastName ASC, o.firstName ASC, o.id ASC</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>When keyset pagination is used, the keyset values from the <code>Cursor</code> of the <code>Pageable</code> are available as query parameters, allowing the Jakarta Data provider to append additional query conditions. For example,</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="jpql">SELECT o FROM Customer o WHERE (o.zipCode = ?1)
+                           AND (   (o.lastName &gt; ?2)
+                                OR (o.lastName = ?2 AND o.firstName &gt; ?3)
+                                OR (o.lastName = ?2 AND o.firstName = ?3 AND o.id &gt; ?4)
+                               )
+                         ORDER BY o.lastName ASC, o.firstName ASC, o.id ASC</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_avoiding_missed_and_duplicate_results">Avoiding Missed and Duplicate Results</h4>
+<div class="paragraph">
+<p>Because searching for the next page of results is relative to a last known position, it is possible with keyset pagination to allow some types of updates to data while pages are being traversed without causing missed results or duplicates to appear. If you add entities to a prior position in the traversal of pages, the shift forward of numerical position of existing entities will not cause duplicates entities to appear in your continued traversal of subsequent pages because keyset pagination does not query based on a numerical position. If you remove entities from a prior position in the traversal of pages, the shift backward of numerical position of existing entities will not cause missed entities in your continued traversal of subsequent pages because keyset pagination does not query based on a numerical position.</p>
+</div>
+<div class="paragraph">
+<p>Other types of updates to data, however, will cause duplicate or missed results. If you modify entity properties which are used as the sort criteria, keyset pagination cannot prevent the same entity from appearing again or never appearing due to the altered values. If you add an entity that you previously removed, whether with different values or the same values, keyset pagination cannot prevent the entity from being missed or possibly appearing a second time due to its changed values.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_restrictions_on_use_of_keyset_pagination">Restrictions on use of Keyset Pagination</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>The repository method signature must return <code>KeysetAwareSlice</code> or <code>KeysetAwarePage</code>. A repository method with return type of <code>KeysetAwareSlice</code> or <code>KeysetAwarePage</code> must raise <code>UnsupportedOperationException</code> if the database is incapable of keyset pagination.</p>
+</li>
+<li>
+<p>The repository method signature must accept a <code>Pageable</code> parameter.</p>
+</li>
+<li>
+<p>Sort criteria must be provided and should be minimal.</p>
+</li>
+<li>
+<p>The combination of provided sort criteria must uniquely identify each entity.</p>
+</li>
+<li>
+<p>Page numbers for keyset pagination are estimated relative to prior page requests or the observed absence of further results and are not accurate. Page numbers must not be relied upon when using keyset pagination.</p>
+</li>
+<li>
+<p>Page totals and result totals are not accurate for keyset pagination and must not be relied upon.</p>
+</li>
+<li>
+<p>A next or previous page can end up being empty. You cannot obtain a next or previous <code>Pageable</code> from an empty page because there are no keyset values relative to which to query.</p>
+</li>
+<li>
+<p>A repository method that is annotated with <code>@Query</code> and performs keyset pagination must omit the <code>ORDER BY</code> clause from the provided query and instead must supply the sort criteria via <code>@OrderBy</code> annotations or <code>Sort</code> parameters of <code>Pageable</code>. The provided query must end with a <code>WHERE</code> clause to which additional conditions can be appended by the Jakarta Data provider. The Jakarta Data provider is not expected to parse query text that is provided by the application.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_keyset_pagination_example_with_sorts">Keyset Pagination Example with Sorts</h4>
+<div class="paragraph">
+<p>Here is an example where an application uses <code>@Query</code> to provide a partial query to which the Jakarta Data provider can generate and append additional query conditions and an <code>ORDER BY</code> clause.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span style="color:#007">@Repository</span>
+<span style="color:#088;font-weight:bold">public</span> <span style="color:#339;font-weight:bold">interface</span> <span style="color:#B06;font-weight:bold">CustomerRepository</span> <span style="color:#088;font-weight:bold">extends</span> BasicRepository&lt;Customer, <span style="color:#0a8;font-weight:bold">Long</span>&gt; {
+  <span style="color:#007">@Query</span>(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">SELECT o FROM Customer o WHERE (o.totalSpent / o.totalPurchases &gt; ?1)</span><span style="color:#710">&quot;</span></span>)
+  KeysetAwareSlice&lt;Customer&gt; withAveragePurchaseAbove(<span style="color:#339;font-weight:bold">float</span> minimum, <span style="color:#0a8;font-weight:bold">Pageable</span> pagination);
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Example traversal of pages:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span style="color:#080;font-weight:bold">for</span> (<span style="color:#0a8;font-weight:bold">Pageable</span> p = <span style="color:#0a8;font-weight:bold">Pageable</span>.ofSize(<span style="color:#00D">25</span>).sortBy(Sort.desc(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">yearBorn</span><span style="color:#710">&quot;</span></span>), Sort.asc(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">name</span><span style="color:#710">&quot;</span></span>), Sort.asc(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">id</span><span style="color:#710">&quot;</span></span>)));
+     p != <span style="color:#069">null</span>; ) {
+  page = customers.withAveragePurchaseAbove(<span style="color:#60E">50.0f</span>, p);
+  ...
+  p = page.nextPageable();
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_precedence_of_repository_methods_in_jakarta_data">Precedence of Repository Methods in Jakarta Data</h3>
+<div class="paragraph">
+<p>In Jakarta Data, repository methods define how data is accessed and manipulated. Understanding the precedence of these methods is essential for controlling query execution and customizing data access in your Java applications. It explores the rules governing the precedence of repository methods in Jakarta Data, clarifying how queries are determined and executed.</p>
+</div>
+<div class="paragraph">
+<p>When composing repository methods in Jakarta Data, there are a several different patterns from which to choose. Jakarta Data providers must support all of the patterns that are defined in this specification: default method implementations, resource accessor methods, custom queries, and query derivation based on method names and parameters. This section clarifies the order of precedence for each pattern that must be used when interpreting the meaning of repository methods.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 6. Precedence Rules for Repository Methods</caption>
+<colgroup>
+<col style="width: 66.6666%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Precedence Rule</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If the method is a default method, the provided implementation takes precedence.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The Jakarta Data provider does not replace the implementation that is provided by the user in the default method.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Otherwise, if the method has no parameters and returns one of (EntityManager/DataSource/Connection), then it is a resource accessor method.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Resource accessor methods allow direct access to underlying data source resources.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Otherwise, if the method is annotated with <code>@Query</code>, the query from the annotation is used.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The <code>@Query</code> annotation defines a custom query.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Otherwise, if the method has a single parameter with a type that is the entity type or array, Iterable, or Iterable subclass of the entity type, determine the operation according to the method name prefix, which can be <code>save</code> or <code>delete</code>.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Methods with entity parameters define operations on one or more entities.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Otherwise, if the method name contains the <code>By</code> keyword, determine the query according to the BNF for Query by Method Name.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Query by method name allows dynamic query generation based on method names and parameters.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Otherwise, process it as Query by Parameters, determining the query from the supplied parameters and the <code>delete</code>, <code>find</code>, <code>count</code>, or <code>exists</code> prefix.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Query by parameters constructs queries based on method parameters and prefixes.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>These rules define the precedence of repository methods in Jakarta Data, allowing developers to control query execution based on specific method characteristics and annotations. Based on the method type and provided annotations, Jakarta Data determines the appropriate query derivation mechanism for database operations.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_jakarta_data_vendor_extension_features">Jakarta Data Vendor Extension Features</h3>
+<div class="paragraph">
+<p>When designing and implementing persistence solutions, Jakarta Data offers a set of powerful extension features that simplify the development process and enhance the overall code design. These features include Default Methods, Interface Queries, and Resource Accessor Methods.</p>
+</div>
+<div class="sect3">
+<h4 id="_default_methods">Default Methods</h4>
+<div class="paragraph">
+<p>Jakarta Data&#8217;s Default Methods feature introduces a novel way of enriching repository interfaces with additional functionality. Default methods allow the creation of methods with default implementations directly within the Interface. These methods can be seamlessly integrated into the repository without breaking existing implementations.</p>
+</div>
+<div class="paragraph">
+<p>For example, consider the following <code>BookRepository</code> interface:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span style="color:#007">@Repository</span>
+<span style="color:#088;font-weight:bold">public</span> <span style="color:#339;font-weight:bold">interface</span> <span style="color:#B06;font-weight:bold">BookRepository</span> <span style="color:#088;font-weight:bold">extends</span> PageableRepository&lt;<span style="color:#0a8;font-weight:bold">Book</span>, <span style="color:#0a8;font-weight:bold">String</span>&gt; {
+
+    <span style="color:#0a8;font-weight:bold">List</span>&lt;<span style="color:#0a8;font-weight:bold">Book</span>&gt; findByCategory(<span style="color:#0a8;font-weight:bold">String</span> category);
+
+    <span style="color:#0a8;font-weight:bold">List</span>&lt;<span style="color:#0a8;font-weight:bold">Book</span>&gt; findByYear(Year year);
+
+    <span style="color:#080;font-weight:bold">default</span> <span style="color:#0a8;font-weight:bold">List</span>&lt;<span style="color:#0a8;font-weight:bold">Book</span>&gt; releasedThisYear(){
+        <span style="color:#080;font-weight:bold">return</span> findByYear(Year.now());
+    }
+
+    <span style="color:#080;font-weight:bold">default</span> <span style="color:#0a8;font-weight:bold">Book</span> register(<span style="color:#0a8;font-weight:bold">Book</span> book, <span style="color:#0a8;font-weight:bold">Event</span>&lt;<span style="color:#0a8;font-weight:bold">Book</span>&gt; event) {
+        event.fire(book);
+        <span style="color:#777">// some logic here</span>
+        <span style="color:#080;font-weight:bold">return</span> <span style="color:#950">this</span>.save(book);
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In this Interface, the <code>releasedThisYear</code> method is a default method that utilizes the <code>findByYear</code> method to retrieve books published in the current year. Additionally, the <code>register</code> method provides a default implementation for registering a book and an event.</p>
+</div>
+<div class="paragraph">
+<p>Benefits for Java Developers:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Smooth Evolution of Interfaces:</strong> Default Methods enable the seamless addition of new methods to existing repository interfaces. It ensures compatibility with existing implementations while incorporating new features.</p>
+</li>
+<li>
+<p><strong>Enhanced Interface Usability:</strong> Developers can create default implementations for common operations within the Interface itself, enhancing the usability of the repository interface.</p>
+</li>
+<li>
+<p><strong>Standardized Behaviors:</strong> Default methods enable the definition of standardized behaviors across different repository interfaces, simplifying code maintenance.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Combine with Interface Queries:
+You can also combine Default Methods with Interface Queries to create comprehensive and reusable repository interfaces that include common queries and default implementations for common operations.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_interface_queries">Interface Queries</h4>
+<div class="paragraph">
+<p>Interface queries are a powerful feature that allows the creation of common queries in separate interfaces, which can then be plugged into repository interfaces. It promotes code reuse and modularity, making it easier to manage and maintain query definitions.</p>
+</div>
+<div class="paragraph">
+<p>For instance, consider the <code>PetQueries</code> interface that defines common queries for pet-related repositories:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span style="color:#088;font-weight:bold">public</span> <span style="color:#339;font-weight:bold">interface</span> <span style="color:#B06;font-weight:bold">PetQueries</span>&lt;T <span style="color:#088;font-weight:bold">extends</span> Pet&gt; {
+
+    <span style="color:#0a8;font-weight:bold">List</span>&lt;T&gt; findByName(<span style="color:#0a8;font-weight:bold">String</span> name);
+
+    <span style="color:#0a8;font-weight:bold">List</span>&lt;T&gt; findByBreed(<span style="color:#0a8;font-weight:bold">String</span> breed);
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>These queries can be integrated into repositories for different pet types, such as <code>DogRepository</code> and <code>CatRepository</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span style="color:#007">@Repository</span>
+<span style="color:#088;font-weight:bold">public</span> <span style="color:#339;font-weight:bold">interface</span> <span style="color:#B06;font-weight:bold">DogRepository</span> <span style="color:#088;font-weight:bold">extends</span> PageableRepository&lt;Dog, <span style="color:#0a8;font-weight:bold">String</span>&gt;,
+        PetQueries&lt;Dog&gt; {
+}
+
+<span style="color:#007">@Repository</span>
+<span style="color:#088;font-weight:bold">public</span> <span style="color:#339;font-weight:bold">interface</span> <span style="color:#B06;font-weight:bold">CatRepository</span> <span style="color:#088;font-weight:bold">extends</span> PageableRepository&lt;Cat, <span style="color:#0a8;font-weight:bold">String</span>&gt;,
+        PetQueries&lt;Cat&gt; {
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This approach centralizes common query definitions, making them easily accessible across multiple repository interfaces.</p>
+</div>
+<div class="paragraph">
+<p>Benefits for Java Developers:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Reusability and Modularity:</strong> Interface Queries facilitate the creation of common query definitions in separate interfaces. These queries can be easily reused across different repository implementations, promoting code reusability.</p>
+</li>
+<li>
+<p><strong>Simplified Code Maintenance:</strong> By centralizing query definitions, Java developers can efficiently manage and update queries across multiple repositories, reducing redundancy and minimizing errors.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Combine with Default Methods:
+Combining Interface Queries and Default Methods creates repository interfaces with standardized queries and default implementations for common operations, enhancing code organization and usability.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_resource_accessor_methods">Resource Accessor Methods</h4>
+<div class="paragraph">
+<p>Jakarta Data providers can be built on top of other technologies, such as Jakarta Persistence or JDBC. At times, users might wish to perform advanced operations using these technologies that are outside the scope of Jakarta Data.</p>
+</div>
+<div class="paragraph">
+<p>To accommodate this, Jakarta Data defines a mechanism for users to obtain resources such as <code>EntityManager</code>, <code>DataSource</code>, and <code>Connection</code> from the Jakarta Data provider.</p>
+</div>
+<div class="paragraph">
+<p>A user can define a repository interface method with no parameters and one of the following return types:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>jakarta.persistence.EntityManager</code> (for a Jakarta Data provider that is backed by Jakarta Persistence)</p>
+</li>
+<li>
+<p><code>javax.sql.DataSource</code> (for a Jakarta Data provider that is backed by JDBC)</p>
+</li>
+<li>
+<p><code>java.sql.Connection</code> (for a Jakarta Data provider that is backed by JDBC)</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The Jakarta Data provider implements the method such that it returns an instance of the type of resource. If the resource type implements <code>java.lang.AutoCloseable</code> and the resource is obtained within the scope of a default method of the repository, then the Jakarta Data provider automatically closes the resource upon completion of the default method. If the method for obtaining the resource is invoked outside the scope of a default method of the repository, then the user is responsible for closing the resource instance.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_extension_features_summary">Extension Features Summary</h4>
+<div class="paragraph">
+<p>In summary, Jakarta Data&#8217;s extension features offer a range of benefits for Java developers. These features empower developers to evolve interfaces gracefully, streamline query management, and implement intricate functionality while maintaining code integrity and design principles.</p>
+</div>
+<div class="paragraph">
+<p>These extension features enhance the capabilities of Jakarta Data repositories, promoting code reusability, modularity, and customization.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2023-10-09 15:39:15 +0300
+</div>
+</div>
+</body>
+</html>

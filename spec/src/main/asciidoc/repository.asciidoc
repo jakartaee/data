@@ -54,7 +54,7 @@ Several vital characteristics define repositories:
 
 Repositories in Jakarta Data serve as efficient gateways for managing and interacting with persistent data, offering a simplified and consistent approach to data access and modification within Java applications.
 
-The parent interface at the root of the hierarchy of built-in interfaces is `DataRepository`. All of the built-in interfaces are extensible. A repository might extend one or more of the built-in interfaces or none of them. Method signatures that are copied from the built-in interfaces to a repository must have the same behavior as defined on the built-in interface.
+The Jakarta Data specification currently supports two types of repositories. The first type consists of built-in interfaces that are parent interfaces from which repositories can inherit. At the root of this hierarchy is the `DataRepository` interface. These built-in interfaces are extensible, meaning a repository can extend one or more of them or none at all. When a repository extends a built-in interface, the method signatures copied from the built-in interfaces must retain the same behavior as defined in the built-in interfaces.
 
 [ditaa]
 ....
