@@ -47,6 +47,7 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
      * @throws UnsupportedOperationException for Key-Value and Wide-Column databases
      *         that use an append model to write data.
      */
+    @Insert
     void insert(T entity);
 
     /**
@@ -60,6 +61,7 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
      * @throws UnsupportedOperationException for Key-Value and Wide-Column databases
      *         that use an append model to write data.
      */
+    @Insert
     void insertAll(Iterable<T> entities);
 
     /**
@@ -79,6 +81,7 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
      * @return true if a matching entity was found in the database to update, otherwise false.
      * @throws NullPointerException if the entity is null.
      */
+    @Update
     boolean update(T entity);
 
     /**
@@ -98,5 +101,6 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
      * @return the number of matching entities that were found in the database to update.
      * @throws NullPointerException if either the iterable is null or any element is null.
      */
+    @Update
     int updateAll(Iterable<T> entities);
 }
