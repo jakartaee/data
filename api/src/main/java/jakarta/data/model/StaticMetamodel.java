@@ -105,9 +105,7 @@ import jakarta.data.Sort;
 @Target(ElementType.TYPE)
 public @interface StaticMetamodel {
     /**
-     * An entity class.
-     *
-     * @return the entity class.
+     * Class being modelled by the annotated class.
      */
     Class<?> value();
 }
