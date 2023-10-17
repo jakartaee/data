@@ -20,9 +20,7 @@ package jakarta.data.model;
 import jakarta.data.Sort;
 
 /**
- * Implemented by the Jakarta Data provider to
- * {@link Attribute#init(Attribute) initialize} an attribute field
- * in the {@link StaticMetamodel}.
+ * Represents an attribute of a Java type.
  */
 public interface Attribute {
     /**

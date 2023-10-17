@@ -20,9 +20,9 @@ import jakarta.data.model.StaticMetamodel;
 
 @StaticMetamodel(AsciiCharacter.class)
 public interface AsciiCharacter_ {
-    public static final Attribute id = Attribute.get();
-    public static final Attribute hexadecimal = Attribute.get();
-    public static final Attribute isControl = Attribute.get();
-    public static final Attribute numericValue = Attribute.get();
-    public static final Attribute thisCharacter = Attribute.get();
+    Attribute id = Attribute.get();
+    Attribute hexadecimal = Attribute.get();
+    Attribute isControl = Attribute.get();
+    Attribute numericValue = Attribute.get();
+    Attribute thisCharacter = Attribute.get();
 }
