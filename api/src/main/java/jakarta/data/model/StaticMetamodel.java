@@ -87,7 +87,7 @@ import jakarta.data.Sort;
  * such as embedded classes.</li>
  * </ul>
  *
- * <p>The Jakarta Data provider must {@link Attribute#init(AttributeInfo) initialize}
+ * <p>The Jakarta Data provider must {@link Attribute#init(Attribute) initialize}
  * each {@code Attribute} value that corresponds to the name of an entity attribute.</p>
  *
  * <p>Additionally, a field that meets the above criteria except for the name
