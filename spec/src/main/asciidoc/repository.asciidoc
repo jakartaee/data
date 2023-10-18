@@ -702,7 +702,7 @@ The corresponding canonical metamodel class, Product, is as follows:
 @StaticMetamodel(Product.class)
 public class Product_ {
   public static final Attribute id = ...;
-  public static final Attribute name= ...;
+  public static final Attribute name = ...;
   public static final Attribute price = ...;
 }
 ----
