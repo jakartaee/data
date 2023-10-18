@@ -644,9 +644,19 @@ In instances where a Jakarta Data provider for NoSQL databases encounters a recu
 
 ==== Type-safe Access to Entity Attributes
 
-Jakarta Data provides a static metamodel that allows entity attributes to be accessed by applications in a type-safe manner.
+Jakarta Data introduces a powerful feature, Static Metamodel, designed to facilitate type-safe access to entity attributes. This feature empowers applications to work with entity attributes securely and predictably.
 
-For each entity class, the application developer can choose to define a separate class, referred to as the metamodel class, following a prescribed set of conventions.
+For each entity class within your application, developers can access a dedicated metamodel class, commonly called a 'Static Metamodel' class. This metamodel class follows a well-defined set of conventions, ensuring consistency and coherence in your data access layer.
+
+The Static Metamodel classes can be produced through various methods:
+
+Firstly, Jakarta Data supports the generation of Static Metamodel classes using any generation tools at build time, such as Java Annotation Processor. This automatic generation occurs during compilation, offering a hassle-free way to obtain type-safe attribute access.
+
+Alternatively, application developers can craft these metamodel classes manually, tailoring them to their specific requirements. This method provides greater control and customization when working with your entity attributes.
+
+Moreover, Jakarta Data allows dynamic access to the metamodel through the 'jakarta.data.metamodel.Metamodel' interface. This dynamic approach is particularly beneficial when dealing with scenarios where the metamodel classes have not been generated or defined beforehand, enabling applications to adapt and interact with entity attributes on the fly.
+
+Jakarta Data's Static Metamodel empowers developers with multiple options to access entity attributes safely, whether through automatic generation, manual creation, or dynamic exploration via the 'jakarta.data.metamodel.Metamodel' interface.
 
 ===== Application Requirements for a Metamodel Class
 
