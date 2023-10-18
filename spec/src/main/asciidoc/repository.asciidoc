@@ -680,13 +680,9 @@ The application can use the field values of the metamodel class to obtain artifa
 
 If the application defines repositories for the same entity class across multiple Jakarta Data providers, no guarantee is made of the order in which the fields of the metamodel class are assigned by the Jakarta Data providers.
 
-===== Jakarta Data Provider Requirements for a Metamodel Class
-
-The Jakarta Data provider observes classes that are annotated with the `@StaticMetamodel` annotation. If the `value` of the `@StaticMetamodel` annotation is an entity class for which the Jakarta Data provides a repository implementation, then the Jakarta Data provider must initialize, via the `Attribute.init` method, the value of each field meeting the criteria that is defined in the "Application Requirements for a Metamodel Class" above with the corresponding entity attribute name. The value of the field that is named `id`, if present, must be initialized by the Jakarta Data provider with the attribute information for the unique identifier if the unique identifier is a single entity attribute.
-
 ===== Example Metamodel Class and Usage
 
-Example entity class:
+Assume the `Product` entity below.
 
 [source,java]
 ----
@@ -698,15 +694,15 @@ public class Product {
 }
 ----
 
-Example metamodel class for the entity:
+The corresponding canonical metamodel class, Product, is as follows:
 
 [source,java]
 ----
 @StaticMetamodel(Product.class)
 public class Product_ {
-  public static final Attribute id = Attribute.get();
-  public static final Attribute name = Attribute.get();
-  public static final Attribute price = Attribute.get();
+  public static final Attribute id = ...;
+  public static final Attribute name= ...;
+  public static final Attribute price = ...;
 }
 ----
 
@@ -719,6 +715,8 @@ List<Product> found = products.findByNameContains(searchPattern,
                                                   Product_.name.asc(),
                                                   Product_.id.asc());
 ----
+
+Jakarta Data providers must support the use of canonical metamodel classes. Jakarta Data providers may, but are not required to, support the use of non-canonical metamodel classes.
 
 === Query by Method Name
 
