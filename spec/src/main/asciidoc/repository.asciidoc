@@ -660,23 +660,21 @@ Jakarta Data's Static Metamodel empowers developers with multiple options to acc
 
 ===== Application Requirements for a Metamodel Class
 
-For each entity class for which the application wishes to access the metamodel,
+This specification introduces the concept of a canonical metamodel, which entails the structure and conventions for creating metamodel classes.
 
-- The application defines a class (the metamodel class) and annotates it with the `@StaticMetamodel` annotation.
-- The application specifies the `value` of the `@StaticMetamodel` annotation to be an entity class that the application uses in a repository as the result type of a find method or the parameter type of an insert, update, save, or delete method.
+- For every entity class "X" located within package "p," a corresponding metamodel class "X_" within package "p" is automatically generated.
+- The name of the metamodel class is derived from the entity class by appending an underscore " _ " to the entity class's name.
+- The metamodel class "X_" is required to be annotated with the `jakarta.persistence.StaticMetamodel` annotation.
 
-For each field of the metamodel class,
+For each field within the metamodel class, the following conditions must be met:
 
-- The field type must be `jakarta.data.model.Attribute`.
-- The field must have the `public` modifier.
-- The field must have the `static` modifier.
-- The field must have the `final` modifier.
-- The name of the field, ignoring case, must match the name of an entity attribute, with the `_` character in the field name delimiting the attribute names of hierarchical structures or relationships, such as embedded classes.
-- The value of the field must be a unique instance obtained from the `Attribute.get` method.
+- The field type must be a `jakarta.data.metamodel.Attribute` or a specialization of it.
+- The field must have a `public` modifier.
+- The field must be declared with a `static` modifier.
+- The field must be declared with a `final` modifier.
+- The field's name must precisely match the corresponding field name within the entity class.
 
-If the entity class has a unique identifier that is represented by a single entity attribute, then the application can also include a field that follows the above criteria, except that it has a field name of `id`.
-
-The application is not required to include fields for all entity attributes.
+These strict conventions ensure that metamodel classes adhere to a well-defined structure, facilitating consistent and reliable access to entity attributes within Jakarta Data.
 
 The application can use the field values of the metamodel class to obtain artifacts relating to the entity attribute in a type-safe manner, for example, `Book_.title.asc()` or `Sort.asc(Book_.title.name())` rather than `Sort.asc("title")`.
 
