@@ -646,7 +646,7 @@ In instances where a Jakarta Data provider for NoSQL databases encounters a recu
 
 Jakarta Data provides a static metamodel that allows entity attributes to be accessed by applications in a type-safe manner.
 
-For each entity class, the application developer can choose to define a separate class, referred to as the metamodel class, following a prescribed set of conventions. The application developer annotates the metamodel class with `@StaticMetamodel`, specifying the entity class as its `value`. The metamodel class must contain one or more fields of type `jakarta.data.model.Attribute` with modifiers `public`, `static`, `final`, with each field named after an entity attribute. The application sets the value of each field to an uninitialized instance obtained from the `Attribute.get` method. A Jakarta Data provider that provides a repository for the entity class must initialize each `Attribute` field for which the field name corresponds to an entity attribute name.
+For each entity class, the application developer can choose to define a separate class, referred to as the metamodel class, following a prescribed set of conventions.
 
 ===== Application Requirements for a Metamodel Class
 
