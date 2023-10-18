@@ -63,6 +63,13 @@ cons public init(java.lang.Throwable)
 supr jakarta.data.exceptions.DataException
 hfds serialVersionUID
 
+CLSS public jakarta.data.exceptions.EntityExistsException
+cons public init(java.lang.String)
+cons public init(java.lang.String,java.lang.Throwable)
+cons public init(java.lang.Throwable)
+supr jakarta.data.exceptions.DataException
+hfds serialVersionUID
+
 CLSS public jakarta.data.exceptions.MappingException
 cons public init(java.lang.String)
 cons public init(java.lang.String,java.lang.Throwable)
@@ -165,6 +172,13 @@ meth public abstract void deleteAll()
 meth public abstract void deleteAll(java.lang.Iterable<? extends {jakarta.data.repository.BasicRepository%0}>)
 meth public abstract void deleteById({jakarta.data.repository.BasicRepository%1})
 meth public abstract void deleteByIdIn(java.lang.Iterable<{jakarta.data.repository.BasicRepository%1}>)
+
+CLSS public abstract interface jakarta.data.repository.CrudRepository<%0 extends java.lang.Object, %1 extends java.lang.Object>
+intf jakarta.data.repository.BasicRepository<{jakarta.data.repository.CrudRepository%0},{jakarta.data.repository.CrudRepository%1}>
+meth public abstract boolean update({jakarta.data.repository.CrudRepository%0})
+meth public abstract int updateAll(java.lang.Iterable<{jakarta.data.repository.CrudRepository%0}>)
+meth public abstract void insert({jakarta.data.repository.CrudRepository%0})
+meth public abstract void insertAll(java.lang.Iterable<{jakarta.data.repository.CrudRepository%0}>)
 
 CLSS public abstract interface jakarta.data.repository.DataRepository<%0 extends java.lang.Object, %1 extends java.lang.Object>
 
