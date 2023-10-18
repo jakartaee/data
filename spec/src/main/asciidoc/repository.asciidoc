@@ -665,14 +665,15 @@ This specification introduces the concept of a canonical metamodel, which entail
 - For every entity class "X" located within package "p," a corresponding metamodel class "X_" within package "p" is automatically generated.
 - The name of the metamodel class is derived from the entity class by appending an underscore " _ " to the entity class's name.
 - The metamodel class "X_" is required to be annotated with the `jakarta.persistence.StaticMetamodel` annotation.
-- Import statements must be included for the needed jakarta.data.metamodel types as appropriate
+- If the class was generated, the jakarta.annotation.Generated annotation should be used to annotate the class.
+- Import statements must be included for the needed jakarta.data.metamodel types as appropriate.
 
 For each field within the metamodel class, the following conditions must be met:
 
 - The field type must be a `jakarta.data.metamodel.Attribute` or a specialization of it.
 - The field must have a `public` modifier.
 - The field must be declared with a `static` modifier.
-- The field must be declared with a `final` modifier.
+- The field can be declared with a `final` modifier.
 - The field's name must precisely match the corresponding field name within the entity class.
 
 These strict conventions ensure that metamodel classes adhere to a well-defined structure, facilitating consistent and reliable access to entity attributes within Jakarta Data.
@@ -717,7 +718,11 @@ List<Product> found = products.findByNameContains(searchPattern,
                                                   Product_.id.asc());
 ----
 
-Jakarta Data providers must support the use of canonical metamodel classes. Jakarta Data providers may, but are not required to, support the use of non-canonical metamodel classes.
+Each Jakarta Data provider has the flexibility to define its bootstrap lifecycle as needed. For instance, in the context of Jakarta Persistence, this might involve creating an entity manager factory for a specific persistence unit. In some NoSQL scenarios, the provider might generate the complete implementation during the build process.
+
+For example, consider a Jakarta Persistence provider that configures and initializes its entity manager factory, which manages the lifecycle of entity managers. On the other hand, a NoSQL database provider might generate schema structures during compilation time, making them available for data storage operations.
+
+It's important to note that Jakarta Data providers have a degree of independence, and there is no guarantee of compatibility between providers. Each provider may offer unique features, optimizations, and behavior, so application developers should know these distinctions when selecting a Jakarta Data provider for their specific use case. Compatibility and behavior can vary significantly among different providers.
 
 === Query by Method Name
 
