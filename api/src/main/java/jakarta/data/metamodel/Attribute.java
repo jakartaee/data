@@ -15,7 +15,7 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.model;
+package jakarta.data.metamodel;
 
 import jakarta.data.Sort;
 

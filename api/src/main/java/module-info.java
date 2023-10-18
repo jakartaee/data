@@ -18,7 +18,6 @@
 
 import jakarta.data.Limit;
 import jakarta.data.Sort;
-import jakarta.data.exceptions.OptimisticLockingFailureException;
 import jakarta.data.page.Pageable;
 import jakarta.data.repository.BasicRepository;
 import jakarta.data.repository.DataRepository;
@@ -750,7 +749,7 @@ import java.util.List;
 //       under: "Wildcard characters for patterns are determined by the data access provider"
 module jakarta.data {
     exports jakarta.data;
-    exports jakarta.data.model;
+    exports jakarta.data.metamodel;
     exports jakarta.data.page;
     exports jakarta.data.repository;
     exports jakarta.data.exceptions;
