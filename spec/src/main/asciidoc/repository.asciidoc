@@ -680,7 +680,11 @@ These strict conventions ensure that metamodel classes adhere to a well-defined 
 
 The application can use the field values of the metamodel class to obtain artifacts relating to the entity attribute in a type-safe manner, for example, `Book_.title.asc()` or `Sort.asc(Book_.title.name())` rather than `Sort.asc("title")`.
 
-If the application defines repositories for the same entity class across multiple Jakarta Data providers, no guarantee is made of the order in which the fields of the metamodel class are assigned by the Jakarta Data providers.
+Each Jakarta Data provider has the flexibility to define its bootstrap lifecycle as needed. For instance, in the context of Jakarta Persistence, this might involve creating an entity manager factory for a specific persistence unit. In some NoSQL scenarios, the provider might generate the complete implementation during the build process.
+
+For example, consider a Jakarta Persistence provider that configures and initializes its entity manager factory, which manages the lifecycle of entity managers. On the other hand, a NoSQL database provider might generate schema structures during compilation time, making them available for data storage operations.
+
+It's important to note that Jakarta Data providers have a degree of independence, and there is no guarantee of compatibility between providers. Each provider may offer unique features, optimizations, and behavior, so application developers should know these distinctions when selecting a Jakarta Data provider for their specific use case. Compatibility and behavior can vary significantly among different providers.
 
 ===== Example Metamodel Class and Usage
 
@@ -717,12 +721,6 @@ List<Product> found = products.findByNameContains(searchPattern,
                                                   Product_.name.asc(),
                                                   Product_.id.asc());
 ----
-
-Each Jakarta Data provider has the flexibility to define its bootstrap lifecycle as needed. For instance, in the context of Jakarta Persistence, this might involve creating an entity manager factory for a specific persistence unit. In some NoSQL scenarios, the provider might generate the complete implementation during the build process.
-
-For example, consider a Jakarta Persistence provider that configures and initializes its entity manager factory, which manages the lifecycle of entity managers. On the other hand, a NoSQL database provider might generate schema structures during compilation time, making them available for data storage operations.
-
-It's important to note that Jakarta Data providers have a degree of independence, and there is no guarantee of compatibility between providers. Each provider may offer unique features, optimizations, and behavior, so application developers should know these distinctions when selecting a Jakarta Data provider for their specific use case. Compatibility and behavior can vary significantly among different providers.
 
 === Query by Method Name
 
