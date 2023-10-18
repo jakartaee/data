@@ -3,7 +3,7 @@
 This package is inherited from the Platform-TCK (https://github.com/eclipse-ee4j/jakartaee-tck/tree/master/src/com/sun/ts/tests/signaturetest)
 
 The latest signature files are updated in the Jakarta Data TCK Repository 
-(data/tck/src/main/resources/ee/jakarta/tck/data/signature) 
+(data/tck/src/main/resources/ee/jakarta/tck/data/framework/signature) 
 generated using sigtest-maven-plugin.jar (version 1.6).
 
 The signature tests are run using the sigtest-maven-plugin.jar and the framework available in this folder.
@@ -18,28 +18,33 @@ The plugin that generates the signature file has been copied below for reference
 
 
 ```xml
-<plugin>
+  <!-- Run signature plugin to generate signature file -->
+  <plugin>
     <groupId>org.netbeans.tools</groupId>
     <artifactId>sigtest-maven-plugin</artifactId>
     <version>${sigtest.version}</version>
     <executions>
-        <execution>
-            <id>createSigFile</id>
-            <goals>
-                <goal>generate</goal>
-            </goals>
-        </execution>
+      <execution>
+        <id>createSigFile</id>
+        <phase>generate-resources</phase>
+        <goals>
+          <goal>generate</goal>
+        </goals>
+      </execution>
     </executions>
     <configuration>
-        <classes>${project.build.directory}/jakarta-data-api</classes>
-        <packages>
-            jakarta.data,
-            jakarta.data.repository
-        </packages>
-        <attach>false</attach>
-        <sigfile>${project.build.directory}/jakarta.data.sig_${project.version}</sigfile>
+      <classes>${project.build.directory}/jakarta-data-api</classes>
+      <classes>${project.build.directory}/jimage/java.base</classes><classes>${project.build.directory}/jimage/java.base</classes>
+      <packages>
+        jakarta.data,
+        jakarta.data.exceptions,
+        jakarta.data.page,
+        jakarta.data.repository
+      </packages>
+      <attach>false</attach>
+      <sigfile>${project.build.directory}/jakarta.data.sig_${java.version}</sigfile>
     </configuration>
-</plugin>
+  </plugin>
 ```
 
 - The `classes` configuration points to a location where an earlier plugin has unpacked the api jar from which we are generating the signature file.
@@ -49,24 +54,23 @@ The plugin that generates the signature file has been copied below for reference
 
 ### Generating the Signature File
 
-To generate the signature file go to the TCK project:
+To generate the signature file first build the API:
 
 ```sh
-cd tck
+cd api
+mvn package
 ```
 
-Use Maven to build the TCK and run the custom profile to generate the signature file:
+Then build the TCK with the `signature-generation` profile to re-generate the signature file:
 
 ```sh
-mvn install -Psignature-generation
+cd ../tck
+mvn package -Psignature-generation
 ```
 
 The signature file will be generated in the `/target/` directory.
 
-The signature file name expected is `jakarta.data.sig_${version}`, where version is the api version from which the signature was generated.
-
-Copy the signature file to the TCK so that it can be used by the test project, and checked into version control.
-`src/main/resources/ee/jakarta/tck/data/signature`
+The signature file will be automatically copied to the `/src/main/resource/ee/jakarta/tck/data/framework/signature/` directory.
 
 ## For TCK users
 
