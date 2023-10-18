@@ -665,6 +665,7 @@ This specification introduces the concept of a canonical metamodel, which entail
 - For every entity class "X" located within package "p," a corresponding metamodel class "X_" within package "p" is automatically generated.
 - The name of the metamodel class is derived from the entity class by appending an underscore " _ " to the entity class's name.
 - The metamodel class "X_" is required to be annotated with the `jakarta.persistence.StaticMetamodel` annotation.
+- Import statements must be included for the needed jakarta.data.metamodel types as appropriate
 
 For each field within the metamodel class, the following conditions must be met:
 
