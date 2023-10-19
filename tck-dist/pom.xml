@@ -46,7 +46,7 @@
   <!-- jruby 9.4.3.0 is not working, keeping this on the 9.3.x stream since 9.4 seems to implement a newer ruby version
   which is causing issues with asciidoctor, even though asciidoctorj considers it compatible.
   Looks like this may work with the asciidoctorj 3.0.0 stream when it releases-->
-  <jruby.version>9.3.10.0</jruby.version>  
+  <jruby.version>9.4.4.0</jruby.version>  
  </properties>
 
  <dependencies>
