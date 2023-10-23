@@ -15,14 +15,40 @@
  */
 package ee.jakarta.tck.data.framework.read.only;
 
+import jakarta.annotation.Generated;
+import jakarta.data.Sort;
 import jakarta.data.model.Attribute;
+import jakarta.data.model.AttributeInfo;
 import jakarta.data.model.StaticMetamodel;
 
+/**
+ * This static metamodel class represents what an annotation processor-based approach
+ * might generate.
+ */
+@Generated("ee.jakarta.tck.data.mock.generator")
 @StaticMetamodel(AsciiCharacter.class)
-public interface AsciiCharacter_ {
+public class AsciiCharacter_ {
     public static final Attribute id = Attribute.get();
     public static final Attribute hexadecimal = Attribute.get();
     public static final Attribute isControl = Attribute.get();
     public static final Attribute numericValue = Attribute.get();
     public static final Attribute thisCharacter = Attribute.get();
+
+    private static record Attr(String name, Sort asc, Sort ascIgnoreCase, Sort desc, Sort descIgnoreCase)
+                    implements AttributeInfo {
+        private Attr(String name) {
+            this(name, Sort.asc(name), Sort.ascIgnoreCase(name), Sort.desc(name), Sort.descIgnoreCase(name));
+        }
+    };
+
+    static {
+        id.init(new Attr("id"));
+        hexadecimal.init(new Attr("hexadecimal"));
+        isControl.init(new Attr("isControl"));
+        numericValue.init(new Attr("numericValue"));
+        thisCharacter.init(new Attr("thisCharacter"));
+    }
+
+    private AsciiCharacter_() {
+    }
 }
