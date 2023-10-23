@@ -45,7 +45,7 @@ class ReplaceCamelCaseAndUnderscoreAndNumberTest {
                 Arguments.of("shouldReturnTheValueOf_maxResults", "Should return the value of maxResults"),
                 Arguments.of("shouldReturnTheNumberOfErrorsAs_numberOfErrors_InferiorOrEqualTo5", "Should return the number of errors as numberOfErrors inferior or equal to 5 (String)"),
                 Arguments.of("shouldReturnTheNumberOfErrorsAs_numberOfErrors_InferiorOrEqualTo15", "Should return the number of errors as numberOfErrors inferior or equal to 15"),
-                Arguments.of("doNothing", null)
+                Arguments.of("methodNotAnnotatedWithTestOrParameterizedTest", null)
         );
     }
 

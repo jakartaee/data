@@ -36,7 +36,7 @@ class ClassAnnotatedWithReplaceCamelCaseAndUnderscoreAndNumberTest {
     @ParameterizedTest
     @ValueSource(strings = {"", "  "})
     void shouldCreateLimitWithRange(String input) {
-        doNothing();
+        methodNotAnnotatedWithTestOrParameterizedTest();
     }
 
     @ParameterizedTest
@@ -46,7 +46,7 @@ class ClassAnnotatedWithReplaceCamelCaseAndUnderscoreAndNumberTest {
 
     @Test
     void shouldReturn5errors() {
-        doNothing();
+        methodNotAnnotatedWithTestOrParameterizedTest();
     }
 
     @Test
@@ -55,7 +55,7 @@ class ClassAnnotatedWithReplaceCamelCaseAndUnderscoreAndNumberTest {
 
     @Test
     void shouldReturnTheValueOf_maxResults() {
-        doNothing();
+        methodNotAnnotatedWithTestOrParameterizedTest();
     }
 
     @ParameterizedTest
@@ -67,6 +67,6 @@ class ClassAnnotatedWithReplaceCamelCaseAndUnderscoreAndNumberTest {
     void shouldReturnTheNumberOfErrorsAs_numberOfErrors_InferiorOrEqualTo15() {
     }
 
-    private void doNothing() {
+    private void methodNotAnnotatedWithTestOrParameterizedTest() {
     }
 }
