@@ -50,7 +50,8 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
      *
      * @param entity the entity to insert. Must not be {@code null}.
      * @param <S> Type of the entity to insert.
-     * @return the inserted entity, which may or may not be a different instance depending on whether the insert caused values to be generated or automatically incremented.
+     * @return the inserted entity, which may or may not be a different instance depending on whether the insert caused
+     * values to be generated or automatically incremented.
      * @throws EntityExistsException if the entity is already present in the database (in ACID-supported databases).
      * @throws NullPointerException if the entity is null.
      */
@@ -81,6 +82,7 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
      */
     @Insert
     <S extends T> Iterable<S> insertAll(Iterable<S> entities);
+
     /**
      * <p>Modifies an entity that already exists in the database.</p>
      *
@@ -95,9 +97,17 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
      *
      * <p>Non-matching entities are ignored and do not cause an error to be raised.</p>
      *
+     * <p>It's important to note that the update operation may change the entity instance,
+     * especially when certain database controls, such as Optimistic Locking and the {@code @Version} annotation
+     * in Jakarta Persistence, are in place. In these cases, the entity may be modified to reflect
+     * newly generated values or automatically incremented version information. Therefore, the updated entity
+     * returned by this method may or may not be a different instance depending on whether the update
+     * caused values to be generated or automatically incremented.</p>
+     *
      * @param entity the entity to update. Must not be {@code null}.
      * @param <S> Type of the entities to update.
-     * @return true if a matching entity was found in the database to update, otherwise false.
+     * @return the updated entity, which may or may not be a different instance depending on whether the update caused
+     * values to be generated or automatically incremented
      * @throws NullPointerException if the entity is null.
      */
     @Update
@@ -116,7 +126,7 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
      * the update.</p>
      *
      * <p>Non-matching entities are ignored and do not cause an error to be raised.</p>
-     *@param <S> Type of the entities to update.
+     * @param <S> Type of the entities to update.
      * @param entities entities to update.
      * @return the number of matching entities that were found in the database to update.
      * @throws NullPointerException if either the iterable is null or any element is null.
