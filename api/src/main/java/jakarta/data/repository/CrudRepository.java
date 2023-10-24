@@ -126,6 +126,12 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
      * the update.</p>
      *
      * <p>Non-matching entities are ignored and do not cause an error to be raised.</p>
+     *
+     * <p>It's important to note that the update operation may change the entity instances,
+     * especially when certain database controls, such as Optimistic Locking and the {@code @Version} annotation
+     * in Jakarta Persistence, are in place. In these cases, the entities may be modified to reflect
+     * newly generated values or automatically incremented version information.</p>
+     *
      * @param <S> Type of the entities to update.
      * @param entities entities to update.
      * @return the number of matching entities that were found in the database to update.
