@@ -292,11 +292,11 @@
               <classes>${project.build.directory}/jakarta-data-api</classes>
               <classes>${project.build.directory}/jimage/java.base</classes><classes>${project.build.directory}/jimage/java.base</classes>
               <packages>
-                jakarta.data,
-                jakarta.data.exceptions,
-                jakarta.data.model,
-                jakarta.data.page,
-                jakarta.data.repository
+                  jakarta.data,
+                  jakarta.data.exceptions,
+                  jakarta.data.metamodel,
+                  jakarta.data.page,
+                  jakarta.data.repository
               </packages>
               <attach>false</attach>
               <sigfile>${project.build.directory}/jakarta.data.sig_${java.version}</sigfile>
