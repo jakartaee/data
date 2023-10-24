@@ -96,11 +96,12 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
      * <p>Non-matching entities are ignored and do not cause an error to be raised.</p>
      *
      * @param entity the entity to update. Must not be {@code null}.
+     * @param <S> Type of the entities to update.
      * @return true if a matching entity was found in the database to update, otherwise false.
      * @throws NullPointerException if the entity is null.
      */
     @Update
-    boolean update(T entity);
+    <S extends T> S update(S entity);
 
     /**
      * <p>Modifies entities that already exist in the database.</p>
@@ -115,12 +116,12 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
      * the update.</p>
      *
      * <p>Non-matching entities are ignored and do not cause an error to be raised.</p>
-     *
+     *@param <S> Type of the entities to update.
      * @param entities entities to update.
      * @return the number of matching entities that were found in the database to update.
      * @throws NullPointerException if either the iterable is null or any element is null.
      */
     @Update
-    int updateAll(Iterable<T> entities);
+    <S extends T> Iterable<S> updateAll(Iterable<S> entities);
 
 }
