@@ -73,7 +73,8 @@ import jakarta.data.Sort;
  *                                          Person_.ssn.asc());
  * </pre>
  *
- * <p>When a class is annotated as a {@code StaticMetamodel}, Jakarta Data providers
+ * <p>When a class is annotated with {@code StaticMetamodel} and the
+ * {@link jakarta.annotation.Generated} annotation is not present, Jakarta Data providers
  * that provide a repository for the entity type must assign the value of each field
  * that meets the following criteria:</p>
  *
@@ -99,6 +100,11 @@ import jakarta.data.Sort;
  * entity type, no guarantees are made of the order in which the Jakarta Data providers
  * initialize the {@code Attribute} fields of the class that is annotated with
  * {@code StaticMetamodel}.</p>
+ *
+ * <p>Alternatively, an annotation processor might generate fully implemented
+ * static metamodel classes for your entities during compile time. The generated
+ * classes must be annotated with the {@link jakarta.annotation.Generated} annotation,
+ * which signals the Jakarta Data provider to avoid initializing the classes at run time.</p>
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
