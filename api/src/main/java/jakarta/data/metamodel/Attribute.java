@@ -21,7 +21,7 @@ import jakarta.data.Sort;
 
 /**
  * Implemented by the Jakarta Data provider to
- * {@link AttributeMetadata#init(Attribute) initialize} an attribute field
+ * {@link AttributeInfo#init(Attribute) initialize} an attribute field
  * in the {@link StaticMetamodel}.
  */
 public interface Attribute {

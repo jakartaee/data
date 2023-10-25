@@ -93,14 +93,14 @@ hfds serialVersionUID
 
 CLSS abstract interface jakarta.data.exceptions.package-info
 
-CLSS public jakarta.data.metamodel.AttributeMetadata
+CLSS public jakarta.data.metamodel.AttributeInfo
 meth public final boolean init(jakarta.data.metamodel.Attribute)
 meth public final jakarta.data.Sort asc()
 meth public final jakarta.data.Sort ascIgnoreCase()
 meth public final jakarta.data.Sort desc()
 meth public final jakarta.data.Sort descIgnoreCase()
 meth public final java.lang.String name()
-meth public final static jakarta.data.metamodel.AttributeMetadata get()
+meth public final static jakarta.data.metamodel.AttributeInfo get()
 supr java.lang.Object
 hfds info
 

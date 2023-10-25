@@ -25,12 +25,12 @@ import jakarta.data.exceptions.MappingException;
 /**
  * Represents an entity attribute in the {@link StaticMetamodel}.
  */
-public class AttributeMetadata {
+public class AttributeInfo {
     // This allows the Jakarta Data provider to initialize the static final
     // Attribute instance with the provider's own implementation of it.
     private final AtomicReference<Attribute> info = new AtomicReference<Attribute>();
 
-    private AttributeMetadata() {
+    private AttributeInfo() {
     }
 
     /**
@@ -107,8 +107,8 @@ public class AttributeMetadata {
      *
      * @return a new instance for an entity attribute.
      */
-    public static final AttributeMetadata get() {
-        return new AttributeMetadata();
+    public static final AttributeInfo get() {
+        return new AttributeInfo();
     }
 
     /**

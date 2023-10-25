@@ -17,7 +17,7 @@ package ee.jakarta.tck.data.framework.read.only;
 
 import jakarta.annotation.Generated;
 import jakarta.data.Sort;
-import jakarta.data.metamodel.AttributeMetadata;
+import jakarta.data.metamodel.AttributeInfo;
 import jakarta.data.metamodel.Attribute;
 import jakarta.data.metamodel.StaticMetamodel;
 
@@ -28,11 +28,11 @@ import jakarta.data.metamodel.StaticMetamodel;
 @Generated("ee.jakarta.tck.data.mock.generator")
 @StaticMetamodel(AsciiCharacter.class)
 public class AsciiCharacter_ {
-    public static final AttributeMetadata id = AttributeMetadata.get();
-    public static final AttributeMetadata hexadecimal = AttributeMetadata.get();
-    public static final AttributeMetadata isControl = AttributeMetadata.get();
-    public static final AttributeMetadata numericValue = AttributeMetadata.get();
-    public static final AttributeMetadata thisCharacter = AttributeMetadata.get();
+    public static final AttributeInfo id = AttributeInfo.get();
+    public static final AttributeInfo hexadecimal = AttributeInfo.get();
+    public static final AttributeInfo isControl = AttributeInfo.get();
+    public static final AttributeInfo numericValue = AttributeInfo.get();
+    public static final AttributeInfo thisCharacter = AttributeInfo.get();
 
     private static record Attr(String name, Sort asc, Sort ascIgnoreCase, Sort desc, Sort descIgnoreCase)
                     implements Attribute {

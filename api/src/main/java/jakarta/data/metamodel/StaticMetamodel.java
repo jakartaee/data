@@ -79,7 +79,7 @@ import jakarta.data.Sort;
  * that meets the following criteria:</p>
  *
  * <ul>
- * <li>The field type is {@link AttributeMetadata}.</li>
+ * <li>The field type is {@link AttributeInfo}.</li>
  * <li>The field is {@code public}.</li>
  * <li>The field is {@code static}.</li>
  * <li>The field is {@code final}.</li>
@@ -88,7 +88,7 @@ import jakarta.data.Sort;
  * such as embedded classes.</li>
  * </ul>
  *
- * <p>The Jakarta Data provider must {@link AttributeMetadata#init(Attribute) initialize}
+ * <p>The Jakarta Data provider must {@link AttributeInfo#init(Attribute) initialize}
  * each {@code Attribute} value that corresponds to the name of an entity attribute.</p>
  *
  * <p>Additionally, a field that meets the above criteria except for the name
