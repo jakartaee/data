@@ -37,8 +37,7 @@ body:
     description: What version of the TCK are you running against? 
     options: #TODO need to update this list per release
       - 1.0.0-SNAPSHOT (Locally built)
-      - 1.0.0-RC1      (Release candidate)
-      - 1.0.0          (Generally available)
+      - 1.0.0-M1       (Generally available)        
 - type: input
   id: implementation
   validations:

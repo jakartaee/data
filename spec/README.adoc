@@ -16,10 +16,10 @@ From the `spec` directory, execute `mvn install`
 Maven will generate the final documentation in HTML and PDF format in `target` directory with the default license (ASL2).
 
 The HTML version of the document may be found in:
-- `target/generated-docs/jakarta-data-1.0.0-<version>.html`
+- `target/generated-docs/jakarta-data-<version>.html`
 
 The PDF version of the document may be found in:
-- `target/generated-docs/jakarta-data-1.0.0-<version>.pdf`
+- `target/generated-docs/jakarta-data-<version>.pdf`
 
 == License in Documentation
 

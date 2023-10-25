@@ -34,6 +34,7 @@ body:
         #### Prepare
           - [X] Open this issue.
           - [ ] Complete outstanding work
+          - [ ] (Update TCK Signatures to capture API changes)[https://github.com/jakartaee/data/blob/main/tck/src/main/java/ee/jakarta/tck/data/framework/signature/README.md#generating-the-signature-file]
         #### Stage release
           - [ ] [Update the CHANGELOG.adoc file to reflect the changes put into the new release](https://github.com/jakartaee/data/blob/main/CHANGELOG.adoc)
           - [ ] [Build and stage artifacts to staging repository](https://ci.eclipse.org/data/view/Release%20Builds/job/jakarta-data-build-and-stage/)
@@ -50,5 +51,12 @@ body:
           - [ ] [Modify the `pre-release` on GitHub to be `latest`](https://github.com/jakartaee/data/releases)
         #### Follow up
           - [ ] [Email a Jakarta steering committee member to promote the TCK Distribution publically](https://ci.eclipse.org/jakartaee-spec-committee/job/promote-release/)
+          - [ ] Update versions in non-build files, such as:
+            Templates:
+            - [bug-report.yml](https://github.com/jakartaee/data/blob/main/.github/ISSUE_TEMPLATE/bug-report.md)
+            - [tck-challenge.yml](https://github.com/jakartaee/data/blob/main/.github/ISSUE_TEMPLATE/tck-challenge.yml)
+            Documentation:
+            - [README.adoc](https://github.com/jakartaee/data/blob/main/README.adoc)
+            - [data-tck-reference-guide.adoc](https://github.com/jakartaee/data/blob/main/tck-dist/src/main/asciidoc/data-tck-reference-guide.adoc)
   validations:
     required: true
