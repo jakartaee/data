@@ -18,6 +18,7 @@
 package jakarta.data.displaynamegeneration.test;
 
 import jakarta.data.displaynamegeneration.ReplaceCamelCaseAndUnderscoreAndNumber;
+import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -29,10 +30,9 @@ import java.util.stream.Stream;
 
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
-//TODO: Solve the module issue related to the usage of @DisplayNameGeneration(ReplaceCamelCaseAndUnderscoreAndNumber.class)
-// and test the display names inside ClassAnnotatedWithReplaceCamelCaseAndUnderscoreAndNumberTest
-// without explicitly calling the method generateDisplayNameForMethod
-// by finding a way to programmatically get these names from JUnit then compare to expected results.
+/**
+ * This class explicitly tests {@linkplain ReplaceCamelCaseAndUnderscoreAndNumber } by directly calling the method {@linkplain ReplaceCamelCaseAndUnderscoreAndNumber#generateDisplayNameForMethod(Class, Method)}  }
+ * */
 class ReplaceCamelCaseAndUnderscoreAndNumberTest {
 
     private static Stream<Arguments> provideMethodNameAndExpectedDisplayName() {
