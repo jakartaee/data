@@ -3,60 +3,60 @@ description: Propose a new minor/major release
 title: "[Release]: "
 labels: ["release"] #Verified - label exists
 body:
-- type: markdown
-  attributes: 
-    value: >
-      This issue is to help the committers to the Jakarta Data project to propose
-      and complete the release process.
-- type: textarea
-  attributes:
-    label: Proposal
-    description: |
-      Why is a release needed?
-  validations:
-    required: true
-- type: textarea
-  attributes:
-    label: Outstanding work
-    description: |
-      Issues / pulls to finish before this release can become generally available.
-    placeholder: |
-      - [ ] 
-  validations:
-    required: false
-- type: textarea
-  attributes:
-    label: Check List
-    description: |
-      This is a checklist of what needs to be completed during the release process.
-      This checklist typically does not need to be edited prior to submitting this form.
-    value: |
-        #### Prepare
-          - [X] Open this issue.
-          - [ ] Complete outstanding work
-          - [ ] (Update TCK Signatures to capture API changes)[https://github.com/jakartaee/data/blob/main/tck/src/main/java/ee/jakarta/tck/data/framework/signature/README.md#generating-the-signature-file]
-        #### Stage release
-          - [ ] [Update the CHANGELOG.adoc file to reflect the changes put into the new release](https://github.com/jakartaee/data/blob/main/CHANGELOG.adoc)
-          - [ ] [Build and stage artifacts to staging repository](https://ci.eclipse.org/data/view/Release%20Builds/job/jakarta-data-build-and-stage/)
-          - [ ] [Build and stage the TCK distribution artifact to download.eclipse.org](https://ci.eclipse.org/data/view/Eclipse%20Builds/job/jakarta-data-tck-build-and-stage/)
-          - [ ] Update this issue with a comment that links to the staged artifacts and the generated GitHub branch and tag
-          - [ ] [Create a `pre-release` on GitHub](https://github.com/jakartaee/data/releases/new)
-        #### Verify and modify
-          - [ ] Ask for feedback from the community to verify the staged artifact has all the expected changes.
-          - [ ] If anything needs to be added before publishing do that now and repeat the `Stage Release` section
-        #### Publish release
-          - [ ] [Publish staged artifacts to the public repository](https://ci.eclipse.org/data/view/Release%20Builds/job/jakarta-data-stage-to-release/)
-          - [ ] [Publish staged TCK distribution artifact to download.eclipse.org](https://ci.eclipse.org/data/view/Eclipse%20Builds/job/jakarta-data-tck-staged-to-promoted/)
-          - [ ] Update this issue with a comment that links to the published artifacts and the generated GitHub branch and tag
-          - [ ] [Modify the `pre-release` on GitHub to be `latest`](https://github.com/jakartaee/data/releases)
-        #### Follow up
-          - [ ] [Email a Jakarta steering committee member to promote the TCK Distribution publically](https://ci.eclipse.org/jakartaee-spec-committee/job/promote-release/)
-          - [ ] Update versions in non-build files, such as:
-            Templates:
-            - [bug-report.yml](https://github.com/jakartaee/data/blob/main/.github/ISSUE_TEMPLATE/bug-report.md)
-            - [tck-challenge.yml](https://github.com/jakartaee/data/blob/main/.github/ISSUE_TEMPLATE/tck-challenge.yml)
-            Documentation:
-            - [README.adoc](https://github.com/jakartaee/data/blob/main/README.adoc)
-            - [data-tck-reference-guide.adoc](https://github.com/jakartaee/data/blob/main/tck-dist/src/main/asciidoc/data-tck-reference-guide.adoc)
-  validations:
-    required: true
+  - type: markdown
+    attributes: 
+      value: |
+        This issue is to help the committers to the Jakarta Data project to propose
+        and complete the release process.
+  - type: textarea
+    attributes:
+      label: Proposal
+      description: |
+        Why is a release needed?
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Outstanding work
+      description: |
+        Issues / pulls to finish before this release can become generally available.
+      placeholder: |
+        - [ ] 
+    validations:
+      required: false
+  - type: textarea
+    attributes:
+      label: Check List
+      description: |
+        This is a checklist of what needs to be completed during the release process.
+        This checklist typically does not need to be edited prior to submitting this form.
+      value: |
+          #### Prepare
+            - [X] Open this issue.
+            - [ ] Complete outstanding work
+            - [ ] (Update TCK Signatures to capture API changes)[https://github.com/jakartaee/data/blob/main/tck/src/main/java/ee/jakarta/tck/data/framework/signature/README.md#generating-the-signature-file]
+          #### Stage release
+            - [ ] [Update the CHANGELOG.adoc file to reflect the changes put into the new release](https://github.com/jakartaee/data/blob/main/CHANGELOG.adoc)
+            - [ ] [Build and stage artifacts to staging repository](https://ci.eclipse.org/data/view/Release%20Builds/job/jakarta-data-build-and-stage/)
+            - [ ] [Build and stage the TCK distribution artifact to download.eclipse.org](https://ci.eclipse.org/data/view/Eclipse%20Builds/job/jakarta-data-tck-build-and-stage/)
+            - [ ] Update this issue with a comment that links to the staged artifacts and the generated GitHub branch and tag
+            - [ ] [Create a `pre-release` on GitHub](https://github.com/jakartaee/data/releases/new)
+          #### Verify and modify
+            - [ ] Ask for feedback from the community to verify the staged artifact has all the expected changes.
+            - [ ] If anything needs to be added before publishing do that now and repeat the `Stage Release` section
+          #### Publish release
+            - [ ] [Publish staged artifacts to the public repository](https://ci.eclipse.org/data/view/Release%20Builds/job/jakarta-data-stage-to-release/)
+            - [ ] [Publish staged TCK distribution artifact to download.eclipse.org](https://ci.eclipse.org/data/view/Eclipse%20Builds/job/jakarta-data-tck-staged-to-promoted/)
+            - [ ] Update this issue with a comment that links to the published artifacts and the generated GitHub branch and tag
+            - [ ] [Modify the `pre-release` on GitHub to be `latest`](https://github.com/jakartaee/data/releases)
+          #### Follow up
+            - [ ] [Email a Jakarta steering committee member to promote the TCK Distribution publically](https://ci.eclipse.org/jakartaee-spec-committee/job/promote-release/)
+            - [ ] Update versions in non-build files, such as:
+              Templates:
+              - [bug-report.yml](https://github.com/jakartaee/data/blob/main/.github/ISSUE_TEMPLATE/bug-report.md)
+              - [tck-challenge.yml](https://github.com/jakartaee/data/blob/main/.github/ISSUE_TEMPLATE/tck-challenge.yml)
+              Documentation:
+              - [README.adoc](https://github.com/jakartaee/data/blob/main/README.adoc)
+              - [data-tck-reference-guide.adoc](https://github.com/jakartaee/data/blob/main/tck-dist/src/main/asciidoc/data-tck-reference-guide.adoc)
+    validations:
+      required: true
