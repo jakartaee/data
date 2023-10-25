@@ -15,7 +15,7 @@
  */
 package ee.jakarta.tck.data.framework.read.only;
 
-import jakarta.data.metamodel.Attribute;
+import jakarta.data.metamodel.AttributeMetadata;
 import jakarta.data.metamodel.StaticMetamodel;
 
 /**
@@ -24,9 +24,9 @@ import jakarta.data.metamodel.StaticMetamodel;
  */
 @StaticMetamodel(AsciiCharacter.class)
 public interface AsciiChar_ {
-    Attribute id = Attribute.get();
-    Attribute hexadecimal = Attribute.get();
-    Attribute isControl = Attribute.get();
-    Attribute numericValue = Attribute.get();
-    Attribute thisCharacter = Attribute.get();
+    AttributeMetadata id = AttributeMetadata.get();
+    AttributeMetadata hexadecimal = AttributeMetadata.get();
+    AttributeMetadata isControl = AttributeMetadata.get();
+    AttributeMetadata numericValue = AttributeMetadata.get();
+    AttributeMetadata thisCharacter = AttributeMetadata.get();
 }

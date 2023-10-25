@@ -17,119 +17,47 @@
  */
 package jakarta.data.metamodel;
 
-import java.util.concurrent.atomic.AtomicReference;
-
 import jakarta.data.Sort;
-import jakarta.data.exceptions.MappingException;
 
 /**
- * Represents an entity attribute in the {@link StaticMetamodel}.
+ * Implemented by the Jakarta Data provider to
+ * {@link AttributeMetadata#init(Attribute) initialize} an attribute field
+ * in the {@link StaticMetamodel}.
  */
-public class Attribute {
-    // This allows the Jakarta Data provider to initialize the static final
-    // Attribute instance with the provider's own implementation of it.
-    private final AtomicReference<AttributeInfo> info = new AtomicReference<AttributeInfo>();
-
-    private Attribute() {
-    }
-
+public interface Attribute {
     /**
-     * Obtain a request for an ascending {@link Sort} based on the entity attribute.
+     * Returns a request for an ascending {@link Sort} based on the entity attribute.
      *
-     * @return a request for an ascending sort on the entity attribute.
-     * @throws MappingException if an entity attribute with this name does not exist or
-     *                          if no Jakarta Data provider provides a repository for the entity type.
+     * @return a request for an ascending {@link Sort} based on the entity attribute.
      */
-    public final Sort asc() {
-        return attrInfo().asc();
-    }
+    Sort asc();
 
     /**
-     * Obtain a request for an ascending, case insensitive {@link Sort} based on the entity attribute.
+     * Returns a request for an ascending, case-insensitive {@link Sort} based on the entity attribute.
      *
-     * @return a request for an ascending, case insensitive sort on the entity attribute.
-     * @throws MappingException if an entity attribute with this name does not exist or
-     *                          if no Jakarta Data provider provides a repository for the entity type.
+     * @return a request for an ascending, case-insensitive sort on the entity attribute.
      */
-    public final Sort ascIgnoreCase() {
-        return attrInfo().ascIgnoreCase();
-    }
-
-    private final AttributeInfo attrInfo() {
-        AttributeInfo attrInfo = info.get();
-        if (attrInfo == null)
-            throw new MappingException("Unable to find a Jakarta Data provider that provides a repository " +
-                                       " for an entity with an attribute having this name.");
-        return attrInfo;
-    }
+    Sort ascIgnoreCase();
 
     /**
-     * Obtain a request for a descending {@link Sort} based on the entity attribute.
+     * Returns a request for a descending {@link Sort} based on the entity attribute.
      *
-     * @return a request for a descending sort on the entity attribute.
-     * @throws MappingException if an entity attribute with this name does not exist or
-     *                          if no Jakarta Data provider provides a repository for the entity type.
+     * @return a request for a descending {@link Sort} based on the entity attribute.
      */
-    public final Sort desc() {
-        return attrInfo().desc();
-    }
+    Sort desc();
 
     /**
-     * Obtain a request for a descending, case insensitive {@link Sort} based on the entity attribute.
+     * Returns a request for a descending, case-insensitive {@link Sort} based on the entity attribute.
      *
-     * @return a request for a descending, case insensitive sort on the entity attribute.
-     * @throws MappingException if an entity attribute with this name does not exist or
-     *                          if no Jakarta Data provider provides a repository for the entity type.
+     * @return a request for a descending, case-insensitive sort on the entity attribute.
      */
-    public final Sort descIgnoreCase() {
-        return attrInfo().descIgnoreCase();
-    }
+    Sort descIgnoreCase();
 
     /**
-     * <p>Obtains a new instance for the Jakarta Data provider to initialize.</p>
-     *
-     * <p>The Jakarta Data provider automatically initializes the instance when
-     * used as the value of a {@code public}, {@code static}, {@code final} field
-     * of a class that is annotated with {@link StaticMetamodel},
-     * where the field name matches the name of an entity attribute.
-     * For example, a {@code Vehicle} entity with attributes {@code vin}, {@code make},
-     * {@code model}, and {@code year} could have the following static metamodel,</p>
-     *
-     * <pre>
-     * &#64;StaticMetamodel(Vehicle.class)
-     * public class Vehicle_ {
-     *     public static final Attribute vin = Attribute.get();
-     *     public static final Attribute make = Attribute.get();
-     *     public static final Attribute model = Attribute.get();
-     *     public static final Attribute year = Attribute.get();
-     * }
-     * </pre>
-     *
-     * @return a new instance for an entity attribute.
-     */
-    public static final Attribute get() {
-        return new Attribute();
-    }
-
-    /**
-     * Used by the Jakarta Data provider to initialize this {@code Attribute} with implementation.
-     *
-     * @param attrInfo attribute information provided by the Jakarta Data provider.
-     * @return true if initialization was successful; false if previously initialized.
-     */
-    public final boolean init(AttributeInfo attrInfo) {
-        return info.compareAndSet(null, attrInfo);
-    }
-
-    /**
-     * Obtain the entity attribute name, suitable for use wherever the specification requires
+     * Returns the name of the entity attribute, suitable for use wherever the specification requires
      * an entity attribute name. For example, as the parameter to {@link Sort#asc(String)}.
      *
      * @return the entity attribute name.
-     * @throws MappingException if an entity attribute with this name does not exist or
-     *                          if no Jakarta Data provider provides a repository for the entity type.
      */
-    public final String name() {
-        return attrInfo().name();
-    }
+    String name();
 }
