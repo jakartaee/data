@@ -36,8 +36,8 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
  * This class implicitly tests {@linkplain ReplaceCamelCaseAndUnderscoreAndNumber } by checking if the generated display name matches the expected one.
  * */
 @Disabled("Disabled until module issue has been fixed!")
-//This next line is commented in order to avoid "TestEngine with ID 'junit-jupiter' failed to discover tests"
-//@DisplayNameGeneration(ReplaceCamelCaseAndUnderscoreAndNumber.class)
+//This next line should be commented in order to avoid "TestEngine with ID 'junit-jupiter' failed to discover tests"
+@DisplayNameGeneration(ReplaceCamelCaseAndUnderscoreAndNumber.class)
 class ClassAnnotatedWithReplaceCamelCaseAndUnderscoreAndNumberTest {
 
     private TestInfo testInfo;
