@@ -15,8 +15,8 @@
  */
 package ee.jakarta.tck.data.framework.read.only;
 
-import jakarta.data.model.Attribute;
-import jakarta.data.model.StaticMetamodel;
+import jakarta.data.metamodel.Attribute;
+import jakarta.data.metamodel.StaticMetamodel;
 
 /**
  * This static metamodel class represents what a user might explicitly provide,

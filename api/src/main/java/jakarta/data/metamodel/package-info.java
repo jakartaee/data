@@ -55,4 +55,4 @@
  * page1 = products.findByNameLike(namePattern, pageRequest);
  * </pre>
  */
-package jakarta.data.model;
+package jakarta.data.metamodel;

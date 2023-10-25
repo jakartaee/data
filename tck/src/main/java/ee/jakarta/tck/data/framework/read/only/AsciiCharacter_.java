@@ -17,9 +17,9 @@ package ee.jakarta.tck.data.framework.read.only;
 
 import jakarta.annotation.Generated;
 import jakarta.data.Sort;
-import jakarta.data.model.Attribute;
-import jakarta.data.model.AttributeInfo;
-import jakarta.data.model.StaticMetamodel;
+import jakarta.data.metamodel.Attribute;
+import jakarta.data.metamodel.AttributeInfo;
+import jakarta.data.metamodel.StaticMetamodel;
 
 /**
  * This static metamodel class represents what an annotation processor-based approach
