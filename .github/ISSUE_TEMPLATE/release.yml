@@ -52,9 +52,6 @@ body:
           #### Follow up
             - [ ] [Email a Jakarta steering committee member to promote the TCK Distribution publically](https://ci.eclipse.org/jakartaee-spec-committee/job/promote-release/)
             - [ ] Update versions in non-build files, such as:
-              Templates:
-              - [bug-report.yml](https://github.com/jakartaee/data/blob/main/.github/ISSUE_TEMPLATE/bug-report.md)
-              - [tck-challenge.yml](https://github.com/jakartaee/data/blob/main/.github/ISSUE_TEMPLATE/tck-challenge.yml)
               Documentation:
               - [README.adoc](https://github.com/jakartaee/data/blob/main/README.adoc)
               - [data-tck-reference-guide.adoc](https://github.com/jakartaee/data/blob/main/tck-dist/src/main/asciidoc/data-tck-reference-guide.adoc)

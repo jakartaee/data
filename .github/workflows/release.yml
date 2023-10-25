@@ -1,0 +1,35 @@
+# This workflow will run when a release is created, and automatically update GitHub issue templates
+
+name: GitHub Release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: checkout
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+    - name: Create branch
+      run: |
+        git checkout -b update-templates
+    - name: Insert release - ${{ github.event.release.tag_name }}
+      uses: mikefarah/yq@a198f72367ce9da70b564a2cc25399de8e27bf37 #v4.35.2
+      with:
+        cmd: |
+            yq -i '( .body.[] | select(.id == "version") ) ref $x | $x .attributes.options = ["${{ github.event.release.tag_name }}"] + $x .attributes.options' .github/ISSUE_TEMPLATE/bug-report.yml &&
+            yq -i '( .body.[] | select(.id == "version") ) ref $x | $x .attributes.options = ["${{ github.event.release.tag_name }}"] + $x .attributes.options' .github/ISSUE_TEMPLATE/tck-challenge.yml
+    - name: Create Pull Request
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git config user.name "github-actions[bot]"
+        git add .github/ISSUE_TEMPLATE/bug-report.yml
+        git add .github/ISSUE_TEMPLATE/tck-challenge.yml
+        git commit -m "Update templates to include release ${{ github.event.release.tag_name }}"
+        git push origin update-templates
+        gh pr create -B main --title 'Update templates to include release ${{ github.event.release.tag_name }}' --body 'Created by Github action' --label 'version'
