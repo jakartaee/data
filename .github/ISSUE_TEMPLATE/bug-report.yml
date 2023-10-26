@@ -1,0 +1,32 @@
+name: Bug Report
+description: Report a mistake or inconsistency in the specification code or documentation text. 
+title: "[Bug]: "
+labels: ["bug"] #Verified - label exists
+body:
+  - type: markdown
+    attributes: 
+      value: |
+        > Report a mistake or inconsistency in the specification code, TCK tests, or documentation text.
+        > If error is related to a TCK test after release, then use the TCK Challenge template instead.
+  - type: dropdown
+    id: version
+    validations:
+      required: true
+    attributes: 
+      label: Specification Version
+      description: What version of the Concurrency Spec are you running using? 
+      options:
+        - 1.0.0-M1
+        - 1.0.0-SNAPSHOT (Locally built)
+  - type: textarea
+    validations:
+      required: true
+    attributes:
+      label: Bug report
+      value: |
+        > Description of the bug found.
+  - type: textarea
+    attributes:
+      label: Additional information
+      value: |
+        > Proposed solutions, code examples, ect. 
