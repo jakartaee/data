@@ -1057,7 +1057,6 @@ public class EntityTests {
     @Assertion(id = "133", strategy = "Use the StaticMetamodel to obtain ascending Sorts for an entity attribute in a type-safe manner.")
     public void testStaticMetamodelAscendingSorts() {
         assertEquals(Sort.asc("id"), AsciiChar_.id.asc());
-        assertEquals(Sort.asc("isControl"), AsciiChar_.isControl.asc());
         assertEquals(Sort.ascIgnoreCase("hexadecimal"), AsciiChar_.hexadecimal.ascIgnoreCase());
         assertEquals(Sort.ascIgnoreCase("thisCharacter"), AsciiChar_.thisCharacter.ascIgnoreCase());
 
@@ -1107,7 +1106,6 @@ public class EntityTests {
     @Assertion(id = "133", strategy = "Use the StaticMetamodel to obtain descending Sorts for an entity attribute a type-safe manner.")
     public void testStaticMetamodelDescendingSorts() {
         assertEquals(Sort.desc("id"), AsciiChar_.id.desc());
-        assertEquals(Sort.desc("isControl"), AsciiChar_.isControl.desc());
         assertEquals(Sort.descIgnoreCase("hexadecimal"), AsciiChar_.hexadecimal.descIgnoreCase());
         assertEquals(Sort.descIgnoreCase("thisCharacter"), AsciiChar_.thisCharacter.descIgnoreCase());
 

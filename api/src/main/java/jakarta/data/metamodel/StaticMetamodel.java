@@ -56,11 +56,11 @@ import jakarta.data.Sort;
  * <pre>
  * &#64;StaticMetamodel(Person.class)
  * public class Person_ {
- *     public static final Attribute ssn = Attribute.get(); // ssn or id
+ *     public static final SortableAttribute ssn = SortableAttribute.get(); // ssn or id
  *     public static final Attribute name = Attribute.get();
- *     public static final Attribute name_first = Attribute.get();
- *     public static final Attribute name_last = Attribute.get();
- *     public static final Attribute yearOfBirth = Attribute.get();
+ *     public static final TextAttribute name_first = TextAttribute.get();
+ *     public static final TextAttribute name_last = TextAttribute.get();
+ *     public static final SortableAttribute yearOfBirth = SortableAttribute.get();
  * }
  * </pre>
  *
@@ -79,7 +79,8 @@ import jakarta.data.Sort;
  * that meets the following criteria:</p>
  *
  * <ul>
- * <li>The field type is {@link Attribute}.</li>
+ * <li>The field type is {@link Attribute} or a subclass of it
+ *     from the {@link jakarta.data.metamodel} package.</li>
  * <li>The field is {@code public}.</li>
  * <li>The field is {@code static}.</li>
  * <li>The field is {@code final}.</li>
@@ -88,8 +89,10 @@ import jakarta.data.Sort;
  * such as embedded classes.</li>
  * </ul>
  *
- * <p>The Jakarta Data provider must {@link Attribute#init(AttributeInfo) initialize}
- * each {@code Attribute} value that corresponds to the name of an entity attribute.</p>
+ * <p>The Jakarta Data provider must {@link Attribute#init(Attribute) initialize}
+ * each {@code Attribute} value that corresponds to the name of an entity attribute.
+ * When {@code Attribute} subclasses are used, the value must be initialized with the
+ * same type as the subclass.</p>
  *
  * <p>Additionally, a field that meets the above criteria except for the name
  * and is named {@code id} must be assigned by the Jakarta Data provider to the

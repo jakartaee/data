@@ -16,7 +16,9 @@
 package ee.jakarta.tck.data.framework.read.only;
 
 import jakarta.data.metamodel.Attribute;
+import jakarta.data.metamodel.SortableAttribute;
 import jakarta.data.metamodel.StaticMetamodel;
+import jakarta.data.metamodel.TextAttribute;
 
 /**
  * This static metamodel class represents what a user might explicitly provide,
@@ -24,9 +26,9 @@ import jakarta.data.metamodel.StaticMetamodel;
  */
 @StaticMetamodel(AsciiCharacter.class)
 public interface AsciiChar_ {
-    Attribute id = Attribute.get();
-    Attribute hexadecimal = Attribute.get();
-    Attribute isControl = Attribute.get();
-    Attribute numericValue = Attribute.get();
-    Attribute thisCharacter = Attribute.get();
+    SortableAttribute id = SortableAttribute.get();
+    TextAttribute hexadecimal = TextAttribute.get();
+    Attribute isControl = Attribute.get(); // user decided it didn't care about sorting for this one
+    SortableAttribute numericValue = SortableAttribute.get();
+    TextAttribute thisCharacter = TextAttribute.get();
 }
