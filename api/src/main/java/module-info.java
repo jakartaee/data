@@ -24,6 +24,7 @@ import jakarta.data.repository.DataRepository;
 import jakarta.data.repository.Delete;
 import jakarta.data.repository.Insert;
 import jakarta.data.repository.OrderBy;
+import jakarta.data.repository.Param;
 import jakarta.data.repository.Query;
 import jakarta.data.repository.Repository;
 import jakarta.data.repository.Save;
@@ -549,13 +550,16 @@ import java.util.List;
  * the method name begins with {@code find}
  * and must not include the {@code By} keyword.
  * The query conditions are defined by the method parameters.
- * Method parameter names must match the name of an entity attribute.
+ * You can annotate method parameters with the {@link Param} annotation
+ * to specify the name of the entity attribute that the parameter value
+ * is to be compared with. Otherwise, the method parameter name
+ * must match the name of an entity attribute and you must compile
+ * with the {@code -parameters} compiler option that makes parameter
+ * names available at run time.
  * The {@code _} character can be used in method parameter names to
  * reference embedded attributes. All conditions are considered to be
  * the equality condition. All conditions must match in order to
- * retrieve an entity.
- * The developer must compile with the {@code -parameters}
- * compiler option that makes parameter names available at run time.</p>
+ * retrieve an entity.</p>
  *
  * <p>The following examples illustrate the difference between
  * <i>Query By Method Name</i> and <i>Parameter-based Conditions</i> patterns.
