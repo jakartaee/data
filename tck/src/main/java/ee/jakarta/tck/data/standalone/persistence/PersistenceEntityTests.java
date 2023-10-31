@@ -16,12 +16,15 @@
 package ee.jakarta.tck.data.standalone.persistence;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -37,7 +40,9 @@ import ee.jakarta.tck.data.standalone.persistence.Product.Department;
 
 import jakarta.data.Sort;
 import jakarta.data.Streamable;
+import jakarta.data.exceptions.EntityExistsException;
 import jakarta.data.exceptions.MappingException;
+import jakarta.data.exceptions.OptimisticLockingFailureException;
 import jakarta.inject.Inject;
 
 /**
@@ -131,6 +136,22 @@ public class PersistenceEntityTests {
         assertEquals(5L, catalog.deleteByProductNumLike("TEST-PROD-%"));
     }
 
+    @Assertion(id = "133", strategy = "Attempt to insert and entity that already exists in the database and expect EntityExistsException.")
+    public void testInsertEntityThatAlreadyExists() {
+        catalog.deleteByProductNumLike("TEST-PROD-%");
+
+        Product prod1 = catalog.add(Product.of("watermelon", 6.29, "TEST-PROD-94", Department.GROCERY));
+
+        try {
+            catalog.add(Product.of("pineapple", 1.99, "TEST-PROD-94", Department.GROCERY));
+            fail("Should not be able to insert an entity that has same Id as another entity.");
+        } catch (EntityExistsException x) {
+            // expected
+        }
+
+        assertEquals(true, catalog.remove(prod1));
+    }
+
     @Assertion(id = "133", strategy = "Use a repository method with the Like keyword.")
     public void testLike() {
         catalog.deleteByProductNumLike("TEST-PROD-%");
@@ -167,6 +188,66 @@ public class PersistenceEntityTests {
         });
 
         assertEquals(5L, catalog.deleteByProductNumLike("TEST-PROD-%"));
+    }
+
+    @Assertion(id = "133", strategy = "Life cycle methods to insert, update, and delete multiple entities.")
+    public void testMultipleInsertUpdateDelete() {
+        catalog.deleteByProductNumLike("TEST-PROD-%");
+
+        Product[] added = catalog.addMultiple(Product.of("blueberries", 2.49, "TEST-PROD-95", Department.GROCERY),
+                                              Product.of("strawberries", 2.29, "TEST-PROD-96", Department.GROCERY),
+                                              Product.of("raspberries", 2.39, "TEST-PROD-97", Department.GROCERY));
+
+        // The position of resulting entities must match the parameter
+        assertEquals("blueberries", added[0].getName());
+        assertEquals("TEST-PROD-95", added[0].getProductNum());
+        assertEquals(2.49, added[0].getPrice(), 0.001);
+        assertEquals(Set.of(Department.GROCERY), added[0].getDepartments());
+        Product blueberries = added[0];
+
+        assertEquals("strawberries", added[1].getName());
+        assertEquals("TEST-PROD-96", added[1].getProductNum());
+        assertEquals(2.29, added[1].getPrice(), 0.001);
+        assertEquals(Set.of(Department.GROCERY), added[1].getDepartments());
+        Product strawberries = added[1];
+
+        assertEquals("raspberries", added[2].getName());
+        assertEquals("TEST-PROD-97", added[2].getProductNum());
+        assertEquals(2.39, added[2].getPrice(), 0.001);
+        assertEquals(Set.of(Department.GROCERY), added[2].getDepartments());
+        Product raspberries = added[2];
+
+        strawberries.setPrice(1.99);
+        raspberries.setPrice(2.34);
+        Product[] modified = catalog.modifyMultiple(raspberries, strawberries);
+        assertEquals(2, modified.length);
+
+        assertEquals("raspberries", modified[0].getName());
+        assertEquals("TEST-PROD-97", modified[0].getProductNum());
+        assertEquals(2.34, modified[0].getPrice(), 0.001);
+        assertEquals(Set.of(Department.GROCERY), modified[0].getDepartments());
+        raspberries = modified[0];
+
+        assertEquals("strawberries", modified[1].getName());
+        assertEquals("TEST-PROD-96", modified[1].getProductNum());
+        assertEquals(1.99, modified[1].getPrice(), 0.001);
+        assertEquals(Set.of(Department.GROCERY), modified[1].getDepartments());
+        strawberries = modified[1];
+
+        // Attempt to remove entities that do not exist in the database
+        try {
+            catalog.removeMultiple(Product.of("blackberries", 2.59, "TEST-PROD-98", Department.GROCERY),
+                                   Product.of("gooseberries", 2.79, "TEST-PROD-99", Department.GROCERY));
+            fail("OptimisticLockingFailureException must be raised because the entities are not found for deletion.");
+        } catch (OptimisticLockingFailureException x) {
+            // expected
+        }
+
+        // Remove only the entities that actually exist in the database
+        catalog.removeMultiple(strawberries, blueberries, raspberries);
+
+        Iterable<Product> remaining = catalog.findByIdBetween("TEST-PROD-95", "TEST-PROD-99");
+        assertEquals(false, remaining.iterator().hasNext());
     }
 
     @Assertion(id = "133", strategy = "Use a repository method with the Null keyword.")
@@ -233,5 +314,45 @@ public class PersistenceEntityTests {
                      found.stream().map(Product::getName).collect(Collectors.toList()));
 
         assertEquals(7L, catalog.deleteByProductNumLike("TEST-PROD-%"));
+    }
+
+    @Assertion(id = "133", strategy = "Insert, update, and delete an entity with a generated version.")
+    public void testVersionedInsertUpdateDelete() {
+        catalog.deleteByProductNumLike("TEST-PROD-%");
+
+        Product prod1 = catalog.add(Product.of("zucchini", 1.49, "TEST-PROD-91", Department.GROCERY));
+        Product prod2 = catalog.add(Product.of("cucumber", 1.29, "TEST-PROD-92", Department.GROCERY));
+
+        long prod1InitialVersion = prod1.getVersionNum();
+        long prod2InitialVersion = prod2.getVersionNum();
+
+        prod1.setPrice(1.59);
+        prod1 = catalog.modify(prod1);
+
+        prod2.setPrice(1.39);
+        prod2 = catalog.modify(prod2);
+
+        // Expect version number to change when modified
+        assertNotEquals(prod1InitialVersion, prod1.getVersionNum());
+        assertNotEquals(prod2InitialVersion, prod2.getVersionNum());
+
+        long prod1SecondVersion = prod1.getVersionNum();
+
+        prod1.setPrice(1.54);
+        prod1 = catalog.modify(prod1);
+
+        assertNotEquals(prod1SecondVersion, prod1.getVersionNum());
+        assertNotEquals(prod1InitialVersion, prod1.getVersionNum());
+
+        // Update must not be made when the version does not match:
+        prod2.setVersionNum(prod2InitialVersion);
+        prod2.setPrice(1.34);
+        assertEquals(null, catalog.modify(prod2));
+
+        assertEquals(true, catalog.remove(prod1));
+        assertEquals(false, catalog.remove(prod1)); // already removed
+        assertEquals(false, catalog.remove(prod2)); // still at old version
+
+        assertEquals(1L, catalog.deleteByProductNumLike("TEST-PROD-%"));
     }
 }
