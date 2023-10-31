@@ -26,6 +26,7 @@ import jakarta.data.page.Page;
 import jakarta.data.page.Pageable;
 import jakarta.data.repository.DataRepository;
 import jakarta.data.repository.Repository;
+import jakarta.data.repository.Save;
 
 /**
  * This is a read only repository that represents the set of AsciiCharacters from 0-256.
@@ -67,5 +68,6 @@ public interface AsciiCharacters extends DataRepository<AsciiCharacter, Long>, I
                         .filter(c -> Character.isLetterOrDigit(c.getThisCharacter()));
     }
 
+    @Save
     Iterable<AsciiCharacter> saveAll(Iterable<AsciiCharacter> characters);
 }

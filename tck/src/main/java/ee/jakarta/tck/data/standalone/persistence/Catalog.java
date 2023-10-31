@@ -27,6 +27,7 @@ import jakarta.data.repository.OrderBy;
 import jakarta.data.repository.Param;
 import jakarta.data.repository.Query;
 import jakarta.data.repository.Repository;
+import jakarta.data.repository.Save;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import ee.jakarta.tck.data.standalone.persistence.Product.Department;
@@ -34,6 +35,7 @@ import ee.jakarta.tck.data.standalone.persistence.Product.Department;
 @Repository
 public interface Catalog extends DataRepository<Product, String> {
 
+    @Save
     void save(Product product);
 
     void deleteById(String productNum);
