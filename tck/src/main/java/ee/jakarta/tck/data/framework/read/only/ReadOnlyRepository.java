@@ -19,6 +19,7 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import jakarta.data.repository.DataRepository;
+import jakarta.data.repository.Save;
 
 //FIXME - Are user defined repository interfaces like this allowed via the Specification? 
 // Currently failing in test environment
@@ -29,6 +30,7 @@ public interface ReadOnlyRepository<T, K> extends DataRepository<T, K>{
 
     // WRITE - default method
     // Necessary for pre-population
+    @Save
     <S extends T> Iterable<S> saveAll(Iterable<S> entities);
 
     // READ - default methods
