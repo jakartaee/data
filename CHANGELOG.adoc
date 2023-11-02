@@ -8,6 +8,10 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 
 == [Unreleased]
 
+=== Removed
+
+- Remove metamodel package where we will release in a following version
+
 == [1.0.0-M1] - 2023-10-19
 
 === Added
