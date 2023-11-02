@@ -197,6 +197,7 @@ public class PersistenceEntityTests {
         Product[] added = catalog.addMultiple(Product.of("blueberries", 2.49, "TEST-PROD-95", Department.GROCERY),
                                               Product.of("strawberries", 2.29, "TEST-PROD-96", Department.GROCERY),
                                               Product.of("raspberries", 2.39, "TEST-PROD-97", Department.GROCERY));
+assertEquals(3, added.length);
 
         // The position of resulting entities must match the parameter
         assertEquals("blueberries", added[0].getName());
