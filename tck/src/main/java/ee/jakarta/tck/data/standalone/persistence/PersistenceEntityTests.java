@@ -136,7 +136,7 @@ public class PersistenceEntityTests {
         assertEquals(5L, catalog.deleteByProductNumLike("TEST-PROD-%"));
     }
 
-    @Assertion(id = "133", strategy = "Attempt to insert and entity that already exists in the database and expect EntityExistsException.")
+    @Assertion(id = "133", strategy = "Attempt to insert an entity that already exists in the database and expect EntityExistsException.")
     public void testInsertEntityThatAlreadyExists() {
         catalog.deleteByProductNumLike("TEST-PROD-%");
 
