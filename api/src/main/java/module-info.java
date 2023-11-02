@@ -749,7 +749,6 @@ import java.util.List;
 //       under: "Wildcard characters for patterns are determined by the data access provider"
 module jakarta.data {
     exports jakarta.data;
-    exports jakarta.data.metamodel;
     exports jakarta.data.page;
     exports jakarta.data.repository;
     exports jakarta.data.exceptions;
