@@ -43,10 +43,7 @@
   <asciidoctor.maven.plugin.version>2.2.4</asciidoctor.maven.plugin.version>
   <asciidoctorj.version>2.5.10</asciidoctorj.version>
   <asciidoctorj.pdf.version>2.3.9</asciidoctorj.pdf.version>
-  <!-- Keeping this on the 9.3.x stream since 9.4 seems to implement a newer ruby version
-  which is causing issues with asciidoctor, even though asciidoctorj considers it compatible.
-  Looks like this may work with the asciidoctorj 3.0.0 stream when it releases-->
-  <jruby.version>9.3.11.0</jruby.version>  
+  <jruby.version>9.4.5.0</jruby.version>
  </properties>
 
  <dependencies>
@@ -130,7 +127,7 @@
     <dependencies>
      <dependency>
       <groupId>org.jruby</groupId>
-      <artifactId>jruby-complete</artifactId>
+      <artifactId>jruby</artifactId>
       <version>${jruby.version}</version>
      </dependency>
      <dependency>
