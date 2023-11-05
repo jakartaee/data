@@ -122,7 +122,7 @@ Non-built-in interfaces play a pivotal role in Jakarta Data, offering a powerful
 
 In this context, database operations involving fundamental data changes, such as insertion, update, and removal, are realized through the strategic utilization of annotations like `Insert`, `Update`, `Delete`, and `Save`. These annotations enable the crafting of expressive and contextually meaningful repository methods, resulting in a repository that closely mirrors the semantics of your domain.
 
-For instance, consider the 'Garage' repository interface below:
+For instance, consider the `Garage` repository interface below:
 
 [source,java]
 ----
