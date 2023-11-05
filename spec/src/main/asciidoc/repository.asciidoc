@@ -443,7 +443,7 @@ The topic of serialization of Domain-Relation fields within databases is crucial
 
 In Jakarta Data, the serialization of Domain-Relation fields, such as components, can be achieved in two ways.
 
-1. *Merging Fields Directly in the Entity (Component Embedding):*
+* *Merging Fields Directly in the Entity (Component Embedding):*
 
 In this approach, a component merges its fields directly within the entity. From the perspective of the persistence layer, the component itself doesn't exist as a separate table or document. Instead, it becomes part of the entity's structure. This approach leads to a flat representation in the database.
 
@@ -488,7 +488,7 @@ The structure of the entity in a Document, Wide-Column, and Graph database will 
 
 This approach allows for a flat and denormalized structure in the database, making it suitable for a variety of database types.
 
-2. * Second Approach: Storing Components in Separate Tables (Relational Databases) or as Subdocuments/UDTs (NoSQL Databases)*
+* * Second Approach: Storing Components in Separate Tables (Relational Databases) or as Subdocuments/UDTs (NoSQL Databases)*
 
 This approach is typically employed for more complex relationships and associations within the domain model, allowing for greater flexibility and scalability. It involves storing components, such as the `Passport` in the example, in separate tables for relational databases or as subdocuments or User-Defined Types (UDTs) for NoSQL databases. This method is suitable for scenarios where an association exists between one entity and another.
 
