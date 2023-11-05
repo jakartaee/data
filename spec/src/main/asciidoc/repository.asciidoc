@@ -69,12 +69,13 @@ The first type consists of built-in interfaces that are parent interfaces from w
                           +-----------------+
                           | BasicRepository |
                           +-----------------+
-                                  ^
-                                  |
-                                  |
-                        +--------------------+
-                        | PageableRepository |
-                        +--------------------+
+                              ^         ^
+                              |         |
+                              |         |
+            +--------------------+    +--------------------+
+            | CrudRepository     |    | PageableRepository |
+            +--------------------+    +--------------------+
+
 ....
 
 
