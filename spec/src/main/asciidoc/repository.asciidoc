@@ -864,9 +864,9 @@ The following table lists the query-by-method keywords that must be supported by
 |===
 
 [NOTE]
-.Note
-* The "Not Required For" column indicates the database types for which the respective keyword is not required or applicable.
-
+====
+The "Not Required For" column indicates the database types for which the respective keyword is not required or applicable.
+====
 Jakarta Data implementations must support the following list of query-by-method keywords, except where indicated for a database type. A repository method must raise `java.lang.UnsupportedOperationException` or a more specific subclass of the exception if the database does not provide the requested functionality.
 
 |===
@@ -990,9 +990,9 @@ Jakarta Data implementations must support the following list of query-by-method 
 |===
 
 [NOTE]
-.Note:
-* The "Not Required For" column indicates the database types for which the respective keyword is not required or applicable.
-
+====
+The "Not Required For" column indicates the database types for which the respective keyword is not required or applicable.
+====
 
 ===== Patterns
 
