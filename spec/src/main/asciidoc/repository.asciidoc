@@ -69,12 +69,13 @@ The first type consists of built-in interfaces that are parent interfaces from w
                           +-----------------+
                           | BasicRepository |
                           +-----------------+
-                                  ^
-                                  |
-                                  |
-                        +--------------------+
-                        | PageableRepository |
-                        +--------------------+
+                              ^         ^
+                              |         |
+                              |         |
+            +--------------------+    +--------------------+
+            | CrudRepository     |    | PageableRepository |
+            +--------------------+    +--------------------+
+
 ....
 
 
@@ -121,7 +122,7 @@ Non-built-in interfaces play a pivotal role in Jakarta Data, offering a powerful
 
 In this context, database operations involving fundamental data changes, such as insertion, update, and removal, are realized through the strategic utilization of annotations like `Insert`, `Update`, `Delete`, and `Save`. These annotations enable the crafting of expressive and contextually meaningful repository methods, resulting in a repository that closely mirrors the semantics of your domain.
 
-For instance, consider the 'Garage' repository interface below:
+For instance, consider the `Garage` repository interface below:
 
 [source,java]
 ----
@@ -442,7 +443,7 @@ The topic of serialization of Domain-Relation fields within databases is crucial
 
 In Jakarta Data, the serialization of Domain-Relation fields, such as components, can be achieved in two ways.
 
-1. *Merging Fields Directly in the Entity (Component Embedding):*
+* *Merging Fields Directly in the Entity (Component Embedding):*
 
 In this approach, a component merges its fields directly within the entity. From the perspective of the persistence layer, the component itself doesn't exist as a separate table or document. Instead, it becomes part of the entity's structure. This approach leads to a flat representation in the database.
 
@@ -487,7 +488,7 @@ The structure of the entity in a Document, Wide-Column, and Graph database will 
 
 This approach allows for a flat and denormalized structure in the database, making it suitable for a variety of database types.
 
-2. * Second Approach: Storing Components in Separate Tables (Relational Databases) or as Subdocuments/UDTs (NoSQL Databases)*
+* * Second Approach: Storing Components in Separate Tables (Relational Databases) or as Subdocuments/UDTs (NoSQL Databases)*
 
 This approach is typically employed for more complex relationships and associations within the domain model, allowing for greater flexibility and scalability. It involves storing components, such as the `Passport` in the example, in separate tables for relational databases or as subdocuments or User-Defined Types (UDTs) for NoSQL databases. This method is suitable for scenarios where an association exists between one entity and another.
 
@@ -734,19 +735,19 @@ public interface OrderRepository extends BasicRepository<Order, Long> {
 
 The resolution algorithm for identifying properties in query methods by method name, with manual traversal points, is defined as follows:
 
-1. *Method Name Parsing*:: The query method's name is parsed to identify the property or properties being referenced. Method names in query methods typically follow a pattern of "findBy[Property]", where "[Property]" represents the name of the property you want to query by.
+1. *Method Name Parsing*: The query method's name is parsed to identify the property or properties being referenced. Method names in query methods typically follow a pattern of "findBy[Property]", where "[Property]" represents the name of the property you want to query by.
 
-2. *Property Extraction*:: The property name is extracted from the method name by removing the "findBy" prefix. For example, in the query method `findByAddressZipCode`, the property name extracted is `AddressZipCode`.
+2. *Property Extraction*: The property name is extracted from the method name by removing the "findBy" prefix. For example, in the query method `findByAddressZipCode`, the property name extracted is `AddressZipCode`.
 
-3. *Property Name Capitalization*:: The extracted property name is treated as is, with its original capitalization. For example, if the property name is `AddressZipCode`, it remains in camel case.
+3. *Property Name Capitalization*: The extracted property name is treated as is, with its original capitalization. For example, if the property name is `AddressZipCode`, it remains in camel case.
 
-4. *Manual Traversal Points*:: To resolve ambiguity or to specify traversal through nested properties, underscores (`_`) can be used within the method name. Each underscore represents a traversal point to access nested properties. For example, `findByAddress_ZipCode` explicitly indicates traversal to the `Address` object's `ZipCode` property.
+4. *Manual Traversal Points*: To resolve ambiguity or to specify traversal through nested properties, underscores (`_`) can be used within the method name. Each underscore represents a traversal point to access nested properties. For example, `findByAddress_ZipCode` explicitly indicates traversal to the `Address` object's `ZipCode` property.
 
 5. **Domain Class Property Lookup**: The framework checks the domain class associated with the repository for a property with the same name as the extracted property name (uncapitalized) in a case-insensitive manner. If the domain class has a property named `addressZipCode` or `addresszipcode`, this is considered a successful resolution.
 
-6. *Nested Property Handling*:: If the extracted property name includes underscores (`_`) indicating nested traversal, the framework follows the specified path to resolve the property.
+6. *Nested Property Handling*: If the extracted property name includes underscores (`_`) indicating nested traversal, the framework follows the specified path to resolve the property.
 
-7. *Resolution Outcome*:: If the framework successfully identifies a property in the domain class or along the specified traversal path that matches the extracted property name, it uses that property in the query to filter data.
+7. *Resolution Outcome*: If the framework successfully identifies a property in the domain class or along the specified traversal path that matches the extracted property name, it uses that property in the query to filter data.
 
 Users are encouraged to follow Java's naming standards in formalizing Jakarta Data queries using name conventions, avoiding underscores in field names. The resolution algorithm for property identification relies on "findBy[Property]" naming, allowing manual traversal with underscores. Adhering to the camel case for property names ensures consistency and seamless query method naming in Jakarta Data, enabling effective data filtering and retrieval from domain classes.
 
@@ -863,9 +864,9 @@ The following table lists the query-by-method keywords that must be supported by
 |===
 
 [NOTE]
-.Note
-* The "Not Required For" column indicates the database types for which the respective keyword is not required or applicable.
-
+====
+The "Not Required For" column indicates the database types for which the respective keyword is not required or applicable.
+====
 Jakarta Data implementations must support the following list of query-by-method keywords, except where indicated for a database type. A repository method must raise `java.lang.UnsupportedOperationException` or a more specific subclass of the exception if the database does not provide the requested functionality.
 
 |===
@@ -989,9 +990,9 @@ Jakarta Data implementations must support the following list of query-by-method 
 |===
 
 [NOTE]
-.Note:
-* The "Not Required For" column indicates the database types for which the respective keyword is not required or applicable.
-
+====
+The "Not Required For" column indicates the database types for which the respective keyword is not required or applicable.
+====
 
 ===== Patterns
 
