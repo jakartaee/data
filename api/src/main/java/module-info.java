@@ -20,6 +20,7 @@ import jakarta.data.Limit;
 import jakarta.data.Sort;
 import jakarta.data.page.Pageable;
 import jakarta.data.repository.BasicRepository;
+import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.DataRepository;
 import jakarta.data.repository.Delete;
 import jakarta.data.repository.Insert;
@@ -713,6 +714,68 @@ import java.util.List;
  * <li>Otherwise, <b>Parameter-based Conditions</b> determine the implementation of the method.
  * You must compile with the {@code -parameters} compiler option that makes parameter names
  * available at run time.</li>
+ * </ol>
+ *
+ * <h2>Identifying the type of Entity</h2>
+ *
+ * <p>Most repository methods perform operations related to a type of entity. In some cases,
+ * the entity type is explicit within the signature of the repository method, and in other
+ * cases, such as {@code countBy...} and {@code existsBy...} the entity type cannot be determined
+ * from the method signature and a primary entity type must be defined for the repository.</p>
+ *
+ * <b>Methods where the entity type is explicitly specified:</b>
+ *
+ * <ul>
+ * <li>For repository methods that are annotated with {@link Insert}, {@link Update},
+ * {@link Save}, or {@link Delete} where the method parameter is a type, an array of type,
+ * or is parameterized with a type that is annotated as an entity,
+ * the entity type is determined from the method parameter type.</li>
+ * <li>For find and delete methods where the return type is a type, an array of type,
+ * or is parameterized with a type that is annotated as an entity,
+ * such as {@code MyEntity}, {@code MyEntity[]}, or {@code Page<MyEntity>},
+ * the entity type is determined from the method return type.</li>
+ * </ul>
+ *
+ * <b>Identifying a Primary Entity Type:</b>
+ *
+ * <p>The following precedence, from highest to lowest, is used to determine a primary
+ * entity type for a repository.</p>
+ *
+ * <ol>
+ * <li>You can explicitly define the primary entity type for a repository interface
+ * by having the repository interface inherit from a super interface such as
+ * {@link CrudRepository} where the primary entity type is the type of the
+ * super interface's first type parameter. For example, {@code Product}, in,
+ * <pre>
+ * &#64;Repository
+ * public interface Products extends CrudRepository&lt;Product, Long&gt; {
+ *     // applies to the primary entity type: Product
+ *     int countByPriceLessThan(float max);
+ * }
+ * </pre>
+ * </li>
+ * <li>Otherwise, if you define life cycle methods ({@link Insert}, {@link Update},
+ * {@link Save}, or {@link Delete}) where the method parameter is a type, an array of type,
+ * or is parameterized with a type that is annotated as an entity,
+ * and all of these methods share the same entity type,
+ * then the primary entity type for the repository is that entity type. For example,
+ * <pre>
+ * &#64;Repository
+ * public interface Products {
+ *     &#64;Insert
+ *     List&lt;Product&gt; add(List&lt;Product&gt; p);
+ *
+ *     &#64;Update
+ *     Product modify(Product p);
+ *
+ *     &#64;Save
+ *     Product[] save(Product... p);
+ *
+ *     // applies to the primary entity type: Product
+ *     boolean existsByName(String name);
+ * }
+ * </pre>
+ * </li>
  * </ol>
  *
  * <h2>Jakarta Validation</h2>
