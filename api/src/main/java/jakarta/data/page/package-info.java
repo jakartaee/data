@@ -47,7 +47,7 @@
  * <p>Slices and pages can be determined based on fixed positional index
  * or relative to a cursor.</p>
  *
- * <p>{@link Slice} and {@link Page} are computed based on their positional index
+ * <p>{@link jakarta.data.page.Slice} and {@link jakarta.data.page.Page} are computed based on their positional index
  * within the list of results. For example, if you are on the first page of 10
  * and request the next page, the database identifies the matching entities
  * for the query at positions 11 through 20 and retrieves them. Results are
@@ -58,10 +58,10 @@
  * were instead removed prior to requesting the second page, then the second page
  * will not include the entities that have now moved into positions 1 to 10.</p>
  *
- * <p>For situations where the above must be avoided or the appliaction wishes to
+ * <p>For situations where the above must be avoided or the application wishes to
  * avoid the performance cost of the database re-scanning data from previous pages
  * (to determine the position), Jakarta Data offers a cursor based approach with
- * {@link KeysetAwareSlice} and {@link KeysetAwarePage}. In this approach,
+ * {@link jakarta.data.page.KeysetAwareSlice} and {@link jakarta.data.page.KeysetAwarePage}. In this approach,
  * queries for the next or previous page are performed relative to the last
  * or first entry of the current page.</p>
  */

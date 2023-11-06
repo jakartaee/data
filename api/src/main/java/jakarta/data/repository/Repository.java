@@ -61,14 +61,14 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface Repository {
     /**
-     * Value for the {@link provider} attribute that allows the use of any
+     * Value for the {@link Repository#provider()} attribute that allows the use of any
      * available Jakarta Data provider that supports the type of entity
      * annotation that is present on the repository's entity class.
      */
     static final String ANY_PROVIDER = "";
 
     /**
-     * Value for the {@link dataStore} attribute that indicates that the
+     * Value for the {@link Repository#dataStore()} attribute that indicates that the
      * Jakarta Data provider should choose a default data store to use.
      * The default data store might require additional vendor-specific
      * configuration, depending on the vendor.
