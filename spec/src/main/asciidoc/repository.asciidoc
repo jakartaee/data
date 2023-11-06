@@ -139,239 +139,6 @@ public interface Garage {
 
 Here, the `@Insert` annotation is used for the `park` method, allowing you to design a repository interface that encapsulates the essence of your domain. This approach fosters a shared understanding and more intuitive communication within your development team, ensuring that your database operations are integral to your domain's language.
 
-=== Repository interfaces
-
-A Jakarta Data repository is a Java interface annotated `@Repository`.
-A repository interface may declare:
-
-- _abstract_ (non-`default`) methods, and
-- _concrete_ (`default`) methods.
-
-A concrete method may call other methods of the repository, including abstract methods.
-
-Every abstract method of the interface is usually either:
-
-- an entity instance _lifecycle method_,
-- an _annotated query method_,
-- an _automatic query method_, or
-- a _resource accessor method_.
-
-A repository may declare lifecycle methods for a single entity type, or for multiple related entity types.
-Similarly, a repository might have query methods which return different entity types.
-
-A repository interface may inherit methods from a superinterface.
-A Jakarta Data implementation must treat inherited abstract methods as if they were directly declared by the repository interface.
-For example, a repository interface may inherit the `CrudRepository` interface defined by this specification.
-
-Repositories perform operations on entities. For repository methods that are annotated with `@Insert`, `@Update`, `@Save`, or `@Delete`, the entity type is determined from the method parameter type.  For `find` and `delete` methods where the return type is an entity, array of entity, or parameterized type such as `List<MyEntity>` or `Page<MyEntity>`, the entity type is determined from the method return type.  For `count`, `exists`, and other `delete` methods that do not return the entity or accept the entity as a parameter, the entity type cannot be determined from the method signature and a primary entity type must be defined for the repository.
-
-Users of Jakarta Data declare a primary entity type for a repository by inheriting from a built-in repository super interface, such as `BasicRepository`, and specifying the primary entity type as the first type variable.  The primary entity type is assumed for methods that do not otherwise specify an entity type, such as `countByPriceLessThan`. Methods that require a primary entity type raise `MappingException` if a primary entity type is not provided.
-
-
-NOTE: A Jakarta Data provider might go beyond what is required by this specification and support abstract methods which do not fall into any of the above categories.
-
-Such functionality is not defined by this specification, and so programs with repositories which declare such methods are not portable between providers.
-
-The subsections below specify the rules that an abstract method declaration must observe so that the Jakarta Data implementation is able to provide an implementation of the abstract method.
-
-- If every abstract method of a repository complies with the rules specified below, then the Jakarta Data implementation must provide an implementation of the repository.
-- Otherwise, if a repository declares an abstract method which does not comply with the rules specified below, or makes use of functionality which is not supported by the Jakarta Data implementation, then an error might be produced by the Jakarta Data implementation at build time or at runtime.
-
-The portability of a given repository interface between Jakarta Data implementations depends on the portability of the entity types it uses.
-If an entity class is not portable between given implementations, then any repository which uses the entity class is also unportable between those implementations.
-
-NOTE: Additional portability guarantees may be provided by specifications which extend this specification, specializing to a given class of datastore.
-
-==== Lifecycle methods
-
-A *lifecycle method* is an abstract method annotated with a _lifecycle annotation_.
-Lifecycle methods allow the program to make changes to persistent data in the data store.
-
-A lifecycle method must be annotated with a lifecycle annotation. The method signature of the lifecycle method, including its return type, must follow the requirements that are specified by the JavaDoc of the lifecycle annotation.
-
-Lifecycle methods follow the general pattern:
-
-[source,java]
-----
-@Lifecycle
-ReturnType lifecycle(Entity e);
-----
-
-where `lifecycle` is the arbitrary name of the method, `Entity` is a concrete entity class or an `Iterable` or array of this entity, `Lifecycle` is a lifecycle annotation, and `ReturnType` is a return type that is permitted by the lifecycle annotation JavaDoc.
-
-This specification defines four built-in lifecycle annotations: `@Insert`, `@Update`, `@Delete`, and `@Save`.
-
-For example:
-
-[source,java]
-----
-@Insert 
-void insertBook(Book book);
-----
-
-Lifecycle methods are not guaranteed to be portable between all providers.
-
-Jakarta Data providers must support lifecycle methods to the extent that the data store is capable of the corresponding operation. If the data store is not capable of the operation, the Jakarta Data provider must raise `UnsupportedOperationException` when the operation is attempted, per the requirements of the JavaDoc for the lifecycle annotation, or the Jakarta Data provider must report the error at compile time.
-
-There is no special programming model for lifecycle annotations.
-The Jakarta Data implementation automatically recognizes the lifecycle annotations it supports.
-
-[NOTE]
-====
-A Jakarta Data provider might extend this specification to define additional lifecycle annotations, or to support lifecycle methods with signatures other than the usual signatures defined above. For example, a provider might support "merge" methods declared as follows:
-
-[source,java]
-----
-@Merge
-Book mergeBook(Book book);
-----
-
-Such lifecycle methods are not portable between Jakarta Data providers.
-====
-
-==== Annotated query methods
-
-An _annotated query method_ is an abstract method annotated by a _query annotation_ type.
-The query annotation specifies a query in some datastore-native query language.
-
-Each parameter of an annotated query method must either:
-
-- have exactly the same name and type as a named parameter of the query,
-- have exactly the same type and position within the parameter list of the method as a positional parameter of the query, or
-- be of type `Limit`, `Pageable`, or `Sort`.
-
-A repository with annotated query methods with named parameters must be compiled so that parameter names are preserved in the class file (for example, using `javac -parameters`), or the parameter names must be specified explicitly using the `@Param` annotation.
-
-An annotated query method must not also be annotated with a lifecycle annotation.
-
-The return type of the annotated query method must be consistent with the result type of the query specified by the query annotation.
-
-[NOTE]
-====
-The result type of a query depends on datastore-native semantics, and so the return type of an annotated query method cannot be specified here.
-However, Jakarta Data implementations are strongly encouraged to support the following return types:
-
-- for a query which returns a single result of type `T`, the type `T` itself, or `Optional<T>`,
-- for a query which returns many results of type `T`, the types `List<T>`, `Page<T>`, and `T[]`.
-
-Furthermore, implementations are encouraged to support `void` as the return type for a query which never returns a result.
-====
-
-This specification defines the built-in `@Query` annotation, which may be used to specify a query in an arbitrary query language understood by the Jakarta Data provider.
-
-For example, using a named parameter:
-
-[source,java]
-----
-@Query(“where title like :title order by title”)
-Page<Book> booksByTitle(String title, Pageable page);
-----
-
-Or, using a positional parameter:
-
-[source,java]
-----
-@Query(“delete from Book where isbn = ?1”)
-void deleteBook(String isbn);
-----
-
-Programs which make use of annotated query methods are not portable between providers.
-
-[NOTE]
-====
-A Jakarta Data provider might extend this specification to define its own query annotation types.
-For example, a provider might define a `@SQL` annotation for declaring queries written in SQL.
-====
-
-There is no special programming model for query annotations.
-The Jakarta Data implementation automatically recognizes the query annotations it supports.
-
-==== Automatic query methods
-
-An _automatic query method_ is an abstract method that either follows the Query by Method Name pattern where the Jakarta Data provider generates a query based on the name of the method, or follows a pattern for whereby the Jakarta Data provider automatically generates a find query based on the names of parameters that are supplied to the method, where the method has return type that identifies the entity, such as `E`, `Optional<E>`, `Page<E>`, or `List<E>`, where `E` is an entity class. Each parameter must either:
-
-- have exactly the same type and name as a persistent field or property of the entity class, or
-- be of type `Limit`, `Pageable`, or `Sort`.
-
-A repository with automatic query methods that are based on parameters must either be compiled so that parameter names are preserved in the class file (for example, using `javac -parameters`), or the parameter names must be specified explicitly using the `@Param` annotation.
-
-For example:
-
-[source,java]
-----
-Book bookByIsbn(String isbn);
-
-List<Book> booksByYear(Year year, Sort order, Limit limit)
-----
-
-Automatic query methods _are_ portable between providers.
-
-==== Resource accessor method
-
-A _resource accessor method_ is a method with no parameters which returns a type supported by the Jakarta Data provider.
-The purpose of this method is to provide the program with direct access to the data store.
-
-For example, if the Jakarta Data provider is based on JDBC, the return type might be `java.sql.Connection` or `javax.sql.DataSource`.
-Or, if the Jakarta Data provider is backed by Jakarta Persistence, the return type might be `jakarta.persistence.EntityManager`.
-
-The Jakarta Data provider recognizes the connection types it supports and implements the method such that it returns an instance of the type of resource. If the resource type implements `java.lang.AutoCloseable` and the resource is obtained within the scope of a default method of the repository, then the Jakarta Data provider automatically closes the resource upon completion of the default method. If the method for obtaining the resource is invoked outside the scope of a default method of the repository, then the user is responsible for closing the resource instance.
-
-[NOTE]
-A Jakarta Data implementation might allow a resource accessor method to be annotated with additional metadata providing information about the connection.
-
-For example:
-
-[source,java]
-----
-Connection connection();
-
-default void cleanup() {
-    try (Statement s = connection().createStatement()) {
-        s.executeUpdate("truncate table books");
-    }
-}
-----
-
-A repository may have at most one resource accessor method.
-
-==== Additional examples
-
-The following examples demonstrate the use of annotated and automatic query methods with `CrudRepository`.
-
-[source,java]
-----
-@Repository
-public interface ProductRepository extends CrudRepository<Product, Long> {
-  @Query("SELECT p FROM Product p WHERE p.name=?1")  // example in JPQL
-  Optional<Product> findByName(String name);
-}
-----
-
-[source,java]
-----
-@Repository
-public interface ProductRepository extends CrudRepository<Product, Long> {
-  @Query("SELECT p FROM Product p WHERE p.name=:name")  // example in JPQL
-  Optional<Product> findByName(@Param("name") String name);
-}
-----
-
-[source,java]
-----
-@Repository
-public interface ProductRepository extends CrudRepository<Product, Long> {
-
-  // Assumes that the Product entity has attributes: yearProduced
-  List<Product> findMadeIn(int yearProduced, Sort... sorts);
-
-  @Query("SELECT count(p) FROM Product p WHERE p.name=?1 AND p.status=?2")
-  int countWithStatus(String name, Status status);
-
-  @Query("DELETE FROM Product p WHERE p.yearProduced=?1")
-  void deleteOutdated(int yearProduced);
-}
-----
-
 
 === Entity Classes
 
@@ -643,6 +410,238 @@ For other types of databases, Jakarta Data does not require explicit support for
 
 In instances where a Jakarta Data provider for NoSQL databases encounters a recursive relationship that it cannot support due to the specific characteristics of the database, it must throw a `jakarta.data.exceptions.MappingException` or an appropriate subclass of `MappingException`. This exception notifies developers that the database does not support the relationship.
 
+=== Repository interfaces
+
+A Jakarta Data repository is a Java interface annotated `@Repository`.
+A repository interface may declare:
+
+- _abstract_ (non-`default`) methods, and
+- _concrete_ (`default`) methods.
+
+A concrete method may call other methods of the repository, including abstract methods.
+
+Every abstract method of the interface is usually either:
+
+- an entity instance _lifecycle method_,
+- an _annotated query method_,
+- an _automatic query method_, or
+- a _resource accessor method_.
+
+A repository may declare lifecycle methods for a single entity type, or for multiple related entity types.
+Similarly, a repository might have query methods which return different entity types.
+
+A repository interface may inherit methods from a superinterface.
+A Jakarta Data implementation must treat inherited abstract methods as if they were directly declared by the repository interface.
+For example, a repository interface may inherit the `CrudRepository` interface defined by this specification.
+
+Repositories perform operations on entities. For repository methods that are annotated with `@Insert`, `@Update`, `@Save`, or `@Delete`, the entity type is determined from the method parameter type.  For `find` and `delete` methods where the return type is an entity, array of entity, or parameterized type such as `List<MyEntity>` or `Page<MyEntity>`, the entity type is determined from the method return type.  For `count`, `exists`, and other `delete` methods that do not return the entity or accept the entity as a parameter, the entity type cannot be determined from the method signature and a primary entity type must be defined for the repository.
+
+Users of Jakarta Data declare a primary entity type for a repository by inheriting from a built-in repository super interface, such as `BasicRepository`, and specifying the primary entity type as the first type variable.  The primary entity type is assumed for methods that do not otherwise specify an entity type, such as `countByPriceLessThan`. Methods that require a primary entity type raise `MappingException` if a primary entity type is not provided.
+
+
+NOTE: A Jakarta Data provider might go beyond what is required by this specification and support abstract methods which do not fall into any of the above categories.
+
+Such functionality is not defined by this specification, and so programs with repositories which declare such methods are not portable between providers.
+
+The subsections below specify the rules that an abstract method declaration must observe so that the Jakarta Data implementation is able to provide an implementation of the abstract method.
+
+- If every abstract method of a repository complies with the rules specified below, then the Jakarta Data implementation must provide an implementation of the repository.
+- Otherwise, if a repository declares an abstract method which does not comply with the rules specified below, or makes use of functionality which is not supported by the Jakarta Data implementation, then an error might be produced by the Jakarta Data implementation at build time or at runtime.
+
+The portability of a given repository interface between Jakarta Data implementations depends on the portability of the entity types it uses.
+If an entity class is not portable between given implementations, then any repository which uses the entity class is also unportable between those implementations.
+
+NOTE: Additional portability guarantees may be provided by specifications which extend this specification, specializing to a given class of datastore.
+
+==== Lifecycle methods
+
+A *lifecycle method* is an abstract method annotated with a _lifecycle annotation_.
+Lifecycle methods allow the program to make changes to persistent data in the data store.
+
+A lifecycle method must be annotated with a lifecycle annotation. The method signature of the lifecycle method, including its return type, must follow the requirements that are specified by the JavaDoc of the lifecycle annotation.
+
+Lifecycle methods follow the general pattern:
+
+[source,java]
+----
+@Lifecycle
+ReturnType lifecycle(Entity e);
+----
+
+where `lifecycle` is the arbitrary name of the method, `Entity` is a concrete entity class or an `Iterable` or array of this entity, `Lifecycle` is a lifecycle annotation, and `ReturnType` is a return type that is permitted by the lifecycle annotation JavaDoc.
+
+This specification defines four built-in lifecycle annotations: `@Insert`, `@Update`, `@Delete`, and `@Save`.
+
+For example:
+
+[source,java]
+----
+@Insert 
+void insertBook(Book book);
+----
+
+Lifecycle methods are not guaranteed to be portable between all providers.
+
+Jakarta Data providers must support lifecycle methods to the extent that the data store is capable of the corresponding operation. If the data store is not capable of the operation, the Jakarta Data provider must raise `UnsupportedOperationException` when the operation is attempted, per the requirements of the JavaDoc for the lifecycle annotation, or the Jakarta Data provider must report the error at compile time.
+
+There is no special programming model for lifecycle annotations.
+The Jakarta Data implementation automatically recognizes the lifecycle annotations it supports.
+
+[NOTE]
+====
+A Jakarta Data provider might extend this specification to define additional lifecycle annotations, or to support lifecycle methods with signatures other than the usual signatures defined above. For example, a provider might support "merge" methods declared as follows:
+
+[source,java]
+----
+@Merge
+Book mergeBook(Book book);
+----
+
+Such lifecycle methods are not portable between Jakarta Data providers.
+====
+
+==== Annotated query methods
+
+An _annotated query method_ is an abstract method annotated by a _query annotation_ type.
+The query annotation specifies a query in some datastore-native query language.
+
+Each parameter of an annotated query method must either:
+
+- have exactly the same name and type as a named parameter of the query,
+- have exactly the same type and position within the parameter list of the method as a positional parameter of the query, or
+- be of type `Limit`, `Pageable`, or `Sort`.
+
+A repository with annotated query methods with named parameters must be compiled so that parameter names are preserved in the class file (for example, using `javac -parameters`), or the parameter names must be specified explicitly using the `@Param` annotation.
+
+An annotated query method must not also be annotated with a lifecycle annotation.
+
+The return type of the annotated query method must be consistent with the result type of the query specified by the query annotation.
+
+[NOTE]
+====
+The result type of a query depends on datastore-native semantics, and so the return type of an annotated query method cannot be specified here.
+However, Jakarta Data implementations are strongly encouraged to support the following return types:
+
+- for a query which returns a single result of type `T`, the type `T` itself, or `Optional<T>`,
+- for a query which returns many results of type `T`, the types `List<T>`, `Page<T>`, and `T[]`.
+
+Furthermore, implementations are encouraged to support `void` as the return type for a query which never returns a result.
+====
+
+This specification defines the built-in `@Query` annotation, which may be used to specify a query in an arbitrary query language understood by the Jakarta Data provider.
+
+For example, using a named parameter:
+
+[source,java]
+----
+@Query(“where title like :title order by title”)
+Page<Book> booksByTitle(String title, Pageable page);
+----
+
+Or, using a positional parameter:
+
+[source,java]
+----
+@Query(“delete from Book where isbn = ?1”)
+void deleteBook(String isbn);
+----
+
+Programs which make use of annotated query methods are not portable between providers.
+
+[NOTE]
+====
+A Jakarta Data provider might extend this specification to define its own query annotation types.
+For example, a provider might define a `@SQL` annotation for declaring queries written in SQL.
+====
+
+There is no special programming model for query annotations.
+The Jakarta Data implementation automatically recognizes the query annotations it supports.
+
+==== Automatic query methods
+
+An _automatic query method_ is an abstract method that either follows the Query by Method Name pattern where the Jakarta Data provider generates a query based on the name of the method, or follows a pattern for whereby the Jakarta Data provider automatically generates a find query based on the names of parameters that are supplied to the method, where the method has return type that identifies the entity, such as `E`, `Optional<E>`, `Page<E>`, or `List<E>`, where `E` is an entity class. Each parameter must either:
+
+- have exactly the same type and name as a persistent field or property of the entity class, or
+- be of type `Limit`, `Pageable`, or `Sort`.
+
+A repository with automatic query methods that are based on parameters must either be compiled so that parameter names are preserved in the class file (for example, using `javac -parameters`), or the parameter names must be specified explicitly using the `@Param` annotation.
+
+For example:
+
+[source,java]
+----
+Book bookByIsbn(String isbn);
+
+List<Book> booksByYear(Year year, Sort order, Limit limit)
+----
+
+Automatic query methods _are_ portable between providers.
+
+==== Resource accessor method
+
+A _resource accessor method_ is a method with no parameters which returns a type supported by the Jakarta Data provider.
+The purpose of this method is to provide the program with direct access to the data store.
+
+For example, if the Jakarta Data provider is based on JDBC, the return type might be `java.sql.Connection` or `javax.sql.DataSource`.
+Or, if the Jakarta Data provider is backed by Jakarta Persistence, the return type might be `jakarta.persistence.EntityManager`.
+
+The Jakarta Data provider recognizes the connection types it supports and implements the method such that it returns an instance of the type of resource. If the resource type implements `java.lang.AutoCloseable` and the resource is obtained within the scope of a default method of the repository, then the Jakarta Data provider automatically closes the resource upon completion of the default method. If the method for obtaining the resource is invoked outside the scope of a default method of the repository, then the user is responsible for closing the resource instance.
+
+[NOTE]
+A Jakarta Data implementation might allow a resource accessor method to be annotated with additional metadata providing information about the connection.
+
+For example:
+
+[source,java]
+----
+Connection connection();
+
+default void cleanup() {
+    try (Statement s = connection().createStatement()) {
+        s.executeUpdate("truncate table books");
+    }
+}
+----
+
+A repository may have at most one resource accessor method.
+
+==== Additional examples
+
+The following examples demonstrate the use of annotated and automatic query methods with `CrudRepository`.
+
+[source,java]
+----
+@Repository
+public interface ProductRepository extends CrudRepository<Product, Long> {
+  @Query("SELECT p FROM Product p WHERE p.name=?1")  // example in JPQL
+  Optional<Product> findByName(String name);
+}
+----
+
+[source,java]
+----
+@Repository
+public interface ProductRepository extends CrudRepository<Product, Long> {
+  @Query("SELECT p FROM Product p WHERE p.name=:name")  // example in JPQL
+  Optional<Product> findByName(@Param("name") String name);
+}
+----
+
+[source,java]
+----
+@Repository
+public interface ProductRepository extends CrudRepository<Product, Long> {
+
+  // Assumes that the Product entity has attributes: yearProduced
+  List<Product> findMadeIn(int yearProduced, Sort... sorts);
+
+  @Query("SELECT count(p) FROM Product p WHERE p.name=?1 AND p.status=?2")
+  int countWithStatus(String name, Status status);
+
+  @Query("DELETE FROM Product p WHERE p.yearProduced=?1")
+  void deleteOutdated(int yearProduced);
+}
+----
 
 === Query by Method Name
 
