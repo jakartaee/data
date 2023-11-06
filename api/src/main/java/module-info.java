@@ -159,7 +159,8 @@ import java.util.List;
  * }
  * </pre>
  *
- * <p>When using the <b>Query by Method Name</b> pattern,
+ * <p>When using the <b>Query by Method Name</b> pattern
+ * as well as the <b>Parameter-based Conditions</b> pattern,
  * <code>Id</code> is an alias for the entity property
  * that is designated as the id. Entity property names that are used in queries
  * by method name must not contain reserved words.</p>
@@ -205,8 +206,10 @@ import java.util.List;
  * <h2>Query by Method Name</h2>
  *
  * <p>Repository methods following the <b>Query by Method Name</b> pattern
- * must include the {@code By} keyword in the method name. Query conditions
- * are determined by the method name following the {@code By} keyword.</p>
+ * must include the {@code By} keyword in the method name and must not include
+ * any life cycle annotations on the method or any data access related annotations
+ * on the method parameters. Query conditions
+ * are determined by the portion of the method name following the {@code By} keyword.</p>
  *
  * <table style="width: 100%">
  * <caption><b>Query By Method Name</b></caption>
@@ -470,8 +473,10 @@ import java.util.List;
  * the capabilities of the database.
  * </p>
  *
+ * <h2>Return Types for Repository Methods</h2>
+ *
  * <table style="width: 100%">
- * <caption><b>Return Types for Repository Methods</b></caption>
+ * <caption><b>Return Types when using Query by Method Name and Parameter-based Conditions</b></caption>
  * <tr>
  * <td style="vertical-align: top"><b>Method</b></td>
  * <td style="vertical-align: top"><b>Return Types</b></td>
@@ -537,6 +542,13 @@ import java.util.List;
  *
  * </table>
  *
+ * <h3>Return Types for Annotated Methods</h3>
+ *
+ * <p>Return types that are valid when using {@link Query} depend on the Query Language
+ * operation that is performed. For queries that correspond to operations in the above
+ * table, the same return types must be supported as for the Query-by-Method-Name and
+ * Parameter-based Conditions patterns.</p>
+ *
  * <p>Refer to the {@link Insert}, {@link Update}, {@link Save}, and {@link Delete}
  * JavaDoc for valid return types when using those annotations. Whenever the
  * return type is an {@link Iterable} subtype that is a concrete class,
@@ -546,8 +558,8 @@ import java.util.List;
  * <h2>Parameter-based Conditions</h2>
  *
  * <p>When using the <i>Parameter-based Conditions</i> pattern,
- * the method name begins with {@code find}
- * and must not include the {@code By} keyword.
+ * the method name must not include the {@code By} keyword or at least one
+ * of the parameters must be annotated with a data access related annotation.
  * The query conditions are defined by the method parameters.
  * Method parameter names must match the name of an entity attribute.
  * The {@code _} character can be used in method parameter names to
@@ -678,6 +690,30 @@ import java.util.List;
  * automatically closes the resource after the default method ends.
  * If you invoke the accessor method from outside the scope of a default method,
  * you are responsible for closing the resource instance.</p>
+ *
+ * <h2>Precedence of Repository Methods</h2>
+ *
+ * <p>The following precedence, from highest to lowest, is used when interpreting the
+ * meaning of repository methods.</p>
+ *
+ * <ol>
+ * <li>If you define a method as a <b>Java default method</b> and provide implementation,
+ * then your provided implementation is used.</li>
+ * <li>If you define a method with a <b>Resource Accessor Method</b> return type,
+ * then the method is implemented as a Resource Accessor Method.</li>
+ * <li>If you annotate a method with {@link Query}, then the method is implemented
+ * to run the corresponding Query Language query.</li>
+ * <li>If you annotate a method with an annotation that defines the type of operation
+ * ({@link Insert}, {@link Update}, {@link Save}, or {@link Delete}),
+ * then the annotation determines how the method is implemented.
+ * <li>If you annotate any of the method parameters with a data access related annotation,
+ * then <b>Parameter-based Conditions</b> determine the implementation of the method.</li>
+ * <li>If you define a method according to the <b>Query by Method Name pattern</b> naming conventions,
+ * then the implementation follows the Query by Method Name pattern.</li>
+ * <li>Otherwise, <b>Parameter-based Conditions</b> determine the implementation of the method.
+ * You must compile with the {@code -parameters} compiler option that makes parameter names
+ * available at run time.</li>
+ * </ol>
  *
  * <h2>Jakarta Validation</h2>
  *
