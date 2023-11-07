@@ -1096,7 +1096,7 @@ public interface CustomerRepository extends BasicRepository<Customer, Long> {
 }
 ----
 
-You can obtain the next page with,
+You can obtain the initial page relative to an offset and subsequent pages relative to the last entity of the current page as follows,
 
 [source,java]
 ----
