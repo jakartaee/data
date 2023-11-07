@@ -37,7 +37,7 @@ import jakarta.data.repository.OrderBy;
  * <p>To use keyset pagination, define a repository method with return value of
  * {@link KeysetAwareSlice} or {@link KeysetAwarePage} and which accepts a
  * special parameter (after the normal query parameters) that is a
- * {@link Pageable}. For example,</p>
+ * {@link Pagination}. For example,</p>
  *
  * <pre>
  * &#64;OrderBy("lastName")
@@ -46,7 +46,7 @@ import jakarta.data.repository.OrderBy;
  * KeysetAwareSlice&lt;Employee&gt; findByHoursWorkedGreaterThan(int hours, Pageable pagination);
  * </pre>
  *
- * <p>You can use a normal {@link Pageable} to request an initial page,</p>
+ * <p>You can use a normal {@link Pagination} to request an initial page,</p>
  *
  * <pre>
  * page = employees.findByHoursWorkedGreaterThan(1500, Pageable.ofSize(50));
@@ -59,15 +59,15 @@ import jakarta.data.repository.OrderBy;
  * page = employees.findByHoursWorkedGreaterThan(1500, page.nextPageable());
  * </pre>
  *
- * <p>Because the page is keyset aware, the {@link Pageable}
+ * <p>Because the page is keyset aware, the {@link Pagination}
  * that it returns from the call to {@link KeysetAwareSlice#nextPageable}
  * above is based upon a keyset from that page to use as a starting point
  * after which the results for the next page are to be found.</p>
  *
- * <p>You can also construct a {@link Pageable} with a {@link Pageable.Cursor Cursor} directly, which
+ * <p>You can also construct a {@link Pagination} with a {@link Cursor Cursor} directly, which
  * allows you to make it relative to a specific list of values. The number and
  * order of values must match that of the {@link OrderBy} annotations,
- * {@link Pageable#sortBy(jakarta.data.Sort...)} or {@link Pageable#sortBy(Iterable)} parameters,
+ * {@link Pagination#sortBy(jakarta.data.Sort...)} or {@link Pagination#sortBy(Iterable)} parameters,
  * or <code>OrderBy</code> name pattern of the repository method.
  * For example,</p>
  *
@@ -98,7 +98,7 @@ import jakarta.data.repository.OrderBy;
  * in parenthesis.
  * Sort criteria must be specified independently from the user-provided query,
  * either with the {@link OrderBy} annotation or
- * {@link Pageable#sortBy(jakarta.data.Sort...)} or {@link Pageable#sortBy(Iterable)} parameters.
+ * {@link Pagination#sortBy(jakarta.data.Sort...)} or {@link Pagination#sortBy(Iterable)} parameters.
  * For example,</p>
  *
  * <pre>
@@ -126,13 +126,13 @@ import jakarta.data.repository.OrderBy;
  */
 public interface KeysetAwareSlice<T> extends Slice<T> {
     /**
-     * Returns a {@link Pageable.Cursor Cursor} for keyset values at the
+     * Returns a {@link Cursor Cursor} for keyset values at the
      * specified position.
      *
      * @param index position (0 is first) of a result on the page.
      * @return cursor for keyset values at the specified position.
      */
-    Pageable.Cursor getKeysetCursor(int index);
+    Cursor getKeysetCursor(int index);
 
     /**
      * <p>Returns pagination information for requesting the next page
@@ -147,7 +147,7 @@ public interface KeysetAwareSlice<T> extends Slice<T> {
      *         or if it is known that there is not a next page.
      */
     @Override
-    Pageable nextPageable();
+    Pagination nextPageable();
 
     /**
      * <p>Returns pagination information for requesting the previous page
@@ -174,5 +174,5 @@ public interface KeysetAwareSlice<T> extends Slice<T> {
      *         <code>null</code> if the current page is empty
      *         or if it is known that there is not a previous page.
      */
-    Pageable previousPageable();
+    Pagination previousPageable();
 }

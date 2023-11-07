@@ -34,12 +34,12 @@ class KeysetPageableTest {
     @Test
     @DisplayName("Should include keyset values in next Pageable")
     void shouldCreatePageableAfterKeyset() {
-        Pageable pageable = Pageable.ofSize(20).afterKeyset("First", 2L, 3);
+        Pagination pageable = Pagination.ofSize(20).afterKeyset("First", 2L, 3);
 
         assertSoftly(softly -> {
             softly.assertThat(pageable.size()).isEqualTo(20);
             softly.assertThat(pageable.page()).isEqualTo(1L);
-            softly.assertThat(pageable.mode()).isEqualTo(Pageable.Mode.CURSOR_NEXT);
+            softly.assertThat(pageable.mode()).isEqualTo(Pagination.Mode.CURSOR_NEXT);
             softly.assertThat(pageable.cursor().size()).isEqualTo(3);
             softly.assertThat(pageable.cursor().getKeysetElement(0)).isEqualTo("First");
             softly.assertThat(pageable.cursor().getKeysetElement(1)).isEqualTo(2L);
@@ -50,14 +50,14 @@ class KeysetPageableTest {
     @Test
     @DisplayName("Should include keyset values in next Pageable from Cursor")
     void shouldCreatePageableAfterKeysetCursor() {
-        Pageable.Cursor cursor = new KeysetCursor("me", 200);
-        Pageable pageable = Pageable.ofSize(35).sortBy(Sort.asc("name"), Sort.asc("id")).afterKeysetCursor(cursor);
+        Cursor cursor = new KeysetCursor("me", 200);
+        Pagination pageable = Pagination.ofSize(35).sortBy(Sort.asc("name"), Sort.asc("id")).afterKeysetCursor(cursor);
 
         assertSoftly(softly -> {
             softly.assertThat(pageable.size()).isEqualTo(35);
             softly.assertThat(pageable.page()).isEqualTo(1L);
             softly.assertThat(pageable.sorts()).isEqualTo(List.of(Sort.asc("name"), Sort.asc("id")));
-            softly.assertThat(pageable.mode()).isEqualTo(Pageable.Mode.CURSOR_NEXT);
+            softly.assertThat(pageable.mode()).isEqualTo(Pagination.Mode.CURSOR_NEXT);
             softly.assertThat(pageable.cursor().size()).isEqualTo(2);
             softly.assertThat(pageable.cursor().getKeysetElement(0)).isEqualTo("me");
             softly.assertThat(pageable.cursor().getKeysetElement(1)).isEqualTo(200);
@@ -67,13 +67,13 @@ class KeysetPageableTest {
     @Test
     @DisplayName("Should include keyset values in previous Pageable")
     void shouldCreatePageableBeforeKeyset() {
-        Pageable pageable = Pageable.ofSize(30).sortBy(Sort.desc("yearBorn"), Sort.asc("ssn")).beforeKeyset(1991, "123-45-6789").page(10);
+        Pagination pageable = Pagination.ofSize(30).sortBy(Sort.desc("yearBorn"), Sort.asc("ssn")).beforeKeyset(1991, "123-45-6789").page(10);
 
         assertSoftly(softly -> {
             softly.assertThat(pageable.size()).isEqualTo(30);
             softly.assertThat(pageable.page()).isEqualTo(10L);
             softly.assertThat(pageable.sorts()).isEqualTo(List.of(Sort.desc("yearBorn"), Sort.asc("ssn")));
-            softly.assertThat(pageable.mode()).isEqualTo(Pageable.Mode.CURSOR_PREVIOUS);
+            softly.assertThat(pageable.mode()).isEqualTo(Pagination.Mode.CURSOR_PREVIOUS);
             softly.assertThat(pageable.cursor().size()).isEqualTo(2);
             softly.assertThat(pageable.cursor().getKeysetElement(0)).isEqualTo(1991);
             softly.assertThat(pageable.cursor().getKeysetElement(1)).isEqualTo("123-45-6789");
@@ -83,14 +83,14 @@ class KeysetPageableTest {
     @Test
     @DisplayName("Should include keyset values in previous Pageable from Cursor")
     void shouldCreatePageableBeforeKeysetCursor() {
-        Pageable.Cursor cursor = new KeysetCursor(900L, 300, "testing", 120, 'T');
-        Pageable pageable = Pageable.ofPage(8).beforeKeysetCursor(cursor);
+        Cursor cursor = new KeysetCursor(900L, 300, "testing", 120, 'T');
+        Pagination pageable = Pagination.ofPage(8).beforeKeysetCursor(cursor);
 
         assertSoftly(softly -> {
             softly.assertThat(pageable.size()).isEqualTo(10);
             softly.assertThat(pageable.page()).isEqualTo(8L);
             softly.assertThat(pageable.sorts()).isEqualTo(Collections.EMPTY_LIST);
-            softly.assertThat(pageable.mode()).isEqualTo(Pageable.Mode.CURSOR_PREVIOUS);
+            softly.assertThat(pageable.mode()).isEqualTo(Pagination.Mode.CURSOR_PREVIOUS);
             softly.assertThat(pageable.cursor().size()).isEqualTo(5);
             softly.assertThat(pageable.cursor().getKeysetElement(0)).isEqualTo(900L);
             softly.assertThat(pageable.cursor().getKeysetElement(1)).isEqualTo(300);
@@ -103,12 +103,12 @@ class KeysetPageableTest {
     @Test
     @DisplayName("Should be usable in a hashing structure")
     void shouldHash() {
-        Pageable pageable1 = Pageable.ofSize(15).afterKeyset(1, '1', "1")
+        Pagination pageable1 = Pagination.ofSize(15).afterKeyset(1, '1', "1")
                                            .sortBy(Sort.desc("yearHired"), Sort.asc("lastName"), Sort.asc("id"));
-        Pageable pageable2a = Pageable.ofSize(15).afterKeyset(2, '2', "2");
-        Pageable pageable2b = Pageable.ofSize(15).beforeKeyset(2, '2', "2");
-        Pageable pageable2c = Pageable.ofSize(15).beforeKeyset(2, '2', "2");
-        Map<Pageable, Integer> map = new HashMap<>();
+        Pagination pageable2a = Pagination.ofSize(15).afterKeyset(2, '2', "2");
+        Pagination pageable2b = Pagination.ofSize(15).beforeKeyset(2, '2', "2");
+        Pagination pageable2c = Pagination.ofSize(15).beforeKeyset(2, '2', "2");
+        Map<Pagination, Integer> map = new HashMap<>();
 
         assertSoftly(softly -> {
             softly.assertThat(pageable2b.hashCode()).isEqualTo(pageable2c.hashCode());
@@ -127,12 +127,12 @@ class KeysetPageableTest {
     @Test
     @DisplayName("Should be displayable as String with toString")
     void shouldPageableDisplayAsString() {
-        Pageable pageable = Pageable.ofSize(200).afterKeyset("value1", 1);
+        Pagination pageable = Pagination.ofSize(200).afterKeyset("value1", 1);
 
         assertSoftly(softly -> softly.assertThat(pageable.toString())
               .isEqualTo("Pageable{page=1, size=200, mode=CURSOR_NEXT, 2 keys}"));
 
-        Pageable pageableWithSorts = Pageable.ofSize(100).sortBy(Sort.desc("name"), Sort.asc("id"))
+        Pagination pageableWithSorts = Pagination.ofSize(100).sortBy(Sort.desc("name"), Sort.asc("id"))
                                              .beforeKeyset("Item1", 3456);
 
         assertSoftly(softly -> softly.assertThat(pageableWithSorts.toString())
@@ -142,18 +142,18 @@ class KeysetPageableTest {
     @Test
     @DisplayName("Should return true from equals if keyset values and other properties are equal")
     void shouldBeEqualWithSameKeysetValues() {
-        Pageable pageable25p1s0a1 = Pageable.ofSize(25).afterKeyset("keyval1", '2', 3);
-        Pageable pageable25p1s0b1 = Pageable.ofSize(25).beforeKeyset("keyval1", '2', 3);
-        Pageable pageable25p1s0a1match = Pageable.ofSize(25).afterKeysetCursor(new KeysetCursor("keyval1", '2', 3));
-        Pageable pageable25p2s0a1 = Pageable.ofPage(2).size(25).afterKeysetCursor(new KeysetCursor("keyval1", '2', 3));
-        Pageable pageable25p1s1a1 = Pageable.ofSize(25).sortBy(Sort.desc("d"), Sort.asc("a"), Sort.asc("id")).afterKeyset("keyval1", '2', 3);
-        Pageable pageable25p1s2a1 = Pageable.ofSize(25).sortBy(Sort.desc("d"), Sort.asc("a"), Sort.desc("id")).afterKeyset("keyval1", '2', 3);
-        Pageable pageable25p1s0a2 = Pageable.ofSize(25).afterKeyset("keyval2", '2', 3);
+        Pagination pageable25p1s0a1 = Pagination.ofSize(25).afterKeyset("keyval1", '2', 3);
+        Pagination pageable25p1s0b1 = Pagination.ofSize(25).beforeKeyset("keyval1", '2', 3);
+        Pagination pageable25p1s0a1match = Pagination.ofSize(25).afterKeysetCursor(new KeysetCursor("keyval1", '2', 3));
+        Pagination pageable25p2s0a1 = Pagination.ofPage(2).size(25).afterKeysetCursor(new KeysetCursor("keyval1", '2', 3));
+        Pagination pageable25p1s1a1 = Pagination.ofSize(25).sortBy(Sort.desc("d"), Sort.asc("a"), Sort.asc("id")).afterKeyset("keyval1", '2', 3);
+        Pagination pageable25p1s2a1 = Pagination.ofSize(25).sortBy(Sort.desc("d"), Sort.asc("a"), Sort.desc("id")).afterKeyset("keyval1", '2', 3);
+        Pagination pageable25p1s0a2 = Pagination.ofSize(25).afterKeyset("keyval2", '2', 3);
 
-        Pageable.Cursor cursor1 = new KeysetCursor("keyval1", '2', 3);
-        Pageable.Cursor cursor2 = new KeysetCursor("keyval2", '2', 3);
-        Pageable.Cursor cursor3 = new KeysetCursor("keyval1", '2');
-        Pageable.Cursor cursor4 = new DefaultPagination.Cursor() {
+        Cursor cursor1 = new KeysetCursor("keyval1", '2', 3);
+        Cursor cursor2 = new KeysetCursor("keyval2", '2', 3);
+        Cursor cursor3 = new KeysetCursor("keyval1", '2');
+        Cursor cursor4 = new Cursor() {
             private final Object[] keyset = new Object[] { "keyval1", '2', 3 };
 
             @Override
@@ -186,34 +186,34 @@ class KeysetPageableTest {
             softly.assertThat(pageable25p1s0a1.equals(pageable25p1s1a1)).isFalse(); // with vs without sorting
             softly.assertThat(pageable25p1s2a1.equals(pageable25p1s1a1)).isFalse(); // different sorting
             softly.assertThat(pageable25p1s0a1.equals(pageable25p1s0a2)).isFalse(); // different keyset value
-            softly.assertThat(pageable25p1s0a1.equals(Pageable.ofSize(25))).isFalse(); // Pageable with keyset vs Pageable
-            softly.assertThat(Pageable.ofSize(25).equals(pageable25p1s0a1)).isFalse(); // Pageable vs Pageable with keyset
+            softly.assertThat(pageable25p1s0a1.equals(Pagination.ofSize(25))).isFalse(); // Pageable with keyset vs Pageable
+            softly.assertThat(Pagination.ofSize(25).equals(pageable25p1s0a1)).isFalse(); // Pageable vs Pageable with keyset
         });
     }
 
     @Test
     @DisplayName("Should raise IllegalArgumentException when keyset values are absent")
     void shouldRaiseErrorForMissingKeysetValues() {
-        assertThatIllegalArgumentException().isThrownBy(() -> Pageable.ofSize(60).afterKeyset(null));
-        assertThatIllegalArgumentException().isThrownBy(() -> Pageable.ofSize(70).afterKeyset(new Object[0]));
-        assertThatIllegalArgumentException().isThrownBy(() -> Pageable.ofSize(80).beforeKeyset(null));
-        assertThatIllegalArgumentException().isThrownBy(() -> Pageable.ofSize(90).beforeKeyset(new Object[0]));
+        assertThatIllegalArgumentException().isThrownBy(() -> Pagination.ofSize(60).afterKeyset(null));
+        assertThatIllegalArgumentException().isThrownBy(() -> Pagination.ofSize(70).afterKeyset(new Object[0]));
+        assertThatIllegalArgumentException().isThrownBy(() -> Pagination.ofSize(80).beforeKeyset(null));
+        assertThatIllegalArgumentException().isThrownBy(() -> Pagination.ofSize(90).beforeKeyset(new Object[0]));
     }
 
     @Test
     @DisplayName("Keyset should be replaced on new instance of Pageable")
     void shouldReplaceKeyset() {
-        Pageable p1 = Pageable.ofSize(30).sortBy(Sort.asc("lastName"), Sort.asc("firstName"), Sort.asc("id"))
+        Pagination p1 = Pagination.ofSize(30).sortBy(Sort.asc("lastName"), Sort.asc("firstName"), Sort.asc("id"))
                                          .afterKeyset("last1", "fname1", 100).page(12);
-        Pageable p2 = p1.beforeKeyset("lname2", "fname2", 200);
+        Pagination p2 = p1.beforeKeyset("lname2", "fname2", 200);
 
         assertSoftly(softly -> {
-            softly.assertThat(p1.mode()).isEqualTo(Pageable.Mode.CURSOR_NEXT);
+            softly.assertThat(p1.mode()).isEqualTo(Pagination.Mode.CURSOR_NEXT);
             softly.assertThat(p1.cursor().getKeysetElement(0)).isEqualTo("last1");
             softly.assertThat(p1.cursor().getKeysetElement(1)).isEqualTo("fname1");
             softly.assertThat(p1.cursor().getKeysetElement(2)).isEqualTo(100);
 
-            softly.assertThat(p2.mode()).isEqualTo(Pageable.Mode.CURSOR_PREVIOUS);
+            softly.assertThat(p2.mode()).isEqualTo(Pagination.Mode.CURSOR_PREVIOUS);
             softly.assertThat(p2.cursor().getKeysetElement(0)).isEqualTo("lname2");
             softly.assertThat(p2.cursor().getKeysetElement(1)).isEqualTo("fname2");
             softly.assertThat(p2.cursor().getKeysetElement(2)).isEqualTo(200);

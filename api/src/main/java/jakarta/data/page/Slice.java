@@ -49,16 +49,16 @@ public interface Slice<T> extends Streamable<T> {
     int numberOfElements();
 
     /**
-     * Returns the current {@link Pageable}
+     * Returns the current {@link Pagination}
      *
      * @return the current Pageable; will never be {@literal null}.
      */
-    Pageable pageable();
+    Pagination pageable();
 
     /**
-     * Returns the next {@link Pageable#next()}, or <code>null</code> if it is known that there is no next page.
+     * Returns the next {@link Pagination#next()}, or <code>null</code> if it is known that there is no next page.
      *
      * @return the next pageable.
      */
-    Pageable nextPageable();
+    Pagination nextPageable();
 }

@@ -22,7 +22,7 @@ import java.util.Arrays;
 /**
  * Built-in implementation of Cursor for keyset pagination.
  */
-class KeysetCursor implements Pageable.Cursor {
+class KeysetCursor implements Cursor {
     /**
      * Keyset values.
      */

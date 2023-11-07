@@ -17,7 +17,7 @@
  */
 package jakarta.data;
 
-import jakarta.data.page.Pageable;
+import jakarta.data.page.Pagination;
 import jakarta.data.repository.OrderBy;
 import jakarta.data.repository.Query;
 import java.util.Objects;
@@ -28,7 +28,7 @@ import java.util.Objects;
  * a {@link Direction} and a property.</p>
  *
  * <p>Dynamic <code>Sort</code> criteria can be specified when
- * {@link Pageable#sortBy(Sort[]) requesting a page of results}
+ * {@link Pagination#sortBy(Sort[]) requesting a page of results}
  * or can be optionally specified as
  * parameters to a repository method in any of the positions that are after
  * the query parameters. You can use <code>Sort...</code> to allow a variable
@@ -55,8 +55,8 @@ import java.util.Objects;
  * or a more specific subclass if</p>
  * <ul>
  * <li>a <code>Sort</code> parameter is
- *     specified in combination with a {@link Pageable} parameter with
- *     {@link Pageable#sorts()}.</li>
+ *     specified in combination with a {@link Pagination} parameter with
+ *     {@link Pagination#sorts()}.</li>
  * <li>the database is incapable of ordering with the requested
  *     sort criteria.</li>
  * </ul>

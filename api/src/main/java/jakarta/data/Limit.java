@@ -17,7 +17,7 @@
  */
 package jakarta.data;
 
-import jakarta.data.page.Pageable;
+import jakarta.data.page.Pagination;
 
 /**
  * <p>Limits the number of results of a single invocation of a
@@ -42,7 +42,7 @@ import jakarta.data.page.Pageable;
  * <ul>
  * <li>multiple <code>Limit</code> parameters are supplied to the
  *     same method.</li>
- * <li><code>Limit</code> and {@link Pageable} parameters are supplied to the
+ * <li><code>Limit</code> and {@link Pagination} parameters are supplied to the
  *     same method.</li>
  * <li>a <code>Limit</code> parameter is supplied in combination
  *     with the <code>First</code> keyword.</li>

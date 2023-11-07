@@ -33,7 +33,7 @@ class PageableTest {
     @Test
     @DisplayName("Should correctly paginate")
     void shouldCreatePageable() {
-        Pageable pageable = Pageable.ofPage(2).size(6);
+        Pagination pageable = Pagination.ofPage(2).size(6);
 
         assertSoftly(softly -> {
             softly.assertThat(pageable.page()).isEqualTo(2L);
@@ -44,7 +44,7 @@ class PageableTest {
     @Test
     @DisplayName("Should create pageable with size")
     void shouldCreatePageableWithSize() {
-        Pageable pageable = Pageable.ofSize(50);
+        Pagination pageable = Pagination.ofSize(50);
 
         assertSoftly(softly -> {
             softly.assertThat(pageable.page()).isEqualTo(1L);
@@ -55,8 +55,8 @@ class PageableTest {
     @Test
     @DisplayName("Should navigate next")
     void shouldNext() {
-        Pageable pageable = Pageable.ofSize(1).page(2);
-        Pageable next = pageable.next();
+        Pagination pageable = Pagination.ofSize(1).page(2);
+        Pagination next = pageable.next();
 
         assertSoftly(softly -> {
             softly.assertThat(pageable.page()).isEqualTo(2L);
@@ -69,7 +69,7 @@ class PageableTest {
     @Test
     @DisplayName("Should create a new Pageable at the given page with a default size of 10")
     void shouldCreatePage() {
-        Pageable pageable = Pageable.ofPage(5);
+        Pagination pageable = Pagination.ofPage(5);
 
         assertSoftly(softly -> {
             softly.assertThat(pageable.page()).isEqualTo(5L);
@@ -80,10 +80,10 @@ class PageableTest {
     @Test
     @DisplayName("Should be displayable as String with toString")
     void shouldPageableDisplayAsString() {
-        assertSoftly(softly -> softly.assertThat(Pageable.ofSize(60).toString())
+        assertSoftly(softly -> softly.assertThat(Pagination.ofSize(60).toString())
               .isEqualTo("Pageable{page=1, size=60}"));
 
-        assertSoftly(softly -> softly.assertThat(Pageable.ofSize(80).sortBy(Sort.desc("yearBorn"), Sort.asc("monthBorn"),
+        assertSoftly(softly -> softly.assertThat(Pagination.ofSize(80).sortBy(Sort.desc("yearBorn"), Sort.asc("monthBorn"),
                         Sort.asc("id")).toString())
               .isEqualTo("Pageable{page=1, size=80, yearBorn DESC, monthBorn ASC, id ASC}"));
     }
@@ -91,19 +91,19 @@ class PageableTest {
     @Test
     @DisplayName("Should throw IllegalArgumentException when page is not present")
     void shouldReturnErrorWhenThereIsIllegalArgument() {
-        Pageable p1 = Pageable.ofPage(1);
+        Pagination p1 = Pagination.ofPage(1);
 
-        assertThatIllegalArgumentException().isThrownBy(() -> Pageable.ofPage(0));
-        assertThatIllegalArgumentException().isThrownBy(() -> Pageable.ofPage(-1));
+        assertThatIllegalArgumentException().isThrownBy(() -> Pagination.ofPage(0));
+        assertThatIllegalArgumentException().isThrownBy(() -> Pagination.ofPage(-1));
         assertThatIllegalArgumentException().isThrownBy(() -> p1.size(-1));
         assertThatIllegalArgumentException().isThrownBy(() -> p1.size(0));
-        assertThatIllegalArgumentException().isThrownBy(() -> Pageable.ofSize(0));
-        assertThatIllegalArgumentException().isThrownBy(() -> Pageable.ofSize(-1));
+        assertThatIllegalArgumentException().isThrownBy(() -> Pagination.ofSize(0));
+        assertThatIllegalArgumentException().isThrownBy(() -> Pagination.ofSize(-1));
     }
 
     @Test
     public void shouldHaveEmptySortListWhenSortIsNullOrEmpty() {
-        Pageable p = Pageable.ofSize(2).sortBy(Sort.asc("Id"));
+        Pagination p = Pagination.ofSize(2).sortBy(Sort.asc("Id"));
 
         assertSoftly(softly -> {
             softly.assertThat(p.sorts()).isEqualTo(List.of(Sort.asc("Id")));
@@ -117,7 +117,7 @@ class PageableTest {
 
     @Test
     void shouldCreatePageableSort() {
-        Pageable pageable = Pageable.ofSize(3).sortBy(Sort.asc("name"));
+        Pagination pageable = Pagination.ofSize(3).sortBy(Sort.asc("name"));
 
         assertSoftly(softly -> {
             softly.assertThat(pageable).isNotNull();
@@ -131,7 +131,7 @@ class PageableTest {
     @DisplayName("Should expect UnsupportedOperationException when sort is modified")
     void shouldNotModifySort() {
         assertThatThrownBy( () -> {
-            Pageable pageable = Pageable.ofSize(3).sortBy(Sort.asc("name"));
+            Pagination pageable = Pagination.ofSize(3).sortBy(Sort.asc("name"));
             List<Sort> sorts = pageable.sorts();
 
             sorts.clear();
@@ -141,8 +141,8 @@ class PageableTest {
     @Test
     @DisplayName("Should not modify sort on next pahe")
     void shouldNotModifySortOnNextPage() {
-        Pageable pageable = Pageable.ofSize(3).sortBy(Sort.asc("name"), Sort.desc("age"));
-        Pageable next = pageable.next();
+        Pagination pageable = Pagination.ofSize(3).sortBy(Sort.asc("name"), Sort.desc("age"));
+        Pagination next = pageable.next();
 
         assertSoftly(softly -> {
             softly.assertThat(pageable.page()).isEqualTo(1);
@@ -160,8 +160,8 @@ class PageableTest {
     @Test
     @DisplayName("Page number should be replaced on new instance of Pageable")
     void shouldReplacePage() {
-        Pageable p6 = Pageable.ofSize(75).page(6).sortBy(Sort.desc("price"));
-        Pageable p7 = p6.page(7);
+        Pagination p6 = Pagination.ofSize(75).page(6).sortBy(Sort.desc("price"));
+        Pagination p7 = p6.page(7);
 
         assertSoftly(softly -> {
             softly.assertThat(p7.page()).isEqualTo(7L);
@@ -176,8 +176,8 @@ class PageableTest {
     @Test
     @DisplayName("Size should be replaced on new instance of Pageable")
     void shouldReplaceSize() {
-        Pageable s90 = Pageable.ofPage(4).size(90);
-        Pageable s80 = s90.size(80);
+        Pagination s90 = Pagination.ofPage(4).size(90);
+        Pagination s80 = s90.size(80);
 
         assertSoftly(softly -> {
             softly.assertThat(s80.size()).isEqualTo(80);
@@ -190,8 +190,8 @@ class PageableTest {
     @Test
     @DisplayName("Sorts should be replaced on new instance of Pageable")
     void shouldReplaceSorts() {
-        Pageable p1 = Pageable.ofSize(55).sortBy(Sort.desc("lastName"), Sort.asc("firstName"));
-        Pageable p2 = p1.sortBy(Sort.asc("firstName"), Sort.asc("lastName"));
+        Pagination p1 = Pagination.ofSize(55).sortBy(Sort.desc("lastName"), Sort.asc("firstName"));
+        Pagination p2 = p1.sortBy(Sort.asc("firstName"), Sort.asc("lastName"));
 
         assertSoftly(softly -> {
             softly.assertThat(p1.sorts()).isEqualTo(List.of(Sort.desc("lastName"), Sort.asc("firstName")));

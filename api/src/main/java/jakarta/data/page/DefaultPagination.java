@@ -26,7 +26,7 @@ import java.util.stream.StreamSupport;
 /**
  * Built-in implementation of Pageable.
  */
-record DefaultPagination(long page, int size, List<Sort> sorts, Mode mode, Cursor cursor) implements Pageable {
+record DefaultPagination(long page, int size, List<Sort> sorts, Mode mode, Cursor cursor) implements Pagination {
 
     DefaultPagination {
         if (page < 1) {
@@ -41,27 +41,27 @@ record DefaultPagination(long page, int size, List<Sort> sorts, Mode mode, Curso
     }
 
     @Override
-    public Pageable afterKeyset(Object... keyset) {
+    public Pagination afterKeyset(Object... keyset) {
         return new DefaultPagination(page, size, sorts, Mode.CURSOR_NEXT, new KeysetCursor(keyset));
     }
 
     @Override
-    public Pageable beforeKeyset(Object... keyset) {
+    public Pagination beforeKeyset(Object... keyset) {
         return new DefaultPagination(page, size, sorts, Mode.CURSOR_PREVIOUS, new KeysetCursor(keyset));
     }
 
     @Override
-    public Pageable afterKeysetCursor(Cursor keysetCursor) {
+    public Pagination afterKeysetCursor(Cursor keysetCursor) {
         return new DefaultPagination(page, size, sorts, Mode.CURSOR_NEXT, keysetCursor);
     }
 
     @Override
-    public Pageable beforeKeysetCursor(Cursor keysetCursor) {
+    public Pagination beforeKeysetCursor(Cursor keysetCursor) {
         return new DefaultPagination(page, size, sorts, Mode.CURSOR_PREVIOUS, keysetCursor);
     }
 
     @Override
-    public Pageable next() {
+    public Pagination next() {
         if (mode == Mode.OFFSET) {
             return new DefaultPagination((page + 1), this.size, this.sorts, Mode.OFFSET, null);
         } else {
@@ -90,17 +90,17 @@ record DefaultPagination(long page, int size, List<Sort> sorts, Mode mode, Curso
     }
 
     @Override
-    public Pageable page(long pageNumber) {
+    public Pagination page(long pageNumber) {
         return new DefaultPagination(pageNumber, size, sorts, mode, cursor);
     }
 
     @Override
-    public Pageable size(int maxPageSize) {
+    public Pagination size(int maxPageSize) {
         return new DefaultPagination(page, maxPageSize, sorts, mode, cursor);
     }
 
     @Override
-    public Pageable sortBy(Iterable<Sort> sorts) {
+    public Pagination sortBy(Iterable<Sort> sorts) {
         List<Sort> sortList = sorts == null
                 ? Collections.emptyList()
                 : StreamSupport.stream(sorts.spliterator(), false).collect(Collectors.toUnmodifiableList());
@@ -108,7 +108,7 @@ record DefaultPagination(long page, int size, List<Sort> sorts, Mode mode, Curso
     }
 
     @Override
-    public Pageable sortBy(Sort... sorts) {
+    public Pagination sortBy(Sort... sorts) {
         return new DefaultPagination(page, size, sorts == null ? Collections.emptyList() : List.of(sorts), mode, cursor);
     }
 }

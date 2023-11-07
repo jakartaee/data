@@ -18,7 +18,7 @@
 
 import jakarta.data.Limit;
 import jakarta.data.Sort;
-import jakarta.data.page.Pageable;
+import jakarta.data.page.Pagination;
 import jakarta.data.repository.BasicRepository;
 import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.DataRepository;
@@ -609,7 +609,7 @@ import java.util.List;
  *
  * <h3>Pagination</h3>
  *
- * <p>You can request that results be paginated by adding a {@link Pageable}
+ * <p>You can request that results be paginated by adding a {@link Pagination}
  * parameter to a repository find method. For example,</p>
  *
  * <pre>
@@ -623,7 +623,7 @@ import java.util.List;
  * <h3>Sorting at Runtime</h3>
  *
  * <p>When using pagination, you can dynamically supply sorting criteria
- * via the {@link Pageable#sortBy(Sort...)} and {@link Pageable#sortBy(Iterable)}
+ * via the {@link Pagination#sortBy(Sort...)} and {@link Pagination#sortBy(Iterable)}
  * methods. For example,</p>
  *
  * <pre>
