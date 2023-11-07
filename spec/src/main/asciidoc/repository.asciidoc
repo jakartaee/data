@@ -1099,7 +1099,7 @@ Pagination is vital to Java developers for several reasons:
 
 Jakarta Data supports two main types of pagination: Offset and Keyset. These approaches differ in how they manage and retrieve paginated data:
 
-Offset pagination is the more traditional form based on "jumping" to a specific starting point in the dataset. It is typically used with a fixed page size, where a specified number of records is retrieved starting from a given offset position.
+Offset pagination is the more traditional form based on position relative to the first record in the dataset. It is typically used with a fixed page size, where a specified number of records is retrieved starting from a given offset position.
 
 Keyset pagination, also known as "seek method" or "keyset-based pagination," uses a unique key or value to navigate the dataset. It does not rely on fixed page sizes but retrieves records based on a specific key value. It is handy for datasets where the order of records matters.
 
