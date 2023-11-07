@@ -1107,7 +1107,7 @@ Keyset pagination, also known as seek method or cursor-based pagination, uses a 
 The critical differences between Offset and Keyset pagination lie in their retrieval methods:
 
 - Offset pagination uses a fixed page size and retrieves data based on page number and size.
-- Keyset pagination relies on a unique key or value to determine the next set of records and is suitable for datasets where order and value uniqueness are significant.
+- Keyset pagination relies on a unique key or unique combination of values (the keyset) for an entity relative to which it determines the next page or previous page.
 
 ==== Keyset Pagination
 
