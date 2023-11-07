@@ -759,6 +759,26 @@ import java.util.List;
  * }
  * </pre>
  *
+ * <h2>Jakarta Persistence</h2>
+ *
+ * <h3>Persistence Context</h3>
+ *
+ * <p>When the Jakarta Data provider is backed by a Jakarta Persistence provider,
+ * repository operations must behave as though backed by a stateless Entity Manager
+ * in that persistence context is not preserved across the end of repository methods.
+ * If you retrieve an entity via a repository and then modify the entity,
+ * the modifications are not persisted to the database unless you explicitly invoke
+ * a {@link Save} or {@link Update} operation in order to persist it.</p>
+ *
+ * <p>Here is an example with {@link BasicRepository#findById(K)} and
+ * {@link BasicRepository#save(S)} operations:</p>
+ *
+ * <pre>
+ * product = products.findById(prodNum).orElseThrow();
+ * product.price = produce.price + 0.50;
+ * product = products.save(product);
+ * </pre>
+ *
  * <h2>Jakarta Transactions</h2>
  *
  * <p>Repository methods can participate in global transactions.
