@@ -1083,7 +1083,7 @@ KeysetAwarePage<User> olderThan(int age, Pageable pagination);
 
 === Pagination in Jakarta Data
 
-Pagination is a critical aspect of data access and retrieval in any application, including those developed in Java. It plays a crucial role in ensuring the efficient and user-friendly handling of large datasets. In Jakarta Data, APIs are provided to help Java developers manage and navigate through data efficiently. This session will discuss the importance of pagination in Java development and explore the two main types of pagination: Offset and Keyset.
+Pagination is a critical aspect of data access and retrieval in many applications, including those developed in Java. It plays a crucial role in ensuring the efficient and user-friendly handling of large datasets. In Jakarta Data, APIs are provided to help Java developers manage and navigate through data efficiently. This session will discuss the importance of pagination in Java development and explore the two main types of pagination: Offset and Keyset.
 
 Pagination is vital to Java developers for several reasons:
 
