@@ -95,8 +95,6 @@ public interface Pagination {
     @Override
     boolean equals(Object o);
 
-
-
     /**
      * Returns the type of pagination.
      *
@@ -172,6 +170,62 @@ public interface Pagination {
      * @return a new instance of <code>Pageable</code>. This method never returns <code>null</code>.
      */
     Pagination sortBy(Sort... sorts);
+
+    /**
+     * <p>Requests {@link KeysetAwareSlice keyset pagination} in the forward direction,
+     * starting after the specified keyset values.</p>
+     *
+     * @param keyset keyset values, the order and number of which must match the
+     *        {@link OrderBy} annotations, {@link Sort} parameters, or
+     *        <code>OrderBy</code> name pattern of the repository method to which
+     *        this pagination will be supplied.
+     * @return a new instance of <code>Pageable</code> with forward keyset pagination.
+     *         This method never returns <code>null</code>.
+     * @throws IllegalArgumentException if no keyset values are provided.
+     */
+    KeyPageable afterKeyset(Object... keyset);
+
+    /**
+     * <p>Requests {@link KeysetAwareSlice keyset pagination} in the reverse direction,
+     * starting after the specified keyset values.</p>
+     *
+     * @param keyset keyset values, the order and number of which must match the
+     *        {@link OrderBy} annotations, {@link Sort} parameters, or
+     *        <code>OrderBy</code> name pattern of the repository method to which
+     *        this pagination will be supplied.
+     * @return a new instance of <code>Pageable</code> with reverse keyset pagination.
+     *         This method never returns <code>null</code>.
+     * @throws IllegalArgumentException if no keyset values are provided.
+     */
+    KeyPageable beforeKeyset(Object... keyset);
+
+    /**
+     * <p>Requests {@link KeysetAwareSlice keyset pagination} in the forward direction,
+     * starting after the specified keyset values.</p>
+     *
+     * @param keysetCursor cursor with keyset values, the order and number of which must match the
+     *        {@link OrderBy} annotations, {@link Sort} parameters, or
+     *        <code>OrderBy</code> name pattern of the repository method to which
+     *        this pagination will be supplied.
+     * @return a new instance of <code>Pageable</code> with forward keyset pagination.
+     *         This method never returns <code>null</code>.
+     * @throws IllegalArgumentException if no keyset values are provided.
+     */
+    KeyPageable afterKeysetCursor(Cursor keysetCursor);
+
+    /**
+     * <p>Requests {@link KeysetAwareSlice keyset pagination} in the reverse direction,
+     * starting after the specified keyset values.</p>
+     *
+     * @param keysetCursor cursor with keyset values, the order and number of which must match the
+     *        {@link OrderBy} annotations, {@link Sort} parameters, or
+     *        <code>OrderBy</code> name pattern of the repository method to which
+     *        this pagination will be supplied.
+     * @return a new instance of <code>Pageable</code> with reverse keyset pagination.
+     *         This method never returns <code>null</code>.
+     * @throws IllegalArgumentException if no keyset values are provided.
+     */
+    KeyPageable beforeKeysetCursor(Cursor keysetCursor);
 
     /**
      * The type of pagination, which can be offset pagination or
