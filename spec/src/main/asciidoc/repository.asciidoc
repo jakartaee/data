@@ -1101,7 +1101,7 @@ Jakarta Data supports two main types of pagination: Offset and Keyset. These app
 
 Offset pagination is the more traditional form based on position relative to the first record in the dataset. It is typically used with a fixed page size, where a specified number of records is retrieved starting from a given offset position.
 
-Keyset pagination, also known as "seek method" or "keyset-based pagination," uses a unique key or value to navigate the dataset. It does not rely on fixed page sizes but retrieves records based on a specific key value. It is handy for datasets where the order of records matters.
+Keyset pagination, also known as seek method or cursor-based pagination, uses a unique key or unique combination of values (referred to as the keyset) to navigate the dataset relative to the first or last record of the current page. Keyset pagination is typically used with fixed page sizes but can accommodate varying the page size if desired. It is more robust when dealing with datasets where the underlying data might change and offers the the potential for improved performance by avoiding the need to scan records prior to the cursor.
 
 
 The critical differences between Offset and Keyset pagination lie in their retrieval methods:
