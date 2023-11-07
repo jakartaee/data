@@ -20,7 +20,7 @@ package jakarta.data.page;
 import jakarta.data.Sort;
 import jakarta.data.repository.OrderBy;
 
-public interface KeyPageable {
+public interface KeyPageable extends Pagination {
 
     /**
      * <p>Requests {@link KeysetAwareSlice keyset pagination} in the forward direction,

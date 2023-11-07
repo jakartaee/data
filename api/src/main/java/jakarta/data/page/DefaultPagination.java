@@ -26,7 +26,7 @@ import java.util.stream.StreamSupport;
 /**
  * Built-in implementation of Pageable.
  */
-record DefaultPagination(long page, int size, List<Sort> sorts, Mode mode, Cursor cursor) implements Pagination {
+record DefaultPagination(long page, int size, List<Sort> sorts, Mode mode, Cursor cursor) implements Pagination, KeyPageable, Pageable {
 
     DefaultPagination {
         if (page < 1) {
@@ -41,22 +41,22 @@ record DefaultPagination(long page, int size, List<Sort> sorts, Mode mode, Curso
     }
 
     @Override
-    public Pagination afterKeyset(Object... keyset) {
+    public KeyPageable afterKeyset(Object... keyset) {
         return new DefaultPagination(page, size, sorts, Mode.CURSOR_NEXT, new KeysetCursor(keyset));
     }
 
     @Override
-    public Pagination beforeKeyset(Object... keyset) {
+    public KeyPageable beforeKeyset(Object... keyset) {
         return new DefaultPagination(page, size, sorts, Mode.CURSOR_PREVIOUS, new KeysetCursor(keyset));
     }
 
     @Override
-    public Pagination afterKeysetCursor(Cursor keysetCursor) {
+    public KeyPageable afterKeysetCursor(Cursor keysetCursor) {
         return new DefaultPagination(page, size, sorts, Mode.CURSOR_NEXT, keysetCursor);
     }
 
     @Override
-    public Pagination beforeKeysetCursor(Cursor keysetCursor) {
+    public KeyPageable beforeKeysetCursor(Cursor keysetCursor) {
         return new DefaultPagination(page, size, sorts, Mode.CURSOR_PREVIOUS, keysetCursor);
     }
 

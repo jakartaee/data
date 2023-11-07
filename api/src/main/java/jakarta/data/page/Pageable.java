@@ -17,7 +17,7 @@
  */
 package jakarta.data.page;
 
-public interface Pageable {
+public interface Pageable extends Pagination {
 
     /**
      * <p>Returns the <code>Pageable</code> requesting the next page
