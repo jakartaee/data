@@ -17,12 +17,31 @@
  */
 package jakarta.data.page;
 
+
 import jakarta.data.Sort;
 import jakarta.data.repository.OrderBy;
+import jakarta.data.repository.Query;
 
 public interface KeyPageable extends Pagination {
 
 
+    /**
+     * <p>Creates a new <code>Pageable</code> instance representing the same
+     * pagination information, except with the specified page number.</p>
+     *
+     * @param pageNumber The page number
+     * @return a new instance of <code>Pageable</code>. This method never returns <code>null</code>.
+     */
+    KeyPageable page(long pageNumber);
+
+    /**
+     * <p>Creates a new <code>Pageable</code> instance representing the same
+     * pagination information, except with the specified maximum page size.</p>
+     *
+     * @param maxPageSize the number of query results in a full page.
+     * @return a new instance of <code>Pageable</code>. This method never returns <code>null</code>.
+     */
+    KeyPageable size(int maxPageSize);
 
 
     /**
@@ -32,4 +51,19 @@ public interface KeyPageable extends Pagination {
      * @return the keyset values; <code>null</code> if using offset pagination.
      */
     Cursor cursor();
+
+    /**
+     * <p>Creates a new <code>KeyPageable</code> instance representing the same
+     * pagination information, except using the specified sort criteria.
+     * The order of precedence for sort criteria is that of any statically
+     * specified sort criteria (from the <code>OrderBy</code> keyword,
+     * {@link OrderBy} annotation or <code>ORDER BY</code> clause of a the
+     * {@link Query} annotation) followed by the order in which the
+     * {@link Sort} parameters to this method are listed.</p>
+     *
+     * @param sorts sort criteria to use. This method can be invoked without parameters
+     *        to request a <code>Pageable</code> that does not specify sort criteria.
+     * @return a new instance of <code>Pageable</code>. This method never returns <code>null</code>.
+     */
+    KeyPageable sortBy(Sort... sorts);
 }
