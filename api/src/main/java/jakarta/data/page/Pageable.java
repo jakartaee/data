@@ -70,7 +70,7 @@ public interface Pageable {
      * @throws IllegalArgumentException when the page number is negative or zero.
      */
     static Pageable ofPage(long pageNumber) {
-        return new Pagination(pageNumber, 10, Collections.emptyList(), Mode.OFFSET, null);
+        return new DefaultPagination(pageNumber, 10, Collections.emptyList(), Mode.OFFSET, null);
     }
 
     /**
@@ -82,7 +82,7 @@ public interface Pageable {
      * @throws IllegalArgumentException when maximum page size is negative or zero.
      */
     static Pageable ofSize(int maxPageSize) {
-        return new Pagination(1, maxPageSize, Collections.emptyList(), Mode.OFFSET, null);
+        return new DefaultPagination(1, maxPageSize, Collections.emptyList(), Mode.OFFSET, null);
     }
 
     /**

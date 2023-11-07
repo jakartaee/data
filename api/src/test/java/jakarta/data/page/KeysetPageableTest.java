@@ -153,7 +153,7 @@ class KeysetPageableTest {
         Pageable.Cursor cursor1 = new KeysetCursor("keyval1", '2', 3);
         Pageable.Cursor cursor2 = new KeysetCursor("keyval2", '2', 3);
         Pageable.Cursor cursor3 = new KeysetCursor("keyval1", '2');
-        Pageable.Cursor cursor4 = new Pagination.Cursor() {
+        Pageable.Cursor cursor4 = new DefaultPagination.Cursor() {
             private final Object[] keyset = new Object[] { "keyval1", '2', 3 };
 
             @Override
