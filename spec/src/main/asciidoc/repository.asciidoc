@@ -564,7 +564,7 @@ An _automatic query method_ is an abstract method that either follows the Query 
 - have exactly the same type and name as a persistent field or property of the entity class, or
 - be of type `Limit`, `Pageable`, or `Sort`.
 
-A repository with automatic query methods that are based on parameters must either be compiled so that parameter names are preserved in the class file (for example, using `javac -parameters`), or the parameter names must be specified explicitly using the `@Param` annotation.
+A repository with automatic query methods that are based on parameters must either be compiled so that parameter names are preserved in the class file (for example, using `javac -parameters`), or the parameter names must be specified explicitly using the `@By` annotation.
 
 For example:
 
