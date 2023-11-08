@@ -89,6 +89,10 @@ A Jakarta Data provider that supports Jakarta Persistence allows you to define r
 
 By supporting Jakarta Persistence annotations, Jakarta Data providers enable Java developers to utilize familiar and standardized mapping techniques when defining entities in repositories, ensuring compatibility and interoperability with the respective technologies.
 
+==== Persistence Context
+
+Repository operations must behave as though backed by a stateless Entity Manager in that persistence context is not preserved across the end of repository methods. All entities that are returned by repository methods must be in a detached state such that modifications to these entities are not persisted to the database unless the application explicitly invokes a `Save` or `Update` life cycle method for the entity.
+
 === Jakarta NoSQL
 
 When integrating Jakarta Data with Jakarta NoSQL, developers can use the NoSQL annotations to define the mapping of entities in repositories. Entities in Jakarta NoSQL are typically annotated with `jakarta.nosql.Entity` to indicate their suitability for persistence in NoSQL databases.

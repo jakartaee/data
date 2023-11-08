@@ -19,10 +19,12 @@ import java.util.List;
 
 import jakarta.data.repository.DataRepository;
 import jakarta.data.repository.Repository;
+import jakarta.data.repository.Save;
 
 @Repository
 public interface Catalog extends DataRepository<Product, Long> {
-    
+
+    @Save
     void save(Product product);
     void deleteById(Long id);
     

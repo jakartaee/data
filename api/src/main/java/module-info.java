@@ -21,6 +21,7 @@ import jakarta.data.Sort;
 import jakarta.data.page.Pageable;
 import jakarta.data.repository.BasicRepository;
 import jakarta.data.repository.By;
+import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.DataRepository;
 import jakarta.data.repository.Delete;
 import jakarta.data.repository.Insert;
@@ -160,7 +161,8 @@ import java.util.List;
  * }
  * </pre>
  *
- * <p>When using the <b>Query by Method Name</b> pattern,
+ * <p>When using the <b>Query by Method Name</b> pattern
+ * as well as the <b>Parameter-based Conditions</b> pattern,
  * <code>Id</code> is an alias for the entity property
  * that is designated as the id. Entity property names that are used in queries
  * by method name must not contain reserved words.</p>
@@ -206,8 +208,10 @@ import java.util.List;
  * <h2>Query by Method Name</h2>
  *
  * <p>Repository methods following the <b>Query by Method Name</b> pattern
- * must include the {@code By} keyword in the method name. Query conditions
- * are determined by the method name following the {@code By} keyword.</p>
+ * must include the {@code By} keyword in the method name and must not include
+ * any life cycle annotations on the method or any data access related annotations
+ * on the method parameters. Query conditions
+ * are determined by the portion of the method name following the {@code By} keyword.</p>
  *
  * <table style="width: 100%">
  * <caption><b>Query By Method Name</b></caption>
@@ -471,8 +475,10 @@ import java.util.List;
  * the capabilities of the database.
  * </p>
  *
+ * <h2>Return Types for Repository Methods</h2>
+ *
  * <table style="width: 100%">
- * <caption><b>Return Types for Repository Methods</b></caption>
+ * <caption><b>Return Types when using Query by Method Name and Parameter-based Conditions</b></caption>
  * <tr>
  * <td style="vertical-align: top"><b>Method</b></td>
  * <td style="vertical-align: top"><b>Return Types</b></td>
@@ -538,6 +544,13 @@ import java.util.List;
  *
  * </table>
  *
+ * <h3>Return Types for Annotated Methods</h3>
+ *
+ * <p>Return types that are valid when using {@link Query} depend on the Query Language
+ * operation that is performed. For queries that correspond to operations in the above
+ * table, the same return types must be supported as for the Query-by-Method-Name and
+ * Parameter-based Conditions patterns.</p>
+ *
  * <p>Refer to the {@link Insert}, {@link Update}, {@link Save}, and {@link Delete}
  * JavaDoc for valid return types when using those annotations. Whenever the
  * return type is an {@link Iterable} subtype that is a concrete class,
@@ -547,8 +560,8 @@ import java.util.List;
  * <h2>Parameter-based Conditions</h2>
  *
  * <p>When using the <i>Parameter-based Conditions</i> pattern,
- * the method name begins with {@code find}
- * and must not include the {@code By} keyword.
+ * the method name must not include the {@code By} keyword or at least one
+ * of the parameters must be annotated with a data access related annotation.
  * The query conditions are defined by the method parameters.
  * You can annotate method parameters with the {@link By} annotation
  * to specify the name of the entity attribute that the parameter value
@@ -683,6 +696,92 @@ import java.util.List;
  * If you invoke the accessor method from outside the scope of a default method,
  * you are responsible for closing the resource instance.</p>
  *
+ * <h2>Precedence of Repository Methods</h2>
+ *
+ * <p>The following precedence, from highest to lowest, is used when interpreting the
+ * meaning of repository methods.</p>
+ *
+ * <ol>
+ * <li>If you define a method as a <b>Java default method</b> and provide implementation,
+ * then your provided implementation is used.</li>
+ * <li>If you define a method with a <b>Resource Accessor Method</b> return type,
+ * then the method is implemented as a Resource Accessor Method.</li>
+ * <li>If you annotate a method with {@link Query}, then the method is implemented
+ * to run the corresponding Query Language query.</li>
+ * <li>If you annotate a method with an annotation that defines the type of operation
+ * ({@link Insert}, {@link Update}, {@link Save}, or {@link Delete}),
+ * then the annotation determines how the method is implemented.
+ * <li>If you annotate any of the method parameters with a data access related annotation,
+ * then <b>Parameter-based Conditions</b> determine the implementation of the method.</li>
+ * <li>If you define a method according to the <b>Query by Method Name pattern</b> naming conventions,
+ * then the implementation follows the Query by Method Name pattern.</li>
+ * <li>Otherwise, <b>Parameter-based Conditions</b> determine the implementation of the method.
+ * You must compile with the {@code -parameters} compiler option that makes parameter names
+ * available at run time.</li>
+ * </ol>
+ *
+ * <h2>Identifying the type of Entity</h2>
+ *
+ * <p>Most repository methods perform operations related to a type of entity. In some cases,
+ * the entity type is explicit within the signature of the repository method, and in other
+ * cases, such as {@code countBy...} and {@code existsBy...} the entity type cannot be determined
+ * from the method signature and a primary entity type must be defined for the repository.</p>
+ *
+ * <b>Methods where the entity type is explicitly specified:</b>
+ *
+ * <ul>
+ * <li>For repository methods that are annotated with {@link Insert}, {@link Update},
+ * {@link Save}, or {@link Delete} where the method parameter is a type, an array of type,
+ * or is parameterized with a type that is annotated as an entity,
+ * the entity type is determined from the method parameter type.</li>
+ * <li>For find and delete methods where the return type is a type, an array of type,
+ * or is parameterized with a type that is annotated as an entity,
+ * such as {@code MyEntity}, {@code MyEntity[]}, or {@code Page<MyEntity>},
+ * the entity type is determined from the method return type.</li>
+ * </ul>
+ *
+ * <b>Identifying a Primary Entity Type:</b>
+ *
+ * <p>The following precedence, from highest to lowest, is used to determine a primary
+ * entity type for a repository.</p>
+ *
+ * <ol>
+ * <li>You can explicitly define the primary entity type for a repository interface
+ * by having the repository interface inherit from a super interface such as
+ * {@link CrudRepository} where the primary entity type is the type of the
+ * super interface's first type parameter. For example, {@code Product}, in,
+ * <pre>
+ * &#64;Repository
+ * public interface Products extends CrudRepository&lt;Product, Long&gt; {
+ *     // applies to the primary entity type: Product
+ *     int countByPriceLessThan(float max);
+ * }
+ * </pre>
+ * </li>
+ * <li>Otherwise, if you define life cycle methods ({@link Insert}, {@link Update},
+ * {@link Save}, or {@link Delete}) where the method parameter is a type, an array of type,
+ * or is parameterized with a type that is annotated as an entity,
+ * and all of these methods share the same entity type,
+ * then the primary entity type for the repository is that entity type. For example,
+ * <pre>
+ * &#64;Repository
+ * public interface Products {
+ *     &#64;Insert
+ *     List&lt;Product&gt; add(List&lt;Product&gt; p);
+ *
+ *     &#64;Update
+ *     Product modify(Product p);
+ *
+ *     &#64;Save
+ *     Product[] save(Product... p);
+ *
+ *     // applies to the primary entity type: Product
+ *     boolean existsByName(String name);
+ * }
+ * </pre>
+ * </li>
+ * </ol>
+ *
  * <h2>Jakarta Validation</h2>
  *
  * <p>When a Jakarta Validation provider is present, constraints that are defined on
@@ -727,6 +826,26 @@ import java.util.List;
  * }
  * </pre>
  *
+ * <h2>Jakarta Persistence</h2>
+ *
+ * <h3>Persistence Context</h3>
+ *
+ * <p>When the Jakarta Data provider is backed by a Jakarta Persistence provider,
+ * repository operations must behave as though backed by a stateless Entity Manager
+ * in that persistence context is not preserved across the end of repository methods.
+ * If you retrieve an entity via a repository and then modify the entity,
+ * the modifications are not persisted to the database unless you explicitly invoke
+ * a {@link Save} or {@link Update} operation in order to persist it.</p>
+ *
+ * <p>Here is an example with {@link BasicRepository#findById(K)} and
+ * {@link BasicRepository#save(S)} operations:</p>
+ *
+ * <pre>
+ * product = products.findById(prodNum).orElseThrow();
+ * product.price = produce.price + 0.50;
+ * product = products.save(product);
+ * </pre>
+ *
  * <h2>Jakarta Transactions</h2>
  *
  * <p>Repository methods can participate in global transactions.
@@ -753,7 +872,6 @@ import java.util.List;
 //       under: "Wildcard characters for patterns are determined by the data access provider"
 module jakarta.data {
     exports jakarta.data;
-    exports jakarta.data.metamodel;
     exports jakarta.data.page;
     exports jakarta.data.repository;
     exports jakarta.data.exceptions;
