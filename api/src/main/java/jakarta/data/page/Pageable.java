@@ -156,7 +156,7 @@ public interface Pageable {
      * Returns the keyset values which are the starting point for
      * keyset pagination.
      *
-     * @return the keyset values; <code></code> if using offset pagination.
+     * @return the keyset values; {@link Optional#empty()} if using offset pagination.
      */
     Optional<Cursor> cursor();
 
