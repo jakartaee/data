@@ -20,13 +20,14 @@ package jakarta.data.page;
 import jakarta.data.Sort;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 /**
  * Built-in implementation of Pageable.
  */
-record Pagination(long page, int size, List<Sort> sorts, Mode mode, Cursor cursor) implements Pageable {
+record Pagination(long page, int size, List<Sort> sorts, Mode mode, Cursor type) implements Pageable {
 
     Pagination {
         if (page < 1) {
@@ -35,7 +36,7 @@ record Pagination(long page, int size, List<Sort> sorts, Mode mode, Cursor curso
             throw new IllegalArgumentException("maxPageSize: " + size);
         }
 
-        if (mode != Mode.OFFSET && (cursor == null || cursor.size() == 0)) {
+        if (mode != Mode.OFFSET && (type == null || type.size() == 0)) {
             throw new IllegalArgumentException("No keyset values were provided.");
         }
     }
@@ -61,6 +62,11 @@ record Pagination(long page, int size, List<Sort> sorts, Mode mode, Cursor curso
     }
 
     @Override
+    public Optional<Cursor> cursor() {
+        return Optional.ofNullable(type);
+    }
+
+    @Override
     public Pageable next() {
         if (mode == Mode.OFFSET) {
             return new Pagination((page + 1), this.size, this.sorts, Mode.OFFSET, null);
@@ -75,9 +81,9 @@ record Pagination(long page, int size, List<Sort> sorts, Mode mode, Cursor curso
         StringBuilder s = new StringBuilder(mode == Mode.OFFSET ? 100 : 150)
                 .append("Pageable{page=").append(page)
                 .append(", size=").append(size);
-        if (cursor != null) {
+        if (type != null) {
             s.append(", mode=").append(mode)
-            .append(", ").append(cursor.size()).append(" keys");
+            .append(", ").append(type.size()).append(" keys");
         }
         for (Sort sort : sorts) {
             s.append(", ").append(sort.property());
@@ -91,12 +97,12 @@ record Pagination(long page, int size, List<Sort> sorts, Mode mode, Cursor curso
 
     @Override
     public Pageable page(long pageNumber) {
-        return new Pagination(pageNumber, size, sorts, mode, cursor);
+        return new Pagination(pageNumber, size, sorts, mode, type);
     }
 
     @Override
     public Pageable size(int maxPageSize) {
-        return new Pagination(page, maxPageSize, sorts, mode, cursor);
+        return new Pagination(page, maxPageSize, sorts, mode, type);
     }
 
     @Override
@@ -104,11 +110,11 @@ record Pagination(long page, int size, List<Sort> sorts, Mode mode, Cursor curso
         List<Sort> sortList = sorts == null
                 ? Collections.emptyList()
                 : StreamSupport.stream(sorts.spliterator(), false).collect(Collectors.toUnmodifiableList());
-        return new Pagination(page, size, sortList, mode, cursor);
+        return new Pagination(page, size, sortList, mode, type);
     }
 
     @Override
     public Pageable sortBy(Sort... sorts) {
-        return new Pagination(page, size, sorts == null ? Collections.emptyList() : List.of(sorts), mode, cursor);
+        return new Pagination(page, size, sorts == null ? Collections.emptyList() : List.of(sorts), mode, type);
     }
 }

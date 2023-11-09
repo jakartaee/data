@@ -24,6 +24,7 @@ import jakarta.data.repository.Query;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * <p>This class represents pagination information.</p>
@@ -155,9 +156,9 @@ public interface Pageable {
      * Returns the keyset values which are the starting point for
      * keyset pagination.
      *
-     * @return the keyset values; <code>null</code> if using offset pagination.
+     * @return the keyset values; {@link Optional#empty()} if using offset pagination.
      */
-    Cursor cursor();
+    Optional<Cursor> cursor();
 
     /**
      * Returns the type of pagination.
