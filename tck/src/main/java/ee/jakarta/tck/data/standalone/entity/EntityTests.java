@@ -45,6 +45,7 @@ import ee.jakarta.tck.data.framework.junit.anno.Standalone;
 import ee.jakarta.tck.data.framework.read.only.AsciiCharacter;
 import ee.jakarta.tck.data.framework.read.only.AsciiCharacters;
 import ee.jakarta.tck.data.framework.read.only.AsciiCharactersPopulator;
+import ee.jakarta.tck.data.framework.read.only.CustomRepository;
 import ee.jakarta.tck.data.framework.read.only.NaturalNumber;
 import ee.jakarta.tck.data.framework.read.only.NaturalNumbers;
 import ee.jakarta.tck.data.framework.read.only.NaturalNumbersPopulator;
@@ -84,6 +85,9 @@ public class EntityTests {
 
     @Inject
     PositiveIntegers positives; // shares same read-only data with NaturalNumbers
+
+    @Inject
+    CustomRepository customRepo; // shares same read-only data with NaturalNumbers
 
     @Inject
     AsciiCharacters characters;
@@ -159,6 +163,17 @@ public class EntityTests {
         assertEquals(0, slice.stream().count());
         assertEquals(false, slice.hasContent());
         assertEquals(false, slice.iterator().hasNext());
+    }
+
+    @Assertion(id = "133", strategy = "Use a parameter-based find operation that uses the By annotation to identify the entity attribute names.")
+    public void testBy() {
+        AsciiCharacter ch = characters.find('L', "4c").orElseThrow();
+        assertEquals('L', ch.getThisCharacter());
+        assertEquals("4c", ch.getHexadecimal());
+        assertEquals(76L, ch.getId());
+        assertEquals(false, ch.isControl());
+
+        assertEquals(true, characters.find('M', "4b").isEmpty());
     }
 
     @Assertion(id = "133", strategy = "Use a repository that inherits some if its methods from another interface.")
@@ -1030,6 +1045,15 @@ public class EntityTests {
         assertEquals(false, page.iterator().hasNext());
         assertEquals(0L, page.totalElements());
         assertEquals(0L, page.totalPages());
+    }
+
+    @Assertion(id = "133", strategy = "Use count and exists methods where the primary entity class is inferred from the life cycle methods.")
+    public void testPrimaryEntityClassDeterminedByLifeCycleMethods() {
+        assertEquals(4, customRepo.countByIdIn(Set.of(2L, 15L, 37L, -5L, 60L)));
+
+        assertEquals(true, customRepo.existsByIdIn(Set.of(17L, 14L, -1L)));
+
+        assertEquals(false, customRepo.existsByIdIn(Set.of(-10L, -12L, -14L)));
     }
 
     @Assertion(id = "133", strategy = "Use a repository method that returns a single entity value where a single result is found.")
