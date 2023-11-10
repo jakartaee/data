@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,8 +17,9 @@
  */
 
 /**
- *Jakarta Data provides an API that makes data access easy. A Java developer can split the persistence
- * from the model with several features, such as the ability to compose custom query methods
- * on a Repository interface where the framework will implement it.
+ * <p>Jakarta Data provides an API that simplifies data access. It enables the Java developer to
+ * focus on the data model, while delegating away the complexities of data persistence.</p>
+ *
+ * <p>The module JavaDoc provides an {@link jakarta.data/ overview} of Jakarta Data.</p>
  */
 package jakarta.data;

@@ -64,5 +64,7 @@
  * {@link jakarta.data.page.KeysetAwareSlice} and {@link jakarta.data.page.KeysetAwarePage}. In this approach,
  * queries for the next or previous page are performed relative to the last
  * or first entry of the current page.</p>
+ *
+ * <p>The module JavaDoc provides an {@link jakarta.data/ overview} of Jakarta Data.</p>
  */
 package jakarta.data.page;
