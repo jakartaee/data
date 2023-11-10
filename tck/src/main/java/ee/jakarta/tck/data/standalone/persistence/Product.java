@@ -28,7 +28,7 @@ import jakarta.persistence.Version;
 @Entity
 public class Product {
     public static enum Department {
-        APPLIANCES, AUTOMOTIVE, CLOTHING, ELECTRONICS, FURNITURE, GARDEN, GROCERY, OFFICE, PHARMACY, SPORTING_GOODS, TOOLS
+        APPLIANCES, AUTOMOTIVE, CLOTHING, CRAFTS, ELECTRONICS, FURNITURE, GARDEN, GROCERY, OFFICE, PHARMACY, SPORTING_GOODS, TOOLS
     }
 
     @ElementCollection
