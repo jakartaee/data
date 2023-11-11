@@ -140,7 +140,7 @@ public interface Garage {
 Here, the `@Insert` annotation is used for the `park` method, allowing you to design a repository interface that encapsulates the essence of your domain. This approach fosters a shared understanding and more intuitive communication within your development team, ensuring that your database operations are integral to your domain's language.
 
 
-=== Entity Classes
+== Entity Classes
 
 In Jakarta Data, an entity refers to a fundamental data representation and management building block. It can be conceptually understood in several aspects:
 
@@ -154,13 +154,13 @@ In Jakarta Data, an entity refers to a fundamental data representation and manag
 
 An entity within Jakarta Data encompasses the Java class representing the data and the schema, persistence characteristics, and provider-specific annotations, all working together to simplify data access and management within Java applications. While a Jakarta Data provider might require a default constructor and work primarily with mutable entities, Jakarta Data allows for the use of immutable entity classes, which are best represented as Java records.
 
-==== Programming Model for Entity Data in Jakarta Data
+=== Programming Model for Entity Data in Jakarta Data
 
 Jakarta Data does not define an entity model of its own, instead borrowing the entity models of other Jakarta standards (Jakarta Persistence and Jakarta NoSQL) and allowing for vendor-specific entity models to be used.  This section defines core concepts that entity models must follow in order to be used with Jakarta Data.  The entity model allows the user to define Java classes that represent data entities. These entities can be stored, retrieved, and manipulated in various databases, including key-value, wide-column, document, graph, and relational databases. A programming model for entities ensures that entity classes are well-defined and can be seamlessly integrated with different database technologies.
 
 Jakarta Data places requirements on two types of fields within entity classes: basic fields and relation fields. Basic fields represent fundamental data types natively supported by Jakarta Data Providers. Support for basic types is mandatory for all Jakarta Data providers. On the other hand, Domain-Relation fields allow entities to interact with other domain classes or types, enriching data structures, but also making them more complex. Support for Domain-Relation fields varies depending on the Jakarta Data provider and the database type. Jakarta Data does not require support for Domain-Relation entity fields when using Graph databases.
 
-===== Basic Types
+==== Basic Types
 
 A variety of basic types can be used for fields or properties of entity classes. The basic types include:
 
@@ -192,13 +192,13 @@ A variety of basic types can be used for fields or properties of entity classes.
 
 Every entity in Jakarta Data must have a unique identifier composed of one or more supported basic types. This unique identifier is crucial for distinguishing individual entities in the database. Entity models that are used with Jakarta Data must define a way for developers to specify the unique identifier. Typically this is done with an `@Id` annotation, but other means are permitted, such as `@EmbeddedId` in Jakarta Persistence which defines a compound unique identifier based on an embeddable class, or by naming convention (for example, considering a property to be the unique identifier if it is named id or ends in Id).
 
-IMPORTANT: It's important to note that key-value, wide-column, document, and relational databases support Collection specializations and Maps of the basic types. However, these databases may have different serialization processes, impacting performance and causing impedance mismatch. Developers should consider these side effects when working with collections and maps in their entity models.
+IMPORTANT: It is important to note that key-value, wide-column, document, and relational databases support Collection specializations and Maps of the basic types. However, these databases may have different serialization processes, impacting performance and causing impedance mismatch. Developers should consider these side effects when working with collections and maps in their entity models.
 
 In addition to the basic types, entity models might also choose to support additional types that represent data in a domain-specific manner. These custom types may include complex data structures and objects. Entity models can choose to provide mechanisms to convert these custom types to the supported basic types.
 
-===== Domain-Relation Fields in Jakarta Data
+==== Domain-Relation Fields in Jakarta Data
 
-In Jakarta Data, the concept of "Domain-Relation" fields encompasses two distinct types: "component" and "association" fields. These fields enable developers to establish relationships between entities and other domain concepts, enriching the complexity and structure of data entities.
+In Jakarta Data, the concept of Domain-Relation fields encompasses two distinct types: component fields and association fields. These fields enable developers to establish relationships between entities and other domain concepts, enriching the complexity and structure of data entities.
 
 - *Component Fields*: A component field represents a relationship where one entity is treated as a component of another entity. It implies that the component does not have a life cycle outside the entity to which it belongs. It is an embedded object that exists solely within the context of the owning entity.
 
@@ -210,7 +210,7 @@ The topic of serialization of Domain-Relation fields within databases is crucial
 
 In Jakarta Data, the serialization of Domain-Relation fields, such as components, can be achieved in two ways.
 
-* *Merging Fields Directly in the Entity (Component Embedding):*
+===== Merging Fields Directly in the Entity (Component Embedding)
 
 In this approach, a component merges its fields directly within the entity. From the perspective of the persistence layer, the component itself doesn't exist as a separate table or document. Instead, it becomes part of the entity's structure. This approach leads to a flat representation in the database.
 
@@ -255,7 +255,7 @@ The structure of the entity in a Document, Wide-Column, and Graph database will 
 
 This approach allows for a flat and denormalized structure in the database, making it suitable for a variety of database types.
 
-* * Second Approach: Storing Components in Separate Tables (Relational Databases) or as Subdocuments/UDTs (NoSQL Databases)*
+===== Storing Components in Separate Tables (Relational Databases) or as Subdocuments/UDTs (NoSQL Databases)
 
 This approach is typically employed for more complex relationships and associations within the domain model, allowing for greater flexibility and scalability. It involves storing components, such as the `Passport` in the example, in separate tables for relational databases or as subdocuments or User-Defined Types (UDTs) for NoSQL databases. This method is suitable for scenarios where an association exists between one entity and another.
 
@@ -357,6 +357,20 @@ public class Book {
 }
 ----
 
+[source,json]
+----
+{
+  "id": "218828d0-3215-08fe-937f-42b5119c8f22",
+  "name": "Jane Smith",
+  "books": [
+    {
+      "title": "Sample Book 2",
+      "category": "Non-fiction"
+    }
+  ]
+}
+----
+
 In the JSON representation, an `Author` entity can be associated with multiple `Book` entities within an array.
 
 Here are the tables with content based on the JSON data structure:
@@ -386,7 +400,7 @@ Here are the tables with content based on the JSON data structure:
 | 2                       | 2
 |===
 
-These tables represent the data from the JSON structure you provided earlier, illustrating a many-to-many relationship between authors and books using an auxiliary table.
+These tables represent the data from the JSON structure provided earlier, illustrating a many-to-many relationship between authors and books using an auxiliary table.
 
 In a relational database, this relationship typically generates three tables: `Author`, `Book`, and an auxiliary table `Author_Book` to manage the many-to-many relationship between authors and books.
 
@@ -394,13 +408,13 @@ In some scenarios, books can have multiple authors, and authors can contribute t
 
 This N-N relationship typically generates a dedicated table to manage the associations between books and authors in a relational database. However, NoSQL databases may take a different approach, especially in cases where denormalization and data duplication are favored for query-driven designs.
 
-IMPORTANT: The key-value database might support these fields, generating a single BLOB value. However, the serialization process for such fields may vary depending on the Jakarta Data provider and the specific key-value database used.
+IMPORTANT: Key-value databases might support these fields, generating a single BLOB value. However, the serialization process for such fields may vary depending on the Jakarta Data provider and the specific key-value database used.
 
-NOTE: The Graph database is not required to support Domain-Relation types, but it might be used for aggregate query returns or as a read-only field.
+NOTE: Graph databases are not required to support Domain-Relation types, but it might be used for aggregate query returns or as a read-only field.
 
-===== Recursion at Domain-Relation Fields in Jakarta Data
+==== Recursion in Domain-Relation Fields in Jakarta Data
 
-In the context of Jakarta Data, the term "recursion" pertains to the ability to manage hierarchical or nested relationships between entities. This capability is essential when dealing with complex domain models involving associations, aggregations, or compositions between various entity types. Jakarta Data ensures these relationships are correctly mapped and maintained within the database, enabling consistent data retrieval and manipulation.
+In the context of Jakarta Data, the term recursion pertains to the ability to manage hierarchical or nested relationships between entities. This capability is essential when dealing with complex domain models involving associations, aggregations, or compositions between various entity types. Jakarta Data ensures these relationships are correctly mapped and maintained within the database, enabling consistent data retrieval and manipulation.
 
 
 For relational databases, Jakarta Data requires support of recursive relationships. If one entity type is associated with or contains another entity type, the Jakarta Data provider for relational databases must establish the required table structures and foreign key constraints to uphold these relationships. This approach guarantees data integrity and consistency when working with the database.
@@ -410,7 +424,7 @@ For other types of databases, Jakarta Data does not require explicit support for
 
 In instances where a Jakarta Data provider for NoSQL databases encounters a recursive relationship that it cannot support due to the specific characteristics of the database, it must throw a `jakarta.data.exceptions.MappingException` or an appropriate subclass of `MappingException`. This exception notifies developers that the database does not support the relationship.
 
-=== Repository interfaces
+== Repository Interfaces
 
 A Jakarta Data repository is a Java interface annotated `@Repository`.
 A repository interface may declare:
@@ -453,7 +467,7 @@ If an entity class is not portable between given implementations, then any repos
 
 NOTE: Additional portability guarantees may be provided by specifications which extend this specification, specializing to a given class of datastore.
 
-==== Lifecycle methods
+=== Lifecycle methods
 
 A *lifecycle method* is an abstract method annotated with a _lifecycle annotation_.
 Lifecycle methods allow the program to make changes to persistent data in the data store.
@@ -500,7 +514,7 @@ Book mergeBook(Book book);
 Such lifecycle methods are not portable between Jakarta Data providers.
 ====
 
-==== Annotated query methods
+=== Annotated Query methods
 
 An _annotated query method_ is an abstract method annotated by a _query annotation_ type.
 The query annotation specifies a query in some datastore-native query language.
@@ -534,15 +548,21 @@ For example, using a named parameter:
 
 [source,java]
 ----
-@Query(“where title like :title order by title”)
+@Query("where title like :title order by title")
 Page<Book> booksByTitle(String title, Pageable page);
+----
+
+[source,java]
+----
+@Query("SELECT p FROM Product p WHERE p.name=:prodname")
+Optional<Product> findByName(@Param("prodname") String name);
 ----
 
 Or, using a positional parameter:
 
 [source,java]
 ----
-@Query(“delete from Book where isbn = ?1”)
+@Query("delete from Book where isbn = ?1")
 void deleteBook(String isbn);
 ----
 
@@ -557,7 +577,7 @@ For example, a provider might define a `@SQL` annotation for declaring queries w
 There is no special programming model for query annotations.
 The Jakarta Data implementation automatically recognizes the query annotations it supports.
 
-==== Automatic query methods
+=== Parameter-based automatic query methods
 
 An _automatic query method_ is an abstract method that either follows the Query by Method Name pattern where the Jakarta Data provider generates a query based on the name of the method, or follows a pattern for whereby the Jakarta Data provider automatically generates a find query based on the names of parameters that are supplied to the method, where the method has return type that identifies the entity, such as `E`, `Optional<E>`, `Page<E>`, or `List<E>`, where `E` is an entity class. Each parameter must either:
 
@@ -577,7 +597,7 @@ List<Book> booksByYear(Year year, Sort order, Limit limit)
 
 Automatic query methods _are_ portable between providers.
 
-==== Resource accessor method
+=== Resource accessor methods
 
 A _resource accessor method_ is a method with no parameters which returns a type supported by the Jakarta Data provider.
 The purpose of this method is to provide the program with direct access to the data store.
@@ -604,44 +624,6 @@ default void cleanup() {
 ----
 
 A repository may have at most one resource accessor method.
-
-==== Additional examples
-
-The following examples demonstrate the use of annotated and automatic query methods with `CrudRepository`.
-
-[source,java]
-----
-@Repository
-public interface ProductRepository extends CrudRepository<Product, Long> {
-  @Query("SELECT p FROM Product p WHERE p.name=?1")  // example in JPQL
-  Optional<Product> findByName(String name);
-}
-----
-
-[source,java]
-----
-@Repository
-public interface ProductRepository extends CrudRepository<Product, Long> {
-  @Query("SELECT p FROM Product p WHERE p.name=:name")  // example in JPQL
-  Optional<Product> findByName(@Param("name") String name);
-}
-----
-
-[source,java]
-----
-@Repository
-public interface ProductRepository extends CrudRepository<Product, Long> {
-
-  // Assumes that the Product entity has attributes: yearProduced
-  List<Product> findMadeIn(int yearProduced, Sort... sorts);
-
-  @Query("SELECT count(p) FROM Product p WHERE p.name=?1 AND p.status=?2")
-  int countWithStatus(String name, Status status);
-
-  @Query("DELETE FROM Product p WHERE p.yearProduced=?1")
-  void deleteOutdated(int yearProduced);
-}
-----
 
 === Query by Method Name
 
