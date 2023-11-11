@@ -18,25 +18,25 @@ In the realm of software design, the repository pattern encapsulates the logic r
 
 image::01-repository.png[alt=repository structure, width=70%, height=70%]
 
-The Repository pattern is a fundamental concept within Jakarta Data that plays a central role in data access and management. Essentially, a repository is a mediator between your application's domain logic and the underlying data storage, be it a relational database, NoSQL database, or any other data source.
+The Repository pattern is a fundamental concept within Jakarta Data that plays a central role in data access and management. Essentially, a repository is a mediator between an application's domain logic and the underlying data storage, be it a relational database, NoSQL database, or any other data source.
 
-In Jakarta Data, a Repository provides a structured and organized way to interact with your data. It abstracts data storage and retrieval complexities, allowing you to work with domain-specific objects and perform everyday data operations without writing low-level database queries.
+In Jakarta Data, a Repository provides a structured and organized way to interact with data. It abstracts data storage and retrieval complexities, allowing you to work with domain-specific objects and perform common operations on data without writing low-level database queries.
 
-As employed in Jakarta Data, the Repository pattern exhibits several key characteristics that make it a powerful tool for managing data access within your Java applications. These characteristics collectively define how repositories function within Jakarta Data, providing a structured and domain-centric approach to working with data. By understanding these key characteristics, you'll gain insight into how repositories simplify data access and enhance the maintainability of your code.
+As employed in Jakarta Data, the Repository pattern exhibits several key characteristics that make it a powerful tool for managing data access within Java applications. These characteristics collectively define how repositories function within Jakarta Data, providing a structured and domain-centric approach to working with data. These key characteristics offer insight into how repositories simplify data access and enhance the maintainability of code.
 
-- **Abstraction:** Repositories abstract the details of how data is stored, enabling you to focus on your application's domain logic without being tightly coupled to a specific database technology.
+- **Abstraction:** Repositories abstract the details of how data is stored, enabling the developer to focus on the application's domain logic without being tightly coupled to a specific database technology.
 
-- **Structured Data Access:** Jakarta Data repositories offer a structured and consistent way to perform data access operations. This structured approach ensures that your codebase remains organized and maintainable.
+- **Structured Data Access:** Jakarta Data repositories offer a structured and consistent way to perform data access operations. This structured approach ensures that the codebase remains organized and maintainable.
 
-- **Domain-Centric:** Repositories are designed to be domain-centric, aligning with your application's domain model. It means that data access operations are closely tied to your business entities, making your code more intuitive and expressive.
+- **Domain-Centric:** Repositories are designed to be domain-centric, aligning with the application's domain model. It means that data access operations are closely tied to business entities, making code more intuitive and expressive.
 
-In summary, the Repository pattern in Jakarta Data offers a structured and domain-centric approach to data access, providing a balance between abstraction and ease of use. It simplifies data access by encapsulating the details of the data source while aligning closely with your application's domain model. It makes it a valuable choice for many Java developers, especially in projects where a clean separation of concerns and maintainable codebase are essential.
+In summary, the Repository pattern in Jakarta Data offers a structured and domain-centric approach to data access, providing a balance between abstraction and ease of use. It simplifies data access by encapsulating the details of the data source while aligning closely with the application's domain model. It makes it a valuable choice for many Java developers, especially in projects where a clean separation of concerns and maintainable codebase are essential.
 
-=== Repositories on Jakarta Data
+=== Repositories in Jakarta Data
 
-Within the context of Jakarta Data, a repository plays a pivotal role in simplifying data access layers for various persistence stores. It is a Java interface that acts as a gateway for accessing persistent data of one or more entity types. Repositories offer a streamlined approach to working with data by exposing operations for querying, retrieving, and modifying entity class instances that represent persistent instances of the entities they are associated with.
+Within the context of Jakarta Data, the repository plays a pivotal role in simplifying data access for various persistence stores. The repository is a Java interface that acts as a gateway for accessing persistent data of one or more entity types. Repositories offer a streamlined approach to working with data by exposing operations for querying, retrieving, and modifying entity class instances that represent data in the persistent store.
 
-Several vital characteristics define repositories:
+Several characteristics define repositories:
 
 - **Reduced Boilerplate Code:** One of the primary goals of a repository abstraction is to significantly reduce the boilerplate code required to implement data access layers for diverse persistence stores. This reduction in repetitive code enhances code maintainability and developer productivity.
 
@@ -44,17 +44,29 @@ Several vital characteristics define repositories:
 
 - **Built-In Interfaces:** The Jakarta Data specification provides a set of built-in interfaces from which repositories can inherit. These built-in interfaces offer a convenient way to include a variety of pre-defined methods for common operations. They also declare the entity type to use for methods where the entity type cannot otherwise be inferred.
 
-- **Data Retrieval and Modification:** Repositories facilitate data retrieval and modification operations. This includes querying for persistent instances in the data store, creating new persistent instances in the data store, removing existing persistent instances, and modifying the state of persistent instances. Conventionally, these operations are named save and delete for modifying operations and find, count, and exists for retrieval operations.
+- **Data Retrieval and Modification:** Repositories facilitate data retrieval and modification operations. This includes querying for persistent instances in the data store, creating new persistent instances in the data store, removing existing persistent instances, and modifying the state of persistent instances. Conventionally, these operations are named insert, update, save and delete for modifying operations and find, count, and exists for retrieval operations.
 
 - **Subset of Data:** Repositories may expose only a subset of the full data set available in the data store, providing a focused and controlled access point to the data.
 
 - **Entity Associations:** Entities within a repository may have associations between them, especially in the case of relational data access. However, this specification does not define the semantics of associations between entities belonging to different repositories.
 
-- **Stateless Repositories:** Repositories are typically designed to be stateless. However, it's important to note that this specification does not address the definition of repositories backed by Jakarta Persistence-style stateful persistence contexts.
+- **Stateless Repositories:** Repositories are typically designed to be stateless. However, it is important to note that this specification does not address the definition of repositories backed by Jakarta Persistence-style stateful persistence contexts.
 
 Repositories in Jakarta Data serve as efficient gateways for managing and interacting with persistent data, offering a simplified and consistent approach to data access and modification within Java applications.
 
+The application must provide the following when using repositories in Jakarta Data:
+
+1. **Entity Classes and Mappings:** Developers define a set of entity classes and mappings tailored to a specific data store. These entities represent the data structure and schema, offering a powerful means to interact with the underlying data.
+
+2. **Repository Interfaces:** Jakarta Data enables the creation of one or more repository interfaces, following predefined rules that include the guidelines set forth by this specification. These interfaces are the gateways to accessing and manipulating the data, offering a structured and efficient way to perform data operations.
+
+An implementation of Jakarta Data, specifically tailored to the chosen data store, assumes the responsibility of implementing each repository interface. This symbiotic relationship between developers and Jakarta Data ensures that data access and manipulation remain consistent, efficient, and aligned with best practices.
+
+Jakarta Data empowers developers to shape their data access strategies by defining entity classes and repositories, with implementations seamlessly adapting to the chosen data store. This flexibility and Jakarta Data's persistence-agnostic approach promote robust data management within Java applications.
+
 The Jakarta Data specification supports two types of repositories.
+
+==== Repositories with Built-in Supertypes
 
 The first type consists of built-in interfaces that are parent interfaces from which repositories can inherit. At the root of this hierarchy is the `DataRepository` interface. These built-in interfaces are extensible, meaning a repository can extend one or more of them or none at all. When a repository extends a built-in interface, the method signatures copied from the built-in interfaces must retain the same behavior as defined in the built-in interfaces.
 
@@ -78,13 +90,15 @@ The first type consists of built-in interfaces that are parent interfaces from w
 
 ....
 
+The `BasicRepository` interface includes some of the most common operations, which applies to single type of entity, designated via its first parameterized type variable.
 
-* Interface with basic operations on a repository for a specific type. This one we can see more often on several Java implementations.
-* Interface with basic operations using the pagination feature.
+The `CrudRepository` interface inherits from `BasicRepository`, adding `Insert` and `Update` operations that correspond to Create and Update in the CRUD (Create, Read, Update, Delete) pattern.
 
-From the Java developer perspective, create an interface that is annotated with the `@Repository` annotation and optionally extends one of the built-in repository interfaces.
+The `PageableRepository` interface inherits from `BasicRepository`, adding built-in methods that leverage the pagination feature.
 
-So, given a `Product` entity where the ID is a `long` type, the repository would be:
+The Java developer creates an interface that is annotated with the `@Repository` annotation and optionally extends one of the built-in repository interfaces.
+
+Given a `Product` entity where the ID is a `long` type, the repository can be:
 
 [source,java]
 ----
@@ -95,7 +109,7 @@ public interface ProductRepository extends BasicRepository<Product, Long> {
 ----
 
 
-There is no nomenclature restriction to make mandatory the `Repository` suffix. Such as, you might represent the repository of the Car's entity as a `Garage` instead of `CarRepository`.
+There is no nomenclature restriction to require the `Repository` suffix. For example a repository for `Car` entities can be named `Cars`, `Vehicles`, or even `Garage` instead of `CarRepository`.
 
 [source,java]
 ----
@@ -105,20 +119,9 @@ public interface Garage extends BasicRepository<Car, String> {
 }
 ----
 
-Jakarta Data empowers developers to take control of their data access and management by providing the flexibility to define two essential components:
+==== Repositories without Built-in Supertypes
 
-1. **Entity Classes and Mappings:** Developers can define a set of entity classes and mappings tailored to a specific data store. These entities represent the data structure and schema, offering a powerful means to interact with the underlying data.
-
-2. **Repository Interfaces:** Jakarta Data encourages the creation of one or more repository interfaces, following predefined rules that include the guidelines set forth by this specification. These interfaces are the gateways to accessing and manipulating the data, offering a structured and efficient way to perform data operations.
-
-
-Subsequently, an implementation of Jakarta Data, specifically tailored to the chosen data store, assumes the responsibility of implementing each repository interface. This symbiotic relationship between developers and Jakarta Data ensures that data access and manipulation remain consistent, efficient, and aligned with best practices.
-
-Jakarta Data empowers developers to shape their data access strategies by defining entity classes and repositories, with implementations seamlessly adapting to the chosen data store. This flexibility and Jakarta Data's persistence-agnostic approach promote robust data management within Java applications.
-
-Additionally, Jakarta Data allows for custom interfaces that do not extend any built-in interfaces. These non-built-in interfaces enable developers to define their repository structures and behavior.
-
-Non-built-in interfaces play a pivotal role in Jakarta Data, offering a powerful mechanism for creating custom repository interfaces that align seamlessly with your specific domain requirements. These custom interfaces provide a means to define your domain's ubiquitous language precisely.
+Additionally, Jakarta Data allows for custom interfaces that do not extend any built-in interfaces. These non-built-in interfaces enable developers to define the repository structures and behavior and provide a means to define your domain's ubiquitous language precisely.
 
 In this context, database operations involving fundamental data changes, such as insertion, update, and removal, are realized through the strategic utilization of annotations like `Insert`, `Update`, `Delete`, and `Save`. These annotations enable the crafting of expressive and contextually meaningful repository methods, resulting in a repository that closely mirrors the semantics of your domain.
 
@@ -139,6 +142,7 @@ public interface Garage {
 
 Here, the `@Insert` annotation is used for the `park` method, allowing you to design a repository interface that encapsulates the essence of your domain. This approach fosters a shared understanding and more intuitive communication within your development team, ensuring that your database operations are integral to your domain's language.
 
+NOTE: Jakarta Data allows applications to intermix both patterns by defining methods that are annotated with `Insert`, `Update`, `Delete`, or `Save` on repositories that inherit from the built-in supertypes.
 
 == Entity Classes
 
