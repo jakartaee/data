@@ -16,9 +16,26 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 /**
- * In Domain-driven design, DDD, a repository is an object that participates in the domain but abstracts away storage
- * and infrastructure details. Most systems have persistent storage,
- * like a database, for their full functioning. Applying repositories happens
- * by integrating and synchronizing with existing aggregate objects in the system.
+ * <p>A repository is an interface annotated with {@link Repository} that defines
+ * operations on entities. Entities represent data in the persistent store.
+ * In Domain-driven design, a repository participates in the domain but abstracts away storage
+ * and infrastructure details.</p>
+ *
+ * <p>Repository interfaces can optionally inherit from built-in interfaces within this package,</p>
+ *
+ * <ul>
+ * <li>{@link DataRepository} - root of the hierarchy, allows the entity type to be specified as a type parameter.</li>
+ * <li>{@link BasicRepository} - provides common find, delete, and save operations.</li>
+ * <li>{@link CrudRepository} - extends the {@code BasicRepository} to add {@link CrudRepository#insert(S) insert}
+ *     and {@link CrudRepository#update(T) update} operations.</li>
+ * <li>{@link PageableRepository} - extends the {@code BasicRepository} with a built-in method that uses pagination.</li>
+ * </ul>
+ *
+ * <p>Repository interfaces can also define their own life cycle methods using the
+ * {@link Insert}, {@link Update}, {@link Save}, and {@link Delete} annotations,
+ * as well as a variety of other methods following the Query by Method Name pattern,
+ * the Parameter-based Conditions pattern, and the {@link Query} annotation.</p>
+ *
+ * <p>The module JavaDoc provides an {@link jakarta.data/ overview} of Jakarta Data.</p>
  */
 package jakarta.data.repository;

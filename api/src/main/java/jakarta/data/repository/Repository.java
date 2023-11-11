@@ -55,6 +55,8 @@ import java.lang.annotation.Target;
  * found = products.findByNameLike("%Printer%");
  * numUpdated = products.putOnSale(0.15f, 20.0f);
  * </pre>
+ *
+ * <p>The module JavaDoc provides an {@link jakarta.data/ overview} of Jakarta Data.</p>
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
