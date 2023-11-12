@@ -112,4 +112,10 @@ public class Product {
     public void setVersionNum(long versionNum) {
         this.versionNum = versionNum;
     }
+
+    @Override
+    public String toString() {
+        return "Product [departments=" + departments + ", name=" + name + ", price=" + price + ", productNum="
+                + productNum + ", surgePrice=" + surgePrice + ", versionNum=" + versionNum + "]";
+    }
 }
