@@ -1071,6 +1071,8 @@ KeysetAwarePage<User> olderThan(int age, Pageable pagination);
 
 Pagination is a critical aspect of data access and retrieval in many applications, including those developed in Java. It plays a crucial role in ensuring the efficient and user-friendly handling of large datasets. In Jakarta Data, APIs are provided to help Java developers manage and navigate through data efficiently. This session will discuss the importance of pagination in Java development and explore the two main types of pagination: Offset and Keyset.
 
+image::02-pagination.png[alt=pagiantion sample, width=70%, height=70%]
+
 Pagination is vital to Java developers for several reasons:
 
 1. *Performance*: Without pagination, loading large datasets at once can result in slow and resource-intensive operations. By breaking data into smaller, manageable chunks, applications can provide a faster and more responsive user experience.
@@ -1094,6 +1096,106 @@ The critical differences between Offset and Keyset pagination lie in their retri
 
 - Offset pagination uses a fixed page size and retrieves data based on page number and size.
 - Keyset pagination relies on a unique key or unique combination of values (the keyset) for an entity relative to which it determines the next page or previous page.
+
+==== Offset Pagination in Jakarta Data
+
+Offset pagination is a popular method for managing and retrieving large datasets efficiently. It is based on dividing the dataset into pages containing a specified number of elements. This method allows developers to retrieve a subset of the dataset by identifying the page number and the maximum number of elements per page.
+
+Offset pagination is motivated by the need to provide efficient navigation through large datasets. Loading an entire dataset into memory at once can be resource-intensive and lead to performance issues. By breaking the dataset into smaller, manageable pages, offset pagination improves performance, reduces resource consumption, and enhances the overall user experience.
+
+Offset pagination offers several key features that make it a valuable approach for managing and retrieving large datasets in a controlled and efficient manner:
+
+- *Page Size*: The maximum number of elements to be included in each page is known as the page size. This parameter determines the subset of data retrieved with each pagination request.
+
+- *Page Number*: The page number indicates which subset of the dataset to retrieve. It typically starts from 1, representing the first page, and increments with each subsequent page.
+
+- *Efficient Navigation*: Offset pagination allows efficient dataset navigation. By specifying the desired page and page size, developers can control the data retrieved, optimizing memory usage and processing time.
+
+- *Sequential Order*: Elements are retrieved sequentially based on predefined criteria, such as ascending or descending order of a specific attribute, like an ID.
+
+===== Scenario: Person Entity and People Repository
+
+Consider a scenario with a `Person` entity and a corresponding `People` repository:
+
+[source,java]
+----
+
+public class Person {
+    private Long id;
+    private String name;
+}
+
+@Repository
+public interface People extends PageableRepository<Person, Long> {
+}
+----
+
+
+
+The dataset contains the following elements:
+
+[source,json]
+----
+[
+   {"id":1, "name":"Lin Le Marchant"},
+   {"id":2, "name":"Corri Davidou"},
+   {"id":3, "name":"Alyse Dadson"},
+   {"id":4, "name":"Orelle Roughey"},
+   {"id":5, "name":"Jaquith Wealthall"},
+   {"id":6, "name":"Debor Bracegirdle"},
+   {"id":7, "name":"Patten Bedell"},
+   {"id":8, "name":"Danita Pilipyak"},
+   {"id":9, "name":"Harlene Branigan"},
+   {"id":10, "name":"Boothe Martinson"}
+]
+----
+
+
+Code Execution:
+
+[source,java]
+----
+
+@Inject
+People people;
+
+Page<Person> page = people.findAll(Pageable.ofPage(1).size(2).sortBy(Sort.asc("id")));
+----
+
+Resulting Page Content:
+
+[source,json]
+----
+[
+   {"id":1, "name":"Lin Le Marchant"},
+   {"id":2, "name":"Corri Davidou"}
+]
+----
+
+
+Next Page Execution:
+
+[source,java]
+----
+Pageable nextPageable = page.nextPageable();
+Page<Person> page2 = people.findAll(nextPageable);
+----
+
+
+Resulting Page Content:
+
+[source,json]
+----
+[
+   {"id":3, "name":"Alyse Dadson"},
+   {"id":4, "name":"Orelle Roughey"}
+]
+----
+
+
+In this scenario, each page represents a subset of the dataset, and developers can navigate through the pages efficiently using offset pagination.
+
+Offset pagination is a valuable tool for Java developers when dealing with large datasets, providing control, efficiency, and a seamless user experience.
 
 ==== Keyset Pagination
 
