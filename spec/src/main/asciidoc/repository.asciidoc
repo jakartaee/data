@@ -1125,7 +1125,7 @@ Offset pagination offers several key features that make it a valuable approach f
 
 - *Efficient Navigation*: Offset pagination allows efficient dataset navigation. By specifying the desired page and page size, developers can control the data retrieved, optimizing memory usage and processing time.
 
-- *Sequential Order*: Elements are retrieved sequentially based on a predefined criterion, such as ascending or descending order of a specific attribute, like an ID.
+- *Sequential Order*: Elements are retrieved sequentially based on predefined criteria, such as ascending or descending order of a specific attribute, like an ID.
 
 ===== Scenario: Person Entity and People Repository
 
