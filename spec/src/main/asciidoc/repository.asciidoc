@@ -430,7 +430,7 @@ In instances where a Jakarta Data provider for NoSQL databases encounters a recu
 
 == Repository Interfaces
 
-A Jakarta Data repository is a Java interface annotated `@Repository`.
+A Jakarta Data repository is a Java interface annotated with `@Repository`.
 A repository interface may declare:
 
 - _abstract_ (non-`default`) methods, and
@@ -442,7 +442,7 @@ Every abstract method of the interface is usually either:
 
 - an entity instance _lifecycle method_,
 - an _annotated query method_,
-- an _automatic query method_, or
+- an _automatic query method_ (with Parameter-based conditions or Query by Method Name), or
 - a _resource accessor method_.
 
 A repository may declare lifecycle methods for a single entity type, or for multiple related entity types.
@@ -457,9 +457,7 @@ Repositories perform operations on entities. For repository methods that are ann
 Users of Jakarta Data declare a primary entity type for a repository by inheriting from a built-in repository super interface, such as `BasicRepository`, and specifying the primary entity type as the first type variable. For repositories that do not inherit from a super interface with a type parameter to indicate the primary entity type, life cycle methods on the repository determine the primary entity type. To do so, all life cycle methods where the method parameter is a type, an array of type, or is parameterized with a type that is annotated as an entity, must correspond to the same entity type. The primary entity type is assumed for methods that do not otherwise specify an entity type, such as `countByPriceLessThan`. Methods that require a primary entity type raise `MappingException` if a primary entity type is not provided.
 
 
-NOTE: A Jakarta Data provider might go beyond what is required by this specification and support abstract methods which do not fall into any of the above categories.
-
-Such functionality is not defined by this specification, and so programs with repositories which declare such methods are not portable between providers.
+NOTE: A Jakarta Data provider might go beyond what is required by this specification and support abstract methods which do not fall into any of the above categories. Such functionality is not defined by this specification, and so programs with repositories which declare such methods are not portable between providers.
 
 The subsections below specify the rules that an abstract method declaration must observe so that the Jakarta Data implementation is able to provide an implementation of the abstract method.
 
@@ -583,12 +581,12 @@ The Jakarta Data implementation automatically recognizes the query annotations i
 
 === Parameter-based automatic query methods
 
-An _automatic query method_ is an abstract method that either follows the Query by Method Name pattern where the Jakarta Data provider generates a query based on the name of the method, or follows a pattern for whereby the Jakarta Data provider automatically generates a find query based on the names of parameters that are supplied to the method, where the method has return type that identifies the entity, such as `E`, `Optional<E>`, `Page<E>`, or `List<E>`, where `E` is an entity class. Each parameter must either:
+An _automatic query method_ is an abstract method that either generates a query based on the parameters of the method or based on the name of the method (the Query by Method Name pattern is discussed separately). The method return type identifies the entity. For example: `E`, `Optional<E>`, `Page<E>`, or `List<E>`, where `E` is an entity class. Each parameter must either:
 
 - have exactly the same type and name as a persistent field or property of the entity class, or
 - be of type `Limit`, `Pageable`, or `Sort`.
 
-A repository with automatic query methods that are based on parameters must either be compiled so that parameter names are preserved in the class file (for example, using `javac -parameters`), or the parameter names must be specified explicitly using the `@By` annotation.
+A repository with automatic query methods that are based on parameters must either be compiled so that parameter names are preserved in the class file (for example, using `javac -parameters`), or the corresponding entity attribute name for parameters must be specified explicitly using the `@By` annotation.
 
 For example:
 
@@ -596,7 +594,11 @@ For example:
 ----
 Book bookByIsbn(String isbn);
 
-List<Book> booksByYear(Year year, Sort order, Limit limit)
+List<Book> booksByYear(Year year, Sort order, Limit limit);
+
+Page<Book> find(@By("year") Year publishedIn,
+                @By("genre") Category type,
+                Pageable pagination);
 ----
 
 Automatic query methods _are_ portable between providers.
@@ -652,12 +654,14 @@ public interface ProductRepository extends BasicRepository<Product, Long> {
 The parsing of query method names follows a specific format:
 
 - The method name consists of the subject, the predicate, and optionally the order clause.
-- The subject, defines the action (such as `find` or `delete`) , optionally followed by an expression (for example, `First10`), followed by `By`
+- The subject begins with the action (such as `find` or `delete`) and is optionally followed by an expression (for example, `First10`), followed by any number of other characters, followed by `By`.
 - The predicate defines the query's condition or filtering criteria, where multiple conditions are delimited by `And` or `Or`. For example, `PriceLessThanAndNameLike`.
 - The order clause, which is optional, begins with `OrderBy` and consists of an ordered collection of entity attributes by which to sort results, delimited by `Asc` or `Desc` to specify the sort direction of the preceding attribute.
 - The method name is formed by combining the subject, predicate, and order clause, in that order.
 
-Queries can also handle entities with related classes by specifying the relationship using dot notation.
+NOTE: This specification uses the terms subject and predicate in a way that aligns with industry terminology rather than how they are defined in English grammar. Aligning with the rules of English grammar, the subject would be the repository instance upon which the method is invoked, and the predicate would start with the action (such as `find`) and include the prepositional phrase `By...`.
+
+Queries can also handle entities with relation attributes by specifying the relationship using dot notation, with the dot converted to underscore so that it is a valid character within the method name.
 
 Example query methods:
 
@@ -673,7 +677,7 @@ Query methods allow developers to create database queries using method naming co
 [source,bnf]
 ----
 <query-method> ::= <subject> <predicate> [<order-clause>]
-<subject> ::= (<action> | "find" <find-expression>) "By"
+<subject> ::= (<action> | "find" <find-expression>) [<ignored-text>] "By"
 <action> ::= "find" | "delete" | "update" | "count" | "exists"
 <find-expression> ::= "First" [<positive-integer>]
 <predicate> ::= <condition> { ("And" | "Or") <condition> }
@@ -692,6 +696,7 @@ Explanation of the BNF elements:
 - `<subject>`: Defines the action (e.g., "find" or "delete") followed by an optional expression and "By."
 - `<action>`: Specifies the action, such as "find" or "delete."
 - `<find-expression>`: Represents an optional expression for find operations, such as "First10."
+- `<ignored-text>`: Optional text that does not contain "By".
 - `<predicate>`: Represents the query's condition or filtering criteria, which can include multiple conditions separated by "And" or "Or."
 - `<condition>`: Specifies a property and an operator for the condition.
 - `<operator>`: Defines the operator for the condition, like "Between" or "LessThan."
@@ -705,7 +710,7 @@ Explanation of the BNF elements:
 
 Within an entity, property names must be unique ignoring case. For simple entity properties, the field or accessor method name serves as the entity property name. In the case of embedded classes, entity property names are computed by concatenating the field or accessor method names at each level.
 
-Assume an Order entity has an Address with a ZipCode. In that case, the access is `order.address.zipCode`. This form is used within annotations, such as `@Query`.
+Assume an `Order` entity has an `address` of type `MailingAddress` with a `zipCode` of type `int`. In that case, the access is `order.address.zipCode`. This form is used within annotations, such as `@Query`.
 
 [source,java]
 ----
@@ -713,20 +718,20 @@ Assume an Order entity has an Address with a ZipCode. In that case, the access i
 public interface OrderRepository extends BasicRepository<Order, Long> {
 
   @Query("SELECT order FROM Order order WHERE order.address.zipCode=?1")
-  List<Order> withZipCode(ZipCode zipCode);
+  List<Order> withZipCode(int zipCode);
 
 }
 ----
 
 The resolution algorithm for identifying properties in query methods by method name, with manual traversal points, is defined as follows:
 
-1. *Method Name Parsing*: The query method's name is parsed to identify the property or properties being referenced. Method names in query methods typically follow a pattern of "findBy[Property]", where "[Property]" represents the name of the property you want to query by.
+1. *Method Name Parsing*: The query method's name is parsed to identify the property or properties being referenced. Method names in query methods follow a pattern of "findBy[Property]", where "[Property]" represents the name of the property you want to query by.
 
 2. *Property Extraction*: The property name is extracted from the method name by removing the "findBy" prefix. For example, in the query method `findByAddressZipCode`, the property name extracted is `AddressZipCode`.
 
 3. *Property Name Capitalization*: The extracted property name is treated as is, with its original capitalization. For example, if the property name is `AddressZipCode`, it remains in camel case.
 
-4. *Manual Traversal Points*: To resolve ambiguity or to specify traversal through nested properties, underscores (`_`) can be used within the method name. Each underscore represents a traversal point to access nested properties. For example, `findByAddress_ZipCode` explicitly indicates traversal to the `Address` object's `ZipCode` property.
+4. *Manual Traversal Points*: To resolve ambiguity or to specify traversal through nested properties, underscores (`_`) can be used within the method name. Each underscore represents a traversal point to access nested properties. For example, `findByAddress_ZipCode` explicitly indicates traversal to the `address` property, which is of type `MailingAddress`, and then to that object's `zipCode` property.
 
 5. **Domain Class Property Lookup**: The framework checks the domain class associated with the repository for a property with the same name as the extracted property name (uncapitalized) in a case-insensitive manner. If the domain class has a property named `addressZipCode` or `addresszipcode`, this is considered a successful resolution.
 
@@ -737,7 +742,7 @@ The resolution algorithm for identifying properties in query methods by method n
 Users are encouraged to follow Java's naming standards in formalizing Jakarta Data queries using name conventions, avoiding underscores in field names. The resolution algorithm for property identification relies on "findBy[Property]" naming, allowing manual traversal with underscores. Adhering to the camel case for property names ensures consistency and seamless query method naming in Jakarta Data, enabling effective data filtering and retrieval from domain classes.
 
 
-*Scenario 1: Person Repository with findByAddressZipCode(ZipCode zipCode)*
+*Scenario 1: Person Repository with findByAddressZipCode(int zipCode)*
 
 In this scenario, we have the following data models:
 
@@ -745,19 +750,19 @@ In this scenario, we have the following data models:
 ----
 class Person {
   private Long id;
-  private Address address;
+  private MailingAddress address;
 }
 
-class Address {
-  private Zipcode zipcode;
+class MailingAddress {
+  private int zipcode;
 }
 ----
 
-- The query method `findByAddressZipCode` takes a `ZipCode` object as a parameter.
+- The query method `findByAddressZipCode` takes a `int` object as a parameter.
 - The Property Resolution Algorithm will parse the method name and extract `AddressZipCode`.
 - It will then attempt to resolve the property named `addressZipCode` in the `Person` class, following automatic class splitting by camel case.
-- Since the `Person` class has an `Address` property, it will recursively follow the path to the `Address` class.
-- In the `Address` class, it will identify the `zipcode` property and filter `Person` records based on the provided `Zipcode` object within the `Address` object.
+- Since the `Person` class has an `address` property, it will recursively follow the path to the `MailingAddress` class.
+- In the `MailingAddress` class, it will identify the `zipcode` property and filter `Person` records based on the provided `zipcode` integer within the `MailingAddress` object.
 
 *Scenario 2: People Repository with findByAddressZipCode(String addressZipCode)*
 
@@ -777,7 +782,7 @@ class Person {
 - It will then attempt to resolve the property named `addressZipCode` in the `Person` class, following automatic class splitting by camel case.
 - If a property named `addressZipCode` of type `String` exists in the `Person` class or its nested objects, the query will filter `Person` records based on the provided `addressZipCode` string.
 
-*Scenario 3: OrderRepository` Repository with `findByAddress_ZipCode(ZipCode zipCode)*
+*Scenario 3: Order Repository with findByAddress_ZipCode(int zipCode)*
 
 In this scenario, we have the following data models:
 
@@ -786,19 +791,19 @@ In this scenario, we have the following data models:
 class Order {
   private Long id;
   private String addressZipCode;
-  private Address address;
+  private MailingAddress address;
 }
 
-class Address {
-  private Zipcode zipcode;
+class MailingAddress {
+  private int zipcode;
 }
 ----
 
-- The query method `findByAddress_ZipCode` takes a `Zipcode` object as a parameter.
+- The query method `findByAddress_ZipCode` takes an `int` object as a parameter.
 - The method name includes an underscore (`_`) indicating manual traversal points.
 - The Property Resolution Algorithm will parse the method name and extract `Address_ZipCode`, recognizing the underscore as a traversal point.
-- It will then attempt to resolve the property named `Address` within the `Order` class, followed by the `zipcode` property within the `Address` class, following manual traversal points.
-- If properties `Address` and `ZipCode` are found in the appropriate classes or their nested objects, the query will filter `Order` records based on the provided `Zipcode` object within the `Address` object.
+- It will then attempt to resolve the property named `address` within the `Order` class, followed by the `zipcode` property within the `MailingAddress` class, following manual traversal points.
+- If properties `address` and `zipCode` are found in the appropriate classes or their nested objects, the query will filter `Order` records based on the provided `zipcode` integer within the `MailingAddress` object.
 
 
 *Scenario 4: People Repository with findByAddressZipCode(String addressZipCode)*
@@ -820,9 +825,9 @@ class Person {
 - If a property named `addressZipCode` of type `String` exists in the `Person` class or its nested objects, the query will filter `Person` records based on the provided `addressZipCode` string.
 
 
-WARNING: Define as a priority following standard Java naming conventions, camel case,  using underscore as the last resort.
+WARNING: Define entity properties following standard Java naming conventions for camel case, using underscore only as the last resort.
 
-In queries by method name, `Id` is an alias for the entity property that is designated as the id. Entity property names that are used in queries by method name must not contain reserved words.
+In Query by Method Name, `Id` is an alias for the entity property that is designated as the id. Entity property names that are used in queries by method name must not contain reserved words.
 
 ==== Query by Method Name Keywords
 
@@ -832,7 +837,7 @@ The following table lists the query-by-method keywords that must be supported by
 |Keyword |Description| Not Required For
 
 |findBy
-|General query method returning the repository type.
+|General query method returning entities.
 |Key-value, Wide-Column
 
 |deleteBy
@@ -852,18 +857,18 @@ The following table lists the query-by-method keywords that must be supported by
 ====
 The "Not Required For" column indicates the database types for which the respective keyword is not required or applicable.
 ====
-Jakarta Data implementations must support the following list of query-by-method keywords, except where indicated for a database type. A repository method must raise `java.lang.UnsupportedOperationException` or a more specific subclass of the exception if the database does not provide the requested functionality.
+Jakarta Data implementations must support the following list of Query by Method Name keywords, except where indicated for a database type. A repository method must raise `java.lang.UnsupportedOperationException` or a more specific subclass of the exception if the database does not provide the requested functionality.
 
 |===
 |Keyword |Description | Method signature Sample| Not Required For
 
 |And
-|The `and` operator.
+|The `And` operator requires both conditions to match.
 |findByNameAndYear
 |Key-value, Wide-Column
 
 |Or
-|The `or` operator.
+|The `Or` operator requires at least one of the conditions to match.
 |findByNameOrYear
 |Key-value, Wide-Column
 
@@ -873,7 +878,7 @@ Jakarta Data implementations must support the following list of query-by-method 
 |Key-value, Wide-Column
 
 |Between
-|Find results where the property is between the given values
+|Find results where the property is between (inclusive of) the given values
 |findByDateBetween
 |Key-value, Wide-Column
 
@@ -987,11 +992,15 @@ Wildcard characters for patterns are determined by the data access provider. For
 
 For relational databases, the logical operator `And` takes precedence over `Or`, meaning that `And` is evaluated on conditions before `Or` when both are specified on the same method. For other database types, the precedence is limited to the capabilities of the database. For example, some graph databases are limited to precedence in traversal order.
 
+==== Return Types
+
+Refer to the Jakarta Data module JavaDoc section on "Return Types for Repository Methods" for a listing of valid return types for methods using Query by Method Name.
+
 === Special Parameter Handling
 
 Jakarta Data also supports particular parameters to define pagination and sorting.
 
-Jakarta Data recognizes, when specified on a repository method after the query parameters, specific types, like `Limit`, `Pageable`, and `Sort`, to dynamically apply limits, pagination, and sorting to queries. The following example demonstrates these features:
+Jakarta Data recognizes, when specified on a repository method after the query parameters, the specific types, `Limit`, `Pageable`, and `Sort`, to dynamically apply limits, pagination, and sorting to queries. The following example demonstrates these features:
 
 [source,java]
 ----
@@ -1020,8 +1029,6 @@ Pageable pageable = Pageable.ofSize(20).page(1).sortBy(Sort.desc("price"));
 first20 = products.findByNameLike(name, pageable);
 
 ----
-
-Refer to the Jakarta Data module JavaDoc section on "Return Types for Repository Methods" for a listing of valid return types for methods with entity parameters.
 
 === Precedence of Sort Criteria
 
