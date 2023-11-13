@@ -812,6 +812,7 @@ import java.util.List;
  *
  *     List&lt;Contact&gt; findByEmailIn(&#64;NotEmpty Set&lt;String&gt; emails);
  *
+ *     &#64;Save
  *     void save(&#64;Valid Contact c);
  * }
  *
