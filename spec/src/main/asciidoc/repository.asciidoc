@@ -1069,7 +1069,7 @@ KeysetAwarePage<User> olderThan(int age, Pageable pagination);
 
 === Pagination in Jakarta Data
 
-Dividing up large sets of data into pages is a beneficial strategy for data access and retrieval in many applications, including those developed in Java. Pagination helps improve the efficiency of handling large datasets in a way that is also user-friendly. In Jakarta Data, APIs are provided to help Java developers efficiently manage and navigate through data. This section discusses the importance of pagination in Java development and explores the two types of pagination that are available in Jakarta Data: Offset-based pagination and Keyset cursor-based pagination.
+Dividing up large sets of data into pages is a beneficial strategy for data access and retrieval in many applications, including those developed in Java. Pagination helps improve the efficiency of handling large datasets in a way that is also user-friendly. In Jakarta Data, APIs are provided to help Java developers efficiently manage and navigate through data.
 
 image::02-pagination.png[alt=pagiantion sample, width=70%, height=70%]
 
