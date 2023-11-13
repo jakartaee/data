@@ -803,7 +803,7 @@ class MailingAddress {
 - The method name includes an underscore (`_`) indicating manual traversal points.
 - The Property Resolution Algorithm will parse the method name and extract `Address_ZipCode`, recognizing the underscore as a traversal point.
 - It will then attempt to resolve the property named `address` within the `Order` class, followed by the `zipcode` property within the `MailingAddress` class, following manual traversal points.
-- If properties `address` and `zipCode` are found in the appropriate classes or their nested objects, the query will filter `Order` records based on the provided `zipcode` integer within the `MailingAddress` object.
+- If properties `address` and `zipcode` are found in the appropriate classes or their nested objects, the query will filter `Order` records based on the provided `zipcode` integer within the `MailingAddress` object.
 
 
 *Scenario 4: People Repository with findByAddressZipCode(String addressZipCode)*
