@@ -1078,20 +1078,6 @@ KeysetAwarePage<User> olderThan(int age, Pageable pagination);
 
 Dividing up large sets of data into pages is a beneficial strategy for data access and retrieval in many applications, including those developed in Java. Pagination helps improve the efficiency of handling large datasets in a way that is also user-friendly. In Jakarta Data, APIs are provided to help Java developers efficiently manage and navigate through data.
 
-image::02-pagination.png[alt=pagiantion sample, width=70%, height=70%]
-
-Pagination is helpful to Java developers for several reasons:
-
-1. *Performance*: Without pagination, loading large datasets at once can result in slow and resource-intensive operations. By breaking data into smaller, manageable chunks, applications can provide a faster and more responsive user experience.
-
-2. *Resource Efficiency*: Pagination minimizes the memory and CPU resources required for data retrieval. It ensures that only a portion of the dataset is loaded at any given time, reducing the application's resource footprint.
-
-3. *User Experience*: Leveraging pagination in applications makes it easier for users to navigate through extensive lists or datasets. It enables users to view data incrementally and access relevant information more quickly.
-
-4. *Scalability*: For applications that handle substantial amounts of data, pagination is essential for ensuring scalability. It prevents overloading the system and slowing down the application as the dataset grows.
-
-5. *Responsive User Interfaces*: In web applications and graphical user interfaces (GUIs), pagination is essential for creating responsive, user-friendly interfaces. It allows users to access data with minimal latency.
-
 Jakarta Data supports two types of pagination: Offset and Keyset. These approaches differ in how they manage and retrieve paginated data:
 
 Offset pagination is the more traditional form based on position relative to the first record in the dataset. It is typically used with a fixed page size, where a specified number of records is retrieved starting from a given offset position.
