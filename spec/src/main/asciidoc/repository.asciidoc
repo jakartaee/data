@@ -1173,7 +1173,7 @@ Code Execution:
 @Inject
 People people;
 
-Page<Person> page = people.findAll(Pageable.ofPage(1).size(2));
+Page<Person> page = people.findAll(Pageable.ofPage(1).size(2).sortBy(Sort.asc("id")));
 ----
 
 Resulting Page Content:
