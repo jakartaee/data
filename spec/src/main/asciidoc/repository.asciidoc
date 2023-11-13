@@ -1000,7 +1000,7 @@ Refer to the Jakarta Data module JavaDoc section on "Return Types for Repository
 
 Jakarta Data also supports particular parameters to define pagination and sorting.
 
-Jakarta Data recognizes, when specified on a repository method after the query parameters, the specific types, `Limit`, `Pageable`, and `Sort`, to dynamically apply limits, pagination, and sorting to queries. The following example demonstrates these features:
+Jakarta Data recognizes, when specified on a repository method after the query parameters, the specific types, `Limit`, `Pageable`, and `Sort`, to dynamically apply limits, pagination, and sorting to queries, respectively. The following example demonstrates these features:
 
 [source,java]
 ----
