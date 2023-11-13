@@ -99,11 +99,18 @@
     </dependency>
     
     <dependency>
-	    <groupId>jakarta.transaction</groupId>
-	    <artifactId>jakarta.transaction-api</artifactId>
-	    <version>${jakarta.transaction.version}</version>
-	    <scope>provided</scope>
-	</dependency>
+      <groupId>jakarta.transaction</groupId>
+      <artifactId>jakarta.transaction-api</artifactId>
+      <version>${jakarta.transaction.version}</version>
+      <scope>provided</scope>
+    </dependency>
+	
+    <dependency>
+      <groupId>jakarta.validation</groupId>
+      <artifactId>jakarta.validation-api</artifactId>
+      <version>${jakarta.validation.version}</version>
+      <scope>provided</scope>
+    </dependency>
     
     <!-- Provided Entity APIs -->
     <dependency>

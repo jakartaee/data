@@ -80,7 +80,7 @@
         <jakarta.data.version>${project.version}</jakarta.data.version>
         <jakarta.servlet.version>6.0.0</jakarta.servlet.version>
         <jakarta.transaction.version>2.0.1</jakarta.transaction.version>
-        <jakarta.validation.version>2.0.1</jakarta.validation.version>
+        <jakarta.validation.version>3.0.2</jakarta.validation.version>
 
         <apache.rat.version>0.15</apache.rat.version>
         <commons.io.version>2.15.0</commons.io.version>
