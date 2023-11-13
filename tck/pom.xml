@@ -98,6 +98,13 @@
       <scope>provided</scope>
     </dependency>
     
+    <dependency>
+	    <groupId>jakarta.transaction</groupId>
+	    <artifactId>jakarta.transaction-api</artifactId>
+	    <version>${jakarta.transaction.version}</version>
+	    <scope>provided</scope>
+	</dependency>
+    
     <!-- Provided Entity APIs -->
     <dependency>
       <groupId>jakarta.nosql</groupId>

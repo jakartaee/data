@@ -78,6 +78,8 @@ public interface Catalog extends DataRepository<Product, String> {
     Iterable<Product> findByIdBetween(String first, String last, Sort... sorts);
 
     List<Product> findByNameLike(String name);
+    
+    List<Product> findByProductNumLike(String productNum);
 
     @OrderBy(value = "price", descending = true)
     Stream<Product> findByPriceNotNullAndPriceLessThanEqual(double maxPrice);
