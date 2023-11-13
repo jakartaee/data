@@ -661,7 +661,7 @@ The parsing of query method names follows a specific format:
 
 NOTE: This specification uses the terms subject and predicate in a way that aligns with industry terminology rather than how they are defined in English grammar. Aligning with the rules of English grammar, the subject would be the repository instance upon which the method is invoked, and the predicate would start with the action (such as `find`) and include the prepositional phrase `By...`.
 
-Queries can also handle entities with relation attributes by specifying the relationship using dot notation, with the dot converted to underscore so that it is a valid character within the method name.
+Queries can also handle entities with relation attributes by specifying the relationship using dot notation, with the dot converted to underscore so that it is a valid character within the method name. See Scenario 3 below for an example.
 
 Example query methods:
 
