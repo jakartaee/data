@@ -59,7 +59,7 @@ List<Car> cars = repository.findByType(CarType.SPORT);
 ----
 
 In the above snippet, the application injects the `CarRepository` instance using the `@Inject` annotation. Once injected, the repository object can be used to invoke various data access methods defined by the `CarRepository` interface, such as `save()`, `findByType()`, and `findByName()`.
-This integration between CDI and Jakarta EE Data allows for seamless management of repository instances within Jakarta EE applications.
+This integration between CDI and Jakarta Data allows for seamless management of repository instances within Jakarta EE applications.
 
 ==== CDI Extensions for Jakarta Data providers
 
