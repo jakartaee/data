@@ -28,7 +28,7 @@ This section discusses interoperability with related Jakarta EE specifications. 
 
 Contexts and Dependency Injection (CDI) is a specification in the Jakarta EE Core profile that provides a powerful and flexible dependency injection framework for Java applications. CDI lets you decouple components and manage their lifecycle through dependency injection, enabling loose coupling and promoting modular and reusable code.
 
-In Jakarta EE products, CDI provides the ability to register implementation of Jakarta Data repositories for injection into applications via the the `@Inject` annotation. Repositories are interfaces that define data access and manipulation operations for a specific domain entity. The following example illustrates this integration:
+In Jakarta EE products, CDI provides the ability to register implementations of Jakarta Data repositories for injection into applications via the the `@Inject` annotation.  The following example illustrates this integration:
 
 [source,java]
 ----
