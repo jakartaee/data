@@ -44,7 +44,7 @@ public interface CarRepository extends BasicRepository<Car, Long> {
 
 In the above example, a `CarRepository` interface extends the `BasicRepository` interface provided by Jakarta Data. The `BasicRepository` interface offers a set of basic operations for entities.
 
-By annotating the `CarRepository` interface with `@Repository`, the application requests that the Jakarta Data provider generate implementation of the interface and its methods. To make the implementation available to the application, the Jakarta Data provider uses CDI to register the implementation as a bean or registers a producer or producer factory to provide the implementation on unqualified injection points for the `CarRepository` interface.
+By annotating the `CarRepository` interface with `@Repository`, the application requests that the Jakarta Data provider generate an implementation of the interface and its methods. To make the implementation available to the application, the Jakarta Data provider uses CDI to register the implementation as a bean or registers a producer or producer factory to provide the implementation on unqualified injection points for the `CarRepository` interface.
 
 With CDI and the `@Inject` annotation, the application is able to inject the `CarRepository` instance and utilize its methods:
 
