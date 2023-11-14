@@ -1,22 +1,46 @@
+
 == Portability in Jakarta Data
 
-Portability is a critical aspect of Jakarta Data, ensuring flexibility and adaptability across different data stores while maintaining consistent functionality. Jakarta Data offers a comprehensive approach to portability, which is discussed separately for relational databases and NoSQL databases.
+Jakarta Data offers varying degrees of portability depending on the database and capabilities used. A subset of function is standardized across all database types, while other subsets of function are standardized only for the specific types of databases to which the capability pertains. These requirements are explicitly called out in documentation throughout the specification, such as the "Unavailable In" column of the tables of repository keywords in the Jakarta Data module JavaDoc. The Jakarta Data specification levies requirements against applications and Jakarta Data providers, but not against databases. The Jakarta Data specification requires the Jakarta Data provider to offer function to the extent that the database is capable and to raise an exception where the database is not capable. It is not the aim of Jakarta Data to offer the ability to switch between different databases, but to standardize a common starting point for data access from which capability that is specific to the various types of databases is able to build upon.
 
-=== Portability in Relational Databases
+The portability that is offered by Jakarta Data pertains to usage of the Jakarta Data API by application code, enabling application code that restricts itself to the Jakarta Data API to remain the same when used with any Jakarta Data provider running against the same database. Jakarta Data relies on external persistence specifications such as Jakarta Persistence and Jakarta NoSQL to standardize entity models. Jakarta Data does not place any requirements on the format of data to make persisted data and other database artifacts portable across providers. Jakarta Data does not offer any means to migrate data that is persisted by one provider to a form that is usable by another provider.
+
+=== Portability for Relational Databases
 
 All functionality defined by Jakarta Data must be supported when using relational databases.
 
-1. **Support for Jakarta Persistence Annotations:** Jakarta Data, when used in conjunction with a Jakarta Persistence provider, ensures comprehensive support for all Jakarta Persistence entity annotations. This support covers a wide range of functionality, including entity definitions, primary keys, and relationships.
+==== Jakarta Persistence Annotations
 
-2. **Built-In Repositories:** Jakarta Data's built-in repositories, such as `PageableRepository` and `BasicRepository`, are designed to offer consistent and well-defined methods compatible with relational databases. Developers can rely on these repositories to perform common data access tasks.
+Jakarta Data, when used in conjunction with a Jakarta Data provider that is backed by Jakarta Persistence, requires support for the `jakarta.persistence.Entity` annotation on entity classes and requires support for the following minimal set of Jakarta Persistence annotations for entity properties:
 
-3. **Query Methods:** Jakarta Data's support for query methods, including pagination, ordering, and limiting, is designed to work seamlessly with relational databases.
+* `jakarta.persistence.Basic`
+* `jakarta.persistence.Column`
+* `jakarta.persistence.Convert`
+* `jakarta.persistence.ElementCollection`
+* `jakarta.persistence.Embedded`
+* `jakarta.persistence.Enumerated`
+* `jakarta.persistence.GeneratedValue`
+* `jakarta.persistence.Id`
+* `jakarta.persistence.Temporal`
+* `jakarta.persistence.Version`
+
+Jakarta Data providers might choose to offer additional functionality that is provided by Jakarta Persistence beyond what is stated in this section.
+
+==== Built-In Repositories
+
+Jakarta Data's built-in repositories, such as `PageableRepository` and `BasicRepository`, are designed to offer consistent and well-defined methods compatible with relational databases. Developers can rely on these repositories to perform common data access tasks.
+
+==== Query Methods
+
+Jakarta Data's support for query methods, including pagination, ordering, and limiting, is designed to work seamlessly with relational databases.
+
+All limitations of Jakarta Persistence, the respective Jakarta Persistence provider, JPQL, SQL, and of the database apply when using entities that are annotated with `jakarta.persistence.Entity`. Repository methods must correspond to operations that are valid via `JPQL` and `SQL` queries. For example, although one can write a repository method that asks for sorting by a collection attribute or attempts to perform a Like operation on a numeric type rather than a String, there is no expectation for a Jakarta Data provider to support doing so because Jakarta Persistence and JPQL and SQL do not offer the ability.
 
 By aligning Jakarta Data closely with relational databases, developers can expect high portability and compatibility. This approach ensures that Jakarta Data remains a powerful tool for simplifying data access, irrespective of the specific relational database used.
 
-=== Portability in NoSQL Databases
+=== Portability for NoSQL Databases
 
-Portability in Jakarta Data extends to various NoSQL databases, each presenting unique challenges and capabilities. Jakarta Data aims to provide a consistent experience across these NoSQL database types. Here, we delve into the key portability aspects for four primary NoSQL database categories: key-value, wide-column, document, and graph databases.
+Portability in Jakarta Data extends to various NoSQL databases, each presenting unique challenges and capabilities. Jakarta Data aims to provide a consistent experience across these NoSQL database types. This section covers the key portability aspects for four categories of NoSQL databases: key-value, wide-column, document, and graph databases.
 
 ==== Key-Value Databases
 
@@ -26,11 +50,11 @@ IMPORTANT: For any NoSQL database type not covered here, such as time series dat
 
 ==== Wide-Column Databases
 
-Wide-column databases offer more query flexibility, even allowing the use of secondary indexes, albeit potentially impacting performance. When interacting with wide-column databases, Jakarta Data requires the implementation of the `BasicRepository` along with all of its methods, including query by method. However, developers should be mindful that certain query keywords, such as "And" or "Or," may not be universally supported in these databases. The full set of required keywords is documented in the section "Query Methods Keywords".
+Wide-column databases offer more query flexibility, even allowing the use of secondary indexes, albeit potentially impacting performance. When interacting with wide-column databases, Jakarta Data requires the implementation of the `BasicRepository` along with all of its methods, including Query by Method Name. However, developers should be mindful that certain query keywords, such as "And" or "Or," may not be universally supported in these databases. The full set of required keywords is documented in the section of the Jakarta Data module JavaDoc that is titled "Reserved Keywords for Query by Method Name".
 
 ==== Document Databases
 
-Document databases provide query flexibility akin to relational databases, offering robust query capabilities. They encourage denormalization for performance optimization. When interfacing with document databases, Jakarta Data goes a step further by supporting both built-in repositories: `BasicRepository` and `PageableRepository`. Additionally, method by query is implemented, though developers should be aware that some keywords may not be universally supported.  The full set of required keywords is documented in the section "Query Methods Keywords".
+Document databases provide query flexibility akin to relational databases, offering robust query capabilities. They encourage denormalization for performance optimization. When interfacing with document databases, Jakarta Data goes a step further by supporting both built-in repositories: `BasicRepository` and `PageableRepository`. Additionally, Query by Method Name is available, though developers should be aware that some keywords may not be universally supported.  The full set of required keywords is documented in the section of the Jakarta Data module JavaDoc that is titled "Reserved Keywords for Query by Method Name".
 
 These portability considerations reflect Jakarta Data's commitment to providing a consistent data access experience across diverse NoSQL database types. While specific capabilities and query support may vary, Jakarta Data aims to simplify data access, promoting flexibility and compatibility in NoSQL database interactions.
 
@@ -40,4 +64,4 @@ A Graph database, a specialized NoSQL variant, excels in managing intricate data
 
 Graph databases excel at answering queries that return rows containing flat objects, collections, or a combination of flat objects and connections. However, portability is only guaranteed when mapping rows to classes, and when queries specified via annotations or other supported means are used. It should be noted that queries derived from keywords and combinations of mapped classes/properties will be translated into vendor-specific queries.
 
-It's important to note that in Jakarta Data the Graph database supports both built-in repositories: `BasicRepository` and `PageableRepository`. Additionally, query-by-method is implemented, though developers should be aware that some keywords may not be universally supported. The full set of required keywords is documented in the section "Query Methods Keywords."
+It is important to note that in Jakarta Data the Graph database supports the built-in repositories: `BasicRepository` and `PageableRepository`. Additionally, Query by Method Name is available, though developers should be aware that some keywords may not be universally supported. The full set of required keywords is documented in the section of the Jakarta Data module JavaDoc that is titled "Reserved Keywords for Query by Method Name".
