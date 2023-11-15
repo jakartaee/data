@@ -1147,7 +1147,7 @@ The dataset contains the following elements:
    {"id":3, "name":"Alyse Dadson"},
    {"id":4, "name":"Orelle Roughey"},
    {"id":5, "name":"Jaquith Wealthall"},
-   {"id":6, "name":"Debor Bracegirdle"},
+   {"id":6, "name":"Boothe Martinson"},
    {"id":7, "name":"Patten Bedell"},
    {"id":8, "name":"Danita Pilipyak"},
    {"id":9, "name":"Harlene Branigan"},
@@ -1308,3 +1308,87 @@ for (Pageable p = Pageable.ofSize(25).sortBy(Sort.desc("yearBorn"),
   p = page.nextPageable();
 }
 ----
+
+===== Scenario: Person Entity and People Repository
+
+This keyset cursor-based pagination scenario uses the same `Person` entity and example dataset from the offset-based pagination scenario, but orders it by `name` and then by `id`,
+
+[source,json]
+----
+[
+   {"id":3, "name":"Alyse Dadson"},
+   {"id":6, "name":"Boothe Martinson"},
+   {"id":10, "name":"Boothe Martinson"},
+   {"id":2, "name":"Corri Davidou"},
+   {"id":8, "name":"Danita Pilipyak"},
+   {"id":9, "name":"Harlene Branigan"},
+   {"id":5, "name":"Jaquith Wealthall"},
+   {"id":1, "name":"Lin Le Marchant"},
+   {"id":4, "name":"Orelle Roughey"},
+   {"id":7, "name":"Patten Bedell"}
+]
+----
+
+[source,java]
+----
+@Repository
+public interface People extends BasicRepository<Person, Long> {
+    KeysetAwarePage<Person> findAll(Pageable pagination);
+}
+----
+
+Code Execution:
+
+[source,java]
+----
+@Inject
+People people;
+
+Pageable firstPageRequest = Pageable.ofSize(4).sortBy(Sort.asc("name"), Sort.asc("id"));
+KeysetAwarePage<Person> page = people.findAll(firstPageRequest);
+----
+
+Resulting Page Content:
+
+[source,json]
+----
+[
+   {"id":3, "name":"Alyse Dadson"},
+   {"id":6, "name":"Boothe Martinson"},
+   {"id":10, "name":"Boothe Martinson"},
+   {"id":2, "name":"Corri Davidou"}
+]
+----
+
+
+Deletion of an Entity:
+
+----
+// The user decides to remove one of the entities that has the same name,
+people.deleteById(10);
+----
+
+
+Next Page Execution:
+
+[source,java]
+----
+Pageable nextPageRequest = page.nextPageable();
+KeysetAwarePage<Person> page2 = people.findAll(nextPageRequest);
+----
+
+
+Resulting Page Content:
+
+[source,json]
+----
+[
+   {"id":8, "name":"Danita Pilipyak"},
+   {"id":9, "name":"Harlene Branigan"},
+   {"id":5, "name":"Jaquith Wealthall"},
+   {"id":1, "name":"Lin Le Marchant"}
+]
+----
+
+It should be noted, the above result is different than what would be retrieved with offset-based pagination, where the removal of an entity from the first page shifts the offset for entries 5 through 8 to start from `{"id":9, "name":"Harlene Branigan"}`, skipping over `{"id":8, "name":"Danita Pilipyak"}` that becomes offset position 4 after the removal. Keyset cursor-based pagination does not skip the entity because it queries relative to a cursor position, starting from the next entity after `{"id":2, "name":"Corri Davidou"}`.
+
