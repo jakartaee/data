@@ -52,6 +52,7 @@ public class ValidationTests {
     @BeforeEach
     public void cleanup() {
         rectangles.deleteAll();
+        TestPropertyUtility.waitForEventualConsistency();
     }
     
     @Assertion(id = "133",
