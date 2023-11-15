@@ -15,11 +15,13 @@
  */
 package ee.jakarta.tck.data.web.validation;
 
+import java.util.List;
 import java.util.stream.Stream;
 
 import jakarta.data.repository.DataRepository;
 import jakarta.data.repository.Repository;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Size;
 
 @Repository
 public interface Rectangles extends DataRepository<Rectangle, String> {
@@ -30,4 +32,7 @@ public interface Rectangles extends DataRepository<Rectangle, String> {
     long count();
     void deleteAll();
     Stream<Rectangle> findAll();
+    
+    @Size(min = 0, max = 3)
+    List<Rectangle> findAllByOrderByIdAsc();
 }

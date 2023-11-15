@@ -54,7 +54,8 @@ public class ValidationTests {
         rectangles.deleteAll();
     }
     
-    @Assertion(id = "133", strategy="Ensure that entities that do not violate the constraints can be successfully inserted into the database")
+    @Assertion(id = "133",
+            strategy="Ensure that entities that do not violate the constraints can be successfully inserted into the database")
     public void testSaveWithValidConstraints() {        
         // Save
         Rectangle validRect = new Rectangle("RECT-000", 5L, 5L, 5, 5);
@@ -120,7 +121,8 @@ public class ValidationTests {
         assertEquals(5, resultingException.getConstraintViolations().size(), "Incorrect number of constraint violations.");        
     }
     
-    @Assertion(id = "133", strategy="Ensure that entities that do not violate the constraints can be successfully updated in the database")
+    @Assertion(id = "133",
+            strategy="Ensure that entities that do not violate the constraints can be successfully updated in the database")
     public void testUpdateWithValidConstraints() {        
         // Save
         Rectangle validRect = new Rectangle("RECT-020", 5L, 5L, 5, 5);
@@ -141,7 +143,8 @@ public class ValidationTests {
         assertRectangleFields(updatedRect, getResults().get(0));     
     }
     
-    @Assertion(id = "133", strategy="Ensure that entities that do not violate the constraints can be successfully updated in the database")
+    @Assertion(id = "133",
+            strategy="Ensure that entities that do not violate the constraints can be successfully updated in the database")
     public void testUpdateAllWithValidConstraints() {        
         // Save All
         List<Rectangle> validRects = List.of(
@@ -242,6 +245,57 @@ public class ValidationTests {
         for(int i = 0; i < resultRects.size(); i++) {
             assertRectangleFields(validRects.get(i), resultRects.get(i));
         }     
+    }
+    
+    @Assertion(id = "133", 
+            strategy="Ensure that entities that do not violate the constraints on a method return data from the database")
+    public void testValidResultsFromMethod() {
+        // Save
+        List<Rectangle> validRects = List.of(
+                new Rectangle("RECT-060", 5L, 5L, 5, 5),
+                new Rectangle("RECT-061", 0L, 0L, 1, 1),
+                new Rectangle("RECT-062", 1800L, 1000L, 120, 80)
+                );
+        validRects = immutableListOf(rectangles.saveAll(validRects));
+        
+        TestPropertyUtility.waitForEventualConsistency();
+        
+        assertEquals(3, rectangles.count(), "Number of results was incorrect");
+        
+        // Get
+        List<Rectangle> resultRects = rectangles.findAllByOrderByIdAsc();
+        
+        // Verify
+        for(int i = 0; i < resultRects.size(); i++) {
+            assertRectangleFields(validRects.get(i), resultRects.get(i));
+        }
+    }
+    
+    @Assertion(id = "133", 
+            strategy="Ensure that entities that violate the constraints on a method do not return data from the database")
+    public void testInvalidResultsFromMethod() {
+        ConstraintViolationException resultingException;
+        
+        // Save
+        List<Rectangle> invalidRects = List.of(
+                new Rectangle("RECT-070", 5L, 5L, 5, 5),
+                new Rectangle("RECT-071", 0L, 0L, 1, 1),
+                new Rectangle("RECT-072", 1800L, 1000L, 120, 80),
+                new Rectangle("RECT-073", 1L, 1L, 1, 1)
+                );
+        invalidRects = immutableListOf(rectangles.saveAll(invalidRects));
+        
+        TestPropertyUtility.waitForEventualConsistency();
+        
+        assertEquals(4, rectangles.count(), "Number of results was incorrect");
+        
+        // Get
+        resultingException = assertThrows(ConstraintViolationException.class, () -> {
+            rectangles.findAllByOrderByIdAsc(); //returns 4 results when max is 3
+        });
+        
+        // Verify
+        assertEquals(1, resultingException.getConstraintViolations().size());
     }
     
     /**
