@@ -22,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -33,7 +34,6 @@ import ee.jakarta.tck.data.framework.junit.anno.Persistence;
 import ee.jakarta.tck.data.framework.junit.anno.Web;
 import jakarta.inject.Inject;
 import jakarta.validation.ConstraintViolationException;
-
 
 @Web
 @Persistence
@@ -54,27 +54,29 @@ public class PersistenceTests {
     }
     
     @Assertion(id = "133", strategy="Ensure that entities that do not violate the constraints can be successfully inserted into the database")
-    public void testSaveWithValidConstraints() {
-        List<Rectangle> resultRects;
-        
+    public void testSaveWithValidConstraints() {        
         // Save
         Rectangle validRect = new Rectangle("RECT-000", 5L, 5L, 5, 5);
-        rectangles.save(validRect);
+        validRect = rectangles.save(validRect);
         
         assertEquals(1, rectangles.count());
+        assertRectangleFields(validRect, getResults().get(0));
         
         // Save All
         List<Rectangle> validRects = List.of(
+                validRect,
                 new Rectangle("RECT-001", 0L, 0L, 1, 1), //min
                 new Rectangle("RECT-002", 1800L, 1000L, 120, 80), //max
                 new Rectangle("RECT-003", 1L, 1L, 1, 1) //positive
                 );
-        rectangles.saveAll(validRects);
+        validRects = immutableListOf(rectangles.saveAll(validRects));
         
-       resultRects = getResults();
-        assertEquals(4, resultRects.size(), "Number of results was incorrect");
-        for(int i = 0; i < resultRects.size(); i++) {
-            assertEquals("RECT-00" + i, resultRects.get(i).getId(), "Result list did not contain the correct object");
+        assertEquals(4, rectangles.count(), "Number of results was incorrect");
+        
+        //validate
+        List<Rectangle> resultRects = getResults();
+        for (int i = 0; i < resultRects.size(); i++) {
+            assertRectangleFields(validRects.get(i), resultRects.get(i));
         } 
     }
     
@@ -88,6 +90,7 @@ public class PersistenceTests {
         resultingException = assertThrows(ConstraintViolationException.class, () -> {
             rectangles.save(invalidRect);
         });
+        
         assertEquals(0, rectangles.count(), "No rectangles should have presisted to database while violating constraints.");
         assertEquals(4, resultingException.getConstraintViolations().size(), "Incorrect number of constraint violations.");
         
@@ -108,31 +111,24 @@ public class PersistenceTests {
     }
     
     @Assertion(id = "133", strategy="Ensure that entities that do not violate the constraints can be successfully updated in the database")
-    public void testUpdateWithValidConstraints() {
-        List<Rectangle> resultRects;
-        
+    public void testUpdateWithValidConstraints() {        
         // Save
         Rectangle validRect = new Rectangle("RECT-020", 5L, 5L, 5, 5);
-        rectangles.save(validRect);
+        validRect = rectangles.save(validRect);
         
         assertEquals(1, rectangles.count(), "Number of results was incorrect");
+        assertRectangleFields(validRect, getResults().get(0));
         
         // Update
         Rectangle updatedRect = new Rectangle("RECT-020", 10L, 10L, 10, 10);
-        rectangles.save(updatedRect);
+        updatedRect = rectangles.save(updatedRect);
         
         assertEquals(1, rectangles.count(), "Number of results was incorrect");
-        
-        // Verify
-        resultRects = getResults();
-        Rectangle resultRect = resultRects.get(0);
-        assertRectangleFields(updatedRect, resultRect);      
+        assertRectangleFields(updatedRect, getResults().get(0));     
     }
     
     @Assertion(id = "133", strategy="Ensure that entities that do not violate the constraints can be successfully updated in the database")
-    public void testUpdateAllWithValidConstraints() {
-        List<Rectangle> resultRects;
-        
+    public void testUpdateAllWithValidConstraints() {        
         // Save All
         List<Rectangle> validRects = List.of(
                 new Rectangle("RECT-030", 5L, 5L, 5, 5),
@@ -150,11 +146,11 @@ public class PersistenceTests {
                 new Rectangle("RECT-032", 1800L, 999L, 120, 80),
                 new Rectangle("RECT-033", 1L, 1L, 1, 2)
                 );
-        rectangles.saveAll(updatedRects);
+        updatedRects = immutableListOf(rectangles.saveAll(updatedRects));
         assertEquals(4, rectangles.count(), "Number of results was incorrect");
         
         // Verify All
-        resultRects = getResults();
+        List<Rectangle> resultRects = getResults();
         for(int i = 0; i < resultRects.size(); i++) {
             assertRectangleFields(updatedRects.get(i), resultRects.get(i));
         }     
@@ -166,7 +162,7 @@ public class PersistenceTests {
         
         // Save
         Rectangle validRect = new Rectangle("RECT-040", 5L, 5L, 5, 5);
-        rectangles.save(validRect);
+        validRect = rectangles.save(validRect);
         assertEquals(1, rectangles.count(), "Number of results was incorrect");
         
         // Update
@@ -184,7 +180,6 @@ public class PersistenceTests {
     
     @Assertion(id = "133", strategy="Ensure that entities that violate the constraints cannot be updated in the database")
     public void testUpdateAllWithInvalidConstraints() {
-        List<Rectangle> resultRects;
         ConstraintViolationException resultingException;
         
         // Save All
@@ -194,7 +189,7 @@ public class PersistenceTests {
                 new Rectangle("RECT-052", 5L, 5L, 5, 5),
                 new Rectangle("RECT-053", 5L, 5L, 5, 5)
                 );
-        rectangles.saveAll(validRects);
+        validRects = immutableListOf(rectangles.saveAll(validRects));
         assertEquals(4, rectangles.count(), "Number of results was incorrect");
         
         // Update All
@@ -211,19 +206,42 @@ public class PersistenceTests {
         assertEquals(4, resultingException.getConstraintViolations().size());
         
         // Verify
-        resultRects = getResults();
+        List<Rectangle> resultRects = getResults();
         for(int i = 0; i < resultRects.size(); i++) {
             assertRectangleFields(validRects.get(i), resultRects.get(i));
         }     
     }
     
+    /**
+     * Converts an iterable to an immutable list
+     * 
+     * @param <T> object type
+     * @param objects in an iterable that will be copied into a list
+     * @return an immutable list of the objects provided by an iterable
+     */
+    private <T> List<T> immutableListOf(Iterable<T> objects) {
+        return StreamSupport.stream(objects.spliterator(), false)
+            .collect(Collectors.toList());
+    }
     
+    /**
+     * Gets all results from repository and ensures they are ordered
+     * 
+     * @return List of all ordered results
+     */
     private List<Rectangle> getResults() {
         return rectangles.findAll()
                 .sorted((o1, o2) -> o1.getId().compareTo(o2.getId()))
                 .toList();
     }
     
+    /**
+     * Softly asserts all fields of the rectangle entity are equal.
+     * 
+     * @param expected - The expected rectangle
+     * @param actual - The actual rectangle
+     * @param additionalMessages - Additional messages to add to a failed assertion
+     */
     private void assertRectangleFields(Rectangle expected, Rectangle actual, String... additionalMessages) {
         assertAll("Asserting rectangle fields are equal." + 
                 Stream.of(additionalMessages).collect(Collectors.joining(" ")), 

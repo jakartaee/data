@@ -24,8 +24,9 @@ import jakarta.validation.Valid;
 @Repository
 public interface Rectangles extends DataRepository<Rectangle, String> {
     
-    void save(@Valid Rectangle rect);
-    void saveAll(@Valid Iterable<Rectangle> rects);
+    Rectangle save(@Valid Rectangle rect);
+    Iterable<Rectangle> saveAll(@Valid Iterable<Rectangle> rects);
+    
     long count();
     void deleteAll();
     Stream<Rectangle> findAll();
