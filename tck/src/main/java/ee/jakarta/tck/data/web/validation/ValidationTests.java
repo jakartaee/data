@@ -29,15 +29,16 @@ import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.jupiter.api.BeforeEach;
 
+import ee.jakarta.tck.data.framework.junit.anno.AnyEntity;
 import ee.jakarta.tck.data.framework.junit.anno.Assertion;
-import ee.jakarta.tck.data.framework.junit.anno.Persistence;
 import ee.jakarta.tck.data.framework.junit.anno.Web;
+import ee.jakarta.tck.data.framework.utilities.TestPropertyUtility;
 import jakarta.inject.Inject;
 import jakarta.validation.ConstraintViolationException;
 
 @Web
-@Persistence
-public class PersistenceTests {
+@AnyEntity
+public class ValidationTests {
 
     @Deployment
     public static WebArchive createDeployment() {
@@ -59,6 +60,8 @@ public class PersistenceTests {
         Rectangle validRect = new Rectangle("RECT-000", 5L, 5L, 5, 5);
         validRect = rectangles.save(validRect);
         
+        TestPropertyUtility.waitForEventualConsistency();
+        
         assertEquals(1, rectangles.count());
         assertRectangleFields(validRect, getResults().get(0));
         
@@ -70,6 +73,8 @@ public class PersistenceTests {
                 new Rectangle("RECT-003", 1L, 1L, 1, 1) //positive
                 );
         validRects = immutableListOf(rectangles.saveAll(validRects));
+        
+        TestPropertyUtility.waitForEventualConsistency();
         
         assertEquals(4, rectangles.count(), "Number of results was incorrect");
         
@@ -91,6 +96,8 @@ public class PersistenceTests {
             rectangles.save(invalidRect);
         });
         
+        TestPropertyUtility.waitForEventualConsistency();
+        
         assertEquals(0, rectangles.count(), "No rectangles should have presisted to database while violating constraints.");
         assertEquals(4, resultingException.getConstraintViolations().size(), "Incorrect number of constraint violations.");
         
@@ -106,6 +113,9 @@ public class PersistenceTests {
         resultingException = assertThrows(ConstraintViolationException.class, () -> {
             rectangles.saveAll(invalidRects);
         });
+        
+        TestPropertyUtility.waitForEventualConsistency();
+        
         assertEquals(0, rectangles.count(), "No rectangles should have presisted to database while violating constraints.");
         assertEquals(5, resultingException.getConstraintViolations().size(), "Incorrect number of constraint violations.");        
     }
@@ -116,12 +126,16 @@ public class PersistenceTests {
         Rectangle validRect = new Rectangle("RECT-020", 5L, 5L, 5, 5);
         validRect = rectangles.save(validRect);
         
+        TestPropertyUtility.waitForEventualConsistency();
+        
         assertEquals(1, rectangles.count(), "Number of results was incorrect");
         assertRectangleFields(validRect, getResults().get(0));
         
         // Update
         Rectangle updatedRect = new Rectangle("RECT-020", 10L, 10L, 10, 10);
         updatedRect = rectangles.save(updatedRect);
+        
+        TestPropertyUtility.waitForEventualConsistency();
         
         assertEquals(1, rectangles.count(), "Number of results was incorrect");
         assertRectangleFields(updatedRect, getResults().get(0));     
@@ -137,6 +151,9 @@ public class PersistenceTests {
                 new Rectangle("RECT-033", 1L, 1L, 1, 1)
                 );
         rectangles.saveAll(validRects);
+        
+        TestPropertyUtility.waitForEventualConsistency();
+        
         assertEquals(4, rectangles.count(), "Number of results was incorrect");
         
         // Update All
@@ -147,6 +164,9 @@ public class PersistenceTests {
                 new Rectangle("RECT-033", 1L, 1L, 1, 2)
                 );
         updatedRects = immutableListOf(rectangles.saveAll(updatedRects));
+        
+        TestPropertyUtility.waitForEventualConsistency();
+        
         assertEquals(4, rectangles.count(), "Number of results was incorrect");
         
         // Verify All
@@ -163,6 +183,9 @@ public class PersistenceTests {
         // Save
         Rectangle validRect = new Rectangle("RECT-040", 5L, 5L, 5, 5);
         validRect = rectangles.save(validRect);
+        
+        TestPropertyUtility.waitForEventualConsistency();
+        
         assertEquals(1, rectangles.count(), "Number of results was incorrect");
         
         // Update
@@ -170,6 +193,9 @@ public class PersistenceTests {
         resultingException = assertThrows(ConstraintViolationException.class, () -> {
             rectangles.save(updatedInvalidRect);
         });
+        
+        TestPropertyUtility.waitForEventualConsistency();
+        
         assertEquals(1, rectangles.count(), "Number of results was incorrect");
         assertEquals(4, resultingException.getConstraintViolations().size());
         
@@ -190,6 +216,9 @@ public class PersistenceTests {
                 new Rectangle("RECT-053", 5L, 5L, 5, 5)
                 );
         validRects = immutableListOf(rectangles.saveAll(validRects));
+        
+        TestPropertyUtility.waitForEventualConsistency();
+        
         assertEquals(4, rectangles.count(), "Number of results was incorrect");
         
         // Update All
@@ -202,6 +231,9 @@ public class PersistenceTests {
         resultingException = assertThrows(ConstraintViolationException.class, () -> {
             rectangles.saveAll(invalidRects);
         });
+        
+        TestPropertyUtility.waitForEventualConsistency();
+        
         assertEquals(4, rectangles.count(), "Number of results was incorrect");
         assertEquals(4, resultingException.getConstraintViolations().size());
         

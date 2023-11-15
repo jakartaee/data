@@ -15,8 +15,6 @@
  */
 package ee.jakarta.tck.data.web.validation;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -24,25 +22,31 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 
-@Entity
+@jakarta.nosql.Entity
+@jakarta.persistence.Entity
 public class Rectangle {
-    @Id
+    @jakarta.nosql.Id
+    @jakarta.persistence.Id
     @NotBlank
     private String id;
     
+    @jakarta.nosql.Column
     @PositiveOrZero
     @Max(1800) 
     private long x;
     
+    @jakarta.nosql.Column
     @NotNull
     @Min(0)
     @Max(1000)
     private Long y;
     
+    @jakarta.nosql.Column
     @Positive
     @Max(120)
     private int width;
     
+    @jakarta.nosql.Column
     @NotNull
     @Min(1)
     @Max(80)
