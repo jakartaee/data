@@ -34,7 +34,7 @@ Jakarta Data's built-in repositories, such as `PageableRepository` and `BasicRep
 
 Jakarta Data's support for query methods, including pagination, ordering, and limiting, is designed to work seamlessly with relational databases.
 
-All limitations of Jakarta Persistence, the respective Jakarta Persistence provider, JPQL, SQL, and of the database apply when using entities that are annotated with `jakarta.persistence.Entity`. Repository methods must correspond to operations that are valid via `JPQL` and `SQL` queries. For example, although one can write a repository method that asks for sorting by a collection attribute or attempts to perform a Like operation on a numeric type rather than a String, there is no expectation for a Jakarta Data provider to support doing so because Jakarta Persistence and JPQL and SQL do not offer the ability.
+All limitations of Jakarta Persistence, the respective Jakarta Persistence provider, JPQL, SQL, and the database apply when using entities that are annotated with `jakarta.persistence.Entity`. Repository methods must correspond to operations that are valid via `JPQL` and `SQL` queries. For example, although one can write a repository method that asks for sorting by a collection attribute or attempts to perform a Like operation on a numeric type rather than a String, there is no expectation for a Jakarta Data provider to support doing so because Jakarta Persistence, JPQL, and SQL do not offer the ability.
 
 By aligning Jakarta Data closely with relational databases, developers can expect high portability and compatibility. This approach ensures that Jakarta Data remains a powerful tool for simplifying data access, irrespective of the specific relational database used.
 
