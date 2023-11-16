@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * <p>This class represents pagination information.</p>
+ * <p>A request for a page or slice.</p>
  *
  * <p><code>Pageable</code> is optionally specified as a parameter to a
  * repository method in one of the parameter positions after the
@@ -64,7 +64,7 @@ import java.util.Optional;
 public interface Pageable {
 
     /**
-     * Creates a new <code>Pageable</code> with the given page number and with a default size of 10.
+     * Creates a new page request with the given page number and with a default size of 10.
      *
      * @param pageNumber The page number.
      * @return a new instance of <code>Pageable</code>. This method never returns <code>null</code>.
@@ -75,7 +75,7 @@ public interface Pageable {
     }
 
     /**
-     * Creates a new <code>Pageable</code> for requesting pages of the
+     * Creates a new page request for requesting pages of the
      * specified size, starting with the first page number, which is 1.
      *
      * @param maxPageSize The number of query results in a full page.
@@ -182,7 +182,7 @@ public interface Pageable {
     int size();
 
     /**
-     * Return the order collection if it was specified on this <code>Pageable</code>, otherwise an empty list.
+     * Return the order collection if it was specified on this page request, otherwise an empty list.
      *
      * @return the order collection; will never be {@literal null}.
      */
@@ -205,7 +205,7 @@ public interface Pageable {
     Pageable next();
 
     /**
-     * <p>Creates a new <code>Pageable</code> instance representing the same
+     * <p>Creates a new page request with the same
      * pagination information, except with the specified page number.</p>
      *
      * @param pageNumber The page number
@@ -214,8 +214,11 @@ public interface Pageable {
     Pageable page(long pageNumber);
 
     /**
-     * <p>Creates a new <code>Pageable</code> instance representing the same
-     * pagination information, except with the specified maximum page size.</p>
+     * <p>Creates a new page request with the same
+     * pagination information, except with the specified maximum page size.
+     * When a page is retrieved from the database, the number of elements in the page
+     * must be equal to the maximum page size unless there is an insufficient number
+     * of elements to retrieve from the database from the start of the page.</p>
      *
      * @param maxPageSize the number of query results in a full page.
      * @return a new instance of <code>Pageable</code>. This method never returns <code>null</code>.
@@ -223,7 +226,7 @@ public interface Pageable {
     Pageable size(int maxPageSize);
 
     /**
-     * <p>Creates a new <code>Pageable</code> instance representing the same
+     * <p>Creates a new page request with the same
      * pagination information, except using the specified sort criteria.
      * The order of precedence for sort criteria is that of any statically
      * specified sort criteria (from the <code>OrderBy</code> keyword,
@@ -237,7 +240,7 @@ public interface Pageable {
     Pageable sortBy(Iterable<Sort> sorts);
 
     /**
-     * <p>Creates a new <code>Pageable</code> instance representing the same
+     * <p>Creates a new page request with the same
      * pagination information, except using the specified sort criteria.
      * The order of precedence for sort criteria is that of any statically
      * specified sort criteria (from the <code>OrderBy</code> keyword,
@@ -252,25 +255,21 @@ public interface Pageable {
     Pageable sortBy(Sort... sorts);
 
     /**
-     * The type of pagination, which can be offset pagination or
-     * keyset cursor pagination which includes a direction.
+     * The type of pagination: offset-based or
+     * keyset cursor-based, which includes a direction.
      */
     enum Mode {
         /**
          * Indicates forward keyset pagination, which follows the
-         * direction of the {@link OrderBy} annotations,
-         * {@link Pageable#sortBy(Sort...)} or {@link Pageable#sortBy(Iterable)}
-         * parameters, repository method {@link Sort} parameters,
-         * or <code>OrderBy</code> name pattern of the repository method.
+         * direction of the sort criteria, using a cursor that is
+         * formed from the keyset of the last entity on the current page.
          */
         CURSOR_NEXT,
 
         /**
          * Indicates a request for a page with keyset pagination
-         * in the reverse direction of the {@link OrderBy} annotations,
-         * {@link Pageable#sortBy(Sort...)} or {@link Pageable#sortBy(Iterable)}
-         * parameters, repository method {@link Sort} parameters,
-         * or <code>OrderBy</code> name pattern of the repository method.
+         * in the reverse direction of the sort criteria, using a cursor
+         * that is formed from the keyset of first entity on the current page.
          * The order of results on each page follows the sort criteria
          * and is not reversed.
          */
@@ -286,19 +285,21 @@ public interface Pageable {
     }
 
     /**
-     * Represents keyset values, which can be a starting point for
-     * requesting a next or previous page.
+     * A cursor that is formed from a keyset, relative to which a next
+     * or previous page can be requested.
      */
     interface Cursor {
         /**
-         * Returns whether or not the keyset values of this instance
-         * are equal to those of the supplied instance.
-         * Cursor implementation classes must also match to be equal.
+         * Returns whether or not the keyset values of this cursor
+         * are equal to those of the supplied cursor.
+         * Both instances must also have the same cursor implementation class
+         * in order to be considered equal.
          *
+         * @param cursor a keyset cursor against which to compare.
          * @return true or false.
          */
         @Override
-        boolean equals(Object o);
+        boolean equals(Object cursor);
 
         /**
          * Returns the keyset value at the specified position.

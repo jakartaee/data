@@ -20,13 +20,16 @@ package jakarta.data.page;
 import jakarta.data.repository.OrderBy;
 
 /**
+ * <p>A slice of data with the ability to create a cursor from the
+ * keyset of each entity in the slice.</p>
+ *
  * <p>Keyset pagination is a form of pagination that aims to reduce the
  * possibility of missed or duplicate results by making the request for
  * each subsequent page relative to the observed values of entity properties
  * from the current page. This list of values is referred to as the keyset
- * and only includes values of entity properties that are in the sort criteria
+ * and consists of the values of entity properties that are in the sort criteria
  * of the repository method. The combination of sort criteria must uniquely
- * identify each entity. The keyset values can be from the last entity
+ * identify each entity. The keyset values can be from the last entity on the page
  * (for pagination in a forward direction) or first entity on the page
  * (if requesting pages in a reverse direction),
  * or can be any other desired list of values which serve as a new starting
@@ -46,7 +49,7 @@ import jakarta.data.repository.OrderBy;
  * KeysetAwareSlice&lt;Employee&gt; findByHoursWorkedGreaterThan(int hours, Pageable pagination);
  * </pre>
  *
- * <p>You can use a normal {@link Pageable} to request an initial page,</p>
+ * <p>You can use an offset-based {@link Pageable} to request an initial page,</p>
  *
  * <pre>
  * page = employees.findByHoursWorkedGreaterThan(1500, Pageable.ofSize(50));
@@ -59,12 +62,12 @@ import jakarta.data.repository.OrderBy;
  * page = employees.findByHoursWorkedGreaterThan(1500, page.nextPageable());
  * </pre>
  *
- * <p>Because the page is keyset aware, the {@link Pageable}
+ * <p>Because the page is keyset aware, the {@link Pageable page request}
  * that it returns from the call to {@link KeysetAwareSlice#nextPageable}
- * above is based upon a keyset from that page to use as a starting point
+ * above is based upon a keyset cursor from that page to use as a starting point
  * after which the results for the next page are to be found.</p>
  *
- * <p>You can also construct a {@link Pageable} with a {@link Pageable.Cursor Cursor} directly, which
+ * <p>You can also construct a {@link Pageable page request} with a {@link Pageable.Cursor Cursor} directly, which
  * allows you to make it relative to a specific list of values. The number and
  * order of values must match that of the {@link OrderBy} annotations,
  * {@link Pageable#sortBy(jakarta.data.Sort...)} or {@link Pageable#sortBy(Iterable)} parameters,
@@ -109,6 +112,10 @@ import jakarta.data.repository.OrderBy;
  * KeysetAwareSlice&lt;Customer&gt; getTopBuyers(int minOrders, float minSpent, Pageable pagination);
  * </pre>
  *
+ * <p>Queries that are used with keyset pagination must return entities
+ * because keyset cursors are created from the entity attribute values that
+ * form the keyset.</p>
+ *
  * <h2>Page Numbers and Totals</h2>
  *
  * <p>Page numbers, total numbers of elements across all pages, and total
@@ -135,11 +142,11 @@ public interface KeysetAwareSlice<T> extends Slice<T> {
     Pageable.Cursor getKeysetCursor(int index);
 
     /**
-     * <p>Returns pagination information for requesting the next page
+     * <p>Creates a request for the next page
      * in a forward direction from the current page. This method computes a
-     * keyset from the last entity of the current page and includes the
-     * keyset in the pagination information so that it can be used to
-     * obtain the next slice in a forward direction according to the
+     * keyset cursor from the last entity of the current page and includes the
+     * cursor in the pagination information so that it can be used to
+     * obtain the next page in a forward direction according to the
      * sort criteria and relative to that entity.</p>
      *
      * @return pagination information for requesting the next page, or
@@ -150,10 +157,10 @@ public interface KeysetAwareSlice<T> extends Slice<T> {
     Pageable nextPageable();
 
     /**
-     * <p>Returns pagination information for requesting the previous page
+     * <p>Creates a request for the previous page
      * in a reverse direction from the current page. This method computes a
-     * keyset from the first entity of the current page and includes the
-     * keyset in the pagination information so that it can be used to
+     * keyset cursor from the first entity of the current page and includes the
+     * cursor in the pagination information so that it can be used to
      * obtain the previous slice in a reverse direction to the sort criteria
      * and relative to that entity. Within a single page, results are not
      * reversed and remain ordered according to the sort criteria.</p>

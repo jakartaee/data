@@ -194,9 +194,9 @@ class KeysetPageableTest {
     @Test
     @DisplayName("Should raise IllegalArgumentException when keyset values are absent")
     void shouldRaiseErrorForMissingKeysetValues() {
-        assertThatIllegalArgumentException().isThrownBy(() -> Pageable.ofSize(60).afterKeyset(null));
+        assertThatIllegalArgumentException().isThrownBy(() -> Pageable.ofSize(60).afterKeyset((Object[]) null));
         assertThatIllegalArgumentException().isThrownBy(() -> Pageable.ofSize(70).afterKeyset(new Object[0]));
-        assertThatIllegalArgumentException().isThrownBy(() -> Pageable.ofSize(80).beforeKeyset(null));
+        assertThatIllegalArgumentException().isThrownBy(() -> Pageable.ofSize(80).beforeKeyset((Object[]) null));
         assertThatIllegalArgumentException().isThrownBy(() -> Pageable.ofSize(90).beforeKeyset(new Object[0]));
     }
 
