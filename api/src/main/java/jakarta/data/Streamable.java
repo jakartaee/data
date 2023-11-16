@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,13 +21,15 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 /**
- * <p>Simple interface to ease streamability of {@link Iterable}s.
- * This is an interface and can therefore be used as the assignment target for a lambda expression or method reference.
+ * <p>An interface for sequential streaming of an {@link Iterable}.
+ * This is a functional interface and can therefore be used as the assignment target for a lambda expression or method reference.
  * </p>
  *
  * <p>Data is fetched once per <code>Streamable</code> instance;
  * it is not re-fetched with each invocation of {@link #stream()}
  * and {@link #iterator()}.</p>
+ *
+ * @param <T> the element type.
  */
 @FunctionalInterface
 public interface Streamable<T> extends Iterable<T> {

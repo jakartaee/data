@@ -20,22 +20,22 @@ package jakarta.data;
 import jakarta.data.page.Pageable;
 
 /**
- * <p>Limits the number of results of a single invocation of a
- * repository find method to a maximum amount or to within a
- * positional range.</p>
+ * <p>Limits how many results are retrieved by a repository find method.
+ * Results of a single invocation of a repository find method
+ * can be capped to a maximum amount
+ * or be limited to a given positional range.</p>
  *
  * <p><code>Limit</code> is optionally specified as a parameter to a
  * repository method in one of the parameter positions after the
  * query parameters. For example,</p>
  *
  * <pre>
- * &#64;Query("SELECT o FROM Products o WHERE o.weight &lt;= ?1 AND o.width * o.length * o.height &lt;= ?2 ORDER BY o.price DESC")
- * Product[] freeShippingEligible(float maxWeight, float maxVolume, Limit limit);
+ * Product[] findByNameLike(String namePattern, Limit limit, Sort... sorts);
  * 
  * ...
- * mostExpensive50 = products.freeShippingEligible(6.0f, 360.0f, Limit.of(50));
+ * mostExpensive50 = products.findByNameLike(pattern, Limit.of(50), Sort.desc("price"));
  * ...
- * secondMostExpensive50 = products.freeShippingEligible(6.0f, 360.0f, Limit.range(51, 100));
+ * secondMostExpensive50 = products.findByNameLike(pattern, Limit.range(51, 100), Sort.desc("price"));
  * </pre>
  *
  * <p>A repository method will fail if</p>
@@ -100,8 +100,8 @@ public record Limit(int maxResults, long startAt) {
      * specified maximum, starting from the first result.</p>
      *
      * @param maxResults maximum number of results.
-     * @return limit that can be supplied to a <code>find...By</code>
-     *         or <code>&#64;Query</code> method; will never be {@literal null}.
+     * @return limit that can be supplied to a find method
+     *         or <code>&#64;Query</code> method that performs a find operation; will never be {@literal null}.
      * @throws IllegalArgumentException if maxResults is less than 1.
      */
     public static Limit of(int maxResults) {
@@ -117,8 +117,8 @@ public record Limit(int maxResults, long startAt) {
      * @param startAt position at which to start including results.
      *                The first query result is position 1.
      * @param endAt   position after which to cease including results.
-     * @return limit that can be supplied to a <code>find...By</code>
-     *         or <code>&#64;Query</code> method; will never be {@literal null}.
+     * @return limit that can be supplied to a find method or
+     *         or a <code>&#64;Query</code> method that performs a find operation; will never be {@literal null}.
      * @throws IllegalArgumentException if <code>startAt</code> is less than 1
      *         or <code>endAt</code> is less than <code>startAt</code>,
      *         or the range from <code>startAt</code> to <code>endAt</code>
