@@ -50,7 +50,7 @@ public interface Slice<T> extends Streamable<T> {
      * sorting first by the sort criteria of the repository method,
      * and then by the sort criteria of the page request.
      *
-     * @return the page content as a {@link List}; will never be {@literal null}.
+     * @return the page content as a {@link List}; will never be {@code null}.
      */
     List<T> content();
 
