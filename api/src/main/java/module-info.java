@@ -180,13 +180,13 @@ import java.util.List;
  *
  * <table style="width: 100%">
  * <caption><b>Lifecycle Annotations</b></caption>
- * <tr>
+ * <tr style="background-color:#ccc">
  * <td style="vertical-align: top; width: 10%"><b>Annotation</b></td>
  * <td style="vertical-align: top; width: 25%"><b>Description</b></td>
  * <td style="vertical-align: top; width: 65%"><b>Example</b></td>
  * </tr>
  *
- * <tr style="vertical-align: top"><td>{@link Delete}</td>
+ * <tr style="vertical-align: top; background-color:#eee"><td>{@link Delete}</td>
  * <td>deletes entities</td>
  * <td>{@code @Delete}<br><code>public void remove(person);</code></td></tr>
  *
@@ -194,7 +194,7 @@ import java.util.List;
  * <td>creates new entities</td>
  * <td>{@code @Insert}<br><code>public List&lt;Employee&gt; add(List&lt;Employee&gt; newEmployees);</code></td></tr>
  *
- * <tr style="vertical-align: top"><td>{@link Save}</td>
+ * <tr style="vertical-align: top; background-color:#eee"><td>{@link Save}</td>
  * <td>update if exists, otherwise insert</td>
  * <td>{@code @Save}<br><code>Product[] saveAll(Product... products)</code></td></tr>
  *
@@ -213,9 +213,9 @@ import java.util.List;
  * on the method parameters. Query conditions
  * are determined by the portion of the method name following the {@code By} keyword.</p>
  *
- * <table style="width: 100%">
+ * <table id="methodNamePrefixes" style="width: 100%">
  * <caption><b>Query By Method Name</b></caption>
- * <tr>
+ * <tr style="background-color:#ccc">
  * <td style="vertical-align: top; width: 10%"><b>Prefix</b></td>
  * <td style="vertical-align: top; width: 25%"><b>Description</b></td>
  * <td style="vertical-align: top; width: 65%"><b>Example</b></td>
@@ -225,7 +225,7 @@ import java.util.List;
  * <td>counts the number of entities</td>
  * <td><code>countByAgeGreaterThanEqual(ageLimit)</code></td></tr>
  *
- * <tr style="vertical-align: top"><td><code>deleteBy</code></td>
+ * <tr style="vertical-align: top; background-color:#eee"><td><code>deleteBy</code></td>
  * <td>for delete operations</td>
  * <td><code>deleteByStatus("DISCONTINUED")</code></td></tr>
  *
@@ -233,7 +233,7 @@ import java.util.List;
  * <td>for determining existence</td>
  * <td><code>existsByYearHiredAndWageLessThan(2022, 60000)</code></td></tr>
  *
- * <tr style="vertical-align: top"><td><code>find...By</code></td>
+ * <tr style="vertical-align: top; background-color:#eee"><td><code>find...By</code></td>
  * <td>for find operations</td>
  * <td><code>findByHeightBetween(minHeight, maxHeight)</code></td></tr>
  *
@@ -257,7 +257,7 @@ import java.util.List;
  *
  * <table style="width: 100%">
  * <caption><b>Reserved for Predicate</b></caption>
- * <tr>
+ * <tr style="background-color:#ccc">
  * <td style="vertical-align: top"><b>Keyword</b></td>
  * <td style="vertical-align: top"><b>Applies to</b></td>
  * <td style="vertical-align: top"><b>Description</b></td>
@@ -265,7 +265,7 @@ import java.util.List;
  * <td style="vertical-align: top"><b>Unavailable In</b></td>
  * </tr>
  *
- * <tr style="vertical-align: top"><td><code>And</code></td>
+ * <tr style="vertical-align: top; background-color:#eee"><td><code>And</code></td>
  * <td>conditions</td>
  * <td>Requires both conditions to be satisfied in order to match an entity.</td>
  * <td><code>findByNameLikeAndPriceLessThanEqual(namePattern, maxPrice)</code></td>
@@ -278,7 +278,7 @@ import java.util.List;
  * <td><code>findByAgeBetween(minAge, maxAge)</code></td>
  * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column</td></tr>
  *
- * <tr style="vertical-align: top"><td><code>Contains</code></td>
+ * <tr style="vertical-align: top; background-color:#eee"><td><code>Contains</code></td>
  * <td>collections, strings</td>
  * <td>For Collection attributes, requires that the entity's attribute value,
  * which is a collection, includes the parameter value.
@@ -295,7 +295,7 @@ import java.util.List;
  * <br><code>findByInviteesNotEmpty()</code></td>
  * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column<br>Document<br>Graph</td></tr>
  *
- * <tr style="vertical-align: top"><td><code>EndsWith</code></td>
+ * <tr style="vertical-align: top; background-color:#eee"><td><code>EndsWith</code></td>
  * <td>strings</td>
  * <td>Requires that the characters at the end of the entity's attribute value
  * match the parameter value, which can be a pattern.</td>
@@ -308,7 +308,7 @@ import java.util.List;
  * <td><code>findByCanceledFalse()</code></td>
  * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column</td></tr>
  *
- * <tr style="vertical-align: top"><td><code>GreaterThan</code></td>
+ * <tr style="vertical-align: top; background-color:#eee"><td><code>GreaterThan</code></td>
  * <td>numeric, strings, time</td>
  * <td>Requires that the entity's attribute value be larger than the parameter value.</td>
  * <td><code>findByStartTimeGreaterThan(startedAfter)</code></td>
@@ -320,7 +320,7 @@ import java.util.List;
  * <td><code>findByAgeGreaterThanEqual(minimumAge)</code></td>
  * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column</td></tr>
  *
- * <tr style="vertical-align: top"><td><code>IgnoreCase</code></td>
+ * <tr style="vertical-align: top; background-color:#eee"><td><code>IgnoreCase</code></td>
  * <td>strings</td>
  * <td>Requires case insensitive comparison. For query conditions
  * as well as ordering, the <code>IgnoreCase</code> keyword can be
@@ -335,7 +335,7 @@ import java.util.List;
  * <td><code>findByNameIn(names)</code></td>
  * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column<br>Document<br>Graph</td></tr>
  *
- * <tr style="vertical-align: top"><td><code>LessThan</code></td>
+ * <tr style="vertical-align: top; background-color:#eee"><td><code>LessThan</code></td>
  * <td>numeric, strings, time</td>
  * <td>Requires that the entity's attribute value be less than the parameter value.</td>
  * <td><code>findByStartTimeLessThan(startedBefore)</code></td>
@@ -347,7 +347,7 @@ import java.util.List;
  * <td><code>findByAgeLessThanEqual(maximumAge)</code></td>
  * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column</td></tr>
  *
- * <tr style="vertical-align: top"><td><code>Like</code></td>
+ * <tr style="vertical-align: top; background-color:#eee"><td><code>Like</code></td>
  * <td>strings</td>
  * <td>Requires that the entity's attribute value match the parameter value, which can be a pattern.</td>
  * <td><code>findByNameLike(namePattern)</code></td>
@@ -360,7 +360,7 @@ import java.util.List;
  * <br><code>findByStatusNot("RUNNING")</code></td>
  * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column</td></tr>
  *
- * <tr style="vertical-align: top"><td><code>Null</code></td>
+ * <tr style="vertical-align: top; background-color:#eee"><td><code>Null</code></td>
  * <td>nullable types</td>
  * <td>Requires that the entity's attribute has a null value.</td>
  * <td><code>findByEndTimeNull()</code>
@@ -373,7 +373,7 @@ import java.util.List;
  * <td><code>findByPriceLessThanEqualOrDiscountGreaterThanEqual(maxPrice, minDiscount)</code></td>
  * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column</td></tr>
  *
- * <tr style="vertical-align: top"><td><code>StartsWith</code></td>
+ * <tr style="vertical-align: top; background-color:#eee"><td><code>StartsWith</code></td>
  * <td>strings</td>
  * <td>Requires that the characters at the beginning of the entity's attribute value
  * match the parameter value, which can be a pattern.</td>
@@ -392,7 +392,7 @@ import java.util.List;
  *
  * <table style="width: 100%">
  * <caption><b>Reserved for Subject</b></caption>
- * <tr>
+ * <tr style="background-color:#ccc">
  * <td style="vertical-align: top; width: 12%"><b>Keyword</b></td>
  * <td style="vertical-align: top; width: *%"><b>Applies to</b></td>
  * <td style="vertical-align: top; width: *"><b>Description</b></td>
@@ -400,7 +400,7 @@ import java.util.List;
  * <td style="vertical-align: top; width: *"><b>Unavailable In</b></td>
  * </tr>
  *
- * <tr style="vertical-align: top"><td><code>First</code></td>
+ * <tr style="vertical-align: top; background-color:#eee"><td><code>First</code></td>
  * <td>find...By</td>
  * <td>Limits the amount of results that can be returned by the query
  * to the number that is specified after <code>First</code>,
@@ -414,13 +414,13 @@ import java.util.List;
  *
  * <table style="width: 100%">
  * <caption><b>Reserved for Order Clause</b></caption>
- * <tr>
+ * <tr style="background-color:#ccc">
  * <td style="vertical-align: top"><b>Keyword</b></td>
  * <td style="vertical-align: top"><b>Description</b></td>
  * <td style="vertical-align: top"><b>Example</b></td>
  * </tr>
  *
- * <tr style="vertical-align: top"><td><code>Asc</code></td>
+ * <tr style="vertical-align: top; background-color:#eee"><td><code>Asc</code></td>
  * <td>Specifies ascending sort order for <code>findBy</code> queries</td>
  * <td><code>findByAgeOrderByFirstNameAsc(age)</code></td></tr>
  *
@@ -428,7 +428,7 @@ import java.util.List;
  * <td>Specifies descending sort order for <code>findBy</code> queries</td>
  * <td><code>findByAuthorLastNameOrderByYearPublishedDesc(surname)</code></td></tr>
  *
- * <tr style="vertical-align: top"><td><code>OrderBy</code></td>
+ * <tr style="vertical-align: top; background-color:#eee"><td><code>OrderBy</code></td>
  * <td>Sorts results of a <code>findBy</code> query according to one or more entity attributes.
  * Multiple attributes are delimited by <code>Asc</code> and <code>Desc</code>,
  * which indicate ascending and descending sort direction.
@@ -477,15 +477,23 @@ import java.util.List;
  *
  * <h2>Return Types for Repository Methods</h2>
  *
+ * <p>The following is a table of valid return types.
+ * The <b>Method</b> column shows name patterns for <i>Query by Method Name</i>.
+ * For methods with the {@link Query} annotation or <i>Parameter-based Conditions</i>,
+ * which have flexible naming, refer to the equivalent <i>Query by Method Name</i>
+ * pattern in the table. For example, to identify the valid return types for a method,
+ * {@code findNamed(String name, Pageable pagination)}, refer to the row for
+ * {@code find...By...(..., Pageable)}.</p>
+ *
  * <table style="width: 100%">
  * <caption><b>Return Types when using Query by Method Name and Parameter-based Conditions</b></caption>
- * <tr>
+ * <tr style="background-color:#ccc">
  * <td style="vertical-align: top"><b>Method</b></td>
  * <td style="vertical-align: top"><b>Return Types</b></td>
  * <td style="vertical-align: top"><b>Notes</b></td>
  * </tr>
  *
- * <tr style="vertical-align: top"><td><code>countBy...</code></td>
+ * <tr style="vertical-align: top; background-color:#eee"><td><code>countBy...</code></td>
  * <td><code>long</code>, <code>Long</code>,
  * <br><code>int</code>, <code>Integer</code>,
  * <br><code>short</code>, <code>Short</code>,
@@ -502,43 +510,37 @@ import java.util.List;
  * <br><code>Number</code></td>
  * <td>Jakarta Persistence providers limit the maximum to <code>Integer.MAX_VALUE</code></td></tr>
  *
- * <tr style="vertical-align: top"><td><code>existsBy...</code></td>
+ * <tr style="vertical-align: top; background-color:#eee"><td><code>existsBy...</code></td>
  * <td><code>boolean</code>, <code>Boolean</code></td>
  * <td>For determining existence.</td></tr>
  *
- * <tr style="vertical-align: top"><td><code>find...</code>,
- * <br><code>find...By...</code></td>
+ * <tr style="vertical-align: top"><td><code>find...By...</code></td>
  * <td><code>E</code>,
  * <br><code>Optional&lt;E&gt;</code></td>
  * <td>For queries returning a single item (or none)</td></tr>
  *
- * <tr style="vertical-align: top"><td><code>find...</code>,
- * <br><code>find...By...</code></td>
+ * <tr style="vertical-align: top; background-color:#eee"><td><code>find...By...</code></td>
  * <td><code>E[]</code>,
  * <br><code>Iterable&lt;E&gt;</code>,
  * <br><code>Streamable&lt;E&gt;</code>,
  * <br><code>Collection&lt;E&gt;</code></td>
  * <td>For queries where it is possible to return more than 1 item.</td></tr>
  *
- * <tr style="vertical-align: top"><td><code>find...</code>,
- * <br><code>find...By...</code></td>
+ * <tr style="vertical-align: top"><td><code>find...By...</code></td>
  * <td><code>Stream&lt;E&gt;</code></td>
  * <td>The caller must arrange to {@link java.util.stream.BaseStream#close() close}
  * all streams that it obtains from repository methods.</td></tr>
  *
- * <tr style="vertical-align: top"><td><code>find...</code>,
- * <br><code>find...By...</code></td>
+ * <tr style="vertical-align: top; background-color:#eee"><td><code>find...By...</code></td>
  * <td><code>Collection</code> subtypes</td>
  * <td>The subtype must have a public default constructor and support <code>addAll</code> or <code>add</code></td></tr>
  *
- * <tr style="vertical-align: top"><td><code>find...(..., Pageable)</code>,
- * <br><code>find...By...(..., Pageable)</code></td>
+ * <tr style="vertical-align: top"><td><code>find...By...(..., Pageable)</code></td>
  * <td><code>Page&lt;E&gt;</code>, <code>KeysetAwarePage&lt;E&gt;</code>,
  * <br><code>Slice&lt;E&gt;</code>, <code>KeysetAwareSlice&lt;E&gt;</code></td>
  * <td>For use with pagination</td></tr>
  *
- * <tr style="vertical-align: top"><td><code>find...</code>,
- * <br><code>find...By...</code></td>
+ * <tr style="vertical-align: top; background-color:#eee"><td><code>find...By...</code></td>
  * <td><code>LinkedHashMap&lt;K, E&gt;</code></td>
  * <td>Ordered map of Id attribute value to entity</td></tr>
  *
