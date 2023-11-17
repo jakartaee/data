@@ -93,7 +93,7 @@
   <!-- The API -->
   <dependency>
    <groupId>jakarta-data</groupId>
-   <artifactId>jakarta-data-api</artifactId>
+   <artifactId>jakarta.data-api</artifactId>
    <version>${jakarta.data.version}</version>
   </dependency>
   <!-- Arquillian Implementation for JUnit5 -->
@@ -164,7 +164,7 @@
       <!-- end::arquillian[] -->
       <!-- tag::signature[] -->
       <jimage.dir>[path-to-extract-jvm-classes]</jimage.dir>
-      <signature.sigTestClasspath>[path-to]/jakarta-data-api.jar:[path-to-jimage]/java.base:[path-to-jimage]/java.rmi:[path-to-jimage]/java.sql:[path-to-jimage]/java.naming</signature.sigTestClasspath>
+      <signature.sigTestClasspath>[path-to]/jakarta.data-api.jar:[path-to-jimage]/java.base:[path-to-jimage]/java.rmi:[path-to-jimage]/java.sql:[path-to-jimage]/java.naming</signature.sigTestClasspath>
       <!-- end::signature[] -->
       <!-- tag::logging[] -->
       <java.util.logging.config.file>${basedir}/../logging.properties</java.util.logging.config.file>
