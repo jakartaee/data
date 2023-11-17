@@ -8,6 +8,10 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 
 == [Unreleased]
 
+=== Changed
+
+- Update the artifact at the Jakarta Data API.
+
 === Removed
 
 - Remove metamodel package where we will release in a following version
