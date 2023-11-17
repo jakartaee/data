@@ -83,7 +83,7 @@
   <!-- The API -->
   <dependency>
    <groupId>jakarta-data</groupId>
-   <artifactId>jakarta-data-api</artifactId>
+   <artifactId>jakarta.data-api</artifactId>
    <version>${jakarta.data.version}</version>
   </dependency>
   <!-- TODO add your implementation of the Jakarta Data API -->

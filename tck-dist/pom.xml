@@ -62,7 +62,7 @@
 
   <dependency>
     <groupId>jakarta.data</groupId>
-    <artifactId>jakarta-data-api</artifactId>
+    <artifactId>jakarta.data-api</artifactId>
     <version>${jakarta.data.api.version}</version>
   </dependency>
  </dependencies>
