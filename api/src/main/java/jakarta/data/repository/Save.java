@@ -25,8 +25,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * <p>The {@code Save} annotation indicates that the annotated repository method
- * updates one or more entities if found in the database
+ * <p>Annotates a repository method that updates entities if found in the database
  * and inserts entities into the database that are not found.
  * This method must have a single parameter whose type must be one of the following:
  * </p>

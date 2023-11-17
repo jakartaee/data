@@ -26,7 +26,47 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Defines the query string such as SQL, JPA-QL, Cypher etc. that should be executed.
+ * <p>Annotates a repository method to specify a query string such as SQL, JPQL, Cypher etc. to execute.</p>
+ *
+ * <p>Jakarta Data providers for relational databases must support
+ * JPQL queries if backed by a Jakarta Persistence provider,
+ * and otherwise must support SQL queries.</p>
+ *
+ * <p>The query language can used named parameters or positional parameters.</p>
+ *
+ * <p><b>Named parameters</b> are referred to by name within the query language.
+ * The {@link Param} annotation annotates method parameters to bind them to a named parameter name.
+ * The {@code Param} annotation is unnecessary for named parameters when the method parameter name
+ * matches the query language named parameter name and the application is compiled with the
+ * {@code -parameters} compiler option that makes parameter names available
+ * at run time. When the {@code Param} annotation is not used, the Jakarta Data provider must
+ * interpret the query by scanning for the delimiter that is used for positional parameters.
+ * If the delimiter appears for another purpose in a query that requries named parameters,
+ * it might be necessary for the application to explictly define the {@code Param} in order to
+ * disambiguate.</p>
+ *
+ * <p><b>Positional parameters</b> are referred to by a number that corresponds to the
+ * numerical position, starting with 1, of the repository method parameters.</p>
+ *
+ * <p>For example,</p>
+ *
+ * <pre>
+ * {@code @Repository}
+ * public interface People extends CrudRepository{@code <Person, Long>} {
+ *
+ *     // JPQL using positional parameters
+ *     {@code @Query("SELECT p from Person p WHERE (EXTRACT(YEAR FROM p.birthday) = ?1)")}
+ *     {@code List<Person>} bornIn(int year);
+ *
+ *     // JPQL using named parameters
+ *     {@code @Query("SELECT DISTINCT p.name from Person p WHERE (LENGTH(p.name) >= :min AND LENGTH(p.name) <= :max)")}
+ *     {@code List<String>} namesOfLength({@code @Param}("min") int minLength,
+ *                                {@code @Param}("max") int minLength,
+ *                                Sort... sorts);
+ *
+ *     ...
+ * }
+ * </pre>
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)

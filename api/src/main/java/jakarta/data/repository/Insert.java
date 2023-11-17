@@ -25,6 +25,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * <p>Annotates a repository method that inserts entities.</p>
+ *
  * <p>The {@code Insert} annotation indicates that the annotated repository method requests that one or more entities
  * be inserted into the database. This method must have a single parameter whose type must be one of the following:
  * </p>

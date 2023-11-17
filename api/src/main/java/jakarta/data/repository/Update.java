@@ -26,8 +26,11 @@ import java.lang.annotation.Target;
 
 
 /**
+ * <p>Annotates a repository method to perform update operations.</p>
+ *
  * <p>The {@code Update} annotation indicates that the annotated repository method requests that one or more entities
- * be updated if found in the database. This method must have a single parameter whose type must be one of the following:
+ * be updated if found in the database. To request updates to specific entity instances, the annotated
+ * repository method must have a single parameter whose type must be one of the following:
  * </p>
  * <ul>
  *     <li>The entity to be updated.</li>

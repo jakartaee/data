@@ -22,22 +22,67 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 /**
- * <p>A repository interface for performing basic operations on entities.</p>
+ * <p>A built-in repository supertype for performing basic operations on entities.</p>
  *
- * <p>This repository provides methods to interact with persistent entities of type <code>&lt;T&gt;</code>,
- * where <code>&lt;T&gt;</code> represents the entity bean type, and <code>&lt;K&gt;</code> represents the key type.</p>
+ * <p>The type parameters of {@code BasicRepository<T,K>} capture the primary entity type ({@code T})
+ * for the repository and the type of the Id entity attribute ({@code K}) that uniquely identifies each entity
+ * of that type.</p>
  *
- * @param <T> the entity bean type
- * @param <K> the key type.
+ * <p>The primary entity type is used for repository methods, such as {@code countBy...}
+ * and {@code deleteBy...}, which do not explicitly specify an entity type.</p>
+ *
+ * <p>Example entity:</p>
+ *
+ * <pre>
+ * {@code @Entity}
+ * public class Employee {
+ *     {@code @Id}
+ *     public int badgeNumber;
+ *     public String firstName;
+ *     public String lastName;
+ *     ...
+ * }
+ * </pre>
+ *
+ * <p>Example repository:</p>
+ *
+ * <pre>
+ * {@code @Repository}
+ * public interface Employees extends BasicRepository{@code <Employee, Integer>} {
+ *
+ *     boolean deleteByBadgeNumber(int badgeNum);
+ *
+ *     ...
+ * }
+ * </pre>
+ *
+ * <p>Example usage:</p>
+ *
+ * <pre>
+ * {@code @Inject}
+ * Employees employees;
+ *
+ * ...
+ *
+ * Employee emp = ...
+ * emp = employees.save(emp);
+ *
+ * boolean deleted = employees.deleteByBadgeNumber(emp.badgeNum);
+ * </pre>
+ *
+ * <p>The module JavaDoc provides an {@link jakarta.data/ overview} of Jakarta Data.</p>
+ *
+ * @param <T> the type of the primary entity class of the repository.
+ * @param <K> the type of the Id attribute of the primary entity.
  */
 public interface BasicRepository<T, K> extends DataRepository<T, K> {
 
     /**
-     * Saves a given entity to the database. If the entity has an ID or key that exists in the database,
+     * Saves a given entity to the database. If the entity has an Id or key that exists in the database,
      * the method will update the existing record. Otherwise, it will insert a new record.
      *
-     * <p>If the entity has a non-null ID, the method will attempt to
-     * update the existing record in the database. If the entity does not exist in the database or has a null ID,
+     * <p>If the entity has a non-null Id, the method will attempt to
+     * update the existing record in the database. If the entity does not exist in the database or has a null Id,
      * then this method will insert a new record into the database.</p>
      *
      * <p>The entity instance that is returned as a result value of this method
@@ -60,12 +105,12 @@ public interface BasicRepository<T, K> extends DataRepository<T, K> {
     <S extends T> S save(S entity);
 
     /**
-     * Saves all given entities to the database. If an entity has a non-null ID that exists in the database,
+     * Saves all given entities to the database. If an entity has a non-null Id that exists in the database,
      * the method will update the existing record. Otherwise, it will insert a new record.
      *
-     * <p>If an entity has a non-null ID, this method will attempt to update the
+     * <p>If an entity has a non-null Id, this method will attempt to update the
      * existing record in the database. If an entity does not exist in the database
-     * or has a null ID, then this method inserts a new record into the database.</p>
+     * or has a null Id, then this method inserts a new record into the database.</p>
      *
      * <p>The entity instances that are returned as a result of this method
      * must be updated with all automatically generated values and incremented values
@@ -84,20 +129,20 @@ public interface BasicRepository<T, K> extends DataRepository<T, K> {
     <S extends T> Iterable<S> saveAll(Iterable<S> entities);
 
     /**
-     * Retrieves an entity by its id.
+     * Retrieves an entity by its Id.
      *
      * @param id must not be {@literal null}.
-     * @return the entity with the given id or {@literal Optional#empty()} if none found.
-     * @throws NullPointerException when the id is null
+     * @return the entity with the given Id or {@literal Optional#empty()} if none found.
+     * @throws NullPointerException when the Id is {@code null}.
      */
     Optional<T> findById(K id);
 
     /**
-     * Returns whether an entity with the given id exists.
+     * Returns whether an entity with the given Id exists.
      *
      * @param id must not be {@literal null}.
-     * @return {@literal true} if an entity with the given id exists, {@literal false} otherwise.
-     * @throws NullPointerException when the ID is null
+     * @return {@literal true} if an entity with the given Id exists, {@literal false} otherwise.
+     * @throws NullPointerException when the Id is {@code null}.
      */
     boolean existsById(K id);
 
@@ -111,9 +156,9 @@ public interface BasicRepository<T, K> extends DataRepository<T, K> {
     Stream<T> findAll();
 
     /**
-     * Returns all instances of the type {@code T} with the given IDs.
+     * Returns all instances of the type {@code T} with the given Ids.
      * <p>
-     * If some or all ids are not found, no entities are returned for these IDs.
+     * If some or all Ids are not found, no entities are returned for these Ids.
      * <p>
      * Note that the order of elements in the result is not guaranteed.
      *
@@ -133,12 +178,12 @@ public interface BasicRepository<T, K> extends DataRepository<T, K> {
     long count();
 
     /**
-     * Deletes the entity with the given id.
+     * Deletes the entity with the given Id.
      * <p>
      * If the entity is not found in the persistence store it is silently ignored.
      *
      * @param id must not be {@literal null}.
-     * @throws NullPointerException when the id is null
+     * @throws NullPointerException when the Id is {@code null}.
      */
     void deleteById(K id);
 
@@ -156,24 +201,24 @@ public interface BasicRepository<T, K> extends DataRepository<T, K> {
     void delete(T entity);
 
     /**
-     * Deletes all instances of the type {@code T} with the given IDs.
+     * Deletes all instances of the type {@code T} with the given Ids.
      * <p>
-     * Entities that aren't found in the persistence store are silently ignored.
+     * Entities that are not found in the persistent store are silently ignored.
      *
      * @param ids must not be {@literal null}. Must not contain {@literal null} elements.
-     * @throws NullPointerException when either the iterable is null or contains null elements
+     * @throws NullPointerException when the iterable is {@code null} or contains {@code null} elements.
      */
     void deleteByIdIn(Iterable<K> ids);
 
     /**
-     * Deletes the given entities. Deletion of each entity is performed by matching the ID, and if the entity is
+     * Deletes the given entities. Deletion of each entity is performed by matching the Id, and if the entity is
      * versioned (for example, with {@code jakarta.persistence.Version}), then also the version.
      * Other properties of the entity do not need to match.
      *
      * @param entities Must not be {@literal null}. Must not contain {@literal null} elements.
      * @throws OptimisticLockingFailureException If an entity is not found in the database for deletion
      *         or has a version for optimistic locking that is inconsistent with the version in the database.
-     * @throws NullPointerException If either the iterable is null or contains null elements.
+     * @throws NullPointerException If the iterable is {@code null} or contains {@code null} elements.
      */
     @Delete
     void deleteAll(Iterable<? extends T> entities);
