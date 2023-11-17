@@ -18,7 +18,15 @@
 package jakarta.data.page;
 
 /**
- * <p>A page is a sublist of results. It provides information about its position relative to the entire list.</p>
+ * <p>A page contains the data that is retrieved for a page request
+ * and has awareness of the total number of pages.</p>
+ *
+ * <p>A page is a sublist of results. It provides information about its position relative to the entire list.
+ * A page is obtained by supplying a {@link Pageable} parameter to a repository method. For example,</p>
+ *
+ * <pre>
+ * {@code Page<Employee>} findByYearHired(int year, Pageable pageRequest);
+ * </pre>
  *
  * <p>Repository methods that are declared to return <code>Page</code> or
  * {@link KeysetAwarePage} must raise {@link UnsupportedOperationException} if the
@@ -26,13 +34,16 @@ package jakarta.data.page;
  * in which case a return type of {@link Slice} or {@link KeysetAwareSlice}
  * should be used instead.</p>
  *
+ * <p>For a lighter weight subset of query results that does not have awareness of the
+ * total number of pages, {@link Slice} can be used instead of page.</p>
+ *
  * @param <T> the type of elements in this page 
  */
 public interface Page<T> extends Slice<T> {
 
     /**
-     * Returns the total amount of elements.
-     * @return the total amount of elements.
+     * Returns the total number of elements across all pages that can be requested for the query.
+     * @return the total number of elements across all pages.
      */
     long totalElements();
 

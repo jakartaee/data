@@ -113,6 +113,12 @@ public @interface OrderBy {
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.METHOD)
     @interface List {
+        /**
+         * Returns a list of annotations with the first taking precedence,
+         * followed by the second, and so forth.
+         *
+         * @return list of annotations.
+         */
         OrderBy[] value();
     }
 }

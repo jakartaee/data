@@ -18,11 +18,12 @@
 package jakarta.data.page;
 
 /**
- * <p>A page of results from a repository query that performs
- * {@link KeysetAwareSlice keyset pagination}.</p>
+ * <p>A page of data with the ability to create a cursor from the keyset
+ * of each entity in the page. This class inherits from {@link KeysetAwareSlice},
+ * which is where most of the documentation on keyset curosr-based pagination
+ * can be found.</p>
  *
- * <p>The concept of {@link Page} differs from {@link Slice} in that slices
- * do not have awareness of a total number of pages or results. Page numbers
+ * <p>Page numbers
  * and total numbers of pages and results cannot be accurately known
  * with keyset pagination, which allows entities to be added and removed
  * in between traversal of slices or pages. When keyset pagination is used,

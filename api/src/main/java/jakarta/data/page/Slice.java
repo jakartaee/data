@@ -21,16 +21,36 @@ import jakarta.data.Streamable;
 import java.util.List;
 
 /**
- * A slice of data that indicates whether there's a next or previous slice available.
+ * <p>A slice contains the data that is retrieved for a page request.
+ * A slice is obtained by supplying a {@link Pageable} parameter to a repository method.
+ * For example,</p>
  *
- * @param <T> the type of elements in this slice 
+ * <pre>
+ * {@code Slice<Vehicle>} find({@code @By("make")} String make,
+ *                     {@code @By("model")} String model,
+ *                     {@code @By("year")} int designYear,
+ *                     Pageable pagination);
+ * </pre>
+ *
+ * <p>Unlike {@link Page}, a {@code Slice} does not have awareness of the total number of pages
+ * that can be retrieved for the query.</p>
+ *
+ * <p>The lowercase terms, <i>slice</i> and <i>page</i>, are used interchangeably
+ * throughout this specification. Wherever a distinction needs to be made between them,
+ * the class name, {@code Slice} or {@code Page}, is used.</p>
+ *
+ * @param <T> the type of elements in this slice.
  */
 public interface Slice<T> extends Streamable<T> {
 
     /**
-     * Returns the page content as {@link List}.
+     * Returns the page content as a {@link List}.
+     * The list is sorted according to the combined sort criteria of the repository method
+     * and the sort criteria of the page request that is supplied to the repository method,
+     * sorting first by the sort criteria of the repository method,
+     * and then by the sort criteria of the page request.
      *
-     * @return the page content as {@link List}; will never be {@literal null}.
+     * @return the page content as a {@link List}; will never be {@code null}.
      */
     List<T> content();
 
@@ -42,23 +62,28 @@ public interface Slice<T> extends Streamable<T> {
     boolean hasContent();
 
     /**
-     * Returns the number of elements currently on this Slice.
+     * Returns the number of elements in this Slice,
+     * which must be no larger than the maximum
+     * {@link Pageable#size() size} of the page request.
+     * If the number of elements in the slice is less than the maximum page size,
+     * then there are no subsequent slices of data to read.
      *
-     * @return the number of elements currently on this Slice.
+     * @return the number of elements in this Slice.
      */
     int numberOfElements();
 
     /**
-     * Returns the current {@link Pageable}
+     * Returns the {@link Pageable page request} for which this
+     * slice was obtained.
      *
-     * @return the current Pageable; will never be {@literal null}.
+     * @return the request for the current page; will never be {@literal null}.
      */
     Pageable pageable();
 
     /**
-     * Returns the next {@link Pageable#next()}, or <code>null</code> if it is known that there is no next page.
+     * Returns a request for the {@link Pageable#next() next} page, or <code>null</code> if it is known that there is no next page.
      *
-     * @return the next pageable.
+     * @return a request for the next page.
      */
     Pageable nextPageable();
 }
