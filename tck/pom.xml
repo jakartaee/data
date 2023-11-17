@@ -52,7 +52,7 @@
     <!-- Data API -->
     <dependency>
         <groupId>jakarta.data</groupId>
-        <artifactId>jakarta-data-api</artifactId>
+        <artifactId>jakarta.data-api</artifactId>
         <version>${jakarta.data.version}</version>
         <scope>provided</scope>
     </dependency>
@@ -249,11 +249,11 @@
                   <artifactItems>
                     <artifactItem>
                       <groupId>jakarta.data</groupId>
-                      <artifactId>jakarta-data-api</artifactId>
+                      <artifactId>jakarta.data-api</artifactId>
                       <version>${project.version}</version>
                       <type>jar</type>
                       <overWrite>false</overWrite>
-                      <outputDirectory>${project.build.directory}/jakarta-data-api</outputDirectory>
+                      <outputDirectory>${project.build.directory}/jakarta.data-api</outputDirectory>
                       <includes>**/*.class,**/*.xml</includes>
                     </artifactItem>
                   </artifactItems>
@@ -303,7 +303,7 @@
               </execution>
             </executions>
             <configuration>
-              <classes>${project.build.directory}/jakarta-data-api</classes>
+              <classes>${project.build.directory}/jakarta.data-api</classes>
               <classes>${project.build.directory}/jimage/java.base</classes><classes>${project.build.directory}/jimage/java.base</classes>
               <packages>
                   jakarta.data,
