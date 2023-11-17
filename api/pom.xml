@@ -27,7 +27,7 @@
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>jakarta-data-api</artifactId>
+    <artifactId>jakarta.data-api</artifactId>
     <name>Jakarta Data API</name>
     <description>Jakarta Data :: API</description>
 
