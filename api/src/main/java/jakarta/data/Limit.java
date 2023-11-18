@@ -101,7 +101,7 @@ public record Limit(int maxResults, long startAt) {
      *
      * @param maxResults maximum number of results.
      * @return limit that can be supplied to a find method
-     *         or <code>&#64;Query</code> method that performs a find operation; will never be {@literal null}.
+     *         or <code>&#64;Query</code> method that performs a find operation; will never be {@code null}.
      * @throws IllegalArgumentException if maxResults is less than 1.
      */
     public static Limit of(int maxResults) {
@@ -118,7 +118,7 @@ public record Limit(int maxResults, long startAt) {
      *                The first query result is position 1.
      * @param endAt   position after which to cease including results.
      * @return limit that can be supplied to a find method or
-     *         or a <code>&#64;Query</code> method that performs a find operation; will never be {@literal null}.
+     *         or a <code>&#64;Query</code> method that performs a find operation; will never be {@code null}.
      * @throws IllegalArgumentException if <code>startAt</code> is less than 1
      *         or <code>endAt</code> is less than <code>startAt</code>,
      *         or the range from <code>startAt</code> to <code>endAt</code>

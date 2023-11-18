@@ -76,7 +76,7 @@ public interface Slice<T> extends Streamable<T> {
      * Returns the {@link Pageable page request} for which this
      * slice was obtained.
      *
-     * @return the request for the current page; will never be {@literal null}.
+     * @return the request for the current page; will never be {@code null}.
      */
     Pageable pageable();
 

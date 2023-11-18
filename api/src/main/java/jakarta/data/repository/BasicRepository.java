@@ -94,12 +94,12 @@ public interface BasicRepository<T, K> extends DataRepository<T, K> {
      * <p>If the entity uses optimistic locking and the version differs from the version in the database,
      * an {@link OptimisticLockingFailureException} will be thrown.</p>
      *
-     * @param entity The entity to be saved. Must not be {@literal null}.
+     * @param entity The entity to be saved. Must not be {@code null}.
      * @param <S> Type of the entity to save.
-     * @return The saved entity; never {@literal null}.
+     * @return The saved entity; never {@code null}.
      * @throws OptimisticLockingFailureException If the entity uses optimistic locking and the version in the
      *         database differs from the version in the entity.
-     * @throws NullPointerException If the provided entity is {@literal null}.
+     * @throws NullPointerException If the provided entity is {@code null}.
      */
     @Save
     <S extends T> S save(S entity);
@@ -120,7 +120,7 @@ public interface BasicRepository<T, K> extends DataRepository<T, K> {
      *
      * @param entities An iterable of entities.
      * @param <S> Type of entity to save.
-     * @return The saved entities; will never be {@literal null}.
+     * @return The saved entities; will never be {@code null}.
      * @throws OptimisticLockingFailureException If an entity has a version for optimistic locking
      *         that differs from the version in the database.
      * @throws NullPointerException If either the iterable is null or any element is null.
@@ -131,8 +131,8 @@ public interface BasicRepository<T, K> extends DataRepository<T, K> {
     /**
      * Retrieves an entity by its Id.
      *
-     * @param id must not be {@literal null}.
-     * @return the entity with the given Id or {@literal Optional#empty()} if none found.
+     * @param id must not be {@code null}.
+     * @return the entity with the given Id or {@code Optional#empty()} if none found.
      * @throws NullPointerException when the Id is {@code null}.
      */
     Optional<T> findById(K id);
@@ -140,8 +140,8 @@ public interface BasicRepository<T, K> extends DataRepository<T, K> {
     /**
      * Returns whether an entity with the given Id exists.
      *
-     * @param id must not be {@literal null}.
-     * @return {@literal true} if an entity with the given Id exists, {@literal false} otherwise.
+     * @param id must not be {@code null}.
+     * @return {@code true} if an entity with the given Id exists, {@code false} otherwise.
      * @throws NullPointerException when the Id is {@code null}.
      */
     boolean existsById(K id);
@@ -149,7 +149,7 @@ public interface BasicRepository<T, K> extends DataRepository<T, K> {
     /**
      * Retrieves all persistent entities of the specified type from the database.
      *
-     * @return a stream of all entities; will never be {@literal null}.
+     * @return a stream of all entities; will never be {@code null}.
      * @throws UnsupportedOperationException  for Key-Value and Wide-Column databases that are not capable
      * of the {@code findAll} operation.
      */
@@ -162,10 +162,10 @@ public interface BasicRepository<T, K> extends DataRepository<T, K> {
      * <p>
      * Note that the order of elements in the result is not guaranteed.
      *
-     * @param ids must not be {@literal null} nor contain any {@literal null} values.
-     * @return guaranteed to be not {@literal null}. The size can be equal or less than the number of given
-     * {@literal ids}.
-     * @throws NullPointerException in case the given {@link Iterable ids} or one of its items is {@literal null}.
+     * @param ids must not be {@code null} nor contain any {@code null} values.
+     * @return guaranteed to be not {@code null}. The size can be equal or less than the number of given
+     * ids.
+     * @throws NullPointerException in case the given {@link Iterable ids} or one of its items is {@code null}.
      */
     Stream<T> findByIdIn(Iterable<K> ids);
 
@@ -182,7 +182,7 @@ public interface BasicRepository<T, K> extends DataRepository<T, K> {
      * <p>
      * If the entity is not found in the persistence store it is silently ignored.
      *
-     * @param id must not be {@literal null}.
+     * @param id must not be {@code null}.
      * @throws NullPointerException when the Id is {@code null}.
      */
     void deleteById(K id);
@@ -192,7 +192,7 @@ public interface BasicRepository<T, K> extends DataRepository<T, K> {
      * versioned (for example, with {@code jakarta.persistence.Version}), then also the version.
      * Other properties of the entity do not need to match.
      *
-     * @param entity must not be {@literal null}.
+     * @param entity must not be {@code null}.
      * @throws OptimisticLockingFailureException if the entity is not found in the database for deletion
      *         or has a version for optimistic locking that is inconsistent with the version in the database.
      * @throws NullPointerException when the entity is null
@@ -205,7 +205,7 @@ public interface BasicRepository<T, K> extends DataRepository<T, K> {
      * <p>
      * Entities that are not found in the persistent store are silently ignored.
      *
-     * @param ids must not be {@literal null}. Must not contain {@literal null} elements.
+     * @param ids must not be {@code null}. Must not contain {@code null} elements.
      * @throws NullPointerException when the iterable is {@code null} or contains {@code null} elements.
      */
     void deleteByIdIn(Iterable<K> ids);
@@ -215,7 +215,7 @@ public interface BasicRepository<T, K> extends DataRepository<T, K> {
      * versioned (for example, with {@code jakarta.persistence.Version}), then also the version.
      * Other properties of the entity do not need to match.
      *
-     * @param entities Must not be {@literal null}. Must not contain {@literal null} elements.
+     * @param entities Must not be {@code null}. Must not contain {@code null} elements.
      * @throws OptimisticLockingFailureException If an entity is not found in the database for deletion
      *         or has a version for optimistic locking that is inconsistent with the version in the database.
      * @throws NullPointerException If the iterable is {@code null} or contains {@code null} elements.
