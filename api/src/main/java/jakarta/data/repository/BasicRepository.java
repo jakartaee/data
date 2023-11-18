@@ -132,7 +132,7 @@ public interface BasicRepository<T, K> extends DataRepository<T, K> {
      * Retrieves an entity by its Id.
      *
      * @param id must not be {@code null}.
-     * @return the entity with the given Id or {@code Optional#empty()} if none found.
+     * @return the entity with the given Id or {@link Optional#empty()} if none is found.
      * @throws NullPointerException when the Id is {@code null}.
      */
     Optional<T> findById(K id);
