@@ -108,7 +108,7 @@ public @interface OrderBy {
     String value();
 
     /**
-     * Enables multiple <code>OrderBy</code> annotations on the same type.
+     * Enables multiple <code>OrderBy</code> annotations on the method.
      */
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.METHOD)

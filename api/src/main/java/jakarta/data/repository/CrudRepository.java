@@ -20,17 +20,66 @@ package jakarta.data.repository;
 import jakarta.data.exceptions.EntityExistsException;
 
 /**
- * <p>A repository interface that extends the capabilities of basic operations on entities, including insert and update operations.</p>
+ * <p>A built-in repository supertype for performing Create, Read, Update, and Delete (CRUD) operations on entities.</p>
  *
- * <p>This repository extends the {@link BasicRepository} interface, providing a comprehensive set of methods to interact with
- * persistent entities of type {@code <T>}, where {@code <T>} represents the entity bean type, and {@code <K>} represents the key type.</p>
- *
- * <p>It encompasses standard CRUD (Create, Read, Update, Delete) operations, allowing you to perform insert and update operations in
+ * <p>This repository extends the {@link BasicRepository} interface, allowing you to perform insert and update operations in
  * addition to basic retrieval and deletion. This interface combines the Data Access Object (DAO) aspect with the repository pattern,
- * offering a versatile and complete solution for managing persistent entities within your Java applications.</p>
+ * offering a versatile and complete solution for managing persistent entities within Java applications.</p>
  *
- * @param <T> the entity bean type
- * @param <K> the key type.
+ * <p>The type parameters of {@code CrudRepository<T,K>} capture the primary entity type ({@code T})
+ * for the repository and the type of the Id entity attribute ({@code K}) that uniquely identifies each entity
+ * of that type.</p>
+ *
+ * <p>The primary entity type is used for repository methods, such as {@code countBy...}
+ * and {@code deleteBy...}, which do not explicitly specify an entity type.</p>
+ *
+ * <p>Example entity:</p>
+ *
+ * <pre>
+ * {@code @Entity}
+ * public class Cars {
+ *     {@code @Id}
+ *     public long vin;
+ *     public String make;
+ *     public String model;
+ *     public int year;
+ *     ...
+ * }
+ * </pre>
+ *
+ * <p>Example repository:</p>
+ *
+ * <pre>
+ * {@code @Repository}
+ * public interface Cars extends CrudRepository{@code <Car, Long>} {
+ *
+ *     List{@code <Car>} findByMakeAndModel(String make, String model, Sort...);
+ *
+ *     ...
+ * }
+ * </pre>
+ *
+ * <p>Example usage:</p>
+ *
+ * <pre>
+ * {@code @Inject}
+ * Cars cars;
+ *
+ * ...
+ *
+ * Car car1 = ...
+ * car1 = cars.insert(car1);
+ *
+ * List{@code <Car>} found = findByMakeAndModel(car1.make,
+ *                                      car1.model,
+ *                                      Sort.desc("year"),
+ *                                      Sort.asc("vin"));
+ * </pre>
+ *
+ * <p>The module JavaDoc provides an {@link jakarta.data/ overview} of Jakarta Data.</p>
+ *
+ * @param <T> the type of the primary entity class of the repository.
+ * @param <K> the type of the Id attribute of the primary entity.
  * @see BasicRepository
  * @see DataRepository
  */

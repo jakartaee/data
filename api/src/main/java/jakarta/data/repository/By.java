@@ -24,8 +24,8 @@ import java.lang.annotation.Target;
 
 
 /**
- * <p>Specifies the name of the entity attribute to compare against the
- * value of the repository method parameter that is annotated.</p>
+ * <p>Annotates a parameter of a repository method to specify the name of an
+ * entity attribute against which to compare.</p>
  *
  * <p>Example usage for a {@code Person} entity with attributes
  * {@code id}, {@code firstName}, and {@code lastName}:</p>

@@ -22,21 +22,73 @@ import jakarta.data.page.Page;
 import jakarta.data.page.Pageable;
 
 /**
- * Repository fragment to provide methods to retrieve entities using the pagination and sorting abstraction. In many
- * cases this will be combined with {@link BasicRepository} or similar or with manually added methods to provide CRUD
- * functionality.
- * @param <T> the domain type the repository manages
- * @param <K> the type of the id of the entity the repository manages
+ * <p>A built-in repository supertype with methods that use pagination and sorting to retreive entities.
+ * Methods that are inherited from {@link BasicRepository} provide additional basic built-in save, delete, and find
+ * functionality.</p>
+ *
+ * <p>The type parameters of {@code PageableRepository<T,K>} capture the primary entity type ({@code T})
+ * for the repository and the type of the Id entity attribute ({@code K}) that uniquely identifies each entity
+ * of that type.</p>
+ *
+ * <p>The primary entity type is used for repository methods, such as {@code countBy...}
+ * and {@code deleteBy...}, which do not explicitly specify an entity type.</p>
+ *
+ * <p>Example entity:</p>
+ *
+ * <pre>
+ * {@code @Entity}
+ * public class Person {
+ *     {@code @Id}
+ *     public long ssn;
+ *     public String firstName;
+ *     public String lastName;
+ *     ...
+ * }
+ * </pre>
+ *
+ * <p>Example repository:</p>
+ *
+ * <pre>
+ * {@code @Repository}
+ * public interface People extends PageableRepository{@code <Person, Long>} {
+ *
+ *     long countByFirstName(String name);
+ *
+ *     ...
+ * }
+ * </pre>
+ *
+ * <p>Example usage:</p>
+ *
+ * <pre>
+ * {@code @Inject}
+ * People people;
+ *
+ * ...
+ *
+ * Person person1 = ...
+ * person1 = people.save(person1);
+ *
+ * long howMany = people.countByFirstName(person1.firstName);
+ *
+ * Pagination page1Request = Pageable.ofSize(25).sortBy(Sort.asc("ssn"));
+ * Page{@code <Person>} page1 = people.findAll(page1Request);
+ * </pre>
+ *
+ * <p>The module JavaDoc provides an {@link jakarta.data/ overview} of Jakarta Data.</p>
+ *
+ * @param <T> the type of the primary entity class of the repository.
+ * @param <K> the type of the Id attribute of the primary entity.
  * @see BasicRepository
  */
 public interface PageableRepository<T, K> extends BasicRepository<T, K> {
 
     /**
-     * Returns a {@link Page} of entities meeting the paging restriction provided in the {@link Pageable} object.
+     * Returns a {@link Page} of entities according to the page request that is provided as the {@link Pageable} parameter.
      *
-     * @param pageable the pageable to request a paginated result, must not be null.
-     * @return a page of entities; will never be {@literal null}.
-     * @throws NullPointerException when pageable is null
+     * @param pageable the request for a paginated result; must not be {@code null}.
+     * @return a page of entities; will never be {@code null}.
+     * @throws NullPointerException when {@code pageable} is {@code null}.
      * @throws UnsupportedOperationException for Key-Value and Wide-Column databases when the {@link Pageable.Mode#CURSOR_NEXT}
      * or {@link Pageable.Mode#CURSOR_PREVIOUS} pagination mode is selected.
      * @see Pageable.Mode

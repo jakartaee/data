@@ -24,15 +24,36 @@ import java.lang.annotation.Target;
 
 
 /**
- * Annotation to bind method parameters to a {@link  Query} via a named parameter.
+ * <p>Annotates a parameter of a repository method to bind it to a named parameter of a {@link Query}.</p>
+ *
+ * <p>For example,</p>
+ *
+ * <pre>
+ * {@code @Repository}
+ * public interface Products extends BasicRepository{@code <Product, String>} {
+ *
+ *     {@code @Query("SELECT p from Products p WHERE (p.length * p.width * p.height <= :maxVolume)")}
+ *     {@code Page<Product>} freeShippingEligible({@code @Param}("maxVolume") float volumeLimit,
+ *                                        Pageable pageRequest);
+ *
+ *     ...
+ * }
+ * </pre>
+ *
+ * <p>The {@code Param} annotation is unnecessary when the method parameter name
+ * matches the query language named parameter name and the application is compiled with the
+ * {@code -parameters} compiler option that makes parameter names available
+ * at run time.</p>
+ *
+ * @see Query
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.PARAMETER)
 public @interface Param {
 
     /**
-     * Defines the name of the parameter to bind to.
-     * @return the parameter name
+     * Defines the name of the query language named parameter to bind to.
+     * @return the name of the query language named parameter.
      */
     String value();
 }

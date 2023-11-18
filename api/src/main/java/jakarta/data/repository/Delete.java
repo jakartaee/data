@@ -25,8 +25,11 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * <p>Annotates a repository method to perform delete operations.</p>
+ *
  * <p>The {@code Delete} annotation indicates that the annotated repository method requests one or more
- * entities to be removed from the database. This method must have a single parameter whose type must be one of the following:
+ * entities to be removed from the database. To request deletion of specific entity instances, the annotated
+ * repository method must have a single parameter whose type must be one of the following:
  * </p>
  * <ul>
  *     <li>The entity to be deleted.</li>

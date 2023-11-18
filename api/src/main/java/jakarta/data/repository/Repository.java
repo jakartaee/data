@@ -24,7 +24,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * <p>Annotates a data repository interface that will be implemented by the container/runtime.</p>
+ * <p>Annotates a repository interface to be implemented by the container/runtime.</p>
  *
  * <p>This class is a CDI bean-defining annotation when CDI is available.
  * Regardless of whether CDI or custom dependency injection is used, the
