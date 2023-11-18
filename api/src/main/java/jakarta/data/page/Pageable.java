@@ -184,7 +184,7 @@ public interface Pageable {
     /**
      * Return the order collection if it was specified on this page request, otherwise an empty list.
      *
-     * @return the order collection; will never be {@literal null}.
+     * @return the order collection; will never be {@code null}.
      */
     List<Sort> sorts();
 

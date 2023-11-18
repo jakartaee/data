@@ -17,7 +17,7 @@ package ee.jakarta.tck.data.common.cdi;
 
 /**
  * A test entity that will be persisted to a repository.
- * Uses the custom {@literal @}PersonEntity annotation.
+ * Uses the custom {@code @PersonEntity} annotation.
  * 
  * @see ee.jakarta.tck.data.common.cdi.PersonEntity
  */

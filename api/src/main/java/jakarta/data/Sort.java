@@ -95,7 +95,7 @@ public record Sort(String property, boolean isAscending, boolean ignoreCase) {
     /**
      * Name of the property to order by.
      *
-     * @return The property name to order by; will never be {@literal null}.
+     * @return The property name to order by; will never be {@code null}.
      */
     public String property() {
         return property;

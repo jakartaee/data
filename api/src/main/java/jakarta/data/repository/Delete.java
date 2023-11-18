@@ -47,9 +47,9 @@ import java.lang.annotation.Target;
  * </p>
  * <p>For example, consider an interface representing a garage:</p>
  * <pre>
- * {@literal @}Repository
+ * {@code @Repository}
  * interface Garage {
- *     {@literal @}Delete
+ *     {@code @Delete}
  *     Car unpark(Car car);
  * }
  * </pre>
