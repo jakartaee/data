@@ -428,6 +428,108 @@ For other types of databases, Jakarta Data does not require explicit support for
 
 In instances where a Jakarta Data provider for NoSQL databases encounters a recursive relationship that it cannot support due to the specific characteristics of the database, it must throw a `jakarta.data.exceptions.MappingException` or an appropriate subclass of `MappingException`. This exception notifies developers that the database does not support the relationship.
 
+==== Entity Property Names
+
+Within an entity, property names must be unique ignoring case. For simple entity properties, the field or accessor method name serves as the entity property name. In the case of embedded classes, entity property names are computed by concatenating the field or accessor method names at each level, optionally joined by a delimiter.
+
+Locations where entity property names can be used, along with delimiters, are shown in the table. The examples in the table assume an `Order` entity has an `address` of type `MailingAddress` with a `zipCode` of type `int`.
+
+.Locations of Entity Properties and Delimiters Table:
+[cols="3, 1, 6"]
+|===
+|Entity Property Location |Delimiter |Example
+
+|`@Query` annotation
+|`.`
+|`@Query("SELECT o FROM Order o WHERE o.address.zipCode=?1")`
+
+|_Query by Method Name_ method name
+|`_`
+|`List<Order> findByAddress_zipCode(int zip);`
+
+|_Parameter-based Conditions_ parameter name
+|`_`
+|`List<Order> find(int address_zipCode);`
+
+|`Sort` property value
+|`.` or `_`
+|`Sort.asc("address_zipCode")`
+
+|`@By` or `@OrderBy` annotation value
+|`.` or `_`
+|`List<Order> find(@By("address.zipCode") int zip);`
+|===
+
+For a given entity property name, delimiter usage must be consistent. Either the delimiter must always be used within the entity property name to delimit subcomponents or the delimiter must never be used within the entity property name. Except in the case of `@Query` where the delimiter is required by the query language, delimiters can be omitted entirely from an entity property name when it is unnecessary to disambiguate the entity property to which the name refers.
+
+The resolution of properties involves the following steps:
+
+1. *Property Extraction*: The framework obtains entity property names from the locations in the above table, applying the BNF grammar in the case of _Query by Method Name_ to extract entity property names from the method name. For example, for the query method `findByAddressZipCode`, the property name extracted is `AddressZipCode`.
+
+2. *Property Lookup on Entity*: The framework compares the extracted name, ignoring case, against the field names of the respective entity class.
+
+3. *Property Lookup in Hierarchy*: If no match was found among the entity field names, the framework compares the extracted name, ignoring case, against the combination of the field names of the respective entity and the fields of the entity's hierarchy of relations and embedded classes, concatenated as outlined in this section above, both with and without the optional delimiter.
+
+4. *Resolution Outcome*: If the framework successfully identifies a property in the domain class or along the specified traversal path that matches the extracted property name, it uses that property.
+
+When `@Query` is used, the Jakarta Data specification defers to the rules of the query language on whether the delimiter is required and whether the case must match.
+
+Users are encouraged to follow Java's camel case naming standards for fields of entities, relations, and embedded classes, avoiding underscores in field names. The resolution algorithm for property identification relies on traversal with underscores. Adhering to camel case for property names ensures consistency and eliminates ambiguity, enabling effective data filtering and retrieval from domain classes.
+
+
+===== Scenario 1: Person Repository with Unambiguous Resolution
+
+In this scenario, we have the following data model:
+
+[source,java]
+----
+class Person {
+  private Long id;
+  private MailingAddress address;
+}
+
+class MailingAddress {
+  private int zipcode;
+}
+----
+
+The `Person` entity does not have an `addressZipCode` field, so use of the delimiter is optional. It is valid to write both of the following repository methods, which have the same meaning,
+
+[source,java]
+----
+List<Person> findByAddressZipCode(int zipCode);
+List<Person> findByAddress_zipcode(int zipCode);
+----
+
+===== Scenario 2: Order Repository with Resolution that requires a Delimiter
+
+In this scenario, we have the following data model:
+
+[source,java]
+----
+class Order {
+  private Long id;
+  private String addressZipCode;
+  private MailingAddress address;
+}
+
+class MailingAddress {
+  private int zipcode;
+}
+----
+
+The `Order` entity has an `addressZipCode` field, as well as an `address` field for an embeddable class with a `zipcode` field. The method name `findByAddressZipCode` points to the `addressZipCode` field and cannot be used to navigate to the embedded class. To navigate to the `zipcode` field of the embedded class, the delimiter must be used:
+
+[source,java]
+----
+List<Order> findByAddress_zipcode(int zipCode);
+----
+
+WARNING: Define entity properties following standard Java naming conventions for camel case, using underscore only as the last resort.
+
+In all places where entity property names can be specified other than `@Query`, `Id` is an alias for the entity property that is designated as the id. Entity property names that are used in _Query by Method Name_ must not contain reserved words.
+
+
 == Repository Interfaces
 
 A Jakarta Data repository is a Java interface annotated with `@Repository`.
@@ -706,132 +808,9 @@ Explanation of the BNF elements:
 - `<order-clause>`: Specifies the optional order clause, starting with "OrderBy" and followed by one or more order items.
 - `<order-item>`: Represents an ordered collection of entity attributes by which to sort results, including an optional "Asc" or "Desc" to specify the sort direction.
 
-==== Entity Property Names
-
-Within an entity, property names must be unique ignoring case. For simple entity properties, the field or accessor method name serves as the entity property name. In the case of embedded classes, entity property names are computed by concatenating the field or accessor method names at each level.
-
-Assume an `Order` entity has an `address` of type `MailingAddress` with a `zipCode` of type `int`. In that case, the access is `order.address.zipCode`. This form is used within annotations, such as `@Query`.
-
-[source,java]
-----
-@Repository
-public interface OrderRepository extends BasicRepository<Order, Long> {
-
-  @Query("SELECT order FROM Order order WHERE order.address.zipCode=?1")
-  List<Order> withZipCode(int zipCode);
-
-}
-----
-
-The resolution algorithm for identifying properties in query methods by method name, with manual traversal points, is defined as follows:
-
-1. *Method Name Parsing*: The query method's name is parsed to identify the property or properties being referenced. Method names in query methods follow a pattern of "findBy[Property]", where "[Property]" represents the name of the property you want to query by.
-
-2. *Property Extraction*: The property name is extracted from the method name by removing the "findBy" prefix. For example, in the query method `findByAddressZipCode`, the property name extracted is `AddressZipCode`.
-
-3. *Property Name Capitalization*: The extracted property name is treated as is, with its original capitalization. For example, if the property name is `AddressZipCode`, it remains in camel case.
-
-4. *Manual Traversal Points*: To resolve ambiguity or to specify traversal through nested properties, underscores (`_`) can be used within the method name. Each underscore represents a traversal point to access nested properties. For example, `findByAddress_ZipCode` explicitly indicates traversal to the `address` property, which is of type `MailingAddress`, and then to that object's `zipCode` property.
-
-5. **Domain Class Property Lookup**: The framework checks the domain class associated with the repository for a property with the same name as the extracted property name (uncapitalized) in a case-insensitive manner. If the domain class has a property named `addressZipCode` or `addresszipcode`, this is considered a successful resolution.
-
-6. *Nested Property Handling*: If the extracted property name includes underscores (`_`) indicating nested traversal, the framework follows the specified path to resolve the property.
-
-7. *Resolution Outcome*: If the framework successfully identifies a property in the domain class or along the specified traversal path that matches the extracted property name, it uses that property in the query to filter data.
-
-Users are encouraged to follow Java's naming standards in formalizing Jakarta Data queries using name conventions, avoiding underscores in field names. The resolution algorithm for property identification relies on "findBy[Property]" naming, allowing manual traversal with underscores. Adhering to the camel case for property names ensures consistency and seamless query method naming in Jakarta Data, enabling effective data filtering and retrieval from domain classes.
-
-
-*Scenario 1: Person Repository with findByAddressZipCode(int zipCode)*
-
-In this scenario, we have the following data models:
-
-[source,java]
-----
-class Person {
-  private Long id;
-  private MailingAddress address;
-}
-
-class MailingAddress {
-  private int zipcode;
-}
-----
-
-- The query method `findByAddressZipCode` takes a `int` object as a parameter.
-- The Property Resolution Algorithm will parse the method name and extract `AddressZipCode`.
-- It will then attempt to resolve the property named `addressZipCode` in the `Person` class, following automatic class splitting by camel case.
-- Since the `Person` class has an `address` property, it will recursively follow the path to the `MailingAddress` class.
-- In the `MailingAddress` class, it will identify the `zipcode` property and filter `Person` records based on the provided `zipcode` integer within the `MailingAddress` object.
-
-*Scenario 2: People Repository with findByAddressZipCode(String addressZipCode)*
-
-
-In this scenario, we have the following data model:
-
-[source,java]
-----
-class Person {
-  private Long id;
-  private String addressZipCode;
-}
-----
-
-- The query method `findByAddressZipCode` takes a `String` parameter named `addressZipCode`.
-- The Property Resolution Algorithm will parse the method name and extract `AddressZipCode`.
-- It will then attempt to resolve the property named `addressZipCode` in the `Person` class, following automatic class splitting by camel case.
-- If a property named `addressZipCode` of type `String` exists in the `Person` class or its nested objects, the query will filter `Person` records based on the provided `addressZipCode` string.
-
-*Scenario 3: Order Repository with findByAddress_ZipCode(int zipCode)*
-
-In this scenario, we have the following data models:
-
-[source,java]
-----
-class Order {
-  private Long id;
-  private String addressZipCode;
-  private MailingAddress address;
-}
-
-class MailingAddress {
-  private int zipcode;
-}
-----
-
-- The query method `findByAddress_ZipCode` takes an `int` object as a parameter.
-- The method name includes an underscore (`_`) indicating manual traversal points.
-- The Property Resolution Algorithm will parse the method name and extract `Address_ZipCode`, recognizing the underscore as a traversal point.
-- It will then attempt to resolve the property named `address` within the `Order` class, followed by the `zipcode` property within the `MailingAddress` class, following manual traversal points.
-- If properties `address` and `zipcode` are found in the appropriate classes or their nested objects, the query will filter `Order` records based on the provided `zipcode` integer within the `MailingAddress` object.
-
-
-*Scenario 4: People Repository with findByAddressZipCode(String addressZipCode)*
-
-
-In this scenario, we have the following data model:
-
-[source,java]
-----
-class Person {
-  private Long id;
-  private String addressZipcode;
-}
-----
-
-- The query method `findByAddressZipCode` takes a `String` parameter named `addressZipCode`.
-- The Property Resolution Algorithm will parse the method name and extract `AddressZipCode`.
-- It will then attempt to resolve the property named `addressZipcode` in the `Person` class, following automatic class splitting by case-insensitive.
-- If a property named `addressZipCode` of type `String` exists in the `Person` class or its nested objects, the query will filter `Person` records based on the provided `addressZipCode` string.
-
-
-WARNING: Define entity properties following standard Java naming conventions for camel case, using underscore only as the last resort.
-
-In Query by Method Name, `Id` is an alias for the entity property that is designated as the id. Entity property names that are used in queries by method name must not contain reserved words.
-
 ==== Query by Method Name Keywords
 
-The following table lists the query-by-method keywords that must be supported by Jakarta Data providers, except where explicitly indicated for a type of database.
+The following table lists the _Query by Method Name_ keywords that must be supported by Jakarta Data providers, except where explicitly indicated for a type of database.
 
 |===
 |Keyword |Description| Not Required For
