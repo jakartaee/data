@@ -1288,6 +1288,40 @@ for (Pageable p = Pageable.ofSize(25).sortBy(Sort.desc("yearBorn"),
 }
 ----
 
+===== Example with Before/After Cursor
+
+In this example, the application uses a cursor to request pages in forward and previous direction from a specific value, which is the price for a matching product.
+
+[source,java]
+----
+@Repository
+public interface Products extends CrudRepository<Product, Long> {
+  KeysetAwareSlice<Product> findByNameContains(String namePattern, Pageable pageRequest);
+}
+----
+
+Obtaining the next 10 products that cost $50.00 or more:
+
+[source,java]
+----
+float priceMidpoint = 50.0f;
+Pageable pageRequest = Pageable.ofSize(10)
+                               .sortBy(Sort.asc("price"), Sort.asc("id"))
+                               .afterKeyset(priceMidpoint, 0L);
+KeysetAwareSlice<Product> moreExpensive = products.findByNameContains(pattern, pageRequest);
+----
+
+Obtaining the previous 10 products:
+
+[source,java]
+----
+if (moreExpensive.hasContent())
+    pageRequest = pageRequest.beforeKeysetCursor(moreExpensive.getKeysetCursor(0));
+else
+    pageRequest = pageRequest.beforeKeyset(priceMidpoint, 1L);
+KeysetAwareSlice<Product> lessExpensive = products.findByNameContains(pattern, pageRequest);
+----
+
 ===== Scenario: Person Entity and People Repository
 
 This keyset cursor-based pagination scenario uses the same `Person` entity and example dataset from the offset-based pagination scenario, but orders it by `name` and then by `id`,
