@@ -26,7 +26,7 @@ In this context, a domain-centric approach refers to designing the application's
 
 === Goals
 
-Jakarta Data is addresses a fundamental challenge in Java application development: the seamless integration of diverse data sources amid the dissimilarities in their respective programming models. Offering the Java developer a common, familiar starting point for data access is helpful for solutions involving multiple databases and storage technologies.
+Jakarta Data addresses a fundamental challenge in Java application development: the seamless integration of diverse data sources amid the dissimilarities in their respective programming models. Offering the Java developer a common, familiar starting point for data access is helpful for solutions involving multiple databases and storage technologies.
 
 The primary problem Jakarta Data sets out to solve is the complexity and inconsistency that arises when Java applications encounter various database systems—relational, document, column, key-value, graph, and others. Managing these diverse data sources can be daunting, often requiring developers to write specialized code for each storage technology.
 
@@ -50,13 +50,11 @@ Jakarta Data is guided by a set of clear and well-defined objectives to simplify
 
 === Non-Goals
 
-In the development of any software component, important decisions are made to strike a balance between various considerations. It iss equally important to define what Jakarta Data does not aim to achieve—its non-goals:
+The following are not goals of Jakarta Data:
 
-1. **Specific Features of Jakarta Persistence, Jakarta NoSQL, etc., and Specializations:** Jakarta Data does not intend to replicate or replace the specific features provided by other Jakarta specifications, such as Jakarta Persistence and Jakarta NoSQL, along with their associated specializations and extensions. These specifications have well-defined scopes and functionalities that cater to specific use cases. Jakarta Data operates with the understanding that it complements these specifications by providing a higher-level, agnostic API. It does not seek to duplicate their capabilities but aims to simplify data access and integration across diverse data sources. The specialized features, specializations, and extensions that address particular behaviors and use cases are crucial within the Jakarta ecosystem but distinct from Jakarta Data's core API. Jakarta Data's core API primarily provides a persistence-agnostic data access and integration framework. It establishes a consistent foundation that abstracts the complexities of data sources and storage engines, offering developers a unified approach.
+1. **Specific Features of Jakarta Persistence, Jakarta NoSQL, etc., and Specializations:** Jakarta Data does not intend to replicate or replace the specific features provided by other Jakarta specifications, such as Jakarta Persistence and Jakarta NoSQL, along with their associated specializations and extensions. These specifications have well-defined scopes and functionalities that cater to specific use cases. Jakarta Data operates with the understanding that it complements these specifications by providing a higher-level, agnostic API. It does not seek to duplicate their capabilities but aims to simplify data access and integration across diverse data sources.
 
 2. **Replacement of Jakarta Persistence or Jakarta NoSQL Specifications:** Jakarta Data's primary goal is not to replace or supersede the Jakarta Persistence or Jakarta NoSQL specifications. Instead, it works in harmony with these specifications, serving as an additional layer that abstracts the complexities of data access. Jakarta Data enhances the developer experience by offering a persistence-agnostic approach while leveraging the capabilities of Jakarta Persistence and Jakarta NoSQL. Its role is to complement and simplify, not replace, these established specifications.
-
-These clarifications emphasize Jakarta Data's role as a complementary and simplifying layer within the Jakarta ecosystem, highlighting that it does not aim to replicate existing functionality or replace established specifications.
 
 === Conventions
 
