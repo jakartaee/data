@@ -50,7 +50,7 @@ Several characteristics define repositories:
 
 - **Entity Associations:** Entities within a repository may have associations between them, especially in the case of relational data access. However, this specification does not define the semantics of associations between entities belonging to different repositories.
 
-- **Stateless Repositories:** Repositories are typically designed to be stateless. However, it is important to note that this specification does not address the definition of repositories backed by Jakarta Persistence-style stateful persistence contexts.
+- **Stateless Repositories:** Repositories are stateless. This specification does not address the definition of repositories that externalize Jakarta Persistence-style stateful persistence contexts.
 
 Repositories in Jakarta Data serve as efficient gateways for managing and interacting with persistent data, offering a simplified and consistent approach to data access and modification within Java applications.
 
@@ -154,7 +154,7 @@ In Jakarta Data, an entity refers to a fundamental data representation and manag
 
 3. *Persistence and Representation*: Entities are associated with persistent data, meaning the data outlives any specific Java process utilizing it. Each persistent instantiation of the schema is distinguishable by a unique identifier. For example, a row of a relational database table is identifiable by the value of its primary key. In Java, these entities are represented as classes, referred to as entity classes. It's important to note that multiple instances of the entity class within a Java program can represent a single persistent instance of the schema.
 
-4. *Provider Differentiation*: To maintain clarity and specify the desired provider when using Jakarta Data, it's recommended that applications do not mix Entity annotations from different models. This practice allows the Entity annotation to indicate the desired provider, especially in cases where multiple types of Jakarta Data providers are available. A Jakarta Data provider must provide implementation of repositories for Entity types having the Entity annotations that it supports, ignoring Entity types only having identifiable Entity annotations that the Jakarta Data provider does not support. The latter are to be handled by other Jakarta Data providers that do support the other types of Entity annotations.
+4. *Provider Differentiation*: To maintain clarity and specify the desired provider when using Jakarta Data, it is recommended that applications do not mix Entity annotations from different models. This practice allows the Entity annotation to indicate the desired provider, especially in cases where multiple types of Jakarta Data providers are available. A Jakarta Data provider must provide implementation of repositories for Entity types having the Entity annotations that it supports, ignoring Entity types only having identifiable Entity annotations that the Jakarta Data provider does not support. The latter are to be handled by other Jakarta Data providers that do support the other types of Entity annotations.
 
 An entity within Jakarta Data encompasses the Java class representing the data and the schema, persistence characteristics, and provider-specific annotations, all working together to simplify data access and management within Java applications. While a Jakarta Data provider might require a default constructor and work primarily with mutable entities, Jakarta Data allows for the use of immutable entity classes, which are best represented as Java records.
 
@@ -761,7 +761,7 @@ The parsing of query method names follows a specific format:
 - The order clause, which is optional, begins with `OrderBy` and consists of an ordered collection of entity attributes by which to sort results, delimited by `Asc` or `Desc` to specify the sort direction of the preceding attribute.
 - The method name is formed by combining the subject, predicate, and order clause, in that order.
 
-NOTE: This specification uses the terms subject and predicate in a way that aligns with industry terminology rather than how they are defined in English grammar. Aligning with the rules of English grammar, the subject would be the repository instance upon which the method is invoked, and the predicate would start with the action (such as `find`) and include the prepositional phrase `By...`.
+NOTE: This specification uses the terms subject and predicate in a way that aligns with industry terminology rather than how they are defined in English grammar.
 
 Queries can also handle entities with relation attributes by specifying the relationship using dot notation, with the dot converted to underscore so that it is a valid character within the method name. See Scenario 3 below for an example.
 
