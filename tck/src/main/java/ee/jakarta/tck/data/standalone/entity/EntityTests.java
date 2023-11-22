@@ -24,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
@@ -51,6 +52,7 @@ import ee.jakarta.tck.data.framework.read.only.NaturalNumbers;
 import ee.jakarta.tck.data.framework.read.only.NaturalNumbersPopulator;
 import ee.jakarta.tck.data.framework.read.only.PositiveIntegers;
 import ee.jakarta.tck.data.framework.read.only.NaturalNumber.NumberType;
+import ee.jakarta.tck.data.framework.utilities.TestPropertyUtility;
 import jakarta.data.Limit;
 import jakarta.data.Sort;
 import jakarta.data.Streamable;
@@ -79,6 +81,9 @@ public class EntityTests {
     public static JavaArchive createDeployment() {
         return ShrinkWrap.create(JavaArchive.class).addClasses(EntityTests.class);
     }
+
+    @Inject
+    Boxes boxes;
 
     @Inject
     NaturalNumbers numbers;
@@ -133,6 +138,262 @@ public class EntityTests {
                      new TreeSet<>(list.subList(0, 2)));
         assertEquals(Set.of(50L, 51L, 52L, 54L, 55L, 56L, 57L, 58L), // the remaining 8 are composite numbers
                      new TreeSet<>(list.subList(2, 10)));
+    }
+
+    @Assertion(id = "133",
+            strategy = "Use a repository that inherits from BasicRepository and defines no additional methods of its own. " +
+                       "Use all of the built-in methods.")
+    public void testBasicRepositoryBuiltInMethods() {
+        boxes.deleteAll();
+
+        TestPropertyUtility.waitForEventualConsistency();
+
+        // BasicRepository.saveAll
+        Iterable<Box> saved = boxes.saveAll(List.of(Box.of("TestBasicRepositoryMethods-01", 119, 120, 169),
+                                                    Box.of("TestBasicRepositoryMethods-02", 20, 21, 29),
+                                                    Box.of("TestBasicRepositoryMethods-03", 33, 56, 65),
+                                                    Box.of("TestBasicRepositoryMethods-04", 45, 28, 53)));
+        Iterator<Box> savedIt = saved.iterator();
+        assertEquals(true, savedIt.hasNext());
+        Box box1 = savedIt.next();
+        assertEquals("TestBasicRepositoryMethods-01", box1.boxIdentifier);
+        assertEquals(119, box1.length);
+        assertEquals(120, box1.width);
+        assertEquals(169, box1.height);
+        assertEquals(true, savedIt.hasNext());
+        Box box2 = savedIt.next();
+        assertEquals("TestBasicRepositoryMethods-02", box2.boxIdentifier);
+        assertEquals(20, box2.length);
+        assertEquals(21, box2.width);
+        assertEquals(29, box2.height);
+        assertEquals(true, savedIt.hasNext());
+        Box box3 = savedIt.next();
+        assertEquals("TestBasicRepositoryMethods-03", box3.boxIdentifier);
+        assertEquals(33, box3.length);
+        assertEquals(56, box3.width);
+        assertEquals(65, box3.height);
+        assertEquals(true, savedIt.hasNext());
+        Box box4 = savedIt.next();
+        assertEquals("TestBasicRepositoryMethods-04", box4.boxIdentifier);
+        assertEquals(45, box4.length);
+        assertEquals(28, box4.width);
+        assertEquals(53, box4.height);
+        assertEquals(false, savedIt.hasNext());
+
+        TestPropertyUtility.waitForEventualConsistency();
+
+        // BasicRepository.existsById
+        assertEquals(true, boxes.existsById("TestBasicRepositoryMethods-04"));
+
+        // BasicRepository.count
+        assertEquals(4, boxes.count());
+
+        // BasicRepository.save
+        box2.length = 21;
+        box2.width = 20;
+        box2 = boxes.save(box2);
+        assertEquals("TestBasicRepositoryMethods-02", box2.boxIdentifier);
+        assertEquals(21, box2.length);
+        assertEquals(20, box2.width);
+        assertEquals(29, box2.height);
+
+        Box box5 = boxes.save(Box.of("TestBasicRepositoryMethods-05", 153, 104, 185));
+        assertEquals("TestBasicRepositoryMethods-05", box5.boxIdentifier);
+        assertEquals(153, box5.length);
+        assertEquals(104, box5.width);
+        assertEquals(185, box5.height);
+
+        TestPropertyUtility.waitForEventualConsistency();
+
+        // BasicRepository.deleteAll(Iterable)
+        boxes.deleteAll(Set.of(box1, box2));
+
+        TestPropertyUtility.waitForEventualConsistency();
+
+        assertEquals(false, boxes.existsById("TestBasicRepositoryMethods-01"));
+        assertEquals(3, boxes.count());
+
+        // BasicRepository.findByIdIn
+        Stream<Box> stream = boxes.findByIdIn(List.of("TestBasicRepositoryMethods-04", "TestBasicRepositoryMethods-05"));
+        List<Box> list = stream.sorted(Comparator.comparing(b -> b.boxIdentifier)).collect(Collectors.toList());
+        assertEquals(2, list.size());
+        box4 = list.get(0);
+        assertEquals("TestBasicRepositoryMethods-04", box4.boxIdentifier);
+        assertEquals(45, box4.length);
+        assertEquals(28, box4.width);
+        assertEquals(53, box4.height);
+        box5 = list.get(1);
+        assertEquals("TestBasicRepositoryMethods-05", box5.boxIdentifier);
+        assertEquals(153, box5.length);
+        assertEquals(104, box5.width);
+        assertEquals(185, box5.height);
+
+        // BasicRepository.delete
+        boxes.delete(box4);
+
+        TestPropertyUtility.waitForEventualConsistency();
+
+        // BasicRepository.findAll
+        stream = boxes.findAll();
+        list = stream.sorted(Comparator.comparing(b -> b.boxIdentifier)).collect(Collectors.toList());
+        assertEquals(2, list.size());
+        box4 = list.get(0);
+        assertEquals("TestBasicRepositoryMethods-03", box3.boxIdentifier);
+        assertEquals(33, box3.length);
+        assertEquals(56, box3.width);
+        assertEquals(65, box3.height);
+        box5 = list.get(1);
+        assertEquals("TestBasicRepositoryMethods-05", box5.boxIdentifier);
+        assertEquals(153, box5.length);
+        assertEquals(104, box5.width);
+        assertEquals(185, box5.height);
+
+        // BasicRepository.deleteById
+        boxes.deleteById("TestBasicRepositoryMethods-03");
+
+        TestPropertyUtility.waitForEventualConsistency();
+
+        // BasicRepository.findById
+        assertEquals(false, boxes.findById("TestBasicRepositoryMethods-03").isPresent());
+        box5 = boxes.findById("TestBasicRepositoryMethods-05").orElseThrow();
+        assertEquals("TestBasicRepositoryMethods-05", box5.boxIdentifier);
+        assertEquals(153, box5.length);
+        assertEquals(104, box5.width);
+        assertEquals(185, box5.height);
+
+        // BasicRepository.deleteAll
+        boxes.deleteAll();
+
+        TestPropertyUtility.waitForEventualConsistency();
+
+        assertEquals(0, boxes.count());
+    }
+
+    @Assertion(id = "133", strategy = "Use a repository that inherits from BasicRepository and defines no additional methods of its own. Use all of the built-in methods.")
+    public void testBasicRepositoryMethods() {
+        boxes.deleteAll();
+
+        TestPropertyUtility.waitForEventualConsistency();
+
+        // BasicRepository.saveAll
+        Iterable<Box> saved = boxes.saveAll(List.of(Box.of("TestBasicRepositoryMethods-01", 119, 120, 169),
+                                                    Box.of("TestBasicRepositoryMethods-02", 20, 21, 29),
+                                                    Box.of("TestBasicRepositoryMethods-03", 33, 56, 65),
+                                                    Box.of("TestBasicRepositoryMethods-04", 45, 28, 53)));
+        Iterator<Box> savedIt = saved.iterator();
+        assertEquals(true, savedIt.hasNext());
+        Box box1 = savedIt.next();
+        assertEquals("TestBasicRepositoryMethods-01", box1.boxIdentifier);
+        assertEquals(119, box1.length);
+        assertEquals(120, box1.width);
+        assertEquals(169, box1.height);
+        assertEquals(true, savedIt.hasNext());
+        Box box2 = savedIt.next();
+        assertEquals("TestBasicRepositoryMethods-02", box2.boxIdentifier);
+        assertEquals(20, box2.length);
+        assertEquals(21, box2.width);
+        assertEquals(29, box2.height);
+        assertEquals(true, savedIt.hasNext());
+        Box box3 = savedIt.next();
+        assertEquals("TestBasicRepositoryMethods-03", box3.boxIdentifier);
+        assertEquals(33, box3.length);
+        assertEquals(56, box3.width);
+        assertEquals(65, box3.height);
+        assertEquals(true, savedIt.hasNext());
+        Box box4 = savedIt.next();
+        assertEquals("TestBasicRepositoryMethods-04", box4.boxIdentifier);
+        assertEquals(45, box4.length);
+        assertEquals(28, box4.width);
+        assertEquals(53, box4.height);
+        assertEquals(false, savedIt.hasNext());
+
+        TestPropertyUtility.waitForEventualConsistency();
+
+        // BasicRepository.existsById
+        assertEquals(true, boxes.existsById("TestBasicRepositoryMethods-04"));
+
+        // BasicRepository.count
+        assertEquals(4, boxes.count());
+
+        // BasicRepository.save
+        box2.length = 21;
+        box2.width = 20;
+        box2 = boxes.save(box2);
+        assertEquals("TestBasicRepositoryMethods-02", box2.boxIdentifier);
+        assertEquals(21, box2.length);
+        assertEquals(20, box2.width);
+        assertEquals(29, box2.height);
+
+        Box box5 = boxes.save(Box.of("TestBasicRepositoryMethods-05", 153, 104, 185));
+        assertEquals("TestBasicRepositoryMethods-05", box5.boxIdentifier);
+        assertEquals(153, box5.length);
+        assertEquals(104, box5.width);
+        assertEquals(185, box5.height);
+
+        TestPropertyUtility.waitForEventualConsistency();
+
+        // BasicRepository.deleteAll(Iterable)
+        boxes.deleteAll(Set.of(box1, box2));
+
+        TestPropertyUtility.waitForEventualConsistency();
+
+        assertEquals(false, boxes.existsById("TestBasicRepositoryMethods-01"));
+        assertEquals(3, boxes.count());
+
+        // BasicRepository.findByIdIn
+        Stream<Box> stream = boxes.findByIdIn(List.of("TestBasicRepositoryMethods-04", "TestBasicRepositoryMethods-05"));
+        List<Box> list = stream.sorted(Comparator.comparing(b -> b.boxIdentifier)).collect(Collectors.toList());
+        assertEquals(2, list.size());
+        box4 = list.get(0);
+        assertEquals("TestBasicRepositoryMethods-04", box4.boxIdentifier);
+        assertEquals(45, box4.length);
+        assertEquals(28, box4.width);
+        assertEquals(53, box4.height);
+        box5 = list.get(1);
+        assertEquals("TestBasicRepositoryMethods-05", box5.boxIdentifier);
+        assertEquals(153, box5.length);
+        assertEquals(104, box5.width);
+        assertEquals(185, box5.height);
+
+        // BasicRepository.delete
+        boxes.delete(box4);
+
+        TestPropertyUtility.waitForEventualConsistency();
+
+        // BasicRepository.findAll
+        stream = boxes.findAll();
+        list = stream.sorted(Comparator.comparing(b -> b.boxIdentifier)).collect(Collectors.toList());
+        assertEquals(2, list.size());
+        box4 = list.get(0);
+        assertEquals("TestBasicRepositoryMethods-03", box3.boxIdentifier);
+        assertEquals(33, box3.length);
+        assertEquals(56, box3.width);
+        assertEquals(65, box3.height);
+        box5 = list.get(1);
+        assertEquals("TestBasicRepositoryMethods-05", box5.boxIdentifier);
+        assertEquals(153, box5.length);
+        assertEquals(104, box5.width);
+        assertEquals(185, box5.height);
+
+        // BasicRepository.deleteById
+        boxes.deleteById("TestBasicRepositoryMethods-03");
+
+        TestPropertyUtility.waitForEventualConsistency();
+
+        // BasicRepository.findById
+        assertEquals(false, boxes.findById("TestBasicRepositoryMethods-03").isPresent());
+        box5 = boxes.findById("TestBasicRepositoryMethods-05").orElseThrow();
+        assertEquals("TestBasicRepositoryMethods-05", box5.boxIdentifier);
+        assertEquals(153, box5.length);
+        assertEquals(104, box5.width);
+        assertEquals(185, box5.height);
+
+        // BasicRepository.deleteAll
+        boxes.deleteAll();
+
+        TestPropertyUtility.waitForEventualConsistency();
+
+        assertEquals(0, boxes.count());
     }
 
     @Assertion(id = "133", strategy = "Request a Page higher than the final Page, expecting an empty Page with 0 results.")
