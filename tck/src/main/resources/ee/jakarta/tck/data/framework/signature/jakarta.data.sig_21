@@ -93,33 +93,6 @@ hfds serialVersionUID
 
 CLSS abstract interface jakarta.data.exceptions.package-info
 
-CLSS public jakarta.data.metamodel.Attribute
-meth public final boolean init(jakarta.data.metamodel.AttributeInfo)
-meth public final jakarta.data.Sort asc()
-meth public final jakarta.data.Sort ascIgnoreCase()
-meth public final jakarta.data.Sort desc()
-meth public final jakarta.data.Sort descIgnoreCase()
-meth public final java.lang.String name()
-meth public final static jakarta.data.metamodel.Attribute get()
-supr java.lang.Object
-hfds info
-
-CLSS public abstract interface jakarta.data.metamodel.AttributeInfo
-meth public abstract jakarta.data.Sort asc()
-meth public abstract jakarta.data.Sort ascIgnoreCase()
-meth public abstract jakarta.data.Sort desc()
-meth public abstract jakarta.data.Sort descIgnoreCase()
-meth public abstract java.lang.String name()
-
-CLSS public abstract interface !annotation jakarta.data.metamodel.StaticMetamodel
- anno 0 java.lang.annotation.Documented()
- anno 0 java.lang.annotation.Retention(java.lang.annotation.RetentionPolicy value=RUNTIME)
- anno 0 java.lang.annotation.Target(java.lang.annotation.ElementType[] value=[TYPE])
-intf java.lang.annotation.Annotation
-meth public abstract java.lang.Class<?> value()
-
-CLSS abstract interface jakarta.data.metamodel.package-info
-
 CLSS abstract interface jakarta.data.package-info
 
 CLSS public abstract interface jakarta.data.page.KeysetAwarePage<%0 extends java.lang.Object>
@@ -151,9 +124,9 @@ meth public abstract jakarta.data.page.Pageable next()
 meth public abstract jakarta.data.page.Pageable page(long)
 meth public abstract jakarta.data.page.Pageable size(int)
 meth public abstract jakarta.data.page.Pageable sortBy(java.lang.Iterable<jakarta.data.Sort>)
-meth public abstract jakarta.data.page.Pageable$Cursor cursor()
 meth public abstract jakarta.data.page.Pageable$Mode mode()
 meth public abstract java.util.List<jakarta.data.Sort> sorts()
+meth public abstract java.util.Optional<jakarta.data.page.Pageable$Cursor> cursor()
 meth public abstract long page()
 meth public static jakarta.data.page.Pageable ofPage(long)
 meth public static jakarta.data.page.Pageable ofSize(int)
@@ -188,26 +161,52 @@ CLSS abstract interface jakarta.data.page.package-info
 CLSS public abstract interface jakarta.data.repository.BasicRepository<%0 extends java.lang.Object, %1 extends java.lang.Object>
 intf jakarta.data.repository.DataRepository<{jakarta.data.repository.BasicRepository%0},{jakarta.data.repository.BasicRepository%1}>
 meth public abstract <%0 extends {jakarta.data.repository.BasicRepository%0}> java.lang.Iterable<{%%0}> saveAll(java.lang.Iterable<{%%0}>)
+ anno 0 jakarta.data.repository.Save()
 meth public abstract <%0 extends {jakarta.data.repository.BasicRepository%0}> {%%0} save({%%0})
+ anno 0 jakarta.data.repository.Save()
 meth public abstract boolean existsById({jakarta.data.repository.BasicRepository%1})
 meth public abstract java.util.Optional<{jakarta.data.repository.BasicRepository%0}> findById({jakarta.data.repository.BasicRepository%1})
 meth public abstract java.util.stream.Stream<{jakarta.data.repository.BasicRepository%0}> findAll()
 meth public abstract java.util.stream.Stream<{jakarta.data.repository.BasicRepository%0}> findByIdIn(java.lang.Iterable<{jakarta.data.repository.BasicRepository%1}>)
 meth public abstract long count()
 meth public abstract void delete({jakarta.data.repository.BasicRepository%0})
+ anno 0 jakarta.data.repository.Delete()
 meth public abstract void deleteAll()
 meth public abstract void deleteAll(java.lang.Iterable<? extends {jakarta.data.repository.BasicRepository%0}>)
+ anno 0 jakarta.data.repository.Delete()
 meth public abstract void deleteById({jakarta.data.repository.BasicRepository%1})
 meth public abstract void deleteByIdIn(java.lang.Iterable<{jakarta.data.repository.BasicRepository%1}>)
 
+CLSS public abstract interface !annotation jakarta.data.repository.By
+ anno 0 java.lang.annotation.Retention(java.lang.annotation.RetentionPolicy value=RUNTIME)
+ anno 0 java.lang.annotation.Target(java.lang.annotation.ElementType[] value=[PARAMETER])
+intf java.lang.annotation.Annotation
+meth public abstract java.lang.String value()
+
 CLSS public abstract interface jakarta.data.repository.CrudRepository<%0 extends java.lang.Object, %1 extends java.lang.Object>
 intf jakarta.data.repository.BasicRepository<{jakarta.data.repository.CrudRepository%0},{jakarta.data.repository.CrudRepository%1}>
+meth public abstract <%0 extends {jakarta.data.repository.CrudRepository%0}> java.lang.Iterable<{%%0}> insertAll(java.lang.Iterable<{%%0}>)
+ anno 0 jakarta.data.repository.Insert()
+meth public abstract <%0 extends {jakarta.data.repository.CrudRepository%0}> {%%0} insert({%%0})
+ anno 0 jakarta.data.repository.Insert()
 meth public abstract boolean update({jakarta.data.repository.CrudRepository%0})
+ anno 0 jakarta.data.repository.Update()
 meth public abstract int updateAll(java.lang.Iterable<{jakarta.data.repository.CrudRepository%0}>)
-meth public abstract void insert({jakarta.data.repository.CrudRepository%0})
-meth public abstract void insertAll(java.lang.Iterable<{jakarta.data.repository.CrudRepository%0}>)
+ anno 0 jakarta.data.repository.Update()
 
 CLSS public abstract interface jakarta.data.repository.DataRepository<%0 extends java.lang.Object, %1 extends java.lang.Object>
+
+CLSS public abstract interface !annotation jakarta.data.repository.Delete
+ anno 0 java.lang.annotation.Documented()
+ anno 0 java.lang.annotation.Retention(java.lang.annotation.RetentionPolicy value=RUNTIME)
+ anno 0 java.lang.annotation.Target(java.lang.annotation.ElementType[] value=[METHOD])
+intf java.lang.annotation.Annotation
+
+CLSS public abstract interface !annotation jakarta.data.repository.Insert
+ anno 0 java.lang.annotation.Documented()
+ anno 0 java.lang.annotation.Retention(java.lang.annotation.RetentionPolicy value=RUNTIME)
+ anno 0 java.lang.annotation.Target(java.lang.annotation.ElementType[] value=[METHOD])
+intf java.lang.annotation.Annotation
 
 CLSS public abstract interface !annotation jakarta.data.repository.OrderBy
  anno 0 java.lang.annotation.Repeatable(java.lang.Class<? extends java.lang.annotation.Annotation> value=class jakarta.data.repository.OrderBy$List)
@@ -252,6 +251,18 @@ fld public final static java.lang.String DEFAULT_DATA_STORE = ""
 intf java.lang.annotation.Annotation
 meth public abstract !hasdefault java.lang.String dataStore()
 meth public abstract !hasdefault java.lang.String provider()
+
+CLSS public abstract interface !annotation jakarta.data.repository.Save
+ anno 0 java.lang.annotation.Documented()
+ anno 0 java.lang.annotation.Retention(java.lang.annotation.RetentionPolicy value=RUNTIME)
+ anno 0 java.lang.annotation.Target(java.lang.annotation.ElementType[] value=[METHOD])
+intf java.lang.annotation.Annotation
+
+CLSS public abstract interface !annotation jakarta.data.repository.Update
+ anno 0 java.lang.annotation.Documented()
+ anno 0 java.lang.annotation.Retention(java.lang.annotation.RetentionPolicy value=RUNTIME)
+ anno 0 java.lang.annotation.Target(java.lang.annotation.ElementType[] value=[METHOD])
+intf java.lang.annotation.Annotation
 
 CLSS abstract interface jakarta.data.repository.package-info
 
