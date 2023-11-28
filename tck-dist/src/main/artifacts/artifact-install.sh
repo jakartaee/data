@@ -11,12 +11,12 @@ fi
 
 # Parent pom
 mvn org.apache.maven.plugins:maven-install-plugin:3.0.0-M1:install-file \
--Dfile=jakarta-data-parent-"$VERSION".pom \
+-Dfile=jakarta.data-parent-"$VERSION".pom \
 -DgroupId=jakarta.data \
--DartifactId=jakarta-data-parent \
+-DartifactId=jakarta.data-parent \
 -Dversion="$VERSION" \
 -Dpackaging=pom
 
 # Jakarta Data TCK Installed Library
 mvn org.apache.maven.plugins:maven-install-plugin:3.0.0-M1:install-file \
--Dfile=jakarta-data-tck-"$VERSION".jar
+-Dfile=jakarta.data-tck-"$VERSION".jar

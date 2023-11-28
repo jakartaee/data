@@ -19,11 +19,11 @@
 
   <parent>
     <groupId>jakarta.data</groupId>
-    <artifactId>jakarta-data-parent</artifactId>
+    <artifactId>jakarta.data-parent</artifactId>
     <version>1.0.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>jakarta-data-tck</artifactId>
+  <artifactId>jakarta.data-tck</artifactId>
   <name>Jakarta Data Technology Compatibility Kit</name>
   <description>Jakarta Data :: TCK</description>
 

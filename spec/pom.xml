@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ Copyright (c) 2022 Contributors to the Eclipse Foundation
+  ~ Copyright (c) 2022, 2023 Contributors to the Eclipse Foundation
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -22,11 +22,11 @@
 
     <parent>
         <groupId>jakarta.data</groupId>
-        <artifactId>jakarta-data-parent</artifactId>
+        <artifactId>jakarta.data-parent</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>jakarta-data-spec</artifactId>
+    <artifactId>jakarta.data-spec</artifactId>
     <packaging>pom</packaging>
     <name>Jakarta Data Specification</name>
 
