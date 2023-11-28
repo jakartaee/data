@@ -34,6 +34,7 @@ body:
       label: TCK Version
       description: What version of the TCK are you running against? 
       options:
+        - 1.0.0-M2
         - 1.0.0-M1
         - SNAPSHOT (Locally built)      
   - type: input
