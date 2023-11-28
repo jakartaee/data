@@ -87,7 +87,7 @@
   <!-- The TCK -->
   <dependency>
    <groupId>jakarta-data</groupId>
-   <artifactId>jakarta-data-tck</artifactId>
+   <artifactId>jakarta.data-tck</artifactId>
    <version>${jakarta.data.tck.version}</version>
   </dependency>
   <!-- The API -->
@@ -150,7 +150,7 @@
     <version>${maven.surefire.plugin.version}</version>
     <configuration>
      <dependenciesToScan>
-      <dependency>jakarta.data:jakarta-data-tck</dependency>
+      <dependency>jakarta.data:jakarta.data-tck</dependency>
      </dependenciesToScan>
      <!-- tag::systemProperties[] -->
      <systemPropertyVariables>
