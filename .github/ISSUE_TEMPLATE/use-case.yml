@@ -6,7 +6,7 @@ body:
   - type: markdown
     attributes: 
       value: |
-        Describe a new use case for the specification.
+        > Describe a new use case for the specification.
   - type: checkboxes
     attributes:
       label: As a ...
@@ -20,17 +20,17 @@ body:
       required: true
     attributes:
       label: I need to be able to ...
-      value: |
+      placeholder: |
         > Description of the new or different use case
   - type: textarea
     validations:
       required: true
     attributes:
       label: Which enables me to ...
-      value: |
+      placeholder: |
         > Description of the added value of this use case
   - type: textarea
     attributes:
       label: Additional information
-      value: |
+      placeholder: |
         > Proposed solutions, code examples, ect. 

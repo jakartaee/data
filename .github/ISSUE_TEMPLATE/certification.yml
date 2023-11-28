@@ -1,15 +1,13 @@
 name: Platform Certification
 description: Jakarta Data Platform Certification
 title: "[Certification]: "
-labels: ["certification"] #TODO need to add this label
+labels: ["certification"] #Verified - label exists
 body:
   - type: markdown
     attributes: 
       value: |
-        Before submitting a Platform Certification to the Jakarta Data community 
-        please read and be familiar with the 
-        [TCK Process document](https://jakarta.ee/committees/specification/tckprocess) 
-        which may be updated occasionally.
+        > Before submitting a Platform Certification to the Jakarta Data community please read and be familiar with the 
+        > [TCK Process document](https://jakarta.ee/committees/specification/tckprocess) which may be updated occasionally.
   - type: input
     id: organization
     validations:

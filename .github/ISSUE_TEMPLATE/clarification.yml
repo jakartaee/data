@@ -1,6 +1,6 @@
 name: Clarification
 description: Request that some aspect of the specification be clarified. 
-title: "[Clarification]: "
+title: "[clarification]: "
 labels: ["question"] #Verified - label exists
 body:
   - type: markdown
@@ -21,10 +21,10 @@ body:
       required: true
     attributes:
       label: I need clarification on ...
-      value: |
+      placeholder: |
         > Description of the clarification needed.
   - type: textarea
     attributes:
       label: Additional information
-      value: |
+      placeholder: |
         > Proposed solutions, code examples, ect. 

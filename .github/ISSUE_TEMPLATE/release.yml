@@ -1,5 +1,5 @@
 name: Release
-description: Propose a new minor/major release
+description: Propose a new major/minor/milestone release
 title: "[Release]: "
 labels: ["release"] #Verified - label exists
 body:
@@ -20,7 +20,7 @@ body:
       label: Outstanding work
       description: |
         Issues / pulls to finish before this release can become generally available.
-      placeholder: |
+      value: |
         - [ ] 
     validations:
       required: false
