@@ -1,0 +1,53 @@
+# This workflow automates the deployment of generated files
+
+name: Update generated files
+
+on: workflow_dispatch
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    # TODO update once 25-ea is available
+    strategy:
+      max-parallel: 1
+      matrix:
+        java-version: [ '17', '21' ]
+
+    steps:
+    - name: Checkout source
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+    - name: Set up JDK ${{ matrix.java-version }}
+      uses: actions/setup-java@0ab4596768b603586c0de567f2430c30f5b0d2b0 # v3.13.0
+      with:
+        java-version: ${{ matrix.java-version }}
+        distribution: 'temurin'
+        cache: maven
+    - name: Checkout branch
+      id: checkout
+      run: .github/scripts/checkout.sh update-generated-files-${{ github.sha }}
+    - name: Generate signatures
+      run: mvn package -Psignature-generation --file tck/pom.xml
+    ## Add any other automated update steps here
+    - name: Needs updates
+      id: update
+      run: echo "update_count=$(git status -s -uno | wc -l)" >> $GITHUB_OUTPUT
+    - name: Create commit
+      if: steps.update.outputs.update_count > 0
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git config user.name "github-actions[bot]"
+
+        git add tck/src/main/resources/
+        git commit -m "Update generated files ${{ matrix.java-version }}"
+        git push origin update-generated-files-${{ github.sha }}
+
+  pull-request:
+    needs: [update]
+    uses: ./.github/workflows/pull-request.yml
+    with:
+      branch: 'update-generated-files-${{ github.sha }}'
+      title: 'Update generated files'
+      body: 'generated pull request'

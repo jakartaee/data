@@ -1,0 +1,38 @@
+# This is a reusable workflow for creating a pull request for an existing branch in github
+
+name: Create a pull request
+
+on:
+  workflow_call:
+    inputs:
+      branch:
+        required: true
+        type: string
+      title:
+        required: true
+        type: string
+      body:
+        required: true
+        type: string
+
+jobs:
+  pull:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      - name: Check branch
+        id: check
+        run: .github/scripts/checkout.sh ${{ inputs.branch }}
+      - name: Create pull request
+        if: steps.check.outputs.branch_existed == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr create \
+            --base main \
+            --head ${{ inputs.branch }} \
+            --title "${{ inputs.title }}" \
+            --body "${{ inputs.body }}" \
+            --label 'bot'
