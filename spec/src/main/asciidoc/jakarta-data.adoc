@@ -1,4 +1,4 @@
-// Copyright (c) 2022 Contributors to the Eclipse Foundation
+// Copyright (c) 2022, 2023 Contributors to the Eclipse Foundation
 //
 // This program and the accompanying materials are made available under the
 // terms of the Eclipse Public License v. 2.0 which is available at
@@ -18,6 +18,7 @@
 :version-label!:
 :doctype: book
 :license: Apache License v2.0
+:inceptionYear: 2022
 :source-highlighter: coderay
 :toc: left
 :toclevels: 3

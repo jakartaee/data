@@ -11,7 +11,7 @@ Release: {revdate}
 
 == Copyright
 
-Copyright (c) {inceptionYear} , {currentYear} Eclipse Foundation.
+Copyright (c) {inceptionYear}, {docyear} Eclipse Foundation.
 
 === Eclipse Foundation Specification License
 
@@ -49,9 +49,9 @@ specification is expressly prohibited.
 
 The notice is:
 
-"Copyright (c) [$date-of-document] Eclipse Foundation. This software or
-document includes material copied from or derived from [title and URI
-of the Eclipse Foundation specification document]."
+"Copyright (c) {inceptionYear}, {docyear} Eclipse Foundation. This software or
+document includes material copied from or derived from Jakarta Data and 
+https://jakarta.ee/specifications/data/."
 
 === Disclaimers
 
