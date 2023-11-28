@@ -16,17 +16,18 @@ body:
       label: Specification Version
       description: What version of the Concurrency Spec are you running using? 
       options:
+        - 1.0.0-M2
         - 1.0.0-M1
-        - 1.0.0-SNAPSHOT (Locally built)
+        - SNAPSHOT (Locally built)
   - type: textarea
     validations:
       required: true
     attributes:
       label: Bug report
-      value: |
+      placeholder: |
         > Description of the bug found.
   - type: textarea
     attributes:
       label: Additional information
-      value: |
+      placeholder: |
         > Proposed solutions, code examples, ect. 

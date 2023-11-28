@@ -1,5 +1,5 @@
 name: Release
-description: Propose a new minor/major release
+description: Propose a new major/minor/milestone release
 title: "[Release]: "
 labels: ["release"] #Verified - label exists
 body:
@@ -20,7 +20,7 @@ body:
       label: Outstanding work
       description: |
         Issues / pulls to finish before this release can become generally available.
-      placeholder: |
+      value: |
         - [ ] 
     validations:
       required: false
@@ -34,7 +34,7 @@ body:
           #### Prepare
             - [X] Open this issue.
             - [ ] Complete outstanding work
-            - [ ] (Update TCK Signatures to capture API changes)[https://github.com/jakartaee/data/blob/main/tck/src/main/java/ee/jakarta/tck/data/framework/signature/README.md#generating-the-signature-file]
+            - [ ] (Update TCK Signatures to capture API changes)[https://github.com/jakartaee/data/actions/workflows/release.yml]
           #### Stage release
             - [ ] [Update the CHANGELOG.adoc file to reflect the changes put into the new release](https://github.com/jakartaee/data/blob/main/CHANGELOG.adoc)
             - [ ] [Build and stage artifacts to staging repository](https://ci.eclipse.org/data/view/Release%20Builds/job/jakarta-data-build-and-stage/)

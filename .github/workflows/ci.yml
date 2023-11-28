@@ -14,9 +14,11 @@ permissions:
 
 jobs:
   build:
+
+    # TODO update once 25-ea is available
     strategy:
       matrix:
-        java-version: [ '17', '21' ]
+        java-version: [ '21' ]
 
     runs-on: ubuntu-latest
 

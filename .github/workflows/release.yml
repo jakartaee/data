@@ -7,29 +7,42 @@ on:
     types: [published]
 
 jobs:
-  build:
+  update:
     runs-on: ubuntu-latest
 
     steps:
     - name: checkout
       uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
     - name: Create branch
-      run: |
-        git checkout -b update-templates
+      id: checkout
+      run: .github/scripts/checkout.sh update-templates-${{ github.sha }}
     - name: Insert release - ${{ github.event.release.tag_name }}
       uses: mikefarah/yq@1cf9ecc79df9cabe69ae75a0bbfa7df7f9fe8a2f #v4.40.2
       with:
         cmd: |
             yq -i '( .body.[] | select(.id == "version") ) ref $x | $x .attributes.options = ["${{ github.event.release.tag_name }}"] + $x .attributes.options' .github/ISSUE_TEMPLATE/bug-report.yml &&
             yq -i '( .body.[] | select(.id == "version") ) ref $x | $x .attributes.options = ["${{ github.event.release.tag_name }}"] + $x .attributes.options' .github/ISSUE_TEMPLATE/tck-challenge.yml
-    - name: Create Pull Request
+    - name: Needs updates
+      id: update
+      run: echo "update_count=$(git status -s -uno | wc -l)" >> $GITHUB_OUTPUT
+    - name: Create commit
+      if: steps.update.outputs.update_count > 0
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
         git config user.name "github-actions[bot]"
+
         git add .github/ISSUE_TEMPLATE/bug-report.yml
         git add .github/ISSUE_TEMPLATE/tck-challenge.yml
+
         git commit -m "Update templates to include release ${{ github.event.release.tag_name }}"
         git push origin update-templates
-        gh pr create -B main --title 'Update templates to include release ${{ github.event.release.tag_name }}' --body 'Created by Github action' --label 'version'
+
+  pull-request:
+    needs: [update]
+    uses: ./.github/workflows/pull-request.yml
+    with:
+      branch: 'update-templates-${{ github.sha }}'
+      title: 'Update templates to include release ${{ github.event.release.tag_name }}'
+      body: 'generated pull request'
