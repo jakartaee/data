@@ -27,10 +27,12 @@ of the project committers and various contributors.
 
 * https://projects.eclipse.org/content/denis-stepanov-committer-jakarta-data[Denis Stepanov]
 * https://projects.eclipse.org/content/dmitry-kornilov-committer-jakarta-data[Dmitry Kornilov]
-* https://projects.eclipse.org/content/dmitry-kornilov-committer-jakarta-data[Emily Jiang]
+* https://projects.eclipse.org/content/emily-jiang-committer-jakarta-data[Emily Jiang]
+* https://projects.eclipse.org/content/gavin-king-committer-jakarta-data[Gavin King]
 * https://projects.eclipse.org/content/graeme-rocher-committer-jakarta-data[Graeme Rocher]
 * https://projects.eclipse.org/content/james-krueger-committer-jakarta-data[James Krueger]
 * https://projects.eclipse.org/content/james-stephens-committer-jakarta-data[James Stephens]
+* https://projects.eclipse.org/content/mark-swatosh-committer-jakarta-data[Mark Swatosh]
 * https://projects.eclipse.org/content/michael-redlich-committer-jakarta-data[Michael Redlich]
 * https://projects.eclipse.org/content/nathan-rauh-committer-jakarta-data[Nathan Rauh]
 * https://projects.eclipse.org/content/otavio-santana-committer-jakarta-data[Otavio Santana]
