@@ -37,7 +37,7 @@ jobs:
         git add .github/ISSUE_TEMPLATE/tck-challenge.yml
 
         git commit -m "Update templates to include release ${{ github.event.release.tag_name }}"
-        git push origin update-templates
+        git push origin update-templates-${{ github.sha }}
 
   pull-request:
     needs: [update]
