@@ -8,6 +8,8 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 
 == [Unreleased]
 
+== [1.0.0-M2] - 2023-11-31
+
 === Changed
 
 - Update the artifact at the Jakarta Data API.
