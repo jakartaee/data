@@ -155,7 +155,7 @@ Abstractly, an entity (or _entity type_) is a schema for data.
 
 NOTE: When there's no risk of confusion, we often use the word “entity” to mean the entity class, or even an instance of the entity class.
 
-Data represented by an entity is persistent, that is, the data itself outlives any Java process which makes use of it. Thus, it's necessary to maintain an association between instances of Java entity classes, and state held in a data store.
+Data represented by an entity is persistent, that is, the data itself outlives any Java process which makes use of it. Thus, it is necessary to maintain an association between instances of Java entity classes and state held in a data store.
 
 - Each persistent instantiation of the schema is distinguishable by a unique _identifier_. For example, a row of a relational database table is identifiable by the value of its primary key.
 - Any persistent instantiation of the schema is representable by an instance of the entity class. In a given Java program, multiple entity class instances might represent the same persistent instance of the schema.
