@@ -168,7 +168,7 @@ In Jakarta Data, the concrete definition of an entity may be understood to encom
 
 3. Its *association with a repository*: Each entity class is associated with at least one repository, which exposes operations for retrieving and storing instances of the entity.
 
-=== Programming Model for Entity Data in Jakarta Data
+=== Programming Model for Entity Classes
 
 A _programming model for entity classes_ specifies:
 
@@ -184,13 +184,18 @@ This section lays out the core requirements that an entity programming model mus
 
 Every entity programming model specifies an _entity-defining annotation_. For Jakarta Persistence, this is `jakarta.persistence.Entity`. For Jakarta NoSQL, it is `jakarta.nosql.Entity`. A Jakarta Data provider must provide repository implementations for entity classes bearing the entity-defining annotations it supports, and must ignore entity classes with entity-defining annotations it does not support.
 
-NOTE: To maintain clarity and to disambiguate the desired Jakarta Data provider, a single entity class should not mix entity-defining annotations from different providers. For example, an entity class should not be annotated both `jakarta.persistence.Entity` and `jakarta.nosql.Entity`. This practice allows the `Entity` annotation to indicate the desired provider in programs where multiple Jakarta Data providers are available.
+NOTE: To maintain clarity and to disambiguate the desired Jakarta Data provider, a single entity class should not mix entity-defining annotations from different providers. For example, an entity class should not be annotated both `jakarta.persistence.Entity` and `jakarta.nosql.Entity`. This practice allows the entity-defining annotation to indicate the desired provider in programs where multiple Jakarta Data providers are available.
 
-Furthermore, an entity programming model must define an annotation which identifies the field or property holding the unique identifier of the entity. For Jakarta Persistence, it is `jakarta.persistence.Id` or `jakarta.persistence.EmbeddedId`. For Jakarta NoSQL, it is `jakarta.nosql.Id`. Alternatively, an entity programming model might allow the identifier field or property to be identified via some convention.
+Furthermore, an entity programming model must define an annotation which identifies the field or property holding the unique identifier of an entity. For Jakarta Persistence, it is `jakarta.persistence.Id` or `jakarta.persistence.EmbeddedId`. For Jakarta NoSQL, it is `jakarta.nosql.Id`. Alternatively, an entity programming model might allow the identifier field or property to be identified via some convention.
 
 Typically, an entity programming model specifies additional annotations which are used to make the schema of the entity explicit, for example, `jakarta.persistence.Id` and `jakarta.persistence.Column`, or `jakarta.nosql.Id` and `jakarta.nosql.Column`. The nature of such annotations is beyond the scope of this specification.
 
-An entity programming model might require that the entity class declare a default constructor, and work primarily with mutable entities. Alternatively, the programming model might allow the use of immutable entity classes, ideally represented as Java `record` types.
+In a given entity programming model, entity classes might always be mutable, or might always be immutable, or, alternatively, the model might support a mix of mutable and immutable entity classes.
+
+- A programming model which supports immutable entity classes may require that every mutable entity class declare a constructor with no parameters, and might place limits on the visibility of this constructor.
+- A programming model which supports the use of immutable entity classes--ideally represented as Java `record` types--would not typically require the existence of such a constructor.
+
+In either case, an entity programming model might place restrictions on the visibility of fields and property accessors of an entity class.
 
 An entity programming model might support inheritance between entities, and might provide support for retrieval of entities in a polymorphic fashion. Support for inheritance is not required by this specification.
 
