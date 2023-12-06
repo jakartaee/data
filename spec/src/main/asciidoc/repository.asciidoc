@@ -146,59 +146,96 @@ NOTE: Jakarta Data allows applications to intermix both patterns by defining met
 
 == Entity Classes
 
-In Jakarta Data, an entity refers to a fundamental data representation and management building block. It can be conceptually understood in several aspects:
+The notion of an _entity_ is the fundamental building block with which a data model may be constructed.
+Abstractly, an entity (or _entity type_) is a schema for data.
 
-1. *Entity Classes*: Entity classes are simple Java objects equipped with fields or accessor methods that designate each property of the entity. Depending on your data storage needs, you may use annotations from the Jakarta Persistence specification, such as `jakarta.persistence.Entity`, `jakarta.persistence.Id`, and `jakarta.persistence.Column`, to define and customize entities for relational databases. Alternatively, for NoSQL databases, you can use annotations from the Jakarta NoSQL specification, including `jakarta.nosql.Entity`, `jakarta.nosql.Id`, and `jakarta.nosql.Column`.
+- The schema may be as simple as a tuple of types, as is typical in the relational model, or it might be structured, as in document data stores.
+- The schema might be explicit, as in the case of SQL DDL declaring a relational table, or it might be implicit, as is commonplace in key/value stores.
+- Either way, we assume that the entity is represented in Java as a class, which we call the _entity class_. footnote:[We will not consider generic programs which work with entity data via detyped representations.]
 
-2. *Data Schema*: Abstractly, an entity or entity type serves as a schema for data. It defines the structure and properties of the data it represents. This schema can be as simple as a set of typed fields, similar to the relational model, or more structured, as found in document data stores. The schema can be explicitly defined, as in the case of SQL Data Definition Language (DDL) declarations for relational tables, or it can be implicit, common in key/value stores.
+NOTE: When there's no risk of confusion, we often use the word “entity” to mean the entity class, or even an instance of the entity class.
 
-3. *Persistence and Representation*: Entities are associated with persistent data, meaning the data outlives any specific Java process utilizing it. Each persistent instantiation of the schema is distinguishable by a unique identifier. For example, a row of a relational database table is identifiable by the value of its primary key. In Java, these entities are represented as classes, referred to as entity classes. It's important to note that multiple instances of the entity class within a Java program can represent a single persistent instance of the schema.
+Data represented by an entity is persistent, that is, the data itself outlives any Java process which makes use of it. Thus, it is necessary to maintain an association between instances of Java entity classes and state held in a data store.
 
-4. *Provider Differentiation*: To maintain clarity and specify the desired provider when using Jakarta Data, it is recommended that applications do not mix Entity annotations from different models. This practice allows the Entity annotation to indicate the desired provider, especially in cases where multiple types of Jakarta Data providers are available. A Jakarta Data provider must provide implementation of repositories for Entity types having the Entity annotations that it supports, ignoring Entity types only having identifiable Entity annotations that the Jakarta Data provider does not support. The latter are to be handled by other Jakarta Data providers that do support the other types of Entity annotations.
+- Each persistent instantiation of the schema is distinguishable by a unique _identifier_. For example, a row of a relational database table is identifiable by the value of its primary key.
+- Any persistent instantiation of the schema is representable by an instance of the entity class. In a given Java program, multiple entity class instances might represent the same persistent instance of the schema.
 
-An entity within Jakarta Data encompasses the Java class representing the data and the schema, persistence characteristics, and provider-specific annotations, all working together to simplify data access and management within Java applications. While a Jakarta Data provider might require a default constructor and work primarily with mutable entities, Jakarta Data allows for the use of immutable entity classes, which are best represented as Java records.
+In Jakarta Data, the concrete definition of an entity may be understood to encompass the following aspects:
 
-=== Programming Model for Entity Data in Jakarta Data
+1. The *entity class* itself: An entity class is simple Java object equipped with fields or accessor methods designating each property of the entity. An entity class is identified by an annotation.
 
-Jakarta Data does not define an entity model of its own, instead borrowing the entity models of other Jakarta standards (Jakarta Persistence and Jakarta NoSQL) and allowing for vendor-specific entity models to be used.  This section defines core concepts that entity models must follow in order to be used with Jakarta Data.  The entity model allows the user to define Java classes that represent data entities. These entities can be stored, retrieved, and manipulated in various databases, including key-value, wide-column, document, graph, and relational databases. A programming model for entities ensures that entity classes are well-defined and can be seamlessly integrated with different database technologies.
+2. Its *data schema*: Some data storage technologies require an explicit schema defining the structure and properties of the data the entity represents. For example, a relational database requires that the schema be specified using SQL Data Definition Language (DDL) statements. The schema might be generated by the Jakarta Data provider, from the information available in the Java entity class, or it might be managed independently. When the data store itself does not require an explicit schema, the data schema is implicit.
 
-Jakarta Data places requirements on two types of fields within entity classes: basic fields and relation fields. Basic fields represent fundamental data types natively supported by Jakarta Data Providers. Support for basic types is mandatory for all Jakarta Data providers. On the other hand, Domain-Relation fields allow entities to interact with other domain classes or types, enriching data structures, but also making them more complex. Support for Domain-Relation fields varies depending on the Jakarta Data provider and the database type. Jakarta Data does not require support for Domain-Relation entity fields when using Graph databases.
+3. Its *association with a repository*: Each entity class is associated with at least one repository, which exposes operations for retrieving and storing instances of the entity.
+
+=== Programming Model for Entity Classes
+
+A _programming model for entity classes_ specifies:
+
+- a set of restrictions on the implementation of a Java class which allows it to be used as an entity class with a given Jakarta Data provider, and
+- a set of annotations allowing the identification of a Java class as an entity class, and further specification of the schema of the entity.
+
+Jakarta Data does not define its own programming model for entities, but instead:
+
+- is compatible with the programming models defined by the Jakarta Persistence and Jakarta NoSQL specifications, and
+- allows for vendor-specific entity programming models to be defined by Jakarta Data providers.
+
+This section lays out the core requirements that an entity programming model must satisfy in order to be compatible with Jakarta Data, and for the defining provider to be considered a fully-compliant implementation of this specification.
+
+Every entity programming model specifies an _entity-defining annotation_. For Jakarta Persistence, this is `jakarta.persistence.Entity`. For Jakarta NoSQL, it is `jakarta.nosql.Entity`. A Jakarta Data provider must provide repository implementations for entity classes bearing the entity-defining annotations it supports, and must ignore entity classes with entity-defining annotations it does not support.
+
+NOTE: To maintain clarity and to disambiguate the desired Jakarta Data provider, a single entity class should not mix entity-defining annotations from different providers. For example, an entity class should not be annotated both `jakarta.persistence.Entity` and `jakarta.nosql.Entity`. This practice allows the entity-defining annotation to indicate the desired provider in programs where multiple Jakarta Data providers are available.
+
+Furthermore, an entity programming model must define an annotation which identifies the field or property holding the unique identifier of an entity. For Jakarta Persistence, it is `jakarta.persistence.Id` or `jakarta.persistence.EmbeddedId`. For Jakarta NoSQL, it is `jakarta.nosql.Id`. Alternatively, an entity programming model might allow the identifier field or property to be identified via some convention.
+
+Typically, an entity programming model specifies additional annotations which are used to make the schema of the entity explicit, for example, `jakarta.persistence.Id` and `jakarta.persistence.Column`, or `jakarta.nosql.Id` and `jakarta.nosql.Column`. The nature of such annotations is beyond the scope of this specification.
+
+In a given entity programming model, entity classes might always be mutable, or might always be immutable, or, alternatively, the model might support a mix of mutable and immutable entity classes.
+
+- A programming model which supports immutable entity classes may require that every mutable entity class declare a constructor with no parameters, and might place limits on the visibility of this constructor.
+- A programming model which supports the use of immutable entity classes--ideally represented as Java `record` types--would not typically require the existence of such a constructor.
+
+In either case, an entity programming model might place restrictions on the visibility of fields and property accessors of an entity class.
+
+An entity programming model might support inheritance between entities, and might provide support for retrieval of entities in a polymorphic fashion. Support for inheritance is not required by this specification.
+
+Jakarta Data distinguishes two types of fields within entity classes.
+
+- A _basic field_ holds a value belonging to some fundamental data type supported natively by the Jakarta Data Provider. Support for the set of basic types enumerated in the next section below is mandatory for all Jakarta Data providers.
+- A _domain-relation field_ represents an association between entity types, or the inclusion of the state of a finer-grained Java class within the state of an entity. The type of a domain-relation field is often a user-written Java class. Support for domain-relation fields varies depending on the Jakarta Data provider and the database type.
 
 ==== Basic Types
 
-A variety of basic types can be used for fields or properties of entity classes. The basic types include:
+Every Jakarta Data provider must support the following basic types within its programming model:
 
 |===
 | Basic Data Type | Description
 
-| Primitive Types and Wrappers
-| All Java primitive types, such as int, double, boolean, etc., and their corresponding java.lang wrapper types (e.g., Integer, Double, Boolean).
+| Primitive types and wrapper classes
+| All Java primitive types, such as `int`, `double`, `boolean`, etc., and their corresponding wrapper types from `java.lang` (e.g., `Integer`, `Double`, `Boolean`).
 
-| String
+| `java.lang.String`
 | Represents text data.
 
-| LocalDate, LocalDateTime, LocalTime, Instant
+| `LocalDate`, `LocalDateTime`, `LocalTime`, `Instant` from `java.time`
 | Represent date and time-related data.
 
-| UUID
-| Universally Unique Identifier for identifying entities.
+| `java.util.UUID`
+| Universally Unique IDentifier for identifying entities.
 
-| BigInteger, BigDecimal
+| `BigInteger` and `BigDecimal` from `java.math`
 | Represent large integer and decimal numbers.
 
-| byte[]
+| `byte[]`
 | Represents binary data.
 
-| Enum Types
-| Custom enumerated types defined by developers.
+| User-defined `enum` types
+| Custom enumerated types defined by user-written code.
 |===
 
+In addition to the types listed above, an entity programming model might support additional domain-specific basic types. This extended set of basic types might include types with a nontrivial internal structure. An entity programming model might even provide mechanisms to convert between user-written types and natively-supported basic types. For example, Jakarta Persistence defines the `AttributeConverter` interface.
 
-Every entity in Jakarta Data must have a unique identifier composed of one or more supported basic types. This unique identifier is crucial for distinguishing individual entities in the database. Entity models that are used with Jakarta Data must define a way for developers to specify the unique identifier. Typically this is done with an `@Id` annotation, but other means are permitted, such as `@EmbeddedId` in Jakarta Persistence which defines a compound unique identifier based on an embeddable class, or by naming convention (for example, considering a property to be the unique identifier if it is named id or ends in Id).
-
-IMPORTANT: It is important to note that key-value, wide-column, document, and relational databases support Collection specializations and Maps of the basic types. However, these databases may have different serialization processes, impacting performance and causing impedance mismatch. Developers should consider these side effects when working with collections and maps in their entity models.
-
-In addition to the basic types, entity models might also choose to support additional types that represent data in a domain-specific manner. These custom types may include complex data structures and objects. Entity models can choose to provide mechanisms to convert these custom types to the supported basic types.
+NOTE: Many key-value, wide-column, document, and relational databases feature native support for arrays or even associative arrays of these basic types. Unfortunately, the semantics of such types--along with their performance characteristics--are extremely nonuniform, and so support for such types is left undefined by the Jakarta Data specification.
 
 ==== Domain-Relation Fields in Jakarta Data
 
