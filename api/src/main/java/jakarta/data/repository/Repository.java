@@ -70,29 +70,42 @@ public @interface Repository {
     static final String ANY_PROVIDER = "";
 
     /**
-     * Value for the {@link Repository#dataStore()} attribute that indicates that the
-     * Jakarta Data provider should choose a default data store to use.
-     * The default data store might require additional vendor-specific
-     * configuration, depending on the vendor.
+     * <p>Value for the {@link Repository#dataStore()} attribute that indicates to use
+     * a default data store.</p>
+     *
+     * <p>When running in a Jakarta EE profile or platform and the entity annotations
+     * indicate a relational database, the default data store is the
+     * Jakarta EE default data source, {@code java:comp/DefaultDataSource}.
+     * Otherwise, the default data store is determined by the Jakarta Data provider.</p>
+     *
+     * <p>The default data store might require additional vendor-specific
+     * configuration, depending on the vendor.</p>
      */
     static final String DEFAULT_DATA_STORE = "";
 
     /**
      * <p>Optionally indicates the data store to use for the repository.</p>
      *
-     * <p>The Jakarta Data specification does not define a full configuration
-     * model, and relies upon the Jakarta Data providers to provide configuration.
-     * This value serves as an identifier linking to vendor-specific configuration
-     * for each Jakarta Data provider to interpret in a vendor-specific way.</p>
+     * <p>Precedence for interpreting the {@code dataStore} value is as follows,
+     * from highest precedence to lowest precedence.</p>
      *
-     * <p>For some Jakarta Data providers, this value could map directly to an
-     * identifier in vendor-specific configuration. For others, this value could
-     * map to a base configuration path that forms a configuration hierarchy,
-     * such as in MicroProfile Config, or possibly Jakarta Config in a future
-     * version of this specification. For providers backed by Jakarta Persistence,
-     * it might point to a {@code jakarta.annotation.sql.DataSourceDefinition} name
-     * or a {@code javax.sql.DataSource} JNDI name or resource reference,
-     * or other vendor-specific configuration.</p>
+     * <ul>
+     * <li>If running in an environment where Jakarta Config is available
+     * and the value is found in Jakarta Config, an error is raised.
+     * Interoperability with Jakarta Config is reserved for future versions
+     * of Jakarta Data.
+     * </li>
+     * <li>If running in a Jakarta EE profile or platform and the entity annotations
+     * indicate a relational database and the value begins with {@code java:}
+     * and matches the name of a {@code jakarta.annotation.sql.DataSourceDefinition},
+     * the JNDI name of a data source, or a resource reference to a data source,
+     * then the corresponding {@code javax.sql.DataSource} is used as the data store.
+     * </li>
+     * <li>Otherwise, the value serves as an identifier linking to vendor-specific configuration
+     * for the Jakarta Data provider to interpret in a vendor-specific way.
+     * Refer to the documentation of the Jakarta Data provider.
+     * </li>
+     * </ul>
      *
      * <p>The default value of this attribute is {@link #DEFAULT_DATA_STORE}.</p>
      *
