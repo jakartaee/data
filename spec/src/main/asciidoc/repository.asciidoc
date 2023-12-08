@@ -246,7 +246,7 @@ public class Person {
     @Id
     private UUID id;
     private String name;
-    private String ssn;
+    private long ssn;
     private LocalDate birthdate;
     private byte[] photo;
 }
