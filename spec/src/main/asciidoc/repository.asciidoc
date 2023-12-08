@@ -204,7 +204,7 @@ An entity programming model might support inheritance between entities, and migh
 Jakarta Data distinguishes three types of fields within entity classes.
 
 - A _basic field_ holds a value belonging to some fundamental data type supported natively by the Jakarta Data Provider. Support for the set of basic types enumerated in the next section below is mandatory for all Jakarta Data providers.
-- An _embedded field_ allows the inclusion of the state of a finer-grained Java class within the state of an entity. The type of a embedded field is often a user-written Java class. Support for embedded fields varies depending on the Jakarta Data provider and the database type.
+- An _embedded field_ allows the inclusion of the state of a finer-grained Java class within the state of an entity. The type of an embedded field is often a user-written Java class. Support for embedded fields varies depending on the Jakarta Data provider and the database type.
 - An _association field_ implements an association between entity types. Support for association fields varies depending on the Jakarta Data provider and the database type.
 
 
