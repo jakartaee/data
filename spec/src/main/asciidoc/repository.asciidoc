@@ -356,7 +356,7 @@ create type Address as (
 create table Person (
     id bigint primary key,
     name varchar,
-    adddress Address
+    address Address
 )
 ----
 
