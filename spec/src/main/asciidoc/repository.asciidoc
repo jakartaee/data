@@ -237,7 +237,7 @@ Every Jakarta Data provider must support the following basic types within its pr
 | Custom enumerated types defined by user-written code.
 |===
 
-For example, the following entity class has three basic fields:
+For example, the following entity class has five basic fields:
 
 [source,java]
 ----
