@@ -267,7 +267,7 @@ An _embedded field_ is a field whose type is an embeddable class.
 
 Like entities, embeddable classes may have basic fields, embeddable fields, and association fields, but, unlike entities, they do not have identifier fields.
 
-Like entities, a programming model for entity classes may support mutable embeddable classes, it might support immutable entity classes, or it might support both.
+Like entities, a programming model for entity classes might support mutable embeddable classes, immutable embeddable classes, or both.
 
 A programming model for entity classes might define an annotation that identifies a user-written class as an embeddable class. For example, Jakarta Persistence defines the annotation `jakarta.persistence.Embeddabe`. Alternatively, the programming model might define an annotation that identifies a field as an embedded field. For example, Jakarta Persistence defines the annotation `jakarta.persistence.Embedded`.
 
