@@ -201,12 +201,26 @@ In either case, an entity programming model might place restrictions on the visi
 
 An entity programming model might support inheritance between entities, and might provide support for retrieval of entities in a polymorphic fashion. Support for inheritance is not required by this specification.
 
-Jakarta Data distinguishes three types of fields within entity classes.
+==== Persistent Fields
+
+A field of an entity class may or may not represent state which is persistent in the datastore.
+A _persistent field_ has some corresponding representation in the data schema of the entity, for example, it might map to a column or columns in a relational database table.
+Any programming model for entity classes must provide well-defined rules for distinguishing fields which are persistent in the datastore from which fields are _transient_, having no persistent representation in the datastore.
+Furthermore, the programming model must specify how the Jakarta Data provider accesses the persistent fields of an entity to read and write their values.
+
+Every programming model for entity classes must support _direct field access_, that is, access to the persistent fields of an entity class without triggering any intermediating user-written code such as JavaBeans-style property accessors.
+When direct field access is used, every Java field marked with the Java language `transient` modifier must be treated as transient.
+
+A programming model for entity classes might also support _property-based access_, that is, access to persistent fields via JavaBeans-style property accessors, or, especially for Java `record` types, via accessor methods combined with constructor-based initialization.
+Such programming models should provide an annotation or other convention to distinguish transient properties.
+For example, Jakarta Persistence provides `jakarta.persistence.Transient`.
+Support for property-based access is not required by this specification.
+
+Jakarta Data distinguishes three kinds of persistent field within entity classes.
 
 - A _basic field_ holds a value belonging to some fundamental data type supported natively by the Jakarta Data Provider. Support for the set of basic types enumerated in the next section below is mandatory for all Jakarta Data providers.
 - An _embedded field_ allows the inclusion of the state of a finer-grained Java class within the state of an entity. The type of an embedded field is often a user-written Java class. Support for embedded fields varies depending on the Jakarta Data provider and the database type.
 - An _association field_ implements an association between entity types. Support for association fields varies depending on the Jakarta Data provider and the database type.
-
 
 ==== Basic Types
 
