@@ -210,10 +210,15 @@ Furthermore, the programming model must specify how the Jakarta Data provider ac
 
 Every programming model for entity classes must support _direct field access_, that is, access to the persistent fields of an entity class without triggering any intermediating user-written code such as JavaBeans-style property accessors.
 When direct field access is used, every Java field marked with the Java language `transient` modifier must be treated as transient.
+A programming model might place constraints on the visibility of persistent fields.
+For example, Jakarta Persistence disallows `public` persistent fields.
+Every programming model must permit `private` persistent fields.
 
 A programming model for entity classes might also support _property-based access_, that is, access to persistent fields via JavaBeans-style property accessors, or, especially for Java `record` types, via accessor methods combined with constructor-based initialization.
 Such programming models should provide an annotation or other convention to distinguish transient properties.
 For example, Jakarta Persistence provides `jakarta.persistence.Transient`.
+When property-based access is supported, a programming model might place constraints on the visibility of property accessors.
+For example, Jakarta Persistence requires that property accessors be `public` or `protected`.
 Support for property-based access is not required by this specification.
 
 Jakarta Data distinguishes three kinds of persistent field within entity classes.
