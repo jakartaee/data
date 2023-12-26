@@ -273,8 +273,8 @@ import java.util.List;
  *
  * <tr style="vertical-align: top"><td><code>Between</code></td>
  * <td>numeric, strings, time</td>
- * <td>Requires that the entity's attribute value be within the range specified by two parameters.
- * The minimum is listed first, then the maximum.</td>
+ * <td>Requires that the entity's attribute value be within the range specified by two parameters,
+ * inclusive of the parameters. The minimum is listed first, then the maximum.</td>
  * <td><code>findByAgeBetween(minAge, maxAge)</code></td>
  * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column</td></tr>
  *
