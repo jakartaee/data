@@ -50,7 +50,7 @@ import java.lang.annotation.Target;
  * {@code @Repository}
  * interface Garage {
  *     {@code @Delete}
- *     Car unpark(Car car);
+ *     void unpark(Car car);
  * }
  * </pre>
  * <p>If this annotation is combined with other operation annotations (e.g., {@code @Insert}, {@code @Update},
