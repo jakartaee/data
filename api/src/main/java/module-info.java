@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2024 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -700,8 +700,8 @@ import java.util.List;
  *
  * <h2>Precedence of Repository Methods</h2>
  *
- * <p>The following precedence, from highest to lowest, is used when interpreting the
- * meaning of repository methods.</p>
+ * <p>The following order, with the lower number having higher precedence,
+ * is used to interpret the meaning of repository methods.</p>
  *
  * <ol>
  * <li>If you define a method as a <b>Java default method</b> and provide implementation,
