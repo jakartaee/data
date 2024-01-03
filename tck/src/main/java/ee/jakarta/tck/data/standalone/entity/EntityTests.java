@@ -79,7 +79,8 @@ public class EntityTests {
 
     @Deployment
     public static JavaArchive createDeployment() {
-        return ShrinkWrap.create(JavaArchive.class).addClasses(EntityTests.class);
+        return ShrinkWrap.create(JavaArchive.class)
+            .addClasses(EntityTests.class, Box.class, Boxes.class);
     }
 
     @Inject
