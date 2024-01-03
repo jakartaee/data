@@ -32,7 +32,7 @@
     <description>Jakarta Data :: API</description>
 
     <properties>
-        <assertj.version>3.25.0</assertj.version>
+        <assertj.version>3.25.1</assertj.version>
     </properties>
 
     <dependencies>
