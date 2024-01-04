@@ -42,7 +42,7 @@ import java.lang.annotation.Target;
  * </p>
  * <p>
  * A boolean return type indicates whether a matching entity was found in the database to update.
- * An int return type indicates how many matching entities were found in the database to update.
+ * An {@code int} or {@code long} return type indicates how many matching entities were found in the database to update.
  * An entity return type indicates the updated entity if found in the database. If the entity is not found
  * in the database or has a non-matching version, then {@code null} is returned.
  * An {@code Iterable} or array return type includes all matching entities that are found in the database,
