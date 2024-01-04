@@ -20,19 +20,27 @@ import java.util.stream.Stream;
 
 import jakarta.data.repository.DataRepository;
 import jakarta.data.repository.Repository;
+import jakarta.data.repository.Save;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 
 @Repository
 public interface Rectangles extends DataRepository<Rectangle, String> {
     
-    Rectangle save(@Valid Rectangle rect);
-    Iterable<Rectangle> saveAll(@Valid Iterable<Rectangle> rects);
+    @Save
+    Rectangle save(@Valid Rectangle entity);
+
+    @Save
+    Iterable<Rectangle> saveAll(@Valid Iterable<Rectangle> entities);
     
-    long count();
-    void deleteAll();
+    @PositiveOrZero
+    long countBy();
+
     Stream<Rectangle> findAll();
     
+    void deleteAllBy();
+
     @Size(min = 0, max = 3)
     List<Rectangle> findAllByOrderByIdAsc();
 }
