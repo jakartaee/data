@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2023,2024 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -21,14 +21,23 @@ import jakarta.data.metamodel.StaticMetamodel;
 import jakarta.data.metamodel.TextAttribute;
 
 /**
- * This static metamodel class represents what a user might explicitly provide,
+ * This static metamodel class tests what a user might explicitly provide,
  * in which case the Jakarta Data provider will need to initialize the attributes.
  */
 @StaticMetamodel(AsciiCharacter.class)
-public interface AsciiChar_ {
-    SortableAttribute id = SortableAttribute.get();
-    TextAttribute hexadecimal = TextAttribute.get();
-    Attribute isControl = Attribute.get(); // user decided it didn't care about sorting for this one
-    SortableAttribute numericValue = SortableAttribute.get();
-    TextAttribute thisCharacter = TextAttribute.get();
+public class _AsciiChar {
+    public static final String ID = "id";
+    public static final String HEXADECIMAL = "hexadecimal";
+    public static final String NUMERICVALUE = "numericValue";
+
+    public static volatile SortableAttribute id;
+    public static volatile TextAttribute hexadecimal;
+    public static volatile Attribute isControl; // user decided it didn't care about sorting for this one
+    public static volatile SortableAttribute numericValue;
+    public static volatile TextAttribute thisCharacter;
+
+    // Avoids the checkstyle error,
+    // HideUtilityClassConstructor: Utility classes should not have a public or default constructor
+    private _AsciiChar() {
+    }
 }

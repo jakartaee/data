@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2023,2024 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,7 +34,7 @@
  * }
  *
  * &#64;StaticMetamodel(Product.class)
- * public interface Product_ {
+ * public class _Product {
  *     SortableAttribute id = SortableAttribute.get();
  *     TextAttribute name = TextAttribute.get();
  *     SortableAttribute price = SortableAttribute.get();
@@ -48,9 +48,9 @@
  * ...
  *
  * Pageable pageRequest = Pageable.ofSize(20)
- *                                .sortBy(Product_price.desc(),
- *                                        Product_name.asc(),
- *                                        Product_id.asc());
+ *                                .sortBy(_Product.price.desc(),
+ *                                        _Product.name.asc(),
+ *                                        _Product.id.asc());
  *
  * page1 = products.findByNameLike(namePattern, pageRequest);
  * </pre>

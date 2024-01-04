@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2023,2024 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -43,9 +43,9 @@ import ee.jakarta.tck.data.framework.junit.anno.AnyEntity;
 import ee.jakarta.tck.data.framework.junit.anno.Assertion;
 import ee.jakarta.tck.data.framework.junit.anno.ReadOnlyTest;
 import ee.jakarta.tck.data.framework.junit.anno.Standalone;
-import ee.jakarta.tck.data.framework.read.only.AsciiChar_;
+import ee.jakarta.tck.data.framework.read.only._AsciiChar;
+import ee.jakarta.tck.data.framework.read.only._AsciiCharacter;
 import ee.jakarta.tck.data.framework.read.only.AsciiCharacter;
-import ee.jakarta.tck.data.framework.read.only.AsciiCharacter_;
 import ee.jakarta.tck.data.framework.read.only.AsciiCharacters;
 import ee.jakarta.tck.data.framework.read.only.AsciiCharactersPopulator;
 import ee.jakarta.tck.data.framework.read.only.CustomRepository;
@@ -1341,11 +1341,11 @@ public class EntityTests {
 
     @Assertion(id = "133", strategy = "Use the StaticMetamodel to obtain ascending Sorts for an entity attribute in a type-safe manner.")
     public void testStaticMetamodelAscendingSorts() {
-        assertEquals(Sort.asc("id"), AsciiChar_.id.asc());
-        assertEquals(Sort.ascIgnoreCase("hexadecimal"), AsciiChar_.hexadecimal.ascIgnoreCase());
-        assertEquals(Sort.ascIgnoreCase("thisCharacter"), AsciiChar_.thisCharacter.ascIgnoreCase());
+        assertEquals(Sort.asc("id"), _AsciiChar.id.asc());
+        assertEquals(Sort.ascIgnoreCase(_AsciiChar.HEXADECIMAL), _AsciiChar.hexadecimal.ascIgnoreCase());
+        assertEquals(Sort.ascIgnoreCase("thisCharacter"), _AsciiChar.thisCharacter.ascIgnoreCase());
 
-        Pageable pageRequest = Pageable.ofSize(6).sortBy(AsciiChar_.numericValue.asc());
+        Pageable pageRequest = Pageable.ofSize(6).sortBy(_AsciiChar.numericValue.asc());
         Page<AsciiCharacter> page1 = characters.findByNumericValueBetween(68, 90, pageRequest);
 
         assertEquals(List.of('D', 'E', 'F', 'G', 'H', 'I'),
@@ -1356,45 +1356,45 @@ public class EntityTests {
 
     @Assertion(id = "133", strategy = "Use a pre-generated StaticMetamodel to obtain ascending Sorts for an entity attribute in a type-safe manner.")
     public void testStaticMetamodelAscendingSortsPreGenerated() {
-        assertEquals(Sort.ascIgnoreCase("thisCharacter"), AsciiCharacter_.thisCharacter.ascIgnoreCase());
-        assertEquals(Sort.ascIgnoreCase("hexadecimal"), AsciiCharacter_.hexadecimal.ascIgnoreCase());
-        assertEquals(Sort.asc("isControl"), AsciiCharacter_.isControl.asc());
-        assertEquals(Sort.asc("id"), AsciiCharacter_.id.asc());
+        assertEquals(Sort.asc("id"), _AsciiCharacter.id.asc());
+        assertEquals(Sort.asc("isControl"), _AsciiCharacter.isControl.asc());
+        assertEquals(Sort.ascIgnoreCase(_AsciiCharacter.HEXADECIMAL), _AsciiCharacter.hexadecimal.ascIgnoreCase());
+        assertEquals(Sort.ascIgnoreCase("thisCharacter"), _AsciiCharacter.thisCharacter.ascIgnoreCase());
 
-        Pageable pageRequest = Pageable.ofSize(7).sortBy(AsciiCharacter_.numericValue.asc());
-        Page<AsciiCharacter> firstPage = characters.findByNumericValueBetween(100, 122, pageRequest);
+        Pageable pageRequest = Pageable.ofSize(7).sortBy(_AsciiCharacter.numericValue.asc());
+        Page<AsciiCharacter> page1 = characters.findByNumericValueBetween(100, 122, pageRequest);
 
         assertEquals(List.of('d', 'e', 'f', 'g', 'h', 'i', 'j'),
-                     firstPage.stream()
+                     page1.stream()
                                      .map(AsciiCharacter::getThisCharacter)
                                      .collect(Collectors.toList()));
     }
 
     @Assertion(id = "133", strategy = "Use the StaticMetamodel to refer to entity attribute names in a type-safe manner.")
     public void testStaticMetamodelAttributeNames() {
-        assertEquals("hexadecimal", AsciiChar_.hexadecimal.name());
-        assertEquals("id", AsciiChar_.id.name());
-        assertEquals("isControl", AsciiChar_.isControl.name());
-        assertEquals("numericValue", AsciiChar_.numericValue.name());
-        assertEquals("thisCharacter", AsciiChar_.thisCharacter.name());
+        assertEquals(_AsciiChar.HEXADECIMAL, _AsciiChar.hexadecimal.name());
+        assertEquals(_AsciiChar.ID, _AsciiChar.id.name());
+        assertEquals("isControl", _AsciiChar.isControl.name());
+        assertEquals(_AsciiChar.NUMERICVALUE, _AsciiChar.numericValue.name());
+        assertEquals("thisCharacter", _AsciiChar.thisCharacter.name());
     }
 
     @Assertion(id = "133", strategy = "Use a pre-generated StaticMetamodel to refer to entity attribute names in a type-safe manner.")
     public void testStaticMetamodelAttributeNamesPreGenerated() {
-        assertEquals("hexadecimal", AsciiCharacter_.hexadecimal.name());
-        assertEquals("id", AsciiCharacter_.id.name());
-        assertEquals("isControl", AsciiCharacter_.isControl.name());
-        assertEquals("numericValue", AsciiCharacter_.numericValue.name());
-        assertEquals("thisCharacter", AsciiCharacter_.thisCharacter.name());
+        assertEquals(_AsciiCharacter.HEXADECIMAL, _AsciiCharacter.hexadecimal.name());
+        assertEquals(_AsciiCharacter.ID, _AsciiCharacter.id.name());
+        assertEquals("isControl", _AsciiCharacter.isControl.name());
+        assertEquals(_AsciiChar.NUMERICVALUE, _AsciiCharacter.numericValue.name());
+        assertEquals("thisCharacter", _AsciiCharacter.thisCharacter.name());
     }
 
     @Assertion(id = "133", strategy = "Use the StaticMetamodel to obtain descending Sorts for an entity attribute a type-safe manner.")
     public void testStaticMetamodelDescendingSorts() {
-        assertEquals(Sort.desc("id"), AsciiChar_.id.desc());
-        assertEquals(Sort.descIgnoreCase("hexadecimal"), AsciiChar_.hexadecimal.descIgnoreCase());
-        assertEquals(Sort.descIgnoreCase("thisCharacter"), AsciiChar_.thisCharacter.descIgnoreCase());
+        assertEquals(Sort.desc(_AsciiChar.ID), _AsciiChar.id.desc());
+        assertEquals(Sort.descIgnoreCase("hexadecimal"), _AsciiChar.hexadecimal.descIgnoreCase());
+        assertEquals(Sort.descIgnoreCase("thisCharacter"), _AsciiChar.thisCharacter.descIgnoreCase());
 
-        Sort sort = AsciiChar_.numericValue.desc();
+        Sort sort = _AsciiChar.numericValue.desc();
         AsciiCharacter[] found = characters.findFirst3ByNumericValueGreaterThanEqualAndHexadecimalEndsWith(30, "1", sort);
         assertEquals(3, found.length);
         assertEquals('q', found[0].getThisCharacter());
@@ -1404,12 +1404,12 @@ public class EntityTests {
 
     @Assertion(id = "133", strategy = "Use a pre-generated StaticMetamodel to obtain descending Sorts for an entity attribute a type-safe manner.")
     public void testStaticMetamodelDescendingSortsPreGenerated() {
-        assertEquals(Sort.descIgnoreCase("thisCharacter"), AsciiCharacter_.thisCharacter.descIgnoreCase());
-        assertEquals(Sort.descIgnoreCase("hexadecimal"), AsciiCharacter_.hexadecimal.descIgnoreCase());
-        assertEquals(Sort.desc("isControl"), AsciiCharacter_.isControl.desc());
-        assertEquals(Sort.desc("id"), AsciiCharacter_.id.desc());
+        assertEquals(Sort.desc(_AsciiCharacter.ID), _AsciiCharacter.id.desc());
+        assertEquals(Sort.desc("isControl"), _AsciiCharacter.isControl.desc());
+        assertEquals(Sort.descIgnoreCase("hexadecimal"), _AsciiCharacter.hexadecimal.descIgnoreCase());
+        assertEquals(Sort.descIgnoreCase("thisCharacter"), _AsciiCharacter.thisCharacter.descIgnoreCase());
 
-        Sort sort = AsciiCharacter_.numericValue.desc();
+        Sort sort = _AsciiCharacter.numericValue.desc();
         AsciiCharacter[] found = characters.findFirst3ByNumericValueGreaterThanEqualAndHexadecimalEndsWith(30, "4", sort);
         assertEquals(3, found.length);
         assertEquals('t', found[0].getThisCharacter());

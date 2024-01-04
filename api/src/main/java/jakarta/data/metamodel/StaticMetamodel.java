@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2023,2024 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -55,22 +55,29 @@ import jakarta.data.Sort;
  *
  * <pre>
  * &#64;StaticMetamodel(Person.class)
- * public interface Person_ {
- *     SortableAttribute ssn = SortableAttribute.get(); // ssn or id
- *     Attribute name = Attribute.get();
- *     TextAttribute name_first = TextAttribute.get();
- *     TextAttribute name_last = TextAttribute.get();
- *     SortableAttribute yearOfBirth = SortableAttribute.get();
+ * public class _Person {
+ *     // These can be uninitialized and non-final if you don't need to access them from annotations.
+ *     public static final String SSN = "ssn";
+ *     public static final String NAME = "name";
+ *     public static final String NAME_FIRST = "name.first";
+ *     public static final String NAME_LAST = "name.last";
+ *     public static final String YEAROFBIRTH = "yearOfBirth";
+ *
+ *     public static volatile SortableAttribute ssn; // ssn or id
+ *     public static volatile Attribute name;
+ *     public static volatile TextAttribute name_first;
+ *     public static volatile TextAttribute name_last;
+ *     public static volatile SortableAttribute yearOfBirth;
  * }
  * </pre>
  *
  * <p>And use it to refer to entity attributes in a type-safe manner,</p>
  *
  * <pre>
- * pageRequest = Pageable.ofSize(20).sortBy(Person_.yearOfBirth.desc(),
- *                                          Person_.name_last.asc(),
- *                                          Person_.name_first.asc(),
- *                                          Person_.ssn.asc());
+ * pageRequest = Pageable.ofSize(20).sortBy(_Person.yearOfBirth.desc(),
+ *                                          _Person.name_last.asc(),
+ *                                          _Person.name_first.asc(),
+ *                                          _Person.ssn.asc());
  * </pre>
  *
  * <p>When a class is annotated with {@code StaticMetamodel} and the
@@ -79,34 +86,34 @@ import jakarta.data.Sort;
  * that meets the following criteria:</p>
  *
  * <ul>
- * <li>The field type is {@link Attribute} or a subclass of it
+ * <li>The field is {@code public}, {@code static}, and not {@code final}.</li>
+ * <li>The field type is {@link String}, {@link Attribute}, or an {@code Attribute} subclass
  *     from the {@link jakarta.data.metamodel} package.</li>
- * <li>The field is {@code public}, {@code static}, and {@code final}.
- *     This is implicit if the metamodel class is an interface.</li>
  * <li>The name of the field, ignoring case, matches the name of an entity attribute,
  *     where the {@code _} character delimits the attribute names of hierarchical structures
  *     such as embedded classes.</li>
+ * <li>The value of the field is uninitialized or {@code null}.</li>
  * </ul>
  *
- * <p>The Jakarta Data provider must {@link Attribute#init(Attribute) initialize}
- * each {@code Attribute} value that corresponds to the name of an entity attribute.
- * When {@code Attribute} subclasses are used, the value must be initialized with the
- * same type as the subclass.</p>
- *
  * <p>Additionally, a field that meets the above criteria except for the name
- * and is named {@code id} must be assigned by the Jakarta Data provider to the
+ * and is named {@code id} or {@code ID} must be assigned by the Jakarta Data provider for the
  * unique identifier entity attribute if a single entity attribute represents the
  * unique identifier.</p>
  *
  * <p>In cases where multiple Jakarta Data providers provide repositories for the same
- * entity type, no guarantees are made of the order in which the Jakarta Data providers
- * initialize the {@code Attribute} fields of the class that is annotated with
- * {@code StaticMetamodel}.</p>
+ * entity type, no guarantees are made of the order in which the Jakarta Data providers attempt to
+ * initialize the fields of the class that is annotated with {@code StaticMetamodel}.
+ * It is recommended to include the {@code volatile} modifier on metamodel fields in case the
+ * initialize attempt overlaps between multiple providers.</p>
+ *
+ * <p>You can include a mixture of {@code final} and non-{@code final} fields, in which case
+ * the latter are initialized by the Jakarta Data provider and the former are ignored by it.</p>
  *
  * <p>Alternatively, an annotation processor might generate fully implemented
  * static metamodel classes for your entities during compile time. The generated
  * classes must be annotated with the {@link jakarta.annotation.Generated} annotation,
- * which signals the Jakarta Data provider to avoid initializing the classes at run time.</p>
+ * which signals the Jakarta Data provider to avoid attempting to initialize any fields in the class
+ * at run time.</p>
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)

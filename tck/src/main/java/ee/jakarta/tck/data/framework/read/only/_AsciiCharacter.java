@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2023,2024 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -27,7 +27,11 @@ import jakarta.data.metamodel.TextAttribute;
  */
 @Generated("ee.jakarta.tck.data.mock.generator")
 @StaticMetamodel(AsciiCharacter.class)
-public class AsciiCharacter_ {
+public class _AsciiCharacter {
+    public static final String ID = "id";
+    public static final String HEXADECIMAL = "hexadecimal";
+    public static final String NUMERICVALUE = "numericValue";
+
     public static final SortableAttribute id = new NumericAttr("id");
     public static final TextAttribute hexadecimal = new TextAttr("hexadecimal");
     public static final SortableAttribute isControl = new BooleanAttr("isControl");
@@ -53,6 +57,8 @@ public class AsciiCharacter_ {
         }
     };
 
-    private AsciiCharacter_() {
+    // Avoids the checkstyle error,
+    // HideUtilityClassConstructor: Utility classes should not have a public or default constructor
+    private _AsciiCharacter() {
     }
 }
