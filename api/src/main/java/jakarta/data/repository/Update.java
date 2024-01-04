@@ -37,8 +37,8 @@ import java.lang.annotation.Target;
  *     <li>An {@code Iterable} of entities to be updated.</li>
  *     <li>An array of entities to be updated.</li>
  * </ul>
- * <p>The return type of the annotated method must be {@code void}, {@code boolean}, {@code int},
- * a corresponding primitive wrapper type {@link Integer}, or the same type as the parameter.
+ * <p>The return type of the annotated method must be {@code void}, {@code boolean}, {@code int}, {@code long}
+ * a corresponding primitive wrapper type such as {@link Integer}, or the same type as the parameter.
  * </p>
  * <p>
  * A boolean return type indicates whether a matching entity was found in the database to update.
