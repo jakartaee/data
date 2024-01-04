@@ -39,7 +39,7 @@ import java.lang.annotation.Target;
  * <p>The return type of the annotated method must be {@code void}, {@code boolean}, {@code int}, {@code long},
  * or a corresponding primitive wrapper such as {@link Integer}.
  * A boolean return type indicates whether or not an entity was deleted from the database.
- * An int return type indicates how many entities were deleted from the database.
+ * An {@code int} or {@code long} return type indicates how many entities were deleted from the database.
  * </p>
  * <p>Deletion of a given entity is performed by matching the entity's Id. If the entity is versioned (e.g.,
  * with {@code jakarta.persistence.Version}), the version is also checked for consistency during deletion.
