@@ -36,8 +36,8 @@ import java.lang.annotation.Target;
  *     <li>An {@code Iterable} of entities to be deleted.</li>
  *     <li>An array of entities to be deleted.</li>
  * </ul>
- * <p>The return type of the annotated method must be {@code void}, {@code boolean}, a {@code int}),
- * or a corresponding primitive wrapper {@link Integer}.
+ * <p>The return type of the annotated method must be {@code void}, {@code boolean}, {@code int}, {@code long},
+ * or a corresponding primitive wrapper such as {@link Integer}.
  * A boolean return type indicates whether or not an entity was deleted from the database.
  * An int return type indicates how many entities were deleted from the database.
  * </p>
