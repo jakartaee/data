@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2024 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -224,7 +224,7 @@ public interface BasicRepository<T, K> extends DataRepository<T, K> {
     void deleteAll(Iterable<? extends T> entities);
 
     /**
-     * Deletes all persistent entities managed by the repository.
+     * Deletes all persistent entities of the primary entity type that are managed by the repository.
      *
      * @throws UnsupportedOperationException for Key-Value and Wide-Column databases that are not capable of the {@code deleteAll} operation.
      */

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2023,2024 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,6 +36,8 @@ import java.lang.annotation.Target;
  *     <li>An {@code Iterable} of entities to be deleted.</li>
  *     <li>An array of entities to be deleted.</li>
  * </ul>
+ * <p>The {@code Delete} annotation can be used on a repository method that has no parameters
+ * to request deletion of all entity instances of the primary entity type.</p>
  * <p>The return type of the annotated method must be {@code void}, {@code boolean}, {@code int}, {@code long},
  * or a corresponding primitive wrapper such as {@link Integer}.
  * A boolean return type indicates whether or not an entity was deleted from the database.
@@ -55,7 +57,7 @@ import java.lang.annotation.Target;
  * </pre>
  * <p>If this annotation is combined with other operation annotations (e.g., {@code @Insert}, {@code @Update},
  * {@code @Save}), it will throw an {@link UnsupportedOperationException} as only one operation type can be specified.</p>
- * <p>If the unique identifier of an entity is not found in the database or its version does not match, and the return
+ * <p>If the unique identifier of a requested entity is not found in the database or its version does not match, and the return
  * type of the annotated method is {@code void} or {@code Void}, the method must
  * raise {@link jakarta.data.exceptions.OptimisticLockingFailureException}.
  */
