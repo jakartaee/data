@@ -29,7 +29,7 @@ public class NaturalNumbersPopulator implements Populator<NaturalNumbers> {
     
     @Override
     public boolean isPopulated(NaturalNumbers repo) {
-       return repo.count() == 100L;
+       return repo.countBy() == 100L;
     }
     
     @Override
