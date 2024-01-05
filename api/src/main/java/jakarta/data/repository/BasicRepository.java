@@ -228,6 +228,7 @@ public interface BasicRepository<T, K> extends DataRepository<T, K> {
      *
      * @throws UnsupportedOperationException for Key-Value and Wide-Column databases that are not capable of the {@code deleteAll} operation.
      */
+    @Delete
     void deleteAll();
 
 }
