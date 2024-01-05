@@ -175,7 +175,7 @@ public interface BasicRepository<T, K> extends DataRepository<T, K> {
      * @return the total number of entities.
      * @throws UnsupportedOperationException for Key-Value and Wide-Column databases that are not capable of the {@code count} operation.
      */
-    long count();
+    long countBy();
 
     /**
      * Deletes the entity with the given Id.
