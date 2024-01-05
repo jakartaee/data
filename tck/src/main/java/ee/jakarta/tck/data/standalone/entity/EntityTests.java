@@ -109,7 +109,7 @@ public class EntityTests {
 
     @Assertion(id = "136", strategy = "Ensures that the prepopulation step for readonly entities was successful")
     public void ensureNaturalNumberPrepopulation() {
-        assertEquals(100L, numbers.count());
+        assertEquals(100L, numbers.countBy());
         assertTrue(numbers.findById(0L).isEmpty(), "Zero should not have been in the set of natural numbers.");
         assertFalse(numbers.findById(10L).get().isOdd());
     }
@@ -187,7 +187,7 @@ public class EntityTests {
         assertEquals(true, boxes.existsById("TestBasicRepositoryMethods-04"));
 
         // BasicRepository.count
-        assertEquals(4, boxes.count());
+        assertEquals(4, boxes.countBy());
 
         // BasicRepository.save
         box2.length = 21;
@@ -212,7 +212,7 @@ public class EntityTests {
         TestPropertyUtility.waitForEventualConsistency();
 
         assertEquals(false, boxes.existsById("TestBasicRepositoryMethods-01"));
-        assertEquals(3, boxes.count());
+        assertEquals(3, boxes.countBy());
 
         // BasicRepository.findByIdIn
         Stream<Box> stream = boxes.findByIdIn(List.of("TestBasicRepositoryMethods-04", "TestBasicRepositoryMethods-05"));
@@ -267,7 +267,7 @@ public class EntityTests {
 
         TestPropertyUtility.waitForEventualConsistency();
 
-        assertEquals(0, boxes.count());
+        assertEquals(0, boxes.countBy());
     }
 
     @Assertion(id = "133", strategy = "Use a repository that inherits from BasicRepository and defines no additional methods of its own. Use all of the built-in methods.")
@@ -314,7 +314,7 @@ public class EntityTests {
         assertEquals(true, boxes.existsById("TestBasicRepositoryMethods-04"));
 
         // BasicRepository.count
-        assertEquals(4, boxes.count());
+        assertEquals(4, boxes.countBy());
 
         // BasicRepository.save
         box2.length = 21;
@@ -339,7 +339,7 @@ public class EntityTests {
         TestPropertyUtility.waitForEventualConsistency();
 
         assertEquals(false, boxes.existsById("TestBasicRepositoryMethods-01"));
-        assertEquals(3, boxes.count());
+        assertEquals(3, boxes.countBy());
 
         // BasicRepository.findByIdIn
         Stream<Box> stream = boxes.findByIdIn(List.of("TestBasicRepositoryMethods-04", "TestBasicRepositoryMethods-05"));
@@ -394,7 +394,7 @@ public class EntityTests {
 
         TestPropertyUtility.waitForEventualConsistency();
 
-        assertEquals(0, boxes.count());
+        assertEquals(0, boxes.countBy());
     }
 
     @Assertion(id = "133", strategy = "Request a Page higher than the final Page, expecting an empty Page with 0 results.")
