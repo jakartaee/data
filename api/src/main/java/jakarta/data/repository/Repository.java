@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2024 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -100,6 +100,9 @@ public @interface Repository {
      * and matches the name of a {@code jakarta.annotation.sql.DataSourceDefinition},
      * the JNDI name of a data source, or a resource reference to a data source,
      * then the corresponding {@code javax.sql.DataSource} is used as the data store.
+     * If the same conditions are met but the value matches a persistence unit reference,
+     * then the corresponding {@code jakarta.persistence.PersistenceUnit} is used as the
+     * data store.
      * </li>
      * <li>Otherwise, the value serves as an identifier linking to vendor-specific configuration
      * for the Jakarta Data provider to interpret in a vendor-specific way.
