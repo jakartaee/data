@@ -29,7 +29,6 @@
   <!-- General properties -->
   <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-  <!-- TODO might need to update to 21 for Jakarta 11 -->
   <maven.compiler.source>17</maven.compiler.source>
   <maven.compiler.target>17</maven.compiler.target>
 

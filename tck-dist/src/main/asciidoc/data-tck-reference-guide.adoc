@@ -16,8 +16,8 @@
 :TCKTestPlatform: JUnit5
 :SigPluginGAV: org.netbeans.tools:sigtest-maven-plugin:1.6
 
-:JavaVersion1: 21
-:JavaVersion2: 17
+:JavaVersion1: 17
+:JavaVersion2: 21
 
 :TCKProcess: 1.3
 :TCKProcessDoc: https://jakarta.ee/committees/specification/tckprocess
