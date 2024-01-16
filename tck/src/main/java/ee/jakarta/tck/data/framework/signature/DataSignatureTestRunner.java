@@ -323,7 +323,6 @@ public class DataSignatureTestRunner extends SigTestEE {
         }
 
         // Ensure user is running on JDK 17 or higher, different JDKs produce different signatures
-        // TODO update to JDK 21 once it is GA
         int javaSpecVersion = Integer.parseInt(System.getProperty("java.specification.version"));
         assertTrue(javaSpecVersion >= 17, "The signature tests must be run on a JVM using Java 17 or higher.");
 
