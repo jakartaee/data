@@ -35,9 +35,9 @@
  *
  * &#64;StaticMetamodel(Product.class)
  * public class _Product {
- *     SortableAttribute id = SortableAttribute.get();
- *     TextAttribute name = TextAttribute.get();
- *     SortableAttribute price = SortableAttribute.get();
+ *     public static volatile SortableAttribute id;
+ *     public static volatile TextAttribute name;
+ *     public static volatile SortableAttribute price);
  * }
  *
  * ...
