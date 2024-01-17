@@ -43,7 +43,7 @@
  * ...
  *
  * &#64;Repository
- * Product products;
+ * Products products;
  *
  * ...
  *
