@@ -27,7 +27,9 @@ jobs:
       id: checkout
       run: .github/scripts/checkout.sh update-generated-files-${{ github.sha }}
     - name: Generate signatures
-      run: mvn package -Psignature-generation --file tck/pom.xml
+      run: |
+        mvn install --file tck/pom.xml
+        mvn package -Psignature-generation --file tck/pom.xml
     ## Add any other automated update steps here
     - name: Needs updates
       id: update
