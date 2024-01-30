@@ -537,6 +537,93 @@ WARNING: Define entity properties following standard Java naming conventions for
 In all places where entity property names can be specified other than `@Query`, `Id` is an alias for the entity property that is designated as the id. Entity property names that are used in _Query by Method Name_ must not contain reserved words.
 
 
+==== Type-safe Access to Entity Attributes
+
+Jakarta Data provides a static metamodel that allows entity attributes to be accessed by applications in a type-safe manner.
+
+For each entity class, the application developer or a compile-time annotation processor can define a corresponding metamodel class following a prescribed set of conventions. The metamodel class must be annotated with `@StaticMetamodel`, specifying the entity class as its `value`. The metamodel class can contain one or more fields of type `java.lang.String` or `jakarta.data.metamodel.Attribute` (or `Attribute` subclasses from the `jakarta.data.metamodel` package) with modifiers `public` and `static`, but not `final`, with each field named after an entity attribute. The value of each matching field can be left uninitialized (`null`) or can be preinitialized. Generated metamodel classes for which all fields are initialized must be annotated with the `jakarta.annotation.Generated` annotation. Otherwise, a Jakarta Data provider that provides a repository for the entity class initializes each uninitialized `String` and `Attribute` field (as well as fields for `Attribute` subclasses from the `jakarta.data.metamodel` package) for which the field name corresponds to an entity attribute name.
+
+===== Application Requirements for a Metamodel Class
+
+For each entity class for which the application wishes to request the metamodel,
+
+- The application defines a class (the metamodel class) and annotates it with the `@StaticMetamodel` annotation.
+- The application specifies the `value` of the `@StaticMetamodel` annotation to be an entity class that the application uses in a repository as the result type of a find method or the parameter type of an insert, update, save, or delete method.
+
+For each field of the metamodel class that is to be initialized by a Jakarta Data provider,
+
+- The field type must be `java.lang.String`, `jakarta.data.model.Attribute` or an `Attribute` subclass from the `jakarta.data.metamodel` package.
+- The field must have the `public` and `static` modifiers, but not the `final` modifier.
+- The name of the field, ignoring case, must match the name of an entity attribute, with the `_` character in the field name delimiting the attribute names of hierarchical structures or relationships, such as embedded classes.
+- The value of the field must be uninitialized or `null`.
+
+If the entity class has a unique identifier that is represented by a single entity attribute, then the application can also include a field that follows the above criteria, except that it has a field name of `id` or `ID`.
+
+The application is not required to include fields for all entity attributes.
+
+The application can use the field values of the metamodel class to obtain artifacts relating to the entity attribute in a type-safe manner, for example, `_Book.title.asc()` or `Sort.asc(_Book.title.name())` or `Sort.asc(_Book.TITLE)` rather than `Sort.asc("title")`.
+
+If the application defines repositories for the same entity class across multiple Jakarta Data providers, no guarantee is made of the order in which the fields of the metamodel class are assigned by the Jakarta Data providers.
+
+===== Compile-time Annotation Processor Requirements for a Metamodel Class
+
+A compile-time annotation processor that generates a metamodel class must follow the same requirements as stated for the Application under "Application Requirements for a Metamodel Class". If all fields of the metamodel class are preinitialized, then the metamodel class must be annotated with `jakarta.annotation.Generated`. This signals the Jakarta Data providers to avoid attempting to initialize any fields of the class.
+
+===== Jakarta Data Provider Requirements for a Metamodel Class
+
+The Jakarta Data provider observes classes that are annotated with the `@StaticMetamodel` annotation where the `jakarta.annotation.Generated` is not also present. If the `value` of the `@StaticMetamodel` annotation is an entity class for which the Jakarta Data provides a repository implementation, then the Jakarta Data provider must initialize the value of each uninitialized (`null` valued) field that meets the criteria that is defined in the "Application Requirements for a Metamodel Class" above.
+
+===== Conventions for Metamodel Fields
+
+The following are conventions for static metamodel classes:
+
+- The name of the static metamodel class should consist of underscore (`_`) followed by the entity class name.
+- Fields of type `String` should be named with all capitals.
+- Fields of type `Attribute` or `Attribute` subclass should be named in lower case or mixed case.
+- Uninitialized fields should have modifiers `public`, `static`, and `volatile`.
+- `String` fields for entity attribute names should be preinitialized and have modifiers `public`, `static`, and `final`, enabling the field to be referenced by code that supplies values to annotations.
+
+===== Example Metamodel Class and Usage
+
+Example entity class:
+
+[source,java]
+----
+@Entity
+public class Product {
+  public long id;
+  public String name;
+  public float price;
+}
+----
+
+Example metamodel class for the entity:
+
+[source,java]
+----
+@StaticMetamodel(Product.class)
+public class _Product {
+  public static final String ID = "id";
+  public static final String NAME = "name";
+  public static final String PRICE = "price";
+
+  public static volatile SortableAttribute id;
+  public static volatile TextAttribute name;
+  public static volatile SortableAttribute price;
+}
+----
+
+Example usage:
+
+[source,java]
+----
+List<Product> found = products.findByNameContains(searchPattern,
+                                                  _Product.price.desc(),
+                                                  _Product.name.asc(),
+                                                  _Product.id.asc());
+----
+
+
 == Repository Interfaces
 
 A Jakarta Data repository is a Java interface annotated with `@Repository`.
