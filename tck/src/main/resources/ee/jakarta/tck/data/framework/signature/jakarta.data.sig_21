@@ -93,6 +93,28 @@ hfds serialVersionUID
 
 CLSS abstract interface jakarta.data.exceptions.package-info
 
+CLSS public abstract interface jakarta.data.metamodel.Attribute
+meth public abstract java.lang.String name()
+
+CLSS public abstract interface jakarta.data.metamodel.SortableAttribute
+intf jakarta.data.metamodel.Attribute
+meth public abstract jakarta.data.Sort asc()
+meth public abstract jakarta.data.Sort desc()
+
+CLSS public abstract interface !annotation jakarta.data.metamodel.StaticMetamodel
+ anno 0 java.lang.annotation.Documented()
+ anno 0 java.lang.annotation.Retention(java.lang.annotation.RetentionPolicy value=RUNTIME)
+ anno 0 java.lang.annotation.Target(java.lang.annotation.ElementType[] value=[TYPE])
+intf java.lang.annotation.Annotation
+meth public abstract java.lang.Class<?> value()
+
+CLSS public abstract interface jakarta.data.metamodel.TextAttribute
+intf jakarta.data.metamodel.SortableAttribute
+meth public abstract jakarta.data.Sort ascIgnoreCase()
+meth public abstract jakarta.data.Sort descIgnoreCase()
+
+CLSS abstract interface jakarta.data.metamodel.package-info
+
 CLSS abstract interface jakarta.data.package-info
 
 CLSS public abstract interface jakarta.data.page.KeysetAwarePage<%0 extends java.lang.Object>
@@ -168,10 +190,11 @@ meth public abstract boolean existsById({jakarta.data.repository.BasicRepository
 meth public abstract java.util.Optional<{jakarta.data.repository.BasicRepository%0}> findById({jakarta.data.repository.BasicRepository%1})
 meth public abstract java.util.stream.Stream<{jakarta.data.repository.BasicRepository%0}> findAll()
 meth public abstract java.util.stream.Stream<{jakarta.data.repository.BasicRepository%0}> findByIdIn(java.lang.Iterable<{jakarta.data.repository.BasicRepository%1}>)
-meth public abstract long count()
+meth public abstract long countBy()
 meth public abstract void delete({jakarta.data.repository.BasicRepository%0})
  anno 0 jakarta.data.repository.Delete()
 meth public abstract void deleteAll()
+ anno 0 jakarta.data.repository.Delete()
 meth public abstract void deleteAll(java.lang.Iterable<? extends {jakarta.data.repository.BasicRepository%0}>)
  anno 0 jakarta.data.repository.Delete()
 meth public abstract void deleteById({jakarta.data.repository.BasicRepository%1})

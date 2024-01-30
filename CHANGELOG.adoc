@@ -8,6 +8,16 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 
 == [Unreleased]
 
+== [1.0.0-M3] - 2024-01-30
+
+=== Changed
+
+- Updated specification to allow for deleteAll() with no parameters to be valid
+- Changed the default count() method to be countBy()
+- Introduced @Delete annotation to the default deleteAll() method
+- Restricted @Update and @Delete return types for numeric types to only int and long
+- Re-introduced static metamodel
+
 == [1.0.0-M2] - 2023-11-31
 
 === Changed
