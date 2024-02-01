@@ -972,7 +972,7 @@ public class EntityTests {
         //                                                                                  ^^^^^ next page ^^^^
 
         Pageable middle7 = Pageable.ofSize(7)
-                        .sortBy(Sort.asc("floorOfSquareRoot"), Sort.desc("id"))
+                        .sortBy(Sort.desc("numBitsRequired"), Sort.asc("floorOfSquareRoot"), Sort.desc("id"))
                         .afterKeyset((short) 5, 5L, 26L); // 20th result is 26; it requires 5 bits and its square root rounds down to 5.
 
         KeysetAwarePage<NaturalNumber> page;
