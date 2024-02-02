@@ -139,7 +139,7 @@ public record Sort(String property, boolean isAscending, boolean ignoreCase) {
      * @param property  the property name to order by
      * @param direction the direction in which to order.
      * @param ignoreCase whether to request a case insensitive ordering.
-     * @return an {@link Sort} instance. Never {@code null}.
+     * @return a {@link Sort} instance. Never {@code null}.
      * @throws NullPointerException when there is a null parameter
      */
     public static Sort of(String property, Direction direction, boolean ignoreCase) {
