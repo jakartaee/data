@@ -139,7 +139,7 @@ class PageableTest {
     }
 
     @Test
-    @DisplayName("Should not modify sort on next pahe")
+    @DisplayName("Should not modify sort on next page")
     void shouldNotModifySortOnNextPage() {
         Pageable pageable = Pageable.ofSize(3).sortBy(Sort.asc("name"), Sort.desc("age"));
         Pageable next = pageable.next();

@@ -651,7 +651,7 @@ import java.util.List;
  * Product[] findByNameLike(String pattern, Limit max, Sort... sortBy);
  *
  * ...
- * page1 = products.findByNameLike(namePattern, Limit.of(25),
+ * found = products.findByNameLike(namePattern, Limit.of(25),
  *                                 Sort.desc("price"),
  *                                 Sort.desc("amountSold"),
  *                                 Sort.asc("name"));
