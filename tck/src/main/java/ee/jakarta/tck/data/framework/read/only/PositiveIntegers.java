@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2023,2024 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -22,7 +22,7 @@ import java.util.stream.Stream;
 
 import ee.jakarta.tck.data.framework.read.only.NaturalNumber.NumberType;
 import jakarta.data.Limit;
-import jakarta.data.Sort;
+import jakarta.data.Order;
 import jakarta.data.Streamable;
 import jakarta.data.page.KeysetAwarePage;
 import jakarta.data.page.Page;
@@ -43,7 +43,7 @@ public interface PositiveIntegers extends PageableRepository<NaturalNumber, Long
 
     KeysetAwarePage<NaturalNumber> findByFloorOfSquareRootNotAndIdLessThanOrderByBitsRequiredDesc(long excludeSqrt,
                                                                                                   long eclusiveMax,
-                                                                                                  Pageable pagination);
+                                                                                                  Pageable<NaturalNumber> pagination);
 
     Iterable<NaturalNumber> findByIsOddTrueAndIdLessThanEqualOrderByIdDesc(long max);
 
@@ -53,9 +53,10 @@ public interface PositiveIntegers extends PageableRepository<NaturalNumber, Long
 
     Stream<NaturalNumber> findByNumTypeOrFloorOfSquareRoot(NumberType type, long floor);
 
-    Page<NaturalNumber> findMatching(long floorOfSquareRoot, Short numBitsRequired, NumberType numType, Pageable pagination);
+    Page<NaturalNumber> findMatching(long floorOfSquareRoot, Short numBitsRequired, NumberType numType,
+            Pageable<NaturalNumber> pagination);
 
     Optional<NaturalNumber> findNumber(long id);
 
-    List<NaturalNumber> findOdd(boolean isOdd, NumberType numType, Limit limit, Sort... sorts);
+    List<NaturalNumber> findOdd(boolean isOdd, NumberType numType, Limit limit, Order<NaturalNumber> sorts);
 }

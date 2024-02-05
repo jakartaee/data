@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2024 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -78,12 +78,30 @@ public interface Slice<T> extends Streamable<T> {
      *
      * @return the request for the current page; will never be {@code null}.
      */
-    Pageable pageable();
+    Pageable<T> pageable();
+
+    /**
+     * TODO
+     *
+     * @param <E>         entity class of the attributes that are used as sort criteria.
+     * @param entityClass entity class of the attributes that are used as sort criteria.
+     * @return the request for the current page; will never be {@code null}.
+     */
+    <E> Pageable<E> pageable(Class<E> entityClass);
 
     /**
      * Returns a request for the {@link Pageable#next() next} page, or <code>null</code> if it is known that there is no next page.
      *
      * @return a request for the next page.
      */
-    Pageable nextPageable();
+    Pageable<T> nextPageable();
+
+    /**
+     * TODO (needed to obtain a Pageable for the entity class after query language causes results of different type to be returned)
+     *
+     * @param <E>         entity class of the attributes that are used as sort criteria.
+     * @param entityClass entity class of the attributes that are used as sort criteria.
+     * @return a request for the next page.
+     */
+    <E> Pageable<E> nextPageable(Class<E> entityClass);
 }

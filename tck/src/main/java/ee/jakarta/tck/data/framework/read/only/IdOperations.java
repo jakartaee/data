@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2023,2024 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -20,6 +20,7 @@ import java.util.Collection;
 import java.util.stream.Stream;
 
 import jakarta.data.Limit;
+import jakarta.data.Order;
 import jakarta.data.Sort;
 
 /**
@@ -28,13 +29,13 @@ import jakarta.data.Sort;
  * @param <T> type of entity.
  */
 public interface IdOperations<T> {
-    Stream<T> findByIdBetween(long minimum, long maximum, Sort sort);
+    Stream<T> findByIdBetween(long minimum, long maximum, Sort<T> sort);
 
     Collection<T> findByIdGreaterThanEqual(long minimum,
                                            Limit limit,
-                                           Sort... sorts);
+                                           Order<T> sorts);
 
-    T[] findByIdLessThan(long exclusiveMax, Sort primarySort, Sort secondarySort);
+    T[] findByIdLessThan(long exclusiveMax, Sort<T> primarySort, Sort<T> secondarySort);
 
-    ArrayList<T> findByIdLessThanEqual(long maximum, Sort... sorts);
+    ArrayList<T> findByIdLessThanEqual(long maximum, Order<T> sorts);
 }

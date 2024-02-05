@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2023,2024 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -38,6 +38,7 @@ import ee.jakarta.tck.data.framework.junit.anno.Persistence;
 import ee.jakarta.tck.data.framework.junit.anno.Standalone;
 import ee.jakarta.tck.data.standalone.persistence.Product.Department;
 
+import jakarta.data.Order;
 import jakarta.data.Sort;
 import jakarta.data.Streamable;
 import jakarta.data.exceptions.EntityExistsException;
@@ -123,7 +124,7 @@ public class PersistenceEntityTests {
         catalog.save(Product.of("banana", 0.49, "TEST-PROD-17", Department.GROCERY));
         catalog.save(Product.of("plum", 0.89, "TEST-PROD-18", Department.GROCERY));
 
-        Iterable<Product> found = catalog.findByIdBetween("TEST-PROD-13", "TEST-PROD-17", Sort.asc("name"));
+        Iterable<Product> found = catalog.findByIdBetween("TEST-PROD-13", "TEST-PROD-17", Order.by(Sort.asc("name")));
         Iterator<Product> it = found.iterator();
         assertEquals(true, it.hasNext());
         assertEquals("banana", it.next().getName());
@@ -248,7 +249,7 @@ public class PersistenceEntityTests {
         // Remove only the entities that actually exist in the database
         catalog.removeMultiple(strawberries, blueberries, raspberries);
 
-        Iterable<Product> remaining = catalog.findByIdBetween("TEST-PROD-95", "TEST-PROD-99");
+        Iterable<Product> remaining = catalog.findByIdBetween("TEST-PROD-95", "TEST-PROD-99", Order.by());
         assertEquals(false, remaining.iterator().hasNext());
     }
 

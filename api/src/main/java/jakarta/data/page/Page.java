@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2023,2024 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,7 +37,7 @@ package jakarta.data.page;
  * <p>For a lighter weight subset of query results that does not have awareness of the
  * total number of pages, {@link Slice} can be used instead of page.</p>
  *
- * @param <T> the type of elements in this page 
+ * @param <T> the type of elements in this page
  */
 public interface Page<T> extends Slice<T> {
 

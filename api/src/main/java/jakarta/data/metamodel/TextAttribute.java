@@ -22,20 +22,20 @@ import jakarta.data.Sort;
 /**
  * Represents an textual entity attribute in the {@link StaticMetamodel}.
  */
-public interface TextAttribute extends SortableAttribute {
+public interface TextAttribute<T> extends SortableAttribute<T> {
 
     /**
      * Obtain a request for an ascending, case insensitive {@link Sort} based on the entity attribute.
      *
      * @return a request for an ascending, case insensitive sort on the entity attribute.
      */
-    Sort ascIgnoreCase();
+    Sort<T> ascIgnoreCase();
 
     /**
      * Obtain a request for a descending, case insensitive {@link Sort} based on the entity attribute.
      *
      * @return a request for a descending, case insensitive sort on the entity attribute.
      */
-    Sort descIgnoreCase();
+    Sort<T> descIgnoreCase();
 
 }

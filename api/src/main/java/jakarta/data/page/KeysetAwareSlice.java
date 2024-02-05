@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2024 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@
 package jakarta.data.page;
 
 import jakarta.data.repository.OrderBy;
+import jakarta.data.Sort;
 
 /**
  * <p>A slice of data with the ability to create a cursor from the
@@ -70,7 +71,7 @@ import jakarta.data.repository.OrderBy;
  * <p>You can also construct a {@link Pageable page request} with a {@link Pageable.Cursor Cursor} directly, which
  * allows you to make it relative to a specific list of values. The number and
  * order of values must match that of the {@link OrderBy} annotations,
- * {@link Pageable#sortBy(jakarta.data.Sort...)} or {@link Pageable#sortBy(Iterable)} parameters,
+ * {@link Sort} parameters of the page request,
  * or <code>OrderBy</code> name pattern of the repository method.
  * For example,</p>
  *
@@ -101,7 +102,7 @@ import jakarta.data.repository.OrderBy;
  * in parenthesis.
  * Sort criteria must be specified independently from the user-provided query,
  * either with the {@link OrderBy} annotation or
- * {@link Pageable#sortBy(jakarta.data.Sort...)} or {@link Pageable#sortBy(Iterable)} parameters.
+ * {@link Sort} parameters to {@link Pageable}.
  * For example,</p>
  *
  * <pre>
@@ -154,7 +155,7 @@ public interface KeysetAwareSlice<T> extends Slice<T> {
      *         or if it is known that there is not a next page.
      */
     @Override
-    Pageable nextPageable();
+    Pageable<T> nextPageable();
 
     /**
      * <p>Creates a request for the previous page
@@ -181,5 +182,5 @@ public interface KeysetAwareSlice<T> extends Slice<T> {
      *         <code>null</code> if the current page is empty
      *         or if it is known that there is not a previous page.
      */
-    Pageable previousPageable();
+    Pageable<T> previousPageable();
 }

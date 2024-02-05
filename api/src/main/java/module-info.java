@@ -17,7 +17,9 @@
  */
 
 import jakarta.data.Limit;
+import jakarta.data.Order;
 import jakarta.data.Sort;
+import jakarta.data.metamodel.StaticMetamodel;
 import jakarta.data.page.Pageable;
 import jakarta.data.repository.BasicRepository;
 import jakarta.data.repository.By;
@@ -629,32 +631,42 @@ import java.util.List;
  * <h3>Sorting at Runtime</h3>
  *
  * <p>When using pagination, you can dynamically supply sorting criteria
- * via the {@link Pageable#sortBy(Sort...)} and {@link Pageable#sortBy(Iterable)}
- * methods. For example,</p>
+ * via the {@link Pageable#sortBy(Sort)} method and other methods
+ * of {@code Pageable} with the same name. For example,</p>
  *
  * <pre>
- * Product[] findByNameLike(String pattern, Pageable pagination);
+ * Product[] findByNameLike(String pattern, {@code Pageable<Product>} pagination);
  *
  * ...
- * Pageable pagination = Pageable.ofSize(25).sortBy(
- *                           Sort.desc("price"),
- *                           Sort.asc("name"));
+ * {@code Pageable<Product>} pagination = Pageable.of(Product.class)
+ *                                        .size(25)
+ *                                        .sortBy(Sort.desc("price"),
+ *                                                Sort.asc("name"));
  * page1 = products.findByNameLikeAndPriceBetween(
  *                 namePattern, minPrice, maxPrice, pagination);
  * </pre>
  *
- * <p>To supply sorting criteria dynamically without using pagination,
- * add one or more {@link Sort} parameters (or <code>Sort...</code>)
- * to a repository find method. For example,</p>
+ * <p>An alternative when using the {@link StaticMetamodel} is to obtain the
+ * page request from an {@link Order} instance, as follows,</p>
  *
  * <pre>
- * Product[] findByNameLike(String pattern, Limit max, Sort... sortBy);
+ * {@code Pageable<Product>} pagination = Order.by(_Product.price.desc(),
+ *                                         _Product.name.asc())
+ *                                     .pageSize(25));
+ * </pre>
+ *
+ * <p>To supply sort criteria dynamically without using pagination,
+ * populate an {@link Order} instance with one or more {@link Sort} parameters
+ * and supply it to a repository find method. For example,</p>
+ *
+ * <pre>
+ * Product[] findByNameLike(String pattern, Limit max, {@code Order<Product>} sortBy);
  *
  * ...
- * found = products.findByNameLike(namePattern, Limit.of(25),
+ * found = products.findByNameLike(namePattern, Limit.of(25), Order.by(
  *                                 Sort.desc("price"),
  *                                 Sort.desc("amountSold"),
- *                                 Sort.asc("name"));
+ *                                 Sort.asc("name")));
  * </pre>
  *
  * <h2>Repository Default Methods</h2>

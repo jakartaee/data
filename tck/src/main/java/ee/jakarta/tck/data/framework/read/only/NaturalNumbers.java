@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2023,2024 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -18,7 +18,7 @@ package ee.jakarta.tck.data.framework.read.only;
 import java.util.stream.Stream;
 
 import jakarta.data.Limit;
-import jakarta.data.Sort;
+import jakarta.data.Order;
 import jakarta.data.page.KeysetAwareSlice;
 import jakarta.data.page.Pageable;
 import jakarta.data.page.Slice;
@@ -37,23 +37,23 @@ import ee.jakarta.tck.data.framework.read.only.NaturalNumber.NumberType;
 public interface NaturalNumbers extends BasicRepository<NaturalNumber, Long>, IdOperations<NaturalNumber> {
 
     KeysetAwareSlice<NaturalNumber> findByFloorOfSquareRootOrderByIdAsc(long sqrtFloor,
-                                                                        Pageable pagination);
+                                                                        Pageable<NaturalNumber> pagination);
 
     Stream<NaturalNumber> findByIdBetweenOrderByNumTypeAsc(long minimum,
                                                            long maximum,
-                                                           Sort... sorts);
+                                                           Order<NaturalNumber> sorts);
 
     Slice<NaturalNumber> findByIdLessThanOrderByFloorOfSquareRootDesc(long exclusiveMax,
-                                                                      Pageable pagination);
+                                                                      Pageable<NaturalNumber> pagination);
 
     KeysetAwareSlice<NaturalNumber> findByNumTypeAndNumBitsRequiredLessThan(NumberType type,
                                                                             short bitsUnder,
-                                                                            Pageable pagination);
+                                                                            Pageable<NaturalNumber> pagination);
 
-    NaturalNumber[] findByNumTypeNot(NumberType notThisType, Limit limit, Sort... sorts);
+    NaturalNumber[] findByNumTypeNot(NumberType notThisType, Limit limit, Order<NaturalNumber> sorts);
 
     Slice<NaturalNumber> findByNumTypeAndFloorOfSquareRootLessThanEqual(NumberType type,
                                                                         long maxSqrtFloor,
-                                                                        Pageable pagination);
+                                                                        Pageable<NaturalNumber> pagination);
 
 }
