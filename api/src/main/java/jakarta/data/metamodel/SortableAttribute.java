@@ -17,6 +17,7 @@
  */
 package jakarta.data.metamodel;
 
+import jakarta.data.ParameterizedSort;
 import jakarta.data.Sort;
 
 /**
@@ -31,20 +32,20 @@ import jakarta.data.Sort;
  * <li>{@link TextAttribute textual attributes}</li>
  * </ul>
  */
-public interface SortableAttribute extends Attribute {
+public interface SortableAttribute<T> extends Attribute {
 
     /**
      * Obtain a request for an ascending {@link Sort} based on the entity attribute.
      *
      * @return a request for an ascending sort on the entity attribute.
      */
-    Sort asc();
+    ParameterizedSort<T> asc();
 
     /**
      * Obtain a request for a descending {@link Sort} based on the entity attribute.
      *
      * @return a request for a descending sort on the entity attribute.
      */
-    Sort desc();
+    ParameterizedSort<T> desc();
 
 }

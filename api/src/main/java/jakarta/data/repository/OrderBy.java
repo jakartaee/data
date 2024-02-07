@@ -17,7 +17,6 @@
  */
 package jakarta.data.repository;
 
-import jakarta.data.Sort;
 import jakarta.data.page.Pageable;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Repeatable;
@@ -32,7 +31,7 @@ import java.lang.annotation.Target;
  * repository method, the precedence for sorting follows the order
  * in which the <code>OrderBy</code> annotations are specified,
  * and after that follows any sort criteria that is supplied
- * dynamically by {@link Sort} parameters or by a
+ * dynamically by {@link jakarta.data.Sort} parameters or by a
  * {@link Pageable} parameter with {@link Pageable#sorts()}.</p>
  *
  * <p>For example, the following sorts first by the

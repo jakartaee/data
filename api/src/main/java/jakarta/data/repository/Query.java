@@ -17,7 +17,6 @@
  */
 package jakarta.data.repository;
 
-import jakarta.data.Sort;
 import jakarta.data.page.KeysetAwarePage;
 import jakarta.data.page.Page;
 import java.lang.annotation.ElementType;
@@ -76,7 +75,7 @@ public @interface Query {
      * <p>Defines the query to be executed when the annotated method is called.</p>
      *
      * <p>If an application defines a repository method with <code>&#64;Query</code>
-     * and supplies other forms of sorting (such as {@link Sort}) to that method,
+     * and supplies other forms of sorting (such as {@link jakarta.data.Sort}) to that method,
      * then it is the responsibility of the application to compose the query in
      * such a way that an <code>ORDER BY</code> clause (or query language equivalent)
      * can be validly appended. The Jakarta Data provider is not expected to
