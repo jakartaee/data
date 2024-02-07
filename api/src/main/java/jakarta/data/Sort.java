@@ -17,8 +17,56 @@
  */
 package jakarta.data;
 
+
 import java.util.Objects;
 
+/**
+ * <p>Requests sorting on a given entity attribute.</p>
+ *
+ * <p><code>Sort</code> allows the application to dynamically provide
+ * sort criteria which includes a case sensitivity request,
+ * a {@link Direction} and a property.</p>
+ *
+ * <p>Dynamic <code>Sort</code> criteria can be specified when
+ * {@link jakarta.data.page.Pageable#sortBy(Sort[]) requesting a page of results}
+ * or can be optionally specified as
+ * parameters to a repository method in any of the positions that are after
+ * the query parameters. You can use <code>Sort...</code> to allow a variable
+ * number of <code>Sort</code> criteria. For example,</p>
+ *
+ * <pre>
+ * Employee[] findByYearHired(int yearYired, Limit maxResults, Sort... sortBy);
+ * ...
+ * highestPaidNewHires = employees.findByYearHired(Year.now(),
+ *                                                 Limit.of(10),
+ *                                                 Sort.desc("salary"),
+ *                                                 Sort.asc("lastName"),
+ *                                                 Sort.asc("firstName"));
+ * </pre>
+ *
+ * <p>When combined on a method with static sort criteria
+ * (<code>OrderBy</code> keyword or {@link jakarta.data.repository.OrderBy} annotation or
+ * {@link jakarta.data.repository.Query} with an <code>ORDER BY</code> clause), the static
+ * sort criteria is applied first, followed by the dynamic sort criteria
+ * that is defined by <code>Sort</code> instances in the order listed.</p>
+ *
+ * <p>In the example above, the matching employees are sorted first by salary
+ * from highest to lowest. Employees with the same salary are then sorted
+ * alphabetically by last name. Employees with the same salary and last name
+ * are then sorted alphabetically by first name.</p>
+ *
+ * <p>A repository method will fail with a
+ * {@link jakarta.data.exceptions.DataException DataException}
+ * or a more specific subclass if</p>
+ * <ul>
+ * <li>a <code>Sort</code> parameter is
+ *     specified in combination with a {@link jakarta.data.page.Pageable} parameter with
+ *     {@link jakarta.data.page.Pageable#sorts()}.</li>
+ * <li>the database is incapable of ordering with the requested
+ *     sort criteria.</li>
+ * </ul>
+ *
+ */
 public interface Sort {
     /**
      * Create a {@link Sort} instance

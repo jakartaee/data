@@ -17,61 +17,9 @@
  */
 package jakarta.data;
 
-import jakarta.data.page.Pageable;
-import jakarta.data.repository.OrderBy;
-import jakarta.data.repository.Query;
 import java.util.Objects;
 
-/**
- * <p>Requests sorting on a given entity attribute.</p>
- *
- * <p><code>Sort</code> allows the application to dynamically provide
- * sort criteria which includes a case sensitivity request,
- * a {@link Direction} and a property.</p>
- *
- * <p>Dynamic <code>Sort</code> criteria can be specified when
- * {@link Pageable#sortBy(Sort[]) requesting a page of results}
- * or can be optionally specified as
- * parameters to a repository method in any of the positions that are after
- * the query parameters. You can use <code>Sort...</code> to allow a variable
- * number of <code>Sort</code> criteria. For example,</p>
- *
- * <pre>
- * Employee[] findByYearHired(int yearYired, Limit maxResults, Sort... sortBy);
- * ...
- * highestPaidNewHires = employees.findByYearHired(Year.now(),
- *                                                 Limit.of(10),
- *                                                 Sort.desc("salary"),
- *                                                 Sort.asc("lastName"),
- *                                                 Sort.asc("firstName"));
- * </pre>
- *
- * <p>When combined on a method with static sort criteria
- * (<code>OrderBy</code> keyword or {@link OrderBy} annotation or
- * {@link Query} with an <code>ORDER BY</code> clause), the static
- * sort criteria is applied first, followed by the dynamic sort criteria
- * that is defined by <code>Sort</code> instances in the order listed.</p>
- *
- * <p>In the example above, the matching employees are sorted first by salary
- * from highest to lowest. Employees with the same salary are then sorted
- * alphabetically by last name. Employees with the same salary and last name
- * are then sorted alphabetically by first name.</p>
- *
- * <p>A repository method will fail with a
- * {@link jakarta.data.exceptions.DataException DataException}
- * or a more specific subclass if</p>
- * <ul>
- * <li>a <code>Sort</code> parameter is
- *     specified in combination with a {@link Pageable} parameter with
- *     {@link Pageable#sorts()}.</li>
- * <li>the database is incapable of ordering with the requested
- *     sort criteria.</li>
- * </ul>
- *
- * @param property    name of the property to order by.
- * @param isAscending whether ordering for this property is ascending (true) or descending (false).
- * @param ignoreCase  whether or not to request case insensitive ordering from a database with case sensitive collation.
- */
+
 record DefaultSort(String property, boolean isAscending, boolean ignoreCase) implements Sort {
 
     /**
