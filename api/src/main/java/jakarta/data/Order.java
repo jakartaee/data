@@ -36,7 +36,7 @@ import jakarta.data.repository.Query;
  *
  * <p>The {@code Order} class is useful in combination with the
  * {@link StaticMetamodel} for helping to enforce type safety of
- * sort criteria during development type. For example,</p>
+ * sort criteria during development. For example,</p>
  *
  * <pre>
  * {@code Page<Employee>} findByYearHired(int year, {@code Pageable<Employee>} pageRequest);
