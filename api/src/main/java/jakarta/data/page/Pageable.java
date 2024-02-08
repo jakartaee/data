@@ -201,7 +201,8 @@ public interface Pageable<T> {
      * <p>Creates a new page request with the same pagination information,
      * appending the specified {@link Sort#ascIgnoreCase(String) case-insensitive ascending sort}
      * with lower priority than all other sort criteria (if any) that have already
-     * been specified.</p>
+     * been specified. The case-insensitive sort means that the respective value
+     * in the database is compared independent of case.</p>
      *
      * @param property name of the entity attribute upon which to sort.
      * @return a new instance of <code>Pageable</code> with the case-insensitive ascending sort
@@ -227,7 +228,8 @@ public interface Pageable<T> {
      * <p>Creates a new page request with the same pagination information,
      * appending the specified {@link Sort#descIgnoreCase(String) case-insensitive descending sort}
      * with lower priority than all other sort criteria (if any) that have already
-     * been specified.</p>
+     * been specified. The case-insensitive sort means that the respective value
+     * in the database is compared independent of case.</p>
      *
      * @param property name of the entity attribute upon which to sort.
      * @return a new instance of <code>Pageable</code> with the case-insensitive descending sort
