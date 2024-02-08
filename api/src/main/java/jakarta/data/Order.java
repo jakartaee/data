@@ -20,10 +20,56 @@ package jakarta.data;
 import java.util.Iterator;
 import java.util.List;
 
+import jakarta.data.metamodel.StaticMetamodel;
 import jakarta.data.page.Pageable;
+import jakarta.data.repository.OrderBy;
+import jakarta.data.repository.Query;
 
 /**
- * TODO Requests the ordering of find operation results based on {@link Sort} criteria.
+ * <p>Requests sorting on various entity attributes.</p>
+ *
+ * <p><code>Order</code> can be optionally specified as a
+ * parameter to a repository find method in any of the positions
+ * that are after the query parameters, or it can be used
+ * to obtain a {@link Pageable page request} that is similarly
+ * specified as a parameter to a repository find method.</p>
+ *
+ * <p>The {@code Order} class is useful in combination with the
+ * {@link StaticMetamodel} for helping to enforce type safety of
+ * sort criteria during development type. For example,</p>
+ *
+ * <pre>
+ * {@code Page<Employee>} findByYearHired(int year, {@code Pageable<Employee>} pageRequest);
+ * ...
+ * page1 = employees.findByYearHired(Year.now(),
+ *                                   Order.by(_Employee.salaray.desc(),
+ *                                            _Employee.lastName.asc(),
+ *                                            _Employee.firstName.asc())
+ *                                        .page(1)
+ *                                        .size(10));
+ * </pre>
+ *
+ * <p>When combined on a method with static sort criteria
+ * (<code>OrderBy</code> keyword or {@link OrderBy} annotation or
+ * {@link Query} with an <code>ORDER BY</code> clause), the static
+ * sort criteria is applied first, followed by the dynamic sort criteria
+ * that is defined by {@link Sort} instances in the order listed.</p>
+ *
+ * <p>In the example above, the matching employees are sorted first by salary
+ * from highest to lowest. Employees with the same salary are then sorted
+ * alphabetically by last name. Employees with the same salary and last name
+ * are then sorted alphabetically by first name.</p>
+ *
+ * <p>A repository method will fail with a
+ * {@link jakarta.data.exceptions.DataException DataException}
+ * or a more specific subclass if</p>
+ * <ul>
+ * <li>an <code>Order</code> parameter is
+ *     specified in combination with a {@link Pageable} parameter with
+ *     {@link Pageable#sorts()}.</li>
+ * <li>the database is incapable of ordering with the requested
+ *     sort criteria.</li>
+ * </ul>
  *
  * @param <T> entity class of the attributes that are used as sort criteria.
  */
@@ -36,7 +82,8 @@ public class Order<T> implements Iterable<Sort<T>> {
     }
 
     /**
-     * TODO
+     * <p>Defines a list of {@link Sort} criteria, ordered from highest precedence
+     * to lowest precedence.</p>
      *
      * @param <T>   entity class of the attributes that are used as sort criteria.
      * @param sorts sort criteria to use, ordered from highest precedence to lowest precedence.
@@ -49,7 +96,11 @@ public class Order<T> implements Iterable<Sort<T>> {
     }
 
     /**
-     * TODO
+     * Determines whether this instance specifies matching {@link Sort} criteria
+     * in the same order of precedence as another instance.
+     *
+     * @return true if the other instance is an {@code Order} that specifies
+     *         the same ordering of sort criteria as this instance.
      */
     @Override
     public boolean equals(Object other) {
@@ -58,7 +109,9 @@ public class Order<T> implements Iterable<Sort<T>> {
     }
 
     /**
-     * TODO
+     * Computes a hash code for this instance.
+     *
+     * @return hash code.
      */
     @Override
     public int hashCode() {
@@ -66,7 +119,10 @@ public class Order<T> implements Iterable<Sort<T>> {
     }
 
     /**
-     * TODO
+     * Returns an iterator that follows the order of precedence for the
+     * {@link Sort} criteria, from highest precedence to lowest.
+     *
+     * @return iterator over the sort criteria.
      */
     @Override
     public Iterator<Sort<T>> iterator() {
@@ -74,7 +130,11 @@ public class Order<T> implements Iterable<Sort<T>> {
     }
 
     /**
-     * TODO
+     * Create a {@link Pageable page request} for the specified page number
+     * of page size 10 (the default for {@code Pageable})
+     * of the query results sorted according to any static sort criteria that
+     * is specified and the the the ordered list of {@link Sort} criteria
+     * that is represented by this instance.
      *
      * @param pageNumber requested page number.
      * @return a request for a page of results that are sorted based on the sort criteria represented by this instance
@@ -85,7 +145,10 @@ public class Order<T> implements Iterable<Sort<T>> {
     }
 
     /**
-     * TODO
+     * Create a {@link Pageable page request} for the first page of the specified page size
+     * of the query results sorted according to any static sort criteria that
+     * is specified and the the the ordered list of {@link Sort} criteria
+     * that is represented by this instance.
      *
      * @param size requested size of pages.
      * @return a request for a page of results that are sorted based on the sort criteria represented by this instance
@@ -96,7 +159,11 @@ public class Order<T> implements Iterable<Sort<T>> {
     }
 
     /**
-     * TODO
+     * Textual representation of this instance, including the result of invoking
+     * {@link Sort#toString()} on each member of the sort criteria, in order of
+     * precedence from highest to lowest.
+     *
+     * @return textual representation of this instance.
      */
     @Override
     public String toString() {

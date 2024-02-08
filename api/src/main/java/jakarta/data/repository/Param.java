@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2024 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,7 +34,7 @@ import java.lang.annotation.Target;
  *
  *     {@code @Query("SELECT p from Products p WHERE (p.length * p.width * p.height <= :maxVolume)")}
  *     {@code Page<Product>} freeShippingEligible({@code @Param}("maxVolume") float volumeLimit,
- *                                        Pageable pageRequest);
+ *                                        {@code Pageable<?>} pageRequest);
  *
  *     ...
  * }

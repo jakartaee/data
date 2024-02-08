@@ -25,7 +25,7 @@ package jakarta.data.page;
  * A page is obtained by supplying a {@link Pageable} parameter to a repository method. For example,</p>
  *
  * <pre>
- * {@code Page<Employee>} findByYearHired(int year, Pageable pageRequest);
+ * {@code Page<Employee>} findByYearHired(int year, {@code Pageable<?>} pageRequest);
  * </pre>
  *
  * <p>Repository methods that are declared to return <code>Page</code> or

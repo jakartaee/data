@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2024 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ import jakarta.data.page.Page;
 import jakarta.data.page.Pageable;
 
 /**
- * <p>A built-in repository supertype with methods that use pagination and sorting to retreive entities.
+ * <p>A built-in repository supertype with methods that use pagination and sorting to retrieve entities.
  * Methods that are inherited from {@link BasicRepository} provide additional basic built-in save, delete, and find
  * functionality.</p>
  *
@@ -71,7 +71,7 @@ import jakarta.data.page.Pageable;
  *
  * long howMany = people.countByFirstName(person1.firstName);
  *
- * Pagination page1Request = Pageable.ofSize(25).sortBy(Sort.asc("ssn"));
+ * Pagination page1Request = Pageable.of(Person.class).size(25).sortBy(Sort.asc("ssn"));
  * Page{@code <Person>} page1 = people.findAll(page1Request);
  * </pre>
  *
@@ -93,6 +93,6 @@ public interface PageableRepository<T, K> extends BasicRepository<T, K> {
      * or {@link Pageable.Mode#CURSOR_PREVIOUS} pagination mode is selected.
      * @see Pageable.Mode
      */
-    Page<T> findAll(Pageable pageable);
+    Page<T> findAll(Pageable<T> pageable);
 
 }

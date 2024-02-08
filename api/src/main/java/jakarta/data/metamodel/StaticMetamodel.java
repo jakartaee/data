@@ -63,21 +63,23 @@ import jakarta.data.Sort;
  *     public static final String NAME_LAST = "name.last";
  *     public static final String YEAROFBIRTH = "yearOfBirth";
  *
- *     public static volatile SortableAttribute ssn; // ssn or id
+ *     public static volatile {@code SortableAttribute<Person>} ssn; // ssn or id
  *     public static volatile Attribute name;
- *     public static volatile TextAttribute name_first;
- *     public static volatile TextAttribute name_last;
- *     public static volatile SortableAttribute yearOfBirth;
+ *     public static volatile {@code TextAttribute<Person>} name_first;
+ *     public static volatile {@code TextAttribute<Person>} name_last;
+ *     public static volatile {@code SortableAttribute<Person>} yearOfBirth;
  * }
  * </pre>
  *
  * <p>And use it to refer to entity attributes in a type-safe manner,</p>
  *
  * <pre>
- * pageRequest = Pageable.ofSize(20).sortBy(_Person.yearOfBirth.desc(),
+ * {@code Pageable<Product>} pageRequest = Order.by(_Person.yearOfBirth.desc(),
  *                                          _Person.name_last.asc(),
  *                                          _Person.name_first.asc(),
- *                                          _Person.ssn.asc());
+ *                                          _Person.ssn.asc())
+ *                                      .page(1)
+ *                                      .size(20);
  * </pre>
  *
  * <p>When a class is annotated with {@code StaticMetamodel} and the

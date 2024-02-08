@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2023,2024 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,9 +30,9 @@
  * to allow data to be read in slices or pages,</p>
  *
  * <pre>
- * Pageable.ofSize(25).sortBy(Sort.asc("lastName"),
- *                            Sort.asc("firstName"),
- *                            Sort.asc("id")); // unique identifier
+ * Pageable.of(Person.class).size(25).sortBy(Sort.asc("lastName"),
+ *                                           Sort.asc("firstName"),
+ *                                           Sort.asc("id")); // unique identifier
  * </pre>
  *
  * <p>In the example above, even if multiple people have the same last names

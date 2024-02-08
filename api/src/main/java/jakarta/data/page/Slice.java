@@ -18,6 +18,7 @@
 package jakarta.data.page;
 
 import jakarta.data.Streamable;
+import jakarta.data.repository.Query;
 import java.util.List;
 
 /**
@@ -29,7 +30,7 @@ import java.util.List;
  * {@code Slice<Vehicle>} find({@code @By("make")} String make,
  *                     {@code @By("model")} String model,
  *                     {@code @By("year")} int designYear,
- *                     Pageable pagination);
+ *                     {@code Pageable<?>} pageRequest);
  * </pre>
  *
  * <p>Unlike {@link Page}, a {@code Slice} does not have awareness of the total number of pages
@@ -81,7 +82,13 @@ public interface Slice<T> extends Streamable<T> {
     Pageable<T> pageable();
 
     /**
-     * TODO
+     * <p>Returns the {@link Pageable page request} for which this
+     * slice was obtained.</p>
+     *
+     * <p>This method is provided for when {@link Query query language} is used to
+     * return a results of different type than the entity that is being queried.
+     * This method allows the {@link Pageable} to be returned for the
+     * type of entity class that was queried.</p>
      *
      * @param <E>         entity class of the attributes that are used as sort criteria.
      * @param entityClass entity class of the attributes that are used as sort criteria.
@@ -97,7 +104,13 @@ public interface Slice<T> extends Streamable<T> {
     Pageable<T> nextPageable();
 
     /**
-     * TODO (needed to obtain a Pageable for the entity class after query language causes results of different type to be returned)
+     * <p>Returns a request for the {@link Pageable#next() next} page,
+     * or <code>null</code> if it is known that there is no next page.</p>
+     *
+     * <p>This method is useful when {@link Query query language} is used to
+     * return a results of different type than the entity that is being queried.
+     * This method allows the subsequent {@link Pageable} to be returned for the
+     * type of entity class that is being queried.</p>
      *
      * @param <E>         entity class of the attributes that are used as sort criteria.
      * @param entityClass entity class of the attributes that are used as sort criteria.

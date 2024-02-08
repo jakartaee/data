@@ -18,7 +18,9 @@
 package jakarta.data.page;
 
 import jakarta.data.Limit;
+import jakarta.data.Order;
 import jakarta.data.Sort;
+import jakarta.data.metamodel.StaticMetamodel;
 import jakarta.data.repository.OrderBy;
 import jakarta.data.repository.Query;
 
@@ -36,10 +38,11 @@ import java.util.Optional;
  * <pre>
  * &#64;OrderBy("age")
  * &#64;OrderBy("ssn")
- * Person[] findByAgeBetween(int minAge, int maxAge, Pageable pagination);
+ * Person[] findByAgeBetween(int minAge, int maxAge, {@code Pageable<Person>} pageRequest);
  *
  * ...
- * for (Pageable p = Pageable.ofSize(100); p != null; p = page.length == 0 ? null : p.next()) {
+ * for ({@code Pageable<Person>} p = Pageable.of(Person.class).size(100);
+ *      p != null; p = page.length == 0 ? null : p.next()) {
  *   page = people.findByAgeBetween(35, 59, p);
  *   ...
  * }
@@ -55,8 +58,10 @@ import java.util.Optional;
  *     same method.</li>
  * <li>a <code>Pageable</code> parameter is supplied in combination
  *     with the <code>First</code> keyword.</li>
- * <li>a <code>Pageable</code> parameter is supplied and separate
+ * <li>a <code>Pageable</code> parameter with sort criteria is supplied and separate
  *     {@link Sort} parameters are also supplied to the same method.</li>
+ * <li>a <code>Pageable</code> parameter with sort criteria is supplied and an
+ *     {@link Order} parameter is also supplied to the same method.</li>
  * <li>the database is incapable of ordering with the requested
  *     sort criteria.</li>
  * </ul>
@@ -66,10 +71,32 @@ import java.util.Optional;
 public interface Pageable<T> {
 
     /**
-     * TODO
+     * <p>Creates a page request to use when querying on entities of the specified entity class.</p>
      *
-     * @param <T>         entity class of the attributes that are used as sort criteria.
-     * @param entityClass entity class of the attributes that are used as sort criteria.
+     * <p>This method is useful for supplying the entity type when you do not have
+     * typed {@link Sort} instances. For example,</p>
+     *
+     * <pre>
+     * {@code Pageable<Car>} page1Request = Pageable.of(Car.class).page(1).size(25).sortBy(
+     *                                          Sort.desc("price"),
+     *                                          Sort.asc("mileage"),
+     *                                          Sort.asc("vin"));
+     * </pre>
+     *
+     * <p>If using typed {@link Sort} instances from the {@link StaticMetamodel},
+     * a more concise way to create page requests is to start with the {@link Order} class,
+     * as follows:</p>
+     *
+     * <pre>
+     * {@code Pageable<Car>} page1Request = Order.by(_Car.price.desc(),
+     *                                       _Car.mileage.asc(),
+     *                                       _Car.vin.asc())
+     *                                   .page(1)
+     *                                   .size(25);
+     * </pre>
+     *
+     * @param <T>         entity class of attributes that can be used as sort criteria.
+     * @param entityClass entity class of attributes that can be used as sort criteria.
      * @return a new instance of <code>Pageable</code>. This method never returns <code>null</code>.
      */
     static <T> Pageable<T> of(Class<T> entityClass) {

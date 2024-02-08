@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2024 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ package jakarta.data.repository;
 import jakarta.data.Sort;
 import jakarta.data.page.KeysetAwarePage;
 import jakarta.data.page.Page;
+import jakarta.data.page.Slice;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -31,6 +32,8 @@ import java.lang.annotation.Target;
  * <p>Jakarta Data providers for relational databases must support
  * JPQL queries if backed by a Jakarta Persistence provider,
  * and otherwise must support SQL queries.</p>
+ *
+ * <h2>Parameters</h2>
  *
  * <p>The query language can used named parameters or positional parameters.</p>
  *
@@ -60,12 +63,24 @@ import java.lang.annotation.Target;
  *
  *     // JPQL using named parameters
  *     {@code @Query("SELECT DISTINCT p.name from Person p WHERE (LENGTH(p.name) >= :min AND LENGTH(p.name) <= :max)")}
- *     {@code List<String>} namesOfLength({@code @Param}("min") int minLength,
- *                                {@code @Param}("max") int minLength,
- *                                Sort... sorts);
+ *     {@code Page<String>} namesOfLength({@code @Param}("min") int minLength,
+ *                                {@code @Param}("max") int maxLength,
+ *                                {@code Pageable<Person>} pageRequest);
  *
  *     ...
  * }
+ * </pre>
+ *
+ * <h2>Return Types</h2>
+ *
+ * <p>Some query languages such as JPQL can be used to return a type other than the
+ * entity class, as shown in the above example, resulting in a {@link Page} that is
+ * parameterized with the query result type rather than the entity class.
+ * to request a subsequent page, use the {@link Slice#nextPageable(Class)} method
+ * to specify the entity class. For example,</p>
+ *
+ * <pre>
+ * {@code Page<String>} page2 = people.namesOfLength(5, 10, page1.nextPageable(Person.class));
  * </pre>
  */
 @Retention(RetentionPolicy.RUNTIME)

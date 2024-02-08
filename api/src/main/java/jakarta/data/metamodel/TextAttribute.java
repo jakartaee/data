@@ -21,6 +21,8 @@ import jakarta.data.Sort;
 
 /**
  * Represents an textual entity attribute in the {@link StaticMetamodel}.
+ *
+ * @param <T> entity class of the static metamodel.
  */
 public interface TextAttribute<T> extends SortableAttribute<T> {
 

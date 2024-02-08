@@ -30,6 +30,8 @@ import jakarta.data.Sort;
  * <li>boolean attributes</li>
  * <li>{@link TextAttribute textual attributes}</li>
  * </ul>
+ *
+ * @param <T> entity class of the static metamodel.
  */
 public interface SortableAttribute<T> extends Attribute {
 

@@ -47,13 +47,13 @@ import jakarta.data.Sort;
  * &#64;OrderBy("lastName")
  * &#64;OrderBy("firstName")
  * &#64;OrderBy("id")
- * KeysetAwareSlice&lt;Employee&gt; findByHoursWorkedGreaterThan(int hours, Pageable pagination);
+ * KeysetAwareSlice&lt;Employee&gt; findByHoursWorkedGreaterThan(int hours, {@code Pageable<Employee>} pageRequest);
  * </pre>
  *
  * <p>You can use an offset-based {@link Pageable} to request an initial page,</p>
  *
  * <pre>
- * page = employees.findByHoursWorkedGreaterThan(1500, Pageable.ofSize(50));
+ * page = employees.findByHoursWorkedGreaterThan(1500, Pageable.of(Employee.class).size(50));
  * </pre>
  *
  * <p>For subsequent pages, you can request pagination relative to the
@@ -77,8 +77,10 @@ import jakarta.data.Sort;
  *
  * <pre>
  * Employee emp = ...
- * Pageable pagination = Pageable.ofSize(50).afterKeyset(emp.lastName, emp.firstName, emp.id);
- * page = employees.findByHoursWorkedGreaterThan(1500, pagination);
+ * {@code Pageable<Employee>} pageRequest = Pageable.of(Employee.class)
+ *                                          .size(50)
+ *                                          .afterKeyset(emp.lastName, emp.firstName, emp.id);
+ * page = employees.findByHoursWorkedGreaterThan(1500, pageRequest);
  * </pre>
  *
  * <p>By making the query for the next page relative to observed values,
@@ -110,7 +112,8 @@ import jakarta.data.Sort;
  * &#64;OrderBy("zipcode")
  * &#64;OrderBy("birthYear")
  * &#64;OrderBy("id")
- * KeysetAwareSlice&lt;Customer&gt; getTopBuyers(int minOrders, float minSpent, Pageable pagination);
+ * KeysetAwareSlice&lt;Customer&gt; getTopBuyers(int minOrders, float minSpent,
+ *                                         {@code Pageable<Customer>} pageRequest);
  * </pre>
  *
  * <p>Queries that are used with keyset pagination must return entities

@@ -151,15 +151,15 @@ import java.util.List;
  * }
  *
  * &#64;Repository
- * public interface Orders {
+ * public interface Purchases {
  *     &#64;OrderBy("address.zipCode")
- *     List&lt;Order&gt; findByAddressZipCodeIn(List&lt;Integer&gt; zipCodes);
+ *     List&lt;Purchase&gt; findByAddressZipCodeIn(List&lt;Integer&gt; zipCodes);
  *
- *     &#64;Query("SELECT o FROM Order o WHERE o.address.zipCode=?1")
- *     List&lt;Order&gt; forZipCode(int zipCode);
+ *     &#64;Query("SELECT o FROM Purchase o WHERE o.address.zipCode=?1")
+ *     List&lt;Purchase&gt; forZipCode(int zipCode);
  *
  *     &#64;Save
- *     Order checkout(Order order);
+ *     Purchase checkout(Purchase purchase);
  * }
  * </pre>
  *
@@ -584,10 +584,10 @@ import java.util.List;
  *
  * <pre>
  * // Query by Method Name:
- * Vehicle[] findByMakeAndModelAndYear(String makerName, String model, int year, Sort... sorts);
+ * Vehicle[] findByMakeAndModelAndYear(String makerName, String model, int year, {@code Sort<?>...} sorts);
  *
  * // Parameter-based Conditions:
- * Vehicle[] find(String make, String model, int year, Sort... sorts);
+ * Vehicle[] find(String make, String model, int year, {@code Sort<?>...} sorts);
  * </pre>
  *
  * <h2>Additional Method Parameters</h2>
@@ -617,20 +617,20 @@ import java.util.List;
  *
  * <h3>Pagination</h3>
  *
- * <p>You can request that results be paginated by adding a {@link Pageable}
+ * <p>You can request that results be split into pages by adding a {@link Pageable}
  * parameter to a repository find method. For example,</p>
  *
  * <pre>
  * Product[] findByNameLikeOrderByAmountSoldDescNameAsc(
- *           String pattern, Pageable pagination);
+ *           String pattern, {@code Pageable<Product>} pageRequest);
  * ...
  * page1 = products.findByNameLikeOrderByAmountSoldDescNameAsc(
- *                  "%phone%", Pageable.ofSize(20));
+ *                  "%phone%", Pageable.of(Product.class).size(20));
  * </pre>
  *
  * <h3>Sorting at Runtime</h3>
  *
- * <p>When using pagination, you can dynamically supply sorting criteria
+ * <p>When requesting pages, you can dynamically supply sorting criteria
  * via the {@link Pageable#sortBy(Sort)} method and other methods
  * of {@code Pageable} with the same name. For example,</p>
  *
@@ -638,21 +638,21 @@ import java.util.List;
  * Product[] findByNameLike(String pattern, {@code Pageable<Product>} pagination);
  *
  * ...
- * {@code Pageable<Product>} pagination = Pageable.of(Product.class)
- *                                        .size(25)
- *                                        .sortBy(Sort.desc("price"),
- *                                                Sort.asc("name"));
+ * {@code Pageable<Product>} page1Request = Pageable.of(Product.class)
+ *                                          .size(25)
+ *                                          .sortBy(Sort.desc("price"),
+ *                                                  Sort.asc("name"));
  * page1 = products.findByNameLikeAndPriceBetween(
- *                 namePattern, minPrice, maxPrice, pagination);
+ *                 namePattern, minPrice, maxPrice, page1Request);
  * </pre>
  *
  * <p>An alternative when using the {@link StaticMetamodel} is to obtain the
  * page request from an {@link Order} instance, as follows,</p>
  *
  * <pre>
- * {@code Pageable<Product>} pagination = Order.by(_Product.price.desc(),
- *                                         _Product.name.asc())
- *                                     .pageSize(25));
+ * {@code Pageable<Product>} pageRequest = Order.by(_Product.price.desc(),
+ *                                          _Product.name.asc())
+ *                                      .pageSize(25));
  * </pre>
  *
  * <p>To supply sort criteria dynamically without using pagination,
@@ -667,6 +667,20 @@ import java.util.List;
  *                                 Sort.desc("price"),
  *                                 Sort.desc("amountSold"),
  *                                 Sort.asc("name")));
+ * </pre>
+ *
+ * <p>Generic, untyped {@link Sort} criteria can be supplied directly to a
+ * repository method with a variable arguments {@code Sort<?>...} parameter.
+ * For example,</p>
+ *
+ * <pre>
+ * Product[] findByNameLike(String pattern, Limit max, {@code Sort<?>...} sortBy);
+ *
+ * ...
+ * found = products.findByNameLike(namePattern, Limit.of(25),
+ *                                 Sort.desc("price"),
+ *                                 Sort.desc("amountSold"),
+ *                                 Sort.asc("name"));
  * </pre>
  *
  * <h2>Repository Default Methods</h2>

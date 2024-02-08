@@ -17,6 +17,7 @@
  */
 package jakarta.data;
 
+import jakarta.data.metamodel.StaticMetamodel;
 import jakarta.data.page.Pageable;
 import jakarta.data.repository.OrderBy;
 import jakarta.data.repository.Query;
@@ -31,20 +32,36 @@ import java.util.Objects;
  * a {@link Direction} and a property.</p>
  *
  * <p>Dynamic <code>Sort</code> criteria can be specified when
- * {@link Pageable#sortBy(Sort) requesting a page of results}
+ * requesting a {@link Pageable#sortBy(Sort) page} of results,
  * or can be optionally specified as
- * parameters to a repository method in any of the positions that are after
- * the query parameters. You can use <code>Sort...</code> to allow a variable
- * number of <code>Sort</code> criteria. For example,</p>
+ * parameters to a repository find method in any of the positions that are after
+ * the query parameters.</p>
+ *
+ * <p>You can use {@code Sort<?>...} to allow a variable
+ * number of generic <code>Sort</code> criteria. For example,</p>
  *
  * <pre>
- * Employee[] findByYearHired(int yearYired, Limit maxResults, Sort... sortBy);
+ * Employee[] findByYearHired(int yearYired, Limit maxResults, {@code Sort<?>...} sortBy);
  * ...
  * highestPaidNewHires = employees.findByYearHired(Year.now(),
  *                                                 Limit.of(10),
  *                                                 Sort.desc("salary"),
  *                                                 Sort.asc("lastName"),
  *                                                 Sort.asc("firstName"));
+ * </pre>
+ *
+ * <p>You can use {@link Order} in combination with the
+ * {@link StaticMetamodel} to allow a variable number of
+ * typed <code>Sort</code> criteria. For example,</p>
+ *
+ * <pre>
+ * Employee[] findByYearHired(int yearYired, Limit maxResults, {@code Order<Employee>} sortBy);
+ * ...
+ * highestPaidNewHires = employees.findByYearHired(Year.now(),
+ *                                                 Limit.of(10),
+ *                                                 Order.by(_Employee.salary.desc(),
+ *                                                          _Employee.lastName.asc(),
+ *                                                          _Employee.firstName.asc()));
  * </pre>
  *
  * <p>When combined on a method with static sort criteria
@@ -69,6 +86,7 @@ import java.util.Objects;
  *     sort criteria.</li>
  * </ul>
  *
+ * @param <T>         entity class of the property upon which to sort.
  * @param property    name of the property to order by.
  * @param isAscending whether ordering for this property is ascending (true) or descending (false).
  * @param ignoreCase  whether or not to request case insensitive ordering from a database with case sensitive collation.

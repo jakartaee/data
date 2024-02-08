@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2024 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
  */
 package jakarta.data.repository;
 
+import jakarta.data.Order;
 import jakarta.data.Sort;
 import jakarta.data.page.Pageable;
 import java.lang.annotation.ElementType;
@@ -32,8 +33,8 @@ import java.lang.annotation.Target;
  * repository method, the precedence for sorting follows the order
  * in which the <code>OrderBy</code> annotations are specified,
  * and after that follows any sort criteria that is supplied
- * dynamically by {@link Sort} parameters or by a
- * {@link Pageable} parameter with {@link Pageable#sorts()}.</p>
+ * dynamically by {@link Sort} parameters, {@link Order} parameter, or by a
+ * {@link Pageable} parameter with {@link Pageable#sorts() sort criteria}.</p>
  *
  * <p>For example, the following sorts first by the
  * <code>lastName</code> attribute in ascending order,
@@ -47,7 +48,7 @@ import java.lang.annotation.Target;
  * <pre>
  * &#64;OrderBy("lastName")
  * &#64;OrderBy("firstName")
- * Person[] findByZipCode(int zipCode, Pageable pagination);
+ * Person[] findByZipCode(int zipCode, {@code Pageable<?>} pageRequest);
  * </pre>
  *
  * <p>The precise meaning of ascending and descending order is
