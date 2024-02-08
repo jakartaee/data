@@ -86,7 +86,7 @@ public interface Slice<T> extends Streamable<T> {
      * slice was obtained.</p>
      *
      * <p>This method is provided for when {@link Query query language} is used to
-     * return a results of different type than the entity that is being queried.
+     * return a result of different type than the entity that is being queried.
      * This method allows the {@link Pageable} to be returned for the
      * type of entity class that was queried.</p>
      *
