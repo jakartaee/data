@@ -42,7 +42,7 @@ import jakarta.data.repository.Query;
  * {@code Page<Employee>} findByYearHired(int year, {@code Pageable<Employee>} pageRequest);
  * ...
  * page1 = employees.findByYearHired(Year.now(),
- *                                   Order.by(_Employee.salaray.desc(),
+ *                                   Order.by(_Employee.salary.desc(),
  *                                            _Employee.lastName.asc(),
  *                                            _Employee.firstName.asc())
  *                                        .page(1)
