@@ -108,7 +108,7 @@ public interface Slice<T> extends Streamable<T> {
      * or <code>null</code> if it is known that there is no next page.</p>
      *
      * <p>This method is useful when {@link Query query language} is used to
-     * return a results of different type than the entity that is being queried.
+     * return a result of different type than the entity that is being queried.
      * This method allows the subsequent {@link Pageable} to be returned for the
      * type of entity class that is being queried.</p>
      *
