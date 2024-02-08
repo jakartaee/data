@@ -185,6 +185,58 @@ public interface Pageable<T> {
     Pageable<T> beforeKeysetCursor(Cursor keysetCursor);
 
     /**
+     * <p>Creates a new page request with the same pagination information,
+     * appending the specified {@link Sort#asc(String) ascending sort}
+     * with lower priority than all other sort criteria (if any) that have already
+     * been specified.</p>
+     *
+     * @param property name of the entity attribute upon which to sort.
+     * @return a new instance of <code>Pageable</code> with the ascending sort
+     *         as its lowest priority sort criteria.
+     * @throws NullPointerException when the property is null
+     */
+    Pageable<T> asc(String property);
+
+    /**
+     * <p>Creates a new page request with the same pagination information,
+     * appending the specified {@link Sort#ascIgnoreCase(String) case-insensitive ascending sort}
+     * with lower priority than all other sort criteria (if any) that have already
+     * been specified.</p>
+     *
+     * @param property name of the entity attribute upon which to sort.
+     * @return a new instance of <code>Pageable</code> with the case-insensitive ascending sort
+     *         as its lowest priority sort criteria.
+     * @throws NullPointerException when the property is null
+     */
+    Pageable<T> ascIgnoreCase(String property);
+
+    /**
+     * <p>Creates a new page request with the same pagination information,
+     * appending the specified {@link Sort#desc(String) descending sort}
+     * with lower priority than all other sort criteria (if any) that have already
+     * been specified.</p>
+     *
+     * @param property name of the entity attribute upon which to sort.
+     * @return a new instance of <code>Pageable</code> with the descending sort
+     *         as its lowest priority sort criteria.
+     * @throws NullPointerException when the property is null
+     */
+    Pageable<T> desc(String property);
+
+    /**
+     * <p>Creates a new page request with the same pagination information,
+     * appending the specified {@link Sort#descIgnoreCase(String) case-insensitive descending sort}
+     * with lower priority than all other sort criteria (if any) that have already
+     * been specified.</p>
+     *
+     * @param property name of the entity attribute upon which to sort.
+     * @return a new instance of <code>Pageable</code> with the case-insensitive descending sort
+     *         as its lowest priority sort criteria.
+     * @throws NullPointerException when the property is null
+     */
+    Pageable<T> descIgnoreCase(String property);
+
+    /**
      * Compares with another instance to determine if both represent the same
      * pagination information.
      *

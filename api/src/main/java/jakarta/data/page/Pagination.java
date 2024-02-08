@@ -18,6 +18,8 @@
 package jakarta.data.page;
 
 import jakarta.data.Sort;
+
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -62,8 +64,41 @@ record Pagination<T>(long page, int size, List<Sort<T>> sorts, Mode mode, Cursor
     }
 
     @Override
+    public Pageable<T> asc(String property) {
+        return new Pagination<T>(page, size, combine(sorts, Sort.asc(property)), mode, type);
+    }
+
+    @Override
+    public Pageable<T> ascIgnoreCase(String property) {
+        return new Pagination<T>(page, size, combine(sorts, Sort.ascIgnoreCase(property)), mode, type);
+    }
+
+    private static final <E> List<E> combine(List<E> list, E element) {
+        int size = list.size();
+        if (size == 0) {
+            return List.of(element);
+        } else {
+            Object[] array = list.toArray(new Object[size + 1]);
+            array[size] = element;
+            @SuppressWarnings("unchecked")
+            List<E> newList = (List<E>) Collections.unmodifiableList(Arrays.asList(array));
+            return newList;
+        }
+    }
+
+    @Override
     public Optional<Cursor> cursor() {
         return Optional.ofNullable(type);
+    }
+
+    @Override
+    public Pageable<T> desc(String property) {
+        return new Pagination<T>(page, size, combine(sorts, Sort.desc(property)), mode, type);
+    }
+
+    @Override
+    public Pageable<T> descIgnoreCase(String property) {
+        return new Pagination<T>(page, size, combine(sorts, Sort.descIgnoreCase(property)), mode, type);
     }
 
     @Override

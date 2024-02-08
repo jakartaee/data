@@ -199,4 +199,76 @@ class PageableTest {
             softly.assertThat(p2.size()).isEqualTo(55);
         });
     }
+
+    @Test
+    @DisplayName("Sorts should be appended by the Pageable.asc method")
+    void shouldAppendAscendingSort() {
+        Pageable<?> p1 = Pageable.ofSize(50).asc("first");
+        Pageable<?> p2 = p1.asc("second");
+        Pageable<?> p3 = p2.asc("third");
+
+        assertSoftly(softly -> {
+            softly.assertThat(p1.sorts()).isEqualTo(
+                    List.of(Sort.asc("first")));
+            softly.assertThat(p2.sorts()).isEqualTo(
+                    List.of(Sort.asc("first"), Sort.asc("second")));
+            softly.assertThat(p3.sorts()).isEqualTo(
+                    List.of(Sort.asc("first"), Sort.asc("second"), Sort.asc("third")));
+            softly.assertThat(p3.size()).isEqualTo(50);
+        });
+    }
+
+    @Test
+    @DisplayName("Sorts should be appended by the Pageable.ascIgnoreCase method")
+    void shouldAppendCaseInsensitiveAscendingSort() {
+        Pageable<?> p1 = Pageable.ofSize(40).ascIgnoreCase("first");
+        Pageable<?> p2 = p1.ascIgnoreCase("second");
+        Pageable<?> p3 = p2.ascIgnoreCase("third");
+
+        assertSoftly(softly -> {
+            softly.assertThat(p1.sorts()).isEqualTo(
+                    List.of(Sort.ascIgnoreCase("first")));
+            softly.assertThat(p2.sorts()).isEqualTo(
+                    List.of(Sort.ascIgnoreCase("first"), Sort.ascIgnoreCase("second")));
+            softly.assertThat(p3.sorts()).isEqualTo(
+                    List.of(Sort.ascIgnoreCase("first"), Sort.ascIgnoreCase("second"), Sort.ascIgnoreCase("third")));
+            softly.assertThat(p3.size()).isEqualTo(40);
+        });
+    }
+
+    @Test
+    @DisplayName("Sorts should be appended by the Pageable.descIgnoreCase method")
+    void shouldAppendCaseInsensitiveDescendingSort() {
+        Pageable<?> p1 = Pageable.ofSize(30).descIgnoreCase("first");
+        Pageable<?> p2 = p1.descIgnoreCase("second");
+        Pageable<?> p3 = p2.descIgnoreCase("third");
+
+        assertSoftly(softly -> {
+            softly.assertThat(p1.sorts()).isEqualTo(
+                    List.of(Sort.descIgnoreCase("first")));
+            softly.assertThat(p2.sorts()).isEqualTo(
+                    List.of(Sort.descIgnoreCase("first"), Sort.descIgnoreCase("second")));
+            softly.assertThat(p3.sorts()).isEqualTo(
+                    List.of(Sort.descIgnoreCase("first"), Sort.descIgnoreCase("second"), Sort.descIgnoreCase("third")));
+            softly.assertThat(p3.size()).isEqualTo(30);
+        });
+    }
+
+    @Test
+    @DisplayName("Sorts should be appended by the Pageable.desc method")
+    void shouldAppendDescendingSort() {
+        Pageable<?> p1 = Pageable.ofSize(20).desc("first");
+        Pageable<?> p2 = p1.desc("second");
+        Pageable<?> p3 = p2.desc("third");
+
+        assertSoftly(softly -> {
+            softly.assertThat(p1.sorts()).isEqualTo(
+                    List.of(Sort.desc("first")));
+            softly.assertThat(p2.sorts()).isEqualTo(
+                    List.of(Sort.desc("first"), Sort.desc("second")));
+            softly.assertThat(p3.sorts()).isEqualTo(
+                    List.of(Sort.desc("first"), Sort.desc("second"), Sort.desc("third")));
+            softly.assertThat(p3.size()).isEqualTo(20);
+        });
+    }
 }
