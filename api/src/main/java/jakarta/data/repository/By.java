@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2023,2024 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,6 +34,7 @@ import java.lang.annotation.Target;
  * &#64;Repository
  * public interface People extends BasicRepository&lt;Person, Long&gt; {
  *
+ *     {@code @Find}
  *     List&lt;Person&gt; findNamed(&#64;By("firstName") String first,
  *                            &#64;By("lastName") String last);
  * }

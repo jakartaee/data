@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2023,2024 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -70,8 +70,9 @@ import java.lang.annotation.Target;
  * </p>
  *
  * <p>If this annotation is combined with other operation annotations (e.g., {@code @Update}, {@code @Delete},
- *  {@code @Save}), it will throw an {@link UnsupportedOperationException} because only one operation type can be specified.
- *  A Jakarta Data provider implementation must detect (and report) this error at compile time or at runtime.</p>
+ * {@code @Find}, {@code @Query}, {@code @Save}),
+ * it will throw an {@link UnsupportedOperationException} because only one operation type can be specified.
+ * A Jakarta Data provider implementation must detect (and report) this error at compile time or at runtime.</p>
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
