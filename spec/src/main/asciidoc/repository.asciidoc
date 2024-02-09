@@ -777,7 +777,7 @@ The Jakarta Data implementation automatically recognizes the query annotations i
 
 === Parameter-based automatic query methods
 
-An _automatic query method_ is an abstract method that either generates a query based on the parameters of the method or based on the name of the method (the Query by Method Name pattern is discussed separately). The method return type identifies the entity. For example: `E`, `Optional<E>`, `Page<E>`, or `List<E>`, where `E` is an entity class. Each parameter must either:
+An _automatic query method_ is an abstract method that either generates a query based on the parameters of the method. The method return type identifies the entity. For example: `E`, `Optional<E>`, `Page<E>`, or `List<E>`, where `E` is an entity class. Each parameter must either:
 
 - have exactly the same type and name as a persistent field or property of the entity class, or
 - be of type `Limit`, `Order`, `Pageable`, or `Sort`.
@@ -788,10 +788,14 @@ For example:
 
 [source,java]
 ----
+
+@Find
 Book bookByIsbn(String isbn);
 
+@Find
 List<Book> booksByYear(Year year, Sort order, Limit limit);
 
+@Find
 Page<Book> find(@By("year") Year publishedIn,
                 @By("genre") Category type,
                 Pageable<?> pagination);
