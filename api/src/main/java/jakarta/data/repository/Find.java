@@ -62,7 +62,7 @@ import java.lang.annotation.Target;
  *     <li>Array of the entity type</li>
  * </ul>
  *
- * <p>If the annotated method returns a single instance (either through {@code Optional} or directly), but the query returns more than one element,
+ * <p>If the annotated method return type is a single instance (either through {@code Optional} or directly), but the query returns more than one element,
  * it will throw a {@link jakarta.data.exceptions.NonUniqueResultException}.</p>
  *
  * <p>If this annotation is combined with other operation annotations (e.g., {@code @Update}, {@code @Delete},
