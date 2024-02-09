@@ -30,11 +30,11 @@ public class _AsciiChar {
     public static final String HEXADECIMAL = "hexadecimal";
     public static final String NUMERICVALUE = "numericValue";
 
-    public static volatile SortableAttribute id;
-    public static volatile TextAttribute hexadecimal;
+    public static volatile SortableAttribute<AsciiCharacter> id;
+    public static volatile TextAttribute<AsciiCharacter> hexadecimal;
     public static volatile Attribute isControl; // user decided it didn't care about sorting for this one
-    public static volatile SortableAttribute numericValue;
-    public static volatile TextAttribute thisCharacter;
+    public static volatile SortableAttribute<AsciiCharacter> numericValue;
+    public static volatile TextAttribute<AsciiCharacter> thisCharacter;
 
     // Avoids the checkstyle error,
     // HideUtilityClassConstructor: Utility classes should not have a public or default constructor

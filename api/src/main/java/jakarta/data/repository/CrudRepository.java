@@ -53,7 +53,7 @@ import jakarta.data.exceptions.EntityExistsException;
  * {@code @Repository}
  * public interface Cars extends CrudRepository{@code <Car, Long>} {
  *
- *     List{@code <Car>} findByMakeAndModel(String make, String model, Sort...);
+ *     List{@code <Car>} findByMakeAndModel(String make, String model, {@code Sort<?>...} sorts);
  *
  *     ...
  * }

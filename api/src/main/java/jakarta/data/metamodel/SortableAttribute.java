@@ -30,21 +30,23 @@ import jakarta.data.Sort;
  * <li>boolean attributes</li>
  * <li>{@link TextAttribute textual attributes}</li>
  * </ul>
+ *
+ * @param <T> entity class of the static metamodel.
  */
-public interface SortableAttribute extends Attribute {
+public interface SortableAttribute<T> extends Attribute {
 
     /**
      * Obtain a request for an ascending {@link Sort} based on the entity attribute.
      *
      * @return a request for an ascending sort on the entity attribute.
      */
-    Sort asc();
+    Sort<T> asc();
 
     /**
      * Obtain a request for a descending {@link Sort} based on the entity attribute.
      *
      * @return a request for a descending sort on the entity attribute.
      */
-    Sort desc();
+    Sort<T> desc();
 
 }

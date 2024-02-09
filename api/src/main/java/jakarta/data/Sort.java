@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2024 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,9 +17,11 @@
  */
 package jakarta.data;
 
+import jakarta.data.metamodel.StaticMetamodel;
 import jakarta.data.page.Pageable;
 import jakarta.data.repository.OrderBy;
 import jakarta.data.repository.Query;
+
 import java.util.Objects;
 
 /**
@@ -30,20 +32,36 @@ import java.util.Objects;
  * a {@link Direction} and a property.</p>
  *
  * <p>Dynamic <code>Sort</code> criteria can be specified when
- * {@link Pageable#sortBy(Sort[]) requesting a page of results}
+ * requesting a {@link Pageable#sortBy(Sort) page} of results,
  * or can be optionally specified as
- * parameters to a repository method in any of the positions that are after
- * the query parameters. You can use <code>Sort...</code> to allow a variable
- * number of <code>Sort</code> criteria. For example,</p>
+ * parameters to a repository find method in any of the positions that are after
+ * the query parameters.</p>
+ *
+ * <p>You can use {@code Sort<?>...} to allow a variable
+ * number of generic <code>Sort</code> criteria. For example,</p>
  *
  * <pre>
- * Employee[] findByYearHired(int yearYired, Limit maxResults, Sort... sortBy);
+ * Employee[] findByYearHired(int yearYired, Limit maxResults, {@code Sort<?>...} sortBy);
  * ...
  * highestPaidNewHires = employees.findByYearHired(Year.now(),
  *                                                 Limit.of(10),
  *                                                 Sort.desc("salary"),
  *                                                 Sort.asc("lastName"),
  *                                                 Sort.asc("firstName"));
+ * </pre>
+ *
+ * <p>You can use {@link Order} in combination with the
+ * {@link StaticMetamodel} to allow a variable number of
+ * typed <code>Sort</code> criteria. For example,</p>
+ *
+ * <pre>
+ * Employee[] findByYearHired(int yearYired, Limit maxResults, {@code Order<Employee>} sortBy);
+ * ...
+ * highestPaidNewHires = employees.findByYearHired(Year.now(),
+ *                                                 Limit.of(10),
+ *                                                 Order.by(_Employee.salary.desc(),
+ *                                                          _Employee.lastName.asc(),
+ *                                                          _Employee.firstName.asc()));
  * </pre>
  *
  * <p>When combined on a method with static sort criteria
@@ -68,11 +86,12 @@ import java.util.Objects;
  *     sort criteria.</li>
  * </ul>
  *
+ * @param <T>         entity class of the property upon which to sort.
  * @param property    name of the property to order by.
  * @param isAscending whether ordering for this property is ascending (true) or descending (false).
  * @param ignoreCase  whether or not to request case insensitive ordering from a database with case sensitive collation.
  */
-public record Sort(String property, boolean isAscending, boolean ignoreCase) {
+public record Sort<T>(String property, boolean isAscending, boolean ignoreCase) {
 
     /**
      * <p>Defines sort criteria for an entity property. For more descriptive code, use:</p>
@@ -136,62 +155,67 @@ public record Sort(String property, boolean isAscending, boolean ignoreCase) {
     /**
      * Create a {@link Sort} instance
      *
+     * @param <T>        entity class of the sortable property.
      * @param property  the property name to order by
      * @param direction the direction in which to order.
      * @param ignoreCase whether to request a case insensitive ordering.
      * @return a {@link Sort} instance. Never {@code null}.
      * @throws NullPointerException when there is a null parameter
      */
-    public static Sort of(String property, Direction direction, boolean ignoreCase) {
+    public static <T> Sort<T> of(String property, Direction direction, boolean ignoreCase) {
         Objects.requireNonNull(direction, "direction is required");
-        return new Sort(property, Direction.ASC.equals(direction), ignoreCase);
+        return new Sort<>(property, Direction.ASC.equals(direction), ignoreCase);
     }
 
     /**
      * Create a {@link Sort} instance with {@link Direction#ASC ascending direction}
      * that does not request case insensitive ordering.
      *
+     * @param <T>      entity class of the sortable property.
      * @param property the property name to order by
      * @return a {@link Sort} instance. Never {@code null}.
      * @throws NullPointerException when the property is null
      */
-    public static Sort asc(String property) {
-        return new Sort(property, true, false);
+    public static <T> Sort<T> asc(String property) {
+        return new Sort<>(property, true, false);
     }
 
     /**
      * Create a {@link Sort} instance with {@link Direction#ASC ascending direction}
      * and case insensitive ordering.
      *
+     * @param <T>      entity class of the sortable property.
      * @param property the property name to order by.
      * @return a {@link Sort} instance. Never {@code null}.
      * @throws NullPointerException when the property is null.
      */
-    public static Sort ascIgnoreCase(String property) {
-        return new Sort(property, true, true);
+    public static <T> Sort<T> ascIgnoreCase(String property) {
+        return new Sort<>(property, true, true);
     }
 
     /**
      * Create a {@link Sort} instance with {@link Direction#DESC descending direction}
      * that does not request case insensitive ordering.
      *
+     * @param <T>      entity class of the sortable property.
      * @param property the property name to order by
      * @return a {@link Sort} instance. Never {@code null}.
      * @throws NullPointerException when the property is null
      */
-    public static Sort desc(String property) {
-        return new Sort(property, false, false);
+    public static <T> Sort<T> desc(String property) {
+        return new Sort<>(property, false, false);
     }
 
     /**
      * Create a {@link Sort} instance with {@link Direction#DESC descending direction}
      * and case insensitive ordering.
      *
+     * @param <T>      entity class of the sortable property.
      * @param property the property name to order by.
      * @return a {@link Sort} instance. Never {@code null}.
      * @throws NullPointerException when the property is null.
      */
-    public static Sort descIgnoreCase(String property) {
-        return new Sort(property, false, true);
+    public static <T> Sort<T> descIgnoreCase(String property) {
+        return new Sort<>(property, false, true);
     }
 }

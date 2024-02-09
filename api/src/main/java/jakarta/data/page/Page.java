@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2023,2024 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ package jakarta.data.page;
  * A page is obtained by supplying a {@link Pageable} parameter to a repository method. For example,</p>
  *
  * <pre>
- * {@code Page<Employee>} findByYearHired(int year, Pageable pageRequest);
+ * {@code Page<Employee>} findByYearHired(int year, {@code Pageable<?>} pageRequest);
  * </pre>
  *
  * <p>Repository methods that are declared to return <code>Page</code> or
@@ -37,7 +37,7 @@ package jakarta.data.page;
  * <p>For a lighter weight subset of query results that does not have awareness of the
  * total number of pages, {@link Slice} can be used instead of page.</p>
  *
- * @param <T> the type of elements in this page 
+ * @param <T> the type of elements in this page
  */
 public interface Page<T> extends Slice<T> {
 

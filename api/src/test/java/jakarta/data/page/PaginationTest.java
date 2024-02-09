@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2023,2024 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,14 +32,14 @@ class PaginationTest {
     void shouldThrowExceptionWhenNoKeysetValuesWereProvided() {
         assertThatIllegalArgumentException()
                 .as("Mode must be different from OFFSET when cursor is null")
-                .isThrownBy(() -> new Pagination(1, 10, Collections.emptyList(), Pageable.Mode.CURSOR_NEXT, null));
+                .isThrownBy(() -> new Pagination<>(1, 10, Collections.emptyList(), Pageable.Mode.CURSOR_NEXT, null));
     }
 
     @Test
     @DisplayName("Should throw UnsupportedOperationException when keyset is not supported")
     void shouldThrowExceptionWhenKeysetIsNotSupported() {
         assertThatThrownBy(() -> {
-            Pagination pagination = new Pagination(1, 10, Collections.emptyList(), Pageable.Mode.CURSOR_NEXT, new KeysetCursor("me", 200));
+            Pagination<?> pagination = new Pagination<>(1, 10, Collections.emptyList(), Pageable.Mode.CURSOR_NEXT, new KeysetCursor("me", 200));
             pagination.next();
         }).isInstanceOf(UnsupportedOperationException.class)
                 .hasMessage("Not supported for keyset pagination. Instead use afterKeyset or afterKeysetCursor to provide the next keyset values or obtain the nextPageable from a KeysetAwareSlice.");

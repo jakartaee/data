@@ -37,7 +37,7 @@ class SortTest {
     @Test
     @DisplayName("Should use ascending sort when direction is ASC")
     void shouldCreateAscendingSort() {
-        Sort order = Sort.of(NAME, Direction.ASC, false);
+        Sort<?> order = Sort.of(NAME, Direction.ASC, false);
 
         assertSoftly(softly -> {
             softly.assertThat(order).isNotNull();
@@ -51,7 +51,7 @@ class SortTest {
     @Test
     @DisplayName("Should descending short when direction is DESC")
     void shouldCreateDescendingSort() {
-        Sort order = Sort.of(NAME, Direction.DESC, true);
+        Sort<?> order = Sort.of(NAME, Direction.DESC, true);
 
         assertSoftly(softly -> {
             softly.assertThat(order).isNotNull();
@@ -65,7 +65,7 @@ class SortTest {
     @Test
     @DisplayName("Should ascending sort when Sort.asc method is used")
     void shouldCreateAsc() {
-        Sort order = Sort.asc("name");
+        Sort<?> order = Sort.asc("name");
 
         assertSoftly(softly -> {
             softly.assertThat(order).isNotNull();
@@ -79,7 +79,7 @@ class SortTest {
     @Test
     @DisplayName("Should use ascending sort ignoring case when Sort.ascIgnoreCase method is used")
     void shouldCreateAscIgnoreCase() {
-        Sort order = Sort.ascIgnoreCase("name");
+        Sort<?> order = Sort.ascIgnoreCase("name");
 
         assertSoftly(softly -> {
             softly.assertThat(order).isNotNull();
@@ -93,7 +93,7 @@ class SortTest {
     @Test
     @DisplayName("Should descending sort when Sort.desc method is used")
     void shouldCreateDesc() {
-        Sort order = Sort.desc(NAME);
+        Sort<?> order = Sort.desc(NAME);
 
         assertSoftly(softly -> {
             softly.assertThat(order).isNotNull();
@@ -107,7 +107,7 @@ class SortTest {
     @Test
     @DisplayName("Should use descending sort ignoring case when Sort.descIgnoreCase method is used")
     void shouldCreateDescIgnoreCase() {
-        Sort order = Sort.descIgnoreCase(NAME);
+        Sort<?> order = Sort.descIgnoreCase(NAME);
 
         assertSoftly(softly -> {
             softly.assertThat(order).isNotNull();

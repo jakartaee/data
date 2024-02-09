@@ -56,6 +56,7 @@ import ee.jakarta.tck.data.framework.read.only.PositiveIntegers;
 import ee.jakarta.tck.data.framework.read.only.NaturalNumber.NumberType;
 import ee.jakarta.tck.data.framework.utilities.TestPropertyUtility;
 import jakarta.data.Limit;
+import jakarta.data.Order;
 import jakarta.data.Sort;
 import jakarta.data.Streamable;
 import jakarta.data.exceptions.EmptyResultException;
@@ -401,7 +402,7 @@ public class EntityTests {
 
     @Assertion(id = "133", strategy = "Request a Page higher than the final Page, expecting an empty Page with 0 results.")
     public void testBeyondFinalPage() {
-        Pageable sixth = Pageable.ofPage(6).sortBy(Sort.asc("numericValue")).size(10);
+        Pageable<AsciiCharacter> sixth = Order.by(_AsciiCharacter.numericValue.asc()).page(6).size(10);
         Page<AsciiCharacter> page;
         try {
             page = characters.findByNumericValueBetween(48, 90, sixth);
@@ -420,7 +421,7 @@ public class EntityTests {
 
     @Assertion(id = "133", strategy = "Request a Slice higher than the final Slice, expecting an empty Slice with 0 results.")
     public void testBeyondFinalSlice() {
-        Pageable sixth = Pageable.ofSize(5).sortBy(Sort.desc("id")).page(6);
+        Pageable<NaturalNumber> sixth = Pageable.of(NaturalNumber.class).size(5).sortBy(Sort.desc("id")).page(6);
         Slice<NaturalNumber> slice = numbers.findByNumTypeAndFloorOfSquareRootLessThanEqual(NumberType.PRIME, 8L,
                 sixth);
         assertEquals(0, slice.numberOfElements());
@@ -453,13 +454,13 @@ public class EntityTests {
                                      .collect(Collectors.toList()));
 
         assertEquals(List.of('D', 'E', 'F', 'G', 'H'),
-                     characters.findByIdGreaterThanEqual(68L, Limit.of(5), Sort.asc("numericValue"), Sort.asc("id"))
+                     characters.findByIdGreaterThanEqual(68L, Limit.of(5), Order.by(Sort.asc("numericValue"), Sort.asc("id")))
                                      .stream()
                                      .map(AsciiCharacter::getThisCharacter)
                                      .collect(Collectors.toList()));
 
         assertEquals(List.of(71L, 73L, 79L, 83L, 89L),
-                     numbers.findByIdGreaterThanEqual(68L, Limit.of(5), Sort.asc("numType"), Sort.asc("id"))
+                     numbers.findByIdGreaterThanEqual(68L, Limit.of(5), Order.by(Sort.asc("numType"), Sort.asc("id")))
                                      .stream()
                                      .map(NaturalNumber::getId)
                                      .collect(Collectors.toList()));
@@ -542,7 +543,7 @@ public class EntityTests {
 
     @Assertion(id = "133", strategy = "Request the last Page of up to 10 results, expecting to find the final 3.")
     public void testFinalPageOfUpTo10() {
-        Pageable fifthPageRequest = Pageable.ofSize(10).page(5).sortBy(Sort.asc("numericValue"));
+        Pageable<AsciiCharacter> fifthPageRequest = Order.by(_AsciiCharacter.numericValue.asc()).pageSize(10).page(5);
         Page<AsciiCharacter> page;
         try {
             page = characters.findByNumericValueBetween(48, 90, fifthPageRequest); // 'X' to 'Z'
@@ -590,7 +591,7 @@ public class EntityTests {
 
     @Assertion(id = "133", strategy = "Request the last Slice of up to 5 results, expecting to find the final 2.")
     public void testFinalSliceOfUpTo5() {
-        Pageable fifth = Pageable.ofSize(5).page(5).sortBy(Sort.desc("id"));
+        Pageable<NaturalNumber> fifth = Pageable.of(NaturalNumber.class).size(5).page(5).sortBy(Sort.desc("id"));
         Slice<NaturalNumber> slice = numbers.findByNumTypeAndFloorOfSquareRootLessThanEqual(NumberType.PRIME, 8L,
                 fifth);
         assertEquals(true, slice.hasContent());
@@ -626,7 +627,8 @@ public class EntityTests {
                           "ascending and descending sort. Verify the page contains all 12 expected entities, " +
                           "sorted according to the mixture of ascending and descending sort orders specified.")
     public void testFindAllWithPagination() {
-        Pageable page2request = Pageable.ofPage(2).size(12).sortBy(Sort.asc("floorOfSquareRoot"), Sort.desc("id"));
+        Pageable<NaturalNumber> page2request = Pageable.of(NaturalNumber.class).page(2).size(12)
+                .sortBy(Sort.asc("floorOfSquareRoot"), Sort.desc("id"));
         Page<NaturalNumber> page2 = positives.findAll(page2request);
 
         assertEquals(12, page2.numberOfElements());
@@ -667,9 +669,9 @@ public class EntityTests {
     public void testFindList() {
         List<NaturalNumber> oddCompositeNumbers = positives.findOdd(true, NumberType.COMPOSITE,
                                                                     Limit.of(10),
-                                                                    Sort.asc("floorOfSquareRoot"),
-                                                                    Sort.desc("numBitsRequired"),
-                                                                    Sort.asc("id"));
+                                                                    Order.by(Sort.asc("floorOfSquareRoot"),
+                                                                               Sort.desc("numBitsRequired"),
+                                                                               Sort.asc("id")));
         assertEquals(List.of(9L, 15L,  // 3 <= sqrt < 4, 4 bits
                              21L,      // 4 <= sqrt < 5, 5 bits
                              33L, 35L, // 5 <= sqrt < 6, 6 bits
@@ -681,7 +683,7 @@ public class EntityTests {
                                      .map(NaturalNumber::getId)
                                      .collect(Collectors.toList()));
 
-        List<NaturalNumber> evenPrimeNumbers = positives.findOdd(false, NumberType.PRIME, Limit.of(9));
+        List<NaturalNumber> evenPrimeNumbers = positives.findOdd(false, NumberType.PRIME, Limit.of(9), Order.by());
 
         assertEquals(1, evenPrimeNumbers.size());
         NaturalNumber num = evenPrimeNumbers.get(0);
@@ -723,7 +725,7 @@ public class EntityTests {
     @Assertion(id = "133",
                strategy = "Find a page of entities, with entity attributes identified by the parameter names and matching the parameter values.")
     public void testFindPage() {
-        Pageable page1Request = Pageable.ofSize(7).sortBy(Sort.desc("id"));
+        Pageable<NaturalNumber> page1Request = Pageable.of(NaturalNumber.class).size(7).sortBy(Sort.desc("id"));
 
         Page<NaturalNumber> page1 = positives.findMatching(9L, Short.valueOf((short) 7), NumberType.COMPOSITE,
                                                            page1Request);
@@ -756,7 +758,7 @@ public class EntityTests {
         // 4, 5, 6, 7, 8 square root rounds down to 2
         // 1, 2, 3 square root rounds down to 1
 
-        Pageable first8 = Pageable.ofSize(8).sortBy(Sort.asc("id"));
+        Pageable<NaturalNumber> first8 = Pageable.of(NaturalNumber.class).size(8).sortBy(Sort.asc("id"));
         KeysetAwarePage<NaturalNumber> page;
 
         try {
@@ -804,7 +806,7 @@ public class EntityTests {
                           "then request the next KeysetAwareSlice and the KeysetAwareSlice after that, " +
                           "expecting to find all results.")
     public void testFirstKeysetAwareSliceOf6AndNextSlices() {
-        Pageable first6 = Pageable.ofSize(6);
+        Pageable<NaturalNumber> first6 = Pageable.ofSize(6);
         KeysetAwareSlice<NaturalNumber> slice;
 
         try {
@@ -851,7 +853,7 @@ public class EntityTests {
                strategy = "Request the first Page of 10 results, expecting to find all 10. " +
                           "From the Page, verify the totalElements and totalPages expected.")
     public void testFirstPageOf10() {
-        Pageable first10 = Pageable.ofSize(10).sortBy(Sort.asc("numericValue"));
+        Pageable<AsciiCharacter> first10 = Order.by(_AsciiCharacter.numericValue.asc()).pageSize(10);
         Page<AsciiCharacter> page;
         try {
             page = characters.findByNumericValueBetween(48, 90, first10); // '0' to 'Z'
@@ -875,7 +877,7 @@ public class EntityTests {
 
     @Assertion(id = "133", strategy = "Request the first Slice of 5 results, expecting to find all 5.")
     public void testFirstSliceOf5() {
-        Pageable first5 = Pageable.ofSize(5).sortBy(Sort.desc("id"));
+        Pageable<NaturalNumber> first5 = Pageable.of(NaturalNumber.class).size(5).sortBy(Sort.desc("id"));
         Slice<NaturalNumber> slice = numbers.findByNumTypeAndFloorOfSquareRootLessThanEqual(NumberType.PRIME, 8L,
                 first5);
         assertEquals(5, slice.numberOfElements());
@@ -939,7 +941,7 @@ public class EntityTests {
     public void testIgnoreCase() {
         Stream<AsciiCharacter> found = characters.findByHexadecimalIgnoreCaseBetweenAndHexadecimalNotIn("4c", "5A",
                                                                                                         Set.of("5"),
-                                                                                                        Sort.asc("hexadecimal"));
+                                                                                                        Order.by(Sort.asc("hexadecimal")));
 
         assertEquals(List.of(Character.valueOf('L'), // 4c
                              Character.valueOf('M'), // 4d
@@ -971,7 +973,7 @@ public class EntityTests {
         //                                        ^^^ previous page ^^
         //                                                                                  ^^^^^ next page ^^^^
 
-        Pageable middle7 = Pageable.ofSize(7)
+        Pageable<NaturalNumber> middle7 = Pageable.of(NaturalNumber.class).size(7)
                         .sortBy(Sort.desc("numBitsRequired"), Sort.asc("floorOfSquareRoot"), Sort.desc("id"))
                         .afterKeyset((short) 5, 5L, 26L); // 20th result is 26; it requires 5 bits and its square root rounds down to 5.
 
@@ -1058,7 +1060,7 @@ public class EntityTests {
         //                                  ^^^^^^^^ slice 2 ^^^^^^^^^
         //                                                                                        ^^^^^^^^ slice 3 ^^^^^^^^^
 
-        Pageable middle9 = Pageable.ofSize(9)
+        Pageable<NaturalNumber> middle9 = Pageable.of(NaturalNumber.class).size(9)
                              .sortBy(Sort.desc("floorOfSquareRoot"), Sort.asc("id"))
                              .afterKeyset(6L, 46L); // 20th result is 46; its square root rounds down to 6.
 
@@ -1112,7 +1114,7 @@ public class EntityTests {
     @Assertion(id = "133", strategy = "Request a KeysetAwareSlice of results where none match the query, expecting an empty KeysetAwareSlice with 0 results.")
     public void testKeysetAwareSliceOfNothing() {
         // There are no numbers larger than 30 which have a square root that rounds down to 3.
-        Pageable pagination = Pageable.ofSize(33).afterKeyset(30L);
+        Pageable<NaturalNumber> pagination = Pageable.of(NaturalNumber.class).size(33).afterKeyset(30L);
 
         KeysetAwareSlice<NaturalNumber> slice;
         try {
@@ -1140,8 +1142,8 @@ public class EntityTests {
     public void testLimit() {
         Collection<NaturalNumber> nums = numbers.findByIdGreaterThanEqual(60L,
                                                         Limit.of(10),
-                                                        Sort.asc("floorOfSquareRoot"),
-                                                        Sort.desc("id"));
+                                                        Order.by(Sort.asc("floorOfSquareRoot"),
+                                                                   Sort.desc("id")));
 
         assertEquals(Arrays.toString(new Long[] { 63L, 62L, 61L, 60L, // square root rounds down to 7
                                 80L, 79L, 78L, 77L, 76L, 75L }), // square root rounds down to 8
@@ -1159,8 +1161,8 @@ public class EntityTests {
 
         Collection<NaturalNumber> nums = numbers.findByIdGreaterThanEqual(40L,
                                                         Limit.range(6, 10),
-                                                        Sort.asc("numType"), // primes first
-                                                        Sort.asc("id"));
+                                                        Order.by(Sort.asc("numType"), // primes first
+                                                                   Sort.asc("id")));
 
         assertEquals(Arrays.toString(new Long[] { 61L, 67L, 71L, 73L, 79L }),
         Arrays.toString(nums.stream().map(number -> number.getId()).toArray()));
@@ -1169,7 +1171,7 @@ public class EntityTests {
     @Assertion(id = "133", strategy = "Use a repository method with Limit and verify that the Limit caps " +
                                       "the number of results to the amount that is specified.")
     public void testLimitToOneResult() {
-        Collection<NaturalNumber> nums = numbers.findByIdGreaterThanEqual(80L, Limit.of(1));
+        Collection<NaturalNumber> nums = numbers.findByIdGreaterThanEqual(80L, Limit.of(1), Order.by());
 
         Iterator<NaturalNumber> it = nums.iterator();
         assertEquals(true, it.hasNext());
@@ -1209,7 +1211,7 @@ public class EntityTests {
 
     @Assertion(id = "133", strategy = "Use a repository method with the Not keyword.")
     public void testNot() {
-        NaturalNumber[] n = numbers.findByNumTypeNot(NumberType.COMPOSITE, Limit.of(8), Sort.asc("id"));
+        NaturalNumber[] n = numbers.findByNumTypeNot(NumberType.COMPOSITE, Limit.of(8), Order.by(Sort.asc("id")));
         assertEquals(8, n.length);
         assertEquals(1L, n[0].getId());
         assertEquals(2L, n[1].getId());
@@ -1241,7 +1243,7 @@ public class EntityTests {
                           "verfying that all results are returned and are ordered first by the static sort criteria, " +
                           "followed by the dynamic sort criteria when the value(s) being compared by the static criteria match.")
     public void testOrderByHasPrecedenceOverPageableSorts() {
-        Pageable pagination = Pageable.ofSize(8).sortBy(Sort.asc("numType"), Sort.desc("id"));
+        Pageable<NaturalNumber> pagination = Pageable.of(NaturalNumber.class).size(8).sortBy(Sort.asc("numType"), Sort.desc("id"));
         Slice<NaturalNumber> slice = numbers.findByIdLessThanOrderByFloorOfSquareRootDesc(25L, pagination);
 
         assertEquals(Arrays.toString(new Long[] { 23L, 19L, 17L, // square root rounds down to 4; prime
@@ -1278,8 +1280,8 @@ public class EntityTests {
                           "followed by the dynamic sort criteria when the value(s) being compared by the static criteria match.")
     public void testOrderByHasPrecedenceOverSorts() {
         Stream<NaturalNumber> nums = numbers.findByIdBetweenOrderByNumTypeAsc(5L, 24L,
-                                                                              Sort.desc("floorOfSquareRoot"),
-                                                                              Sort.asc("id"));
+                                                                              Order.by(Sort.desc("floorOfSquareRoot"),
+                                                                                       Sort.asc("id")));
 
         assertEquals(Arrays.toString(new Long[] { 17L, 19L, 23L, // prime; square root rounds down to 4
                                                   11L, 13L, // prime; square root rounds down to 3
@@ -1292,7 +1294,7 @@ public class EntityTests {
 
     @Assertion(id = "133", strategy = "Request a Page of results where none match the query, expecting an empty Page with 0 results.")
     public void testPageOfNothing() {
-        Pageable pagination = Pageable.ofSize(6).sortBy(Sort.asc("id"));
+        Pageable<AsciiCharacter> pagination = Order.by(_AsciiCharacter.id.asc()).pageSize(6);
         Page<AsciiCharacter> page;
         try {
             page = characters.findByNumericValueBetween(150, 160, pagination);
@@ -1331,7 +1333,7 @@ public class EntityTests {
 
     @Assertion(id = "133", strategy = "Request a Slice of results where none match the query, expecting an empty Slice with 0 results.")
     public void testSliceOfNothing() {
-        Pageable pagination = Pageable.ofSize(5).sortBy(Sort.desc("id"));
+        Pageable<NaturalNumber> pagination =  Pageable.of(NaturalNumber.class).size(5).sortBy(Sort.desc("id"));
         Slice<NaturalNumber> slice = numbers.findByNumTypeAndFloorOfSquareRootLessThanEqual(NumberType.COMPOSITE, 1L,
                 pagination);
 
@@ -1346,7 +1348,7 @@ public class EntityTests {
         assertEquals(Sort.ascIgnoreCase(_AsciiChar.HEXADECIMAL), _AsciiChar.hexadecimal.ascIgnoreCase());
         assertEquals(Sort.ascIgnoreCase("thisCharacter"), _AsciiChar.thisCharacter.ascIgnoreCase());
 
-        Pageable pageRequest = Pageable.ofSize(6).sortBy(_AsciiChar.numericValue.asc());
+        Pageable<AsciiCharacter> pageRequest = Order.by(_AsciiChar.numericValue.asc()).pageSize(6);
         Page<AsciiCharacter> page1 = characters.findByNumericValueBetween(68, 90, pageRequest);
 
         assertEquals(List.of('D', 'E', 'F', 'G', 'H', 'I'),
@@ -1362,7 +1364,7 @@ public class EntityTests {
         assertEquals(Sort.ascIgnoreCase(_AsciiCharacter.HEXADECIMAL), _AsciiCharacter.hexadecimal.ascIgnoreCase());
         assertEquals(Sort.ascIgnoreCase("thisCharacter"), _AsciiCharacter.thisCharacter.ascIgnoreCase());
 
-        Pageable pageRequest = Pageable.ofSize(7).sortBy(_AsciiCharacter.numericValue.asc());
+        Pageable<AsciiCharacter> pageRequest = Order.by(_AsciiCharacter.numericValue.asc()).pageSize(7);
         Page<AsciiCharacter> page1 = characters.findByNumericValueBetween(100, 122, pageRequest);
 
         assertEquals(List.of('d', 'e', 'f', 'g', 'h', 'i', 'j'),
@@ -1395,7 +1397,7 @@ public class EntityTests {
         assertEquals(Sort.descIgnoreCase("hexadecimal"), _AsciiChar.hexadecimal.descIgnoreCase());
         assertEquals(Sort.descIgnoreCase("thisCharacter"), _AsciiChar.thisCharacter.descIgnoreCase());
 
-        Sort sort = _AsciiChar.numericValue.desc();
+        Sort<AsciiCharacter> sort = _AsciiChar.numericValue.desc();
         AsciiCharacter[] found = characters.findFirst3ByNumericValueGreaterThanEqualAndHexadecimalEndsWith(30, "1", sort);
         assertEquals(3, found.length);
         assertEquals('q', found[0].getThisCharacter());
@@ -1410,7 +1412,7 @@ public class EntityTests {
         assertEquals(Sort.descIgnoreCase("hexadecimal"), _AsciiCharacter.hexadecimal.descIgnoreCase());
         assertEquals(Sort.descIgnoreCase("thisCharacter"), _AsciiCharacter.thisCharacter.descIgnoreCase());
 
-        Sort sort = _AsciiCharacter.numericValue.desc();
+        Sort<AsciiCharacter> sort = _AsciiCharacter.numericValue.desc();
         AsciiCharacter[] found = characters.findFirst3ByNumericValueGreaterThanEqualAndHexadecimalEndsWith(30, "4", sort);
         assertEquals(3, found.length);
         assertEquals('t', found[0].getThisCharacter());
@@ -1450,7 +1452,7 @@ public class EntityTests {
                strategy = "Request the third Page of 10 results, expecting to find all 10. " +
                           "Request the next Page via nextPageable, expecting page number 4 and another 10 results.")
     public void testThirdAndFourthPagesOf10() {
-        Pageable third10 = Pageable.ofPage(3).size(10).sortBy(Sort.asc("numericValue"));
+        Pageable<AsciiCharacter> third10 = Order.by(_AsciiCharacter.numericValue.asc()).page(3).size(10);
         Page<AsciiCharacter> page;
         try {
             page = characters.findByNumericValueBetween(48, 90, third10); // 'D' to 'M'
@@ -1471,7 +1473,7 @@ public class EntityTests {
                                      .map(c -> c.getHexadecimal() + ':' + c.getThisCharacter() + ';')
                                      .reduce("", String::concat));
 
-        Pageable fourth10 = third10.next();
+        Pageable<AsciiCharacter> fourth10 = third10.next();
         page = characters.findByNumericValueBetween(48, 90, fourth10); // 'N' to 'W'
 
         assertEquals(4, page.pageable().page());
@@ -1490,7 +1492,7 @@ public class EntityTests {
                strategy = "Request the third Slice of 5 results, expecting to find all 5. "
                        +  "Request the next Slice via nextPageable, expecting page number 4 and another 5 results.")
     public void testThirdAndFourthSlicesOf5() {
-        Pageable third5 = Pageable.ofPage(3).size(5).sortBy(Sort.desc("id"));
+        Pageable<NaturalNumber> third5 = Pageable.of(NaturalNumber.class).page(3).size(5).sortBy(Sort.desc("id"));
         Slice<NaturalNumber> slice = numbers.findByNumTypeAndFloorOfSquareRootLessThanEqual(NumberType.PRIME, 8L,
                 third5);
 
@@ -1500,7 +1502,7 @@ public class EntityTests {
         assertEquals(Arrays.toString(new Long[] { 37L, 31L, 29L, 23L, 19L }),
                 Arrays.toString(slice.stream().map(number -> number.getId()).toArray()));
 
-        Pageable fourth5 = third5.next();
+        Pageable<NaturalNumber> fourth5 = third5.next();
 
         slice = numbers.findByNumTypeAndFloorOfSquareRootLessThanEqual(NumberType.PRIME, 8L, fourth5);
 
@@ -1538,10 +1540,10 @@ public class EntityTests {
                strategy = "Use a repository method with varargs Sort... specifying a mixture of ascending and descending order, " +
                           "and verify all results are returned and are ordered according to the sort criteria.")
     public void testVarargsSort() {
-        List<NaturalNumber> list = numbers.findByIdLessThanEqual(12L,
+        List<NaturalNumber> list = numbers.findByIdLessThanEqual(12L, Order.by(
                                                                  Sort.asc("floorOfSquareRoot"),
                                                                  Sort.desc("numBitsRequired"),
-                                                                 Sort.asc("id"));
+                                                                 Sort.asc("id")));
 
         assertEquals(Arrays.toString(new Long[] { 2L, 3L, // square root rounds down to 1; 2 bits
                                                   1L, // square root rounds down to 1; 1 bit

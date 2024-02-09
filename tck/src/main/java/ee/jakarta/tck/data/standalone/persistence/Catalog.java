@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2023,2024 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -20,7 +20,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Stream;
 
-import jakarta.data.Sort;
+import jakarta.data.Order;
 import jakarta.data.Streamable;
 import jakarta.data.repository.DataRepository;
 import jakarta.data.repository.Delete;
@@ -75,7 +75,7 @@ public interface Catalog extends DataRepository<Product, String> {
 
     LinkedList<Product> findByDepartmentsEmpty();
 
-    Iterable<Product> findByIdBetween(String first, String last, Sort... sorts);
+    Iterable<Product> findByIdBetween(String first, String last, Order<Product> sorts);
 
     List<Product> findByNameLike(String name);
     

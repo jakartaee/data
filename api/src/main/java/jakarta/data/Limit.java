@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2024 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ import jakarta.data.page.Pageable;
  * query parameters. For example,</p>
  *
  * <pre>
- * Product[] findByNameLike(String namePattern, Limit limit, Sort... sorts);
+ * Product[] findByNameLike(String namePattern, Limit limit, {@code Sort<?>...} sorts);
  * 
  * ...
  * mostExpensive50 = products.findByNameLike(pattern, Limit.of(50), Sort.desc("price"));
