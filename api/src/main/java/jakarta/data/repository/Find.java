@@ -38,10 +38,10 @@ import java.lang.annotation.Target;
  * {@code @Repository}
  * interface Garage {
  *     {@code @Find}
- *     {@code List<Car>} getCarWithModel(@By("model") String model);
+ *     {@code List<Car>} getCarsWithModel(@By("model") String model);
  * }
  * </pre>
- * <p>The {@code @Find} annotation indicates that the {@code getCarWithModel(model)} method is responsible for searching
+ * <p>The {@code @Find} annotation indicates that the {@code getCarsWithModel(model)} method is responsible for searching
  * a list of Car objects based on the provided model parameter in a database.
  * </p>
  *
