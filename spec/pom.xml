@@ -32,7 +32,7 @@
 
     <properties>
         <asciidoctor-maven.version>2.2.5</asciidoctor-maven.version>
-        <asciidoctorj-pdf.version>2.3.10</asciidoctorj-pdf.version>
+        <asciidoctorj-pdf.version>2.3.12</asciidoctorj-pdf.version>
         <asciidoctorj.diagram.version>2.2.17</asciidoctorj.diagram.version>
 
         <maven.build.timestamp.format>MMMM dd, yyyy</maven.build.timestamp.format>
