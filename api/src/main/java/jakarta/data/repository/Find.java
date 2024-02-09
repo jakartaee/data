@@ -48,6 +48,10 @@ import java.lang.annotation.Target;
  * <p>The return type of a method annotated with {@code @Find} must be one of the following:</p>
  * <ul>
  *     <li>{@code List}</li>
+ *     <li>{@code Page}</li>
+ *     <li>{@code Slice}</li>
+ *     <li>{@code KeysetAwarePage}</li>
+ *     <li>{@code KeysetAwareSlice}</li>
  *     <li>{@code Set}</li>
  *     <li>{@code Stream}</li>
  *     <li>{@code Streamable}</li>
