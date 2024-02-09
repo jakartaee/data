@@ -8,6 +8,11 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 
 == [Unreleased]
 
+=== Changed
+
+- Define the Sort and Pageable as parameterized
+- Include the Find annotation
+
 == [1.0.0-M3] - 2024-01-30
 
 === Changed
@@ -17,6 +22,7 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 - Introduced @Delete annotation to the default deleteAll() method
 - Restricted @Update and @Delete return types for numeric types to only int and long
 - Re-introduced static metamodel
+
 
 == [1.0.0-M2] - 2023-11-31
 
