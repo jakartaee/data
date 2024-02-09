@@ -803,7 +803,7 @@ Page<Book> find(@By("year") Year publishedIn,
                 Pageable<?> pagination);
 ----
 
-Automatic query methods annotated `@Find` _are_ portable between providers.
+Automatic query methods annotated with `@Find` _are_ portable between providers.
 
 [NOTE]
 ====
