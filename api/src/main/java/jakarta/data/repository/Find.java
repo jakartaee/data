@@ -26,7 +26,7 @@ import java.lang.annotation.Target;
 
 
 /**
- * <p>Annotates a repository method that performs entity search operations.</p>
+ * <p>Annotates a repository method that performs entity search operations as Parameter-based automatic query methods.</p>
  *
  * <p>The {@code Find} annotation indicates that the annotated repository method executes a query to retrieve entities based on specified parameters.
  * The method parameters must match the types and names of the corresponding fields of the entity being queried.
