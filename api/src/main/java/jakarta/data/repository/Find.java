@@ -54,6 +54,7 @@ import java.lang.annotation.Target;
  *     <li>{@code Collection}</li>
  *     <li>{@code Optional} (for single instances)</li>
  *     <li>The entity type itself (for single instances)</li>
+ *     <li>Array of the entity type</li>
  * </ul>
  *
  * <p>If the annotated method returns a single instance (either through {@code Optional} or directly), but the query returns more than one element,
