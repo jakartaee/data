@@ -26,27 +26,42 @@ import java.lang.annotation.Target;
 
 
 /**
- * <p>Annotates a repository method that is search entities.</p>
+ * <p>Annotates a repository method that performs entity search operations.</p>
  *
- * <p>The {@code Find} annotation indicates that the annotated repository method requests will execute a query by match parameter.
- * Thus, the types and names of the method parameters exactly match the types and names of the corresponding fields of the entity. Also,
- * there's no special naming convention for the @Find methods—they may be named arbitrarily, and their names encode no semantics.
+ * <p>The {@code Find} annotation indicates that the annotated repository method executes a query to retrieve entities based on specified parameters.
+ * The method parameters must match the types and names of the corresponding fields of the entity being queried.
+ * There is no specific naming convention for methods annotated with {@code @Find}; they may be named arbitrarily,
+ * and their names do not carry any specific semantic meaning.
  * </p>
  * <p>For example, consider an interface representing a garage:</p>
  * <pre>
  * {@code @Repository}
  * interface Garage {
  *     {@code @Find}
- *     List<Car> getCarWithModel({@code @By("model"} String model);
+ *     List<Car> getCarWithModel({@code @By("model")} String model);
  * }
  * </pre>
- * <p>The {@code @Find} annotation can be used to indicate that the {@code getCarWithModel(model)} method is responsible for searching
- * a list of {@code Car} based at the model in parameter into a database.
+ * <p>The {@code @Find} annotation indicates that the {@code getCarWithModel(model)} method is responsible for searching
+ * a list of {@code Car} objects based on the provided model parameter in a database.
  * </p>
  *
+ * <p>The return type of a method annotated with {@code @Find} must be one of the following:</p>
+ * <ul>
+ *     <li>{@code List}</li>
+ *     <li>{@code Set}</li>
+ *     <li>{@code Stream}</li>
+ *     <li>{@code Iterable}</li>
+ *     <li>{@code Collection}</li>
+ *     <li>{@code Optional} (for single instances)</li>
+ *     <li>The entity type itself (for single instances)</li>
+ * </ul>
+ *
+ * <p>If the annotated method returns a single instance (either through {@code Optional} or directly), but the query returns more than one element,
+ * it will throw a {@link jakarta.data.exceptions.NonUniqueResultException}.</p>
+ *
  * <p>If this annotation is combined with other operation annotations (e.g., {@code @Update}, {@code @Delete},
- *  {@code @Save}), it will throw an {@link UnsupportedOperationException} because only one operation type can be specified.
- *  A Jakarta Data provider implementation must detect (and report) this error at compile time or at runtime.</p>
+ *  {@code @Save}), it will result in an {@link UnsupportedOperationException} being thrown, as only one operation type can be specified.
+ *  A Jakarta Data provider implementation must detect and report this error either at compile time or runtime.</p>
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
