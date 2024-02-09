@@ -50,6 +50,7 @@ import java.lang.annotation.Target;
  *     <li>{@code List}</li>
  *     <li>{@code Set}</li>
  *     <li>{@code Stream}</li>
+ *     <li>{@code Streamable}</li>
  *     <li>{@code Iterable}</li>
  *     <li>{@code Collection}</li>
  *     <li>{@code Optional} (for single instances)</li>
