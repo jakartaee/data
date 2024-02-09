@@ -1511,8 +1511,6 @@ The following order, with the lower number having higher precedence, is used whe
 1. If the method is a Java default method, then its provided implementation is used.
 2. If the method has a _Resource Accessor Method_ return type, then the method is implemented as a _Resource Accessor Method_.
 3. If the method is annotated with `@Query`, then the method is implemented to run the corresponding Query Language query.
-4. If the method is annotated with a _Life Cycle_ annotation that defines the type of operation (`@Insert`, `@Update`, `@Save`, or `@Delete`), then the annotation determines how the method is implemented.
+4. If the method is annotated with a _Life Cycle_ annotation that defines the type of operation (`@Insert`, `@Update`, `@Save`, `@Delete`, or `@Find`), then the annotation determines how the method is implemented.
 5. If any of the method parameters are annotated with a data access related annotation (such as `@By`), then the method is implemented as an _Automatic Query Method_ with _Parameter-based Conditions_.
 6. If the method is named according to the _Query by Method Name_ naming conventions, then the implementation follows the _Query by Method Name_ pattern.
-7. Otherwise, the method is implemented as an _Automatic Query Method_ with _Parameter-based Conditions_. The `-parameters` compiler option that makes parameter names available at run time must be used.
-
