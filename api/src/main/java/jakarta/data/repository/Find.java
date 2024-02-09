@@ -38,11 +38,11 @@ import java.lang.annotation.Target;
  * {@code @Repository}
  * interface Garage {
  *     {@code @Find}
- *     List<Car> getCarWithModel({@code @By("model")} String model);
+ *     {@code List<Car>} getCarWithModel(@By("model") String model);
  * }
  * </pre>
  * <p>The {@code @Find} annotation indicates that the {@code getCarWithModel(model)} method is responsible for searching
- * a list of {@code Car} objects based on the provided model parameter in a database.
+ * a list of Car objects based on the provided model parameter in a database.
  * </p>
  *
  * <p>The return type of a method annotated with {@code @Find} must be one of the following:</p>
