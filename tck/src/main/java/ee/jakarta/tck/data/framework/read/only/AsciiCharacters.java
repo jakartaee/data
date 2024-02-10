@@ -27,6 +27,7 @@ import jakarta.data.page.Page;
 import jakarta.data.page.Pageable;
 import jakarta.data.repository.By;
 import jakarta.data.repository.DataRepository;
+import jakarta.data.repository.Find;
 import jakarta.data.repository.Repository;
 import jakarta.data.repository.Save;
 
@@ -42,8 +43,10 @@ public interface AsciiCharacters extends DataRepository<AsciiCharacter, Long>, I
 
     boolean existsByThisCharacter(char ch);
 
+    @Find
     AsciiCharacter find(char thisCharacter);
 
+    @Find
     Optional<AsciiCharacter> find(@By("thisCharacter") char ch,
                                   @By("hexadecimal") String hex);
 

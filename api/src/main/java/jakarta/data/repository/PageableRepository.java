@@ -93,6 +93,7 @@ public interface PageableRepository<T, K> extends BasicRepository<T, K> {
      * or {@link Pageable.Mode#CURSOR_PREVIOUS} pagination mode is selected.
      * @see Pageable.Mode
      */
+    @Find
     Page<T> findAll(Pageable<T> pageable);
 
 }

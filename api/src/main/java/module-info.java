@@ -26,6 +26,7 @@ import jakarta.data.repository.By;
 import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.DataRepository;
 import jakarta.data.repository.Delete;
+import jakarta.data.repository.Find;
 import jakarta.data.repository.Insert;
 import jakarta.data.repository.OrderBy;
 import jakarta.data.repository.Query;
@@ -136,9 +137,9 @@ import java.util.List;
  *
  * <pre>
  * &#64;Entity
- * public class Order {
+ * public class Purchase {
  *     &#64;Id
- *     public String orderId;
+ *     public String purchaseId;
  *     &#64;Embedded
  *     public Address address;
  *     ...
@@ -211,6 +212,7 @@ import java.util.List;
  *
  * <p>Repository methods following the <b>Query by Method Name</b> pattern
  * must include the {@code By} keyword in the method name and must not include
+ * the {@code @Find} annotation, {@code @Query} annotation, or
  * any life cycle annotations on the method or any data access related annotations
  * on the method parameters. Query conditions
  * are determined by the portion of the method name following the {@code By} keyword.</p>
@@ -555,7 +557,7 @@ import java.util.List;
  * table, the same return types must be supported as for the Query-by-Method-Name and
  * Parameter-based Conditions patterns.</p>
  *
- * <p>Refer to the {@link Insert}, {@link Update}, {@link Save}, and {@link Delete}
+ * <p>Refer to the {@link Insert}, {@link Update}, {@link Save}, {@link Delete}, and {@link Find}
  * JavaDoc for valid return types when using those annotations. Whenever the
  * return type is an {@link Iterable} subtype that is a concrete class,
  * the class must have a public default constructor and support
@@ -564,8 +566,9 @@ import java.util.List;
  * <h2>Parameter-based Conditions</h2>
  *
  * <p>When using the <i>Parameter-based Conditions</i> pattern,
- * the method name must not include the {@code By} keyword or at least one
- * of the parameters must be annotated with a data access related annotation.
+ * you must annotate the repository method to indicate the type of operation.
+ * This information is not derived from the method name. The {@link Find}
+ * annotation indicates that the repository method is a find operation.
  * The query conditions are defined by the method parameters.
  * You can annotate method parameters with the {@link By} annotation
  * to specify the name of the entity attribute that the parameter value
@@ -587,7 +590,8 @@ import java.util.List;
  * Vehicle[] findByMakeAndModelAndYear(String makerName, String model, int year, {@code Sort<?>...} sorts);
  *
  * // Parameter-based Conditions:
- * Vehicle[] find(String make, String model, int year, {@code Sort<?>...} sorts);
+ * {@code @Find}
+ * Vehicle[] searchFor(String make, String model, int year, {@code Sort<?>...} sorts);
  * </pre>
  *
  * <h2>Additional Method Parameters</h2>
@@ -737,16 +741,17 @@ import java.util.List;
  * <li>If you annotate a method with {@link Query}, then the method is implemented
  * to run the corresponding Query Language query.</li>
  * <li>If you annotate a method with an annotation that defines the type of operation
- * ({@link Insert}, {@link Update}, {@link Save}, or {@link Delete}),
- * then the annotation determines how the method is implemented.
- * <li>If you annotate any of the method parameters with a data access related annotation,
- * then <b>Parameter-based Conditions</b> determine the implementation of the method.</li>
+ * ({@link Insert}, {@link Update}, {@link Save}, {@link Delete}, or {@link Find}),
+ * then the annotation determines how the method is implemented, along with any
+ * data access related annotations that you place on method parameters.</li>
  * <li>If you define a method according to the <b>Query by Method Name pattern</b> naming conventions,
  * then the implementation follows the Query by Method Name pattern.</li>
- * <li>Otherwise, <b>Parameter-based Conditions</b> determine the implementation of the method.
- * You must compile with the {@code -parameters} compiler option that makes parameter names
- * available at run time.</li>
  * </ol>
+ *
+ * <p>A repository method that does not fit any of the above patterns
+ * and is not handled as a vendor-specific extension
+ * must either result in an error at build time or raise
+ * {@link UnsupportedOperationException} at run time.</p>
  *
  * <h2>Identifying the type of Entity</h2>
  *

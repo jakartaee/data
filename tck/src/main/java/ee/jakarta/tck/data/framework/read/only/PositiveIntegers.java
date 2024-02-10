@@ -27,6 +27,7 @@ import jakarta.data.Streamable;
 import jakarta.data.page.KeysetAwarePage;
 import jakarta.data.page.Page;
 import jakarta.data.page.Pageable;
+import jakarta.data.repository.Find;
 import jakarta.data.repository.PageableRepository;
 import jakarta.data.repository.Repository;
 
@@ -53,10 +54,13 @@ public interface PositiveIntegers extends PageableRepository<NaturalNumber, Long
 
     Stream<NaturalNumber> findByNumTypeOrFloorOfSquareRoot(NumberType type, long floor);
 
+    @Find
     Page<NaturalNumber> findMatching(long floorOfSquareRoot, Short numBitsRequired, NumberType numType,
             Pageable<NaturalNumber> pagination);
 
+    @Find
     Optional<NaturalNumber> findNumber(long id);
 
+    @Find
     List<NaturalNumber> findOdd(boolean isOdd, NumberType numType, Limit limit, Order<NaturalNumber> sorts);
 }
