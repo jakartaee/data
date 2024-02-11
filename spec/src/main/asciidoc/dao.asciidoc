@@ -54,3 +54,8 @@ Several key benefits and features of using templates in Jakarta Data include:
 6. **Documentation and Best Practices:** Templates often come with documentation and best practice guidelines, helping developers adhere to industry standards and design principles. This documentation is a valuable resource for onboarding new team members and ensuring code quality.
 
 By leveraging templates in Jakarta Data, developers can design efficient, scalable, and maintainable data access layers that adhere to best practices and standards within the Jakarta EE ecosystem. Templates promote consistency, reuse, and flexibility, empowering developers to confidently build robust and reliable applications.
+
+== Entity Classes
+
+The entities classes at DAO Template have the same terminology at the repository; check <<entity_classes>> for further details.
+

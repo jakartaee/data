@@ -144,7 +144,7 @@ Here, the `@Insert` annotation is used for the `park` method, allowing you to de
 
 NOTE: Jakarta Data allows applications to intermix both patterns by defining methods that are annotated with `Insert`, `Update`, `Delete`, or `Save` on repositories that inherit from the built-in supertypes.
 
-== Entity Classes
+== Entity Classes [[entity_classes]]
 
 The notion of an _entity_ is the fundamental building block with which a data model may be constructed.
 Abstractly, an entity (or _entity type_) is a schema for data.
