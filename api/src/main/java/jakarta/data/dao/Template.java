@@ -189,49 +189,50 @@ public interface Template {
     <T> int updateAll(Iterable<T> entities);
 
     /**
-     * Finds by ID or key.
+     * Finds an entity by its ID or key.
      *
-     * @param type the entity class
-     * @param id   the id value
-     * @param <T>  the entity class type
-     * @param <K>  the id type
-     * @return the entity instance otherwise {@link Optional#empty()}
-     * @throws NullPointerException when either the type or id are null
+     * @param type the class of the entity
+     * @param id   the ID or key value
+     * @param <T>  the type of the entity class
+     * @param <K>  the type of the ID or key
+     * @return an {@link Optional} containing the entity if found, otherwise {@link Optional#empty()}
+     * @throws NullPointerException if either the type or id is null
      */
     <T, K> Optional<T> find(Class<T> type, K id);
 
     /**
-     * Deletes the entity with the given Id and the type.
-     * If the entity is not found in the persistence store it is silently ignored.
-     * @param type the entity class
-     * @param id   the id value must not be {@code null}.
-     * @param <T>  the entity class type
-     * @param <K>  the id type
-     * @throws NullPointerException when either the type or id are null
+     * Deletes the entity with the specified ID and class type.
+     * If the entity is not found in the persistence store, the operation is silently ignored.
+     *
+     * @param type the class of the entity
+     * @param id   the ID value (must not be {@code null})
+     * @param <T>  the type of the entity class
+     * @param <K>  the type of the ID
+     * @throws NullPointerException if either the type or id is null
      */
     <T, K> void delete(Class<T> type, K id);
 
     /**
-     * It starts a query using the fluent-API journey. It is a mutable and non-thread-safe instance.
+     * Starts a query using the fluent API. This instance is mutable and not thread-safe.
      *
-     * @param type the entity class
-     * @param <T>  the entity type
-     * @return a {@link QueryMapper.MapperFrom} instance
-     * @throws NullPointerException          when type is null
-     * @throws UnsupportedOperationException when the database cannot operate,
-     *                                       such as key-value where most operations are key-based.
+     * @param type the class of the entity
+     * @param <T>  the type of the entity
+     * @return a {@link QueryMapper.MapperFrom} instance for building queries
+     * @throws NullPointerException          if the type is null
+     * @throws UnsupportedOperationException if the database does not support the operation,
+     *                                       such as with key-value databases where most operations are key-based
      */
     <T> QueryMapper.MapperFrom select(Class<T> type);
 
     /**
-     * It starts a query builder using the fluent-API journey. It is a mutable and non-thread-safe instance.
+     * Starts a query builder using the fluent API. This instance is mutable and not thread-safe.
      *
-     * @param type the entity class
-     * @param <T>  the entity type
-     * @return a {@link QueryMapper.MapperDeleteFrom} instance
-     * @throws NullPointerException          when type is null
-     * @throws UnsupportedOperationException when the database cannot operate,
-     *                                       such as key-value where most operations are key-based.
+     * @param type the class of the entity
+     * @param <T>  the type of the entity
+     * @return a {@link QueryMapper.MapperDeleteFrom} instance for building delete queries
+     * @throws NullPointerException          if the type is null
+     * @throws UnsupportedOperationException if the database does not support the operation,
+     *                                       such as with key-value databases where most operations are key-based
      */
     <T> QueryMapper.MapperDeleteFrom delete(Class<T> type);
 }
