@@ -20,7 +20,6 @@ package jakarta.data.dao;
 
 import jakarta.data.exceptions.EntityExistsException;
 
-import java.time.Duration;
 import java.util.Optional;
 
 /**
@@ -31,7 +30,8 @@ import java.util.Optional;
  *
  * <p>
  * The DAO pattern involves encapsulating the logic for interacting with the database within dedicated DAO classes. Similarly, the
- * Template feature in Jakarta Data provides a standardized approach for performing database operations, allowing developers to focus on implementing the specific logic required for their
+ * Template feature in Jakarta Data provides a standardized approach for performing database operations,
+ * allowing developers to focus on implementing the specific logic required for their
  * application.
  * </p>
  * <p>
@@ -40,7 +40,8 @@ import java.util.Optional;
  * </p>
  *
  * <p>
- * Additionally, the Jakarta Data provider may extend this Template class to include specific behavior tailored to a particular database, providing flexibility and customization options.
+ * Additionally, the Jakarta Data provider may extend this Template class to include specific behavior tailored to
+ * a particular database, providing flexibility and customization options.
  * </p>
  *
  * <pre>{@code
@@ -64,7 +65,8 @@ import java.util.Optional;
  * template.delete(Book.class,id);
  * }</pre>
  * <p>
- * Furthermore, in CRUD operations, Template provides a fluent-API for either select or delete entities. Thus, Template offers the capability for search and remove beyond the ID
+ * Furthermore, in CRUD operations, Template provides a fluent-API for either select or delete entities. Thus,
+ * Template offers the capability for search and remove beyond the ID
  * attribute. Take a look at {@link QueryMapper} for more detail about the provided fluent-API.
  * </p>
  * <pre>{@code

@@ -155,7 +155,8 @@ public interface QueryMapper {
     }
 
     /**
-     * Represents a step in the delete query fluent API where it's possible to perform a logical conjunction or disjunction by adding one more delete condition or end up executing the built query.
+     * Represents a step in the delete query fluent API where it's possible to perform a logical conjunction
+     * or disjunction by adding one more delete condition or end up executing the built query.
      */
     interface MapperDeleteWhere extends MapperDeleteQueryBuild {
 
