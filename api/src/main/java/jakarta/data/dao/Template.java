@@ -201,10 +201,10 @@ public interface Template {
     <T, K> Optional<T> find(Class<T> type, K id);
 
     /**
-     * Deletes by ID or key.
-     *
+     * Deletes the entity with the given Id and the type.
+     * If the entity is not found in the persistence store it is silently ignored.
      * @param type the entity class
-     * @param id   the id value
+     * @param id   the id value must not be {@code null}.
      * @param <T>  the entity class type
      * @param <K>  the id type
      * @throws NullPointerException when either the type or id are null
