@@ -1,0 +1,56 @@
+// Copyright (c) 2022,2024 Contributors to the Eclipse Foundation
+//
+// This program and the accompanying materials are made available under the
+// terms of the Eclipse Public License v. 2.0 which is available at
+// http://www.eclipse.org/legal/epl-2.0.
+//
+// This Source Code may also be made available under the following Secondary
+// Licenses when the conditions for such availability set forth in the Eclipse
+// Public License v. 2.0 are satisfied: GNU General Public License, version 2
+// with the GNU Classpath Exception which is available at
+// https://www.gnu.org/software/classpath/license.html.
+//
+// SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
+
+
+== Data Access Object (DAO)
+
+The DAO (Data Access Object) pattern is another design pattern used to abstract and encapsulate access to data sources, similar to the Repository pattern. However, the DAO pattern focuses more on individual data access operations than providing a higher-level abstraction over the data access layer.
+
+//image::02-dao.png[alt=dao structure, width=70%, height=70%]
+
+In Jakarta Data, a DAO acts as an interface between the business logic of an application and the underlying data storage. It provides methods for performing specific data access operations on individual data entities, such as create, read, update, and delete (CRUD) operations.
+
+The key characteristics of the DAO pattern in Jakarta Data include:
+
+- **Operation-Centric:** Unlike the Repository pattern, which offers a higher-level abstraction over data access, the DAO pattern focuses more on individual data access operations. Each DAO interface typically corresponds to a specific data entity and defines methods for CRUD operations related to that entity.
+
+- **Flexible Data Access:** DAO interfaces provide flexibility in defining data access operations tailored to specific requirements. Developers can create custom methods in DAO interfaces to encapsulate complex data access logic as needed.
+
+- **Direct Interaction:** DAO interfaces often directly map to database tables or other data sources, allowing for more direct interaction with the underlying data. This direct interaction can be advantageous when fine-grained control over data access is required.
+
+- **Encapsulation:** DAO interfaces encapsulate the details of data access operations, shielding the rest of the application from the complexities of interacting with the underlying data storage. This encapsulation promotes code maintainability and reusability.
+
+In summary, the DAO pattern in Jakarta Data provides a flexible and operation-centric approach to data access, focusing on individual data access operations rather than higher-level abstractions. It offers fine-grained control over data access while encapsulating the complexities of interacting with the underlying data storage. It makes the DAO pattern suitable for applications requiring precise control over data access operations.
+
+=== Templates in Jakarta Data
+
+In Jakarta Data, templates are predefined structures or patterns that provide a standardized approach to defining and implementing data access operations. These templates offer a set of guidelines and best practices for designing data access objects (DAOs) within the Jakarta Data framework.
+
+Templates are blueprints for creating DAOs, ensuring consistency, maintainability, and scalability across different applications and data access layers. By adhering to templates, developers can streamline the development process, reduce boilerplate code, and improve code quality.
+
+Several key benefits and features of using templates in Jakarta Data include:
+
+1. **Consistency:** Templates ensure consistency in designing and implementing data access objects across different parts of an application or between multiple applications. Consistent patterns make it easier for developers to understand and navigate codebases.
+
+2. **Maintainability:** By following standardized templates, developers can create DAOs that are easier to maintain and update over time. Changes made to one DAO can be applied consistently to others, reducing the risk of introducing errors or inconsistencies.
+
+3. **Scalability:** Templates provide a scalable foundation for building data access layers that can accommodate the evolving needs of an application. As requirements change or new features are added, developers can extend existing templates or create new ones to meet demand.
+
+4. **Reuse:** Templates encourage code reuse by encapsulating common data access patterns and operations. Developers can leverage existing templates to quickly create DAOs for new entities or data access requirements, saving time and effort.
+
+5. **Flexibility:** While templates provide a standardized approach to data access, they also allow for flexibility and customization to meet specific project requirements. Developers can tailor templates to fit the unique characteristics of their applications or integrate with other frameworks and technologies.
+
+6. **Documentation and Best Practices:** Templates often come with documentation and best practice guidelines, helping developers adhere to industry standards and design principles. This documentation is a valuable resource for onboarding new team members and ensuring code quality.
+
+By leveraging templates in Jakarta Data, developers can design efficient, scalable, and maintainable data access layers that adhere to best practices and standards within the Jakarta EE ecosystem. Templates promote consistency, reuse, and flexibility, empowering developers to confidently build robust and reliable applications.
