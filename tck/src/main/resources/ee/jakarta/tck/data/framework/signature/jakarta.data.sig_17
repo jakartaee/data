@@ -20,7 +20,20 @@ meth public static jakarta.data.Limit range(long,long)
 supr java.lang.Record
 hfds DEFAULT_START_AT,maxResults,startAt
 
-CLSS public final jakarta.data.Sort
+CLSS public jakarta.data.Order<%0 extends java.lang.Object>
+intf java.lang.Iterable<jakarta.data.Sort<{jakarta.data.Order%0}>>
+meth public !varargs final static <%0 extends java.lang.Object> jakarta.data.Order<{%%0}> by(jakarta.data.Sort<{%%0}>[])
+ anno 0 java.lang.SafeVarargs()
+meth public boolean equals(java.lang.Object)
+meth public int hashCode()
+meth public jakarta.data.page.Pageable<{jakarta.data.Order%0}> page(long)
+meth public jakarta.data.page.Pageable<{jakarta.data.Order%0}> pageSize(int)
+meth public java.lang.String toString()
+meth public java.util.Iterator<jakarta.data.Sort<{jakarta.data.Order%0}>> iterator()
+supr java.lang.Object
+hfds sorts
+
+CLSS public final jakarta.data.Sort<%0 extends java.lang.Object>
 cons public init(java.lang.String,boolean,boolean)
 meth public boolean ignoreCase()
 meth public boolean isAscending()
@@ -29,11 +42,11 @@ meth public final boolean equals(java.lang.Object)
 meth public final int hashCode()
 meth public final java.lang.String toString()
 meth public java.lang.String property()
-meth public static jakarta.data.Sort asc(java.lang.String)
-meth public static jakarta.data.Sort ascIgnoreCase(java.lang.String)
-meth public static jakarta.data.Sort desc(java.lang.String)
-meth public static jakarta.data.Sort descIgnoreCase(java.lang.String)
-meth public static jakarta.data.Sort of(java.lang.String,jakarta.data.Direction,boolean)
+meth public static <%0 extends java.lang.Object> jakarta.data.Sort<{%%0}> asc(java.lang.String)
+meth public static <%0 extends java.lang.Object> jakarta.data.Sort<{%%0}> ascIgnoreCase(java.lang.String)
+meth public static <%0 extends java.lang.Object> jakarta.data.Sort<{%%0}> desc(java.lang.String)
+meth public static <%0 extends java.lang.Object> jakarta.data.Sort<{%%0}> descIgnoreCase(java.lang.String)
+meth public static <%0 extends java.lang.Object> jakarta.data.Sort<{%%0}> of(java.lang.String,jakarta.data.Direction,boolean)
 supr java.lang.Record
 hfds ignoreCase,isAscending,property
 
@@ -96,10 +109,10 @@ CLSS abstract interface jakarta.data.exceptions.package-info
 CLSS public abstract interface jakarta.data.metamodel.Attribute
 meth public abstract java.lang.String name()
 
-CLSS public abstract interface jakarta.data.metamodel.SortableAttribute
+CLSS public abstract interface jakarta.data.metamodel.SortableAttribute<%0 extends java.lang.Object>
 intf jakarta.data.metamodel.Attribute
-meth public abstract jakarta.data.Sort asc()
-meth public abstract jakarta.data.Sort desc()
+meth public abstract jakarta.data.Sort<{jakarta.data.metamodel.SortableAttribute%0}> asc()
+meth public abstract jakarta.data.Sort<{jakarta.data.metamodel.SortableAttribute%0}> desc()
 
 CLSS public abstract interface !annotation jakarta.data.metamodel.StaticMetamodel
  anno 0 java.lang.annotation.Documented()
@@ -108,10 +121,10 @@ CLSS public abstract interface !annotation jakarta.data.metamodel.StaticMetamode
 intf java.lang.annotation.Annotation
 meth public abstract java.lang.Class<?> value()
 
-CLSS public abstract interface jakarta.data.metamodel.TextAttribute
-intf jakarta.data.metamodel.SortableAttribute
-meth public abstract jakarta.data.Sort ascIgnoreCase()
-meth public abstract jakarta.data.Sort descIgnoreCase()
+CLSS public abstract interface jakarta.data.metamodel.TextAttribute<%0 extends java.lang.Object>
+intf jakarta.data.metamodel.SortableAttribute<{jakarta.data.metamodel.TextAttribute%0}>
+meth public abstract jakarta.data.Sort<{jakarta.data.metamodel.TextAttribute%0}> ascIgnoreCase()
+meth public abstract jakarta.data.Sort<{jakarta.data.metamodel.TextAttribute%0}> descIgnoreCase()
 
 CLSS abstract interface jakarta.data.metamodel.package-info
 
@@ -123,35 +136,44 @@ intf jakarta.data.page.Page<{jakarta.data.page.KeysetAwarePage%0}>
 
 CLSS public abstract interface jakarta.data.page.KeysetAwareSlice<%0 extends java.lang.Object>
 intf jakarta.data.page.Slice<{jakarta.data.page.KeysetAwareSlice%0}>
-meth public abstract jakarta.data.page.Pageable nextPageable()
-meth public abstract jakarta.data.page.Pageable previousPageable()
 meth public abstract jakarta.data.page.Pageable$Cursor getKeysetCursor(int)
+meth public abstract jakarta.data.page.Pageable<{jakarta.data.page.KeysetAwareSlice%0}> nextPageable()
+meth public abstract jakarta.data.page.Pageable<{jakarta.data.page.KeysetAwareSlice%0}> previousPageable()
 
 CLSS public abstract interface jakarta.data.page.Page<%0 extends java.lang.Object>
 intf jakarta.data.page.Slice<{jakarta.data.page.Page%0}>
 meth public abstract long totalElements()
 meth public abstract long totalPages()
 
-CLSS public abstract interface jakarta.data.page.Pageable
+CLSS public abstract interface jakarta.data.page.Pageable<%0 extends java.lang.Object>
 innr public abstract interface static Cursor
 innr public final static !enum Mode
-meth public abstract !varargs jakarta.data.page.Pageable afterKeyset(java.lang.Object[])
-meth public abstract !varargs jakarta.data.page.Pageable beforeKeyset(java.lang.Object[])
-meth public abstract !varargs jakarta.data.page.Pageable sortBy(jakarta.data.Sort[])
+meth public abstract !varargs jakarta.data.page.Pageable<{jakarta.data.page.Pageable%0}> afterKeyset(java.lang.Object[])
+meth public abstract !varargs jakarta.data.page.Pageable<{jakarta.data.page.Pageable%0}> beforeKeyset(java.lang.Object[])
 meth public abstract boolean equals(java.lang.Object)
 meth public abstract int size()
-meth public abstract jakarta.data.page.Pageable afterKeysetCursor(jakarta.data.page.Pageable$Cursor)
-meth public abstract jakarta.data.page.Pageable beforeKeysetCursor(jakarta.data.page.Pageable$Cursor)
-meth public abstract jakarta.data.page.Pageable next()
-meth public abstract jakarta.data.page.Pageable page(long)
-meth public abstract jakarta.data.page.Pageable size(int)
-meth public abstract jakarta.data.page.Pageable sortBy(java.lang.Iterable<jakarta.data.Sort>)
 meth public abstract jakarta.data.page.Pageable$Mode mode()
-meth public abstract java.util.List<jakarta.data.Sort> sorts()
+meth public abstract jakarta.data.page.Pageable<{jakarta.data.page.Pageable%0}> afterKeysetCursor(jakarta.data.page.Pageable$Cursor)
+meth public abstract jakarta.data.page.Pageable<{jakarta.data.page.Pageable%0}> asc(java.lang.String)
+meth public abstract jakarta.data.page.Pageable<{jakarta.data.page.Pageable%0}> ascIgnoreCase(java.lang.String)
+meth public abstract jakarta.data.page.Pageable<{jakarta.data.page.Pageable%0}> beforeKeysetCursor(jakarta.data.page.Pageable$Cursor)
+meth public abstract jakarta.data.page.Pageable<{jakarta.data.page.Pageable%0}> desc(java.lang.String)
+meth public abstract jakarta.data.page.Pageable<{jakarta.data.page.Pageable%0}> descIgnoreCase(java.lang.String)
+meth public abstract jakarta.data.page.Pageable<{jakarta.data.page.Pageable%0}> next()
+meth public abstract jakarta.data.page.Pageable<{jakarta.data.page.Pageable%0}> page(long)
+meth public abstract jakarta.data.page.Pageable<{jakarta.data.page.Pageable%0}> size(int)
+meth public abstract jakarta.data.page.Pageable<{jakarta.data.page.Pageable%0}> sortBy(jakarta.data.Sort<{jakarta.data.page.Pageable%0}>)
+meth public abstract jakarta.data.page.Pageable<{jakarta.data.page.Pageable%0}> sortBy(jakarta.data.Sort<{jakarta.data.page.Pageable%0}>,jakarta.data.Sort<{jakarta.data.page.Pageable%0}>)
+meth public abstract jakarta.data.page.Pageable<{jakarta.data.page.Pageable%0}> sortBy(jakarta.data.Sort<{jakarta.data.page.Pageable%0}>,jakarta.data.Sort<{jakarta.data.page.Pageable%0}>,jakarta.data.Sort<{jakarta.data.page.Pageable%0}>)
+meth public abstract jakarta.data.page.Pageable<{jakarta.data.page.Pageable%0}> sortBy(jakarta.data.Sort<{jakarta.data.page.Pageable%0}>,jakarta.data.Sort<{jakarta.data.page.Pageable%0}>,jakarta.data.Sort<{jakarta.data.page.Pageable%0}>,jakarta.data.Sort<{jakarta.data.page.Pageable%0}>)
+meth public abstract jakarta.data.page.Pageable<{jakarta.data.page.Pageable%0}> sortBy(jakarta.data.Sort<{jakarta.data.page.Pageable%0}>,jakarta.data.Sort<{jakarta.data.page.Pageable%0}>,jakarta.data.Sort<{jakarta.data.page.Pageable%0}>,jakarta.data.Sort<{jakarta.data.page.Pageable%0}>,jakarta.data.Sort<{jakarta.data.page.Pageable%0}>)
+meth public abstract jakarta.data.page.Pageable<{jakarta.data.page.Pageable%0}> sortBy(java.lang.Iterable<jakarta.data.Sort<{jakarta.data.page.Pageable%0}>>)
+meth public abstract java.util.List<jakarta.data.Sort<{jakarta.data.page.Pageable%0}>> sorts()
 meth public abstract java.util.Optional<jakarta.data.page.Pageable$Cursor> cursor()
 meth public abstract long page()
-meth public static jakarta.data.page.Pageable ofPage(long)
-meth public static jakarta.data.page.Pageable ofSize(int)
+meth public static <%0 extends java.lang.Object> jakarta.data.page.Pageable<{%%0}> of(java.lang.Class<{%%0}>)
+meth public static <%0 extends java.lang.Object> jakarta.data.page.Pageable<{%%0}> ofPage(long)
+meth public static <%0 extends java.lang.Object> jakarta.data.page.Pageable<{%%0}> ofSize(int)
 
 CLSS public abstract interface static jakarta.data.page.Pageable$Cursor
  outer jakarta.data.page.Pageable
@@ -172,10 +194,12 @@ supr java.lang.Enum<jakarta.data.page.Pageable$Mode>
 
 CLSS public abstract interface jakarta.data.page.Slice<%0 extends java.lang.Object>
 intf jakarta.data.Streamable<{jakarta.data.page.Slice%0}>
+meth public abstract <%0 extends java.lang.Object> jakarta.data.page.Pageable<{%%0}> nextPageable(java.lang.Class<{%%0}>)
+meth public abstract <%0 extends java.lang.Object> jakarta.data.page.Pageable<{%%0}> pageable(java.lang.Class<{%%0}>)
 meth public abstract boolean hasContent()
 meth public abstract int numberOfElements()
-meth public abstract jakarta.data.page.Pageable nextPageable()
-meth public abstract jakarta.data.page.Pageable pageable()
+meth public abstract jakarta.data.page.Pageable<{jakarta.data.page.Slice%0}> nextPageable()
+meth public abstract jakarta.data.page.Pageable<{jakarta.data.page.Slice%0}> pageable()
 meth public abstract java.util.List<{jakarta.data.page.Slice%0}> content()
 
 CLSS abstract interface jakarta.data.page.package-info
@@ -189,6 +213,7 @@ meth public abstract <%0 extends {jakarta.data.repository.BasicRepository%0}> {%
 meth public abstract boolean existsById({jakarta.data.repository.BasicRepository%1})
 meth public abstract java.util.Optional<{jakarta.data.repository.BasicRepository%0}> findById({jakarta.data.repository.BasicRepository%1})
 meth public abstract java.util.stream.Stream<{jakarta.data.repository.BasicRepository%0}> findAll()
+ anno 0 jakarta.data.repository.Find()
 meth public abstract java.util.stream.Stream<{jakarta.data.repository.BasicRepository%0}> findByIdIn(java.lang.Iterable<{jakarta.data.repository.BasicRepository%1}>)
 meth public abstract long countBy()
 meth public abstract void delete({jakarta.data.repository.BasicRepository%0})
@@ -225,6 +250,12 @@ CLSS public abstract interface !annotation jakarta.data.repository.Delete
  anno 0 java.lang.annotation.Target(java.lang.annotation.ElementType[] value=[METHOD])
 intf java.lang.annotation.Annotation
 
+CLSS public abstract interface !annotation jakarta.data.repository.Find
+ anno 0 java.lang.annotation.Documented()
+ anno 0 java.lang.annotation.Retention(java.lang.annotation.RetentionPolicy value=RUNTIME)
+ anno 0 java.lang.annotation.Target(java.lang.annotation.ElementType[] value=[METHOD])
+intf java.lang.annotation.Annotation
+
 CLSS public abstract interface !annotation jakarta.data.repository.Insert
  anno 0 java.lang.annotation.Documented()
  anno 0 java.lang.annotation.Retention(java.lang.annotation.RetentionPolicy value=RUNTIME)
@@ -250,7 +281,8 @@ meth public abstract jakarta.data.repository.OrderBy[] value()
 
 CLSS public abstract interface jakarta.data.repository.PageableRepository<%0 extends java.lang.Object, %1 extends java.lang.Object>
 intf jakarta.data.repository.BasicRepository<{jakarta.data.repository.PageableRepository%0},{jakarta.data.repository.PageableRepository%1}>
-meth public abstract jakarta.data.page.Page<{jakarta.data.repository.PageableRepository%0}> findAll(jakarta.data.page.Pageable)
+meth public abstract jakarta.data.page.Page<{jakarta.data.repository.PageableRepository%0}> findAll(jakarta.data.page.Pageable<{jakarta.data.repository.PageableRepository%0}>)
+ anno 0 jakarta.data.repository.Find()
 
 CLSS public abstract interface !annotation jakarta.data.repository.Param
  anno 0 java.lang.annotation.Retention(java.lang.annotation.RetentionPolicy value=RUNTIME)
