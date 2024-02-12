@@ -13,6 +13,8 @@ jobs:
     steps:
     - name: checkout
       uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      with:
+        ref: 'main' # Otherwise, this action will checkout the tag that was created during publishing
     - name: Create branch
       id: checkout
       run: .github/scripts/checkout.sh update-templates-${{ github.sha }}
