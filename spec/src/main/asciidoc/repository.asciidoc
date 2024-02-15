@@ -244,7 +244,7 @@ Every Jakarta Data provider must support the following basic types within its pr
 | Represent date and time-related data.
 
 | `java.util.UUID`
-| Universally Unique IDentifier for identifying entities.
+| Universally Unique Identifier for identifying entities.
 
 | `BigInteger` and `BigDecimal` from `java.math`
 | Represent large integer and decimal numbers.
