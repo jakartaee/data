@@ -31,7 +31,7 @@
     <name>Jakarta Data Specification</name>
 
     <properties>
-        <asciidoctor-maven.version>2.2.6</asciidoctor-maven.version>
+        <asciidoctor-maven.version>3.0.0</asciidoctor-maven.version>
         <asciidoctorj-pdf.version>2.3.12</asciidoctorj-pdf.version>
         <asciidoctorj.diagram.version>2.3.0</asciidoctorj.diagram.version>
 
