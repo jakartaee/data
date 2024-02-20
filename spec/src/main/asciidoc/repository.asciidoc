@@ -213,7 +213,7 @@ An entity programming model specifies which Java inheritance relationships are i
 When entities are related by inheritance, a query method which returns the entity supertype might also return instances of its subtypes.
 
 The Jakarta Data provider determines how entity classes which participate in an entity inheritance hierarchy "map" to the data schema.
-For, example, in a relational datastore, all entities in the hierarchy might be stored together on one table, or each entity might have its own dedicated table.
+For example, in a relational datastore, all entities in the hierarchy might be stored together on one table, or each entity might have its own dedicated table.
 
 Support for entity inheritance is not required by this specification.
 
