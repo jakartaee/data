@@ -11,20 +11,7 @@ All functionality defined by Jakarta Data must be supported when using relationa
 
 ==== Jakarta Persistence Annotations
 
-Jakarta Data, when used in conjunction with a Jakarta Data provider that is backed by Jakarta Persistence, requires support for the `jakarta.persistence.Entity` annotation on entity classes and requires support for the following minimal set of Jakarta Persistence annotations for entity properties:
-
-* `jakarta.persistence.Basic`
-* `jakarta.persistence.Column`
-* `jakarta.persistence.Convert`
-* `jakarta.persistence.ElementCollection`
-* `jakarta.persistence.Embedded`
-* `jakarta.persistence.Enumerated`
-* `jakarta.persistence.GeneratedValue`
-* `jakarta.persistence.Id`
-* `jakarta.persistence.Temporal`
-* `jakarta.persistence.Version`
-
-Jakarta Data providers might choose to offer additional functionality that is provided by Jakarta Persistence beyond what is stated in this section.
+Jakarta Data, when used in conjunction with a Jakarta Data provider that is backed by Jakarta Persistence, requires support for the jakarta.persistence.Entity annotation on entity classes and requires support for all annotations in the Jakarta Persistence specification.
 
 ==== Built-In Repositories
 
