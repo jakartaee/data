@@ -68,7 +68,7 @@ import jakarta.data.Sort;
  * above is based upon a keyset cursor from that page to use as a starting point
  * after which the results for the next page are to be found.</p>
  *
- * <p>You can also construct a {@link PageRequest page request} with a {@link PageRequest.Cursor Cursor} directly, which
+ * <p>You can also construct a {@link PageRequest} with a {@link PageRequest.Cursor Cursor} directly, which
  * allows you to make it relative to a specific list of values. The number and
  * order of values must match that of the {@link OrderBy} annotations,
  * {@link Sort} parameters of the page request,
