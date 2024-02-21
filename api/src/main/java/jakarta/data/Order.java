@@ -39,7 +39,7 @@ import jakarta.data.repository.Query;
  * sort criteria during development. For example,</p>
  *
  * <pre>
- * {@code Page<Employee>} findByYearHired(int year, {@code Pageable<Employee>} pageRequest);
+ * {@code Page<Employee>} findByYearHired(int year, {@code PageRequest<Employee>} pageRequest);
  * ...
  * page1 = employees.findByYearHired(Year.now(),
  *                                   Order.by(_Employee.salary.desc(),
@@ -131,7 +131,7 @@ public class Order<T> implements Iterable<Sort<T>> {
 
     /**
      * Create a {@link PageRequest} for the specified page number
-     * of page size 10 (the default for {@code Pageable})
+     * of page size 10 (the default for {@code PageRequest})
      * of the query results sorted according to any static sort criteria that
      * is specified and the ordered list of {@link Sort} criteria
      * that is represented by this instance.

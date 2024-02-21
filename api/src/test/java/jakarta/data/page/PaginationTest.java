@@ -42,6 +42,6 @@ class PaginationTest {
             Pagination<?> pagination = new Pagination<>(1, 10, Collections.emptyList(), PageRequest.Mode.CURSOR_NEXT, new KeysetCursor("me", 200));
             pagination.next();
         }).isInstanceOf(UnsupportedOperationException.class)
-                .hasMessage("Not supported for keyset pagination. Instead use afterKeyset or afterKeysetCursor to provide the next keyset values or obtain the nextPageable from a KeysetAwareSlice.");
+                .hasMessage("Not supported for keyset pagination. Instead use afterKeyset or afterKeysetCursor to provide the next keyset values or obtain the nextPageRequest from a KeysetAwareSlice.");
     }
 }

@@ -81,20 +81,18 @@ The first type consists of built-in interfaces that are parent interfaces from w
                           +-----------------+
                           | BasicRepository |
                           +-----------------+
-                              ^         ^
-                              |         |
-                              |         |
-            +--------------------+    +--------------------+
-            | CrudRepository     |    | PageableRepository |
-            +--------------------+    +--------------------+
+                                  ^
+                                  |
+                                  |
+                        +--------------------+
+                        | CrudRepository     |
+                        +--------------------+
 
 ....
 
 The `BasicRepository` interface includes some of the most common operations, which applies to single type of entity, designated via its first parameterized type variable.
 
 The `CrudRepository` interface inherits from `BasicRepository`, adding `Insert` and `Update` operations that correspond to Create and Update in the CRUD (Create, Read, Update, Delete) pattern.
-
-The `PageableRepository` interface inherits from `BasicRepository`, adding built-in methods that leverage the pagination feature.
 
 The Java developer creates an interface that is annotated with the `@Repository` annotation and optionally extends one of the built-in repository interfaces.
 
@@ -737,7 +735,7 @@ Each parameter of an annotated query method must either:
 
 - have exactly the same name and type as a named parameter of the query,
 - have exactly the same type and position within the parameter list of the method as a positional parameter of the query, or
-- be of type `Limit`, `Order`, `Pageable`, or `Sort`.
+- be of type `Limit`, `Order`, `PageRequest`, or `Sort`.
 
 A repository with annotated query methods with named parameters must be compiled so that parameter names are preserved in the class file (for example, using `javac -parameters`), or the parameter names must be specified explicitly using the `@Param` annotation.
 
@@ -763,7 +761,7 @@ For example, using a named parameter:
 [source,java]
 ----
 @Query("where title like :title order by title")
-Page<Book> booksByTitle(String title, Pageable page);
+Page<Book> booksByTitle(String title, PageRequest<Book> pageRequest);
 ----
 
 [source,java]
@@ -796,7 +794,7 @@ The Jakarta Data implementation automatically recognizes the query annotations i
 A _parameter-based automatic_ query method is an abstract method annotated with the `Find` annotation. Jakarta Data infers a query based on the parameters of the method. The method return type identifies the entity. For example: `E`, `Optional<E>`, `Page<E>`, or `List<E>`, where `E` is an entity class. Each parameter must either:
 
 - have exactly the same type and name as a persistent field or property of the entity class, or
-- be of type `Limit`, `Order`, `Pageable`, or `Sort`.
+- be of type `Limit`, `Order`, `PageRequest`, or `Sort`.
 
 A repository with automatic query methods that are based on parameters must either be compiled so that parameter names are preserved in the class file (for example, using `javac -parameters`), or the corresponding entity attribute name for parameters must be specified explicitly using the `@By` annotation.
 
@@ -816,7 +814,7 @@ List<Book> booksByYear(Year year, Sort order, Limit limit);
 @Find
 Page<Book> find(@By("year") Year publishedIn,
                 @By("genre") Category type,
-                Pageable<?> pagination);
+                PageRequest<?> pagination);
 ----
 
 Automatic query methods annotated with `@Find` _are_ portable between providers.
@@ -1101,7 +1099,7 @@ Refer to the Jakarta Data module JavaDoc section on "Return Types for Repository
 
 Jakarta Data also supports particular parameters to define pagination and sorting.
 
-Jakarta Data recognizes, when specified on a repository method after the query parameters, the specific types, `Limit`, `Order`, `Pageable`, and `Sort`, to dynamically apply limits, pagination, and sorting to queries, respectively. The following example demonstrates these features:
+Jakarta Data recognizes, when specified on a repository method after the query parameters, the specific types, `Limit`, `Order`, `PageRequest`, and `Sort`, to dynamically apply limits, pagination, and sorting to queries, respectively. The following example demonstrates these features:
 
 [source,java]
 ----
@@ -1147,7 +1145,7 @@ Sort criteria is provided statically for a repository method by using the `Order
 
 ==== Dynamic Mechanisms for Sort Criteria
 
-Sort criteria is provided dynamically to repository methods either via `Sort` parameters or via a `Pageable` or `Order` parameter that has one or more `Sort` values. `Sort` and `Pageable` containing `Sort` must not both be provided to the same method. Similarly, `Order` and `Pageable` containing `Sort` must not both be provided to the same method.
+Sort criteria is provided dynamically to repository methods either via `Sort` parameters or via a `PageRequest` or `Order` parameter that has one or more `Sort` values. `Sort` and `PageRequest` containing `Sort` must not both be provided to the same method. Similarly, `Order` and `PageRequest` containing `Sort` must not both be provided to the same method.
 
 ==== Examples of Sort Criteria Precedence
 
@@ -1155,24 +1153,24 @@ The following examples work through scenarios where static and dynamic sort crit
 
 [source,java]
 ----
-// Sorts first by type. When type is the same, applies the Pageable's sort criteria
-Page<User> findByNameStartsWithOrderByType(String namePrefix, Pageable<?> pagination);
+// Sorts first by type. When type is the same, applies the PageRequest's sort criteria
+Page<User> findByNameStartsWithOrderByType(String namePrefix, PageRequest<?> pagination);
 
 // Sorts first by type. When type is the same, applies the criteria in the Sorts
 List<User> findByNameStartsWithOrderByType(String namePrefix, Sort<?>... sorts);
 
-// Sorts first by age. When age is the same, applies the Pageable's sort criteria
+// Sorts first by age. When age is the same, applies the PageRequest's sort criteria
 @OrderBy("age")
-Page<User> findByNameStartsWith(String namePrefix, Pageable<?> pagination);
+Page<User> findByNameStartsWith(String namePrefix, PageRequest<?> pagination);
 
 // Sorts first by age. When age is the same, applies the criteria in the Sorts
 @OrderBy("age")
 List<User> findByNameStartsWith(String namePrefix, Sort<?>... sorts);
 
-// Sorts first by name. When name is the same, applies the Pageable's sort criteria
+// Sorts first by name. When name is the same, applies the PageRequest's sort criteria
 @Query("SELECT u FROM User u WHERE (u.age > ?1)")
 @OrderBy("name")
-KeysetAwarePage<User> olderThan(int age, Pageable<?> pagination);
+KeysetAwarePage<User> olderThan(int age, PageRequest<?> pagination);
 ----
 
 === Pagination in Jakarta Data
@@ -1212,7 +1210,7 @@ Offset pagination offers several key features that make it a valuable approach f
 The following requirements must be met when using offset-based pagination:
 
 * The repository method signature must return `Slice` or `Page`. A repository method with return type of `Slice` or `Page` must raise `UnsupportedOperationException` if the database is incapable of offset pagination.
-* The repository method signature must accept a `Pageable` parameter.
+* The repository method signature must accept a `PageRequest` parameter.
 * Sort criteria must be provided and should be minimal.
 * The combination of provided sort criteria must define a deterministic ordering of entities.
 * The entities within each page must be ordered according to the provided sort criteria.
@@ -1232,7 +1230,7 @@ public class Person {
 }
 
 @Repository
-public interface People extends PageableRepository<Person, Long> {
+public interface People extends BasicRepository<Person, Long> {
 }
 ----
 
@@ -1265,10 +1263,10 @@ Code Execution:
 @Inject
 People people;
 
-Page<Person> page = people.findAll(Pageable.of(Person.class)
-                                           .page(1)
-                                           .size(2)
-                                           .sortBy(Sort.asc("id")));
+Page<Person> page = people.findAll(PageRequest.of(Person.class)
+                                              .page(1)
+                                              .size(2)
+                                              .sortBy(Sort.asc("id")));
 ----
 
 Resulting Page Content:
@@ -1286,8 +1284,8 @@ Next Page Execution:
 
 [source,java]
 ----
-Pageable<Person> nextPageable = page.nextPageable();
-Page<Person> page2 = people.findAll(nextPageable);
+PageRequest<Person> nextPageRequest = page.nextPageRequest();
+Page<Person> page2 = people.findAll(nextPageRequest);
 ----
 
 
@@ -1308,7 +1306,7 @@ Offset pagination is a valuable tool for Java developers when dealing with large
 
 ==== Keyset Pagination
 
-Keyset pagination aims to reduce missed and duplicate results across pages by querying relative to the observed values of entity properties that constitute the sorting criteria. Keyset pagination can also offer an improvement in performance because it avoids fetching and ordering results from prior pages by causing those results to be non-matching. A Jakarta Data provider appends additional conditions to the query and tracks keyset values automatically when `KeysetAwareSlice` or `KeysetAwarePage` are used as the repository method return type. The application invokes `nextPageable` or `previousPageable` on the keyset aware slice or page to obtain a `Pageable` which keeps track of the keyset values.
+Keyset pagination aims to reduce missed and duplicate results across pages by querying relative to the observed values of entity properties that constitute the sorting criteria. Keyset pagination can also offer an improvement in performance because it avoids fetching and ordering results from prior pages by causing those results to be non-matching. A Jakarta Data provider appends additional conditions to the query and tracks keyset values automatically when `KeysetAwareSlice` or `KeysetAwarePage` are used as the repository method return type. The application invokes `nextPageRequest` or `previousPageRequest` on the keyset aware slice or page to obtain a `PageRequest` which keeps track of the keyset values.
 
 For example,
 
@@ -1325,10 +1323,10 @@ You can obtain the initial page relative to an offset and subsequent pages relat
 
 [source,java]
 ----
-for (Pageable<?> p = Pageable.ofSize(50); p != null; ) {
+for (PageRequest<?> p = PageRequest.ofSize(50); p != null; ) {
   page = customers.findByZipcodeOrderByLastNameAscFirstNameAscIdAsc(55901, p);
   ...
-  p = page.nextPageable();
+  p = page.nextPageRequest();
 }
 ----
 
@@ -1337,14 +1335,14 @@ Or you can obtain the next (or previous) page relative to a known entity,
 [source,java]
 ----
 Customer c = ...
-Pageable<?> p = Pageable.ofSize(50).afterKeyset(c.lastName, c.firstName, c.id);
+PageRequest<?> p = PageRequest.ofSize(50).afterKeyset(c.lastName, c.firstName, c.id);
 page = customers.findByZipcodeOrderByLastNameAscFirstNameAscIdAsc(55902, p);
 ----
 
 The sort criteria for a repository method that performs keyset pagination must uniquely identify each entity and must be provided by:
 
 * `OrderBy` name pattern of the repository method (as in the examples above) or `@OrderBy` annotation(s) on the repository method.
-* `Sort` parameters of the `Pageable` that is supplied to the repository method.
+* `Sort` parameters of the `PageRequest` that is supplied to the repository method.
 
 ===== Example of Appending to Queries for Keyset Pagination
 
@@ -1356,7 +1354,7 @@ SELECT o FROM Customer o WHERE (o.zipCode = ?1)
                          ORDER BY o.lastName ASC, o.firstName ASC, o.id ASC
 ----
 
-When keyset pagination is used, the keyset values from the `Cursor` of the `Pageable` are available as query parameters, allowing the Jakarta Data provider to append additional query conditions. For example,
+When keyset pagination is used, the keyset values from the `Cursor` of the `PageRequest` are available as query parameters, allowing the Jakarta Data provider to append additional query conditions. For example,
 
 [source,jpql]
 ----
@@ -1377,14 +1375,14 @@ Other types of updates to data, however, will cause duplicate or missed results.
 ===== Restrictions on use of Keyset Pagination
 
 * The repository method signature must return `KeysetAwareSlice` or `KeysetAwarePage`. A repository method with return type of `KeysetAwareSlice` or `KeysetAwarePage` must raise `UnsupportedOperationException` if the database is incapable of keyset pagination.
-* The repository method signature must accept a `Pageable` parameter.
+* The repository method signature must accept a `PageRequest` parameter.
 * Sort criteria must be provided and should be minimal.
 * The combination of provided sort criteria must uniquely identify each entity such that the sort criteria defines a deterministic ordering of entities.
 * The entities within each page must be ordered according to the provided sort criteria.
 * Page numbers for keyset pagination are estimated relative to prior page requests or the observed absence of further results and are not accurate. Page numbers must not be relied upon when using keyset pagination.
 * Page totals and result totals are not accurate for keyset pagination and must not be relied upon.
-* A next or previous page can end up being empty. You cannot obtain a next or previous `Pageable` from an empty page because there are no keyset values relative to which to query.
-* A repository method that is annotated with `@Query` and performs keyset pagination must omit the `ORDER BY` clause from the provided query and instead must supply the sort criteria via `@OrderBy` annotations or `Sort` criteria of `Pageable`. The provided query must end with a `WHERE` clause to which additional conditions can be appended by the Jakarta Data provider. The Jakarta Data provider is not expected to parse query text that is provided by the application.
+* A next or previous page can end up being empty. You cannot obtain a next or previous `PageRequest` from an empty page because there are no keyset values relative to which to query.
+* A repository method that is annotated with `@Query` and performs keyset pagination must omit the `ORDER BY` clause from the provided query and instead must supply the sort criteria via `@OrderBy` annotations or `Sort` criteria of `PageRequest`. The provided query must end with a `WHERE` clause to which additional conditions can be appended by the Jakarta Data provider. The Jakarta Data provider is not expected to parse query text that is provided by the application.
 
 ===== Keyset Pagination Example with Sorts
 
@@ -1395,7 +1393,7 @@ Here is an example where an application uses `@Query` to provide a partial query
 @Repository
 public interface CustomerRepository extends BasicRepository<Customer, Long> {
   @Query("SELECT o FROM Customer o WHERE (o.totalSpent / o.totalPurchases > ?1)")
-  KeysetAwareSlice<Customer> withAveragePurchaseAbove(float minimum, Pageable<?> pagination);
+  KeysetAwareSlice<Customer> withAveragePurchaseAbove(float minimum, PageRequest<?> pagination);
 }
 ----
 
@@ -1403,13 +1401,13 @@ Example traversal of pages:
 
 [source,java]
 ----
-for (Pageable<?> p = Pageable.ofSize(25).sortBy(Sort.desc("yearBorn"),
-                                                Sort.asc("name"),
-                                                Sort.asc("id"));
+for (PageRequest<?> p = PageRequest.ofSize(25).sortBy(Sort.desc("yearBorn"),
+                                                      Sort.asc("name"),
+                                                      Sort.asc("id"));
      p != null; ) {
   page = customers.withAveragePurchaseAbove(50.0f, p);
   ...
-  p = page.nextPageable();
+  p = page.nextPageRequest();
 }
 ----
 
@@ -1421,7 +1419,7 @@ In this example, the application uses a cursor to request pages in forward and p
 ----
 @Repository
 public interface Products extends CrudRepository<Product, Long> {
-  KeysetAwareSlice<Product> findByNameContains(String namePattern, Pageable<?> pageRequest);
+  KeysetAwareSlice<Product> findByNameContains(String namePattern, PageRequest<?> pageRequest);
 }
 ----
 
@@ -1430,9 +1428,9 @@ Obtaining the next 10 products that cost $50.00 or more:
 [source,java]
 ----
 float priceMidpoint = 50.0f;
-Pageable<?> pageRequest = Pageable.ofSize(10)
-                                  .sortBy(Sort.asc("price"), Sort.asc("id"))
-                                  .afterKeyset(priceMidpoint, 0L);
+PageRequest<?> pageRequest = PageRequest.ofSize(10)
+                                        .sortBy(Sort.asc("price"), Sort.asc("id"))
+                                        .afterKeyset(priceMidpoint, 0L);
 KeysetAwareSlice<Product> moreExpensive = products.findByNameContains(pattern, pageRequest);
 ----
 
@@ -1472,7 +1470,7 @@ This keyset cursor-based pagination scenario uses the same `Person` entity and e
 @Repository
 public interface People extends BasicRepository<Person, Long> {
     @Find
-    KeysetAwarePage<Person> findAll(Pageable<Person> pagination);
+    KeysetAwarePage<Person> findAll(PageRequest<Person> pagination);
 }
 ----
 
@@ -1483,9 +1481,10 @@ Code Execution:
 @Inject
 People people;
 
-Pageable<Person> firstPageRequest = Pageable.of(Person.class)
-                                            .size(4)
-                                            .sortBy(Sort.asc("name"), Sort.asc("id"));
+PageRequest<Person> firstPageRequest = PageRequest.of(Person.class)
+                                                  .size(4)
+                                                  .sortBy(Sort.asc("name"),
+                                                          Sort.asc("id"));
 KeysetAwarePage<Person> page = people.findAll(firstPageRequest);
 ----
 
@@ -1514,7 +1513,7 @@ Next Page Execution:
 
 [source,java]
 ----
-Pageable<Person> nextPageRequest = page.nextPageable();
+PageRequest<Person> nextPageRequest = page.nextPageRequest();
 KeysetAwarePage<Person> page2 = people.findAll(nextPageRequest);
 ----
 

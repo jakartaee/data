@@ -65,7 +65,7 @@ import java.lang.annotation.Target;
  *     {@code @Query("SELECT DISTINCT p.name from Person p WHERE (LENGTH(p.name) >= :min AND LENGTH(p.name) <= :max)")}
  *     {@code Page<String>} namesOfLength({@code @Param}("min") int minLength,
  *                                {@code @Param}("max") int maxLength,
- *                                {@code Pageable<Person>} pageRequest);
+ *                                {@code PageRequest<Person>} pageRequest);
  *
  *     ...
  * }
@@ -80,7 +80,7 @@ import java.lang.annotation.Target;
  * to specify the entity class. For example,</p>
  *
  * <pre>
- * {@code Page<String>} page2 = people.namesOfLength(5, 10, page1.nextPageable(Person.class));
+ * {@code Page<String>} page2 = people.namesOfLength(5, 10, page1.nextPageRequest(Person.class));
  * </pre>
  */
 @Retention(RetentionPolicy.RUNTIME)

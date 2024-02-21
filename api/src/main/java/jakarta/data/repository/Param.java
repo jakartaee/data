@@ -34,7 +34,7 @@ import java.lang.annotation.Target;
  *
  *     {@code @Query("SELECT p from Products p WHERE (p.length * p.width * p.height <= :maxVolume)")}
  *     {@code Page<Product>} freeShippingEligible({@code @Param}("maxVolume") float volumeLimit,
- *                                        {@code Pageable<?>} pageRequest);
+ *                                        {@code PageRequest<?>} pageRequest);
  *
  *     ...
  * }

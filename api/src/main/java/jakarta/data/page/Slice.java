@@ -31,7 +31,7 @@ import java.util.List;
  * {@code Slice<Vehicle>} search({@code @By("make")} String make,
  *                       {@code @By("model")} String model,
  *                       {@code @By("year")} int designYear,
- *                       {@code Pageable<?>} pageRequest);
+ *                       {@code PageRequest<?>} pageRequest);
  * </pre>
  *
  * <p>Unlike {@link Page}, a {@code Slice} does not have awareness of the total number of pages
