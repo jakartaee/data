@@ -1317,7 +1317,7 @@ For example,
 @Repository
 public interface CustomerRepository extends BasicRepository<Customer, Long> {
   KeysetAwareSlice<Customer> findByZipcodeOrderByLastNameAscFirstNameAscIdAsc(
-                                 int zipcode, Pageable<?> pageRequest);
+                                 int zipcode, PageRequest<?> pageRequest);
 }
 ----
 
