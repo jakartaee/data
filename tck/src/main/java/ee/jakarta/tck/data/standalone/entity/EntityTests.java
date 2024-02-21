@@ -582,7 +582,7 @@ public class EntityTests {
 
         assertEquals(false, it.hasNext());
 
-        assertEquals(5, page.PageRequest().page());
+        assertEquals(5, page.pageRequest().page());
         assertEquals(true, page.hasContent());
         assertEquals(3, page.numberOfElements());
         assertEquals(43L, page.totalElements());
@@ -595,7 +595,7 @@ public class EntityTests {
         Slice<NaturalNumber> slice = numbers.findByNumTypeAndFloorOfSquareRootLessThanEqual(NumberType.PRIME, 8L,
                 fifth);
         assertEquals(true, slice.hasContent());
-        assertEquals(5, slice.PageRequest().page());
+        assertEquals(5, slice.pageRequest().page());
         assertEquals(2, slice.numberOfElements());
 
         Iterator<NaturalNumber> it = slice.iterator();
@@ -632,7 +632,7 @@ public class EntityTests {
         Page<NaturalNumber> page2 = positives.findAll(page2request);
 
         assertEquals(12, page2.numberOfElements());
-        assertEquals(2, page2.PageRequest().page());
+        assertEquals(2, page2.pageRequest().page());
 
         assertEquals(List.of(11L, 10L, 9L, // square root rounds down to 3
                              24L, 23L, 22L, 21L, 20L, 19L, 18L, 17L, 16L), // square root rounds down to 4
@@ -863,7 +863,7 @@ public class EntityTests {
             return;
         }
 
-        assertEquals(1, page.PageRequest().page());
+        assertEquals(1, page.pageRequest().page());
         assertEquals(true, page.hasContent());
         assertEquals(10, page.numberOfElements());
         assertEquals(43L, page.totalElements());
@@ -1462,7 +1462,7 @@ public class EntityTests {
             return;
         }
 
-        assertEquals(3, page.PageRequest().page());
+        assertEquals(3, page.pageRequest().page());
         assertEquals(true, page.hasContent());
         assertEquals(10, page.numberOfElements());
         assertEquals(43L, page.totalElements());
@@ -1476,7 +1476,7 @@ public class EntityTests {
         PageRequest<AsciiCharacter> fourth10 = third10.next();
         page = characters.findByNumericValueBetween(48, 90, fourth10); // 'N' to 'W'
 
-        assertEquals(4, page.PageRequest().page());
+        assertEquals(4, page.pageRequest().page());
         assertEquals(true, page.hasContent());
         assertEquals(10, page.numberOfElements());
         assertEquals(43L, page.totalElements());
@@ -1496,7 +1496,7 @@ public class EntityTests {
         Slice<NaturalNumber> slice = numbers.findByNumTypeAndFloorOfSquareRootLessThanEqual(NumberType.PRIME, 8L,
                 third5);
 
-        assertEquals(3, slice.PageRequest().page());
+        assertEquals(3, slice.pageRequest().page());
         assertEquals(5, slice.numberOfElements());
 
         assertEquals(Arrays.toString(new Long[] { 37L, 31L, 29L, 23L, 19L }),
@@ -1506,7 +1506,7 @@ public class EntityTests {
 
         slice = numbers.findByNumTypeAndFloorOfSquareRootLessThanEqual(NumberType.PRIME, 8L, fourth5);
 
-        assertEquals(4, slice.PageRequest().page());
+        assertEquals(4, slice.pageRequest().page());
         assertEquals(5, slice.numberOfElements());
 
         assertEquals(Arrays.toString(new Long[] { 17L, 13L, 11L, 7L, 5L }),
