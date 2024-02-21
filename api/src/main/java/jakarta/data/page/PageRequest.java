@@ -78,9 +78,9 @@ public interface PageRequest<T> {
      *
      * <pre>
      * {@code PageRequest<Car>} page1Request = PageRequest.of(Car.class).page(1).size(25).sortBy(
-     *                                          Sort.desc("price"),
-     *                                          Sort.asc("mileage"),
-     *                                          Sort.asc("vin"));
+     *                                              Sort.desc("price"),
+     *                                              Sort.asc("mileage"),
+     *                                              Sort.asc("vin"));
      * </pre>
      *
      * <p>If using typed {@link Sort} instances from the {@link StaticMetamodel},
@@ -91,8 +91,8 @@ public interface PageRequest<T> {
      * {@code PageRequest<Car>} page1Request = Order.by(_Car.price.desc(),
      *                                       _Car.mileage.asc(),
      *                                       _Car.vin.asc())
-     *                                   .page(1)
-     *                                   .size(25);
+     *                                       .page(1)
+     *                                       .size(25);
      * </pre>
      *
      * @param <T>         entity class of attributes that can be used as sort criteria.
@@ -133,11 +133,11 @@ public interface PageRequest<T> {
      * starting after the specified keyset values.</p>
      *
      * @param keyset keyset values, the order and number of which must match the
-     *        {@link OrderBy} annotations, {@link Sort} parameters, or
-     *        <code>OrderBy</code> name pattern of the repository method to which
-     *        this pagination will be supplied.
+     *               {@link OrderBy} annotations, {@link Sort} parameters, or
+     *               <code>OrderBy</code> name pattern of the repository method to which
+     *               this pagination will be supplied.
      * @return a new instance of <code>PageRequest</code> with forward keyset pagination.
-     *         This method never returns <code>null</code>.
+     * This method never returns <code>null</code>.
      * @throws IllegalArgumentException if no keyset values are provided.
      */
     PageRequest<T> afterKeyset(Object... keyset);
@@ -147,11 +147,11 @@ public interface PageRequest<T> {
      * starting after the specified keyset values.</p>
      *
      * @param keyset keyset values, the order and number of which must match the
-     *        {@link OrderBy} annotations, {@link Sort} parameters, or
-     *        <code>OrderBy</code> name pattern of the repository method to which
-     *        this pagination will be supplied.
+     *               {@link OrderBy} annotations, {@link Sort} parameters, or
+     *               <code>OrderBy</code> name pattern of the repository method to which
+     *               this pagination will be supplied.
      * @return a new instance of <code>PageRequest</code> with reverse keyset pagination.
-     *         This method never returns <code>null</code>.
+     * This method never returns <code>null</code>.
      * @throws IllegalArgumentException if no keyset values are provided.
      */
     PageRequest<T> beforeKeyset(Object... keyset);
@@ -161,11 +161,11 @@ public interface PageRequest<T> {
      * starting after the specified keyset values.</p>
      *
      * @param keysetCursor cursor with keyset values, the order and number of which must match the
-     *        {@link OrderBy} annotations, {@link Sort} parameters, or
-     *        <code>OrderBy</code> name pattern of the repository method to which
-     *        this pagination will be supplied.
+     *                     {@link OrderBy} annotations, {@link Sort} parameters, or
+     *                     <code>OrderBy</code> name pattern of the repository method to which
+     *                     this pagination will be supplied.
      * @return a new instance of <code>PageRequest</code> with forward keyset pagination.
-     *         This method never returns <code>null</code>.
+     * This method never returns <code>null</code>.
      * @throws IllegalArgumentException if no keyset values are provided.
      */
     PageRequest<T> afterKeysetCursor(Cursor keysetCursor);
@@ -175,11 +175,11 @@ public interface PageRequest<T> {
      * starting after the specified keyset values.</p>
      *
      * @param keysetCursor cursor with keyset values, the order and number of which must match the
-     *        {@link OrderBy} annotations, {@link Sort} parameters, or
-     *        <code>OrderBy</code> name pattern of the repository method to which
-     *        this pagination will be supplied.
+     *                     {@link OrderBy} annotations, {@link Sort} parameters, or
+     *                     <code>OrderBy</code> name pattern of the repository method to which
+     *                     this pagination will be supplied.
      * @return a new instance of <code>PageRequest</code> with reverse keyset pagination.
-     *         This method never returns <code>null</code>.
+     * This method never returns <code>null</code>.
      * @throws IllegalArgumentException if no keyset values are provided.
      */
     PageRequest<T> beforeKeysetCursor(Cursor keysetCursor);
@@ -192,7 +192,7 @@ public interface PageRequest<T> {
      *
      * @param property name of the entity attribute upon which to sort.
      * @return a new instance of <code>PageRequest</code> with the ascending sort
-     *         as its lowest priority sort criteria.
+     * as its lowest priority sort criteria.
      * @throws NullPointerException when the property is null
      */
     PageRequest<T> asc(String property);
@@ -206,7 +206,7 @@ public interface PageRequest<T> {
      *
      * @param property name of the entity attribute upon which to sort.
      * @return a new instance of <code>PageRequest</code> with the case-insensitive ascending sort
-     *         as its lowest priority sort criteria.
+     * as its lowest priority sort criteria.
      * @throws NullPointerException when the property is null
      */
     PageRequest<T> ascIgnoreCase(String property);
@@ -219,7 +219,7 @@ public interface PageRequest<T> {
      *
      * @param property name of the entity attribute upon which to sort.
      * @return a new instance of <code>PageRequest</code> with the descending sort
-     *         as its lowest priority sort criteria.
+     * as its lowest priority sort criteria.
      * @throws NullPointerException when the property is null
      */
     PageRequest<T> desc(String property);
@@ -233,7 +233,7 @@ public interface PageRequest<T> {
      *
      * @param property name of the entity attribute upon which to sort.
      * @return a new instance of <code>PageRequest</code> with the case-insensitive descending sort
-     *         as its lowest priority sort criteria.
+     * as its lowest priority sort criteria.
      * @throws NullPointerException when the property is null
      */
     PageRequest<T> descIgnoreCase(String property);
@@ -243,7 +243,7 @@ public interface PageRequest<T> {
      * pagination information.
      *
      * @return true if both instances are of the same class and
-     *         represent the same pagination information. Otherwise false.
+     * represent the same pagination information. Otherwise false.
      */
     @Override
     boolean equals(Object o);
@@ -294,9 +294,9 @@ public interface PageRequest<T> {
      * {@link KeysetAwareSlice#getKeysetCursor(int) keyset cursor},
      * not with this method.</p>
      *
-     * @return The next PageRequest.
+     * @return The next page request.
      * @throws UnsupportedOperationException if this <code>PageRequest</code> has a
-     *         {@link PageRequest.Cursor Cursor}.
+     *                                       {@link PageRequest.Cursor Cursor}.
      */
     PageRequest<T> next();
 
@@ -465,10 +465,10 @@ public interface PageRequest<T> {
         /**
          * Returns the keyset value at the specified position.
          *
-         * @param  index position (0 is first) of the keyset value to obtain.
+         * @param index position (0 is first) of the keyset value to obtain.
          * @return the keyset value at the specified position.
          * @throws IndexOutOfBoundsException if the index is negative
-         *         or greater than or equal to the {@link #size}.
+         *                                   or greater than or equal to the {@link #size}.
          */
         Object getKeysetElement(int index);
 
