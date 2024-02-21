@@ -38,6 +38,10 @@ In particular:
 A Jakarta Data provider might define a custom entity-defining annotation.
 The name of such a custom entity-defining annotation type must end with `Entity`. This convention allows any Jakarta Data provider to identify when a repository is associated with entity classes declared using an unrecognized entity-defining annotation.
 
+The lifecycle methods and query methods of a repository operate on a set of entities associated with that repository.
+All entities associated with a given repository should be declared using the same entity-defining annotation type.
+If the entities associated with a given repository are declared using a mix of annotation types, the behavior is undefined by this specification.
+
 A Jakarta Data provider must ignore every repository associated with entity classes declared using an entity-defining annotation which is available at runtime, but not recognized by the provider, allowing another Jakarta Data provider to supply the implementation.
 
 On the other hand, if an entity class is annotated with an entity-defining annotation which is _not_ available at runtime, the Jakarta Data provider must completely ignore the annotation, and treat the entity as if that entity-defining annotation were missing.
