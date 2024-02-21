@@ -18,9 +18,10 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 
 - Include FindAll method with pagination at BasicRepository
 
+
 === Removed
 
--
+- Remove the PageableRepository interface
 
 == [1.0.0-M3] - 2024-01-30
 
