@@ -4,6 +4,8 @@ A Jakarta Data provider might come as an integrated component of a Jakarta EE co
 For example, a Jakarta Data provider might use a CDI portable extension to integrate with dependency injection.
 The role of the Jakarta Data provider is to supply implementations of application-defined repositories.
 
+=== Providers and Repositories
+
 A Jakarta Data provider must supply an implementation of each repository interface which either:
 
 - explicitly specifies the name of the provider via the `provider` member of the `@Repository` annotation, or
