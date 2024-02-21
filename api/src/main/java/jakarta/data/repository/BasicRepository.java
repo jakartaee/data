@@ -71,7 +71,8 @@ import java.util.stream.Stream;
  * emp = employees.save(emp);
  *
  * boolean deleted = employees.deleteByBadgeNumber(emp.badgeNum);
- * Pageable{@code <Employee>} pageRequest = Pageable.of(Employee.class).size(25).sortBy(Sort.asc("name"));
+ *
+ * PageRequest{@code <Employee>} pageRequest = PageRequest.of(Employee.class).size(25).sortBy(Sort.asc("name"));
  * Page{@code <Employee>} page = people.findAll(pageRequest);
  * </pre>
  *
