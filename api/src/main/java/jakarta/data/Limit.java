@@ -17,7 +17,7 @@
  */
 package jakarta.data;
 
-import jakarta.data.page.Pageable;
+import jakarta.data.page.PageRequest;
 
 /**
  * <p>Limits how many results are retrieved by a repository find method.
@@ -42,7 +42,7 @@ import jakarta.data.page.Pageable;
  * <ul>
  * <li>multiple <code>Limit</code> parameters are supplied to the
  *     same method.</li>
- * <li><code>Limit</code> and {@link Pageable} parameters are supplied to the
+ * <li><code>Limit</code> and {@link PageRequest} parameters are supplied to the
  *     same method.</li>
  * <li>a <code>Limit</code> parameter is supplied in combination
  *     with the <code>First</code> keyword.</li>

@@ -1108,7 +1108,7 @@ Jakarta Data recognizes, when specified on a repository method after the query p
 @Repository
 public interface ProductRepository extends BasicRepository<Product, Long> {
 
-  List<Product> findByName(String name, Pageable<?> pageable);
+  List<Product> findByName(String name, Pageable<?> pageRequest);
 
   List<Product> findByNameLike(String pattern, Limit max, Sort<?>... sorts);
 
@@ -1126,8 +1126,8 @@ You can combine sorting with a starting page and maximum page size by using prop
 
 [source,java]
 ----
-Pageable<?> pageable = Pageable.ofSize(20).page(1).sortBy(Sort.desc("price"));
-first20 = products.findByNameLike(name, pageable);
+Pageable<?> pageRequest = Pageable.ofSize(20).page(1).sortBy(Sort.desc("price"));
+first20 = products.findByNameLike(name, pageRequest);
 
 ----
 
@@ -1317,7 +1317,7 @@ For example,
 @Repository
 public interface CustomerRepository extends BasicRepository<Customer, Long> {
   KeysetAwareSlice<Customer> findByZipcodeOrderByLastNameAscFirstNameAscIdAsc(
-                                 int zipcode, Pageable<?> pageable);
+                                 int zipcode, Pageable<?> pageRequest);
 }
 ----
 

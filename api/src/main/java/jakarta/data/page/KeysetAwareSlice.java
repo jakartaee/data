@@ -41,7 +41,7 @@ import jakarta.data.Sort;
  * <p>To use keyset pagination, define a repository method with return value of
  * {@link KeysetAwareSlice} or {@link KeysetAwarePage} and which accepts a
  * special parameter (after the normal query parameters) that is a
- * {@link Pageable}. For example,</p>
+ * {@link PageRequest}. For example,</p>
  *
  * <pre>
  * &#64;OrderBy("lastName")
@@ -50,7 +50,7 @@ import jakarta.data.Sort;
  * KeysetAwareSlice&lt;Employee&gt; findByHoursWorkedGreaterThan(int hours, {@code Pageable<Employee>} pageRequest);
  * </pre>
  *
- * <p>You can use an offset-based {@link Pageable} to request an initial page,</p>
+ * <p>You can use an offset-based {@link PageRequest} to request an initial page,</p>
  *
  * <pre>
  * page = employees.findByHoursWorkedGreaterThan(1500, Pageable.of(Employee.class).size(50));
@@ -63,12 +63,12 @@ import jakarta.data.Sort;
  * page = employees.findByHoursWorkedGreaterThan(1500, page.nextPageable());
  * </pre>
  *
- * <p>Because the page is keyset aware, the {@link Pageable page request}
+ * <p>Because the page is keyset aware, the {@link PageRequest page request}
  * that it returns from the call to {@link KeysetAwareSlice#nextPageable}
  * above is based upon a keyset cursor from that page to use as a starting point
  * after which the results for the next page are to be found.</p>
  *
- * <p>You can also construct a {@link Pageable page request} with a {@link Pageable.Cursor Cursor} directly, which
+ * <p>You can also construct a {@link PageRequest page request} with a {@link PageRequest.Cursor Cursor} directly, which
  * allows you to make it relative to a specific list of values. The number and
  * order of values must match that of the {@link OrderBy} annotations,
  * {@link Sort} parameters of the page request,
@@ -104,7 +104,7 @@ import jakarta.data.Sort;
  * in parenthesis.
  * Sort criteria must be specified independently from the user-provided query,
  * either with the {@link OrderBy} annotation or
- * {@link Sort} parameters to {@link Pageable}.
+ * {@link Sort} parameters to {@link PageRequest}.
  * For example,</p>
  *
  * <pre>
@@ -137,13 +137,13 @@ import jakarta.data.Sort;
  */
 public interface KeysetAwareSlice<T> extends Slice<T> {
     /**
-     * Returns a {@link Pageable.Cursor Cursor} for keyset values at the
+     * Returns a {@link PageRequest.Cursor Cursor} for keyset values at the
      * specified position.
      *
      * @param index position (0 is first) of a result on the page.
      * @return cursor for keyset values at the specified position.
      */
-    Pageable.Cursor getKeysetCursor(int index);
+    PageRequest.Cursor getKeysetCursor(int index);
 
     /**
      * <p>Creates a request for the next page
@@ -158,7 +158,7 @@ public interface KeysetAwareSlice<T> extends Slice<T> {
      *         or if it is known that there is not a next page.
      */
     @Override
-    Pageable<T> nextPageable();
+    PageRequest<T> nextPageable();
 
     /**
      * <p>Creates a request for the previous page
@@ -185,5 +185,5 @@ public interface KeysetAwareSlice<T> extends Slice<T> {
      *         <code>null</code> if the current page is empty
      *         or if it is known that there is not a previous page.
      */
-    Pageable<T> previousPageable();
+    PageRequest<T> previousPageable();
 }

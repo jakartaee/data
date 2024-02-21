@@ -19,7 +19,7 @@ package jakarta.data.repository;
 
 import jakarta.data.Order;
 import jakarta.data.Sort;
-import jakarta.data.page.Pageable;
+import jakarta.data.page.PageRequest;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;
@@ -34,7 +34,7 @@ import java.lang.annotation.Target;
  * in which the <code>OrderBy</code> annotations are specified,
  * and after that follows any sort criteria that is supplied
  * dynamically by {@link Sort} parameters, {@link Order} parameter, or by a
- * {@link Pageable} parameter with {@link Pageable#sorts() sort criteria}.</p>
+ * {@link PageRequest} parameter with {@link PageRequest#sorts() sort criteria}.</p>
  *
  * <p>For example, the following sorts first by the
  * <code>lastName</code> attribute in ascending order,
@@ -43,7 +43,7 @@ import java.lang.annotation.Target;
  * also in ascending order. For entities with the same
  * <code>lastName</code> and <code>firstName</code>,
  * it then sorts by criteria that is specified in the
- * {@link Pageable#sorts()}.</p>
+ * {@link PageRequest#sorts()}.</p>
  *
  * <pre>
  * &#64;OrderBy("lastName")

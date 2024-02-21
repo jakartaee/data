@@ -19,7 +19,7 @@
 package jakarta.data.repository;
 
 import jakarta.data.page.Page;
-import jakarta.data.page.Pageable;
+import jakarta.data.page.PageRequest;
 
 /**
  * <p>A built-in repository supertype with methods that use pagination and sorting to retrieve entities.
@@ -84,16 +84,16 @@ import jakarta.data.page.Pageable;
 public interface PageableRepository<T, K> extends BasicRepository<T, K> {
 
     /**
-     * Returns a {@link Page} of entities according to the page request that is provided as the {@link Pageable} parameter.
+     * Returns a {@link Page} of entities according to the page request that is provided as the {@link PageRequest} parameter.
      *
-     * @param pageable the request for a paginated result; must not be {@code null}.
+     * @param pageRequest the request for a paginated result; must not be {@code null}.
      * @return a page of entities; will never be {@code null}.
      * @throws NullPointerException when {@code pageable} is {@code null}.
-     * @throws UnsupportedOperationException for Key-Value and Wide-Column databases when the {@link Pageable.Mode#CURSOR_NEXT}
-     * or {@link Pageable.Mode#CURSOR_PREVIOUS} pagination mode is selected.
-     * @see Pageable.Mode
+     * @throws UnsupportedOperationException for Key-Value and Wide-Column databases when the {@link PageRequest.Mode#CURSOR_NEXT}
+     * or {@link PageRequest.Mode#CURSOR_PREVIOUS} pagination mode is selected.
+     * @see PageRequest.Mode
      */
     @Find
-    Page<T> findAll(Pageable<T> pageable);
+    Page<T> findAll(PageRequest<T> pageRequest);
 
 }
