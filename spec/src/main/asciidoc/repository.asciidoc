@@ -199,7 +199,23 @@ In a given entity programming model, entity classes might always be mutable, or 
 
 In either case, an entity programming model might place restrictions on the visibility of fields and property accessors of an entity class.
 
-An entity programming model might support inheritance between entities, and might provide support for retrieval of entities in a polymorphic fashion. Support for inheritance is not required by this specification.
+==== Entity Inheritance
+
+An entity programming model might support inheritance between entities.
+Two entities are related by inheritance if:
+
+1. the entity classes are related by Java language inheritance, and
+2. the Jakarta Data provider supports retrieving and querying the entities in a polymorphic fashion.
+
+It's possible for two entity classes to be related by Java inheritance, but _not_ by entity inheritance in the sense defined here.
+An entity programming model specifies which Java inheritance relationships are interpreted as entity inheritance.
+
+When entities are related by inheritance, a query method which returns the entity supertype might also return instances of its subtypes.
+
+The Jakarta Data provider determines how entity classes which participate in an entity inheritance hierarchy "map" to the data schema.
+For example, in a relational datastore, all entities in the hierarchy might be stored together on one table, or each entity might have its own dedicated table.
+
+Support for entity inheritance is not required by this specification.
 
 ==== Persistent Fields
 
