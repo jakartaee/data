@@ -63,7 +63,7 @@ import jakarta.data.Sort;
  * page = employees.findByHoursWorkedGreaterThan(1500, page.nextPageable());
  * </pre>
  *
- * <p>Because the page is keyset aware, the {@link PageRequest page request}
+ * <p>Because the page is keyset aware, the {@link PageRequest}
  * that it returns from the call to {@link KeysetAwareSlice#nextPageRequest}
  * above is based upon a keyset cursor from that page to use as a starting point
  * after which the results for the next page are to be found.</p>
