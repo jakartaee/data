@@ -31,7 +31,7 @@ import jakarta.data.repository.Query;
  * <p><code>Order</code> can be optionally specified as a
  * parameter to a repository find method in any of the positions
  * that are after the query parameters, or it can be used
- * to obtain a {@link PageRequest page request} that is similarly
+ * to obtain a {@link PageRequest} that is similarly
  * specified as a parameter to a repository find method.</p>
  *
  * <p>The {@code Order} class is useful in combination with the
