@@ -1108,7 +1108,7 @@ Jakarta Data recognizes, when specified on a repository method after the query p
 @Repository
 public interface ProductRepository extends BasicRepository<Product, Long> {
 
-  List<Product> findByName(String name, Pageable<?> pageRequest);
+  List<Product> findByName(String name, PageRequest<?> pageRequest);
 
   List<Product> findByNameLike(String pattern, Limit max, Sort<?>... sorts);
 
