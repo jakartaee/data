@@ -24,7 +24,7 @@ import jakarta.data.Order;
 import jakarta.data.Sort;
 import jakarta.data.Streamable;
 import jakarta.data.page.Page;
-import jakarta.data.page.Pageable;
+import jakarta.data.page.PageRequest;
 import jakarta.data.repository.By;
 import jakarta.data.repository.DataRepository;
 import jakarta.data.repository.Find;
@@ -63,7 +63,7 @@ public interface AsciiCharacters extends DataRepository<AsciiCharacter, Long>, I
 
     Optional<AsciiCharacter> findByNumericValue(int id);
 
-    Page<AsciiCharacter> findByNumericValueBetween(int min, int max, Pageable<AsciiCharacter> pagination);
+    Page<AsciiCharacter> findByNumericValueBetween(int min, int max, PageRequest<AsciiCharacter> pagination);
 
     Streamable<AsciiCharacter> findByNumericValueLessThanEqualAndNumericValueGreaterThanEqual(int max, int min);
 

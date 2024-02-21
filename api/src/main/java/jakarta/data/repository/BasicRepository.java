@@ -18,6 +18,9 @@
 package jakarta.data.repository;
 
 import jakarta.data.exceptions.OptimisticLockingFailureException;
+import jakarta.data.page.Page;
+import jakarta.data.page.PageRequest;
+
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -68,6 +71,9 @@ import java.util.stream.Stream;
  * emp = employees.save(emp);
  *
  * boolean deleted = employees.deleteByBadgeNumber(emp.badgeNum);
+ *
+ * PageRequest{@code <Employee>} pageRequest = PageRequest.of(Employee.class).size(25).sortBy(Sort.asc("name"));
+ * Page{@code <Employee>} page = people.findAll(pageRequest);
  * </pre>
  *
  * <p>The module JavaDoc provides an {@link jakarta.data/ overview} of Jakarta Data.</p>
@@ -155,6 +161,19 @@ public interface BasicRepository<T, K> extends DataRepository<T, K> {
      */
     @Find
     Stream<T> findAll();
+
+    /**
+     * Returns a {@link Page} of entities according to the page request that is provided as the {@link PageRequest} parameter.
+     *
+     * @param pageRequest the request for a paginated result; must not be {@code null}.
+     * @return a page of entities; will never be {@code null}.
+     * @throws NullPointerException when {@code pageable} is {@code null}.
+     * @throws UnsupportedOperationException for Key-Value and Wide-Column databases when the {@link PageRequest.Mode#CURSOR_NEXT}
+     * or {@link PageRequest.Mode#CURSOR_PREVIOUS} pagination mode is selected.
+     * @see PageRequest.Mode
+     */
+    @Find
+    Page<T> findAll(PageRequest<T> pageRequest);
 
     /**
      * Returns all instances of the type {@code T} with the given Ids.

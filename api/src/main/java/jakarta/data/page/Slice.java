@@ -23,7 +23,7 @@ import java.util.List;
 
 /**
  * <p>A slice contains the data that is retrieved for a page request.
- * A slice is obtained by supplying a {@link Pageable} parameter to a repository method.
+ * A slice is obtained by supplying a {@link PageRequest} parameter to a repository method.
  * For example,</p>
  *
  * <pre>
@@ -66,7 +66,7 @@ public interface Slice<T> extends Streamable<T> {
     /**
      * Returns the number of elements in this Slice,
      * which must be no larger than the maximum
-     * {@link Pageable#size() size} of the page request.
+     * {@link PageRequest#size() size} of the page request.
      * If the number of elements in the slice is less than the maximum page size,
      * then there are no subsequent slices of data to read.
      *
@@ -75,47 +75,47 @@ public interface Slice<T> extends Streamable<T> {
     int numberOfElements();
 
     /**
-     * Returns the {@link Pageable page request} for which this
+     * Returns the {@link PageRequest page request} for which this
      * slice was obtained.
      *
      * @return the request for the current page; will never be {@code null}.
      */
-    Pageable<T> pageable();
+    PageRequest<T> pageRequest();
 
     /**
-     * <p>Returns the {@link Pageable page request} for which this
+     * <p>Returns the {@link PageRequest page request} for which this
      * slice was obtained.</p>
      *
      * <p>This method is provided for when {@link Query query language} is used to
      * return a result of different type than the entity that is being queried.
-     * This method allows the {@link Pageable} to be returned for the
+     * This method allows the {@link PageRequest} to be returned for the
      * type of entity class that was queried.</p>
      *
      * @param <E>         entity class of the attributes that are used as sort criteria.
      * @param entityClass entity class of the attributes that are used as sort criteria.
      * @return the request for the current page; will never be {@code null}.
      */
-    <E> Pageable<E> pageable(Class<E> entityClass);
+    <E> PageRequest<E> pageRequest(Class<E> entityClass);
 
     /**
-     * Returns a request for the {@link Pageable#next() next} page, or <code>null</code> if it is known that there is no next page.
+     * Returns a request for the {@link PageRequest#next() next} page, or <code>null</code> if it is known that there is no next page.
      *
      * @return a request for the next page.
      */
-    Pageable<T> nextPageable();
+    PageRequest<T> nextPageRequest();
 
     /**
-     * <p>Returns a request for the {@link Pageable#next() next} page,
+     * <p>Returns a request for the {@link PageRequest#next() next} page,
      * or <code>null</code> if it is known that there is no next page.</p>
      *
      * <p>This method is useful when {@link Query query language} is used to
      * return a result of different type than the entity that is being queried.
-     * This method allows the subsequent {@link Pageable} to be returned for the
+     * This method allows the subsequent {@link PageRequest} to be returned for the
      * type of entity class that is being queried.</p>
      *
      * @param <E>         entity class of the attributes that are used as sort criteria.
      * @param entityClass entity class of the attributes that are used as sort criteria.
      * @return a request for the next page.
      */
-    <E> Pageable<E> nextPageable(Class<E> entityClass);
+    <E> PageRequest<E> nextPageRequest(Class<E> entityClass);
 }

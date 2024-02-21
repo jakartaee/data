@@ -16,7 +16,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 /**
- * <p>A repository is an interface annotated with {@link Repository} that defines
+ * <p>A repository is an interface annotated with {@link jakarta.data.repository.Repository} that defines
  * operations on entities. Entities represent data in the persistent store.
  * In Domain-driven design, a repository participates in the domain but abstracts away storage
  * and infrastructure details.</p>
@@ -24,17 +24,16 @@
  * <p>Repository interfaces can optionally inherit from built-in interfaces within this package,</p>
  *
  * <ul>
- * <li>{@link DataRepository} - root of the hierarchy, allows the entity type to be specified as a type parameter.</li>
- * <li>{@link BasicRepository} - provides common find, delete, and save operations.</li>
- * <li>{@link CrudRepository} - extends the {@code BasicRepository} to add {@link CrudRepository#insert(S) insert}
- *     and {@link CrudRepository#update(T) update} operations.</li>
- * <li>{@link PageableRepository} - extends the {@code BasicRepository} with a built-in method that uses pagination.</li>
+ * <li>{@link jakarta.data.repository.DataRepository} - root of the hierarchy, allows the entity type to be specified as a type parameter.</li>
+ * <li>{@link jakarta.data.repository.BasicRepository} - provides common find, delete, and save operations.</li>
+ * <li>{@link jakarta.data.repository.CrudRepository} - extends the {@code BasicRepository} to add {@link jakarta.data.repository.CrudRepository#insert(java.lang.Object)}
+ *     and {@link jakarta.data.repository.CrudRepository#update(java.lang.Object)} operations.</li>
  * </ul>
  *
  * <p>Repository interfaces can also define their own life cycle methods using the
- * {@link Insert}, {@link Update}, {@link Save}, and {@link Delete} annotations,
+ * {@link jakarta.data.repository.Insert}, {@link jakarta.data.repository.Update}, {@link jakarta.data.repository.Save}, and {@link jakarta.data.repository.Delete} annotations,
  * as well as a variety of other methods following the Query by Method Name pattern,
- * the Parameter-based Conditions pattern, and the {@link Query} annotation.</p>
+ * the Parameter-based Conditions pattern, and the {@link jakarta.data.repository.Query} annotation.</p>
  *
  * <p>The module JavaDoc provides an {@link jakarta.data/ overview} of Jakarta Data.</p>
  */

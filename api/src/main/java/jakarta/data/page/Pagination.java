@@ -29,7 +29,7 @@ import java.util.stream.StreamSupport;
 /**
  * Built-in implementation of Pageable.
  */
-record Pagination<T>(long page, int size, List<Sort<T>> sorts, Mode mode, Cursor type) implements Pageable<T> {
+record Pagination<T>(long page, int size, List<Sort<T>> sorts, Mode mode, Cursor type) implements PageRequest<T> {
 
     Pagination {
         if (page < 1) {
@@ -44,32 +44,32 @@ record Pagination<T>(long page, int size, List<Sort<T>> sorts, Mode mode, Cursor
     }
 
     @Override
-    public Pageable<T> afterKeyset(Object... keyset) {
+    public PageRequest<T> afterKeyset(Object... keyset) {
         return new Pagination<T>(page, size, sorts, Mode.CURSOR_NEXT, new KeysetCursor(keyset));
     }
 
     @Override
-    public Pageable<T> beforeKeyset(Object... keyset) {
+    public PageRequest<T> beforeKeyset(Object... keyset) {
         return new Pagination<T>(page, size, sorts, Mode.CURSOR_PREVIOUS, new KeysetCursor(keyset));
     }
 
     @Override
-    public Pageable<T> afterKeysetCursor(Cursor keysetCursor) {
+    public PageRequest<T> afterKeysetCursor(Cursor keysetCursor) {
         return new Pagination<T>(page, size, sorts, Mode.CURSOR_NEXT, keysetCursor);
     }
 
     @Override
-    public Pageable<T> beforeKeysetCursor(Cursor keysetCursor) {
+    public PageRequest<T> beforeKeysetCursor(Cursor keysetCursor) {
         return new Pagination<T>(page, size, sorts, Mode.CURSOR_PREVIOUS, keysetCursor);
     }
 
     @Override
-    public Pageable<T> asc(String property) {
+    public PageRequest<T> asc(String property) {
         return new Pagination<T>(page, size, combine(sorts, Sort.asc(property)), mode, type);
     }
 
     @Override
-    public Pageable<T> ascIgnoreCase(String property) {
+    public PageRequest<T> ascIgnoreCase(String property) {
         return new Pagination<T>(page, size, combine(sorts, Sort.ascIgnoreCase(property)), mode, type);
     }
 
@@ -92,17 +92,17 @@ record Pagination<T>(long page, int size, List<Sort<T>> sorts, Mode mode, Cursor
     }
 
     @Override
-    public Pageable<T> desc(String property) {
+    public PageRequest<T> desc(String property) {
         return new Pagination<T>(page, size, combine(sorts, Sort.desc(property)), mode, type);
     }
 
     @Override
-    public Pageable<T> descIgnoreCase(String property) {
+    public PageRequest<T> descIgnoreCase(String property) {
         return new Pagination<T>(page, size, combine(sorts, Sort.descIgnoreCase(property)), mode, type);
     }
 
     @Override
-    public Pageable<T> next() {
+    public PageRequest<T> next() {
         if (mode == Mode.OFFSET) {
             return new Pagination<T>((page + 1), this.size, this.sorts, Mode.OFFSET, null);
         } else {
@@ -131,17 +131,17 @@ record Pagination<T>(long page, int size, List<Sort<T>> sorts, Mode mode, Cursor
     }
 
     @Override
-    public Pageable<T> page(long pageNumber) {
+    public PageRequest<T> page(long pageNumber) {
         return new Pagination<T>(pageNumber, size, sorts, mode, type);
     }
 
     @Override
-    public Pageable<T> size(int maxPageSize) {
+    public PageRequest<T> size(int maxPageSize) {
         return new Pagination<T>(page, maxPageSize, sorts, mode, type);
     }
 
     @Override
-    public Pageable<T> sortBy(Iterable<Sort<T>> sorts) {
+    public PageRequest<T> sortBy(Iterable<Sort<T>> sorts) {
         List<Sort<T>> sortList = sorts instanceof List ? List.copyOf((List<Sort<T>>) sorts)
                 : sorts == null ? Collections.emptyList()
                 : StreamSupport.stream(sorts.spliterator(), false).collect(Collectors.toUnmodifiableList());
@@ -149,27 +149,27 @@ record Pagination<T>(long page, int size, List<Sort<T>> sorts, Mode mode, Cursor
     }
 
     @Override
-    public Pageable<T> sortBy(Sort<T> sort) {
+    public PageRequest<T> sortBy(Sort<T> sort) {
         return new Pagination<T>(page, size, List.of(sort), mode, type);
     }
 
     @Override
-    public Pageable<T> sortBy(Sort<T> sort1, Sort<T> sort2) {
+    public PageRequest<T> sortBy(Sort<T> sort1, Sort<T> sort2) {
         return new Pagination<T>(page, size, List.of(sort1, sort2), mode, type);
     }
 
     @Override
-    public Pageable<T> sortBy(Sort<T> sort1, Sort<T> sort2, Sort<T> sort3) {
+    public PageRequest<T> sortBy(Sort<T> sort1, Sort<T> sort2, Sort<T> sort3) {
         return new Pagination<T>(page, size, List.of(sort1, sort2, sort3), mode, type);
     }
 
     @Override
-    public Pageable<T> sortBy(Sort<T> sort1, Sort<T> sort2, Sort<T> sort3, Sort<T> sort4) {
+    public PageRequest<T> sortBy(Sort<T> sort1, Sort<T> sort2, Sort<T> sort3, Sort<T> sort4) {
         return new Pagination<T>(page, size, List.of(sort1, sort2, sort3, sort4), mode, type);
     }
 
     @Override
-    public Pageable<T> sortBy(Sort<T> sort1, Sort<T> sort2, Sort<T> sort3, Sort<T> sort4, Sort<T> sort5) {
+    public PageRequest<T> sortBy(Sort<T> sort1, Sort<T> sort2, Sort<T> sort3, Sort<T> sort4, Sort<T> sort5) {
         return new Pagination<T>(page, size, List.of(sort1, sort2, sort3, sort4, sort5), mode, type);
     }
 }

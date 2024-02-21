@@ -26,9 +26,9 @@ import jakarta.data.Order;
 import jakarta.data.Streamable;
 import jakarta.data.page.KeysetAwarePage;
 import jakarta.data.page.Page;
-import jakarta.data.page.Pageable;
+import jakarta.data.page.PageRequest;
 import jakarta.data.repository.Find;
-import jakarta.data.repository.PageableRepository;
+import jakarta.data.repository.BasicRepository;
 import jakarta.data.repository.Repository;
 
 /**
@@ -37,14 +37,14 @@ import jakarta.data.repository.Repository;
  * This repository is pre-populated at test startup and verified prior to running tests.
  */
 @Repository
-public interface PositiveIntegers extends PageableRepository<NaturalNumber, Long> {
+public interface PositiveIntegers extends BasicRepository<NaturalNumber, Long> {
     long countByIdLessThan(long number);
 
     boolean existsByIdGreaterThan(Long number);
 
     KeysetAwarePage<NaturalNumber> findByFloorOfSquareRootNotAndIdLessThanOrderByBitsRequiredDesc(long excludeSqrt,
                                                                                                   long eclusiveMax,
-                                                                                                  Pageable<NaturalNumber> pagination);
+                                                                                                  PageRequest<NaturalNumber> pagination);
 
     Iterable<NaturalNumber> findByIsOddTrueAndIdLessThanEqualOrderByIdDesc(long max);
 
@@ -56,7 +56,7 @@ public interface PositiveIntegers extends PageableRepository<NaturalNumber, Long
 
     @Find
     Page<NaturalNumber> findMatching(long floorOfSquareRoot, Short numBitsRequired, NumberType numType,
-            Pageable<NaturalNumber> pagination);
+            PageRequest<NaturalNumber> pagination);
 
     @Find
     Optional<NaturalNumber> findNumber(long id);

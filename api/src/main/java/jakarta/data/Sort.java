@@ -18,7 +18,7 @@
 package jakarta.data;
 
 import jakarta.data.metamodel.StaticMetamodel;
-import jakarta.data.page.Pageable;
+import jakarta.data.page.PageRequest;
 import jakarta.data.repository.OrderBy;
 import jakarta.data.repository.Query;
 
@@ -32,7 +32,7 @@ import java.util.Objects;
  * a {@link Direction} and a property.</p>
  *
  * <p>Dynamic <code>Sort</code> criteria can be specified when
- * requesting a {@link Pageable#sortBy(Sort) page} of results,
+ * requesting a {@link PageRequest#sortBy(Sort) page} of results,
  * or can be optionally specified as
  * parameters to a repository find method in any of the positions that are after
  * the query parameters.</p>
@@ -80,8 +80,8 @@ import java.util.Objects;
  * or a more specific subclass if</p>
  * <ul>
  * <li>a <code>Sort</code> parameter is
- *     specified in combination with a {@link Pageable} parameter with
- *     {@link Pageable#sorts()}.</li>
+ *     specified in combination with a {@link PageRequest} parameter with
+ *     {@link PageRequest#sorts()}.</li>
  * <li>the database is incapable of ordering with the requested
  *     sort criteria.</li>
  * </ul>

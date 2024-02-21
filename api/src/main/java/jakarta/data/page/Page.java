@@ -22,7 +22,7 @@ package jakarta.data.page;
  * and has awareness of the total number of pages.</p>
  *
  * <p>A page is a sublist of results. It provides information about its position relative to the entire list.
- * A page is obtained by supplying a {@link Pageable} parameter to a repository method. For example,</p>
+ * A page is obtained by supplying a {@link PageRequest} parameter to a repository method. For example,</p>
  *
  * <pre>
  * {@code Page<Employee>} findByYearHired(int year, {@code Pageable<?>} pageRequest);

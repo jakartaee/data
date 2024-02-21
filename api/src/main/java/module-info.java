@@ -20,7 +20,7 @@ import jakarta.data.Limit;
 import jakarta.data.Order;
 import jakarta.data.Sort;
 import jakarta.data.metamodel.StaticMetamodel;
-import jakarta.data.page.Pageable;
+import jakarta.data.page.PageRequest;
 import jakarta.data.repository.BasicRepository;
 import jakarta.data.repository.By;
 import jakarta.data.repository.CrudRepository;
@@ -621,7 +621,7 @@ import java.util.List;
  *
  * <h3>Pagination</h3>
  *
- * <p>You can request that results be split into pages by adding a {@link Pageable}
+ * <p>You can request that results be split into pages by adding a {@link PageRequest}
  * parameter to a repository find method. For example,</p>
  *
  * <pre>
@@ -635,7 +635,7 @@ import java.util.List;
  * <h3>Sorting at Runtime</h3>
  *
  * <p>When requesting pages, you can dynamically supply sorting criteria
- * via the {@link Pageable#sortBy(Sort)} method and other methods
+ * via the {@link PageRequest#sortBy(Sort)} method and other methods
  * of {@code Pageable} with the same name. For example,</p>
  *
  * <pre>

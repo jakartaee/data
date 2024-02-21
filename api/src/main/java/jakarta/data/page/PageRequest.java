@@ -31,17 +31,17 @@ import java.util.Optional;
 /**
  * <p>A request for a page or slice.</p>
  *
- * <p><code>Pageable</code> is optionally specified as a parameter to a
+ * <p><code>PageRequest</code> is optionally specified as a parameter to a
  * repository method in one of the parameter positions after the
  * query parameters. For example,</p>
  *
  * <pre>
  * &#64;OrderBy("age")
  * &#64;OrderBy("ssn")
- * Person[] findByAgeBetween(int minAge, int maxAge, {@code Pageable<Person>} pageRequest);
+ * Person[] findByAgeBetween(int minAge, int maxAge, {@code PageRequest<Person>} pageRequest);
  *
  * ...
- * for ({@code Pageable<Person>} p = Pageable.of(Person.class).size(100);
+ * for ({@code PageRequest<Person>} p = PageRequest.of(Person.class).size(100);
  *      p != null; p = page.length == 0 ? null : p.next()) {
  *   page = people.findByAgeBetween(35, 59, p);
  *   ...
@@ -52,15 +52,15 @@ import java.util.Optional;
  * {@link jakarta.data.exceptions.DataException DataException}
  * or a more specific subclass if</p>
  * <ul>
- * <li>multiple <code>Pageable</code> parameters are supplied to the
+ * <li>multiple <code>PageRequest</code> parameters are supplied to the
  *     same method.</li>
- * <li><code>Pageable</code> and {@link Limit} parameters are supplied to the
+ * <li><code>PageRequest</code> and {@link Limit} parameters are supplied to the
  *     same method.</li>
- * <li>a <code>Pageable</code> parameter is supplied in combination
+ * <li>a <code>PageRequest</code> parameter is supplied in combination
  *     with the <code>First</code> keyword.</li>
- * <li>a <code>Pageable</code> parameter with sort criteria is supplied and separate
+ * <li>a <code>PageRequest</code> parameter with sort criteria is supplied and separate
  *     {@link Sort} parameters are also supplied to the same method.</li>
- * <li>a <code>Pageable</code> parameter with sort criteria is supplied and an
+ * <li>a <code>PageRequest</code> parameter with sort criteria is supplied and an
  *     {@link Order} parameter is also supplied to the same method.</li>
  * <li>the database is incapable of ordering with the requested
  *     sort criteria.</li>
@@ -68,7 +68,7 @@ import java.util.Optional;
  *
  * @param <T> entity class of the attributes that are used as sort criteria.
  */
-public interface Pageable<T> {
+public interface PageRequest<T> {
 
     /**
      * <p>Creates a page request to use when querying on entities of the specified entity class.</p>
@@ -77,7 +77,7 @@ public interface Pageable<T> {
      * typed {@link Sort} instances. For example,</p>
      *
      * <pre>
-     * {@code Pageable<Car>} page1Request = Pageable.of(Car.class).page(1).size(25).sortBy(
+     * {@code PageRequest<Car>} page1Request = PageRequest.of(Car.class).page(1).size(25).sortBy(
      *                                          Sort.desc("price"),
      *                                          Sort.asc("mileage"),
      *                                          Sort.asc("vin"));
@@ -88,7 +88,7 @@ public interface Pageable<T> {
      * as follows:</p>
      *
      * <pre>
-     * {@code Pageable<Car>} page1Request = Order.by(_Car.price.desc(),
+     * {@code PageRequest<Car>} page1Request = Order.by(_Car.price.desc(),
      *                                       _Car.mileage.asc(),
      *                                       _Car.vin.asc())
      *                                   .page(1)
@@ -97,9 +97,9 @@ public interface Pageable<T> {
      *
      * @param <T>         entity class of attributes that can be used as sort criteria.
      * @param entityClass entity class of attributes that can be used as sort criteria.
-     * @return a new instance of <code>Pageable</code>. This method never returns <code>null</code>.
+     * @return a new instance of <code>PageRequest</code>. This method never returns <code>null</code>.
      */
-    static <T> Pageable<T> of(Class<T> entityClass) {
+    static <T> PageRequest<T> of(Class<T> entityClass) {
         return new Pagination<T>(1, 10, Collections.emptyList(), Mode.OFFSET, null);
     }
 
@@ -108,10 +108,10 @@ public interface Pageable<T> {
      *
      * @param <T>        entity class of the attributes that are used as sort criteria.
      * @param pageNumber The page number.
-     * @return a new instance of <code>Pageable</code>. This method never returns <code>null</code>.
+     * @return a new instance of <code>PageRequest</code>. This method never returns <code>null</code>.
      * @throws IllegalArgumentException when the page number is negative or zero.
      */
-    static <T> Pageable<T> ofPage(long pageNumber) {
+    static <T> PageRequest<T> ofPage(long pageNumber) {
         return new Pagination<T>(pageNumber, 10, Collections.emptyList(), Mode.OFFSET, null);
     }
 
@@ -121,10 +121,10 @@ public interface Pageable<T> {
      *
      * @param <T>         entity class of the attributes that are used as sort criteria.
      * @param maxPageSize The number of query results in a full page.
-     * @return a new instance of <code>Pageable</code>. This method never returns <code>null</code>.
+     * @return a new instance of <code>PageRequest</code>. This method never returns <code>null</code>.
      * @throws IllegalArgumentException when maximum page size is negative or zero.
      */
-    static <T> Pageable<T> ofSize(int maxPageSize) {
+    static <T> PageRequest<T> ofSize(int maxPageSize) {
         return new Pagination<T>(1, maxPageSize, Collections.emptyList(), Mode.OFFSET, null);
     }
 
@@ -136,11 +136,11 @@ public interface Pageable<T> {
      *        {@link OrderBy} annotations, {@link Sort} parameters, or
      *        <code>OrderBy</code> name pattern of the repository method to which
      *        this pagination will be supplied.
-     * @return a new instance of <code>Pageable</code> with forward keyset pagination.
+     * @return a new instance of <code>PageRequest</code> with forward keyset pagination.
      *         This method never returns <code>null</code>.
      * @throws IllegalArgumentException if no keyset values are provided.
      */
-    Pageable<T> afterKeyset(Object... keyset);
+    PageRequest<T> afterKeyset(Object... keyset);
 
     /**
      * <p>Requests {@link KeysetAwareSlice keyset pagination} in the reverse direction,
@@ -150,11 +150,11 @@ public interface Pageable<T> {
      *        {@link OrderBy} annotations, {@link Sort} parameters, or
      *        <code>OrderBy</code> name pattern of the repository method to which
      *        this pagination will be supplied.
-     * @return a new instance of <code>Pageable</code> with reverse keyset pagination.
+     * @return a new instance of <code>PageRequest</code> with reverse keyset pagination.
      *         This method never returns <code>null</code>.
      * @throws IllegalArgumentException if no keyset values are provided.
      */
-    Pageable<T> beforeKeyset(Object... keyset);
+    PageRequest<T> beforeKeyset(Object... keyset);
 
     /**
      * <p>Requests {@link KeysetAwareSlice keyset pagination} in the forward direction,
@@ -164,11 +164,11 @@ public interface Pageable<T> {
      *        {@link OrderBy} annotations, {@link Sort} parameters, or
      *        <code>OrderBy</code> name pattern of the repository method to which
      *        this pagination will be supplied.
-     * @return a new instance of <code>Pageable</code> with forward keyset pagination.
+     * @return a new instance of <code>PageRequest</code> with forward keyset pagination.
      *         This method never returns <code>null</code>.
      * @throws IllegalArgumentException if no keyset values are provided.
      */
-    Pageable<T> afterKeysetCursor(Cursor keysetCursor);
+    PageRequest<T> afterKeysetCursor(Cursor keysetCursor);
 
     /**
      * <p>Requests {@link KeysetAwareSlice keyset pagination} in the reverse direction,
@@ -178,11 +178,11 @@ public interface Pageable<T> {
      *        {@link OrderBy} annotations, {@link Sort} parameters, or
      *        <code>OrderBy</code> name pattern of the repository method to which
      *        this pagination will be supplied.
-     * @return a new instance of <code>Pageable</code> with reverse keyset pagination.
+     * @return a new instance of <code>PageRequest</code> with reverse keyset pagination.
      *         This method never returns <code>null</code>.
      * @throws IllegalArgumentException if no keyset values are provided.
      */
-    Pageable<T> beforeKeysetCursor(Cursor keysetCursor);
+    PageRequest<T> beforeKeysetCursor(Cursor keysetCursor);
 
     /**
      * <p>Creates a new page request with the same pagination information,
@@ -191,11 +191,11 @@ public interface Pageable<T> {
      * been specified.</p>
      *
      * @param property name of the entity attribute upon which to sort.
-     * @return a new instance of <code>Pageable</code> with the ascending sort
+     * @return a new instance of <code>PageRequest</code> with the ascending sort
      *         as its lowest priority sort criteria.
      * @throws NullPointerException when the property is null
      */
-    Pageable<T> asc(String property);
+    PageRequest<T> asc(String property);
 
     /**
      * <p>Creates a new page request with the same pagination information,
@@ -205,11 +205,11 @@ public interface Pageable<T> {
      * in the database is compared independent of case.</p>
      *
      * @param property name of the entity attribute upon which to sort.
-     * @return a new instance of <code>Pageable</code> with the case-insensitive ascending sort
+     * @return a new instance of <code>PageRequest</code> with the case-insensitive ascending sort
      *         as its lowest priority sort criteria.
      * @throws NullPointerException when the property is null
      */
-    Pageable<T> ascIgnoreCase(String property);
+    PageRequest<T> ascIgnoreCase(String property);
 
     /**
      * <p>Creates a new page request with the same pagination information,
@@ -218,11 +218,11 @@ public interface Pageable<T> {
      * been specified.</p>
      *
      * @param property name of the entity attribute upon which to sort.
-     * @return a new instance of <code>Pageable</code> with the descending sort
+     * @return a new instance of <code>PageRequest</code> with the descending sort
      *         as its lowest priority sort criteria.
      * @throws NullPointerException when the property is null
      */
-    Pageable<T> desc(String property);
+    PageRequest<T> desc(String property);
 
     /**
      * <p>Creates a new page request with the same pagination information,
@@ -232,11 +232,11 @@ public interface Pageable<T> {
      * in the database is compared independent of case.</p>
      *
      * @param property name of the entity attribute upon which to sort.
-     * @return a new instance of <code>Pageable</code> with the case-insensitive descending sort
+     * @return a new instance of <code>PageRequest</code> with the case-insensitive descending sort
      *         as its lowest priority sort criteria.
      * @throws NullPointerException when the property is null
      */
-    Pageable<T> descIgnoreCase(String property);
+    PageRequest<T> descIgnoreCase(String property);
 
     /**
      * Compares with another instance to determine if both represent the same
@@ -285,29 +285,29 @@ public interface Pageable<T> {
     List<Sort<T>> sorts();
 
     /**
-     * <p>Returns the <code>Pageable</code> requesting the next page
+     * <p>Returns the <code>PageRequest</code> requesting the next page
      * if using offset pagination.</p>
      *
      * <p>If using keyset pagination, traversal of pages must only be done
-     * via the {@link KeysetAwareSlice#nextPageable()},
-     * {@link KeysetAwareSlice#previousPageable()}, or
+     * via the {@link KeysetAwareSlice#nextPageRequest()},
+     * {@link KeysetAwareSlice#previousPageRequest()}, or
      * {@link KeysetAwareSlice#getKeysetCursor(int) keyset cursor},
      * not with this method.</p>
      *
-     * @return The next pageable.
-     * @throws UnsupportedOperationException if this <code>Pageable</code> has a
-     *         {@link Pageable.Cursor Cursor}.
+     * @return The next PageRequest.
+     * @throws UnsupportedOperationException if this <code>PageRequest</code> has a
+     *         {@link PageRequest.Cursor Cursor}.
      */
-    Pageable<T> next();
+    PageRequest<T> next();
 
     /**
      * <p>Creates a new page request with the same
      * pagination information, except with the specified page number.</p>
      *
      * @param pageNumber The page number
-     * @return a new instance of <code>Pageable</code>. This method never returns <code>null</code>.
+     * @return a new instance of <code>PageRequest</code>. This method never returns <code>null</code>.
      */
-    Pageable<T> page(long pageNumber);
+    PageRequest<T> page(long pageNumber);
 
     /**
      * <p>Creates a new page request with the same
@@ -317,9 +317,9 @@ public interface Pageable<T> {
      * of elements to retrieve from the database from the start of the page.</p>
      *
      * @param maxPageSize the number of query results in a full page.
-     * @return a new instance of <code>Pageable</code>. This method never returns <code>null</code>.
+     * @return a new instance of <code>PageRequest</code>. This method never returns <code>null</code>.
      */
-    Pageable<T> size(int maxPageSize);
+    PageRequest<T> size(int maxPageSize);
 
     /**
      * <p>Creates a new page request with the same
@@ -331,9 +331,9 @@ public interface Pageable<T> {
      * {@link Iterable} that is supplied to this method.</p>
      *
      * @param sorts sort criteria to use.
-     * @return a new instance of <code>Pageable</code>. This method never returns <code>null</code>.
+     * @return a new instance of <code>PageRequest</code>. This method never returns <code>null</code>.
      */
-    Pageable<T> sortBy(Iterable<Sort<T>> sorts);
+    PageRequest<T> sortBy(Iterable<Sort<T>> sorts);
 
     /**
      * <p>Creates a new page request with the same
@@ -345,9 +345,9 @@ public interface Pageable<T> {
      * {@link Sort} parameters to this method are listed.</p>
      *
      * @param sort sort criteria to use.
-     * @return a new instance of <code>Pageable</code>. This method never returns <code>null</code>.
+     * @return a new instance of <code>PageRequest</code>. This method never returns <code>null</code>.
      */
-    Pageable<T> sortBy(Sort<T> sort);
+    PageRequest<T> sortBy(Sort<T> sort);
 
     /**
      * <p>Creates a new page request with the same
@@ -360,9 +360,9 @@ public interface Pageable<T> {
      *
      * @param sort1 dynamic sort criteria to use first.
      * @param sort2 dynamic sort criteria to use second.
-     * @return a new instance of <code>Pageable</code>. This method never returns <code>null</code>.
+     * @return a new instance of <code>PageRequest</code>. This method never returns <code>null</code>.
      */
-    Pageable<T> sortBy(Sort<T> sort1, Sort<T> sort2);
+    PageRequest<T> sortBy(Sort<T> sort1, Sort<T> sort2);
 
     /**
      * <p>Creates a new page request with the same
@@ -376,9 +376,9 @@ public interface Pageable<T> {
      * @param sort1 dynamic sort criteria to use first.
      * @param sort2 dynamic sort criteria to use second.
      * @param sort3 dynamic sort criteria to use last.
-     * @return a new instance of <code>Pageable</code>. This method never returns <code>null</code>.
+     * @return a new instance of <code>PageRequest</code>. This method never returns <code>null</code>.
      */
-    Pageable<T> sortBy(Sort<T> sort1, Sort<T> sort2, Sort<T> sort3);
+    PageRequest<T> sortBy(Sort<T> sort1, Sort<T> sort2, Sort<T> sort3);
 
     /**
      * <p>Creates a new page request with the same
@@ -393,9 +393,9 @@ public interface Pageable<T> {
      * @param sort2 dynamic sort criteria to use second.
      * @param sort3 dynamic sort criteria to use third.
      * @param sort4 dynamic sort criteria to use last.
-     * @return a new instance of <code>Pageable</code>. This method never returns <code>null</code>.
+     * @return a new instance of <code>PageRequest</code>. This method never returns <code>null</code>.
      */
-    Pageable<T> sortBy(Sort<T> sort1, Sort<T> sort2, Sort<T> sort3, Sort<T> sort4);
+    PageRequest<T> sortBy(Sort<T> sort1, Sort<T> sort2, Sort<T> sort3, Sort<T> sort4);
 
     /**
      * <p>Creates a new page request with the same
@@ -411,9 +411,9 @@ public interface Pageable<T> {
      * @param sort3 dynamic sort criteria to use third.
      * @param sort4 dynamic sort criteria to use fourth.
      * @param sort5 dynamic sort criteria to use last.
-     * @return a new instance of <code>Pageable</code>. This method never returns <code>null</code>.
+     * @return a new instance of <code>PageRequest</code>. This method never returns <code>null</code>.
      */
-    Pageable<T> sortBy(Sort<T> sort1, Sort<T> sort2, Sort<T> sort3, Sort<T> sort4, Sort<T> sort5);
+    PageRequest<T> sortBy(Sort<T> sort1, Sort<T> sort2, Sort<T> sort3, Sort<T> sort4, Sort<T> sort5);
 
     /**
      * The type of pagination: offset-based or

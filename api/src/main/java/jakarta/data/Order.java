@@ -21,7 +21,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import jakarta.data.metamodel.StaticMetamodel;
-import jakarta.data.page.Pageable;
+import jakarta.data.page.PageRequest;
 import jakarta.data.repository.OrderBy;
 import jakarta.data.repository.Query;
 
@@ -31,7 +31,7 @@ import jakarta.data.repository.Query;
  * <p><code>Order</code> can be optionally specified as a
  * parameter to a repository find method in any of the positions
  * that are after the query parameters, or it can be used
- * to obtain a {@link Pageable page request} that is similarly
+ * to obtain a {@link PageRequest} that is similarly
  * specified as a parameter to a repository find method.</p>
  *
  * <p>The {@code Order} class is useful in combination with the
@@ -65,8 +65,8 @@ import jakarta.data.repository.Query;
  * or a more specific subclass if</p>
  * <ul>
  * <li>an <code>Order</code> parameter is
- *     specified in combination with a {@link Pageable} parameter with
- *     {@link Pageable#sorts()}.</li>
+ *     specified in combination with a {@link PageRequest} parameter with
+ *     {@link PageRequest#sorts()}.</li>
  * <li>the database is incapable of ordering with the requested
  *     sort criteria.</li>
  * </ul>
@@ -130,7 +130,7 @@ public class Order<T> implements Iterable<Sort<T>> {
     }
 
     /**
-     * Create a {@link Pageable page request} for the specified page number
+     * Create a {@link PageRequest} for the specified page number
      * of page size 10 (the default for {@code Pageable})
      * of the query results sorted according to any static sort criteria that
      * is specified and the ordered list of {@link Sort} criteria
@@ -140,12 +140,12 @@ public class Order<T> implements Iterable<Sort<T>> {
      * @return a request for a page of results that are sorted based on the sort criteria represented by this instance
      *         and with the specified page number. This method never returns <code>null</code>.
      */
-    public Pageable<T> page(long pageNumber) {
-        return Pageable.<T>ofPage(pageNumber).sortBy(sorts);
+    public PageRequest<T> page(long pageNumber) {
+        return PageRequest.<T>ofPage(pageNumber).sortBy(sorts);
     }
 
     /**
-     * Create a {@link Pageable page request} for the first page of the specified page size
+     * Create a {@link PageRequest} for the first page of the specified page size
      * of the query results sorted according to any static sort criteria that
      * is specified and the ordered list of {@link Sort} criteria
      * that is represented by this instance.
@@ -154,8 +154,8 @@ public class Order<T> implements Iterable<Sort<T>> {
      * @return a request for a page of results that are sorted based on the sort criteria represented by this instance
      *         and with the specified page size. This method never returns <code>null</code>.
      */
-    public Pageable<T> pageSize(int size) {
-        return Pageable.<T>ofSize(size).sortBy(sorts);
+    public PageRequest<T> pageSize(int size) {
+        return PageRequest.<T>ofSize(size).sortBy(sorts);
     }
 
     /**

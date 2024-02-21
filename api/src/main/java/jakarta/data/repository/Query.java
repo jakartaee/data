@@ -76,7 +76,7 @@ import java.lang.annotation.Target;
  * <p>Some query languages such as JPQL can be used to return a type other than the
  * entity class, as shown in the above example, resulting in a {@link Page} that is
  * parameterized with the query result type rather than the entity class.
- * to request a subsequent page, use the {@link Slice#nextPageable(Class)} method
+ * to request a subsequent page, use the {@link Slice#nextPageRequest(Class)} method
  * to specify the entity class. For example,</p>
  *
  * <pre>
