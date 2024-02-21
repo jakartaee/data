@@ -243,12 +243,4 @@ public interface BasicRepository<T, K> extends DataRepository<T, K> {
     @Delete
     void deleteAll(Iterable<? extends T> entities);
 
-    /**
-     * Deletes all persistent entities of the primary entity type that are managed by the repository.
-     *
-     * @throws UnsupportedOperationException for Key-Value and Wide-Column databases that are not capable of the {@code deleteAll} operation.
-     */
-    @Delete
-    void deleteAll();
-
 }
