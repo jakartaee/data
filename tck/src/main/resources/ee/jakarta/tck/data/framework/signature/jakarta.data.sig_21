@@ -137,8 +137,8 @@ intf jakarta.data.page.Page<{jakarta.data.page.KeysetAwarePage%0}>
 CLSS public abstract interface jakarta.data.page.KeysetAwareSlice<%0 extends java.lang.Object>
 intf jakarta.data.page.Slice<{jakarta.data.page.KeysetAwareSlice%0}>
 meth public abstract jakarta.data.page.PageRequest$Cursor getKeysetCursor(int)
-meth public abstract jakarta.data.page.PageRequest<{jakarta.data.page.KeysetAwareSlice%0}> nextPageable()
-meth public abstract jakarta.data.page.PageRequest<{jakarta.data.page.KeysetAwareSlice%0}> previousPageable()
+meth public abstract jakarta.data.page.PageRequest<{jakarta.data.page.KeysetAwareSlice%0}> nextPageRequest()
+meth public abstract jakarta.data.page.PageRequest<{jakarta.data.page.KeysetAwareSlice%0}> previousPageRequest()
 
 CLSS public abstract interface jakarta.data.page.Page<%0 extends java.lang.Object>
 intf jakarta.data.page.Slice<{jakarta.data.page.Page%0}>
@@ -194,11 +194,11 @@ supr java.lang.Enum<jakarta.data.page.PageRequest$Mode>
 
 CLSS public abstract interface jakarta.data.page.Slice<%0 extends java.lang.Object>
 intf jakarta.data.Streamable<{jakarta.data.page.Slice%0}>
-meth public abstract <%0 extends java.lang.Object> jakarta.data.page.PageRequest<{%%0}> nextPageable(java.lang.Class<{%%0}>)
+meth public abstract <%0 extends java.lang.Object> jakarta.data.page.PageRequest<{%%0}> nextPageRequest(java.lang.Class<{%%0}>)
 meth public abstract <%0 extends java.lang.Object> jakarta.data.page.PageRequest<{%%0}> pageRequest(java.lang.Class<{%%0}>)
 meth public abstract boolean hasContent()
 meth public abstract int numberOfElements()
-meth public abstract jakarta.data.page.PageRequest<{jakarta.data.page.Slice%0}> nextPageable()
+meth public abstract jakarta.data.page.PageRequest<{jakarta.data.page.Slice%0}> nextPageRequest()
 meth public abstract jakarta.data.page.PageRequest<{jakarta.data.page.Slice%0}> pageRequest()
 meth public abstract java.util.List<{jakarta.data.page.Slice%0}> content()
 
@@ -279,9 +279,9 @@ CLSS public abstract interface static !annotation jakarta.data.repository.OrderB
 intf java.lang.annotation.Annotation
 meth public abstract jakarta.data.repository.OrderBy[] value()
 
-CLSS public abstract interface jakarta.data.repository.PageableRepository<%0 extends java.lang.Object, %1 extends java.lang.Object>
-intf jakarta.data.repository.BasicRepository<{jakarta.data.repository.PageableRepository%0},{jakarta.data.repository.PageableRepository%1}>
-meth public abstract jakarta.data.page.Page<{jakarta.data.repository.PageableRepository%0}> findAll(jakarta.data.page.PageRequest<{jakarta.data.repository.PageableRepository%0}>)
+CLSS public abstract interface jakarta.data.repository.BasicRepository<%0 extends java.lang.Object, %1 extends java.lang.Object>
+intf jakarta.data.repository.BasicRepository<{jakarta.data.repository.BasicRepository%0},{jakarta.data.repository.BasicRepository%1}>
+meth public abstract jakarta.data.page.Page<{jakarta.data.repository.BasicRepository%0}> findAll(jakarta.data.page.PageRequest<{jakarta.data.repository.BasicRepository%0}>)
  anno 0 jakarta.data.repository.Find()
 
 CLSS public abstract interface !annotation jakarta.data.repository.Param

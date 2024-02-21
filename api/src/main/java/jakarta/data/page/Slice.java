@@ -80,7 +80,7 @@ public interface Slice<T> extends Streamable<T> {
      *
      * @return the request for the current page; will never be {@code null}.
      */
-    PageRequest<T> pageable();
+    PageRequest<T> pageRequest();
 
     /**
      * <p>Returns the {@link PageRequest page request} for which this
@@ -95,14 +95,14 @@ public interface Slice<T> extends Streamable<T> {
      * @param entityClass entity class of the attributes that are used as sort criteria.
      * @return the request for the current page; will never be {@code null}.
      */
-    <E> PageRequest<E> pageable(Class<E> entityClass);
+    <E> PageRequest<E> pageRequest(Class<E> entityClass);
 
     /**
      * Returns a request for the {@link PageRequest#next() next} page, or <code>null</code> if it is known that there is no next page.
      *
      * @return a request for the next page.
      */
-    PageRequest<T> nextPageable();
+    PageRequest<T> nextPageRequest();
 
     /**
      * <p>Returns a request for the {@link PageRequest#next() next} page,
@@ -117,5 +117,5 @@ public interface Slice<T> extends Streamable<T> {
      * @param entityClass entity class of the attributes that are used as sort criteria.
      * @return a request for the next page.
      */
-    <E> PageRequest<E> nextPageable(Class<E> entityClass);
+    <E> PageRequest<E> nextPageRequest(Class<E> entityClass);
 }

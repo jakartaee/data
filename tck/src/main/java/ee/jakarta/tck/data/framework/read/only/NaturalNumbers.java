@@ -20,7 +20,7 @@ import java.util.stream.Stream;
 import jakarta.data.Limit;
 import jakarta.data.Order;
 import jakarta.data.page.KeysetAwareSlice;
-import jakarta.data.page.Pageable;
+import jakarta.data.page.PageRequest;
 import jakarta.data.page.Slice;
 import jakarta.data.repository.BasicRepository;
 import jakarta.data.repository.Repository;
@@ -37,23 +37,23 @@ import ee.jakarta.tck.data.framework.read.only.NaturalNumber.NumberType;
 public interface NaturalNumbers extends BasicRepository<NaturalNumber, Long>, IdOperations<NaturalNumber> {
 
     KeysetAwareSlice<NaturalNumber> findByFloorOfSquareRootOrderByIdAsc(long sqrtFloor,
-                                                                        Pageable<NaturalNumber> pagination);
+                                                                        PageRequest<NaturalNumber> pagination);
 
     Stream<NaturalNumber> findByIdBetweenOrderByNumTypeAsc(long minimum,
                                                            long maximum,
                                                            Order<NaturalNumber> sorts);
 
     Slice<NaturalNumber> findByIdLessThanOrderByFloorOfSquareRootDesc(long exclusiveMax,
-                                                                      Pageable<NaturalNumber> pagination);
+                                                                      PageRequest<NaturalNumber> pagination);
 
     KeysetAwareSlice<NaturalNumber> findByNumTypeAndNumBitsRequiredLessThan(NumberType type,
                                                                             short bitsUnder,
-                                                                            Pageable<NaturalNumber> pagination);
+                                                                            PageRequest<NaturalNumber> pagination);
 
     NaturalNumber[] findByNumTypeNot(NumberType notThisType, Limit limit, Order<NaturalNumber> sorts);
 
     Slice<NaturalNumber> findByNumTypeAndFloorOfSquareRootLessThanEqual(NumberType type,
                                                                         long maxSqrtFloor,
-                                                                        Pageable<NaturalNumber> pagination);
+                                                                        PageRequest<NaturalNumber> pagination);
 
 }

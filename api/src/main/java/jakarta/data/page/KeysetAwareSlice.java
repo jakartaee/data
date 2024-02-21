@@ -64,7 +64,7 @@ import jakarta.data.Sort;
  * </pre>
  *
  * <p>Because the page is keyset aware, the {@link PageRequest page request}
- * that it returns from the call to {@link KeysetAwareSlice#nextPageable}
+ * that it returns from the call to {@link KeysetAwareSlice#nextPageRequest}
  * above is based upon a keyset cursor from that page to use as a starting point
  * after which the results for the next page are to be found.</p>
  *
@@ -157,8 +157,7 @@ public interface KeysetAwareSlice<T> extends Slice<T> {
      *         <code>null</code> if the current page is empty
      *         or if it is known that there is not a next page.
      */
-    @Override
-    PageRequest<T> nextPageable();
+    PageRequest<T> nextPageRequest();
 
     /**
      * <p>Creates a request for the previous page
@@ -185,5 +184,5 @@ public interface KeysetAwareSlice<T> extends Slice<T> {
      *         <code>null</code> if the current page is empty
      *         or if it is known that there is not a previous page.
      */
-    PageRequest<T> previousPageable();
+    PageRequest<T> previousPageRequest();
 }

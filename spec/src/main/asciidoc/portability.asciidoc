@@ -28,7 +28,7 @@ Jakarta Data providers might choose to offer additional functionality that is pr
 
 ==== Built-In Repositories
 
-Jakarta Data's built-in repositories, such as `PageableRepository` and `BasicRepository`, are designed to offer consistent and well-defined methods compatible with relational databases. Developers can rely on these repositories to perform common data access tasks.
+Jakarta Data's built-in repositories, such as `BasicRepository` and `CrudRepository`, are designed to offer consistent and well-defined methods compatible with relational databases. Developers can rely on these repositories to perform common data access tasks.
 
 ==== Query Methods
 
@@ -54,7 +54,7 @@ Wide-column databases offer more query flexibility, even allowing the use of sec
 
 ==== Document Databases
 
-Document databases provide query flexibility akin to relational databases, offering robust query capabilities. They encourage denormalization for performance optimization. When interfacing with document databases, Jakarta Data goes a step further by supporting both built-in repositories: `BasicRepository` and `PageableRepository`. Additionally, Query by Method Name is available, though developers should be aware that some keywords may not be universally supported.  The full set of required keywords is documented in the section of the Jakarta Data module JavaDoc that is titled "Reserved Keywords for Query by Method Name".
+Document databases provide query flexibility akin to relational databases, offering robust query capabilities. They encourage denormalization for performance optimization. When interfacing with document databases, Jakarta Data goes a step further by supporting both built-in repositories: `BasicRepository` and `CrudRepository`. Additionally, Query by Method Name is available, though developers should be aware that some keywords may not be universally supported.  The full set of required keywords is documented in the section of the Jakarta Data module JavaDoc that is titled "Reserved Keywords for Query by Method Name".
 
 These portability considerations reflect Jakarta Data's commitment to providing a consistent data access experience across diverse NoSQL database types. While specific capabilities and query support may vary, Jakarta Data aims to simplify data access, promoting flexibility and compatibility in NoSQL database interactions.
 
