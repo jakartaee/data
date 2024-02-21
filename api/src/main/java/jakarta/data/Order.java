@@ -145,7 +145,7 @@ public class Order<T> implements Iterable<Sort<T>> {
     }
 
     /**
-     * Create a {@link PageRequest page request} for the first page of the specified page size
+     * Create a {@link PageRequest} for the first page of the specified page size
      * of the query results sorted according to any static sort criteria that
      * is specified and the ordered list of {@link Sort} criteria
      * that is represented by this instance.
