@@ -41,7 +41,7 @@ structure:
 
 Example for happy paths (positive scenario):
 
-* `shouldCreatePageable`
+* `shouldCreatePageRequest`
 * shouldCreateLimitWithEqualsRange
 
 Example for negative scenario (or corner-case):
@@ -88,13 +88,13 @@ below example is `softly`:
 [source,java]
 ----
 assertSoftly(softly->{
-softly.assertThat(pageable.size()).isEqualTo(20);
-softly.assertThat(pageable.page()).isEqualTo(1L);
-softly.assertThat(pageable.mode()).isEqualTo(Pageable.Mode.CURSOR_NEXT);
-softly.assertThat(pageable.cursor().size()).isEqualTo(3);
-softly.assertThat(pageable.cursor().getKeysetElement(0)).isEqualTo("First");
-softly.assertThat(pageable.cursor().getKeysetElement(1)).isEqualTo(2L);
-softly.assertThat(pageable.cursor().getKeysetElement(2)).isEqualTo(3);
+softly.assertThat(pageRequest.size()).isEqualTo(20);
+softly.assertThat(pageRequest.page()).isEqualTo(1L);
+softly.assertThat(pageRequest.mode()).isEqualTo(PageRequest.Mode.CURSOR_NEXT);
+softly.assertThat(pageRequest.cursor().size()).isEqualTo(3);
+softly.assertThat(pageRequest.cursor().getKeysetElement(0)).isEqualTo("First");
+softly.assertThat(pageRequest.cursor().getKeysetElement(1)).isEqualTo(2L);
+softly.assertThat(pageRequest.cursor().getKeysetElement(2)).isEqualTo(3);
 });
 ----
 

@@ -47,11 +47,11 @@
  *
  * ...
  *
- * {@code Pageable<Product>} pageRequest = Order.by(_Product.price.desc(),
- *                                          _Product.name.asc(),
- *                                          _Product.id.asc())
- *                                      .page(1)
- *                                      .size(20);
+ * {@code Pagerequest<Product>} pageRequest = Order.by(_Product.price.desc(),
+ *                                             _Product.name.asc(),
+ *                                             _Product.id.asc())
+ *                                         .page(1)
+ *                                         .size(20);
  *
  * page1 = products.findByNameLike(namePattern, pageRequest);
  * </pre>

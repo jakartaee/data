@@ -47,20 +47,20 @@ import jakarta.data.Sort;
  * &#64;OrderBy("lastName")
  * &#64;OrderBy("firstName")
  * &#64;OrderBy("id")
- * KeysetAwareSlice&lt;Employee&gt; findByHoursWorkedGreaterThan(int hours, {@code Pageable<Employee>} pageRequest);
+ * KeysetAwareSlice&lt;Employee&gt; findByHoursWorkedGreaterThan(int hours, {@code PageRequest<Employee>} pageRequest);
  * </pre>
  *
  * <p>You can use an offset-based {@link PageRequest} to request an initial page,</p>
  *
  * <pre>
- * page = employees.findByHoursWorkedGreaterThan(1500, Pageable.of(Employee.class).size(50));
+ * page = employees.findByHoursWorkedGreaterThan(1500, PageRequest.of(Employee.class).size(50));
  * </pre>
  *
  * <p>For subsequent pages, you can request pagination relative to the
  * end of the current page as follows,</p>
  *
  * <pre>
- * page = employees.findByHoursWorkedGreaterThan(1500, page.nextPageable());
+ * page = employees.findByHoursWorkedGreaterThan(1500, page.nextPageRequest());
  * </pre>
  *
  * <p>Because the page is keyset aware, the {@link PageRequest}
@@ -77,9 +77,9 @@ import jakarta.data.Sort;
  *
  * <pre>
  * Employee emp = ...
- * {@code Pageable<Employee>} pageRequest = Pageable.of(Employee.class)
- *                                          .size(50)
- *                                          .afterKeyset(emp.lastName, emp.firstName, emp.id);
+ * {@code PageRequest<Employee>} pageRequest = PageRequest.of(Employee.class)
+ *                                                .size(50)
+ *                                                .afterKeyset(emp.lastName, emp.firstName, emp.id);
  * page = employees.findByHoursWorkedGreaterThan(1500, pageRequest);
  * </pre>
  *
@@ -113,7 +113,7 @@ import jakarta.data.Sort;
  * &#64;OrderBy("birthYear")
  * &#64;OrderBy("id")
  * KeysetAwareSlice&lt;Customer&gt; getTopBuyers(int minOrders, float minSpent,
- *                                         {@code Pageable<Customer>} pageRequest);
+ *                                         {@code PageRequest<Customer>} pageRequest);
  * </pre>
  *
  * <p>Queries that are used with keyset pagination must return entities
@@ -176,7 +176,7 @@ public interface KeysetAwareSlice<T> extends Slice<T> {
      * previous page is requested) by assigning a page number of <code>1</code>
      * to such pages. This means that there can be multiple consecutive pages
      * numbered <code>1</code> and that
-     * <code>currentPage.previousPageable().next().page()</code>
+     * <code>currentPage.previousPageRequest().next().page()</code>
      * cannot be relied upon to return a page number that is equal to the
      * current page number.</p>
      *

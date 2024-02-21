@@ -32,8 +32,8 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 class KeysetPageRequestTest {
 
     @Test
-    @DisplayName("Should include keyset values in next Pageable")
-    void shouldCreatePageableAfterKeyset() {
+    @DisplayName("Should include keyset values in next PageRequest")
+    void shouldCreatePageRequestAfterKeyset() {
         PageRequest<?> pageRequest = PageRequest.ofSize(20).afterKeyset("First", 2L, 3);
 
         assertSoftly(softly -> {
@@ -48,8 +48,8 @@ class KeysetPageRequestTest {
     }
 
     @Test
-    @DisplayName("Should include keyset values in next Pageable from Cursor")
-    void shouldCreatePageableAfterKeysetCursor() {
+    @DisplayName("Should include keyset values in next PageRequest from Cursor")
+    void shouldCreatePageRequestAfterKeysetCursor() {
         PageRequest.Cursor cursor = new KeysetCursor("me", 200);
         PageRequest<?> pageRequest = PageRequest.ofSize(35).sortBy(Sort.asc("name"), Sort.asc("id")).afterKeysetCursor(cursor);
 
@@ -65,8 +65,8 @@ class KeysetPageRequestTest {
     }
 
     @Test
-    @DisplayName("Should include keyset values in previous Pageable")
-    void shouldCreatePageableBeforeKeyset() {
+    @DisplayName("Should include keyset values in previous PageRequest")
+    void shouldCreatePageRequestBeforeKeyset() {
         PageRequest<?> pageRequest = PageRequest.ofSize(30).sortBy(Sort.desc("yearBorn"), Sort.asc("ssn")).beforeKeyset(1991, "123-45-6789").page(10);
 
         assertSoftly(softly -> {
@@ -81,8 +81,8 @@ class KeysetPageRequestTest {
     }
 
     @Test
-    @DisplayName("Should include keyset values in previous Pageable from Cursor")
-    void shouldCreatePageableBeforeKeysetCursor() {
+    @DisplayName("Should include keyset values in previous PageRequest from Cursor")
+    void shouldCreatePageRequestBeforeKeysetCursor() {
         PageRequest.Cursor cursor = new KeysetCursor(900L, 300, "testing", 120, 'T');
         PageRequest<?> pageRequest = PageRequest.ofPage(8).beforeKeysetCursor(cursor);
 
@@ -126,17 +126,17 @@ class KeysetPageRequestTest {
 
     @Test
     @DisplayName("Should be displayable as String with toString")
-    void shouldPageableDisplayAsString() {
+    void shouldPageRequestDisplayAsString() {
         PageRequest<?> pageRequest = PageRequest.ofSize(200).afterKeyset("value1", 1);
 
         assertSoftly(softly -> softly.assertThat(pageRequest.toString())
-              .isEqualTo("Pageable{page=1, size=200, mode=CURSOR_NEXT, 2 keys}"));
+              .isEqualTo("PageRequest{page=1, size=200, mode=CURSOR_NEXT, 2 keys}"));
 
         PageRequest<?> pageRequestWithSorts = PageRequest.ofSize(100).sortBy(Sort.desc("name"), Sort.asc("id"))
                                              .beforeKeyset("Item1", 3456);
 
         assertSoftly(softly -> softly.assertThat(pageRequestWithSorts.toString())
-              .isEqualTo("Pageable{page=1, size=100, mode=CURSOR_PREVIOUS, 2 keys, name DESC, id ASC}"));
+              .isEqualTo("PageRequest{page=1, size=100, mode=CURSOR_PREVIOUS, 2 keys, name DESC, id ASC}"));
     }
 
     @Test
@@ -186,8 +186,8 @@ class KeysetPageRequestTest {
             softly.assertThat(pageRequest25P1S0A1.equals(pageRequest25P1S1A1)).isFalse(); // with vs without sorting
             softly.assertThat(pageRequest25P1S2A1.equals(pageRequest25P1S1A1)).isFalse(); // different sorting
             softly.assertThat(pageRequest25P1S0A1.equals(pageRequest25P1S0A2)).isFalse(); // different keyset value
-            softly.assertThat(pageRequest25P1S0A1.equals(PageRequest.ofSize(25))).isFalse(); // Pageable with keyset vs Pageable
-            softly.assertThat(PageRequest.ofSize(25).equals(pageRequest25P1S0A1)).isFalse(); // Pageable vs Pageable with keyset
+            softly.assertThat(pageRequest25P1S0A1.equals(PageRequest.ofSize(25))).isFalse(); // PageRequest with keyset vs PageRequest
+            softly.assertThat(PageRequest.ofSize(25).equals(pageRequest25P1S0A1)).isFalse(); // PageRequest vs PageRequest with keyset
         });
     }
 
@@ -201,7 +201,7 @@ class KeysetPageRequestTest {
     }
 
     @Test
-    @DisplayName("Keyset should be replaced on new instance of Pageable")
+    @DisplayName("Keyset should be replaced on new instance of PageRequest")
     void shouldReplaceKeyset() {
         PageRequest<?> p1 = PageRequest.ofSize(30).sortBy(Sort.asc("lastName"), Sort.asc("firstName"), Sort.asc("id"))
                                          .afterKeyset("last1", "fname1", 100).page(12);

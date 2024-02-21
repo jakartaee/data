@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 /**
- * Built-in implementation of Pageable.
+ * Built-in implementation of PageRequest.
  */
 record Pagination<T>(long page, int size, List<Sort<T>> sorts, Mode mode, Cursor type) implements PageRequest<T> {
 
@@ -107,14 +107,14 @@ record Pagination<T>(long page, int size, List<Sort<T>> sorts, Mode mode, Cursor
             return new Pagination<T>((page + 1), this.size, this.sorts, Mode.OFFSET, null);
         } else {
             throw new UnsupportedOperationException("Not supported for keyset pagination. Instead use afterKeyset or afterKeysetCursor " +
-                    "to provide the next keyset values or obtain the nextPageable from a KeysetAwareSlice.");
+                    "to provide the next keyset values or obtain the nextPageRequest from a KeysetAwareSlice.");
         }
     }
 
     @Override
     public String toString() {
         StringBuilder s = new StringBuilder(mode == Mode.OFFSET ? 100 : 150)
-                .append("Pageable{page=").append(page)
+                .append("PageRequest{page=").append(page)
                 .append(", size=").append(size);
         if (type != null) {
             s.append(", mode=").append(mode)

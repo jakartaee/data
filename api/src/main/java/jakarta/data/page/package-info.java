@@ -30,9 +30,9 @@
  * to allow data to be read in slices or pages,</p>
  *
  * <pre>
- * Pageable.of(Person.class).size(25).sortBy(Sort.asc("lastName"),
- *                                           Sort.asc("firstName"),
- *                                           Sort.asc("id")); // unique identifier
+ * PageRequest.of(Person.class).size(25).sortBy(Sort.asc("lastName"),
+ *                                              Sort.asc("firstName"),
+ *                                              Sort.asc("id")); // unique identifier
  * </pre>
  *
  * <p>In the example above, even if multiple people have the same last names

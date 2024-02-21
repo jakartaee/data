@@ -74,12 +74,12 @@ import jakarta.data.Sort;
  * <p>And use it to refer to entity attributes in a type-safe manner,</p>
  *
  * <pre>
- * {@code Pageable<Product>} pageRequest = Order.by(_Person.yearOfBirth.desc(),
- *                                          _Person.name_last.asc(),
- *                                          _Person.name_first.asc(),
- *                                          _Person.ssn.asc())
- *                                      .page(1)
- *                                      .size(20);
+ * {@code PageRequest<Product>} pageRequest = Order.by(_Person.yearOfBirth.desc(),
+ *                                             _Person.name_last.asc(),
+ *                                             _Person.name_first.asc(),
+ *                                             _Person.ssn.asc())
+ *                                         .page(1)
+ *                                         .size(20);
  * </pre>
  *
  * <p>When a class is annotated with {@code StaticMetamodel} and the

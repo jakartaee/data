@@ -486,8 +486,8 @@ import java.util.List;
  * For methods with the {@link Query} annotation or <i>Parameter-based Conditions</i>,
  * which have flexible naming, refer to the equivalent <i>Query by Method Name</i>
  * pattern in the table. For example, to identify the valid return types for a method,
- * {@code findNamed(String name, Pageable pagination)}, refer to the row for
- * {@code find...By...(..., Pageable)}.</p>
+ * {@code findNamed(String name, PageRequest pagination)}, refer to the row for
+ * {@code find...By...(..., PageRequest)}.</p>
  *
  * <table style="width: 100%">
  * <caption><b>Return Types when using Query by Method Name and Parameter-based Conditions</b></caption>
@@ -539,7 +539,7 @@ import java.util.List;
  * <td><code>Collection</code> subtypes</td>
  * <td>The subtype must have a public default constructor and support <code>addAll</code> or <code>add</code></td></tr>
  *
- * <tr style="vertical-align: top"><td><code>find...By...(..., Pageable)</code></td>
+ * <tr style="vertical-align: top"><td><code>find...By...(..., PageRequest)</code></td>
  * <td><code>Page&lt;E&gt;</code>, <code>KeysetAwarePage&lt;E&gt;</code>,
  * <br><code>Slice&lt;E&gt;</code>, <code>KeysetAwareSlice&lt;E&gt;</code></td>
  * <td>For use with pagination</td></tr>
@@ -626,26 +626,26 @@ import java.util.List;
  *
  * <pre>
  * Product[] findByNameLikeOrderByAmountSoldDescNameAsc(
- *           String pattern, {@code Pageable<Product>} pageRequest);
+ *           String pattern, {@code PageRequest<Product>} pageRequest);
  * ...
  * page1 = products.findByNameLikeOrderByAmountSoldDescNameAsc(
- *                  "%phone%", Pageable.of(Product.class).size(20));
+ *                  "%phone%", PageRequest.of(Product.class).size(20));
  * </pre>
  *
  * <h3>Sorting at Runtime</h3>
  *
  * <p>When requesting pages, you can dynamically supply sorting criteria
  * via the {@link PageRequest#sortBy(Sort)} method and other methods
- * of {@code Pageable} with the same name. For example,</p>
+ * of {@code PageRequest} with the same name. For example,</p>
  *
  * <pre>
- * Product[] findByNameLike(String pattern, {@code Pageable<Product>} pagination);
+ * Product[] findByNameLike(String pattern, {@code PageRequest<Product>} pagination);
  *
  * ...
- * {@code Pageable<Product>} page1Request = Pageable.of(Product.class)
- *                                          .size(25)
- *                                          .sortBy(Sort.desc("price"),
- *                                                  Sort.asc("name"));
+ * {@code PageRequest<Product>} page1Request = PageRequest.of(Product.class)
+ *                                                .size(25)
+ *                                                .sortBy(Sort.desc("price"),
+ *                                                        Sort.asc("name"));
  * page1 = products.findByNameLikeAndPriceBetween(
  *                 namePattern, minPrice, maxPrice, page1Request);
  * </pre>
@@ -654,9 +654,9 @@ import java.util.List;
  * page request from an {@link Order} instance, as follows,</p>
  *
  * <pre>
- * {@code Pageable<Product>} pageRequest = Order.by(_Product.price.desc(),
- *                                          _Product.name.asc())
- *                                      .pageSize(25));
+ * {@code PageRequest<Product>} pageRequest = Order.by(_Product.price.desc(),
+ *                                             _Product.name.asc())
+ *                                         .pageSize(25));
  * </pre>
  *
  * <p>To supply sort criteria dynamically without using pagination,

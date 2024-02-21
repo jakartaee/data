@@ -32,7 +32,7 @@ class PageRequestTest {
 
     @Test
     @DisplayName("Should correctly paginate")
-    void shouldCreatePageable() {
+    void shouldCreatePageRequest() {
         PageRequest<?> pageRequest = PageRequest.ofPage(2).size(6);
 
         assertSoftly(softly -> {
@@ -42,8 +42,8 @@ class PageRequestTest {
     }
 
     @Test
-    @DisplayName("Should create pageable with size")
-    void shouldCreatePageableWithSize() {
+    @DisplayName("Should create PageRequest with size")
+    void shouldCreatePageRequestWithSize() {
         PageRequest<?> pageRequest = PageRequest.ofSize(50);
 
         assertSoftly(softly -> {
@@ -67,7 +67,7 @@ class PageRequestTest {
     }
 
     @Test
-    @DisplayName("Should create a new Pageable at the given page with a default size of 10")
+    @DisplayName("Should create a new PageRequest at the given page with a default size of 10")
     void shouldCreatePage() {
         PageRequest<?> pageRequest = PageRequest.ofPage(5);
 
@@ -79,13 +79,13 @@ class PageRequestTest {
 
     @Test
     @DisplayName("Should be displayable as String with toString")
-    void shouldPageableDisplayAsString() {
+    void shouldPageRequestDisplayAsString() {
         assertSoftly(softly -> softly.assertThat(PageRequest.ofSize(60).toString())
-              .isEqualTo("Pageable{page=1, size=60}"));
+              .isEqualTo("PageRequest{page=1, size=60}"));
 
         assertSoftly(softly -> softly.assertThat(PageRequest.ofSize(80).sortBy(Sort.desc("yearBorn"), Sort.asc("monthBorn"),
                         Sort.asc("id")).toString())
-              .isEqualTo("Pageable{page=1, size=80, yearBorn DESC, monthBorn ASC, id ASC}"));
+              .isEqualTo("PageRequest{page=1, size=80, yearBorn DESC, monthBorn ASC, id ASC}"));
     }
 
     @Test
@@ -113,7 +113,7 @@ class PageRequestTest {
     }
 
     @Test
-    void shouldCreatePageableSort() {
+    void shouldCreatePageRequestSort() {
         PageRequest<?> pageRequest = PageRequest.ofSize(3).sortBy(Sort.asc("name"));
 
         assertSoftly(softly -> {
@@ -155,7 +155,7 @@ class PageRequestTest {
     }
 
     @Test
-    @DisplayName("Page number should be replaced on new instance of Pageable")
+    @DisplayName("Page number should be replaced on new instance of PageRequest")
     void shouldReplacePage() {
         PageRequest<?> p6 = PageRequest.ofSize(75).page(6).sortBy(Sort.desc("price"));
         PageRequest<?> p7 = p6.page(7);
@@ -171,7 +171,7 @@ class PageRequestTest {
     }
 
     @Test
-    @DisplayName("Size should be replaced on new instance of Pageable")
+    @DisplayName("Size should be replaced on new instance of PageRequest")
     void shouldReplaceSize() {
         PageRequest<?> s90 = PageRequest.ofPage(4).size(90);
         PageRequest<?> s80 = s90.size(80);
@@ -185,7 +185,7 @@ class PageRequestTest {
     }
 
     @Test
-    @DisplayName("Sorts should be replaced on new instance of Pageable")
+    @DisplayName("Sorts should be replaced on new instance of PageRequest")
     void shouldReplaceSorts() {
         PageRequest<?> p1 = PageRequest.ofSize(55).sortBy(Sort.desc("lastName"), Sort.asc("firstName"));
         PageRequest<?> p2 = p1.sortBy(Sort.asc("firstName"), Sort.asc("lastName"));
@@ -201,7 +201,7 @@ class PageRequestTest {
     }
 
     @Test
-    @DisplayName("Sorts should be appended by the Pageable.asc method")
+    @DisplayName("Sorts should be appended by the Sort.asc method")
     void shouldAppendAscendingSort() {
         PageRequest<?> p1 = PageRequest.ofSize(50).asc("first");
         PageRequest<?> p2 = p1.asc("second");
@@ -219,7 +219,7 @@ class PageRequestTest {
     }
 
     @Test
-    @DisplayName("Sorts should be appended by the Pageable.ascIgnoreCase method")
+    @DisplayName("Sorts should be appended by the Sort.ascIgnoreCase method")
     void shouldAppendCaseInsensitiveAscendingSort() {
         PageRequest<?> p1 = PageRequest.ofSize(40).ascIgnoreCase("first");
         PageRequest<?> p2 = p1.ascIgnoreCase("second");
@@ -237,7 +237,7 @@ class PageRequestTest {
     }
 
     @Test
-    @DisplayName("Sorts should be appended by the Pageable.descIgnoreCase method")
+    @DisplayName("Sorts should be appended by the Sort.descIgnoreCase method")
     void shouldAppendCaseInsensitiveDescendingSort() {
         PageRequest<?> p1 = PageRequest.ofSize(30).descIgnoreCase("first");
         PageRequest<?> p2 = p1.descIgnoreCase("second");
@@ -255,7 +255,7 @@ class PageRequestTest {
     }
 
     @Test
-    @DisplayName("Sorts should be appended by the Pageable.desc method")
+    @DisplayName("Sorts should be appended by the Sort.desc method")
     void shouldAppendDescendingSort() {
         PageRequest<?> p1 = PageRequest.ofSize(20).desc("first");
         PageRequest<?> p2 = p1.desc("second");
