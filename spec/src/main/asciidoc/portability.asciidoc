@@ -7,23 +7,47 @@ The portability that is offered by Jakarta Data pertains to usage of the Jakarta
 
 === Portability for Relational Databases
 
-All functionality defined by Jakarta Data must be supported when using relational databases.
+Jakarta Data is intended to be compatible with two very different approaches to relational data access:
 
-==== Jakarta Persistence Annotations
+- In the approach typified by Jakarta Persistence, entities are _managed objects_ associated with a _persistence context_, and have a well-defined _persistence lifecycle_. Under this approach, an entity instance maintains its association with the Jakarta Data provider between repository method calls.
 
-A Jakarta Data provider backed by Jakarta Persistence must allow the use of `jakarta.persistence.Entity` as an entity-defining annotation.
+- In the _persistence context free_ approach, entity instances are unmanaged objects, and their association with the Jakarta Data provider never outlasts a single call to a lifecycle method or query method of a repository.
 
-==== Built-In Repositories
+The two approaches feature very different patterns of interaction with the repository, and it is not a goal of Jakarta Data to abstract away the differences.
 
-Jakarta Data's built-in repositories, such as `BasicRepository` and `CrudRepository`, are designed to offer consistent and well-defined methods compatible with relational databases. Developers can rely on these repositories to perform common data access tasks.
+Regardless of the approach, a Jakarta Data provider backed by access to relational data must fully support Jakarta Data query methods, including pagination, ordering, and limiting, subject to the caveats specified below.
 
-==== Query Methods
+==== Jakarta Persistence
 
-Jakarta Data's support for query methods, including pagination, ordering, and limiting, is designed to work seamlessly with relational databases.
+In Jakarta Persistence, an instance of `EntityManager` reifies access to a given persistence context.
+Jakarta Persistence does not currently support the persistence context free approach.
 
-All limitations of Jakarta Persistence, the respective Jakarta Persistence provider, JPQL, SQL, and the database apply when using entities that are annotated with `jakarta.persistence.Entity`. Repository methods must correspond to operations that are valid via `JPQL` and `SQL` queries. For example, although one can write a repository method that asks for sorting by a collection attribute or attempts to perform a Like operation on a numeric type rather than a String, there is no expectation for a Jakarta Data provider to support doing so because Jakarta Persistence, JPQL, and SQL do not offer the ability.
+A Jakarta Data provider backed by Jakarta Persistence must:
 
-By aligning Jakarta Data closely with relational databases, developers can expect high portability and compatibility. This approach ensures that Jakarta Data remains a powerful tool for simplifying data access, irrespective of the specific relational database used.
+- allow the use of `jakarta.persistence.Entity` as an entity-defining annotation,
+- along with resource accessor methods of type `jakarta.persistence.EntityManager`.
+
+A Jakarta Data provider backed by Jakarta Persistence should define a query annotation accepting JPQL as the query language, along with an annotation accepting native SQL as the query language.
+
+[CAUTION]
+====
+This release of Jakarta Data does not standardize lifecycle annotations or query annotations for use with Jakarta Data providers backed by Jakarta Persistence.
+====
+
+The Jakarta Persistence specification, the respective Jakarta Persistence provider, JPQL, SQL, and the database all set limitations on what is possible for a repository implementation backed by Jakarta Persistence. All such limitations apply when the entities associated with a Jakarta Data repository are declared using the annotation `jakarta.persistence.Entity`. In particular, repository query methods must correspond to operations which are legal JPQL and SQL queries.
+
+For example, although one can write a repository method that asks for sorting by a collection attribute or attempts to perform a Like operation on a numeric type rather than a String, there is no expectation that a Jakarta Data provider backed by Jakarta Persistence should be able to supply an implementation of such a repository.
+
+==== Other Relational Data Access Technologies
+
+A Jakarta Data provider for relational data does not need to be based on Jakarta Persistence, and is not required to feature persistence contexts.
+
+A Jakarta Data provider based on persistence context free access to relational data must support the built-in lifecycle annotations `@Insert`, `@Update`, and `@Delete`, along with the built-in repository types `BasicRepository` and `CrudRepository`.
+
+If the provider is backed by JDBC, it should support resource accessor methods of type `java.sql.Connection`.
+
+As above, the SQL dialect and the database set limits on what operations are implementable.
+The Jakarta Data provider is not required to supply an implementation of a repository which declares query methods mapping to operations which are not supported by the database itself.
 
 === Portability for NoSQL Databases
 
