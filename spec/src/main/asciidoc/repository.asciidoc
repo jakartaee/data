@@ -695,9 +695,9 @@ NOTE: Additional portability guarantees may be provided by specifications which 
 A _lifecycle method_ is an abstract method annotated with a _lifecycle annotation_.
 Lifecycle methods allow the program to make changes to persistent data in the data store.
 
-A lifecycle method must be annotated with a lifecycle annotation. The method signature of the lifecycle method, including its return type, must follow the requirements that are specified by the JavaDoc of the lifecycle annotation.
+A lifecycle method must be annotated with a lifecycle annotation. The method signature of the lifecycle method, including its return type, must follow the requirements specified by the Javadoc of the lifecycle annotation.
 
-Lifecycle methods follow the general pattern:
+Lifecycle methods typically follow the general pattern:
 
 [source,java]
 ----
@@ -707,7 +707,7 @@ ReturnType lifecycle(Entity e);
 
 where `lifecycle` is the arbitrary name of the method, `Entity` is a concrete entity class or an `Iterable` or array of this entity, `Lifecycle` is a lifecycle annotation, and `ReturnType` is a return type that is permitted by the lifecycle annotation JavaDoc.
 
-This specification defines four built-in lifecycle annotations: `@Insert`, `@Update`, `@Delete`, and `@Save`.
+This specification defines four general-purpose built-in lifecycle annotations: `@Insert`, `@Update`, `@Delete`, and `@Save`. These annotations belong to the package `jakarta.data.repository`.
 
 For example:
 
@@ -715,6 +715,25 @@ For example:
 ----
 @Insert 
 void insertBook(Book book);
+
+@Update
+void updateBook(Book book);
+----
+
+In addition, this specification provides a set of built-in lifecycle annotations for use with repositories backed by the Jakarta Persistence `EntityManager`. The annotations `@Persist`, `@Merge`, `@Remove`, `@Lock`, `@Refresh`, and `@Detach` belong to the package `jakarta.data.orm`.
+
+For example:
+
+[source,java]
+----
+@Persist
+void persistBook(Book book);
+
+@Lock
+void lockBook(Book book, LockModeType lockMode);
+
+@Merge
+Book mergeBook(Book book);
 ----
 
 Lifecycle methods are not guaranteed to be portable between all providers.
@@ -726,15 +745,7 @@ The Jakarta Data implementation automatically recognizes the lifecycle annotatio
 
 [NOTE]
 ====
-A Jakarta Data provider might extend this specification to define additional lifecycle annotations, or to support lifecycle methods with signatures other than the usual signatures defined above. For example, a provider might support "merge" methods declared as follows:
-
-[source,java]
-----
-@Merge
-Book mergeBook(Book book);
-----
-
-Such lifecycle methods are not portable between Jakarta Data providers.
+A Jakarta Data provider might extend this specification to define additional lifecycle annotations, or to support lifecycle methods with signatures other than the usual signatures exemplified above. Such lifecycle methods are not portable between Jakarta Data providers.
 ====
 
 === Annotated Query methods

@@ -22,17 +22,15 @@ Regardless of the approach, a Jakarta Data provider backed by access to relation
 In Jakarta Persistence, an instance of `EntityManager` reifies access to a given persistence context.
 Jakarta Persistence does not currently support the persistence context free approach.
 
-A Jakarta Data provider backed by Jakarta Persistence must:
+A Jakarta Data provider backed by Jakarta Persistence must allow the use of `jakarta.persistence.Entity` as an entity-defining annotation. Furthermore, the provider should accept repositories with:
 
-- allow the use of `jakarta.persistence.Entity` as an entity-defining annotation,
-- along with resource accessor methods of type `jakarta.persistence.EntityManager`.
+- resource accessor methods of type `jakarta.persistence.EntityManager`,
+- query methods with JPQL specified via the annotation `jakarta.data.repository.Query`, and
+- lifecycle methods annotated with the Jakarta Data annotations `@Persist`, `@Merge`, `@Remove`, `@Lock`, `@Refresh`, and `@Detach`.
 
-A Jakarta Data provider backed by Jakarta Persistence should define a query annotation accepting JPQL as the query language, along with an annotation accepting native SQL as the query language.
+Such a repository is backed by a Jakarta Persistence `EntityManager` with a stateful persistence context. The lifecycle methods are expected to delegate to the corresponding methods of the `EntityManager` interface, and must respect the semantics defined by the Jakarta Persistence specification for those operations. In particular, the repository observes the semantics of the Jakarta Persistence `CascadeType`.
 
-[CAUTION]
-====
-This release of Jakarta Data does not standardize lifecycle annotations or query annotations for use with Jakarta Data providers backed by Jakarta Persistence.
-====
+Alternatively, a Jakarta Data provider might support repositories whose associated entities are annotated `jakarta.persistence.Entity` and mapped according to the Jakarta Persistence specification, but whose lifecycle methods are annotated with the Jakarta Data annotations `@Insert`, `@Update`, and `@Delete`. Such a repository is "stateless", in the sense that it does not maintain a persistence context which outlives the invocation of a single repository method. The lifecycle operations of this kind of repository adhere to the usual semantics defined by this specification for the annotations listed. In particular, these operations never cascade to related entities. Such a repository is typically not permitted a resource accessor method of type `jakarta.persistence.EntityManager`, since `EntityManager` is designed for use with stateful persistence contexts.
 
 The Jakarta Persistence specification, the respective Jakarta Persistence provider, JPQL, SQL, and the database all set limitations on what is possible for a repository implementation backed by Jakarta Persistence. All such limitations apply when the entities associated with a Jakarta Data repository are declared using the annotation `jakarta.persistence.Entity`. In particular, repository query methods must correspond to operations which are legal JPQL and SQL queries.
 
