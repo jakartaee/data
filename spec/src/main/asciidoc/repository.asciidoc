@@ -853,6 +853,30 @@ default void cleanup() {
 
 A repository may have at most one resource accessor method.
 
+A resource accessor method may be annotated with:
+
+- one or more CDI qualifier types,
+- `jakarta.persistence.PersistenceContext` or `jakarta.persistence.PersistenceUnit`, or
+- `jakarta.annotation.Resource`.
+
+In this case, the repository implementation should use such annotations to disambiguate the resource it uses to access the data store, according to the usual rules defined by CDI, Jakarta EE, or Jakarta Persistence.
+
+For example, `@Resource` might be used to disambiguate a `DataSource` used to obtain JDBC ``Connection``s:
+
+[source,java]
+----
+@Resource(name="documentDatabase")
+DataSource connection();
+----
+
+Similarly, `@PersistenceContext` might be used to disambiguate a Jakarta Persistence persistence unit:
+
+[source,java]
+----
+@PersistenceContext(unitName="documents")
+EntityManager entityManager();
+----
+
 === Query by Method Name
 
 The Query by method mechanism allows for creating query commands by naming convention.
