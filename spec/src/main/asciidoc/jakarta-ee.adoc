@@ -120,15 +120,14 @@ When a repository method is annotated with an interceptor binding annotation, th
 
 === Jakarta Persistence
 
-When integrating Jakarta Data with Jakarta Persistence, developers can leverage the JPA annotations to define the mapping of entities in repositories. Entities in Jakarta Persistence are typically annotated with `jakarta.persistence.Entity` to indicate their persistence capability.
+When integrating Jakarta Data with Jakarta Persistence, a developer uses the annotations defined in `jakarta.persistence` to specify the object/relational mapping metadata for entity types stored in a relational database.
 
-A Jakarta Data provider that supports Jakarta Persistence allows you to define repositories for classes marked with the `jakarta.persistence.Entity` annotation.
+According to the Jakarta Persistence specification, every entity class should be annotated `jakarta.persistence.Entity`. Jakarta Data places an additional interpretation on this annotation, treating it as an entity-defining annotation.
 
-By supporting Jakarta Persistence annotations, Jakarta Data providers enable Java developers to utilize familiar and standardized mapping techniques when defining entities in repositories, ensuring compatibility and interoperability with the respective technologies.
+Thus, a Jakarta Data provider which supports Jakarta Persistence is able to supply an implementation of any repository whose associated entity classes are marked with the `jakarta.persistence.Entity` annotation. Typically, such an implementation simply delegates operations declared by the repository interface to the Jakarta Persistence `EntityManager`. Management of persistence contexts and integration with Jakarta Transactions remains the responsibility of the Jakarta Persistence provider.
 
-==== Persistence Context
+By supporting Jakarta Persistence, a Jakarta Data provider enables Java developers to utilize familiar and standardized mapping techniques when defining entities associated with Jakarta Data repositories, ensuring compatibility and interoperability with the respective technologies.
 
-Repository operations must behave as though backed by a stateless Entity Manager in that persistence context is not preserved across the end of repository methods. All entities that are returned by repository methods must be in a detached state such that modifications to these entities are not persisted to the database unless the application explicitly invokes a `Save` or `Update` life cycle method for the entity.
 
 === Jakarta NoSQL
 
