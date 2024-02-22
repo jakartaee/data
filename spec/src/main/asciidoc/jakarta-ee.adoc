@@ -1,24 +1,62 @@
 == Jakarta Data Providers
 
-Jakarta Data providers implement repository interfaces, performing queries and other operations related to entities per the rules of the Jakarta Data specification. A Jakarta Data provider makes the repository implementation available to the application via dependency injection. The Jakarta Data specification defines the rules by which Jakarta Data providers must abide to ensure that multiple Jakarta Data providers are able to coexist in a system without interfering or overlapping on the same injection points.
+A Jakarta Data provider might come as an integrated component of a Jakarta EE container, or it might be a separate component that integrates with the Jakarta EE container via standard or proprietary SPIs.
+For example, a Jakarta Data provider might use a CDI portable extension to integrate with dependency injection.
+The role of the Jakarta Data provider is to supply implementations of application-defined repositories.
+
+=== Providers and Repositories
+
+A Jakarta Data provider must supply an implementation of each repository interface which either:
+
+- explicitly specifies the name of the provider via the `provider` member of the `@Repository` annotation, or
+- does not explicitly specify a `provider`, but whose entity classes are annotated with an entity-defining annotation type supported by the provider.
+
+The repository implementation and the Jakarta Data provider are responsible for mediating interaction between the application program and the datastore, often taking advantage of other Jakarta EE services such as datasource provisioning and transaction management.
+
+An application usually obtains a reference to an implementation of a repository via dependency injection.
+Therefore, the provider must make its repository implementations available to the bean container responsible for dependency injection.
+
+Multiple Jakarta Data providers may coexist within a single program and provide repository implementations.
+It is the responsibility of the application developer to ensure that each repository is eligible for implementation by exactly one provider, according to the rules specified below.
+
+[NOTE]
+====
+If the application developer fails to disambiguate the provider for every repository in the application, the behavior is undefined by this specification.
+====
 
 === Provider support for Entities
 
-A Jakarta Data provider supplies an implementation of repository interfaces in Jakarta Data for one or more types of entities. An entity refers to a class that represents objects in a storage engine, such as SQL or NoSQL databases.
+A Jakarta Data provider typically supports one entity-defining annotation type, but it may support multiple entity-defining annotation types.
+A provider may even have no entity-defining annotation and feature a programming model for entity classes where the entity classes are unannotated.
 
-The `jakarta.persistence.Entity` annotation from the Jakarta Persistence specification can be used by repository entity classes for Jakarta Data providers that are backed by a Jakarta Persistence provider. Other Jakarta Data providers must not support the `jakarta.persistence.Entity` annotation.
+In particular:
 
-The `jakarta.nosql.Entity` annotation from the Jakarta NoSQL specification can be used by repository entity classes for Jakarta Data providers that are backed by NoSQL databases. Other Jakarta Data providers must not support the `jakarta.nosql.Entity` annotation.
+- The `jakarta.persistence.Entity` annotation from the Jakarta Persistence specification is an entity-defining annotation for Jakarta Data providers backed by a Jakarta Persistence provider. Other Jakarta Data providers must not support the use of `jakarta.persistence.Entity` as an entity-defining annotation.
 
-Jakarta Data providers that define custom entity annotations must follow the convention that the class name of all supported entity annotation types ends with `Entity`. This enables Jakarta Data providers to identify if a repository entity class contains entity annotations from different Jakarta Data providers so that the corresponding `Repository` can be ignored by Jakarta Data providers that should not provide it.
+- The `jakarta.nosql.Entity` annotation from the Jakarta NoSQL specification is an entity-defining annotation for Jakarta Data providers backed by NoSQL databases. Other Jakarta Data providers must not support the use of `jakarta.nosql.Entity` as an entity-defining annotation.
 
-Jakarta Data providers must ignore all `Repository` annotations where annotations for the corresponding entity are available at run time and none of the entity annotations are supported by the Jakarta Data provider. Ignoring these `Repository` annotations allows other Jakarta Data providers to handle them.
+A Jakarta Data provider might define a custom entity-defining annotation.
+The name of such a custom entity-defining annotation type must end with `Entity`. This convention allows any Jakarta Data provider to identify when a repository is associated with entity classes declared using an unrecognized entity-defining annotation.
+
+The lifecycle methods and query methods of a repository operate on a set of entities associated with that repository.
+All entities associated with a given repository should be declared using the same entity-defining annotation type.
+If the entities associated with a given repository are declared using a mix of annotation types, the behavior is undefined by this specification.
+
+A Jakarta Data provider must ignore every repository associated with entity classes declared using an entity-defining annotation which is available at runtime, but not recognized by the provider, allowing another Jakarta Data provider to supply the implementation.
+
+On the other hand, if an entity class is annotated with an entity-defining annotation which is _not_ available at runtime, the Jakarta Data provider must completely ignore the annotation, and treat the entity as if that entity-defining annotation were missing.
+
+[NOTE]
+====
+This allows an entity class to be compiled with multiple entity-defining annotations, each targeting a different Jakarta Data provider, and have the provider automatically disambiguated at runtime based on the availability of the entity-defining annotations.
+====
 
 === Provider Name
 
-The entity annotation class is the primary strategy to avoid conflicts between Jakarta Data providers. In most cases, it is sufficient to differentiate between providers. In situations where multiple Jakarta Data providers support the same entity annotation class, the application can specify the name of the desired Jakarta Data provider using the optional `provider` attribute of the `Repository` annotation.
+The entity-defining annotation type is the preferred way to avoid conflicts between Jakarta Data providers.
+But when multiple Jakarta Data providers support the same entity-defining annotation, the application must disambiguate the Jakarta Data provider for a repository by explicitly specifying the `provider` attribute of the `Repository` annotation.
 
-To ensure compatibility and prevent conflicts, Jakarta Data providers must disregard all `Repository` annotations that specify a different provider's name through the `Repository.provider()` attribute. By ignoring these annotations, Jakarta Data providers allow other Jakarta Data providers to handle them.
+A Jakarta Data provider must ignore every repository which specifies the name of a different `provider` in its `@Repository` annotation.
 
 == Interoperability with other Jakarta EE Specifications
 
