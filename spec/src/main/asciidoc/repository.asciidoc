@@ -64,11 +64,18 @@ An implementation of Jakarta Data, specifically tailored to the chosen data stor
 
 Jakarta Data empowers developers to shape their data access strategies by defining entity classes and repositories, with implementations seamlessly adapting to the chosen data store. This flexibility and Jakarta Data's persistence-agnostic approach promote robust data management within Java applications.
 
-The Jakarta Data specification supports two types of repositories.
+The Jakarta Data specification supports two basic ways to define a repository interface:
+
+- by extending one of the generic repository supertype interfaces defined by Jakarta Data, or
+- by annotating the methods of an interface which does _not_ extend any built-in supertype.
+
+A Java developer creates an interface, marks it with the `@Repository` annotation, and has the option to extend one or more built-in generic repository interfaces, or to annotate its lifecycle methods.
+
+NOTE: Jakarta Data allows applications to intermix the two approaches by defining methods annotated with `@Insert`, `@Update`, `@Delete`, or `@Save` on repositories which inherit the built-in supertypes.
 
 ==== Repositories with Built-in Supertypes
 
-The first type consists of built-in interfaces that are parent interfaces from which repositories can inherit. At the root of this hierarchy is the `DataRepository` interface. These built-in interfaces are extensible, meaning a repository can extend one or more of them or none at all. When a repository extends a built-in interface, the method signatures copied from the built-in interfaces must retain the same behavior as defined in the built-in interfaces.
+Jakarta Data defines a hierarchy of built-in interfaces which user-defined repositories may inherit. At the root of this hierarchy is the `DataRepository` interface. A repository is permitted to extend one or more of the members of the hierarchy, or none at all. When a repository extends a built-in interface, the implementation of every method inherited from the built-in interface must preserve the semantics specified by the built-in interface.
 
 [ditaa]
 ....
@@ -90,13 +97,14 @@ The first type consists of built-in interfaces that are parent interfaces from w
 
 ....
 
-The `BasicRepository` interface includes some of the most common operations, which applies to single type of entity, designated via its first parameterized type variable.
+A repository which extends a built-in supertype usually acts as a home for operations acting in a single entity type.
+This entity type is designated via the first generic type variable of the generic supertype.
 
-The `CrudRepository` interface inherits from `BasicRepository`, adding `Insert` and `Update` operations that correspond to Create and Update in the CRUD (Create, Read, Update, Delete) pattern.
+- The `BasicRepository` interface includes some of the most common operations applying to a single type of entity, including `save()`, `delete()`, and `findById()`.
 
-The Java developer creates an interface that is annotated with the `@Repository` annotation and optionally extends one of the built-in repository interfaces.
+- The `CrudRepository` interface inherits `BasicRepository`, adding `insert()` and `update()` methods corresponding to the Create and Update operations of the CRUD (Create, Read, Update, Delete) pattern.
 
-Given a `Product` entity where the ID is a `long` type, the repository can be:
+Given a `Product` entity with ID of type `long`, the repository could be as simple as:
 
 [source,java]
 ----
@@ -107,7 +115,7 @@ public interface ProductRepository extends BasicRepository<Product, Long> {
 ----
 
 
-There is no nomenclature restriction to require the `Repository` suffix. For example a repository for `Car` entities can be named `Cars`, `Vehicles`, or even `Garage` instead of `CarRepository`.
+There is no nomenclature restriction requiring the `Repository` suffix. For example, a repository for the `Car` entity does not need to be named `CarRepository`. It could be named `Cars`, `Vehicles`, or even `Garage`.
 
 [source,java]
 ----
@@ -119,9 +127,12 @@ public interface Garage extends BasicRepository<Car, String> {
 
 ==== Repositories without Built-in Supertypes
 
-Additionally, Jakarta Data allows for custom interfaces that do not extend any built-in interfaces. These non-built-in interfaces enable developers to define the repository structures and behavior and provide a means to define your domain's ubiquitous language precisely.
+Alternatively, Jakarta Data allows a custom repository interface which does not extend any built-in type. This option:
 
-In this context, database operations involving fundamental data changes, such as insertion, update, and removal, are realized through the strategic utilization of annotations like `Insert`, `Update`, `Delete`, and `Save`. These annotations enable the crafting of expressive and contextually meaningful repository methods, resulting in a repository that closely mirrors the semantics of your domain.
+- provides the developer with complete control over the operations available, and over their naming, and
+- allows a single repository to declare operations acting on a family of related entities, instead of being limited to just one entity type.
+
+In this approach, database operations involving fundamental data changes, such as insertion, update, and removal, are realized via the use of lifecycle annotations like `@Insert`, `@Update`, `@Delete`, and `@Save`. These annotations enable the crafting of expressive and contextually meaningful repository methods, resulting in a repository API that closely mirrors the semantics of the domain.
 
 For instance, consider the `Garage` repository interface below:
 
@@ -138,9 +149,9 @@ public interface Garage {
 }
 ----
 
-Here, the `@Insert` annotation is used for the `park` method, allowing you to design a repository interface that encapsulates the essence of your domain. This approach fosters a shared understanding and more intuitive communication within your development team, ensuring that your database operations are integral to your domain's language.
+Notice that the `@Insert` annotation is used to declare the `park()` method.
 
-NOTE: Jakarta Data allows applications to intermix both patterns by defining methods that are annotated with `Insert`, `Update`, `Delete`, or `Save` on repositories that inherit from the built-in supertypes.
+The previous example illustrates the design of a repository interface which captures some of the essence of the business domain. This approach fosters a shared understanding and more intuitive communication within the development team, with database operations named according to the language of the domain.
 
 == Entity Classes
 
