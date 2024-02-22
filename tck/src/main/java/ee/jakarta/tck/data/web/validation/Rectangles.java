@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import jakarta.data.repository.DataRepository;
+import jakarta.data.repository.Find;
 import jakarta.data.repository.Repository;
 import jakarta.data.repository.Save;
 import jakarta.validation.Valid;
@@ -37,6 +38,7 @@ public interface Rectangles extends DataRepository<Rectangle, String> {
     @PositiveOrZero
     long countBy();
 
+    @Find
     Stream<Rectangle> findAll();
     
     void deleteAllBy();
