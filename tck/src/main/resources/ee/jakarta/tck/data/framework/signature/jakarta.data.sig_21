@@ -211,6 +211,8 @@ meth public abstract <%0 extends {jakarta.data.repository.BasicRepository%0}> ja
 meth public abstract <%0 extends {jakarta.data.repository.BasicRepository%0}> {%%0} save({%%0})
  anno 0 jakarta.data.repository.Save()
 meth public abstract boolean existsById({jakarta.data.repository.BasicRepository%1})
+meth public abstract jakarta.data.page.Page<{jakarta.data.repository.BasicRepository%0}> findAll(jakarta.data.page.PageRequest<{jakarta.data.repository.BasicRepository%0}>)
+ anno 0 jakarta.data.repository.Find()
 meth public abstract java.util.Optional<{jakarta.data.repository.BasicRepository%0}> findById({jakarta.data.repository.BasicRepository%1})
 meth public abstract java.util.stream.Stream<{jakarta.data.repository.BasicRepository%0}> findAll()
  anno 0 jakarta.data.repository.Find()
@@ -276,11 +278,6 @@ CLSS public abstract interface static !annotation jakarta.data.repository.OrderB
  anno 0 java.lang.annotation.Target(java.lang.annotation.ElementType[] value=[METHOD])
 intf java.lang.annotation.Annotation
 meth public abstract jakarta.data.repository.OrderBy[] value()
-
-CLSS public abstract interface jakarta.data.repository.BasicRepository<%0 extends java.lang.Object, %1 extends java.lang.Object>
-intf jakarta.data.repository.BasicRepository<{jakarta.data.repository.BasicRepository%0},{jakarta.data.repository.BasicRepository%1}>
-meth public abstract jakarta.data.page.Page<{jakarta.data.repository.BasicRepository%0}> findAll(jakarta.data.page.PageRequest<{jakarta.data.repository.BasicRepository%0}>)
- anno 0 jakarta.data.repository.Find()
 
 CLSS public abstract interface !annotation jakarta.data.repository.Param
  anno 0 java.lang.annotation.Retention(java.lang.annotation.RetentionPolicy value=RUNTIME)
