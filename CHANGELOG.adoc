@@ -8,22 +8,7 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 
 == [Unreleased]
 
-=== Changed
-
-- Define the Sort and Pageable as parameterized
-- Include the Find annotation
-- Rename Pageable to PageRequest
-
-=== Added
-
-- Include FindAll method with pagination at BasicRepository
-
-
-=== Removed
-
-- Remove the PageableRepository interface
-
-== [1.0.0-M3] - 2024-01-30
+== [1.0.0-M3] - 2024-02-2023
 
 === Changed
 
@@ -32,6 +17,17 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 - Introduced @Delete annotation to the default deleteAll() method
 - Restricted @Update and @Delete return types for numeric types to only int and long
 - Re-introduced static metamodel
+- Include the Find annotation
+- Rename Pageable to PageRequest
+- Define the Sort and Pageable as parameterized
+
+=== Added
+
+- Include FindAll method with pagination at BasicRepository
+
+=== Removed
+
+- Remove the PageableRepository interface
 
 
 == [1.0.0-M2] - 2023-11-31
