@@ -29,11 +29,7 @@ If the application developer fails to disambiguate the provider for every reposi
 A Jakarta Data provider typically supports one entity-defining annotation type, but it may support multiple entity-defining annotation types.
 A provider may even have no entity-defining annotation and feature a programming model for entity classes where the entity classes are unannotated.
 
-In particular:
-
-- The `jakarta.persistence.Entity` annotation from the Jakarta Persistence specification is an entity-defining annotation for Jakarta Data providers backed by a Jakarta Persistence provider. Other Jakarta Data providers must not support the use of `jakarta.persistence.Entity` as an entity-defining annotation.
-
-- The `jakarta.nosql.Entity` annotation from the Jakarta NoSQL specification is an entity-defining annotation for Jakarta Data providers backed by NoSQL databases. Other Jakarta Data providers must not support the use of `jakarta.nosql.Entity` as an entity-defining annotation.
+In particular, the `jakarta.nosql.Entity` annotation from the Jakarta NoSQL specification is an entity-defining annotation for Jakarta Data providers backed by NoSQL databases. Other Jakarta Data providers must not support the use of `jakarta.nosql.Entity` as an entity-defining annotation.
 
 A Jakarta Data provider might define a custom entity-defining annotation.
 The name of such a custom entity-defining annotation type must end with `Entity`. This convention allows any Jakarta Data provider to identify when a repository is associated with entity classes declared using an unrecognized entity-defining annotation.
@@ -120,14 +116,7 @@ When a repository method is annotated with an interceptor binding annotation, th
 
 === Jakarta Persistence
 
-When integrating Jakarta Data with Jakarta Persistence, a developer uses the annotations defined in `jakarta.persistence` to specify the object/relational mapping metadata for entity types stored in a relational database.
-
-According to the Jakarta Persistence specification, every entity class should be annotated `jakarta.persistence.Entity`. Jakarta Data places an additional interpretation on this annotation, treating it as an entity-defining annotation.
-
-Thus, a Jakarta Data provider which supports Jakarta Persistence is able to supply an implementation of any repository whose associated entity classes are marked with the `jakarta.persistence.Entity` annotation. Typically, such an implementation simply delegates operations declared by the repository interface to the Jakarta Persistence `EntityManager`. Management of persistence contexts and integration with Jakarta Transactions remains the responsibility of the Jakarta Persistence provider.
-
-By supporting Jakarta Persistence, a Jakarta Data provider enables Java developers to utilize familiar and standardized mapping techniques when defining entities associated with Jakarta Data repositories, ensuring compatibility and interoperability with the respective technologies.
-
+Integration with Jakarta Persistence is left undefined in this first release of Jakarta Data.
 
 === Jakarta NoSQL
 
@@ -180,7 +169,3 @@ public interface School extends DataRepository<Student, String> {
     List<Student> findByAgeLessThanEqual(@Min(18) int age);
 }
 ----
-
-==== Avoiding Overlap with Validation from Jakarta Persistence
-
-Jakarta Data providers that are built using Jakarta Persistence might require the user to define persistence units for repositories or might handle the details of defining the persistence units internally. A user that defines the persistence unit for a Jakarta Data repository must specify the `validation-mode` as `NONE` per the "Enabling Automatic Validation" section of the Jakarta Persistence specification to avoid duplicate validation of entities. Similarly, the Jakarta Data provider must specify either the `validation-mode` of `NONE` or the `jakarta.persistence.validation.mode` map key with value of `none` that is defined in the "Enabling Automatic Validation" section of the Jakarta Persistence specification to avoid duplicate validation of entities.
