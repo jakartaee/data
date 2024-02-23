@@ -98,7 +98,7 @@ public class Order<T> implements Iterable<Sort<T>> {
     /**
      * The instances of {@link Sort} belonging to this {@code Order}.
      *
-     * @return the instances of {@link Sort}
+     * @return the instances of {@link Sort}, from highest precedence to lowest precedence.
      */
     public List<Sort<T>> getSorts() {
         return sorts;
