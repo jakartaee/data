@@ -96,6 +96,15 @@ public class Order<T> implements Iterable<Sort<T>> {
     }
 
     /**
+     * The instances of {@link Sort} belonging to this {@code Order}.
+     *
+     * @return the instances of {@link Sort}
+     */
+    public List<Sort<T>> getSorts() {
+        return sorts;
+    }
+
+    /**
      * Determines whether this instance specifies matching {@link Sort} criteria
      * in the same order of precedence as another instance.
      *
