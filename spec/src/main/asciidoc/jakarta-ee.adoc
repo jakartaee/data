@@ -29,7 +29,11 @@ If the application developer fails to disambiguate the provider for every reposi
 A Jakarta Data provider typically supports one entity-defining annotation type, but it may support multiple entity-defining annotation types.
 A provider may even have no entity-defining annotation and feature a programming model for entity classes where the entity classes are unannotated.
 
-In particular, the `jakarta.nosql.Entity` annotation from the Jakarta NoSQL specification is an entity-defining annotation for Jakarta Data providers backed by NoSQL databases. Other Jakarta Data providers must not support the use of `jakarta.nosql.Entity` as an entity-defining annotation.
+In particular:
+
+- The `jakarta.persistence.Entity` annotation from the Jakarta Persistence specification is an entity-defining annotation for Jakarta Data providers backed by a Jakarta Persistence provider. Other Jakarta Data providers must not support the use of `jakarta.persistence.Entity` as an entity-defining annotation.
+
+- The `jakarta.nosql.Entity` annotation from the Jakarta NoSQL specification is an entity-defining annotation for Jakarta Data providers backed by NoSQL databases. Other Jakarta Data providers must not support the use of `jakarta.nosql.Entity` as an entity-defining annotation.
 
 A Jakarta Data provider might define a custom entity-defining annotation.
 The name of such a custom entity-defining annotation type must end with `Entity`. This convention allows any Jakarta Data provider to identify when a repository is associated with entity classes declared using an unrecognized entity-defining annotation.
