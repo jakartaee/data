@@ -109,7 +109,7 @@ NOTE: Jakarta Data providers that wish to provide both extensions can use CDI's 
 
 === Jakarta Transactions Usage
 
-When running in an environment where Jakarta Transactions is available and a global transaction is active on the thread of execution for a repository operation and the data source backing the repository is capable of transaction enlistment, the repository operation enlists the data source resource as a participant in the transaction. The repository operation does not commit or roll back the transaction that was already present on the thread, but it might cause the transaction to be marked as rollback only (`jakarta.transaction.Status.STATUS_MARKED_ROLLBACK`) if the repository operation fails.
+When running in an environment where Jakarta Transactions is available and a global transaction is active on the thread of execution for a repository operation and the data source backing the repository is capable of transaction enlistment, the operation performed by the repository involves the use of resources from the data source that enlist as participants in the transaction. The repository operation does not commit or roll back the transaction that was already present on the thread, but it might cause the transaction to be marked as rollback only (`jakarta.transaction.Status.STATUS_MARKED_ROLLBACK`) if the repository operation fails.
 
 When running in an environment where Jakarta Transactions and Jakarta CDI are available, a repository method can be annotated with the `jakarta.transaction.Transactional` annotation, which is applied to the execution of the repository method.
 
