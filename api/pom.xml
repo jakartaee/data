@@ -76,9 +76,9 @@
         </dependency>
     </dependencies>
 
-        <modules>
-           <module>core</module>
-           <module>persistence</module>
-        </modules>
+    <modules>
+        <module>core</module>
+        <module>persistence</module>
+    </modules>
 
 </project>
