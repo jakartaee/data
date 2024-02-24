@@ -26,10 +26,11 @@
         <artifactId>jakarta.data-parent</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
+    <packaging>pom</packaging>
 
-    <artifactId>jakarta.data-api</artifactId>
+    <artifactId>jakarta.data-api-parent</artifactId>
     <name>Jakarta Data API</name>
-    <description>Jakarta Data :: API</description>
+    <description>Jakarta Data :: API Parent</description>
 
     <properties>
         <assertj.version>3.25.3</assertj.version>
@@ -74,5 +75,10 @@
             <scope>provided</scope>
         </dependency>
     </dependencies>
+
+        <modules>
+           <module>core</module>
+           <module>persistence</module>
+        </modules>
 
 </project>
