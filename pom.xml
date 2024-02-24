@@ -206,7 +206,7 @@
                     <excludes>**/module-info.java,${checkstyle.excludes}</excludes>
                     <logViolationsToConsole>true</logViolationsToConsole>
                     <consoleOutput>true</consoleOutput>
-                    <configLocation>api/src/main/resources/checkstyle.xml</configLocation>
+                    <configLocation>api/core/src/main/resources/checkstyle.xml</configLocation>
                 </configuration>
             </plugin>
             <plugin>
