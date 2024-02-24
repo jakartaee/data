@@ -100,7 +100,7 @@ public class Order<T> implements Iterable<Sort<T>> {
      *
      * @return the instances of {@link Sort}, from highest precedence to lowest precedence.
      */
-    public List<Sort<T>> getSorts() {
+    public List<Sort<T>> sorts() {
         return java.util.Collections.unmodifiableList(sorts);
     }
 
