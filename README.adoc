@@ -76,6 +76,38 @@ public interface ProductRepository extends BasicRepository<Product, Long> {
 }
 ----
 
+== Type-safe Access to Entity Attributes
+
+Jakarta Data provides a static metamodel for type-safe access to entity attributes by applications.
+Given this entity class:
+
+[source,java]
+----
+@Entity
+public class Product {
+  public long id;
+  public String name;
+  public float price;
+}
+----
+
+You can leverage Jakarta Data's static metamodel to access entity attributes in a type-safe manner, offering several advantages:
+
+- **Compile-time Safety:** By accessing entity attributes through the static metamodel (_Product), you gain compile-time safety. Any errors or mismatches in attribute names or types are detected at compile time, reducing the likelihood of runtime errors and enhancing code reliability.
+- **Refactoring Support:** Type-safe access to entity attributes facilitates seamless refactoring. When renaming or changing attributes in entity classes, the static metamodel ensures that all references to these attributes in your codebase are updated automatically, minimizing the risk of introducing bugs during refactoring.
+- **Reduced Magic Strings:** Accessing entity attributes via the static metamodel eliminates the need for using magic strings (e.g., "price", "name") directly in your code. Instead, you reference attributes using generated constants (e.g., _Product.price, _Product.name), making your code more readable, maintainable, and less error-prone.
+- **Enhanced Documentation:** Type-safe access to entity attributes enhances code documentation and self-documenting code practices. When reviewing code, developers can easily understand which attributes are accessed and manipulated, promoting better code understanding and collaboration.
+
+By embracing type-safe access to entity attributes with Jakarta Data's static metamodel, developers can write more robust, maintainable, and error-resistant code, leading to improved software quality and developer productivity.
+
+[source,java]
+----
+List<Product> found = products.findByNameContains(searchPattern,
+                                                  _Product.price.desc(),
+                                                  _Product.name.asc(),
+                                                  _Product.id.asc());
+----
+
 === Maven
 
 To start to use Jakarta Data, add the API as a Maven dependency:
