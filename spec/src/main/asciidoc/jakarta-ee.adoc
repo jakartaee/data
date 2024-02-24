@@ -120,14 +120,7 @@ When a repository method is annotated with an interceptor binding annotation, th
 
 === Jakarta Persistence
 
-When integrating Jakarta Data with Jakarta Persistence, a developer uses the annotations defined in `jakarta.persistence` to specify the object/relational mapping metadata for entity types stored in a relational database.
-
-According to the Jakarta Persistence specification, every entity class should be annotated `jakarta.persistence.Entity`. Jakarta Data places an additional interpretation on this annotation, treating it as an entity-defining annotation.
-
-Thus, a Jakarta Data provider which supports Jakarta Persistence is able to supply an implementation of any repository whose associated entity classes are marked with the `jakarta.persistence.Entity` annotation. Typically, such an implementation simply delegates operations declared by the repository interface to the Jakarta Persistence `EntityManager`. Management of persistence contexts and integration with Jakarta Transactions remains the responsibility of the Jakarta Persistence provider.
-
-By supporting Jakarta Persistence, a Jakarta Data provider enables Java developers to utilize familiar and standardized mapping techniques when defining entities associated with Jakarta Data repositories, ensuring compatibility and interoperability with the respective technologies.
-
+Integration with Jakarta Persistence is left undefined in this first release of Jakarta Data.
 
 === Jakarta NoSQL
 
@@ -180,7 +173,3 @@ public interface School extends DataRepository<Student, String> {
     List<Student> findByAgeLessThanEqual(@Min(18) int age);
 }
 ----
-
-==== Avoiding Overlap with Validation from Jakarta Persistence
-
-Jakarta Data providers that are built using Jakarta Persistence might require the user to define persistence units for repositories or might handle the details of defining the persistence units internally. A user that defines the persistence unit for a Jakarta Data repository must specify the `validation-mode` as `NONE` per the "Enabling Automatic Validation" section of the Jakarta Persistence specification to avoid duplicate validation of entities. Similarly, the Jakarta Data provider must specify either the `validation-mode` of `NONE` or the `jakarta.persistence.validation.mode` map key with value of `none` that is defined in the "Enabling Automatic Validation" section of the Jakarta Persistence specification to avoid duplicate validation of entities.
