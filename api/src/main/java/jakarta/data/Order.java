@@ -75,8 +75,16 @@ import jakarta.data.repository.Query;
  */
 public class Order<T> implements Iterable<Sort<T>> {
 
+    /**
+     * Unmodifiable list of Sort instances, from highest precedence to lowest.
+     */
     private final List<Sort<T>> sorts;
 
+    /**
+     * Creates a new instance.
+     *
+     * @param sorts unmodifiable list of Sort instances, from highest precedence to lowest.
+     */
     private Order(List<Sort<T>> sorts) {
         this.sorts = sorts;
     }
@@ -101,7 +109,7 @@ public class Order<T> implements Iterable<Sort<T>> {
      * @return the instances of {@link Sort}, from highest precedence to lowest precedence.
      */
     public List<Sort<T>> sorts() {
-        return java.util.Collections.unmodifiableList(sorts);
+        return sorts;
     }
 
     /**
