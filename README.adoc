@@ -102,10 +102,10 @@ By embracing type-safe access to entity attributes with Jakarta Data's static me
 
 [source,java]
 ----
-List<Product> found = products.findByNameContains(searchPattern,
+List<Product> found = products.findByNameContains(searchPattern, Order.by(
                                                   _Product.price.desc(),
                                                   _Product.name.asc(),
-                                                  _Product.id.asc());
+                                                  _Product.id.asc()));
 ----
 
 === Maven
