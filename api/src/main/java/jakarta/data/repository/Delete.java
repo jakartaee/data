@@ -25,27 +25,18 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * <p>Annotates a repository method to perform delete operations.</p>
+ * <p>Lifecycle annotation for repository methods which perform delete operations.</p>
  *
- * <p>The {@code Delete} annotation indicates that the annotated repository method requests one or more
- * entities to be removed from the database. To request deletion of specific entity instances, the annotated
- * repository method must have a single parameter whose type must be one of the following:
+ * <p>The {@code Delete} annotation indicates that the annotated repository method the state of one or more entities
+ * from in the database. The annotated repository method usually has exactly one parameter whose type must be one of
+ * the following:
  * </p>
  * <ul>
  *     <li>The entity to be deleted.</li>
  *     <li>An {@code Iterable} of entities to be deleted.</li>
  *     <li>An array of entities to be deleted.</li>
  * </ul>
- * <p>The {@code Delete} annotation can be used on a repository method that has no parameters
- * to request deletion of all entity instances of the primary entity type.</p>
- * <p>The return type of the annotated method must be {@code void}, {@code boolean}, {@code int}, {@code long},
- * or a corresponding primitive wrapper such as {@link Integer}.
- * A boolean return type indicates whether or not an entity was deleted from the database.
- * An {@code int} or {@code long} return type indicates how many entities were deleted from the database.
- * </p>
- * <p>Deletion of a given entity is performed by matching the entity's Id. If the entity is versioned (e.g.,
- * with {@code jakarta.persistence.Version}), the version is also checked for consistency during deletion.
- * Properties other than the Id and version do not need to match for deletion.
+ * <p>The annotated method must be declared {@code void}.
  * </p>
  * <p>For example, consider an interface representing a garage:</p>
  * <pre>
@@ -55,12 +46,19 @@ import java.lang.annotation.Target;
  *     void unpark(Car car);
  * }
  * </pre>
- * <p>If this annotation is combined with other operation annotations (e.g.,
- * {@code @Find}, {@code @Insert}, {@code @Query}, {@code @Update},
- * {@code @Save}), it will throw an {@link UnsupportedOperationException} as only one operation type can be specified.</p>
- * <p>If the unique identifier of a requested entity is not found in the database or its version does not match, and the return
- * type of the annotated method is {@code void} or {@code Void}, the method must
- * raise {@link jakarta.data.exceptions.OptimisticLockingFailureException}.
+ * <p>Alternatively, the {@code Delete} annotation may be applied to a repository method with no parameters, indicating
+ * that the annotated method deletes all instances of the primary entity type. In this case, the annotated method must
+ * either be declared {@code void}, or return {@code int} or {@code long}.
+ * </p>
+ * <p>Deletes are performed by matching the unique identifier of the entity. If the entity is versioned, for example,
+ * with {@code jakarta.persistence.Version}, the version is also checked for consistency. Attributes other than the
+ * identifier and version do not need to match. If no entity with a matching identifier is found in the database, or
+ * if the entity with a matching identifier does not have a matching version, the annotated method must raise
+ * {@link jakarta.data.exceptions.OptimisticLockingFailureException}.
+ * </p>
+ * <p>If this annotation occurs alongside a different lifecycle annotation, the annotated repository method must raise
+ * {@link UnsupportedOperationException} every time it is called. Alternatively, a Jakarta Data provider is permitted to
+ * reject such a method declaration at compile time.</p>
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)

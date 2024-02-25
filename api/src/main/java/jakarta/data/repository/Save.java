@@ -25,35 +25,20 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * <p>Annotates a repository method that updates entities if found in the database
- * and inserts entities into the database that are not found.
- * This method must have a single parameter whose type must be one of the following:
+ * <p>Lifecycle annotation for repository methods which conditionally perform insert or update operations.</p>
+ *
+ * <p>The {@code Save} annotation indicates that the annotated repository method accepts one or more entities and, for
+ * each entity, either adds its state to the database, or updates state already held in the database. The annotated
+ * repository method must have exactly one parameter whose type must be one of the following:
  * </p>
  * <ul>
  *     <li>The entity to be saved.</li>
  *     <li>An {@code Iterable} of entities to be saved.</li>
  *     <li>An array of entities to be saved.</li>
  * </ul>
- * <p>The return type of an annotated method that requires a single entity as the parameter
- * must have a return type that is {@code void}, {@code Void}, or the same type as the parameter.
- * The return type of an annotated method that accepts an {@code Iterable} or array of entities
-  * as the parameter must have a return type that is {@code void}, {@code Void},
-  * or an {@code Iterable} or array of the entity.
+ * <p>The annotated method must either be declared {@code void}, or have a return type that is the same as the type of
+ * its parameter.
  * </p>
- * <p>Saving an entity involves persisting it in the database. If the entity has an ID or key that already exists
- * in the database, the method will update the existing record. If the entity does not exist in the database or has a
- * null ID, this method will insert a new record. The entity instance returned by this method will be updated with
- * any automatically generated or incremented values that changed due to the save operation.
- * </p>
- * <p>Entities that are returned by the annotated method must include all values that were
- * written to the database, including all automatically generated values and incremented values
- * that changed due to the save. The position of entities within an {@code Iterable} or array return value
- * must correspond to the position of entities in the parameter based on the unique identifier of the entity.</p>
- * <p>After invoking this method, avoid using the entity value that was supplied as a parameter, because it might not accurately
- * reflect the changes made during the save process. If the entity uses optimistic locking and its version differs from
- * the version in the database, an {@link jakarta.data.exceptions.OptimisticLockingFailureException} will be thrown.
- * </p>
- *
  * <p>For example, consider an interface representing a garage:</p>
  * <pre>
  * {@code @Repository}
@@ -62,16 +47,21 @@ import java.lang.annotation.Target;
  *     Car park(Car car);
  * }
  * </pre>
- * <p>The {@code @Save} annotation can be used to indicate that the {@code park(Car)} method is responsible
- * for updating the entity in the database if it already exists there and otherwise inserting
- * a car entity into a database.
+ * <p>The operation performed by the annotated method depends on whether the database already holds an entity with the
+ * unique identifier of an entity passed as an argument:
  * </p>
+ * <ul>
+ * <li>If there is such an entity already held in the database, the annotated method must behave as if it were annotated
+ *     {@link Update @Update}.
+ * <li>Otherwise, if there is no such entity in the database, the annotated method must behave as if it were annotated
+ *     {@link Insert @Insert}.
+ * </ul>
+ * <p>If this annotation occurs alongside a different lifecycle annotation, the annotated repository method must raise
+ * {@link UnsupportedOperationException} every time it is called. Alternatively, a Jakarta Data provider is permitted to
+ * reject such a method declaration at compile time.</p>
  *
- * <p>If this annotation is combined with other operation annotations (e.g., {@code @Update}, {@code @Delete},
- * {@code @Find}, {@code @Insert}, {@code @Query}),
- * it will throw an {@link UnsupportedOperationException} because only one operation type can be specified.
- * A Jakarta Data provider implementation must detect (and report) this error at compile time or at runtime.</p>
- * @see jakarta.data.exceptions.OptimisticLockingFailureException
+ * @see Insert
+ * @see Update
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)

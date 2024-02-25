@@ -25,39 +25,23 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * <p>Annotates a repository method that inserts entities.</p>
+ * <p>Lifecycle annotation for repository methods which perform insert operations.</p>
  *
- * <p>The {@code Insert} annotation indicates that the annotated repository method requests that one or more entities
- * be inserted into the database. This method must have a single parameter whose type must be one of the following:
+ * <p>The {@code Insert} annotation indicates that the annotated repository method adds the state of one or more
+ * entities to the database. The annotated repository method must have exactly one parameter whose type must be one of
+ * the following:
  * </p>
  * <ul>
  *     <li>The entity to be inserted.</li>
  *     <li>An {@code Iterable} of entities to be inserted.</li>
  *     <li>An array of entities to be inserted.</li>
  * </ul>
- * <p>The return type of an annotated method that requires a single entity as the parameter must have a return type
- * that is {@code void}, {@code Void}, or the same type as the parameter.
- * The return type of an annotated method that accepts an {@code Iterable} or array of entities as the parameter must
- * have a return type that is {@code void}, {@code Void}, or an {@code Iterable} or array of the entity.
- * For example, if the method is annotated with {@code @Insert} and takes a parameter of type {@code Car car},
- * the return type can be {@code Car}.
- * Similarly, if the parameter is an {@code Iterable<Car>} or an array of {@code Car}, the return type can be
- * {@code Iterable<Car>}.
- * Entities that are returned by the annotated method must include all values that were
- * written to the database, including all automatically generated values and incremented values
- * that changed due to the insert. The position of entities within an {@code Iterable} or array return value
- * must correspond to the position of entities in the parameter based on the unique identifier of the entity.
+ * <p>The annotated method must either be declared {@code void}, or have a return type that is the same as the type of
+ * its parameter.
  * </p>
- * <p>After invoking this method, it is recommended not to use the entity value supplied as a parameter, as this method
- * makes no guarantees about the state of the entity value after insertion.
- * </p>
- * <p>If an entity of this type with the same unique identifier already exists in the database
- * and the databases performs ACID (atomic, consistent, isolated, durable) transactions,
- * then annotated method raises {@link jakarta.data.exceptions.EntityExistsException}.
- * In databases that follow the BASE model or use an append model to write data,
- * this exception is not thrown.
- * </p>
- * <p>For example, consider an interface representing a garage:</p>
+ * <p>For example, if the method is annotated with {@code @Insert} and takes a parameter of type {@code Car car}, the
+ * return type can be {@code Car}. Similarly, if the parameter is of type {@code Iterable<Car>}, the return type can be
+ * {@code Iterable<Car>}. Consider an interface representing a garage:</p>
  * <pre>
  * {@code @Repository}
  * interface Garage {
@@ -65,14 +49,21 @@ import java.lang.annotation.Target;
  *     Car park(Car car);
  * }
  * </pre>
- * <p>The {@code @Insert} annotation can be used to indicate that the {@code park(Car)} method is responsible for inserting
- * a {@code Car} entity into a database.
+ * <p>When the annotated method is non-{@code void}, it must return an inserted entity instance for each entity instance
+ * passed as an argument. Instances returned by the annotated method must include all values that were written to the
+ * database, including all automatically generated identifiers, initial versions, and other values which changed as a
+ * result of the insert. The order of entities within an {@code Iterable} or array return value must match the position
+ * of entities in the argument. After the annotated method returns, an original entity instance supplied as an argument
+ * might not accurately reflect the inserted state.
  * </p>
- *
- * <p>If this annotation is combined with other operation annotations (e.g., {@code @Update}, {@code @Delete},
- * {@code @Find}, {@code @Query}, {@code @Save}),
- * it will throw an {@link UnsupportedOperationException} because only one operation type can be specified.
- * A Jakarta Data provider implementation must detect (and report) this error at compile time or at runtime.</p>
+ * <p>If an entity of the given type, and with the same unique identifier already exists in the database with the
+ * annotated method is called, and if the databases uses ACID (atomic, consistent, isolated, durable) transactions,
+ * then annotated method must raises {@link jakarta.data.exceptions.EntityExistsException}.
+ * If the database follows the BASE model, or uses an append model to write data, this exception is not thrown.
+ * </p>
+ * <p>If this annotation occurs alongside a different lifecycle annotation, the annotated repository method must raise
+ * {@link UnsupportedOperationException} every time it is called. Alternatively, a Jakarta Data provider is permitted to
+ * reject such a method declaration at compile time.</p>
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
