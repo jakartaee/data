@@ -27,8 +27,8 @@ import java.lang.annotation.Target;
 /**
  * <p>Lifecycle annotation for repository methods which perform delete operations.</p>
  *
- * <p>The {@code Delete} annotation indicates that the annotated repository method deletes the state of one or more entities
- * from in the database. The annotated repository method usually has exactly one parameter whose type must be one of
+ * <p>The {@code Delete} annotation indicates that the annotated repository method deletes the state of one or more
+ * entities from in the database. The annotated repository method usually has exactly one parameter whose type is one of
  * the following:
  * </p>
  * <ul>
@@ -46,15 +46,18 @@ import java.lang.annotation.Target;
  *     void unpark(Car car);
  * }
  * </pre>
- * <p>Alternatively, the {@code Delete} annotation may be applied to a repository method with no parameters, indicating
- * that the annotated method deletes all instances of the primary entity type. In this case, the annotated method must
- * either be declared {@code void}, or return {@code int} or {@code long}.
- * </p>
  * <p>Deletes are performed by matching the unique identifier of the entity. If the entity is versioned, for example,
  * with {@code jakarta.persistence.Version}, the version is also checked for consistency. Attributes other than the
  * identifier and version do not need to match. If no entity with a matching identifier is found in the database, or
  * if the entity with a matching identifier does not have a matching version, the annotated method must raise
  * {@link jakarta.data.exceptions.OptimisticLockingFailureException}.
+ * </p>
+ * <p>Alternatively, the {@code Delete} annotation may be applied to a repository method with no parameters, indicating
+ * that the annotated method deletes all instances of the primary entity type. In this case, the annotated method must
+ * either be declared {@code void}, or return {@code int} or {@code long}.
+ * </p>
+ * <p> Application of the {@code Delete} annotation to a method with any other signature is not portable between Jakarta
+ * Data providers.
  * </p>
  * <p>If this annotation occurs alongside a different lifecycle annotation, the annotated repository method must raise
  * {@link UnsupportedOperationException} every time it is called. Alternatively, a Jakarta Data provider is permitted to

@@ -28,7 +28,7 @@ import java.lang.annotation.Target;
  * <p>Lifecycle annotation for repository methods which perform insert operations.</p>
  *
  * <p>The {@code Insert} annotation indicates that the annotated repository method adds the state of one or more
- * entities to the database. The annotated repository method must have exactly one parameter whose type must be one of
+ * entities to the database. The annotated repository method usually has exactly one parameter whose type is one of
  * the following:
  * </p>
  * <ul>
@@ -60,6 +60,9 @@ import java.lang.annotation.Target;
  * annotated method is called, and if the databases uses ACID (atomic, consistent, isolated, durable) transactions,
  * then annotated method must raises {@link jakarta.data.exceptions.EntityExistsException}.
  * If the database follows the BASE model, or uses an append model to write data, this exception is not thrown.
+ * </p>
+ * <p>Application of the {@code Insert} annotation to a method with any other signature is not portable between Jakarta
+ * Data providers.
  * </p>
  * <p>If this annotation occurs alongside a different lifecycle annotation, the annotated repository method must raise
  * {@link UnsupportedOperationException} every time it is called. Alternatively, a Jakarta Data provider is permitted to

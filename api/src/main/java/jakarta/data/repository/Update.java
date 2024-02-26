@@ -28,8 +28,8 @@ import java.lang.annotation.Target;
  * <p>Lifecycle annotation for repository methods which perform update operations.</p>
  *
  * <p>The {@code Update} annotation indicates that the annotated repository method updates the state of one or more
- * entities already held in the database. The annotated repository method must have a exactly one parameter whose type
- * must be one of the following:
+ * entities already held in the database. The annotated repository method usually has exactly one parameter whose type
+ * is one of the following:
  * </p>
  * <ul>
  *     <li>The entity to be updated.</li>
@@ -63,6 +63,9 @@ import java.lang.annotation.Target;
  * <p>
  * If the database follows the BASE model, or uses an append model to write data, the annotated method behaves the same
  * as the {@code @Insert} method.
+ * </p>
+ * <p>Application of the {@code Update} annotation to a method with any other signature is not portable between Jakarta
+ * Data providers.
  * </p>
  * <p>If this annotation occurs alongside a different lifecycle annotation, the annotated repository method must raise
  * {@link UnsupportedOperationException} every time it is called. Alternatively, a Jakarta Data provider is permitted to
