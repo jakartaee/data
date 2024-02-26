@@ -27,7 +27,7 @@ import java.lang.annotation.Target;
 /**
  * <p>Lifecycle annotation for repository methods which perform delete operations.</p>
  *
- * <p>The {@code Delete} annotation indicates that the annotated repository method the state of one or more entities
+ * <p>The {@code Delete} annotation indicates that the annotated repository method deletes the state of one or more entities
  * from in the database. The annotated repository method usually has exactly one parameter whose type must be one of
  * the following:
  * </p>
