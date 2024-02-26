@@ -28,13 +28,11 @@ import java.lang.annotation.Target;
  * <p>Lifecycle annotation for repository methods which perform insert operations.</p>
  *
  * <p>The {@code Insert} annotation indicates that the annotated repository method adds the state of one or more
- * entities to the database. The annotated repository method usually has exactly one parameter whose type is one of
- * the following:
+ * entities to the database. The annotated repository method usually has exactly one parameter whose type is either:
  * </p>
  * <ul>
- *     <li>The entity to be inserted.</li>
- *     <li>An {@code Iterable} of entities to be inserted.</li>
- *     <li>An array of entities to be inserted.</li>
+ *     <li>the class of the entity to be inserted, or</li>
+ *     <li>{@code Iterable<E>} or {@code E[]} where {@code E} is the class of the entities to be inserted.</li>
  * </ul>
  * <p>The annotated method must either be declared {@code void}, or have a return type that is the same as the type of
  * its parameter.

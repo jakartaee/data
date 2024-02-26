@@ -29,12 +29,11 @@ import java.lang.annotation.Target;
  *
  * <p>The {@code Save} annotation indicates that the annotated repository method accepts one or more entities and, for
  * each entity, either adds its state to the database, or updates state already held in the database. The annotated
- * repository method must have exactly one parameter whose type must be one of the following:
+ * repository method must have exactly one parameter whose type is either:
  * </p>
  * <ul>
- *     <li>The entity to be saved.</li>
- *     <li>An {@code Iterable} of entities to be saved.</li>
- *     <li>An array of entities to be saved.</li>
+ *     <li>the class of the entity to be inserted or updated, or</li>
+ *     <li>{@code Iterable<E>} or {@code E[]} where {@code E} is the class of the entities to be inserted or updated.</li>
  * </ul>
  * <p>The annotated method must either be declared {@code void}, or have a return type that is the same as the type of
  * its parameter.
@@ -56,9 +55,10 @@ import java.lang.annotation.Target;
  * <li>Otherwise, if there is no such entity in the database, the annotated method must behave as if it were annotated
  *     {@link Insert @Insert}.
  * </ul>
- * <p>If this annotation occurs alongside a different lifecycle annotation, the annotated repository method must raise
- * {@link UnsupportedOperationException} every time it is called. Alternatively, a Jakarta Data provider is permitted to
- * reject such a method declaration at compile time.</p>
+ * <p>Annotations such as {@code @Find}, {@code @Query}, {@code @Insert}, {@code @Update}, {@code @Delete}, and
+ * {@code @Save} are mutually-exclusive. A given method of a repository interface may have at most one {@code @Find}
+ * annotation, lifecycle annotation, or query annotation.
+ * </p
  *
  * @see Insert
  * @see Update

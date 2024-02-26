@@ -29,12 +29,11 @@ import java.lang.annotation.Target;
  *
  * <p>The {@code Update} annotation indicates that the annotated repository method updates the state of one or more
  * entities already held in the database. The annotated repository method usually has exactly one parameter whose type
- * is one of the following:
+ * is either:
  * </p>
  * <ul>
- *     <li>The entity to be updated.</li>
- *     <li>An {@code Iterable} of entities to be updated.</li>
- *     <li>An array of entities to be updated.</li>
+ *     <li>the class of the entity to be updated, or</li>
+ *     <li>{@code Iterable<E>} or {@code E[]} where {@code E} is the class of the entities to be updated.</li>
  * </ul>
  * <p>The annotated method must either be declared {@code void}, or have a return type that is the same as the type of
  * its parameter.
