@@ -190,14 +190,6 @@ public interface BasicRepository<T, K> extends DataRepository<T, K> {
     Stream<T> findByIdIn(Iterable<K> ids);
 
     /**
-     * Retrieves the total number of persistent entities of the specified type in the database.
-     *
-     * @return the total number of entities.
-     * @throws UnsupportedOperationException for Key-Value and Wide-Column databases that are not capable of the {@code count} operation.
-     */
-    long countBy();
-
-    /**
      * Deletes the entity with the given Id.
      * <p>
      * If the entity is not found in the persistence store it is silently ignored.
