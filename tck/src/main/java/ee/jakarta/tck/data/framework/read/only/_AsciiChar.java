@@ -32,7 +32,7 @@ public class _AsciiChar {
 
     public static volatile SortableAttribute<AsciiCharacter> id;
     public static volatile TextAttribute<AsciiCharacter> hexadecimal;
-    public static volatile Attribute isControl; // user decided it didn't care about sorting for this one
+    public static volatile Attribute<AsciiCharacter> isControl; // user decided it didn't care about sorting for this one
     public static volatile SortableAttribute<AsciiCharacter> numericValue;
     public static volatile TextAttribute<AsciiCharacter> thisCharacter;
 
