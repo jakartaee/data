@@ -194,9 +194,6 @@ public class EntityTests {
         // BasicRepository.existsById
         assertEquals(true, boxes.existsById("TestBasicRepositoryMethods-04"));
 
-        // BasicRepository.count
-        assertEquals(4, boxes.countBy());
-
         // BasicRepository.save
         box2.length = 21;
         box2.width = 20;
@@ -220,7 +217,7 @@ public class EntityTests {
         TestPropertyUtility.waitForEventualConsistency();
 
         assertEquals(false, boxes.existsById("TestBasicRepositoryMethods-01"));
-        assertEquals(3, boxes.countBy());
+        assertEquals(3, boxes.findAll().count());
 
         // BasicRepository.findByIdIn
         Stream<Box> stream = boxes.findByIdIn(List.of("TestBasicRepositoryMethods-04", "TestBasicRepositoryMethods-05"));
@@ -274,7 +271,7 @@ public class EntityTests {
         boxes.deleteByIdIn(List.of("TestBasicRepositoryMethods-05"));
         TestPropertyUtility.waitForEventualConsistency();
 
-        assertEquals(0, boxes.countBy());
+        assertEquals(0, boxes.findAll().count());
     }
 
     @Assertion(id = "133", strategy = "Use a repository that inherits from BasicRepository and defines no additional methods of its own. Use all of the built-in methods.")
@@ -325,9 +322,6 @@ public class EntityTests {
         // BasicRepository.existsById
         assertEquals(true, boxes.existsById("TestBasicRepositoryMethods-04"));
 
-        // BasicRepository.count
-        assertEquals(4, boxes.countBy());
-
         // BasicRepository.save
         box2.length = 21;
         box2.width = 20;
@@ -351,7 +345,7 @@ public class EntityTests {
         TestPropertyUtility.waitForEventualConsistency();
 
         assertEquals(false, boxes.existsById("TestBasicRepositoryMethods-01"));
-        assertEquals(3, boxes.countBy());
+        assertEquals(3, boxes.findAll().count());
 
         // BasicRepository.findByIdIn
         Stream<Box> stream = boxes.findByIdIn(List.of("TestBasicRepositoryMethods-04", "TestBasicRepositoryMethods-05"));
@@ -406,7 +400,7 @@ public class EntityTests {
 
         TestPropertyUtility.waitForEventualConsistency();
 
-        assertEquals(0, boxes.countBy());
+        assertEquals(0, boxes.findAll().count());
     }
 
     @Assertion(id = "133", strategy = "Request a Page higher than the final Page, expecting an empty Page with 0 results.")

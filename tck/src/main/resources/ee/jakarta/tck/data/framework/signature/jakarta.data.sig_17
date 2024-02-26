@@ -217,7 +217,6 @@ meth public abstract java.util.Optional<{jakarta.data.repository.BasicRepository
 meth public abstract java.util.stream.Stream<{jakarta.data.repository.BasicRepository%0}> findAll()
  anno 0 jakarta.data.repository.Find()
 meth public abstract java.util.stream.Stream<{jakarta.data.repository.BasicRepository%0}> findByIdIn(java.lang.Iterable<{jakarta.data.repository.BasicRepository%1}>)
-meth public abstract long countBy()
 meth public abstract void delete({jakarta.data.repository.BasicRepository%0})
  anno 0 jakarta.data.repository.Delete()
 meth public abstract void deleteAll(java.lang.Iterable<? extends {jakarta.data.repository.BasicRepository%0}>)
