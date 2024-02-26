@@ -28,7 +28,10 @@ import java.lang.annotation.Target;
  * <p>Lifecycle annotation for repository methods which perform insert operations.</p>
  *
  * <p>The {@code Insert} annotation indicates that the annotated repository method adds the state of one or more
- * entities to the database. The annotated repository method must have exactly one parameter whose type is either:
+ * entities to the database.
+ * </p>
+ * <p>An {@code Insert} method accepts an instance or instances of an entity class. The method must have exactly one
+ * parameter whose type is either:
  * </p>
  * <ul>
  *     <li>the class of the entity to be inserted, or</li>
@@ -36,6 +39,10 @@ import java.lang.annotation.Target;
  * </ul>
  * <p>The annotated method must either be declared {@code void}, or have a return type that is the same as the type of
  * its parameter.
+ * </p>
+ * <p>All Jakarta Data providers are required to accept an {@code Insert} method which conforms to this signature.
+ * Application of the {@code Insert} annotation to a method with any other signature is not portable between Jakarta
+ * Data providers.
  * </p>
  * <p>For example, if the method is annotated with {@code @Insert} and takes a parameter of type {@code Car car}, the
  * return type can be {@code Car}. Similarly, if the parameter is of type {@code Iterable<Car>}, the return type can be
@@ -58,9 +65,6 @@ import java.lang.annotation.Target;
  * annotated method is called, and if the databases uses ACID (atomic, consistent, isolated, durable) transactions,
  * then annotated method must raises {@link jakarta.data.exceptions.EntityExistsException}.
  * If the database follows the BASE model, or uses an append model to write data, this exception is not thrown.
- * </p>
- * <p>Application of the {@code Insert} annotation to a method with any other signature is not portable between Jakarta
- * Data providers.
  * </p>
  * <p>Annotations such as {@code @Find}, {@code @Query}, {@code @Insert}, {@code @Update}, {@code @Delete}, and
  * {@code @Save} are mutually-exclusive. A given method of a repository interface may have at most one {@code @Find}

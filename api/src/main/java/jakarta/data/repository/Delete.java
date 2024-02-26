@@ -28,14 +28,20 @@ import java.lang.annotation.Target;
  * <p>Lifecycle annotation for repository methods which perform delete operations.</p>
  *
  * <p>The {@code Delete} annotation indicates that the annotated repository method deletes the state of one or more
- * entities from in the database. The annotated repository method usually has exactly one parameter whose type is
- * either:
+ * entities from in the database.
+ * </p>
+ * <p>A {@code Delete} method might accept an instance or instances of an entity class. In this case, the method must
+ * have exactly one parameter whose type is either:
  * </p>
  * <ul>
  *     <li>the class of the entity to be deleted, or</li>
  *     <li>{@code Iterable<E>} where {@code E} is the class of the entities to be deleted.</li>
  * </ul>
  * <p>The annotated method must be declared {@code void}.
+ * </p>
+ * <p>All Jakarta Data providers are required to accept a {@code Delete} method which conforms to this signature.
+ * Application of the {@code Delete} annotation to a method with any other signature is not portable between Jakarta
+ * Data providers, excepting the specific case of a repository method with no parameters, as described below.
  * </p>
  * <p>For example, consider an interface representing a garage:</p>
  * <pre>
@@ -54,9 +60,6 @@ import java.lang.annotation.Target;
  * <p>Alternatively, the {@code Delete} annotation may be applied to a repository method with no parameters, indicating
  * that the annotated method deletes all instances of the primary entity type. In this case, the annotated method must
  * either be declared {@code void}, or return {@code int} or {@code long}.
- * </p>
- * <p> Application of the {@code Delete} annotation to a method with any other signature is not portable between Jakarta
- * Data providers.
  * </p>
  * <p>Annotations such as {@code @Find}, {@code @Query}, {@code @Insert}, {@code @Update}, {@code @Delete}, and
  * {@code @Save} are mutually-exclusive. A given method of a repository interface may have at most one {@code @Find}

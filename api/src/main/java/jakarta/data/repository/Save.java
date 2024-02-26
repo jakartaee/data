@@ -28,8 +28,10 @@ import java.lang.annotation.Target;
  * <p>Lifecycle annotation for repository methods which conditionally perform insert or update operations.</p>
  *
  * <p>The {@code Save} annotation indicates that the annotated repository method accepts one or more entities and, for
- * each entity, either adds its state to the database, or updates state already held in the database. The annotated
- * repository method must have exactly one parameter whose type is either:
+ * each entity, either adds its state to the database, or updates state already held in the database.
+ * </p>
+ * <p>A {@code Save} method accepts an instance or instances of an entity class. The method must have exactly one
+ * parameter whose type is either:
  * </p>
  * <ul>
  *     <li>the class of the entity to be inserted or updated, or</li>
@@ -37,6 +39,10 @@ import java.lang.annotation.Target;
  * </ul>
  * <p>The annotated method must either be declared {@code void}, or have a return type that is the same as the type of
  * its parameter.
+ * </p>
+ * <p>All Jakarta Data providers are required to accept a {@code Save} method which conforms to this signature.
+ * Application of the {@code Save} annotation to a method with any other signature is not portable between Jakarta Data
+ * providers.
  * </p>
  * <p>For example, consider an interface representing a garage:</p>
  * <pre>

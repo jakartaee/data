@@ -28,8 +28,10 @@ import java.lang.annotation.Target;
  * <p>Lifecycle annotation for repository methods which perform update operations.</p>
  *
  * <p>The {@code Update} annotation indicates that the annotated repository method updates the state of one or more
- * entities already held in the database. The annotated repository method usually has exactly one parameter whose type
- * is either:
+ * entities already held in the database.
+ * </p>
+ * <p>An {@code Update} method might accept an instance or instances of an entity class. In this case, the method must
+ * have exactly one parameter whose type is either:
  * </p>
  * <ul>
  *     <li>the class of the entity to be updated, or</li>
@@ -37,6 +39,11 @@ import java.lang.annotation.Target;
  * </ul>
  * <p>The annotated method must either be declared {@code void}, or have a return type that is the same as the type of
  * its parameter.
+ * <p>
+ * All Jakarta Data providers are required to accept an {@code Update} method which conforms to this signature.
+ * Application of the {@code Update} annotation to a method with any other signature is not portable between Jakarta
+ * Data providers.
+ * </p>
  * </p>
  * <p>For example, consider an interface representing a garage:</p>
  * <pre>
@@ -62,9 +69,6 @@ import java.lang.annotation.Target;
  * <p>
  * If the database follows the BASE model, or uses an append model to write data, the annotated method behaves the same
  * as the {@code @Insert} method.
- * </p>
- * <p>Application of the {@code Update} annotation to a method with any other signature is not portable between Jakarta
- * Data providers.
  * </p>
  * <p>Annotations such as {@code @Find}, {@code @Query}, {@code @Insert}, {@code @Update}, {@code @Delete}, and
  * {@code @Save} are mutually-exclusive. A given method of a repository interface may have at most one {@code @Find}
