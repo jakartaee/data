@@ -67,9 +67,10 @@ import java.lang.annotation.Target;
  * <p>Application of the {@code Update} annotation to a method with any other signature is not portable between Jakarta
  * Data providers.
  * </p>
- * <p>If this annotation occurs alongside a different lifecycle annotation, the annotated repository method must raise
- * {@link UnsupportedOperationException} every time it is called. Alternatively, a Jakarta Data provider is permitted to
- * reject such a method declaration at compile time.</p>
+ * <p>Annotations such as {@code @Find}, {@code @Query}, {@code @Insert}, {@code @Update}, {@code @Delete}, and
+ * {@code @Save} are mutually-exclusive. A given method of a repository interface may have at most one {@code @Find}
+ * annotation, lifecycle annotation, or query annotation.
+ * </p
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)

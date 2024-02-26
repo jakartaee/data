@@ -28,10 +28,10 @@ import java.lang.annotation.Target;
 /**
  * <p>Annotates a repository method that performs entity search operations as Parameter-based automatic query methods.</p>
  *
- * <p>The {@code Find} annotation indicates that the annotated repository method executes a query to retrieve entities based on specified parameters.
- * The method parameters must match the types and names of the corresponding fields of the entity being queried.
- * There is no specific naming convention for methods annotated with {@code @Find}; they may be named arbitrarily,
- * and their names do not carry any specific semantic meaning.
+ * <p>The {@code Find} annotation indicates that the annotated repository method executes a query to retrieve entities
+ * based on specified parameters. The method parameters must match the types and names of the corresponding fields of
+ * the entity being queried. There is no specific naming convention for methods annotated with {@code @Find}; they may
+ * be named arbitrarily, and their names do not carry any specific semantic meaning.
  * </p>
  * <p>For example, consider an interface representing a garage:</p>
  * <pre>
@@ -62,12 +62,12 @@ import java.lang.annotation.Target;
  *     <li>Array of the entity type</li>
  * </ul>
  *
- * <p>If the annotated method return type is a single instance (either through {@code Optional} or directly), but the query returns more than one element,
- * it will throw a {@link jakarta.data.exceptions.NonUniqueResultException}.</p>
- *
- * <p>If this annotation is combined with other operation annotations (e.g., {@code @Update}, {@code @Delete},
- *  {@code @Save}), it will result in an {@link UnsupportedOperationException} being thrown, as only one operation type can be specified.
- *  A Jakarta Data provider implementation must detect and report this error either at compile time or runtime.</p>
+ * <p>If the annotated method return type is a single instance (either through {@code Optional} or directly), but the
+ * query returns more than one element, it will throw a {@link jakarta.data.exceptions.NonUniqueResultException}.
+ * </p>
+ * <p>Annotations such as {@code @Find}, {@code @Query}, {@code @Insert}, {@code @Update}, {@code @Delete}, and
+ * {@code @Save} are mutually-exclusive. A given method of a repository interface may have at most one {@code @Find}
+ * annotation, lifecycle annotation, or query annotation.
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)

@@ -737,10 +737,6 @@ Book mergeBook(Book book);
 Such lifecycle methods are not portable between Jakarta Data providers.
 ====
 
-A given method of a repository interface may have at most one lifecycle annotation. If a method of a repository interface has more than one lifecycle annotation, the annotated repository method must raise
- `UnsupportedOperationException` every time it is called. Alternatively, a Jakarta Data provider is permitted to
- reject such a method declaration at compile time.
-
 === Annotated Query methods
 
 An _annotated query method_ is an abstract method annotated by a _query annotation_ type.
@@ -867,6 +863,19 @@ default void cleanup() {
 ----
 
 A repository may have at most one resource accessor method.
+
+=== Conflicting Repository Method Annotations
+
+Annotations like `@Find`, `@Query`, `@Insert`, `@Update`, `@Delete`, and `@Save` are mutually-exclusive. A given method of a repository interface may have at most one:
+
+- `@Find` annotation,
+- lifecycle annotation, or
+- query annotation.
+
+If a method of a repository interface has more than one such annotation, the annotated repository method must raise
+`UnsupportedOperationException` every time it is called. Alternatively, a Jakarta Data provider is permitted to
+reject such a method declaration at compile time.
+
 
 === Query by Method Name
 
