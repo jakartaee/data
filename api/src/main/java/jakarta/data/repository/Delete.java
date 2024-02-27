@@ -28,8 +28,9 @@ import java.lang.annotation.Target;
  * <p>Lifecycle annotation for repository methods which perform delete operations.</p>
  *
  * <p>The {@code Delete} annotation indicates that the annotated repository method deletes the state of one or more
- * entities from the database.
+ * entities from the database. The method must follow one of the following patterns.
  * </p>
+ * <h2>Parameter for Entity Instances</h2>
  * <p>A {@code Delete} method might accept an instance or instances of an entity class. In this case, the method must
  * have exactly one parameter whose type is either:
  * </p>
@@ -40,8 +41,6 @@ import java.lang.annotation.Target;
  * <p>The annotated method must be declared {@code void}.
  * </p>
  * <p>All Jakarta Data providers are required to accept a {@code Delete} method which conforms to this signature.
- * Application of the {@code Delete} annotation to a method with any other signature is not portable between Jakarta
- * Data providers, excepting the specific case of a repository method with no parameters, as described below.
  * </p>
  * <p>For example, consider an interface representing a garage:</p>
  * <pre>
@@ -57,6 +56,7 @@ import java.lang.annotation.Target;
  * if the entity with a matching identifier does not have a matching version, the annotated method must raise
  * {@link jakarta.data.exceptions.OptimisticLockingFailureException}.
  * </p>
+ * <h2>Without Parameters</h2>
  * <p>Alternatively, the {@code Delete} annotation may be applied to a repository method with no parameters, indicating
  * that the annotated method deletes all instances of the primary entity type. In this case, the annotated method must
  * either be declared {@code void}, or return {@code int} or {@code long}.
@@ -64,7 +64,7 @@ import java.lang.annotation.Target;
  * <p>Annotations such as {@code @Find}, {@code @Query}, {@code @Insert}, {@code @Update}, {@code @Delete}, and
  * {@code @Save} are mutually-exclusive. A given method of a repository interface may have at most one {@code @Find}
  * annotation, lifecycle annotation, or query annotation.
- * </p
+ * </p>
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)

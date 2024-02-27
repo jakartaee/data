@@ -18,12 +18,14 @@ package ee.jakarta.tck.data.standalone.persistence;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import jakarta.data.Order;
 import jakarta.data.Streamable;
 import jakarta.data.repository.DataRepository;
 import jakarta.data.repository.Delete;
+import jakarta.data.repository.Find;
 import jakarta.data.repository.Insert;
 import jakarta.data.repository.OrderBy;
 import jakarta.data.repository.Param;
@@ -43,6 +45,9 @@ public interface Catalog extends DataRepository<Product, String> {
 
     @Insert
     Product[] addMultiple(Product... products);
+
+    @Find
+    Optional<Product> get(String productNum);
 
     @Update
     Product modify(Product product);

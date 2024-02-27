@@ -24,6 +24,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -150,7 +151,14 @@ public class PersistenceEntityTests {
             // expected
         }
 
-        assertEquals(true, catalog.remove(prod1));
+        Optional<Product> result;
+        result = catalog.get("TEST-PROD-94");
+        assertEquals(true, result.isPresent());
+
+        catalog.remove(prod1);
+
+        result = catalog.get("TEST-PROD-94");
+        assertEquals(false, result.isPresent());
     }
 
     @Assertion(id = "133", strategy = "Use a repository method with the Like keyword.")
@@ -352,9 +360,24 @@ public class PersistenceEntityTests {
         prod2.setPrice(1.34);
         assertEquals(null, catalog.modify(prod2));
 
-        assertEquals(true, catalog.remove(prod1));
-        assertEquals(false, catalog.remove(prod1)); // already removed
-        assertEquals(false, catalog.remove(prod2)); // still at old version
+        catalog.remove(prod1);
+
+        Optional<Product> found = catalog.get("TEST-PROD-91");
+        assertEquals(false, found.isPresent());
+
+        try {
+            catalog.remove(prod1); // already removed
+            fail("Must raise OptimisticLockingFailureException for entity that was already removed from the database.");
+        } catch (OptimisticLockingFailureException x) {
+            // expected
+        }
+
+        try {
+            catalog.remove(prod2); // still at old version
+            fail("Must raise OptimisticLockingFailureException for entity with non-matching version.");
+        } catch (OptimisticLockingFailureException x) {
+            // expected
+        }
 
         assertEquals(1L, catalog.deleteByProductNumLike("TEST-PROD-%"));
     }
