@@ -107,16 +107,41 @@ NOTE: CDI Lite (corresponding to Jakarta Core profile) does not include a requir
 
 NOTE: Jakarta Data providers that wish to provide both extensions can use CDI's `@SkipIfPortableExtensionPresent` to prevent the `BuildCompatibleExtension` from colliding with the portable `Extension` when running in the Jakarta Web Profile or Jakarta Platform where CDI Full is present.
 
-=== Jakarta Transactions Usage
+=== Jakarta Interceptors
 
-When running in an environment where Jakarta Transactions is available and a global transaction is active on the thread of execution for a repository operation and the data source backing the repository is capable of transaction enlistment, the operation performed by the repository involves the use of resources from the data source that enlist as participants in the transaction. The repository operation does not commit or roll back the transaction that was already present on the thread, but it might cause the transaction to be marked as rollback only (`jakarta.transaction.Status.STATUS_MARKED_ROLLBACK`) if the repository operation fails.
+A repository interface or method of a repository interface may be annotated with an interceptor binding annotation.
+In the Jakarta EE environment, or in any other environment where:
 
-When running in an environment where Jakarta Transactions and Jakarta CDI are available, a repository method can be annotated with the `jakarta.transaction.Transactional` annotation, which is applied to the execution of the repository method.
+1. Jakarta Interceptors is available and integrated with Jakarta CDI,
+2. the repository implementation is instantiated by the CDI bean container,
+3. the interceptor binding type is declared `@Inherited`,
 
-=== Interceptor Annotations on Repository Methods
+then the interceptor binding annotation is inherited by the repository implementation, and the interceptors bound to the annotation are applied automatically by the implementation of Jakarta Interceptors.
 
-When a repository method is annotated with an interceptor binding annotation, the interceptor is bound to the repository bean according to the interceptor binding annotation of the repository interface method, causing the bound interceptor to be invoked around the repository method when it runs. This enables the use of interceptors such as `jakarta.transaction.Transactional` on repository methods when running in an environment where the Jakarta EE technology that provides the interceptor is available.
+=== Jakarta Transactions
 
+Work performed by a repository might occur within the scope of a transaction managed by Jakarta Transactions. This is usually transparent to the code acting as client of the repository. When:
+
+1. Jakarta Transactions is available,
+2. a global transaction is active on the thread of execution in which a repository operation is called, and
+3. the data source backing the repository is capable of transaction enlistment,
+
+then the repository operation must be performed within the context of the global transaction. That is, the data source resources involved in the operation must be enlisted as participants in the transaction.
+
+[NOTE]
+====
+In the Jakarta EE environment, such enlistment usually happens automatically when the repository implementation makes use of a data source which is under the management of the Jakarta EE container.
+====
+
+The repository operation must not commit or roll back a transaction which was already associated with the thread in which the repository operation was called, but it might cause the transaction to be marked for rollback if the repository operation fails, that is, it may set the transaction status to `jakarta.transaction.Status.STATUS_MARKED_ROLLBACK`.
+
+A repository interface or method of a repository interface may be marked with the annotation `jakarta.transaction.Transactional`.
+When a repository operation marked `@Transactional` is called in an environment where both Jakarta Transactions and Jakarta CDI are available, the semantics of this annotation must be observed during execution of the repository operation.
+
+[NOTE]
+====
+In the Jakarta EE environment, the `@Transactional` annotation is automatically inherited by the repository implementation from the user-written repository interface, and the semantics of the `@Transactional` annotation are applied automatically by the implementation of Jakarta Interceptors supplied by the Jakarta EE container.
+====
 
 === Jakarta Persistence
 
