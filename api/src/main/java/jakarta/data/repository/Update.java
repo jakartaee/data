@@ -30,7 +30,7 @@ import java.lang.annotation.Target;
  * <p>The {@code Update} annotation indicates that the annotated repository method updates the state of one or more
  * entities already held in the database.
  * </p>
- * <p>An {@code Update} method might accept an instance or instances of an entity class. In this case, the method must
+ * <p>An {@code Update} method accepts an instance or instances of an entity class. The method must
  * have exactly one parameter whose type is either:
  * </p>
  * <ul>
@@ -41,8 +41,6 @@ import java.lang.annotation.Target;
  * its parameter.
  * <p>
  * All Jakarta Data providers are required to accept an {@code Update} method which conforms to this signature.
- * Application of the {@code Update} annotation to a method with any other signature is not portable between Jakarta
- * Data providers.
  * </p>
  * <p>For example, consider an interface representing a garage:</p>
  * <pre>
