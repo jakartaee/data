@@ -82,6 +82,10 @@ import java.lang.annotation.Target;
  * <pre>
  * {@code Page<String>} page2 = people.namesOfLength(5, 10, page1.nextPageRequest(Person.class));
  * </pre>
+ *
+ * <p>Annotations such as {@code @Find}, {@code @Query}, {@code @Insert}, {@code @Update}, {@code @Delete}, and
+ * {@code @Save} are mutually-exclusive. A given method of a repository interface may have at most one {@code @Find}
+ * annotation, lifecycle annotation, or query annotation.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)

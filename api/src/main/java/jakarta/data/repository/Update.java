@@ -24,51 +24,27 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-
 /**
- * <p>Annotates a repository method to perform update operations.</p>
+ * <p>Lifecycle annotation for repository methods which perform update operations.</p>
  *
- * <p>The {@code Update} annotation indicates that the annotated repository method requests that one or more entities
- * be updated if found in the database. To request updates to specific entity instances, the annotated
- * repository method must have a single parameter whose type must be one of the following:
+ * <p>The {@code Update} annotation indicates that the annotated repository method updates the state of one or more
+ * entities already held in the database.
+ * </p>
+ * <p>An {@code Update} method might accept an instance or instances of an entity class. In this case, the method must
+ * have exactly one parameter whose type is either:
  * </p>
  * <ul>
- *     <li>The entity to be updated.</li>
- *     <li>An {@code Iterable} of entities to be updated.</li>
- *     <li>An array of entities to be updated.</li>
+ *     <li>the class of the entity to be updated, or</li>
+ *     <li>{@code Iterable<E>} or {@code E[]} where {@code E} is the class of the entities to be updated.</li>
  * </ul>
- * <p>The return type of the annotated method must be {@code void}, {@code boolean}, {@code int}, {@code long}
- * a corresponding primitive wrapper type such as {@link Integer}, or the same type as the parameter.
- * </p>
+ * <p>The annotated method must either be declared {@code void}, or have a return type that is the same as the type of
+ * its parameter.
  * <p>
- * A boolean return type indicates whether a matching entity was found in the database to update.
- * An {@code int} or {@code long} return type indicates how many matching entities were found in the database to update.
- * An entity return type indicates the updated entity if found in the database. If the entity is not found
- * in the database or has a non-matching version, then {@code null} is returned.
- * An {@code Iterable} or array return type includes all matching entities that are found in the database,
- * skipping over entities that are not present in the database or have a non-matching version.
- * For example, if the method is annotated with {@code @Update} and takes a parameter of type {@code Car car},
- * the return type can be {@code Car}.
- * Similarly, if the parameter is an {@code Iterable<Car>} or an array of {@code Car}, the return type can be
- * {@code Iterable<Car>}.
- * Entities that are returned by the annotated method must include all values that were
- * written to the database, including all automatically generated values, updated versions and incremented values
- * that changed due to the update. The order of entities within an {@code Iterable} or array return value
- * must correspond to the position of entities in the parameter based on the unique identifier of the entity,
- * leaving out those that did not match the unique identifier and version that is in the database.
+ * All Jakarta Data providers are required to accept an {@code Update} method which conforms to this signature.
+ * Application of the {@code Update} annotation to a method with any other signature is not portable between Jakarta
+ * Data providers.
  * </p>
- * <p>Updating an entity involves modifying its existing data in the database. The method will search for the entity
- * in the database using its ID (and version, if versioned) and then update the corresponding record with the new data. After invoking
- * this method, do not continue to use the entity value that is supplied as a parameter, as it may not accurately
- * reflect the changes made during the update process.
  * </p>
- * <p>If the entity does not exist in the database or it is versioned and its version differs from the version in the database,
- * no update is made and no error is raised.
- * </p>
- *<p>
- * In databases that use an append model to write data or follow the BASE model, this method
- * behaves the same as the {@code @Insert} method.
- *  </p>
  * <p>For example, consider an interface representing a garage:</p>
  * <pre>
  * {@code @Repository}
@@ -77,10 +53,27 @@ import java.lang.annotation.Target;
  *     Car update(Car car);
  * }
  * </pre>
- * <p>If this annotation is combined with other operation annotations (e.g., {@code @Insert}, {@code @Delete},
- * {@code @Find}, {@code @Query},
- * {@code @Save}), it will throw an {@link UnsupportedOperationException} because only one operation type can be specified.
- * A Jakarta Data provider implementation must detect (and report) this error at compile time or at runtime.</p>
+ * <p>When the annotated method is non-{@code void}, it must return an updated entity instance for each entity instance
+ * passed as an argument. Instances returned by the annotated method must include all values that were written to the
+ * database, including all automatically generated values, updated versions, and incremented values which changed as a
+ * result of the update. The order of entities within an {@code Iterable} or array return value must match the position
+ * of entities in the argument, based on the unique identifier of the entity. After the annotated method returns, an
+ * original entity instance supplied as an argument might not accurately reflect the updated state.
+ * </p>
+ * <p>Updates are performed by matching the unique identifier of the entity. If the entity is versioned, for example,
+ * with {@code jakarta.persistence.Version}, the version is also checked for consistency. Attributes other than the
+ * identifier and version do not need to match. If no entity with a matching identifier is found in the database, or
+ * if the entity with a matching identifier does not have a matching version, the annotated method must raise
+ * {@link jakarta.data.exceptions.OptimisticLockingFailureException}.
+ * </p>
+ * <p>
+ * If the database follows the BASE model, or uses an append model to write data, the annotated method behaves the same
+ * as the {@code @Insert} method.
+ * </p>
+ * <p>Annotations such as {@code @Find}, {@code @Query}, {@code @Insert}, {@code @Update}, {@code @Delete}, and
+ * {@code @Save} are mutually-exclusive. A given method of a repository interface may have at most one {@code @Find}
+ * annotation, lifecycle annotation, or query annotation.
+ * </p
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)

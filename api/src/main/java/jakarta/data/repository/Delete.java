@@ -25,27 +25,23 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * <p>Annotates a repository method to perform delete operations.</p>
+ * <p>Lifecycle annotation for repository methods which perform delete operations.</p>
  *
- * <p>The {@code Delete} annotation indicates that the annotated repository method requests one or more
- * entities to be removed from the database. To request deletion of specific entity instances, the annotated
- * repository method must have a single parameter whose type must be one of the following:
+ * <p>The {@code Delete} annotation indicates that the annotated repository method deletes the state of one or more
+ * entities from the database.
+ * </p>
+ * <p>A {@code Delete} method might accept an instance or instances of an entity class. In this case, the method must
+ * have exactly one parameter whose type is either:
  * </p>
  * <ul>
- *     <li>The entity to be deleted.</li>
- *     <li>An {@code Iterable} of entities to be deleted.</li>
- *     <li>An array of entities to be deleted.</li>
+ *     <li>the class of the entity to be deleted, or</li>
+ *     <li>{@code Iterable<E>} where {@code E} is the class of the entities to be deleted.</li>
  * </ul>
- * <p>The {@code Delete} annotation can be used on a repository method that has no parameters
- * to request deletion of all entity instances of the primary entity type.</p>
- * <p>The return type of the annotated method must be {@code void}, {@code boolean}, {@code int}, {@code long},
- * or a corresponding primitive wrapper such as {@link Integer}.
- * A boolean return type indicates whether or not an entity was deleted from the database.
- * An {@code int} or {@code long} return type indicates how many entities were deleted from the database.
+ * <p>The annotated method must be declared {@code void}.
  * </p>
- * <p>Deletion of a given entity is performed by matching the entity's Id. If the entity is versioned (e.g.,
- * with {@code jakarta.persistence.Version}), the version is also checked for consistency during deletion.
- * Properties other than the Id and version do not need to match for deletion.
+ * <p>All Jakarta Data providers are required to accept a {@code Delete} method which conforms to this signature.
+ * Application of the {@code Delete} annotation to a method with any other signature is not portable between Jakarta
+ * Data providers, excepting the specific case of a repository method with no parameters, as described below.
  * </p>
  * <p>For example, consider an interface representing a garage:</p>
  * <pre>
@@ -55,12 +51,20 @@ import java.lang.annotation.Target;
  *     void unpark(Car car);
  * }
  * </pre>
- * <p>If this annotation is combined with other operation annotations (e.g.,
- * {@code @Find}, {@code @Insert}, {@code @Query}, {@code @Update},
- * {@code @Save}), it will throw an {@link UnsupportedOperationException} as only one operation type can be specified.</p>
- * <p>If the unique identifier of a requested entity is not found in the database or its version does not match, and the return
- * type of the annotated method is {@code void} or {@code Void}, the method must
- * raise {@link jakarta.data.exceptions.OptimisticLockingFailureException}.
+ * <p>Deletes are performed by matching the unique identifier of the entity. If the entity is versioned, for example,
+ * with {@code jakarta.persistence.Version}, the version is also checked for consistency. Attributes other than the
+ * identifier and version do not need to match. If no entity with a matching identifier is found in the database, or
+ * if the entity with a matching identifier does not have a matching version, the annotated method must raise
+ * {@link jakarta.data.exceptions.OptimisticLockingFailureException}.
+ * </p>
+ * <p>Alternatively, the {@code Delete} annotation may be applied to a repository method with no parameters, indicating
+ * that the annotated method deletes all instances of the primary entity type. In this case, the annotated method must
+ * either be declared {@code void}, or return {@code int} or {@code long}.
+ * </p>
+ * <p>Annotations such as {@code @Find}, {@code @Query}, {@code @Insert}, {@code @Update}, {@code @Delete}, and
+ * {@code @Save} are mutually-exclusive. A given method of a repository interface may have at most one {@code @Find}
+ * annotation, lifecycle annotation, or query annotation.
+ * </p
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)

@@ -864,6 +864,19 @@ default void cleanup() {
 
 A repository may have at most one resource accessor method.
 
+=== Conflicting Repository Method Annotations
+
+Annotations like `@Find`, `@Query`, `@Insert`, `@Update`, `@Delete`, and `@Save` are mutually-exclusive. A given method of a repository interface may have at most one:
+
+- `@Find` annotation,
+- lifecycle annotation, or
+- query annotation.
+
+If a method of a repository interface has more than one such annotation, the annotated repository method must raise
+`UnsupportedOperationException` every time it is called. Alternatively, a Jakarta Data provider is permitted to
+reject such a method declaration at compile time.
+
+
 === Query by Method Name
 
 The Query by method mechanism allows for creating query commands by naming convention.
