@@ -63,7 +63,7 @@ import java.lang.annotation.Target;
  * </p>
  * <p>If an entity of the given type, and with the same unique identifier already exists in the database when the
  * annotated method is called, and if the databases uses ACID (atomic, consistent, isolated, durable) transactions,
- * then annotated method must raises {@link jakarta.data.exceptions.EntityExistsException}.
+ * then the annotated method must raise {@link jakarta.data.exceptions.EntityExistsException}.
  * If the database follows the BASE model, or uses an append model to write data, this exception is not thrown.
  * </p>
  * <p>Annotations such as {@code @Find}, {@code @Query}, {@code @Insert}, {@code @Update}, {@code @Delete}, and
