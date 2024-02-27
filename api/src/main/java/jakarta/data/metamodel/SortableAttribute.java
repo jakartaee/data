@@ -33,7 +33,7 @@ import jakarta.data.Sort;
  *
  * @param <T> entity class of the static metamodel.
  */
-public interface SortableAttribute<T> extends Attribute {
+public interface SortableAttribute<T> extends Attribute<T> {
 
     /**
      * Obtain a request for an ascending {@link Sort} based on the entity attribute.

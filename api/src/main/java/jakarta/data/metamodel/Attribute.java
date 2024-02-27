@@ -21,8 +21,10 @@ import jakarta.data.Sort;
 
 /**
  * Represents an entity attribute in the {@link StaticMetamodel}.
+ *
+ * @param <T> entity class of the static metamodel.
  */
-public interface Attribute {
+public interface Attribute<T> {
     /**
      * Obtain the entity attribute name, suitable for use wherever the specification requires
      * an entity attribute name. For example, as the parameter to {@link Sort#asc(String)}.
