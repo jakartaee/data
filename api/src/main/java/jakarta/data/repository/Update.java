@@ -44,7 +44,6 @@ import java.lang.annotation.Target;
  * Application of the {@code Update} annotation to a method with any other signature is not portable between Jakarta
  * Data providers.
  * </p>
- * </p>
  * <p>For example, consider an interface representing a garage:</p>
  * <pre>
  * {@code @Repository}
@@ -73,7 +72,7 @@ import java.lang.annotation.Target;
  * <p>Annotations such as {@code @Find}, {@code @Query}, {@code @Insert}, {@code @Update}, {@code @Delete}, and
  * {@code @Save} are mutually-exclusive. A given method of a repository interface may have at most one {@code @Find}
  * annotation, lifecycle annotation, or query annotation.
- * </p
+ * </p>
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
