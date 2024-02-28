@@ -737,13 +737,13 @@ public class EntityTests {
                      page1.stream().map(NaturalNumber::getId).collect(Collectors.toList()));
 
         Page<NaturalNumber> page2 = positives.findMatching(9L, Short.valueOf((short) 7), NumberType.COMPOSITE,
-                                                           page1.nextPageRequest());
+                                                           page1.nextPageRequest().orElse(null));
 
         assertEquals(List.of(91L, 90L, 88L, 87L, 86L, 85L, 84L),
                      page2.stream().map(NaturalNumber::getId).collect(Collectors.toList()));
 
         Page<NaturalNumber> page3 = positives.findMatching(9L, Short.valueOf((short) 7), NumberType.COMPOSITE,
-                                                           page2.nextPageRequest());
+                                                           page2.nextPageRequest().orElse(null));
 
         assertEquals(List.of(82L, 81L),
                      page3.stream().map(NaturalNumber::getId).collect(Collectors.toList()));
@@ -778,7 +778,7 @@ public class EntityTests {
                      Arrays.toString(page.stream().map(number -> number.getId()).toArray()));
 
         try {
-            page = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByBitsRequiredDesc(4L, 33L, page.nextPageRequest());
+            page = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByBitsRequiredDesc(4L, 33L, page.nextPageRequest().orElse(null));
         } catch (MappingException x) {
             // Test passes: Jakarta Data providers must raise MappingException when the database
             // is not capable of keyset pagination.
@@ -791,7 +791,7 @@ public class EntityTests {
         assertEquals(8, page.numberOfElements());
 
         try {
-            page = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByBitsRequiredDesc(4L, 33L, page.nextPageRequest());
+            page = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByBitsRequiredDesc(4L, 33L, page.nextPageRequest().orElse(null));
         } catch (MappingException x) {
             // Test passes: Jakarta Data providers must raise MappingException when the database
             // is not capable of keyset pagination.
@@ -826,7 +826,7 @@ public class EntityTests {
         assertEquals(6, slice.numberOfElements());
 
         try {
-            slice = numbers.findByFloorOfSquareRootOrderByIdAsc(7L, slice.nextPageRequest());
+            slice = numbers.findByFloorOfSquareRootOrderByIdAsc(7L, slice.nextPageRequest().orElse(null));
         } catch (MappingException x) {
             // Test passes: Jakarta Data providers must raise MappingException when the database
             // is not capable of keyset pagination.
@@ -839,7 +839,7 @@ public class EntityTests {
                      Arrays.toString(slice.stream().map(number -> number.getId()).toArray()));
 
         try {
-            slice = numbers.findByFloorOfSquareRootOrderByIdAsc(7L, slice.nextPageRequest());
+            slice = numbers.findByFloorOfSquareRootOrderByIdAsc(7L, slice.nextPageRequest().orElse(null));
         } catch (MappingException x) {
             // Test passes: Jakarta Data providers must raise MappingException when the database
             // is not capable of keyset pagination.
@@ -1000,7 +1000,7 @@ public class EntityTests {
         KeysetAwarePage<NaturalNumber> previousPage;
         try {
             previousPage = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByBitsRequiredDesc(6L, 50L,
-                                                                                                    page.previousPageRequest());
+                                                                                                    page.previousPageRequest().orElse(null));
         } catch (MappingException x) {
             // Test passes: Jakarta Data providers must raise MappingException when the database
             // is not capable of keyset pagination.
@@ -1017,7 +1017,7 @@ public class EntityTests {
         KeysetAwarePage<NaturalNumber> nextPage;
         try {
             nextPage = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByBitsRequiredDesc(6L, 50L,
-                                                                                                page.nextPageRequest());
+                                                                                                page.nextPageRequest().orElse(null));
         } catch (MappingException x) {
             // Test passes: Jakarta Data providers must raise MappingException when the database
             // is not capable of keyset pagination.
@@ -1085,7 +1085,7 @@ public class EntityTests {
         try {
             previousSlice = numbers.findByNumTypeAndNumBitsRequiredLessThan(NumberType.COMPOSITE,
                                                                             (short) 7,
-                                                                            slice.previousPageRequest());
+                                                                            slice.previousPageRequest().orElse(null));
         } catch (MappingException x) {
             // Test passes: Jakarta Data providers must raise MappingException when the database
             // is not capable of keyset pagination.
@@ -1101,7 +1101,7 @@ public class EntityTests {
          try {
              nextSlice = numbers.findByNumTypeAndNumBitsRequiredLessThan(NumberType.COMPOSITE,
                                                                          (short) 7,
-                                                                         slice.nextPageRequest());
+                                                                         slice.nextPageRequest().orElse(null));
          } catch (MappingException x) {
              // Test passes: Jakarta Data providers must raise MappingException when the database
              // is not capable of keyset pagination.
@@ -1253,7 +1253,7 @@ public class EntityTests {
                                                   24L, 22L, 21L, 20L, 18L }), // square root rounds down to 4; composite
                      Arrays.toString(slice.stream().map(number -> number.getId()).toArray()));
 
-        pagination = slice.nextPageRequest();
+        pagination = slice.nextPageRequest().orElse(null);
         slice = numbers.findByIdLessThanOrderByFloorOfSquareRootDesc(25L, pagination);
 
         assertEquals(Arrays.toString(new Long[] { 16L, // square root rounds down to 4; composite
@@ -1261,7 +1261,7 @@ public class EntityTests {
                                                   15L, 14L, 12L, 10L, 9L }), // square root rounds down to 3; composite
                      Arrays.toString(slice.stream().map(number -> number.getId()).toArray()));
 
-        pagination = slice.nextPageRequest();
+        pagination = slice.nextPageRequest().orElse(null);
         slice = numbers.findByIdLessThanOrderByFloorOfSquareRootDesc(25L, pagination);
 
         assertEquals(Arrays.toString(new Long[] { 7L, 5L, // square root rounds down to 2; prime
@@ -1270,7 +1270,7 @@ public class EntityTests {
                                                   3L, 2L }), // square root rounds down to 1; prime
                      Arrays.toString(slice.stream().map(number -> number.getId()).toArray()));
 
-        pagination = slice.nextPageRequest();
+        pagination = slice.nextPageRequest().orElse(null);
         if (pagination != null) {
             slice = numbers.findByIdLessThanOrderByFloorOfSquareRootDesc(25L, pagination);
             assertEquals(false, slice.hasContent());
