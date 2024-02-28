@@ -153,7 +153,7 @@ class KeysetPageRequestTest {
         PageRequest.Cursor cursor1 = new KeysetCursor("keyval1", '2', 3);
         PageRequest.Cursor cursor2 = new KeysetCursor("keyval2", '2', 3);
         PageRequest.Cursor cursor3 = new KeysetCursor("keyval1", '2');
-        PageRequest.Cursor cursor4 = new Pagination.Cursor() {
+        PageRequest.Cursor cursor4 = new PageRequest.Cursor() {
             private final Object[] keyset = new Object[] { "keyval1", '2', 3 };
 
             @Override
@@ -164,6 +164,11 @@ class KeysetPageRequestTest {
             @Override
             public int size() {
                 return keyset.length;
+            }
+
+            @Override
+            public List<?> elements() {
+                return List.of(keyset);
             }
         };
 
