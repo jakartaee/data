@@ -825,7 +825,7 @@ List<Book> booksByYear(Year year, Sort order, Limit limit);
 @Find
 Page<Book> find(@By("year") Year publishedIn,
                 @By("genre") Category type,
-                PageRequest<?> pagination);
+                PageRequest<Book> pageRequest);
 ----
 
 Automatic query methods annotated with `@Find` _are_ portable between providers.
@@ -1130,7 +1130,7 @@ Jakarta Data recognizes, when specified on a repository method after the query p
 @Repository
 public interface ProductRepository extends BasicRepository<Product, Long> {
 
-  List<Product> findByName(String name, PageRequest<?> pageRequest);
+  List<Product> findByName(String name, PageRequest<Product> pageRequest);
 
   List<Product> findByNameLike(String pattern, Limit max, Sort<?>... sorts);
 
@@ -1148,7 +1148,7 @@ You can combine sorting with a starting page and maximum page size by using prop
 
 [source,java]
 ----
-PageRequest<?> pageRequest = PageRequest.ofSize(20).page(1).sortBy(Sort.desc("price"));
+PageRequest<Product> pageRequest = PageRequest.ofSize(20).page(1).sortBy(Sort.desc("price"));
 first20 = products.findByNameLike(name, pageRequest);
 
 ----
@@ -1178,14 +1178,14 @@ The following examples work through scenarios where static and dynamic sort crit
 [source,java]
 ----
 // Sorts first by type. When type is the same, applies the PageRequest's sort criteria
-Page<User> findByNameStartsWithOrderByType(String namePrefix, PageRequest<?> pagination);
+Page<User> findByNameStartsWithOrderByType(String namePrefix, PageRequest<User> pagination);
 
 // Sorts first by type. When type is the same, applies the criteria in the Sorts
 List<User> findByNameStartsWithOrderByType(String namePrefix, Sort<?>... sorts);
 
 // Sorts first by age. When age is the same, applies the PageRequest's sort criteria
 @OrderBy("age")
-Page<User> findByNameStartsWith(String namePrefix, PageRequest<?> pagination);
+Page<User> findByNameStartsWith(String namePrefix, PageRequest<User> pagination);
 
 // Sorts first by age. When age is the same, applies the criteria in the Sorts
 @OrderBy("age")
@@ -1194,7 +1194,7 @@ List<User> findByNameStartsWith(String namePrefix, Sort<?>... sorts);
 // Sorts first by name. When name is the same, applies the PageRequest's sort criteria
 @Query("SELECT u FROM User u WHERE (u.age > ?1)")
 @OrderBy("name")
-KeysetAwarePage<User> olderThan(int age, PageRequest<?> pagination);
+KeysetAwarePage<User> olderThan(int age, PageRequest<User> pagination);
 ----
 
 === Pagination in Jakarta Data
@@ -1339,7 +1339,7 @@ For example,
 @Repository
 public interface CustomerRepository extends BasicRepository<Customer, Long> {
   KeysetAwareSlice<Customer> findByZipcodeOrderByLastNameAscFirstNameAscIdAsc(
-                                 int zipcode, PageRequest<?> pageRequest);
+                                 int zipcode, PageRequest<Customer> pageRequest);
 }
 ----
 
@@ -1347,7 +1347,7 @@ You can obtain the initial page relative to an offset and subsequent pages relat
 
 [source,java]
 ----
-for (PageRequest<?> p = PageRequest.ofSize(50); p != null; ) {
+for (PageRequest<Customer> p = PageRequest.ofSize(50); p != null; ) {
   page = customers.findByZipcodeOrderByLastNameAscFirstNameAscIdAsc(55901, p);
   ...
   p = page.nextPageRequest();
@@ -1359,7 +1359,7 @@ Or you can obtain the next (or previous) page relative to a known entity,
 [source,java]
 ----
 Customer c = ...
-PageRequest<?> p = PageRequest.ofSize(50).afterKeyset(c.lastName, c.firstName, c.id);
+PageRequest<Customer> p = PageRequest.ofSize(50).afterKeyset(c.lastName, c.firstName, c.id);
 page = customers.findByZipcodeOrderByLastNameAscFirstNameAscIdAsc(55902, p);
 ----
 
@@ -1417,7 +1417,7 @@ Here is an example where an application uses `@Query` to provide a partial query
 @Repository
 public interface CustomerRepository extends BasicRepository<Customer, Long> {
   @Query("SELECT o FROM Customer o WHERE (o.totalSpent / o.totalPurchases > ?1)")
-  KeysetAwareSlice<Customer> withAveragePurchaseAbove(float minimum, PageRequest<?> pagination);
+  KeysetAwareSlice<Customer> withAveragePurchaseAbove(float minimum, PageRequest<Customer> pageRequest);
 }
 ----
 
@@ -1425,7 +1425,7 @@ Example traversal of pages:
 
 [source,java]
 ----
-for (PageRequest<?> p = PageRequest.ofSize(25).sortBy(Sort.desc("yearBorn"),
+for (PageRequest<Customer> p = PageRequest.ofSize(25).sortBy(Sort.desc("yearBorn"),
                                                       Sort.asc("name"),
                                                       Sort.asc("id"));
      p != null; ) {
@@ -1443,7 +1443,7 @@ In this example, the application uses a cursor to request pages in forward and p
 ----
 @Repository
 public interface Products extends CrudRepository<Product, Long> {
-  KeysetAwareSlice<Product> findByNameContains(String namePattern, PageRequest<?> pageRequest);
+  KeysetAwareSlice<Product> findByNameContains(String namePattern, PageRequest<Product> pageRequest);
 }
 ----
 
@@ -1452,7 +1452,7 @@ Obtaining the next 10 products that cost $50.00 or more:
 [source,java]
 ----
 float priceMidpoint = 50.0f;
-PageRequest<?> pageRequest = PageRequest.ofSize(10)
+PageRequest<Product> pageRequest = PageRequest.ofSize(10)
                                         .sortBy(Sort.asc("price"), Sort.asc("id"))
                                         .afterKeyset(priceMidpoint, 0L);
 KeysetAwareSlice<Product> moreExpensive = products.findByNameContains(pattern, pageRequest);
