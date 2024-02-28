@@ -503,5 +503,14 @@ public interface PageRequest<T> {
          */
         @Override
         String toString();
+
+        /**
+         * Obtain an instance of {@code Cursor} for the given keyset.
+         * @param keyset the keyset
+         * @return a new instance of {@code Cursor}
+         */
+        static Cursor forKeyset(Object... keyset) {
+            return new KeysetCursor(keyset);
+        }
     }
 }
