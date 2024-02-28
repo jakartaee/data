@@ -1148,7 +1148,7 @@ You can combine sorting with a starting page and maximum page size by using prop
 
 [source,java]
 ----
-PageRequest<Product> pageRequest = PageRequest.ofSize(20).page(1).sortBy(Sort.desc("price"));
+PageRequest<Product> pageRequest = PageRequest.of(Product.class).size(20).page(1).sortBy(Sort.desc("price"));
 first20 = products.findByNameLike(name, pageRequest);
 
 ----
