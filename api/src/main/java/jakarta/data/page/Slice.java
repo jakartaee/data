@@ -20,6 +20,7 @@ package jakarta.data.page;
 import jakarta.data.Streamable;
 import jakarta.data.repository.Query;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * <p>A slice contains the data that is retrieved for a page request.
@@ -98,15 +99,15 @@ public interface Slice<T> extends Streamable<T> {
     <E> PageRequest<E> pageRequest(Class<E> entityClass);
 
     /**
-     * Returns a request for the {@link PageRequest#next() next} page, or <code>null</code> if it is known that there is no next page.
+     * Returns a request for the {@link PageRequest#next() next} page, or {@link Optional#empty()} if it is known that there is no next page.
      *
      * @return a request for the next page.
      */
-    PageRequest<T> nextPageRequest();
+    Optional<PageRequest<T>> nextPageRequest();
 
     /**
      * <p>Returns a request for the {@link PageRequest#next() next} page,
-     * or <code>null</code> if it is known that there is no next page.</p>
+     * or {@link Optional#empty()} if it is known that there is no next page.</p>
      *
      * <p>This method is useful when {@link Query query language} is used to
      * return a result of different type than the entity that is being queried.
@@ -117,5 +118,5 @@ public interface Slice<T> extends Streamable<T> {
      * @param entityClass entity class of the attributes that are used as sort criteria.
      * @return a request for the next page.
      */
-    <E> PageRequest<E> nextPageRequest(Class<E> entityClass);
+    <E> Optional<PageRequest<E>> nextPageRequest(Class<E> entityClass);
 }
