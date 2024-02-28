@@ -20,6 +20,8 @@ package jakarta.data.page;
 import jakarta.data.repository.OrderBy;
 import jakarta.data.Sort;
 
+import java.util.Optional;
+
 /**
  * <p>A slice of data with the ability to create a cursor from the
  * keyset of each entity in the slice.</p>
@@ -154,10 +156,10 @@ public interface KeysetAwareSlice<T> extends Slice<T> {
      * sort criteria and relative to that entity.</p>
      *
      * @return pagination information for requesting the next page, or
-     *         <code>null</code> if the current page is empty
+     *         {@link Optional#empty()} if the current page is empty
      *         or if it is known that there is not a next page.
      */
-    PageRequest<T> nextPageRequest();
+    Optional<PageRequest<T>> nextPageRequest();
 
     /**
      * <p>Creates a request for the previous page
@@ -181,8 +183,8 @@ public interface KeysetAwareSlice<T> extends Slice<T> {
      * current page number.</p>
      *
      * @return pagination information for requesting the previous page, or
-     *         <code>null</code> if the current page is empty
+     *         {@link Optional#empty()} if the current page is empty
      *         or if it is known that there is not a previous page.
      */
-    PageRequest<T> previousPageRequest();
+    Optional<PageRequest<T>> previousPageRequest();
 }
