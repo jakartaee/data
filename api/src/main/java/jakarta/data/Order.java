@@ -73,19 +73,19 @@ import jakarta.data.repository.Query;
  *
  * @param <T> entity class of the attributes that are used as sort criteria.
  */
-public class Order<T> implements Iterable<Sort<T>> {
+public class Order<T> implements Iterable<Sort<? super T>> {
 
     /**
      * Unmodifiable list of Sort instances, from highest precedence to lowest.
      */
-    private final List<Sort<T>> sorts;
+    private final List<Sort<? super T>> sorts;
 
     /**
      * Creates a new instance.
      *
      * @param sorts unmodifiable list of Sort instances, from highest precedence to lowest.
      */
-    private Order(List<Sort<T>> sorts) {
+    private Order(List<Sort<? super T>> sorts) {
         this.sorts = sorts;
     }
 
@@ -99,7 +99,7 @@ public class Order<T> implements Iterable<Sort<T>> {
      *         This method never returns <code>null</code>.
      */
     @SafeVarargs
-    public static final <T> Order<T> by(Sort<T>... sorts) {
+    public static <T> Order<T> by(Sort<? super T>... sorts) {
         return new Order<T>(List.of(sorts));
     }
 
@@ -108,7 +108,7 @@ public class Order<T> implements Iterable<Sort<T>> {
      *
      * @return the instances of {@link Sort}, from highest precedence to lowest precedence.
      */
-    public List<Sort<T>> sorts() {
+    public List<Sort<? super T>> sorts() {
         return sorts;
     }
 
@@ -142,7 +142,7 @@ public class Order<T> implements Iterable<Sort<T>> {
      * @return iterator over the sort criteria.
      */
     @Override
-    public Iterator<Sort<T>> iterator() {
+    public Iterator<Sort<? super T>> iterator() {
         return sorts.iterator();
     }
 
