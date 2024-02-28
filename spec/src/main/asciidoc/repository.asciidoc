@@ -1359,7 +1359,7 @@ Or you can obtain the next (or previous) page relative to a known entity,
 [source,java]
 ----
 Customer c = ...
-PageRequest<Customer> p = PageRequest.ofSize(50).afterKeyset(c.lastName, c.firstName, c.id);
+PageRequest<Customer> p = PageRequest.of(Customer.class).size(50).afterKeyset(c.lastName, c.firstName, c.id);
 page = customers.findByZipcodeOrderByLastNameAscFirstNameAscIdAsc(55902, p);
 ----
 
