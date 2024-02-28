@@ -282,7 +282,7 @@ public interface PageRequest<T> {
      *
      * @return the order collection; will never be {@code null}.
      */
-    List<Sort<T>> sorts();
+    List<Sort<? super T>> sorts();
 
     /**
      * <p>Returns the <code>PageRequest</code> requesting the next page
@@ -333,7 +333,7 @@ public interface PageRequest<T> {
      * @param sorts sort criteria to use.
      * @return a new instance of <code>PageRequest</code>. This method never returns <code>null</code>.
      */
-    PageRequest<T> sortBy(Iterable<Sort<T>> sorts);
+    PageRequest<T> sortBy(Iterable<Sort<? super T>> sorts);
 
     /**
      * <p>Creates a new page request with the same
@@ -347,7 +347,7 @@ public interface PageRequest<T> {
      * @param sort sort criteria to use.
      * @return a new instance of <code>PageRequest</code>. This method never returns <code>null</code>.
      */
-    PageRequest<T> sortBy(Sort<T> sort);
+    PageRequest<T> sortBy(Sort<? super T> sort);
 
     /**
      * <p>Creates a new page request with the same
@@ -362,7 +362,7 @@ public interface PageRequest<T> {
      * @param sort2 dynamic sort criteria to use second.
      * @return a new instance of <code>PageRequest</code>. This method never returns <code>null</code>.
      */
-    PageRequest<T> sortBy(Sort<T> sort1, Sort<T> sort2);
+    PageRequest<T> sortBy(Sort<? super T> sort1, Sort<? super T> sort2);
 
     /**
      * <p>Creates a new page request with the same
@@ -378,7 +378,7 @@ public interface PageRequest<T> {
      * @param sort3 dynamic sort criteria to use last.
      * @return a new instance of <code>PageRequest</code>. This method never returns <code>null</code>.
      */
-    PageRequest<T> sortBy(Sort<T> sort1, Sort<T> sort2, Sort<T> sort3);
+    PageRequest<T> sortBy(Sort<? super T> sort1, Sort<? super T> sort2, Sort<? super T> sort3);
 
     /**
      * <p>Creates a new page request with the same
@@ -395,7 +395,7 @@ public interface PageRequest<T> {
      * @param sort4 dynamic sort criteria to use last.
      * @return a new instance of <code>PageRequest</code>. This method never returns <code>null</code>.
      */
-    PageRequest<T> sortBy(Sort<T> sort1, Sort<T> sort2, Sort<T> sort3, Sort<T> sort4);
+    PageRequest<T> sortBy(Sort<? super T> sort1, Sort<? super T> sort2, Sort<? super T> sort3, Sort<? super T> sort4);
 
     /**
      * <p>Creates a new page request with the same
@@ -413,7 +413,7 @@ public interface PageRequest<T> {
      * @param sort5 dynamic sort criteria to use last.
      * @return a new instance of <code>PageRequest</code>. This method never returns <code>null</code>.
      */
-    PageRequest<T> sortBy(Sort<T> sort1, Sort<T> sort2, Sort<T> sort3, Sort<T> sort4, Sort<T> sort5);
+    PageRequest<T> sortBy(Sort<? super T> sort1, Sort<? super T> sort2, Sort<? super T> sort3, Sort<? super T> sort4, Sort<? super T> sort5);
 
     /**
      * The type of pagination: offset-based or
