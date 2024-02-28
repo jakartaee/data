@@ -488,6 +488,14 @@ public interface PageRequest<T> {
         int size();
 
         /**
+         * An unmodifiable list of values in the keyset.
+         *
+         * @return an unmodifiable list containing the
+         *         ordered values
+         */
+        List<?> elements();
+
+        /**
          * String representation of the keyset cursor, including the number of
          * key values in the cursor but not the values themselves.
          *

@@ -18,6 +18,7 @@
 package jakarta.data.page;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Built-in implementation of Cursor for keyset pagination.
@@ -58,6 +59,11 @@ class KeysetCursor implements PageRequest.Cursor {
 
     public int size() {
         return keyset.length;
+    }
+
+    @Override
+    public List<?> elements() {
+        return List.of(keyset);
     }
 
     @Override
