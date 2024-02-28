@@ -23,9 +23,10 @@ import jakarta.data.metamodel.Attribute;
  * Record type implementing {@link jakarta.data.metamodel.TextAttribute}.
  * This may be used to simplify implementation of the static metamodel.
  *
+ * @param <T> entity class of the static metamodel.
  * @param name the name of the attribute
  */
-public record AttributeRecord(String name)
-        implements Attribute {
+public record AttributeRecord<T>(String name)
+        implements Attribute<T> {
 }
 
