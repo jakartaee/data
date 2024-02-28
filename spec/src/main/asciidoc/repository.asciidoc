@@ -1425,9 +1425,10 @@ Example traversal of pages:
 
 [source,java]
 ----
-for (PageRequest<Customer> p = PageRequest.ofSize(25).sortBy(Sort.desc("yearBorn"),
-                                                      Sort.asc("name"),
-                                                      Sort.asc("id"));
+for (PageRequest<Customer> p = Order.by(_Customer.yearBorn.desc(),
+                                        _Customer.name.asc(),
+                                        _Customer.id.asc())
+                                    .pageSize(25);
      p != null; ) {
   page = customers.withAveragePurchaseAbove(50.0f, p);
   ...
