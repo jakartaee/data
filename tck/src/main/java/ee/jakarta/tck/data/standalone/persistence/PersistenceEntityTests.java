@@ -358,7 +358,12 @@ public class PersistenceEntityTests {
         // Update must not be made when the version does not match:
         prod2.setVersionNum(prod2InitialVersion);
         prod2.setPrice(1.34);
-        assertEquals(null, catalog.modify(prod2));
+        try {
+            catalog.modify(prod2);
+            fail("Must raise OptimisticLockingFailureException for entity instance with old version.");
+        } catch (OptimisticLockingFailureException x) {
+            // expected
+        }
 
         catalog.remove(prod1);
 
