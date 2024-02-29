@@ -40,7 +40,9 @@ public record PageRecord<T>(PageRequest<T> pageRequest, List<T> content, long to
         implements Page<T> {
 
     public PageRecord(PageRequest<T> pageRequest, List<T> content, long totalElements) {
-        this( pageRequest, content, totalElements, content.size() == pageRequest.size() );
+        this( pageRequest, content, totalElements,
+                content.size() == pageRequest.size()
+                        && totalElements > pageRequest.size() * pageRequest.page() );
     }
 
     @Override

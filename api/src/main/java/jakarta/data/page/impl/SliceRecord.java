@@ -32,8 +32,12 @@ import java.util.List;
  * @param content The page content
  * @param <T> The type of elements on the page
  */
-public record SliceRecord<T>(PageRequest<T> pageRequest, List<T> content)
+public record SliceRecord<T>(PageRequest<T> pageRequest, List<T> content, boolean moreResults)
         implements Slice<T> {
+
+    public SliceRecord(PageRequest<T> pageRequest, List<T> content) {
+        this( pageRequest, content, content.size() == pageRequest.size() );
+    }
 
     @Override
     public boolean hasContent() {
