@@ -46,7 +46,7 @@ public interface Page<T> extends Slice<T> {
      * {@link #nextPageRequest()} will definitely not return {@code null}.
      * @return {@code false} if this the last page of results
      */
-    boolean hasNextPage();
+    boolean hasNext();
 
     /**
      * Returns the total number of elements across all pages that can be requested for the query.
