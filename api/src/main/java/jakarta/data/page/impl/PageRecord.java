@@ -56,7 +56,7 @@ public record PageRecord<T>(PageRequest<T> pageRequest, List<T> content, long to
     }
 
     @Override
-    public boolean hasNextPage() {
+    public boolean hasNext() {
         return moreResults;
     }
 
