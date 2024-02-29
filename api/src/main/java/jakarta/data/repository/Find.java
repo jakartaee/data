@@ -31,7 +31,8 @@ import java.lang.annotation.Target;
  * <p>The {@code Find} annotation indicates that the annotated repository method executes a query to retrieve entities
  * based on specified parameters. The method parameters must match the types and names of the corresponding fields of
  * the entity being queried. There is no specific naming convention for methods annotated with {@code @Find}; they may
- * be named arbitrarily, and their names do not carry any specific semantic meaning.
+ * be named arbitrarily, and their names do not carry any specific semantic meaning. The method return type identifies
+ * the entity type returned by the query.
  * </p>
  * <p>For example, consider an interface representing a garage:</p>
  * <pre>
@@ -41,29 +42,22 @@ import java.lang.annotation.Target;
  *     {@code List<Car>} getCarsWithModel(@By("model") String model);
  * }
  * </pre>
- * <p>The {@code @Find} annotation indicates that the {@code getCarsWithModel(model)} method is responsible for searching
- * a list of Car objects based on the provided model parameter in a database.
+ * <p>The {@code @Find} annotation indicates that the {@code getCarsWithModel(model)} method retrieves {@code Car}
+ * instances with the given value of the {@code model} field.
  * </p>
  *
- * <p>The return type of a method annotated with {@code @Find} must be one of the following:</p>
+ * <p>A method annotated with {@code @Find} must return one of the following types:</p>
  * <ul>
- *     <li>{@code List}</li>
- *     <li>{@code Page}</li>
- *     <li>{@code Slice}</li>
- *     <li>{@code KeysetAwarePage}</li>
- *     <li>{@code KeysetAwareSlice}</li>
- *     <li>{@code Set}</li>
- *     <li>{@code Stream}</li>
- *     <li>{@code Streamable}</li>
- *     <li>{@code Iterable}</li>
- *     <li>{@code Collection}</li>
- *     <li>{@code Optional} (for single instances)</li>
- *     <li>The entity type itself (for single instances)</li>
- *     <li>Array of the entity type</li>
+ *     <li>an entity type {@code E}, when the method returns a single instance,</li>
+ *     <li>{@code Optional<E>}, when the method returns at most a single instance,</li>
+ *     <li>an entity array type {@code E[]},
+ *     <li>{@code List<E>},</li>
+ *     <li>{@code Stream<E>}, or</li>
+ *     <li>{@code Page<E>}, {@code Slice<E>}, {@code KeysetAwarePage<E>}, or {@code KeysetAwareSlice<E>}.</li>
  * </ul>
  *
- * <p>If the annotated method return type is a single instance (either through {@code Optional} or directly), but the
- * query returns more than one element, it will throw a {@link jakarta.data.exceptions.NonUniqueResultException}.
+ * <p>If the return type of the annotated method is {@code E} or {@code Optional<E>}, and the query returns more than
+ * one element when executed, the method must throw {@link jakarta.data.exceptions.NonUniqueResultException}.
  * </p>
  * <p>Annotations such as {@code @Find}, {@code @Query}, {@code @Insert}, {@code @Update}, {@code @Delete}, and
  * {@code @Save} are mutually-exclusive. A given method of a repository interface may have at most one {@code @Find}
