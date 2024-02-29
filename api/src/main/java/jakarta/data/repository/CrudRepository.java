@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2024 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@
 package jakarta.data.repository;
 
 import jakarta.data.exceptions.EntityExistsException;
+import jakarta.data.exceptions.OptimisticLockingFailureException;
 
 /**
  * <p>A built-in repository supertype for performing Create, Read, Update, and Delete (CRUD) operations on entities.</p>
@@ -130,6 +131,7 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
      */
     @Insert
     <S extends T> Iterable<S> insertAll(Iterable<S> entities);
+
     /**
      * <p>Modifies an entity that already exists in the database.</p>
      *
@@ -142,14 +144,15 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
      * then the version must also match. The version is automatically incremented when making
      * the update.</p>
      *
-     * <p>Non-matching entities are ignored and do not cause an error to be raised.</p>
-     *
      * @param entity the entity to update. Must not be {@code null}.
-     * @return true if a matching entity was found in the database to update, otherwise false.
+     * @return an updated entity instance including all automatically generated values,
+     *         updated versions, and incremented values which changed as a result of the update.
+     * @throws OptimisticLockingFailureException the entity is not found in the database
+     *         or has a version that differs from the version in the database.
      * @throws NullPointerException if the entity is null.
      */
     @Update
-    boolean update(T entity);
+    T update(T entity);
 
     /**
      * <p>Modifies entities that already exist in the database.</p>
@@ -163,13 +166,15 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
      * then the version must also match. The version is automatically incremented when making
      * the update.</p>
      *
-     * <p>Non-matching entities are ignored and do not cause an error to be raised.</p>
-     *
      * @param entities entities to update.
-     * @return the number of matching entities that were found in the database to update.
-     * @throws NullPointerException if either the iterable is null or any element is null.
+     * @return updated entity instances, in the same order as the supplied entities,
+     *         and including all automatically generated values, updated versions, and
+     *         incremented values which changed as a result of the update.
+     * @throws OptimisticLockingFailureException If any of the supplied entities is not found in the database
+     *         or has a version that differs from the version in the database.
+     * @throws NullPointerException if either the supplied {@code Iterable} is null or any element is null.
      */
     @Update
-    int updateAll(Iterable<T> entities);
+    Iterable<T> updateAll(Iterable<T> entities);
 
 }
