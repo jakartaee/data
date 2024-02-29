@@ -57,13 +57,13 @@ public record SliceRecord<T>(PageRequest<T> pageRequest, List<T> content, boolea
 
     @Override
     public PageRequest<T> nextPageRequest() {
-        return pageRequest.next();
+        return moreResults ? pageRequest.next() : null;
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public <E> PageRequest<E> nextPageRequest(Class<E> entityClass) {
-        return (PageRequest<E>) pageRequest.next();
+        return (PageRequest<E>) nextPageRequest();
     }
 
     @Override
