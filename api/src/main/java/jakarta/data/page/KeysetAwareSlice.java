@@ -147,7 +147,8 @@ public interface KeysetAwareSlice<T> extends Slice<T> {
 
     /**
      * Returns {@code true} when it is possible to navigate to a previous
-     * page of results.
+     * page of results or if it is necessary to request a previous page in order to
+     * determine whether there are more previous results.
      * @return {@code false} if the current page is empty or if it is known
      *         that there is not a previous page.
      */
