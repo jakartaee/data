@@ -42,6 +42,13 @@ package jakarta.data.page;
 public interface Page<T> extends Slice<T> {
 
     /**
+     * Returns {@code true} if it is known that there are more results, so that
+     * {@link #nextPageRequest()} will definitely not return {@code null}.
+     * @return {@code false} if this the last page of results
+     */
+    boolean hasNextPage();
+
+    /**
      * Returns the total number of elements across all pages that can be requested for the query.
      * @return the total number of elements across all pages.
      */
