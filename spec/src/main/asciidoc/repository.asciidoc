@@ -1368,6 +1368,8 @@ The sort criteria for a repository method that performs keyset pagination must u
 * `OrderBy` name pattern of the repository method (as in the examples above) or `@OrderBy` annotation(s) on the repository method.
 * `Sort` parameters of the `PageRequest` that is supplied to the repository method.
 
+The values of the entity attributes of the combined sort criteria define the cursor for keyset cursor based pagination. Within the cursor, each entity attribute has the same sorting and order of precedence that it has within the combined sort criteria.
+
 ===== Example of Appending to Queries for Keyset Pagination
 
 Without keyset pagination, a Jakarta Data provider that is based on Jakarta Persistence might compose the following JPQL for the `findByZipcodeOrderByLastNameAscFirstNameAscIdAsc` repository method from the prior example:
@@ -1468,6 +1470,43 @@ if (moreExpensive.hasContent())
 else
     pageRequest = pageRequest.beforeKeyset(priceMidpoint, 1L);
 KeysetAwareSlice<Product> lessExpensive = products.findByNameContains(pattern, pageRequest);
+----
+
+===== Example with Combined Sort Criteria
+
+In this example, the application uses `OrderBy` to define a subset of the sort criteria during development time, but also uses `Sort` to dynamically determine more fine-grained sorting when all of the static sort criteria matches. In this case the repository query is written to always order `Car` entities with a vehicle condition of `VehicleCondition.NEW` ahead of those with `VehicleCondition.USED`.
+
+[source,java]
+----
+@Repository
+public interface Products extends CrudRepository<Product, Long> {
+  @OrderBy(_Car.vehicleCondition)
+  KeysetAwarePage<Car> find(@By(_Car.make) String manufacturer,
+                            @By(_Car.model) String model,
+                            PageRequest<Car> pageRequest);
+}
+----
+
+The above criteria does not uniquely identify `Car` entities. After sorting on the vehicle condition, finer grained sorting is provided dynamically by the `PageRequest`, in this case the vehicle price followed by the unique Vehicle Identification Number (VIN). It is a good practice for the final sort criterion to be the `Id` attribute or another unique identifier of the entity to ensure a deterministic ordering.
+
+[source,java]
+----
+PageRequest<Car> page1Request = Order.by(_Car.price.desc(), _Car.vin.asc())
+                                     .pageSize(25);
+KeysetAwarePage<Car> page1 = cars.find(make, model, page1Request);
+----
+
+The query results are ordered first by vehicle condition. All resulting entities with the same vehicle condition are subsequently ordered by their price in descending order. All resulting entities with the same vehicle condition and price are ordered alphabetically by their VIN. The end user requests the next page of results. If the application still has access to the page at this point, it can use `page.nextPageRequest()` to obtain a request for the next page of results. In this case, the Jakarta Data provider computes the cursor from the vehicle condition, price, and VIN of the final `Car` entity of the page and includes the cursor in the resulting `PageRequest` instance. Alternatively, the application does not need access to the page if it obtained the cursor or the vehicle condition, price, and VIN values that make up the cursor. In this case, it can construct a new `PageRequest`,
+
+[source,java]
+----
+PageRequest<Car> page2Request = Order.by(_Car.price.desc(), _Car.vin.asc())
+                                     .page(2) // cosmetic when using a cursor
+                                     .size(25)
+                                     .afterKeyset(lastCar.vehicleCondition,
+                                                  lastCar.price,
+                                                  lastCar.vin);
+KeysetAwarePage<Car> page2 = cars.find(make, model, page2Request);
 ----
 
 ===== Scenario: Person Entity and People Repository
