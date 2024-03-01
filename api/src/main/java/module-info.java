@@ -498,24 +498,20 @@ import java.util.List;
  * </tr>
  *
  * <tr style="vertical-align: top; background-color:#eee"><td><code>countBy...</code></td>
- * <td><code>long</code>, <code>Long</code>,
- * <br><code>int</code>, <code>Integer</code>,
- * <br><code>short</code>, <code>Short</code>,
- * <br><code>Number</code></td>
+ * <td><code>long</code>,
+ * <br><code>int</code></td>
  * <td>Jakarta Persistence providers limit the maximum to <code>Integer.MAX_VALUE</code></td></tr>
  *
  * <tr style="vertical-align: top"><td><code>deleteBy...</code>,
  * <br><code>updateBy...</code></td>
- * <td><code>void</code>, <code>Void</code>,
- * <br><code>boolean</code>, <code>Boolean</code>,
- * <br><code>long</code>, <code>Long</code>,
- * <br><code>int</code>, <code>Integer</code>,
- * <br><code>short</code>, <code>Short</code>,
- * <br><code>Number</code></td>
+ * <td><code>void</code>,
+ * <br><code>boolean</code>,
+ * <br><code>long</code>,
+ * <br><code>int</code></td>
  * <td>Jakarta Persistence providers limit the maximum to <code>Integer.MAX_VALUE</code></td></tr>
  *
  * <tr style="vertical-align: top; background-color:#eee"><td><code>existsBy...</code></td>
- * <td><code>boolean</code>, <code>Boolean</code></td>
+ * <td><code>boolean</code></td>
  * <td>For determining existence.</td></tr>
  *
  * <tr style="vertical-align: top"><td><code>find...By...</code></td>
@@ -525,9 +521,7 @@ import java.util.List;
  *
  * <tr style="vertical-align: top; background-color:#eee"><td><code>find...By...</code></td>
  * <td><code>E[]</code>,
- * <br><code>Iterable&lt;E&gt;</code>,
- * <br><code>Streamable&lt;E&gt;</code>,
- * <br><code>Collection&lt;E&gt;</code></td>
+ * <br><code>List&lt;E&gt;</code></td>
  * <td>For queries where it is possible to return more than 1 item.</td></tr>
  *
  * <tr style="vertical-align: top"><td><code>find...By...</code></td>
@@ -535,18 +529,10 @@ import java.util.List;
  * <td>The caller must arrange to {@link java.util.stream.BaseStream#close() close}
  * all streams that it obtains from repository methods.</td></tr>
  *
- * <tr style="vertical-align: top; background-color:#eee"><td><code>find...By...</code></td>
- * <td><code>Collection</code> subtypes</td>
- * <td>The subtype must have a public default constructor and support <code>addAll</code> or <code>add</code></td></tr>
- *
  * <tr style="vertical-align: top"><td><code>find...By...(..., PageRequest)</code></td>
  * <td><code>Page&lt;E&gt;</code>, <code>KeysetAwarePage&lt;E&gt;</code>,
  * <br><code>Slice&lt;E&gt;</code>, <code>KeysetAwareSlice&lt;E&gt;</code></td>
  * <td>For use with pagination</td></tr>
- *
- * <tr style="vertical-align: top; background-color:#eee"><td><code>find...By...</code></td>
- * <td><code>LinkedHashMap&lt;K, E&gt;</code></td>
- * <td>Ordered map of Id attribute value to entity</td></tr>
  *
  * </table>
  *
