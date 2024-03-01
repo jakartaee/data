@@ -552,16 +552,14 @@ import java.util.List;
  *
  * <h3>Return Types for Annotated Methods</h3>
  *
- * <p>Return types that are valid when using {@link Query} depend on the Query Language
+ * <p>The legal return types for a method annotated {@link Query} depend on the Query Language
  * operation that is performed. For queries that correspond to operations in the above
  * table, the same return types must be supported as for the Query-by-Method-Name and
  * Parameter-based Conditions patterns.</p>
  *
- * <p>Refer to the {@link Insert}, {@link Update}, {@link Save}, {@link Delete}, and {@link Find}
- * JavaDoc for valid return types when using those annotations. Whenever the
- * return type is an {@link Iterable} subtype that is a concrete class,
- * the class must have a public default constructor and support
- * {@link Collection#addAll addAll} or {@link Collection#add add}.</p>
+ * <p>The legal return types for a method annotated {@link Insert}, {@link Update},
+ * {@link Save}, {@link Delete}, or {@link Find} are specified by the API documentation
+ * for those annotations.</p>
  *
  * <h2>Parameter-based Conditions</h2>
  *
