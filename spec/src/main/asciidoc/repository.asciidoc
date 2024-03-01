@@ -1308,8 +1308,10 @@ Next Page Execution:
 
 [source,java]
 ----
-PageRequest<Person> nextPageRequest = page.nextPageRequest();
-Page<Person> page2 = people.findAll(nextPageRequest);
+if (page.hasNext()) {
+   PageRequest<Person> nextPageRequest = page.nextPageRequest();
+   Page<Person> page2 = people.findAll(nextPageRequest);
+}
 ----
 
 
@@ -1347,10 +1349,13 @@ You can obtain the initial page relative to an offset and subsequent pages relat
 
 [source,java]
 ----
-for (PageRequest<Customer> p = PageRequest.of(Customer.class).size(50); p != null; ) {
-  page = customers.findByZipcodeOrderByLastNameAscFirstNameAscIdAsc(55901, p);
+PageRequest<Customer> pageRequest = PageRequest.of(Customer.class).size(50);
+Page<Customer> page = customers.findByZipcodeOrderByLastNameAscFirstNameAscIdAsc(
+                                55901, pageRequest);
+if (page.hasNext()) {
+  pageRequest = page.nextPageRequest();
+  page = customers.findByZipcodeOrderByLastNameAscFirstNameAscIdAsc(55901, pageRequest);
   ...
-  p = page.nextPageRequest();
 }
 ----
 
@@ -1427,15 +1432,16 @@ Example traversal of pages:
 
 [source,java]
 ----
-for (PageRequest<Customer> p = Order.by(_Customer.yearBorn.desc(),
-                                        _Customer.name.asc(),
-                                        _Customer.id.asc())
-                                    .pageSize(25);
-     p != null; ) {
-  page = customers.withAveragePurchaseAbove(50.0f, p);
+PageRequest<Customer> pageRequest = Order.by(_Customer.yearBorn.desc(),
+                                             _Customer.name.asc(),
+                                             _Customer.id.asc())
+                                         .pageSize(25);
+do {
+  page = customers.withAveragePurchaseAbove(50.0f, pageRequest);
   ...
-  p = page.nextPageRequest();
-}
+  if (page.hasNext())
+    pageRequest = page.nextPageRequest();
+} while (page.hasNext());
 ----
 
 ===== Example with Before/After Cursor
@@ -1577,8 +1583,10 @@ Next Page Execution:
 
 [source,java]
 ----
-PageRequest<Person> nextPageRequest = page.nextPageRequest();
-KeysetAwarePage<Person> page2 = people.findAll(nextPageRequest);
+if (page.hasNext()) {
+   PageRequest<Person> nextPageRequest = page.nextPageRequest();
+   KeysetAwarePage<Person> page2 = people.findAll(nextPageRequest);
+}
 ----
 
 
