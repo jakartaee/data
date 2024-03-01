@@ -19,6 +19,7 @@ package jakarta.data.page;
 
 import jakarta.data.repository.OrderBy;
 import jakarta.data.Sort;
+import java.util.NoSuchElementException;
 
 /**
  * <p>A slice of data with the ability to create a cursor from the
@@ -163,9 +164,11 @@ public interface KeysetAwareSlice<T> extends Slice<T> {
      * obtain the next page in a forward direction according to the
      * sort criteria and relative to that entity.</p>
      *
-     * @return pagination information for requesting the next page, or
-     *         <code>null</code> if the current page is empty
-     *         or if it is known that there is not a next page.
+     * @return pagination information for requesting the next page.
+     * @throws NoSuchElementException if the current page is empty
+     *         or it is known that there is no next page.
+     *         To avoid this exception, check for a {@code true} result of
+     *         {@link Slice#hasNext()} before invoking this method.
      */
     PageRequest<T> nextPageRequest();
 
@@ -190,9 +193,11 @@ public interface KeysetAwareSlice<T> extends Slice<T> {
      * cannot be relied upon to return a page number that is equal to the
      * current page number.</p>
      *
-     * @return pagination information for requesting the previous page, or
-     *         <code>null</code> if the current page is empty
-     *         or if it is known that there is not a previous page.
+     * @return pagination information for requesting the previous page.
+     * @throws NoSuchElementException if the current page is empty
+     *         or it is known that there is no previous page.
+     *         To avoid this exception, check for a {@code true} result of
+     *         {@link #hasPrevious()} before invoking this method.
      */
     PageRequest<T> previousPageRequest();
 }

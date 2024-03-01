@@ -20,6 +20,7 @@ package jakarta.data.page;
 import jakarta.data.Streamable;
 import jakarta.data.repository.Query;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * <p>A slice contains the data that is retrieved for a page request.
@@ -106,15 +107,19 @@ public interface Slice<T> extends Streamable<T> {
     <E> PageRequest<E> pageRequest(Class<E> entityClass);
 
     /**
-     * Returns a request for the {@link PageRequest#next() next} page, or <code>null</code> if it is known that there is no next page.
+     * Returns a request for the {@link PageRequest#next() next} page if
+     * {@link Slice#hasNext()} indicates there might be a next page.
      *
      * @return a request for the next page.
+     * @throws NoSuchElementException if it is known that there is no next page.
+     *         To avoid this exception, check for a {@code true} result of
+     *         {@link #hasNext()} before invoking this method.
      */
     PageRequest<T> nextPageRequest();
 
     /**
-     * <p>Returns a request for the {@link PageRequest#next() next} page,
-     * or <code>null</code> if it is known that there is no next page.</p>
+     * <p>Returns a request for the {@link PageRequest#next() next} page if
+     * {@link Slice#hasNext()} indicates there might be a next page.</p>
      *
      * <p>This method is useful when {@link Query query language} is used to
      * return a result of different type than the entity that is being queried.
@@ -124,6 +129,9 @@ public interface Slice<T> extends Streamable<T> {
      * @param <E>         entity class of the attributes that are used as sort criteria.
      * @param entityClass entity class of the attributes that are used as sort criteria.
      * @return a request for the next page.
+     * @throws NoSuchElementException if it is known that there is no next page.
+     *         To avoid this exception, check for a {@code true} result of
+     *         {@link #hasNext()} before invoking this method.
      */
     <E> PageRequest<E> nextPageRequest(Class<E> entityClass);
 }

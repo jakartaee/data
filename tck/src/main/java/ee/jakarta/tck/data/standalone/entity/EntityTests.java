@@ -27,6 +27,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
@@ -1059,6 +1060,27 @@ public class EntityTests {
         assertEquals(false, page.hasPrevious());
         assertEquals(0, page.content().size());
         assertEquals(0, page.numberOfElements());
+
+        try {
+            page.nextPageRequest();
+            fail("nextPageRequest must raise NoSuchElementException when current page is empty.");
+        } catch (NoSuchElementException x) {
+            // expected
+        }
+
+        try {
+            page.nextPageRequest(NaturalNumber.class);
+            fail("nextPageRequest(entityClass) must raise NoSuchElementException when current page is empty.");
+        } catch (NoSuchElementException x) {
+            // expected
+        }
+
+        try {
+            page.previousPageRequest();
+            fail("previousPageRequest must raise NoSuchElementException when current page is empty.");
+        } catch (NoSuchElementException x) {
+            // expected
+        }
     }
 
     @Assertion(id = "133",
