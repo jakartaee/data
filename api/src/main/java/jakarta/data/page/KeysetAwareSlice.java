@@ -24,15 +24,16 @@ import jakarta.data.Sort;
  * <p>A slice of data with the ability to create a cursor from the
  * keyset of each entity in the slice.</p>
  *
- * <p>Keyset pagination is a form of pagination that aims to reduce the
+ * <p>Keyset cursor pagination is a form of pagination that aims to reduce the
  * possibility of missed or duplicate results by making the request for
  * each subsequent page relative to the observed values of entity properties
- * from the current page. This list of values is referred to as the keyset
- * and consists of the values of entity properties that are in the sort criteria
- * of the repository method. The combination of sort criteria must uniquely
- * identify each entity. The keyset values can be from the last entity on the page
- * (for pagination in a forward direction) or first entity on the page
- * (if requesting pages in a reverse direction),
+ * from the current page. This list of values is referred to as the keyset cursor
+ * and is an ordered list of the values of entity properties that are in the
+ * combined sort criteria of the repository method, in the same order of precedence.
+ * The combination of sort criteria must uniquely identify each entity.
+ * The keyset values can be from the last entity on the page
+ * (for the next page in a forward direction) or first entity on the page
+ * (if requesting the previous page),
  * or can be any other desired list of values which serve as a new starting
  * point. Keyset pagination also has the potential to improve performance
  * by avoiding the fetching and ordering of results from prior pages
