@@ -19,9 +19,9 @@ import java.util.stream.Stream;
 
 import jakarta.data.Limit;
 import jakarta.data.Order;
-import jakarta.data.page.KeysetAwareSlice;
+import jakarta.data.page.CursoredPage;
+import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
-import jakarta.data.page.Slice;
 import jakarta.data.repository.BasicRepository;
 import jakarta.data.repository.Repository;
 
@@ -38,24 +38,24 @@ public interface NaturalNumbers extends BasicRepository<NaturalNumber, Long>, Id
 
     long countBy();
 
-    KeysetAwareSlice<NaturalNumber> findByFloorOfSquareRootOrderByIdAsc(long sqrtFloor,
-                                                                        PageRequest<NaturalNumber> pagination);
+    CursoredPage<NaturalNumber> findByFloorOfSquareRootOrderByIdAsc(long sqrtFloor,
+                                                                    PageRequest<NaturalNumber> pagination);
 
     Stream<NaturalNumber> findByIdBetweenOrderByNumTypeAsc(long minimum,
                                                            long maximum,
                                                            Order<NaturalNumber> sorts);
 
-    Slice<NaturalNumber> findByIdLessThanOrderByFloorOfSquareRootDesc(long exclusiveMax,
-                                                                      PageRequest<NaturalNumber> pagination);
+    Page<NaturalNumber> findByIdLessThanOrderByFloorOfSquareRootDesc(long exclusiveMax,
+                                                                     PageRequest<NaturalNumber> pagination);
 
-    KeysetAwareSlice<NaturalNumber> findByNumTypeAndNumBitsRequiredLessThan(NumberType type,
-                                                                            short bitsUnder,
-                                                                            PageRequest<NaturalNumber> pagination);
+    CursoredPage<NaturalNumber> findByNumTypeAndNumBitsRequiredLessThan(NumberType type,
+                                                                        short bitsUnder,
+                                                                        PageRequest<NaturalNumber> pagination);
 
     NaturalNumber[] findByNumTypeNot(NumberType notThisType, Limit limit, Order<NaturalNumber> sorts);
 
-    Slice<NaturalNumber> findByNumTypeAndFloorOfSquareRootLessThanEqual(NumberType type,
-                                                                        long maxSqrtFloor,
-                                                                        PageRequest<NaturalNumber> pagination);
+    Page<NaturalNumber> findByNumTypeAndFloorOfSquareRootLessThanEqual(NumberType type,
+                                                                       long maxSqrtFloor,
+                                                                       PageRequest<NaturalNumber> pagination);
 
 }

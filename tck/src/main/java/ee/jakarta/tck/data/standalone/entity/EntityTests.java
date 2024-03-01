@@ -35,6 +35,7 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import jakarta.data.page.CursoredPage;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
@@ -59,15 +60,11 @@ import ee.jakarta.tck.data.framework.utilities.TestPropertyUtility;
 import jakarta.data.Limit;
 import jakarta.data.Order;
 import jakarta.data.Sort;
-import jakarta.data.Streamable;
 import jakarta.data.exceptions.EmptyResultException;
 import jakarta.data.exceptions.MappingException;
 import jakarta.data.exceptions.NonUniqueResultException;
-import jakarta.data.page.KeysetAwarePage;
-import jakarta.data.page.KeysetAwareSlice;
 import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
-import jakarta.data.page.Slice;
 import jakarta.inject.Inject;
 
 /**
@@ -425,13 +422,13 @@ public class EntityTests {
 
     @Assertion(id = "133", strategy = "Request a Slice higher than the final Slice, expecting an empty Slice with 0 results.")
     public void testBeyondFinalSlice() {
-        PageRequest<NaturalNumber> sixth = PageRequest.of(NaturalNumber.class).size(5).sortBy(Sort.desc("id")).page(6);
-        Slice<NaturalNumber> slice = numbers.findByNumTypeAndFloorOfSquareRootLessThanEqual(NumberType.PRIME, 8L,
+        PageRequest<NaturalNumber> sixth = PageRequest.of(NaturalNumber.class).size(5).sortBy(Sort.desc("id")).page(6).withoutTotal();
+        Page<NaturalNumber> page = numbers.findByNumTypeAndFloorOfSquareRootLessThanEqual(NumberType.PRIME, 8L,
                 sixth);
-        assertEquals(0, slice.numberOfElements());
-        assertEquals(0, slice.stream().count());
-        assertEquals(false, slice.hasContent());
-        assertEquals(false, slice.iterator().hasNext());
+        assertEquals(0, page.numberOfElements());
+        assertEquals(0, page.stream().count());
+        assertEquals(false, page.hasContent());
+        assertEquals(false, page.iterator().hasNext());
     }
 
     @Assertion(id = "133", strategy = "Use a parameter-based find operation that uses the By annotation to identify the entity attribute names.")
@@ -537,7 +534,7 @@ public class EntityTests {
 
     @Assertion(id = "133", strategy = "Use a repository method with the False keyword.")
     public void testFalse() {
-        Streamable<NaturalNumber> even = positives.findByIsOddFalseAndIdBetween(50L, 60L);
+        Page<NaturalNumber> even = positives.findByIsOddFalseAndIdBetween(50L, 60L);
 
         assertEquals(6L, even.stream().count());
 
@@ -595,14 +592,14 @@ public class EntityTests {
 
     @Assertion(id = "133", strategy = "Request the last Slice of up to 5 results, expecting to find the final 2.")
     public void testFinalSliceOfUpTo5() {
-        PageRequest<NaturalNumber> fifth = PageRequest.of(NaturalNumber.class).size(5).page(5).sortBy(Sort.desc("id"));
-        Slice<NaturalNumber> slice = numbers.findByNumTypeAndFloorOfSquareRootLessThanEqual(NumberType.PRIME, 8L,
+        PageRequest<NaturalNumber> fifth = PageRequest.of(NaturalNumber.class).size(5).page(5).sortBy(Sort.desc("id")).withoutTotal();
+        Page<NaturalNumber> page = numbers.findByNumTypeAndFloorOfSquareRootLessThanEqual(NumberType.PRIME, 8L,
                 fifth);
-        assertEquals(true, slice.hasContent());
-        assertEquals(5, slice.pageRequest().page());
-        assertEquals(2, slice.numberOfElements());
+        assertEquals(true, page.hasContent());
+        assertEquals(5, page.pageRequest().page());
+        assertEquals(2, page.numberOfElements());
 
-        Iterator<NaturalNumber> it = slice.iterator();
+        Iterator<NaturalNumber> it = page.iterator();
 
         // first result
         assertEquals(true, it.hasNext());
@@ -757,10 +754,10 @@ public class EntityTests {
     }
 
     @Assertion(id = "133",
-               strategy = "Request the first KeysetAwarePage of 8 results, expecting to find all 8, " +
-                          "then request the next KeysetAwarePage and the KeysetAwarePage after that, " +
+               strategy = "Request the first CursoredPage of 8 results, expecting to find all 8, " +
+                          "then request the next CursoredPage and the CursoredPage after that, " +
                           "expecting to find all results.")
-    public void testFirstKeysetAwarePageOf8AndNextPages() {
+    public void testFirstCursoredPageOf8AndNextPages() {
         // The query for this test returns 1-15,25-32 in the following order:
 
         // 25, 26, 27, 28, 29, 30, 31, 32 square root rounds down to 4
@@ -769,7 +766,7 @@ public class EntityTests {
         // 1, 2, 3 square root rounds down to 1
 
         PageRequest<NaturalNumber> first8 = PageRequest.of(NaturalNumber.class).size(8).sortBy(Sort.asc("id"));
-        KeysetAwarePage<NaturalNumber> page;
+        CursoredPage<NaturalNumber> page;
 
         try {
             page = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByBitsRequiredDesc(4L, 33L, first8);
@@ -812,12 +809,12 @@ public class EntityTests {
     }
 
     @Assertion(id = "133",
-               strategy = "Request the first KeysetAwareSlice of 6 results, expecting to find all 6, " +
-                          "then request the next KeysetAwareSlice and the KeysetAwareSlice after that, " +
+               strategy = "Request the first CursoredPage of 6 results, expecting to find all 6, " +
+                          "then request the next CursoredPage and the CursoredPage after that, " +
                           "expecting to find all results.")
     public void testFirstKeysetAwareSliceOf6AndNextSlices() {
-        PageRequest<NaturalNumber> first6 = PageRequest.ofSize(6);
-        KeysetAwareSlice<NaturalNumber> slice;
+        PageRequest<NaturalNumber> first6 = PageRequest.of(NaturalNumber.class).size(6).withoutTotal();
+        CursoredPage<NaturalNumber> slice;
 
         try {
             slice = numbers.findByFloorOfSquareRootOrderByIdAsc(7L, first6);
@@ -887,12 +884,12 @@ public class EntityTests {
 
     @Assertion(id = "133", strategy = "Request the first Slice of 5 results, expecting to find all 5.")
     public void testFirstSliceOf5() {
-        PageRequest<NaturalNumber> first5 = PageRequest.of(NaturalNumber.class).size(5).sortBy(Sort.desc("id"));
-        Slice<NaturalNumber> slice = numbers.findByNumTypeAndFloorOfSquareRootLessThanEqual(NumberType.PRIME, 8L,
+        PageRequest<NaturalNumber> first5 = PageRequest.of(NaturalNumber.class).size(5).sortBy(Sort.desc("id")).withoutTotal();
+        Page<NaturalNumber> page = numbers.findByNumTypeAndFloorOfSquareRootLessThanEqual(NumberType.PRIME, 8L,
                 first5);
-        assertEquals(5, slice.numberOfElements());
+        assertEquals(5, page.numberOfElements());
 
-        Iterator<NaturalNumber> it = slice.iterator();
+        Iterator<NaturalNumber> it = page.iterator();
 
         // first result
         assertEquals(true, it.hasNext());
@@ -972,10 +969,10 @@ public class EntityTests {
     }
 
     @Assertion(id = "133",
-               strategy = "Request a KeysetAwarePage of 7 results after the keyset of the 20th result, expecting to find the next 7 results. " +
-                          "Then request the KeysetAwarePage before the keyset of the first entry of the page, expecting to find the previous 7 results. " +
-                          "Then request the KeysetAwarePage after the last entry of the original slice, expecting to find the next 7.")
-    public void testKeysetAwarePageOf7FromCursor() {
+               strategy = "Request a CursoredPage of 7 results after the keyset of the 20th result, expecting to find the next 7 results. " +
+                          "Then request the CursoredPage before the keyset of the first entry of the page, expecting to find the previous 7 results. " +
+                          "Then request the CursoredPage after the last entry of the original slice, expecting to find the next 7.")
+    public void testCursoredPageOf7FromCursor() {
         // The query for this test returns 1-35 and 49 in the following order:
         //
         // 35 34 33 32 49 24 23 22 21 20 19 18 17 16 31 30 29 28 27 26 25 08 15 14 13 12 11 10 09 07 06 05 04 03 02 01
@@ -987,7 +984,7 @@ public class EntityTests {
                         .sortBy(Sort.desc("numBitsRequired"), Sort.asc("floorOfSquareRoot"), Sort.desc("id"))
                         .afterKeyset((short) 5, 5L, 26L); // 20th result is 26; it requires 5 bits and its square root rounds down to 5.
 
-        KeysetAwarePage<NaturalNumber> page;
+        CursoredPage<NaturalNumber> page;
         try {
             page = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByBitsRequiredDesc(6L, 50L, middle7);
         } catch (MappingException x) {
@@ -1006,7 +1003,7 @@ public class EntityTests {
 
         assertEquals(true, page.hasPrevious());
 
-        KeysetAwarePage<NaturalNumber> previousPage;
+        CursoredPage<NaturalNumber> previousPage;
         try {
             previousPage = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByBitsRequiredDesc(6L, 50L,
                                                                                                     page.previousPageRequest());
@@ -1023,7 +1020,7 @@ public class EntityTests {
 
         assertEquals(7, previousPage.numberOfElements());
 
-        KeysetAwarePage<NaturalNumber> nextPage;
+        CursoredPage<NaturalNumber> nextPage;
         try {
             nextPage = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByBitsRequiredDesc(6L, 50L,
                                                                                                 page.nextPageRequest());
@@ -1042,10 +1039,10 @@ public class EntityTests {
         assertEquals(7, nextPage.numberOfElements());
     }
 
-    @Assertion(id = "133", strategy = "Request a KeysetAwarePage of results where none match the query, expecting an empty KeysetAwarePage with 0 results.")
-    public void testKeysetAwarePageOfNothing() {
+    @Assertion(id = "133", strategy = "Request a CursoredPage of results where none match the query, expecting an empty CursoredPage with 0 results.")
+    public void testCursoredPageOfNothing() {
 
-        KeysetAwarePage<NaturalNumber> page;
+        CursoredPage<NaturalNumber> page;
         try {
             // There are no positive integers less than 4 which have a square root that rounds down to something other than 1.
             page = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByBitsRequiredDesc(1L, 4L, PageRequest.ofPage(1L));
@@ -1084,9 +1081,9 @@ public class EntityTests {
     }
 
     @Assertion(id = "133",
-            strategy = "Request a KeysetAwareSlice of 9 results after the keyset of the 20th result, expecting to find the next 9 results. " +
-                       "Then request the KeysetAwareSlice before the keyset of the first entry of the slice, expecting to find the previous 9 results. " +
-                       "Then request the KeysetAwareSlice after the last entry of the original slice, expecting to find the next 9.")
+            strategy = "Request a CursoredPage of 9 results after the keyset of the 20th result, expecting to find the next 9 results. " +
+                       "Then request the CursoredPage before the keyset of the first entry of the slice, expecting to find the previous 9 results. " +
+                       "Then request the CursoredPage after the last entry of the original slice, expecting to find the next 9.")
     public void testKeysetAwareSliceOf9FromCursor() {
         // The query for this test returns composite natural numbers under 64 in the following order:
         //
@@ -1095,11 +1092,11 @@ public class EntityTests {
         //                                  ^^^^^^^^ slice 2 ^^^^^^^^^
         //                                                                                        ^^^^^^^^ slice 3 ^^^^^^^^^
 
-        PageRequest<NaturalNumber> middle9 = PageRequest.of(NaturalNumber.class).size(9)
+        PageRequest<NaturalNumber> middle9 = PageRequest.of(NaturalNumber.class).size(9).withoutTotal()
                              .sortBy(Sort.desc("floorOfSquareRoot"), Sort.asc("id"))
                              .afterKeyset(6L, 46L); // 20th result is 46; its square root rounds down to 6.
 
-        KeysetAwareSlice<NaturalNumber> slice;
+        CursoredPage<NaturalNumber> slice;
         try {
             slice = numbers.findByNumTypeAndNumBitsRequiredLessThan(NumberType.COMPOSITE, (short) 7, middle9);
         } catch (MappingException x) {
@@ -1114,8 +1111,7 @@ public class EntityTests {
         assertEquals(9, slice.numberOfElements());
 
         assertEquals(true, slice.hasPrevious());
-
-        KeysetAwareSlice<NaturalNumber> previousSlice;
+        CursoredPage<NaturalNumber> previousSlice;
         try {
             previousSlice = numbers.findByNumTypeAndNumBitsRequiredLessThan(NumberType.COMPOSITE,
                                                                             (short) 7,
@@ -1131,7 +1127,7 @@ public class EntityTests {
 
          assertEquals(9, previousSlice.numberOfElements());
 
-         KeysetAwareSlice<NaturalNumber> nextSlice;
+         CursoredPage<NaturalNumber> nextSlice;
          try {
              nextSlice = numbers.findByNumTypeAndNumBitsRequiredLessThan(NumberType.COMPOSITE,
                                                                          (short) 7,
@@ -1148,12 +1144,12 @@ public class EntityTests {
          assertEquals(9, nextSlice.numberOfElements());
     }
 
-    @Assertion(id = "133", strategy = "Request a KeysetAwareSlice of results where none match the query, expecting an empty KeysetAwareSlice with 0 results.")
+    @Assertion(id = "133", strategy = "Request a CursoredPage of results where none match the query, expecting an empty CursoredPage with 0 results.")
     public void testKeysetAwareSliceOfNothing() {
         // There are no numbers larger than 30 which have a square root that rounds down to 3.
-        PageRequest<NaturalNumber> pagination = PageRequest.of(NaturalNumber.class).size(33).afterKeyset(30L);
+        PageRequest<NaturalNumber> pagination = PageRequest.of(NaturalNumber.class).size(33).afterKeyset(30L).withoutTotal();
 
-        KeysetAwareSlice<NaturalNumber> slice;
+        CursoredPage<NaturalNumber> slice;
         try {
             slice = numbers.findByFloorOfSquareRootOrderByIdAsc(3L, pagination);
         } catch (MappingException x) {
@@ -1281,35 +1277,35 @@ public class EntityTests {
                           "followed by the dynamic sort criteria when the value(s) being compared by the static criteria match.")
     public void testOrderByHasPrecedenceOverPageRequestSorts() {
         PageRequest<NaturalNumber> pagination = PageRequest.of(NaturalNumber.class).size(8).sortBy(Sort.asc("numType"), Sort.desc("id"));
-        Slice<NaturalNumber> slice = numbers.findByIdLessThanOrderByFloorOfSquareRootDesc(25L, pagination);
+        Page<NaturalNumber> page = numbers.findByIdLessThanOrderByFloorOfSquareRootDesc(25L, pagination);
 
         assertEquals(Arrays.toString(new Long[] { 23L, 19L, 17L, // square root rounds down to 4; prime
                                                   24L, 22L, 21L, 20L, 18L }), // square root rounds down to 4; composite
-                     Arrays.toString(slice.stream().map(number -> number.getId()).toArray()));
+                     Arrays.toString(page.stream().map(number -> number.getId()).toArray()));
 
-        assertEquals(true, slice.hasNext());
-        pagination = slice.nextPageRequest();
-        slice = numbers.findByIdLessThanOrderByFloorOfSquareRootDesc(25L, pagination);
+        assertEquals(true, page.hasNext());
+        pagination = page.nextPageRequest();
+        page = numbers.findByIdLessThanOrderByFloorOfSquareRootDesc(25L, pagination);
 
         assertEquals(Arrays.toString(new Long[] { 16L, // square root rounds down to 4; composite
                                                   13L, 11L, // square root rounds down to 3; prime
                                                   15L, 14L, 12L, 10L, 9L }), // square root rounds down to 3; composite
-                     Arrays.toString(slice.stream().map(number -> number.getId()).toArray()));
+                     Arrays.toString(page.stream().map(number -> number.getId()).toArray()));
 
-        assertEquals(true, slice.hasNext());
-        pagination = slice.nextPageRequest();
-        slice = numbers.findByIdLessThanOrderByFloorOfSquareRootDesc(25L, pagination);
+        assertEquals(true, page.hasNext());
+        pagination = page.nextPageRequest();
+        page = numbers.findByIdLessThanOrderByFloorOfSquareRootDesc(25L, pagination);
 
         assertEquals(Arrays.toString(new Long[] { 7L, 5L, // square root rounds down to 2; prime
                                                   8L, 6L, 4L, // square root rounds down to 2; composite
                                                   1L, // square root rounds down to 1; one
                                                   3L, 2L }), // square root rounds down to 1; prime
-                     Arrays.toString(slice.stream().map(number -> number.getId()).toArray()));
+                     Arrays.toString(page.stream().map(number -> number.getId()).toArray()));
 
-        if (slice.hasNext()) {
-            pagination = slice.nextPageRequest();
-            slice = numbers.findByIdLessThanOrderByFloorOfSquareRootDesc(25L, pagination);
-            assertEquals(false, slice.hasContent());
+        if (page.hasNext()) {
+            pagination = page.nextPageRequest();
+            page = numbers.findByIdLessThanOrderByFloorOfSquareRootDesc(25L, pagination);
+            assertEquals(false, page.hasContent());
         }
     }
 
@@ -1372,13 +1368,13 @@ public class EntityTests {
 
     @Assertion(id = "133", strategy = "Request a Slice of results where none match the query, expecting an empty Slice with 0 results.")
     public void testSliceOfNothing() {
-        PageRequest<NaturalNumber> pagination =  PageRequest.of(NaturalNumber.class).size(5).sortBy(Sort.desc("id"));
-        Slice<NaturalNumber> slice = numbers.findByNumTypeAndFloorOfSquareRootLessThanEqual(NumberType.COMPOSITE, 1L,
+        PageRequest<NaturalNumber> pagination =  PageRequest.of(NaturalNumber.class).size(5).sortBy(Sort.desc("id")).withoutTotal();
+        Page<NaturalNumber> page = numbers.findByNumTypeAndFloorOfSquareRootLessThanEqual(NumberType.COMPOSITE, 1L,
                 pagination);
 
-        assertEquals(false, slice.hasContent());
-        assertEquals(0, slice.content().size());
-        assertEquals(0, slice.numberOfElements());
+        assertEquals(false, page.hasContent());
+        assertEquals(0, page.content().size());
+        assertEquals(0, page.numberOfElements());
     }
 
     @Assertion(id = "133", strategy = "Use the StaticMetamodel to obtain ascending Sorts for an entity attribute in a type-safe manner.")
@@ -1458,34 +1454,34 @@ public class EntityTests {
         assertEquals('d', found[1].getThisCharacter());
         assertEquals('T', found[2].getThisCharacter());
     }
-
-    @Assertion(id = "133", strategy = "Use a repository method that returns Streamable and verify the results.")
-    public void testStreamable() {
-        Streamable<AsciiCharacter> chars = characters.findByNumericValueLessThanEqualAndNumericValueGreaterThanEqual(109, 101);
-
-        assertEquals(Arrays.toString(new Character[] { Character.valueOf('e'),
-                                                       Character.valueOf('f'),
-                                                       Character.valueOf('g'),
-                                                       Character.valueOf('h'),
-                                                       Character.valueOf('i'),
-                                                       Character.valueOf('j'),
-                                                       Character.valueOf('k'),
-                                                       Character.valueOf('l'),
-                                                       Character.valueOf('m') }),
-                     Arrays.toString(chars.stream().map(ch -> ch.getThisCharacter()).sorted().toArray()));
-
-        assertEquals(101 + 102 + 103 + 104 + 105 + 106 + 107 + 108 + 109,
-                     chars.stream().mapToInt(AsciiCharacter::getNumericValue).sum());
-
-        Set<String> sorted = new TreeSet<>();
-        chars.forEach(ch -> sorted.add(ch.getHexadecimal()));
-        assertEquals(new TreeSet<>(Set.of("65", "66", "67", "68", "69", "6a", "6b", "6c", "6d")),
-                     sorted);
-
-        Streamable<AsciiCharacter> empty = characters.findByNumericValueLessThanEqualAndNumericValueGreaterThanEqual(115, 120);
-        assertEquals(false, empty.iterator().hasNext());
-        assertEquals(0L, empty.stream().count());
-    }
+//
+//    @Assertion(id = "133", strategy = "Use a repository method that returns Streamable and verify the results.")
+//    public void testStreamable() {
+//        Streamable<AsciiCharacter> chars = characters.findByNumericValueLessThanEqualAndNumericValueGreaterThanEqual(109, 101);
+//
+//        assertEquals(Arrays.toString(new Character[] { Character.valueOf('e'),
+//                                                       Character.valueOf('f'),
+//                                                       Character.valueOf('g'),
+//                                                       Character.valueOf('h'),
+//                                                       Character.valueOf('i'),
+//                                                       Character.valueOf('j'),
+//                                                       Character.valueOf('k'),
+//                                                       Character.valueOf('l'),
+//                                                       Character.valueOf('m') }),
+//                     Arrays.toString(chars.stream().map(ch -> ch.getThisCharacter()).sorted().toArray()));
+//
+//        assertEquals(101 + 102 + 103 + 104 + 105 + 106 + 107 + 108 + 109,
+//                     chars.stream().mapToInt(AsciiCharacter::getNumericValue).sum());
+//
+//        Set<String> sorted = new TreeSet<>();
+//        chars.forEach(ch -> sorted.add(ch.getHexadecimal()));
+//        assertEquals(new TreeSet<>(Set.of("65", "66", "67", "68", "69", "6a", "6b", "6c", "6d")),
+//                     sorted);
+//
+//        Streamable<AsciiCharacter> empty = characters.findByNumericValueLessThanEqualAndNumericValueGreaterThanEqual(115, 120);
+//        assertEquals(false, empty.iterator().hasNext());
+//        assertEquals(0L, empty.stream().count());
+//    }
 
     @Assertion(id = "133",
                strategy = "Request the third Page of 10 results, expecting to find all 10. " +
@@ -1532,26 +1528,26 @@ public class EntityTests {
                strategy = "Request the third Slice of 5 results, expecting to find all 5. "
                        +  "Request the next Slice via nextPageRequest, expecting page number 4 and another 5 results.")
     public void testThirdAndFourthSlicesOf5() {
-        PageRequest<NaturalNumber> third5 = PageRequest.of(NaturalNumber.class).page(3).size(5).sortBy(Sort.desc("id"));
-        Slice<NaturalNumber> slice = numbers.findByNumTypeAndFloorOfSquareRootLessThanEqual(NumberType.PRIME, 8L,
+        PageRequest<NaturalNumber> third5 = PageRequest.of(NaturalNumber.class).page(3).size(5).sortBy(Sort.desc("id")).withoutTotal();
+        Page<NaturalNumber> page = numbers.findByNumTypeAndFloorOfSquareRootLessThanEqual(NumberType.PRIME, 8L,
                 third5);
 
-        assertEquals(3, slice.pageRequest().page());
-        assertEquals(5, slice.numberOfElements());
+        assertEquals(3, page.pageRequest().page());
+        assertEquals(5, page.numberOfElements());
 
         assertEquals(Arrays.toString(new Long[] { 37L, 31L, 29L, 23L, 19L }),
-                Arrays.toString(slice.stream().map(number -> number.getId()).toArray()));
+                Arrays.toString(page.stream().map(number -> number.getId()).toArray()));
 
-        assertEquals(true, slice.hasNext());
-        PageRequest<NaturalNumber> fourth5 = slice.nextPageRequest();
+        assertEquals(true, page.hasNext());
+        PageRequest<NaturalNumber> fourth5 = page.nextPageRequest();
 
-        slice = numbers.findByNumTypeAndFloorOfSquareRootLessThanEqual(NumberType.PRIME, 8L, fourth5);
+        page = numbers.findByNumTypeAndFloorOfSquareRootLessThanEqual(NumberType.PRIME, 8L, fourth5);
 
-        assertEquals(4, slice.pageRequest().page());
-        assertEquals(5, slice.numberOfElements());
+        assertEquals(4, page.pageRequest().page());
+        assertEquals(5, page.numberOfElements());
 
         assertEquals(Arrays.toString(new Long[] { 17L, 13L, 11L, 7L, 5L }),
-                Arrays.toString(slice.stream().map(number -> number.getId()).toArray()));
+                Arrays.toString(page.stream().map(number -> number.getId()).toArray()));
     }
 
     @Assertion(id = "133", strategy = "Use a repository method with the True keyword.")

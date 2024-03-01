@@ -50,7 +50,7 @@ class KeysetPageRequestTest {
     @Test
     @DisplayName("Should include keyset values in next PageRequest from Cursor")
     void shouldCreatePageRequestAfterKeysetCursor() {
-        PageRequest.Cursor cursor = new KeysetCursor("me", 200);
+        PageRequest.Cursor cursor = new PageRequestCursor("me", 200);
         PageRequest<?> pageRequest = PageRequest.ofSize(35).sortBy(Sort.asc("name"), Sort.asc("id")).afterKeysetCursor(cursor);
 
         assertSoftly(softly -> {
@@ -83,7 +83,7 @@ class KeysetPageRequestTest {
     @Test
     @DisplayName("Should include keyset values in previous PageRequest from Cursor")
     void shouldCreatePageRequestBeforeKeysetCursor() {
-        PageRequest.Cursor cursor = new KeysetCursor(900L, 300, "testing", 120, 'T');
+        PageRequest.Cursor cursor = new PageRequestCursor(900L, 300, "testing", 120, 'T');
         PageRequest<?> pageRequest = PageRequest.ofPage(8).beforeKeysetCursor(cursor);
 
         assertSoftly(softly -> {
@@ -144,15 +144,15 @@ class KeysetPageRequestTest {
     void shouldBeEqualWithSameKeysetValues() {
         PageRequest<?> pageRequest25P1S0A1 = PageRequest.ofSize(25).afterKeyset("keyval1", '2', 3);
         PageRequest<?> pageRequest25P1S0B1 = PageRequest.ofSize(25).beforeKeyset("keyval1", '2', 3);
-        PageRequest<?> pageRequest25P1S0A1Match = PageRequest.ofSize(25).afterKeysetCursor(new KeysetCursor("keyval1", '2', 3));
-        PageRequest<?> pageRequest25P2S0A1 = PageRequest.ofPage(2).size(25).afterKeysetCursor(new KeysetCursor("keyval1", '2', 3));
+        PageRequest<?> pageRequest25P1S0A1Match = PageRequest.ofSize(25).afterKeysetCursor(new PageRequestCursor("keyval1", '2', 3));
+        PageRequest<?> pageRequest25P2S0A1 = PageRequest.ofPage(2).size(25).afterKeysetCursor(new PageRequestCursor("keyval1", '2', 3));
         PageRequest<?> pageRequest25P1S1A1 = PageRequest.ofSize(25).sortBy(Sort.desc("d"), Sort.asc("a"), Sort.asc("id")).afterKeyset("keyval1", '2', 3);
         PageRequest<?> pageRequest25P1S2A1 = PageRequest.ofSize(25).sortBy(Sort.desc("d"), Sort.asc("a"), Sort.desc("id")).afterKeyset("keyval1", '2', 3);
         PageRequest<?> pageRequest25P1S0A2 = PageRequest.ofSize(25).afterKeyset("keyval2", '2', 3);
 
-        PageRequest.Cursor cursor1 = new KeysetCursor("keyval1", '2', 3);
-        PageRequest.Cursor cursor2 = new KeysetCursor("keyval2", '2', 3);
-        PageRequest.Cursor cursor3 = new KeysetCursor("keyval1", '2');
+        PageRequest.Cursor cursor1 = new PageRequestCursor("keyval1", '2', 3);
+        PageRequest.Cursor cursor2 = new PageRequestCursor("keyval2", '2', 3);
+        PageRequest.Cursor cursor3 = new PageRequestCursor("keyval1", '2');
         PageRequest.Cursor cursor4 = new PageRequest.Cursor() {
             private final Object[] keyset = new Object[] { "keyval1", '2', 3 };
 

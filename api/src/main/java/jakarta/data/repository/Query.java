@@ -18,9 +18,9 @@
 package jakarta.data.repository;
 
 import jakarta.data.Sort;
-import jakarta.data.page.KeysetAwarePage;
+import jakarta.data.page.CursoredPage;
 import jakarta.data.page.Page;
-import jakarta.data.page.Slice;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -76,7 +76,7 @@ import java.lang.annotation.Target;
  * <p>Some query languages such as JPQL can be used to return a type other than the
  * entity class, as shown in the above example, resulting in a {@link Page} that is
  * parameterized with the query result type rather than the entity class.
- * to request a subsequent page, use the {@link Slice#nextPageRequest(Class)} method
+ * to request a subsequent page, use the {@link Page#nextPageRequest(Class)} method
  * to specify the entity class. For example,</p>
  *
  * <pre>
@@ -108,11 +108,9 @@ public @interface Query {
     /**
      * <p>Defines an additional query that counts the number of elements that are
      * returned by the {@link #value() primary} query. This is used to compute
-     * the {@link Page#totalElements() total elements}
-     * and {@link Page#totalPages() total pages}
-     * for paginated repository queries that are annotated with
-     * <code>@Query</code> and return a {@link Page} or {@link KeysetAwarePage}.
-     * Slices do not use a counting query.</p>
+     * the {@link Page#totalElements total elements} and {@link Page#totalPages
+     * total pages} for paginated repository queries which are annotated with
+     * {@code @Query} and return a {@link Page} or {@link CursoredPage}.</p>
      *
      * <p>The default value of empty string indicates that no counting query
      * is provided. A counting query is unnecessary when pagination is

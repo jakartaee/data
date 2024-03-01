@@ -29,6 +29,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import jakarta.data.page.Page;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
@@ -41,7 +42,6 @@ import ee.jakarta.tck.data.standalone.persistence.Product.Department;
 
 import jakarta.data.Order;
 import jakarta.data.Sort;
-import jakarta.data.Streamable;
 import jakarta.data.exceptions.EntityExistsException;
 import jakarta.data.exceptions.MappingException;
 import jakarta.data.exceptions.OptimisticLockingFailureException;
@@ -314,7 +314,7 @@ public class PersistenceEntityTests {
         catalog.save(Product.of("basketball", 14.88, "TEST-PROD-76", Department.SPORTING_GOODS));
         catalog.save(Product.of("baseball cap", 12.99, "TEST-PROD-77", Department.SPORTING_GOODS, Department.CLOTHING));
 
-        Streamable<Product> found = catalog.findByDepartmentCountAndPriceBelow(2, 100.0);
+        Page<Product> found = catalog.findByDepartmentCountAndPriceBelow(2, 100.0);
 
         assertEquals(List.of("baseball cap", "toothpaste"),
                      found.stream().map(Product::getName).collect(Collectors.toList()));

@@ -41,15 +41,14 @@ import java.util.NoSuchElementException;
  * because these become non-matching.</p>
  *
  * <p>To use keyset pagination, define a repository method with return value of
- * {@link KeysetAwareSlice} or {@link KeysetAwarePage} and which accepts a
- * special parameter (after the normal query parameters) that is a
- * {@link PageRequest}. For example,</p>
+ * {@link CursoredPage} and which accepts a special parameter (after the normal
+ * query parameters) that is a {@link PageRequest}. For example,</p>
  *
  * <pre>
  * &#64;OrderBy("lastName")
  * &#64;OrderBy("firstName")
  * &#64;OrderBy("id")
- * KeysetAwareSlice&lt;Employee&gt; findByHoursWorkedGreaterThan(int hours, {@code PageRequest<Employee>} pageRequest);
+ * CursoredPage&lt;Employee&gt; findByHoursWorkedGreaterThan(int hours, {@code PageRequest<Employee>} pageRequest);
  * </pre>
  *
  * <p>You can use an offset-based {@link PageRequest} to request an initial page,</p>
@@ -66,7 +65,7 @@ import java.util.NoSuchElementException;
  * </pre>
  *
  * <p>Because the page is keyset aware, the {@link PageRequest}
- * that it returns from the call to {@link KeysetAwareSlice#nextPageRequest}
+ * that it returns from the call to {@link CursoredPage#nextPageRequest}
  * above is based upon a keyset cursor from that page to use as a starting point
  * after which the results for the next page are to be found.</p>
  *
@@ -114,7 +113,7 @@ import java.util.NoSuchElementException;
  * &#64;OrderBy("zipcode")
  * &#64;OrderBy("birthYear")
  * &#64;OrderBy("id")
- * KeysetAwareSlice&lt;Customer&gt; getTopBuyers(int minOrders, float minSpent,
+ * CursoredPage&lt;Customer&gt; getTopBuyers(int minOrders, float minSpent,
  *                                         {@code PageRequest<Customer>} pageRequest);
  * </pre>
  *
@@ -130,14 +129,14 @@ import java.util.NoSuchElementException;
  *
  * <h2>Database Support for Keyset Pagination</h2>
  *
- * <p>A repository method with return type of <code>KeysetAwareSlice</code> or
- * {@link KeysetAwarePage} must raise {@link UnsupportedOperationException}
- * if the database is incapable of keyset pagination.
+ * <p>A repository method with return type of <code>CursoredPage</code> must
+ * raise {@link UnsupportedOperationException} if the database is incapable
+ * of keyset pagination.
  * </p>
  *
  * @param <T> the type of elements in this slice 
  */
-public interface KeysetAwareSlice<T> extends Slice<T> {
+public interface CursoredPage<T> extends Page<T> {
     /**
      * Returns a {@link PageRequest.Cursor Cursor} for keyset values at the
      * specified position.

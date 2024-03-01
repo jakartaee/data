@@ -530,8 +530,7 @@ import java.util.List;
  * all streams that it obtains from repository methods.</td></tr>
  *
  * <tr style="vertical-align: top"><td><code>find...By...(..., PageRequest)</code></td>
- * <td><code>Page&lt;E&gt;</code>, <code>KeysetAwarePage&lt;E&gt;</code>,
- * <br><code>Slice&lt;E&gt;</code>, <code>KeysetAwareSlice&lt;E&gt;</code></td>
+ * <td><code>Page&lt;E&gt;</code>, <code>CursoredPage&lt;E&gt;</code></td>
  * <td>For use with pagination</td></tr>
  *
  * </table>

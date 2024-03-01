@@ -53,7 +53,7 @@ import java.lang.annotation.Target;
  *     <li>an entity array type {@code E[]},
  *     <li>{@code List<E>},</li>
  *     <li>{@code Stream<E>}, or</li>
- *     <li>{@code Page<E>}, {@code Slice<E>}, {@code KeysetAwarePage<E>}, or {@code KeysetAwareSlice<E>}.</li>
+ *     <li>{@code Page<E>} or {@code CursoredPage<E>}.</li>
  * </ul>
  *
  * <p>If the return type of the annotated method is {@code E} or {@code Optional<E>}, and the query returns more than

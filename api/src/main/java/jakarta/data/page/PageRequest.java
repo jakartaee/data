@@ -129,7 +129,7 @@ public interface PageRequest<T> {
     }
 
     /**
-     * <p>Requests {@link KeysetAwareSlice keyset pagination} in the forward direction,
+     * <p>Requests {@link CursoredPage keyset pagination} in the forward direction,
      * starting after the specified keyset values.</p>
      *
      * @param keyset keyset values, the order and number of which must match the
@@ -143,7 +143,7 @@ public interface PageRequest<T> {
     PageRequest<T> afterKeyset(Object... keyset);
 
     /**
-     * <p>Requests {@link KeysetAwareSlice keyset pagination} in the reverse direction,
+     * <p>Requests {@link CursoredPage keyset pagination} in the reverse direction,
      * starting after the specified keyset values.</p>
      *
      * @param keyset keyset values, the order and number of which must match the
@@ -157,7 +157,7 @@ public interface PageRequest<T> {
     PageRequest<T> beforeKeyset(Object... keyset);
 
     /**
-     * <p>Requests {@link KeysetAwareSlice keyset pagination} in the forward direction,
+     * <p>Requests {@link CursoredPage keyset pagination} in the forward direction,
      * starting after the specified keyset values.</p>
      *
      * @param keysetCursor cursor with keyset values, the order and number of which must match the
@@ -171,7 +171,7 @@ public interface PageRequest<T> {
     PageRequest<T> afterKeysetCursor(Cursor keysetCursor);
 
     /**
-     * <p>Requests {@link KeysetAwareSlice keyset pagination} in the reverse direction,
+     * <p>Requests {@link CursoredPage keyset pagination} in the reverse direction,
      * starting after the specified keyset values.</p>
      *
      * @param keysetCursor cursor with keyset values, the order and number of which must match the
@@ -278,6 +278,17 @@ public interface PageRequest<T> {
     int size();
 
     /**
+     * Indicates that a query method which returns a {@link Page}
+     * should retrieve the {@linkplain Page#totalElements() total
+     * number elements} available across all pages. This behavior
+     * is enabled by default. To obtain a page request with total
+     * retrieval disabled, call {@link #withoutTotal()}.
+     * @return {@code true} if the total number of elements should
+     *         be retrieved from the database.
+     */
+    boolean requestTotal();
+
+    /**
      * Return the order collection if it was specified on this page request, otherwise an empty list.
      *
      * @return the order collection; will never be {@code null}.
@@ -289,9 +300,9 @@ public interface PageRequest<T> {
      * if using offset pagination.</p>
      *
      * <p>If using keyset pagination, traversal of pages must only be done
-     * via the {@link KeysetAwareSlice#nextPageRequest()},
-     * {@link KeysetAwareSlice#previousPageRequest()}, or
-     * {@link KeysetAwareSlice#getKeysetCursor(int) keyset cursor},
+     * via the {@link CursoredPage#nextPageRequest()},
+     * {@link CursoredPage#previousPageRequest()}, or
+     * {@link CursoredPage#getKeysetCursor(int) keyset cursor},
      * not with this method.</p>
      *
      * @return The next PageRequest.
@@ -416,6 +427,28 @@ public interface PageRequest<T> {
     PageRequest<T> sortBy(Sort<? super T> sort1, Sort<? super T> sort2, Sort<? super T> sort3, Sort<? super T> sort4, Sort<? super T> sort5);
 
     /**
+     * Returns an otherwise-equivalent page request with
+     * {@link #requestTotal()} set to {@code false}, so that
+     * totals will not be retrieved from the database. Note
+     * that when totals are not retrieved by a repository
+     * method with return type {@link Page}, the operations
+     * {@link Page#totalElements()} and {@link Page#totalPages()}
+     * throw an {@link IllegalArgumentException} when called.
+     * @return a page request with {@link #requestTotal()}
+     *         set to {@code false}.
+     */
+    PageRequest<T> withoutTotal();
+
+    /**
+     * Returns an otherwise-equivalent page request with
+     * {@link #requestTotal()} set to {@code false}, so that
+     * totals will be retrieved from the database.
+     * @return a page request with {@link #requestTotal()}
+     *         set to {@code false}.
+     */
+    PageRequest<T> withTotal();
+
+    /**
      * The type of pagination: offset-based or
      * keyset cursor-based, which includes a direction.
      */
@@ -510,7 +543,7 @@ public interface PageRequest<T> {
          * @return a new instance of {@code Cursor}
          */
         static Cursor forKeyset(Object... keyset) {
-            return new KeysetCursor(keyset);
+            return new PageRequestCursor(keyset);
         }
     }
 }
