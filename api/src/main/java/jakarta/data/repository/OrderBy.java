@@ -33,8 +33,9 @@ import java.lang.annotation.Target;
  * repository method, the precedence for sorting follows the order
  * in which the <code>OrderBy</code> annotations are specified,
  * and after that follows any sort criteria that is supplied
- * dynamically by {@link Sort} parameters, {@link Order} parameter, or by a
- * {@link PageRequest} parameter with {@link PageRequest#sorts() sort criteria}.</p>
+ * dynamically by {@link Sort} parameters, any {@link Order} parameter,
+ * or by a {@link PageRequest} parameter with
+ * {@linkplain PageRequest#sorts() sorting criteria}.</p>
  *
  * <p>For example, the following sorts first by the
  * <code>lastName</code> attribute in ascending order,
