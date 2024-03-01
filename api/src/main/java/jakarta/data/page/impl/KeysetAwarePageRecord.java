@@ -56,6 +56,16 @@ public record KeysetAwarePageRecord<T>
     }
 
     @Override
+    public boolean hasNext() {
+        return nextPageRequest != null;
+    }
+
+    @Override
+    public boolean hasPrevious() {
+        return previousPageRequest != null;
+    }
+
+    @Override
     @SuppressWarnings("unchecked")
     public <E> PageRequest<E> pageRequest(Class<E> entityClass) {
         return (PageRequest<E>) pageRequest;

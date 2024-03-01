@@ -50,6 +50,11 @@ public record SliceRecord<T>(PageRequest<T> pageRequest, List<T> content, boolea
     }
 
     @Override
+    public boolean hasNext() {
+        return moreResults;
+    }
+
+    @Override
     @SuppressWarnings("unchecked")
     public <E> PageRequest<E> pageRequest(Class<E> entityClass) {
         return (PageRequest<E>) pageRequest;

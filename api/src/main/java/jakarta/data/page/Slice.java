@@ -75,6 +75,14 @@ public interface Slice<T> extends Streamable<T> {
     int numberOfElements();
 
     /**
+     * Returns {@code true} if it is known that there are more results or that it is
+     * necessary to request a next page to determine whether there are more results, so that
+     * {@link #nextPageRequest()} will definitely not return {@code null}.
+     * @return {@code false} if this is the last page of results.
+     */
+    boolean hasNext();
+
+    /**
      * Returns the {@link PageRequest page request} for which this
      * slice was obtained.
      *
