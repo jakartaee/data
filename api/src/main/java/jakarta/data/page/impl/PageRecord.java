@@ -76,6 +76,22 @@ public record PageRecord<T>(PageRequest<T> pageRequest, List<T> content, long to
     }
 
     @Override
+    public boolean hasPrevious() {
+        return pageRequest.page() > 1;
+    }
+
+    @Override
+    public PageRequest<T> previousPageRequest() {
+        return pageRequest.previous();
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <E> PageRequest<E> previousPageRequest(Class<E> entityClass) {
+        return (PageRequest<E>) previousPageRequest();
+    }
+
+    @Override
     @SuppressWarnings("unchecked")
     public <E> PageRequest<E> nextPageRequest(Class<E> entityClass) {
         return (PageRequest<E>) nextPageRequest();

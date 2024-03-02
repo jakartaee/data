@@ -91,7 +91,15 @@ public interface Page<T> extends Iterable<T> {
     boolean hasNext();
 
     /**
-     * Returns the {@link PageRequest page request} for which this
+     * Returns {@code true} if it is known that there are previous results or that it
+     * is necessary to request the previous page to determine whether there are previous
+     * results, so that {@link #previousPageRequest()} will not return {@code null}.
+     * @return {@code false} if this is the first page of results.
+     */
+    boolean hasPrevious();
+
+    /**
+     * Returns the {@linkplain PageRequest page request} for which this
      * slice was obtained.
      *
      * @return the request for the current page; will never be {@code null}.
@@ -99,10 +107,10 @@ public interface Page<T> extends Iterable<T> {
     PageRequest<T> pageRequest();
 
     /**
-     * <p>Returns the {@link PageRequest page request} for which this
-     * slice was obtained.</p>
+     * <p>Returns the {@linkplain PageRequest page request} for which this page
+     * was obtained.</p>
      *
-     * <p>This method is provided for when {@link Query query language} is used to
+     * <p>This method is provided for when {@linkplain Query query language} is used to
      * return a result of different type than the entity that is being queried.
      * This method allows the {@link PageRequest} to be returned for the
      * type of entity class that was queried.</p>
@@ -114,17 +122,17 @@ public interface Page<T> extends Iterable<T> {
     <E> PageRequest<E> pageRequest(Class<E> entityClass);
 
     /**
-     * Returns a request for the {@link PageRequest#next() next} page, or <code>null</code> if it is known that there is no next page.
+     * Returns a request for the {@linkplain PageRequest#next() next} page, or <code>null</code> if it is known that there is no next page.
      *
      * @return a request for the next page.
      */
     PageRequest<T> nextPageRequest();
 
     /**
-     * <p>Returns a request for the {@link PageRequest#next() next} page,
+     * <p>Returns a request for the {@linkplain PageRequest#next() next} page,
      * or <code>null</code> if it is known that there is no next page.</p>
      *
-     * <p>This method is useful when {@link Query query language} is used to
+     * <p>This method is useful when {@linkplain Query query language} is used to
      * return a result of different type than the entity that is being queried.
      * This method allows the subsequent {@link PageRequest} to be returned for the
      * type of entity class that is being queried.</p>
@@ -134,6 +142,29 @@ public interface Page<T> extends Iterable<T> {
      * @return a request for the next page.
      */
     <E> PageRequest<E> nextPageRequest(Class<E> entityClass);
+
+    /**
+     * <p>Returns a request for the {@link PageRequest#previous() previous} page,
+     * or <code>null</code> if it is known that there is no previous page.</p>
+     *
+     * @return a request for the previous page.
+     */
+    PageRequest<T> previousPageRequest();
+
+    /**
+     * <p>Returns a request for the {@linkplain PageRequest#previous() previous}
+     * page, or <code>null</code> if it is known that there is no previous page.</p>
+     *
+     * <p>This method is useful when {@linkplain Query query language} is used to
+     * return a result of different type than the entity that is being queried.
+     * This method allows the subsequent {@link PageRequest} to be returned for the
+     * type of entity class that is being queried.</p>
+     *
+     * @param <E>         entity class of the attributes that are used as sort criteria.
+     * @param entityClass entity class of the attributes that are used as sort criteria.
+     * @return a request for the previous page.
+     */
+    <E> PageRequest<E> previousPageRequest(Class<E> entityClass);
 
     /**
      * Returns {@code true} if the {@link #pageRequest()} specified that the

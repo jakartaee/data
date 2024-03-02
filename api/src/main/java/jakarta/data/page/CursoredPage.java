@@ -148,37 +148,37 @@ public interface CursoredPage<T> extends Page<T> {
 
     /**
      * Returns {@code true} when it is possible to navigate to a previous
-     * page of results or if it is necessary to request a previous page in order to
-     * determine whether there are more previous results.
+     * page of results or if it is necessary to request a previous page in
+     * order to determine whether there are more previous results.
      * @return {@code false} if the current page is empty or if it is known
      *         that there is not a previous page.
      */
     boolean hasPrevious();
 
     /**
-     * <p>Creates a request for the next page
-     * in a forward direction from the current page. This method computes a
-     * keyset cursor from the last entity of the current page and includes the
-     * cursor in the pagination information so that it can be used to
-     * obtain the next page in a forward direction according to the
-     * sort criteria and relative to that entity.</p>
+     * <p>Creates a request for the next page in a forward direction from
+     * the current page. This method computes a keyset cursor from the last
+     * entity of the current page and includes the cursor in the pagination
+     * information so that it can be used to obtain the next page in a
+     * forward direction according to the sort criteria and relative to that
+     * entity.</p>
      *
      * @return pagination information for requesting the next page.
      * @throws NoSuchElementException if the current page is empty
      *         or it is known that there is no next page.
      *         To avoid this exception, check for a {@code true} result of
-     *         {@link Slice#hasNext()} before invoking this method.
+     *         {@link #hasNext()} before invoking this method.
      */
     PageRequest<T> nextPageRequest();
 
     /**
-     * <p>Creates a request for the previous page
-     * in a reverse direction from the current page. This method computes a
-     * keyset cursor from the first entity of the current page and includes the
-     * cursor in the pagination information so that it can be used to
-     * obtain the previous slice in a reverse direction to the sort criteria
-     * and relative to that entity. Within a single page, results are not
-     * reversed and remain ordered according to the sort criteria.</p>
+     * <p>Creates a request for the previous page in a reverse direction from
+     * the current page. This method computes a keyset cursor from the first
+     * entity of the current page and includes the cursor in the pagination
+     * information so that it can be used to obtain the previous slice in a
+     * reverse direction to the sort criteria and relative to that entity.
+     * Within a single page, results are not reversed and remain ordered
+     * according to the sort criteria.</p>
      *
      * <p>Page numbers are not accurate and should not be relied upon when
      * using keyset pagination. Jakarta Data providers should aim to at least

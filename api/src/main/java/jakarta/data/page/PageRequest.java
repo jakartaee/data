@@ -302,7 +302,7 @@ public interface PageRequest<T> {
      * <p>If using keyset pagination, traversal of pages must only be done
      * via the {@link CursoredPage#nextPageRequest()},
      * {@link CursoredPage#previousPageRequest()}, or
-     * {@link CursoredPage#getKeysetCursor(int) keyset cursor},
+     * {@linkplain CursoredPage#getKeysetCursor(int) keyset cursor},
      * not with this method.</p>
      *
      * @return The next PageRequest.
@@ -310,6 +310,23 @@ public interface PageRequest<T> {
      *         {@link PageRequest.Cursor Cursor}.
      */
     PageRequest<T> next();
+
+    /**
+     * <p>Returns the <code>PageRequest</code> requesting the previous page
+     * if using offset pagination, or null if this is the first page, that
+     * is, when {@link #page()} returns {@code 1}.</p>
+     *
+     * <p>If using keyset pagination, traversal of pages must only be done
+     * via the {@link CursoredPage#nextPageRequest()},
+     * {@link CursoredPage#previousPageRequest()}, or
+     * {@linkplain CursoredPage#getKeysetCursor(int) keyset cursor},
+     * not with this method.</p>
+     *
+     * @return The previous PageRequest, or null if this is the first page.
+     * @throws UnsupportedOperationException if this <code>PageRequest</code> has a
+     *         {@link PageRequest.Cursor Cursor}.
+     */
+    PageRequest<T> previous();
 
     /**
      * <p>Creates a new page request with the same

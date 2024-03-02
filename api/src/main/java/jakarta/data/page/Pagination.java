@@ -118,10 +118,20 @@ record Pagination<T>(long page, int size, List<Sort<? super T>> sorts, Mode mode
     @Override
     public PageRequest<T> next() {
         if (mode == Mode.OFFSET) {
-            return new Pagination<T>((page + 1), this.size, this.sorts, Mode.OFFSET, null);
+            return new Pagination<T>(page + 1, this.size, this.sorts, Mode.OFFSET, null);
         } else {
             throw new UnsupportedOperationException("Not supported for keyset pagination. Instead use afterKeyset or afterKeysetCursor " +
                     "to provide the next keyset values or obtain the nextPageRequest from a CursoredPage.");
+        }
+    }
+
+    @Override
+    public PageRequest<T> previous() {
+        if (mode == Mode.OFFSET) {
+            return page()<=1 ? null : new Pagination<T>(page - 1, this.size, this.sorts, Mode.OFFSET, null);
+        } else {
+            throw new UnsupportedOperationException("Not supported for keyset pagination. Instead use beforeKeyset or beforeKeysetCursor " +
+                    "to provide the previous keyset values or obtain the previousPageRequest from a CursoredPage.");
         }
     }
 

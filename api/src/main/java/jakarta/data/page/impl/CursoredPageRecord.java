@@ -87,6 +87,11 @@ public record CursoredPageRecord<T>
         return previousPageRequest;
     }
 
+    @SuppressWarnings("unchecked")
+    public <E> PageRequest<E> previousPageRequest(Class<E> entityClass) {
+        return (PageRequest<E>) previousPageRequest;
+    }
+
     @Override
     public Iterator<T> iterator() {
         return content.iterator();
