@@ -22,6 +22,7 @@ import jakarta.data.page.Slice;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * Record type implementing {@link Slice}.
@@ -62,7 +63,11 @@ public record SliceRecord<T>(PageRequest<T> pageRequest, List<T> content, boolea
 
     @Override
     public PageRequest<T> nextPageRequest() {
-        return moreResults ? pageRequest.next() : null;
+        if (moreResults) {
+            return pageRequest.next();
+        } else {
+            throw new NoSuchElementException();
+        }
     }
 
     @Override

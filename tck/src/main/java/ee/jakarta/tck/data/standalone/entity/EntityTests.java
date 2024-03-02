@@ -27,6 +27,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
@@ -736,17 +737,23 @@ public class EntityTests {
         assertEquals(List.of(99L, 98L, 96L, 95L, 94L, 93L, 92L),
                      page1.stream().map(NaturalNumber::getId).collect(Collectors.toList()));
 
+        assertEquals(true, page1.hasNext());
+
         Page<NaturalNumber> page2 = positives.findMatching(9L, Short.valueOf((short) 7), NumberType.COMPOSITE,
                                                            page1.nextPageRequest());
 
         assertEquals(List.of(91L, 90L, 88L, 87L, 86L, 85L, 84L),
                      page2.stream().map(NaturalNumber::getId).collect(Collectors.toList()));
 
+        assertEquals(true, page2.hasNext());
+
         Page<NaturalNumber> page3 = positives.findMatching(9L, Short.valueOf((short) 7), NumberType.COMPOSITE,
                                                            page2.nextPageRequest());
 
         assertEquals(List.of(82L, 81L),
                      page3.stream().map(NaturalNumber::getId).collect(Collectors.toList()));
+
+        assertEquals(false, page3.hasNext());
     }
 
     @Assertion(id = "133",
@@ -997,6 +1004,8 @@ public class EntityTests {
 
         assertEquals(7, page.numberOfElements());
 
+        assertEquals(true, page.hasPrevious());
+
         KeysetAwarePage<NaturalNumber> previousPage;
         try {
             previousPage = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByBitsRequiredDesc(6L, 50L,
@@ -1047,8 +1056,31 @@ public class EntityTests {
         }
 
         assertEquals(false, page.hasContent());
+        assertEquals(false, page.hasNext());
+        assertEquals(false, page.hasPrevious());
         assertEquals(0, page.content().size());
         assertEquals(0, page.numberOfElements());
+
+        try {
+            page.nextPageRequest();
+            fail("nextPageRequest must raise NoSuchElementException when current page is empty.");
+        } catch (NoSuchElementException x) {
+            // expected
+        }
+
+        try {
+            page.nextPageRequest(NaturalNumber.class);
+            fail("nextPageRequest(entityClass) must raise NoSuchElementException when current page is empty.");
+        } catch (NoSuchElementException x) {
+            // expected
+        }
+
+        try {
+            page.previousPageRequest();
+            fail("previousPageRequest must raise NoSuchElementException when current page is empty.");
+        } catch (NoSuchElementException x) {
+            // expected
+        }
     }
 
     @Assertion(id = "133",
@@ -1080,6 +1112,8 @@ public class EntityTests {
                      Arrays.toString(slice.stream().map(number -> number.getId()).toArray()));
 
         assertEquals(9, slice.numberOfElements());
+
+        assertEquals(true, slice.hasPrevious());
 
         KeysetAwareSlice<NaturalNumber> previousSlice;
         try {
@@ -1253,6 +1287,7 @@ public class EntityTests {
                                                   24L, 22L, 21L, 20L, 18L }), // square root rounds down to 4; composite
                      Arrays.toString(slice.stream().map(number -> number.getId()).toArray()));
 
+        assertEquals(true, slice.hasNext());
         pagination = slice.nextPageRequest();
         slice = numbers.findByIdLessThanOrderByFloorOfSquareRootDesc(25L, pagination);
 
@@ -1261,6 +1296,7 @@ public class EntityTests {
                                                   15L, 14L, 12L, 10L, 9L }), // square root rounds down to 3; composite
                      Arrays.toString(slice.stream().map(number -> number.getId()).toArray()));
 
+        assertEquals(true, slice.hasNext());
         pagination = slice.nextPageRequest();
         slice = numbers.findByIdLessThanOrderByFloorOfSquareRootDesc(25L, pagination);
 
@@ -1270,8 +1306,8 @@ public class EntityTests {
                                                   3L, 2L }), // square root rounds down to 1; prime
                      Arrays.toString(slice.stream().map(number -> number.getId()).toArray()));
 
-        pagination = slice.nextPageRequest();
-        if (pagination != null) {
+        if (slice.hasNext()) {
+            pagination = slice.nextPageRequest();
             slice = numbers.findByIdLessThanOrderByFloorOfSquareRootDesc(25L, pagination);
             assertEquals(false, slice.hasContent());
         }
@@ -1476,7 +1512,8 @@ public class EntityTests {
                                      .map(c -> c.getHexadecimal() + ':' + c.getThisCharacter() + ';')
                                      .reduce("", String::concat));
 
-        PageRequest<AsciiCharacter> fourth10 = third10.next();
+        assertEquals(true, page.hasNext());
+        PageRequest<AsciiCharacter> fourth10 = page.nextPageRequest();
         page = characters.findByNumericValueBetween(48, 90, fourth10); // 'N' to 'W'
 
         assertEquals(4, page.pageRequest().page());
@@ -1505,7 +1542,8 @@ public class EntityTests {
         assertEquals(Arrays.toString(new Long[] { 37L, 31L, 29L, 23L, 19L }),
                 Arrays.toString(slice.stream().map(number -> number.getId()).toArray()));
 
-        PageRequest<NaturalNumber> fourth5 = third5.next();
+        assertEquals(true, slice.hasNext());
+        PageRequest<NaturalNumber> fourth5 = slice.nextPageRequest();
 
         slice = numbers.findByNumTypeAndFloorOfSquareRootLessThanEqual(NumberType.PRIME, 8L, fourth5);
 

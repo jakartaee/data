@@ -23,6 +23,7 @@ import jakarta.data.page.PageRequest.Cursor;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * Record type implementing {@link KeysetAwareSlice}.
@@ -72,7 +73,16 @@ public record KeysetAwareSliceRecord<T>
     @Override
     @SuppressWarnings("unchecked")
     public <E> PageRequest<E> nextPageRequest(Class<E> entityClass) {
+        if (nextPageRequest == null)
+            throw new NoSuchElementException();
         return (PageRequest<E>) nextPageRequest;
+    }
+
+    @Override
+    public PageRequest<T> previousPageRequest() {
+        if (previousPageRequest == null)
+            throw new NoSuchElementException();
+        return previousPageRequest;
     }
 
     @Override
