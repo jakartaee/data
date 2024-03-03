@@ -73,7 +73,7 @@ public interface Catalog extends DataRepository<Product, String> {
     int countBySurgePriceGreaterThanEqual(Double price);
 
     @Query("SELECT p FROM Product p WHERE (SIZE(p.departments) = ?1 AND p.price < ?2) ORDER BY p.name")
-    Page<Product> findByDepartmentCountAndPriceBelow(int numDepartments, double maxPrice);
+    List<Product> findByDepartmentCountAndPriceBelow(int numDepartments, double maxPrice);
 
     @OrderBy("name")
     Product[] findByDepartmentsContains(Department department);
