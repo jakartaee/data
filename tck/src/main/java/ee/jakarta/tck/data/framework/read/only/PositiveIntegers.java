@@ -47,7 +47,7 @@ public interface PositiveIntegers extends BasicRepository<NaturalNumber, Long> {
 
     Iterable<NaturalNumber> findByIsOddTrueAndIdLessThanEqualOrderByIdDesc(long max);
 
-    Page<NaturalNumber> findByIsOddFalseAndIdBetween(long min, long max);
+    List<NaturalNumber> findByIsOddFalseAndIdBetween(long min, long max);
 
     Stream<NaturalNumber> findByNumTypeInOrderByIdAsc(Set<NumberType> types, Limit limit);
 
