@@ -144,6 +144,9 @@ public interface Page<T> extends Iterable<T> {
      * @param <E>         entity class of the attributes that are used as sort criteria.
      * @param entityClass entity class of the attributes that are used as sort criteria.
      * @return a request for the next page.
+     * @throws NoSuchElementException if it is known that there is no next page.
+     *         To avoid this exception, check for a {@code true} result of
+     *         {@link #hasNext()} before invoking this method.
      */
     <E> PageRequest<E> nextPageRequest(Class<E> entityClass);
 
