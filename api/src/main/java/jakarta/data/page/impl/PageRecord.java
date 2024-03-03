@@ -68,11 +68,9 @@ public record PageRecord<T>(PageRequest<T> pageRequest, List<T> content, long to
 
     @Override
     public PageRequest<T> nextPageRequest() {
-        if (moreResults) {
-            return pageRequest.next();
-        } else {
+        if ( !hasNext() )
             throw new NoSuchElementException();
-        }
+        return pageRequest.next();
     }
 
     @Override
@@ -82,6 +80,8 @@ public record PageRecord<T>(PageRequest<T> pageRequest, List<T> content, long to
 
     @Override
     public PageRequest<T> previousPageRequest() {
+        if ( !hasPrevious() )
+            throw new NoSuchElementException();
         return pageRequest.previous();
     }
 

@@ -73,11 +73,16 @@ public record CursoredPageRecord<T>
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public <E> PageRequest<E> nextPageRequest(Class<E> entityClass) {
+    public PageRequest<T> nextPageRequest() {
         if (nextPageRequest == null)
             throw new NoSuchElementException();
-        return (PageRequest<E>) nextPageRequest;
+        return nextPageRequest;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <E> PageRequest<E> nextPageRequest(Class<E> entityClass) {
+        return (PageRequest<E>) nextPageRequest();
     }
 
     @Override
@@ -87,9 +92,10 @@ public record CursoredPageRecord<T>
         return previousPageRequest;
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public <E> PageRequest<E> previousPageRequest(Class<E> entityClass) {
-        return (PageRequest<E>) previousPageRequest;
+        return (PageRequest<E>) previousPageRequest();
     }
 
     @Override
