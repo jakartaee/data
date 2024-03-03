@@ -152,9 +152,12 @@ public interface Page<T> extends Iterable<T> {
 
     /**
      * <p>Returns a request for the {@link PageRequest#previous() previous} page,
-     * or <code>null</code> if it is known that there is no previous page.</p>
+     * if {@link #hasPrevious()} indicates there might be a previous page.</p>
      *
      * @return a request for the previous page.
+     * @throws NoSuchElementException if it is known that there is no previous page.
+     *         To avoid this exception, check for a {@code true} result of
+     *         {@link #hasPrevious()} before invoking this method.
      */
     PageRequest<T> previousPageRequest();
 
