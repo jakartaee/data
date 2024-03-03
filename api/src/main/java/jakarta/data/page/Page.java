@@ -100,7 +100,7 @@ public interface Page<T> extends Iterable<T> {
 
     /**
      * Returns the {@linkplain PageRequest page request} for which this
-     * slice was obtained.
+     * page was obtained.
      *
      * @return the request for the current page; will never be {@code null}.
      */
