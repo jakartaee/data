@@ -19,6 +19,7 @@ package jakarta.data.page;
 
 import jakarta.data.repository.Query;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -63,7 +64,8 @@ public interface Page<T> extends Iterable<T> {
     boolean hasContent();
 
     /**
-     * Returns a sequential stream of results, which follow the order of the sort criteria if specified.
+     * Returns a sequential stream of results, which follow the order of the sort
+     * criteria, if any were specified.
      *
      * @return a stream of results.
      */
@@ -72,10 +74,9 @@ public interface Page<T> extends Iterable<T> {
     }
 
     /**
-     * Returns the number of elements on this {@code Page},
-     * which must be no larger than the maximum
-     * {@link PageRequest#size() size} of the page request.
-     * If the number of elements in the page is less than the maximum page size,
+     * Returns the number of elements on this {@code Page}, which must be no larger
+     * than the maximum {@link PageRequest#size() size} of the page request.
+     * If the number of elements in the page is smaller than the maximum page size,
      * then there are no subsequent pages of data to read.
      *
      * @return the number of elements on this {@code Page}.
@@ -84,8 +85,8 @@ public interface Page<T> extends Iterable<T> {
 
     /**
      * Returns {@code true} if it is known that there are more results or that it is
-     * necessary to request a next page to determine whether there are more results, so that
-     * {@link #nextPageRequest()} will definitely not return {@code null}.
+     * necessary to request a next page to determine whether there are more results,
+     * so that {@link #nextPageRequest()} will definitely not return {@code null}.
      * @return {@code false} if this is the last page of results.
      */
     boolean hasNext();
@@ -107,13 +108,13 @@ public interface Page<T> extends Iterable<T> {
     PageRequest<T> pageRequest();
 
     /**
-     * <p>Returns the {@linkplain PageRequest page request} for which this page
-     * was obtained.</p>
+     * <p>Returns the {@linkplain PageRequest page request} for which this page was
+     * obtained.</p>
      *
-     * <p>This method is provided for when {@linkplain Query query language} is used to
-     * return a result of different type than the entity that is being queried.
-     * This method allows the {@link PageRequest} to be returned for the
-     * type of entity class that was queried.</p>
+     * <p>This method is useful when the {@linkplain Query query language} is used
+     * to return a result of different type to the entity class that was queried,
+     * allowing the subsequent {@code PageRequest} to be cast back to the type of
+     * entity class that was queried.</p>
      *
      * @param <E>         entity class of the attributes that are used as sort criteria.
      * @param entityClass entity class of the attributes that are used as sort criteria.
@@ -136,10 +137,10 @@ public interface Page<T> extends Iterable<T> {
      * <p>Returns a request for the {@linkplain PageRequest#next() next} page if
      * {@link #hasNext()} indicates there might be a next page.</p>
      *
-     * <p>This method is useful when {@linkplain Query query language} is used to
-     * return a result of different type than the entity that is being queried.
-     * This method allows the subsequent {@link PageRequest} to be returned for the
-     * type of entity class that is being queried.</p>
+     * <p>This method is useful when the {@linkplain Query query language} is used
+     * to return a result of different type to the entity class that was queried,
+     * allowing the subsequent {@code PageRequest} to be cast back to the type of
+     * entity class that was queried.</p>
      *
      * @param <E>         entity class of the attributes that are used as sort criteria.
      * @param entityClass entity class of the attributes that are used as sort criteria.
@@ -165,10 +166,10 @@ public interface Page<T> extends Iterable<T> {
      * <p>Returns a request for the {@linkplain PageRequest#previous() previous}
      * page, if {@link #hasPrevious()} indicates there might be a previous page.</p>
      *
-     * <p>This method is useful when {@linkplain Query query language} is used to
-     * return a result of different type than the entity that is being queried.
-     * This method allows the subsequent {@link PageRequest} to be returned for the
-     * type of entity class that is being queried.</p>
+     * <p>This method is useful when the {@linkplain Query query language} is used
+     * to return a result of different type to the entity class that was queried,
+     * allowing the subsequent {@code PageRequest} to be cast back to the type of
+     * entity class that was queried.</p>
      *
      * @param <E>         entity class of the attributes that are used as sort criteria.
      * @param entityClass entity class of the attributes that are used as sort criteria.

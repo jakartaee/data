@@ -164,10 +164,10 @@ public interface CursoredPage<T> extends Page<T> {
      * entity.</p>
      *
      * @return pagination information for requesting the next page.
-     * @throws NoSuchElementException if the current page is empty
-     *         or it is known that there is no next page.
-     *         To avoid this exception, check for a {@code true} result of
-     *         {@link #hasNext()} before invoking this method.
+     * @throws NoSuchElementException if the current page is empty or if
+     *         it is known that there is no next page.
+     *         To avoid this exception, check for a {@code true} result
+     *         of {@link #hasNext()} before invoking this method.
      */
     PageRequest<T> nextPageRequest();
 
@@ -193,10 +193,10 @@ public interface CursoredPage<T> extends Page<T> {
      * current page number.</p>
      *
      * @return pagination information for requesting the previous page.
-     * @throws NoSuchElementException if the current page is empty
-     *         or it is known that there is no previous page.
-     *         To avoid this exception, check for a {@code true} result of
-     *         {@link #hasPrevious()} before invoking this method.
+     * @throws NoSuchElementException if the current page is empty or if
+     *         it is known that there is no previous page.
+     *         To avoid this exception, check for a {@code true} result
+     *         of {@link #hasPrevious()} before invoking this method.
      */
     PageRequest<T> previousPageRequest();
 }
