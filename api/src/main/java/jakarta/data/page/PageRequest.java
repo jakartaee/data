@@ -450,7 +450,7 @@ public interface PageRequest<T> {
      * that when totals are not retrieved by a repository
      * method with return type {@link Page}, the operations
      * {@link Page#totalElements()} and {@link Page#totalPages()}
-     * throw an {@link IllegalArgumentException} when called.
+     * throw an {@link IllegalStateException} when called.
      * @return a page request with {@link #requestTotal()}
      *         set to {@code false}.
      */
