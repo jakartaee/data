@@ -534,7 +534,7 @@ public class EntityTests {
 
     @Assertion(id = "133", strategy = "Use a repository method with the False keyword.")
     public void testFalse() {
-        Page<NaturalNumber> even = positives.findByIsOddFalseAndIdBetween(50L, 60L);
+        List<NaturalNumber> even = positives.findByIsOddFalseAndIdBetween(50L, 60L);
 
         assertEquals(6L, even.stream().count());
 
