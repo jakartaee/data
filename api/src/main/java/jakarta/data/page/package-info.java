@@ -47,7 +47,7 @@
  * <p>Pages can be determined based on fixed positional offset or relative to a
  * cursor.</p>
  *
- * <p>{@link jakarta.data.page.Page} and {@link jakarta.data.page.Page} are computed based on their positional offset
+ * <p>The elements of a {@link jakarta.data.page.Page} are computed based on their positional offset
  * within the list of results. For example, if you are on the first page of 10
  * and request the next page, the database identifies the matching entities
  * for the query at positions 11 through 20 and retrieves them. Results are
