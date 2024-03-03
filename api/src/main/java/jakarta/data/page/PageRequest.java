@@ -461,7 +461,7 @@ public interface PageRequest<T> {
      * {@link #requestTotal()} set to {@code false}, so that
      * totals will be retrieved from the database.
      * @return a page request with {@link #requestTotal()}
-     *         set to {@code false}.
+     *         set to {@code true}.
      */
     PageRequest<T> withTotal();
 
