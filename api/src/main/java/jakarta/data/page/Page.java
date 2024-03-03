@@ -75,8 +75,8 @@ public interface Page<T> extends Iterable<T> {
      * Returns the number of elements on this {@code Page},
      * which must be no larger than the maximum
      * {@link PageRequest#size() size} of the page request.
-     * If the number of elements in the slice is less than the maximum page size,
-     * then there are no subsequent slices of data to read.
+     * If the number of elements in the page is less than the maximum page size,
+     * then there are no subsequent pages of data to read.
      *
      * @return the number of elements on this {@code Page}.
      */
