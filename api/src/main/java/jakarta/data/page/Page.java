@@ -133,8 +133,8 @@ public interface Page<T> extends Iterable<T> {
     PageRequest<T> nextPageRequest();
 
     /**
-     * <p>Returns a request for the {@linkplain PageRequest#next() next} page,
-     * or <code>null</code> if it is known that there is no next page.</p>
+     * <p>Returns a request for the {@linkplain PageRequest#next() next} page if
+     * {@link #hasNext()} indicates there might be a next page.</p>
      *
      * <p>This method is useful when {@linkplain Query query language} is used to
      * return a result of different type than the entity that is being queried.
