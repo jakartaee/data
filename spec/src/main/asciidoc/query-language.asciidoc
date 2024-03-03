@@ -1,0 +1,337 @@
+== Jakarta Data Query Language
+
+The Jakarta Data Query Language (JDQL) is a simple language designed to be used inside the `@Query` annotation to specify the semantics of query methods of Jakarta Data repositories. The language is in essence a subset of the widely-used Jakarta Persistence Query Language (JPQL), and thus a dialect of SQL. But, consistent with the goals of Jakarta Data, it is sufficiently limited in functionality that it is easily implementable across a wide variety of data storage technologies. Thus, the language defined in this chapter excludes features of JPQL which, while useful when the target datasource is a relational database, cannot be easily implemented on all non-relational datastores. In particular, the `from` clause of a Jakarta Data query may contain only a single entity.
+
+NOTE: A Jakarta Data provider backed by access to a relational database might choose to allow the use of a much larger subset of JPQL&mdash;or even the whole language&mdash;via the `@Query` annotation. Such extensions are not required by this specification.
+
+=== Type system
+
+Every expression in a JDQL query is assigned a Java type. An implementation of JDQL is required to support the Java types listed in <<Basic Types>>, that is: primitive types, `String`, `LocalDate`, `LocalDateTime`, `LocalTime`, and `Instant`, `java.util.UUID`, `java.math.BigInteger` and `java.math.BigDecimal`, `byte[]`, and user-defined `enum` types.
+
+NOTE: An implementation of JDQL is permitted and encouraged to support additional types. Use of such types is not guaranteed to be portable between implementations.
+
+The interpretation of an operator expression or literal expression of a given type is given by the interpretation of the equivalent expression in Java. However, the precise behavior of some queries might vary depending on the native semantics of queries on the underlying datastore. For example, numeric precision and overflow, string collation,and integer division are permitted to depart from the semantics of the Java language.
+
+NOTE: This specification should not be interpreted to mandate an inefficient implementation of query language constructs in cases where the native behavior of the database varies from Java in such minor ways. That said, portability between Jakarta Data providers is maximized when their behavior is closest to the Java language.
+
+=== Lexical structure
+
+Lexical analysis requires recognition of the following token types:
+
+- keywords (reserved identifiers),
+- regular identifiers,
+- named and ordinal parameters,
+- operators and punctuation characters,
+- literal strings, and
+- integer and decimal number literals.
+
+==== Identifiers and keywords
+
+An _identifier_ is any legal Java identifier which is not a keyword. Identifiers are case-sensitive: `hello`, `Hello`, and `HELLO` are distinct identifiers.
+
+In the JDQL grammar, identifiers are labelled with the `IDENTIFIER` token type.
+
+The following identifiers are _keywords_: `select`, `update`, `set`, `delete`, `from`, `where`, `order`, `by`, `asc`, `desc`, `not`, `and`, `or`, `between`, `like`, `in`, `null`, `local`, `true`, `false`. In addition, every reserved identifier listed in section 4.4.1 of the Jakarta Persistence specification version 3.2 is also considered a reserved identifier. Keywords and other reserved identifiers are case-insensitive: `null`, `Null`, and `NULL` are three ways to write the same keyword.
+
+NOTE: Use of a reserved identifier as a regular identifier in JDQL might be accepted by a given Jakarta Data provider, but such usage is not guaranteed to be portable between providers.
+
+==== Parameters
+
+A _named parameter_ is a legal Java identifier prefixed with the `:` character, for example, `:name`.
+
+An _ordinal parameter_ is a decimal integer prefixed with the `?` character, for example, `?1`.
+
+==== Operators and punctuation
+
+The character sequences `+`,`-`,`*`,`/`,`||`,`=`,`<`,`>`,`<>`,`&lt;=`,`>=` are _operators_.
+
+The characters `(`,`)`, and `,` are _punctuation characters_.
+
+==== String literals
+
+A _literal string_ is a character sequence quoted using the character `'`.
+
+A single literal `'` character may be included within a string literal by self-escaping it, that is, by writing `''`. For example, the string literal ``'Furry''s theorem has nothing to do with furries.'`` evaluates to the string `pass:[Furry's theorem has nothing to do with furries.]`.
+
+In the grammar, literal strings are labelled with the `STRING` token type.
+
+==== Numeric literals
+
+Numeric literals come in two flavors:
+
+- any legal Java decimal literal of type `int` or `long` is an _integer literal_, and
+- any legal Java literal of type `float` or `double` is a _decimal literal_.
+
+In the grammar, integer and decimal literals are labelled with the `INTEGER` and `DOUBLE` token types respectively.
+
+NOTE: JDQL does not require support for literals written octal or hexadecimal.
+
+==== Whitespace
+
+The characters Space, Horizontal Tab, Line Feed, Form Feed, and Carriage Return are considered whitespace characters and make no contribution to the token stream.
+
+As usual, token recognition is "greedy". Therefore, whitespace must be placed between two tokens when:
+
+- a keyword directly follows an identifier or named parameter,
+- an identifier directly follows a keyword or named parameter, or
+- a numeric literal directly follows an identifier, keyword, or parameter.
+
+=== Expressions
+
+An expression is a sequence of tokens to which a Java type can be assigned, and which evaluates to a well-defined value when the query is executed. In JDQL, expressions may be categorized as:
+
+- literals,
+- special values,
+- parameters,
+- enum literals,
+- paths,
+- function calls, and
+- operator expressions.
+
+==== Literal expressions
+
+A string, integer, or decimal literal is assigned the type it would be assigned in Java. So, for example, `'Hello'` is assigned the type `java.lang.String`, `123` is assigned the type `int`, `1e4` is assigned the type `double`, and `1.23f` is assigned the type `float`.
+
+The syntax for literal expressions is given by the `literal` grammar rule, and in the previous section titled <<Lexical structure>>.
+
+When executed, a literal expression evaluates to its literal value.
+
+==== Special values
+
+The special values `true` and `false` are assigned the type `boolean`, and evaluate to their literal values.
+
+The special values `local date` and `local datetime` are assigned the types `java.time.LocalDate` and `java.time.LocalDateTime`, and evaluate to the current date and current datetime of the database server, respectively.
+
+The syntax for special values is given by the `special_expression` grammar rule.
+
+==== Parameter expressions
+
+A parameter expression, with syntax given by `input_parameter`, is assigned the type of the repository method parameter it matches. For example, the parameter `:titlePattern` is assigned the type `java.lang.String`:
+
+[source,java]
+----
+@Query("where title like :titlePattern")
+List<Book> booksMatchingTitle(String titlePattern);
+----
+
+When executed, a parameter expression evaluates to the argument supplied to the parameter of the repository method.
+
+==== Enum literals
+
+An _enum literal expression_ is a Java identifier, with syntax specified by `enum_literal`, and may only occur as the right operand of a `set` assignment or `=`/`<>` equality comparison. It is assigned the type of the left operand of the assignment or comparison. The type must be a Java `enum` type, and the identifier must be the name of an enumerated value of the `enum` type. For example, `day <> MONDAY` is a legal comparison expression.
+
+When executed, an enum expression evaluates to the named member of the Java `enum` type.
+
+==== Path expressions
+
+A _path expression_ is a period-separated list of Java identifiers, with syntax specified by `state_field_path_expression`. Each identifier is interpreted as the name of a field of an entity or embeddable class. Each prefix of the list is assigned a Java type:
+
+- the first element of the list is assigned the type of the named field of the entity being queried, and
+- each subsequent element is assigned the type of the named field of the type assigned to the previous element.
+
+The type of the whole path expression is the type of the last element of the list. For example, `pages` is assigned the type `int`, `address` is assigned the type `org.example.Address`, and `address.street` is assigned the type `java.lang.String`.
+
+When executed, a path expression is evaluated in the context of a given record of the queried entity type, and evaluates to the value of the entity field for the given record.
+
+==== Function calls
+
+A _function call_ is the name of a JDQL function, followed by a parenthesized list of argument expressions, with syntax given by `function_expression`.
+
+- The `abs()` function is assigned the type of its numeric argument, and evaluates to the absolute value of the numeric value to which its argument evaluates. Its argument must be of numeric type.
+
+- The `length()` function is assigned the type `java.lang.Integer`, and evaluates to the length of string to which its argument evaluates. Its argument must be of type `java.lang.String`.
+
+- The `lower()` function is assigned the type `java.lang.String`, and evaluates to the lowercase form of the string to which its argument evaluates. Its argument must be of type `java.lang.String`.
+
+- The `upper()` function is assigned the type `java.lang.String`, and evaluates to the uppercase form of the string to which its argument evaluates. Its argument must be of type `java.lang.String`.
+
+- The `left()` function is assigned the type `java.lang.String`, and evaluates to a prefix of the string to which its first argument evaluates. The length of the prefix is given by the integer value to which its second argument evaluates. The first argument must be of type `java.lang.String`, and the second argument must be of integral numeric type.
+
+- The `right()` function is assigned the type `java.lang.String`, and evaluates to a suffix of the string to which its first argument evaluates. The length of the suffix is given by the integer value to which its second argument evaluates. The first argument must be of type `java.lang.String`, and the second argument must be of integral numeric type.
+
+When any argument expression of any function call evaluates to a null value, the whole function call evaluates to null.
+
+==== Operator expressions
+
+The syntax of an _operator expression_ is given by the `scalar_expression` rule. Within an operator expression, parentheses indicate grouping.
+
+The concatenation operator `||` is assigned the type `java.lang.String`. Its operand expressions must also be of type `java.lang.String`. When executed, a concatenation operator expression evaluates to a new string concatenating the strings to which its arguments evaluate.
+
+The numeric operators `+`, `-`, `*`, and `/` have the same meaning for primitive numeric types they have in Java, and operator expression involving these operators are assigned the types they would be assigned in Java.
+
+NOTE: As an exception, when the operands of `/` are both integers, a JDQL implementation is not required to interpret the operator expression as integer division if that is not the native semantics of the database. However, portability is maximized when Jakarta Data providers _do_ interpret such an expression as integer division.
+
+The four numeric operators may also be applied to an operand of wrapper type, for example, to `java.lang.Integer` or `java.lang.Double`. In this case, the operator expression is assigned a wrapper type, and evaluates to a null value when either of its operands evaluates to a null value. When both operands are non-null, the semantics are identical to the semantics of an operator expression involving the corresponding primitive types.
+
+The four numeric operators may also be applied to operands of type `java.math.BigInteger` or `java.math.BigDecimal`.
+
+A numeric operator expression is evaluated according to the native semantics of the database. In translating an operator expression to the native query language of the database, a Jakarta Data provider is encouraged, but not required, to apply reasonable transformations so that evaluation of the expression more closely mimics the semantics of the Java language.
+
+==== Numeric types and numeric type promotion
+
+The type assigned to an operator expression depends on the types of its operand expression, which need not be identical. The rules for numeric promotion are given in section 4.7 of the Jakarta Persistence specification version 3.2:
+
+> * If there is an operand of type `Double` or `double`, the expression is of type `Double`;
+> * otherwise, if there is an operand of type `Float` or `float`, the expression is of type `Float`;
+> * otherwise, if there is an operand of type `BigDecimal`, the expression is of type `BigDecimal`;
+> * otherwise, if there is an operand of type `BigInteger`, the expression is of type `BigInteger`, unless the operator is `/` (division), in which case the expression type is not defined here;
+> * otherwise, if there is an operand of type `Long` or `long`, the expression is of type `Long`, unless the operator is `/` (division), in which case the expression type is not defined here;
+> * otherwise, if there is an operand of integral type, the expression is of type `Integer`, unless the operator is `/` (division), in which case the expression type is not defined here.
+
+=== Conditional expressions
+
+A _conditional expression_ is a sequence of tokens which specifies a condition which, for a given record, might be _satisfied_ or _unsatisfied_. Unlike the scalar <<Expressions>> defined in the previous section, a conditional expression is not considered to have a well-defined type.
+
+NOTE: JPQL defines the result of a conditional expression in terms of ternary logic. JDQL does not specify that a conditional expression evaluates to well-defined value, only the effect of the conditional expression when it is used as a restriction. The "value" of a conditional expression is not considered observable by the application program.
+
+Conditional expressions may be categorized as:
+
+- `null` comparisons,
+- `in` expressions,
+- `between` expressions,
+- `like` expressions,
+- equality and inequality operator expressions, and
+- logical operator expressions.
+
+The syntax for conditional expressions is given by the `conditional_expression` rule. Within a conditional expression, parentheses indicate grouping.
+
+==== Null comparisons
+
+A `null` comparison, with syntax given by `null_comparison_expression` is satisfied when:
+
+- the `not` keyword is missing, and its operand evaluates to a null value, or
+- the `not` keyword occurs, and its operand evaluates to any non-null value.
+
+==== In expressions
+
+An `in` expression, with syntax given by `in_expression` is satisfied when its leftmost operand evaluates to a non-null value, and:
+
+- the `not` keyword is missing, and any one of its parenthesized operands evaluates to the same value as its leftmost operand, or
+- the `not` keyword occurs, and none of its parenthesized operands evaluate to the same value as its leftmost operand.
+
+All operands must have the same type.
+
+==== Between expressions
+
+A `between` expression, with syntax given by `between_expression` is satisfied when its operands all evaluate to non-null values, and, if the `not` keyword is missing, its left operand evaluates to a value which is:
+
+- larger than or equal to the value take by its middle operand, and
+- smaller than or equal to the value taken by its right operand.
+
+Or, if the `not` keyword occurs, the left operand must evaluate to a value which is:
+
+- strictly smaller than to the value take by its middle operand, or
+- strictly larger than the value taken by its right operand.
+
+All three operands must have the same type.
+
+==== Like expressions
+
+A `like` expression is satisfied when its left operand evaluates to a non-null value and:
+
+- the `not` keyword is missing, and this value matches the pattern, or
+- the `not` keyword occurs, and the value does not match the pattern.
+
+The left operand must have type `java.lang.String`.
+
+Within the pattern, `_` matches any single character, and `%` matches any sequence of characters.
+
+==== Equality and inequality operators
+
+The equality and inequality operators are `=`, `&lt;&gt;`, `&lt;`, `&gt;`, `&lt;=`, `&gt;=`.
+
+- For primitive types, these operators have the same meaning they have in Java, except for `<>` which has the same meaning that `!=` has in Java. Such an operator expression is satisfied when the equivalent operator expression would evaluate to `true` in Java.
+- For wrapper types, these operators are satisfied if both operands evaluate to non-null values, and the equivalent operator expression involving primitives would be satisfied.
+- For other types, these operators are evaluated according to the native semantics of the database.
+
+NOTE: Portability is maximized when Jakarta Data providers interpret equality and inequality operators in a manner consistent with the implementation of `Object.equals()` or `Comparable.compareTo()` for the assigned Java type.
+
+NOTE: For string values, a database might have a different collation algorithm to Java. In evaluating an inequality involving string operands, an implementation of JDQL is not required to emulate Java collation.
+
+The operands of an equality or inequality operator must have the same type.
+
+==== Logical operators
+
+The logical operators are `and`, `or`, and `not`.
+
+- An `and` operator expression is satisfied if and only if both its operands are satisfied.
+- An `or` operator expression is satisfied if and only if at least one of its operands are satisfied.
+- A `not` operator expression is never satisfied if its operand _is_ satisfied.
+
+This specification leaves undefined the interpretation of the `not` operator when its operand _is not_ satisfied.
+
+CAUTION: A compliant implementation of JDQL might feature SQL/JPQL-style ternary logic, where `not n > 0` is an unsatisfied logical expression when `n` evaluates to null, or it might feature binary logic where the same expression is considered satisfied. Application programmers should take great care when using the `not` operator with scalar expressions involving `null` values.
+
+=== Clauses
+
+Each JDQL statement is built from a sequence of _clauses_. The beginning of a clause is identified by a keyword: `from`, `where`, `select`, `set`, or `order`.
+
+There is a logical ordering of clauses, reflecting the order in which their effect must be computed by the datastore:
+
+1. `from`
+2. `where`,
+3. `select` or `set`,
+4. `order`.
+
+The interpretation and effect of each clause in this list is influenced by clauses occurring earlier in the list, but not by clauses occurring later in the list.
+
+==== From clause
+
+The `from` clause, with syntax given by `from_clause`, specifies an _entity name_ which identifies the queried entity. Path expressions occurring in later clauses are interpreted with respect to this entity. That is, the first element of each path expression in the query must be a persistent field of the entity named in the `from` clause. The entity name is a Java identifier, usually the unqualified name of the entity class, as specified in <<Entity Names>>.
+
+The `from` clause is optional in `select` statements. When it is missing, the queried entity is determined by the return type of the repository method, or, if the return type is not an entity type, by the primary entity type of the repository.
+
+NOTE: The syntax of the `update` statement is irregular, with the `from` keyword implied. That is, the syntax _should_ be `update from Entity`, but for historical reasons it is simply `update Entity`.
+
+==== Where clause
+
+The `where` clause, with syntax given by `where_clause`, specifies a conditional expression used to restrict the records returned, deleted, or updated by the query. Only records for which the conditional expression is satisfied are returned, deleted, or updated.
+
+The `where` clause is always optional. When it is missing, there is no restriction, and, and all records are of the queried entity type are returned, deleted, or updated.
+
+==== Select clause
+
+The `select` clause, with syntax given by `select_clause`, specifies a list of expressions which are returned by the query. Each expression in the list is evaluated for each record which satisfies the restriction imposed by the `where` clause. Alternatively, the `select` clause may contain a single `count(*)` aggregate expression, which evaluates to the number of records which satisfy the restriction.
+
+The `select` clause is optional in `select` statements. When it is missing, the query returns the queried entity.
+
+==== Set clause
+
+The `set` clause, with syntax given by `set_clause`, specifies a list of updates to fields of the queried entity. For each record which satisfies the restriction imposed by the `where` clause, and for each element of the list, the scalar expression is evaluated and assigned to the entity field identified by the path expression.
+
+==== Order clause
+
+The `order` clause (or `order by` clause), with syntax given by `orderby_clause`, specifies a lexicographic order for the query results, that is, a list of entity fields used to sort the records which satisfy the restriction imposed by the `where` clause. The keywords `asc` and `desc` specify that a given field should be sorted in ascending or descending order respectively; when neither is specified, ascending order is the default.
+
+The `order` clause is always optional. When it is missing, and when no sort criteria are given as arguments to a parameter of the repository method, the order of the query results is undefined, and may not be deterministic.
+
+=== Statements
+
+Finally, there are three kinds of _statement_:
+
+- `select` statements,
+- `update` statements, and
+- `delete` statements.
+
+The clauses which can appear in a statement are given by the grammar for each kind of statement.
+
+==== Select statements
+
+A `select` statement, with syntax given by `select_statement`, returns data to the client. For each record which satisfies the restriction imposed by the `where` clause, a result is returned containing the values obtained by evaluating the scalar expressions in the `select` clause. Alternatively, for the case of `select count(*)`, the query returns the number of records which satisfied the restriction.
+
+==== Update statements
+
+An `update` statement, with syntax given by `update_statement`, updates each record which satisfies the restriction imposed by the `where` clause, and returns the number of updated records to the client.
+
+==== Delete statements
+
+A `delete` statement, with syntax given by `delete_statement`, deletes each record which satisfies the restriction imposed by the `where` clause, and returns the number of deleted records to the client.
+
+=== Syntax
+
+The following grammar defines the syntax of JDQL, via ANTLR4-style BNF.
+
+[source, antlrv4]
+----
+include::../../antlr/JDQL.g4[]
+----

@@ -460,6 +460,13 @@ create table Book (
 
 NOTE: Support for entity associations is not required by this specification.
 
+==== Entity Names
+
+Each entity must be assigned an _entity name_ by the provider.
+By default, this must be the unqualified Java class name of the entity class.
+A programming model for entity classes might provide a way to explicitly specify an entity name.
+For example, Jakarta Persistence allows the entity name to be specified via the `name` member of the `@Entity` annotation.
+
 ==== Entity Property Names
 
 Within an entity, property names must be unique ignoring case. For simple entity properties, the field or accessor method name serves as the entity property name. In the case of embedded classes, entity property names are computed by concatenating the field or accessor method names at each level, optionally joined by a delimiter.
@@ -765,7 +772,7 @@ However, Jakarta Data implementations are strongly encouraged to support the fol
 Furthermore, implementations are encouraged to support `void` as the return type for a query which never returns a result.
 ====
 
-This specification defines the built-in `@Query` annotation, which may be used to specify a query in an arbitrary query language understood by the Jakarta Data provider.
+This specification defines the built-in `@Query` annotation, which may be used to specify a query written in the <<Jakarta Data Query Language>> defined in the next chapter.
 
 For example, using a named parameter:
 

@@ -44,5 +44,6 @@ include::chapters/license/license-efsl.adoc[]
 
 include::chapters/introduction/introduction.asciidoc[]
 include::repository.asciidoc[]
+include::query-language.asciidoc[]
 include::jakarta-ee.adoc[]
 include::portability.asciidoc[]
