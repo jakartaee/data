@@ -122,9 +122,13 @@ public interface Page<T> extends Iterable<T> {
     <E> PageRequest<E> pageRequest(Class<E> entityClass);
 
     /**
-     * Returns a request for the {@linkplain PageRequest#next() next} page, or <code>null</code> if it is known that there is no next page.
+     * Returns a request for the {@linkplain PageRequest#next() next} page if
+     * {@link #hasNext()} indicates there might be a next page.
      *
      * @return a request for the next page.
+     * @throws NoSuchElementException if it is known that there is no next page.
+     *         To avoid this exception, check for a {@code true} result of
+     *         {@link #hasNext()} before invoking this method.
      */
     PageRequest<T> nextPageRequest();
 
