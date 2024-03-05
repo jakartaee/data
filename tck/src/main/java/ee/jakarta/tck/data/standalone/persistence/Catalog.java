@@ -22,7 +22,6 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import jakarta.data.Order;
-import jakarta.data.page.Page;
 import jakarta.data.repository.DataRepository;
 import jakarta.data.repository.Delete;
 import jakarta.data.repository.Find;
