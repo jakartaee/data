@@ -32,14 +32,17 @@ class PaginationTest {
     void shouldThrowExceptionWhenNoKeysetValuesWereProvided() {
         assertThatIllegalArgumentException()
                 .as("Mode must be different from OFFSET when cursor is null")
-                .isThrownBy(() -> new Pagination<>(1, 10, Collections.emptyList(), PageRequest.Mode.CURSOR_NEXT, null));
+                .isThrownBy(() -> new Pagination<>(1, 10, Collections.emptyList(), PageRequest.Mode.CURSOR_NEXT, null, true));
     }
 
     @Test
     @DisplayName("Should throw UnsupportedOperationException when keyset is not supported")
     void shouldThrowExceptionWhenKeysetIsNotSupported() {
         assertThatThrownBy(() -> {
-            Pagination<?> pagination = new Pagination<>(1, 10, Collections.emptyList(), PageRequest.Mode.CURSOR_NEXT, new PageRequestCursor("me", 200));
+            Pagination<?> pagination = new Pagination<>(1, 10, Collections.emptyList(),
+                                                        PageRequest.Mode.CURSOR_NEXT,
+                                                        new PageRequestCursor("me", 200),
+                                                        true);
             pagination.next();
         }).isInstanceOf(UnsupportedOperationException.class)
                 .hasMessage("Not supported for keyset pagination. Instead use afterKeyset or afterKeysetCursor to provide the next keyset values or obtain the nextPageRequest from a CursoredPage.");

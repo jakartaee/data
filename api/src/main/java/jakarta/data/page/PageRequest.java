@@ -102,7 +102,7 @@ public interface PageRequest<T> {
      * @return a new instance of <code>PageRequest</code>. This method never returns <code>null</code>.
      */
     static <T> PageRequest<T> of(Class<T> entityClass) {
-        return new Pagination<T>(1, 10, Collections.emptyList(), Mode.OFFSET, null);
+        return new Pagination<T>(1, 10, Collections.emptyList(), Mode.OFFSET, null, true);
     }
 
     /**
@@ -114,7 +114,7 @@ public interface PageRequest<T> {
      * @throws IllegalArgumentException when the page number is negative or zero.
      */
     static <T> PageRequest<T> ofPage(long pageNumber) {
-        return new Pagination<T>(pageNumber, 10, Collections.emptyList(), Mode.OFFSET, null);
+        return new Pagination<T>(pageNumber, 10, Collections.emptyList(), Mode.OFFSET, null, true);
     }
 
     /**
@@ -127,7 +127,7 @@ public interface PageRequest<T> {
      * @throws IllegalArgumentException when maximum page size is negative or zero.
      */
     static <T> PageRequest<T> ofSize(int maxPageSize) {
-        return new Pagination<T>(1, maxPageSize, Collections.emptyList(), Mode.OFFSET, null);
+        return new Pagination<T>(1, maxPageSize, Collections.emptyList(), Mode.OFFSET, null, true);
     }
 
     /**
