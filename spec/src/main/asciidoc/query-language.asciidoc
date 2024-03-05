@@ -151,6 +151,10 @@ A _function call_ is the name of a JDQL function, followed by a parenthesized li
 
 When any argument expression of any function call evaluates to a null value, the whole function call evaluates to null.
 
+NOTE: These functions cannot be emulated on every datastore. When a function cannot be reasonably emulated via the native query capabilities of the database, a JDQL implementation is not required to provide the function.
+
+NOTE: On the other hand, an implementation of JDQL might provide additional built-in functions, and might even allow invocation of user-defined functions. Section 4.7 of the Jakarta Persistence specification defines a set of functions that all JPQL implementations are required to provide, including `concat`, `substring`, `trim`, `locate`, `ceiling`, `floor`, `exp`, `ln`, `mod`, `power`, `round`, `sign`, `sqrt`, `cast`, `extract`, `coalesce`, and `nullif`. JDQL implementations are encouraged to support any of these functions which are reasonably implementable.
+
 ==== Operator expressions
 
 The syntax of an _operator expression_ is given by the `scalar_expression` rule. Within an operator expression, parentheses indicate grouping.
