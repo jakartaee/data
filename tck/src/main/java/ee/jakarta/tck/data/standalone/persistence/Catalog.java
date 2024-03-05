@@ -77,9 +77,9 @@ public interface Catalog extends DataRepository<Product, String> {
     @OrderBy("name")
     Product[] findByDepartmentsContains(Department department);
 
-    LinkedList<Product> findByDepartmentsEmpty();
+    Stream<Product> findByDepartmentsEmpty();
 
-    Iterable<Product> findByIdBetween(String first, String last, Order<Product> sorts);
+    List<Product> findByIdBetween(String first, String last, Order<Product> sorts);
 
     List<Product> findByNameLike(String name);
     
@@ -88,7 +88,7 @@ public interface Catalog extends DataRepository<Product, String> {
     @OrderBy(value = "price", descending = true)
     Stream<Product> findByPriceNotNullAndPriceLessThanEqual(double maxPrice);
 
-    Collection<Product> findByPriceNull();
+    List<Product> findByPriceNull();
 
     EntityManager getEntityManager();
 

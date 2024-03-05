@@ -15,8 +15,7 @@
  */
 package ee.jakarta.tck.data.framework.read.only;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 import java.util.stream.Stream;
 
 import jakarta.data.Limit;
@@ -31,11 +30,11 @@ import jakarta.data.Sort;
 public interface IdOperations<T> {
     Stream<T> findByIdBetween(long minimum, long maximum, Sort<T> sort);
 
-    Collection<T> findByIdGreaterThanEqual(long minimum,
+    List<T> findByIdGreaterThanEqual(long minimum,
                                            Limit limit,
                                            Order<T> sorts);
 
     T[] findByIdLessThan(long exclusiveMax, Sort<T> primarySort, Sort<T> secondarySort);
 
-    ArrayList<T> findByIdLessThanEqual(long maximum, Order<T> sorts);
+    List<T> findByIdLessThanEqual(long maximum, Order<T> sorts);
 }
