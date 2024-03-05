@@ -23,7 +23,7 @@ import java.util.List;
 /**
  * Built-in implementation of Cursor for keyset pagination.
  */
-class KeysetCursor implements PageRequest.Cursor {
+class PageRequestCursor implements PageRequest.Cursor {
     /**
      * Keyset values.
      */
@@ -35,7 +35,7 @@ class KeysetCursor implements PageRequest.Cursor {
      * @param keyset keyset values.
      * @throws IllegalArgumentException if no keyset values are provided.
      */
-    KeysetCursor(Object... keyset) {
+    PageRequestCursor(Object... keyset) {
         this.keyset = keyset;
         if (keyset == null || keyset.length == 0)
             throw new IllegalArgumentException("No keyset values were provided.");
@@ -45,7 +45,7 @@ class KeysetCursor implements PageRequest.Cursor {
     public boolean equals(Object o) {
         return this == o || o != null
                 && o.getClass() == getClass()
-                && Arrays.equals(keyset, ((KeysetCursor) o).keyset);
+                && Arrays.equals(keyset, ((PageRequestCursor) o).keyset);
     }
 
     public Object getKeysetElement(int index) {

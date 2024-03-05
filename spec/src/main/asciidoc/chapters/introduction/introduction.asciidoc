@@ -60,6 +60,4 @@ The following are not goals of Jakarta Data:
 
 The terms, _entity attribute_ and _entity property_, are used interchangeably throughout the specification.
 
-The lower case terms, _slice_ and _page_, are used interchangeably throughout the specification. Where there is a need to distinguish, the class name, `Slice` or `Page`, is used.
-
 include::project_team.adoc[]

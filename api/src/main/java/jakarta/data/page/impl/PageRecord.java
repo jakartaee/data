@@ -19,14 +19,13 @@ package jakarta.data.page.impl;
 
 import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
-import jakarta.data.page.Slice;
 
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
- * Record type implementing {@link Slice}.
+ * Record type implementing {@link Page}.
  * This may be used to simplify implementation of a repository interface.
  *
  * @param pageRequest The {@link PageRequest page request} for which this
@@ -69,11 +68,27 @@ public record PageRecord<T>(PageRequest<T> pageRequest, List<T> content, long to
 
     @Override
     public PageRequest<T> nextPageRequest() {
-        if (moreResults) {
-            return pageRequest.next();
-        } else {
+        if ( !hasNext() )
             throw new NoSuchElementException();
-        }
+        return pageRequest.next();
+    }
+
+    @Override
+    public boolean hasPrevious() {
+        return pageRequest.page() > 1;
+    }
+
+    @Override
+    public PageRequest<T> previousPageRequest() {
+        if ( !hasPrevious() )
+            throw new NoSuchElementException();
+        return pageRequest.previous();
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <E> PageRequest<E> previousPageRequest(Class<E> entityClass) {
+        return (PageRequest<E>) previousPageRequest();
     }
 
     @Override
@@ -88,7 +103,23 @@ public record PageRecord<T>(PageRequest<T> pageRequest, List<T> content, long to
     }
 
     @Override
+    public boolean hasTotals() {
+        return totalElements >= 0;
+    }
+
+    @Override
+    public long totalElements() {
+        if (totalElements<0) {
+            throw new IllegalStateException("total elements are not available");
+        }
+        return totalElements;
+    }
+
+    @Override
     public long totalPages() {
+        if (totalElements<0) {
+            throw new IllegalStateException("total elements are not available");
+        }
         int size = pageRequest.size();
         return (totalElements + size - 1) / size;
     }

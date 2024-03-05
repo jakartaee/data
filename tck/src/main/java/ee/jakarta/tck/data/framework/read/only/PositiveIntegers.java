@@ -23,8 +23,7 @@ import java.util.stream.Stream;
 import ee.jakarta.tck.data.framework.read.only.NaturalNumber.NumberType;
 import jakarta.data.Limit;
 import jakarta.data.Order;
-import jakarta.data.Streamable;
-import jakarta.data.page.KeysetAwarePage;
+import jakarta.data.page.CursoredPage;
 import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
 import jakarta.data.repository.Find;
@@ -42,13 +41,13 @@ public interface PositiveIntegers extends BasicRepository<NaturalNumber, Long> {
 
     boolean existsByIdGreaterThan(Long number);
 
-    KeysetAwarePage<NaturalNumber> findByFloorOfSquareRootNotAndIdLessThanOrderByBitsRequiredDesc(long excludeSqrt,
+    CursoredPage<NaturalNumber> findByFloorOfSquareRootNotAndIdLessThanOrderByBitsRequiredDesc(long excludeSqrt,
                                                                                                   long eclusiveMax,
                                                                                                   PageRequest<NaturalNumber> pagination);
 
     Iterable<NaturalNumber> findByIsOddTrueAndIdLessThanEqualOrderByIdDesc(long max);
 
-    Streamable<NaturalNumber> findByIsOddFalseAndIdBetween(long min, long max);
+    List<NaturalNumber> findByIsOddFalseAndIdBetween(long min, long max);
 
     Stream<NaturalNumber> findByNumTypeInOrderByIdAsc(Set<NumberType> types, Limit limit);
 

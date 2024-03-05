@@ -1194,7 +1194,7 @@ List<User> findByNameStartsWith(String namePrefix, Sort<?>... sorts);
 // Sorts first by name. When name is the same, applies the PageRequest's sort criteria
 @Query("SELECT u FROM User u WHERE (u.age > ?1)")
 @OrderBy("name")
-KeysetAwarePage<User> olderThan(int age, PageRequest<User> pagination);
+CursoredPage<User> olderThan(int age, PageRequest<User> pagination);
 ----
 
 === Pagination in Jakarta Data
@@ -1233,11 +1233,12 @@ Offset pagination offers several key features that make it a valuable approach f
 
 The following requirements must be met when using offset-based pagination:
 
-* The repository method signature must return `Slice` or `Page`. A repository method with return type of `Slice` or `Page` must raise `UnsupportedOperationException` if the database is incapable of offset pagination.
+* The repository method signature must return `Page`. A repository method with return type of `Page` must raise `UnsupportedOperationException` if the database is incapable of offset pagination.
 * The repository method signature must accept a `PageRequest` parameter.
 * Sort criteria must be provided and should be minimal.
 * The combination of provided sort criteria must define a deterministic ordering of entities.
 * The entities within each page must be ordered according to the provided sort criteria.
+* If `PageRequest.requestTotal()` returns `true`, the `Page` should contain accurate information about the total number of pages and total number of elements across all pages. Otherwise, if `PageRequest.requestTotal()` returns `false`, the operations `Page.totalElements()` and `Page.totalPages()` throw `IllegalStateException`.
 * Except for the highest numbered page, the Jakarta Data provider must return full pages consisting of the maximum page size number of entities.
 * Page numbers for offset pagination are computed by taking the entity's 1-based offset after sorting, dividing it by the maximum page size, and rounding up. For example, the 52nd entity is on page 6 when the maximum page size is 10, because 52 / 10 rounded up is 6. Note that the first page number is always 1.
 
@@ -1332,7 +1333,7 @@ Offset pagination is a valuable tool for Java developers when dealing with large
 
 ==== Keyset Pagination
 
-Keyset pagination aims to reduce missed and duplicate results across pages by querying relative to the observed values of entity properties that constitute the sorting criteria. Keyset pagination can also offer an improvement in performance because it avoids fetching and ordering results from prior pages by causing those results to be non-matching. A Jakarta Data provider appends additional conditions to the query and tracks keyset values automatically when `KeysetAwareSlice` or `KeysetAwarePage` are used as the repository method return type. The application invokes `nextPageRequest` or `previousPageRequest` on the keyset aware slice or page to obtain a `PageRequest` which keeps track of the keyset values.
+Keyset pagination aims to reduce missed and duplicate results across pages by querying relative to the observed values of entity properties that constitute the sorting criteria. Keyset pagination can also offer an improvement in performance because it avoids fetching and ordering results from prior pages by causing those results to be non-matching. A Jakarta Data provider appends additional conditions to the query and tracks keyset values automatically when `CursoredPage` is used as the repository method return type. The application invokes `nextPageRequest` or `previousPageRequest` on the keyset aware slice or page to obtain a `PageRequest` which keeps track of the keyset values.
 
 For example,
 
@@ -1340,7 +1341,7 @@ For example,
 ----
 @Repository
 public interface CustomerRepository extends BasicRepository<Customer, Long> {
-  KeysetAwareSlice<Customer> findByZipcodeOrderByLastNameAscFirstNameAscIdAsc(
+  CursoredPage<Customer> findByZipcodeOrderByLastNameAscFirstNameAscIdAsc(
                                  int zipcode, PageRequest<Customer> pageRequest);
 }
 ----
@@ -1405,7 +1406,7 @@ Other types of updates to data, however, will cause duplicate or missed results.
 
 ===== Restrictions on use of Keyset Pagination
 
-* The repository method signature must return `KeysetAwareSlice` or `KeysetAwarePage`. A repository method with return type of `KeysetAwareSlice` or `KeysetAwarePage` must raise `UnsupportedOperationException` if the database is incapable of keyset pagination.
+* The repository method signature must return `CursoredPage`. A repository method with return type of `CursoredPage` must raise `UnsupportedOperationException` if the database is incapable of keyset pagination.
 * The repository method signature must accept a `PageRequest` parameter.
 * Sort criteria must be provided and should be minimal.
 * The combination of provided sort criteria must uniquely identify each entity such that the sort criteria defines a deterministic ordering of entities.
@@ -1424,7 +1425,7 @@ Here is an example where an application uses `@Query` to provide a partial query
 @Repository
 public interface CustomerRepository extends BasicRepository<Customer, Long> {
   @Query("SELECT o FROM Customer o WHERE (o.totalSpent / o.totalPurchases > ?1)")
-  KeysetAwareSlice<Customer> withAveragePurchaseAbove(float minimum, PageRequest<Customer> pageRequest);
+  CursoredPage<Customer> withAveragePurchaseAbove(float minimum, PageRequest<Customer> pageRequest);
 }
 ----
 
@@ -1452,7 +1453,7 @@ In this example, the application uses a cursor to request pages in forward and p
 ----
 @Repository
 public interface Products extends CrudRepository<Product, Long> {
-  KeysetAwareSlice<Product> findByNameContains(String namePattern, PageRequest<Product> pageRequest);
+  CursoredPage<Product> findByNameContains(String namePattern, PageRequest<Product> pageRequest);
 }
 ----
 
@@ -1464,7 +1465,7 @@ float priceMidpoint = 50.0f;
 PageRequest<Product> pageRequest = Order.by(_Product.price.asc(), _Product.id.asc())
                                         .pageSize(10)
                                         .afterKeyset(priceMidpoint, 0L);
-KeysetAwareSlice<Product> moreExpensive = products.findByNameContains(pattern, pageRequest);
+CursoredPage<Product> moreExpensive = products.findByNameContains(pattern, pageRequest);
 ----
 
 Obtaining the previous 10 products:
@@ -1475,7 +1476,7 @@ if (moreExpensive.hasContent())
     pageRequest = pageRequest.beforeKeysetCursor(moreExpensive.getKeysetCursor(0));
 else
     pageRequest = pageRequest.beforeKeyset(priceMidpoint, 1L);
-KeysetAwareSlice<Product> lessExpensive = products.findByNameContains(pattern, pageRequest);
+CursoredPage<Product> lessExpensive = products.findByNameContains(pattern, pageRequest);
 ----
 
 ===== Example with Combined Sort Criteria
@@ -1487,7 +1488,7 @@ In this example, the application uses `OrderBy` to define a subset of the sort c
 @Repository
 public interface Products extends CrudRepository<Product, Long> {
   @OrderBy(_Car.vehicleCondition)
-  KeysetAwarePage<Car> find(@By(_Car.make) String manufacturer,
+  CursoredPage<Car> find(@By(_Car.make) String manufacturer,
                             @By(_Car.model) String model,
                             PageRequest<Car> pageRequest);
 }
@@ -1499,7 +1500,7 @@ The above criteria does not uniquely identify `Car` entities. After sorting on t
 ----
 PageRequest<Car> page1Request = Order.by(_Car.price.desc(), _Car.vin.asc())
                                      .pageSize(25);
-KeysetAwarePage<Car> page1 = cars.find(make, model, page1Request);
+CursoredPage<Car> page1 = cars.find(make, model, page1Request);
 ----
 
 The query results are ordered first by vehicle condition. All resulting entities with the same vehicle condition are subsequently ordered by their price in descending order. All resulting entities with the same vehicle condition and price are ordered alphabetically by their VIN. The end user requests the next page of results. If the application still has access to the page at this point, it can use `page.nextPageRequest()` to obtain a request for the next page of results. In this case, the Jakarta Data provider computes the cursor from the vehicle condition, price, and VIN of the final `Car` entity of the page and includes the cursor in the resulting `PageRequest` instance. Alternatively, the application does not need access to the page if it obtained the cursor or the vehicle condition, price, and VIN values that make up the cursor. In this case, it can construct a new `PageRequest`,
@@ -1512,7 +1513,7 @@ PageRequest<Car> page2Request = Order.by(_Car.price.desc(), _Car.vin.asc())
                                      .afterKeyset(lastCar.vehicleCondition,
                                                   lastCar.price,
                                                   lastCar.vin);
-KeysetAwarePage<Car> page2 = cars.find(make, model, page2Request);
+CursoredPage<Car> page2 = cars.find(make, model, page2Request);
 ----
 
 ===== Scenario: Person Entity and People Repository
@@ -1540,7 +1541,7 @@ This keyset cursor-based pagination scenario uses the same `Person` entity and e
 @Repository
 public interface People extends BasicRepository<Person, Long> {
     @Find
-    KeysetAwarePage<Person> findAll(PageRequest<Person> pagination);
+    CursoredPage<Person> findAll(PageRequest<Person> pagination);
 }
 ----
 
@@ -1555,7 +1556,7 @@ PageRequest<Person> firstPageRequest = PageRequest.of(Person.class)
                                                   .size(4)
                                                   .sortBy(Sort.asc("name"),
                                                           Sort.asc("id"));
-KeysetAwarePage<Person> page = people.findAll(firstPageRequest);
+CursoredPage<Person> page = people.findAll(firstPageRequest);
 ----
 
 Resulting Page Content:
@@ -1585,7 +1586,7 @@ Next Page Execution:
 ----
 if (page.hasNext()) {
    PageRequest<Person> nextPageRequest = page.nextPageRequest();
-   KeysetAwarePage<Person> page2 = people.findAll(nextPageRequest);
+   CursoredPage<Person> page2 = people.findAll(nextPageRequest);
 }
 ----
 
