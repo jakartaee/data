@@ -812,7 +812,7 @@ public class EntityTests {
                strategy = "Request the first CursoredPage of 6 results, expecting to find all 6, " +
                           "then request the next CursoredPage and the CursoredPage after that, " +
                           "expecting to find all results.")
-    public void testFirstKeysetAwareSliceOf6AndNextSlices() {
+    public void testFirstCursoredPageWithoutTotalOf6AndNextPages() {
         PageRequest<NaturalNumber> first6 = PageRequest.of(NaturalNumber.class).size(6).withoutTotal();
         CursoredPage<NaturalNumber> slice;
 
@@ -969,8 +969,8 @@ public class EntityTests {
     }
 
     @Assertion(id = "133",
-               strategy = "Request a CursoredPage of 7 results after the keyset of the 20th result, expecting to find the next 7 results. " +
-                          "Then request the CursoredPage before the keyset of the first entry of the page, expecting to find the previous 7 results. " +
+               strategy = "Request a CursoredPage of 7 results after the cursor of the 20th result, expecting to find the next 7 results. " +
+                          "Then request the CursoredPage before the cursor of the first entry of the page, expecting to find the previous 7 results. " +
                           "Then request the CursoredPage after the last entry of the original slice, expecting to find the next 7.")
     public void testCursoredPageOf7FromCursor() {
         // The query for this test returns 1-35 and 49 in the following order:
@@ -1081,10 +1081,10 @@ public class EntityTests {
     }
 
     @Assertion(id = "133",
-            strategy = "Request a CursoredPage of 9 results after the keyset of the 20th result, expecting to find the next 9 results. " +
-                       "Then request the CursoredPage before the keyset of the first entry of the slice, expecting to find the previous 9 results. " +
+            strategy = "Request a CursoredPage of 9 results after the cursor of the 20th result, expecting to find the next 9 results. " +
+                       "Then request the CursoredPage before the cursor of the first entry of the slice, expecting to find the previous 9 results. " +
                        "Then request the CursoredPage after the last entry of the original slice, expecting to find the next 9.")
-    public void testKeysetAwareSliceOf9FromCursor() {
+    public void testCursoredPageWithoutTotalOf9FromCursor() {
         // The query for this test returns composite natural numbers under 64 in the following order:
         //
         // 49 50 51 52 54 55 56 57 58 60 62 63 36 38 39 40 42 44 45 46 48 25 26 27 28 30 32 33 34 35 16 18 20 21 22 24 09 10 12 14 15 04 06 08
@@ -1145,7 +1145,7 @@ public class EntityTests {
     }
 
     @Assertion(id = "133", strategy = "Request a CursoredPage of results where none match the query, expecting an empty CursoredPage with 0 results.")
-    public void testKeysetAwareSliceOfNothing() {
+    public void testCursoredPageWithoutTotalOfNothing() {
         // There are no numbers larger than 30 which have a square root that rounds down to 3.
         PageRequest<NaturalNumber> pagination = PageRequest.of(NaturalNumber.class).size(33).afterKeyset(30L).withoutTotal();
 
@@ -1454,34 +1454,34 @@ public class EntityTests {
         assertEquals('d', found[1].getThisCharacter());
         assertEquals('T', found[2].getThisCharacter());
     }
-//
-//    @Assertion(id = "133", strategy = "Use a repository method that returns Streamable and verify the results.")
-//    public void testStreamable() {
-//        Streamable<AsciiCharacter> chars = characters.findByNumericValueLessThanEqualAndNumericValueGreaterThanEqual(109, 101);
-//
-//        assertEquals(Arrays.toString(new Character[] { Character.valueOf('e'),
-//                                                       Character.valueOf('f'),
-//                                                       Character.valueOf('g'),
-//                                                       Character.valueOf('h'),
-//                                                       Character.valueOf('i'),
-//                                                       Character.valueOf('j'),
-//                                                       Character.valueOf('k'),
-//                                                       Character.valueOf('l'),
-//                                                       Character.valueOf('m') }),
-//                     Arrays.toString(chars.stream().map(ch -> ch.getThisCharacter()).sorted().toArray()));
-//
-//        assertEquals(101 + 102 + 103 + 104 + 105 + 106 + 107 + 108 + 109,
-//                     chars.stream().mapToInt(AsciiCharacter::getNumericValue).sum());
-//
-//        Set<String> sorted = new TreeSet<>();
-//        chars.forEach(ch -> sorted.add(ch.getHexadecimal()));
-//        assertEquals(new TreeSet<>(Set.of("65", "66", "67", "68", "69", "6a", "6b", "6c", "6d")),
-//                     sorted);
-//
-//        Streamable<AsciiCharacter> empty = characters.findByNumericValueLessThanEqualAndNumericValueGreaterThanEqual(115, 120);
-//        assertEquals(false, empty.iterator().hasNext());
-//        assertEquals(0L, empty.stream().count());
-//    }
+
+    @Assertion(id = "133", strategy = "Obtain multiple streams from the same List result of a repository method.")
+    public void testStreamsFromList() {
+        List<AsciiCharacter> chars = characters.findByNumericValueLessThanEqualAndNumericValueGreaterThanEqual(109, 101);
+
+        assertEquals(Arrays.toString(new Character[] { Character.valueOf('e'),
+                                                       Character.valueOf('f'),
+                                                       Character.valueOf('g'),
+                                                       Character.valueOf('h'),
+                                                       Character.valueOf('i'),
+                                                       Character.valueOf('j'),
+                                                       Character.valueOf('k'),
+                                                       Character.valueOf('l'),
+                                                       Character.valueOf('m') }),
+                     Arrays.toString(chars.stream().map(ch -> ch.getThisCharacter()).sorted().toArray()));
+
+        assertEquals(101 + 102 + 103 + 104 + 105 + 106 + 107 + 108 + 109,
+                     chars.stream().mapToInt(AsciiCharacter::getNumericValue).sum());
+
+        Set<String> sorted = new TreeSet<>();
+        chars.forEach(ch -> sorted.add(ch.getHexadecimal()));
+        assertEquals(new TreeSet<>(Set.of("65", "66", "67", "68", "69", "6a", "6b", "6c", "6d")),
+                     sorted);
+
+        List<AsciiCharacter> empty = characters.findByNumericValueLessThanEqualAndNumericValueGreaterThanEqual(115, 120);
+        assertEquals(false, empty.iterator().hasNext());
+        assertEquals(0L, empty.stream().count());
+    }
 
     @Assertion(id = "133",
                strategy = "Request the third Page of 10 results, expecting to find all 10. " +

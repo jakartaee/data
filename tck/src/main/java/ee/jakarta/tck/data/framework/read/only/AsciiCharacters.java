@@ -16,6 +16,7 @@
 package ee.jakarta.tck.data.framework.read.only;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -64,7 +65,7 @@ public interface AsciiCharacters extends DataRepository<AsciiCharacter, Long>, I
 
     Page<AsciiCharacter> findByNumericValueBetween(int min, int max, PageRequest<AsciiCharacter> pagination);
 
-//    Streamable<AsciiCharacter> findByNumericValueLessThanEqualAndNumericValueGreaterThanEqual(int max, int min);
+    List<AsciiCharacter> findByNumericValueLessThanEqualAndNumericValueGreaterThanEqual(int max, int min);
 
     AsciiCharacter[] findFirst3ByNumericValueGreaterThanEqualAndHexadecimalEndsWith(long minValue, String lastHexDigit, Sort<AsciiCharacter> sort);
 
