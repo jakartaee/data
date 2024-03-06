@@ -529,7 +529,7 @@ import java.util.List;
  * <td>The caller must arrange to {@link java.util.stream.BaseStream#close() close}
  * all streams that it obtains from repository methods.</td></tr>
  *
- * <tr style="vertical-align: top"><td><code>find...By...(..., PageRequest)</code></td>
+ * <tr style="vertical-align: top; background-color:#eee"><td><code>find...By...(..., PageRequest)</code></td>
  * <td><code>Page&lt;E&gt;</code>, <code>CursoredPage&lt;E&gt;</code></td>
  * <td>For use with pagination</td></tr>
  *

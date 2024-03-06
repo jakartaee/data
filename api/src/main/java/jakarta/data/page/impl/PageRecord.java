@@ -29,20 +29,39 @@ import java.util.NoSuchElementException;
  * This may be used to simplify implementation of a repository interface.
  *
  * @param pageRequest The {@link PageRequest page request} for which this
- *                    slice was obtained
+ *                    page was obtained
  * @param content The page content
  * @param totalElements The total number of elements across all pages that
- *                      can be requested for the query
+ *                      can be requested for the query. A negative value
+ *                      indicates that a total count of elements and pages
+ *                      is not available.
  * @param moreResults whether there is a (nonempty) next page of results
  * @param <T> The type of elements on the page
  */
 public record PageRecord<T>(PageRequest<T> pageRequest, List<T> content, long totalElements, boolean moreResults)
         implements Page<T> {
 
+    /**
+     * Constructs a new instance, computing the {@link #moreResults}
+     * component as {@code true} if the page {@code content} is a full
+     * page of results and the {@code totalElements} is either unavailable
+     * (indicated by a negative value) or it exceeds the current
+     * {@linkplain PageRequest#page() page number} multiplied by the
+     * {@link PageRequest#size() size} of a full page.
+     *
+     * @param pageRequest   The {@link PageRequest page request} for which
+     *                      this page was obtained.
+     * @param content       The page content.
+     * @param totalElements The total number of elements across all pages
+     *                      that can be requested for the query. A negative
+     *                      value indicates that a total count of elements
+     *                      and pages is not available.
+     */
     public PageRecord(PageRequest<T> pageRequest, List<T> content, long totalElements) {
         this( pageRequest, content, totalElements,
                 content.size() == pageRequest.size()
-                        && totalElements > pageRequest.size() * pageRequest.page() );
+                        && (totalElements < 0
+                                || totalElements > pageRequest.size() * pageRequest.page() ));
     }
 
     @Override
