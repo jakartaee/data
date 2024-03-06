@@ -14,6 +14,8 @@ The interpretation of an operator expression or literal expression of a given ty
 
 NOTE: This specification should not be interpreted to mandate an inefficient implementation of query language constructs in cases where the native behavior of the database varies from Java in such minor ways. That said, portability between Jakarta Data providers is maximized when their behavior is closest to the Java language.
 
+Since a field of an entity may be null, a JDQL expression may evaluate to a null value.
+
 === Lexical structure
 
 Lexical analysis requires recognition of the following token types:
@@ -131,7 +133,12 @@ A _path expression_ is a period-separated list of Java identifiers, with syntax 
 
 The type of the whole path expression is the type of the last element of the list. For example, `pages` is assigned the type `int`, `address` is assigned the type `org.example.Address`, and `address.street` is assigned the type `java.lang.String`.
 
-When executed, a path expression is evaluated in the context of a given record of the queried entity type, and evaluates to the value of the entity field for the given record.
+When a path expression is executed, each element of the path is evaluated in turn:
+
+- the first element of the path expression is evaluated in the context of a given record of the queried entity type, and evaluates to the value of the named entity field of the given record, and then
+- each subsequent element is evaluated in the context of the result produced the previous element, and evaluates to the value of the named field of the result.
+
+If any element of a path expression evaluates to a null value, the whole path expression evaluates to a null value.
 
 ==== Function calls
 
