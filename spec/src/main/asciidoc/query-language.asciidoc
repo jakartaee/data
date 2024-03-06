@@ -45,7 +45,7 @@ An _ordinal parameter_ is a decimal integer prefixed with the `?` character, for
 
 The character sequences `+`,`-`,`*`,`/`,`||`,`=`,`<`,`>`,`<>`,`&lt;=`,`>=` are _operators_.
 
-The characters `(`,`)`, and `,` are _punctuation characters_.
+The characters `(`, `)`, and `,` are _punctuation characters_.
 
 ==== String literals
 
