@@ -102,7 +102,7 @@ When executed, a literal expression evaluates to its literal value.
 
 The special values `true` and `false` are assigned the type `boolean`, and evaluate to their literal values.
 
-The special values `local date` and `local datetime` are assigned the types `java.time.LocalDate` and `java.time.LocalDateTime`, and evaluate to the current date and current datetime of the database server, respectively.
+The special values `local date`, `local time`, and `local datetime` are assigned the types `java.time.LocalDate`, `java.time.LocalTime`, and `java.time.LocalDateTime`, and evaluate to the current date and current datetime of the database server, respectively.
 
 The syntax for special values is given by the `special_expression` grammar rule.
 
