@@ -22,7 +22,6 @@ import static org.junit.jupiter.api.Assertions.fail;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -92,10 +91,11 @@ public class PersistenceEntityTests {
         catalog.save(Product.of("book", 15.98, "TEST-PROD-42"));
         catalog.save(Product.of("baseball cap", 10.99, "TEST-PROD-43", Department.SPORTING_GOODS, Department.CLOTHING));
 
-        LinkedList<Product> found = catalog.findByDepartmentsEmpty();
+        Stream<Product> found = catalog.findByDepartmentsEmpty();
 
-        assertEquals(1, found.size());
-        assertEquals("book", found.getFirst().getName());
+        assertEquals(List.of("book"),
+                     found.map(Product::getName)
+                          .collect(Collectors.toList()));
 
         assertEquals(3L, catalog.deleteByProductNumLike("TEST-PROD-%"));
     }
