@@ -27,49 +27,49 @@ class PageRequestCursor implements PageRequest.Cursor {
     /**
      * Key values.
      */
-    private final Object[] keyset;
+    private final Object[] key;
 
     /**
      * Constructs a cursor with the specified key values.
      *
-     * @param keyset key values.
+     * @param key key values.
      * @throws IllegalArgumentException if no key values are provided.
      */
-    PageRequestCursor(Object... keyset) {
-        this.keyset = keyset;
-        if (keyset == null || keyset.length == 0)
-            throw new IllegalArgumentException("No keyset values were provided.");
+    PageRequestCursor(Object... key) {
+        this.key = key;
+        if (key == null || key.length == 0)
+            throw new IllegalArgumentException("No key values were provided.");
     }
 
     @Override
     public boolean equals(Object o) {
         return this == o || o != null
                 && o.getClass() == getClass()
-                && Arrays.equals(keyset, ((PageRequestCursor) o).keyset);
+                && Arrays.equals(key, ((PageRequestCursor) o).key);
     }
 
-    public Object getKeysetElement(int index) {
-        return keyset[index];
+    public Object get(int index) {
+        return key[index];
     }
 
     @Override
     public int hashCode() {
-        return Arrays.hashCode(keyset);
+        return Arrays.hashCode(key);
     }
 
     public int size() {
-        return keyset.length;
+        return key.length;
     }
 
     @Override
     public List<?> elements() {
-        return List.of(keyset);
+        return List.of(key);
     }
 
     @Override
     public String toString() {
         return new StringBuilder(27).append("Cursor@").append(Integer.toHexString(hashCode()))
-                        .append(" with ").append(keyset.length).append(" keys")
+                        .append(" with ").append(key.length).append(" keys")
                         .toString();
     }
 }

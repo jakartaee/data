@@ -134,7 +134,7 @@ public interface PageRequest<T> {
      * <p>Requests {@link CursoredPage key-based pagination} in the forward direction,
      * starting after the specified key values.</p>
      *
-     * @param keyset key values, the order and number of which must match the
+     * @param key key values, the order and number of which must match the
      *        {@link OrderBy} annotations, {@link Sort} parameters, or
      *        <code>OrderBy</code> name pattern of the repository method to which
      *        this pagination will be supplied.
@@ -142,13 +142,13 @@ public interface PageRequest<T> {
      *         This method never returns <code>null</code>.
      * @throws IllegalArgumentException if no key values are provided.
      */
-    PageRequest<T> afterKeyset(Object... keyset);
+    PageRequest<T> afterKey(Object... key);
 
     /**
      * <p>Requests {@link CursoredPage key-based pagination} in the reverse direction,
      * starting after the specified key values.</p>
      *
-     * @param keyset key values, the order and number of which must match the
+     * @param key key values, the order and number of which must match the
      *        {@link OrderBy} annotations, {@link Sort} parameters, or
      *        <code>OrderBy</code> name pattern of the repository method to which
      *        this pagination will be supplied.
@@ -156,13 +156,13 @@ public interface PageRequest<T> {
      *         This method never returns <code>null</code>.
      * @throws IllegalArgumentException if no key values are provided.
      */
-    PageRequest<T> beforeKeyset(Object... keyset);
+    PageRequest<T> beforeKey(Object... key);
 
     /**
      * <p>Requests {@link CursoredPage key-based pagination} in the forward direction,
      * starting after the specified key values.</p>
      *
-     * @param keysetCursor cursor with key values, the order and number of which must match the
+     * @param cursor cursor with key values, the order and number of which must match the
      *        {@link OrderBy} annotations, {@link Sort} parameters, or
      *        <code>OrderBy</code> name pattern of the repository method to which
      *        this pagination will be supplied.
@@ -170,13 +170,13 @@ public interface PageRequest<T> {
      *         This method never returns <code>null</code>.
      * @throws IllegalArgumentException if no key values are provided.
      */
-    PageRequest<T> afterKeysetCursor(Cursor keysetCursor);
+    PageRequest<T> afterCursor(Cursor cursor);
 
     /**
      * <p>Requests {@link CursoredPage key-based pagination} in the reverse direction,
      * starting after the specified key values.</p>
      *
-     * @param keysetCursor cursor with key values, the order and number of which must match the
+     * @param cursor cursor with key values, the order and number of which must match the
      *        {@link OrderBy} annotations, {@link Sort} parameters, or
      *        <code>OrderBy</code> name pattern of the repository method to which
      *        this pagination will be supplied.
@@ -184,7 +184,7 @@ public interface PageRequest<T> {
      *         This method never returns <code>null</code>.
      * @throws IllegalArgumentException if no key values are provided.
      */
-    PageRequest<T> beforeKeysetCursor(Cursor keysetCursor);
+    PageRequest<T> beforeCursor(Cursor cursor);
 
     /**
      * <p>Creates a new page request with the same pagination information,
@@ -305,7 +305,7 @@ public interface PageRequest<T> {
      * <p>If using key-based pagination, traversal of pages must only be done
      * via the {@link CursoredPage#nextPageRequest()},
      * {@link CursoredPage#previousPageRequest()}, or
-     * {@linkplain CursoredPage#getKeysetCursor(int) cursor},
+     * {@linkplain CursoredPage#getCursor(int) cursor},
      * not with this method.</p>
      *
      * @return The next PageRequest.
@@ -322,7 +322,7 @@ public interface PageRequest<T> {
      * <p>If using key-based pagination, traversal of pages must only be done
      * via the {@link CursoredPage#nextPageRequest()},
      * {@link CursoredPage#previousPageRequest()}, or
-     * {@linkplain CursoredPage#getKeysetCursor(int) cursor},
+     * {@linkplain CursoredPage#getCursor(int) cursor},
      * not with this method.</p>
      *
      * @return The previous PageRequest, or null if this is the first page.
@@ -531,7 +531,7 @@ public interface PageRequest<T> {
          * @throws IndexOutOfBoundsException if the index is negative
          *         or greater than or equal to the {@link #size}.
          */
-        Object getKeysetElement(int index);
+        Object get(int index);
 
         /**
          * Returns a hash code based on the key values.
@@ -567,11 +567,11 @@ public interface PageRequest<T> {
 
         /**
          * Obtain an instance of {@code Cursor} for the given key.
-         * @param keyset the key
+         * @param key the key
          * @return a new instance of {@code Cursor}
          */
-        static Cursor forKeyset(Object... keyset) {
-            return new PageRequestCursor(keyset);
+        static Cursor forKey(Object... key) {
+            return new PageRequestCursor(key);
         }
     }
 }

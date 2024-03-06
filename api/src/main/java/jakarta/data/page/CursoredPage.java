@@ -77,7 +77,7 @@ import java.util.NoSuchElementException;
  * result on the current page.</p>
  *
  * <p>A {@link PageRequest} based on an explicit key may be constructed by
- * calling {@link PageRequest#afterKeyset(Object...)}. The arguments supplied
+ * calling {@link PageRequest#afterKey(Object...)}. The arguments supplied
  * to this method must match the list of sorting criteria specified by
  * {@link OrderBy} annotations of the repository method, {@link Sort}
  * parameters of the page request, or <code>OrderBy</code> name pattern of
@@ -87,7 +87,7 @@ import java.util.NoSuchElementException;
  * Employee emp = ...
  * {@code PageRequest<Employee>} pageRequest = PageRequest.of(Employee.class)
  *                                                .size(50)
- *                                                .afterKeyset(emp.lastName, emp.firstName, emp.id);
+ *                                                .afterKey(emp.lastName, emp.firstName, emp.id);
  * page = employees.findByHoursWorkedGreaterThan(1500, pageRequest);
  * </pre>
  *
@@ -151,7 +151,7 @@ public interface CursoredPage<T> extends Page<T> {
      * @param index position (0 is first) of a result on the page.
      * @return cursor for key values at the specified position.
      */
-    PageRequest.Cursor getKeysetCursor(int index);
+    PageRequest.Cursor getCursor(int index);
 
     /**
      * Returns {@code true} when it is possible to navigate to a previous
