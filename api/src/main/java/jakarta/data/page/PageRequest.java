@@ -131,58 +131,58 @@ public interface PageRequest<T> {
     }
 
     /**
-     * <p>Requests {@link CursoredPage keyset pagination} in the forward direction,
-     * starting after the specified keyset values.</p>
+     * <p>Requests {@link CursoredPage key-based pagination} in the forward direction,
+     * starting after the specified key values.</p>
      *
-     * @param keyset keyset values, the order and number of which must match the
+     * @param keyset key values, the order and number of which must match the
      *        {@link OrderBy} annotations, {@link Sort} parameters, or
      *        <code>OrderBy</code> name pattern of the repository method to which
      *        this pagination will be supplied.
-     * @return a new instance of <code>PageRequest</code> with forward keyset pagination.
+     * @return a new instance of <code>PageRequest</code> with forward key-based pagination.
      *         This method never returns <code>null</code>.
-     * @throws IllegalArgumentException if no keyset values are provided.
+     * @throws IllegalArgumentException if no key values are provided.
      */
     PageRequest<T> afterKeyset(Object... keyset);
 
     /**
-     * <p>Requests {@link CursoredPage keyset pagination} in the reverse direction,
-     * starting after the specified keyset values.</p>
+     * <p>Requests {@link CursoredPage key-based pagination} in the reverse direction,
+     * starting after the specified key values.</p>
      *
-     * @param keyset keyset values, the order and number of which must match the
+     * @param keyset key values, the order and number of which must match the
      *        {@link OrderBy} annotations, {@link Sort} parameters, or
      *        <code>OrderBy</code> name pattern of the repository method to which
      *        this pagination will be supplied.
-     * @return a new instance of <code>PageRequest</code> with reverse keyset pagination.
+     * @return a new instance of <code>PageRequest</code> with reverse key-based pagination.
      *         This method never returns <code>null</code>.
-     * @throws IllegalArgumentException if no keyset values are provided.
+     * @throws IllegalArgumentException if no key values are provided.
      */
     PageRequest<T> beforeKeyset(Object... keyset);
 
     /**
-     * <p>Requests {@link CursoredPage keyset pagination} in the forward direction,
-     * starting after the specified keyset values.</p>
+     * <p>Requests {@link CursoredPage key-based pagination} in the forward direction,
+     * starting after the specified key values.</p>
      *
-     * @param keysetCursor cursor with keyset values, the order and number of which must match the
+     * @param keysetCursor cursor with key values, the order and number of which must match the
      *        {@link OrderBy} annotations, {@link Sort} parameters, or
      *        <code>OrderBy</code> name pattern of the repository method to which
      *        this pagination will be supplied.
-     * @return a new instance of <code>PageRequest</code> with forward keyset pagination.
+     * @return a new instance of <code>PageRequest</code> with forward key-based pagination.
      *         This method never returns <code>null</code>.
-     * @throws IllegalArgumentException if no keyset values are provided.
+     * @throws IllegalArgumentException if no key values are provided.
      */
     PageRequest<T> afterKeysetCursor(Cursor keysetCursor);
 
     /**
-     * <p>Requests {@link CursoredPage keyset pagination} in the reverse direction,
-     * starting after the specified keyset values.</p>
+     * <p>Requests {@link CursoredPage key-based pagination} in the reverse direction,
+     * starting after the specified key values.</p>
      *
-     * @param keysetCursor cursor with keyset values, the order and number of which must match the
+     * @param keysetCursor cursor with key values, the order and number of which must match the
      *        {@link OrderBy} annotations, {@link Sort} parameters, or
      *        <code>OrderBy</code> name pattern of the repository method to which
      *        this pagination will be supplied.
-     * @return a new instance of <code>PageRequest</code> with reverse keyset pagination.
+     * @return a new instance of <code>PageRequest</code> with reverse key-based pagination.
      *         This method never returns <code>null</code>.
-     * @throws IllegalArgumentException if no keyset values are provided.
+     * @throws IllegalArgumentException if no key values are provided.
      */
     PageRequest<T> beforeKeysetCursor(Cursor keysetCursor);
 
@@ -251,10 +251,10 @@ public interface PageRequest<T> {
     boolean equals(Object o);
 
     /**
-     * Returns the keyset values which are the starting point for
-     * keyset pagination.
+     * Returns the key values which are the starting point for
+     * key-based pagination.
      *
-     * @return the keyset values; {@link Optional#empty()} if using offset pagination.
+     * @return the key values; {@link Optional#empty()} if using offset pagination.
      */
     Optional<Cursor> cursor();
 
@@ -302,10 +302,10 @@ public interface PageRequest<T> {
      * <p>Returns the <code>PageRequest</code> requesting the next page if
      * using offset pagination.</p>
      *
-     * <p>If using keyset pagination, traversal of pages must only be done
+     * <p>If using key-based pagination, traversal of pages must only be done
      * via the {@link CursoredPage#nextPageRequest()},
      * {@link CursoredPage#previousPageRequest()}, or
-     * {@linkplain CursoredPage#getKeysetCursor(int) keyset cursor},
+     * {@linkplain CursoredPage#getKeysetCursor(int) cursor},
      * not with this method.</p>
      *
      * @return The next PageRequest.
@@ -319,10 +319,10 @@ public interface PageRequest<T> {
      * if using offset pagination, or null if this is the first page, that
      * is, when {@link #page()} returns {@code 1}.</p>
      *
-     * <p>If using keyset pagination, traversal of pages must only be done
+     * <p>If using key-based pagination, traversal of pages must only be done
      * via the {@link CursoredPage#nextPageRequest()},
      * {@link CursoredPage#previousPageRequest()}, or
-     * {@linkplain CursoredPage#getKeysetCursor(int) keyset cursor},
+     * {@linkplain CursoredPage#getKeysetCursor(int) cursor},
      * not with this method.</p>
      *
      * @return The previous PageRequest, or null if this is the first page.
@@ -477,21 +477,21 @@ public interface PageRequest<T> {
     PageRequest<T> withTotal();
 
     /**
-     * The type of pagination: offset-based or keyset cursor-based,
-     * which includes a direction.
+     * The type of pagination: offset-based or key-based, which includes
+     * a direction.
      */
     enum Mode {
         /**
-         * Indicates forward keyset pagination, which follows the
+         * Indicates forward key-based pagination, which follows the
          * direction of the sort criteria, using a cursor that is
-         * formed from the keyset of the last entity on the current page.
+         * formed from the key of the last entity on the current page.
          */
         CURSOR_NEXT,
 
         /**
-         * Indicates a request for a page with keyset pagination
+         * Indicates a request for a page with key-based pagination
          * in the reverse direction of the sort criteria, using a cursor
-         * that is formed from the keyset of first entity on the current page.
+         * that is formed from the key of first entity on the current page.
          * The order of results on each page follows the sort criteria
          * and is not reversed.
          */
@@ -507,49 +507,49 @@ public interface PageRequest<T> {
     }
 
     /**
-     * A cursor that is formed from a keyset, relative to which a next
+     * A cursor that is formed from a key, relative to which a next
      * or previous page can be requested.
      */
     interface Cursor {
         /**
-         * Returns whether or not the keyset values of this cursor
+         * Returns whether or not the key values of this cursor
          * are equal to those of the supplied cursor.
          * Both instances must also have the same cursor implementation class
          * in order to be considered equal.
          *
-         * @param cursor a keyset cursor against which to compare.
+         * @param cursor a cursor against which to compare.
          * @return true or false.
          */
         @Override
         boolean equals(Object cursor);
 
         /**
-         * Returns the keyset value at the specified position.
+         * Returns the key value at the specified position.
          *
-         * @param  index position (0 is first) of the keyset value to obtain.
-         * @return the keyset value at the specified position.
+         * @param  index position (0 is first) of the key value to obtain.
+         * @return the key value at the specified position.
          * @throws IndexOutOfBoundsException if the index is negative
          *         or greater than or equal to the {@link #size}.
          */
         Object getKeysetElement(int index);
 
         /**
-         * Returns a hash code based on the keyset values.
+         * Returns a hash code based on the key values.
          *
-         * @return a hash code based on the keyset values.
+         * @return a hash code based on the key values.
          */
         @Override
         int hashCode();
 
         /**
-         * Returns the number of values in the keyset.
+         * Returns the number of values in the key.
          *
-         * @return the number of values in the keyset.
+         * @return the number of values in the key.
          */
         int size();
 
         /**
-         * An unmodifiable list of values in the keyset.
+         * An unmodifiable list of values in the key.
          *
          * @return an unmodifiable list containing the
          *         ordered values
@@ -557,17 +557,17 @@ public interface PageRequest<T> {
         List<?> elements();
 
         /**
-         * String representation of the keyset cursor, including the number of
+         * String representation of the cursor, including the number of
          * key values in the cursor but not the values themselves.
          *
-         * @return String representation of the keyset cursor.
+         * @return String representation of the cursor.
          */
         @Override
         String toString();
 
         /**
-         * Obtain an instance of {@code Cursor} for the given keyset.
-         * @param keyset the keyset
+         * Obtain an instance of {@code Cursor} for the given key.
+         * @param keyset the key
          * @return a new instance of {@code Cursor}
          */
         static Cursor forKeyset(Object... keyset) {

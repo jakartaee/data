@@ -21,19 +21,19 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Built-in implementation of Cursor for keyset pagination.
+ * Built-in implementation of Cursor for key-based pagination.
  */
 class PageRequestCursor implements PageRequest.Cursor {
     /**
-     * Keyset values.
+     * Key values.
      */
     private final Object[] keyset;
 
     /**
-     * Constructs a keyset cursor with the specified values.
+     * Constructs a cursor with the specified key values.
      *
-     * @param keyset keyset values.
-     * @throws IllegalArgumentException if no keyset values are provided.
+     * @param keyset key values.
+     * @throws IllegalArgumentException if no key values are provided.
      */
     PageRequestCursor(Object... keyset) {
         this.keyset = keyset;
