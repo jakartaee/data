@@ -306,7 +306,7 @@ The `where` clause is always optional. When it is missing, there is no restricti
 
 ==== Select clause
 
-The `select` clause, with syntax given by `select_clause`, specifies a list of expressions which are returned by the query. Each expression in the list is evaluated for each record which satisfies the restriction imposed by the `where` clause.
+The `select` clause, with syntax given by `select_clause`, specifies a path expression which determines the values returned by the query. The path expression is evaluated for each record which satisfies the restriction imposed by the `where` clause, as specified in <<Path expressions>>, and the value of the last element of the path expression is added to the query results.
 
 Alternatively, the `select` clause may contain a single `count(*)` aggregate expression, which evaluates to the number of records which satisfy the restriction.
 
@@ -342,7 +342,7 @@ The clauses which can appear in a statement are given by the grammar for each ki
 
 ==== Select statements
 
-A `select` statement, with syntax given by `select_statement`, returns data to the client. For each record which satisfies the restriction imposed by the `where` clause, a result is returned containing the values obtained by evaluating the scalar expressions in the `select` clause. Alternatively, for the case of `select count(*)`, the query returns the number of records which satisfied the restriction.
+A `select` statement, with syntax given by `select_statement`, returns data to the client. For each record which satisfies the restriction imposed by the `where` clause, a result is returned containing the value obtained by evaluating the path expression in the `select` clause. Alternatively, for the case of `select count(*)`, the query returns the number of records which satisfied the restriction.
 
 ==== Update statements
 

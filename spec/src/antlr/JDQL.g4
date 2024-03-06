@@ -15,7 +15,7 @@ update_item : state_field_path_expression '=' (scalar_expression | 'NULL');
 
 select_clause : 'SELECT' select_list;
 select_list
-    : scalar_expression (',' scalar_expression)* // could limit to single select item and/or to state_field_path_expression
+    : state_field_path_expression
     | aggregate_expression
     ;
 aggregate_expression : 'COUNT' '(' '*' ')';
