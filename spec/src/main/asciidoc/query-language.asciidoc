@@ -10,7 +10,7 @@ Every expression in a JDQL query is assigned a Java type. An implementation of J
 
 NOTE: An implementation of JDQL is permitted and encouraged to support additional types. Use of such types is not guaranteed to be portable between implementations.
 
-The interpretation of an operator expression or literal expression of a given type is given by the interpretation of the equivalent expression in Java. However, the precise behavior of some queries might vary depending on the native semantics of queries on the underlying datastore. For example, numeric precision and overflow, string collation,and integer division are permitted to depart from the semantics of the Java language.
+The interpretation of an operator expression or literal expression of a given type is given by the interpretation of the equivalent expression in Java. However, the precise behavior of some queries might vary depending on the native semantics of queries on the underlying datastore. For example, numeric precision and overflow, string collation, and integer division are permitted to depart from the semantics of the Java language.
 
 NOTE: This specification should not be interpreted to mandate an inefficient implementation of query language constructs in cases where the native behavior of the database varies from Java in such minor ways. That said, portability between Jakarta Data providers is maximized when their behavior is closest to the Java language.
 
