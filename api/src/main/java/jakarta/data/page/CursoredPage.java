@@ -115,7 +115,7 @@ import java.util.NoSuchElementException;
  * be enclosed in parentheses.
  * <li>Sorting criteria must be specified independently of the user-provided
  * query, either via the {@link OrderBy} annotation or, or by passing {@link Sort}
- * criteria along with the {@linkplain PageRequest#sorts() page request}.
+ * criteria within the {@linkplain PageRequest#sorts() page request}.
  * </ul>
  * <p>For example:</p>
  *
