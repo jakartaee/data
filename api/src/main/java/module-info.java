@@ -516,7 +516,7 @@ import java.util.List;
  *
  * <tr style="vertical-align: top"><td>{@code find...By...}</td>
  * <td>{@code E},
- * <br>{@code Optional&lt;E&gt;}</td>
+ * <br>{@code Optional<E>}</td>
  * <td>For queries returning a single item (or none)</td></tr>
  *
  * <tr style="vertical-align: top; background-color:#eee"><td>{@code find...By...}</td>
