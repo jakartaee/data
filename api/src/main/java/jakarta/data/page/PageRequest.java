@@ -491,7 +491,7 @@ public interface PageRequest<T> {
 
         /**
          * Indicates a request for a page with cursor-based pagination
-         * in the reverse direction of the sort criteria, using a cursor
+         * in the previous page direction to the sort criteria, using a cursor
          * that is formed from the key of first entity on the current page.
          * The order of results on each page follows the sort criteria
          * and is not reversed.
