@@ -324,7 +324,7 @@ The `set` clause, with syntax given by `set_clause`, specifies a list of updates
 
 The `order` clause (or `order by` clause), with syntax given by `orderby_clause`, specifies a lexicographic order for the query results, that is, a list of entity fields used to sort the records which satisfy the restriction imposed by the `where` clause. The keywords `asc` and `desc` specify that a given field should be sorted in ascending or descending order respectively; when neither is specified, ascending order is the default.
 
-By default, the order of values of a Java enumerated type is determined by the integer returned by `ordinal()`. A programming model for entity classes might allow control over the order of `enum` values. For example, Jakarta Persistence allows this via the `@Enumerated` annotation.
+NOTE: This specification does not define an order for the sorting of Java `enum` values, which is provider-dependent. A programming model for entity classes might allow control over the order of `enum` values. For example, Jakarta Persistence allows this via the `@Enumerated` annotation.
 
 The `order` clause is always optional. When it is missing, and when no sort criteria are given as arguments to a parameter of the repository method, the order of the query results is undefined, and may not be deterministic.
 
