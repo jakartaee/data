@@ -525,7 +525,7 @@ import java.util.List;
  * <td>For queries where it is possible to return more than 1 item.</td></tr>
  *
  * <tr style="vertical-align: top"><td>{@code find...By...}</td>
- * <td>{@code Stream&lt;E&gt;}</td>
+ * <td>{@code Stream<E>}</td>
  * <td>The caller must arrange to {@link java.util.stream.BaseStream#close() close}
  * all streams that it obtains from repository methods.</td></tr>
  *
