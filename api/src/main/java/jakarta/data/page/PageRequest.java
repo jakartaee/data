@@ -140,7 +140,7 @@ public interface PageRequest<T> {
      *        this pagination will be supplied.
      * @return a new instance of <code>PageRequest</code> with forward cursor-based pagination.
      *         This method never returns <code>null</code>.
-     * @throws IllegalArgumentException if no key values are provided.
+     * @throws IllegalArgumentException if no values are provided for the key.
      */
     PageRequest<T> afterKey(Object... key);
 
