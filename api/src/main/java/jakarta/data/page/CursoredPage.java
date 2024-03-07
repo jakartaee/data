@@ -73,7 +73,7 @@ import java.util.NoSuchElementException;
  * allows you to make it relative to a specific list of values. The number and
  * order of values must match that of the {@link OrderBy} annotations,
  * {@link Sort} parameters of the page request,
- * or <code>OrderBy</code> name pattern of the repository method.
+ * or {@code OrderBy} name pattern of the repository method.
  * For example,</p>
  *
  * <pre>
@@ -100,8 +100,8 @@ import java.util.NoSuchElementException;
  * be possible, a user-provided
  * <a href="https://eclipse-ee4j.github.io/jakartaee-tutorial/#full-query-language-syntax">JPQL</a>
  * query must end with a
- * <code>WHERE</code> clause to which additional conditions can be appended.
- * Enclose the entire conditional expression of the <code>WHERE</code> clause
+ * {@code WHERE} clause to which additional conditions can be appended.
+ * Enclose the entire conditional expression of the {@code WHERE} clause
  * in parenthesis.
  * Sort criteria must be specified independently from the user-provided query,
  * either with the {@link OrderBy} annotation or
@@ -129,7 +129,7 @@ import java.util.NoSuchElementException;
  *
  * <h2>Database Support for Keyset Pagination</h2>
  *
- * <p>A repository method with return type of <code>CursoredPage</code> must
+ * <p>A repository method with return type of {@code CursoredPage} must
  * raise {@link UnsupportedOperationException} if the database is incapable
  * of keyset pagination.
  * </p>
@@ -182,13 +182,13 @@ public interface CursoredPage<T> extends Page<T> {
      *
      * <p>Page numbers are not accurate and should not be relied upon when
      * using keyset pagination. Jakarta Data providers should aim to at least
-     * avoid returning negative or <code>0</code> as page numbers when
+     * avoid returning negative or {@code 0} as page numbers when
      * traversing pages in the reverse direction (this might otherwise occur
      * when matching entities are added prior to the first page and the
-     * previous page is requested) by assigning a page number of <code>1</code>
+     * previous page is requested) by assigning a page number of {@code 1}
      * to such pages. This means that there can be multiple consecutive pages
-     * numbered <code>1</code> and that
-     * <code>currentPage.previousPageRequest().next().page()</code>
+     * numbered {@code 1} and that
+     * {@code currentPage.previousPageRequest().next().page()}
      * cannot be relied upon to return a page number that is equal to the
      * current page number.</p>
      *

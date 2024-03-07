@@ -394,7 +394,7 @@ public abstract class SignatureTestDriver {
      * @param testArguments      the arguments necessary to invoke the signature
      *                           test framework
      *
-     * @return <code>true</code> if the test passed, otherwise <code>false</code>
+     * @return {@code true} if the test passed, otherwise {@code false}
      * 
      * @throws Exception if we fail to run signature tests
      */
@@ -406,8 +406,8 @@ public abstract class SignatureTestDriver {
      * @param packageOrClassName the package or class to be validated
      * @param testArguments array of test arguments
      *
-     * @return <code>true</code> if the package was found to exist, otherwise
-     *         <code>false</code>
+     * @return {@code true} if the package was found to exist, otherwise
+     *         {@code false}
      * @throws Exception - If we cannot find packages
      */
     protected abstract boolean runPackageSearch(String packageOrClassName, String[] testArguments) throws Exception;
@@ -419,8 +419,8 @@ public abstract class SignatureTestDriver {
      * @param classpath     the classpath, pointing JTA API jar
      * @param repositoryDir the directory containing an empty signature file
      *
-     * @return <code>true</code> if the package javax.transaction.xa is not found in
-     *         the JTA API jar, otherwise <code>false</code>
+     * @return {@code true} if the package javax.transaction.xa is not found in
+     *         the JTA API jar, otherwise {@code false}
      * @throws Exception - If we are unable to verify
      */
     protected abstract boolean verifyJTAJarForNoXA(String classpath, String repositoryDir) throws Exception;
@@ -464,8 +464,8 @@ public abstract class SignatureTestDriver {
 
     /**
      * This method will attempt to build a fully-qualified filename in the format of
-     * <code>respositoryDir</code> + <code>baseName</code> + <code>.sig_</code> +
-     * <code>version</code>.
+     * {@code respositoryDir} + {@code baseName} + {@code .sig_} +
+     * {@code version}.
      *
      * @param baseName      the base portion of the signature filename
      * @param repositoryDir the directory in which the signatures are stored
