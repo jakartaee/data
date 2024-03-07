@@ -577,6 +577,67 @@ import java.util.List;
  * Vehicle[] searchFor(String make, String model, int year, {@code Sort<?>...} sorts);
  * </pre>
  *
+ * <h2>Basic Types</h2>
+ *
+ * <p>The following is a list of valid basic entity attribute types.
+ * These can be used as the types of repository method parameters
+ * for the respective entity attribute.</p>
+ *
+ * <table style="width: 100%">
+ * <caption><b>Basic Types for Entity Attributes</b></caption>
+ * <tr style="background-color:#ccc">
+ * <td style="vertical-align: top; width:20%"><b>Category</b></td>
+ * <td style="vertical-align: top; width:20%"><b>Basic Types</b></td>
+ * <td style="vertical-align: top; width:*"><b>Notes</b></td>
+ * </tr>
+ *
+ * <tr style="vertical-align: top; background-color:#eee"><td>Primitives and primitive wrappers</td>
+ * <td>{@code boolean} and {@link Boolean}
+ * <br>{@code byte} and {@link Byte}
+ * <br>{@code char} and {@link Character}
+ * <br>{@code double} and {@link Double}
+ * <br>{@code float} and {@link Float}
+ * <br>{@code int} and {@link Integer}
+ * <br>{@code long} and {@link Long}
+ * <br>{@code short} and {@link Short}</td>
+ * <td></td></tr>
+ *
+ * <tr style="vertical-align: top"><td>Binary data</td>
+ * <td>{@code byte[]}</td>
+ * <td>Not sortable.</td></tr>
+ *
+ * <tr style="vertical-align: top; background-color:#eee"><td>Enumerated types</td>
+ * <td>{@code enum} types</td>
+ * <td>It is provider-specific whether sorting is based on
+ * {@link Enum#ordinal()} or {@link Enum#name()}.
+ * The Jakarta Persistence default of {@code ordinal} can be
+ * overridden with the {@code jakarta.persistence.Enumerated}
+ * annotation.</td></tr>
+ *
+ * <tr style="vertical-align: top"><td>Large numbers</td>
+ * <td>{@link java.math.BigDecimal}
+ * <br>{@link java.math.BigInteger}</td>
+ * <td></td></tr>
+ *
+ * <tr style="vertical-align: top; background-color:#eee"><td>Textual data</td>
+ * <td>{@link String}</td>
+ * <td></td></tr>
+ *
+ * <tr style="vertical-align: top"><td>Time and Dates</td>
+ * <td>{@link java.time.Instant}
+ * <br>{@link java.time.LocalDate}
+ * <br>{@link java.time.LocalDateTime}
+ * <br>{@link java.time.LocalTime}</td>
+ * <td></td></tr>
+ *
+ * <tr style="vertical-align: top; background-color:#eee"><td>Universally unique identifier</td>
+ * <td>{@link java.util.UUID}</td>
+ * <td></td></tr>
+ *
+ * </table>
+ *
+ * <p>Jakarta Data providers might allow additional entity attribute types.</p>
+ *
  * <h2>Additional Method Parameters</h2>
  *
  * <p>When using {@code @Query} or the
