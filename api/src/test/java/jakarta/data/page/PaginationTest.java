@@ -45,6 +45,6 @@ class PaginationTest {
                                                         true);
             pagination.next();
         }).isInstanceOf(UnsupportedOperationException.class)
-                .hasMessage("Not supported for cursor-based pagination. Instead use afterKey or afterCursor to provide the next key values or obtain the nextPageRequest from a CursoredPage.");
+                .hasMessage("Not supported for cursor-based pagination. Instead use afterKey or afterCursor to provide a cursor or obtain the nextPageRequest from a CursoredPage.");
     }
 }
