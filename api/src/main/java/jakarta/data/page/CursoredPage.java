@@ -183,7 +183,7 @@ public interface CursoredPage<T> extends Page<T> {
      * <p>Creates a request for the previous page in a reverse direction from
      * the current page. This method computes a cursor from the first
      * entity of the current page and includes the cursor in the pagination
-     * information so that it can be used to obtain the previous slice in a
+     * information so that it can be used to obtain the previous page in a
      * reverse direction to the sort criteria and relative to that entity.
      * Within a single page, results are not reversed and remain ordered
      * according to the sort criteria.</p>
