@@ -165,7 +165,7 @@ public interface CursoredPage<T> extends Page<T> {
 
     /**
      * <p>Creates a request for the next page in a forward direction from
-     * the current page. This method computes a cursor-based cursor from the last
+     * the current page. This method computes a cursor from the last
      * entity of the current page and includes the cursor in the pagination
      * information so that it can be used to obtain the next page in a
      * forward direction according to the sort criteria and relative to that
