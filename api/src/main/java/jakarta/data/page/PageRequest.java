@@ -181,8 +181,8 @@ public interface PageRequest<T> {
      *        {@link OrderBy} annotations, {@link Sort} parameters, or
      *        <code>OrderBy</code> name pattern of the repository method to which
      *        this pagination will be supplied.
-     * @return a new instance of <code>PageRequest</code> with reverse cursor-based pagination.
-     *         This method never returns <code>null</code>.
+     * @return a new instance of <code>PageRequest</code> with cursor-based pagination
+     *         in the previous page direction. This method never returns <code>null</code>.
      * @throws IllegalArgumentException if no key values are provided.
      */
     PageRequest<T> beforeCursor(Cursor cursor);
