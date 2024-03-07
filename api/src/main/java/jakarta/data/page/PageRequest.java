@@ -134,7 +134,8 @@ public interface PageRequest<T> {
      * <p>Requests {@link CursoredPage cursor-based pagination} in the forward direction,
      * starting after the specified key.</p>
      *
-     * @param key key values, the order and number of which must match the
+     * @param key values that combined together form the key,
+     *            the order and number of which must match the
      *        {@link OrderBy} annotations, {@link Sort} parameters, or
      *        <code>OrderBy</code> name pattern of the repository method to which
      *        this pagination will be supplied.
