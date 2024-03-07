@@ -193,7 +193,7 @@ public interface CursoredPage<T> extends Page<T> {
      * <p>Page numbers are not accurate and should not be relied upon when
      * using cursor-based pagination. Jakarta Data providers should aim to at
      * least avoid returning negative or <code>0</code> as page numbers when
-     * traversing pages in the reverse direction (this might otherwise occur
+     * traversing pages in the previous page direction (this might otherwise occur
      * when matching entities are added prior to the first page and the
      * previous page is requested) by assigning a page number of <code>1</code>
      * to such pages. This means that there can be multiple consecutive pages
