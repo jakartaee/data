@@ -24,7 +24,7 @@ import java.util.List;
 
 /**
  * <p>
- * Wrapper for the <code>Sig Test</code> framework.
+ * Wrapper for the {@code Sig Test} framework.
  * </p>
  */
 public class SigTestDriver extends SignatureTestDriver {

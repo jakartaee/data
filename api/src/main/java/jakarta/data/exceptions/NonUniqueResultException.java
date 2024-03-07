@@ -20,8 +20,8 @@ package jakarta.data.exceptions;
 /**
  * This exception is raised when execution of a repository method with a singular
  * return type finds multiple results. To avoid raising an error for this, you can
- * use the <code>findFirst...</code> method name pattern or supply
- * <code>Limit.of(1)</code> as a parameter to explicitly request only the first result.
+ * use the {@code findFirst...} method name pattern or supply {@code Limit.of(1)}
+ * as a parameter to explicitly request only the first result.
  */
 public class NonUniqueResultException extends DataException {
     private static final long serialVersionUID = 7742411163016495764L;

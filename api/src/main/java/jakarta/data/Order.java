@@ -28,7 +28,7 @@ import jakarta.data.repository.Query;
 /**
  * <p>Requests sorting on various entity attributes.</p>
  *
- * <p><code>Order</code> can be optionally specified as a
+ * <p>{@code Order} can be optionally specified as a
  * parameter to a repository find method in any of the positions
  * that are after the query parameters, or it can be used
  * to obtain a {@link PageRequest} that is similarly
@@ -50,8 +50,8 @@ import jakarta.data.repository.Query;
  * </pre>
  *
  * <p>When combined on a method with static sort criteria
- * (<code>OrderBy</code> keyword or {@link OrderBy} annotation or
- * {@link Query} with an <code>ORDER BY</code> clause), the static
+ * ({@code OrderBy} keyword or {@link OrderBy} annotation or
+ * {@link Query} with an {@code ORDER BY} clause), the static
  * sort criteria is applied first, followed by the dynamic sort criteria
  * that is defined by {@link Sort} instances in the order listed.</p>
  *
@@ -64,7 +64,7 @@ import jakarta.data.repository.Query;
  * {@link jakarta.data.exceptions.DataException DataException}
  * or a more specific subclass if</p>
  * <ul>
- * <li>an <code>Order</code> parameter is
+ * <li>an {@code Order} parameter is
  *     specified in combination with a {@link PageRequest} parameter with
  *     {@link PageRequest#sorts()}.</li>
  * <li>the database is incapable of ordering with the requested
@@ -96,7 +96,7 @@ public class Order<T> implements Iterable<Sort<? super T>> {
      * @param <T>   entity class of the attributes that are used as sort criteria.
      * @param sorts sort criteria to use, ordered from highest precedence to lowest precedence.
      * @return a new instance indicating the order of precedence for sort criteria.
-     *         This method never returns <code>null</code>.
+     *         This method never returns {@code null}.
      */
     @SafeVarargs
     public static <T> Order<T> by(Sort<? super T>... sorts) {
@@ -155,7 +155,7 @@ public class Order<T> implements Iterable<Sort<? super T>> {
      *
      * @param pageNumber requested page number.
      * @return a request for a page of results that are sorted based on the sort criteria represented by this instance
-     *         and with the specified page number. This method never returns <code>null</code>.
+     *         and with the specified page number. This method never returns {@code null}.
      */
     public PageRequest<T> page(long pageNumber) {
         return PageRequest.<T>ofPage(pageNumber).sortBy(sorts);
@@ -169,7 +169,7 @@ public class Order<T> implements Iterable<Sort<? super T>> {
      *
      * @param size requested size of pages.
      * @return a request for a page of results that are sorted based on the sort criteria represented by this instance
-     *         and with the specified page size. This method never returns <code>null</code>.
+     *         and with the specified page size. This method never returns {@code null}.
      */
     public PageRequest<T> pageSize(int size) {
         return PageRequest.<T>ofSize(size).sortBy(sorts);

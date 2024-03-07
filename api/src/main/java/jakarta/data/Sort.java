@@ -27,18 +27,18 @@ import java.util.Objects;
 /**
  * <p>Requests sorting on a given entity attribute.</p>
  *
- * <p><code>Sort</code> allows the application to dynamically provide
+ * <p>{@code Sort} allows the application to dynamically provide
  * sort criteria which includes a case sensitivity request,
  * a {@link Direction} and a property.</p>
  *
- * <p>Dynamic <code>Sort</code> criteria can be specified when
+ * <p>Dynamic {@code Sort} criteria can be specified when
  * requesting a {@link PageRequest#sortBy(Sort) page} of results,
  * or can be optionally specified as
  * parameters to a repository find method in any of the positions that are after
  * the query parameters.</p>
  *
  * <p>You can use {@code Sort<?>...} to allow a variable
- * number of generic <code>Sort</code> criteria. For example,</p>
+ * number of generic {@code Sort} criteria. For example,</p>
  *
  * <pre>
  * Employee[] findByYearHired(int yearYired, Limit maxResults, {@code Sort<?>...} sortBy);
@@ -52,7 +52,7 @@ import java.util.Objects;
  *
  * <p>You can use {@link Order} in combination with the
  * {@link StaticMetamodel} to allow a variable number of
- * typed <code>Sort</code> criteria. For example,</p>
+ * typed {@code Sort} criteria. For example,</p>
  *
  * <pre>
  * Employee[] findByYearHired(int yearYired, Limit maxResults, {@code Order<Employee>} sortBy);
@@ -65,10 +65,10 @@ import java.util.Objects;
  * </pre>
  *
  * <p>When combined on a method with static sort criteria
- * (<code>OrderBy</code> keyword or {@link OrderBy} annotation or
- * {@link Query} with an <code>ORDER BY</code> clause), the static
+ * ({@code OrderBy} keyword or {@link OrderBy} annotation or
+ * {@link Query} with an {@code ORDER BY} clause), the static
  * sort criteria is applied first, followed by the dynamic sort criteria
- * that is defined by <code>Sort</code> instances in the order listed.</p>
+ * that is defined by {@code Sort} instances in the order listed.</p>
  *
  * <p>In the example above, the matching employees are sorted first by salary
  * from highest to lowest. Employees with the same salary are then sorted
@@ -79,7 +79,7 @@ import java.util.Objects;
  * {@link jakarta.data.exceptions.DataException DataException}
  * or a more specific subclass if</p>
  * <ul>
- * <li>a <code>Sort</code> parameter is
+ * <li>a {@code Sort} parameter is
  *     specified in combination with a {@link PageRequest} parameter with
  *     {@link PageRequest#sorts()}.</li>
  * <li>the database is incapable of ordering with the requested
@@ -125,7 +125,7 @@ public record Sort<T>(String property, boolean isAscending, boolean ignoreCase) 
      * <p>Indicates whether or not to request case insensitive ordering
      * from a database with case sensitive collation.
      * A database with case insensitive collation performs case insensitive
-     * ordering regardless of the requested <code>ignoreCase</code> value.</p>
+     * ordering regardless of the requested {@code ignoreCase} value.</p>
      *
      * @return Returns whether or not to request case insensitive sorting for the property.
      */
