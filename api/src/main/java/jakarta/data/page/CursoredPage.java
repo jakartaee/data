@@ -111,7 +111,7 @@ import java.util.NoSuchElementException;
  * end with a <code>WHERE</code> clause to which additional conditions may be
  * appended without otherwise changing the semantics of the query:</p>
  * <ul>
- * <li>The entire conditional expression of the <code>WHERE</code> clause should
+ * <li>The entire conditional expression of the <code>WHERE</code> clause must
  * be enclosed in parentheses.
  * <li>Sorting criteria must be specified independently of the user-provided
  * query, either via the {@link OrderBy} annotation or, or by passing {@link Sort}
