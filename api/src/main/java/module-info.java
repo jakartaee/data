@@ -521,7 +521,7 @@ import java.util.List;
  *
  * <tr style="vertical-align: top; background-color:#eee"><td>{@code find...By...}</td>
  * <td>{@code E[]},
- * <br>{@code List&lt;E&gt;}</td>
+ * <br>{@code List<E>}</td>
  * <td>For queries where it is possible to return more than 1 item.</td></tr>
  *
  * <tr style="vertical-align: top"><td>{@code find...By...}</td>
