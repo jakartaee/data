@@ -530,7 +530,7 @@ import java.util.List;
  * all streams that it obtains from repository methods.</td></tr>
  *
  * <tr style="vertical-align: top; background-color:#eee"><td>{@code find...By...(..., PageRequest)}</td>
- * <td>{@code Page&lt;E&gt;}, {@code CursoredPage&lt;E&gt;}</td>
+ * <td>{@code Page<E>}, {@code CursoredPage<E>}</td>
  * <td>For use with pagination</td></tr>
  *
  * </table>
