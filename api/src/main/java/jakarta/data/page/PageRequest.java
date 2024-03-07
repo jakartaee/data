@@ -145,8 +145,8 @@ public interface PageRequest<T> {
     PageRequest<T> afterKey(Object... key);
 
     /**
-     * <p>Requests {@link CursoredPage cursor-based pagination} in the reverse direction,
-     * starting after the specified key values.</p>
+     * <p>Requests {@link CursoredPage cursor-based pagination} in the previous page
+     * direction relative to the specified key.</p>
      *
      * @param key key values, the order and number of which must match the
      *        {@link OrderBy} annotations, {@link Sort} parameters, or
