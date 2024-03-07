@@ -132,7 +132,7 @@ public interface PageRequest<T> {
 
     /**
      * <p>Requests {@link CursoredPage cursor-based pagination} in the forward direction,
-     * starting after the specified key values.</p>
+     * starting after the specified key.</p>
      *
      * @param key key values, the order and number of which must match the
      *        {@link OrderBy} annotations, {@link Sort} parameters, or
