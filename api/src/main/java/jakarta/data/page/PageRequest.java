@@ -254,7 +254,7 @@ public interface PageRequest<T> {
      * Returns the key values which are the starting point for
      * cursor-based pagination.
      *
-     * @return the key values; {@link Optional#empty()} if using offset pagination.
+     * @return the cursor; {@link Optional#empty()} if using offset pagination.
      */
     Optional<Cursor> cursor();
 
