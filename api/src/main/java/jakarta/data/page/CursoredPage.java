@@ -37,10 +37,11 @@ import java.util.NoSuchElementException;
  * entity, or it might be some other combination of fields which uniquely
  * identifies each query result.</p>
  *
- * <p>When cursor-based pagination is used, a page request is made relative
- * to the last entity on the previous page, when paging in a forward
- * direction, or relative to the first entity on the next page, when
- * paging in the reverse direction. Alternatively, a page request might
+ * <p>When cursor-based pagination is used, a
+ * {@linkplain #nextPageRequest next} page request is made relative
+ * to the last entity of the current page and a
+ * {@linkplain #previousPageRequest previous} page request is made relative
+ * to the first entity of the current page. Alternatively, a page request might
  * be made relative to an arbitrary starting point in the result set, that
  * is, with an arbitrary value of the key.</p>
  *
