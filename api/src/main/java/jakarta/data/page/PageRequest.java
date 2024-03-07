@@ -515,7 +515,7 @@ public interface PageRequest<T> {
      */
     interface Cursor {
         /**
-         * Returns whether or not the key values of this cursor
+         * Returns whether or not the values that make up the key of this cursor
          * are equal to those of the supplied cursor.
          * Both instances must also have the same cursor implementation class
          * in order to be considered equal.
