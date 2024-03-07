@@ -33,7 +33,9 @@ import java.util.NoSuchElementException;
  * Cursor-based pagination is possible when a query result set has a
  * well-defined total order, that is, when the results are sorted by a
  * list of entity fields which forms a unique key on the result set.
- * This list of entity fields could just be the identifier field of the
+ * This list of entity fields must be the entity fields of the combined
+ * sort criteria of the repository method, in the same order of
+ * precedence. This could just be the identifier field of the
  * entity, or it might be some other combination of fields which uniquely
  * identifies each query result.</p>
  *
