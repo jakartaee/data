@@ -127,7 +127,7 @@ import java.util.NoSuchElementException;
  * </pre>
  *
  * <p>Only queries which return entities may be used with cursor-based pagination
- * because cursor-based cursors are created from the entity attribute values that
+ * because cursors are created from the entity attribute values that
  * form the unique key.</p>
  *
  * <h2>Page Numbers and Totals</h2>
