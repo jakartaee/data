@@ -48,7 +48,7 @@ public class SignatureTestDriverFactory {
 
     /**
      * <p>
-     * Obtain a {@link SignatureTestDriver} instance based on the <code>type</code>
+     * Obtain a {@link SignatureTestDriver} instance based on the {@code type}
      * argument.
      *
      * @param type the driver type to create

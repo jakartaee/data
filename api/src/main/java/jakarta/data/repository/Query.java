@@ -44,8 +44,8 @@ import java.lang.annotation.Target;
  * {@code -parameters} compiler option that makes parameter names available
  * at run time. When the {@code Param} annotation is not used, the Jakarta Data provider must
  * interpret the query by scanning for the delimiter that is used for positional parameters.
- * If the delimiter appears for another purpose in a query that requries named parameters,
- * it might be necessary for the application to explictly define the {@code Param} in order to
+ * If the delimiter appears for another purpose in a query that requires named parameters,
+ * it might be necessary for the application to explicitly define the {@code Param} in order to
  * disambiguate.</p>
  *
  * <p><b>Positional parameters</b> are referred to by a number that corresponds to the
@@ -94,10 +94,10 @@ public @interface Query {
     /**
      * <p>Defines the query to be executed when the annotated method is called.</p>
      *
-     * <p>If an application defines a repository method with <code>&#64;Query</code>
+     * <p>If an application defines a repository method with {@code @Query}
      * and supplies other forms of sorting (such as {@link Sort}) to that method,
      * then it is the responsibility of the application to compose the query in
-     * such a way that an <code>ORDER BY</code> clause (or query language equivalent)
+     * such a way that an {@code ORDER BY} clause (or query language equivalent)
      * can be validly appended. The Jakarta Data provider is not expected to
      * parse query language that is provided by the application.</p>
      *
