@@ -157,7 +157,7 @@ public interface PageRequest<T> {
      * @return a new instance of <code>PageRequest</code> with cursor-based pagination
      *         in the previous page direction.
      *         This method never returns <code>null</code>.
-     * @throws IllegalArgumentException if no key values are provided.
+     * @throws IllegalArgumentException if no values are provided for the key.
      */
     PageRequest<T> beforeKey(Object... key);
 
