@@ -127,7 +127,7 @@ record Pagination<T>(long page, int size, List<Sort<? super T>> sorts, Mode mode
             return page()<=1 ? null : new Pagination<T>(page - 1, this.size, this.sorts, Mode.OFFSET, null, requestTotal);
         } else {
             throw new UnsupportedOperationException("Not supported for cursor-based pagination. Instead use beforeKey or beforeCursor " +
-                    "to provide the previous key values or obtain the previousPageRequest from a CursoredPage.");
+                    "to provide a cursor or obtain the previousPageRequest from a CursoredPage.");
         }
     }
 
