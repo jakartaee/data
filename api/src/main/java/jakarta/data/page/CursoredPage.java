@@ -25,19 +25,19 @@ import java.util.NoSuchElementException;
  * <p>A page of data retrieved to satisfy a given page request, with a
  * {@linkplain PageRequest.Cursor cursor} for each result on the page.
  * A repository method which returns the type {@code CursoredPage} uses
- * <em>key-based pagination</em> to determine page boundaries.</p>
+ * <em>cursor-based pagination</em> to determine page boundaries.</p>
  *
- * <p>Compared to offset-based pagination, key-based pagination reduces
+ * <p>Compared to offset-based pagination, cursor-based pagination reduces
  * the possibility of missed or duplicate results when records are
  * inserted, deleted, or updated in the database between page requests.
- * Key-based pagination is possible when a query result set has a
+ * Cursor-based pagination is possible when a query result set has a
  * well-defined total order, that is, when the results are sorted by a
  * list of entity fields which forms a unique key on the result set.
  * This list of entity fields could just be the identifier field of the
  * entity, or it might be some other combination of fields which uniquely
  * identifies each query result.</p>
  *
- * <p>When key-based pagination is used, a page request is made relative
+ * <p>When cursor-based pagination is used, a page request is made relative
  * to the last entity on the previous page, when paging in a forward
  * direction, or relative to the first entity on the next page, when
  * paging in the reverse direction. Alternatively, a page request might
@@ -47,7 +47,7 @@ import java.util.NoSuchElementException;
  * <p>The key for a given element of the result set is represented by an
  * instance of {@link jakarta.data.page.PageRequest.Cursor Cursor}.</p>
  *
- * <p>To use key-based pagination, declare a repository method with return
+ * <p>To use cursor-based pagination, declare a repository method with return
  * type {@code CursoredPage} and with a special parameter (after the normal
  * query parameters) of type {@link PageRequest}, for example:</p>
  *
@@ -92,17 +92,17 @@ import java.util.NoSuchElementException;
  * </pre>
  *
  * <p>By making the query for the next page relative to observed values,
- * not a numerical position, key-based pagination is less vulnerable to changes
+ * not a numerical position, cursor-based pagination is less vulnerable to changes
  * that are made to data in between page requests. Adding or removing entities
  * is possible without causing unexpected missed or duplicate results.
- * Key-based pagination does not prevent misses and duplicates if the entity
+ * Cursor-based pagination does not prevent misses and duplicates if the entity
  * properties which are the sort criteria for existing entities are modified
  * or if an entity is re-added with different sort criteria after having
  * previously been removed.</p>
  *
- * <h2>Key-based Pagination with {@code @Query}</h2>
+ * <h2>Cursor-based Pagination with {@code @Query}</h2>
  *
- * <p>Key-based pagination involves generating and appending additional
+ * <p>Cursor-based pagination involves generating and appending additional
  * restrictions involving the key fields to the <code>WHERE</code> clause of
  * the query. For this to be possible, a user-provided JDQL or JPQL query must
  * end with a <code>WHERE</code> clause to which additional conditions may be
@@ -125,21 +125,21 @@ import java.util.NoSuchElementException;
  *                                         {@code PageRequest<Customer>} pageRequest);
  * </pre>
  *
- * <p>Only queries which return entities may be used with key-based pagination
- * because key-based cursors are created from the entity attribute values that
+ * <p>Only queries which return entities may be used with cursor-based pagination
+ * because cursor-based cursors are created from the entity attribute values that
  * form the unique key.</p>
  *
  * <h2>Page Numbers and Totals</h2>
  *
  * <p>Page numbers, total numbers of elements across all pages, and total count
- * of pages are not accurate when key-based pagination is used and should not be
+ * of pages are not accurate when cursor-based pagination is used and should not be
  * relied upon.</p>
  *
- * <h2>Database Support for Key-based Pagination</h2>
+ * <h2>Database Support for Cursor-based Pagination</h2>
  *
  * <p>A repository method with return type <code>CursoredPage</code> must raise
  * {@link UnsupportedOperationException} if the database itself is not capable
- * of key-based pagination.</p>
+ * of cursor-based pagination.</p>
  *
  * @param <T> the type of elements in this slice 
  */
@@ -164,7 +164,7 @@ public interface CursoredPage<T> extends Page<T> {
 
     /**
      * <p>Creates a request for the next page in a forward direction from
-     * the current page. This method computes a key-based cursor from the last
+     * the current page. This method computes a cursor-based cursor from the last
      * entity of the current page and includes the cursor in the pagination
      * information so that it can be used to obtain the next page in a
      * forward direction according to the sort criteria and relative to that
@@ -180,7 +180,7 @@ public interface CursoredPage<T> extends Page<T> {
 
     /**
      * <p>Creates a request for the previous page in a reverse direction from
-     * the current page. This method computes a key-based cursor from the first
+     * the current page. This method computes a cursor-based cursor from the first
      * entity of the current page and includes the cursor in the pagination
      * information so that it can be used to obtain the previous slice in a
      * reverse direction to the sort criteria and relative to that entity.
@@ -188,7 +188,7 @@ public interface CursoredPage<T> extends Page<T> {
      * according to the sort criteria.</p>
      *
      * <p>Page numbers are not accurate and should not be relied upon when
-     * using key-based pagination. Jakarta Data providers should aim to at
+     * using cursor-based pagination. Jakarta Data providers should aim to at
      * least avoid returning negative or <code>0</code> as page numbers when
      * traversing pages in the reverse direction (this might otherwise occur
      * when matching entities are added prior to the first page and the

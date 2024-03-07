@@ -772,7 +772,7 @@ public class EntityTests {
             page = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByBitsRequiredDesc(4L, 33L, first8);
         } catch (MappingException x) {
             // Test passes: Jakarta Data providers must raise MappingException when the database
-            // is not capable of key-based pagination.
+            // is not capable of cursor-based pagination.
             return;
         }
 
@@ -785,7 +785,7 @@ public class EntityTests {
             page = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByBitsRequiredDesc(4L, 33L, page.nextPageRequest());
         } catch (MappingException x) {
             // Test passes: Jakarta Data providers must raise MappingException when the database
-            // is not capable of key-based pagination.
+            // is not capable of cursor-based pagination.
             return;
         }
 
@@ -798,7 +798,7 @@ public class EntityTests {
             page = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByBitsRequiredDesc(4L, 33L, page.nextPageRequest());
         } catch (MappingException x) {
             // Test passes: Jakarta Data providers must raise MappingException when the database
-            // is not capable of key-based pagination.
+            // is not capable of cursor-based pagination.
             return;
         }
 
@@ -820,7 +820,7 @@ public class EntityTests {
             slice = numbers.findByFloorOfSquareRootOrderByIdAsc(7L, first6);
         } catch (MappingException x) {
             // Test passes: Jakarta Data providers must raise MappingException when the database
-            // is not capable of key-based pagination.
+            // is not capable of cursor-based pagination.
             return;
         }
 
@@ -833,7 +833,7 @@ public class EntityTests {
             slice = numbers.findByFloorOfSquareRootOrderByIdAsc(7L, slice.nextPageRequest());
         } catch (MappingException x) {
             // Test passes: Jakarta Data providers must raise MappingException when the database
-            // is not capable of key-based pagination.
+            // is not capable of cursor-based pagination.
             return;
         }
 
@@ -846,7 +846,7 @@ public class EntityTests {
             slice = numbers.findByFloorOfSquareRootOrderByIdAsc(7L, slice.nextPageRequest());
         } catch (MappingException x) {
             // Test passes: Jakarta Data providers must raise MappingException when the database
-            // is not capable of key-based pagination.
+            // is not capable of cursor-based pagination.
             return;
         }
 
@@ -989,7 +989,7 @@ public class EntityTests {
             page = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByBitsRequiredDesc(6L, 50L, middle7);
         } catch (MappingException x) {
             // Test passes: Jakarta Data providers must raise MappingException when the database
-            // is not capable of key-based pagination.
+            // is not capable of cursor-based pagination.
             return;
         }
 
@@ -1009,7 +1009,7 @@ public class EntityTests {
                                                                                                     page.previousPageRequest());
         } catch (MappingException x) {
             // Test passes: Jakarta Data providers must raise MappingException when the database
-            // is not capable of key-based pagination.
+            // is not capable of cursor-based pagination.
             return;
         }
 
@@ -1026,7 +1026,7 @@ public class EntityTests {
                                                                                                 page.nextPageRequest());
         } catch (MappingException x) {
             // Test passes: Jakarta Data providers must raise MappingException when the database
-            // is not capable of key-based pagination.
+            // is not capable of cursor-based pagination.
             return;
         }
 
@@ -1048,7 +1048,7 @@ public class EntityTests {
             page = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByBitsRequiredDesc(1L, 4L, PageRequest.ofPage(1L));
         } catch (MappingException x) {
             // Test passes: Jakarta Data providers must raise MappingException when the database
-            // is not capable of key-based pagination.
+            // is not capable of cursor-based pagination.
             return;
         }
 
@@ -1101,7 +1101,7 @@ public class EntityTests {
             slice = numbers.findByNumTypeAndNumBitsRequiredLessThan(NumberType.COMPOSITE, (short) 7, middle9);
         } catch (MappingException x) {
             // Test passes: Jakarta Data providers must raise MappingException when the database
-            // is not capable of key-based pagination.
+            // is not capable of cursor-based pagination.
             return;
         }
 
@@ -1118,7 +1118,7 @@ public class EntityTests {
                                                                             slice.previousPageRequest());
         } catch (MappingException x) {
             // Test passes: Jakarta Data providers must raise MappingException when the database
-            // is not capable of key-based pagination.
+            // is not capable of cursor-based pagination.
             return;
         }
 
@@ -1134,7 +1134,7 @@ public class EntityTests {
                                                                          slice.nextPageRequest());
          } catch (MappingException x) {
              // Test passes: Jakarta Data providers must raise MappingException when the database
-             // is not capable of key-based pagination.
+             // is not capable of cursor-based pagination.
              return;
          }
 
@@ -1154,7 +1154,7 @@ public class EntityTests {
             slice = numbers.findByFloorOfSquareRootOrderByIdAsc(3L, pagination);
         } catch (MappingException x) {
             // Test passes: Jakarta Data providers must raise MappingException when the database
-            // is not capable of key-based pagination.
+            // is not capable of cursor-based pagination.
             return;
         }
 

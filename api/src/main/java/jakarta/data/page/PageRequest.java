@@ -131,56 +131,56 @@ public interface PageRequest<T> {
     }
 
     /**
-     * <p>Requests {@link CursoredPage key-based pagination} in the forward direction,
+     * <p>Requests {@link CursoredPage cursor-based pagination} in the forward direction,
      * starting after the specified key values.</p>
      *
      * @param key key values, the order and number of which must match the
      *        {@link OrderBy} annotations, {@link Sort} parameters, or
      *        <code>OrderBy</code> name pattern of the repository method to which
      *        this pagination will be supplied.
-     * @return a new instance of <code>PageRequest</code> with forward key-based pagination.
+     * @return a new instance of <code>PageRequest</code> with forward cursor-based pagination.
      *         This method never returns <code>null</code>.
      * @throws IllegalArgumentException if no key values are provided.
      */
     PageRequest<T> afterKey(Object... key);
 
     /**
-     * <p>Requests {@link CursoredPage key-based pagination} in the reverse direction,
+     * <p>Requests {@link CursoredPage cursor-based pagination} in the reverse direction,
      * starting after the specified key values.</p>
      *
      * @param key key values, the order and number of which must match the
      *        {@link OrderBy} annotations, {@link Sort} parameters, or
      *        <code>OrderBy</code> name pattern of the repository method to which
      *        this pagination will be supplied.
-     * @return a new instance of <code>PageRequest</code> with reverse key-based pagination.
+     * @return a new instance of <code>PageRequest</code> with reverse cursor-based pagination.
      *         This method never returns <code>null</code>.
      * @throws IllegalArgumentException if no key values are provided.
      */
     PageRequest<T> beforeKey(Object... key);
 
     /**
-     * <p>Requests {@link CursoredPage key-based pagination} in the forward direction,
+     * <p>Requests {@link CursoredPage cursor-based pagination} in the forward direction,
      * starting after the specified key values.</p>
      *
      * @param cursor cursor with key values, the order and number of which must match the
      *        {@link OrderBy} annotations, {@link Sort} parameters, or
      *        <code>OrderBy</code> name pattern of the repository method to which
      *        this pagination will be supplied.
-     * @return a new instance of <code>PageRequest</code> with forward key-based pagination.
+     * @return a new instance of <code>PageRequest</code> with forward cursor-based pagination.
      *         This method never returns <code>null</code>.
      * @throws IllegalArgumentException if no key values are provided.
      */
     PageRequest<T> afterCursor(Cursor cursor);
 
     /**
-     * <p>Requests {@link CursoredPage key-based pagination} in the reverse direction,
+     * <p>Requests {@link CursoredPage cursor-based pagination} in the reverse direction,
      * starting after the specified key values.</p>
      *
      * @param cursor cursor with key values, the order and number of which must match the
      *        {@link OrderBy} annotations, {@link Sort} parameters, or
      *        <code>OrderBy</code> name pattern of the repository method to which
      *        this pagination will be supplied.
-     * @return a new instance of <code>PageRequest</code> with reverse key-based pagination.
+     * @return a new instance of <code>PageRequest</code> with reverse cursor-based pagination.
      *         This method never returns <code>null</code>.
      * @throws IllegalArgumentException if no key values are provided.
      */
@@ -252,7 +252,7 @@ public interface PageRequest<T> {
 
     /**
      * Returns the key values which are the starting point for
-     * key-based pagination.
+     * cursor-based pagination.
      *
      * @return the key values; {@link Optional#empty()} if using offset pagination.
      */
@@ -302,7 +302,7 @@ public interface PageRequest<T> {
      * <p>Returns the <code>PageRequest</code> requesting the next page if
      * using offset pagination.</p>
      *
-     * <p>If using key-based pagination, traversal of pages must only be done
+     * <p>If using cursor-based pagination, traversal of pages must only be done
      * via the {@link CursoredPage#nextPageRequest()},
      * {@link CursoredPage#previousPageRequest()}, or
      * {@linkplain CursoredPage#getCursor(int) cursor},
@@ -319,7 +319,7 @@ public interface PageRequest<T> {
      * if using offset pagination, or null if this is the first page, that
      * is, when {@link #page()} returns {@code 1}.</p>
      *
-     * <p>If using key-based pagination, traversal of pages must only be done
+     * <p>If using cursor-based pagination, traversal of pages must only be done
      * via the {@link CursoredPage#nextPageRequest()},
      * {@link CursoredPage#previousPageRequest()}, or
      * {@linkplain CursoredPage#getCursor(int) cursor},
@@ -477,19 +477,19 @@ public interface PageRequest<T> {
     PageRequest<T> withTotal();
 
     /**
-     * The type of pagination: offset-based or key-based, which includes
+     * The type of pagination: offset-based or cursor-based, which includes
      * a direction.
      */
     enum Mode {
         /**
-         * Indicates forward key-based pagination, which follows the
+         * Indicates forward cursor-based pagination, which follows the
          * direction of the sort criteria, using a cursor that is
          * formed from the key of the last entity on the current page.
          */
         CURSOR_NEXT,
 
         /**
-         * Indicates a request for a page with key-based pagination
+         * Indicates a request for a page with cursor-based pagination
          * in the reverse direction of the sort criteria, using a cursor
          * that is formed from the key of first entity on the current page.
          * The order of results on each page follows the sort criteria

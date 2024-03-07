@@ -116,7 +116,7 @@ record Pagination<T>(long page, int size, List<Sort<? super T>> sorts, Mode mode
         if (mode == Mode.OFFSET) {
             return new Pagination<T>(page + 1, this.size, this.sorts, Mode.OFFSET, null, requestTotal);
         } else {
-            throw new UnsupportedOperationException("Not supported for key-based pagination. Instead use afterKey or afterCursor " +
+            throw new UnsupportedOperationException("Not supported for cursor-based pagination. Instead use afterKey or afterCursor " +
                     "to provide the next key values or obtain the nextPageRequest from a CursoredPage.");
         }
     }
@@ -126,7 +126,7 @@ record Pagination<T>(long page, int size, List<Sort<? super T>> sorts, Mode mode
         if (mode == Mode.OFFSET) {
             return page()<=1 ? null : new Pagination<T>(page - 1, this.size, this.sorts, Mode.OFFSET, null, requestTotal);
         } else {
-            throw new UnsupportedOperationException("Not supported for key-based pagination. Instead use beforeKey or beforeCursor " +
+            throw new UnsupportedOperationException("Not supported for cursor-based pagination. Instead use beforeKey or beforeCursor " +
                     "to provide the previous key values or obtain the previousPageRequest from a CursoredPage.");
         }
     }

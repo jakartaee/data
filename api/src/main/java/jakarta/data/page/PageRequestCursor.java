@@ -21,7 +21,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Built-in implementation of Cursor for key-based pagination.
+ * Built-in implementation of Cursor for cursor-based pagination.
  */
 class PageRequestCursor implements PageRequest.Cursor {
     /**
