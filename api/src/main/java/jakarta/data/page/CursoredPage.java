@@ -73,7 +73,7 @@ import java.util.NoSuchElementException;
  * </pre>
  *
  * <p>Here, the instance of {@link PageRequest} returned by
- * {@link CursoredPage#nextPageRequest()} is based an a key value encapsulated
+ * {@link CursoredPage#nextPageRequest()} is based on a key value encapsulated
  * in an instance of {@link PageRequest.Cursor Cursor} and identifying the last
  * result on the current page.</p>
  *
