@@ -195,7 +195,7 @@ import java.util.List;
  *
  * <tr style="vertical-align: top"><td>{@link Insert}</td>
  * <td>creates new entities</td>
- * <td>{@code @Insert}<br>{@code public List&lt;Employee&gt; add(List&lt;Employee&gt; newEmployees);}</td></tr>
+ * <td>{@code @Insert}<br>{@code public List<Employee> add(List<Employee> newEmployees);}</td></tr>
  *
  * <tr style="vertical-align: top; background-color:#eee"><td>{@link Save}</td>
  * <td>update if exists, otherwise insert</td>
