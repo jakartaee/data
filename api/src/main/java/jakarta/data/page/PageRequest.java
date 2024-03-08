@@ -62,7 +62,7 @@ import java.util.Optional;
  * sort criteria, and a separate argument or arguments of type {@link Sort}
  * or {@link Order}.</p>
  *
- * <p>A repository method throws {@link UnsupportedOperationException} if
+ * <p>A repository method throws {@link DataException} if
  * the database is incapable of ordering the query results using the given
  * sort criteria.</p>
  *

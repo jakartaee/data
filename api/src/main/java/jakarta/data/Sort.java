@@ -76,10 +76,10 @@ import java.util.Objects;
  * are then sorted alphabetically by first name.</p>
  *
  * <p>A repository method throws {@link IllegalArgumentException} if it is
- * called with an argument of type {@code PageRequest} with nonempty sort
- * criteria, and a separate argument or arguments of type {@link Sort}.</p>
+ * called with an argument or arguments of type {@link Sort} and a separate
+ * argument of type {@code PageRequest} with nonempty sort criteria.</p>
  *
- * <p>A repository method throws {@link UnsupportedOperationException} if
+ * <p>A repository method throws {@link DataException} if
  * the database is incapable of ordering the query results using the given
  * sort criteria.</p>
  *

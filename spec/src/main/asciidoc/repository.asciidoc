@@ -1139,7 +1139,7 @@ Alternatively, a Jakarta Data provider is permitted to reject such a repository 
 
 A repository method must throw `IllegalArgumentException` if it is called with an argument of type `PageRequest` with nonempty sort criteria, and a separate argument or arguments of type `Sort` or `Order`.
 
-A repository method must throw `UnsupportedOperationException` if the database is incapable of ordering the query results using the given sort criteria.
+A repository method must throw `DataException` if the database is incapable of ordering the query results using the given sort criteria.
 
 The following example demonstrates the use of special parameters:
 
