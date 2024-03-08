@@ -28,11 +28,11 @@ import jakarta.data.repository.Query;
 /**
  * <p>Requests sorting on various entity attributes.</p>
  *
- * <p>{@code Order} can be optionally specified as a
- * parameter to a repository find method in any of the positions
- * that are after the query parameters, or it can be used
- * to obtain a {@link PageRequest} that is similarly
- * specified as a parameter to a repository find method.</p>
+ * <p>A query method of a repository may have a parameter of type
+ * {@code Order} if its return type indicates that it may return
+ * multiple entities. The parameter of type {@code Order} must occur
+ * after the method parameters representing regular parameters of
+ * the query itself.</p>
  *
  * <p>The {@code Order} class is useful in combination with the
  * {@link StaticMetamodel} for helping to enforce type safety of

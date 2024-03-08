@@ -31,11 +31,14 @@ import java.util.Objects;
  * sort criteria which includes a case sensitivity request,
  * a {@link Direction} and a property.</p>
  *
- * <p>Dynamic {@code Sort} criteria can be specified when
- * requesting a {@link PageRequest#sortBy(Sort) page} of results,
- * or can be optionally specified as
- * parameters to a repository find method in any of the positions that are after
- * the query parameters.</p>
+ * <p>A query method of a repository may have a parameter or parameters
+ * of type {@code Sort} if its return type indicates that it may return
+ * multiple entities. Parameters of type {@code Sort} must occur after
+ * the method parameters representing regular parameters of the query
+ * itself.</p>
+ *
+ * <p>Alternatively, dynamic {@code Sort} criteria may be specified when
+ * requesting a {@link PageRequest#sortBy(Sort) page} of results.</p>
  *
  * <p>You can use {@code Sort<?>...} to allow a variable
  * number of generic {@code Sort} criteria. For example,</p>

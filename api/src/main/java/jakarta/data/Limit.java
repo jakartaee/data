@@ -25,9 +25,11 @@ import jakarta.data.page.PageRequest;
  * can be capped to a maximum amount
  * or be limited to a given positional range.</p>
  *
- * <p>{@code Limit} is optionally specified as a parameter to a
- * repository method in one of the parameter positions after the
- * query parameters. For example,</p>
+ * <p>A query method of a repository may have a parameter of type
+ * {@code Limit} if its return type indicates that it may return multiple
+ * entities. The parameter of type {@code Limit} must occur after the
+ * method parameters representing regular parameters of the query itself.
+ * For example,</p>
  *
  * <pre>
  * Product[] findByNameLike(String namePattern, Limit limit, {@code Sort<?>...} sorts);
