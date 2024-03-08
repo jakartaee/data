@@ -60,16 +60,16 @@ import jakarta.data.repository.Query;
  * alphabetically by last name. Employees with the same salary and last name
  * are then sorted alphabetically by first name.</p>
  *
- * <p>A repository method will fail with a
- * {@link jakarta.data.exceptions.DataException DataException}
- * or a more specific subclass if</p>
- * <ul>
- * <li>an {@code Order} parameter is
- *     specified in combination with a {@link PageRequest} parameter with
- *     {@link PageRequest#sorts()}.</li>
- * <li>the database is incapable of ordering with the requested
- *     sort criteria.</li>
- * </ul>
+ * <p>A repository method may not be declared with more than one parameter
+ * of type {@code Order}.</p>
+ *
+ * <p>A repository method throws {@link IllegalArgumentException} if it is
+ * called with an argument of type {@code PageRequest} with nonempty sort
+ * criteria, and a separate argument of type {@link Order}.</p>
+ *
+ * <p>A repository method throws {@link UnsupportedOperationException} if
+ * the database is incapable of ordering the query results using the given
+ * sort criteria.</p>
  *
  * @param <T> entity class of the attributes that are used as sort criteria.
  */
