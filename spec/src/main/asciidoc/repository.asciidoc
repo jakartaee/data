@@ -1228,17 +1228,17 @@ CursoredPage<User> olderThan(int age, PageRequest<User> pagination);
 
 Dividing up large sets of data into pages is a beneficial strategy for data access and retrieval in many applications, including those developed in Java. Pagination helps improve the efficiency of handling large datasets in a way that is also user-friendly. In Jakarta Data, APIs are provided to help Java developers efficiently manage and navigate through data.
 
-Jakarta Data supports two types of pagination: Offset and Keyset. These approaches differ in how they manage and retrieve paginated data:
+Jakarta Data supports two types of pagination: offset-based and cursor-based. These approaches differ in how they manage and retrieve paginated data:
 
 Offset pagination is the more traditional form based on position relative to the first record in the dataset. It is typically used with a fixed page size, where a specified number of records is retrieved starting from a given offset position.
 
-Keyset pagination, also known as seek method or cursor-based pagination, uses a unique key or unique combination of values (referred to as the keyset) to navigate the dataset relative to the first or last record of the current page. Keyset pagination is typically used with fixed page sizes but can accommodate varying the page size if desired. It is more robust when dealing with datasets where the underlying data might change and offers the the potential for improved performance by avoiding the need to scan records prior to the cursor.
+Cursor-based pagination, also known as seek method or keyset pagination, uses a unique key or unique combination of values (referred to as the key) to navigate the dataset relative to the first or last record of the current page. Cursor-based pagination is typically used with fixed page sizes but can accommodate varying the page size if desired. It is more robust when dealing with datasets where the underlying data might change and offers the the potential for improved performance by avoiding the need to scan records prior to the cursor.
 
 
-The critical differences between Offset and Keyset pagination lie in their retrieval methods:
+The critical differences between offset-based and cursor-based pagination lie in their retrieval methods:
 
-- Offset pagination uses a fixed page size and retrieves data based on page number and size.
-- Keyset pagination relies on a unique key or unique combination of values (the keyset) for an entity relative to which it determines the next page or previous page.
+- Offset-based pagination uses a fixed page size and retrieves data based on page number and size.
+- Cursor-based pagination relies on a unique key or unique combination of values (the key) for an entity relative to which it determines the next page or previous page.
 
 ==== Offset-based Pagination
 
@@ -1358,9 +1358,9 @@ In this scenario, each page represents a subset of the dataset, and developers c
 
 Offset pagination is a valuable tool for Java developers when dealing with large datasets, providing control, efficiency, and a seamless user experience.
 
-==== Keyset Pagination
+==== Cursor-based Pagination
 
-Keyset pagination aims to reduce missed and duplicate results across pages by querying relative to the observed values of entity properties that constitute the sorting criteria. Keyset pagination can also offer an improvement in performance because it avoids fetching and ordering results from prior pages by causing those results to be non-matching. A Jakarta Data provider appends additional conditions to the query and tracks keyset values automatically when `CursoredPage` is used as the repository method return type. The application invokes `nextPageRequest` or `previousPageRequest` on the keyset aware slice or page to obtain a `PageRequest` which keeps track of the keyset values.
+Cursor-based pagination aims to reduce missed and duplicate results across pages by querying relative to the observed values of entity properties that constitute the sorting criteria. Cursor-based pagination can also offer an improvement in performance because it avoids fetching and ordering results from prior pages by causing those results to be non-matching. A Jakarta Data provider appends additional conditions to the query and tracks cursor-based values automatically when `CursoredPage` is used as the repository method return type. The application invokes `nextPageRequest` or `previousPageRequest` on the cursor-based aware slice or page to obtain a `PageRequest` which keeps track of the cursor-based values.
 
 For example,
 
@@ -1392,20 +1392,20 @@ Or you can obtain the next (or previous) page relative to a known entity,
 [source,java]
 ----
 Customer c = ...
-PageRequest<Customer> p = PageRequest.of(Customer.class).size(50).afterKeyset(c.lastName, c.firstName, c.id);
+PageRequest<Customer> p = PageRequest.of(Customer.class).size(50).afterKey(c.lastName, c.firstName, c.id);
 page = customers.findByZipcodeOrderByLastNameAscFirstNameAscIdAsc(55902, p);
 ----
 
-The sort criteria for a repository method that performs keyset pagination must uniquely identify each entity and must be provided by:
+The sort criteria for a repository method that performs cursor-based pagination must uniquely identify each entity and must be provided by:
 
 * `OrderBy` name pattern of the repository method (as in the examples above) or `@OrderBy` annotation(s) on the repository method.
 * `Sort` parameters of the `PageRequest` that is supplied to the repository method.
 
-The values of the entity attributes of the combined sort criteria define the cursor for keyset cursor based pagination. Within the cursor, each entity attribute has the same sorting and order of precedence that it has within the combined sort criteria.
+The values of the entity attributes of the combined sort criteria define the cursor for cursor-based cursor based pagination. Within the cursor, each entity attribute has the same sorting and order of precedence that it has within the combined sort criteria.
 
-===== Example of Appending to Queries for Keyset Pagination
+===== Example of Appending to Queries for Cursor-based Pagination
 
-Without keyset pagination, a Jakarta Data provider that is based on Jakarta Persistence might compose the following JPQL for the `findByZipcodeOrderByLastNameAscFirstNameAscIdAsc` repository method from the prior example:
+Without cursor-based pagination, a Jakarta Data provider that is based on Jakarta Persistence might compose the following JPQL for the `findByZipcodeOrderByLastNameAscFirstNameAscIdAsc` repository method from the prior example:
 
 [source,jpql]
 ----
@@ -1413,7 +1413,7 @@ SELECT o FROM Customer o WHERE (o.zipCode = ?1)
                          ORDER BY o.lastName ASC, o.firstName ASC, o.id ASC
 ----
 
-When keyset pagination is used, the keyset values from the `Cursor` of the `PageRequest` are available as query parameters, allowing the Jakarta Data provider to append additional query conditions. For example,
+When cursor-based pagination is used, the keys values from the `Cursor` of the `PageRequest` are available as query parameters, allowing the Jakarta Data provider to append additional query conditions. For example,
 
 [source,jpql]
 ----
@@ -1427,23 +1427,23 @@ SELECT o FROM Customer o WHERE (o.zipCode = ?1)
 
 ===== Avoiding Missed and Duplicate Results
 
-Because searching for the next page of results is relative to a last known position, it is possible with keyset pagination to allow some types of updates to data while pages are being traversed without causing missed results or duplicates to appear. If you add entities to a prior position in the traversal of pages, the shift forward of numerical position of existing entities will not cause duplicates entities to appear in your continued traversal of subsequent pages because keyset pagination does not query based on a numerical position. If you remove entities from a prior position in the traversal of pages, the shift backward of numerical position of existing entities will not cause missed entities in your continued traversal of subsequent pages because keyset pagination does not query based on a numerical position.
+Because searching for the next page of results is relative to a last known position, it is possible with cursor-based pagination to allow some types of updates to data while pages are being traversed without causing missed results or duplicates to appear. If you add entities to a prior position in the traversal of pages, the shift forward of numerical position of existing entities will not cause duplicates entities to appear in your continued traversal of subsequent pages because cursor-based pagination does not query based on a numerical position. If you remove entities from a prior position in the traversal of pages, the shift backward of numerical position of existing entities will not cause missed entities in your continued traversal of subsequent pages because keyset pagination does not query based on a numerical position.
 
-Other types of updates to data, however, will cause duplicate or missed results. If you modify entity properties which are used as the sort criteria, keyset pagination cannot prevent the same entity from appearing again or never appearing due to the altered values. If you add an entity that you previously removed, whether with different values or the same values, keyset pagination cannot prevent the entity from being missed or possibly appearing a second time due to its changed values.
+Other types of updates to data, however, will cause duplicate or missed results. If you modify entity properties which are used as the sort criteria, cursor-based pagination cannot prevent the same entity from appearing again or never appearing due to the altered values. If you add an entity that you previously removed, whether with different values or the same values, cursor-based pagination cannot prevent the entity from being missed or possibly appearing a second time due to its changed values.
 
-===== Restrictions on use of Keyset Pagination
+===== Restrictions on use of Cursor-based Pagination
 
-* The repository method signature must return `CursoredPage`. A repository method with return type of `CursoredPage` must raise `UnsupportedOperationException` if the database is incapable of keyset pagination.
+* The repository method signature must return `CursoredPage`. A repository method with return type of `CursoredPage` must raise `UnsupportedOperationException` if the database is incapable of cursor-based pagination.
 * The repository method signature must accept a `PageRequest` parameter.
 * Sort criteria must be provided and should be minimal.
 * The combination of provided sort criteria must uniquely identify each entity such that the sort criteria defines a deterministic ordering of entities.
 * The entities within each page must be ordered according to the provided sort criteria.
-* Page numbers for keyset pagination are estimated relative to prior page requests or the observed absence of further results and are not accurate. Page numbers must not be relied upon when using keyset pagination.
-* Page totals and result totals are not accurate for keyset pagination and must not be relied upon.
-* A next or previous page can end up being empty. You cannot obtain a next or previous `PageRequest` from an empty page because there are no keyset values relative to which to query.
-* A repository method that is annotated with `@Query` and performs keyset pagination must omit the `ORDER BY` clause from the provided query and instead must supply the sort criteria via `@OrderBy` annotations or `Sort` criteria of `PageRequest`. The provided query must end with a `WHERE` clause to which additional conditions can be appended by the Jakarta Data provider. The Jakarta Data provider is not expected to parse query text that is provided by the application.
+* Page numbers for cursor-based pagination are estimated relative to prior page requests or the observed absence of further results and are not accurate. Page numbers must not be relied upon when using cursor-based pagination.
+* Page totals and result totals are not accurate for cursor-based pagination and must not be relied upon.
+* A next or previous page can end up being empty. You cannot obtain a next or previous `PageRequest` from an empty page because there are no key values relative to which to query.
+* A repository method that is annotated with `@Query` and performs cursor-based pagination must omit the `ORDER BY` clause from the provided query and instead must supply the sort criteria via `@OrderBy` annotations or `Sort` criteria of `PageRequest`. The provided query must end with a `WHERE` clause to which additional conditions can be appended by the Jakarta Data provider. The Jakarta Data provider is not expected to parse query text that is provided by the application.
 
-===== Keyset Pagination Example with Sorts
+===== Cursor-based Pagination Example with Sorts
 
 Here is an example where an application uses `@Query` to provide a partial query to which the Jakarta Data provider can generate and append additional query conditions and an `ORDER BY` clause.
 
@@ -1491,7 +1491,7 @@ Obtaining the next 10 products that cost $50.00 or more:
 float priceMidpoint = 50.0f;
 PageRequest<Product> pageRequest = Order.by(_Product.price.asc(), _Product.id.asc())
                                         .pageSize(10)
-                                        .afterKeyset(priceMidpoint, 0L);
+                                        .afterKey(priceMidpoint, 0L);
 CursoredPage<Product> moreExpensive = products.findByNameContains(pattern, pageRequest);
 ----
 
@@ -1500,9 +1500,9 @@ Obtaining the previous 10 products:
 [source,java]
 ----
 if (moreExpensive.hasContent())
-    pageRequest = pageRequest.beforeKeysetCursor(moreExpensive.getKeysetCursor(0));
+    pageRequest = pageRequest.beforeCursor(moreExpensive.getCursor(0));
 else
-    pageRequest = pageRequest.beforeKeyset(priceMidpoint, 1L);
+    pageRequest = pageRequest.beforeKey(priceMidpoint, 1L);
 CursoredPage<Product> lessExpensive = products.findByNameContains(pattern, pageRequest);
 ----
 
@@ -1537,15 +1537,15 @@ The query results are ordered first by vehicle condition. All resulting entities
 PageRequest<Car> page2Request = Order.by(_Car.price.desc(), _Car.vin.asc())
                                      .page(2) // cosmetic when using a cursor
                                      .size(25)
-                                     .afterKeyset(lastCar.vehicleCondition,
-                                                  lastCar.price,
-                                                  lastCar.vin);
+                                     .afterKey(lastCar.vehicleCondition,
+                                               lastCar.price,
+                                               lastCar.vin);
 CursoredPage<Car> page2 = cars.find(make, model, page2Request);
 ----
 
 ===== Scenario: Person Entity and People Repository
 
-This keyset cursor-based pagination scenario uses the same `Person` entity and example dataset from the offset-based pagination scenario, but orders it by `name` and then by `id`,
+This cursor-based pagination scenario uses the same `Person` entity and example dataset from the offset-based pagination scenario, but orders it by `name` and then by `id`,
 
 [source,json]
 ----
@@ -1630,7 +1630,7 @@ Resulting Page Content:
 ]
 ----
 
-It should be noted, the above result is different than what would be retrieved with offset-based pagination, where the removal of an entity from the first page shifts the offset for entries 5 through 8 to start from `{"id":9, "name":"Harlene Branigan"}`, skipping over `{"id":8, "name":"Danita Pilipyak"}` that becomes offset position 4 after the removal. Keyset cursor-based pagination does not skip the entity because it queries relative to a cursor position, starting from the next entity after `{"id":2, "name":"Corri Davidou"}`.
+It should be noted, the above result is different than what would be retrieved with offset-based pagination, where the removal of an entity from the first page shifts the offset for entries 5 through 8 to start from `{"id":9, "name":"Harlene Branigan"}`, skipping over `{"id":8, "name":"Danita Pilipyak"}` that becomes offset position 4 after the removal. Cursor-based pagination does not skip the entity because it queries relative to a cursor position, starting from the next entity after `{"id":2, "name":"Corri Davidou"}`.
 
 === Precedence of Repository Methods
 

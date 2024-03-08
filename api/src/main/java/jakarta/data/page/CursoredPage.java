@@ -22,27 +22,36 @@ import jakarta.data.Sort;
 import java.util.NoSuchElementException;
 
 /**
- * <p>A slice of data with the ability to create a cursor from the
- * keyset of each entity in the slice.</p>
+ * <p>A page of data retrieved to satisfy a given page request, with a
+ * {@linkplain PageRequest.Cursor cursor} for each result on the page.
+ * A repository method which returns the type {@code CursoredPage} uses
+ * <em>cursor-based pagination</em> to determine page boundaries.</p>
  *
- * <p>Keyset cursor pagination is a form of pagination that aims to reduce the
- * possibility of missed or duplicate results by making the request for
- * each subsequent page relative to the observed values of entity properties
- * from the current page. This list of values is referred to as the keyset cursor
- * and is an ordered list of the values of entity properties that are in the
- * combined sort criteria of the repository method, in the same order of precedence.
- * The combination of sort criteria must uniquely identify each entity.
- * The keyset values can be from the last entity on the page
- * (for the next page in a forward direction) or first entity on the page
- * (if requesting the previous page),
- * or can be any other desired list of values which serve as a new starting
- * point. Keyset pagination also has the potential to improve performance
- * by avoiding the fetching and ordering of results from prior pages
- * because these become non-matching.</p>
+ * <p>Compared to offset-based pagination, cursor-based pagination reduces
+ * the possibility of missed or duplicate results when records are
+ * inserted, deleted, or updated in the database between page requests.
+ * Cursor-based pagination is possible when a query result set has a
+ * well-defined total order, that is, when the results are sorted by a
+ * list of entity fields which forms a unique key on the result set.
+ * This list of entity fields must be the entity fields of the combined
+ * sort criteria of the repository method, in the same order of precedence.
+ * This could just be the identifier field of the entity, or it might be
+ * some other combination of fields which uniquely identifies each query
+ * result.</p>
  *
- * <p>To use keyset pagination, define a repository method with return value of
- * {@link CursoredPage} and which accepts a special parameter (after the normal
- * query parameters) that is a {@link PageRequest}. For example,</p>
+ * <p>When cursor-based pagination is used, a {@linkplain #nextPageRequest
+ * next page request} is made relative to the last entity of the current
+ * page and a {@linkplain #previousPageRequest previous page request} is
+ * made relative to the first entity of the current page. Alternatively,
+ * a page request might be made relative to an arbitrary starting point
+ * in the result set, that is, with an arbitrary value of the key.</p>
+ *
+ * <p>The key for a given element of the result set is represented by an
+ * instance of {@link jakarta.data.page.PageRequest.Cursor Cursor}.</p>
+ *
+ * <p>To use cursor-based pagination, declare a repository method with return
+ * type {@code CursoredPage} and with a special parameter (after the normal
+ * query parameters) of type {@link PageRequest}, for example:</p>
  *
  * <pre>
  * &#64;OrderBy("lastName")
@@ -51,62 +60,64 @@ import java.util.NoSuchElementException;
  * CursoredPage&lt;Employee&gt; findByHoursWorkedGreaterThan(int hours, {@code PageRequest<Employee>} pageRequest);
  * </pre>
  *
- * <p>You can use an offset-based {@link PageRequest} to request an initial page,</p>
+ * <p>In initial page may be requested using an offset-based page request:</p>
  *
  * <pre>
  * page = employees.findByHoursWorkedGreaterThan(1500, PageRequest.of(Employee.class).size(50));
  * </pre>
  *
- * <p>For subsequent pages, you can request pagination relative to the
- * end of the current page as follows,</p>
+ * <p>The next page may be requested relative to the end of the current page,
+ * as follows:</p>
  *
  * <pre>
  * page = employees.findByHoursWorkedGreaterThan(1500, page.nextPageRequest());
  * </pre>
  *
- * <p>Because the page is keyset aware, the {@link PageRequest}
- * that it returns from the call to {@link CursoredPage#nextPageRequest}
- * above is based upon a keyset cursor from that page to use as a starting point
- * after which the results for the next page are to be found.</p>
+ * <p>Here, the instance of {@link PageRequest} returned by
+ * {@link CursoredPage#nextPageRequest()} is based on a key value encapsulated
+ * in an instance of {@link PageRequest.Cursor Cursor} and identifying the last
+ * result on the current page.</p>
  *
- * <p>You can also construct a {@link PageRequest} with a {@link PageRequest.Cursor Cursor} directly, which
- * allows you to make it relative to a specific list of values. The number and
- * order of values must match that of the {@link OrderBy} annotations,
- * {@link Sort} parameters of the page request,
- * or {@code OrderBy} name pattern of the repository method.
- * For example,</p>
+ * <p>A {@link PageRequest} based on an explicit key may be constructed by
+ * calling {@link PageRequest#afterKey(Object...)}. The arguments supplied
+ * to this method must match the list of sorting criteria specified by
+ * {@link OrderBy} annotations of the repository method, {@link Sort}
+ * parameters of the page request, or {@code OrderBy} name pattern of
+ * the repository method. For example:</p>
  *
  * <pre>
  * Employee emp = ...
  * {@code PageRequest<Employee>} pageRequest = PageRequest.of(Employee.class)
  *                                                .size(50)
- *                                                .afterKeyset(emp.lastName, emp.firstName, emp.id);
+ *                                                .afterKey(emp.lastName, emp.firstName, emp.id);
  * page = employees.findByHoursWorkedGreaterThan(1500, pageRequest);
  * </pre>
  *
  * <p>By making the query for the next page relative to observed values,
- * not a numerical position, keyset pagination is less vulnerable to changes
- * that are made to data in between page requests. Adding or removing entities
- * is possible without causing unexpected missed or duplicate results.
- * Keyset pagination does not prevent misses and duplicates if the entity
- * properties which are the sort criteria for existing entities are modified
- * or if an entity is re-added with different sort criteria after having
- * previously been removed.</p>
+ * instead of to a numerical position, cursor-based pagination is less
+ * vulnerable to changes made to data in between page requests. Adding or
+ * removing entities is possible without causing unexpected missed or
+ * duplicate results. Cursor-based pagination does not prevent misses and
+ * duplicates if the entity properties which are the sort criteria for
+ * existing entities are modified or if an entity is re-added with different
+ * sort criteria after having previously been removed.</p>
  *
- * <h2>Keyset Pagination with &#64;Query</h2>
+ * <h2>Cursor-based Pagination with {@code @Query}</h2>
  *
- * <p>Keyset pagination involves generating and appending to the query
- * additional query conditions for the keyset properties. In order for that to
- * be possible, a user-provided
- * <a href="https://eclipse-ee4j.github.io/jakartaee-tutorial/#full-query-language-syntax">JPQL</a>
- * query must end with a
- * {@code WHERE} clause to which additional conditions can be appended.
- * Enclose the entire conditional expression of the {@code WHERE} clause
- * in parenthesis.
- * Sort criteria must be specified independently from the user-provided query,
- * either with the {@link OrderBy} annotation or
- * {@link Sort} parameters to {@link PageRequest}.
- * For example,</p>
+ * <p>Cursor-based pagination involves generating and appending additional
+ * restrictions involving the key fields to the {@code WHERE} clause of the
+ * query. For this to be possible, a user-provided JDQL or JPQL query must
+ * end with a {@code WHERE} clause to which additional conditions may be
+ * appended without otherwise changing the semantics of the query:</p>
+ * <ul>
+ * <li>The entire conditional expression of the {@code WHERE} clause must
+ *     be enclosed in parentheses.
+ * <li>Sorting criteria must be specified independently of the user-provided
+ *     query, either via the {@link OrderBy} annotation or, or by passing
+ *     {@link Sort} criteria within the {@linkplain PageRequest#sorts() page
+ *     request}.
+ * </ul>
+ * <p>For example:</p>
  *
  * <pre>
  * &#64;Query("SELECT o FROM Customer o WHERE (o.ordersPlaced &gt;= ?1 OR o.totalSpent &gt;= ?2)")
@@ -117,34 +128,33 @@ import java.util.NoSuchElementException;
  *                                         {@code PageRequest<Customer>} pageRequest);
  * </pre>
  *
- * <p>Queries that are used with keyset pagination must return entities
- * because keyset cursors are created from the entity attribute values that
- * form the keyset.</p>
+ * <p>Only queries which return entities may be used with cursor-based pagination
+ * because cursors are created from the entity attribute values that
+ * form the unique key.</p>
  *
  * <h2>Page Numbers and Totals</h2>
  *
- * <p>Page numbers, total numbers of elements across all pages, and total
- * count of pages are not accurate when keyset pagination is used and should
- * not be relied upon.</p>
+ * <p>Page numbers, total numbers of elements across all pages, and total count
+ * of pages are not accurate when cursor-based pagination is used and should not
+ * be relied upon.</p>
  *
- * <h2>Database Support for Keyset Pagination</h2>
+ * <h2>Database Support for Cursor-based Pagination</h2>
  *
- * <p>A repository method with return type of {@code CursoredPage} must
- * raise {@link UnsupportedOperationException} if the database is incapable
- * of keyset pagination.
- * </p>
+ * <p>A repository method with return type {@code CursoredPage} must raise
+ * {@link UnsupportedOperationException} if the database itself is not capable
+ * of cursor-based pagination.</p>
  *
  * @param <T> the type of elements in this slice 
  */
 public interface CursoredPage<T> extends Page<T> {
     /**
-     * Returns a {@link PageRequest.Cursor Cursor} for keyset values at the
+     * Returns a {@link PageRequest.Cursor Cursor} for key values at the
      * specified position.
      *
      * @param index position (0 is first) of a result on the page.
-     * @return cursor for keyset values at the specified position.
+     * @return cursor for key values at the specified position.
      */
-    PageRequest.Cursor getKeysetCursor(int index);
+    PageRequest.Cursor getCursor(int index);
 
     /**
      * Returns {@code true} when it is possible to navigate to a previous
@@ -157,7 +167,7 @@ public interface CursoredPage<T> extends Page<T> {
 
     /**
      * <p>Creates a request for the next page in a forward direction from
-     * the current page. This method computes a keyset cursor from the last
+     * the current page. This method computes a cursor from the last
      * entity of the current page and includes the cursor in the pagination
      * information so that it can be used to obtain the next page in a
      * forward direction according to the sort criteria and relative to that
@@ -173,17 +183,17 @@ public interface CursoredPage<T> extends Page<T> {
 
     /**
      * <p>Creates a request for the previous page in a reverse direction from
-     * the current page. This method computes a keyset cursor from the first
+     * the current page. This method computes a cursor from the first
      * entity of the current page and includes the cursor in the pagination
-     * information so that it can be used to obtain the previous slice in a
+     * information so that it can be used to obtain the previous page in a
      * reverse direction to the sort criteria and relative to that entity.
      * Within a single page, results are not reversed and remain ordered
      * according to the sort criteria.</p>
      *
      * <p>Page numbers are not accurate and should not be relied upon when
-     * using keyset pagination. Jakarta Data providers should aim to at least
-     * avoid returning negative or {@code 0} as page numbers when
-     * traversing pages in the reverse direction (this might otherwise occur
+     * using cursor-based pagination. Jakarta Data providers should aim to at
+     * least avoid returning negative or {@code 0} as page numbers when
+     * traversing pages in the previous page direction (this might otherwise occur
      * when matching entities are added prior to the first page and the
      * previous page is requested) by assigning a page number of {@code 1}
      * to such pages. This means that there can be multiple consecutive pages

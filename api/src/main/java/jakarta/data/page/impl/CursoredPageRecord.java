@@ -104,7 +104,7 @@ public record CursoredPageRecord<T>
     }
 
     @Override
-    public PageRequest.Cursor getKeysetCursor(int index) {
+    public PageRequest.Cursor getCursor(int index) {
         return cursors.get(index);
     }
 

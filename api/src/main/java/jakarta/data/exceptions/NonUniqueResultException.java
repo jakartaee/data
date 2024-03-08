@@ -19,8 +19,8 @@ package jakarta.data.exceptions;
 
 /**
  * This exception is raised when execution of a repository method with a singular
- * return type finds multiple results. To avoid raising an error for this, you can
- * use the {@code findFirst...} method name pattern or supply {@code Limit.of(1)}
+ * return type finds multiple results. This error may be circumvented using the
+ * {@code findFirst...} method name pattern or by supplying {@code Limit.of(1)}
  * as a parameter to explicitly request only the first result.
  */
 public class NonUniqueResultException extends DataException {

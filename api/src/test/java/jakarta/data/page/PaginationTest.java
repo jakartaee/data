@@ -28,7 +28,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class PaginationTest {
 
     @Test
-    @DisplayName("Should throw IllegalArgumentException when no keyset values were provided")
+    @DisplayName("Should throw IllegalArgumentException when no key values were provided")
     void shouldThrowExceptionWhenNoKeysetValuesWereProvided() {
         assertThatIllegalArgumentException()
                 .as("Mode must be different from OFFSET when cursor is null")
@@ -36,7 +36,7 @@ class PaginationTest {
     }
 
     @Test
-    @DisplayName("Should throw UnsupportedOperationException when keyset is not supported")
+    @DisplayName("Should throw UnsupportedOperationException when key is not supported")
     void shouldThrowExceptionWhenKeysetIsNotSupported() {
         assertThatThrownBy(() -> {
             Pagination<?> pagination = new Pagination<>(1, 10, Collections.emptyList(),
@@ -45,6 +45,6 @@ class PaginationTest {
                                                         true);
             pagination.next();
         }).isInstanceOf(UnsupportedOperationException.class)
-                .hasMessage("Not supported for keyset pagination. Instead use afterKeyset or afterKeysetCursor to provide the next keyset values or obtain the nextPageRequest from a CursoredPage.");
+                .hasMessage("Not supported for cursor-based pagination. Instead use afterKey or afterCursor to provide a cursor or obtain the nextPageRequest from a CursoredPage.");
     }
 }

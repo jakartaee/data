@@ -21,18 +21,18 @@ import jakarta.data.exceptions.EntityExistsException;
 import jakarta.data.exceptions.OptimisticLockingFailureException;
 
 /**
- * <p>A built-in repository supertype for performing Create, Read, Update, and Delete (CRUD) operations on entities.</p>
+ * <p>A built-in repository supertype for performing Create, Read, Update, and Delete (CRUD) operations.</p>
  *
- * <p>This repository extends the {@link BasicRepository} interface, allowing you to perform insert and update operations in
- * addition to basic retrieval and deletion. This interface combines the Data Access Object (DAO) aspect with the repository pattern,
- * offering a versatile and complete solution for managing persistent entities within Java applications.</p>
+ * <p>This repository extends the {@link BasicRepository} interface, adding {@linkplain #insert} and {@linkplain #update}
+ * operations in addition to basic {@linkplain #findById retrieval} and {@linkplain #delete deletion}. This interface
+ * combines the Data Access Object (DAO) aspect with the repository pattern, offering a versatile and complete solution
+ * for managing persistent entities within Java applications.</p>
  *
- * <p>The type parameters of {@code CrudRepository<T,K>} capture the primary entity type ({@code T})
- * for the repository and the type of the Id entity attribute ({@code K}) that uniquely identifies each entity
- * of that type.</p>
+ * <p>The type parameters of {@code CrudRepository<T,K>} capture the primary entity type ({@code T}) for the repository
+ * and the type of the unique identifier attribute ({@code K}) of the primary entity type.</p>
  *
- * <p>The primary entity type is used for repository methods, such as {@code countBy...}
- * and {@code deleteBy...}, which do not explicitly specify an entity type.</p>
+ * <p>The primary entity type is used for repository methods, such as {@code countBy...} and {@code deleteBy...}, which
+ * do not explicitly specify an entity type.</p>
  *
  * <p>Example entity:</p>
  *

@@ -20,10 +20,11 @@ package jakarta.data;
 import jakarta.data.page.PageRequest;
 
 /**
- * <p>Limits how many results are retrieved by a repository find method.
- * Results of a single invocation of a repository find method
- * can be capped to a maximum amount
- * or be limited to a given positional range.</p>
+ * <p>Specifies a limit on the number of results retrieved by a repository
+ * method. The results of a single invocation of a repository method may
+ * be limited to a given {@linkplain #of(int) maximum number of results}
+ * or to a given {@linkplain #range(long, long) positioned range} defined
+ * in terms of an offset and maximum number of results.</p>
  *
  * <p>A query method of a repository may have a parameter of type
  * {@code Limit}. The parameter of type {@code Limit} must occur after the
