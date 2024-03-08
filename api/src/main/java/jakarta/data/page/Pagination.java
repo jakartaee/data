@@ -39,7 +39,7 @@ record Pagination<T>(long page, int size, List<Sort<? super T>> sorts, Mode mode
         }
 
         if (mode != Mode.OFFSET && (type == null || type.size() == 0)) {
-            throw new IllegalArgumentException("No keyset values were provided.");
+            throw new IllegalArgumentException("No key values were provided.");
         }
     }
 
@@ -54,23 +54,23 @@ record Pagination<T>(long page, int size, List<Sort<? super T>> sorts, Mode mode
     }
 
     @Override
-    public PageRequest<T> afterKeyset(Object... keyset) {
-        return new Pagination<T>(page, size, sorts, Mode.CURSOR_NEXT, new PageRequestCursor(keyset), requestTotal);
+    public PageRequest<T> afterKey(Object... key) {
+        return new Pagination<T>(page, size, sorts, Mode.CURSOR_NEXT, new PageRequestCursor(key), requestTotal);
     }
 
     @Override
-    public PageRequest<T> beforeKeyset(Object... keyset) {
-        return new Pagination<T>(page, size, sorts, Mode.CURSOR_PREVIOUS, new PageRequestCursor(keyset), requestTotal);
+    public PageRequest<T> beforeKey(Object... key) {
+        return new Pagination<T>(page, size, sorts, Mode.CURSOR_PREVIOUS, new PageRequestCursor(key), requestTotal);
     }
 
     @Override
-    public PageRequest<T> afterKeysetCursor(Cursor keysetCursor) {
-        return new Pagination<T>(page, size, sorts, Mode.CURSOR_NEXT, keysetCursor, requestTotal);
+    public PageRequest<T> afterCursor(Cursor cursor) {
+        return new Pagination<T>(page, size, sorts, Mode.CURSOR_NEXT, cursor, requestTotal);
     }
 
     @Override
-    public PageRequest<T> beforeKeysetCursor(Cursor keysetCursor) {
-        return new Pagination<T>(page, size, sorts, Mode.CURSOR_PREVIOUS, keysetCursor, requestTotal);
+    public PageRequest<T> beforeCursor(Cursor cursor) {
+        return new Pagination<T>(page, size, sorts, Mode.CURSOR_PREVIOUS, cursor, requestTotal);
     }
 
     @Override
@@ -116,8 +116,8 @@ record Pagination<T>(long page, int size, List<Sort<? super T>> sorts, Mode mode
         if (mode == Mode.OFFSET) {
             return new Pagination<T>(page + 1, this.size, this.sorts, Mode.OFFSET, null, requestTotal);
         } else {
-            throw new UnsupportedOperationException("Not supported for keyset pagination. Instead use afterKeyset or afterKeysetCursor " +
-                    "to provide the next keyset values or obtain the nextPageRequest from a CursoredPage.");
+            throw new UnsupportedOperationException("Not supported for cursor-based pagination. Instead use afterKey or afterCursor " +
+                    "to provide a cursor or obtain the nextPageRequest from a CursoredPage.");
         }
     }
 
@@ -126,8 +126,8 @@ record Pagination<T>(long page, int size, List<Sort<? super T>> sorts, Mode mode
         if (mode == Mode.OFFSET) {
             return page()<=1 ? null : new Pagination<T>(page - 1, this.size, this.sorts, Mode.OFFSET, null, requestTotal);
         } else {
-            throw new UnsupportedOperationException("Not supported for keyset pagination. Instead use beforeKeyset or beforeKeysetCursor " +
-                    "to provide the previous keyset values or obtain the previousPageRequest from a CursoredPage.");
+            throw new UnsupportedOperationException("Not supported for cursor-based pagination. Instead use beforeKey or beforeCursor " +
+                    "to provide a cursor or obtain the previousPageRequest from a CursoredPage.");
         }
     }
 
