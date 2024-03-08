@@ -79,8 +79,8 @@ import java.util.Objects;
  * called with an argument or arguments of type {@link Sort} and a separate
  * argument of type {@code PageRequest} with nonempty sort criteria.</p>
  *
- * <p>A repository method throws {@link DataException} if
- * the database is incapable of ordering the query results using the given
+ * <p>A repository method throws {@link jakarta.data.exceptions.DataException}
+ * if the database is incapable of ordering the query results using the given
  * sort criteria.</p>
  *
  *

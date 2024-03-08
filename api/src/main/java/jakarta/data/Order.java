@@ -67,8 +67,9 @@ import jakarta.data.repository.Query;
  * called with an argument of type {@link Order} and a separate argument
  * of type {@code PageRequest} that has nonempty sort criteria.</p>
  *
- * <p>A repository method throws {@link DataException} if the database
- * is incapable of ordering the query results using the given sort criteria.</p>
+ * <p>A repository method throws {@link jakarta.data.exceptions.DataException}
+ * if the database is incapable of ordering the query results using the given
+ * sort criteria.</p>
  *
  * @param <T> entity class of the attributes that are used as sort criteria.
  */
