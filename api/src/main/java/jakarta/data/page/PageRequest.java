@@ -48,24 +48,23 @@ import java.util.Optional;
  * }
  * </pre>
  *
- * <p>A repository method will fail with a
- * {@link jakarta.data.exceptions.DataException DataException} or a more
- * specific subclass if:</p>
+ * <p>A repository method may not be declared with:</p>
  * <ul>
- * <li>a repository method has more than one parameter of type
- *     {@code PageRequest}, or has a parameter of type
- *     {@code PageRequest} and a parameter of type {@link Limit},</li>
- * <li>a repository method has a parameter of type {@code PageRequest} in
- *     combination with the keyword {@code First},</li>
- * <li>a {@code PageRequest} argument with sort criteria is supplied to a
- *     repository method, and separate {@link Sort} arguments are also
- *     supplied,</li>
- * <li>a {@code PageRequest} argument with sort criteria is supplied to a
- *     repository method, and an {@link Order} argument is also supplied,
- *     or</li>
- * <li>the database is incapable of ordering the query results using the
- *     given sort criteria.</li>
+ * <li>more than one parameter of type {@code PageRequest} or {@link Limit},
+ * <li>a parameter of type {@code PageRequest} and a parameter of type
+ *     {@link Limit}, or</li>
+ * <li>a parameter of type {@code PageRequest} in combination with the
+ *     keyword {@code First}.</li>
  * </ul>
+ *
+ * <p>A repository method throws {@link IllegalArgumentException} if it
+ * is called with an argument of type {@code PageRequest} with nonempty
+ * sort criteria, and a separate argument or arguments of type {@link Sort}
+ * or {@link Order}.</p>
+ *
+ * <p>A repository method throws {@link UnsupportedOperationException} if
+ * the database is incapable of ordering the query results using the given
+ * sort criteria.</p>
  *
  * @param <T> entity class of the attributes that are used as sort criteria.
  */
