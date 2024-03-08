@@ -34,18 +34,17 @@ import java.util.NoSuchElementException;
  * well-defined total order, that is, when the results are sorted by a
  * list of entity fields which forms a unique key on the result set.
  * This list of entity fields must be the entity fields of the combined
- * sort criteria of the repository method, in the same order of
- * precedence. This could just be the identifier field of the
- * entity, or it might be some other combination of fields which uniquely
- * identifies each query result.</p>
+ * sort criteria of the repository method, in the same order of precedence.
+ * This could just be the identifier field of the entity, or it might be
+ * some other combination of fields which uniquely identifies each query
+ * result.</p>
  *
- * <p>When cursor-based pagination is used, a
- * {@linkplain #nextPageRequest next} page request is made relative
- * to the last entity of the current page and a
- * {@linkplain #previousPageRequest previous} page request is made relative
- * to the first entity of the current page. Alternatively, a page request might
- * be made relative to an arbitrary starting point in the result set, that
- * is, with an arbitrary value of the key.</p>
+ * <p>When cursor-based pagination is used, a {@linkplain #nextPageRequest
+ * next page request} is made relative to the last entity of the current
+ * page and a {@linkplain #previousPageRequest previous page request} is
+ * made relative to the first entity of the current page. Alternatively,
+ * a page request might be made relative to an arbitrary starting point
+ * in the result set, that is, with an arbitrary value of the key.</p>
  *
  * <p>The key for a given element of the result set is represented by an
  * instance of {@link jakarta.data.page.PageRequest.Cursor Cursor}.</p>
@@ -95,27 +94,28 @@ import java.util.NoSuchElementException;
  * </pre>
  *
  * <p>By making the query for the next page relative to observed values,
- * not a numerical position, cursor-based pagination is less vulnerable to changes
- * that are made to data in between page requests. Adding or removing entities
- * is possible without causing unexpected missed or duplicate results.
- * Cursor-based pagination does not prevent misses and duplicates if the entity
- * properties which are the sort criteria for existing entities are modified
- * or if an entity is re-added with different sort criteria after having
- * previously been removed.</p>
+ * instead of to a numerical position, cursor-based pagination is less
+ * vulnerable to changes made to data in between page requests. Adding or
+ * removing entities is possible without causing unexpected missed or
+ * duplicate results. Cursor-based pagination does not prevent misses and
+ * duplicates if the entity properties which are the sort criteria for
+ * existing entities are modified or if an entity is re-added with different
+ * sort criteria after having previously been removed.</p>
  *
  * <h2>Cursor-based Pagination with {@code @Query}</h2>
  *
  * <p>Cursor-based pagination involves generating and appending additional
- * restrictions involving the key fields to the {@code WHERE} clause of
- * the query. For this to be possible, a user-provided JDQL or JPQL query must
+ * restrictions involving the key fields to the {@code WHERE} clause of the
+ * query. For this to be possible, a user-provided JDQL or JPQL query must
  * end with a {@code WHERE} clause to which additional conditions may be
  * appended without otherwise changing the semantics of the query:</p>
  * <ul>
- * <li>The entire conditional expression of the <code>WHERE</code> clause must
- * be enclosed in parentheses.
+ * <li>The entire conditional expression of the {@code WHERE} clause must
+ *     be enclosed in parentheses.
  * <li>Sorting criteria must be specified independently of the user-provided
- * query, either via the {@link OrderBy} annotation or, or by passing {@link Sort}
- * criteria within the {@linkplain PageRequest#sorts() page request}.
+ *     query, either via the {@link OrderBy} annotation or, or by passing
+ *     {@link Sort} criteria within the {@linkplain PageRequest#sorts() page
+ *     request}.
  * </ul>
  * <p>For example:</p>
  *
@@ -135,8 +135,8 @@ import java.util.NoSuchElementException;
  * <h2>Page Numbers and Totals</h2>
  *
  * <p>Page numbers, total numbers of elements across all pages, and total count
- * of pages are not accurate when cursor-based pagination is used and should not be
- * relied upon.</p>
+ * of pages are not accurate when cursor-based pagination is used and should not
+ * be relied upon.</p>
  *
  * <h2>Database Support for Cursor-based Pagination</h2>
  *
