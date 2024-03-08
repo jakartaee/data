@@ -27,18 +27,17 @@ import java.util.Objects;
 /**
  * <p>Requests sorting on a given entity attribute.</p>
  *
- * <p>{@code Sort} allows the application to dynamically provide
- * sort criteria which includes a case sensitivity request,
- * a {@link Direction} and a property.</p>
+ * <p>An instance of {@code Sort} specifies a sorting criterion based
+ * on an entity field, with a sorting {@linkplain Direction direction}
+ * and well-defined case sensitivity.</p>
  *
- * <p>Dynamic {@code Sort} criteria can be specified when
- * requesting a {@link PageRequest#sortBy(Sort) page} of results,
- * or can be optionally specified as
- * parameters to a repository find method in any of the positions that are after
- * the query parameters.</p>
+ * <p>Dynamic {@code Sort} criteria may be specified when requesting a
+ * {@link PageRequest#sortBy(Sort) page} of results, or may optionally
+ * be specified as parameters to a repository find method in any
+ * position occurring after the query parameters.</p>
  *
- * <p>You can use {@code Sort<?>...} to allow a variable
- * number of generic {@code Sort} criteria. For example,</p>
+ * <p>The parameter type {@code Sort<?>...} allows a variable number
+ * of generic {@code Sort} criteria. For example,</p>
  *
  * <pre>
  * Employee[] findByYearHired(int yearYired, Limit maxResults, {@code Sort<?>...} sortBy);
@@ -50,9 +49,9 @@ import java.util.Objects;
  *                                                 Sort.asc("firstName"));
  * </pre>
  *
- * <p>You can use {@link Order} in combination with the
- * {@link StaticMetamodel} to allow a variable number of
- * typed {@code Sort} criteria. For example,</p>
+ * <p>Alternatively, {@link Order} may be used in combination with
+ * the {@linkplain StaticMetamodel static metamodel} to allow a
+ * variable number of typed {@code Sort} criteria. For example,</p>
  *
  * <pre>
  * Employee[] findByYearHired(int yearYired, Limit maxResults, {@code Order<Employee>} sortBy);
@@ -64,16 +63,22 @@ import java.util.Objects;
  *                                                          _Employee.firstName.asc()));
  * </pre>
  *
- * <p>When combined on a method with static sort criteria
- * ({@code OrderBy} keyword or {@link OrderBy} annotation or
- * {@link Query} with an {@code ORDER BY} clause), the static
- * sort criteria is applied first, followed by the dynamic sort criteria
- * that is defined by {@code Sort} instances in the order listed.</p>
+ * <p>When multiple sorting criteria are provided, sorting is
+ * lexicographic, with the precedence of a criterion depending
+ * on its position with the list of criteria.</p>
  *
- * <p>In the example above, the matching employees are sorted first by salary
- * from highest to lowest. Employees with the same salary are then sorted
- * alphabetically by last name. Employees with the same salary and last name
- * are then sorted alphabetically by first name.</p>
+ * <p>A repository method may declare static sorting criteria using
+ * the ({@code OrderBy} keyword or {@link OrderBy} annotation, or
+ * using {@link Query} with an {@code ORDER BY} clause), and also
+ * accept dynamic sorting criteria via its parameters. In this
+ * situation, the static sorting criteria are applied first,
+ * followed by any dynamic sorting criteria specified by instances
+ * of {@code Sort} .</p>
+ *
+ * <p>In the example above, the matching employees are sorted first by
+ * salary from highest to lowest. Employees with the same salary are
+ * then sorted alphabetically by last name. Employees with the same
+ * salary and last name are then sorted alphabetically by first name.</p>
  *
  * <p>A repository method will fail with a
  * {@link jakarta.data.exceptions.DataException DataException}
