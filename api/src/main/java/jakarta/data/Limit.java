@@ -26,9 +26,10 @@ import jakarta.data.page.PageRequest;
  * or to a given {@linkplain #range(long, long) positioned range} defined
  * in terms of an offset and maximum number of results.</p>
  *
- * <p>{@code Limit} is optionally specified as a parameter to a
- * repository method in one of the parameter positions after the
- * query parameters. For example,</p>
+ * <p>A query method of a repository may have a parameter of type
+ * {@code Limit}. The parameter of type {@code Limit} must occur after the
+ * method parameters representing regular parameters of the query itself.
+ * For example,</p>
  *
  * <pre>
  * Product[] findByNameLike(String namePattern, Limit limit, {@code Sort<?>...} sorts);
@@ -39,14 +40,13 @@ import jakarta.data.page.PageRequest;
  * secondMostExpensive50 = products.findByNameLike(pattern, Limit.range(51, 100), Sort.desc("price"));
  * </pre>
  *
- * <p>A repository method will fail if</p>
+ * <p>A repository method may not be declared with:
  * <ul>
- * <li>multiple {@code Limit} parameters are supplied to the
- *     same method.</li>
- * <li>{@code Limit} and {@link PageRequest} parameters are supplied to the
- *     same method.</li>
- * <li>a {@code Limit} parameter is supplied in combination
- *     with the {@code First} keyword.</li>
+ * <li>more than one parameter of type {@code Limit},</li>
+ * <li>a parameter of type {@code Limit} and a parameter of type
+ *     {@link PageRequest}, or</li>
+ * <li>a parameter of type {@code Limit} in combination with the
+ *     {@code First} keyword.
  * </ul>
  *
  * @param maxResults maximum number of results for a query.

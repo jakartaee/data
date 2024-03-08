@@ -28,11 +28,10 @@ import jakarta.data.repository.Query;
 /**
  * <p>Requests sorting on various entity attributes.</p>
  *
- * <p>{@code Order} can be optionally specified as a
- * parameter to a repository find method in any of the positions
- * that are after the query parameters, or it can be used
- * to obtain a {@link PageRequest} that is similarly
- * specified as a parameter to a repository find method.</p>
+ * <p>A query method of a repository may have a parameter of type
+ * {@code Order}. The parameter of type {@code Order} must occur
+ * after the method parameters representing regular parameters of
+ * the query itself.</p>
  *
  * <p>The {@code Order} class is useful in combination with the
  * {@link StaticMetamodel} for helping to enforce type safety of
@@ -60,16 +59,16 @@ import jakarta.data.repository.Query;
  * alphabetically by last name. Employees with the same salary and last name
  * are then sorted alphabetically by first name.</p>
  *
- * <p>A repository method will fail with a
- * {@link jakarta.data.exceptions.DataException DataException}
- * or a more specific subclass if</p>
- * <ul>
- * <li>an {@code Order} parameter is
- *     specified in combination with a {@link PageRequest} parameter with
- *     {@link PageRequest#sorts()}.</li>
- * <li>the database is incapable of ordering with the requested
- *     sort criteria.</li>
- * </ul>
+ * <p>A repository method may not be declared with more than one parameter
+ * of type {@code Order}.</p>
+ *
+ * <p>A repository method throws {@link IllegalArgumentException} if it is
+ * called with an argument of type {@link Order} and a separate argument
+ * of type {@code PageRequest} that has nonempty sort criteria.</p>
+ *
+ * <p>A repository method throws {@link jakarta.data.exceptions.DataException}
+ * if the database is incapable of ordering the query results using the given
+ * sort criteria.</p>
  *
  * @param <T> entity class of the attributes that are used as sort criteria.
  */

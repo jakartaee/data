@@ -31,10 +31,13 @@ import java.util.Objects;
  * on an entity field, with a sorting {@linkplain Direction direction}
  * and well-defined case sensitivity.</p>
  *
- * <p>Dynamic {@code Sort} criteria may be specified when requesting a
- * {@link PageRequest#sortBy(Sort) page} of results, or may optionally
- * be specified as parameters to a repository find method in any
+ * <p>A query method of a repository may have a parameter or parameters
+ * of type {@code Sort}. Parameters of type {@code Sort} may be
+ * specified as parameters to a repository find method in any
  * position occurring after the query parameters.</p>
+ *
+ * <p>Alternatively, dynamic {@code Sort} criteria may be specified when
+ * requesting a {@link PageRequest#sortBy(Sort) page} of results.</p>
  *
  * <p>The parameter type {@code Sort<?>...} allows a variable number
  * of generic {@code Sort} criteria. For example,</p>
@@ -80,16 +83,14 @@ import java.util.Objects;
  * then sorted alphabetically by last name. Employees with the same
  * salary and last name are then sorted alphabetically by first name.</p>
  *
- * <p>A repository method will fail with a
- * {@link jakarta.data.exceptions.DataException DataException}
- * or a more specific subclass if</p>
- * <ul>
- * <li>a {@code Sort} parameter is
- *     specified in combination with a {@link PageRequest} parameter with
- *     {@link PageRequest#sorts()}.</li>
- * <li>the database is incapable of ordering with the requested
- *     sort criteria.</li>
- * </ul>
+ * <p>A repository method throws {@link IllegalArgumentException} if it is
+ * called with an argument or arguments of type {@link Sort} and a separate
+ * argument of type {@code PageRequest} with nonempty sort criteria.</p>
+ *
+ * <p>A repository method throws {@link jakarta.data.exceptions.DataException}
+ * if the database is incapable of ordering the query results using the given
+ * sort criteria.</p>
+ *
  *
  * @param <T>         entity class of the property upon which to sort.
  * @param property    name of the property to order by.
