@@ -28,7 +28,7 @@ import java.util.stream.Stream;
  * <p>A built-in repository supertype for performing basic operations on entities.</p>
  *
  * <p>The type parameters of {@code BasicRepository<T,K>} capture the primary entity type ({@code T}) for the repository
- * and the type of the uniquely identifier attribute ({@code K}) of the primary entity type.</p>
+ * and the type of the unique identifier attribute ({@code K}) of the primary entity type.</p>
  *
  * <p>The primary entity type is used for repository methods, such as {@code countBy...} and {@code deleteBy...}, which
  * do not explicitly specify an entity type.</p>

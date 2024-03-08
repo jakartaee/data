@@ -39,7 +39,7 @@ import java.util.List;
 
 /**
  * <p>Jakarta Data standardizes a programming model where data is represented by
- * simple Java classe and where operations on data are represented by interface
+ * simple Java classes and where operations on data are represented by interface
  * methods.</p>
  *
  * <p>The application defines simple Java objects called entities to represent
@@ -116,7 +116,7 @@ import java.util.List;
  * placed upon the method and its parameters.</p>
  *
  * <p>Built-in repository superinterfaces, such as {@link DataRepository},
- * are provided as a convenient way to inherit commonly used methods, and
+ * are provided as a convenient way to inherit commonly used methods and
  * are parameterized with the entity type and by its id type. Other built-in
  * repository interfaces, such as {@link BasicRepository}, may be used in
  * place of {@link DataRepository} and provide a base set of predefined
@@ -182,9 +182,9 @@ import java.util.List;
  * parameter, whose type is either:</p>
  *
  * <ul>
- * <li>the class of the entity to be updated, or</li>
+ * <li>the class of the entity, or</li>
  * <li>{@code Iterable<E>} or {@code E[]} where {@code E} is the class of the
- *     entities to be updated.</li>
+ *     entities.</li>
  * </ul>
  *
  * <table style="width: 100%">
@@ -802,8 +802,8 @@ import java.util.List;
  *     Method Name pattern.</li>
  * </ol>
  *
- * <p>A repository method which does not fit any of the listed patterns,
- * and is not handled as a vendor-specific extension, must either cause
+ * <p>A repository method which does not fit any of the listed patterns
+ * and is not handled as a vendor-specific extension must either cause
  * an error at build time or raise {@link UnsupportedOperationException}
  * at runtime.</p>
  *
