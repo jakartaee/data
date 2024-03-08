@@ -51,7 +51,7 @@ import jakarta.data.Sort;
  * }
  * </pre>
  *
- * <p>You can define a static metamodel as follows,</p>
+ * <p>An application programmer may define a static metamodel as follows,</p>
  *
  * <pre>
  * &#64;StaticMetamodel(Person.class)
@@ -97,25 +97,23 @@ import jakarta.data.Sort;
  * <li>The value of the field is uninitialized or {@code null}.</li>
  * </ul>
  *
- * <p>Additionally, a field that meets the above criteria except for the name
- * and is named {@code id} or {@code ID} must be assigned by the Jakarta Data provider for the
- * unique identifier entity attribute if a single entity attribute represents the
- * unique identifier.</p>
+ * <p>Additionally, a field that meets the above criteria except for the name and is named
+ * {@code id} or {@code ID} must be assigned by the Jakarta Data provider for the unique
+ * identifier entity attribute if a single entity attribute represents the unique identifier.</p>
  *
  * <p>In cases where multiple Jakarta Data providers provide repositories for the same
- * entity type, no guarantees are made of the order in which the Jakarta Data providers attempt to
- * initialize the fields of the class that is annotated with {@code StaticMetamodel}.
+ * entity type, no guarantees are made of the order in which the Jakarta Data providers attempt
+ * to initialize the fields of the class that is annotated with {@code StaticMetamodel}.
  * It is recommended to include the {@code volatile} modifier on metamodel fields in case the
- * initialize attempt overlaps between multiple providers.</p>
+ * initialization attempt overlaps between multiple providers.</p>
  *
- * <p>You can include a mixture of {@code final} and non-{@code final} fields, in which case
+ * <p>A mixture of {@code final} and non-{@code final} fields is permitted, in which case
  * the latter are initialized by the Jakarta Data provider and the former are ignored by it.</p>
  *
- * <p>Alternatively, an annotation processor might generate fully implemented
- * static metamodel classes for your entities during compile time. The generated
- * classes must be annotated with the {@link jakarta.annotation.Generated} annotation,
- * which signals the Jakarta Data provider to avoid attempting to initialize any fields in the class
- * at run time.</p>
+ * <p>Alternatively, an annotation processor might generate fully-implemented static metamodel
+ * classes for entities at compile time. The generated classes must be annotated with the
+ * {@link jakarta.annotation.Generated} annotation, which instructs the Jakarta Data provider
+ * to avoid attempting to initialize any fields in the class at runtime.</p>
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)

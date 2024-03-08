@@ -75,8 +75,8 @@ public interface PageRequest<T> {
      * <p>Creates a page request to use when querying on entities of the
      * specified entity class.</p>
      *
-     * <p>This method is useful for supplying the entity type when you
-     * do not have typed {@link Sort} instances. For example,</p>
+     * <p>This method is useful for supplying the entity type when using
+     * untyped {@link Sort} instances. For example,</p>
      *
      * <pre>
      * {@code PageRequest<Car>} page1Request = PageRequest.of(Car.class).page(1).size(25).sortBy(

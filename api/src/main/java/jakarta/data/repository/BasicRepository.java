@@ -27,12 +27,11 @@ import java.util.stream.Stream;
 /**
  * <p>A built-in repository supertype for performing basic operations on entities.</p>
  *
- * <p>The type parameters of {@code BasicRepository<T,K>} capture the primary entity type ({@code T})
- * for the repository and the type of the Id entity attribute ({@code K}) that uniquely identifies each entity
- * of that type.</p>
+ * <p>The type parameters of {@code BasicRepository<T,K>} capture the primary entity type ({@code T}) for the repository
+ * and the type of the uniquely identifier attribute ({@code K}) of the primary entity type.</p>
  *
- * <p>The primary entity type is used for repository methods, such as {@code countBy...}
- * and {@code deleteBy...}, which do not explicitly specify an entity type.</p>
+ * <p>The primary entity type is used for repository methods, such as {@code countBy...} and {@code deleteBy...}, which
+ * do not explicitly specify an entity type.</p>
  *
  * <p>Example entity:</p>
  *
@@ -79,7 +78,7 @@ import java.util.stream.Stream;
  * <p>The module JavaDoc provides an {@link jakarta.data/ overview} of Jakarta Data.</p>
  *
  * @param <T> the type of the primary entity class of the repository.
- * @param <K> the type of the Id attribute of the primary entity.
+ * @param <K> the type of the unique identifier attribute of the primary entity.
  */
 public interface BasicRepository<T, K> extends DataRepository<T, K> {
 

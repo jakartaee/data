@@ -47,11 +47,11 @@
  * <p>Pages can be determined based on fixed positional offset or relative to a
  * cursor.</p>
  *
- * <p>The elements of a {@link jakarta.data.page.Page} are computed based on their positional offset
- * within the list of results. For example, if you are on the first page of 10
- * and request the next page, the database identifies the matching entities
- * for the query at positions 11 through 20 and retrieves them. Results are
- * predictable if data is not modified in between slice/page requests.
+ * <p>The elements of a {@link jakarta.data.page.Page} are computed based on their
+ * positional offset within the list of results. For example, if we have obtained
+ * the first page of 10 results and request the next page, the database identifies
+ * the matching entities for the query at positions 11 through 20 and retrieves
+ * them. Results are predictable if data is not modified in between page requests.
  * If additional entities were inserted prior to requesting the second page
  * then some of the entities that are retrieved for the second page might have
  * also appeared on the first page. Similarly, if entities from the first page
