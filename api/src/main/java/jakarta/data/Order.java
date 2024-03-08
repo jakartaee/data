@@ -64,8 +64,8 @@ import jakarta.data.repository.Query;
  * of type {@code Order}.</p>
  *
  * <p>A repository method throws {@link IllegalArgumentException} if it is
- * called with an argument of type {@code PageRequest} with nonempty sort
- * criteria, and a separate argument of type {@link Order}.</p>
+ * called with an argument of type {@link Order} and a separate argument
+ * of type {@code PageRequest} that has nonempty sort criteria.</p>
  *
  * <p>A repository method throws {@link UnsupportedOperationException} if
  * the database is incapable of ordering the query results using the given
