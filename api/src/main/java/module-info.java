@@ -117,7 +117,7 @@ import java.util.List;
  *
  * <p>Built-in repository superinterfaces, such as {@link DataRepository},
  * are provided as a convenient way to inherit commonly used methods and
- * are parameterized with the entity type and by its id type. Other built-in
+ * are parameterized by the entity type and by its id type. Other built-in
  * repository interfaces, such as {@link BasicRepository}, may be used in
  * place of {@link DataRepository} and provide a base set of predefined
  * repository operations serving as an optional starting point. The Java
@@ -175,11 +175,12 @@ import java.util.List;
  * that is designated as the id. Entity property names that are used in queries
  * by method name must not contain reserved words.</p>
  *
- * <h2>Methods with Entity Parameters</h2>
+ * <h2>Lifecycle methods</h2>
  *
- * <p>A method may be annotated with a lifecycle annotation such as {@link Insert},
- * {@link Update}, {@link Save}, or {@link Delete}. The method must accept a single
- * parameter, whose type is either:</p>
+ * <p>A lifecycle method makes changes to persistent data in the data store.
+ * A lifecycle method must be annotated with a lifecycle annotation such as
+ * {@link Insert}, {@link Update}, {@link Save}, or {@link Delete}. The
+ * method must accept a single parameter, whose type is either:</p>
  *
  * <ul>
  * <li>the class of the entity, or</li>
@@ -263,7 +264,7 @@ import java.util.List;
  * <p>Key-value and Wide-Column databases raise {@link UnsupportedOperationException}
  * for queries on attributes other than the identifier/key.</p>
  *
- * <h2>Reserved Keywords for Query by Method Name</h2>
+ * <h3>Reserved Keywords for Query by Method Name</h3>
  *
  * <table style="width: 100%">
  * <caption><b>Reserved for Predicate</b></caption>
@@ -796,7 +797,7 @@ import java.util.List;
  *     lifecycle annotation such as {@link Insert}, {@link Update},
  *     {@link Save}, or {@link Delete}, then the annotation determines
  *     how the method is implemented, along with any data access related
- *     annotations that placed on the method and its parameters.</li>
+ *     annotations placed on the method or on its parameters.</li>
  * <li>If a method is named according to the <b>Query by Method Name</b>
  *     naming conventions, then the implementation follows the Query by
  *     Method Name pattern.</li>
