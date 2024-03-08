@@ -29,8 +29,7 @@ import jakarta.data.repository.Query;
  * <p>Requests sorting on various entity attributes.</p>
  *
  * <p>A query method of a repository may have a parameter of type
- * {@code Order} if its return type indicates that it may return
- * multiple entities. The parameter of type {@code Order} must occur
+ * {@code Order}. The parameter of type {@code Order} must occur
  * after the method parameters representing regular parameters of
  * the query itself.</p>
  *
