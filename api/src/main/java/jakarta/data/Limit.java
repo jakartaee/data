@@ -38,14 +38,13 @@ import jakarta.data.page.PageRequest;
  * secondMostExpensive50 = products.findByNameLike(pattern, Limit.range(51, 100), Sort.desc("price"));
  * </pre>
  *
- * <p>A repository method will fail if</p>
+ * <p>A repository method may not be declared with:
  * <ul>
- * <li>multiple {@code Limit} parameters are supplied to the
- *     same method.</li>
- * <li>{@code Limit} and {@link PageRequest} parameters are supplied to the
- *     same method.</li>
- * <li>a {@code Limit} parameter is supplied in combination
- *     with the {@code First} keyword.</li>
+ * <li>more than one parameter of type {@code Limit},</li>
+ * <li>a parameter of type {@code Limit} and a parameter of type
+ *     {@link PageRequest}</li>, or
+ * <li>a parameter of type {@code Limit} in combination with the
+ *     {@code First} keyword.
  * </ul>
  *
  * @param maxResults maximum number of results for a query.
