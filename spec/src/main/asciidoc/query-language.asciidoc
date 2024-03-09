@@ -259,11 +259,27 @@ The equality and inequality operators are `=`, `&lt;&gt;`, `&lt;`, `&gt;`, `&lt;
 - For wrapper types, these operators are satisfied if both operands evaluate to non-null values, and the equivalent operator expression involving primitives would be satisfied.
 - For other types, these operators are evaluated according to the native semantics of the database.
 
+The operands of an equality or inequality operator must have the same type.
+
 NOTE: Portability is maximized when Jakarta Data providers interpret equality and inequality operators in a manner consistent with the implementation of `Object.equals()` or `Comparable.compareTo()` for the assigned Java type.
 
-NOTE: For string values, a database might have a different collation algorithm to Java. In evaluating an inequality involving string operands, an implementation of JDQL is not required to emulate Java collation.
+==== Ordering
 
-The operands of an equality or inequality operator must have the same type.
+Every <<Basic Types,basic type>> can, in principle, be equipped with a total order. An order for a type determines the result of inequality comparisons, and the effect of the <<Order clause>>.
+
+For numeric types, and for date, time, and datetime types, the total order is unique and completely determined by the semantics of the type. JDQL implementations must sort these types according to their natural order, that is, the order in JDQL must agree with the order defined by Java.
+
+Boolean values must be ordered so that `false < true` is satisfied.
+
+For other types, there is at least some freedom in the choice of order. Usually, the order is determined by the native semantics of the database. Note that:
+
+- Textual data is represented in JDQL as the type `java.lang.String`. Strings are in general ordered lexicographically, but the ordering also depends on the character set and collation used by the database server. Applications must not assume that the order agrees with the `compareTo()` method of `java.lang.String`. In evaluating an inequality involving string operands, an implementation of JDQL is not required to emulate Java collation.
+
+- Binary data is represented in JDQL as the type `byte[]`. Binary data is in general ordered lexicographically with respect to the constituent bytes. However, since this ordering is rarely meaningful, this specification does not require implementations of JDQL to respect it.
+
+- This specification does not define an order for the sorting of Java `enum` values, which is provider-dependent. A programming model for entity classes might allow control over the order of `enum` values. For example, Jakarta Persistence allows this via the `@Enumerated` annotation.
+
+- This specification does not define an order for UUID values, which is provider-dependent.
 
 ==== Logical operators
 
@@ -323,8 +339,6 @@ The `set` clause, with syntax given by `set_clause`, specifies a list of updates
 ==== Order clause
 
 The `order` clause (or `order by` clause), with syntax given by `orderby_clause`, specifies a lexicographic order for the query results, that is, a list of entity fields used to sort the records which satisfy the restriction imposed by the `where` clause. The keywords `asc` and `desc` specify that a given field should be sorted in ascending or descending order respectively; when neither is specified, ascending order is the default.
-
-NOTE: This specification does not define an order for the sorting of Java `enum` values, which is provider-dependent. A programming model for entity classes might allow control over the order of `enum` values. For example, Jakarta Persistence allows this via the `@Enumerated` annotation.
 
 The `order` clause is always optional. When it is missing, and when no sort criteria are given as arguments to a parameter of the repository method, the order of the query results is undefined, and may not be deterministic.
 
