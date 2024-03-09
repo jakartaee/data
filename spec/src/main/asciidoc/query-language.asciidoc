@@ -310,9 +310,25 @@ The interpretation and effect of each clause in this list is influenced by claus
 
 The `from` clause, with syntax given by `from_clause`, specifies an _entity name_ which identifies the queried entity. Path expressions occurring in later clauses are interpreted with respect to this entity. That is, the first element of each path expression in the query must be a persistent field of the entity named in the `from` clause. The entity name is a Java identifier, usually the unqualified name of the entity class, as specified in <<Entity Names>>.
 
+NOTE: The syntax of the `update` statement is irregular, with the `from` keyword implied. That is, the syntax _should_ be `update from Entity`, but for historical reasons it is simply `update Entity`.
+
 The `from` clause is optional in `select` statements. When it is missing, the queried entity is determined by the return type of the repository method, or, if the return type is not an entity type, by the primary entity type of the repository.
 
-NOTE: The syntax of the `update` statement is irregular, with the `from` keyword implied. That is, the syntax _should_ be `update from Entity`, but for historical reasons it is simply `update Entity`.
+For example, this repository method declaration:
+
+[source,java]
+----
+@Query("where title like :title")
+List<Book> booksByType(String title);
+----
+
+is equivalent to:
+
+[source,java]
+----
+@Query("from Book where title like :title")
+List<Book> booksByType(String title);
+----
 
 ==== Where clause
 
