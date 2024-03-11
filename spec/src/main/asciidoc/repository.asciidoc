@@ -1121,7 +1121,12 @@ Refer to the Jakarta Data module JavaDoc section on "Return Types for Repository
 
 === Special Parameters for Limits, Sorting, and Pagination
 
-An <<Annotated Query methods,annotated>>, <<Parameter-based automatic query methods,parameter-based>>, or <<Query by Method Name,method name>> query method may have _special parameters_ of type `Limit`, `Order`, `Sort`, or `PageRequest`.
+An <<Annotated Query methods,annotated>>, <<Parameter-based automatic query methods,parameter-based>>, or <<Query by Method Name,method name>> query method may have _special parameters_ of type `Limit`, `Order`, `Sort`, or `PageRequest` if the method return type indicates that the method may return multiple entities, that is, if the return type is:
+
+- an array type,
+- `List` or `Stream`, or
+- `Page` or `CursoredPage`.
+
 A special parameter controls which query results are returned to the caller of a repository method, or in what order the results are returned:
 
 - a `Limit` allows the query results to be limited to a given range defined in terms of an offset and maximum number of results,
