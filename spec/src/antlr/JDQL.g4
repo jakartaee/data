@@ -76,7 +76,7 @@ function_expression
 special_expression
     : 'LOCAL' 'DATE'
     | 'LOCAL' 'DATETIME'
-    | 'LOCAL' 'IME'
+    | 'LOCAL' 'TIME'
     | 'TRUE'
     | 'FALSE'
     ;

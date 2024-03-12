@@ -6,7 +6,7 @@ NOTE: A Jakarta Data provider backed by access to a relational database might ch
 
 === Type system
 
-Every expression in a JDQL query is assigned a Java type. An implementation of JDQL is required to support the Java types listed in <<Basic Types>>, that is: primitive types, `String`, `LocalDate`, `LocalDateTime`, `LocalTime`, and `Instant`, `java.util.UUID`, `java.math.BigInteger` and `java.math.BigDecimal`, `byte[]`, and user-defined `enum` types.
+Every expression in a JDQL query is assigned a Java type. An implementation of JDQL is required to support the Java types listed in <<Basic Types>>, that is: primitive types, `String`, `LocalDate`, `LocalDateTime`, `LocalTime`, and `Instant`, `java.util.UUID`, `java.math.BigInteger` and `java.math.BigDecimal`, `byte[]`, and  `enum` types.
 
 NOTE: An implementation of JDQL is permitted and encouraged to support additional types. Use of such types is not guaranteed to be portable between implementations.
 
@@ -162,7 +162,7 @@ When any argument expression of any function call evaluates to a null value, the
 
 NOTE: These functions cannot be emulated on every datastore. When a function cannot be reasonably emulated via the native query capabilities of the database, a JDQL implementation is not required to provide the function.
 
-If the JDQL implementation does not support a one of the standard functions explicitly listed above, it must throw `UnsupportedOperationException` when the function name occurs in a query. Alternatively, the Jakarta Data provider is permitted to reject a repository method declaration at compilation time if its `@Query` annotation uses an unsupported function.
+If the JDQL implementation does not support a standard function explicitly listed above, it must throw `UnsupportedOperationException` when the function name occurs in a query. Alternatively, the Jakarta Data provider is permitted to reject a repository method declaration at compilation time if its `@Query` annotation uses an unsupported function.
 
 NOTE: On the other hand, an implementation of JDQL might provide additional built-in functions, and might even allow invocation of user-defined functions. Section 4.7 of the Jakarta Persistence specification defines a set of functions that all JPQL implementations are required to provide, including `concat`, `substring`, `trim`, `locate`, `ceiling`, `floor`, `exp`, `ln`, `mod`, `power`, `round`, `sign`, `sqrt`, `cast`, `extract`, `coalesce`, and `nullif`. JDQL implementations are encouraged to support any of these functions which are reasonably implementable.
 
@@ -238,12 +238,12 @@ All operands must have the same type.
 
 A `between` expression, with syntax given by `between_expression` is satisfied when its operands all evaluate to non-null values, and, if the `not` keyword is missing, its left operand evaluates to a value which is:
 
-- larger than or equal to the value take by its middle operand, and
+- larger than or equal to the value taken by its middle operand, and
 - smaller than or equal to the value taken by its right operand.
 
 Or, if the `not` keyword occurs, the left operand must evaluate to a value which is:
 
-- strictly smaller than to the value take by its middle operand, or
+- strictly smaller than to the value taken by its middle operand, or
 - strictly larger than the value taken by its right operand.
 
 All three operands must have the same type.
@@ -294,7 +294,7 @@ For other types, there is at least some freedom in the choice of order. Usually,
 The logical operators are `and`, `or`, and `not`.
 
 - An `and` operator expression is satisfied if and only if both its operands are satisfied.
-- An `or` operator expression is satisfied if and only if at least one of its operands are satisfied.
+- An `or` operator expression is satisfied if at least one of its operands is satisfied.
 - A `not` operator expression is never satisfied if its operand _is_ satisfied.
 
 This specification leaves undefined the interpretation of the `not` operator when its operand _is not_ satisfied.
@@ -344,7 +344,7 @@ List<Book> booksByType(String title);
 
 The `where` clause, with syntax given by `where_clause`, specifies a conditional expression used to restrict the records returned, deleted, or updated by the query. Only records for which the conditional expression is satisfied are returned, deleted, or updated.
 
-The `where` clause is always optional. When it is missing, there is no restriction, and, and all records are of the queried entity type are returned, deleted, or updated.
+The `where` clause is always optional. When it is missing, there is no restriction, and all records of the queried entity type are returned, deleted, or updated.
 
 ==== Select clause
 
@@ -366,7 +366,7 @@ The `set` clause, with syntax given by `set_clause`, specifies a list of updates
 
 The `order` clause (or `order by` clause), with syntax given by `orderby_clause`, specifies a lexicographic order for the query results, that is, a list of entity fields used to sort the records which satisfy the restriction imposed by the `where` clause. The keywords `asc` and `desc` specify that a given field should be sorted in ascending or descending order respectively; when neither is specified, ascending order is the default.
 
-The `order` clause is always optional. When it is missing, and when no sort criteria are given as arguments to a parameter of the repository method, the order of the query results is undefined, and may not be deterministic.
+The `order` clause is always optional. When it is missing, and when no sort criteria are given as arguments to a parameter of the repository method, the order of the query results is undefined, and might not be deterministic.
 
 NOTE: If a datastore does not natively provide the ability to sort query results, the Jakarta Data provider is strongly encouraged, but not required, to sort the query results in Java before returning the results to the client.
 
