@@ -360,7 +360,7 @@ The `order` clause is always optional. When it is missing, and when no sort crit
 
 NOTE: If a datastore does not natively provide the ability to sort query results, the Jakarta Data provider is strongly encouraged, but not required, to sort the query results in Java before returning the results to the client.
 
-If the Jakarta Data provider cannot satisfy a request for sorted query results, it must throw `UnsupportedOperationException`.
+If the Jakarta Data provider cannot satisfy a request for sorted query results, it must throw `DataException`.
 
 === Statements
 
