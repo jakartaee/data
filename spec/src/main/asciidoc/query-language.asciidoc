@@ -162,7 +162,7 @@ When any argument expression of any function call evaluates to a null value, the
 
 NOTE: These functions cannot be emulated on every datastore. When a function cannot be reasonably emulated via the native query capabilities of the database, a JDQL implementation is not required to provide the function.
 
-If the JDQL implementation does not support a one of the standard functions explicitly listed above, it must throw `UnsupportedOperationException` when the function name occurs in a query.
+If the JDQL implementation does not support a one of the standard functions explicitly listed above, it must throw `UnsupportedOperationException` when the function name occurs in a query. Alternatively, the Jakarta Data provider is permitted to reject a repository method declaration at compilation time if its `@Query` annotation uses an unsupported function.
 
 NOTE: On the other hand, an implementation of JDQL might provide additional built-in functions, and might even allow invocation of user-defined functions. Section 4.7 of the Jakarta Persistence specification defines a set of functions that all JPQL implementations are required to provide, including `concat`, `substring`, `trim`, `locate`, `ceiling`, `floor`, `exp`, `ln`, `mod`, `power`, `round`, `sign`, `sqrt`, `cast`, `extract`, `coalesce`, and `nullif`. JDQL implementations are encouraged to support any of these functions which are reasonably implementable.
 
@@ -344,7 +344,7 @@ Alternatively, the `select` clause may contain a single `count(*)` aggregate exp
 
 NOTE: If a datastore does not natively provide the ability to count query results, the Jakarta Data provider is strongly encouraged, but not required, to implement this operation by counting the query results in Java.
 
-If the JDQL implementation does not support `count(*)`, it must throw `UnsupportedOperationException` when this aggregate expression occurs in a query.
+If the JDQL implementation does not support `count(*)`, it must throw `UnsupportedOperationException` when this aggregate expression occurs in a query.  Alternatively, the Jakarta Data provider is permitted to reject a repository method declaration at compilation time if its `@Query` annotation uses the unsupported aggregate expression.
 
 The `select` clause is optional in `select` statements. When it is missing, the query returns the queried entity.
 
