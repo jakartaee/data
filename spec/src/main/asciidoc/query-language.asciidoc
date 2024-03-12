@@ -170,6 +170,14 @@ NOTE: On the other hand, an implementation of JDQL might provide additional buil
 
 The syntax of an _operator expression_ is given by the `scalar_expression` rule. Within an operator expression, parentheses indicate grouping.
 
+All binary infix operators are left-associative. The relative precedence, from highest to lowest precedence, is given by:
+
+1. `*` and `/`,
+2. `+` and `-`,
+3. `||`.
+
+The unary prefix operators `+` and `-` have higher precedence than the binary infix operators. Thus, `2 * -3 + 5` means `(2 * (-3)) + 5` and evaluates to `-1`.
+
 The concatenation operator `||` is assigned the type `java.lang.String`. Its operand expressions must also be of type `java.lang.String`. When executed, a concatenation operator expression evaluates to a new string concatenating the strings to which its arguments evaluate.
 
 The numeric operators `+`, `-`, `*`, and `/` have the same meaning for primitive numeric types they have in Java, and operator expression involving these operators are assigned the types they would be assigned in Java.
@@ -292,6 +300,8 @@ The logical operators are `and`, `or`, and `not`.
 This specification leaves undefined the interpretation of the `not` operator when its operand _is not_ satisfied.
 
 CAUTION: A compliant implementation of JDQL might feature SQL/JPQL-style ternary logic, where `not n > 0` is an unsatisfied logical expression when `n` evaluates to null, or it might feature binary logic where the same expression is considered satisfied. Application programmers should take great care when using the `not` operator with scalar expressions involving `null` values.
+
+Syntactically, logical operators are parsed with lower precedence than <<Equality and inequality operators,equality and inequality operators>> and other <<Conditional expressions,conditional expressions listed above>>. The `not` operator has higher precedence than `and` and `or`. The `and` operator has higher precedence than `or`.
 
 === Clauses
 
