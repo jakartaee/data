@@ -32,7 +32,8 @@ import java.util.Objects;
  * and well-defined case sensitivity.</p>
  *
  * <p>A query method of a repository may have a parameter or parameters
- * of type {@code Sort}. Parameters of type {@code Sort} must occur after
+ * of type {@code Sort} if its return type indicates that it may return
+ * multiple entities. Parameters of type {@code Sort} must occur after
  * the method parameters representing regular parameters of the query
  * itself.</p>
  *
