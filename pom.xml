@@ -95,7 +95,7 @@
         <jacoco.maven.version>0.8.11</jacoco.maven.version>
         <sigtest.version>1.6</sigtest.version> <!-- TODO update to 1.8 once this fix is added https://github.com/jtulach/netbeans-apitest/commit/72a3d3507202357589d77b293cb1e29349a0096e -->
         <sonar.jacoco.reportPath>../target/jacoco.exec</sonar.jacoco.reportPath>
-        <sonar.maven.version>3.10.0.2594</sonar.maven.version>
+        <sonar.maven.version>3.11.0.3922</sonar.maven.version>
     </properties>
 
     <dependencyManagement>
