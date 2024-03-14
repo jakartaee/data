@@ -129,17 +129,8 @@ import java.util.List;
  * is possible because the methods of the built-in repository superinterfaces
  * respect the conventions defined for custom repository methods.</p>
  *
- * <p>Entity property names are computed from the fields and accessor methods
- * of the entity class and must be unique ignoring case. For simple entity
- * properties, the field or accessor method name is used as the entity property
- * name. In the case of embedded classes within entities, entity property names
- * are computed by concatenating the field or accessor method names at each level,
- * delimited by {@code _} or undelimited for query by method name (such as
- * {@code findByAddress_ZipCode} or {@code findByAddressZipCode})
- * when referred to within repository method names, and delimited by
- * {@code .} when used within annotation values, such as for
- * {@link OrderBy#value} and {@link Query#value},</p>
- *
+* <p>The following example shows an entity class, an embeddable class, and
+ * a repository interface:</p>
  * <pre>
  * &#64;Entity
  * public class Purchase {
@@ -169,11 +160,42 @@ import java.util.List;
  * }
  * </pre>
  *
- * <p>When using the <b>Query by Method Name</b> pattern
- * as well as the <b>Parameter-based Conditions</b> pattern,
- * {@code Id} is an alias for the entity property
- * that is designated as the id. Entity property names that are used in queries
- * by method name must not contain reserved words.</p>
+ * <h2>Persistent Field Names</h2>
+ *
+ * <p>Each persistent field of an entity or embeddable class is assigned a
+ * name:</p>
+ * <ul>
+ * <li>when direct field access is used, the name of a persistent field is
+ *     simply the name of the Java field, but</li>
+ * <li>when property-based access is used, the name of the field is derived
+ *     from the accessor methods, according JavaBeans conventions.
+ *</ul>
+ * <p>Within a given entity class or embeddable class, names assigned to
+ * persistent fields must be unique ignoring case.</p>
+ * <p>Furthermore, within the context of a given entity, each persistent field
+ * of an embeddable class reachable by navigation from the entity class may be
+ * assigned a compound name. The compound name is obtained by concatenating the
+ * names assigned to each field traversed by navigation from the entity class
+ * to the persistent field of the embedded class, optionally joined by a
+ * delimiter.<p>
+ * <ul>
+ * <li>For parameters of a {@link Find} method, the delimiter is {@code _}.
+ * <li>For path expressions within a {@linkplain Query query}, the delimiter
+ *     is {@code .}.
+ * <li>For method names in <i>Query by Method Name</i>, the delimiter is
+ *     {@code _} and it is optional. For example, {@code findByAddress_ZipCode}
+ *     or {@code findByAddressZipCode} are both legal.
+ * <li>For arguments to constructor methods of {@link Sort}, the delimiter
+ *     is {@code _} or {@code .}.
+ * <li>For the {@code value} member of the {@link OrderBy} or {@link By}
+ *     annotation the delimiter is {@code _} or {@code .}.
+ * </ul>
+ *
+ * <p>For <i>Query by Method Name</i>, {@code Id} is an alias for the unique
+ * identifier field or property of an entity.<p>
+ *
+ * <p>A persistent field name used in a <i>Query by Method Name</i> must not
+ * contain a keyword reserved by <i>Query by Method Name</i>.</p>
  *
  * <h2>Lifecycle methods</h2>
  *

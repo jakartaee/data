@@ -460,53 +460,68 @@ create table Book (
 
 NOTE: Support for entity associations is not required by this specification.
 
-==== Entity Property Names
+==== Persistent Field Names
 
-Within an entity, property names must be unique ignoring case. For simple entity properties, the field or accessor method name serves as the entity property name. In the case of embedded classes, entity property names are computed by concatenating the field or accessor method names at each level, optionally joined by a delimiter.
+Each persistent field of an entity, as defined above in <<Persistent Fields>>, or of an embeddable class, as defined in <<Embedded Fields and Embeddable Classes>>, must be assigned a name, allowing the persistent field to be referenced by an <<Parameter-based automatic query methods,automatic query method>>, a <<Query by Method Name>>, or from a query specified within the <<Annotated Query methods,`@Query` annotation>>.
 
-Locations where entity property names can be used, along with delimiters, are shown in the table. The examples in the table assume an `Order` entity has an `address` of type `MailingAddress` with a `zipCode` of type `int`.
+- when direct field access is used, the name of a persistent field is simply the name of the Java field, but
+- when property-based access is used, the name of the field is derived from the accessor methods.
 
-.Locations of Entity Properties and Delimiters Table:
-[cols="3, 1, 6"]
+Any programming model for entity classes which supports property-based access must also define a rule for assigning names to persistent fields. Typically, a property with accessors named `getX` and `setX` is assigned a persistent field name obtained by calling `java.beans.Introspector.decapitalize("X")`.
+
+Within a given entity class or embeddable class, names assigned to persistent fields must be unique ignoring case. A Jakarta Data provider is permitted to reject an entity class if two persistent fields would be assigned the same name.
+
+Furthermore, within the context of a given entity, each persistent field of an embeddable class reachable by navigation from the entity class may be assigned a compound name. The compound name is obtained by concatenating the names assigned to each field traversed by navigation from the entity class to the persistent field of the embedded class, optionally joined by a delimiter.
+
+The rule for concatenating compound names depends on the context, and is specified in <<property-name-concatenation>>. The examples in the table assume an `Order` entity has an `address` of type `MailingAddress` with a `zipCode` of type `int`.
+
+[[property-name-concatenation]]
+.Field Name Concatenation and Delimiters
+[cols="3, 2, ^1, 6"]
 |===
-|Entity Property Location |Delimiter |Example
+| Context | Type | Delimiter | Example
 
-|`@Query` annotation
-|`.`
-|`@Query("SELECT o FROM Order o WHERE o.address.zipCode=?1")`
-
-|_Query by Method Name_ method name
-|`_`
-|`List<Order> findByAddress_zipCode(int zip);`
-
-|_Parameter-based Conditions_ parameter name
+| `@Find` | Parameter name
 |`_`
 |`@Find List<Order> find(int address_zipCode);`
 
-|`Sort` property value
+|`@Query` | Path expression within query
+|`.`
+|`@Query("SELECT o FROM Order o WHERE o.address.zipCode=?1")`
+
+|_Query by Method Name_ | Method name
+|`_`
+|`List<Order> findByAddress_zipCode(int zip);`
+
+|`Sort` | String argument
 |`.` or `_`
 |`Sort.asc("address_zipCode")`
 
-|`@By` or `@OrderBy` annotation value
+|`@By` or `@OrderBy` | Annotation value
 |`.` or `_`
 |`@Find List<Order> find(@By("address.zipCode") int zip);`
 |===
 
-For a given entity property name, delimiter usage must be consistent. Either the delimiter must always be used within the entity property name to delimit subcomponents or the delimiter must never be used within the entity property name. Except in the case of `@Query` where the delimiter is required by the query language, delimiters can be omitted entirely from an entity property name when it is unnecessary to disambiguate the entity property to which the name refers.
+NOTE: Application programmers are strongly encouraged to follow Java's camel case naming standard for fields of entities, relations, and embeddable classes, avoiding underscores in field names. The resolution algorithm for persistent field identification relies on the use of underscore as a delimiter. Adhering to the camel case naming convention ensures consistency and eliminates ambiguity.
 
-The resolution of properties involves the following steps:
 
-1. *Property Extraction*: The framework obtains entity property names from the locations in the above table, applying the BNF grammar in the case of _Query by Method Name_ to extract entity property names from the method name. For example, for the query method `findByAddressZipCode`, the property name extracted is `AddressZipCode`.
+==== Persistent Field Names in Query by Method Name
 
-2. *Property Lookup on Entity*: The framework compares the extracted name, ignoring case, against the field names of the respective entity class.
+For _Query by Method Name_, the use of delimiters within a compound name is optional. Delimiters may be omitted entirely from a compound name when they are not needed to disambiguate the persistent field to which the name refers. But for a given entity property name, delimiter usage must be consistent: either the delimiter must be used between every pair of persistent field names within the compound name, or it must not occur within the compound name.
 
-3. *Property Lookup in Hierarchy*: If no match was found among the entity field names, the framework compares the extracted name, ignoring case, against the combination of the field names of the respective entity and the fields of the entity's hierarchy of relations and embedded classes, concatenated as outlined in this section above, both with and without the optional delimiter.
+Resolution of a persistent field involves the following steps:
 
-4. *Resolution Outcome*: If the framework successfully identifies a property in the domain class or along the specified traversal path that matches the extracted property name, it uses that property.
+1. A persistent field name is extracted from the method name according to the <<BNF Grammar for Query Methods>>. For example, if the query method name is `findByAddressZipCode`, the extracted field name is `AddressZipCode`.
 
-When `@Query` is used, the Jakarta Data specification defers to the rules of the query language on whether the delimiter is required and whether the case must match.
+2. The extracted name is matched against the fields of the entity class. If the name assigned to a persistent field of the entity class matches the extracted name, ignoring case, then the extracted name resolves to that field.
 
-Users are encouraged to follow Java's camel case naming standards for fields of entities, relations, and embedded classes, avoiding underscores in field names. The resolution algorithm for property identification relies on traversal with underscores. Adhering to camel case for property names ensures consistency and eliminates ambiguity, enabling effective data filtering and retrieval from domain classes.
+3. Otherwise, if no match is found among the fields of the entity, the extracted name is matched against the fields of entity classes and embedded classes reachable from the entity class, interpreting the extracted name as a compound name, as outlined in the previous section, both with and without the optional delimiter. If the compound name assigned to a persistent field matches the extracted name, also interpreted as a compound name, and ignoring case, then the extracted name resolves to that field.
+
+4. If no matching persistent field is found in either of the previous steps, the provider is permitted to reject the query method, or to throw `UnsupportedOperationException` when the method is called.
+
+Within a _Query by Method Name_, `Id` is an alias for the unique identifier field or property of an entity.
+
+A persistent field name used in a _Query by Method Name_ must not contain a <<Query by Method Name Keywords,keyword>> reserved by _Query by Method Name_.
 
 
 ===== Scenario 1: Person Repository with Unambiguous Resolution
@@ -556,10 +571,6 @@ The `Order` entity has an `addressZipCode` field, as well as an `address` field 
 ----
 List<Order> findByAddress_zipcode(int zipCode);
 ----
-
-WARNING: Define entity properties following standard Java naming conventions for camel case, using underscore only as the last resort.
-
-In all places where entity property names can be specified other than `@Query`, `Id` is an alias for the entity property that is designated as the id. Entity property names that are used in _Query by Method Name_ must not contain reserved words.
 
 
 ==== Type-safe Access to Entity Attributes
