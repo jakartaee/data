@@ -168,8 +168,8 @@ import java.util.List;
  * <li>when direct field access is used, the name of a persistent field is
  *     simply the name of the Java field, but</li>
  * <li>when property-based access is used, the name of the field is derived
- *     from the accessor methods, according JavaBeans conventions.
- *</ul>
+ *     from the accessor methods, according to JavaBeans conventions.</li>
+ * </ul>
  * <p>Within a given entity class or embeddable class, names assigned to
  * persistent fields must be unique ignoring case.</p>
  * <p>Furthermore, within the context of a given entity, each persistent field
@@ -177,7 +177,7 @@ import java.util.List;
  * assigned a compound name. The compound name is obtained by concatenating the
  * names assigned to each field traversed by navigation from the entity class
  * to the persistent field of the embedded class, optionally joined by a
- * delimiter.<p>
+ * delimiter.</p>
  * <ul>
  * <li>For parameters of a {@link Find} method, the delimiter is {@code _}.
  * <li>For path expressions within a {@linkplain Query query}, the delimiter

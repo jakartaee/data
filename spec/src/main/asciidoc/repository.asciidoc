@@ -517,7 +517,7 @@ Resolution of a persistent field involves the following steps:
 
 3. Otherwise, if no match is found among the fields of the entity, the extracted name is matched against the fields of entity classes and embedded classes reachable from the entity class, interpreting the extracted name as a compound name, as outlined in the previous section, both with and without the optional delimiter. If the compound name assigned to a persistent field matches the extracted name, also interpreted as a compound name, and ignoring case, then the extracted name resolves to that field.
 
-4. If no matching persistent field is found in either of the previous steps, the provider is permitted to reject the query method, or to throw `UnsupportedOperationException` when the method is called.
+4. If no matching persistent field is found in either of the previous steps, the provider is permitted to reject the query method or to throw `UnsupportedOperationException` when the method is called.
 
 Within a _Query by Method Name_, `Id` is an alias for the unique identifier field or property of an entity.
 
