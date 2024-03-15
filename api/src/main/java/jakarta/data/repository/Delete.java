@@ -30,7 +30,7 @@ import java.lang.annotation.Target;
  * <p>The {@code Delete} annotation indicates that the annotated repository method deletes the state of one or more
  * entities from the database. The method must follow one of the following patterns.
  * </p>
- * <h2>Parameter for Entity Instances</h2>
+ *
  * <p>A {@code Delete} method might accept an instance or instances of an entity class. In this case, the method must
  * have exactly one parameter whose type is either:
  * </p>
@@ -56,11 +56,18 @@ import java.lang.annotation.Target;
  * if the entity with a matching identifier does not have a matching version, the annotated method must raise
  * {@link jakarta.data.exceptions.OptimisticLockingFailureException}.
  * </p>
- * <h2>Without Parameters</h2>
- * <p>Alternatively, the {@code Delete} annotation may be applied to a repository method with no parameters, indicating
- * that the annotated method deletes all instances of the primary entity type. In this case, the annotated method must
- * either be declared {@code void}, or return {@code int} or {@code long}.
- * </p>
+ *
+ * <p>Alternatively, as a special exception, the {@code Delete} annotation may be used to annotate a repository method
+ * with no a parameter of entity type:</p>
+ * <ul>
+ * <li>{@code Delete} may be applied to a repository method with no parameters, indicating that the annotated method
+ *     deletes all instances of the primary entity type. The annotated method must either be declared {@code void}, or
+ *     return {@code int} or {@code long}.</li>
+ * <li>{@code Delete} may be applied to a repository method with exactly one parameter annotated {@code By}, with a
+ *     defaulted {@linkplain By#value field name}, and with the same type as the unique identifier field or property of
+ *     the primary entity of the repository, indicating that the annotated method deletes the entity instance with the
+ *     given unique identifier. The annotated method must be declared {@code void}.
+ * </ul>
  * <p>Annotations such as {@code @Find}, {@code @Query}, {@code @Insert}, {@code @Update}, {@code @Delete}, and
  * {@code @Save} are mutually-exclusive. A given method of a repository interface may have at most one {@code @Find}
  * annotation, lifecycle annotation, or query annotation.
