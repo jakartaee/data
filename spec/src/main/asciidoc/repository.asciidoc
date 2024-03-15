@@ -591,8 +591,6 @@ For each field of the metamodel class that is to be initialized by a Jakarta Dat
 - The name of the field, ignoring case, must match the name of an entity attribute, with the `_` character in the field name delimiting the attribute names of hierarchical structures or relationships, such as embedded classes.
 - The value of the field must be uninitialized or `null`.
 
-If the entity class has a unique identifier that is represented by a single entity attribute, then the application can also include a field that follows the above criteria, except that it has a field name of `id` or `ID`.
-
 The application is not required to include fields for all entity attributes.
 
 The application can use the field values of the metamodel class to obtain artifacts relating to the entity attribute in a type-safe manner, for example, `_Book.title.asc()` or `Sort.asc(_Book.title.name())` or `Sort.asc(_Book.TITLE)` rather than `Sort.asc("title")`.
