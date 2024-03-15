@@ -18,7 +18,7 @@ select_list
     : state_field_path_expression
     | aggregate_expression
     ;
-aggregate_expression : 'COUNT' '(' '*' ')';
+aggregate_expression : 'COUNT' '(' 'THIS' ')';
 
 orderby_clause : 'ORDER' 'BY' orderby_item (',' orderby_item)*;
 orderby_item : state_field_path_expression ('ASC' | 'DESC');
