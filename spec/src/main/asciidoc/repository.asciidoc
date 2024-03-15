@@ -818,7 +818,12 @@ A _parameter-based automatic_ query method is an abstract method annotated with 
 - have exactly the same type and name as a persistent field or property of the entity class, or
 - be of type `Limit`, `Order`, `PageRequest`, or `Sort`.
 
-A repository with automatic query methods that are based on parameters must either be compiled so that parameter names are preserved in the class file (for example, using `javac -parameters`), or the corresponding entity attribute name for parameters must be specified explicitly using the `@By` annotation.
+Parameter names map parameters to persistent fields. A repository with parameter-based automatic query methods must either:
+
+- be compiled so that parameter names are preserved in the class file (for example, using `javac -parameters`), or
+- explicitly specify the name of the persistent field mapped by each parameter of an automatic query method using the `@By` annotation.
+
+The parameter name or explicit field name specified using `@By` may be a compound name, as specified below in <<Persistent Field Names>>.
 
 This specification defines the built-in automatic query annotation `@Find`.
 
