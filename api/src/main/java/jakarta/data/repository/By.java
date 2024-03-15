@@ -27,10 +27,10 @@ import java.lang.annotation.Target;
  * <p>Annotates a parameter of a repository method, specifying a mapping to
  * a persistent field:</p>
  * <ul>
- * <li>if an explicit {@linkplain #value field name} is specified, the
- *     parameter maps to the persistent field with the specified name, or
- * <li>otherwise, if the name is missing, the parameter maps to the unique
- *     identifier field or property.
+ * <li>if a {@linkplain #value field name} is specified, the parameter maps
+ *     to the persistent field with the specified name, or
+ * <li>if the special value {@value #ID} is specified, the parameter maps
+ *     to the unique identifier field or property.
  * </ul>
  * <p>Arguments to the annotated parameter are compared to values of the
  * mapped persistent field.</p>
@@ -44,7 +44,7 @@ import java.lang.annotation.Target;
  * public interface People {
  *
  *     {@code @Find}
- *     Person findById(&#64;By String id); // maps to Person.ssn
+ *     Person findById(&#64;By(ID) String id); // maps to Person.ssn
  *
  *     {@code @Find}
  *     List&lt;Person&gt; findNamed(&#64;By("firstName") String first,
@@ -84,12 +84,19 @@ import java.lang.annotation.Target;
 public @interface By {
 
     /**
-     * The name of the persistent field mapped by the annotated parameter.
-     * Defaults to the name of the unique identifier field or property of the
-     * entity.
+     * The name of the persistent field mapped by the annotated parameter,
+     * or {@value #ID} to indicate the unique identifier field or property
+     * of the entity.
      *
-     * @return the persistent field name, or {@code ""} to indicate the unique
-     *         identifier field.
+     * @return the persistent field name, or {@value #ID} to indicate the
+     *         unique identifier field.
      */
-    String value() default "";
+    String value();
+
+    /**
+     * The special value which indicates the unique identifier field or
+     * property. The annotation {@code By(ID)} maps a parameter to the
+     * identifier.
+     */
+    String ID = "#id";
 }
