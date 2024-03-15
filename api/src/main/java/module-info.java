@@ -191,9 +191,6 @@ import java.util.List;
  *     annotation the delimiter is {@code _} or {@code .}.
  * </ul>
  *
- * <p>For <i>Query by Method Name</i>, {@code Id} is an alias for the unique
- * identifier field or property of an entity.<p>
- *
  * <p>A persistent field name used in a <i>Query by Method Name</i> must not
  * contain a keyword reserved by <i>Query by Method Name</i>.</p>
  *

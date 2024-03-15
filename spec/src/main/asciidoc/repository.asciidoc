@@ -519,8 +519,6 @@ Resolution of a persistent field involves the following steps:
 
 4. If no matching persistent field is found in either of the previous steps, the provider is permitted to reject the query method or to throw `UnsupportedOperationException` when the method is called.
 
-Within a _Query by Method Name_, `Id` is an alias for the unique identifier field or property of an entity.
-
 A persistent field name used in a _Query by Method Name_ must not contain a <<Query by Method Name Keywords,keyword>> reserved by _Query by Method Name_.
 
 
@@ -1542,7 +1540,7 @@ public interface Products extends CrudRepository<Product, Long> {
 }
 ----
 
-The above criteria does not uniquely identify `Car` entities. After sorting on the vehicle condition, finer grained sorting is provided dynamically by the `PageRequest`, in this case the vehicle price followed by the unique Vehicle Identification Number (VIN). It is a good practice for the final sort criterion to be the `Id` attribute or another unique identifier of the entity to ensure a deterministic ordering.
+The above criteria does not uniquely identify `Car` entities. After sorting on the vehicle condition, finer grained sorting is provided dynamically by the `PageRequest`, in this case the vehicle price followed by the unique Vehicle Identification Number (VIN). It is a good practice for the final sort criterion to be a unique identifier of the entity to ensure a deterministic ordering.
 
 [source,java]
 ----
