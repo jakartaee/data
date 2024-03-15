@@ -649,10 +649,10 @@ Example usage:
 
 [source,java]
 ----
-List<Product> found = products.findByNameContains(searchPattern,
-                                                  _Product.price.desc(),
-                                                  _Product.name.asc(),
-                                                  _Product.id.asc());
+List<Product> found = products.findByNameLike(searchPattern,
+                                              _Product.price.desc(),
+                                              _Product.name.asc(),
+                                              _Product.id.asc());
 ----
 
 
@@ -935,7 +935,7 @@ Query methods allow developers to create database queries using method naming co
 <find-expression> ::= "First" [<positive-integer>]
 <predicate> ::= <condition> { ("And" | "Or") <condition> }
 <condition> ::= <property> ["IgnoreCase"] ["Not"] [<operator>]
-<operator> ::= "Contains" | "EndsWith" | "StartsWith" | "LessThan"| "LessThanEqual" | "GreaterThan" | "GreaterThanEqual" | "Between" | "Empty" | "Like" | "In" | "Null" | "True" | "False"
+<operator> ::= "EndsWith" | "StartsWith" | "LessThan"| "LessThanEqual" | "GreaterThan" | "GreaterThanEqual" | "Between" | "Like" | "In" | "Null" | "True" | "False"
 <property> ::= <identifier> | <identifier> "_" <property>
 <identifier> ::= <word>
 <positive-integer> ::= <digit> { <digit> }
@@ -1011,16 +1011,6 @@ Jakarta Data implementations must support the following list of Query by Method 
 |Find results where the property is between (inclusive of) the given values
 |findByDateBetween
 |Key-value, Wide-Column
-
-|Contains
-|For Collection attributes, matches if the collection includes the value. For String attributes, a substring of the String must match the value, which can be a pattern.
-|findByPhoneNumbersContains
-|Key-value, Wide-Column, Document
-
-|Empty
-|Find results where the property is an empty collection or has a null value.
-|deleteByPendingTasksEmpty
-|Key-value, Wide-Column, Document, Graph
 
 |EndsWith
 |Matches String values with the given ending, which can be a pattern.
@@ -1487,7 +1477,7 @@ In this example, the application uses a cursor to request pages in forward and p
 ----
 @Repository
 public interface Products extends CrudRepository<Product, Long> {
-  CursoredPage<Product> findByNameContains(String namePattern, PageRequest<Product> pageRequest);
+  CursoredPage<Product> findByNameLike(String namePattern, PageRequest<Product> pageRequest);
 }
 ----
 
@@ -1499,7 +1489,7 @@ float priceMidpoint = 50.0f;
 PageRequest<Product> pageRequest = Order.by(_Product.price.asc(), _Product.id.asc())
                                         .pageSize(10)
                                         .afterKey(priceMidpoint, 0L);
-CursoredPage<Product> moreExpensive = products.findByNameContains(pattern, pageRequest);
+CursoredPage<Product> moreExpensive = products.findByNameLike(pattern, pageRequest);
 ----
 
 Obtaining the previous 10 products:
@@ -1510,7 +1500,7 @@ if (moreExpensive.hasContent())
     pageRequest = pageRequest.beforeCursor(moreExpensive.getCursor(0));
 else
     pageRequest = pageRequest.beforeKey(priceMidpoint, 1L);
-CursoredPage<Product> lessExpensive = products.findByNameContains(pattern, pageRequest);
+CursoredPage<Product> lessExpensive = products.findByNameLike(pattern, pageRequest);
 ----
 
 ===== Example with Combined Sort Criteria

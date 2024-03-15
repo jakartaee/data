@@ -289,23 +289,6 @@ import java.util.List;
  * <td>{@code findByAgeBetween(minAge, maxAge)}</td>
  * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column</td></tr>
  *
- * <tr style="vertical-align: top; background-color:#eee"><td>{@code Contains}</td>
- * <td>collections, strings</td>
- * <td>For Collection attributes, requires that the entity's attribute value,
- * which is a collection, includes the parameter value.
- * For String attributes, requires that any substring of the entity's attribute value
- * match the entity's attribute value, which can be a pattern with wildcard characters.</td>
- * <td>{@code findByRecipientsContains(email)}
- * <br>{@code findByDescriptionNotContains("refurbished")}</td>
- * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column<br>Document</td></tr>
- *
- * <tr style="vertical-align: top"><td>{@code Empty}</td>
- * <td>collections</td>
- * <td>Requires that the entity's attribute is an empty collection or has a null value.</td>
- * <td>{@code countByPhoneNumbersEmpty()}
- * <br>{@code findByInviteesNotEmpty()}</td>
- * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column<br>Document<br>Graph</td></tr>
- *
  * <tr style="vertical-align: top; background-color:#eee"><td>{@code EndsWith}</td>
  * <td>strings</td>
  * <td>Requires that the characters at the end of the entity's attribute value
