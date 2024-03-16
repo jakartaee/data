@@ -114,7 +114,7 @@ public @interface Query {
      *
      * <p>The default value of empty string indicates that no counting query
      * is provided. A counting query is unnecessary when pagination is
-     * performed with {@link jakarta.data.page.PageRequest#withTotal()} or
+     * performed with {@link jakarta.data.page.PageRequest#withoutTotal()} or
      * when pagination is not used at all.</p>
      *
      * @return a query for counting the number of elements across all pages.
