@@ -73,6 +73,9 @@ import java.lang.annotation.Target;
  * <p>Annotations such as {@code @Find}, {@code @Query}, {@code @Insert}, {@code @Update}, {@code @Delete}, and
  * {@code @Save} are mutually-exclusive. A given method of a repository interface may have at most one {@code @Find}
  * annotation, lifecycle annotation, or query annotation.
+ *
+ * @see By
+ * @see OrderBy
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)

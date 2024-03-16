@@ -91,6 +91,8 @@ import java.lang.annotation.Target;
  * {@code @Save} are mutually-exclusive. A given method of a repository interface may have at most one {@code @Find}
  * annotation, lifecycle annotation, or query annotation.
  * </p>
+ *
+ * @see By
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
