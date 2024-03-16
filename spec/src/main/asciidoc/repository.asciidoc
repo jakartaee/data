@@ -935,7 +935,7 @@ Query methods allow developers to create database queries using method naming co
 <find-expression> ::= "First" [<positive-integer>]
 <predicate> ::= <condition> { ("And" | "Or") <condition> }
 <condition> ::= <property> ["IgnoreCase"] ["Not"] [<operator>]
-<operator> ::= "EndsWith" | "StartsWith" | "LessThan"| "LessThanEqual" | "GreaterThan" | "GreaterThanEqual" | "Between" | "Like" | "In" | "Null" | "True" | "False"
+<operator> ::= "Contains" | "EndsWith" | "StartsWith" | "LessThan"| "LessThanEqual" | "GreaterThan" | "GreaterThanEqual" | "Between" | "Like" | "In" | "Null" | "True" | "False"
 <property> ::= <identifier> | <identifier> "_" <property>
 <identifier> ::= <word>
 <positive-integer> ::= <digit> { <digit> }
@@ -1011,6 +1011,11 @@ Jakarta Data implementations must support the following list of Query by Method 
 |Find results where the property is between (inclusive of) the given values
 |findByDateBetween
 |Key-value, Wide-Column
+
+|Contains
+|Matches String values with the given substring, which can be a pattern.
+|findByProductNameContains
+|Key-value, Wide-Column, Document, Graph
 
 |EndsWith
 |Matches String values with the given ending, which can be a pattern.
