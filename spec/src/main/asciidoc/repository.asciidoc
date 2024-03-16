@@ -670,7 +670,7 @@ Every abstract method of the interface is usually either:
 
 - an entity instance _lifecycle method_,
 - an _annotated query method_,
-- an _automatic query method_ (with Parameter-based conditions or Query by Method Name), or
+- an _automatic query method_ (with parameter-based conditions or Query by Method Name), or
 - a _resource accessor method_.
 
 A repository may declare lifecycle methods for a single entity type, or for multiple related entity types.
@@ -704,17 +704,23 @@ Lifecycle methods allow the program to make changes to persistent data in the da
 
 A lifecycle method must be annotated with a lifecycle annotation. The method signature of the lifecycle method, including its return type, must follow the requirements that are specified by the JavaDoc of the lifecycle annotation.
 
-Lifecycle methods follow the general pattern:
+Lifecycle method signatures follow one of these generic patterns:
 
 [source,java]
 ----
 @Lifecycle
-ReturnType lifecycle(Entity e);
+void lifecycle(Entity e);
 ----
 
-where `lifecycle` is the arbitrary name of the method, `Entity` is a concrete entity class or an `Iterable` or array of this entity, `Lifecycle` is a lifecycle annotation, and `ReturnType` is a return type that is permitted by the lifecycle annotation JavaDoc.
+[source,java]
+----
+@Lifecycle
+Entity lifecycle(Entity e);
+----
 
-This specification defines four built-in lifecycle annotations: `@Insert`, `@Update`, `@Delete`, and `@Save`.
+where `Lifecycle` is a lifecycle annotation, `lifecycle` is the arbitrary name of the method, and `Entity` is either `E`, `Iterable<E>`, or `E[]`, where `E` is a concrete entity class.
+
+This specification defines four built-in lifecycle annotations: `@Insert`, `@Update`, `@Delete`, and `@Save`. The semantics of these annotations is defined in their Javadoc.
 
 For example:
 
@@ -809,7 +815,14 @@ The Jakarta Data implementation automatically recognizes the query annotations i
 
 === Parameter-based automatic query methods
 
-A _parameter-based automatic_ query method is an abstract method annotated with the `Find` annotation. Jakarta Data infers a query based on the parameters of the method. The method return type identifies the entity. For example: `E`, `Optional<E>`, `Page<E>`, or `List<E>`, where `E` is an entity class. Each parameter must either:
+A _parameter-based automatic query method_ is an abstract method annotated with an _automatic query annotation_.
+
+Each automatic query method must be assigned an entity type. The rules for inferring the entity type depend on the semantics of the automatic query annotation. Typically:
+
+- If the automatic query method returns an entity type, the method return type identifies the entity. For example, the return type might be `E`, `Optional<E>`, `Page<E>`, or `List<E>`, where `E` is an entity class. Then the automatic query method would be assigned the entity type `E`.
+- If the query does not return an entity type, the entity assigned to the automatic query method is the primary entity type of the repository.
+
+Jakarta Data infers a query based on the parameters of the method. Each parameter must either:
 
 - have exactly the same type and name as a persistent field or property of the entity class, or
 - be of type `Limit`, `Order`, `PageRequest`, or `Sort`.
@@ -821,7 +834,7 @@ Parameter names map parameters to persistent fields. A repository with parameter
 
 The parameter name or explicit field name specified using `@By` may be a compound name, as specified below in <<Persistent Field Names>>.
 
-This specification defines the built-in automatic query annotation `@Find`.
+This specification defines the built-in automatic query annotations `@Find` and `@Delete`. The semantics of these annotations are specified in their Javadoc. Note that `@Delete` is _both_ a lifecycle annotation _and_ an automatic query annotation. The signature of a repository method annotated `@Delete` must be used to disambiguate the interpretation of the `@Delete` annotation.
 
 For example:
 
@@ -840,7 +853,7 @@ Page<Book> find(@By("year") Year publishedIn,
                 PageRequest<Book> pageRequest);
 ----
 
-Automatic query methods annotated with `@Find` _are_ portable between providers.
+Automatic query methods annotated with `@Find` or `@Delete` _are_ portable between providers.
 
 [NOTE]
 ====
