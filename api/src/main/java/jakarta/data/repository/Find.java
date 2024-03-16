@@ -33,7 +33,8 @@ import java.lang.annotation.Target;
  * type returned by the query. Each parameter of the annotated method must either:
  * </p>
  * <ul>
- * <li>have exactly the same type and name as a persistent field or property of the entity class, or</li>
+ * <li>have exactly the same type and name (the parameter name in the Java source, or a name assigned by {@link By @By})
+ *     as a persistent field or property of the entity class, or</li>
  * <li>be of type {@link jakarta.data.Limit}, {@link jakarta.data.Sort}, {@link jakarta.data.Order}, or
  *     {@link jakarta.data.page.PageRequest}.</li>
  * </ul>
