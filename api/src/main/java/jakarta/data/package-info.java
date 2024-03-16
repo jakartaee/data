@@ -20,6 +20,6 @@
  * <p>Jakarta Data provides an API that simplifies data access. It enables the Java developer to
  * focus on the data model, while delegating away the complexities of data persistence.</p>
  *
- * <p>The module JavaDoc provides an {@link jakarta.data/ overview} of Jakarta Data.</p>
+ * <p>The module Javadoc provides an {@link jakarta.data/ overview} of Jakarta Data.</p>
  */
 package jakarta.data;

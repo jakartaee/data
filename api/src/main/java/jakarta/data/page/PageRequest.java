@@ -105,7 +105,7 @@ public interface PageRequest<T> {
      * @return a new instance of {@code PageRequest}. This method never returns {@code null}.
      */
     static <T> PageRequest<T> of(Class<T> entityClass) {
-        return new Pagination<T>(1, 10, Collections.emptyList(), Mode.OFFSET, null, true);
+        return new Pagination<>(1, 10, Collections.emptyList(), Mode.OFFSET, null, true);
     }
 
     /**
@@ -117,7 +117,7 @@ public interface PageRequest<T> {
      * @throws IllegalArgumentException when the page number is negative or zero.
      */
     static <T> PageRequest<T> ofPage(long pageNumber) {
-        return new Pagination<T>(pageNumber, 10, Collections.emptyList(), Mode.OFFSET, null, true);
+        return new Pagination<>(pageNumber, 10, Collections.emptyList(), Mode.OFFSET, null, true);
     }
 
     /**
@@ -130,18 +130,17 @@ public interface PageRequest<T> {
      * @throws IllegalArgumentException when maximum page size is negative or zero.
      */
     static <T> PageRequest<T> ofSize(int maxPageSize) {
-        return new Pagination<T>(1, maxPageSize, Collections.emptyList(), Mode.OFFSET, null, true);
+        return new Pagination<>(1, maxPageSize, Collections.emptyList(), Mode.OFFSET, null, true);
     }
 
     /**
      * <p>Requests {@link CursoredPage cursor-based pagination} in the forward direction,
      * starting after the specified key.</p>
      *
-     * @param key values that combined together form the key,
-     *            the order and number of which must match the
-     *        {@link OrderBy} annotations, {@link Sort} parameters, or
-     *        {@code OrderBy} name pattern of the repository method to which
-     *        this pagination will be supplied.
+     * @param key values forming the key, the order and number of which must match the
+     *        {@link OrderBy} annotations, {@link Sort} parameters, or {@code OrderBy}
+     *        name pattern of the repository method to which this pagination will be
+     *        applied.
      * @return a new instance of {@code PageRequest} with forward cursor-based pagination.
      *         This method never returns {@code null}.
      * @throws IllegalArgumentException if no values are provided for the key.
@@ -152,11 +151,10 @@ public interface PageRequest<T> {
      * <p>Requests {@link CursoredPage cursor-based pagination} in the previous page
      * direction relative to the specified key.</p>
      *
-     * @param key values that combined together form the key,
-     *            the order and number of which must match the
-     *        {@link OrderBy} annotations, {@link Sort} parameters, or
-     *        {@code OrderBy} name pattern of the repository method to which
-     *        this pagination will be supplied.
+     * @param key values forming the key, the order and number of which must match the
+     *        {@link OrderBy} annotations, {@link Sort} parameters, or {@code OrderBy}
+     *        name pattern of the repository method to which this pagination will be
+     *        applied.
      * @return a new instance of {@code PageRequest} with cursor-based pagination
      *         in the previous page direction.
      *         This method never returns {@code null}.
@@ -385,8 +383,8 @@ public interface PageRequest<T> {
      * method are listed.</p>
      *
      * @param sort sort criteria to use.
-     * @return a new instance of {@code PageRequest}. T
-     *         his method never returns {@code null}.
+     * @return a new instance of {@code PageRequest}.
+     *         This method never returns {@code null}.
      */
     PageRequest<T> sortBy(Sort<? super T> sort);
 

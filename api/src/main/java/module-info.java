@@ -34,9 +34,6 @@ import jakarta.data.repository.Repository;
 import jakarta.data.repository.Save;
 import jakarta.data.repository.Update;
 
-import java.util.Collection;
-import java.util.List;
-
 /**
  * <p>Jakarta Data standardizes a programming model where data is represented by
  * simple Java classes and where operations on data are represented by interface
@@ -213,7 +210,7 @@ import java.util.List;
  * <td>{@code @Update}<br>{@code public boolean modify(Product modifiedProduct);}</td></tr>
  * </table>
  *
- * <p>Refer to the JavaDoc of each annotation for more information.</p>
+ * <p>Refer to the Javadoc of each annotation for more information.</p>
  *
  * <h2>Query by Method Name</h2>
  *
