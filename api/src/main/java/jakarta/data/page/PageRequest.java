@@ -309,7 +309,7 @@ public interface PageRequest<T> {
      * <p>If using cursor-based pagination, traversal of pages must only be done
      * via the {@link CursoredPage#nextPageRequest()},
      * {@link CursoredPage#previousPageRequest()}, or
-     * {@linkplain CursoredPage#getCursor(int) cursor},
+     * {@linkplain CursoredPage#cursor(int) cursor},
      * not with this method.</p>
      *
      * @return The next PageRequest.
@@ -326,7 +326,7 @@ public interface PageRequest<T> {
      * <p>If using cursor-based pagination, traversal of pages must only be done
      * via the {@link CursoredPage#nextPageRequest()},
      * {@link CursoredPage#previousPageRequest()}, or
-     * {@linkplain CursoredPage#getCursor(int) cursor},
+     * {@linkplain CursoredPage#cursor(int) cursor},
      * not with this method.</p>
      *
      * @return The previous PageRequest, or null if this is the first page.
