@@ -52,8 +52,8 @@ import jakarta.data.repository.Query;
  * <p>When combined on a method with static sort criteria
  * ({@code OrderBy} keyword or {@link OrderBy} annotation or
  * {@link Query} with an {@code ORDER BY} clause), the static
- * sort criteria is applied first, followed by the dynamic sort criteria
- * that is defined by {@link Sort} instances in the order listed.</p>
+ * sort criteria are applied first, followed by the dynamic sort criteria
+ * that are defined by {@link Sort} instances in the order listed.</p>
  *
  * <p>In the example above, the matching employees are sorted first by salary
  * from highest to lowest. Employees with the same salary are then sorted

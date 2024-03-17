@@ -1224,11 +1224,11 @@ A repository method that is annotated with `@Query` with a value that does not c
 
 ==== Static Mechanisms for Sort Criteria
 
-Sort criteria is provided statically for a repository method by using the `OrderBy` keyword or by annotating the method with one or more `@OrderBy` annotations. The `OrderBy` keyword cannot be intermixed with the `@OrderBy` annotation or the `@Query` annotation. Static sort criteria takes precedence over dynamic sort criteria in that static sort criteria is evaluated first. When static sort criteria sorts entities to the same position, dynamic sort criteria is applied to further order those entities.
+Sort criteria are provided statically for a repository method by using the `OrderBy` keyword or by annotating the method with one or more `@OrderBy` annotations. The `OrderBy` keyword cannot be intermixed with the `@OrderBy` annotation or the `@Query` annotation. Static sort criteria takes precedence over dynamic sort criteria in that static sort criteria are evaluated first. When static sort criteria sorts entities to the same position, dynamic sort criteria are applied to further order those entities.
 
 ==== Dynamic Mechanisms for Sort Criteria
 
-Sort criteria is provided dynamically to repository methods either via `Sort` parameters or via a `PageRequest` or `Order` parameter that has one or more `Sort` values. `Sort` and `PageRequest` containing `Sort` must not both be provided to the same method. Similarly, `Order` and `PageRequest` containing `Sort` must not both be provided to the same method.
+Sort criteria are provided dynamically to repository methods either via `Sort` parameters or via a `PageRequest` or `Order` parameter that has one or more `Sort` values. `Sort` and `PageRequest` containing `Sort` must not both be provided to the same method. Similarly, `Order` and `PageRequest` containing `Sort` must not both be provided to the same method.
 
 ==== Examples of Sort Criteria Precedence
 
