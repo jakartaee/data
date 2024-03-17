@@ -709,7 +709,7 @@ NOTE: Additional portability guarantees may be provided by specifications which 
 A _lifecycle method_ is an abstract method annotated with a _lifecycle annotation_.
 Lifecycle methods allow the program to make changes to persistent data in the data store.
 
-A lifecycle method must be annotated with a lifecycle annotation. The method signature of the lifecycle method, including its return type, must follow the requirements that are specified by the JavaDoc of the lifecycle annotation.
+A lifecycle method must be annotated with a lifecycle annotation. The method signature of the lifecycle method, including its return type, must follow the requirements that are specified by the Javadoc of the lifecycle annotation.
 
 Lifecycle method signatures follow one of these generic patterns:
 
@@ -739,7 +739,7 @@ void insertBook(Book book);
 
 Lifecycle methods are not guaranteed to be portable between all providers.
 
-Jakarta Data providers must support lifecycle methods to the extent that the data store is capable of the corresponding operation. If the data store is not capable of the operation, the Jakarta Data provider must raise `UnsupportedOperationException` when the operation is attempted, per the requirements of the JavaDoc for the lifecycle annotation, or the Jakarta Data provider must report the error at compile time.
+Jakarta Data providers must support lifecycle methods to the extent that the data store is capable of the corresponding operation. If the data store is not capable of the operation, the Jakarta Data provider must raise `UnsupportedOperationException` when the operation is attempted, per the requirements of the Javadoc for the lifecycle annotation, or the Jakarta Data provider must report the error at compile time.
 
 There is no special programming model for lifecycle annotations.
 The Jakarta Data implementation automatically recognizes the lifecycle annotations it supports.
@@ -1144,7 +1144,7 @@ For relational databases, the logical operator `And` takes precedence over `Or`,
 
 ==== Return Types
 
-Refer to the Jakarta Data module JavaDoc section on "Return Types for Repository Methods" for a listing of valid return types for methods using Query by Method Name.
+Refer to the Jakarta Data module Javadoc section on "Return Types for Repository Methods" for a listing of valid return types for methods using Query by Method Name.
 
 === Special Parameters for Limits, Sorting, and Pagination
 
@@ -1392,7 +1392,7 @@ Offset pagination is a valuable tool for Java developers when dealing with large
 
 ==== Cursor-based Pagination
 
-Cursor-based pagination aims to reduce missed and duplicate results across pages by querying relative to the observed values of entity properties that constitute the sorting criteria. Cursor-based pagination can also offer an improvement in performance because it avoids fetching and ordering results from prior pages by causing those results to be non-matching. A Jakarta Data provider appends additional conditions to the query and tracks cursor-based values automatically when `CursoredPage` is used as the repository method return type. The application invokes `nextPageRequest` or `previousPageRequest` on the cursor-based aware slice or page to obtain a `PageRequest` which keeps track of the cursor-based values.
+Cursor-based pagination aims to reduce missed and duplicate results across pages by querying relative to the observed values of entity properties that constitute the sorting criteria. Cursor-based pagination can also offer an improvement in performance because it avoids fetching and ordering results from prior pages by causing those results to be non-matching. A Jakarta Data provider appends additional conditions to the query and tracks cursor-based values automatically when `CursoredPage` is used as the repository method return type. The application invokes `nextPageRequest` or `previousPageRequest` on the `CursoredPage` to obtain a `PageRequest` which keeps track of the cursor-based values.
 
 For example,
 

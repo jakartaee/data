@@ -72,7 +72,7 @@ package jakarta.data.repository;
  *                                                                   LocalDate.now());
  * </pre>
  *
- * <p>The module JavaDoc provides an {@link jakarta.data/ overview} of Jakarta Data.</p>
+ * <p>The module Javadoc provides an {@link jakarta.data/ overview} of Jakarta Data.</p>
  *
  * @param <T> the type of the primary entity class of the repository.
  * @param <K> the type of the unique identifier field of property of the primary entity.

@@ -34,7 +34,7 @@ import java.util.NoSuchElementException;
  * @param totalElements The total number of elements across all pages that
  *                      can be requested for the query
  * @param pageRequest The {@link PageRequest page request} for which this
- *                    slice was obtained
+ *                    page was obtained
  * @param nextPageRequest A {@link PageRequest page request} for the next
  *                        page of results
  * @param previousPageRequest A {@link PageRequest page request} for the

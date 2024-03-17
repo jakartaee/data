@@ -17,7 +17,7 @@
  */
 
 /**
- * <p>Splits query results into slices or pages.</p>
+ * <p>Splits query results into pages.</p>
  *
  * <p>For query results that are expected to be large, it can be useful to
  * read the results in separate parts instead of retrieving all of the results
@@ -27,7 +27,7 @@
  * order. This is often done by having the final sort criterion be the
  * unique identifier, but it can be achieved by other means as long as the
  * order is guaranteed to be deterministic. Here is an example of sort criteria
- * to allow data to be read in slices or pages,</p>
+ * to allow data to be read in pages,</p>
  *
  * <pre>
  * PageRequest.of(Person.class).size(25).sortBy(Sort.asc("lastName"),
@@ -38,11 +38,7 @@
  * <p>In the example above, even if multiple people have the same last names
  * and same first names, the results will always be in the same order due to
  * the unique identifier. The predictable order makes it possible to retrieve
- * the query results from the database in separate slices or pages.</p>
- *
- * <p>In Jakarta Data, a slice has most of the same functionality as a page,
- * but does not offer a total count of results across all slices. Using slice
- * rather than page is more efficient when a total count of results is not needed.</p>
+ * the query results from the database in separate pages.</p>
  *
  * <p>Pages can be determined based on fixed positional offset or relative to a
  * cursor.</p>
@@ -65,6 +61,6 @@
  * or previous page are performed relative to the last or first entry of the current
  * page.</p>
  *
- * <p>The module JavaDoc provides an {@link jakarta.data/ overview} of Jakarta Data.</p>
+ * <p>The module Javadoc provides an {@link jakarta.data/ overview} of Jakarta Data.</p>
  */
 package jakarta.data.page;

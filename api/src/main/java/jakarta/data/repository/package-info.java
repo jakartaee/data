@@ -35,6 +35,6 @@
  * as well as a variety of other methods following the Query by Method Name pattern,
  * the Parameter-based Conditions pattern, and the {@link jakarta.data.repository.Query} annotation.</p>
  *
- * <p>The module JavaDoc provides an {@link jakarta.data/ overview} of Jakarta Data.</p>
+ * <p>The module Javadoc provides an {@link jakarta.data/ overview} of Jakarta Data.</p>
  */
 package jakarta.data.repository;

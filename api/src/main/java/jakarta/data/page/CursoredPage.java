@@ -144,7 +144,7 @@ import java.util.NoSuchElementException;
  * {@link UnsupportedOperationException} if the database itself is not capable
  * of cursor-based pagination.</p>
  *
- * @param <T> the type of elements in this slice 
+ * @param <T> the type of elements in this page
  */
 public interface CursoredPage<T> extends Page<T> {
     /**
