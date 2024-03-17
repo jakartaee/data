@@ -80,7 +80,7 @@ import jakarta.data.exceptions.OptimisticLockingFailureException;
  * <p>The module Javadoc provides an {@link jakarta.data/ overview} of Jakarta Data.</p>
  *
  * @param <T> the type of the primary entity class of the repository.
- * @param <K> the type of the Id attribute of the primary entity.
+ * @param <K> the type of the unique identifier field of property of the primary entity.
  * @see BasicRepository
  * @see DataRepository
  */

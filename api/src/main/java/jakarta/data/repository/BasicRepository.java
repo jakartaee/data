@@ -222,9 +222,9 @@ public interface BasicRepository<T, K> extends DataRepository<T, K> {
     void deleteByIdIn(Iterable<K> ids);
 
     /**
-     * Deletes the given entities. Deletion of each entity is performed by matching the Id, and if the entity is
-     * versioned (for example, with {@code jakarta.persistence.Version}), then also the version.
-     * Other properties of the entity do not need to match.
+     * Deletes the given entities. Deletion of each entity is performed by matching the unique identifier,
+     * and if the entity is versioned (for example, with {@code jakarta.persistence.Version}), then also
+     * the version. Other properties of the entity do not need to match.
      *
      * @param entities Must not be {@code null}. Must not contain {@code null} elements.
      * @throws OptimisticLockingFailureException If an entity is not found in the database for deletion

@@ -24,37 +24,79 @@ import java.lang.annotation.Target;
 
 
 /**
- * <p>Annotates a parameter of a repository method to specify the name of an
- * entity attribute against which to compare.</p>
+ * <p>Annotates a parameter of a repository method, specifying a mapping to
+ * a persistent field:</p>
+ * <ul>
+ * <li>if a {@linkplain #value field name} is specified, the parameter maps
+ *     to the persistent field with the specified name, or
+ * <li>if the special value {@value #ID} is specified, the parameter maps
+ *     to the unique identifier field or property.
+ * </ul>
+ * <p>Arguments to the annotated parameter are compared to values of the
+ * mapped persistent field.</p>
+ * <p>The field name may be a compound name like {@code address.city}.</p>
  *
- * <p>Example usage for a {@code Person} entity with attributes
- * {@code id}, {@code firstName}, and {@code lastName}:</p>
+ * <p>For example, for a {@code Person} entity with attributes {@code ssn},
+ * {@code firstName}, {@code lastName}, and {@code address} we might have:</p>
  *
  * <pre>
  * &#64;Repository
- * public interface People extends BasicRepository&lt;Person, Long&gt; {
+ * public interface People {
+ *
+ *     {@code @Find}
+ *     Person findById(&#64;By(ID) String id); // maps to Person.ssn
  *
  *     {@code @Find}
  *     List&lt;Person&gt; findNamed(&#64;By("firstName") String first,
  *                            &#64;By("lastName") String last);
+ *
+ *     {@code @Find}
+ *     Person findByCity(&#64;By("address.city") String city);
  * }
- * ...
- * found = people.findNamed(first, last);
  * </pre>
  *
  * <p>The {@code By} annotation is unnecessary when the method parameter name
  * matches the entity attribute name and the application is compiled with the
  * {@code -parameters} compiler option that makes parameter names available
  * at run time.</p>
+ *
+ * <p>Thus, when this compiler option is enabled, the previous example may be
+ * written without the use of {@code By}:</p>
+ *
+ * <pre>
+ * &#64;Repository
+ * public interface People {
+ *
+ *     {@code @Find}
+ *     Person findById(String ssn);
+ *
+ *     {@code @Find}
+ *     List&lt;Person&gt; findNamed(String firstName,
+ *                            String lastname);
+ *
+ *     {@code @Find}
+ *     Person findByCity(String address_city);
+ * }
+ * </pre>
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.PARAMETER)
 public @interface By {
 
     /**
-     * The name of the entity attribute against which to compare.
+     * The name of the persistent field mapped by the annotated parameter,
+     * or {@value #ID} to indicate the unique identifier field or property
+     * of the entity.
      *
-     * @return the entity attribute name.
+     * @return the persistent field name, or {@value #ID} to indicate the
+     *         unique identifier field.
      */
     String value();
+
+    /**
+     * The special value which indicates the unique identifier field or
+     * property. The annotation {@code By(ID)} maps a parameter to the
+     * identifier.
+     */
+    String ID = "#id";
 }
