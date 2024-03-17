@@ -309,48 +309,38 @@ import java.util.List;
  * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column</td></tr>
  *
  * <tr style="vertical-align: top; background-color:#eee"><td>{@code Contains}</td>
- * <td>collections, strings</td>
- * <td>For Collection attributes, requires that the entity's attribute value,
- * which is a collection, includes the parameter value.
- * For String attributes, requires that any substring of the entity's attribute value
- * match the entity's attribute value, which can be a pattern with wildcard characters.</td>
- * <td>{@code findByRecipientsContains(email)}
- * <br>{@code findByDescriptionNotContains("refurbished")}</td>
- * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column<br>Document</td></tr>
- *
- * <tr style="vertical-align: top"><td>{@code Empty}</td>
- * <td>collections</td>
- * <td>Requires that the entity's attribute is an empty collection or has a null value.</td>
- * <td>{@code countByPhoneNumbersEmpty()}
- * <br>{@code findByInviteesNotEmpty()}</td>
+ * <td>strings</td>
+ * <td>Requires that a substring of the entity's attribute value
+ * matches the parameter value, which can be a pattern.</td>
+ * <td>{@code findByNameContains(middleName)}</td>
  * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column<br>Document<br>Graph</td></tr>
  *
- * <tr style="vertical-align: top; background-color:#eee"><td>{@code EndsWith}</td>
+ * <tr style="vertical-align: top"><td>{@code EndsWith}</td>
  * <td>strings</td>
  * <td>Requires that the characters at the end of the entity's attribute value
  * match the parameter value, which can be a pattern.</td>
  * <td>{@code findByNameEndsWith(surname)}</td>
  * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column<br>Document<br>Graph</td></tr>
  *
- * <tr style="vertical-align: top"><td>{@code False}</td>
+ * <tr style="vertical-align: top; background-color:#eee"><td>{@code False}</td>
  * <td>boolean</td>
  * <td>Requires that the entity's attribute value has a boolean value of false.</td>
  * <td>{@code findByCanceledFalse()}</td>
  * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column</td></tr>
  *
- * <tr style="vertical-align: top; background-color:#eee"><td>{@code GreaterThan}</td>
+ * <tr style="vertical-align: top"><td>{@code GreaterThan}</td>
  * <td>numeric, strings, time</td>
  * <td>Requires that the entity's attribute value be larger than the parameter value.</td>
  * <td>{@code findByStartTimeGreaterThan(startedAfter)}</td>
  * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column</td></tr>
  *
- * <tr style="vertical-align: top"><td>{@code GreaterThanEqual}</td>
+ * <tr style="vertical-align: top; background-color:#eee"><td>{@code GreaterThanEqual}</td>
  * <td>numeric, strings, time</td>
  * <td>Requires that the entity's attribute value be at least as big as the parameter value.</td>
  * <td>{@code findByAgeGreaterThanEqual(minimumAge)}</td>
  * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column</td></tr>
  *
- * <tr style="vertical-align: top; background-color:#eee"><td>{@code IgnoreCase}</td>
+ * <tr style="vertical-align: "><td>{@code IgnoreCase}</td>
  * <td>strings</td>
  * <td>Requires case insensitive comparison. For query conditions
  * as well as ordering, the {@code IgnoreCase} keyword can be
@@ -359,58 +349,58 @@ import java.util.List;
  * <br>{@code findByZipcodeOrderByStreetIgnoreCaseAscHouseNumAsc(55904)}</td>
  * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column<br>Document<br>Graph</td></tr>
  *
- * <tr style="vertical-align: top"><td>{@code In}</td>
+ * <tr style="vertical-align: top; background-color:#eee"><td>{@code In}</td>
  * <td>all attribute types</td>
  * <td>Requires that the entity's attribute value be within the list that is the parameter value.</td>
  * <td>{@code findByNameIn(names)}</td>
  * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column<br>Document<br>Graph</td></tr>
  *
- * <tr style="vertical-align: top; background-color:#eee"><td>{@code LessThan}</td>
+ * <tr style="vertical-align: top"><td>{@code LessThan}</td>
  * <td>numeric, strings, time</td>
  * <td>Requires that the entity's attribute value be less than the parameter value.</td>
  * <td>{@code findByStartTimeLessThan(startedBefore)}</td>
  * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column</td></tr>
  *
- * <tr style="vertical-align: top"><td>{@code LessThanEqual}</td>
+ * <tr style="vertical-align: top; background-color:#eee"><td>{@code LessThanEqual}</td>
  * <td>numeric, strings, time</td>
  * <td>Requires that the entity's attribute value be at least as small as the parameter value.</td>
  * <td>{@code findByAgeLessThanEqual(maximumAge)}</td>
  * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column</td></tr>
  *
- * <tr style="vertical-align: top; background-color:#eee"><td>{@code Like}</td>
+ * <tr style="vertical-align: top"><td>{@code Like}</td>
  * <td>strings</td>
  * <td>Requires that the entity's attribute value match the parameter value, which can be a pattern.</td>
  * <td>{@code findByNameLike(namePattern)}</td>
  * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column<br>Document<br>Graph</td></tr>
  *
- * <tr style="vertical-align: top"><td>{@code Not}</td>
+ * <tr style="vertical-align: top; background-color:#eee"><td>{@code Not}</td>
  * <td>condition</td>
  * <td>Negates a condition.</td>
  * <td>{@code deleteByNameNotLike(namePattern)}
  * <br>{@code findByStatusNot("RUNNING")}</td>
  * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column</td></tr>
  *
- * <tr style="vertical-align: top; background-color:#eee"><td>{@code Null}</td>
+ * <tr style="vertical-align: top"><td>{@code Null}</td>
  * <td>nullable types</td>
  * <td>Requires that the entity's attribute has a null value.</td>
  * <td>{@code findByEndTimeNull()}
  * <br>{@code findByAgeNotNull()}</td>
  * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column<br>Document<br>Graph</td></tr>
  *
- * <tr style="vertical-align: top"><td>{@code Or}</td>
+ * <tr style="vertical-align: top; background-color:#eee"><td>{@code Or}</td>
  * <td>conditions</td>
  * <td>Requires at least one of the two conditions to be satisfied in order to match an entity.</td>
  * <td>{@code findByPriceLessThanEqualOrDiscountGreaterThanEqual(maxPrice, minDiscount)}</td>
  * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column</td></tr>
  *
- * <tr style="vertical-align: top; background-color:#eee"><td>{@code StartsWith}</td>
+ * <tr style="vertical-align: top"><td>{@code StartsWith}</td>
  * <td>strings</td>
  * <td>Requires that the characters at the beginning of the entity's attribute value
  * match the parameter value, which can be a pattern.</td>
  * <td>{@code findByNameStartsWith(firstTwoLetters)}</td>
  * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column<br>Document<br>Graph</td></tr>
  *
- * <tr style="vertical-align: top"><td>{@code True}</td>
+ * <tr style="vertical-align: top; background-color:#eee"><td>{@code True}</td>
  * <td>boolean</td>
  * <td>Requires that the entity's attribute value has a boolean value of true.</td>
  * <td>{@code findByAvailableTrue()}</td>
@@ -478,7 +468,8 @@ import java.util.List;
  * future releases without introducing breaking changes to applications.
  * </p>
  * <p>
- * Reserved for query conditions: {@code AbsoluteValue}, {@code CharCount}, {@code ElementCount},
+ * Reserved for query conditions: {@code AbsoluteValue}, {@code CharCount},
+ * {@code ElementCount}, {@code Empty}
  * {@code Rounded}, {@code RoundedDown}, {@code RoundedUp}, {@code Trimmed},
  * {@code WithDay}, {@code WithHour}, {@code WithMinute}, {@code WithMonth},
  * {@code WithQuarter}, {@code WithSecond}, {@code WithWeek}, {@code WithYear}.
