@@ -104,7 +104,7 @@ public record CursoredPageRecord<T>
     }
 
     @Override
-    public PageRequest.Cursor getCursor(int index) {
+    public PageRequest.Cursor cursor(int index) {
         return cursors.get(index);
     }
 

@@ -154,7 +154,7 @@ public interface CursoredPage<T> extends Page<T> {
      * @param index position (0 is first) of a result on the page.
      * @return cursor for key values at the specified position.
      */
-    PageRequest.Cursor getCursor(int index);
+    PageRequest.Cursor cursor(int index);
 
     /**
      * Returns {@code true} when it is possible to navigate to a previous
