@@ -120,7 +120,7 @@ import java.util.NoSuchElementException;
  * <p>For example:</p>
  *
  * <pre>
- * &#64;Query("SELECT o FROM Customer o WHERE (o.ordersPlaced &gt;= ?1 OR o.totalSpent &gt;= ?2)")
+ * &#64;Query("WHERE (ordersPlaced &gt;= ?1 OR totalSpent &gt;= ?2)")
  * &#64;OrderBy("zipcode")
  * &#64;OrderBy("birthYear")
  * &#64;OrderBy("id")

@@ -32,7 +32,7 @@ import java.lang.annotation.Target;
  * {@code @Repository}
  * public interface Products extends BasicRepository{@code <Product, String>} {
  *
- *     {@code @Query("SELECT p from Products p WHERE (p.length * p.width * p.height <= :maxVolume)")}
+ *     {@code @Query("WHERE (p.length * p.width * p.height <= :maxVolume)")}
  *     {@code Page<Product>} freeShippingEligible({@code @Param}("maxVolume") float volumeLimit,
  *                                        {@code PageRequest<?>} pageRequest);
  *

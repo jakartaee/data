@@ -494,7 +494,7 @@ The rule for concatenating compound names depends on the context, and is specifi
 
 |`@Query` | Path expression within query
 |`.`
-|`@Query("SELECT o FROM Order o WHERE o.address.zipCode=?1")`
+|`@Query("FROM Order WHERE address.zipCode = ?1")`
 
 |_Query by Method Name_ | Method name
 |`_`
@@ -797,7 +797,7 @@ Page<Book> booksByTitle(String title, PageRequest<Book> pageRequest);
 
 [source,java]
 ----
-@Query("SELECT p FROM Product p WHERE p.name=:prodname")
+@Query("where p.name = :prodname")
 Optional<Product> findByName(@Param("prodname") String name);
 ----
 
@@ -1251,7 +1251,7 @@ Page<User> findByNameStartsWith(String namePrefix, PageRequest<User> pagination)
 List<User> findByNameStartsWith(String namePrefix, Sort<?>... sorts);
 
 // Sorts first by name. When name is the same, applies the PageRequest's sort criteria
-@Query("SELECT u FROM User u WHERE (u.age > ?1)")
+@Query("WHERE (u.age > ?1)")
 @OrderBy("name")
 CursoredPage<User> olderThan(int age, PageRequest<User> pagination);
 ----
@@ -1486,7 +1486,7 @@ Here is an example where an application uses `@Query` to provide a partial query
 ----
 @Repository
 public interface CustomerRepository extends BasicRepository<Customer, Long> {
-  @Query("SELECT o FROM Customer o WHERE (o.totalSpent / o.totalPurchases > ?1)")
+  @Query("WHERE (o.totalSpent / o.totalPurchases > ?1)")
   CursoredPage<Customer> withAveragePurchaseAbove(float minimum, PageRequest<Customer> pageRequest);
 }
 ----
