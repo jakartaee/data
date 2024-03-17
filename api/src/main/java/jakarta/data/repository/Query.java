@@ -20,6 +20,7 @@ package jakarta.data.repository;
 import jakarta.data.Sort;
 import jakarta.data.page.CursoredPage;
 import jakarta.data.page.Page;
+import jakarta.data.page.PageRequest;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -27,29 +28,49 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * <p>Annotates a repository method to specify a query string such as SQL, JPQL, Cypher etc. to execute.</p>
+ * <p>Annotates a repository method as a query method, specifying a query written in Jakarta Data Query Language (JDQL)
+ * or in Jakarta Persistence Query Language (JPQL). A Jakarta Data provider is not required to support the complete JPQL
+ * language, which targets relational data stores.</p>
  *
- * <p>Jakarta Data providers for relational databases must support
- * JPQL queries if backed by a Jakarta Persistence provider,
- * and otherwise must support SQL queries.</p>
+ * <p>The required {@link #value} member specifies the JDQL or JPQL query as a string. When {@linkplain Page pagination}
+ * is used, the {@link #count} member optionally specifies a query which returns the total number of elements satisfying
+ * the query.</p>
  *
- * <h2>Parameters</h2>
+ * <p>For {@code select} statements, the return type of the query method must be consistent with the type returned by
+ * the query. For {@code update} or {@code delete} statements, it must be {@code void}, {@code int} or {@code long}.</p>
  *
- * <p>The query language can used named parameters or positional parameters.</p>
+ * <p>Compared to SQL, JDQL allows an abbreviated syntax for {@code select} statements:</p>
+ * <ul>
+ * <li>The {@code from} clause is optional in JDQL. When it is missing, the queried entity is determined by the return
+ *     type of the repository method, or, if the return type is not an entity type, by the primary entity type of the
+ *     repository.</li>
+ * <li>The {@code select} clause is optional in both JDQL and JPQL. When it is missing, the query returns the queried
+ *     entity.</li>
+ * </ul>
  *
- * <p><b>Named parameters</b> are referred to by name within the query language.
- * The {@link Param} annotation annotates method parameters to bind them to a named parameter name.
- * The {@code Param} annotation is unnecessary for named parameters when the method parameter name
- * matches the query language named parameter name and the application is compiled with the
- * {@code -parameters} compiler option that makes parameter names available
- * at runtime. When the {@code Param} annotation is not used, the Jakarta Data provider must
- * interpret the query by scanning for the delimiter that is used for positional parameters.
- * If the delimiter appears for another purpose in a query that requires named parameters,
- * it might be necessary for the application to explicitly define the {@code Param} in order to
- * disambiguate.</p>
+ * <p>A query might involve:</p>
+ * <ul>
+ * <li>named parameters of form {@code :name} where the labels {@code name} are legal Java identifiers, or </li>
+ * <li>ordinal parameters of form {@code ?n} where the labels {@code n} are sequential positive integers starting
+ *     from {@code 1}.</li>
+ * </ul>
+ * <p>A given query may not mix named and ordinal parameters.</p>
  *
- * <p><b>Positional parameters</b> are referred to by a number that corresponds to the
- * numerical position, starting with 1, of the repository method parameters.</p>
+ * <p>Each parameter of an annotated query method must either:</p>
+ * <ul>
+ * <li>have exactly the same name (the parameter name in the Java source, or a name assigned by {@link Param @Param})
+ *     and type as a named parameter of the query,</li>
+ * <li>have exactly the same type and position within the parameter list of the method as a positional parameter of the
+ *     query, or</li>
+ * <li>be of type {@code Limit}, {@code Order}, {@code PageRequest}, or {@code Sort}.</li>
+ * </ul>
+ *
+ * <p>The {@link Param} annotation associates a method parameter with a named parameter. The {@code Param} annotation is
+ * unnecessary when the method parameter name matches the name of a named parameter and the application is compiled with
+ * the {@code -parameters} compiler option making parameter names available at runtime.</p>
+ *
+ * <p>A method parameter is associated with an ordinal parameter by its position in the method parameter list. The first
+ * parameter of the method is associated with the ordinal parameter {@code ?1}.</p>
  *
  * <p>For example,</p>
  *
@@ -57,12 +78,20 @@ import java.lang.annotation.Target;
  * {@code @Repository}
  * public interface People extends CrudRepository{@code <Person, Long>} {
  *
- *     // JPQL using positional parameters
- *     {@code @Query("SELECT p from Person p WHERE (EXTRACT(YEAR FROM p.birthday) = ?1)")}
+ *     // JDQL with positional parameters
+ *     {@code @Query("where firstName = ?1 and lastName = ?2")}
+ *     {@code List<Person>} byName(String first, String last);
+ *
+ *     // JDQL with a named parameter
+ *     {@code @Query("where firstName || ' ' || lastName like :pattern")}
+ *     {@code List<Person>} byName(String pattern);
+ *
+ *     // JPQL using a positional parameter
+ *     {@code @Query("from Person where extract(year from birthdate) = ?1")}
  *     {@code List<Person>} bornIn(int year);
  *
  *     // JPQL using named parameters
- *     {@code @Query("SELECT DISTINCT p.name from Person p WHERE (LENGTH(p.name) >= :min AND LENGTH(p.name) <= :max)")}
+ *     {@code @Query("select distinct name from Person where length(name) >= :min and length(name) <= :max")}
  *     {@code Page<String>} namesOfLength({@code @Param}("min") int minLength,
  *                                {@code @Param}("max") int maxLength,
  *                                {@code PageRequest<Person>} pageRequest);
@@ -71,13 +100,12 @@ import java.lang.annotation.Target;
  * }
  * </pre>
  *
- * <h2>Return Types</h2>
- *
- * <p>Some query languages such as JPQL can be used to return a type other than the
- * entity class, as shown in the above example, resulting in a {@link Page} that is
- * parameterized with the query result type rather than the entity class.
- * to request a subsequent page, use the {@link Page#nextPageRequest(Class)} method
- * to specify the entity class. For example,</p>
+ * <p>A query with an explicit {@code select} clause may return a type other than the entity class, as shown in the
+ * example above, resulting in a {@link Page} parameterized with a query result type different to the queried entity
+ * type when pagination is used. This results in a mismatch between the {@link Page} type returned by the repository
+ * method and the {@link PageRequest} type accepted by the repository method. Therefore, a client must use the method
+ * {@link Page#nextPageRequest(Class)}, explicitly specifying the entity class, to obtain the next page of results. For
+ * example,</p>
  *
  * <pre>
  * {@code Page<String>} page2 = people.namesOfLength(5, 10, page1.nextPageRequest(Person.class));
@@ -94,30 +122,30 @@ import java.lang.annotation.Target;
 public @interface Query {
 
     /**
-     * <p>Defines the query to be executed when the annotated method is called.</p>
+     * <p>Specifies the query executed by the annotated repository method,
+     * in JDQL or JPQL.</p>
      *
-     * <p>If an application defines a repository method with {@code @Query}
-     * and supplies other forms of sorting (such as {@link Sort}) to that method,
-     * then it is the responsibility of the application to compose the query in
-     * such a way that an {@code ORDER BY} clause (or query language equivalent)
-     * can be validly appended. The Jakarta Data provider is not expected to
-     * parse query language that is provided by the application.</p>
+     * <p>If the annotated repository method accepts other forms of sorting
+     * (such as a parameter of type {@link Sort}), it is the responsibility
+     * of the application programmer to compose the query so that an
+     * {@code ORDER BY} clause can be validly appended to the text of the
+     * query.</p>
      *
      * @return the query to be executed when the annotated method is called.
      */
     String value();
 
     /**
-     * <p>Defines an additional query that counts the number of elements that are
-     * returned by the {@link #value() primary} query. This is used to compute
-     * the {@link Page#totalElements total elements} and {@link Page#totalPages
-     * total pages} for paginated repository queries which are annotated with
-     * {@code @Query} and return a {@link Page} or {@link CursoredPage}.</p>
+     * <p>Specifies an additional query that counts the number of elements
+     * returned by the {@linkplain #value() primary query} and is used
+     * to compute the {@linkplain Page#totalElements total elements} and
+     * {@linkplain Page#totalPages total pages} for paginated repository
+     * methods returning {@link Page} or {@link CursoredPage}.</p>
      *
-     * <p>The default value of empty string indicates that no counting query
-     * is provided. A counting query is unnecessary when pagination is
-     * performed with {@link jakarta.data.page.PageRequest#withoutTotal()} or
-     * when pagination is not used at all.</p>
+     * <p>The additional query is optional. It is not used when pagination
+     * is performed with {@link PageRequest#withoutTotal()} or when the
+     * repository method returns a type other than {@link Page} or
+     * {@link CursoredPage}.</p>
      *
      * @return a query for counting the number of elements across all pages.
      *         Empty string indicates that no counting query is provided.
