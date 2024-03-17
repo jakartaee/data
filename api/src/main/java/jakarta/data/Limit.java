@@ -27,7 +27,8 @@ import jakarta.data.page.PageRequest;
  * in terms of an offset and maximum number of results.</p>
  *
  * <p>A query method of a repository may have a parameter of type
- * {@code Limit}. The parameter of type {@code Limit} must occur after the
+ * {@code Limit} if its return type indicates that it may return multiple
+ * entities. The parameter of type {@code Limit} must occur after the
  * method parameters representing regular parameters of the query itself.
  * For example,</p>
  *

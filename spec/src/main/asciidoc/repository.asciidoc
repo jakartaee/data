@@ -467,53 +467,66 @@ By default, this must be the unqualified Java class name of the entity class.
 A programming model for entity classes might provide a way to explicitly specify an entity name.
 For example, Jakarta Persistence allows the entity name to be specified via the `name` member of the `@Entity` annotation.
 
-==== Entity Property Names
+==== Persistent Field Names
 
-Within an entity, property names must be unique ignoring case. For simple entity properties, the field or accessor method name serves as the entity property name. In the case of embedded classes, entity property names are computed by concatenating the field or accessor method names at each level, optionally joined by a delimiter.
+Each persistent field of an entity, as defined above in <<Persistent Fields>>, or of an embeddable class, as defined in <<Embedded Fields and Embeddable Classes>>, must be assigned a name, allowing the persistent field to be referenced by an <<Parameter-based automatic query methods,automatic query method>>, a <<Query by Method Name>>, or from a query specified within the <<Annotated Query methods,`@Query` annotation>>.
 
-Locations where entity property names can be used, along with delimiters, are shown in the table. The examples in the table assume an `Order` entity has an `address` of type `MailingAddress` with a `zipCode` of type `int`.
+- when direct field access is used, the name of a persistent field is simply the name of the Java field, but
+- when property-based access is used, the name of the field is derived from the accessor methods.
 
-.Locations of Entity Properties and Delimiters Table:
-[cols="3, 1, 6"]
+Any programming model for entity classes which supports property-based access must also define a rule for assigning names to persistent fields. Typically, a property with accessors named `getX` and `setX` is assigned a persistent field name obtained by calling `java.beans.Introspector.decapitalize("X")`.
+
+Within a given entity class or embeddable class, names assigned to persistent fields must be unique ignoring case. A Jakarta Data provider is permitted to reject an entity class if two persistent fields would be assigned the same name.
+
+Furthermore, within the context of a given entity, each persistent field of an embeddable class reachable by navigation from the entity class may be assigned a compound name. The compound name is obtained by concatenating the names assigned to each field traversed by navigation from the entity class to the persistent field of the embedded class, optionally joined by a delimiter.
+
+The rule for concatenating compound names depends on the context, and is specified in <<property-name-concatenation>>. The examples in the table assume an `Order` entity has an `address` of type `MailingAddress` with a `zipCode` of type `int`.
+
+[[property-name-concatenation]]
+.Field Name Concatenation and Delimiters
+[cols="3, 2, ^1, 6"]
 |===
-|Entity Property Location |Delimiter |Example
+| Context | Type | Delimiter | Example
 
-|`@Query` annotation
-|`.`
-|`@Query("SELECT o FROM Order o WHERE o.address.zipCode=?1")`
-
-|_Query by Method Name_ method name
-|`_`
-|`List<Order> findByAddress_zipCode(int zip);`
-
-|_Parameter-based Conditions_ parameter name
+| `@Find` | Parameter name
 |`_`
 |`@Find List<Order> find(int address_zipCode);`
 
-|`Sort` property value
+|`@Query` | Path expression within query
+|`.`
+|`@Query("SELECT o FROM Order o WHERE o.address.zipCode=?1")`
+
+|_Query by Method Name_ | Method name
+|`_`
+|`List<Order> findByAddress_zipCode(int zip);`
+
+|`Sort` | String argument
 |`.` or `_`
 |`Sort.asc("address_zipCode")`
 
-|`@By` or `@OrderBy` annotation value
+|`@By` or `@OrderBy` | Annotation value
 |`.` or `_`
 |`@Find List<Order> find(@By("address.zipCode") int zip);`
 |===
 
-For a given entity property name, delimiter usage must be consistent. Either the delimiter must always be used within the entity property name to delimit subcomponents or the delimiter must never be used within the entity property name. Except in the case of `@Query` where the delimiter is required by the query language, delimiters can be omitted entirely from an entity property name when it is unnecessary to disambiguate the entity property to which the name refers.
+NOTE: Application programmers are strongly encouraged to follow Java's camel case naming standard for fields of entities, relations, and embeddable classes, avoiding underscores in field names. The resolution algorithm for persistent field identification relies on the use of underscore as a delimiter. Adhering to the camel case naming convention ensures consistency and eliminates ambiguity.
 
-The resolution of properties involves the following steps:
 
-1. *Property Extraction*: The framework obtains entity property names from the locations in the above table, applying the BNF grammar in the case of _Query by Method Name_ to extract entity property names from the method name. For example, for the query method `findByAddressZipCode`, the property name extracted is `AddressZipCode`.
+==== Persistent Field Names in Query by Method Name
 
-2. *Property Lookup on Entity*: The framework compares the extracted name, ignoring case, against the field names of the respective entity class.
+For _Query by Method Name_, the use of delimiters within a compound name is optional. Delimiters may be omitted entirely from a compound name when they are not needed to disambiguate the persistent field to which the name refers. But for a given entity property name, delimiter usage must be consistent: either the delimiter must be used between every pair of persistent field names within the compound name, or it must not occur within the compound name.
 
-3. *Property Lookup in Hierarchy*: If no match was found among the entity field names, the framework compares the extracted name, ignoring case, against the combination of the field names of the respective entity and the fields of the entity's hierarchy of relations and embedded classes, concatenated as outlined in this section above, both with and without the optional delimiter.
+Resolution of a persistent field involves the following steps:
 
-4. *Resolution Outcome*: If the framework successfully identifies a property in the domain class or along the specified traversal path that matches the extracted property name, it uses that property.
+1. A persistent field name is extracted from the method name according to the <<BNF Grammar for Query Methods>>. For example, if the query method name is `findByAddressZipCode`, the extracted field name is `AddressZipCode`.
 
-When `@Query` is used, the Jakarta Data specification defers to the rules of the query language on whether the delimiter is required and whether the case must match.
+2. The extracted name is matched against the fields of the entity class. If the name assigned to a persistent field of the entity class matches the extracted name, ignoring case, then the extracted name resolves to that field.
 
-Users are encouraged to follow Java's camel case naming standards for fields of entities, relations, and embedded classes, avoiding underscores in field names. The resolution algorithm for property identification relies on traversal with underscores. Adhering to camel case for property names ensures consistency and eliminates ambiguity, enabling effective data filtering and retrieval from domain classes.
+3. Otherwise, if no match is found among the fields of the entity, the extracted name is matched against the fields of entity classes and embedded classes reachable from the entity class, interpreting the extracted name as a compound name, as outlined in the previous section, both with and without the optional delimiter. If the compound name assigned to a persistent field matches the extracted name, also interpreted as a compound name, and ignoring case, then the extracted name resolves to that field.
+
+4. If no matching persistent field is found in either of the previous steps, the provider is permitted to reject the query method or to throw `UnsupportedOperationException` when the method is called.
+
+A persistent field name used in a _Query by Method Name_ must not contain a <<Query by Method Name Keywords,keyword>> reserved by _Query by Method Name_.
 
 
 ===== Scenario 1: Person Repository with Unambiguous Resolution
@@ -564,10 +577,6 @@ The `Order` entity has an `addressZipCode` field, as well as an `address` field 
 List<Order> findByAddress_zipcode(int zipCode);
 ----
 
-WARNING: Define entity properties following standard Java naming conventions for camel case, using underscore only as the last resort.
-
-In all places where entity property names can be specified other than `@Query`, `Id` is an alias for the entity property that is designated as the id. Entity property names that are used in _Query by Method Name_ must not contain reserved words.
-
 
 ==== Type-safe Access to Entity Attributes
 
@@ -588,8 +597,6 @@ For each field of the metamodel class that is to be initialized by a Jakarta Dat
 - The field must have the `public` and `static` modifiers, but not the `final` modifier.
 - The name of the field, ignoring case, must match the name of an entity attribute, with the `_` character in the field name delimiting the attribute names of hierarchical structures or relationships, such as embedded classes.
 - The value of the field must be uninitialized or `null`.
-
-If the entity class has a unique identifier that is represented by a single entity attribute, then the application can also include a field that follows the above criteria, except that it has a field name of `id` or `ID`.
 
 The application is not required to include fields for all entity attributes.
 
@@ -670,7 +677,7 @@ Every abstract method of the interface is usually either:
 
 - an entity instance _lifecycle method_,
 - an _annotated query method_,
-- an _automatic query method_ (with Parameter-based conditions or Query by Method Name), or
+- an _automatic query method_ (with parameter-based conditions or Query by Method Name), or
 - a _resource accessor method_.
 
 A repository may declare lifecycle methods for a single entity type, or for multiple related entity types.
@@ -704,17 +711,23 @@ Lifecycle methods allow the program to make changes to persistent data in the da
 
 A lifecycle method must be annotated with a lifecycle annotation. The method signature of the lifecycle method, including its return type, must follow the requirements that are specified by the JavaDoc of the lifecycle annotation.
 
-Lifecycle methods follow the general pattern:
+Lifecycle method signatures follow one of these generic patterns:
 
 [source,java]
 ----
 @Lifecycle
-ReturnType lifecycle(Entity e);
+void lifecycle(Entity e);
 ----
 
-where `lifecycle` is the arbitrary name of the method, `Entity` is a concrete entity class or an `Iterable` or array of this entity, `Lifecycle` is a lifecycle annotation, and `ReturnType` is a return type that is permitted by the lifecycle annotation JavaDoc.
+[source,java]
+----
+@Lifecycle
+Entity lifecycle(Entity e);
+----
 
-This specification defines four built-in lifecycle annotations: `@Insert`, `@Update`, `@Delete`, and `@Save`.
+where `Lifecycle` is a lifecycle annotation, `lifecycle` is the arbitrary name of the method, and `Entity` is either `E`, `Iterable<E>`, or `E[]`, where `E` is a concrete entity class.
+
+This specification defines four built-in lifecycle annotations: `@Insert`, `@Update`, `@Delete`, and `@Save`. The semantics of these annotations is defined in their Javadoc.
 
 For example:
 
@@ -809,14 +822,26 @@ The Jakarta Data implementation automatically recognizes the query annotations i
 
 === Parameter-based automatic query methods
 
-A _parameter-based automatic_ query method is an abstract method annotated with the `Find` annotation. Jakarta Data infers a query based on the parameters of the method. The method return type identifies the entity. For example: `E`, `Optional<E>`, `Page<E>`, or `List<E>`, where `E` is an entity class. Each parameter must either:
+A _parameter-based automatic query method_ is an abstract method annotated with an _automatic query annotation_.
+
+Each automatic query method must be assigned an entity type. The rules for inferring the entity type depend on the semantics of the automatic query annotation. Typically:
+
+- If the automatic query method returns an entity type, the method return type identifies the entity. For example, the return type might be `E`, `Optional<E>`, `Page<E>`, or `List<E>`, where `E` is an entity class. Then the automatic query method would be assigned the entity type `E`.
+- If the query does not return an entity type, the entity assigned to the automatic query method is the primary entity type of the repository.
+
+Jakarta Data infers a query based on the parameters of the method. Each parameter must either:
 
 - have exactly the same type and name as a persistent field or property of the entity class, or
 - be of type `Limit`, `Order`, `PageRequest`, or `Sort`.
 
-A repository with automatic query methods that are based on parameters must either be compiled so that parameter names are preserved in the class file (for example, using `javac -parameters`), or the corresponding entity attribute name for parameters must be specified explicitly using the `@By` annotation.
+Parameter names map parameters to persistent fields. A repository with parameter-based automatic query methods must either:
 
-This specification defines the built-in automatic query annotation `@Find`.
+- be compiled so that parameter names are preserved in the class file (for example, using `javac -parameters`), or
+- explicitly specify the name of the persistent field mapped by each parameter of an automatic query method using the `@By` annotation.
+
+The parameter name or explicit field name specified using `@By` may be a compound name, as specified below in <<Persistent Field Names>>.
+
+This specification defines the built-in automatic query annotations `@Find` and `@Delete`. The semantics of these annotations are specified in their Javadoc. Note that `@Delete` is _both_ a lifecycle annotation _and_ an automatic query annotation. The signature of a repository method annotated `@Delete` must be used to disambiguate the interpretation of the `@Delete` annotation.
 
 For example:
 
@@ -835,7 +860,7 @@ Page<Book> find(@By("year") Year publishedIn,
                 PageRequest<Book> pageRequest);
 ----
 
-Automatic query methods annotated with `@Find` _are_ portable between providers.
+Automatic query methods annotated with `@Find` or `@Delete` _are_ portable between providers.
 
 [NOTE]
 ====
@@ -1123,7 +1148,12 @@ Refer to the Jakarta Data module JavaDoc section on "Return Types for Repository
 
 === Special Parameters for Limits, Sorting, and Pagination
 
-An <<Annotated Query methods,annotated>>, <<Parameter-based automatic query methods,parameter-based>>, or <<Query by Method Name,method name>> query method may have _special parameters_ of type `Limit`, `Order`, `Sort`, or `PageRequest`.
+An <<Annotated Query methods,annotated>>, <<Parameter-based automatic query methods,parameter-based>>, or <<Query by Method Name,method name>> query method may have _special parameters_ of type `Limit`, `Order`, `Sort`, or `PageRequest` if the method return type indicates that the method may return multiple entities, that is, if the return type is:
+
+- an array type,
+- `List` or `Stream`, or
+- `Page` or `CursoredPage`.
+
 A special parameter controls which query results are returned to the caller of a repository method, or in what order the results are returned:
 
 - a `Limit` allows the query results to be limited to a given range defined in terms of an offset and maximum number of results,
@@ -1523,7 +1553,7 @@ public interface Products extends CrudRepository<Product, Long> {
 }
 ----
 
-The above criteria does not uniquely identify `Car` entities. After sorting on the vehicle condition, finer grained sorting is provided dynamically by the `PageRequest`, in this case the vehicle price followed by the unique Vehicle Identification Number (VIN). It is a good practice for the final sort criterion to be the `Id` attribute or another unique identifier of the entity to ensure a deterministic ordering.
+The above criteria does not uniquely identify `Car` entities. After sorting on the vehicle condition, finer grained sorting is provided dynamically by the `PageRequest`, in this case the vehicle price followed by the unique Vehicle Identification Number (VIN). It is a good practice for the final sort criterion to be a unique identifier of the entity to ensure a deterministic ordering.
 
 [source,java]
 ----

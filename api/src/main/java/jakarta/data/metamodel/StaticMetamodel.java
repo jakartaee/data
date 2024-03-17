@@ -97,10 +97,6 @@ import jakarta.data.Sort;
  * <li>The value of the field is uninitialized or {@code null}.</li>
  * </ul>
  *
- * <p>Additionally, a field that meets the above criteria except for the name and is named
- * {@code id} or {@code ID} must be assigned by the Jakarta Data provider for the unique
- * identifier entity attribute if a single entity attribute represents the unique identifier.</p>
- *
  * <p>In cases where multiple Jakarta Data providers provide repositories for the same
  * entity type, no guarantees are made of the order in which the Jakarta Data providers attempt
  * to initialize the fields of the class that is annotated with {@code StaticMetamodel}.

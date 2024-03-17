@@ -26,13 +26,22 @@ import java.lang.annotation.Target;
 
 
 /**
- * <p>Annotates a repository method that performs entity search operations as Parameter-based automatic query methods.</p>
+ * <p>Annotates a repository method returning entities as a parameter-based automatic query method.</p>
  *
  * <p>The {@code Find} annotation indicates that the annotated repository method executes a query to retrieve entities
- * based on specified parameters. The method parameters must match the types and names of the corresponding fields of
- * the entity being queried. There is no specific naming convention for methods annotated with {@code @Find}; they may
- * be named arbitrarily, and their names do not carry any specific semantic meaning. The method return type identifies
- * the entity type returned by the query.
+ * based on its parameters and on the arguments assigned to its parameters. The method return type identifies the entity
+ * type returned by the query. Each parameter of the annotated method must either:
+ * </p>
+ * <ul>
+ * <li>have exactly the same type and name (the parameter name in the Java source, or a name assigned by {@link By @By})
+ *     as a persistent field or property of the entity class, or</li>
+ * <li>be of type {@link jakarta.data.Limit}, {@link jakarta.data.Sort}, {@link jakarta.data.Order}, or
+ *     {@link jakarta.data.page.PageRequest}.</li>
+ * </ul>
+ * <p>The query is inferred from the method parameters which match persistent fields of the entity.
+ * </p>
+ * <p>There is no specific naming convention for methods annotated with {@code @Find}; they may be named arbitrarily,
+ * and their names do not carry any semantic meaning defined by the Jakarta Data specification.
  * </p>
  * <p>For example, consider an interface representing a garage:</p>
  * <pre>
@@ -56,12 +65,17 @@ import java.lang.annotation.Target;
  *     <li>{@code Page<E>} or {@code CursoredPage<E>}.</li>
  * </ul>
  *
- * <p>If the return type of the annotated method is {@code E} or {@code Optional<E>}, and the query returns more than
- * one element when executed, the method must throw {@link jakarta.data.exceptions.NonUniqueResultException}.
+ * <p>An automatic query method annotated {@code Find} returns an entity instance for every record which satisfies the
+ * parameter-based conditions. If the return type of the annotated method is {@code E} or {@code Optional<E>}, and the
+ * query returns more than one element when executed, the method must throw
+ * {@link jakarta.data.exceptions.NonUniqueResultException}.
  * </p>
  * <p>Annotations such as {@code @Find}, {@code @Query}, {@code @Insert}, {@code @Update}, {@code @Delete}, and
  * {@code @Save} are mutually-exclusive. A given method of a repository interface may have at most one {@code @Find}
  * annotation, lifecycle annotation, or query annotation.
+ *
+ * @see By
+ * @see OrderBy
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)

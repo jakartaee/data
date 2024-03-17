@@ -90,12 +90,12 @@
         <mockito.version>5.11.0</mockito.version>
         <pi-test.version>1.15.8</pi-test.version>
         <pitest-junit5-plugin.version>1.2.1</pitest-junit5-plugin.version>
-        <checkstyle.version>10.14.0</checkstyle.version>
+        <checkstyle.version>10.14.1</checkstyle.version>
         <checkstyle.excludes></checkstyle.excludes>
         <jacoco.maven.version>0.8.11</jacoco.maven.version>
         <sigtest.version>1.6</sigtest.version> <!-- TODO update to 1.8 once this fix is added https://github.com/jtulach/netbeans-apitest/commit/72a3d3507202357589d77b293cb1e29349a0096e -->
         <sonar.jacoco.reportPath>../target/jacoco.exec</sonar.jacoco.reportPath>
-        <sonar.maven.version>3.10.0.2594</sonar.maven.version>
+        <sonar.maven.version>3.11.0.3922</sonar.maven.version>
     </properties>
 
     <dependencyManagement>
@@ -281,7 +281,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
-                        <version>3.1.0</version>
+                        <version>3.2.0</version>
                         <executions>
                             <execution>
                                 <id>sign-artifacts</id>
