@@ -1439,22 +1439,25 @@ The values of the entity attributes of the combined sort criteria define the cur
 
 Without cursor-based pagination, a Jakarta Data provider that is based on Jakarta Persistence might compose the following JPQL for the `findByZipcodeOrderByLastNameAscFirstNameAscIdAsc` repository method from the prior example:
 
-[source,jpql]
+[source,jpaql]
 ----
-SELECT o FROM Customer o WHERE (o.zipCode = ?1)
-                         ORDER BY o.lastName ASC, o.firstName ASC, o.id ASC
+FROM Customer
+WHERE (zipCode = ?1)
+ORDER BY lastName ASC, firstName ASC, id ASC
 ----
 
 When cursor-based pagination is used, the keys values from the `Cursor` of the `PageRequest` are available as query parameters, allowing the Jakarta Data provider to append additional query conditions. For example,
 
-[source,jpql]
+[source,jpaql]
 ----
-SELECT o FROM Customer o WHERE (o.zipCode = ?1)
-                           AND (   (o.lastName > ?2)
-                                OR (o.lastName = ?2 AND o.firstName > ?3)
-                                OR (o.lastName = ?2 AND o.firstName = ?3 AND o.id > ?4)
-                               )
-                         ORDER BY o.lastName ASC, o.firstName ASC, o.id ASC
+FROM Customer
+WHERE (zipCode = ?1)
+  AND (
+         lastName > ?2
+      OR lastName = ?2 AND firstName > ?3
+      OR lastName = ?2 AND firstName = ?3 AND id > ?4
+  )
+ORDER BY lastName ASC, firstName ASC, id ASC
 ----
 
 ===== Avoiding Missed and Duplicate Results
