@@ -675,10 +675,10 @@ A concrete method may call other methods of the repository, including abstract m
 
 Every abstract method of the interface is usually either:
 
-- an entity instance _lifecycle method_,
-- an _annotated query method_,
-- an _automatic query method_ (with parameter-based conditions or Query by Method Name), or
-- a _resource accessor method_.
+- an entity instance <<Lifecycle methods,_lifecycle method_>>,
+- an <<Annotated Query methods,_annotated query method_>>,
+- an _automatic query method_ with <<Parameter-based automatic query methods,parameter-based conditions>> or <<Query by Method Name>>, or
+- a <<Resource accessor methods,_resource accessor method_>>.
 
 A repository may declare lifecycle methods for a single entity type, or for multiple related entity types.
 Similarly, a repository might have query methods which return different entity types.
@@ -687,9 +687,9 @@ A repository interface may inherit methods from a superinterface.
 A Jakarta Data implementation must treat inherited abstract methods as if they were directly declared by the repository interface.
 For example, a repository interface may inherit the `CrudRepository` interface defined by this specification.
 
-Repositories perform operations on entities. For repository methods that are annotated with `@Insert`, `@Update`, `@Save`, or `@Delete`, the entity type is determined from the method parameter type.  For `find` and `delete` methods where the return type is an entity, array of entity, or parameterized type such as `List<MyEntity>` or `Page<MyEntity>`, the entity type is determined from the method return type.  For `count`, `exists`, and other `delete` methods that do not return the entity or accept the entity as a parameter, the entity type cannot be determined from the method signature and a primary entity type must be defined for the repository.
+Repositories perform operations on entities. For repository methods that are annotated with `@Insert`, `@Update`, `@Save`, or `@Delete`, the entity type is determined from the method parameter type.  For `find` and `delete` methods where the return type is an entity, array of entity, or parameterized type such as `List<MyEntity>` or `Page<MyEntity>`, the entity type is determined from the method return type.  For `count`, `exists`, and other `delete` methods that do not return the entity or accept the entity as a parameter, the entity type cannot be determined from the method signature and a _primary entity type_ must be defined for the repository.
 
-Users of Jakarta Data declare a primary entity type for a repository by inheriting from a built-in repository super interface, such as `BasicRepository`, and specifying the primary entity type as the first type variable. For repositories that do not inherit from a super interface with a type parameter to indicate the primary entity type, life cycle methods on the repository determine the primary entity type. To do so, all life cycle methods where the method parameter is a type, an array of type, or is parameterized with a type that is annotated as an entity, must correspond to the same entity type. The primary entity type is assumed for methods that do not otherwise specify an entity type, such as `countByPriceLessThan`. Methods that require a primary entity type raise `MappingException` if a primary entity type is not provided.
+Users of Jakarta Data declare a primary entity type for a repository by inheriting from a built-in repository super interface, such as `BasicRepository`, and specifying the primary entity type as the first type variable. For repositories that do not inherit from a super interface with a type parameter to indicate the primary entity type, lifecycle methods on the repository determine the primary entity type. To do so, all lifecycle methods where the method parameter is a type, an array of type, or is parameterized with a type that is annotated as an entity, must correspond to the same entity type. The primary entity type is assumed for methods that do not otherwise specify an entity type, such as `countByPriceLessThan`. Methods that require a primary entity type raise `MappingException` if a primary entity type is not provided.
 
 
 NOTE: A Jakarta Data provider might go beyond what is required by this specification and support abstract methods which do not fall into any of the above categories. Such functionality is not defined by this specification, and so applications with repositories which declare such methods are not portable between providers.
@@ -1668,11 +1668,11 @@ It should be noted, the above result is different than what would be retrieved w
 
 The following order, with the lower number having higher precedence, is used when interpreting the meaning of repository methods.
 
-1. If the method is a Java default method, then its provided implementation is used.
-2. If the method has a _Resource Accessor Method_ return type, then the method is implemented as a _Resource Accessor Method_.
-3. If the method is annotated with `@Query`, then the method is implemented to run the corresponding Query Language query.
-4. If the method is annotated with `@Find` or a _Life Cycle_ annotation that defines the type of operation (`@Insert`, `@Update`, `@Save`, `@Delete`), then the annotation determines how the method is implemented, along with any applicable data access related annotations that are present on method parameters, according to the _Automatic Query Method_ with _Parameter-based Conditions_ pattern.
-5. If the method is named according to the _Query by Method Name_ naming conventions, then the implementation follows the _Query by Method Name_ pattern.
+1. If the method is a Java `default` method, then its provided implementation is used.
+2. If the method has a <<Resource accessor methods,_resource accessor method_>> return type recognized by the Jakarta Data provider, then the method is implemented as a resource accessor method.
+3. If the method is annotated with a <<Annotated Query methods,query annotation>> recognized by the Jakarta Data provider, such as `@Query`, then the method is implemented to execute the query specified by the query annotation.
+4. If the method is annotated with an <<Parameter-based automatic query methods,automatic query annotation>>, such as `@Find`, or with a <<Lifecycle methods,lifecycle annotation>> declaring the type of operation, for example, with `@Insert`, `@Update`, `@Save`, or `@Delete`, and the provider recognizes the annotation, then the annotation determines how the method is implemented, possibly with the help of other annotations present on the method parameters, for example, any `@By` annotations of the parameters.
+5. If the method is named according to the conventions of _Query by Method Name_, then the implementation follows the <<Query by Method Name,_Query by Method Name_>> pattern.
 
 A repository method that does not fit any of the above patterns and is not handled as a vendor-specific extension to the specification must either result in an error at build time or raise `UnsupportedOperationException` at run time.
 
