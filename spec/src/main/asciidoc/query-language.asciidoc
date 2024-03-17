@@ -2,7 +2,7 @@
 
 The Jakarta Data Query Language (JDQL) is a simple language designed to be used inside the `@Query` annotation to specify the semantics of query methods of Jakarta Data repositories. The language is in essence a subset of the widely-used Jakarta Persistence Query Language (JPQL), and thus a dialect of SQL. But, consistent with the goals of Jakarta Data, it is sufficiently limited in functionality that it is easily implementable across a wide variety of data storage technologies. Thus, the language defined in this chapter excludes features of JPQL which, while useful when the target datasource is a relational database, cannot be easily implemented on all non-relational datastores. In particular, the `from` clause of a Jakarta Data query may contain only a single entity.
 
-NOTE: A Jakarta Data provider backed by access to a relational database might choose to allow the use of a much larger subset of JPQL&mdash;or even the whole language&mdash;via the `@Query` annotation. Such extensions are not required by this specification.
+NOTE: A Jakarta Data provider backed by access to a relational database might choose to allow the use of a much larger subset of JPQL--or even the whole language--via the `@Query` annotation. Such extensions are not required by this specification.
 
 === Type system
 
