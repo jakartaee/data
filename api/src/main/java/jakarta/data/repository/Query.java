@@ -54,7 +54,7 @@ import java.lang.annotation.Target;
  * <li>ordinal parameters of form {@code ?n} where the labels {@code n} are sequential positive integers starting
  *     from {@code 1}.</li>
  * </ul>
- * <p>A given query may not mix named and ordinal parameters.</p>
+ * <p>A given query must not mix named and ordinal parameters.</p>
  *
  * <p>Each parameter of an annotated query method must either:</p>
  * <ul>

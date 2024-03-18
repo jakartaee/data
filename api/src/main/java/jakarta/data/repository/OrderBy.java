@@ -57,7 +57,7 @@ import java.lang.annotation.Target;
  * numeric values means smaller numbers before larger numbers and for
  * string values means {@code A} before {@code Z}.</p>
  *
- * <p>A repository method with an {@code @OrderBy} annotation may not
+ * <p>A repository method with an {@code @OrderBy} annotation must not
  * have:</p>
  * <ul>
  * <li>the <em>Query by Method Name</em> {@code OrderBy} keyword in its
