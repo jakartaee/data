@@ -100,6 +100,19 @@ import java.lang.annotation.Target;
  * }
  * </pre>
  *
+ * <p>A method annotated with {@code @Query} must return one of the following types:</p>
+ * <ul>
+ *     <li>the query result type {@code R}, when the query returns a single result,</li>
+ *     <li>{@code Optional<R>}, when the query returns at most a single result,</li>
+ *     <li>an array type {@code R[]},
+ *     <li>{@code List<R>},</li>
+ *     <li>{@code Stream<R>}, or</li>
+ *     <li>{@code Page<R>} or {@code CursoredPage<R>}.</li>
+ * </ul>
+ * <p>The method returns an object for every query result. If the return type of the annotated method is {@code R} or
+ * {@code Optional<R>}, and the query returns more than one element when executed, the method must throw
+ * {@link jakarta.data.exceptions.NonUniqueResultException}.</p>
+ *
  * <p>A query with an explicit {@code select} clause may return a type other than the entity class, as shown in the
  * example above, resulting in a {@link Page} parameterized with a query result type different to the queried entity
  * type when pagination is used. This results in a mismatch between the {@link Page} type returned by the repository
