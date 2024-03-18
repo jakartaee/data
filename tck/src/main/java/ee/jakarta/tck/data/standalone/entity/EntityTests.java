@@ -210,7 +210,7 @@ public class EntityTests {
         TestPropertyUtility.waitForEventualConsistency();
 
         // BasicRepository.deleteAll(Iterable)
-        boxes.deleteAll(Set.of(box1, box2));
+        boxes.deleteAll(List.of(box1, box2));
 
         TestPropertyUtility.waitForEventualConsistency();
 
@@ -338,7 +338,7 @@ public class EntityTests {
         TestPropertyUtility.waitForEventualConsistency();
 
         // BasicRepository.deleteAll(Iterable)
-        boxes.deleteAll(Set.of(box1, box2));
+        boxes.deleteAll(List.of(box1, box2));
 
         TestPropertyUtility.waitForEventualConsistency();
 
