@@ -39,7 +39,7 @@ import java.lang.annotation.Target;
  * </p>
  * <ul>
  *     <li>the class of the entity to be deleted, or</li>
- *     <li>{@code Iterable<E>} or {@code E[]} where {@code E} is the class of the entities to be deleted.</li>
+ *     <li>{@code List<E>} or {@code E[]} where {@code E} is the class of the entities to be deleted.</li>
  * </ul>
  * <p>The annotated method must be declared {@code void}.
  * </p>
