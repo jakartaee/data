@@ -33,7 +33,7 @@ public interface Rectangles extends DataRepository<Rectangle, String> {
     Rectangle save(@Valid Rectangle entity);
 
     @Save
-    Iterable<Rectangle> saveAll(@Valid Iterable<Rectangle> entities);
+    List<Rectangle> saveAll(@Valid List<Rectangle> entities);
     
     @PositiveOrZero
     long countBy();

@@ -725,7 +725,7 @@ void lifecycle(Entity e);
 Entity lifecycle(Entity e);
 ----
 
-where `Lifecycle` is a lifecycle annotation, `lifecycle` is the arbitrary name of the method, and `Entity` is either `E`, `Iterable<E>`, or `E[]`, where `E` is a concrete entity class.
+where `Lifecycle` is a lifecycle annotation, `lifecycle` is the arbitrary name of the method, and `Entity` is either `E`, `List<E>`, or `E[]`, where `E` is a concrete entity class.
 
 This specification defines four built-in lifecycle annotations: `@Insert`, `@Update`, `@Delete`, and `@Save`. The semantics of these annotations is defined in their Javadoc.
 

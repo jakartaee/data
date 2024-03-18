@@ -21,6 +21,7 @@ import jakarta.data.exceptions.OptimisticLockingFailureException;
 import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -131,7 +132,7 @@ public interface BasicRepository<T, K> extends DataRepository<T, K> {
      * @throws NullPointerException If either the iterable is null or any element is null.
      */
     @Save
-    <S extends T> Iterable<S> saveAll(Iterable<S> entities);
+    <S extends T> List<S> saveAll(List<S> entities);
 
     /**
      * Retrieves an entity by its Id.
@@ -232,6 +233,6 @@ public interface BasicRepository<T, K> extends DataRepository<T, K> {
      * @throws NullPointerException If the iterable is {@code null} or contains {@code null} elements.
      */
     @Delete
-    void deleteAll(Iterable<? extends T> entities);
+    void deleteAll(List<? extends T> entities);
 
 }

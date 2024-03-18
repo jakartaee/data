@@ -200,7 +200,7 @@ import jakarta.data.repository.Update;
  *
  * <ul>
  * <li>the class of the entity, or</li>
- * <li>{@code Iterable<E>} or {@code E[]} where {@code E} is the class of the
+ * <li>{@code List<E>} or {@code E[]} where {@code E} is the class of the
  *     entities.</li>
  * </ul>
  *
