@@ -1486,7 +1486,7 @@ Here is an example where an application uses `@Query` to provide a partial query
 ----
 @Repository
 public interface CustomerRepository extends BasicRepository<Customer, Long> {
-  @Query("WHERE (o.totalSpent / o.totalPurchases > ?1)")
+  @Query("WHERE totalSpent / totalPurchases > ?1")
   CursoredPage<Customer> withAveragePurchaseAbove(float minimum, PageRequest<Customer> pageRequest);
 }
 ----
