@@ -32,9 +32,7 @@ import java.lang.annotation.Target;
  * or in Jakarta Persistence Query Language (JPQL). A Jakarta Data provider is not required to support the complete JPQL
  * language, which targets relational data stores.</p>
  *
- * <p>The required {@link #value} member specifies the JDQL or JPQL query as a string. When {@linkplain Page pagination}
- * is used, the {@link #count} member optionally specifies a query which returns the total number of elements satisfying
- * the query.</p>
+ * <p>The required {@link #value} member specifies the JDQL or JPQL query as a string.</p>
  *
  * <p>For {@code select} statements, the return type of the query method must be consistent with the type returned by
  * the query. For {@code update} or {@code delete} statements, it must be {@code void}, {@code int} or {@code long}.</p>
@@ -147,22 +145,5 @@ public @interface Query {
      * @return the query to be executed when the annotated method is called.
      */
     String value();
-
-    /**
-     * <p>Specifies an additional query that counts the number of elements
-     * returned by the {@linkplain #value() primary query} and is used
-     * to compute the {@linkplain Page#totalElements total elements} and
-     * {@linkplain Page#totalPages total pages} for paginated repository
-     * methods returning {@link Page} or {@link CursoredPage}.</p>
-     *
-     * <p>The additional query is optional. It is not used when pagination
-     * is performed with {@link PageRequest#withoutTotal()} or when the
-     * repository method returns a type other than {@link Page} or
-     * {@link CursoredPage}.</p>
-     *
-     * @return a query for counting the number of elements across all pages.
-     *         Empty string indicates that no counting query is provided.
-     */
-    String count() default "";
 }
 
