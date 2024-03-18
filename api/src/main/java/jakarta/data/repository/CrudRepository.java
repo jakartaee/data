@@ -145,6 +145,7 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
      * the update.</p>
      *
      * @param entity the entity to update. Must not be {@code null}.
+     * @param <S> Type of the entity to update.
      * @return an updated entity instance including all automatically generated values,
      *         updated versions, and incremented values which changed as a result of the update.
      * @throws OptimisticLockingFailureException the entity is not found in the database
@@ -152,7 +153,7 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
      * @throws NullPointerException if the entity is null.
      */
     @Update
-    T update(T entity);
+    <S extends T> S update(S entity);
 
     /**
      * <p>Modifies entities that already exist in the database.</p>
@@ -167,6 +168,7 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
      * the update.</p>
      *
      * @param entities entities to update.
+     * @param <S> Type of the entities to update.
      * @return updated entity instances, in the same order as the supplied entities,
      *         and including all automatically generated values, updated versions, and
      *         incremented values which changed as a result of the update.
@@ -175,6 +177,6 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
      * @throws NullPointerException if either the supplied {@code Iterable} is null or any element is null.
      */
     @Update
-    Iterable<T> updateAll(Iterable<T> entities);
+    <S extends T> Iterable<S> updateAll(Iterable<S> entities);
 
 }
