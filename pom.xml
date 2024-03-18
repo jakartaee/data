@@ -90,7 +90,7 @@
         <mockito.version>5.11.0</mockito.version>
         <pi-test.version>1.15.8</pi-test.version>
         <pitest-junit5-plugin.version>1.2.1</pitest-junit5-plugin.version>
-        <checkstyle.version>10.14.1</checkstyle.version>
+        <checkstyle.version>10.14.2</checkstyle.version>
         <checkstyle.excludes></checkstyle.excludes>
         <jacoco.maven.version>0.8.11</jacoco.maven.version>
         <sigtest.version>1.6</sigtest.version> <!-- TODO update to 1.8 once this fix is added https://github.com/jtulach/netbeans-apitest/commit/72a3d3507202357589d77b293cb1e29349a0096e -->
