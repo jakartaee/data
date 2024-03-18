@@ -34,8 +34,8 @@ import java.lang.annotation.Target;
  * </p>
  * <ul>
  * <li>have exactly the name (the parameter name in the Java source, or a name assigned by {@link By @By}) as a
- *     persistent field or property of the entity class and be of type {@code T}, {@code T[]}, or {@code Iterable<T>}
- *     where {@code T} is the type of the field or property, or</li>
+ *     persistent field or property of the entity class and be of type {@code T}, {@code T[]}, or {@code List<T>} where
+ *     {@code T} is the type of the field or property, or</li>
  * <li>be of type {@link jakarta.data.Limit}, {@link jakarta.data.Sort}, {@link jakarta.data.Order}, or
  *     {@link jakarta.data.page.PageRequest}.</li>
  * </ul>

@@ -65,7 +65,7 @@ import java.lang.annotation.Target;
  * to be deleted is the primary entity type of the repository. The method return type must be {@code void}, {@code int},
  * or {@code long}. Every parameter of the annotated method must have exactly the same name (the parameter name in the
  * Java source, or a name assigned by {@link By @By}) as a persistent field or property of the entity class and be of
- * type {@code T}, {@code T[]}, or {@code Iterable<T>} where {@code T} is the type of the field or property. Parameters
+ * type {@code T}, {@code T[]}, or {@code List<T>} where {@code T} is the type of the field or property. Parameters
  * of type {@code Sort}, {@code Order}, {@code Limit}, and {@code PageRequest} are prohibited.
  * </p>
  * <p>For example, consider an interface representing a garage:</p>
