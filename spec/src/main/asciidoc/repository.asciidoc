@@ -1677,5 +1677,5 @@ The following order, with the lower number having higher precedence, is used whe
 4. If the method is annotated with an <<Parameter-based automatic query methods,automatic query annotation>>, such as `@Find`, or with a <<Lifecycle methods,lifecycle annotation>> declaring the type of operation, for example, with `@Insert`, `@Update`, `@Save`, or `@Delete`, and the provider recognizes the annotation, then the annotation determines how the method is implemented, possibly with the help of other annotations present on the method parameters, for example, any `@By` annotations of the parameters.
 5. If the method is named according to the conventions of _Query by Method Name_, then the implementation follows the <<Query by Method Name,_Query by Method Name_>> pattern.
 
-A repository method that does not fit any of the above patterns and is not handled as a vendor-specific extension to the specification must either result in an error at build time or raise `UnsupportedOperationException` at run time.
+A repository method that does not fit any of the above patterns and is not handled as a vendor-specific extension to the specification must either result in an error at build time or raise `UnsupportedOperationException` at runtime.
 

@@ -42,7 +42,7 @@ import java.lang.annotation.Target;
  * The {@code Param} annotation is unnecessary for named parameters when the method parameter name
  * matches the query language named parameter name and the application is compiled with the
  * {@code -parameters} compiler option that makes parameter names available
- * at run time. When the {@code Param} annotation is not used, the Jakarta Data provider must
+ * at runtime. When the {@code Param} annotation is not used, the Jakarta Data provider must
  * interpret the query by scanning for the delimiter that is used for positional parameters.
  * If the delimiter appears for another purpose in a query that requires named parameters,
  * it might be necessary for the application to explicitly define the {@code Param} in order to

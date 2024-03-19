@@ -58,7 +58,7 @@ import java.lang.annotation.Target;
  * <p>The {@code By} annotation is unnecessary when the method parameter name
  * matches the entity attribute name and the application is compiled with the
  * {@code -parameters} compiler option that makes parameter names available
- * at run time.</p>
+ * at runtime.</p>
  *
  * <p>Thus, when this compiler option is enabled, the previous example may be
  * written without the use of {@code By}:</p>

@@ -1348,7 +1348,7 @@ public class EntityTests {
         assertEquals(0L, page.totalPages());
     }
 
-    @Assertion(id = "133", strategy = "Use count and exists methods where the primary entity class is inferred from the life cycle methods.")
+    @Assertion(id = "133", strategy = "Use count and exists methods where the primary entity class is inferred from the lifecycle methods.")
     public void testPrimaryEntityClassDeterminedByLifeCycleMethods() {
         assertEquals(4, customRepo.countByIdIn(Set.of(2L, 15L, 37L, -5L, 60L)));
 
