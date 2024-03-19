@@ -826,7 +826,7 @@ A _parameter-based automatic query method_ is an abstract method annotated with 
 
 Each automatic query method must be assigned an entity type. The rules for inferring the entity type depend on the semantics of the automatic query annotation. Typically:
 
-- If the automatic query method returns an entity type, the method return type identifies the entity. For example, the return type might be `E`, `Optional<E>`, `Page<E>`, or `List<E>`, where `E` is an entity class. Then the automatic query method would be assigned the entity type `E`.
+- If the automatic query method returns an entity type, the method return type identifies the entity. For example, the return type might be `E`, `Optional<E>`, `E[]`, `Page<E>`, or `List<E>`, where `E` is an entity class. Then the automatic query method would be assigned the entity type `E`.
 - If the query does not return an entity type, the entity assigned to the automatic query method is the primary entity type of the repository.
 
 Jakarta Data infers a query based on the parameters of the method. Each parameter must either:
