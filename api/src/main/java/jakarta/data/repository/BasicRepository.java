@@ -147,15 +147,6 @@ public interface BasicRepository<T, K> extends DataRepository<T, K> {
     Optional<T> findById(@By(ID) K id);
 
     /**
-     * Returns whether an entity with the given Id exists.
-     *
-     * @param id must not be {@code null}.
-     * @return {@code true} if an entity with the given Id exists, {@code false} otherwise.
-     * @throws NullPointerException when the Id is {@code null}.
-     */
-    boolean existsById(K id);
-
-    /**
      * Retrieves all persistent entities of the specified type from the database.
      *
      * @return a stream of all entities; will never be {@code null}.
@@ -177,20 +168,6 @@ public interface BasicRepository<T, K> extends DataRepository<T, K> {
      */
     @Find
     Page<T> findAll(PageRequest<T> pageRequest);
-
-    /**
-     * Returns all instances of the type {@code T} with the given Ids.
-     * <p>
-     * If some or all Ids are not found, no entities are returned for these Ids.
-     * <p>
-     * Note that the order of elements in the result is not guaranteed.
-     *
-     * @param ids must not be {@code null} nor contain any {@code null} values.
-     * @return guaranteed to be not {@code null}. The size can be equal or less than the number of given
-     * ids.
-     * @throws NullPointerException in case the given {@link Iterable ids} or one of its items is {@code null}.
-     */
-    Stream<T> findByIdIn(Iterable<K> ids);
 
     /**
      * Deletes the entity with the given Id.
@@ -215,16 +192,6 @@ public interface BasicRepository<T, K> extends DataRepository<T, K> {
      */
     @Delete
     void delete(T entity);
-
-    /**
-     * Deletes all instances of the type {@code T} with the given Ids.
-     * <p>
-     * Entities that are not found in the persistent store are silently ignored.
-     *
-     * @param ids must not be {@code null}. Must not contain {@code null} elements.
-     * @throws NullPointerException when the iterable is {@code null} or contains {@code null} elements.
-     */
-    void deleteByIdIn(Iterable<K> ids);
 
     /**
      * Deletes the given entities. Deletion of each entity is performed by matching the unique identifier,
