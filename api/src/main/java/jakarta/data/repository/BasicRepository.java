@@ -25,6 +25,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import static jakarta.data.repository.By.ID;
+
 /**
  * <p>A built-in repository supertype for performing basic operations on entities.</p>
  *
@@ -141,7 +143,8 @@ public interface BasicRepository<T, K> extends DataRepository<T, K> {
      * @return the entity with the given Id or {@link Optional#empty()} if none is found.
      * @throws NullPointerException when the Id is {@code null}.
      */
-    Optional<T> findById(K id);
+    @Find
+    Optional<T> findById(@By(ID) K id);
 
     /**
      * Returns whether an entity with the given Id exists.
@@ -197,7 +200,8 @@ public interface BasicRepository<T, K> extends DataRepository<T, K> {
      * @param id must not be {@code null}.
      * @throws NullPointerException when the Id is {@code null}.
      */
-    void deleteById(K id);
+    @Delete
+    void deleteById(@By(ID) K id);
 
     /**
      * Deletes a given entity. Deletion is performed by matching the Id, and if the entity is

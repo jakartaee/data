@@ -43,7 +43,7 @@ import java.lang.annotation.Target;
  * <p>The {@code Param} annotation is unnecessary when the method parameter name
  * matches the query language named parameter name and the application is compiled with the
  * {@code -parameters} compiler option that makes parameter names available
- * at run time.</p>
+ * at runtime.</p>
  *
  * @see Query
  */

@@ -236,7 +236,7 @@ import jakarta.data.repository.Update;
  * <p>Repository methods following the <b>Query by Method Name</b> pattern
  * must include the {@code By} keyword in the method name and must not include
  * the {@code @Find} annotation, {@code @Query} annotation, or
- * any life cycle annotations on the method or any data access related annotations
+ * any lifecycle annotations on the method or any data access related annotations
  * on the method parameters. Query conditions
  * are determined by the portion of the method name following the {@code By} keyword.</p>
  *
@@ -572,7 +572,7 @@ import jakarta.data.repository.Update;
  * If the {@link By} annotation is missing, the method parameter name must
  * match the name of an entity attribute and the repository must be compiled
  * with the {@code -parameters} compiler option so that parameter names are
- * available at run time. The {@code _} character may be used in a method
+ * available at runtime. The {@code _} character may be used in a method
  * parameter name to reference embedded attributes. All conditions are
  * considered to be the equality condition. All conditions must match in
  * order to retrieve an entity.</p>

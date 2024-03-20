@@ -826,7 +826,7 @@ A _parameter-based automatic query method_ is an abstract method annotated with 
 
 Each automatic query method must be assigned an entity type. The rules for inferring the entity type depend on the semantics of the automatic query annotation. Typically:
 
-- If the automatic query method returns an entity type, the method return type identifies the entity. For example, the return type might be `E`, `Optional<E>`, `Page<E>`, or `List<E>`, where `E` is an entity class. Then the automatic query method would be assigned the entity type `E`.
+- If the automatic query method returns an entity type, the method return type identifies the entity. For example, the return type might be `E`, `Optional<E>`, `E[]`, `Page<E>`, or `List<E>`, where `E` is an entity class. Then the automatic query method would be assigned the entity type `E`.
 - If the query does not return an entity type, the entity assigned to the automatic query method is the primary entity type of the repository.
 
 Jakarta Data infers a query based on the parameters of the method. Each parameter must either:
@@ -1677,5 +1677,5 @@ The following order, with the lower number having higher precedence, is used whe
 4. If the method is annotated with an <<Parameter-based automatic query methods,automatic query annotation>>, such as `@Find`, or with a <<Lifecycle methods,lifecycle annotation>> declaring the type of operation, for example, with `@Insert`, `@Update`, `@Save`, or `@Delete`, and the provider recognizes the annotation, then the annotation determines how the method is implemented, possibly with the help of other annotations present on the method parameters, for example, any `@By` annotations of the parameters.
 5. If the method is named according to the conventions of _Query by Method Name_, then the implementation follows the <<Query by Method Name,_Query by Method Name_>> pattern.
 
-A repository method that does not fit any of the above patterns and is not handled as a vendor-specific extension to the specification must either result in an error at build time or raise `UnsupportedOperationException` at run time.
+A repository method that does not fit any of the above patterns and is not handled as a vendor-specific extension to the specification must either result in an error at build time or raise `UnsupportedOperationException` at runtime.
 
