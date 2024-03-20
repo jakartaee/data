@@ -234,6 +234,11 @@ public class EntityTests {
         assertEquals(104, box5.width);
         assertEquals(185, box5.height);
 
+        // BasicRepository.deleteById
+        boxes.deleteById("TestBasicRepositoryMethods-05");
+        TestPropertyUtility.waitForEventualConsistency();
+
+        assertEquals(0, boxes.findAll().count());
     }
 
     @Assertion(id = "133", strategy = "Use a repository that inherits from BasicRepository and defines no additional methods of its own. Use all of the built-in methods.")
