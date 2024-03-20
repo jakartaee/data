@@ -64,7 +64,7 @@ import jakarta.data.Sort;
  *     public static final String YEAROFBIRTH = "yearOfBirth";
  *
  *     public static volatile {@code SortableAttribute<Person>} ssn; // ssn or id
- *     public static volatile Attribute name;
+ *     public static volatile {@code Attribute<Person>} name;
  *     public static volatile {@code TextAttribute<Person>} name_first;
  *     public static volatile {@code TextAttribute<Person>} name_last;
  *     public static volatile {@code SortableAttribute<Person>} yearOfBirth;
