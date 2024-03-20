@@ -141,8 +141,6 @@ public class EntityTests {
                        "Use all of the built-in methods.")
     public void testBasicRepositoryBuiltInMethods() {
 
-        TestPropertyUtility.waitForEventualConsistency();
-
         // BasicRepository.saveAll
         Iterable<Box> saved = boxes.saveAll(List.of(Box.of("TestBasicRepositoryMethods-01", 119, 120, 169),
                                                     Box.of("TestBasicRepositoryMethods-02", 20, 21, 29),
