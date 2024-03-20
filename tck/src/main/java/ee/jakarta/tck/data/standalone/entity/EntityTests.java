@@ -244,8 +244,6 @@ public class EntityTests {
     @Assertion(id = "133", strategy = "Use a repository that inherits from BasicRepository and defines no additional methods of its own. Use all of the built-in methods.")
     public void testBasicRepositoryMethods() {
 
-        TestPropertyUtility.waitForEventualConsistency();
-
         // BasicRepository.saveAll
         Iterable<Box> saved = boxes.saveAll(List.of(Box.of("TestBasicRepositoryMethods-01", 119, 120, 169),
                                                     Box.of("TestBasicRepositoryMethods-02", 20, 21, 29),
