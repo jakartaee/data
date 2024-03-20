@@ -126,13 +126,7 @@ public class EntityTests {
             strategy = "Use a repository that inherits from BasicRepository and adds some methods of its own. " +
                        "Use both built-in methods and the additional methods.")
     public void testBasicRepository() {
-        assertEquals(false, numbers.existsById(0L));
-        assertEquals(true, numbers.existsById(80L));
 
-        Stream<NaturalNumber> found;
-        found = numbers.findByIdIn(List.of(70L, 40L, -20L, 10L));
-        assertEquals(List.of(10L, 40L, 70L),
-                     found.map(NaturalNumber::getId).sorted().collect(Collectors.toList()));
 
         found = numbers.findByIdBetween(50L, 59L, Sort.asc("numType"));
         List<Long> list = found.map(NaturalNumber::getId).collect(Collectors.toList());
@@ -265,21 +259,10 @@ public class EntityTests {
         assertEquals(104, box5.width);
         assertEquals(185, box5.height);
 
-        // BasicRepository.deleteByIdIn
-        boxes.deleteByIdIn(List.of("TestBasicRepositoryMethods-05"));
-        TestPropertyUtility.waitForEventualConsistency();
-
-        assertEquals(0, boxes.findAll().count());
     }
 
     @Assertion(id = "133", strategy = "Use a repository that inherits from BasicRepository and defines no additional methods of its own. Use all of the built-in methods.")
     public void testBasicRepositoryMethods() {
-        boxes.deleteByIdIn(List.of(
-                "TestBasicRepositoryMethods-01",
-                "TestBasicRepositoryMethods-02",
-                "TestBasicRepositoryMethods-03",
-                "TestBasicRepositoryMethods-04",
-                "TestBasicRepositoryMethods-05"));
 
         TestPropertyUtility.waitForEventualConsistency();
 
@@ -342,23 +325,8 @@ public class EntityTests {
 
         TestPropertyUtility.waitForEventualConsistency();
 
-        assertEquals(false, boxes.existsById("TestBasicRepositoryMethods-01"));
         assertEquals(3, boxes.findAll().count());
 
-        // BasicRepository.findByIdIn
-        Stream<Box> stream = boxes.findByIdIn(List.of("TestBasicRepositoryMethods-04", "TestBasicRepositoryMethods-05"));
-        List<Box> list = stream.sorted(Comparator.comparing(b -> b.boxIdentifier)).collect(Collectors.toList());
-        assertEquals(2, list.size());
-        box4 = list.get(0);
-        assertEquals("TestBasicRepositoryMethods-04", box4.boxIdentifier);
-        assertEquals(45, box4.length);
-        assertEquals(28, box4.width);
-        assertEquals(53, box4.height);
-        box5 = list.get(1);
-        assertEquals("TestBasicRepositoryMethods-05", box5.boxIdentifier);
-        assertEquals(153, box5.length);
-        assertEquals(104, box5.width);
-        assertEquals(185, box5.height);
 
         // BasicRepository.delete
         boxes.delete(box4);
@@ -366,8 +334,8 @@ public class EntityTests {
         TestPropertyUtility.waitForEventualConsistency();
 
         // BasicRepository.findAll
-        stream = boxes.findAll();
-        list = stream.sorted(Comparator.comparing(b -> b.boxIdentifier)).collect(Collectors.toList());
+        Stream<Box> stream = boxes.findAll();
+        List<Box> list = stream.sorted(Comparator.comparing(b -> b.boxIdentifier)).collect(Collectors.toList());
         assertEquals(2, list.size());
         box4 = list.get(0);
         assertEquals("TestBasicRepositoryMethods-03", box3.boxIdentifier);
@@ -393,8 +361,6 @@ public class EntityTests {
         assertEquals(104, box5.width);
         assertEquals(185, box5.height);
 
-        // BasicRepository.deleteByIdIn
-        boxes.deleteByIdIn(List.of("TestBasicRepositoryMethods-05"));
 
         TestPropertyUtility.waitForEventualConsistency();
 
