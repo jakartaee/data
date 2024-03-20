@@ -124,7 +124,7 @@ public class PersistenceEntityTests {
         catalog.save(Product.of("banana", 0.49, "TEST-PROD-17", Department.GROCERY));
         catalog.save(Product.of("plum", 0.89, "TEST-PROD-18", Department.GROCERY));
 
-        Iterable<Product> found = catalog.findByIdBetween("TEST-PROD-13", "TEST-PROD-17", Order.by(Sort.asc("name")));
+        Iterable<Product> found = catalog.findByProductNumBetween("TEST-PROD-13", "TEST-PROD-17", Order.by(Sort.asc("name")));
         Iterator<Product> it = found.iterator();
         assertEquals(true, it.hasNext());
         assertEquals("banana", it.next().getName());
@@ -256,7 +256,7 @@ public class PersistenceEntityTests {
         // Remove only the entities that actually exist in the database
         catalog.removeMultiple(strawberries, blueberries, raspberries);
 
-        Iterable<Product> remaining = catalog.findByIdBetween("TEST-PROD-95", "TEST-PROD-99", Order.by());
+        Iterable<Product> remaining = catalog.findByProductNumBetween("TEST-PROD-95", "TEST-PROD-99", Order.by());
         assertEquals(false, remaining.iterator().hasNext());
     }
 
