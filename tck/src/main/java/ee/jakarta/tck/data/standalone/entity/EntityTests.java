@@ -339,6 +339,8 @@ public class EntityTests {
         assertEquals(104, box5.width);
         assertEquals(185, box5.height);
 
+        // BasicRepository.deleteById
+        boxes.deleteById("TestBasicRepositoryMethods-05");
 
         TestPropertyUtility.waitForEventualConsistency();
 
