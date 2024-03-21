@@ -97,8 +97,8 @@ Jakarta Data defines a hierarchy of built-in interfaces which user-defined repos
 
 ....
 
-A repository which extends a built-in supertype usually acts as a home for operations acting in a single entity type.
-This entity type is designated via the first generic type variable of the generic supertype.
+A repository which extends a built-in supertype usually acts as a home for operations acting on a single entity type called the _primary entity type_ of the repository.
+The primary entity type is determined by the argument to the first generic type variable of the generic supertype.
 
 - The `BasicRepository` interface includes some of the most common operations applying to a single type of entity, including `save()`, `delete()`, and `findById()`.
 
