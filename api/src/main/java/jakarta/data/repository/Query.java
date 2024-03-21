@@ -29,7 +29,10 @@ import java.lang.annotation.Target;
 /**
  * <p>Annotates a repository method as a query method, specifying a query written in Jakarta Data Query Language (JDQL)
  * or in Jakarta Persistence Query Language (JPQL). A Jakarta Data provider is not required to support the complete JPQL
- * language, which targets relational data stores.</p>
+ * language, which targets relational data stores. However, a given provider might offer a subset of JPQL which goes
+ * beyond the subset required by JDQL, or might even offer vendor-specific extensions to JDQL which target particular
+ * capabilities of the target data store technology. Such extensions come with no guarantee of portability between
+ * providers, nor between databases.</p>
  *
  * <p>The required {@link #value} member specifies the JDQL or JPQL query as a string.</p>
  *
