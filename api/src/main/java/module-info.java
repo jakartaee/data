@@ -29,6 +29,7 @@ import jakarta.data.repository.Delete;
 import jakarta.data.repository.Find;
 import jakarta.data.repository.Insert;
 import jakarta.data.repository.OrderBy;
+import jakarta.data.repository.Param;
 import jakarta.data.repository.Query;
 import jakarta.data.repository.Repository;
 import jakarta.data.repository.Save;
@@ -157,7 +158,24 @@ import jakarta.data.repository.Update;
  * }
  * </pre>
  *
- * <h2>Persistent Field Names</h2>
+ * <h2>Entities</h2>
+ *
+ * <p>Every entity programming model specifies an entity-defining annotation.
+ * For Jakarta Persistence, this is {@code jakarta.persistence.Entity}. For
+ * Jakarta NoSQL, it is {@code jakarta.nosql.Entity}. An entity class is
+ * identified by its entity-defining annotation.</p>
+ *
+ * <p>Furthermore, an entity programming model must define an annotation which
+ * identifies the field or property holding the unique identifier of an entity.
+ * For Jakarta Persistence, it is {@code jakarta.persistence.Id} or
+ * {@code jakarta.persistence.EmbeddedId}. For Jakarta NoSQL, it is
+ * {@code jakarta.nosql.Id}. Alternatively, an entity programming model might
+ * allow the identifier field or property to be identified via some convention.
+ * Every entity has a unique identifier.</p>
+ *
+ * <p>An entity has an arbitrary number of persistent fields or properties.</p>
+ *
+ * <h3>Persistent field names</h3>
  *
  * <p>Each persistent field of an entity or embeddable class is assigned a
  * name:</p>
@@ -179,7 +197,7 @@ import jakarta.data.repository.Update;
  * <li>For parameters of a {@link Find} method, the delimiter is {@code _}.
  * <li>For path expressions within a {@linkplain Query query}, the delimiter
  *     is {@code .}.
- * <li>For method names in <i>Query by Method Name</i>, the delimiter is
+ * <li>For method names in <em>Query by Method Name</em>, the delimiter is
  *     {@code _} and it is optional. For example, {@code findByAddress_ZipCode}
  *     or {@code findByAddressZipCode} are both legal.
  * <li>For arguments to constructor methods of {@link Sort}, the delimiter
@@ -188,8 +206,69 @@ import jakarta.data.repository.Update;
  *     annotation the delimiter is {@code _} or {@code .}.
  * </ul>
  *
- * <p>A persistent field name used in a <i>Query by Method Name</i> must not
- * contain a keyword reserved by <i>Query by Method Name</i>.</p>
+ * <p>A persistent field name used in a Query by Method Name must not contain
+ * a keyword reserved by Query by Method Name.</p>
+ *
+ * <h3>Persistent field types (basic types)</h3>
+ *
+ * <p>The following is a list of valid basic entity attribute types.
+ * These can be used as the types of repository method parameters
+ * for the respective entity attribute.</p>
+ *
+ * <table style="width: 100%">
+ * <caption><b>Basic Types for Entity Attributes</b></caption>
+ * <tr style="background-color:#ccc">
+ * <td style="vertical-align: top; width:20%"><b>Category</b></td>
+ * <td style="vertical-align: top; width:20%"><b>Basic Types</b></td>
+ * <td style="vertical-align: top; width:*"><b>Notes</b></td>
+ * </tr>
+ *
+ * <tr style="vertical-align: top; background-color:#eee"><td>Primitives and primitive wrappers</td>
+ * <td>{@code boolean} and {@link Boolean}
+ * <br>{@code byte} and {@link Byte}
+ * <br>{@code char} and {@link Character}
+ * <br>{@code double} and {@link Double}
+ * <br>{@code float} and {@link Float}
+ * <br>{@code int} and {@link Integer}
+ * <br>{@code long} and {@link Long}
+ * <br>{@code short} and {@link Short}</td>
+ * <td></td></tr>
+ *
+ * <tr style="vertical-align: top"><td>Binary data</td>
+ * <td>{@code byte[]}</td>
+ * <td>Not sortable.</td></tr>
+ *
+ * <tr style="vertical-align: top; background-color:#eee"><td>Enumerated types</td>
+ * <td>{@code enum} types</td>
+ * <td>It is provider-specific whether sorting is based on
+ * {@link Enum#ordinal()} or {@link Enum#name()}.
+ * The Jakarta Persistence default of {@code ordinal} can be
+ * overridden with the {@code jakarta.persistence.Enumerated}
+ * annotation.</td></tr>
+ *
+ * <tr style="vertical-align: top"><td>Large numbers</td>
+ * <td>{@link java.math.BigDecimal}
+ * <br>{@link java.math.BigInteger}</td>
+ * <td></td></tr>
+ *
+ * <tr style="vertical-align: top; background-color:#eee"><td>Textual data</td>
+ * <td>{@link String}</td>
+ * <td></td></tr>
+ *
+ * <tr style="vertical-align: top"><td>Time and Dates</td>
+ * <td>{@link java.time.Instant}
+ * <br>{@link java.time.LocalDate}
+ * <br>{@link java.time.LocalDateTime}
+ * <br>{@link java.time.LocalTime}</td>
+ * <td></td></tr>
+ *
+ * <tr style="vertical-align: top; background-color:#eee"><td>Universally unique identifier</td>
+ * <td>{@link java.util.UUID}</td>
+ * <td></td></tr>
+ *
+ * </table>
+ *
+ * <p>A Jakarta Data provider might allow additional entity attribute types.</p>
  *
  * <h2>Lifecycle methods</h2>
  *
@@ -203,6 +282,10 @@ import jakarta.data.repository.Update;
  * <li>{@code List<E>} or {@code E[]} where {@code E} is the class of the
  *     entities.</li>
  * </ul>
+ *
+ * <p>The annotated method must be declared {@code void}, or, except in the
+ * case of {@code @Delete}, have a return type that is the same as the type
+ * of its parameter.</p>
  *
  * <table style="width: 100%">
  * <caption><b>Lifecycle Annotations</b></caption>
@@ -229,11 +312,48 @@ import jakarta.data.repository.Update;
  * <td>{@code @Update}<br>{@code public boolean modify(Product modifiedProduct);}</td></tr>
  * </table>
  *
- * <p>Refer to the Javadoc of each annotation for more information.</p>
+ * <p>Refer to the API documentation for {@link Insert}, {@link Update}, {@link Delete},
+ * and {@link Save} for further information about these annotations.</p>
+ *
+ * <h2>JDQL query methods</h2>
+ *
+ * <p>The {@link Query} annotation specifies that a method executes a query written
+ * in Jakarta Data Query Language (JDQL) or Jakarta Persistence Query Language (JPQL).
+ * A Jakarta Data provider is not required to support the complete JPQL language,
+ * which targets relational data stores.</p>
+ *
+ * <p>Each parameter of the annotated method must either:</p>
+ * <ul>
+ * <li>have exactly the same name (the parameter name in the Java source, or a name
+ *     assigned by {@link Param @Param}) and type as a named parameter of the query,</li>
+ * <li>have exactly the same type and position within the parameter list of the method
+ *     as a positional parameter of the query, or</li>
+ * <li>be of type {@code Limit}, {@code Order}, {@code PageRequest}, or {@code Sort}.</li>
+ * </ul>
+ *
+ * <p>The {@link Param} annotation associates a method parameter with a named parameter.
+ * The {@code Param} annotation is unnecessary when the method parameter name matches the
+ * name of a named parameter and the application is compiled with the {@code -parameters}
+ * compiler option making parameter names available at runtime.</p>
+ *
+ * <pre>
+ * // example using named parameters
+ * &#64;Query("where age between :min and :max order by age")
+ * List&lt;Person&gt; peopleInAgeRange(int min, int max);
+ * </pre>
+ *
+ * <pre>
+ * // example using an ordinal parameter
+ * &#64;Query("where ssn = ?1 and deceased = false")
+ * Optional&lt;Person&gt; person(String ssn);
+ * </pre>
+ *
+ * <p>Refer to the {@linkplain Query API documentation} for {@code @Query} for further
+ * information.</p>
  *
  * <h2>Query by Method Name</h2>
  *
- * <p>Repository methods following the <b>Query by Method Name</b> pattern
+ * <p>Repository methods following the <em>Query by Method Name</em> pattern
  * must include the {@code By} keyword in the method name and must not include
  * the {@code @Find} annotation, {@code @Query} annotation, or
  * any lifecycle annotations on the method or any data access related annotations
@@ -269,8 +389,7 @@ import jakarta.data.repository.Update;
  * <td>{@code updateByIdSetModifiedOnAddPrice(productId, now, 10.0)}</td></tr>
  * </table>
  *
- * <p>When using the <i>Query By Method Name</i> pattern
- * the conditions are defined by the portion of the repository method name
+ * <p>The conditions are defined by the portion of the repository method name
  * (referred to as the Predicate) that follows the {@code By} keyword,
  * in the same order specified.
  * Most conditions, such as {@code Like} or {@code LessThan},
@@ -280,7 +399,7 @@ import jakarta.data.repository.Update;
  * <p>Key-value and Wide-Column databases raise {@link UnsupportedOperationException}
  * for queries on attributes other than the identifier/key.</p>
  *
- * <h3>Reserved Keywords for Query by Method Name</h3>
+ * <h3>Reserved keywords for Query by Method Name</h3>
  *
  * <table style="width: 100%">
  * <caption><b>Reserved for Predicate</b></caption>
@@ -457,7 +576,7 @@ import jakarta.data.repository.Update;
  * <p>Key-value and Wide-Column databases raise {@link UnsupportedOperationException}
  * if an order clause is present.</p>
  *
- * <h3>Reserved for Future Use</h3>
+ * <h3>Reserved for future use</h3>
  * <p>
  * The specification does not define behavior for the following keywords, but reserves
  * them as keywords that must not be used as entity attribute names when using
@@ -478,14 +597,14 @@ import jakarta.data.repository.Update;
  * Reserved for updates: {@code Add}, {@code Divide}, {@code Multiply}, {@code Set}, {@code Subtract}.
  * </p>
  *
- * <h3>Wildcard Characters</h3>
+ * <h3>Wildcard characters</h3>
  * <p>
  * Wildcard characters for patterns are determined by the data access provider.
  * For Jakarta Persistence providers, {@code _} matches any one character
  * and {@code %} matches 0 or more characters.
  * </p>
  *
- * <h3>Logical Operator Precedence</h3>
+ * <h3>Logical operator precedence</h3>
  * <p>
  * For relational databases, the logical operator {@code And}
  * is evaluated on conditions before {@code Or} when both are specified
@@ -493,18 +612,16 @@ import jakarta.data.repository.Update;
  * the capabilities of the database.
  * </p>
  *
- * <h2>Return Types for Repository Methods</h2>
+ * <h3>Return types for Query by Method Name</h3>
  *
  * <p>The following is a table of valid return types.
- * The <b>Method</b> column shows name patterns for <i>Query by Method Name</i>.
- * For methods with the {@link Query} annotation or <i>Parameter-based Conditions</i>,
- * which have flexible naming, refer to the equivalent <i>Query by Method Name</i>
- * pattern in the table. For example, to identify the valid return types for a method,
+ * The <b>Method</b> column shows name patterns for Query by Method Name.
+ * For example, to identify the valid return types for a method,
  * {@code findNamed(String name, PageRequest pagination)}, refer to the row for
  * {@code find...By...(..., PageRequest)}.</p>
  *
  * <table style="width: 100%">
- * <caption><b>Return Types when using Query by Method Name and Parameter-based Conditions</b></caption>
+ * <caption><b>Return Types for Query by Method Name</b></caption>
  * <tr style="background-color:#ccc">
  * <td style="vertical-align: top"><b>Method</b></td>
  * <td style="vertical-align: top"><b>Return Types</b></td>
@@ -549,115 +666,79 @@ import jakarta.data.repository.Update;
  *
  * </table>
  *
- * <h3>Return Types for Annotated Methods</h3>
- *
- * <p>The legal return types for a method annotated {@link Query} depend on
- * the Query Language operation that is performed. For queries that correspond
- * to operations in the above table, the same return types must be supported as
- * for the Query-by-Method-Name and Parameter-based Conditions patterns.</p>
- *
- * <p>The legal return types for a method annotated {@link Insert}, {@link Update},
- * {@link Save}, {@link Delete}, or {@link Find} are specified by the API documentation
- * for those annotations.</p>
- *
- * <h2>Parameter-based Automatic Query Methods</h2>
+ * <h2>Parameter-based automatic query methods</h2>
  *
  * <p>The {@link Find} annotation indicates that the repository method is
  * a parameter-based automatic query method. In this case, the method name
  * does not determine the semantics of the method, and the query conditions
- * are defined by the method parameters.</p>
+ * are determined by the method parameters.</p>
+ *
+ * <p>Each parameter of the annotated method must either:</p>
+ * <ul>
+ * <li>have exactly the same type and name (the parameter name in the Java
+ *     source, or a name assigned by {@link By @By}) as a persistent field
+ *     or property of the entity class, or</li>
+ * <li>be of type {@link jakarta.data.Limit}, {@link jakarta.data.Sort},
+ *     {@link jakarta.data.Order}, or {@link jakarta.data.page.PageRequest}.</li>
+ * </ul>
  *
  * <p>A parameter may be annotated with the {@link By} annotation to specify
  * the name of the entity attribute that the argument is to be compared with.
  * If the {@link By} annotation is missing, the method parameter name must
  * match the name of an entity attribute and the repository must be compiled
  * with the {@code -parameters} compiler option so that parameter names are
- * available at runtime. The {@code _} character may be used in a method
- * parameter name to reference embedded attributes. All conditions are
- * considered to be the equality condition. All conditions must match in
- * order to retrieve an entity.</p>
+ * available at runtime.</p>
+ *
+ * <p>Each parameter determines a query condition, and each such condition
+ * is an equality condition. All conditions must match in order that a record
+ * satisfy the query.</p>
+ *
+ * <pre>
+ * &#64;Find
+ * &#64;OrderBy("nationality")
+ * &#64;OrderBy("age")
+ * List&lt;Person&gt; peopleByAgeAndNationality(int age, Country nationality);
+ * </pre>
+ *
+ * <pre>
+ * &#64;Find
+ * Optional&lt;Person&gt; person(String ssn);
+ * </pre>
+ *
+ * <p>The {@code _} character may be used in a method parameter name to
+ * reference an embedded attribute.</p>
+ *
+ * <pre>
+ * &#64;Find
+ * &#64;OrderBy("address.zip")
+ * Stream&lt;Person&gt; peopleInCity(String address_city);
+ * </pre>
  *
  * <p>The following examples illustrate the difference between Query By Method
  * Name and parameter-based automatic query methods. Both methods accept the
  * same parameters and have the same behavior.</p>
  *
  * <pre>
- * // Query by Method Name:
+ * // Query by Method Name
  * Vehicle[] findByMakeAndModelAndYear(String makerName, String model, int year, {@code Sort<?>...} sorts);
  *
- * // Parameter-based Conditions:
+ * // parameter-based conditions
  * {@code @Find}
  * Vehicle[] searchFor(String make, String model, int year, {@code Sort<?>...} sorts);
  * </pre>
  *
- * <h2>Basic Types</h2>
+ * <p>For further information, refer to the {@linkplain Find API documentation}
+ * for {@code @Find}.</p>
  *
- * <p>The following is a list of valid basic entity attribute types.
- * These can be used as the types of repository method parameters
- * for the respective entity attribute.</p>
+ * <h2>Special parameters</h2>
  *
- * <table style="width: 100%">
- * <caption><b>Basic Types for Entity Attributes</b></caption>
- * <tr style="background-color:#ccc">
- * <td style="vertical-align: top; width:20%"><b>Category</b></td>
- * <td style="vertical-align: top; width:20%"><b>Basic Types</b></td>
- * <td style="vertical-align: top; width:*"><b>Notes</b></td>
- * </tr>
- *
- * <tr style="vertical-align: top; background-color:#eee"><td>Primitives and primitive wrappers</td>
- * <td>{@code boolean} and {@link Boolean}
- * <br>{@code byte} and {@link Byte}
- * <br>{@code char} and {@link Character}
- * <br>{@code double} and {@link Double}
- * <br>{@code float} and {@link Float}
- * <br>{@code int} and {@link Integer}
- * <br>{@code long} and {@link Long}
- * <br>{@code short} and {@link Short}</td>
- * <td></td></tr>
- *
- * <tr style="vertical-align: top"><td>Binary data</td>
- * <td>{@code byte[]}</td>
- * <td>Not sortable.</td></tr>
- *
- * <tr style="vertical-align: top; background-color:#eee"><td>Enumerated types</td>
- * <td>{@code enum} types</td>
- * <td>It is provider-specific whether sorting is based on
- * {@link Enum#ordinal()} or {@link Enum#name()}.
- * The Jakarta Persistence default of {@code ordinal} can be
- * overridden with the {@code jakarta.persistence.Enumerated}
- * annotation.</td></tr>
- *
- * <tr style="vertical-align: top"><td>Large numbers</td>
- * <td>{@link java.math.BigDecimal}
- * <br>{@link java.math.BigInteger}</td>
- * <td></td></tr>
- *
- * <tr style="vertical-align: top; background-color:#eee"><td>Textual data</td>
- * <td>{@link String}</td>
- * <td></td></tr>
- *
- * <tr style="vertical-align: top"><td>Time and Dates</td>
- * <td>{@link java.time.Instant}
- * <br>{@link java.time.LocalDate}
- * <br>{@link java.time.LocalDateTime}
- * <br>{@link java.time.LocalTime}</td>
- * <td></td></tr>
- *
- * <tr style="vertical-align: top; background-color:#eee"><td>Universally unique identifier</td>
- * <td>{@link java.util.UUID}</td>
- * <td></td></tr>
- *
- * </table>
- *
- * <p>Jakarta Data providers might allow additional entity attribute types.</p>
- *
- * <h2>Additional Method Parameters</h2>
- *
- * <p>When using {@code @Query} or the <i>Query By Method Name</i> pattern or
- * the <i>parameter-based automatic query method</i> pattern, after conditions
- * are determined from the corresponding parameters, the remaining repository
- * method parameters are used to enable other capabilities such as pagination,
- * limits, and sorting.</p>
+ * <p>A repository method annotated {@link Query @Query}, {@link Find @Find} or
+ * following the <em>Query by Method Name</em> pattern may have <em>special
+ * parameters</em> of type {@link Limit}, {@link Order}, {@link Sort}, or
+ * {@link PageRequest} if the method return type indicates that the method may
+ * return multiple entities. Special parameters occur after parameters related
+ * to query conditions and JDQL query parameters, and enable capabilities such
+ * as pagination, limits, and sorting.</p>
  *
  * <h3>Limits</h3>
  *
@@ -688,7 +769,7 @@ import jakarta.data.repository.Update;
  *                  "%phone%", PageRequest.of(Product.class).size(20));
  * </pre>
  *
- * <h3>Sorting at Runtime</h3>
+ * <h3>Sorting</h3>
  *
  * <p>When a page is requested with a {@code PageRequest}, dynamic sorting
  * criteria may be supplied via the method {@link PageRequest#sortBy(Sort)}
@@ -743,12 +824,12 @@ import jakarta.data.repository.Update;
  *                                 Sort.asc("name"));
  * </pre>
  *
- * <h2>Repository Default Methods</h2>
+ * <h2>Repository default methods</h2>
  *
  * <p>A repository interface may declare any number of {@code default} methods
  * with user-written implementations.</p>
  *
- * <h2>Resource Accessor Methods</h2>
+ * <h2>Resource accessor methods</h2>
  *
  * <p>In advanced scenarios, the application program might make direct use of
  * some underlying resource acquired by the Jakarta Data provider, such as a
@@ -787,26 +868,29 @@ import jakarta.data.repository.Update;
  * the application programmer is responsible for closing the resource
  * instance.</p>
  *
- * <h2>Precedence of Repository Methods</h2>
+ * <h2>Precedence of repository methods</h2>
  *
  * <p>The following order, with the lower number having higher precedence,
  * is used to interpret the meaning of repository methods.</p>
  *
  * <ol>
- * <li>If a method is a <b>Java default method</b> with implementation,
- *     provided, then the provided implementation is used.</li>
- * <li>If a method has a <b>Resource Accessor Method</b> return type,
- *     then the method is implemented as a Resource Accessor Method.</li>
- * <li>If a method is annotated with {@link Query}, then the method is
- *     implemented to run the corresponding Query Language query.</li>
- * <li>If a method is annotated with any annotation specifying the type
- *     of operation to be performed, for example, {@link Find}, or a
- *     lifecycle annotation such as {@link Insert}, {@link Update},
- *     {@link Save}, or {@link Delete}, then the annotation determines
- *     how the method is implemented, along with any data access related
- *     annotations placed on the method or on its parameters.</li>
- * <li>If a method is named according to the <b>Query by Method Name</b>
- *     naming conventions, then the implementation follows the Query by
+ * <li>If the method is a Java {@code default} method, then the provided
+ *     implementation is used.</li>
+ * <li>If a method has a <em>resource accessor method</em> return type
+ *     recognized by the Jakarta Data provider, then the method is
+ *     implemented as a resource accessor method.</li>
+ * <li>If a method is annotated with a <em>query annotation</em>
+ *     recognized by the Jakarta Data provider, such as {@link Query},
+ *     then the method is implemented to execute the query specified by
+ *     the query annotation.</li>
+ * <li>If the method is annotated with an automatic query annotation,
+ *     such as {@link Find}, or with a lifecycle annotation declaring
+ *     the type of operation, for example, with {@link Insert},
+ *     {@link Update}, {@link Save}, or {@link Delete}, and the provider
+ *     recognizes the annotation, then the annotation determines how the
+ *     method is implemented.</li>
+ * <li>If a method is named according to the conventions of <em>Query by
+ *     Method Name</em>, then the implementation follows the Query by
  *     Method Name pattern.</li>
  * </ol>
  *
@@ -815,7 +899,7 @@ import jakarta.data.repository.Update;
  * an error at build time or raise {@link UnsupportedOperationException}
  * at runtime.</p>
  *
- * <h2>Identifying the type of Entity</h2>
+ * <h2>Identifying the type of entity</h2>
  *
  * <p>Most repository methods perform operations related to a type of entity.
  * In some cases, the entity type is explicit within the signature of the
@@ -823,21 +907,26 @@ import jakarta.data.repository.Update;
  * {@code existsBy...} the entity type cannot be determined from the method
  * signature and a primary entity type must be defined for the repository.</p>
  *
- * <b>Methods where the entity type is explicitly specified:</b>
+ * <h3>Methods where the entity type is explicitly specified</h3>
+ *
+ * <p>In the following cases, the entity type is determined by the signature
+ * of the repository method.</p>
  *
  * <ul>
  * <li>For repository methods annotated with {@link Insert}, {@link Update},
- *     {@link Save}, or {@link Delete} where the method parameter is a type,
- *     an array of type, or is parameterized with a type that is annotated
- *     as an entity, the entity type is determined by the method parameter
- *     type.</li>
- * <li>For find and delete methods where the return type is a type, an array
- *     of type, or is parameterized with a type that is annotated as an entity,
- *     such as {@code MyEntity}, {@code MyEntity[]}, or {@code Page<MyEntity>},
- *     the entity type is determined by the method return type.</li>
+ *     {@link Save}, or {@link Delete} where the method parameter type is a
+ *     type, an array of a type, or is parameterized with a type annotated
+ *     as an entity, such as {@code MyEntity}, {@code MyEntity[]}, or
+ *     {@code List<MyEntity>}, the entity type is determined by the method
+ *     parameter type.</li>
+ * <li>For {@code find} and {@code delete} methods where the return type is
+ *     a type, an array of a type, or is parameterized with a type annotated
+ *     as an entity, such as {@code MyEntity}, {@code MyEntity[]}, or
+ *     {@code Page<MyEntity>}, the entity type is determined by the method
+ *     return type.</li>
  * </ul>
  *
- * <b>Identifying a Primary Entity Type:</b>
+ * <h3>Identifying a primary entity type:</h3>
  *
  * <p>The following precedence, from highest to lowest, is used to determine
  * a primary entity type for a repository.</p>
@@ -859,10 +948,10 @@ import jakarta.data.repository.Update;
  * <li>Otherwise, if the repository declares lifecycle methods&mdash;that is,
  * has methods annotated with a lifecycle annotation like {@link Insert},
  * {@link Update}, {@link Save}, or {@link Delete}, where the method
- * parameter is a type, an array of type, or is parameterized with a type
- * that is annotated as an entity&mdash;and all of these methods share the
- * same entity type, then the primary entity type for the repository is that
- * entity type. For example,
+ * parameter type is a type, an array of a type, or is parameterized with a
+ * type annotated as an entity&mdash;and all of these methods share the same
+ * entity type, then the primary entity type for the repository is that entity
+ * type. For example,
  * <pre>
  * &#64;Repository
  * public interface Products {
@@ -928,7 +1017,7 @@ import jakarta.data.repository.Update;
  * </pre>
  *
  *
- * <h2>Jakarta Interceptors and Repository Methods</h2>
+ * <h2>Jakarta Interceptors</h2>
  *
  * <p>A repository interface or method of a repository interface may be annotated with an
  * interceptor binding annotation. In the Jakarta EE environment, or in any other environment
@@ -938,7 +1027,7 @@ import jakarta.data.repository.Update;
  * repository implementation, and the interceptors bound to the annotation are applied
  * automatically by the implementation of Jakarta Interceptors.</p>
  *
- * <h2>Jakarta Transactions and Repository Methods</h2>
+ * <h2>Jakarta Transactions</h2>
  *
  * <p>When Jakarta Transactions is available, repository methods can participate in global
  * transactions. If a global transaction is active on the thread of execution in which a
