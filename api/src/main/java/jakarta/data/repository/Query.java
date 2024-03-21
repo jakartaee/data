@@ -18,6 +18,7 @@
 package jakarta.data.repository;
 
 import jakarta.data.Sort;
+import jakarta.data.page.CursoredPage;
 import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
 
@@ -123,10 +124,6 @@ import java.lang.annotation.Target;
  * <pre>
  * {@code Page<String>} page2 = people.namesOfLength(5, 10, page1.nextPageRequest(Person.class));
  * </pre>
- *
- * <p>A Jakarta Data provider is permitted to support features of JPQL which go beyond the subset required by JDQL, even
- * when the provider does not provide a complete implementation of JPQL. A provider which does support such extensions
- * to JDQL might place restrictions on whether or how they may be used together with cursor-based pagination.</p>
  *
  * <p>Annotations such as {@code @Find}, {@code @Query}, {@code @Insert}, {@code @Update}, {@code @Delete}, and
  * {@code @Save} are mutually-exclusive. A given method of a repository interface may have at most one {@code @Find}
