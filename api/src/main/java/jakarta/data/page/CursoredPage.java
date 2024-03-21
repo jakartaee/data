@@ -120,8 +120,8 @@ import java.util.NoSuchElementException;
  * {@code @OrderBy("zipcode")}
  * {@code @OrderBy("birthYear")}
  * {@code @OrderBy("id")}
- * {@code CursoredPage<Customer> getTopBuyers(int minOrders, float minSpent,
- *                                     {@code PageRequest<Customer> pageRequest);}
+ * {@code CursoredPage<Customer>} getTopBuyers(int minOrders, float minSpent,
+ *                                     {@code PageRequest<Customer>} pageRequest);
  * </pre>
  *
  * <p>Only queries which return entities may be used with cursor-based pagination
