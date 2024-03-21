@@ -936,7 +936,7 @@ The parsing of query method names follows a specific format:
 - The method name consists of the subject, the predicate, and optionally the order clause.
 - The subject begins with the action (such as `find` or `delete`) and is optionally followed by an expression (for example, `First10`), followed by any number of other characters, followed by `By`.
 - The predicate defines the query's condition or filtering criteria, where multiple conditions are delimited by `And` or `Or`. For example, `PriceLessThanAndNameLike`.
-- The order clause, which is optional, begins with `OrderBy` and consists of an ordered collection of entity attributes by which to sort results, delimited by `Asc` or `Desc` to specify the sort direction of the preceding attribute.
+- The order clause, which is optional, begins with `OrderBy` and is followed by one or more ordered pairings consisting of entity attribute name and direction of sorting (`Asc` or `Desc`). For example, `OrderByPriceDescIdAsc`. Ordering of results is performed by sorting the first entity attribute according to its respective direction, where results that sort to the same position are subsequently sorted by the second entity attribute according to its respective direction, and so forth.
 - The method name is formed by combining the subject, predicate, and order clause, in that order.
 
 NOTE: This specification uses the terms subject and predicate in a way that aligns with industry terminology rather than how they are defined in English grammar.
@@ -1110,23 +1110,18 @@ Jakarta Data implementations must support the following list of Query by Method 
 |Key-value, Wide-Column
 
 |OrderBy
-|Specify a static sorting order followed by the property path and direction of ascending.
-|findByNameOrderByAge
+|Specify a static sorting order followed by one or more ordered pairings of a property path and direction (`Asc` or `Desc`).
+|findByNameOrderByHeightDescAgeAscIdAsc
 |Key-value, Wide-Column
 
-|OrderBy____Desc
-|Specify a static sorting order followed by the property path and direction of descending.
+|Desc
+|Specify a static sorting order of descending.
 |findByNameOrderByAgeDesc
 |Key-value, Wide-Column
 
-|OrderBy____Asc
-|Specify a static sorting order followed by the property path and direction of ascending.
+|Asc
+|Specify a static sorting order of ascending.
 |findByNameOrderByAgeAsc
-|Key-value, Wide-Column
-
-|OrderBy____(Asc\|Desc)*(Asc\|Desc)
-|Specify several static sorting orders
-|findByNameOrderByAgeAscNameDescYearAsc
 |Key-value, Wide-Column
 
 |===
