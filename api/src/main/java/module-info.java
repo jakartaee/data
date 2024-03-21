@@ -160,10 +160,12 @@ import jakarta.data.repository.Update;
  *
  * <h2>Entities</h2>
  *
- * <p>Every entity programming model specifies an entity-defining annotation.
- * For Jakarta Persistence, this is {@code jakarta.persistence.Entity}. For
- * Jakarta NoSQL, it is {@code jakarta.nosql.Entity}. An entity class is
- * identified by its entity-defining annotation.</p>
+ * <p>An entity programming model typically specifies an entity-defining
+ * annotation that is used to identify entity classes. For Jakarta Persistence,
+ * this is {@code jakarta.persistence.Entity}. For Jakarta NoSQL, it is
+ * {@code jakarta.nosql.Entity}. A provider may even have no entity-defining
+ * annotation and feature a programming model for entity classes where the
+ * entity classes are unannotated.</p>
  *
  * <p>Furthermore, an entity programming model must define an annotation which
  * identifies the field or property holding the unique identifier of an entity.
@@ -690,13 +692,13 @@ import jakarta.data.repository.Update;
  * available at runtime.</p>
  *
  * <p>Each parameter determines a query condition, and each such condition
- * is an equality condition. All conditions must match in order that a record
+ * is an equality condition. All conditions must match for a record to
  * satisfy the query.</p>
  *
  * <pre>
  * &#64;Find
- * &#64;OrderBy("nationality")
- * &#64;OrderBy("age")
+ * &#64;OrderBy("lastName")
+ * &#64;OrderBy("firstName")
  * List&lt;Person&gt; peopleByAgeAndNationality(int age, Country nationality);
  * </pre>
  *
