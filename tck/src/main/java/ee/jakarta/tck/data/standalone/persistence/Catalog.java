@@ -15,11 +15,14 @@
  */
 package ee.jakarta.tck.data.standalone.persistence;
 
+import static jakarta.data.repository.By.ID;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
 import jakarta.data.Order;
+import jakarta.data.repository.By;
 import jakarta.data.repository.DataRepository;
 import jakarta.data.repository.Delete;
 import jakarta.data.repository.Find;
@@ -61,7 +64,8 @@ public interface Catalog extends DataRepository<Product, String> {
     @Save
     void save(Product product);
 
-    void deleteById(String productNum);
+    @Delete
+    void deleteById(@By(ID) String productNum);
 
     long deleteByProductNumLike(String pattern);
 
@@ -77,16 +81,16 @@ public interface Catalog extends DataRepository<Product, String> {
 
     Stream<Product> findByDepartmentsEmpty();
 
-    List<Product> findByIdBetween(String first, String last, Order<Product> sorts);
-
     List<Product> findByNameLike(String name);
-    
-    List<Product> findByProductNumLike(String productNum);
 
     @OrderBy(value = "price", descending = true)
     Stream<Product> findByPriceNotNullAndPriceLessThanEqual(double maxPrice);
 
     List<Product> findByPriceNull();
+
+    List<Product> findByProductNumBetween(String first, String last, Order<Product> sorts);
+
+    List<Product> findByProductNumLike(String productNum);
 
     EntityManager getEntityManager();
 
