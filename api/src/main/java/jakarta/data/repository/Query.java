@@ -18,7 +18,6 @@
 package jakarta.data.repository;
 
 import jakarta.data.Sort;
-import jakarta.data.page.CursoredPage;
 import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
 
