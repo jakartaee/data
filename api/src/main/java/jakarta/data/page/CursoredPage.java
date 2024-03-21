@@ -102,6 +102,28 @@ import java.util.NoSuchElementException;
  * existing entities are modified or if an entity is re-added with different
  * sort criteria after having previously been removed.</p>
  *
+ * <h2>Cursor-based Pagination with {@code @Query}</h2>
+ *
+ * <p>Cursor-based pagination involves generating and appending additional
+ * restrictions involving the key fields to the {@code WHERE} clause of the
+ * query. For this to be possible, a user-provided JDQL or JPQL query must
+ * end with a {@code WHERE} clause to which additional conditions may be
+ * appended.</p>
+ *
+ * <p>Sorting criteria must be specified independently of the user-provided
+ * query, either via the {@link OrderBy} annotation or, or by passing
+ * {@link Sort} criteria within the {@linkplain PageRequest#sorts() page
+ * request}. For example:</p>
+ *
+ * <pre>
+ * {@code @Query("WHERE ordersPlaced >= ?1 OR totalSpent >= ?2")}
+ * {@code @OrderBy("zipcode")}
+ * {@code @OrderBy("birthYear")}
+ * {@code @OrderBy("id")}
+ * {@code CursoredPage<Customer> getTopBuyers(int minOrders, float minSpent,
+ *                                     {@code PageRequest<Customer> pageRequest);}
+ * </pre>
+ *
  * <p>Only queries which return entities may be used with cursor-based pagination
  * because cursors are created from the entity attribute values that
  * form the unique key.</p>
