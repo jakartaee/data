@@ -617,10 +617,10 @@ The following are conventions for static metamodel classes:
 
 - The name of the static metamodel class should consist of underscore (`_`) followed by the entity class name.
 - Fields of type `String` should be named with all upper case.
-- Fields of type `Attribute` (or subinterface of `Attribute`) should be named in lower case or mixed case.
+- Fields of type `Attribute` (or a subinterface of `Attribute`) should be named in lower case or mixed case.
 - Uninitialized fields should have modifiers `public`, `static`, and `volatile`.
-- Initialized fields should have modifiers `public`, `static`, and `final`.
-- Fields of type `String` should always be statically initialized, enabling their use in annotation values.
+- Initialized fields must have modifiers `public`, `static`, and `final`.
+- Fields of type `String` must always be statically initialized, enabling their use in annotation values.
 
 ===== Example Metamodel Class and Usage
 

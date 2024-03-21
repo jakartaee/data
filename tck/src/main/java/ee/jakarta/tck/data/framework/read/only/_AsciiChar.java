@@ -33,11 +33,11 @@ public class _AsciiChar {
     public static final String HEXADECIMAL = "hexadecimal";
     public static final String NUMERICVALUE = "numericValue";
 
-    public static volatile SortableAttribute<AsciiCharacter> id = new SortableAttributeRecord<>("id");
-    public static volatile TextAttribute<AsciiCharacter> hexadecimal = new TextAttributeRecord<>("hexadecimal");
-    public static volatile Attribute<AsciiCharacter> isControl = new AttributeRecord<>("isControl"); // user decided it didn't care about sorting for this one
-    public static volatile SortableAttribute<AsciiCharacter> numericValue = new SortableAttributeRecord<>("numericValue");
-    public static volatile TextAttribute<AsciiCharacter> thisCharacter = new TextAttributeRecord<>("thisCharacter");
+    public static final SortableAttribute<AsciiCharacter> id = new SortableAttributeRecord<>("id");
+    public static final TextAttribute<AsciiCharacter> hexadecimal = new TextAttributeRecord<>("hexadecimal");
+    public static final Attribute<AsciiCharacter> isControl = new AttributeRecord<>("isControl"); // user decided it didn't care about sorting for this one
+    public static final SortableAttribute<AsciiCharacter> numericValue = new SortableAttributeRecord<>("numericValue");
+    public static final TextAttribute<AsciiCharacter> thisCharacter = new TextAttributeRecord<>("thisCharacter");
 
     // Avoids the checkstyle error,
     // HideUtilityClassConstructor: Utility classes should not have a public or default constructor
