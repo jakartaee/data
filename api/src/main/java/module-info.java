@@ -98,7 +98,7 @@ import jakarta.data.repository.Update;
  * <li>{@code jakarta.persistence.Entity} and the corresponding entity-related
  *    annotations of the Jakarta Persistence specification may be used to
  *    define entities stored in a relational database, or</li>
- * <li>{@code jakarta.nosql.mapping.Entity} and the corresponding entity-related
+ * <li>{@code jakarta.nosql.Entity} and the corresponding entity-related
  *     annotations of the Jakarta NoSQL specification may be used to define
  *     entities stored in a NoSQL database.
  * </ul>
