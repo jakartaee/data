@@ -582,45 +582,45 @@ List<Order> findByAddress_zipcode(int zipCode);
 
 Jakarta Data provides a static metamodel that allows entity attributes to be accessed by applications in a type-safe manner.
 
-For each entity class, the application developer or a compile-time annotation processor can define a corresponding metamodel class following a prescribed set of conventions. The metamodel class must be annotated with `@StaticMetamodel`, specifying the entity class as its `value`. The metamodel class can contain one or more fields of type `java.lang.String` or `jakarta.data.metamodel.Attribute` (or `Attribute` subclasses from the `jakarta.data.metamodel` package) with modifiers `public` and `static`, but not `final`, with each field named after an entity attribute. The value of each matching field can be left uninitialized (`null`) or can be preinitialized. Generated metamodel classes for which all fields are initialized must be annotated with the `jakarta.annotation.Generated` annotation. Otherwise, a Jakarta Data provider that provides a repository for the entity class initializes each uninitialized `String` and `Attribute` field (as well as fields for `Attribute` subclasses from the `jakarta.data.metamodel` package) for which the field name corresponds to an entity attribute name.
+For each entity class, the application developer or a compile-time annotation processor can define a corresponding metamodel class following a prescribed set of conventions.
 
-===== Application Requirements for a Metamodel Class
-
-For each entity class for which the application wishes to request the metamodel,
-
-- The application defines a class (the metamodel class) and annotates it with the `@StaticMetamodel` annotation.
-- The application specifies the `value` of the `@StaticMetamodel` annotation to be an entity class that the application uses in a repository as the result type of a find method or the parameter type of an insert, update, save, or delete method.
-
-For each field of the metamodel class that is to be initialized by a Jakarta Data provider,
-
-- The field type must be `java.lang.String`, `jakarta.data.model.Attribute` or an `Attribute` subclass from the `jakarta.data.metamodel` package.
-- The field must have the `public` and `static` modifiers, but not the `final` modifier.
-- The name of the field, ignoring case, must match the name of an entity attribute, with the `_` character in the field name delimiting the attribute names of hierarchical structures or relationships, such as embedded classes.
-- The value of the field must be uninitialized or `null`.
-
-The application is not required to include fields for all entity attributes.
+- The metamodel class must be annotated with `@StaticMetamodel`, specifying the entity class as its `value`.
+- The metamodel class contains one or more `public static` fields corresponding to persistent fields of the entity class.
+- The type of each of these fields must be either `java.lang.String`, `jakarta.data.metamodel.Attribute`, or a subinterface of `Attribute` from the package `jakarta.data.metamodel`.
 
 The application can use the field values of the metamodel class to obtain artifacts relating to the entity attribute in a type-safe manner, for example, `_Book.title.asc()` or `Sort.asc(_Book.title.name())` or `Sort.asc(_Book.TITLE)` rather than `Sort.asc("title")`.
 
-If the application defines repositories for the same entity class across multiple Jakarta Data providers, no guarantee is made of the order in which the fields of the metamodel class are assigned by the Jakarta Data providers.
+===== Application Requirements for a Metamodel Class
+
+When an application programmer writes a static metamodel class for an entity by hand:
+
+- each field corresponding to a persistent field of an entity must have modifiers `public`, `static`, and `final`, and
+- the fields must be statically initialized.
+
+The static metamodel class is not required to include a field for every persistent field of the entity.
+
+A convenience implementation of each subinterface of `Attribute` is provided in the package `jakarta.data.metamodel.impl`.
 
 ===== Compile-time Annotation Processor Requirements for a Metamodel Class
 
-A compile-time annotation processor that generates a metamodel class must follow the same requirements as stated for the Application under "Application Requirements for a Metamodel Class". If all fields of the metamodel class are preinitialized, then the metamodel class must be annotated with `jakarta.annotation.Generated`. This signals the Jakarta Data providers to avoid attempting to initialize any fields of the class.
+When an annotation processor generates a static metamodel class for an entity:
 
-===== Jakarta Data Provider Requirements for a Metamodel Class
+- the metamodel class must be annotated with `jakarta.annotation.Generated`,
+- each field corresponding to a persistent field of an entity must have modifiers `public`, `static`, and either `final` or `volatile`,
+- the name of each field, ignoring case, must match the name of an entity attribute, according to the conventions specified below in <<Conventions for Metamodel Fields>>, and with the `_` character in the field name delimiting the attribute names of hierarchical structures or relationships, such as embedded classes.
 
-The Jakarta Data provider observes classes that are annotated with the `@StaticMetamodel` annotation where the `jakarta.annotation.Generated` is not also present. If the `value` of the `@StaticMetamodel` annotation is an entity class for which the Jakarta Data provides a repository implementation, then the Jakarta Data provider must initialize the value of each uninitialized (`null` valued) field that meets the criteria that is defined in the "Application Requirements for a Metamodel Class" above.
+The fields may be statically initialized, or they may be initialized by the provider during system initialization.
 
 ===== Conventions for Metamodel Fields
 
 The following are conventions for static metamodel classes:
 
 - The name of the static metamodel class should consist of underscore (`_`) followed by the entity class name.
-- Fields of type `String` should be named with all capitals.
-- Fields of type `Attribute` or `Attribute` subclass should be named in lower case or mixed case.
+- Fields of type `String` should be named with all upper case.
+- Fields of type `Attribute` (or a subinterface of `Attribute`) should be named in lower case or mixed case.
 - Uninitialized fields should have modifiers `public`, `static`, and `volatile`.
-- `String` fields for entity attribute names should be preinitialized and have modifiers `public`, `static`, and `final`, enabling the field to be referenced by code that supplies values to annotations.
+- Initialized fields must have modifiers `public`, `static`, and `final`.
+- Fields of type `String` must always be statically initialized, enabling their use in annotation values.
 
 ===== Example Metamodel Class and Usage
 
@@ -646,9 +646,9 @@ public class _Product {
   public static final String NAME = "name";
   public static final String PRICE = "price";
 
-  public static volatile SortableAttribute<Product> id;
-  public static volatile TextAttribute<Product> name;
-  public static volatile SortableAttribute<Product> price;
+  public static final SortableAttribute<Product> id = new SortableAttributeRecord<>("id");
+  public static final TextAttribute<Product> name = new TextAttributeRecord<>("name");
+  public static final SortableAttribute<Product> price = new SortableAttributeRecord<>("price");
 }
 ----
 

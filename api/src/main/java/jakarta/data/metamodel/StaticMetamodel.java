@@ -26,9 +26,20 @@ import java.lang.annotation.Target;
 import jakarta.data.Sort;
 
 /**
- * <p>Annotates a class to serve as a static metamodel for an entity,
- * enabling type-safe access to entity attribute names and related objects,
- * such as {@link Sort}s for an attribute.</p>
+ * <p>Annotates a class which serves as a static metamodel for an entity, enabling
+ * type-safe access to entity attribute names and related objects such as instances
+ * of {@link Sort}s for an attribute. A metamodel class contains one or more
+ * {@code public static} fields corresponding to persistent fields of the entity class.
+ * The type of each of these fields must be either {@link String}, {@link Attribute},
+ * or a subinterface of {@code Attribute} defined in this package.</p>
+ *
+ * <p>Jakarta Data defines the following conventions for static metamodel classes:</p>
+ * <ul>
+ * <li>The name of the static metamodel class should consist of underscore ({@code _})
+ *     followed by the entity class name.</li>
+ * <li>Fields of type {@code String} should be named with all upper case.</li>
+ * <li>Fields of type {@code Attribute} should be named in lower case or mixed case.</li>
+ * </ul>
  *
  * <p>For example, for the following entity,</p>
  *
@@ -63,11 +74,11 @@ import jakarta.data.Sort;
  *     public static final String NAME_LAST = "name.last";
  *     public static final String YEAROFBIRTH = "yearOfBirth";
  *
- *     public static volatile {@code SortableAttribute<Person>} ssn; // ssn or id
- *     public static volatile {@code Attribute<Person>} name;
- *     public static volatile {@code TextAttribute<Person>} name_first;
- *     public static volatile {@code TextAttribute<Person>} name_last;
- *     public static volatile {@code SortableAttribute<Person>} yearOfBirth;
+ *     public static final {@code SortableAttribute<Person>} ssn = new SortableAttributeRecord&lt;&gt;("ssn");
+ *     public static final {@code Attribute<Person>} name = new AttributeRecord&lt;&gt;("name");
+ *     public static final {@code TextAttribute<Person>} name_first = new TextAttributeRecord&lt;&gt;("name.first");
+ *     public static final {@code TextAttribute<Person>} name_last = new TextAttributeRecord&lt;&gt;("name.last");
+ *     public static final {@code SortableAttribute<Person>} yearOfBirth = new SortableAttributeRecord&lt;&gt;("yearOfBirth");
  * }
  * </pre>
  *
@@ -82,34 +93,17 @@ import jakarta.data.Sort;
  *                                         .size(20);
  * </pre>
  *
- * <p>When a class is annotated with {@code StaticMetamodel} and the
- * {@link jakarta.annotation.Generated} annotation is not present, Jakarta Data providers
- * that provide a repository for the entity type must assign the value of each field
- * that meets the following criteria:</p>
- *
- * <ul>
- * <li>The field is {@code public}, {@code static}, and not {@code final}.</li>
- * <li>The field type is {@link String}, {@link Attribute}, or an {@code Attribute} subclass
- *     from the {@link jakarta.data.metamodel} package.</li>
- * <li>The name of the field, ignoring case, matches the name of an entity attribute,
- *     where the {@code _} character delimits the attribute names of hierarchical structures
- *     such as embedded classes.</li>
- * <li>The value of the field is uninitialized or {@code null}.</li>
- * </ul>
+ * <p>Alternatively, an annotation processor might generate static metamodel classes
+ * for entities at compile time. The generated classes must be annotated with the
+ * {@link jakarta.annotation.Generated @Generated} annotation. The fields may be
+ * statically initialized, or they may be initialized by the provider during system
+ * initialization. In the first case, the fields are declared {@code final}. In the
+ * second case, the fields are declared non-{@code final} and {@code volatile}.</p>
  *
  * <p>In cases where multiple Jakarta Data providers provide repositories for the same
- * entity type, no guarantees are made of the order in which the Jakarta Data providers attempt
- * to initialize the fields of the class that is annotated with {@code StaticMetamodel}.
- * It is recommended to include the {@code volatile} modifier on metamodel fields in case the
- * initialization attempt overlaps between multiple providers.</p>
+ * entity type, no guarantees are made of the order in which the Jakarta Data providers
+ * attempt to initialize the fields of the static metamodel class for that entity.</p>
  *
- * <p>A mixture of {@code final} and non-{@code final} fields is permitted, in which case
- * the latter are initialized by the Jakarta Data provider and the former are ignored by it.</p>
- *
- * <p>Alternatively, an annotation processor might generate fully-implemented static metamodel
- * classes for entities at compile time. The generated classes must be annotated with the
- * {@link jakarta.annotation.Generated} annotation, which instructs the Jakarta Data provider
- * to avoid attempting to initialize any fields in the class at runtime.</p>
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
