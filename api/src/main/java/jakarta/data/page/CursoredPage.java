@@ -108,24 +108,20 @@ import java.util.NoSuchElementException;
  * restrictions involving the key fields to the {@code WHERE} clause of the
  * query. For this to be possible, a user-provided JDQL or JPQL query must
  * end with a {@code WHERE} clause to which additional conditions may be
- * appended without otherwise changing the semantics of the query:</p>
- * <ul>
- * <li>The entire conditional expression of the {@code WHERE} clause must
- *     be enclosed in parentheses.
- * <li>Sorting criteria must be specified independently of the user-provided
- *     query, either via the {@link OrderBy} annotation or, or by passing
- *     {@link Sort} criteria within the {@linkplain PageRequest#sorts() page
- *     request}.
- * </ul>
- * <p>For example:</p>
+ * appended.</p>
+ *
+ * <p>Sorting criteria must be specified independently of the user-provided
+ * query, either via the {@link OrderBy} annotation or, or by passing
+ * {@link Sort} criteria within the {@linkplain PageRequest#sorts() page
+ * request}. For example:</p>
  *
  * <pre>
- * &#64;Query("SELECT o FROM Customer o WHERE (o.ordersPlaced &gt;= ?1 OR o.totalSpent &gt;= ?2)")
- * &#64;OrderBy("zipcode")
- * &#64;OrderBy("birthYear")
- * &#64;OrderBy("id")
- * CursoredPage&lt;Customer&gt; getTopBuyers(int minOrders, float minSpent,
- *                                         {@code PageRequest<Customer>} pageRequest);
+ * {@code @Query("WHERE ordersPlaced >= ?1 OR totalSpent >= ?2")}
+ * {@code @OrderBy("zipcode")}
+ * {@code @OrderBy("birthYear")}
+ * {@code @OrderBy("id")}
+ * {@code CursoredPage<Customer>} getTopBuyers(int minOrders, float minSpent,
+ *                                     {@code PageRequest<Customer>} pageRequest);
  * </pre>
  *
  * <p>Only queries which return entities may be used with cursor-based pagination

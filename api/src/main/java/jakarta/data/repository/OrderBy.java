@@ -32,7 +32,7 @@ import java.lang.annotation.Target;
  * <p>When multiple {@code OrderBy} annotations are specified on a
  * repository method, the precedence for sorting follows the order
  * in which the {@code OrderBy} annotations are specified,
- * and after that follows any sort criteria that is supplied
+ * and after that follows any sort criteria that are supplied
  * dynamically by {@link Sort} parameters, any {@link Order} parameter,
  * or by a {@link PageRequest} parameter with
  * {@linkplain PageRequest#sorts() sorting criteria}.</p>
@@ -57,12 +57,17 @@ import java.lang.annotation.Target;
  * numeric values means smaller numbers before larger numbers and for
  * string values means {@code A} before {@code Z}.</p>
  *
- * <p>A repository method will fail if an {@code OrderBy} annotation is
- * specified in combination with any of:</p>
+ * <p>A repository method with an {@code @OrderBy} annotation must not
+ * have:</p>
  * <ul>
- * <li>an {@code OrderBy} keyword</li>
- * <li>a {@link Query} annotation that contains an {@code ORDER BY} clause.</li>
+ * <li>the <em>Query by Method Name</em> {@code OrderBy} keyword in its
+ *     name, nor</li>
+ * <li>a {@link Query @Query} annotation specifying a JDQL or JPQL query
+ *     with an {@code ORDER BY} clause.</li>
  * </ul>
+ * <p>A Jakarta Data provider is permitted to reject such a repository
+ * method declaration at compile time or to implement the method to
+ * throw {@link UnsupportedOperationException}.</p>
  *
  * <p>A repository method will fail with a
  * {@link jakarta.data.exceptions.DataException DataException}

@@ -70,7 +70,7 @@ import jakarta.data.repository.Update;
  *     &#64;OrderBy("price")
  *     List&lt;Product&gt; findByNameIgnoreCaseLikeAndPriceLessThan(String namePattern, float max);
  *
- *     &#64;Query("UPDATE Product o SET o.price = o.price * (1.0 - ?1) WHERE o.yearProduced &lt;= ?2")
+ *     &#64;Query("UPDATE Product SET price = price * (1.0 - ?1) WHERE yearProduced &lt;= ?2")
  *     int discountOldInventory(float rateOfDiscount, int maxYear);
  *
  *     ...
@@ -150,7 +150,7 @@ import jakarta.data.repository.Update;
  *     &#64;OrderBy("address.zipCode")
  *     List&lt;Purchase&gt; findByAddressZipCodeIn(List&lt;Integer&gt; zipCodes);
  *
- *     &#64;Query("SELECT o FROM Purchase o WHERE o.address.zipCode=?1")
+ *     &#64;Query("WHERE address.zipCode = ?1")
  *     List&lt;Purchase&gt; forZipCode(int zipCode);
  *
  *     &#64;Save
@@ -749,7 +749,7 @@ import jakarta.data.repository.Update;
  * The results may even be limited to a positioned range. For example,</p>
  *
  * <pre>
- * &#64;Query("SELECT o FROM Products o WHERE (o.fullPrice - o.salePrice) / o.fullPrice &gt;= ?1 ORDER BY o.salePrice DESC")
+ * &#64;Query("WHERE (fullPrice - salePrice) / fullPrice &gt;= ?1 ORDER BY salePrice DESC")
  * Product[] highlyDiscounted(float minPercentOff, Limit limit);
  *
  * ...
