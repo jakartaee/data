@@ -936,7 +936,7 @@ The parsing of query method names follows a specific format:
 - The method name consists of the subject, the predicate, and optionally the order clause.
 - The subject begins with the action (such as `find` or `delete`) and is optionally followed by an expression (for example, `First10`), followed by any number of other characters, followed by `By`.
 - The predicate defines the query's condition or filtering criteria, where multiple conditions are delimited by `And` or `Or`. For example, `PriceLessThanAndNameLike`.
-- The order clause, which is optional, begins with `OrderBy` and is followed by one or more ordered pairings consisting of entity attribute name and direction of sorting (`Asc` or `Desc`). For example, `OrderByPriceDescIdAsc`. Ordering of results is performed by sorting the first entity attribute according to its respective direction, where results that sort to the same position are subsequently sorted by the second entity attribute according to its respective direction, and so forth.
+- The order clause, which is optional, begins with `OrderBy` and is followed by one or more ordered pairings consisting of entity attribute name and direction of sorting (`Asc` or `Desc`). The direction can be omitted on the final property, in which case `Asc` is implied. Ordering of results is performed by sorting the first entity attribute according to its respective direction, where results that sort to the same position are subsequently sorted by the second entity attribute according to its respective direction, and so forth.
 - The method name is formed by combining the subject, predicate, and order clause, in that order.
 
 NOTE: This specification uses the terms subject and predicate in a way that aligns with industry terminology rather than how they are defined in English grammar.
@@ -949,6 +949,7 @@ Example query methods:
 - `findByAgeGreaterThan(int age)`: Find entities where 'age' is greater than the specified value.
 - `findByAuthorName(String authorName)`: Find entities by the 'authorName' property of a related entity.
 - `findByCategoryNameAndPriceLessThan(String categoryName, double price)`: Find entities by 'categoryName' and 'price' properties, applying an 'And' condition.
+- `findByNameLikeOrderByPriceDescIdAsc`: Find entities by matching the 'name' property against a pattern, sorting the results by 'price' in descending order, and sorting results with the same 'price' by the 'id' in ascending order.
 
 ==== BNF Grammar for Query Methods
 
@@ -1110,8 +1111,8 @@ Jakarta Data implementations must support the following list of Query by Method 
 |Key-value, Wide-Column
 
 |OrderBy
-|Specify a static sorting order followed by one or more ordered pairings of a property path and direction (`Asc` or `Desc`).
-|findByNameOrderByHeightDescAgeAscIdAsc
+|Specify a static sorting order followed by one or more ordered pairings of a property path and direction (`Asc` or `Desc`). The direction `Asc` can be omitted from the final property listed, in which case ascending order is implied for that property.
+|findByAgeOrderByHeightDescIdAsc findByAgeOrderById
 |Key-value, Wide-Column
 
 |Desc
