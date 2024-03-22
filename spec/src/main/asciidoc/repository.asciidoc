@@ -686,8 +686,12 @@ A repository may declare lifecycle methods for a single entity type, or for mult
 Similarly, a repository might have query methods which return different entity types.
 
 A repository interface may inherit methods from a superinterface.
-A Jakarta Data implementation must treat inherited abstract methods as if they were directly declared by the repository interface.
-For example, a repository interface may inherit the `CrudRepository` interface defined by this specification.
+A superinterface of a repository interface must either:
+
+- be one of the built-in generic repository supertypes defined by this specification, `DataRepository`, `BasicRepository`, or `CrudRepository`, or
+- be a non-generic toplevel interface with no type parameters, whose abstract methods likewise declare no type parameters.
+
+A Jakarta Data implementation must treat abstract methods inherited by a repository interface as if they were directly declared by the repository interface.
 
 Repositories perform operations on entities. For repository methods that are annotated with `@Insert`, `@Update`, `@Save`, or `@Delete`, the entity type is determined from the method parameter type.  For `find` and `delete` methods where the return type is an entity, array of entity, or parameterized type such as `List<MyEntity>` or `Page<MyEntity>`, the entity type is determined from the method return type.  For `count`, `exists`, and other `delete` methods that do not return the entity or accept the entity as a parameter, the entity type cannot be determined from the method signature and a _primary entity type_ must be defined for the repository.
 
