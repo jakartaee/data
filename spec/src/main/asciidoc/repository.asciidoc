@@ -281,6 +281,8 @@ Every Jakarta Data provider must support the following basic types within its pr
 | Custom enumerated types defined by user-written code.
 |===
 
+NOTE: In this specification, "string" means `java.lang.String`, "numeric" means any primitive numeric type, wrapper for a primitive numeric type, `BigInteger`, or `BigDecimal`, and "date/time" means `LocalDate`, `LocalDateTime`, `LocalTime`, or `Instant`.
+
 For example, the following entity class has five basic fields:
 
 [source,java]
