@@ -112,7 +112,7 @@ List<Product> found = products.findByNameLike(searchPattern, Order.by(
 
 Jakarta Data introduces the Jakarta Data Query Language (JDQL), a streamlined query language designed to specify the semantics of query methods within Jakarta Data repositories. Utilizing the `@Query` annotation, JDQL allows developers to define queries straightforwardly and robustly.
 
-JDQL is conceptualized as a subset of the Jakarta Persistence Query Language (JPQL). It inherits its syntax and functionality while being specifically tailored to accommodate the broad spectrum of data storage technologies supported by Jakarta Data. This design approach ensures that JDQL retains the expressiveness of SQL and JPQL yet simplifies its implementation across diverse data stores.
+JDQL is conceptualized as a subset of the Jakarta Persistence Query Language (JPQL). It inherits its syntax and functionality while being specifically tailored to accommodate the broad spectrum of data storage technologies supported by Jakarta Data. This design approach ensures that JDQL remains compatible with JPQL yet simplifies its implementation across diverse data stores.
 
 [source,java]
 ----
