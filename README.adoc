@@ -124,7 +124,7 @@ public interface BookRepository extends BasicRepository<Book, UUID> {
   List<Book> booksMatchingTitle(String titlePattern);
 
   // Select books by a specific author and sort them by title
-  @Query("where author.name = :author order by b.title")
+  @Query("where author.name = :author order by title")
   List<Book> findByAuthorSortedByTitle(String author);
 }
 ----
