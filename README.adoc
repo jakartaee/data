@@ -108,6 +108,35 @@ List<Product> found = products.findByNameLike(searchPattern, Order.by(
                                               _Product.id.asc()));
 ----
 
+== Jakarta Data Query Language (JDQL)
+
+Jakarta Data introduces the Jakarta Data Query Language (JDQL), a streamlined query language designed to specify the semantics of query methods within Jakarta Data repositories. Utilizing the `@Query` annotation, JDQL allows developers to define queries straightforwardly and robustly.
+
+JDQL is conceptualized as a subset of the Jakarta Persistence Query Language (JPQL). It inherits its syntax and functionality while being specifically tailored to accommodate the broad spectrum of data storage technologies supported by Jakarta Data. This design approach ensures that JDQL remains compatible with JPQL yet simplifies its implementation across diverse data stores.
+
+[source,java]
+----
+@Repository
+public interface BookRepository extends BasicRepository<Book, UUID> {
+
+  // Find books with titles matching a specific pattern
+  @Query("where title like :titlePattern")
+  List<Book> booksMatchingTitle(String titlePattern);
+
+  // Select books by a specific author and sort them by title
+  @Query("where author.name = :author order by title")
+  List<Book> findByAuthorSortedByTitle(String author);
+}
+----
+
+*JDQL* supports three primary types of statements, reflecting the core operations typically required for data manipulation and retrieval in applications:
+
+* *Select Statements*: Facilitate data retrieval from a data store, allowing for the specification of criteria to filter results.
+* *Update Statements*: This option enables the modification of existing records in the data store based on specified criteria.
+* *Delete Statements*: Allow for removing records from the data store that meet certain conditions.
+
+This streamlined query language empowers developers to efficiently perform data access operations with minimal complexity, aligning with Jakarta Data's objective of simplifying data access across various storage technologies.
+
 === Maven
 
 To start to use Jakarta Data, add the API as a Maven dependency:
@@ -117,7 +146,7 @@ To start to use Jakarta Data, add the API as a Maven dependency:
 <dependency>
     <groupId>jakarta.data</groupId>
     <artifactId>jakarta.data-api</artifactId>
-    <version>1.0.0-M3</version>
+    <version>1.0.0-M4</version>
 </dependency>
 ----
 

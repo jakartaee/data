@@ -8,7 +8,28 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 
 == [Unreleased]
 
-== [1.0.0-M3] - 2024-02-2023
+== [1.0.0-M4] - 2024-03-22
+
+=== Changed
+
+- clarify combined sort and keyset cursors
+- Replace Sort by Sort<? super T> where appropriate
+
+=== Added
+
+- Introduce the Jakarta Data Query Language (JDQL)
+- add Cursor.elements() method
+- add Order.getSorts() method
+
+=== Removed
+
+- Remove BasicRepository.countBy() method
+- BasicRepository.existsById() method
+- BasicRepository.findByIdIn() method
+- BasicRepository.deleteByIdIn() method
+- BasicRepository.existsById() method
+
+== [1.0.0-M3] - 2024-02-23
 
 === Changed
 
