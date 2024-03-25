@@ -15,6 +15,7 @@
  */
 package ee.jakarta.tck.data.framework.read.only;
 
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import jakarta.data.Limit;
@@ -23,6 +24,7 @@ import jakarta.data.page.CursoredPage;
 import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
 import jakarta.data.repository.BasicRepository;
+import jakarta.data.repository.Query;
 import jakarta.data.repository.Repository;
 
 import ee.jakarta.tck.data.framework.read.only.NaturalNumber.NumberType;
@@ -58,4 +60,9 @@ public interface NaturalNumbers extends BasicRepository<NaturalNumber, Long>, Id
                                                                        long maxSqrtFloor,
                                                                        PageRequest<NaturalNumber> pagination);
 
+    @Query("SELECT id WHERE isOdd = true AND id BETWEEN 21 AND ?1 ORDER BY id ASC")
+    Page<Long> oddsFrom21To(long max, PageRequest<NaturalNumber> pageRequest);
+
+    @Query("WHERE isOdd = false AND numType = ee.jakarta.tck.data.framework.read.only.NaturalNumber.NumberType.PRIME")
+    Optional<NaturalNumber> two();
 }

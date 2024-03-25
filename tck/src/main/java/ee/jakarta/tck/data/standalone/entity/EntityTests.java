@@ -1159,6 +1159,54 @@ public class EntityTests {
         assertEquals(false, it.hasNext());
     }
 
+    @Assertion(id = "458", strategy = "Use a repository method with a JDQL Query that specifies an enum literal and a boolean false literal.")
+    public void testLiteralEnumAndLiteralFalse() {
+
+        NaturalNumber two = numbers.two().orElseThrow();
+
+        assertEquals(2L, two.getId());
+        assertEquals(NumberType.PRIME, two.getNumType());
+        assertEquals(Short.valueOf((short) 2), two.getNumBitsRequired());
+    }
+
+    @Assertion(id = "458", strategy = "Use a repository method with a JDQL Query that specifies literal Integer values.")
+    public void testLiteralInteger() {
+
+        assertEquals(24, characters.twentyFour());
+    }
+
+    @Assertion(id = "458", strategy = "Use a repository method with a JDQL Query that specifies literal String values.")
+    public void testLiteralString() {
+
+        assertEquals(List.of('J', 'K', 'L', 'M'),
+                     characters.jklOr("4d")
+                                     .map(AsciiCharacter::getThisCharacter)
+                                     .sorted()
+                                     .collect(Collectors.toList()));
+    }
+
+    @Assertion(id = "458", strategy = "Use a repository method with a JDQL Query that specifies a boolean true literal.")
+    public void testLiteralTrue() {
+        Page<Long> page1 = numbers.oddsFrom21To(40L, PageRequest.ofSize(5));
+
+        assertEquals(10L, page1.totalElements());
+        assertEquals(2L, page1.totalPages());
+
+        assertEquals(List.of(21L, 23L, 25L, 27L, 29L), page1.content());
+
+        assertEquals(true, page1.hasNext());
+
+        Page<Long> page2 = numbers.oddsFrom21To(40L, page1.nextPageRequest(NaturalNumber.class));
+
+        assertEquals(List.of(31L, 33L, 35L, 37L, 39L), page2.content());
+
+        if (page2.hasNext()) {
+            Page<Long> page3 = numbers.oddsFrom21To(40L, page2.nextPageRequest(NaturalNumber.class));
+            assertEquals(false, page3.hasContent());
+            assertEquals(false, page3.hasNext());
+        }
+    }
+
     @Assertion(id = "133",
                strategy = "Use a repository method with two Sort parameters specifying a mixture of ascending and descending order, " +
                           "and verify all results are returned and are ordered according to the sort criteria.")
