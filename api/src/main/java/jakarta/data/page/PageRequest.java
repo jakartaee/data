@@ -40,22 +40,21 @@ import java.util.Optional;
  * example:</p>
  *
  * <pre>
- * &#64;Find
  * &#64;OrderBy("age")
  * &#64;OrderBy("ssn")
- * Person[] inAgeRange(int minAge, int maxAge,
+ * Person[] findByAgeBetween(int minAge, int maxAge,
  *         PageRequest&lt;Person&gt; pageRequest);
  * </pre>
  *
  * <p>This method might be called as follows:</p>
  *
  * <pre>
- * var page = people.inAgeRange(35, 59,
+ * var page = people.findByAgeBetween(35, 59,
  *         PageRequest.of(Person.class).size(100));
  * var results = page.content();
  * ...
  * while (page.hasNext()) {
- *     page = people.inAgeRange(35, 59,
+ *     page = people.findByAgeBetween(35, 59,
  *             page.nextPageRequest().withoutTotal());
  *     results = page.content();
  *   ...
