@@ -115,9 +115,8 @@
     <!-- Provided Entity APIs -->
     <dependency>
       <groupId>jakarta.nosql</groupId>
-      <artifactId>nosql-core</artifactId>
-      <version>1.0.0-b7</version>
-      <scope>provided</scope>
+      <artifactId>jakarta.nosql-api</artifactId>
+      <version>1.0.0-M1</version>
     </dependency>
 
     <dependency>
