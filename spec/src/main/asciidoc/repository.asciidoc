@@ -1488,8 +1488,8 @@ Here is an example where an application uses `@Query` to provide a partial query
 ----
 @Repository
 public interface CustomerRepository extends BasicRepository<Customer, Long> {
-  @Query("WHERE totalSpent / totalPurchases > ?1")
-  CursoredPage<Customer> withAveragePurchaseAbove(float minimum, PageRequest<Customer> pageRequest);
+    @Query("WHERE totalSpent / totalPurchases > ?1")
+    CursoredPage<Customer> withAveragePurchaseAbove(float minimum, PageRequest<Customer> pageRequest);
 }
 ----
 
@@ -1517,7 +1517,7 @@ In this example, the application uses a cursor to request pages in forward and p
 ----
 @Repository
 public interface Products extends CrudRepository<Product, Long> {
-  CursoredPage<Product> findByNameLike(String namePattern, PageRequest<Product> pageRequest);
+    CursoredPage<Product> findByNameLike(String namePattern, PageRequest<Product> pageRequest);
 }
 ----
 
@@ -1526,10 +1526,12 @@ Obtaining the next 10 products that cost $50.00 or more:
 [source,java]
 ----
 float priceMidpoint = 50.0f;
-PageRequest<Product> pageRequest = Order.by(_Product.price.asc(), _Product.id.asc())
-                                        .pageSize(10)
-                                        .afterKey(priceMidpoint, 0L);
-CursoredPage<Product> moreExpensive = products.findByNameLike(pattern, pageRequest);
+PageRequest<Product> pageRequest =
+        Order.by(_Product.price.asc(), _Product.id.asc())
+             .pageSize(10)
+             .afterKey(priceMidpoint, 0L);
+CursoredPage<Product> moreExpensive =
+        products.findByNameLike(pattern, pageRequest);
 ----
 
 Obtaining the previous 10 products:
@@ -1540,7 +1542,8 @@ if (moreExpensive.hasContent())
     pageRequest = pageRequest.beforeCursor(moreExpensive.getCursor(0));
 else
     pageRequest = pageRequest.beforeKey(priceMidpoint, 1L);
-CursoredPage<Product> lessExpensive = products.findByNameLike(pattern, pageRequest);
+CursoredPage<Product> lessExpensive =
+        products.findByNameLike(pattern, pageRequest);
 ----
 
 ===== Example with Combined Sort Criteria
@@ -1551,10 +1554,11 @@ In this example, the application uses `OrderBy` to define a subset of the sort c
 ----
 @Repository
 public interface Products extends CrudRepository<Product, Long> {
-  @OrderBy(_Car.vehicleCondition)
-  CursoredPage<Car> find(@By(_Car.make) String manufacturer,
-                            @By(_Car.model) String model,
-                            PageRequest<Car> pageRequest);
+    @Find
+    @OrderBy(_Car.vehicleCondition)
+    CursoredPage<Car> find(@By(_Car.make) String manufacturer,
+                           @By(_Car.model) String model,
+                           PageRequest<Car> pageRequest);
 }
 ----
 
@@ -1562,22 +1566,26 @@ The above criteria does not uniquely identify `Car` entities. After sorting on t
 
 [source,java]
 ----
-PageRequest<Car> page1Request = Order.by(_Car.price.desc(), _Car.vin.asc())
-                                     .pageSize(25);
-CursoredPage<Car> page1 = cars.find(make, model, page1Request);
+PageRequest<Car> page1Request =
+        Order.by(_Car.price.desc(), _Car.vin.asc())
+             .pageSize(25);
+CursoredPage<Car> page1 =
+        cars.find(make, model, page1Request);
 ----
 
 The query results are ordered first by vehicle condition. All resulting entities with the same vehicle condition are subsequently ordered by their price in descending order. All resulting entities with the same vehicle condition and price are ordered alphabetically by their VIN. The end user requests the next page of results. If the application still has access to the page at this point, it can use `page.nextPageRequest()` to obtain a request for the next page of results. In this case, the Jakarta Data provider computes the cursor from the vehicle condition, price, and VIN of the final `Car` entity of the page and includes the cursor in the resulting `PageRequest` instance. Alternatively, the application does not need access to the page if it obtained the cursor or the vehicle condition, price, and VIN values that make up the cursor. In this case, it can construct a new `PageRequest`,
 
 [source,java]
 ----
-PageRequest<Car> page2Request = Order.by(_Car.price.desc(), _Car.vin.asc())
-                                     .page(2) // cosmetic when using a cursor
-                                     .size(25)
-                                     .afterKey(lastCar.vehicleCondition,
-                                               lastCar.price,
-                                               lastCar.vin);
-CursoredPage<Car> page2 = cars.find(make, model, page2Request);
+PageRequest<Car> page2Request =
+        Order.by(_Car.price.desc(), _Car.vin.asc())
+             .page(2) // cosmetic when using a cursor
+             .size(25)
+             .afterKey(lastCar.vehicleCondition,
+                       lastCar.price,
+                       lastCar.vin);
+CursoredPage<Car> page2 =
+        cars.find(make, model, page2Request);
 ----
 
 ===== Scenario: Person Entity and People Repository
@@ -1616,11 +1624,13 @@ Code Execution:
 @Inject
 People people;
 
-PageRequest<Person> firstPageRequest = PageRequest.of(Person.class)
-                                                  .size(4)
-                                                  .sortBy(Sort.asc("name"),
-                                                          Sort.asc("id"));
-CursoredPage<Person> page = people.findAll(firstPageRequest);
+PageRequest<Person> firstPageRequest =
+        PageRequest.of(Person.class)
+                   .size(4)
+                   .sortBy(Sort.asc("name"),
+                           Sort.asc("id"));
+CursoredPage<Person> page =
+        people.findAll(firstPageRequest);
 ----
 
 Resulting Page Content:
