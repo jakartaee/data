@@ -15,6 +15,7 @@
  */
 package ee.jakarta.tck.data.framework.read.only;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -31,7 +32,7 @@ public interface ReadOnlyRepository<T, K> extends DataRepository<T, K>{
     // WRITE - default method
     // Necessary for pre-population
     @Save
-    <S extends T> Iterable<S> saveAll(Iterable<S> entities);
+    <S extends T> List<S> saveAll(List<S> entities);
 
     // READ - default methods
     Optional<T> findById(K id);
@@ -40,7 +41,7 @@ public interface ReadOnlyRepository<T, K> extends DataRepository<T, K>{
 
     Stream<T> findAll();
 
-    Stream<T> findByIdIn(Iterable<K> ids);
+    Stream<T> findByIdIn(List<K> ids);
 
     long count();
 
