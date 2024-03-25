@@ -37,17 +37,27 @@ import java.util.Optional;
  * {@code List}, {@code Stream}, {@link Page}, or {@link CursoredPage}.
  * The parameter of type {@code PageRequest} must occur after the method
  * parameters representing regular parameters of the query itself. For
- * example,</p>
+ * example:</p>
  *
  * <pre>
+ * &#64;Find
  * &#64;OrderBy("age")
  * &#64;OrderBy("ssn")
- * Person[] findByAgeBetween(int minAge, int maxAge, {@code PageRequest<Person>} pageRequest);
+ * Person[] inAgeRange(int minAge, int maxAge,
+ *         PageRequest&lt;Person&gt; pageRequest);
+ * </pre>
  *
+ * <p>This method might be called as follows:</p>
+ *
+ * <pre>
+ * var page = people.inAgeRange(35, 59,
+ *         PageRequest.of(Person.class).size(100));
+ * var results = page.content();
  * ...
- * for ({@code PageRequest<Person>} p = PageRequest.of(Person.class).size(100);
- *      p != null; p = page.length == 0 ? null : p.next()) {
- *   page = people.findByAgeBetween(35, 59, p);
+ * while (page.hasNext()) {
+ *     page = people.inAgeRange(35, 59,
+ *             page.nextPageRequest().withoutTotal());
+ *     results = page.content();
  *   ...
  * }
  * </pre>
