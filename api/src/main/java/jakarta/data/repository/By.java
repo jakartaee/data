@@ -97,6 +97,10 @@ public @interface By {
      * The special value which indicates the unique identifier field or
      * property. The annotation {@code By(ID)} maps a parameter to the
      * identifier.
+     * <p>
+     * Note that {@code id(this)} is the expression in JPQL for the
+     * unique identifier of an entity with an implicit identification
+     * variable.
      */
-    String ID = "#id";
+    String ID = "id(this)";
 }
