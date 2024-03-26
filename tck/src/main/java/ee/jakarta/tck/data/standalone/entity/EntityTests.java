@@ -703,16 +703,18 @@ public class EntityTests {
     public void testFirstCursoredPageOf8AndNextPages() {
         // The query for this test returns 1-15,25-32 in the following order:
 
-        // 25, 26, 27, 28, 29, 30, 31, 32 square root rounds down to 4
-        // 9, 10, 11, 12, 13, 14, 15 square root rounds down to 3
-        // 4, 5, 6, 7, 8 square root rounds down to 2
-        // 1, 2, 3 square root rounds down to 1
+        // 32 requires 6 bits
+        // 25, 26, 27, 28, 29, 30, 31 requires 5 bits
+        // 8, 9, 10, 11, 12, 13, 14, 15 requires 4 bits
+        // 4, 5, 6, 7, 8 requires 3 bits
+        // 2, 3 requires 2 bits
+        // 1 requires 1 bit
 
         PageRequest<NaturalNumber> first8 = PageRequest.of(NaturalNumber.class).size(8).sortBy(Sort.asc("id"));
         CursoredPage<NaturalNumber> page;
 
         try {
-            page = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByBitsRequiredDesc(4L, 33L, first8);
+            page = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByNumBitsRequiredDesc(4L, 33L, first8);
         } catch (UnsupportedOperationException x) {
             // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
             // is not capable of cursor-based pagination.
@@ -721,24 +723,24 @@ public class EntityTests {
 
         assertEquals(8, page.numberOfElements());
 
-        assertEquals(Arrays.toString(new Long[] { 25L, 26L, 27L, 28L, 29L, 30L, 31L, 32L }),
+        assertEquals(Arrays.toString(new Long[] { 32L, 25L, 26L, 27L, 28L, 29L, 30L, 31L }),
                      Arrays.toString(page.stream().map(number -> number.getId()).toArray()));
 
         try {
-            page = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByBitsRequiredDesc(4L, 33L, page.nextPageRequest());
+            page = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByNumBitsRequiredDesc(4L, 33L, page.nextPageRequest());
         } catch (UnsupportedOperationException x) {
             // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
             // is not capable of cursor-based pagination.
             return;
         }
 
-        assertEquals(Arrays.toString(new Long[] { 9L, 10L, 11L, 12L, 13L, 14L, 15L, 4L }),
+        assertEquals(Arrays.toString(new Long[] { 8L, 9L, 10L, 11L, 12L, 13L, 14L, 15L }),
                      Arrays.toString(page.stream().map(number -> number.getId()).toArray()));
 
         assertEquals(8, page.numberOfElements());
 
         try {
-            page = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByBitsRequiredDesc(4L, 33L, page.nextPageRequest());
+            page = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByNumBitsRequiredDesc(4L, 33L, page.nextPageRequest());
         } catch (UnsupportedOperationException x) {
             // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
             // is not capable of cursor-based pagination.
@@ -747,7 +749,7 @@ public class EntityTests {
 
         assertEquals(7, page.numberOfElements());
 
-        assertEquals(Arrays.toString(new Long[] { 5L, 6L, 7L, 8L, 1L, 2L, 3L }),
+        assertEquals(Arrays.toString(new Long[] { 4L, 5L, 6L, 7L, 2L, 3L, 1L }),
                      Arrays.toString(page.stream().map(number -> number.getId()).toArray()));
     }
 
@@ -924,12 +926,12 @@ public class EntityTests {
         //                                                                                  ^^^^^ next page ^^^^
 
         PageRequest<NaturalNumber> middle7 = PageRequest.of(NaturalNumber.class).size(7)
-                        .sortBy(Sort.desc("numBitsRequired"), Sort.asc("floorOfSquareRoot"), Sort.desc("id"))
+                        .sortBy(Sort.asc("floorOfSquareRoot"), Sort.desc("id"))
                         .afterKey((short) 5, 5L, 26L); // 20th result is 26; it requires 5 bits and its square root rounds down to 5.
 
         CursoredPage<NaturalNumber> page;
         try {
-            page = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByBitsRequiredDesc(6L, 50L, middle7);
+            page = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByNumBitsRequiredDesc(6L, 50L, middle7);
         } catch (UnsupportedOperationException x) {
             // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
             // is not capable of cursor-based pagination.
@@ -948,7 +950,7 @@ public class EntityTests {
 
         CursoredPage<NaturalNumber> previousPage;
         try {
-            previousPage = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByBitsRequiredDesc(6L, 50L,
+            previousPage = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByNumBitsRequiredDesc(6L, 50L,
                                                                                                     page.previousPageRequest());
         } catch (UnsupportedOperationException x) {
             // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
@@ -965,7 +967,7 @@ public class EntityTests {
 
         CursoredPage<NaturalNumber> nextPage;
         try {
-            nextPage = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByBitsRequiredDesc(6L, 50L,
+            nextPage = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByNumBitsRequiredDesc(6L, 50L,
                                                                                                 page.nextPageRequest());
         } catch (UnsupportedOperationException x) {
             // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
@@ -975,7 +977,7 @@ public class EntityTests {
 
         assertEquals(Arrays.toString(new Long[] { 10L, 9L, // 4 bits required, square root rounds down to 3
                                                   7L, 6L, 5L, 4L, // 3 bits required, square root rounds down to 2
-                                                  3L, 2L // 2 bits required, square root rounds down to 1
+                                                  3L // 2 bits required, square root rounds down to 1
         }),
                      Arrays.toString(nextPage.stream().map(number -> number.getId()).toArray()));
 
@@ -988,7 +990,7 @@ public class EntityTests {
         CursoredPage<NaturalNumber> page;
         try {
             // There are no positive integers less than 4 which have a square root that rounds down to something other than 1.
-            page = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByBitsRequiredDesc(1L, 4L, PageRequest.ofPage(1L));
+            page = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByNumBitsRequiredDesc(1L, 4L, PageRequest.ofPage(1L));
         } catch (UnsupportedOperationException x) {
             // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
             // is not capable of cursor-based pagination.
