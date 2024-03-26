@@ -27,6 +27,7 @@ import jakarta.data.page.PageRequest;
 import jakarta.data.repository.By;
 import jakarta.data.repository.DataRepository;
 import jakarta.data.repository.Find;
+import jakarta.data.repository.Query;
 import jakarta.data.repository.Repository;
 import jakarta.data.repository.Save;
 
@@ -70,6 +71,9 @@ public interface AsciiCharacters extends DataRepository<AsciiCharacter, Long>, I
 
     Optional<AsciiCharacter> findFirstByHexadecimalStartsWithAndIsControlOrderByIdAsc(String firstHexDigit, boolean isControlChar);
 
+    @Query("WHERE hexadecimal <> ' ORDER BY isn''t a keyword when inside a literal' AND hexadecimal IN ('4a', '4b', '4c', ?1)")
+    Stream<AsciiCharacter> jklOr(String hex);
+
     default Stream<AsciiCharacter> retrieveAlphaNumericIn(long minId, long maxId) {
         return findByIdBetween(minId, maxId, Sort.asc("id"))
                         .filter(c -> Character.isLetterOrDigit(c.getThisCharacter()));
@@ -77,4 +81,7 @@ public interface AsciiCharacters extends DataRepository<AsciiCharacter, Long>, I
 
     @Save
     Iterable<AsciiCharacter> saveAll(Iterable<AsciiCharacter> characters);
+
+    @Query("SELECT COUNT(THIS) WHERE numericValue <= 97 AND numericValue >= 74")
+    int twentyFour();
 }

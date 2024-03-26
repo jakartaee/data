@@ -120,7 +120,7 @@ When executed, a parameter expression evaluates to the argument supplied to the 
 
 ==== Enum literals
 
-An _enum literal expression_ is a Java identifier, with syntax specified by `enum_literal`, and may only occur as the right operand of a `set` assignment or `=`/`<>` equality comparison. It is assigned the type of the left operand of the assignment or comparison. The type must be a Java `enum` type, and the identifier must be the name of an enumerated value of the `enum` type. For example, `day <> MONDAY` is a legal comparison expression.
+An _enum literal expression_ is a Java identifier, with syntax specified by `enum_literal`, and may only occur as the right operand of a `set` assignment or `=`/`<>` equality comparison. It is assigned the type of the left operand of the assignment or comparison. The type must be a Java `enum` type, and the identifier must be the name of an enumerated value of the `enum` type including the fully qualified Java enum class name. For example, `day <> java.time.DayOfWeek.MONDAY` is a legal comparison expression.
 
 When executed, an enum expression evaluates to the named member of the Java `enum` type.
 
