@@ -895,8 +895,8 @@ Obtaining the previous 10 products:
 [source,java]
 ----
 pageRequest = moreExpensive.hasContent()
-        ? pageRequest.beforeCursor(moreExpensive.getCursor(0));
-        : pageRequest = pageRequest.beforeKey(priceMidpoint, 1L);
+        ? pageRequest.beforeCursor(moreExpensive.getCursor(0))
+        : pageRequest.beforeKey(priceMidpoint, 1L);
 CursoredPage<Product> lessExpensive =
         products.findByNameLike(pattern, pageRequest);
 ----
