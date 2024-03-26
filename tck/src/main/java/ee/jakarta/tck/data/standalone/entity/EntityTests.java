@@ -61,7 +61,6 @@ import jakarta.data.Limit;
 import jakarta.data.Order;
 import jakarta.data.Sort;
 import jakarta.data.exceptions.EmptyResultException;
-import jakarta.data.exceptions.MappingException;
 import jakarta.data.exceptions.NonUniqueResultException;
 import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
@@ -714,8 +713,8 @@ public class EntityTests {
 
         try {
             page = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByBitsRequiredDesc(4L, 33L, first8);
-        } catch (MappingException x) {
-            // Test passes: Jakarta Data providers must raise MappingException when the database
+        } catch (UnsupportedOperationException x) {
+            // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
             // is not capable of cursor-based pagination.
             return;
         }
@@ -727,8 +726,8 @@ public class EntityTests {
 
         try {
             page = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByBitsRequiredDesc(4L, 33L, page.nextPageRequest());
-        } catch (MappingException x) {
-            // Test passes: Jakarta Data providers must raise MappingException when the database
+        } catch (UnsupportedOperationException x) {
+            // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
             // is not capable of cursor-based pagination.
             return;
         }
@@ -740,8 +739,8 @@ public class EntityTests {
 
         try {
             page = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByBitsRequiredDesc(4L, 33L, page.nextPageRequest());
-        } catch (MappingException x) {
-            // Test passes: Jakarta Data providers must raise MappingException when the database
+        } catch (UnsupportedOperationException x) {
+            // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
             // is not capable of cursor-based pagination.
             return;
         }
@@ -762,8 +761,8 @@ public class EntityTests {
 
         try {
             slice = numbers.findByFloorOfSquareRootOrderByIdAsc(7L, first6);
-        } catch (MappingException x) {
-            // Test passes: Jakarta Data providers must raise MappingException when the database
+        } catch (UnsupportedOperationException x) {
+            // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
             // is not capable of cursor-based pagination.
             return;
         }
@@ -775,8 +774,8 @@ public class EntityTests {
 
         try {
             slice = numbers.findByFloorOfSquareRootOrderByIdAsc(7L, slice.nextPageRequest());
-        } catch (MappingException x) {
-            // Test passes: Jakarta Data providers must raise MappingException when the database
+        } catch (UnsupportedOperationException x) {
+            // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
             // is not capable of cursor-based pagination.
             return;
         }
@@ -788,8 +787,8 @@ public class EntityTests {
 
         try {
             slice = numbers.findByFloorOfSquareRootOrderByIdAsc(7L, slice.nextPageRequest());
-        } catch (MappingException x) {
-            // Test passes: Jakarta Data providers must raise MappingException when the database
+        } catch (UnsupportedOperationException x) {
+            // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
             // is not capable of cursor-based pagination.
             return;
         }
@@ -931,8 +930,8 @@ public class EntityTests {
         CursoredPage<NaturalNumber> page;
         try {
             page = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByBitsRequiredDesc(6L, 50L, middle7);
-        } catch (MappingException x) {
-            // Test passes: Jakarta Data providers must raise MappingException when the database
+        } catch (UnsupportedOperationException x) {
+            // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
             // is not capable of cursor-based pagination.
             return;
         }
@@ -951,8 +950,8 @@ public class EntityTests {
         try {
             previousPage = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByBitsRequiredDesc(6L, 50L,
                                                                                                     page.previousPageRequest());
-        } catch (MappingException x) {
-            // Test passes: Jakarta Data providers must raise MappingException when the database
+        } catch (UnsupportedOperationException x) {
+            // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
             // is not capable of cursor-based pagination.
             return;
         }
@@ -968,8 +967,8 @@ public class EntityTests {
         try {
             nextPage = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByBitsRequiredDesc(6L, 50L,
                                                                                                 page.nextPageRequest());
-        } catch (MappingException x) {
-            // Test passes: Jakarta Data providers must raise MappingException when the database
+        } catch (UnsupportedOperationException x) {
+            // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
             // is not capable of cursor-based pagination.
             return;
         }
@@ -990,8 +989,8 @@ public class EntityTests {
         try {
             // There are no positive integers less than 4 which have a square root that rounds down to something other than 1.
             page = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByBitsRequiredDesc(1L, 4L, PageRequest.ofPage(1L));
-        } catch (MappingException x) {
-            // Test passes: Jakarta Data providers must raise MappingException when the database
+        } catch (UnsupportedOperationException x) {
+            // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
             // is not capable of cursor-based pagination.
             return;
         }
@@ -1043,8 +1042,8 @@ public class EntityTests {
         CursoredPage<NaturalNumber> slice;
         try {
             slice = numbers.findByNumTypeAndNumBitsRequiredLessThan(NumberType.COMPOSITE, (short) 7, middle9);
-        } catch (MappingException x) {
-            // Test passes: Jakarta Data providers must raise MappingException when the database
+        } catch (UnsupportedOperationException x) {
+            // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
             // is not capable of cursor-based pagination.
             return;
         }
@@ -1060,8 +1059,8 @@ public class EntityTests {
             previousSlice = numbers.findByNumTypeAndNumBitsRequiredLessThan(NumberType.COMPOSITE,
                                                                             (short) 7,
                                                                             slice.previousPageRequest());
-        } catch (MappingException x) {
-            // Test passes: Jakarta Data providers must raise MappingException when the database
+        } catch (UnsupportedOperationException x) {
+            // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
             // is not capable of cursor-based pagination.
             return;
         }
@@ -1076,8 +1075,8 @@ public class EntityTests {
              nextSlice = numbers.findByNumTypeAndNumBitsRequiredLessThan(NumberType.COMPOSITE,
                                                                          (short) 7,
                                                                          slice.nextPageRequest());
-         } catch (MappingException x) {
-             // Test passes: Jakarta Data providers must raise MappingException when the database
+         } catch (UnsupportedOperationException x) {
+             // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
              // is not capable of cursor-based pagination.
              return;
          }
@@ -1096,8 +1095,8 @@ public class EntityTests {
         CursoredPage<NaturalNumber> slice;
         try {
             slice = numbers.findByFloorOfSquareRootOrderByIdAsc(3L, pagination);
-        } catch (MappingException x) {
-            // Test passes: Jakarta Data providers must raise MappingException when the database
+        } catch (UnsupportedOperationException x) {
+            // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
             // is not capable of cursor-based pagination.
             return;
         }
@@ -1248,13 +1247,13 @@ public class EntityTests {
         assertEquals(17L, n[7].getId());
     }
 
-    @Assertion(id = "133", strategy = "Use a repository method with Or, expecting MappingException if the underlying database is not capable.")
+    @Assertion(id = "133", strategy = "Use a repository method with Or, expecting UnsupportedOperationException if the underlying database is not capable.")
     public void testOr() {
         Stream<NaturalNumber> found;
         try {
             found = positives.findByNumTypeOrFloorOfSquareRoot(NumberType.ONE, 2L);
-        } catch (MappingException x) {
-            // Test passes: Jakarta Data providers must raise MappingException when the database
+        } catch (UnsupportedOperationException x) {
+            // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
             // is not capable of the OR operation.
             return;
         }
