@@ -54,7 +54,7 @@ public interface Catalog extends DataRepository<Product, String> {
     Product[] modifyMultiple(Product... products);
 
     @Delete
-    boolean remove(Product product);
+    void remove(Product product);
 
     @Delete
     void removeMultiple(Product... products);
