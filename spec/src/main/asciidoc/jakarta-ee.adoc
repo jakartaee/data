@@ -127,13 +127,8 @@ NOTE: Jakarta Data providers that wish to provide both extensions can use CDI's 
 === Jakarta Interceptors
 
 A repository interface or method of a repository interface may be annotated with an interceptor binding annotation.
-In the Jakarta EE environment, or in any other environment where:
+In the Jakarta EE environment--or in any other environment where Jakarta Interceptors is available and integrated with Jakarta CDI--if the repository implementation is instantiated by the CDI bean container then the interceptor binding annotation is inherited by the repository implementation. That is, the interceptor binding annotation must be treated as if it were placed directly on the repository implementation bean. The interceptors bound to the annotation are applied automatically by the implementation of Jakarta Interceptors.
 
-1. Jakarta Interceptors is available and integrated with Jakarta CDI,
-2. the repository implementation is instantiated by the CDI bean container,
-3. the interceptor binding type is declared `@Inherited`,
-
-then the interceptor binding annotation is inherited by the repository implementation, and the interceptors bound to the annotation are applied automatically by the implementation of Jakarta Interceptors.
 
 === Jakarta Transactions
 
