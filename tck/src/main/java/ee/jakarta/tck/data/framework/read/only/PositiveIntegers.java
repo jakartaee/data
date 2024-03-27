@@ -41,7 +41,7 @@ public interface PositiveIntegers extends BasicRepository<NaturalNumber, Long> {
 
     boolean existsByIdGreaterThan(Long number);
 
-    CursoredPage<NaturalNumber> findByFloorOfSquareRootNotAndIdLessThanOrderByBitsRequiredDesc(long excludeSqrt,
+    CursoredPage<NaturalNumber> findByFloorOfSquareRootNotAndIdLessThanOrderByNumBitsRequiredDesc(long excludeSqrt,
                                                                                                   long eclusiveMax,
                                                                                                   PageRequest<NaturalNumber> pagination);
 
