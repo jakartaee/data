@@ -87,7 +87,7 @@ public interface AsciiCharacters extends DataRepository<AsciiCharacter, Long>, I
     }
 
     @Save
-    Iterable<AsciiCharacter> saveAll(Iterable<AsciiCharacter> characters);
+    List<AsciiCharacter> saveAll(List<AsciiCharacter> characters);
 
     @Query("SELECT COUNT(THIS) WHERE numericValue <= 97 AND numericValue >= 74")
     int twentyFour();

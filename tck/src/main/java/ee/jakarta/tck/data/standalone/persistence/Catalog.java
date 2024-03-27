@@ -33,8 +33,6 @@ import jakarta.data.repository.Query;
 import jakarta.data.repository.Repository;
 import jakarta.data.repository.Save;
 import jakarta.data.repository.Update;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.TypedQuery;
 import ee.jakarta.tck.data.standalone.persistence.Product.Department;
 
 @Repository
@@ -56,7 +54,7 @@ public interface Catalog extends DataRepository<Product, String> {
     Product[] modifyMultiple(Product... products);
 
     @Delete
-    boolean remove(Product product);
+    void remove(Product product);
 
     @Delete
     void removeMultiple(Product... products);
@@ -92,22 +90,22 @@ public interface Catalog extends DataRepository<Product, String> {
 
     List<Product> findByProductNumLike(String productNum);
 
-    EntityManager getEntityManager();
-
-    default double sumPrices(Department... departments) {
-        StringBuilder jpql = new StringBuilder("SELECT SUM(o.price) FROM Product o");
-        for (int d = 1; d <= departments.length; d++) {
-            jpql.append(d == 1 ? " WHERE " : " OR ");
-            jpql.append('?').append(d).append(" MEMBER OF o.departments");
-        }
-
-        EntityManager em = getEntityManager();
-        TypedQuery<Double> query = em.createQuery(jpql.toString(), Double.class);
-        for (int d = 1; d <= departments.length; d++) {
-            query.setParameter(d, departments[d - 1]);
-        }
-        return query.getSingleResult();
-    }
+//    EntityManager getEntityManager();
+//
+//    default double sumPrices(Department... departments) {
+//        StringBuilder jpql = new StringBuilder("SELECT SUM(o.price) FROM Product o");
+//        for (int d = 1; d <= departments.length; d++) {
+//            jpql.append(d == 1 ? " WHERE " : " OR ");
+//            jpql.append('?').append(d).append(" MEMBER OF o.departments");
+//        }
+//
+//        EntityManager em = getEntityManager();
+//        TypedQuery<Double> query = em.createQuery(jpql.toString(), Double.class);
+//        for (int d = 1; d <= departments.length; d++) {
+//            query.setParameter(d, departments[d - 1]);
+//        }
+//        return query.getSingleResult();
+//    }
 
     @Query("SELECT o FROM Product o WHERE (:rate * o.price <= :max AND :rate * o.price >= :min) ORDER BY o.name")
     Stream<Product> withTaxBetween(@Param("min") double mininunTaxAmount,
