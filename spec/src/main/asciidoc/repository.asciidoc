@@ -696,10 +696,11 @@ Code Execution:
 @Inject
 People people;
 
-Page<Person> page = people.findAll(PageRequest.of(Person.class)
-                                              .page(1)
-                                              .size(2)
-                                              .sortBy(Sort.asc("id")));
+Page<Person> page =
+        people.findAll(PageRequest.of(Person.class)
+                                  .page(1)
+                                  .size(2)
+                                  .sortBy(Sort.asc("id")));
 ----
 
 Resulting Page Content:
@@ -758,9 +759,11 @@ You can obtain the initial page relative to an offset and subsequent pages relat
 
 [source,java]
 ----
-PageRequest<Customer> pageRequest = PageRequest.of(Customer.class).size(50);
-Page<Customer> page = customers.findByZipcodeOrderByLastNameAscFirstNameAscIdAsc(
-                                55901, pageRequest);
+PageRequest<Customer> pageRequest =
+        PageRequest.of(Customer.class)
+                   .size(50);
+Page<Customer> page =
+        customers.findByZipcodeOrderByLastNameAscFirstNameAscIdAsc(55901, pageRequest);
 if (page.hasNext()) {
   pageRequest = page.nextPageRequest();
   page = customers.findByZipcodeOrderByLastNameAscFirstNameAscIdAsc(55901, pageRequest);
@@ -773,7 +776,10 @@ Or you can obtain the next (or previous) page relative to a known entity,
 [source,java]
 ----
 Customer c = ...
-PageRequest<Customer> p = PageRequest.of(Customer.class).size(50).afterKey(c.lastName, c.firstName, c.id);
+PageRequest<Customer> p =
+        PageRequest.of(Customer.class)
+                   .size(50)
+                   .afterKey(c.lastName, c.firstName, c.id);
 page = customers.findByZipcodeOrderByLastNameAscFirstNameAscIdAsc(55902, p);
 ----
 
@@ -844,16 +850,19 @@ Example traversal of pages:
 
 [source,java]
 ----
-PageRequest<Customer> pageRequest = Order.by(_Customer.yearBorn.desc(),
-                                             _Customer.name.asc(),
-                                             _Customer.id.asc())
-                                         .pageSize(25);
+PageRequest<Customer> pageRequest =
+        Order.by(_Customer.yearBorn.desc(),
+                 _Customer.name.asc(),
+                 _Customer.id.asc())
+             .pageSize(25);
 do {
-  page = customers.withAveragePurchaseAbove(50.0f, pageRequest);
-  ...
-  if (page.hasNext())
-    pageRequest = page.nextPageRequest();
-} while (page.hasNext());
+    page = customers.withAveragePurchaseAbove(50.0f, pageRequest);
+    ...
+    if (page.hasNext()) {
+        pageRequest = page.nextPageRequest();
+    }
+}
+while (page.hasNext());
 ----
 
 ===== Example with Before/After Cursor
@@ -885,10 +894,9 @@ Obtaining the previous 10 products:
 
 [source,java]
 ----
-if (moreExpensive.hasContent())
-    pageRequest = pageRequest.beforeCursor(moreExpensive.getCursor(0));
-else
-    pageRequest = pageRequest.beforeKey(priceMidpoint, 1L);
+pageRequest = moreExpensive.hasContent()
+        ? pageRequest.beforeCursor(moreExpensive.getCursor(0))
+        : pageRequest.beforeKey(priceMidpoint, 1L);
 CursoredPage<Product> lessExpensive =
         products.findByNameLike(pattern, pageRequest);
 ----
