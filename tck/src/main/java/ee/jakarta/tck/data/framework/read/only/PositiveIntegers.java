@@ -27,6 +27,8 @@ import jakarta.data.page.CursoredPage;
 import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
 import jakarta.data.repository.Find;
+import jakarta.data.repository.Param;
+import jakarta.data.repository.Query;
 import jakarta.data.repository.BasicRepository;
 import jakarta.data.repository.Repository;
 
@@ -62,4 +64,14 @@ public interface PositiveIntegers extends BasicRepository<NaturalNumber, Long> {
 
     @Find
     List<NaturalNumber> findOdd(boolean isOdd, NumberType numType, Limit limit, Order<NaturalNumber> sorts);
+
+    @Query("Select id Where isOdd = true and (id = :id or id < :exclusiveMax) Order by id Desc")
+    List<Long> oddAndEqualToOrBelow(long id, long exclusiveMax);
+
+    // Per the spec: The 'and' operator has higher precedence than 'or'.
+    @Query("WHERE numBitsRequired = :bits OR numType = :type AND id < :xmax")
+    CursoredPage<NaturalNumber> withBitCountOrOfTypeAndBelow(@Param("bits") int bitsRequired,
+                                                             @Param("type") NumberType numberType,
+                                                             @Param("xmax") long exclusiveMax,
+                                                             PageRequest<?> pageRequest);
 }

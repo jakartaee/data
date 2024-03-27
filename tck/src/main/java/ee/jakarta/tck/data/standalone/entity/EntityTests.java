@@ -1350,6 +1350,83 @@ public class EntityTests {
         assertEquals(false, customRepo.existsByIdIn(Set.of(-10L, -12L, -14L)));
     }
 
+    @Assertion(id = "458", strategy = "Use a repository method with a JDQL query that uses the NOT operator with LIKE, IN, and BETWEEN.")
+    public void testQueryWithNot() {
+
+        // 'NOT LIKE' excludes '@'
+        // 'NOT IN' excludes 'E' and 'G'
+        // 'NOT BETWEEN' excludes 'H' through 'N'.
+        assertEquals("ABCDFO", String.valueOf(characters.getABCDFO()));
+    }
+
+    @Assertion(id = "458", strategy = "Use a repository method with a JDQL query that relies on the OR operator.")
+    public void testQueryWithOr() {
+        PageRequest<?> page1Request = PageRequest.ofSize(4).sortBy(Sort.desc("numBitsRequired"), Sort.asc("id"));
+        CursoredPage<NaturalNumber> page1;
+
+        try {
+            page1 = positives.withBitCountOrOfTypeAndBelow(4,
+                                                           NumberType.COMPOSITE, 20L,
+                                                           page1Request);
+        } catch (UnsupportedOperationException x) {
+            // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
+            // is not capable of cursor-based pagination.
+            return;
+        }
+
+        assertEquals(List.of(16L, 18L, 8L, 9L),
+                     page1.stream()
+                                     .map(NaturalNumber::getId)
+                                     .collect(Collectors.toList()));
+
+        assertEquals(true, page1.hasTotals());
+        assertEquals(3L, page1.totalPages());
+        assertEquals(12L, page1.totalElements());
+        assertEquals(true, page1.hasNext());
+
+        CursoredPage<NaturalNumber> page2;
+
+        try {
+            page2 = positives.withBitCountOrOfTypeAndBelow(4,
+                                                           NumberType.COMPOSITE, 20L,
+                                                           page1.nextPageRequest());
+        } catch (UnsupportedOperationException x) {
+            // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
+            // is not capable of cursor-based pagination.
+            return;
+        }
+
+        assertEquals(List.of(10L, 11L, 12L, 13L),
+                     page2.stream()
+                                     .map(NaturalNumber::getId)
+                                     .collect(Collectors.toList()));
+
+        assertEquals(true, page2.hasNext());
+
+        CursoredPage<NaturalNumber> page3 = positives.withBitCountOrOfTypeAndBelow(4,
+                                                                                   NumberType.COMPOSITE, 20L,
+                                                                                   page2.nextPageRequest());
+
+        assertEquals(List.of(14L, 15L, 4L, 6L),
+                     page3.stream()
+                                     .map(NaturalNumber::getId)
+                                     .collect(Collectors.toList()));
+
+        if (page3.hasNext()) {
+            CursoredPage<NaturalNumber> page4 = positives.withBitCountOrOfTypeAndBelow(4,
+                                                                                       NumberType.COMPOSITE, 20L,
+                                                                                       page3.nextPageRequest());
+            assertEquals(false, page4.hasContent());
+        }
+    }
+
+    @Assertion(id = "458", strategy = "Use a repository method with a JDQL query that uses parenthesis to make OR be evaluated before AND.")
+    public void testQueryWithParenthesis() {
+
+        assertEquals(List.of(15L, 7L, 5L, 3L, 1L),
+                     positives.oddAndEqualToOrBelow(15L, 9L));
+    }
+
     @Assertion(id = "133", strategy = "Use a repository method that returns a single entity value where a single result is found.")
     public void testSingleEntity() {
         AsciiCharacter ch = characters.findByHexadecimalIgnoreCase("2B");

@@ -71,6 +71,13 @@ public interface AsciiCharacters extends DataRepository<AsciiCharacter, Long>, I
 
     Optional<AsciiCharacter> findFirstByHexadecimalStartsWithAndIsControlOrderByIdAsc(String firstHexDigit, boolean isControlChar);
 
+    @Query("select thisCharacter where hexadecimal like '4_'" +
+           " and hexadecimal not like '%0'" +
+           " and thisCharacter not in ('E', 'G')" +
+           " and id not between 72 and 78" +
+           " order by id asc")
+    char[] getABCDFO();
+
     @Query("WHERE hexadecimal <> ' ORDER BY isn''t a keyword when inside a literal' AND hexadecimal IN ('4a', '4b', '4c', ?1)")
     Stream<AsciiCharacter> jklOr(String hex);
 
