@@ -20,6 +20,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import jakarta.data.Limit;
 import jakarta.data.Order;
 import jakarta.data.Sort;
 import jakarta.data.page.Page;
@@ -38,6 +39,12 @@ import jakarta.data.repository.Save;
  */
 @Repository
 public interface AsciiCharacters extends DataRepository<AsciiCharacter, Long>, IdOperations<AsciiCharacter> {
+
+    @Query(" ") // it is valid to have a query with no clauses
+    Stream<AsciiCharacter> all(Limit limit, Sort<?>... sort);
+
+    @Query("ORDER BY id ASC")
+    Stream<AsciiCharacter> alphabetic(Limit limit);
 
     int countByHexadecimalNotNull();
 
@@ -85,6 +92,9 @@ public interface AsciiCharacters extends DataRepository<AsciiCharacter, Long>, I
         return findByIdBetween(minId, maxId, Sort.asc("id"))
                         .filter(c -> Character.isLetterOrDigit(c.getThisCharacter()));
     }
+
+    @Query("SELECT thisCharacter ORDER BY id DESC")
+    char[] reverseAlphabetic(Limit limit);
 
     @Save
     List<AsciiCharacter> saveAll(List<AsciiCharacter> characters);
