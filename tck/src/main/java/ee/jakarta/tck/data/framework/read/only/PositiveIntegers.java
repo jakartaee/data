@@ -70,7 +70,7 @@ public interface PositiveIntegers extends BasicRepository<NaturalNumber, Long> {
 
     // Per the spec: The 'and' operator has higher precedence than 'or'.
     @Query("WHERE numBitsRequired = :bits OR numType = :type AND id < :xmax")
-    CursoredPage<NaturalNumber> withBitCountOrOfTypeAndBelow(@Param("bits") int bitsRequired,
+    CursoredPage<NaturalNumber> withBitCountOrOfTypeAndBelow(@Param("bits") short bitsRequired,
                                                              @Param("type") NumberType numberType,
                                                              @Param("xmax") long exclusiveMax,
                                                              PageRequest<?> pageRequest);
