@@ -85,6 +85,9 @@ public interface AsciiCharacters extends DataRepository<AsciiCharacter, Long>, I
            " order by id asc")
     char[] getABCDFO();
 
+    @Query("SELECT hexadecimal WHERE hexadecimal IS NOT NULL AND thisCharacter = ?1")
+    Optional<String> hex(char ch);
+
     @Query("WHERE hexadecimal <> ' ORDER BY isn''t a keyword when inside a literal' AND hexadecimal IN ('4a', '4b', '4c', ?1)")
     Stream<AsciiCharacter> jklOr(String hex);
 

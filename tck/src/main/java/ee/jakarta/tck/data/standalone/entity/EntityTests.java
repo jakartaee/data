@@ -1384,6 +1384,13 @@ public class EntityTests {
         assertEquals("ABCDFO", String.valueOf(characters.getABCDFO()));
     }
 
+    @Assertion(id = "458", strategy = "Use a repository method with a JDQL query that uses the NULL keyword.")
+    public void testQueryWithNull() {
+
+        assertEquals("4a", characters.hex('J').orElseThrow());
+        assertEquals("44", characters.hex('D').orElseThrow());
+    }
+
     @Assertion(id = "458", strategy = "Use a repository method with a JDQL query that relies on the OR operator.")
     public void testQueryWithOr() {
         PageRequest<?> page1Request = PageRequest.ofSize(4).sortBy(Sort.desc("numBitsRequired"), Sort.asc("id"));
