@@ -90,5 +90,5 @@ public interface AsciiCharacters extends DataRepository<AsciiCharacter, Long>, I
     List<AsciiCharacter> saveAll(List<AsciiCharacter> characters);
 
     @Query("SELECT COUNT(THIS) WHERE numericValue <= 97 AND numericValue >= 74")
-    int twentyFour();
+    long twentyFour();
 }

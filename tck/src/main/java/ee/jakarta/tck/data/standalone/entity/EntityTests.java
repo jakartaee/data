@@ -1365,7 +1365,7 @@ public class EntityTests {
         CursoredPage<NaturalNumber> page1;
 
         try {
-            page1 = positives.withBitCountOrOfTypeAndBelow(4,
+            page1 = positives.withBitCountOrOfTypeAndBelow((short) 4,
                                                            NumberType.COMPOSITE, 20L,
                                                            page1Request);
         } catch (UnsupportedOperationException x) {
@@ -1387,7 +1387,7 @@ public class EntityTests {
         CursoredPage<NaturalNumber> page2;
 
         try {
-            page2 = positives.withBitCountOrOfTypeAndBelow(4,
+            page2 = positives.withBitCountOrOfTypeAndBelow((short) 4,
                                                            NumberType.COMPOSITE, 20L,
                                                            page1.nextPageRequest());
         } catch (UnsupportedOperationException x) {
@@ -1403,7 +1403,7 @@ public class EntityTests {
 
         assertEquals(true, page2.hasNext());
 
-        CursoredPage<NaturalNumber> page3 = positives.withBitCountOrOfTypeAndBelow(4,
+        CursoredPage<NaturalNumber> page3 = positives.withBitCountOrOfTypeAndBelow((short) 4,
                                                                                    NumberType.COMPOSITE, 20L,
                                                                                    page2.nextPageRequest());
 
@@ -1413,7 +1413,7 @@ public class EntityTests {
                                      .collect(Collectors.toList()));
 
         if (page3.hasNext()) {
-            CursoredPage<NaturalNumber> page4 = positives.withBitCountOrOfTypeAndBelow(4,
+            CursoredPage<NaturalNumber> page4 = positives.withBitCountOrOfTypeAndBelow((short) 4,
                                                                                        NumberType.COMPOSITE, 20L,
                                                                                        page3.nextPageRequest());
             assertEquals(false, page4.hasContent());
