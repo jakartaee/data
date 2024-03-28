@@ -463,6 +463,15 @@ public class EntityTests {
                      Arrays.toString(stream.map(number -> number.getId()).toArray()));
     }
 
+    @Assertion(id = "458", strategy = "Use a repository method with a JDQL query that has no clauses.")
+    public void testEmptyQuery() {
+
+        assertEquals(List.of('a', 'b', 'c', 'd', 'e', 'f'),
+                     characters.all(Limit.range(97, 102), Sort.asc("id"))
+                                     .map(AsciiCharacter::getThisCharacter)
+                                     .collect(Collectors.toList()));
+    }
+
     @Assertion(id = "133", strategy = "Use a repository method that returns a single entity value where no result is found. Expect EmptyResultException.")
     public void testEmptyResultException() {
         try {
@@ -1341,6 +1350,22 @@ public class EntityTests {
         assertEquals(0L, page.totalPages());
     }
 
+    @Assertion(id = "458", strategy = "Use a repository method with a JDQL query that consists of only an ORDER BY clause.")
+    public void testPartialQueryOrderBy() {
+
+        assertEquals(List.of('A', 'B', 'C', 'D', 'E', 'F'),
+                     characters.alphabetic(Limit.range(65, 70))
+                                     .map(AsciiCharacter::getThisCharacter)
+                                     .collect(Collectors.toList()));
+    }
+
+    @Assertion(id = "458", strategy = "Use a repository method with a JDQL query that consists of only the SELECT and ORDER BY clauses.")
+    public void testPartialQuerySelectAndOrderBy() {
+
+        assertEquals("zyxwvuts",
+                     String.valueOf(characters.reverseAlphabetic(Limit.range(6, 13))));
+    }
+
     @Assertion(id = "133", strategy = "Use count and exists methods where the primary entity class is inferred from the lifecycle methods.")
     public void testPrimaryEntityClassDeterminedByLifeCycleMethods() {
         assertEquals(4, customRepo.countByIdIn(Set.of(2L, 15L, 37L, -5L, 60L)));
@@ -1357,6 +1382,13 @@ public class EntityTests {
         // 'NOT IN' excludes 'E' and 'G'
         // 'NOT BETWEEN' excludes 'H' through 'N'.
         assertEquals("ABCDFO", String.valueOf(characters.getABCDFO()));
+    }
+
+    @Assertion(id = "458", strategy = "Use a repository method with a JDQL query that uses the NULL keyword.")
+    public void testQueryWithNull() {
+
+        assertEquals("4a", characters.hex('J').orElseThrow());
+        assertEquals("44", characters.hex('D').orElseThrow());
     }
 
     @Assertion(id = "458", strategy = "Use a repository method with a JDQL query that relies on the OR operator.")
