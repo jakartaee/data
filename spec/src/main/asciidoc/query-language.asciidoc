@@ -350,7 +350,7 @@ The `where` clause is always optional. When it is missing, there is no restricti
 
 The `select` clause, with syntax given by `select_clause`, specifies a path expression which determines the values returned by the query. The path expression is evaluated for each record which satisfies the restriction imposed by the `where` clause, as specified in <<Path expressions>>, and the value of the last element of the path expression is added to the query results.
 
-Alternatively, the `select` clause may contain a single `count(this)` aggregate expression, which evaluates to the number of records which satisfy the restriction.
+Alternatively, the `select` clause may contain a single `count(this)` aggregate expression, which evaluates to the number of records which satisfy the restriction. A query beginning with `select count(this)` always returns a single result of type `Long`, no matter how many records satisfy the conditional expression in the `where` clause.
 
 NOTE: If a datastore does not natively provide the ability to count query results, the Jakarta Data provider is strongly encouraged, but not required, to implement this operation by counting the query results in Java.
 
