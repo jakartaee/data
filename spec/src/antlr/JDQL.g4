@@ -13,15 +13,15 @@ where_clause : 'WHERE' conditional_expression;
 set_clause : 'SET' update_item (',' update_item)*;
 update_item : state_field_path_expression '=' (scalar_expression | 'NULL');
 
-select_clause : 'SELECT' select_list;
-select_list
+select_clause : 'SELECT' select_item;
+select_item
     : state_field_path_expression
+    | id_expression
     | aggregate_expression
     ;
-aggregate_expression : 'COUNT' '(' 'THIS' ')';
 
 orderby_clause : 'ORDER' 'BY' orderby_item (',' orderby_item)*;
-orderby_item : state_field_path_expression ('ASC' | 'DESC');
+orderby_item : (state_field_path_expression | id_expression) ('ASC' | 'DESC');
 
 conditional_expression
     // highest to lowest precedence
@@ -41,7 +41,7 @@ between_expression : scalar_expression 'NOT'? 'BETWEEN' scalar_expression 'AND' 
 like_expression : scalar_expression 'NOT'? 'LIKE' STRING;
 
 in_expression : state_field_path_expression 'NOT'? 'IN' '(' in_item (',' in_item)* ')';
-in_item : literal | enum_literal | input_parameter; // could simplify to just literal
+in_item : literal | enum_literal | input_parameter;
 
 null_comparison_expression : state_field_path_expression 'IS' 'NOT'? 'NULL';
 
@@ -58,11 +58,16 @@ scalar_expression
 primary_expression
     : function_expression
     | special_expression
+    | id_expression
     | state_field_path_expression
     | enum_literal
     | input_parameter
     | literal
     ;
+
+id_expression : 'ID' '(' 'THIS' ')' ;
+
+aggregate_expression : 'COUNT' '(' 'THIS' ')';
 
 function_expression
     : 'ABS' '(' scalar_expression ')'
