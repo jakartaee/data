@@ -1381,7 +1381,11 @@ public class EntityTests {
         // 'NOT LIKE' excludes '@'
         // 'NOT IN' excludes 'E' and 'G'
         // 'NOT BETWEEN' excludes 'H' through 'N'.
-        assertEquals("ABCDFO", String.valueOf(characters.getABCDFO()));
+        Character[] abcdfo = characters.getABCDFO();
+        assertEquals(6, abcdfo.length);
+        for (int i = 0; i<abcdfo.length; i++) {
+            assertEquals("ABCDFO".charAt(i), abcdfo[i]);
+        }
     }
 
     @Assertion(id = "458", strategy = "Use a repository method with a JDQL query that uses the NULL keyword.")

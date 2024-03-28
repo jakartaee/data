@@ -83,7 +83,7 @@ public interface AsciiCharacters extends DataRepository<AsciiCharacter, Long>, I
            " and thisCharacter not in ('E', 'G')" +
            " and id not between 72 and 78" +
            " order by id asc")
-    char[] getABCDFO();
+    Character[] getABCDFO();
 
     @Query("SELECT hexadecimal WHERE hexadecimal IS NOT NULL AND thisCharacter = ?1")
     Optional<String> hex(char ch);
@@ -97,7 +97,7 @@ public interface AsciiCharacters extends DataRepository<AsciiCharacter, Long>, I
     }
 
     @Query("SELECT thisCharacter ORDER BY id DESC")
-    char[] reverseAlphabetic(Limit limit);
+    Character[] reverseAlphabetic(Limit limit);
 
     @Save
     List<AsciiCharacter> saveAll(List<AsciiCharacter> characters);
