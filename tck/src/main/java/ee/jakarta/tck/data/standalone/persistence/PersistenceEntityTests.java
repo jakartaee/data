@@ -313,17 +313,18 @@ public class PersistenceEntityTests {
         catalog.save(Product.of("basketball", 14.88, "TEST-PROD-76", Department.SPORTING_GOODS));
         catalog.save(Product.of("baseball cap", 12.99, "TEST-PROD-77", Department.SPORTING_GOODS, Department.CLOTHING));
 
-        List<Product> found = catalog.findByDepartmentCountAndPriceBelow(2, 100.0);
+        List<Product> found = catalog.findByNameLengthAndPriceBelow(10, 100.0);
 
-        assertEquals(List.of("baseball cap", "toothpaste"),
+        assertEquals(List.of("basketball", "toothpaste"),
                      found.stream().map(Product::getName).collect(Collectors.toList()));
 
-        found = catalog.findByDepartmentCountAndPriceBelow(3, 10000.0);
+        found = catalog.findByNameLengthAndPriceBelow(8, 1000.0);
 
         assertEquals(List.of("sunblock"),
                      found.stream().map(Product::getName).collect(Collectors.toList()));
 
         assertEquals(7L, catalog.deleteByProductNumLike("TEST-PROD-%"));
+
     }
 
     @Assertion(id = "133", strategy = "Insert, update, and delete an entity with a generated version.")

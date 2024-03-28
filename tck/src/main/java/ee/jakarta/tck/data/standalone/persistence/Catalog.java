@@ -71,13 +71,13 @@ public interface Catalog extends DataRepository<Product, String> {
 
     int countBySurgePriceGreaterThanEqual(Double price);
 
-    @Query("SELECT p FROM Product p WHERE (SIZE(p.departments) = ?1 AND p.price < ?2) ORDER BY p.name")
-    List<Product> findByDepartmentCountAndPriceBelow(int numDepartments, double maxPrice);
-
     @OrderBy("name")
     Product[] findByDepartmentsContains(Department department);
 
     Stream<Product> findByDepartmentsEmpty();
+
+    @Query("WHERE LENGTH(name) = ?1 AND price < ?2 ORDER BY name")
+    List<Product> findByNameLengthAndPriceBelow(int nameLength, double maxPrice);
 
     List<Product> findByNameLike(String name);
 
@@ -107,7 +107,7 @@ public interface Catalog extends DataRepository<Product, String> {
 //        return query.getSingleResult();
 //    }
 
-    @Query("SELECT o FROM Product o WHERE (:rate * o.price <= :max AND :rate * o.price >= :min) ORDER BY o.name")
+    @Query("FROM Product WHERE (:rate * price <= :max AND :rate * price >= :min) ORDER BY name")
     Stream<Product> withTaxBetween(@Param("min") double mininunTaxAmount,
                                    @Param("max") double maximumTaxAmount,
                                    @Param("rate") double taxRate);
