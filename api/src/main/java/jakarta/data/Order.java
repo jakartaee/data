@@ -104,6 +104,19 @@ public class Order<T> implements Iterable<Sort<? super T>> {
     }
 
     /**
+     * <p>Defines a list of {@link Sort} criteria, ordered from highest precedence
+     * to lowest precedence.</p>
+     *
+     * @param <T>   entity class of the attributes that are used as sort criteria.
+     * @param sorts sort criteria to use, ordered from highest precedence to lowest precedence.
+     * @return a new instance indicating the order of precedence for sort criteria.
+     *         This method never returns {@code null}.
+     */
+    public static <T> Order<T> by(List<Sort<? super T>> sorts) {
+        return new Order<T>(List.copyOf(sorts));
+    }
+
+    /**
      * The instances of {@link Sort} belonging to this {@code Order}.
      *
      * @return the instances of {@link Sort}, from highest precedence to lowest precedence.
