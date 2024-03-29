@@ -87,7 +87,6 @@
 
         <arquillian.version>1.8.0.Final</arquillian.version>
         <junit.version>5.10.2</junit.version>
-        <mockito.version>5.11.0</mockito.version>
         <pi-test.version>1.15.8</pi-test.version>
         <pitest-junit5-plugin.version>1.2.1</pitest-junit5-plugin.version>
         <checkstyle.version>10.14.2</checkstyle.version>
@@ -104,13 +103,6 @@
                 <groupId>org.junit</groupId>
                 <artifactId>junit-bom</artifactId>
                 <version>${junit.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.mockito</groupId>
-                <artifactId>mockito-bom</artifactId>
-                <version>${mockito.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
