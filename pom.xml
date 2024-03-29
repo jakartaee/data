@@ -84,7 +84,6 @@
         <jakarta.validation.version>3.1.0-M2</jakarta.validation.version>
 
         <apache.rat.version>0.16.1</apache.rat.version>
-        <commons.io.version>2.15.1</commons.io.version>
 
         <arquillian.version>1.8.0.Final</arquillian.version>
         <junit.version>5.10.2</junit.version>
@@ -114,11 +113,6 @@
                 <version>${mockito.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>commons-io</groupId>
-                <artifactId>commons-io</artifactId>
-                <version>${commons.io.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.jboss.arquillian</groupId>
