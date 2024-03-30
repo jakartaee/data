@@ -65,7 +65,7 @@ public record CursoredPageRecord<T>
                         : pageRequest.page(pageRequest.page()+1)
                                 .afterCursor(cursors.get(cursors.size()-1)),
                 firstPage ? null
-                        : pageRequest.page(pageRequest.page()==0 ? 0 : pageRequest.page()-1)
+                        : pageRequest.page(pageRequest.page()==1 ? 1 : pageRequest.page()-1)
                                 .beforeCursor(cursors.get(0)));
     }
 
