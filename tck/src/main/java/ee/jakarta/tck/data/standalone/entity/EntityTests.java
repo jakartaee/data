@@ -1362,8 +1362,10 @@ public class EntityTests {
     @Assertion(id = "458", strategy = "Use a repository method with a JDQL query that consists of only the SELECT and ORDER BY clauses.")
     public void testPartialQuerySelectAndOrderBy() {
 
-        assertEquals("zyxwvuts",
-                     String.valueOf(characters.reverseAlphabetic(Limit.range(6, 13))));
+        Character[] chars = characters.reverseAlphabetic(Limit.range(6, 13));
+        for (int i=0; i<chars.length; i++) {
+            assertEquals("zyxwvuts".charAt(i), chars[i]);
+        }
     }
 
     @Assertion(id = "133", strategy = "Use count and exists methods where the primary entity class is inferred from the lifecycle methods.")
