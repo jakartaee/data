@@ -46,6 +46,29 @@ public record CursoredPageRecord<T>
          PageRequest<T> nextPageRequest, PageRequest<T> previousPageRequest)
         implements CursoredPage<T> {
 
+    /**
+     * @param content The page content, that is, the query results, in order
+     * @param cursors A list of {@link PageRequest.Cursor} instances for result,
+     *                in order
+     * @param totalElements The total number of elements across all pages that
+     *                      can be requested for the query
+     * @param pageRequest The {@link PageRequest page request} for which this
+     *                    page was obtained
+     * @param firstPage True, if this is the first page of results
+     * @param lastPage True, if this is the last page of results
+     */
+    public CursoredPageRecord
+            (List<T> content, List<PageRequest.Cursor> cursors, long totalElements, PageRequest<T> pageRequest,
+            boolean firstPage, boolean lastPage) {
+        this(content, cursors, totalElements, pageRequest,
+                lastPage ? null
+                        : pageRequest.page(pageRequest.page()+1)
+                                .afterCursor(cursors.get(cursors.size()-1)),
+                firstPage ? null
+                        : pageRequest.page(pageRequest.page()==1 ? 1 : pageRequest.page()-1)
+                                .beforeCursor(cursors.get(0)));
+    }
+
     @Override
     public boolean hasContent() {
         return !content.isEmpty();
