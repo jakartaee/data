@@ -69,9 +69,9 @@ Jakarta Data also supports parameters to define pagination and sorting.
 ----
 
 @Repository
-public interface ProductRepository extends BasicRepository<Product, Long> {
+public interface CarRepository extends BasicRepository<Car, Long> {
 
- Page<Car> findByTypeOrderByName(CarType type, PageRequest<?> pageRequest);
+ Page<Car> findByTypeOrderByName(CarType type, PageRequest<Car> pageRequest);
 
 }
 ----
