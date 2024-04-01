@@ -121,11 +121,11 @@ public interface BookRepository extends BasicRepository<Book, UUID> {
 
   // Find books with titles matching a specific pattern
   @Query("where title like :titlePattern")
-  List<Book> booksMatchingTitle(String titlePattern);
+  List<Book> booksMatchingTitle(@Param("titlePattern") String titlePattern);
 
   // Select books by a specific author and sort them by title
   @Query("where author.name = :author order by title")
-  List<Book> findByAuthorSortedByTitle(String author);
+  List<Book> findByAuthorSortedByTitle(@Param("author") String author);
 }
 ----
 
