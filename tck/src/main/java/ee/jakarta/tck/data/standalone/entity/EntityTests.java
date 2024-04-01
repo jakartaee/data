@@ -889,6 +889,13 @@ public class EntityTests {
         assertEquals(false, positives.existsByIdGreaterThan(100L)); // doesn't exist because the table only has 1 to 100
     }
 
+    @Assertion(id = "599", strategy = "Use a repository method with the ID(THIS) function in the SELECT, WHERE, and ORDER BY clauses.")
+    public void testIdFunction() {
+
+        assertEquals(List.of(9L, 8L, 7L, 6L, 5L, 4L, 3L, 2L, 1L),
+                     positives.under(10L));
+    }
+
     @Assertion(id = "133", strategy = "Use a repository method with the In keyword.")
     public void testIn() {
         Stream<NaturalNumber> nonPrimes = positives.findByNumTypeInOrderByIdAsc(Set.of(NumberType.COMPOSITE, NumberType.ONE),
