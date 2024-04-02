@@ -396,7 +396,10 @@ import jakarta.data.repository.Update;
  * in the same order specified.
  * Most conditions, such as {@code Like} or {@code LessThan},
  * correspond to a single method parameter. The exception to this rule is
- * {@code Between}, which corresponds to two method parameters.</p>
+ * {@code Between}, which corresponds to two method parameters.
+ * Multiple conditions are delimited by the keywords {@code And}
+ * and {@code Or}. The equality condition is implied when no
+ * condition operator keyword is present.</p>
  *
  * <p>Key-value and Wide-Column databases raise {@link UnsupportedOperationException}
  * for queries on attributes other than the identifier/key.</p>

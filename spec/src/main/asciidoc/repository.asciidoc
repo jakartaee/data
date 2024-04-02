@@ -288,7 +288,7 @@ The parsing of query method names follows a specific format:
 
 - The method name consists of the subject, the predicate, and optionally the order clause.
 - The subject begins with the action (such as `find` or `delete`) and is optionally followed by an expression (for example, `First10`), followed by any number of other characters, followed by `By`.
-- The predicate defines the query's condition or filtering criteria, where multiple conditions are delimited by `And` or `Or`. For example, `PriceLessThanAndNameLike`.
+- The predicate defines the query's condition or filtering criteria, where multiple conditions are delimited by `And` or `Or`. For example, `PriceLessThanAndNameLike`. Each condition consists of a property name, optionally followed by `IgnoreCase` (for text properties), optionally followed by `Not`, optionally followed by an operator such as `LessThan` or `Like`. Absence of the operator implies the equality condition.
 - The order clause, which is optional, begins with `OrderBy` and is followed by one or more ordered pairings consisting of entity attribute name and direction of sorting (`Asc` or `Desc`). The direction can be omitted on the final property, in which case `Asc` is implied. Ordering of results is performed by sorting the first entity attribute according to its respective direction, where results that sort to the same position are subsequently sorted by the second entity attribute according to its respective direction, and so forth.
 - The method name is formed by combining the subject, predicate, and order clause, in that order.
 
@@ -333,7 +333,7 @@ Explanation of the BNF elements:
 - `<ignored-text>`: Optional text that does not contain "By".
 - `<predicate>`: Represents the query's condition or filtering criteria, which can include multiple conditions separated by "And" or "Or."
 - `<condition>`: Specifies a property and an operator for the condition.
-- `<operator>`: Defines the operator for the condition, like "Between" or "LessThan."
+- `<operator>`: Defines the operator for the condition, like "Between" or "LessThan." When absent, equality is implied.
 - `<property>`: Represents a property name, which can include underscores for nested properties.
 - `<identifier>`: Represents a word (e.g., property names, action names, etc.).
 - `<positive-integer>`: Represents a whole number greater than zero.
