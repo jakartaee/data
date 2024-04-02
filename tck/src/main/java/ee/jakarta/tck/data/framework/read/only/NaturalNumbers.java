@@ -15,11 +15,13 @@
  */
 package ee.jakarta.tck.data.framework.read.only;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
 import jakarta.data.Limit;
 import jakarta.data.Order;
+import jakarta.data.Sort;
 import jakarta.data.page.CursoredPage;
 import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
@@ -36,7 +38,7 @@ import ee.jakarta.tck.data.framework.read.only.NaturalNumber.NumberType;
  * TODO figure out a way to make this a ReadOnlyRepository instead.
  */
 @Repository
-public interface NaturalNumbers extends BasicRepository<NaturalNumber, Long>, IdOperations<NaturalNumber> {
+public interface NaturalNumbers extends BasicRepository<NaturalNumber, Long>, IdOperations {
 
     long countBy();
 
@@ -46,6 +48,14 @@ public interface NaturalNumbers extends BasicRepository<NaturalNumber, Long>, Id
     Stream<NaturalNumber> findByIdBetweenOrderByNumTypeAsc(long minimum,
                                                            long maximum,
                                                            Order<NaturalNumber> sorts);
+
+    List<NaturalNumber> findByIdGreaterThanEqual(long minimum,
+                                                 Limit limit,
+                                                 Order<NaturalNumber> sorts);
+
+    NaturalNumber[] findByIdLessThan(long exclusiveMax, Sort<NaturalNumber> primarySort, Sort<NaturalNumber> secondarySort);
+
+    List<NaturalNumber> findByIdLessThanEqual(long maximum, Sort<?>... sorts);
 
     Page<NaturalNumber> findByIdLessThanOrderByFloorOfSquareRootDesc(long exclusiveMax,
                                                                      PageRequest<NaturalNumber> pagination);

@@ -38,7 +38,7 @@ import jakarta.data.repository.Save;
  * This interface is required to inherit only from DataRepository in order to satisfy a TCK scenario.
  */
 @Repository
-public interface AsciiCharacters extends DataRepository<AsciiCharacter, Long>, IdOperations<AsciiCharacter> {
+public interface AsciiCharacters extends DataRepository<AsciiCharacter, Long>, IdOperations {
 
     @Query(" ") // it is valid to have a query with no clauses
     Stream<AsciiCharacter> all(Limit limit, Sort<?>... sort);
@@ -65,6 +65,8 @@ public interface AsciiCharacters extends DataRepository<AsciiCharacter, Long>, I
                                                                                  Order<AsciiCharacter> sorts);
 
     AsciiCharacter findByHexadecimalIgnoreCase(String hex);
+
+    Stream<AsciiCharacter> findByIdBetween(long minimum, long maximum, Sort<AsciiCharacter> sort);
 
     AsciiCharacter findByIsControlTrueAndNumericValueBetween(int min, int max);
 

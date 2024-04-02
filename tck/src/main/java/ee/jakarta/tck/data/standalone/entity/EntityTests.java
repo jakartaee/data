@@ -130,13 +130,15 @@ public class EntityTests {
                        "Use both built-in methods and the additional methods.")
     public void testBasicRepository() {
 
-
-        Stream<NaturalNumber> found = numbers.findByIdBetween(50L, 59L, Sort.asc("numType"));
+        // custom method from NaturalNumbers:
+        Stream<NaturalNumber> found = numbers.findByIdBetweenOrderByNumTypeAsc(50L, 59L, Order.by(Sort.asc("id")));
         List<Long> list = found.map(NaturalNumber::getId).collect(Collectors.toList());
-        assertEquals(Set.of(53L, 59L), // first 2 must be primes
-                     new TreeSet<>(list.subList(0, 2)));
-        assertEquals(Set.of(50L, 51L, 52L, 54L, 55L, 56L, 57L, 58L), // the remaining 8 are composite numbers
-                     new TreeSet<>(list.subList(2, 10)));
+        assertEquals(List.of(53L, 59L, // first 2 must be primes
+                             50L, 51L, 52L, 54L, 55L, 56L, 57L, 58L), // the remaining 8 are composite numbers
+                     list);
+
+        // built-in method from BasicRepository:
+        assertEquals(60L, numbers.findById(60L).orElseThrow().getId());
     }
 
     @Assertion(id = "133",
@@ -391,26 +393,27 @@ public class EntityTests {
 
     @Assertion(id = "133", strategy = "Use a repository that inherits some if its methods from another interface.")
     public void testCommonInterfaceQueries() {
-        assertEquals(List.of('d', 'c', 'b', 'a'),
-                     characters.findByIdBetween(97L, 100L, Sort.desc("thisCharacter"))
-                                     .map(AsciiCharacter::getThisCharacter)
-                                     .collect(Collectors.toList()));
 
-        assertEquals(List.of(87L, 88L, 89L, 90L),
-                     numbers.findByIdBetween(87L, 90L, Sort.asc("id"))
-                                     .map(NaturalNumber::getId)
-                                     .collect(Collectors.toList()));
+        assertEquals(4L, numbers.countByIdBetween(87L, 90L));
 
-        assertEquals(List.of('D', 'E', 'F', 'G', 'H'),
-                     characters.findByIdGreaterThanEqual(68L, Limit.of(5), Order.by(Sort.asc("numericValue"), Sort.asc("id")))
+        assertEquals(5L, characters.countByIdBetween(86L, 90L));
+
+        assertEquals(true, numbers.existsById(73L));
+
+        assertEquals(true, characters.existsById(74L));
+
+        assertEquals(false, numbers.existsById(-1L));
+
+        assertEquals(false, characters.existsById(-2L));
+
+        assertEquals(List.of(68L, 69L, 70L, 71L, 72L),
+                     characters.withIdEqualOrAbove(68L, Limit.of(5), Order.by(Sort.asc("numericValue"), Sort.asc("id")))
                                      .stream()
-                                     .map(AsciiCharacter::getThisCharacter)
                                      .collect(Collectors.toList()));
 
         assertEquals(List.of(71L, 73L, 79L, 83L, 89L),
-                     numbers.findByIdGreaterThanEqual(68L, Limit.of(5), Order.by(Sort.asc("numType"), Sort.asc("id")))
+                     numbers.withIdEqualOrAbove(68L, Limit.of(5), Order.by(Sort.asc("numType"), Sort.asc("id")))
                                      .stream()
-                                     .map(NaturalNumber::getId)
                                      .collect(Collectors.toList()));
     }
 
@@ -461,10 +464,10 @@ public class EntityTests {
                strategy = "Use a repository method with one Sort parameter specifying descending order, " +
                           "and verify all results are returned and are in descending order according to the sort criteria.")
     public void testDescendingSort() {
-        Stream<NaturalNumber> stream = numbers.findByIdBetween(4, 10, Sort.desc("id"));
+        Stream<AsciiCharacter> stream = characters.findByIdBetween(52L, 57L, Sort.desc("id"));
 
-        assertEquals(Arrays.toString(new Long[] { 10L, 9L, 8L, 7L, 6L, 5L, 4L }),
-                     Arrays.toString(stream.map(number -> number.getId()).toArray()));
+        assertEquals(Arrays.toString(new Character[] { '9', '8', '7', '6', '5', '4' }),
+                     Arrays.toString(stream.map(AsciiCharacter::getThisCharacter).toArray()));
     }
 
     @Assertion(id = "458", strategy = "Use a repository method with a JDQL query that has no clauses.")
@@ -1761,10 +1764,10 @@ public class EntityTests {
                strategy = "Use a repository method with varargs Sort... specifying a mixture of ascending and descending order, " +
                           "and verify all results are returned and are ordered according to the sort criteria.")
     public void testVarargsSort() {
-        List<NaturalNumber> list = numbers.findByIdLessThanEqual(12L, Order.by(
+        List<NaturalNumber> list = numbers.findByIdLessThanEqual(12L,
                                                                  Sort.asc("floorOfSquareRoot"),
                                                                  Sort.desc("numBitsRequired"),
-                                                                 Sort.asc("id")));
+                                                                 Sort.asc("id"));
 
         assertEquals(Arrays.toString(new Long[] { 2L, 3L, // square root rounds down to 1; 2 bits
                                                   1L, // square root rounds down to 1; 1 bit
