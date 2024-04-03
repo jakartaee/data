@@ -218,7 +218,7 @@ Jakarta Data implementations must support the following list of Query by Method 
 The "Not Required For" column indicates the database types for which the respective keyword is not required or applicable.
 ====
 
-Most _Query by Method Name_ conditions require a single value. The `Between` condition requires two values. `Null`, `True`, and `False` require none. The values for _Query by Method Name_ conditions are the parameter values that are supplied to the method, following the order in which the _Query by Method Name_ conditions appear within the method name.
+Most _Query by Method Name_ conditions require a single repository method parameter. The `Between` condition requires two parameters. `Null`, `True`, and `False` require none. The repository method parameters used for _Query by Method Name_ conditions follow the order in which the _Query by Method Name_ conditions appear within the method name.
 
 In the following example the value of the first parameter, `namePattern`, is used for `NameLike`, the values of the second and third parameters, `minYear` and `maxYear`, are used for `YearMadeBetween`, and the value of the fourth parameter, `maxPrice`, is used for `PriceLessThan`.
 
