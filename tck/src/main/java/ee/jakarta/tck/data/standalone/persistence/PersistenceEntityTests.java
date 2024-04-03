@@ -60,46 +60,6 @@ public class PersistenceEntityTests {
     @Inject
     Catalog catalog;
 
-    @Assertion(id = "133", strategy = "Use a repository method with Contains to query for a value with a collection attribute.")
-    public void testContainsInCollection() {
-        catalog.deleteByProductNumLike("TEST-PROD-%");
-
-        catalog.save(Product.of("spade", 9.99, "TEST-PROD-21", Department.TOOLS, Department.GARDEN));
-        catalog.save(Product.of("shelves", 109.88, "TEST-PROD-22", Department.FURNITURE, Department.OFFICE));
-        catalog.save(Product.of("desk", 315.98, "TEST-PROD-23", Department.FURNITURE, Department.OFFICE));
-        catalog.save(Product.of("stapler", 6.79, "TEST-PROD-24", Department.OFFICE));
-
-        Product[] found = catalog.findByDepartmentsContains(Department.FURNITURE);
-        assertEquals(2, found.length);
-        assertEquals("desk", found[0].getName());
-        assertEquals("shelves", found[1].getName());
-
-        found = catalog.findByDepartmentsContains(Department.OFFICE);
-        assertEquals(3, found.length);
-        assertEquals("desk", found[0].getName());
-        assertEquals("shelves", found[1].getName());
-        assertEquals("stapler", found[2].getName());
-
-        assertEquals(4L, catalog.deleteByProductNumLike("TEST-PROD-%"));
-    }
-
-    @Assertion(id = "133", strategy = "Use a repository method with the Empty keyword.")
-    public void testEmpty() {
-        catalog.deleteByProductNumLike("TEST-PROD-%");
-
-        catalog.save(Product.of("refrigerator", 889.30, "TEST-PROD-41", Department.APPLIANCES));
-        catalog.save(Product.of("book", 15.98, "TEST-PROD-42"));
-        catalog.save(Product.of("baseball cap", 10.99, "TEST-PROD-43", Department.SPORTING_GOODS, Department.CLOTHING));
-
-        Stream<Product> found = catalog.findByDepartmentsEmpty();
-
-        assertEquals(List.of("book"),
-                     found.map(Product::getName)
-                          .collect(Collectors.toList()));
-
-        assertEquals(3L, catalog.deleteByProductNumLike("TEST-PROD-%"));
-    }
-
     @Assertion(id = "133", strategy = "Use a repository method that obtains the Entity Manager.")
     public void testEntityManager() {
         catalog.deleteByProductNumLike("TEST-PROD-%");

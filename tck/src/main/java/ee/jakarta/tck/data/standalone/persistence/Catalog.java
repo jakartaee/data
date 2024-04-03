@@ -71,11 +71,6 @@ public interface Catalog extends DataRepository<Product, String> {
 
     int countBySurgePriceGreaterThanEqual(Double price);
 
-    @OrderBy("name")
-    Product[] findByDepartmentsContains(Department department);
-
-    Stream<Product> findByDepartmentsEmpty();
-
     @Query("WHERE LENGTH(name) = ?1 AND price < ?2 ORDER BY name")
     List<Product> findByNameLengthAndPriceBelow(int nameLength, double maxPrice);
 
