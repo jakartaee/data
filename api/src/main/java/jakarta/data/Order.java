@@ -23,7 +23,6 @@ import java.util.List;
 import jakarta.data.metamodel.StaticMetamodel;
 import jakarta.data.page.PageRequest;
 import jakarta.data.repository.OrderBy;
-import jakarta.data.repository.Query;
 
 /**
  * <p>Requests sorting on various entity attributes.</p>
@@ -49,11 +48,10 @@ import jakarta.data.repository.Query;
  *                                        .size(10));
  * </pre>
  *
- * <p>When combined on a method with static sort criteria
- * ({@code OrderBy} keyword or {@link OrderBy} annotation or
- * {@link Query} with an {@code ORDER BY} clause), the static
- * sort criteria are applied first, followed by the dynamic sort criteria
- * that are defined by {@link Sort} instances in the order listed.</p>
+ * <p>When combined on a method with static sort criteria ({@code OrderBy}
+ * keyword or {@link OrderBy @OrderBy} annotation, the static sort criteria
+ * are applied first, followed by the dynamic sort criteria that are defined
+ * by {@link Sort} instances in the order listed.</p>
  *
  * <p>In the example above, the matching employees are sorted first by salary
  * from highest to lowest. Employees with the same salary are then sorted
