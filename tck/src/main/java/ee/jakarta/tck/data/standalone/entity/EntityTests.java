@@ -405,6 +405,12 @@ public class EntityTests {
         assertEquals(false, numbers.existsById(-1L));
 
         assertEquals(false, characters.existsById(-2L));
+
+        assertEquals(List.of(68L, 69L, 70L, 71L, 72L),
+                     characters.withIdEqualOrAbove(68L, Limit.of(5)));
+
+        assertEquals(List.of(71L, 72L, 73L, 74L, 75L),
+                     numbers.withIdEqualOrAbove(71L, Limit.of(5)));
     }
 
     @Assertion(id = "133", strategy = "Use a repository method with Contains to query for a substring of a String attribute.")
