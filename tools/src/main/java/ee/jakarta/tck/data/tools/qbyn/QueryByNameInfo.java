@@ -31,9 +31,26 @@ public class QueryByNameInfo {
      * The support &lt;operator&gt; types
      */
     public enum Operator {
-        CONTAINS, ENDSWITH, STARTSWITH, LESSTHAN, LESSTHANEQUAL, GREATERTHAN,
-        GREATERTHANEQUAL, BETWEEN , EMPTY , LIKE , IN , NULL,
-        TRUE , FALSE, NONE ;
+        CONTAINS("%||...||%"), ENDSWITH("right(...)"), STARTSWITH("left(...)"), LESSTHAN(" <"), LESSTHANEQUAL(" <="),
+        GREATERTHAN(" >"), GREATERTHANEQUAL(" >="), BETWEEN(" between", 2) , EMPTY(" empty") ,
+        LIKE(" like") , IN(" in") , NULL(" null", 0),  TRUE("=true", 0) ,
+        FALSE("=false", 0), EQUAL(" =")
+        ;
+        private Operator(String jdql) {
+            this(jdql, 1);
+        }
+        private Operator(String jdql, int parameters) {
+            this.jdql = jdql;
+            this.parameters = parameters;
+        }
+        private String jdql;
+        private int parameters = 0;
+        public String getJDQL() {
+            return jdql;
+        }
+        public int parameters() {
+            return parameters;
+        }
     }
     public enum OrderBySortDirection {
         ASC, DESC, NONE
@@ -46,7 +63,7 @@ public class QueryByNameInfo {
         // an entity property name
         String property;
         // the operator to apply to the property
-        Operator operator = Operator.NONE;
+        Operator operator = Operator.EQUAL;
         // is the condition case-insensitive
         boolean ignoreCase;
         // is the condition negated
@@ -60,9 +77,19 @@ public class QueryByNameInfo {
      */
     public static class OrderBy {
         // an entity property name
-        String property;
+        public String property;
         // the direction to sort the property
-        OrderBySortDirection direction = OrderBySortDirection.NONE;
+        public OrderBySortDirection direction = OrderBySortDirection.NONE;
+
+        public OrderBy() {
+        }
+        public OrderBy(String property, OrderBySortDirection direction) {
+            this.property = property;
+            this.direction = direction;
+        }
+        public boolean isDescending() {
+            return direction == OrderBySortDirection.DESC;
+        }
     }
     private Action action = Action.NONE;
     private List<Condition> predicates = new ArrayList<>();
@@ -70,6 +97,16 @@ public class QueryByNameInfo {
     // &gt;= 0 means find expression exists
     int findExpressionCount = -1;
     String ignoredText;
+    // The entity name
+    String entity;
+
+    public String getEntity() {
+        return entity;
+    }
+
+    public void setEntity(String entity) {
+        this.entity = entity;
+    }
 
     public Action getAction() {
         return action;
@@ -158,6 +195,7 @@ public class QueryByNameInfo {
         boolean first = true;
         if(!predicates.isEmpty()) {
             for(Condition c : predicates) {
+                // Add the join condition
                 if(!first) {
                     sb.append(c.and ? "AND" : "OR");
                 }
@@ -170,7 +208,7 @@ public class QueryByNameInfo {
                 if(c.not) {
                     sb.append("NOT");
                 }
-                if(c.operator != Operator.NONE) {
+                if(c.operator != Operator.EQUAL) {
                     sb.append(c.operator.name().toUpperCase());
                 }
                 sb.append(')');
