@@ -35,6 +35,7 @@ import java.util.List;
 
 public class AnnProcUtils {
     static String REPO_TEMPLATE = """
+            package #repo.pkg#;
             import jakarta.annotation.Generated;
             import jakarta.data.repository.OrderBy;
             import jakarta.data.repository.Query;

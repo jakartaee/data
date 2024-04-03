@@ -52,6 +52,7 @@ public class RespositoryProcessor extends AbstractProcessor {
         Set<? extends Element> repositories = roundEnv.getElementsAnnotatedWith(Repository.class);
         for (Element repository : repositories) {
             String fqn = AnnProcUtils.getFullyQualifiedName(repository);
+            System.out.printf("Processing repository %s\n", fqn);
             if(repoInfoMap.containsKey(fqn) || repoInfoMap.containsKey(fqn.substring(0, fqn.length()-1))) {
                 System.out.printf("Repository(%s) already processed\n", fqn);
                 continue;
@@ -70,7 +71,7 @@ public class RespositoryProcessor extends AbstractProcessor {
                 continue;
             }
             //
-            newRepos = checkRespositoryForQBN(repository, entityType);
+            newRepos |= checkRespositoryForQBN(repository, entityType);
         }
 
         // Generate repository interfaces for QBN methods

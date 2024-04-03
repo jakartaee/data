@@ -73,6 +73,7 @@ public class RepositoryInfo {
     }
     private Element repositoryElement;
     private String fqn;
+    private String pkg;
     private String name;
     private String dataStore = "";
     private ArrayList<MethodInfo> methods = new ArrayList<>();
@@ -97,6 +98,18 @@ public class RepositoryInfo {
 
     public void setFqn(String fqn) {
         this.fqn = fqn;
+        int index = fqn.lastIndexOf(".");
+        if(index > 0) {
+            setPkg(fqn.substring(0, index));
+        }
+    }
+
+    public String getPkg() {
+        return pkg;
+    }
+
+    public void setPkg(String pkg) {
+        this.pkg = pkg;
     }
 
     public String getName() {
