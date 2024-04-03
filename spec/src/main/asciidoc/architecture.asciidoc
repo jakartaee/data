@@ -153,3 +153,19 @@ public interface Garage {
 Notice that the `@Insert` annotation is used to declare the `park()` method.
 
 The previous example illustrates the design of a repository interface which captures some of the essence of the business domain. This approach fosters a shared understanding and more intuitive communication within the development team, with database operations named according to the language of the domain.
+
+=== Querying in Jakarta Data
+
+Jakarta Data provides two core ways to express queries:
+
+- <<Parameter-based automatic query methods,parameter-based automatic query methods>>, that is, `@Find` and `@Delete`, and
+- <<Annotated Query methods,annotated query methods>>, that is `@Query` and <<Jakarta Data Query Language>> or Jakarta Persistence Query Language.
+
+Newly written code should use these approaches.
+A typical application based on Jakarta Data uses a mix of both approaches, with the choice of approach depending on the complexity of the query.
+
+As an extension to the core specification, Jakarta Data 1.0 offers a Query by Method Name facility to provide a migration path for existing applications written for repository frameworks which offer similar functionality.
+Query by Method name is described in a companion document to this specification.
+
+A Jakarta Data provider is required to support the Query by Method Name extension in Jakarta Data 1.0.
+This requirement will be removed in a future version of Jakarta Data.

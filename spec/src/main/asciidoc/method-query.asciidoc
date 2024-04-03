@@ -41,6 +41,21 @@ include::chapters/license/license-efsl.adoc[]
 
 :sectnums:
 
+== Introduction
+
+Jakarta Data 1.0 offers a Query by Method Name facility as an extension to the specification to provide a migration path for existing applications written for repository frameworks which offer similar functionality.
+
+The functionality described here overlaps significantly with both:
+
+- parameter-based automatic query methods, that is, `@Find` and `@Delete`, and
+- annotated query methods, that is `@Query` and Jakarta Data Query Language or Jakarta Persistence Query Language.
+
+Therefore, these alternative approaches are strongly preferred for newly-written code.
+
+A Jakarta Data provider is required to support the Query by Method Name extension in Jakarta Data 1.0.
+
+WARNING: This functionality is considered deprecated, and the requirement that a provider support the Query by Method Name extension will be removed in a future version of Jakarta Data.
+
 == Query by Method Name
 
 The Query by method mechanism allows for creating query commands by naming convention.
