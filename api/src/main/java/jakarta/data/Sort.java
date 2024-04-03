@@ -71,7 +71,7 @@ import java.util.Objects;
  * on its position with the list of criteria.</p>
  *
  * <p>A repository method may declare static sorting criteria using
- * the ({@code OrderBy} keyword or {@link OrderBy @OrderBy} annotation,
+ * the {@code OrderBy} keyword or {@link OrderBy @OrderBy} annotation,
  * and also accept dynamic sorting criteria via its parameters. In this
  * situation, the static sorting criteria are applied first, followed
  * by any dynamic sorting criteria specified by instances of
