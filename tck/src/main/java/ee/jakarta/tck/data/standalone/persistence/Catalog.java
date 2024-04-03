@@ -33,7 +33,6 @@ import jakarta.data.repository.Query;
 import jakarta.data.repository.Repository;
 import jakarta.data.repository.Save;
 import jakarta.data.repository.Update;
-import ee.jakarta.tck.data.standalone.persistence.Product.Department;
 
 @Repository
 public interface Catalog extends DataRepository<Product, String> {
