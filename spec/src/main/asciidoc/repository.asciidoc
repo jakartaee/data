@@ -266,6 +266,72 @@ reject such a method declaration at compile time.
 
 include::method-query.asciidoc[]
 
+=== Special Parameters for Limits, Sorting, and Pagination
+
+An <<Annotated Query methods,annotated>>, <<Parameter-based automatic query methods,parameter-based>>, or <<Query by Method Name,method name>> query method may have _special parameters_ of type `Limit`, `Order`, `Sort`, or `PageRequest` if the method return type indicates that the method may return multiple entities, that is, if the return type is:
+
+- an array type,
+- `List` or `Stream`, or
+- `Page` or `CursoredPage`.
+
+A special parameter controls which query results are returned to the caller of a repository method, or in what order the results are returned:
+
+- a `Limit` allows the query results to be limited to a given range defined in terms of an offset and maximum number of results,
+- a `Sort` or `Order` allows the query results to be sorted by a given entity field or list of fields, respectively, and
+- a `PageRequest` combines a range with optional sorting criteria, and a parameter of this type must be declared when the repository method returns a `Page` of results, as specified below in <<Offset-based Pagination>>, or a `CursoredPage`, as specified in <<Cursor-based Pagination>>.
+
+A repository method must throw `UnsupportedOperationException` if it has:
+
+- more than one parameter of type `PageRequest` or `Limit`,
+- a parameter of type `PageRequest` and a parameter of type `Limit`,
+- a parameter of type `PageRequest` or `Limit`, in combination with the keyword `First`, or
+- more than one parameter of type `Order`.
+
+Alternatively, a Jakarta Data provider is permitted to reject such a repository method declaration at compile time.
+
+A repository method must throw `IllegalArgumentException` if it is called with an argument or arguments of type `Sort` or `Order` and a separate argument of type `PageRequest` with nonempty sort criteria.
+
+A repository method must throw `DataException` if the database is incapable of ordering the query results using the given sort criteria.
+
+The following example demonstrates the use of special parameters:
+
+[source,java]
+----
+@Repository
+public interface ProductRepository extends BasicRepository<Product, Long> {
+
+    List<Product> findByName(String name, PageRequest<Product> pageRequest);
+
+    List<Product> findByNameLike(String pattern, Limit max, Sort<?>... sorts);
+
+}
+----
+
+An instance of `Sort` may be obtained by specifying an entity field name:
+
+[source,java]
+----
+Sort nameAscending = Sort.asc("name");
+----
+
+Even better, the <<Type-safe Access to Entity Attributes,static metamodel>> may be used to obtain an instance of `Sort` in a typesafe way:
+
+[source,java]
+----
+Sort<Employee> nameAscending = _Employee.name.asc();
+----
+
+This `PageRequest` combines sorting with a starting page and maximum page size:
+
+[source,java]
+----
+PageRequest<Product> pageRequest =
+        PageRequest.of(Product.class)
+                   .size(20).page(1)
+                   .sortBy(_Product.price.desc());
+List<Product> first20 = products.findByName(name, pageRequest);
+----
+
 === Precedence of Sort Criteria
 
 The specification defines different ways of providing sort criteria on queries. This section discusses how these different mechanisms relate to each other.
