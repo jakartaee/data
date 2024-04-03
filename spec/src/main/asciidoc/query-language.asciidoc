@@ -366,6 +366,8 @@ The `set` clause, with syntax given by `set_clause`, specifies a list of updates
 
 The `order` clause (or `order by` clause), with syntax given by `orderby_clause`, specifies a lexicographic order for the query results, that is, a list of entity fields used to sort the records which satisfy the restriction imposed by the `where` clause. The keywords `asc` and `desc` specify that a given field should be sorted in ascending or descending order respectively; when neither is specified, ascending order is the default.
 
+NOTE: An implementation of JDQL is not required to support sorting by entity fields which are not returned by the query. If a query returns the queried entity, then any field of the queried entity may occur in the `order` clause. Otherwise, if the query has is an explicit `select` clause, a provider might require that a field which occurs in the `order` also occurs in the `select`.
+
 Entity fields occurring earlier in the `order by` clause take precedence. That is, a field occurring later in the `order by` clause is only used to resolve "ties" between records which cannot be unambiguously ordered using only earlier fields.
 
 This specification does not define how null values are ordered with respect to non-null values. The ordering of null values may vary between data stores and between Jakarta Data providers.
