@@ -476,7 +476,7 @@ import java.util.Set;
  *
  * <tr style="vertical-align: top; background-color:#eee"><td>{@code In}</td>
  * <td>sortable basic types</td>
- * <td>Requires that the entity's attribute value be within the {@link Set} that is
+ * <td>Requires that the entity attribute value belong to the {@link Set} that is
  * the parameter value.</td>
  * <td>{@code findByMonthIn(Set.of(Month.MAY, Month.JUNE))}</td>
  * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column<br>Document<br>Graph</td></tr>
