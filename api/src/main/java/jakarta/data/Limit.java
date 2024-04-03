@@ -20,14 +20,17 @@ package jakarta.data;
 import jakarta.data.page.PageRequest;
 
 /**
- * <p>Limits how many results are retrieved by a repository find method.
- * Results of a single invocation of a repository find method
- * can be capped to a maximum amount
- * or be limited to a given positional range.</p>
+ * <p>Specifies a limit on the number of results retrieved by a repository
+ * method. The results of a single invocation of a repository method may
+ * be limited to a given {@linkplain #of(int) maximum number of results}
+ * or to a given {@linkplain #range(long, long) positioned range} defined
+ * in terms of an offset and maximum number of results.</p>
  *
- * <p><code>Limit</code> is optionally specified as a parameter to a
- * repository method in one of the parameter positions after the
- * query parameters. For example,</p>
+ * <p>A query method of a repository may have a parameter of type
+ * {@code Limit} if its return type indicates that it may return multiple
+ * entities. The parameter of type {@code Limit} must occur after the
+ * method parameters representing regular parameters of the query itself.
+ * For example,</p>
  *
  * <pre>
  * Product[] findByNameLike(String namePattern, Limit limit, {@code Sort<?>...} sorts);
@@ -38,14 +41,13 @@ import jakarta.data.page.PageRequest;
  * secondMostExpensive50 = products.findByNameLike(pattern, Limit.range(51, 100), Sort.desc("price"));
  * </pre>
  *
- * <p>A repository method will fail if</p>
+ * <p>A repository method may not be declared with:
  * <ul>
- * <li>multiple <code>Limit</code> parameters are supplied to the
- *     same method.</li>
- * <li><code>Limit</code> and {@link PageRequest} parameters are supplied to the
- *     same method.</li>
- * <li>a <code>Limit</code> parameter is supplied in combination
- *     with the <code>First</code> keyword.</li>
+ * <li>more than one parameter of type {@code Limit},</li>
+ * <li>a parameter of type {@code Limit} and a parameter of type
+ *     {@link PageRequest}, or</li>
+ * <li>a parameter of type {@code Limit} in combination with the
+ *     {@code First} keyword.
  * </ul>
  *
  * @param maxResults maximum number of results for a query.
@@ -87,7 +89,7 @@ public record Limit(int maxResults, long startAt) {
     // Override to provide method documentation:
     /**
      * <p>Offset at which to start when returning query results.
-     * The first query result is position <code>1</code>.</p>
+     * The first query result is position {@code 1}.</p>
      *
      * @return offset of the first result.
      */
@@ -101,7 +103,7 @@ public record Limit(int maxResults, long startAt) {
      *
      * @param maxResults maximum number of results.
      * @return limit that can be supplied to a find method
-     *         or <code>&#64;Query</code> method that performs a find operation; will never be {@code null}.
+     *         or {@code @Query} method that performs a find operation; will never be {@code null}.
      * @throws IllegalArgumentException if maxResults is less than 1.
      */
     public static Limit of(int maxResults) {
@@ -110,18 +112,18 @@ public record Limit(int maxResults, long startAt) {
 
     /**
      * <p>Create a limit that restricts the results to a range,
-     * beginning with the <code>startAt</code> position and
-     * ending after the <code>endAt</code> position or the
+     * beginning with the {@code startAt} position and
+     * ending after the {@code endAt} position or the
      * position of the final result, whichever comes first.</p>
      *
      * @param startAt position at which to start including results.
      *                The first query result is position 1.
      * @param endAt   position after which to cease including results.
      * @return limit that can be supplied to a find method or
-     *         or a <code>&#64;Query</code> method that performs a find operation; will never be {@code null}.
-     * @throws IllegalArgumentException if <code>startAt</code> is less than 1
-     *         or <code>endAt</code> is less than <code>startAt</code>,
-     *         or the range from <code>startAt</code> to <code>endAt</code>
+     *         or a {@code @Query} method that performs a find operation; will never be {@code null}.
+     * @throws IllegalArgumentException if {@code startAt} is less than 1
+     *         or {@code endAt} is less than {@code startAt},
+     *         or the range from {@code startAt} to {@code endAt}
      *         exceeds {@link Integer#MAX_VALUE}.
      */
     public static Limit range(long startAt, long endAt) {

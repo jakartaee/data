@@ -15,14 +15,14 @@
  */
 package ee.jakarta.tck.data.standalone.persistence;
 
-import java.util.Collection;
-import java.util.LinkedList;
+import static jakarta.data.repository.By.ID;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
 import jakarta.data.Order;
-import jakarta.data.Streamable;
+import jakarta.data.repository.By;
 import jakarta.data.repository.DataRepository;
 import jakarta.data.repository.Delete;
 import jakarta.data.repository.Find;
@@ -33,8 +33,6 @@ import jakarta.data.repository.Query;
 import jakarta.data.repository.Repository;
 import jakarta.data.repository.Save;
 import jakarta.data.repository.Update;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.TypedQuery;
 import ee.jakarta.tck.data.standalone.persistence.Product.Department;
 
 @Repository
@@ -56,7 +54,7 @@ public interface Catalog extends DataRepository<Product, String> {
     Product[] modifyMultiple(Product... products);
 
     @Delete
-    boolean remove(Product product);
+    void remove(Product product);
 
     @Delete
     void removeMultiple(Product... products);
@@ -64,7 +62,8 @@ public interface Catalog extends DataRepository<Product, String> {
     @Save
     void save(Product product);
 
-    void deleteById(String productNum);
+    @Delete
+    void deleteById(@By(ID) String productNum);
 
     long deleteByProductNumLike(String pattern);
 
@@ -72,43 +71,43 @@ public interface Catalog extends DataRepository<Product, String> {
 
     int countBySurgePriceGreaterThanEqual(Double price);
 
-    @Query("SELECT p FROM Product p WHERE (SIZE(p.departments) = ?1 AND p.price < ?2) ORDER BY p.name")
-    Streamable<Product> findByDepartmentCountAndPriceBelow(int numDepartments, double maxPrice);
-
     @OrderBy("name")
     Product[] findByDepartmentsContains(Department department);
 
-    LinkedList<Product> findByDepartmentsEmpty();
+    Stream<Product> findByDepartmentsEmpty();
 
-    Iterable<Product> findByIdBetween(String first, String last, Order<Product> sorts);
+    @Query("WHERE LENGTH(name) = ?1 AND price < ?2 ORDER BY name")
+    List<Product> findByNameLengthAndPriceBelow(int nameLength, double maxPrice);
 
     List<Product> findByNameLike(String name);
-    
-    List<Product> findByProductNumLike(String productNum);
 
     @OrderBy(value = "price", descending = true)
     Stream<Product> findByPriceNotNullAndPriceLessThanEqual(double maxPrice);
 
-    Collection<Product> findByPriceNull();
+    List<Product> findByPriceNull();
 
-    EntityManager getEntityManager();
+    List<Product> findByProductNumBetween(String first, String last, Order<Product> sorts);
 
-    default double sumPrices(Department... departments) {
-        StringBuilder jpql = new StringBuilder("SELECT SUM(o.price) FROM Product o");
-        for (int d = 1; d <= departments.length; d++) {
-            jpql.append(d == 1 ? " WHERE " : " OR ");
-            jpql.append('?').append(d).append(" MEMBER OF o.departments");
-        }
+    List<Product> findByProductNumLike(String productNum);
 
-        EntityManager em = getEntityManager();
-        TypedQuery<Double> query = em.createQuery(jpql.toString(), Double.class);
-        for (int d = 1; d <= departments.length; d++) {
-            query.setParameter(d, departments[d - 1]);
-        }
-        return query.getSingleResult();
-    }
+//    EntityManager getEntityManager();
+//
+//    default double sumPrices(Department... departments) {
+//        StringBuilder jpql = new StringBuilder("SELECT SUM(o.price) FROM Product o");
+//        for (int d = 1; d <= departments.length; d++) {
+//            jpql.append(d == 1 ? " WHERE " : " OR ");
+//            jpql.append('?').append(d).append(" MEMBER OF o.departments");
+//        }
+//
+//        EntityManager em = getEntityManager();
+//        TypedQuery<Double> query = em.createQuery(jpql.toString(), Double.class);
+//        for (int d = 1; d <= departments.length; d++) {
+//            query.setParameter(d, departments[d - 1]);
+//        }
+//        return query.getSingleResult();
+//    }
 
-    @Query("SELECT o FROM Product o WHERE (:rate * o.price <= :max AND :rate * o.price >= :min) ORDER BY o.name")
+    @Query("FROM Product WHERE (:rate * price <= :max AND :rate * price >= :min) ORDER BY name")
     Stream<Product> withTaxBetween(@Param("min") double mininunTaxAmount,
                                    @Param("max") double maximumTaxAmount,
                                    @Param("rate") double taxRate);

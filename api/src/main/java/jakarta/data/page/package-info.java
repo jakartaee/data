@@ -17,7 +17,7 @@
  */
 
 /**
- * <p>Splits query results into slices or pages.</p>
+ * <p>Splits query results into pages.</p>
  *
  * <p>For query results that are expected to be large, it can be useful to
  * read the results in separate parts instead of retrieving all of the results
@@ -27,7 +27,7 @@
  * order. This is often done by having the final sort criterion be the
  * unique identifier, but it can be achieved by other means as long as the
  * order is guaranteed to be deterministic. Here is an example of sort criteria
- * to allow data to be read in slices or pages,</p>
+ * to allow data to be read in pages,</p>
  *
  * <pre>
  * PageRequest.of(Person.class).size(25).sortBy(Sort.asc("lastName"),
@@ -38,20 +38,16 @@
  * <p>In the example above, even if multiple people have the same last names
  * and same first names, the results will always be in the same order due to
  * the unique identifier. The predictable order makes it possible to retrieve
- * the query results from the database in separate slices or pages.</p>
+ * the query results from the database in separate pages.</p>
  *
- * <p>In Jakarta Data, a slice has most of the same functionality as a page,
- * but does not offer a total count of results across all slices. Using slice
- * rather than page is more efficient when a total count of results is not needed.</p>
+ * <p>Pages can be determined based on fixed positional offset or relative to a
+ * cursor.</p>
  *
- * <p>Slices and pages can be determined based on fixed positional offset
- * or relative to a cursor.</p>
- *
- * <p>{@link jakarta.data.page.Slice} and {@link jakarta.data.page.Page} are computed based on their positional offset
- * within the list of results. For example, if you are on the first page of 10
- * and request the next page, the database identifies the matching entities
- * for the query at positions 11 through 20 and retrieves them. Results are
- * predictable if data is not modified in between slice/page requests.
+ * <p>The elements of a {@link jakarta.data.page.Page} are computed based on their
+ * positional offset within the list of results. For example, if we have obtained
+ * the first page of 10 results and request the next page, the database identifies
+ * the matching entities for the query at positions 11 through 20 and retrieves
+ * them. Results are predictable if data is not modified in between page requests.
  * If additional entities were inserted prior to requesting the second page
  * then some of the entities that are retrieved for the second page might have
  * also appeared on the first page. Similarly, if entities from the first page
@@ -61,10 +57,10 @@
  * <p>For situations where the above must be avoided or the application wishes to
  * avoid the performance cost of the database re-scanning data from previous pages
  * (to determine the position), Jakarta Data offers a cursor based approach with
- * {@link jakarta.data.page.KeysetAwareSlice} and {@link jakarta.data.page.KeysetAwarePage}. In this approach,
- * queries for the next or previous page are performed relative to the last
- * or first entry of the current page.</p>
+ * {@link jakarta.data.page.CursoredPage}. In this approach, queries for the next
+ * or previous page are performed relative to the last or first entry of the current
+ * page.</p>
  *
- * <p>The module JavaDoc provides an {@link jakarta.data/ overview} of Jakarta Data.</p>
+ * <p>The module Javadoc provides an {@link jakarta.data/ overview} of Jakarta Data.</p>
  */
 package jakarta.data.page;

@@ -30,11 +30,11 @@
  *     and {@link jakarta.data.repository.CrudRepository#update(java.lang.Object)} operations.</li>
  * </ul>
  *
- * <p>Repository interfaces can also define their own life cycle methods using the
+ * <p>Repository interfaces can also define their own lifecycle methods using the
  * {@link jakarta.data.repository.Insert}, {@link jakarta.data.repository.Update}, {@link jakarta.data.repository.Save}, and {@link jakarta.data.repository.Delete} annotations,
  * as well as a variety of other methods following the Query by Method Name pattern,
  * the Parameter-based Conditions pattern, and the {@link jakarta.data.repository.Query} annotation.</p>
  *
- * <p>The module JavaDoc provides an {@link jakarta.data/ overview} of Jakarta Data.</p>
+ * <p>The module Javadoc provides an {@link jakarta.data/ overview} of Jakarta Data.</p>
  */
 package jakarta.data.repository;

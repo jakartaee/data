@@ -29,7 +29,7 @@ import java.lang.annotation.Target;
  * <p>This class is a CDI bean-defining annotation when CDI is available.
  * Regardless of whether CDI or custom dependency injection is used, the
  * repository implementation must be made available to applications via the
- * <code>jakarta.inject.Inject</code> annotation.</p>
+ * {@code jakarta.inject.Inject} annotation.</p>
  *
  * <p>For example,</p>
  *
@@ -40,7 +40,7 @@ import java.lang.annotation.Target;
  *     &#64;OrderBy("price")
  *     List&lt;Product&gt; findByNameLike(String namePattern);
  *
- *     &#64;Query("UPDATE Product o SET o.price = o.price - (o.price * ?1) WHERE o.price * ?1 &lt;= ?2")
+ *     &#64;Query("UPDATE Product SET price = price - (price * ?1) WHERE price * ?1 &lt;= ?2")
  *     int putOnSale(float rateOfDiscount, float maxDiscount);
  *
  *     ...
@@ -56,7 +56,7 @@ import java.lang.annotation.Target;
  * numUpdated = products.putOnSale(0.15f, 20.0f);
  * </pre>
  *
- * <p>The module JavaDoc provides an {@link jakarta.data/ overview} of Jakarta Data.</p>
+ * <p>The module Javadoc provides an {@link jakarta.data/ overview} of Jakarta Data.</p>
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
@@ -67,7 +67,7 @@ public @interface Repository {
      * available Jakarta Data provider that supports the type of entity
      * annotation that is present on the repository's entity class.
      */
-    static final String ANY_PROVIDER = "";
+    String ANY_PROVIDER = "";
 
     /**
      * <p>Value for the {@link Repository#dataStore()} attribute that indicates to use
@@ -81,7 +81,7 @@ public @interface Repository {
      * <p>The default data store might require additional vendor-specific
      * configuration, depending on the vendor.</p>
      */
-    static final String DEFAULT_DATA_STORE = "";
+    String DEFAULT_DATA_STORE = "";
 
     /**
      * <p>Optionally indicates the data store to use for the repository.</p>

@@ -19,31 +19,49 @@ package jakarta.data.page.impl;
 
 import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
-import jakarta.data.page.Slice;
 
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
- * Record type implementing {@link Slice}.
+ * Record type implementing {@link Page}.
  * This may be used to simplify implementation of a repository interface.
  *
  * @param pageRequest The {@link PageRequest page request} for which this
- *                    slice was obtained
+ *                    page was obtained
  * @param content The page content
  * @param totalElements The total number of elements across all pages that
- *                      can be requested for the query
+ *                      can be requested for the query. A negative value
+ *                      indicates that a total count of elements and pages
+ *                      is not available.
  * @param moreResults whether there is a (nonempty) next page of results
  * @param <T> The type of elements on the page
  */
 public record PageRecord<T>(PageRequest<T> pageRequest, List<T> content, long totalElements, boolean moreResults)
         implements Page<T> {
 
+    /**
+     * Constructs a new instance, computing the {@link #moreResults}
+     * component as {@code true} if the page {@code content} is a full
+     * page of results and the {@code totalElements} is either unavailable
+     * (indicated by a negative value) or it exceeds the current
+     * {@linkplain PageRequest#page() page number} multiplied by the
+     * {@link PageRequest#size() size} of a full page.
+     *
+     * @param pageRequest   The {@link PageRequest page request} for which
+     *                      this page was obtained.
+     * @param content       The page content.
+     * @param totalElements The total number of elements across all pages
+     *                      that can be requested for the query. A negative
+     *                      value indicates that a total count of elements
+     *                      and pages is not available.
+     */
     public PageRecord(PageRequest<T> pageRequest, List<T> content, long totalElements) {
         this( pageRequest, content, totalElements,
                 content.size() == pageRequest.size()
-                        && totalElements > pageRequest.size() * pageRequest.page() );
+                        && (totalElements < 0
+                                || totalElements > pageRequest.size() * pageRequest.page() ));
     }
 
     @Override
@@ -69,11 +87,27 @@ public record PageRecord<T>(PageRequest<T> pageRequest, List<T> content, long to
 
     @Override
     public PageRequest<T> nextPageRequest() {
-        if (moreResults) {
-            return pageRequest.next();
-        } else {
+        if ( !hasNext() )
             throw new NoSuchElementException();
-        }
+        return pageRequest.next();
+    }
+
+    @Override
+    public boolean hasPrevious() {
+        return pageRequest.page() > 1;
+    }
+
+    @Override
+    public PageRequest<T> previousPageRequest() {
+        if ( !hasPrevious() )
+            throw new NoSuchElementException();
+        return pageRequest.previous();
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <E> PageRequest<E> previousPageRequest(Class<E> entityClass) {
+        return (PageRequest<E>) previousPageRequest();
     }
 
     @Override
@@ -88,7 +122,23 @@ public record PageRecord<T>(PageRequest<T> pageRequest, List<T> content, long to
     }
 
     @Override
+    public boolean hasTotals() {
+        return totalElements >= 0;
+    }
+
+    @Override
+    public long totalElements() {
+        if (totalElements<0) {
+            throw new IllegalStateException("total elements are not available");
+        }
+        return totalElements;
+    }
+
+    @Override
     public long totalPages() {
+        if (totalElements<0) {
+            throw new IllegalStateException("total elements are not available");
+        }
         int size = pageRequest.size();
         return (totalElements + size - 1) / size;
     }

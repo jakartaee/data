@@ -23,11 +23,12 @@ import java.util.stream.Stream;
 import ee.jakarta.tck.data.framework.read.only.NaturalNumber.NumberType;
 import jakarta.data.Limit;
 import jakarta.data.Order;
-import jakarta.data.Streamable;
-import jakarta.data.page.KeysetAwarePage;
+import jakarta.data.page.CursoredPage;
 import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
 import jakarta.data.repository.Find;
+import jakarta.data.repository.Param;
+import jakarta.data.repository.Query;
 import jakarta.data.repository.BasicRepository;
 import jakarta.data.repository.Repository;
 
@@ -42,13 +43,13 @@ public interface PositiveIntegers extends BasicRepository<NaturalNumber, Long> {
 
     boolean existsByIdGreaterThan(Long number);
 
-    KeysetAwarePage<NaturalNumber> findByFloorOfSquareRootNotAndIdLessThanOrderByBitsRequiredDesc(long excludeSqrt,
+    CursoredPage<NaturalNumber> findByFloorOfSquareRootNotAndIdLessThanOrderByNumBitsRequiredDesc(long excludeSqrt,
                                                                                                   long eclusiveMax,
                                                                                                   PageRequest<NaturalNumber> pagination);
 
-    Iterable<NaturalNumber> findByIsOddTrueAndIdLessThanEqualOrderByIdDesc(long max);
+    List<NaturalNumber> findByIsOddTrueAndIdLessThanEqualOrderByIdDesc(long max);
 
-    Streamable<NaturalNumber> findByIsOddFalseAndIdBetween(long min, long max);
+    List<NaturalNumber> findByIsOddFalseAndIdBetween(long min, long max);
 
     Stream<NaturalNumber> findByNumTypeInOrderByIdAsc(Set<NumberType> types, Limit limit);
 
@@ -63,4 +64,14 @@ public interface PositiveIntegers extends BasicRepository<NaturalNumber, Long> {
 
     @Find
     List<NaturalNumber> findOdd(boolean isOdd, NumberType numType, Limit limit, Order<NaturalNumber> sorts);
+
+    @Query("Select id Where isOdd = true and (id = :id or id < :exclusiveMax) Order by id Desc")
+    List<Long> oddAndEqualToOrBelow(long id, long exclusiveMax);
+
+    // Per the spec: The 'and' operator has higher precedence than 'or'.
+    @Query("WHERE numBitsRequired = :bits OR numType = :type AND id < :xmax")
+    CursoredPage<NaturalNumber> withBitCountOrOfTypeAndBelow(@Param("bits") short bitsRequired,
+                                                             @Param("type") NumberType numberType,
+                                                             @Param("xmax") long exclusiveMax,
+                                                             PageRequest<?> pageRequest);
 }

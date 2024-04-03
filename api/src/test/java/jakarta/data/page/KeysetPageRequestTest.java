@@ -32,26 +32,26 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 class KeysetPageRequestTest {
 
     @Test
-    @DisplayName("Should include keyset values in next PageRequest")
+    @DisplayName("Should include key values in next PageRequest")
     void shouldCreatePageRequestAfterKeyset() {
-        PageRequest<?> pageRequest = PageRequest.ofSize(20).afterKeyset("First", 2L, 3);
+        PageRequest<?> pageRequest = PageRequest.ofSize(20).afterKey("First", 2L, 3);
 
         assertSoftly(softly -> {
             softly.assertThat(pageRequest.size()).isEqualTo(20);
             softly.assertThat(pageRequest.page()).isEqualTo(1L);
             softly.assertThat(pageRequest.mode()).isEqualTo(PageRequest.Mode.CURSOR_NEXT);
             softly.assertThat(pageRequest.cursor()).get().extracting(PageRequest.Cursor::size).isEqualTo(3);
-            softly.assertThat(pageRequest.cursor()).get().extracting(c -> c.getKeysetElement(0)).isEqualTo("First");
-            softly.assertThat(pageRequest.cursor()).get().extracting(c -> c.getKeysetElement(1)).isEqualTo(2L);
-            softly.assertThat(pageRequest.cursor()).get().extracting(c -> c.getKeysetElement(2)).isEqualTo(3);
+            softly.assertThat(pageRequest.cursor()).get().extracting(c -> c.get(0)).isEqualTo("First");
+            softly.assertThat(pageRequest.cursor()).get().extracting(c -> c.get(1)).isEqualTo(2L);
+            softly.assertThat(pageRequest.cursor()).get().extracting(c -> c.get(2)).isEqualTo(3);
         });
     }
 
     @Test
-    @DisplayName("Should include keyset values in next PageRequest from Cursor")
+    @DisplayName("Should include key values in next PageRequest from Cursor")
     void shouldCreatePageRequestAfterKeysetCursor() {
-        PageRequest.Cursor cursor = new KeysetCursor("me", 200);
-        PageRequest<?> pageRequest = PageRequest.ofSize(35).sortBy(Sort.asc("name"), Sort.asc("id")).afterKeysetCursor(cursor);
+        PageRequest.Cursor cursor = new PageRequestCursor("me", 200);
+        PageRequest<?> pageRequest = PageRequest.ofSize(35).sortBy(Sort.asc("name"), Sort.asc("id")).afterCursor(cursor);
 
         assertSoftly(softly -> {
             softly.assertThat(pageRequest.size()).isEqualTo(35);
@@ -59,15 +59,15 @@ class KeysetPageRequestTest {
             softly.assertThat(pageRequest.sorts()).isEqualTo(List.of(Sort.asc("name"), Sort.asc("id")));
             softly.assertThat(pageRequest.mode()).isEqualTo(PageRequest.Mode.CURSOR_NEXT);
             softly.assertThat(pageRequest.cursor()).get().extracting(PageRequest.Cursor::size).isEqualTo(2);
-            softly.assertThat(pageRequest.cursor()).get().extracting(c -> c.getKeysetElement(0)).isEqualTo("me");
-            softly.assertThat(pageRequest.cursor()).get().extracting(c -> c.getKeysetElement(1)).isEqualTo(200);
+            softly.assertThat(pageRequest.cursor()).get().extracting(c -> c.get(0)).isEqualTo("me");
+            softly.assertThat(pageRequest.cursor()).get().extracting(c -> c.get(1)).isEqualTo(200);
         });
     }
 
     @Test
-    @DisplayName("Should include keyset values in previous PageRequest")
+    @DisplayName("Should include key values in previous PageRequest")
     void shouldCreatePageRequestBeforeKeyset() {
-        PageRequest<?> pageRequest = PageRequest.ofSize(30).sortBy(Sort.desc("yearBorn"), Sort.asc("ssn")).beforeKeyset(1991, "123-45-6789").page(10);
+        PageRequest<?> pageRequest = PageRequest.ofSize(30).sortBy(Sort.desc("yearBorn"), Sort.asc("ssn")).beforeKey(1991, "123-45-6789").page(10);
 
         assertSoftly(softly -> {
             softly.assertThat(pageRequest.size()).isEqualTo(30);
@@ -75,16 +75,16 @@ class KeysetPageRequestTest {
             softly.assertThat(pageRequest.sorts()).isEqualTo(List.of(Sort.desc("yearBorn"), Sort.asc("ssn")));
             softly.assertThat(pageRequest.mode()).isEqualTo(PageRequest.Mode.CURSOR_PREVIOUS);
             softly.assertThat(pageRequest.cursor()).get().extracting(PageRequest.Cursor::size).isEqualTo(2);
-            softly.assertThat(pageRequest.cursor()).get().extracting(c -> c.getKeysetElement(0)).isEqualTo(1991);
-            softly.assertThat(pageRequest.cursor()).get().extracting(c -> c.getKeysetElement(1)).isEqualTo("123-45-6789");
+            softly.assertThat(pageRequest.cursor()).get().extracting(c -> c.get(0)).isEqualTo(1991);
+            softly.assertThat(pageRequest.cursor()).get().extracting(c -> c.get(1)).isEqualTo("123-45-6789");
         });
     }
 
     @Test
-    @DisplayName("Should include keyset values in previous PageRequest from Cursor")
+    @DisplayName("Should include key values in previous PageRequest from Cursor")
     void shouldCreatePageRequestBeforeKeysetCursor() {
-        PageRequest.Cursor cursor = new KeysetCursor(900L, 300, "testing", 120, 'T');
-        PageRequest<?> pageRequest = PageRequest.ofPage(8).beforeKeysetCursor(cursor);
+        PageRequest.Cursor cursor = new PageRequestCursor(900L, 300, "testing", 120, 'T');
+        PageRequest<?> pageRequest = PageRequest.ofPage(8).beforeCursor(cursor);
 
         assertSoftly(softly -> {
             softly.assertThat(pageRequest.size()).isEqualTo(10);
@@ -92,22 +92,22 @@ class KeysetPageRequestTest {
             softly.assertThat(pageRequest.sorts()).isEqualTo(Collections.EMPTY_LIST);
             softly.assertThat(pageRequest.mode()).isEqualTo(PageRequest.Mode.CURSOR_PREVIOUS);
             softly.assertThat(pageRequest.cursor()).get().extracting(PageRequest.Cursor::size).isEqualTo(5);
-            softly.assertThat(pageRequest.cursor()).get().extracting(c -> c.getKeysetElement(0)).isEqualTo(900L);
-            softly.assertThat(pageRequest.cursor()).get().extracting(c -> c.getKeysetElement(1)).isEqualTo(300);
-            softly.assertThat(pageRequest.cursor()).get().extracting(c -> c.getKeysetElement(2)).isEqualTo("testing");
-            softly.assertThat(pageRequest.cursor()).get().extracting(c -> c.getKeysetElement(3)).isEqualTo(120);
-            softly.assertThat(pageRequest.cursor()).get().extracting(c -> c.getKeysetElement(4)).isEqualTo('T');
+            softly.assertThat(pageRequest.cursor()).get().extracting(c -> c.get(0)).isEqualTo(900L);
+            softly.assertThat(pageRequest.cursor()).get().extracting(c -> c.get(1)).isEqualTo(300);
+            softly.assertThat(pageRequest.cursor()).get().extracting(c -> c.get(2)).isEqualTo("testing");
+            softly.assertThat(pageRequest.cursor()).get().extracting(c -> c.get(3)).isEqualTo(120);
+            softly.assertThat(pageRequest.cursor()).get().extracting(c -> c.get(4)).isEqualTo('T');
         });
     }
 
     @Test
     @DisplayName("Should be usable in a hashing structure")
     void shouldHash() {
-        PageRequest<?> pageRequest1 = PageRequest.ofSize(15).afterKeyset(1, '1', "1")
+        PageRequest<?> pageRequest1 = PageRequest.ofSize(15).afterKey(1, '1', "1")
                                               .sortBy(Sort.desc("yearHired"), Sort.asc("lastName"), Sort.asc("id"));
-        PageRequest<?> pageRequest2A = PageRequest.ofSize(15).afterKeyset(2, '2', "2");
-        PageRequest<?> pageRequest2B = PageRequest.ofSize(15).beforeKeyset(2, '2', "2");
-        PageRequest<?> pageRequest2C = PageRequest.ofSize(15).beforeKeyset(2, '2', "2");
+        PageRequest<?> pageRequest2A = PageRequest.ofSize(15).afterKey(2, '2', "2");
+        PageRequest<?> pageRequest2B = PageRequest.ofSize(15).beforeKey(2, '2', "2");
+        PageRequest<?> pageRequest2C = PageRequest.ofSize(15).beforeKey(2, '2', "2");
         Map<PageRequest<?>, Integer> map = new HashMap<>();
 
         assertSoftly(softly -> {
@@ -127,37 +127,37 @@ class KeysetPageRequestTest {
     @Test
     @DisplayName("Should be displayable as String with toString")
     void shouldPageRequestDisplayAsString() {
-        PageRequest<?> pageRequest = PageRequest.ofSize(200).afterKeyset("value1", 1);
+        PageRequest<?> pageRequest = PageRequest.ofSize(200).afterKey("value1", 1);
 
         assertSoftly(softly -> softly.assertThat(pageRequest.toString())
               .isEqualTo("PageRequest{page=1, size=200, mode=CURSOR_NEXT, 2 keys}"));
 
         PageRequest<?> pageRequestWithSorts = PageRequest.ofSize(100).sortBy(Sort.desc("name"), Sort.asc("id"))
-                                             .beforeKeyset("Item1", 3456);
+                                             .beforeKey("Item1", 3456);
 
         assertSoftly(softly -> softly.assertThat(pageRequestWithSorts.toString())
               .isEqualTo("PageRequest{page=1, size=100, mode=CURSOR_PREVIOUS, 2 keys, name DESC, id ASC}"));
     }
 
     @Test
-    @DisplayName("Should return true from equals if keyset values and other properties are equal")
+    @DisplayName("Should return true from equals if key values and other properties are equal")
     void shouldBeEqualWithSameKeysetValues() {
-        PageRequest<?> pageRequest25P1S0A1 = PageRequest.ofSize(25).afterKeyset("keyval1", '2', 3);
-        PageRequest<?> pageRequest25P1S0B1 = PageRequest.ofSize(25).beforeKeyset("keyval1", '2', 3);
-        PageRequest<?> pageRequest25P1S0A1Match = PageRequest.ofSize(25).afterKeysetCursor(new KeysetCursor("keyval1", '2', 3));
-        PageRequest<?> pageRequest25P2S0A1 = PageRequest.ofPage(2).size(25).afterKeysetCursor(new KeysetCursor("keyval1", '2', 3));
-        PageRequest<?> pageRequest25P1S1A1 = PageRequest.ofSize(25).sortBy(Sort.desc("d"), Sort.asc("a"), Sort.asc("id")).afterKeyset("keyval1", '2', 3);
-        PageRequest<?> pageRequest25P1S2A1 = PageRequest.ofSize(25).sortBy(Sort.desc("d"), Sort.asc("a"), Sort.desc("id")).afterKeyset("keyval1", '2', 3);
-        PageRequest<?> pageRequest25P1S0A2 = PageRequest.ofSize(25).afterKeyset("keyval2", '2', 3);
+        PageRequest<?> pageRequest25P1S0A1 = PageRequest.ofSize(25).afterKey("keyval1", '2', 3);
+        PageRequest<?> pageRequest25P1S0B1 = PageRequest.ofSize(25).beforeKey("keyval1", '2', 3);
+        PageRequest<?> pageRequest25P1S0A1Match = PageRequest.ofSize(25).afterCursor(new PageRequestCursor("keyval1", '2', 3));
+        PageRequest<?> pageRequest25P2S0A1 = PageRequest.ofPage(2).size(25).afterCursor(new PageRequestCursor("keyval1", '2', 3));
+        PageRequest<?> pageRequest25P1S1A1 = PageRequest.ofSize(25).sortBy(Sort.desc("d"), Sort.asc("a"), Sort.asc("id")).afterKey("keyval1", '2', 3);
+        PageRequest<?> pageRequest25P1S2A1 = PageRequest.ofSize(25).sortBy(Sort.desc("d"), Sort.asc("a"), Sort.desc("id")).afterKey("keyval1", '2', 3);
+        PageRequest<?> pageRequest25P1S0A2 = PageRequest.ofSize(25).afterKey("keyval2", '2', 3);
 
-        PageRequest.Cursor cursor1 = new KeysetCursor("keyval1", '2', 3);
-        PageRequest.Cursor cursor2 = new KeysetCursor("keyval2", '2', 3);
-        PageRequest.Cursor cursor3 = new KeysetCursor("keyval1", '2');
+        PageRequest.Cursor cursor1 = new PageRequestCursor("keyval1", '2', 3);
+        PageRequest.Cursor cursor2 = new PageRequestCursor("keyval2", '2', 3);
+        PageRequest.Cursor cursor3 = new PageRequestCursor("keyval1", '2');
         PageRequest.Cursor cursor4 = new PageRequest.Cursor() {
             private final Object[] keyset = new Object[] { "keyval1", '2', 3 };
 
             @Override
-            public Object getKeysetElement(int index) {
+            public Object get(int index) {
                 return keyset[index];
             }
 
@@ -197,31 +197,31 @@ class KeysetPageRequestTest {
     }
 
     @Test
-    @DisplayName("Should raise IllegalArgumentException when keyset values are absent")
+    @DisplayName("Should raise IllegalArgumentException when key values are absent")
     void shouldRaiseErrorForMissingKeysetValues() {
-        assertThatIllegalArgumentException().isThrownBy(() -> PageRequest.ofSize(60).afterKeyset((Object[]) null));
-        assertThatIllegalArgumentException().isThrownBy(() -> PageRequest.ofSize(70).afterKeyset(new Object[0]));
-        assertThatIllegalArgumentException().isThrownBy(() -> PageRequest.ofSize(80).beforeKeyset((Object[]) null));
-        assertThatIllegalArgumentException().isThrownBy(() -> PageRequest.ofSize(90).beforeKeyset(new Object[0]));
+        assertThatIllegalArgumentException().isThrownBy(() -> PageRequest.ofSize(60).afterKey((Object[]) null));
+        assertThatIllegalArgumentException().isThrownBy(() -> PageRequest.ofSize(70).afterKey(new Object[0]));
+        assertThatIllegalArgumentException().isThrownBy(() -> PageRequest.ofSize(80).beforeKey((Object[]) null));
+        assertThatIllegalArgumentException().isThrownBy(() -> PageRequest.ofSize(90).beforeKey(new Object[0]));
     }
 
     @Test
-    @DisplayName("Keyset should be replaced on new instance of PageRequest")
+    @DisplayName("Key should be replaced on new instance of PageRequest")
     void shouldReplaceKeyset() {
         PageRequest<?> p1 = PageRequest.ofSize(30).sortBy(Sort.asc("lastName"), Sort.asc("firstName"), Sort.asc("id"))
-                                         .afterKeyset("last1", "fname1", 100).page(12);
-        PageRequest<?> p2 = p1.beforeKeyset("lname2", "fname2", 200);
+                                         .afterKey("last1", "fname1", 100).page(12);
+        PageRequest<?> p2 = p1.beforeKey("lname2", "fname2", 200);
 
         assertSoftly(softly -> {
             softly.assertThat(p1.mode()).isEqualTo(PageRequest.Mode.CURSOR_NEXT);
-            softly.assertThat(p1.cursor()).get().extracting(c -> c.getKeysetElement(0)).isEqualTo("last1");
-            softly.assertThat(p1.cursor()).get().extracting(c -> c.getKeysetElement(1)).isEqualTo("fname1");
-            softly.assertThat(p1.cursor()).get().extracting(c -> c.getKeysetElement(2)).isEqualTo(100);
+            softly.assertThat(p1.cursor()).get().extracting(c -> c.get(0)).isEqualTo("last1");
+            softly.assertThat(p1.cursor()).get().extracting(c -> c.get(1)).isEqualTo("fname1");
+            softly.assertThat(p1.cursor()).get().extracting(c -> c.get(2)).isEqualTo(100);
 
             softly.assertThat(p2.mode()).isEqualTo(PageRequest.Mode.CURSOR_PREVIOUS);
-            softly.assertThat(p2.cursor()).get().extracting(c -> c.getKeysetElement(0)).isEqualTo("lname2");
-            softly.assertThat(p2.cursor()).get().extracting(c -> c.getKeysetElement(1)).isEqualTo("fname2");
-            softly.assertThat(p2.cursor()).get().extracting(c -> c.getKeysetElement(2)).isEqualTo(200);
+            softly.assertThat(p2.cursor()).get().extracting(c -> c.get(0)).isEqualTo("lname2");
+            softly.assertThat(p2.cursor()).get().extracting(c -> c.get(1)).isEqualTo("fname2");
+            softly.assertThat(p2.cursor()).get().extracting(c -> c.get(2)).isEqualTo(200);
 
             softly.assertThat(p1.sorts()).isEqualTo(List.of(Sort.asc("lastName"), Sort.asc("firstName"), Sort.asc("id")));
             softly.assertThat(p2.sorts()).isEqualTo(List.of(Sort.asc("lastName"), Sort.asc("firstName"), Sort.asc("id")));

@@ -43,6 +43,9 @@ include::chapters/license/license-efsl.adoc[]
 = Jakarta Data
 
 include::chapters/introduction/introduction.asciidoc[]
+include::architecture.asciidoc[]
+include::entity.asciidoc[]
 include::repository.asciidoc[]
+include::query-language.asciidoc[]
 include::jakarta-ee.adoc[]
 include::portability.asciidoc[]

@@ -25,7 +25,7 @@ import jakarta.data.repository.Repository;
 /**
  * Do not add methods or inheritance to this interface.
  * Its purpose is to test that without inheriting from a built-in repository,
- * the life cycle methods with the same entity class are what identifies the
+ * the lifecycle methods with the same entity class are what identifies the
  * primary entity class to use for the count and exist methods.
  */
 @Repository

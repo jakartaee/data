@@ -19,7 +19,7 @@
 /**
  * <p>A static metamodel for entities that are used in Jakarta Data repositories.</p>
  *
- * <p>The {@link StaticMetamodel} allows for type-safe operations that avoid the
+ * <p>The {@link jakarta.data.metamodel.StaticMetamodel} allows for type-safe operations that avoid the
  * need to hard-code entity attribute names as Strings. For example,</p>
  *
  * <pre>
@@ -48,14 +48,14 @@
  * ...
  *
  * {@code Pagerequest<Product>} pageRequest = Order.by(_Product.price.desc(),
- *                                             _Product.name.asc(),
- *                                             _Product.id.asc())
+ *                                           _Product.name.asc(),
+ *                                           _Product.id.asc())
  *                                         .page(1)
  *                                         .size(20);
  *
  * page1 = products.findByNameLike(namePattern, pageRequest);
  * </pre>
  *
- * <p>The module JavaDoc provides an {@link jakarta.data/ overview} of Jakarta Data.</p>
+ * <p>The module Javadoc provides an {@link jakarta.data/ overview} of Jakarta Data.</p>
  */
 package jakarta.data.metamodel;

@@ -20,19 +20,21 @@ package jakarta.data.repository;
 import jakarta.data.exceptions.EntityExistsException;
 import jakarta.data.exceptions.OptimisticLockingFailureException;
 
+import java.util.List;
+
 /**
- * <p>A built-in repository supertype for performing Create, Read, Update, and Delete (CRUD) operations on entities.</p>
+ * <p>A built-in repository supertype for performing Create, Read, Update, and Delete (CRUD) operations.</p>
  *
- * <p>This repository extends the {@link BasicRepository} interface, allowing you to perform insert and update operations in
- * addition to basic retrieval and deletion. This interface combines the Data Access Object (DAO) aspect with the repository pattern,
- * offering a versatile and complete solution for managing persistent entities within Java applications.</p>
+ * <p>This repository extends the {@link BasicRepository} interface, adding {@linkplain #insert} and {@linkplain #update}
+ * operations in addition to basic {@linkplain #findById retrieval} and {@linkplain #delete deletion}. This interface
+ * combines the Data Access Object (DAO) aspect with the repository pattern, offering a versatile and complete solution
+ * for managing persistent entities within Java applications.</p>
  *
- * <p>The type parameters of {@code CrudRepository<T,K>} capture the primary entity type ({@code T})
- * for the repository and the type of the Id entity attribute ({@code K}) that uniquely identifies each entity
- * of that type.</p>
+ * <p>The type parameters of {@code CrudRepository<T,K>} capture the primary entity type ({@code T}) for the repository
+ * and the type of the unique identifier attribute ({@code K}) of the primary entity type.</p>
  *
- * <p>The primary entity type is used for repository methods, such as {@code countBy...}
- * and {@code deleteBy...}, which do not explicitly specify an entity type.</p>
+ * <p>The primary entity type is used for repository methods, such as {@code countBy...} and {@code deleteBy...}, which
+ * do not explicitly specify an entity type.</p>
  *
  * <p>Example entity:</p>
  *
@@ -77,10 +79,10 @@ import jakarta.data.exceptions.OptimisticLockingFailureException;
  *                                      Sort.asc("vin"));
  * </pre>
  *
- * <p>The module JavaDoc provides an {@link jakarta.data/ overview} of Jakarta Data.</p>
+ * <p>The module Javadoc provides an {@link jakarta.data/ overview} of Jakarta Data.</p>
  *
  * @param <T> the type of the primary entity class of the repository.
- * @param <K> the type of the Id attribute of the primary entity.
+ * @param <K> the type of the unique identifier field of property of the primary entity.
  * @see BasicRepository
  * @see DataRepository
  */
@@ -130,7 +132,7 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
      * @throws NullPointerException if the iterable is null or any element is null.
      */
     @Insert
-    <S extends T> Iterable<S> insertAll(Iterable<S> entities);
+    <S extends T> List<S> insertAll(List<S> entities);
 
     /**
      * <p>Modifies an entity that already exists in the database.</p>
@@ -145,6 +147,7 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
      * the update.</p>
      *
      * @param entity the entity to update. Must not be {@code null}.
+     * @param <S> Type of the entity to update.
      * @return an updated entity instance including all automatically generated values,
      *         updated versions, and incremented values which changed as a result of the update.
      * @throws OptimisticLockingFailureException the entity is not found in the database
@@ -152,7 +155,7 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
      * @throws NullPointerException if the entity is null.
      */
     @Update
-    T update(T entity);
+    <S extends T> S update(S entity);
 
     /**
      * <p>Modifies entities that already exist in the database.</p>
@@ -167,6 +170,7 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
      * the update.</p>
      *
      * @param entities entities to update.
+     * @param <S> Type of the entities to update.
      * @return updated entity instances, in the same order as the supplied entities,
      *         and including all automatically generated values, updated versions, and
      *         incremented values which changed as a result of the update.
@@ -175,6 +179,6 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
      * @throws NullPointerException if either the supplied {@code Iterable} is null or any element is null.
      */
     @Update
-    Iterable<T> updateAll(Iterable<T> entities);
+    <S extends T> List<S> updateAll(List<S> entities);
 
 }

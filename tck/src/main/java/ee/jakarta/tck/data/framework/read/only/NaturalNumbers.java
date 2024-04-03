@@ -15,14 +15,18 @@
  */
 package ee.jakarta.tck.data.framework.read.only;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import jakarta.data.Limit;
 import jakarta.data.Order;
-import jakarta.data.page.KeysetAwareSlice;
+import jakarta.data.Sort;
+import jakarta.data.page.CursoredPage;
+import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
-import jakarta.data.page.Slice;
 import jakarta.data.repository.BasicRepository;
+import jakarta.data.repository.Query;
 import jakarta.data.repository.Repository;
 
 import ee.jakarta.tck.data.framework.read.only.NaturalNumber.NumberType;
@@ -34,28 +38,41 @@ import ee.jakarta.tck.data.framework.read.only.NaturalNumber.NumberType;
  * TODO figure out a way to make this a ReadOnlyRepository instead.
  */
 @Repository
-public interface NaturalNumbers extends BasicRepository<NaturalNumber, Long>, IdOperations<NaturalNumber> {
+public interface NaturalNumbers extends BasicRepository<NaturalNumber, Long>, IdOperations {
 
     long countBy();
 
-    KeysetAwareSlice<NaturalNumber> findByFloorOfSquareRootOrderByIdAsc(long sqrtFloor,
-                                                                        PageRequest<NaturalNumber> pagination);
+    CursoredPage<NaturalNumber> findByFloorOfSquareRootOrderByIdAsc(long sqrtFloor,
+                                                                    PageRequest<NaturalNumber> pagination);
 
     Stream<NaturalNumber> findByIdBetweenOrderByNumTypeAsc(long minimum,
                                                            long maximum,
                                                            Order<NaturalNumber> sorts);
 
-    Slice<NaturalNumber> findByIdLessThanOrderByFloorOfSquareRootDesc(long exclusiveMax,
-                                                                      PageRequest<NaturalNumber> pagination);
+    List<NaturalNumber> findByIdGreaterThanEqual(long minimum,
+                                                 Limit limit,
+                                                 Order<NaturalNumber> sorts);
 
-    KeysetAwareSlice<NaturalNumber> findByNumTypeAndNumBitsRequiredLessThan(NumberType type,
-                                                                            short bitsUnder,
-                                                                            PageRequest<NaturalNumber> pagination);
+    NaturalNumber[] findByIdLessThan(long exclusiveMax, Sort<NaturalNumber> primarySort, Sort<NaturalNumber> secondarySort);
+
+    List<NaturalNumber> findByIdLessThanEqual(long maximum, Sort<?>... sorts);
+
+    Page<NaturalNumber> findByIdLessThanOrderByFloorOfSquareRootDesc(long exclusiveMax,
+                                                                     PageRequest<NaturalNumber> pagination);
+
+    CursoredPage<NaturalNumber> findByNumTypeAndNumBitsRequiredLessThan(NumberType type,
+                                                                        short bitsUnder,
+                                                                        PageRequest<NaturalNumber> pagination);
 
     NaturalNumber[] findByNumTypeNot(NumberType notThisType, Limit limit, Order<NaturalNumber> sorts);
 
-    Slice<NaturalNumber> findByNumTypeAndFloorOfSquareRootLessThanEqual(NumberType type,
-                                                                        long maxSqrtFloor,
-                                                                        PageRequest<NaturalNumber> pagination);
+    Page<NaturalNumber> findByNumTypeAndFloorOfSquareRootLessThanEqual(NumberType type,
+                                                                       long maxSqrtFloor,
+                                                                       PageRequest<NaturalNumber> pagination);
 
+    @Query("SELECT id WHERE isOdd = true AND id BETWEEN 21 AND ?1 ORDER BY id ASC")
+    Page<Long> oddsFrom21To(long max, PageRequest<NaturalNumber> pageRequest);
+
+    @Query("WHERE isOdd = false AND numType = ee.jakarta.tck.data.framework.read.only.NaturalNumber.NumberType.PRIME")
+    Optional<NaturalNumber> two();
 }

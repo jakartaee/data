@@ -64,9 +64,11 @@ This section discusses interoperability with related Jakarta EE specifications. 
 
 === Jakarta Contexts and Dependency Injection
 
-Contexts and Dependency Injection (CDI) is a specification in the Jakarta EE Core profile that provides a powerful and flexible dependency injection framework for Java applications. CDI lets you decouple components and manage their lifecycle through dependency injection, enabling loose coupling and promoting modular and reusable code.
+Contexts and Dependency Injection (CDI) is a specification in the Jakarta EE Core profile that provides a powerful and flexible dependency injection framework for Java applications. CDI provides a programming model based around decoupled components with container-managed lifecycles and container-injected dependencies, enabling loose coupling and promoting modular and reusable code.
 
-In Jakarta EE products, CDI provides the ability to register implementations of Jakarta Data repositories for injection into applications via the `@Inject` annotation.  The following example illustrates this integration:
+In the Jakarta EE environment, CDI allows implementations of Jakarta Data repositories to be made available for injection via the `@Inject` annotation.
+
+The following example illustrates this integration:
 
 [source,java]
 ----
@@ -80,11 +82,23 @@ public interface CarRepository extends BasicRepository<Car, Long> {
 }
 ----
 
-In the above example, a `CarRepository` interface extends the `BasicRepository` interface provided by Jakarta Data. The `BasicRepository` interface offers a set of basic operations for entities.
+Here, a `CarRepository` interface extends the `BasicRepository` interface provided by Jakarta Data, which pre-defines a set of basic operations for entities, as described in <<Repositories with Built-in Supertypes>>.
 
-By annotating the `CarRepository` interface with `@Repository`, the application requests that the Jakarta Data provider generate an implementation of the interface and its methods. To make the implementation available to the application, the Jakarta Data provider uses CDI to register the implementation as a bean or registers a producer or producer factory to provide the implementation on unqualified injection points for the `CarRepository` interface.
+The `@Repository` annotation instructs the Jakarta Data provider to:
 
-With CDI and the `@Inject` annotation, the application is able to inject the `CarRepository` instance and utilize its methods:
+- generate an implementation of the repository interface, as defined in <<Repository Interfaces>>, and
+- make the implementation available as a CDI bean, either by registering the implementation class itself as a bean, or by registering a producer or producer factory.
+
+The repository implementation bean must have:
+
+- qualifier type `@Default`, and
+- the repository interface as a bean type.
+
+Thus, the implementation is eligible for injection to unqualified injection points typed to the repository interface, as defined by section 2.4 of the CDI specification, version 4.0.
+
+NOTE: This specification does not restrict the scope of the repository implementation bean.
+
+In our example, the repository implementation is eligible for injection to unqualified injection points of type `CarRepository`.
 
 [source,java]
 ----
@@ -96,12 +110,15 @@ CarRepository repository;
 List<Car> cars = repository.findByType(CarType.SPORT);
 ----
 
-In the above snippet, the application injects the `CarRepository` instance using the `@Inject` annotation. Once injected, the repository object can be used to invoke various data access methods defined by the `CarRepository` interface, such as `save()`, `findByType()`, and `findByName()`.
+This fragment shows how the application might request injection of a `CarRepository` instance using the `@Inject` annotation, and then invoke various data access methods declared or inherited by the `CarRepository` interface, such as `save()`, `findByType()`, and `findByName()`.
+
 This integration between CDI and Jakarta Data allows for seamless management of repository instances within Jakarta EE applications.
 
 ==== CDI Extensions for Jakarta Data providers
 
-In environments where CDI Full or CDI Lite is available, Jakarta Data providers can make use of CDI extensions - `jakarta.enterprise.inject.spi.Extension` and `jakarta.enterprise.inject.build.compatible.spi.BuildCompatibleExtension` - to discover interfaces that are annotated with `@Repository` and provide their implementations to be injected into injection points within the application. Jakarta Data does not mandate the use of a specific type of CDI extension but places the general requirement on the Jakarta Data provider to arrange for injection of the provided repository implementation into injection points having a type that is the repository interface and having no qualifiers (other than `Default` or `Any`).
+In environments where CDI Full or CDI Lite is available, Jakarta Data providers can make use of a CDI extension--an implementation of `jakarta.enterprise.inject.spi.Extension` or `jakarta.enterprise.inject.build.compatible.spi.BuildCompatibleExtension`--to discover interfaces annotated with `@Repository` and make their implementations available for injection.
+
+NOTE: Jakarta Data does not mandate the use of a specific kind of CDI extension but places the general requirement on the Jakarta Data provider to arrange for injection of the provided repository implementation into injection points typed to the repository interface and having no qualifiers (other than `Default` or `Any`), as described above.
 
 NOTE: CDI Lite (corresponding to Jakarta Core profile) does not include a requirement to support `jakarta.enterprise.inject.spi.Extension`, which is part of CDI Full (Jakarta Web profile and Jakarta Platform). The `jakarta.enterprise.inject.build.compatible.spi.BuildCompatibleExtension` applies to both CDI Lite and CDI Full.
 
@@ -110,13 +127,8 @@ NOTE: Jakarta Data providers that wish to provide both extensions can use CDI's 
 === Jakarta Interceptors
 
 A repository interface or method of a repository interface may be annotated with an interceptor binding annotation.
-In the Jakarta EE environment, or in any other environment where:
+In the Jakarta EE environment--or in any other environment where Jakarta Interceptors is available and integrated with Jakarta CDI--if the repository implementation is instantiated by the CDI bean container then the interceptor binding annotation is inherited by the repository implementation. That is, the interceptor binding annotation must be treated as if it were placed directly on the repository implementation bean. The interceptors bound to the annotation are applied automatically by the implementation of Jakarta Interceptors.
 
-1. Jakarta Interceptors is available and integrated with Jakarta CDI,
-2. the repository implementation is instantiated by the CDI bean container,
-3. the interceptor binding type is declared `@Inherited`,
-
-then the interceptor binding annotation is inherited by the repository implementation, and the interceptors bound to the annotation are applied automatically by the implementation of Jakarta Interceptors.
 
 === Jakarta Transactions
 

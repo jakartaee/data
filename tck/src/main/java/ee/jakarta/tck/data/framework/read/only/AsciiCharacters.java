@@ -15,19 +15,20 @@
  */
 package ee.jakarta.tck.data.framework.read.only;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import jakarta.data.Limit;
 import jakarta.data.Order;
 import jakarta.data.Sort;
-import jakarta.data.Streamable;
 import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
 import jakarta.data.repository.By;
 import jakarta.data.repository.DataRepository;
 import jakarta.data.repository.Find;
+import jakarta.data.repository.Query;
 import jakarta.data.repository.Repository;
 import jakarta.data.repository.Save;
 
@@ -37,7 +38,13 @@ import jakarta.data.repository.Save;
  * This interface is required to inherit only from DataRepository in order to satisfy a TCK scenario.
  */
 @Repository
-public interface AsciiCharacters extends DataRepository<AsciiCharacter, Long>, IdOperations<AsciiCharacter> {
+public interface AsciiCharacters extends DataRepository<AsciiCharacter, Long>, IdOperations {
+
+    @Query(" ") // it is valid to have a query with no clauses
+    Stream<AsciiCharacter> all(Limit limit, Sort<?>... sort);
+
+    @Query("ORDER BY id ASC")
+    Stream<AsciiCharacter> alphabetic(Limit limit);
 
     int countByHexadecimalNotNull();
 
@@ -50,7 +57,7 @@ public interface AsciiCharacters extends DataRepository<AsciiCharacter, Long>, I
     Optional<AsciiCharacter> find(@By("thisCharacter") char ch,
                                   @By("hexadecimal") String hex);
 
-    Collection<AsciiCharacter> findByHexadecimalContainsAndIsControlNot(String substring, boolean isPrintable);
+    List<AsciiCharacter> findByHexadecimalContainsAndIsControlNot(String substring, boolean isPrintable);
 
     Stream<AsciiCharacter> findByHexadecimalIgnoreCaseBetweenAndHexadecimalNotIn(String minHex,
                                                                                  String maxHex,
@@ -59,23 +66,44 @@ public interface AsciiCharacters extends DataRepository<AsciiCharacter, Long>, I
 
     AsciiCharacter findByHexadecimalIgnoreCase(String hex);
 
+    Stream<AsciiCharacter> findByIdBetween(long minimum, long maximum, Sort<AsciiCharacter> sort);
+
     AsciiCharacter findByIsControlTrueAndNumericValueBetween(int min, int max);
 
     Optional<AsciiCharacter> findByNumericValue(int id);
 
     Page<AsciiCharacter> findByNumericValueBetween(int min, int max, PageRequest<AsciiCharacter> pagination);
 
-    Streamable<AsciiCharacter> findByNumericValueLessThanEqualAndNumericValueGreaterThanEqual(int max, int min);
+    List<AsciiCharacter> findByNumericValueLessThanEqualAndNumericValueGreaterThanEqual(int max, int min);
 
     AsciiCharacter[] findFirst3ByNumericValueGreaterThanEqualAndHexadecimalEndsWith(long minValue, String lastHexDigit, Sort<AsciiCharacter> sort);
 
     Optional<AsciiCharacter> findFirstByHexadecimalStartsWithAndIsControlOrderByIdAsc(String firstHexDigit, boolean isControlChar);
+
+    @Query("select thisCharacter where hexadecimal like '4_'" +
+           " and hexadecimal not like '%0'" +
+           " and thisCharacter not in ('E', 'G')" +
+           " and id not between 72 and 78" +
+           " order by id asc")
+    Character[] getABCDFO();
+
+    @Query("SELECT hexadecimal WHERE hexadecimal IS NOT NULL AND thisCharacter = ?1")
+    Optional<String> hex(char ch);
+
+    @Query("WHERE hexadecimal <> ' ORDER BY isn''t a keyword when inside a literal' AND hexadecimal IN ('4a', '4b', '4c', ?1)")
+    Stream<AsciiCharacter> jklOr(String hex);
 
     default Stream<AsciiCharacter> retrieveAlphaNumericIn(long minId, long maxId) {
         return findByIdBetween(minId, maxId, Sort.asc("id"))
                         .filter(c -> Character.isLetterOrDigit(c.getThisCharacter()));
     }
 
+    @Query("SELECT thisCharacter ORDER BY id DESC")
+    Character[] reverseAlphabetic(Limit limit);
+
     @Save
-    Iterable<AsciiCharacter> saveAll(Iterable<AsciiCharacter> characters);
+    List<AsciiCharacter> saveAll(List<AsciiCharacter> characters);
+
+    @Query("SELECT COUNT(THIS) WHERE numericValue <= 97 AND numericValue >= 74")
+    long twentyFour();
 }

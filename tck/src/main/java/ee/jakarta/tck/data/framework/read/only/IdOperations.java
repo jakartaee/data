@@ -15,27 +15,20 @@
  */
 package ee.jakarta.tck.data.framework.read.only;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.stream.Stream;
+import java.util.List;
 
 import jakarta.data.Limit;
 import jakarta.data.Order;
-import jakarta.data.Sort;
+import jakarta.data.repository.Query;
 
 /**
  * This interface contains common operations for the NaturalNumbers and AsciiCharacters repositories.
- *
- * @param <T> type of entity.
  */
-public interface IdOperations<T> {
-    Stream<T> findByIdBetween(long minimum, long maximum, Sort<T> sort);
+public interface IdOperations {
+    long countByIdBetween(long minimum, long maximum);
 
-    Collection<T> findByIdGreaterThanEqual(long minimum,
-                                           Limit limit,
-                                           Order<T> sorts);
+    boolean existsById(long id);
 
-    T[] findByIdLessThan(long exclusiveMax, Sort<T> primarySort, Sort<T> secondarySort);
-
-    ArrayList<T> findByIdLessThanEqual(long maximum, Order<T> sorts);
+    @Query("SELECT id WHERE id >= :inclusiveMin")
+    List<Long> withIdEqualOrAbove(long inclusiveMin, Limit limit, Order<?> sorts);
 }

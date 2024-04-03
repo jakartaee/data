@@ -31,10 +31,12 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.UUID;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import jakarta.data.page.CursoredPage;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
@@ -59,15 +61,10 @@ import ee.jakarta.tck.data.framework.utilities.TestPropertyUtility;
 import jakarta.data.Limit;
 import jakarta.data.Order;
 import jakarta.data.Sort;
-import jakarta.data.Streamable;
 import jakarta.data.exceptions.EmptyResultException;
-import jakarta.data.exceptions.MappingException;
 import jakarta.data.exceptions.NonUniqueResultException;
-import jakarta.data.page.KeysetAwarePage;
-import jakarta.data.page.KeysetAwareSlice;
 import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
-import jakarta.data.page.Slice;
 import jakarta.inject.Inject;
 
 /**
@@ -101,7 +98,10 @@ public class EntityTests {
 
     @Inject
     AsciiCharacters characters;
-    
+
+    @Inject
+    MultipleEntityRepo shared;
+
     @BeforeEach //Inject doesn't happen until after BeforeClass so this is necessary before each test
     public void setup() {
         assertNotNull(numbers);
@@ -129,34 +129,22 @@ public class EntityTests {
             strategy = "Use a repository that inherits from BasicRepository and adds some methods of its own. " +
                        "Use both built-in methods and the additional methods.")
     public void testBasicRepository() {
-        assertEquals(false, numbers.existsById(0L));
-        assertEquals(true, numbers.existsById(80L));
 
-        Stream<NaturalNumber> found;
-        found = numbers.findByIdIn(List.of(70L, 40L, -20L, 10L));
-        assertEquals(List.of(10L, 40L, 70L),
-                     found.map(NaturalNumber::getId).sorted().collect(Collectors.toList()));
-
-        found = numbers.findByIdBetween(50L, 59L, Sort.asc("numType"));
+        // custom method from NaturalNumbers:
+        Stream<NaturalNumber> found = numbers.findByIdBetweenOrderByNumTypeAsc(50L, 59L, Order.by(Sort.asc("id")));
         List<Long> list = found.map(NaturalNumber::getId).collect(Collectors.toList());
-        assertEquals(Set.of(53L, 59L), // first 2 must be primes
-                     new TreeSet<>(list.subList(0, 2)));
-        assertEquals(Set.of(50L, 51L, 52L, 54L, 55L, 56L, 57L, 58L), // the remaining 8 are composite numbers
-                     new TreeSet<>(list.subList(2, 10)));
+        assertEquals(List.of(53L, 59L, // first 2 must be primes
+                             50L, 51L, 52L, 54L, 55L, 56L, 57L, 58L), // the remaining 8 are composite numbers
+                     list);
+
+        // built-in method from BasicRepository:
+        assertEquals(60L, numbers.findById(60L).orElseThrow().getId());
     }
 
     @Assertion(id = "133",
             strategy = "Use a repository that inherits from BasicRepository and defines no additional methods of its own. " +
                        "Use all of the built-in methods.")
     public void testBasicRepositoryBuiltInMethods() {
-        boxes.deleteByIdIn(List.of(
-                "TestBasicRepositoryMethods-01",
-                "TestBasicRepositoryMethods-02",
-                "TestBasicRepositoryMethods-03",
-                "TestBasicRepositoryMethods-04",
-                "TestBasicRepositoryMethods-05"));
-
-        TestPropertyUtility.waitForEventualConsistency();
 
         // BasicRepository.saveAll
         Iterable<Box> saved = boxes.saveAll(List.of(Box.of("TestBasicRepositoryMethods-01", 119, 120, 169),
@@ -192,8 +180,6 @@ public class EntityTests {
 
         TestPropertyUtility.waitForEventualConsistency();
 
-        // BasicRepository.existsById
-        assertEquals(true, boxes.existsById("TestBasicRepositoryMethods-04"));
 
         // BasicRepository.save
         box2.length = 21;
@@ -213,27 +199,12 @@ public class EntityTests {
         TestPropertyUtility.waitForEventualConsistency();
 
         // BasicRepository.deleteAll(Iterable)
-        boxes.deleteAll(Set.of(box1, box2));
+        boxes.deleteAll(List.of(box1, box2));
 
         TestPropertyUtility.waitForEventualConsistency();
 
-        assertEquals(false, boxes.existsById("TestBasicRepositoryMethods-01"));
         assertEquals(3, boxes.findAll().count());
 
-        // BasicRepository.findByIdIn
-        Stream<Box> stream = boxes.findByIdIn(List.of("TestBasicRepositoryMethods-04", "TestBasicRepositoryMethods-05"));
-        List<Box> list = stream.sorted(Comparator.comparing(b -> b.boxIdentifier)).collect(Collectors.toList());
-        assertEquals(2, list.size());
-        box4 = list.get(0);
-        assertEquals("TestBasicRepositoryMethods-04", box4.boxIdentifier);
-        assertEquals(45, box4.length);
-        assertEquals(28, box4.width);
-        assertEquals(53, box4.height);
-        box5 = list.get(1);
-        assertEquals("TestBasicRepositoryMethods-05", box5.boxIdentifier);
-        assertEquals(153, box5.length);
-        assertEquals(104, box5.width);
-        assertEquals(185, box5.height);
 
         // BasicRepository.delete
         boxes.delete(box4);
@@ -241,8 +212,8 @@ public class EntityTests {
         TestPropertyUtility.waitForEventualConsistency();
 
         // BasicRepository.findAll
-        stream = boxes.findAll();
-        list = stream.sorted(Comparator.comparing(b -> b.boxIdentifier)).collect(Collectors.toList());
+        Stream<Box> stream = boxes.findAll();
+        List<Box> list = stream.sorted(Comparator.comparing(b -> b.boxIdentifier)).collect(Collectors.toList());
         assertEquals(2, list.size());
         box4 = list.get(0);
         assertEquals("TestBasicRepositoryMethods-03", box3.boxIdentifier);
@@ -268,8 +239,8 @@ public class EntityTests {
         assertEquals(104, box5.width);
         assertEquals(185, box5.height);
 
-        // BasicRepository.deleteByIdIn
-        boxes.deleteByIdIn(List.of("TestBasicRepositoryMethods-05"));
+        // BasicRepository.deleteById
+        boxes.deleteById("TestBasicRepositoryMethods-05");
         TestPropertyUtility.waitForEventualConsistency();
 
         assertEquals(0, boxes.findAll().count());
@@ -277,14 +248,6 @@ public class EntityTests {
 
     @Assertion(id = "133", strategy = "Use a repository that inherits from BasicRepository and defines no additional methods of its own. Use all of the built-in methods.")
     public void testBasicRepositoryMethods() {
-        boxes.deleteByIdIn(List.of(
-                "TestBasicRepositoryMethods-01",
-                "TestBasicRepositoryMethods-02",
-                "TestBasicRepositoryMethods-03",
-                "TestBasicRepositoryMethods-04",
-                "TestBasicRepositoryMethods-05"));
-
-        TestPropertyUtility.waitForEventualConsistency();
 
         // BasicRepository.saveAll
         Iterable<Box> saved = boxes.saveAll(List.of(Box.of("TestBasicRepositoryMethods-01", 119, 120, 169),
@@ -320,8 +283,6 @@ public class EntityTests {
 
         TestPropertyUtility.waitForEventualConsistency();
 
-        // BasicRepository.existsById
-        assertEquals(true, boxes.existsById("TestBasicRepositoryMethods-04"));
 
         // BasicRepository.save
         box2.length = 21;
@@ -341,27 +302,12 @@ public class EntityTests {
         TestPropertyUtility.waitForEventualConsistency();
 
         // BasicRepository.deleteAll(Iterable)
-        boxes.deleteAll(Set.of(box1, box2));
+        boxes.deleteAll(List.of(box1, box2));
 
         TestPropertyUtility.waitForEventualConsistency();
 
-        assertEquals(false, boxes.existsById("TestBasicRepositoryMethods-01"));
         assertEquals(3, boxes.findAll().count());
 
-        // BasicRepository.findByIdIn
-        Stream<Box> stream = boxes.findByIdIn(List.of("TestBasicRepositoryMethods-04", "TestBasicRepositoryMethods-05"));
-        List<Box> list = stream.sorted(Comparator.comparing(b -> b.boxIdentifier)).collect(Collectors.toList());
-        assertEquals(2, list.size());
-        box4 = list.get(0);
-        assertEquals("TestBasicRepositoryMethods-04", box4.boxIdentifier);
-        assertEquals(45, box4.length);
-        assertEquals(28, box4.width);
-        assertEquals(53, box4.height);
-        box5 = list.get(1);
-        assertEquals("TestBasicRepositoryMethods-05", box5.boxIdentifier);
-        assertEquals(153, box5.length);
-        assertEquals(104, box5.width);
-        assertEquals(185, box5.height);
 
         // BasicRepository.delete
         boxes.delete(box4);
@@ -369,8 +315,8 @@ public class EntityTests {
         TestPropertyUtility.waitForEventualConsistency();
 
         // BasicRepository.findAll
-        stream = boxes.findAll();
-        list = stream.sorted(Comparator.comparing(b -> b.boxIdentifier)).collect(Collectors.toList());
+        Stream<Box> stream = boxes.findAll();
+        List<Box> list = stream.sorted(Comparator.comparing(b -> b.boxIdentifier)).collect(Collectors.toList());
         assertEquals(2, list.size());
         box4 = list.get(0);
         assertEquals("TestBasicRepositoryMethods-03", box3.boxIdentifier);
@@ -396,8 +342,8 @@ public class EntityTests {
         assertEquals(104, box5.width);
         assertEquals(185, box5.height);
 
-        // BasicRepository.deleteByIdIn
-        boxes.deleteByIdIn(List.of("TestBasicRepositoryMethods-05"));
+        // BasicRepository.deleteById
+        boxes.deleteById("TestBasicRepositoryMethods-05");
 
         TestPropertyUtility.waitForEventualConsistency();
 
@@ -425,13 +371,13 @@ public class EntityTests {
 
     @Assertion(id = "133", strategy = "Request a Slice higher than the final Slice, expecting an empty Slice with 0 results.")
     public void testBeyondFinalSlice() {
-        PageRequest<NaturalNumber> sixth = PageRequest.of(NaturalNumber.class).size(5).sortBy(Sort.desc("id")).page(6);
-        Slice<NaturalNumber> slice = numbers.findByNumTypeAndFloorOfSquareRootLessThanEqual(NumberType.PRIME, 8L,
+        PageRequest<NaturalNumber> sixth = PageRequest.of(NaturalNumber.class).size(5).sortBy(Sort.desc("id")).page(6).withoutTotal();
+        Page<NaturalNumber> page = numbers.findByNumTypeAndFloorOfSquareRootLessThanEqual(NumberType.PRIME, 8L,
                 sixth);
-        assertEquals(0, slice.numberOfElements());
-        assertEquals(0, slice.stream().count());
-        assertEquals(false, slice.hasContent());
-        assertEquals(false, slice.iterator().hasNext());
+        assertEquals(0, page.numberOfElements());
+        assertEquals(0, page.stream().count());
+        assertEquals(false, page.hasContent());
+        assertEquals(false, page.iterator().hasNext());
     }
 
     @Assertion(id = "133", strategy = "Use a parameter-based find operation that uses the By annotation to identify the entity attribute names.")
@@ -447,26 +393,27 @@ public class EntityTests {
 
     @Assertion(id = "133", strategy = "Use a repository that inherits some if its methods from another interface.")
     public void testCommonInterfaceQueries() {
-        assertEquals(List.of('d', 'c', 'b', 'a'),
-                     characters.findByIdBetween(97L, 100L, Sort.desc("thisCharacter"))
-                                     .map(AsciiCharacter::getThisCharacter)
-                                     .collect(Collectors.toList()));
 
-        assertEquals(List.of(87L, 88L, 89L, 90L),
-                     numbers.findByIdBetween(87L, 90L, Sort.asc("id"))
-                                     .map(NaturalNumber::getId)
-                                     .collect(Collectors.toList()));
+        assertEquals(4L, numbers.countByIdBetween(87L, 90L));
 
-        assertEquals(List.of('D', 'E', 'F', 'G', 'H'),
-                     characters.findByIdGreaterThanEqual(68L, Limit.of(5), Order.by(Sort.asc("numericValue"), Sort.asc("id")))
+        assertEquals(5L, characters.countByIdBetween(86L, 90L));
+
+        assertEquals(true, numbers.existsById(73L));
+
+        assertEquals(true, characters.existsById(74L));
+
+        assertEquals(false, numbers.existsById(-1L));
+
+        assertEquals(false, characters.existsById(-2L));
+
+        assertEquals(List.of(68L, 69L, 70L, 71L, 72L),
+                     characters.withIdEqualOrAbove(68L, Limit.of(5), Order.by(Sort.asc("numericValue"), Sort.asc("id")))
                                      .stream()
-                                     .map(AsciiCharacter::getThisCharacter)
                                      .collect(Collectors.toList()));
 
         assertEquals(List.of(71L, 73L, 79L, 83L, 89L),
-                     numbers.findByIdGreaterThanEqual(68L, Limit.of(5), Order.by(Sort.asc("numType"), Sort.asc("id")))
+                     numbers.withIdEqualOrAbove(68L, Limit.of(5), Order.by(Sort.asc("numType"), Sort.asc("id")))
                                      .stream()
-                                     .map(NaturalNumber::getId)
                                      .collect(Collectors.toList()));
     }
 
@@ -517,10 +464,19 @@ public class EntityTests {
                strategy = "Use a repository method with one Sort parameter specifying descending order, " +
                           "and verify all results are returned and are in descending order according to the sort criteria.")
     public void testDescendingSort() {
-        Stream<NaturalNumber> stream = numbers.findByIdBetween(4, 10, Sort.desc("id"));
+        Stream<AsciiCharacter> stream = characters.findByIdBetween(52L, 57L, Sort.desc("id"));
 
-        assertEquals(Arrays.toString(new Long[] { 10L, 9L, 8L, 7L, 6L, 5L, 4L }),
-                     Arrays.toString(stream.map(number -> number.getId()).toArray()));
+        assertEquals(Arrays.toString(new Character[] { '9', '8', '7', '6', '5', '4' }),
+                     Arrays.toString(stream.map(AsciiCharacter::getThisCharacter).toArray()));
+    }
+
+    @Assertion(id = "458", strategy = "Use a repository method with a JDQL query that has no clauses.")
+    public void testEmptyQuery() {
+
+        assertEquals(List.of('a', 'b', 'c', 'd', 'e', 'f'),
+                     characters.all(Limit.range(97, 102), Sort.asc("id"))
+                                     .map(AsciiCharacter::getThisCharacter)
+                                     .collect(Collectors.toList()));
     }
 
     @Assertion(id = "133", strategy = "Use a repository method that returns a single entity value where no result is found. Expect EmptyResultException.")
@@ -537,7 +493,7 @@ public class EntityTests {
 
     @Assertion(id = "133", strategy = "Use a repository method with the False keyword.")
     public void testFalse() {
-        Streamable<NaturalNumber> even = positives.findByIsOddFalseAndIdBetween(50L, 60L);
+        List<NaturalNumber> even = positives.findByIsOddFalseAndIdBetween(50L, 60L);
 
         assertEquals(6L, even.stream().count());
 
@@ -595,14 +551,14 @@ public class EntityTests {
 
     @Assertion(id = "133", strategy = "Request the last Slice of up to 5 results, expecting to find the final 2.")
     public void testFinalSliceOfUpTo5() {
-        PageRequest<NaturalNumber> fifth = PageRequest.of(NaturalNumber.class).size(5).page(5).sortBy(Sort.desc("id"));
-        Slice<NaturalNumber> slice = numbers.findByNumTypeAndFloorOfSquareRootLessThanEqual(NumberType.PRIME, 8L,
+        PageRequest<NaturalNumber> fifth = PageRequest.of(NaturalNumber.class).size(5).page(5).sortBy(Sort.desc("id")).withoutTotal();
+        Page<NaturalNumber> page = numbers.findByNumTypeAndFloorOfSquareRootLessThanEqual(NumberType.PRIME, 8L,
                 fifth);
-        assertEquals(true, slice.hasContent());
-        assertEquals(5, slice.pageRequest().page());
-        assertEquals(2, slice.numberOfElements());
+        assertEquals(true, page.hasContent());
+        assertEquals(5, page.pageRequest().page());
+        assertEquals(2, page.numberOfElements());
 
-        Iterator<NaturalNumber> it = slice.iterator();
+        Iterator<NaturalNumber> it = page.iterator();
 
         // first result
         assertEquals(true, it.hasNext());
@@ -757,73 +713,75 @@ public class EntityTests {
     }
 
     @Assertion(id = "133",
-               strategy = "Request the first KeysetAwarePage of 8 results, expecting to find all 8, " +
-                          "then request the next KeysetAwarePage and the KeysetAwarePage after that, " +
+               strategy = "Request the first CursoredPage of 8 results, expecting to find all 8, " +
+                          "then request the next CursoredPage and the CursoredPage after that, " +
                           "expecting to find all results.")
-    public void testFirstKeysetAwarePageOf8AndNextPages() {
+    public void testFirstCursoredPageOf8AndNextPages() {
         // The query for this test returns 1-15,25-32 in the following order:
 
-        // 25, 26, 27, 28, 29, 30, 31, 32 square root rounds down to 4
-        // 9, 10, 11, 12, 13, 14, 15 square root rounds down to 3
-        // 4, 5, 6, 7, 8 square root rounds down to 2
-        // 1, 2, 3 square root rounds down to 1
+        // 32 requires 6 bits
+        // 25, 26, 27, 28, 29, 30, 31 requires 5 bits
+        // 8, 9, 10, 11, 12, 13, 14, 15 requires 4 bits
+        // 4, 5, 6, 7, 8 requires 3 bits
+        // 2, 3 requires 2 bits
+        // 1 requires 1 bit
 
         PageRequest<NaturalNumber> first8 = PageRequest.of(NaturalNumber.class).size(8).sortBy(Sort.asc("id"));
-        KeysetAwarePage<NaturalNumber> page;
+        CursoredPage<NaturalNumber> page;
 
         try {
-            page = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByBitsRequiredDesc(4L, 33L, first8);
-        } catch (MappingException x) {
-            // Test passes: Jakarta Data providers must raise MappingException when the database
-            // is not capable of keyset pagination.
+            page = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByNumBitsRequiredDesc(4L, 33L, first8);
+        } catch (UnsupportedOperationException x) {
+            // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
+            // is not capable of cursor-based pagination.
             return;
         }
 
         assertEquals(8, page.numberOfElements());
 
-        assertEquals(Arrays.toString(new Long[] { 25L, 26L, 27L, 28L, 29L, 30L, 31L, 32L }),
+        assertEquals(Arrays.toString(new Long[] { 32L, 25L, 26L, 27L, 28L, 29L, 30L, 31L }),
                      Arrays.toString(page.stream().map(number -> number.getId()).toArray()));
 
         try {
-            page = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByBitsRequiredDesc(4L, 33L, page.nextPageRequest());
-        } catch (MappingException x) {
-            // Test passes: Jakarta Data providers must raise MappingException when the database
-            // is not capable of keyset pagination.
+            page = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByNumBitsRequiredDesc(4L, 33L, page.nextPageRequest());
+        } catch (UnsupportedOperationException x) {
+            // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
+            // is not capable of cursor-based pagination.
             return;
         }
 
-        assertEquals(Arrays.toString(new Long[] { 9L, 10L, 11L, 12L, 13L, 14L, 15L, 4L }),
+        assertEquals(Arrays.toString(new Long[] { 8L, 9L, 10L, 11L, 12L, 13L, 14L, 15L }),
                      Arrays.toString(page.stream().map(number -> number.getId()).toArray()));
 
         assertEquals(8, page.numberOfElements());
 
         try {
-            page = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByBitsRequiredDesc(4L, 33L, page.nextPageRequest());
-        } catch (MappingException x) {
-            // Test passes: Jakarta Data providers must raise MappingException when the database
-            // is not capable of keyset pagination.
+            page = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByNumBitsRequiredDesc(4L, 33L, page.nextPageRequest());
+        } catch (UnsupportedOperationException x) {
+            // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
+            // is not capable of cursor-based pagination.
             return;
         }
 
         assertEquals(7, page.numberOfElements());
 
-        assertEquals(Arrays.toString(new Long[] { 5L, 6L, 7L, 8L, 1L, 2L, 3L }),
+        assertEquals(Arrays.toString(new Long[] { 4L, 5L, 6L, 7L, 2L, 3L, 1L }),
                      Arrays.toString(page.stream().map(number -> number.getId()).toArray()));
     }
 
     @Assertion(id = "133",
-               strategy = "Request the first KeysetAwareSlice of 6 results, expecting to find all 6, " +
-                          "then request the next KeysetAwareSlice and the KeysetAwareSlice after that, " +
+               strategy = "Request the first CursoredPage of 6 results, expecting to find all 6, " +
+                          "then request the next CursoredPage and the CursoredPage after that, " +
                           "expecting to find all results.")
-    public void testFirstKeysetAwareSliceOf6AndNextSlices() {
-        PageRequest<NaturalNumber> first6 = PageRequest.ofSize(6);
-        KeysetAwareSlice<NaturalNumber> slice;
+    public void testFirstCursoredPageWithoutTotalOf6AndNextPages() {
+        PageRequest<NaturalNumber> first6 = PageRequest.of(NaturalNumber.class).size(6).withoutTotal();
+        CursoredPage<NaturalNumber> slice;
 
         try {
             slice = numbers.findByFloorOfSquareRootOrderByIdAsc(7L, first6);
-        } catch (MappingException x) {
-            // Test passes: Jakarta Data providers must raise MappingException when the database
-            // is not capable of keyset pagination.
+        } catch (UnsupportedOperationException x) {
+            // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
+            // is not capable of cursor-based pagination.
             return;
         }
 
@@ -834,9 +792,9 @@ public class EntityTests {
 
         try {
             slice = numbers.findByFloorOfSquareRootOrderByIdAsc(7L, slice.nextPageRequest());
-        } catch (MappingException x) {
-            // Test passes: Jakarta Data providers must raise MappingException when the database
-            // is not capable of keyset pagination.
+        } catch (UnsupportedOperationException x) {
+            // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
+            // is not capable of cursor-based pagination.
             return;
         }
 
@@ -847,9 +805,9 @@ public class EntityTests {
 
         try {
             slice = numbers.findByFloorOfSquareRootOrderByIdAsc(7L, slice.nextPageRequest());
-        } catch (MappingException x) {
-            // Test passes: Jakarta Data providers must raise MappingException when the database
-            // is not capable of keyset pagination.
+        } catch (UnsupportedOperationException x) {
+            // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
+            // is not capable of cursor-based pagination.
             return;
         }
 
@@ -887,12 +845,12 @@ public class EntityTests {
 
     @Assertion(id = "133", strategy = "Request the first Slice of 5 results, expecting to find all 5.")
     public void testFirstSliceOf5() {
-        PageRequest<NaturalNumber> first5 = PageRequest.of(NaturalNumber.class).size(5).sortBy(Sort.desc("id"));
-        Slice<NaturalNumber> slice = numbers.findByNumTypeAndFloorOfSquareRootLessThanEqual(NumberType.PRIME, 8L,
+        PageRequest<NaturalNumber> first5 = PageRequest.of(NaturalNumber.class).size(5).sortBy(Sort.desc("id")).withoutTotal();
+        Page<NaturalNumber> page = numbers.findByNumTypeAndFloorOfSquareRootLessThanEqual(NumberType.PRIME, 8L,
                 first5);
-        assertEquals(5, slice.numberOfElements());
+        assertEquals(5, page.numberOfElements());
 
-        Iterator<NaturalNumber> it = slice.iterator();
+        Iterator<NaturalNumber> it = page.iterator();
 
         // first result
         assertEquals(true, it.hasNext());
@@ -972,10 +930,10 @@ public class EntityTests {
     }
 
     @Assertion(id = "133",
-               strategy = "Request a KeysetAwarePage of 7 results after the keyset of the 20th result, expecting to find the next 7 results. " +
-                          "Then request the KeysetAwarePage before the keyset of the first entry of the page, expecting to find the previous 7 results. " +
-                          "Then request the KeysetAwarePage after the last entry of the original slice, expecting to find the next 7.")
-    public void testKeysetAwarePageOf7FromCursor() {
+               strategy = "Request a CursoredPage of 7 results after the cursor of the 20th result, expecting to find the next 7 results. " +
+                          "Then request the CursoredPage before the cursor of the first entry of the page, expecting to find the previous 7 results. " +
+                          "Then request the CursoredPage after the last entry of the original slice, expecting to find the next 7.")
+    public void testCursoredPageOf7FromCursor() {
         // The query for this test returns 1-35 and 49 in the following order:
         //
         // 35 34 33 32 49 24 23 22 21 20 19 18 17 16 31 30 29 28 27 26 25 08 15 14 13 12 11 10 09 07 06 05 04 03 02 01
@@ -984,15 +942,15 @@ public class EntityTests {
         //                                                                                  ^^^^^ next page ^^^^
 
         PageRequest<NaturalNumber> middle7 = PageRequest.of(NaturalNumber.class).size(7)
-                        .sortBy(Sort.desc("numBitsRequired"), Sort.asc("floorOfSquareRoot"), Sort.desc("id"))
-                        .afterKeyset((short) 5, 5L, 26L); // 20th result is 26; it requires 5 bits and its square root rounds down to 5.
+                        .sortBy(Sort.asc("floorOfSquareRoot"), Sort.desc("id"))
+                        .afterKey((short) 5, 5L, 26L); // 20th result is 26; it requires 5 bits and its square root rounds down to 5.
 
-        KeysetAwarePage<NaturalNumber> page;
+        CursoredPage<NaturalNumber> page;
         try {
-            page = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByBitsRequiredDesc(6L, 50L, middle7);
-        } catch (MappingException x) {
-            // Test passes: Jakarta Data providers must raise MappingException when the database
-            // is not capable of keyset pagination.
+            page = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByNumBitsRequiredDesc(6L, 50L, middle7);
+        } catch (UnsupportedOperationException x) {
+            // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
+            // is not capable of cursor-based pagination.
             return;
         }
 
@@ -1006,13 +964,13 @@ public class EntityTests {
 
         assertEquals(true, page.hasPrevious());
 
-        KeysetAwarePage<NaturalNumber> previousPage;
+        CursoredPage<NaturalNumber> previousPage;
         try {
-            previousPage = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByBitsRequiredDesc(6L, 50L,
+            previousPage = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByNumBitsRequiredDesc(6L, 50L,
                                                                                                     page.previousPageRequest());
-        } catch (MappingException x) {
-            // Test passes: Jakarta Data providers must raise MappingException when the database
-            // is not capable of keyset pagination.
+        } catch (UnsupportedOperationException x) {
+            // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
+            // is not capable of cursor-based pagination.
             return;
         }
 
@@ -1023,35 +981,35 @@ public class EntityTests {
 
         assertEquals(7, previousPage.numberOfElements());
 
-        KeysetAwarePage<NaturalNumber> nextPage;
+        CursoredPage<NaturalNumber> nextPage;
         try {
-            nextPage = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByBitsRequiredDesc(6L, 50L,
+            nextPage = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByNumBitsRequiredDesc(6L, 50L,
                                                                                                 page.nextPageRequest());
-        } catch (MappingException x) {
-            // Test passes: Jakarta Data providers must raise MappingException when the database
-            // is not capable of keyset pagination.
+        } catch (UnsupportedOperationException x) {
+            // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
+            // is not capable of cursor-based pagination.
             return;
         }
 
         assertEquals(Arrays.toString(new Long[] { 10L, 9L, // 4 bits required, square root rounds down to 3
                                                   7L, 6L, 5L, 4L, // 3 bits required, square root rounds down to 2
-                                                  3L, 2L // 2 bits required, square root rounds down to 1
+                                                  3L // 2 bits required, square root rounds down to 1
         }),
                      Arrays.toString(nextPage.stream().map(number -> number.getId()).toArray()));
 
         assertEquals(7, nextPage.numberOfElements());
     }
 
-    @Assertion(id = "133", strategy = "Request a KeysetAwarePage of results where none match the query, expecting an empty KeysetAwarePage with 0 results.")
-    public void testKeysetAwarePageOfNothing() {
+    @Assertion(id = "133", strategy = "Request a CursoredPage of results where none match the query, expecting an empty CursoredPage with 0 results.")
+    public void testCursoredPageOfNothing() {
 
-        KeysetAwarePage<NaturalNumber> page;
+        CursoredPage<NaturalNumber> page;
         try {
             // There are no positive integers less than 4 which have a square root that rounds down to something other than 1.
-            page = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByBitsRequiredDesc(1L, 4L, PageRequest.ofPage(1L));
-        } catch (MappingException x) {
-            // Test passes: Jakarta Data providers must raise MappingException when the database
-            // is not capable of keyset pagination.
+            page = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByNumBitsRequiredDesc(1L, 4L, PageRequest.ofPage(1L));
+        } catch (UnsupportedOperationException x) {
+            // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
+            // is not capable of cursor-based pagination.
             return;
         }
 
@@ -1084,10 +1042,10 @@ public class EntityTests {
     }
 
     @Assertion(id = "133",
-            strategy = "Request a KeysetAwareSlice of 9 results after the keyset of the 20th result, expecting to find the next 9 results. " +
-                       "Then request the KeysetAwareSlice before the keyset of the first entry of the slice, expecting to find the previous 9 results. " +
-                       "Then request the KeysetAwareSlice after the last entry of the original slice, expecting to find the next 9.")
-    public void testKeysetAwareSliceOf9FromCursor() {
+            strategy = "Request a CursoredPage of 9 results after the cursor of the 20th result, expecting to find the next 9 results. " +
+                       "Then request the CursoredPage before the cursor of the first entry of the slice, expecting to find the previous 9 results. " +
+                       "Then request the CursoredPage after the last entry of the original slice, expecting to find the next 9.")
+    public void testCursoredPageWithoutTotalOf9FromCursor() {
         // The query for this test returns composite natural numbers under 64 in the following order:
         //
         // 49 50 51 52 54 55 56 57 58 60 62 63 36 38 39 40 42 44 45 46 48 25 26 27 28 30 32 33 34 35 16 18 20 21 22 24 09 10 12 14 15 04 06 08
@@ -1095,16 +1053,16 @@ public class EntityTests {
         //                                  ^^^^^^^^ slice 2 ^^^^^^^^^
         //                                                                                        ^^^^^^^^ slice 3 ^^^^^^^^^
 
-        PageRequest<NaturalNumber> middle9 = PageRequest.of(NaturalNumber.class).size(9)
+        PageRequest<NaturalNumber> middle9 = PageRequest.of(NaturalNumber.class).size(9).withoutTotal()
                              .sortBy(Sort.desc("floorOfSquareRoot"), Sort.asc("id"))
-                             .afterKeyset(6L, 46L); // 20th result is 46; its square root rounds down to 6.
+                             .afterKey(6L, 46L); // 20th result is 46; its square root rounds down to 6.
 
-        KeysetAwareSlice<NaturalNumber> slice;
+        CursoredPage<NaturalNumber> slice;
         try {
             slice = numbers.findByNumTypeAndNumBitsRequiredLessThan(NumberType.COMPOSITE, (short) 7, middle9);
-        } catch (MappingException x) {
-            // Test passes: Jakarta Data providers must raise MappingException when the database
-            // is not capable of keyset pagination.
+        } catch (UnsupportedOperationException x) {
+            // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
+            // is not capable of cursor-based pagination.
             return;
         }
 
@@ -1114,15 +1072,14 @@ public class EntityTests {
         assertEquals(9, slice.numberOfElements());
 
         assertEquals(true, slice.hasPrevious());
-
-        KeysetAwareSlice<NaturalNumber> previousSlice;
+        CursoredPage<NaturalNumber> previousSlice;
         try {
             previousSlice = numbers.findByNumTypeAndNumBitsRequiredLessThan(NumberType.COMPOSITE,
                                                                             (short) 7,
                                                                             slice.previousPageRequest());
-        } catch (MappingException x) {
-            // Test passes: Jakarta Data providers must raise MappingException when the database
-            // is not capable of keyset pagination.
+        } catch (UnsupportedOperationException x) {
+            // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
+            // is not capable of cursor-based pagination.
             return;
         }
 
@@ -1131,14 +1088,14 @@ public class EntityTests {
 
          assertEquals(9, previousSlice.numberOfElements());
 
-         KeysetAwareSlice<NaturalNumber> nextSlice;
+         CursoredPage<NaturalNumber> nextSlice;
          try {
              nextSlice = numbers.findByNumTypeAndNumBitsRequiredLessThan(NumberType.COMPOSITE,
                                                                          (short) 7,
                                                                          slice.nextPageRequest());
-         } catch (MappingException x) {
-             // Test passes: Jakarta Data providers must raise MappingException when the database
-             // is not capable of keyset pagination.
+         } catch (UnsupportedOperationException x) {
+             // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
+             // is not capable of cursor-based pagination.
              return;
          }
 
@@ -1148,17 +1105,17 @@ public class EntityTests {
          assertEquals(9, nextSlice.numberOfElements());
     }
 
-    @Assertion(id = "133", strategy = "Request a KeysetAwareSlice of results where none match the query, expecting an empty KeysetAwareSlice with 0 results.")
-    public void testKeysetAwareSliceOfNothing() {
+    @Assertion(id = "133", strategy = "Request a CursoredPage of results where none match the query, expecting an empty CursoredPage with 0 results.")
+    public void testCursoredPageWithoutTotalOfNothing() {
         // There are no numbers larger than 30 which have a square root that rounds down to 3.
-        PageRequest<NaturalNumber> pagination = PageRequest.of(NaturalNumber.class).size(33).afterKeyset(30L);
+        PageRequest<NaturalNumber> pagination = PageRequest.of(NaturalNumber.class).size(33).afterKey(30L).withoutTotal();
 
-        KeysetAwareSlice<NaturalNumber> slice;
+        CursoredPage<NaturalNumber> slice;
         try {
             slice = numbers.findByFloorOfSquareRootOrderByIdAsc(3L, pagination);
-        } catch (MappingException x) {
-            // Test passes: Jakarta Data providers must raise MappingException when the database
-            // is not capable of keyset pagination.
+        } catch (UnsupportedOperationException x) {
+            // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
+            // is not capable of cursor-based pagination.
             return;
         }
 
@@ -1219,6 +1176,54 @@ public class EntityTests {
         assertEquals(false, it.hasNext());
     }
 
+    @Assertion(id = "458", strategy = "Use a repository method with a JDQL Query that specifies an enum literal and a boolean false literal.")
+    public void testLiteralEnumAndLiteralFalse() {
+
+        NaturalNumber two = numbers.two().orElseThrow();
+
+        assertEquals(2L, two.getId());
+        assertEquals(NumberType.PRIME, two.getNumType());
+        assertEquals(Short.valueOf((short) 2), two.getNumBitsRequired());
+    }
+
+    @Assertion(id = "458", strategy = "Use a repository method with a JDQL Query that specifies literal Integer values.")
+    public void testLiteralInteger() {
+
+        assertEquals(24, characters.twentyFour());
+    }
+
+    @Assertion(id = "458", strategy = "Use a repository method with a JDQL Query that specifies literal String values.")
+    public void testLiteralString() {
+
+        assertEquals(List.of('J', 'K', 'L', 'M'),
+                     characters.jklOr("4d")
+                                     .map(AsciiCharacter::getThisCharacter)
+                                     .sorted()
+                                     .collect(Collectors.toList()));
+    }
+
+    @Assertion(id = "458", strategy = "Use a repository method with a JDQL Query that specifies a boolean true literal.")
+    public void testLiteralTrue() {
+        Page<Long> page1 = numbers.oddsFrom21To(40L, PageRequest.ofSize(5));
+
+        assertEquals(10L, page1.totalElements());
+        assertEquals(2L, page1.totalPages());
+
+        assertEquals(List.of(21L, 23L, 25L, 27L, 29L), page1.content());
+
+        assertEquals(true, page1.hasNext());
+
+        Page<Long> page2 = numbers.oddsFrom21To(40L, page1.nextPageRequest(NaturalNumber.class));
+
+        assertEquals(List.of(31L, 33L, 35L, 37L, 39L), page2.content());
+
+        if (page2.hasNext()) {
+            Page<Long> page3 = numbers.oddsFrom21To(40L, page2.nextPageRequest(NaturalNumber.class));
+            assertEquals(false, page3.hasContent());
+            assertEquals(false, page3.hasNext());
+        }
+    }
+
     @Assertion(id = "133",
                strategy = "Use a repository method with two Sort parameters specifying a mixture of ascending and descending order, " +
                           "and verify all results are returned and are ordered according to the sort criteria.")
@@ -1260,13 +1265,13 @@ public class EntityTests {
         assertEquals(17L, n[7].getId());
     }
 
-    @Assertion(id = "133", strategy = "Use a repository method with Or, expecting MappingException if the underlying database is not capable.")
+    @Assertion(id = "133", strategy = "Use a repository method with Or, expecting UnsupportedOperationException if the underlying database is not capable.")
     public void testOr() {
         Stream<NaturalNumber> found;
         try {
             found = positives.findByNumTypeOrFloorOfSquareRoot(NumberType.ONE, 2L);
-        } catch (MappingException x) {
-            // Test passes: Jakarta Data providers must raise MappingException when the database
+        } catch (UnsupportedOperationException x) {
+            // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
             // is not capable of the OR operation.
             return;
         }
@@ -1281,35 +1286,35 @@ public class EntityTests {
                           "followed by the dynamic sort criteria when the value(s) being compared by the static criteria match.")
     public void testOrderByHasPrecedenceOverPageRequestSorts() {
         PageRequest<NaturalNumber> pagination = PageRequest.of(NaturalNumber.class).size(8).sortBy(Sort.asc("numType"), Sort.desc("id"));
-        Slice<NaturalNumber> slice = numbers.findByIdLessThanOrderByFloorOfSquareRootDesc(25L, pagination);
+        Page<NaturalNumber> page = numbers.findByIdLessThanOrderByFloorOfSquareRootDesc(25L, pagination);
 
         assertEquals(Arrays.toString(new Long[] { 23L, 19L, 17L, // square root rounds down to 4; prime
                                                   24L, 22L, 21L, 20L, 18L }), // square root rounds down to 4; composite
-                     Arrays.toString(slice.stream().map(number -> number.getId()).toArray()));
+                     Arrays.toString(page.stream().map(number -> number.getId()).toArray()));
 
-        assertEquals(true, slice.hasNext());
-        pagination = slice.nextPageRequest();
-        slice = numbers.findByIdLessThanOrderByFloorOfSquareRootDesc(25L, pagination);
+        assertEquals(true, page.hasNext());
+        pagination = page.nextPageRequest();
+        page = numbers.findByIdLessThanOrderByFloorOfSquareRootDesc(25L, pagination);
 
         assertEquals(Arrays.toString(new Long[] { 16L, // square root rounds down to 4; composite
                                                   13L, 11L, // square root rounds down to 3; prime
                                                   15L, 14L, 12L, 10L, 9L }), // square root rounds down to 3; composite
-                     Arrays.toString(slice.stream().map(number -> number.getId()).toArray()));
+                     Arrays.toString(page.stream().map(number -> number.getId()).toArray()));
 
-        assertEquals(true, slice.hasNext());
-        pagination = slice.nextPageRequest();
-        slice = numbers.findByIdLessThanOrderByFloorOfSquareRootDesc(25L, pagination);
+        assertEquals(true, page.hasNext());
+        pagination = page.nextPageRequest();
+        page = numbers.findByIdLessThanOrderByFloorOfSquareRootDesc(25L, pagination);
 
         assertEquals(Arrays.toString(new Long[] { 7L, 5L, // square root rounds down to 2; prime
                                                   8L, 6L, 4L, // square root rounds down to 2; composite
                                                   1L, // square root rounds down to 1; one
                                                   3L, 2L }), // square root rounds down to 1; prime
-                     Arrays.toString(slice.stream().map(number -> number.getId()).toArray()));
+                     Arrays.toString(page.stream().map(number -> number.getId()).toArray()));
 
-        if (slice.hasNext()) {
-            pagination = slice.nextPageRequest();
-            slice = numbers.findByIdLessThanOrderByFloorOfSquareRootDesc(25L, pagination);
-            assertEquals(false, slice.hasContent());
+        if (page.hasNext()) {
+            pagination = page.nextPageRequest();
+            page = numbers.findByIdLessThanOrderByFloorOfSquareRootDesc(25L, pagination);
+            assertEquals(false, page.hasContent());
         }
     }
 
@@ -1352,13 +1357,119 @@ public class EntityTests {
         assertEquals(0L, page.totalPages());
     }
 
-    @Assertion(id = "133", strategy = "Use count and exists methods where the primary entity class is inferred from the life cycle methods.")
+    @Assertion(id = "458", strategy = "Use a repository method with a JDQL query that consists of only an ORDER BY clause.")
+    public void testPartialQueryOrderBy() {
+
+        assertEquals(List.of('A', 'B', 'C', 'D', 'E', 'F'),
+                     characters.alphabetic(Limit.range(65, 70))
+                                     .map(AsciiCharacter::getThisCharacter)
+                                     .collect(Collectors.toList()));
+    }
+
+    @Assertion(id = "458", strategy = "Use a repository method with a JDQL query that consists of only the SELECT and ORDER BY clauses.")
+    public void testPartialQuerySelectAndOrderBy() {
+
+        Character[] chars = characters.reverseAlphabetic(Limit.range(6, 13));
+        for (int i=0; i<chars.length; i++) {
+            assertEquals("zyxwvuts".charAt(i), chars[i]);
+        }
+    }
+
+    @Assertion(id = "133", strategy = "Use count and exists methods where the primary entity class is inferred from the lifecycle methods.")
     public void testPrimaryEntityClassDeterminedByLifeCycleMethods() {
         assertEquals(4, customRepo.countByIdIn(Set.of(2L, 15L, 37L, -5L, 60L)));
 
         assertEquals(true, customRepo.existsByIdIn(Set.of(17L, 14L, -1L)));
 
         assertEquals(false, customRepo.existsByIdIn(Set.of(-10L, -12L, -14L)));
+    }
+
+    @Assertion(id = "458", strategy = "Use a repository method with a JDQL query that uses the NOT operator with LIKE, IN, and BETWEEN.")
+    public void testQueryWithNot() {
+
+        // 'NOT LIKE' excludes '@'
+        // 'NOT IN' excludes 'E' and 'G'
+        // 'NOT BETWEEN' excludes 'H' through 'N'.
+        Character[] abcdfo = characters.getABCDFO();
+        assertEquals(6, abcdfo.length);
+        for (int i = 0; i<abcdfo.length; i++) {
+            assertEquals("ABCDFO".charAt(i), abcdfo[i]);
+        }
+    }
+
+    @Assertion(id = "458", strategy = "Use a repository method with a JDQL query that uses the NULL keyword.")
+    public void testQueryWithNull() {
+
+        assertEquals("4a", characters.hex('J').orElseThrow());
+        assertEquals("44", characters.hex('D').orElseThrow());
+    }
+
+    @Assertion(id = "458", strategy = "Use a repository method with a JDQL query that relies on the OR operator.")
+    public void testQueryWithOr() {
+        PageRequest<?> page1Request = PageRequest.ofSize(4).sortBy(Sort.desc("numBitsRequired"), Sort.asc("id"));
+        CursoredPage<NaturalNumber> page1;
+
+        try {
+            page1 = positives.withBitCountOrOfTypeAndBelow((short) 4,
+                                                           NumberType.COMPOSITE, 20L,
+                                                           page1Request);
+        } catch (UnsupportedOperationException x) {
+            // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
+            // is not capable of cursor-based pagination.
+            return;
+        }
+
+        assertEquals(List.of(16L, 18L, 8L, 9L),
+                     page1.stream()
+                                     .map(NaturalNumber::getId)
+                                     .collect(Collectors.toList()));
+
+        assertEquals(true, page1.hasTotals());
+        assertEquals(3L, page1.totalPages());
+        assertEquals(12L, page1.totalElements());
+        assertEquals(true, page1.hasNext());
+
+        CursoredPage<NaturalNumber> page2;
+
+        try {
+            page2 = positives.withBitCountOrOfTypeAndBelow((short) 4,
+                                                           NumberType.COMPOSITE, 20L,
+                                                           page1.nextPageRequest());
+        } catch (UnsupportedOperationException x) {
+            // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
+            // is not capable of cursor-based pagination.
+            return;
+        }
+
+        assertEquals(List.of(10L, 11L, 12L, 13L),
+                     page2.stream()
+                                     .map(NaturalNumber::getId)
+                                     .collect(Collectors.toList()));
+
+        assertEquals(true, page2.hasNext());
+
+        CursoredPage<NaturalNumber> page3 = positives.withBitCountOrOfTypeAndBelow((short) 4,
+                                                                                   NumberType.COMPOSITE, 20L,
+                                                                                   page2.nextPageRequest());
+
+        assertEquals(List.of(14L, 15L, 4L, 6L),
+                     page3.stream()
+                                     .map(NaturalNumber::getId)
+                                     .collect(Collectors.toList()));
+
+        if (page3.hasNext()) {
+            CursoredPage<NaturalNumber> page4 = positives.withBitCountOrOfTypeAndBelow((short) 4,
+                                                                                       NumberType.COMPOSITE, 20L,
+                                                                                       page3.nextPageRequest());
+            assertEquals(false, page4.hasContent());
+        }
+    }
+
+    @Assertion(id = "458", strategy = "Use a repository method with a JDQL query that uses parenthesis to make OR be evaluated before AND.")
+    public void testQueryWithParenthesis() {
+
+        assertEquals(List.of(15L, 7L, 5L, 3L, 1L),
+                     positives.oddAndEqualToOrBelow(15L, 9L));
     }
 
     @Assertion(id = "133", strategy = "Use a repository method that returns a single entity value where a single result is found.")
@@ -1372,13 +1483,13 @@ public class EntityTests {
 
     @Assertion(id = "133", strategy = "Request a Slice of results where none match the query, expecting an empty Slice with 0 results.")
     public void testSliceOfNothing() {
-        PageRequest<NaturalNumber> pagination =  PageRequest.of(NaturalNumber.class).size(5).sortBy(Sort.desc("id"));
-        Slice<NaturalNumber> slice = numbers.findByNumTypeAndFloorOfSquareRootLessThanEqual(NumberType.COMPOSITE, 1L,
+        PageRequest<NaturalNumber> pagination =  PageRequest.of(NaturalNumber.class).size(5).sortBy(Sort.desc("id")).withoutTotal();
+        Page<NaturalNumber> page = numbers.findByNumTypeAndFloorOfSquareRootLessThanEqual(NumberType.COMPOSITE, 1L,
                 pagination);
 
-        assertEquals(false, slice.hasContent());
-        assertEquals(0, slice.content().size());
-        assertEquals(0, slice.numberOfElements());
+        assertEquals(false, page.hasContent());
+        assertEquals(0, page.content().size());
+        assertEquals(0, page.numberOfElements());
     }
 
     @Assertion(id = "133", strategy = "Use the StaticMetamodel to obtain ascending Sorts for an entity attribute in a type-safe manner.")
@@ -1459,9 +1570,9 @@ public class EntityTests {
         assertEquals('T', found[2].getThisCharacter());
     }
 
-    @Assertion(id = "133", strategy = "Use a repository method that returns Streamable and verify the results.")
-    public void testStreamable() {
-        Streamable<AsciiCharacter> chars = characters.findByNumericValueLessThanEqualAndNumericValueGreaterThanEqual(109, 101);
+    @Assertion(id = "133", strategy = "Obtain multiple streams from the same List result of a repository method.")
+    public void testStreamsFromList() {
+        List<AsciiCharacter> chars = characters.findByNumericValueLessThanEqualAndNumericValueGreaterThanEqual(109, 101);
 
         assertEquals(Arrays.toString(new Character[] { Character.valueOf('e'),
                                                        Character.valueOf('f'),
@@ -1482,7 +1593,7 @@ public class EntityTests {
         assertEquals(new TreeSet<>(Set.of("65", "66", "67", "68", "69", "6a", "6b", "6c", "6d")),
                      sorted);
 
-        Streamable<AsciiCharacter> empty = characters.findByNumericValueLessThanEqualAndNumericValueGreaterThanEqual(115, 120);
+        List<AsciiCharacter> empty = characters.findByNumericValueLessThanEqualAndNumericValueGreaterThanEqual(115, 120);
         assertEquals(false, empty.iterator().hasNext());
         assertEquals(0L, empty.stream().count());
     }
@@ -1532,26 +1643,26 @@ public class EntityTests {
                strategy = "Request the third Slice of 5 results, expecting to find all 5. "
                        +  "Request the next Slice via nextPageRequest, expecting page number 4 and another 5 results.")
     public void testThirdAndFourthSlicesOf5() {
-        PageRequest<NaturalNumber> third5 = PageRequest.of(NaturalNumber.class).page(3).size(5).sortBy(Sort.desc("id"));
-        Slice<NaturalNumber> slice = numbers.findByNumTypeAndFloorOfSquareRootLessThanEqual(NumberType.PRIME, 8L,
+        PageRequest<NaturalNumber> third5 = PageRequest.of(NaturalNumber.class).page(3).size(5).sortBy(Sort.desc("id")).withoutTotal();
+        Page<NaturalNumber> page = numbers.findByNumTypeAndFloorOfSquareRootLessThanEqual(NumberType.PRIME, 8L,
                 third5);
 
-        assertEquals(3, slice.pageRequest().page());
-        assertEquals(5, slice.numberOfElements());
+        assertEquals(3, page.pageRequest().page());
+        assertEquals(5, page.numberOfElements());
 
         assertEquals(Arrays.toString(new Long[] { 37L, 31L, 29L, 23L, 19L }),
-                Arrays.toString(slice.stream().map(number -> number.getId()).toArray()));
+                Arrays.toString(page.stream().map(number -> number.getId()).toArray()));
 
-        assertEquals(true, slice.hasNext());
-        PageRequest<NaturalNumber> fourth5 = slice.nextPageRequest();
+        assertEquals(true, page.hasNext());
+        PageRequest<NaturalNumber> fourth5 = page.nextPageRequest();
 
-        slice = numbers.findByNumTypeAndFloorOfSquareRootLessThanEqual(NumberType.PRIME, 8L, fourth5);
+        page = numbers.findByNumTypeAndFloorOfSquareRootLessThanEqual(NumberType.PRIME, 8L, fourth5);
 
-        assertEquals(4, slice.pageRequest().page());
-        assertEquals(5, slice.numberOfElements());
+        assertEquals(4, page.pageRequest().page());
+        assertEquals(5, page.numberOfElements());
 
         assertEquals(Arrays.toString(new Long[] { 17L, 13L, 11L, 7L, 5L }),
-                Arrays.toString(slice.stream().map(number -> number.getId()).toArray()));
+                Arrays.toString(page.stream().map(number -> number.getId()).toArray()));
     }
 
     @Assertion(id = "133", strategy = "Use a repository method with the True keyword.")
@@ -1577,14 +1688,86 @@ public class EntityTests {
         assertEquals(false, it.hasNext());
     }
 
+    @Assertion(id = "458", strategy = "Use a repository method with a JDQL UPDATE query without a WHERE clause. " +
+                                      "This method also tests the addition, subtraction, and multiplication operators.")
+    public void testUpdateQueryWithoutWhereClause() {
+        // Ensure there is no data left over from other tests:
+        shared.removeAll();
+
+        TestPropertyUtility.waitForEventualConsistency();
+
+        boxes.saveAll(List.of(Box.of("TestUpdateQueryWithoutWhereClause-01", 125, 117, 44),
+                              Box.of("TestUpdateQueryWithoutWhereClause-02", 173, 165, 52),
+                              Box.of("TestUpdateQueryWithoutWhereClause-03", 229, 221, 60)));
+
+        TestPropertyUtility.waitForEventualConsistency();
+
+        // increases length by 12, decreases width by 12, and doubles the height
+        assertEquals(3L, shared.resizeAll(12, 2));
+
+        TestPropertyUtility.waitForEventualConsistency();
+
+        Box b1 = boxes.findById("TestUpdateQueryWithoutWhereClause-01").orElseThrow();
+        assertEquals(137, b1.length); // increased by 12
+        assertEquals(105, b1.width); // decreased by 12
+        assertEquals(88, b1.height); // increased by factor of 2
+
+        Box b2 = boxes.findById("TestUpdateQueryWithoutWhereClause-02").orElseThrow();
+        assertEquals(185, b2.length); // increased by 12
+        assertEquals(153, b2.width); // decreased by 12
+        assertEquals(104, b2.height); // increased by factor of 2
+
+        Box b3 = boxes.findById("TestUpdateQueryWithoutWhereClause-03").orElseThrow();
+        assertEquals(241, b3.length); // increased by 12
+        assertEquals(209, b3.width); // decreased by 12
+        assertEquals(120, b3.height); // increased by factor of 2
+
+        assertEquals(3, shared.removeAll());
+
+        TestPropertyUtility.waitForEventualConsistency();
+
+        assertEquals(0L, shared.resizeAll(2, 1));
+    }
+
+    @Assertion(id = "458", strategy = "Use a repository method with a JDQL UPDATE query with a WHERE clause. " +
+                                      "This method also tests the assignment and division operators.")
+    public void testUpdateQueryWithWhereClause() {
+        // Ensure there is no data left over from other tests:
+        shared.deleteIfPositive();
+
+        UUID id1 = shared.create(Coordinate.of("first", 1.41d, 5.25f)).id;
+        UUID id2 = shared.create(Coordinate.of("second", 2.2d, 2.34f)).id;
+
+        TestPropertyUtility.waitForEventualConsistency();
+
+        assertEquals(true, shared.move(id1, 1.23d, 1.5f));
+
+        TestPropertyUtility.waitForEventualConsistency();
+
+        Coordinate c1 = shared.withUUID(id1).orElseThrow();
+        assertEquals(1.23d, c1.x, 0.001d);
+        assertEquals(3.5f, c1.y, 0.001f); // 5.25 / 1.5 = 3.5
+
+        Coordinate c2 = shared.withUUID(id2).orElseThrow();
+        assertEquals(2.2d, c2.x, 0.001d);
+        assertEquals(2.34f, c2.y, 0.001f);
+
+        assertEquals(2, shared.deleteIfPositive());
+
+        TestPropertyUtility.waitForEventualConsistency();
+
+        assertEquals(false, shared.withUUID(id1).isPresent());
+        assertEquals(false, shared.withUUID(id2).isPresent());
+    }
+
     @Assertion(id = "133",
                strategy = "Use a repository method with varargs Sort... specifying a mixture of ascending and descending order, " +
                           "and verify all results are returned and are ordered according to the sort criteria.")
     public void testVarargsSort() {
-        List<NaturalNumber> list = numbers.findByIdLessThanEqual(12L, Order.by(
+        List<NaturalNumber> list = numbers.findByIdLessThanEqual(12L,
                                                                  Sort.asc("floorOfSquareRoot"),
                                                                  Sort.desc("numBitsRequired"),
-                                                                 Sort.asc("id")));
+                                                                 Sort.asc("id"));
 
         assertEquals(Arrays.toString(new Long[] { 2L, 3L, // square root rounds down to 1; 2 bits
                                                   1L, // square root rounds down to 1; 1 bit

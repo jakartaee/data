@@ -89,6 +89,26 @@ class PageRequestTest {
     }
 
     @Test
+    @DisplayName("The requestTotal configuration must be preserved when adding subsequent configuration.")
+    void shouldRequestTotalConfigBePreserved() {
+        PageRequest<?> pageRequest1 = PageRequest.ofPage(1).withTotal().size(70);
+
+        assertSoftly(softly -> {
+            softly.assertThat(pageRequest1.page()).isEqualTo(1L);
+            softly.assertThat(pageRequest1.size()).isEqualTo(70);
+            softly.assertThat(pageRequest1.requestTotal()).isEqualTo(true);
+        });
+
+        PageRequest<?> pageRequest2 = PageRequest.ofSize(80).withoutTotal().page(2);
+
+        assertSoftly(softly -> {
+            softly.assertThat(pageRequest2.page()).isEqualTo(2L);
+            softly.assertThat(pageRequest2.size()).isEqualTo(80);
+            softly.assertThat(pageRequest2.requestTotal()).isEqualTo(false);
+        });
+    }
+
+    @Test
     @DisplayName("Should throw IllegalArgumentException when page is not present")
     void shouldReturnErrorWhenThereIsIllegalArgument() {
         PageRequest<?> p1 = PageRequest.ofPage(1);

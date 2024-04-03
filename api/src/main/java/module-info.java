@@ -29,20 +29,20 @@ import jakarta.data.repository.Delete;
 import jakarta.data.repository.Find;
 import jakarta.data.repository.Insert;
 import jakarta.data.repository.OrderBy;
+import jakarta.data.repository.Param;
 import jakarta.data.repository.Query;
 import jakarta.data.repository.Repository;
 import jakarta.data.repository.Save;
 import jakarta.data.repository.Update;
 
-import java.util.Collection;
-import java.util.List;
-
 /**
- * <p>Jakarta Data standardizes a programming model where data is represented by simple Java classes
- * and where operations on data are represented by interface methods.</p>
+ * <p>Jakarta Data standardizes a programming model where data is represented by
+ * simple Java classes and where operations on data are represented by interface
+ * methods.</p>
  *
- * <p>The application defines simple Java objects called entities to represent data in the database.
- * Fields or accessor methods designate each entity property. For example,</p>
+ * <p>The application defines simple Java objects called entities to represent
+ * data in the database. Fields or accessor methods designate each entity property.
+ * For example,</p>
  *
  * <pre>
  * &#64;Entity
@@ -56,9 +56,9 @@ import java.util.List;
  * }
  * </pre>
  *
- * <p>The application defines interface methods on separate classes called repositories
- * to perform queries and other operations on entities. Repositories are interface classes
- * that are annotated with the {@link Repository} annotation. For example,</p>
+ * <p>A repository is an interface annotated with the {@link Repository} annotation.
+ * A repository declares methods which perform queries and other operations on entities.
+ * For example,</p>
  *
  * <pre>
  * &#64;Repository
@@ -70,16 +70,16 @@ import java.util.List;
  *     &#64;OrderBy("price")
  *     List&lt;Product&gt; findByNameIgnoreCaseLikeAndPriceLessThan(String namePattern, float max);
  *
- *     &#64;Query("UPDATE Product o SET o.price = o.price * (1.0 - ?1) WHERE o.yearProduced &lt;= ?2")
+ *     &#64;Query("UPDATE Product SET price = price * (1.0 - ?1) WHERE yearProduced &lt;= ?2")
  *     int discountOldInventory(float rateOfDiscount, int maxYear);
  *
  *     ...
  * }
  * </pre>
  *
- * <p>Repository interfaces are implemented by the container/runtime and are made available
- * to applications via the <code>jakarta.inject.Inject</code> annotation.
- * For example,</p>
+ * <p>Repository interfaces are implemented by the container/runtime and are made
+ * available to applications via the {@code jakarta.inject.Inject} annotation. For
+ * example,</p>
  *
  * <pre>
  * &#64;Inject
@@ -93,48 +93,42 @@ import java.util.List;
  * numDiscounted = products.discountOldInventory(0.15f, Year.now().getValue() - 1);
  * </pre>
  *
- * <p>Jakarta Persistence and Jakarta NoSQL define entity models that you
- * may use in Jakarta Data. You may use {@code jakarta.persistence.Entity}
- * and the corresponding entity-related annotations of the Jakarta Persistence
- * specification to define entities for relational databases.
- * You may use {@code jakarta.nosql.mapping.Entity} and the corresponding
- * entity-related annotations of the Jakarta NoSQL specification to define
- * entities for NoSQL databases. For other types of data stores, you may use
- * other entity models that are determined by the Jakarta Data provider
- * for the respective data store type.</p>
+ * <p>Jakarta Persistence and Jakarta NoSQL define programming models for entity
+ * classes that may be used with Jakarta Data:</p>
+ * <ul>
+ * <li>{@code jakarta.persistence.Entity} and the corresponding entity-related
+ *    annotations of the Jakarta Persistence specification may be used to
+ *    define entities stored in a relational database, or</li>
+ * <li>{@code jakarta.nosql.Entity} and the corresponding entity-related
+ *     annotations of the Jakarta NoSQL specification may be used to define
+ *     entities stored in a NoSQL database.
+ * </ul>
+ * <p>A Jakarta Data provider may define its own programming model for entity
+ *    classes representing some other arbitrary kind of data.</p>
  *
  * <p>Methods of repository interfaces must be styled according to a
- * defined set of conventions, which instruct the container/runtime
+ * well-defined set of conventions, which instruct the container/runtime
  * about the desired data access operation to perform. These conventions
- * consist of patterns of reserved keywords within the method name,
- * method parameters with special meaning, method return types,
- * and annotations that are placed upon the method and its parameters.</p>
+ * consist of patterns of reserved keywords within the method name, method
+ * parameters with special meaning, method return types, and annotations
+ * placed upon the method and its parameters.</p>
  *
- * <p>Built-in repository super interfaces, such as {@link DataRepository},
- * are provided as a convenient way to inherit commonly used methods and are
- * parameterized with the entity type and id type. Other built-in repository
- * interfaces, such as {@link BasicRepository}, can be used in place of
- * {@link DataRepository}
- * and provide a base set of predefined repository methods
- * which serve as an optional starting point.
- * You can extend these built-in interfaces to add your own custom methods.
- * You can also define your own repository interface without inheriting from the
- * built-in super interfaces. You can copy individual method signatures from the
- * built-in repository methods onto your own, which is possible
- * because the built-in repository methods are consistent with the
- * same set of conventions that you use to write custom repository methods.</p>
+ * <p>Built-in repository superinterfaces, such as {@link DataRepository},
+ * are provided as a convenient way to inherit commonly used methods and
+ * are parameterized by the entity type and by its id type. Other built-in
+ * repository interfaces, such as {@link BasicRepository}, may be used in
+ * place of {@link DataRepository} and provide a base set of predefined
+ * repository operations serving as an optional starting point. The Java
+ * application programmer may extend these built-in interfaces, adding
+ * custom methods. Alternatively, the programmer may define a repository
+ * interface without inheriting the built-in superinterfaces. A programmer
+ * may even copy individual method signatures from the built-in repositories
+ * to a repository which does not inherit any built-in superinterface. This
+ * is possible because the methods of the built-in repository superinterfaces
+ * respect the conventions defined for custom repository methods.</p>
  *
- * <p>Entity property names are computed from the fields and accessor methods
- * of the entity class and must be unique ignoring case. For simple entity
- * properties, the field or accessor method name is used as the entity property
- * name. In the case of embedded classes within entities, entity property names
- * are computed by concatenating the field or accessor method names at each level,
- * delimited by <code>_</code> or undelimited for query by method name (such as
- * <code>findByAddress_ZipCode</code> or <code>findByAddressZipCode</code>)
- * when referred to within repository method names, and delimited by
- * <code>.</code> when used within annotation values, such as for
- * {@link OrderBy#value} and {@link Query#value},</p>
- *
+* <p>The following example shows an entity class, an embeddable class, and
+ * a repository interface:</p>
  * <pre>
  * &#64;Entity
  * public class Purchase {
@@ -156,7 +150,7 @@ import java.util.List;
  *     &#64;OrderBy("address.zipCode")
  *     List&lt;Purchase&gt; findByAddressZipCodeIn(List&lt;Integer&gt; zipCodes);
  *
- *     &#64;Query("SELECT o FROM Purchase o WHERE o.address.zipCode=?1")
+ *     &#64;Query("WHERE address.zipCode = ?1")
  *     List&lt;Purchase&gt; forZipCode(int zipCode);
  *
  *     &#64;Save
@@ -164,22 +158,136 @@ import java.util.List;
  * }
  * </pre>
  *
- * <p>When using the <b>Query by Method Name</b> pattern
- * as well as the <b>Parameter-based Conditions</b> pattern,
- * <code>Id</code> is an alias for the entity property
- * that is designated as the id. Entity property names that are used in queries
- * by method name must not contain reserved words.</p>
+ * <h2>Entities</h2>
  *
- * <h2>Methods with Entity Parameters</h2>
+ * <p>An entity programming model typically specifies an entity-defining
+ * annotation that is used to identify entity classes. For Jakarta Persistence,
+ * this is {@code jakarta.persistence.Entity}. For Jakarta NoSQL, it is
+ * {@code jakarta.nosql.Entity}. A provider may even have no entity-defining
+ * annotation and feature a programming model for entity classes where the
+ * entity classes are unannotated.</p>
  *
- * <p>You can annotate a method with {@link Insert}, {@link Update}, {@link Save},
- * or {@link Delete} if the method accepts a single parameter, which must be one of:</p>
+ * <p>Furthermore, an entity programming model must define an annotation which
+ * identifies the field or property holding the unique identifier of an entity.
+ * For Jakarta Persistence, it is {@code jakarta.persistence.Id} or
+ * {@code jakarta.persistence.EmbeddedId}. For Jakarta NoSQL, it is
+ * {@code jakarta.nosql.Id}. Alternatively, an entity programming model might
+ * allow the identifier field or property to be identified via some convention.
+ * Every entity has a unique identifier.</p>
+ *
+ * <p>An entity has an arbitrary number of persistent fields or properties.</p>
+ *
+ * <h3>Persistent field names</h3>
+ *
+ * <p>Each persistent field of an entity or embeddable class is assigned a
+ * name:</p>
+ * <ul>
+ * <li>when direct field access is used, the name of a persistent field is
+ *     simply the name of the Java field, but</li>
+ * <li>when property-based access is used, the name of the field is derived
+ *     from the accessor methods, according to JavaBeans conventions.</li>
+ * </ul>
+ * <p>Within a given entity class or embeddable class, names assigned to
+ * persistent fields must be unique ignoring case.</p>
+ * <p>Furthermore, within the context of a given entity, each persistent field
+ * of an embeddable class reachable by navigation from the entity class may be
+ * assigned a compound name. The compound name is obtained by concatenating the
+ * names assigned to each field traversed by navigation from the entity class
+ * to the persistent field of the embedded class, optionally joined by a
+ * delimiter.</p>
+ * <ul>
+ * <li>For parameters of a {@link Find} method, the delimiter is {@code _}.
+ * <li>For path expressions within a {@linkplain Query query}, the delimiter
+ *     is {@code .}.
+ * <li>For method names in <em>Query by Method Name</em>, the delimiter is
+ *     {@code _} and it is optional. For example, {@code findByAddress_ZipCode}
+ *     or {@code findByAddressZipCode} are both legal.
+ * <li>For arguments to constructor methods of {@link Sort}, the delimiter
+ *     is {@code _} or {@code .}.
+ * <li>For the {@code value} member of the {@link OrderBy} or {@link By}
+ *     annotation the delimiter is {@code _} or {@code .}.
+ * </ul>
+ *
+ * <p>A persistent field name used in a Query by Method Name must not contain
+ * a keyword reserved by Query by Method Name.</p>
+ *
+ * <h3>Persistent field types (basic types)</h3>
+ *
+ * <p>The following is a list of valid basic entity attribute types.
+ * These can be used as the types of repository method parameters
+ * for the respective entity attribute.</p>
+ *
+ * <table style="width: 100%">
+ * <caption><b>Basic Types for Entity Attributes</b></caption>
+ * <tr style="background-color:#ccc">
+ * <td style="vertical-align: top; width:20%"><b>Category</b></td>
+ * <td style="vertical-align: top; width:20%"><b>Basic Types</b></td>
+ * <td style="vertical-align: top; width:*"><b>Notes</b></td>
+ * </tr>
+ *
+ * <tr style="vertical-align: top; background-color:#eee"><td>Primitives and primitive wrappers</td>
+ * <td>{@code boolean} and {@link Boolean}
+ * <br>{@code byte} and {@link Byte}
+ * <br>{@code char} and {@link Character}
+ * <br>{@code double} and {@link Double}
+ * <br>{@code float} and {@link Float}
+ * <br>{@code int} and {@link Integer}
+ * <br>{@code long} and {@link Long}
+ * <br>{@code short} and {@link Short}</td>
+ * <td></td></tr>
+ *
+ * <tr style="vertical-align: top"><td>Binary data</td>
+ * <td>{@code byte[]}</td>
+ * <td>Not sortable.</td></tr>
+ *
+ * <tr style="vertical-align: top; background-color:#eee"><td>Enumerated types</td>
+ * <td>{@code enum} types</td>
+ * <td>It is provider-specific whether sorting is based on
+ * {@link Enum#ordinal()} or {@link Enum#name()}.
+ * The Jakarta Persistence default of {@code ordinal} can be
+ * overridden with the {@code jakarta.persistence.Enumerated}
+ * annotation.</td></tr>
+ *
+ * <tr style="vertical-align: top"><td>Large numbers</td>
+ * <td>{@link java.math.BigDecimal}
+ * <br>{@link java.math.BigInteger}</td>
+ * <td></td></tr>
+ *
+ * <tr style="vertical-align: top; background-color:#eee"><td>Textual data</td>
+ * <td>{@link String}</td>
+ * <td></td></tr>
+ *
+ * <tr style="vertical-align: top"><td>Time and Dates</td>
+ * <td>{@link java.time.Instant}
+ * <br>{@link java.time.LocalDate}
+ * <br>{@link java.time.LocalDateTime}
+ * <br>{@link java.time.LocalTime}</td>
+ * <td></td></tr>
+ *
+ * <tr style="vertical-align: top; background-color:#eee"><td>Universally unique identifier</td>
+ * <td>{@link java.util.UUID}</td>
+ * <td></td></tr>
+ *
+ * </table>
+ *
+ * <p>A Jakarta Data provider might allow additional entity attribute types.</p>
+ *
+ * <h2>Lifecycle methods</h2>
+ *
+ * <p>A lifecycle method makes changes to persistent data in the data store.
+ * A lifecycle method must be annotated with a lifecycle annotation such as
+ * {@link Insert}, {@link Update}, {@link Save}, or {@link Delete}. The
+ * method must accept a single parameter, whose type is either:</p>
  *
  * <ul>
- * <li>An entity.</li>
- * <li>An array of entity (variable arguments array is permitted).</li>
- * <li>An {@link Iterable} of entity (subclasses such as {@link List} are permitted).</li>
+ * <li>the class of the entity, or</li>
+ * <li>{@code List<E>} or {@code E[]} where {@code E} is the class of the
+ *     entities.</li>
  * </ul>
+ *
+ * <p>The annotated method must be declared {@code void}, or, except in the
+ * case of {@code @Delete}, have a return type that is the same as the type
+ * of its parameter.</p>
  *
  * <table style="width: 100%">
  * <caption><b>Lifecycle Annotations</b></caption>
@@ -191,29 +299,66 @@ import java.util.List;
  *
  * <tr style="vertical-align: top; background-color:#eee"><td>{@link Delete}</td>
  * <td>deletes entities</td>
- * <td>{@code @Delete}<br><code>public void remove(person);</code></td></tr>
+ * <td>{@code @Delete}<br>{@code public void remove(person);}</td></tr>
  *
  * <tr style="vertical-align: top"><td>{@link Insert}</td>
  * <td>creates new entities</td>
- * <td>{@code @Insert}<br><code>public List&lt;Employee&gt; add(List&lt;Employee&gt; newEmployees);</code></td></tr>
+ * <td>{@code @Insert}<br>{@code public List<Employee> add(List<Employee> newEmployees);}</td></tr>
  *
  * <tr style="vertical-align: top; background-color:#eee"><td>{@link Save}</td>
  * <td>update if exists, otherwise insert</td>
- * <td>{@code @Save}<br><code>Product[] saveAll(Product... products)</code></td></tr>
+ * <td>{@code @Save}<br>{@code Product[] saveAll(Product... products)}</td></tr>
  *
  * <tr style="vertical-align: top"><td>{@link Update}</td>
  * <td>updates an existing entity</td>
- * <td>{@code @Update}<br><code>public boolean modify(Product modifiedProduct);</code></td></tr>
+ * <td>{@code @Update}<br>{@code public boolean modify(Product modifiedProduct);}</td></tr>
  * </table>
  *
- * <p>Refer to the JavaDoc of each annotation for more information.</p>
+ * <p>Refer to the API documentation for {@link Insert}, {@link Update}, {@link Delete},
+ * and {@link Save} for further information about these annotations.</p>
+ *
+ * <h2>JDQL query methods</h2>
+ *
+ * <p>The {@link Query} annotation specifies that a method executes a query written
+ * in Jakarta Data Query Language (JDQL) or Jakarta Persistence Query Language (JPQL).
+ * A Jakarta Data provider is not required to support the complete JPQL language,
+ * which targets relational data stores.</p>
+ *
+ * <p>Each parameter of the annotated method must either:</p>
+ * <ul>
+ * <li>have exactly the same name (the parameter name in the Java source, or a name
+ *     assigned by {@link Param @Param}) and type as a named parameter of the query,</li>
+ * <li>have exactly the same type and position within the parameter list of the method
+ *     as a positional parameter of the query, or</li>
+ * <li>be of type {@code Limit}, {@code Order}, {@code PageRequest}, or {@code Sort}.</li>
+ * </ul>
+ *
+ * <p>The {@link Param} annotation associates a method parameter with a named parameter.
+ * The {@code Param} annotation is unnecessary when the method parameter name matches the
+ * name of a named parameter and the application is compiled with the {@code -parameters}
+ * compiler option making parameter names available at runtime.</p>
+ *
+ * <pre>
+ * // example using named parameters
+ * &#64;Query("where age between :min and :max order by age")
+ * List&lt;Person&gt; peopleInAgeRange(int min, int max);
+ * </pre>
+ *
+ * <pre>
+ * // example using an ordinal parameter
+ * &#64;Query("where ssn = ?1 and deceased = false")
+ * Optional&lt;Person&gt; person(String ssn);
+ * </pre>
+ *
+ * <p>Refer to the {@linkplain Query API documentation} for {@code @Query} for further
+ * information.</p>
  *
  * <h2>Query by Method Name</h2>
  *
- * <p>Repository methods following the <b>Query by Method Name</b> pattern
+ * <p>Repository methods following the <em>Query by Method Name</em> pattern
  * must include the {@code By} keyword in the method name and must not include
  * the {@code @Find} annotation, {@code @Query} annotation, or
- * any life cycle annotations on the method or any data access related annotations
+ * any lifecycle annotations on the method or any data access related annotations
  * on the method parameters. Query conditions
  * are determined by the portion of the method name following the {@code By} keyword.</p>
  *
@@ -225,39 +370,38 @@ import java.util.List;
  * <td style="vertical-align: top; width: 65%"><b>Example</b></td>
  * </tr>
  *
- * <tr style="vertical-align: top"><td><code>countBy</code></td>
+ * <tr style="vertical-align: top"><td>{@code countBy}</td>
  * <td>counts the number of entities</td>
- * <td><code>countByAgeGreaterThanEqual(ageLimit)</code></td></tr>
+ * <td>{@code countByAgeGreaterThanEqual(ageLimit)}</td></tr>
  *
- * <tr style="vertical-align: top; background-color:#eee"><td><code>deleteBy</code></td>
+ * <tr style="vertical-align: top; background-color:#eee"><td>{@code deleteBy}</td>
  * <td>for delete operations</td>
- * <td><code>deleteByStatus("DISCONTINUED")</code></td></tr>
+ * <td>{@code deleteByStatus("DISCONTINUED")}</td></tr>
  *
- * <tr style="vertical-align: top"><td><code>existsBy</code></td>
+ * <tr style="vertical-align: top"><td>{@code existsBy}</td>
  * <td>for determining existence</td>
- * <td><code>existsByYearHiredAndWageLessThan(2022, 60000)</code></td></tr>
+ * <td>{@code existsByYearHiredAndWageLessThan(2022, 60000)}</td></tr>
  *
- * <tr style="vertical-align: top; background-color:#eee"><td><code>find...By</code></td>
+ * <tr style="vertical-align: top; background-color:#eee"><td>{@code find...By}</td>
  * <td>for find operations</td>
- * <td><code>findByHeightBetween(minHeight, maxHeight)</code></td></tr>
+ * <td>{@code findByHeightBetween(minHeight, maxHeight)}</td></tr>
  *
- * <tr style="vertical-align: top"><td><code>updateBy</code></td>
+ * <tr style="vertical-align: top"><td>{@code updateBy}</td>
  * <td>for simple update operations</td>
- * <td><code>updateByIdSetModifiedOnAddPrice(productId, now, 10.0)</code></td></tr>
+ * <td>{@code updateByIdSetModifiedOnAddPrice(productId, now, 10.0)}</td></tr>
  * </table>
  *
- * <p>When using the <i>Query By Method Name</i> pattern
- * the conditions are defined by the portion of the repository method name
+ * <p>The conditions are defined by the portion of the repository method name
  * (referred to as the Predicate) that follows the {@code By} keyword,
  * in the same order specified.
- * Most conditions, such as <code>Like</code> or <code>LessThan</code>,
+ * Most conditions, such as {@code Like} or {@code LessThan},
  * correspond to a single method parameter. The exception to this rule is
- * <code>Between</code>, which corresponds to two method parameters.</p>
+ * {@code Between}, which corresponds to two method parameters.</p>
  *
  * <p>Key-value and Wide-Column databases raise {@link UnsupportedOperationException}
  * for queries on attributes other than the identifier/key.</p>
  *
- * <h2>Reserved Keywords for Query by Method Name</h2>
+ * <h3>Reserved keywords for Query by Method Name</h3>
  *
  * <table style="width: 100%">
  * <caption><b>Reserved for Predicate</b></caption>
@@ -269,125 +413,115 @@ import java.util.List;
  * <td style="vertical-align: top"><b>Unavailable In</b></td>
  * </tr>
  *
- * <tr style="vertical-align: top; background-color:#eee"><td><code>And</code></td>
+ * <tr style="vertical-align: top; background-color:#eee"><td>{@code And}</td>
  * <td>conditions</td>
  * <td>Requires both conditions to be satisfied in order to match an entity.</td>
- * <td><code>findByNameLikeAndPriceLessThanEqual(namePattern, maxPrice)</code></td>
+ * <td>{@code findByNameLikeAndPriceLessThanEqual(namePattern, maxPrice)}</td>
  * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column</td></tr>
  *
- * <tr style="vertical-align: top"><td><code>Between</code></td>
+ * <tr style="vertical-align: top"><td>{@code Between}</td>
  * <td>numeric, strings, time</td>
  * <td>Requires that the entity's attribute value be within the range specified by two parameters,
  * inclusive of the parameters. The minimum is listed first, then the maximum.</td>
- * <td><code>findByAgeBetween(minAge, maxAge)</code></td>
+ * <td>{@code findByAgeBetween(minAge, maxAge)}</td>
  * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column</td></tr>
  *
- * <tr style="vertical-align: top; background-color:#eee"><td><code>Contains</code></td>
- * <td>collections, strings</td>
- * <td>For Collection attributes, requires that the entity's attribute value,
- * which is a collection, includes the parameter value.
- * For String attributes, requires that any substring of the entity's attribute value
- * match the entity's attribute value, which can be a pattern with wildcard characters.</td>
- * <td><code>findByRecipientsContains(email)</code>
- * <br><code>findByDescriptionNotContains("refurbished")</code></td>
- * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column<br>Document</td></tr>
- *
- * <tr style="vertical-align: top"><td><code>Empty</code></td>
- * <td>collections</td>
- * <td>Requires that the entity's attribute is an empty collection or has a null value.</td>
- * <td><code>countByPhoneNumbersEmpty()</code>
- * <br><code>findByInviteesNotEmpty()</code></td>
+ * <tr style="vertical-align: top; background-color:#eee"><td>{@code Contains}</td>
+ * <td>strings</td>
+ * <td>Requires that a substring of the entity's attribute value
+ * matches the parameter value, which can be a pattern.</td>
+ * <td>{@code findByNameContains(middleName)}</td>
  * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column<br>Document<br>Graph</td></tr>
  *
- * <tr style="vertical-align: top; background-color:#eee"><td><code>EndsWith</code></td>
+ * <tr style="vertical-align: top"><td>{@code EndsWith}</td>
  * <td>strings</td>
  * <td>Requires that the characters at the end of the entity's attribute value
  * match the parameter value, which can be a pattern.</td>
- * <td><code>findByNameEndsWith(surname)</code></td>
+ * <td>{@code findByNameEndsWith(surname)}</td>
  * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column<br>Document<br>Graph</td></tr>
  *
- * <tr style="vertical-align: top"><td><code>False</code></td>
+ * <tr style="vertical-align: top; background-color:#eee"><td>{@code False}</td>
  * <td>boolean</td>
  * <td>Requires that the entity's attribute value has a boolean value of false.</td>
- * <td><code>findByCanceledFalse()</code></td>
+ * <td>{@code findByCanceledFalse()}</td>
  * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column</td></tr>
  *
- * <tr style="vertical-align: top; background-color:#eee"><td><code>GreaterThan</code></td>
+ * <tr style="vertical-align: top"><td>{@code GreaterThan}</td>
  * <td>numeric, strings, time</td>
  * <td>Requires that the entity's attribute value be larger than the parameter value.</td>
- * <td><code>findByStartTimeGreaterThan(startedAfter)</code></td>
+ * <td>{@code findByStartTimeGreaterThan(startedAfter)}</td>
  * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column</td></tr>
  *
- * <tr style="vertical-align: top"><td><code>GreaterThanEqual</code></td>
+ * <tr style="vertical-align: top; background-color:#eee"><td>{@code GreaterThanEqual}</td>
  * <td>numeric, strings, time</td>
  * <td>Requires that the entity's attribute value be at least as big as the parameter value.</td>
- * <td><code>findByAgeGreaterThanEqual(minimumAge)</code></td>
+ * <td>{@code findByAgeGreaterThanEqual(minimumAge)}</td>
  * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column</td></tr>
  *
- * <tr style="vertical-align: top; background-color:#eee"><td><code>IgnoreCase</code></td>
+ * <tr style="vertical-align: "><td>{@code IgnoreCase}</td>
  * <td>strings</td>
  * <td>Requires case insensitive comparison. For query conditions
- * as well as ordering, the <code>IgnoreCase</code> keyword can be
+ * as well as ordering, the {@code IgnoreCase} keyword can be
  * specified immediately following the entity property name.</td>
- * <td><code>countByStatusIgnoreCaseNotLike("%Delivered%")</code>
- * <br><code>findByZipcodeOrderByStreetIgnoreCaseAscHouseNumAsc(55904)</code></td>
+ * <td>{@code countByStatusIgnoreCaseNotLike("%Delivered%")}
+ * <br>{@code findByZipcodeOrderByStreetIgnoreCaseAscHouseNumAsc(55904)}</td>
  * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column<br>Document<br>Graph</td></tr>
  *
- * <tr style="vertical-align: top"><td><code>In</code></td>
+ * <tr style="vertical-align: top; background-color:#eee"><td>{@code In}</td>
  * <td>all attribute types</td>
  * <td>Requires that the entity's attribute value be within the list that is the parameter value.</td>
- * <td><code>findByNameIn(names)</code></td>
+ * <td>{@code findByNameIn(names)}</td>
  * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column<br>Document<br>Graph</td></tr>
  *
- * <tr style="vertical-align: top; background-color:#eee"><td><code>LessThan</code></td>
+ * <tr style="vertical-align: top"><td>{@code LessThan}</td>
  * <td>numeric, strings, time</td>
  * <td>Requires that the entity's attribute value be less than the parameter value.</td>
- * <td><code>findByStartTimeLessThan(startedBefore)</code></td>
+ * <td>{@code findByStartTimeLessThan(startedBefore)}</td>
  * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column</td></tr>
  *
- * <tr style="vertical-align: top"><td><code>LessThanEqual</code></td>
+ * <tr style="vertical-align: top; background-color:#eee"><td>{@code LessThanEqual}</td>
  * <td>numeric, strings, time</td>
  * <td>Requires that the entity's attribute value be at least as small as the parameter value.</td>
- * <td><code>findByAgeLessThanEqual(maximumAge)</code></td>
+ * <td>{@code findByAgeLessThanEqual(maximumAge)}</td>
  * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column</td></tr>
  *
- * <tr style="vertical-align: top; background-color:#eee"><td><code>Like</code></td>
+ * <tr style="vertical-align: top"><td>{@code Like}</td>
  * <td>strings</td>
  * <td>Requires that the entity's attribute value match the parameter value, which can be a pattern.</td>
- * <td><code>findByNameLike(namePattern)</code></td>
+ * <td>{@code findByNameLike(namePattern)}</td>
  * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column<br>Document<br>Graph</td></tr>
  *
- * <tr style="vertical-align: top"><td><code>Not</code></td>
+ * <tr style="vertical-align: top; background-color:#eee"><td>{@code Not}</td>
  * <td>condition</td>
  * <td>Negates a condition.</td>
- * <td><code>deleteByNameNotLike(namePattern)</code>
- * <br><code>findByStatusNot("RUNNING")</code></td>
+ * <td>{@code deleteByNameNotLike(namePattern)}
+ * <br>{@code findByStatusNot("RUNNING")}</td>
  * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column</td></tr>
  *
- * <tr style="vertical-align: top; background-color:#eee"><td><code>Null</code></td>
+ * <tr style="vertical-align: top"><td>{@code Null}</td>
  * <td>nullable types</td>
  * <td>Requires that the entity's attribute has a null value.</td>
- * <td><code>findByEndTimeNull()</code>
- * <br><code>findByAgeNotNull()</code></td>
+ * <td>{@code findByEndTimeNull()}
+ * <br>{@code findByAgeNotNull()}</td>
  * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column<br>Document<br>Graph</td></tr>
  *
- * <tr style="vertical-align: top"><td><code>Or</code></td>
+ * <tr style="vertical-align: top; background-color:#eee"><td>{@code Or}</td>
  * <td>conditions</td>
  * <td>Requires at least one of the two conditions to be satisfied in order to match an entity.</td>
- * <td><code>findByPriceLessThanEqualOrDiscountGreaterThanEqual(maxPrice, minDiscount)</code></td>
+ * <td>{@code findByPriceLessThanEqualOrDiscountGreaterThanEqual(maxPrice, minDiscount)}</td>
  * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column</td></tr>
  *
- * <tr style="vertical-align: top; background-color:#eee"><td><code>StartsWith</code></td>
+ * <tr style="vertical-align: top"><td>{@code StartsWith}</td>
  * <td>strings</td>
  * <td>Requires that the characters at the beginning of the entity's attribute value
  * match the parameter value, which can be a pattern.</td>
- * <td><code>findByNameStartsWith(firstTwoLetters)</code></td>
+ * <td>{@code findByNameStartsWith(firstTwoLetters)}</td>
  * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column<br>Document<br>Graph</td></tr>
  *
- * <tr style="vertical-align: top"><td><code>True</code></td>
+ * <tr style="vertical-align: top; background-color:#eee"><td>{@code True}</td>
  * <td>boolean</td>
  * <td>Requires that the entity's attribute value has a boolean value of true.</td>
- * <td><code>findByAvailableTrue()</code></td>
+ * <td>{@code findByAvailableTrue()}</td>
  * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column</td></tr>
  *
  * </table>
@@ -404,13 +538,13 @@ import java.util.List;
  * <td style="vertical-align: top; width: *"><b>Unavailable In</b></td>
  * </tr>
  *
- * <tr style="vertical-align: top; background-color:#eee"><td><code>First</code></td>
+ * <tr style="vertical-align: top; background-color:#eee"><td>{@code First}</td>
  * <td>find...By</td>
  * <td>Limits the amount of results that can be returned by the query
- * to the number that is specified after <code>First</code>,
+ * to the number that is specified after {@code First},
  * or absent that to a single result.</td>
- * <td><code>findFirst25ByYearHiredOrderBySalaryDesc(int yearHired)</code>
- * <br><code>findFirstByYearHiredOrderBySalaryDesc(int yearHired)</code></td>
+ * <td>{@code findFirst25ByYearHiredOrderBySalaryDesc(int yearHired)}
+ * <br>{@code findFirstByYearHiredOrderBySalaryDesc(int yearHired)}</td>
  * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column<br>Document<br>Graph</td></tr>
  * </table>
  *
@@ -424,27 +558,27 @@ import java.util.List;
  * <td style="vertical-align: top"><b>Example</b></td>
  * </tr>
  *
- * <tr style="vertical-align: top; background-color:#eee"><td><code>Asc</code></td>
- * <td>Specifies ascending sort order for <code>findBy</code> queries</td>
- * <td><code>findByAgeOrderByFirstNameAsc(age)</code></td></tr>
+ * <tr style="vertical-align: top; background-color:#eee"><td>{@code Asc}</td>
+ * <td>Specifies ascending sort order for {@code findBy} queries</td>
+ * <td>{@code findByAgeOrderByFirstNameAsc(age)}</td></tr>
  *
- * <tr style="vertical-align: top"><td><code>Desc</code></td>
- * <td>Specifies descending sort order for <code>findBy</code> queries</td>
- * <td><code>findByAuthorLastNameOrderByYearPublishedDesc(surname)</code></td></tr>
+ * <tr style="vertical-align: top"><td>{@code Desc}</td>
+ * <td>Specifies descending sort order for {@code findBy} queries</td>
+ * <td>{@code findByAuthorLastNameOrderByYearPublishedDesc(surname)}</td></tr>
  *
- * <tr style="vertical-align: top; background-color:#eee"><td><code>OrderBy</code></td>
- * <td>Sorts results of a <code>findBy</code> query according to one or more entity attributes.
- * Multiple attributes are delimited by <code>Asc</code> and <code>Desc</code>,
+ * <tr style="vertical-align: top; background-color:#eee"><td>{@code OrderBy}</td>
+ * <td>Sorts results of a {@code findBy} query according to one or more entity attributes.
+ * Multiple attributes are delimited by {@code Asc} and {@code Desc},
  * which indicate ascending and descending sort direction.
  * Precedence in sorting is determined by the order in which attributes are listed.</td>
- * <td><code>findByStatusOrderByYearHiredDescLastNameAsc(empStatus)</code></td></tr>
+ * <td>{@code findByStatusOrderByYearHiredDescLastNameAsc(empStatus)}</td></tr>
  *
  * </table>
  *
  * <p>Key-value and Wide-Column databases raise {@link UnsupportedOperationException}
  * if an order clause is present.</p>
  *
- * <h3>Reserved for Future Use</h3>
+ * <h3>Reserved for future use</h3>
  * <p>
  * The specification does not define behavior for the following keywords, but reserves
  * them as keywords that must not be used as entity attribute names when using
@@ -452,7 +586,8 @@ import java.util.List;
  * future releases without introducing breaking changes to applications.
  * </p>
  * <p>
- * Reserved for query conditions: {@code AbsoluteValue}, {@code CharCount}, {@code ElementCount},
+ * Reserved for query conditions: {@code AbsoluteValue}, {@code CharCount},
+ * {@code ElementCount}, {@code Empty}
  * {@code Rounded}, {@code RoundedDown}, {@code RoundedUp}, {@code Trimmed},
  * {@code WithDay}, {@code WithHour}, {@code WithMinute}, {@code WithMonth},
  * {@code WithQuarter}, {@code WithSecond}, {@code WithWeek}, {@code WithYear}.
@@ -464,137 +599,157 @@ import java.util.List;
  * Reserved for updates: {@code Add}, {@code Divide}, {@code Multiply}, {@code Set}, {@code Subtract}.
  * </p>
  *
- * <h3>Wildcard Characters</h3>
+ * <h3>Wildcard characters</h3>
  * <p>
  * Wildcard characters for patterns are determined by the data access provider.
- * For Jakarta Persistence providers, <code>_</code> matches any one character
- * and <code>%</code> matches 0 or more characters.
+ * For Jakarta Persistence providers, {@code _} matches any one character
+ * and {@code %} matches 0 or more characters.
  * </p>
  *
- * <h3>Logical Operator Precedence</h3>
+ * <h3>Logical operator precedence</h3>
  * <p>
- * For relational databases, the logical operator <code>And</code>
- * is evaluated on conditions before <code>Or</code> when both are specified
+ * For relational databases, the logical operator {@code And}
+ * is evaluated on conditions before {@code Or} when both are specified
  * on the same method. Precedence for other database types is limited to
  * the capabilities of the database.
  * </p>
  *
- * <h2>Return Types for Repository Methods</h2>
+ * <h3>Return types for Query by Method Name</h3>
  *
  * <p>The following is a table of valid return types.
- * The <b>Method</b> column shows name patterns for <i>Query by Method Name</i>.
- * For methods with the {@link Query} annotation or <i>Parameter-based Conditions</i>,
- * which have flexible naming, refer to the equivalent <i>Query by Method Name</i>
- * pattern in the table. For example, to identify the valid return types for a method,
+ * The <b>Method</b> column shows name patterns for Query by Method Name.
+ * For example, to identify the valid return types for a method,
  * {@code findNamed(String name, PageRequest pagination)}, refer to the row for
  * {@code find...By...(..., PageRequest)}.</p>
  *
  * <table style="width: 100%">
- * <caption><b>Return Types when using Query by Method Name and Parameter-based Conditions</b></caption>
+ * <caption><b>Return Types for Query by Method Name</b></caption>
  * <tr style="background-color:#ccc">
  * <td style="vertical-align: top"><b>Method</b></td>
  * <td style="vertical-align: top"><b>Return Types</b></td>
  * <td style="vertical-align: top"><b>Notes</b></td>
  * </tr>
  *
- * <tr style="vertical-align: top; background-color:#eee"><td><code>countBy...</code></td>
- * <td><code>long</code>,
- * <br><code>int</code></td>
- * <td>Jakarta Persistence providers limit the maximum to <code>Integer.MAX_VALUE</code></td></tr>
+ * <tr style="vertical-align: top; background-color:#eee"><td>{@code countBy...}</td>
+ * <td>{@code long},
+ * <br>{@code int}</td>
+ * <td>Jakarta Persistence providers limit the maximum to {@code Integer.MAX_VALUE}</td></tr>
  *
- * <tr style="vertical-align: top"><td><code>deleteBy...</code>,
- * <br><code>updateBy...</code></td>
- * <td><code>void</code>,
- * <br><code>boolean</code>,
- * <br><code>long</code>,
- * <br><code>int</code></td>
- * <td>Jakarta Persistence providers limit the maximum to <code>Integer.MAX_VALUE</code></td></tr>
+ * <tr style="vertical-align: top"><td>{@code deleteBy...},
+ * <br>{@code updateBy...}</td>
+ * <td>{@code void},
+ * <br>{@code boolean},
+ * <br>{@code long},
+ * <br>{@code int}</td>
+ * <td>Jakarta Persistence providers limit the maximum to {@code Integer.MAX_VALUE}</td></tr>
  *
- * <tr style="vertical-align: top; background-color:#eee"><td><code>existsBy...</code></td>
- * <td><code>boolean</code></td>
+ * <tr style="vertical-align: top; background-color:#eee"><td>{@code existsBy...}</td>
+ * <td>{@code boolean}</td>
  * <td>For determining existence.</td></tr>
  *
- * <tr style="vertical-align: top"><td><code>find...By...</code></td>
- * <td><code>E</code>,
- * <br><code>Optional&lt;E&gt;</code></td>
+ * <tr style="vertical-align: top"><td>{@code find...By...}</td>
+ * <td>{@code E},
+ * <br>{@code Optional<E>}</td>
  * <td>For queries returning a single item (or none)</td></tr>
  *
- * <tr style="vertical-align: top; background-color:#eee"><td><code>find...By...</code></td>
- * <td><code>E[]</code>,
- * <br><code>List&lt;E&gt;</code></td>
+ * <tr style="vertical-align: top; background-color:#eee"><td>{@code find...By...}</td>
+ * <td>{@code E[]},
+ * <br>{@code List<E>}</td>
  * <td>For queries where it is possible to return more than 1 item.</td></tr>
  *
- * <tr style="vertical-align: top"><td><code>find...By...</code></td>
- * <td><code>Stream&lt;E&gt;</code></td>
+ * <tr style="vertical-align: top"><td>{@code find...By...}</td>
+ * <td>{@code Stream<E>}</td>
  * <td>The caller must arrange to {@link java.util.stream.BaseStream#close() close}
  * all streams that it obtains from repository methods.</td></tr>
  *
- * <tr style="vertical-align: top"><td><code>find...By...(..., PageRequest)</code></td>
- * <td><code>Page&lt;E&gt;</code>, <code>KeysetAwarePage&lt;E&gt;</code>,
- * <br><code>Slice&lt;E&gt;</code>, <code>KeysetAwareSlice&lt;E&gt;</code></td>
+ * <tr style="vertical-align: top; background-color:#eee"><td>{@code find...By...(..., PageRequest)}</td>
+ * <td>{@code Page<E>}, {@code CursoredPage<E>}</td>
  * <td>For use with pagination</td></tr>
  *
  * </table>
  *
- * <h3>Return Types for Annotated Methods</h3>
+ * <h2>Parameter-based automatic query methods</h2>
  *
- * <p>The legal return types for a method annotated {@link Query} depend on the Query Language
- * operation that is performed. For queries that correspond to operations in the above
- * table, the same return types must be supported as for the Query-by-Method-Name and
- * Parameter-based Conditions patterns.</p>
+ * <p>The {@link Find} annotation indicates that the repository method is
+ * a parameter-based automatic query method. In this case, the method name
+ * does not determine the semantics of the method, and the query conditions
+ * are determined by the method parameters.</p>
  *
- * <p>The legal return types for a method annotated {@link Insert}, {@link Update},
- * {@link Save}, {@link Delete}, or {@link Find} are specified by the API documentation
- * for those annotations.</p>
+ * <p>Each parameter of the annotated method must either:</p>
+ * <ul>
+ * <li>have exactly the same type and name (the parameter name in the Java
+ *     source, or a name assigned by {@link By @By}) as a persistent field
+ *     or property of the entity class, or</li>
+ * <li>be of type {@link jakarta.data.Limit}, {@link jakarta.data.Sort},
+ *     {@link jakarta.data.Order}, or {@link jakarta.data.page.PageRequest}.</li>
+ * </ul>
  *
- * <h2>Parameter-based Conditions</h2>
+ * <p>A parameter may be annotated with the {@link By} annotation to specify
+ * the name of the entity attribute that the argument is to be compared with.
+ * If the {@link By} annotation is missing, the method parameter name must
+ * match the name of an entity attribute and the repository must be compiled
+ * with the {@code -parameters} compiler option so that parameter names are
+ * available at runtime.</p>
  *
- * <p>When using the <i>Parameter-based Conditions</i> pattern,
- * you must annotate the repository method to indicate the type of operation.
- * This information is not derived from the method name. The {@link Find}
- * annotation indicates that the repository method is a find operation.
- * The query conditions are defined by the method parameters.
- * You can annotate method parameters with the {@link By} annotation
- * to specify the name of the entity attribute that the parameter value
- * is to be compared with. Otherwise, the method parameter name
- * must match the name of an entity attribute and you must compile
- * with the {@code -parameters} compiler option that makes parameter
- * names available at run time.
- * The {@code _} character can be used in method parameter names to
- * reference embedded attributes. All conditions are considered to be
- * the equality condition. All conditions must match in order to
- * retrieve an entity.</p>
- *
- * <p>The following examples illustrate the difference between
- * <i>Query By Method Name</i> and <i>Parameter-based Conditions</i> patterns.
- * Both methods accept the same parameters and have the same behavior.</p>
+ * <p>Each parameter determines a query condition, and each such condition
+ * is an equality condition. All conditions must match for a record to
+ * satisfy the query.</p>
  *
  * <pre>
- * // Query by Method Name:
+ * &#64;Find
+ * &#64;OrderBy("lastName")
+ * &#64;OrderBy("firstName")
+ * List&lt;Person&gt; peopleByAgeAndNationality(int age, Country nationality);
+ * </pre>
+ *
+ * <pre>
+ * &#64;Find
+ * Optional&lt;Person&gt; person(String ssn);
+ * </pre>
+ *
+ * <p>The {@code _} character may be used in a method parameter name to
+ * reference an embedded attribute.</p>
+ *
+ * <pre>
+ * &#64;Find
+ * &#64;OrderBy("address.zip")
+ * Stream&lt;Person&gt; peopleInCity(String address_city);
+ * </pre>
+ *
+ * <p>The following examples illustrate the difference between Query By Method
+ * Name and parameter-based automatic query methods. Both methods accept the
+ * same parameters and have the same behavior.</p>
+ *
+ * <pre>
+ * // Query by Method Name
  * Vehicle[] findByMakeAndModelAndYear(String makerName, String model, int year, {@code Sort<?>...} sorts);
  *
- * // Parameter-based Conditions:
+ * // parameter-based conditions
  * {@code @Find}
  * Vehicle[] searchFor(String make, String model, int year, {@code Sort<?>...} sorts);
  * </pre>
  *
- * <h2>Additional Method Parameters</h2>
+ * <p>For further information, refer to the {@linkplain Find API documentation}
+ * for {@code @Find}.</p>
  *
- * <p>When using {@code @Query} or the
- * <i>Query By Method Name</i> pattern or the
- * <i>Parameter-based Find</i> pattern,
- * after conditions are determined from the corresponding parameters,
- * the remaining repository method parameters are used to enable other
- * capabilities such as pagination, limits, and sorting.</p>
+ * <h2>Special parameters</h2>
+ *
+ * <p>A repository method annotated {@link Query @Query}, {@link Find @Find} or
+ * following the <em>Query by Method Name</em> pattern may have <em>special
+ * parameters</em> of type {@link Limit}, {@link Order}, {@link Sort}, or
+ * {@link PageRequest} if the method return type indicates that the method may
+ * return multiple entities. Special parameters occur after parameters related
+ * to query conditions and JDQL query parameters, and enable capabilities such
+ * as pagination, limits, and sorting.</p>
  *
  * <h3>Limits</h3>
  *
- * <p>You can cap the number of results that can be returned by a single
- * invocation of a repository find method by adding a {@link Limit} parameter.
- * You can also limit the results to a positional range. For example,</p>
+ * <p>The number of results returned by a single invocation of a repository
+ * find method may be limited by adding a parameter of type {@link Limit}.
+ * The results may even be limited to a positioned range. For example,</p>
  *
  * <pre>
- * &#64;Query("SELECT o FROM Products o WHERE (o.fullPrice - o.salePrice) / o.fullPrice &gt;= ?1 ORDER BY o.salePrice DESC")
+ * &#64;Query("WHERE (fullPrice - salePrice) / fullPrice &gt;= ?1 ORDER BY salePrice DESC")
  * Product[] highlyDiscounted(float minPercentOff, Limit limit);
  *
  * ...
@@ -605,8 +760,8 @@ import java.util.List;
  *
  * <h3>Pagination</h3>
  *
- * <p>You can request that results be split into pages by adding a {@link PageRequest}
- * parameter to a repository find method. For example,</p>
+ * <p>A repository find method with a parameter of type {@link PageRequest}
+ * allows its results to be split and retrieved in pages. For example,</p>
  *
  * <pre>
  * Product[] findByNameLikeOrderByAmountSoldDescNameAsc(
@@ -616,11 +771,11 @@ import java.util.List;
  *                  "%phone%", PageRequest.of(Product.class).size(20));
  * </pre>
  *
- * <h3>Sorting at Runtime</h3>
+ * <h3>Sorting</h3>
  *
- * <p>When requesting pages, you can dynamically supply sorting criteria
- * via the {@link PageRequest#sortBy(Sort)} method and other methods
- * of {@code PageRequest} with the same name. For example,</p>
+ * <p>When a page is requested with a {@code PageRequest}, dynamic sorting
+ * criteria may be supplied via the method {@link PageRequest#sortBy(Sort)}
+ * and its overloads. For example,</p>
  *
  * <pre>
  * Product[] findByNameLike(String pattern, {@code PageRequest<Product>} pagination);
@@ -643,9 +798,9 @@ import java.util.List;
  *                                         .pageSize(25));
  * </pre>
  *
- * <p>To supply sort criteria dynamically without using pagination,
- * populate an {@link Order} instance with one or more {@link Sort} parameters
- * and supply it to a repository find method. For example,</p>
+ * <p>To supply sort criteria dynamically without using pagination, an
+ * instance of {@link Order} may be populated with one or more instances
+ * of {@link Sort} and passed to the repository find method. For example,</p>
  *
  * <pre>
  * Product[] findByNameLike(String pattern, Limit max, {@code Order<Product>} sortBy);
@@ -671,22 +826,22 @@ import java.util.List;
  *                                 Sort.asc("name"));
  * </pre>
  *
- * <h2>Repository Default Methods</h2>
+ * <h2>Repository default methods</h2>
  *
- * <p>You can compose default methods on your repository interface to supply
- * user-defined implementation.</p>
+ * <p>A repository interface may declare any number of {@code default} methods
+ * with user-written implementations.</p>
  *
- * <h2>Resource Accessor Methods</h2>
+ * <h2>Resource accessor methods</h2>
  *
- * <p>For some advanced scenarios, you might need access to an
- * underlying resource from the Jakarta Data provider, such as a
- * {@code jakarta.persistence.EntityManager},
- * {@code javax.sql.DataSource}, or
- * {@code java.sql.Connection}</p>
+ * <p>In advanced scenarios, the application program might make direct use of
+ * some underlying resource acquired by the Jakarta Data provider, such as a
+ * {@code javax.sql.DataSource}, {@code java.sql.Connection}, or even an
+ * {@code jakarta.persistence.EntityManager}.</p>
  *
- * <p>To obtain the above, you can define accessor methods on your repository interface,
- * where the method has no parameters and its result value is one of the
- * aforementioned types. When you invoke the method, the Jakarta Data provider
+ * <p>To expose access to an instance of such a resource, the repository
+ * interface may declare an accessor method, a method with no parameters
+ * whose return type is the type of the resource, for example, one of the
+ * types listed above. When this method is called, the Jakarta Data provider
  * supplies an instance of the requested type of resource.</p>
  *
  * <p>For example,</p>
@@ -706,67 +861,84 @@ import java.util.List;
  * }
  * </pre>
  *
- * <p>If the resource type inherits from {@link AutoCloseable} and you invoke the
- * accessor method from a repository default method, the Jakarta Data provider
- * automatically closes the resource after the default method ends.
- * If you invoke the accessor method from outside the scope of a default method,
- * you are responsible for closing the resource instance.</p>
+ * <p>If the resource type inherits from {@link AutoCloseable} and the
+ * accessor method is called from within an invocation of a default method
+ * of the repository, the Jakarta Data provider automatically closes the
+ * resource after the invocation of the default method ends. On the other
+ * hand, if the accessor method is called from outside the scope of a
+ * default method of the repository, it is not automatically closed, and
+ * the application programmer is responsible for closing the resource
+ * instance.</p>
  *
- * <h2>Precedence of Repository Methods</h2>
+ * <h2>Precedence of repository methods</h2>
  *
  * <p>The following order, with the lower number having higher precedence,
  * is used to interpret the meaning of repository methods.</p>
  *
  * <ol>
- * <li>If you define a method as a <b>Java default method</b> and provide implementation,
- * then your provided implementation is used.</li>
- * <li>If you define a method with a <b>Resource Accessor Method</b> return type,
- * then the method is implemented as a Resource Accessor Method.</li>
- * <li>If you annotate a method with {@link Query}, then the method is implemented
- * to run the corresponding Query Language query.</li>
- * <li>If you annotate a method with an annotation that defines the type of operation
- * ({@link Insert}, {@link Update}, {@link Save}, {@link Delete}, or {@link Find}),
- * then the annotation determines how the method is implemented, along with any
- * data access related annotations that you place on method parameters.</li>
- * <li>If you define a method according to the <b>Query by Method Name pattern</b> naming conventions,
- * then the implementation follows the Query by Method Name pattern.</li>
+ * <li>If the method is a Java {@code default} method, then the provided
+ *     implementation is used.</li>
+ * <li>If a method has a <em>resource accessor method</em> return type
+ *     recognized by the Jakarta Data provider, then the method is
+ *     implemented as a resource accessor method.</li>
+ * <li>If a method is annotated with a <em>query annotation</em>
+ *     recognized by the Jakarta Data provider, such as {@link Query},
+ *     then the method is implemented to execute the query specified by
+ *     the query annotation.</li>
+ * <li>If the method is annotated with an automatic query annotation,
+ *     such as {@link Find}, or with a lifecycle annotation declaring
+ *     the type of operation, for example, with {@link Insert},
+ *     {@link Update}, {@link Save}, or {@link Delete}, and the provider
+ *     recognizes the annotation, then the annotation determines how the
+ *     method is implemented.</li>
+ * <li>If a method is named according to the conventions of <em>Query by
+ *     Method Name</em>, then the implementation follows the Query by
+ *     Method Name pattern.</li>
  * </ol>
  *
- * <p>A repository method that does not fit any of the above patterns
- * and is not handled as a vendor-specific extension
- * must either result in an error at build time or raise
- * {@link UnsupportedOperationException} at run time.</p>
+ * <p>A repository method which does not fit any of the listed patterns
+ * and is not handled as a vendor-specific extension must either cause
+ * an error at build time or raise {@link UnsupportedOperationException}
+ * at runtime.</p>
  *
- * <h2>Identifying the type of Entity</h2>
+ * <h2>Identifying the type of entity</h2>
  *
- * <p>Most repository methods perform operations related to a type of entity. In some cases,
- * the entity type is explicit within the signature of the repository method, and in other
- * cases, such as {@code countBy...} and {@code existsBy...} the entity type cannot be determined
- * from the method signature and a primary entity type must be defined for the repository.</p>
+ * <p>Most repository methods perform operations related to a type of entity.
+ * In some cases, the entity type is explicit within the signature of the
+ * repository method, and in other cases, such as {@code countBy...} and
+ * {@code existsBy...} the entity type cannot be determined from the method
+ * signature and a primary entity type must be defined for the repository.</p>
  *
- * <b>Methods where the entity type is explicitly specified:</b>
+ * <h3>Methods where the entity type is explicitly specified</h3>
+ *
+ * <p>In the following cases, the entity type is determined by the signature
+ * of the repository method.</p>
  *
  * <ul>
- * <li>For repository methods that are annotated with {@link Insert}, {@link Update},
- * {@link Save}, or {@link Delete} where the method parameter is a type, an array of type,
- * or is parameterized with a type that is annotated as an entity,
- * the entity type is determined from the method parameter type.</li>
- * <li>For find and delete methods where the return type is a type, an array of type,
- * or is parameterized with a type that is annotated as an entity,
- * such as {@code MyEntity}, {@code MyEntity[]}, or {@code Page<MyEntity>},
- * the entity type is determined from the method return type.</li>
+ * <li>For repository methods annotated with {@link Insert}, {@link Update},
+ *     {@link Save}, or {@link Delete} where the method parameter type is a
+ *     type, an array of a type, or is parameterized with a type annotated
+ *     as an entity, such as {@code MyEntity}, {@code MyEntity[]}, or
+ *     {@code List<MyEntity>}, the entity type is determined by the method
+ *     parameter type.</li>
+ * <li>For {@code find} and {@code delete} methods where the return type is
+ *     a type, an array of a type, or is parameterized with a type annotated
+ *     as an entity, such as {@code MyEntity}, {@code MyEntity[]}, or
+ *     {@code Page<MyEntity>}, the entity type is determined by the method
+ *     return type.</li>
  * </ul>
  *
- * <b>Identifying a Primary Entity Type:</b>
+ * <h3>Identifying a primary entity type:</h3>
  *
- * <p>The following precedence, from highest to lowest, is used to determine a primary
- * entity type for a repository.</p>
+ * <p>The following precedence, from highest to lowest, is used to determine
+ * a primary entity type for a repository.</p>
  *
  * <ol>
- * <li>You can explicitly define the primary entity type for a repository interface
- * by having the repository interface inherit from a super interface such as
- * {@link CrudRepository} where the primary entity type is the type of the
- * super interface's first type parameter. For example, {@code Product}, in,
+ * <li>The primary entity type for a repository interface may be specified
+ * explicitly by having the repository interface inherit a superinterface
+ * like {@link CrudRepository}, where the primary entity type is the argument
+ * to the first type parameter of the superinterface. For example,
+ * {@code Product}, in,
  * <pre>
  * &#64;Repository
  * public interface Products extends CrudRepository&lt;Product, Long&gt; {
@@ -775,11 +947,13 @@ import java.util.List;
  * }
  * </pre>
  * </li>
- * <li>Otherwise, if you define life cycle methods ({@link Insert}, {@link Update},
- * {@link Save}, or {@link Delete}) where the method parameter is a type, an array of type,
- * or is parameterized with a type that is annotated as an entity,
- * and all of these methods share the same entity type,
- * then the primary entity type for the repository is that entity type. For example,
+ * <li>Otherwise, if the repository declares lifecycle methods&mdash;that is,
+ * has methods annotated with a lifecycle annotation like {@link Insert},
+ * {@link Update}, {@link Save}, or {@link Delete}, where the method
+ * parameter type is a type, an array of a type, or is parameterized with a
+ * type annotated as an entity&mdash;and all of these methods share the same
+ * entity type, then the primary entity type for the repository is that entity
+ * type. For example,
  * <pre>
  * &#64;Repository
  * public interface Products {
@@ -844,50 +1018,36 @@ import java.util.List;
  * }
  * </pre>
  *
- * <h2>Jakarta Persistence</h2>
  *
- * <h3>Persistence Context</h3>
+ * <h2>Jakarta Interceptors</h2>
  *
- * <p>When the Jakarta Data provider is backed by a Jakarta Persistence provider,
- * repository operations must behave as though backed by a stateless Entity Manager
- * in that persistence context is not preserved across the end of repository methods.
- * If you retrieve an entity via a repository and then modify the entity,
- * the modifications are not persisted to the database unless you explicitly invoke
- * a {@link Save} or {@link Update} operation in order to persist it.</p>
- *
- * <p>Here is an example with {@link BasicRepository#findById(K)} and
- * {@link BasicRepository#save(S)} operations:</p>
- *
- * <pre>
- * product = products.findById(prodNum).orElseThrow();
- * product.price = produce.price + 0.50;
- * product = products.save(product);
- * </pre>
+ * <p>A repository interface or method of a repository interface may be annotated with an
+ * interceptor binding annotation. In the Jakarta EE environment, or in any other environment
+ * where Jakarta Interceptors is available and integrated with Jakarta CDI, the repository
+ * implementation is instantiated by the CDI bean container, and the interceptor binding type
+ * is declared {@code @Inherited}, the interceptor binding annotation is inherited by the
+ * repository implementation, and the interceptors bound to the annotation are applied
+ * automatically by the implementation of Jakarta Interceptors.</p>
  *
  * <h2>Jakarta Transactions</h2>
  *
- * <p>Repository methods can participate in global transactions.
- * If a global transaction is active on the thread where a repository method runs
- * and the data source that backs the repository is capable of transaction enlistment,
- * then the repository operation runs as part of the transaction.
- * The repository operation does not commit or roll back a transaction
- * that was already present on the thread, but it might mark the transaction
- * for rollback only ({@code jakarta.transaction.Status.STATUS_MARKED_ROLLBACK})
- * if the repository operation fails.</p>
+ * <p>When Jakarta Transactions is available, repository methods can participate in global
+ * transactions. If a global transaction is active on the thread of execution in which a
+ * repository method is called, and the data source backing the repository is capable of
+ * transaction enlistment, then the repository operation is performed within the context of
+ * the global transaction.</p>
  *
- * <p>When running in an environment where Jakarta Transactions and Jakarta CDI are
- * available, you can annotate repository methods with {@code jakarta.transaction.Transactional}
- * to define how the container manages transactions with respect to the repository
- * method.</p>
+ * <p>The repository operation must not not commit or roll back a transaction which was
+ * already associated with the thread in which the repository operation was called, but it
+ * might cause the transaction to be marked for rollback if the repository operation fails,
+ * that is, it may set the transaction status to {@code Status.STATUS_MARKED_ROLLBACK}.</p>
  *
- * <h2>Interceptor Annotations on Repository Methods</h2>
- *
- * <p>Interceptor bindings such as {@code jakarta.transaction.Transactional} can annotate a
- * repository method. The repository bean honors these annotations when running in an
- * environment where the Jakarta EE technology that provides the interceptor is available.</p>
+ * <p>A repository interface or method of a repository interface may be marked with the
+ * annotation {@code jakarta.transaction.Transactional}. When a repository operation marked
+ * {@code @Transactional} is called in an environment where both Jakarta Transactions and
+ * Jakarta CDI are available, the semantics of this annotation are observed during execution
+ * of the repository operation.</p>
  */
-// TODO Does Jakarta NoSQL have the same or different wildcard characters? Document this
-//       under: "Wildcard characters for patterns are determined by the data access provider"
 module jakarta.data {
     exports jakarta.data;
     exports jakarta.data.metamodel;
