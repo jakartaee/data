@@ -43,7 +43,10 @@ include::chapters/license/license-efsl.adoc[]
 
 == Introduction
 
-Jakarta Data 1.0 offers a Query by Method Name facility as an extension to the specification to provide a migration path for existing applications written for repository frameworks which offer similar functionality.
+_Query by Method Name_ is a query language suitable for embedding in the names of methods written in a programming language such as Java.
+As such, its syntax is limited to the use of legal identifier characters, and so the text of a query may not contain whitespace, punctuation characters, numeric operators, nor comparison operators.
+
+Jakarta Data 1.0 offers a Query by Method Name facility as an extension to the specification, providing a migration path for existing applications written for repository frameworks which offer similar functionality.
 
 The functionality described here overlaps significantly with both:
 
@@ -58,7 +61,7 @@ WARNING: This functionality is considered deprecated, and the requirement that a
 
 == Query by Method Name
 
-The Query by method mechanism allows for creating query commands by naming convention.
+The Query by Method Name mechanism allows for creating query commands by naming convention.
 
 [source,java]
 ----
