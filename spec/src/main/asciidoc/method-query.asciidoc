@@ -1,4 +1,4 @@
-// Copyright (c) 2022, 2023 Contributors to the Eclipse Foundation
+// Copyright (c) 2022, 2024 Contributors to the Eclipse Foundation
 //
 // This program and the accompanying materials are made available under the
 // terms of the Eclipse Public License v. 2.0 which is available at
@@ -43,8 +43,8 @@ include::chapters/license/license-efsl.adoc[]
 
 == Introduction
 
-_Query by Method Name_ is a query language suitable for embedding in the names of methods written in a programming language such as Java.
-As such, its syntax is limited to the use of legal identifier characters, and so the text of a query may not contain whitespace, punctuation characters, numeric operators, nor comparison operators.
+_Query by Method Name_ is a query language suitable for embedding in the names of methods written in Java.
+As such, its syntax is limited to the use of legal identifier characters, so the text of a query must neither contain whitespace, nor punctuation characters, nor numeric operators, nor comparison operators.
 
 Jakarta Data 1.0 offers a Query by Method Name facility as an extension to the specification, providing a migration path for existing applications written for repository frameworks which offer similar functionality.
 
