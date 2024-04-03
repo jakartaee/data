@@ -68,8 +68,21 @@
                             <goal>process-asciidoc</goal>
                         </goals>
                         <configuration>
+                            <sourceDocumentName>jakarta-data.adoc</sourceDocumentName>
                             <backend>pdf</backend>
                             <outputFile>${gen-doc-dir}/jakarta-data-${project.version}.pdf</outputFile>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>generate-pdf-doc-method-query</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>process-asciidoc</goal>
+                        </goals>
+                        <configuration>
+                            <sourceDocumentName>method-query.asciidoc</sourceDocumentName>
+                            <backend>pdf</backend>
+                            <outputFile>${gen-doc-dir}/method-query-${project.version}.pdf</outputFile>
                         </configuration>
                     </execution>
                     <execution>
@@ -79,8 +92,21 @@
                             <goal>process-asciidoc</goal>
                         </goals>
                         <configuration>
+                            <sourceDocumentName>jakarta-data.adoc</sourceDocumentName>
                             <backend>html5</backend>
                             <outputFile>${gen-doc-dir}/jakarta-data-${project.version}.html</outputFile>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>output-html-method-query</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>process-asciidoc</goal>
+                        </goals>
+                        <configuration>
+                            <sourceDocumentName>method-query.asciidoc</sourceDocumentName>
+                            <backend>html5</backend>
+                            <outputFile>${gen-doc-dir}/method-query-${project.version}.html</outputFile>
                         </configuration>
                     </execution>
                 </executions>
@@ -89,7 +115,6 @@
                     <requires>
                         <require>asciidoctor-diagram</require>
                     </requires>
-                    <sourceDocumentName>jakarta-data.adoc</sourceDocumentName>
                     <embedAssets>true</embedAssets>
                     <attributes>
                         <license>Apache License v2.0</license>

@@ -264,8 +264,6 @@ If a method of a repository interface has more than one such annotation, the ann
 reject such a method declaration at compile time.
 
 
-include::method-query.asciidoc[]
-
 === Special Parameters for Limits, Sorting, and Pagination
 
 An <<Annotated Query methods,annotated>>, <<Parameter-based automatic query methods,parameter-based>>, or <<Query by Method Name,method name>> query method may have _special parameters_ of type `Limit`, `Order`, `Sort`, or `PageRequest` if the method return type indicates that the method may return multiple entities, that is, if the return type is:
