@@ -15,12 +15,6 @@
  */
 package ee.jakarta.tck.data.framework.read.only;
 
-import java.util.List;
-
-import jakarta.data.Limit;
-import jakarta.data.Order;
-import jakarta.data.repository.Query;
-
 /**
  * This interface contains common operations for the NaturalNumbers and AsciiCharacters repositories.
  */
@@ -28,7 +22,4 @@ public interface IdOperations {
     long countByIdBetween(long minimum, long maximum);
 
     boolean existsById(long id);
-
-    @Query("SELECT id WHERE id >= :inclusiveMin")
-    List<Long> withIdEqualOrAbove(long inclusiveMin, Limit limit, Order<?> sorts);
 }
