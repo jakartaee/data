@@ -12,8 +12,7 @@ public interface ProductRepository extends BasicRepository<Product, Long> {
   @OrderBy("price")
   List<Product> findByNameLike(String namePattern);
 
-  @OrderBy(value = "price", descending = true)
-  List<Product> findByNameLikeAndPriceLessThan(String namePattern, float priceBelow);
+  List<Product> findByNameLikeAndPriceLessThanOrderByPriceDesc(String namePattern, float priceBelow);
 
 }
 ----
@@ -28,7 +27,7 @@ The parsing of query method names follows a specific format:
 
 NOTE: This specification uses the terms subject and predicate in a way that aligns with industry terminology rather than how they are defined in English grammar.
 
-Queries can also handle entities with relation attributes by specifying the relationship using dot notation, with the dot converted to underscore so that it is a valid character within the method name. See Scenario 3 below for an example.
+Queries can also handle entities with relation attributes by specifying the relationship using dot notation, with the dot converted to underscore so that it is a valid character within the method name.
 
 Example query methods:
 
@@ -123,7 +122,7 @@ Jakarta Data implementations must support the following list of Query by Method 
 |Key-value, Wide-Column
 
 |Between
-|Find results where the property is between (inclusive of) the given values
+|Find results where the property is between (inclusive of) two given values, with the first value being the inclusive minimum and the second value being the inclusive maximum.
 |findByDateBetween
 |Key-value, Wide-Column
 
@@ -173,7 +172,7 @@ Jakarta Data implementations must support the following list of Query by Method 
 |Key-value, Wide-Column, Document, Graph
 
 |In
-|Find results where the property is one of the values that are contained within the given list
+|Find results where the property is one of the values that are contained within the given `Set`.
 |findByIdIn
 |Key-value, Wide-Column, Document, Graph
 
@@ -218,6 +217,20 @@ Jakarta Data implementations must support the following list of Query by Method 
 ====
 The "Not Required For" column indicates the database types for which the respective keyword is not required or applicable.
 ====
+
+Most _Query by Method Name_ conditions require a single value. The `Between` condition requires two values. `Null`, `True`, and `False` require none. The values for _Query by Method Name_ conditions are the parameter values that are supplied to the method, following the order in which the _Query by Method Name_ conditions appear within the method name.
+
+In the following example the value of the first parameter, `namePattern`, is used for `NameLike`, the values of the second and third parameters, `minYear` and `maxYear`, are used for `YearMadeBetween`, and the value of the fourth parameter, `maxPrice`, is used for `PriceLessThan`.
+
+[source,java]
+----
+List<Product> findByNameLikeAndYearMadeBetweenAndPriceLessThan(String namePattern,
+                                                               int minYear,
+                                                               int maxYear,
+                                                               float maxPrice,
+                                                               Limit limit,
+                                                               Sort<?>... sorts)
+----
 
 ===== Patterns
 

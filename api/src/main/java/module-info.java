@@ -35,6 +35,8 @@ import jakarta.data.repository.Repository;
 import jakarta.data.repository.Save;
 import jakarta.data.repository.Update;
 
+import java.util.Set;
+
 /**
  * <p>Jakarta Data standardizes a programming model where data is represented by
  * simple Java classes and where operations on data are represented by interface
@@ -270,7 +272,8 @@ import jakarta.data.repository.Update;
  *
  * </table>
  *
- * <p>A Jakarta Data provider might allow additional entity attribute types.</p>
+ * <p>All of the basic types are sortable except for {@code byte[]}.
+ * A Jakarta Data provider might allow additional entity attribute types.</p>
  *
  * <h2>Lifecycle methods</h2>
  *
@@ -356,8 +359,8 @@ import jakarta.data.repository.Update;
  * <h2>Query by Method Name</h2>
  *
  * <p>Repository methods following the <em>Query by Method Name</em> pattern
- * must include the {@code By} keyword in the method name and must not include
- * the {@code @Find} annotation, {@code @Query} annotation, or
+ * must have a method name that begins with one of the following prefixes and
+ * must not include the {@code @Find} annotation, {@code @Query} annotation, or
  * any lifecycle annotations on the method or any data access related annotations
  * on the method parameters. Query conditions
  * are determined by the portion of the method name following the {@code By} keyword.</p>
@@ -395,8 +398,9 @@ import jakarta.data.repository.Update;
  * (referred to as the Predicate) that follows the {@code By} keyword,
  * in the same order specified.
  * Most conditions, such as {@code Like} or {@code LessThan},
- * correspond to a single method parameter. The exception to this rule is
- * {@code Between}, which corresponds to two method parameters.
+ * correspond to a single method parameter. The exceptions to this rule are
+ * {@code Between}, which corresponds to two method parameters, and {@code Null},
+ * {@code True}, and {@code False}, which require no method parameters.
  * Multiple conditions are delimited by the keywords {@code And}
  * and {@code Or}. The equality condition is implied when no
  * condition operator keyword is present.</p>
@@ -423,7 +427,7 @@ import jakarta.data.repository.Update;
  * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column</td></tr>
  *
  * <tr style="vertical-align: top"><td>{@code Between}</td>
- * <td>numeric, strings, time</td>
+ * <td>sortable basic types</td>
  * <td>Requires that the entity's attribute value be within the range specified by two parameters,
  * inclusive of the parameters. The minimum is listed first, then the maximum.</td>
  * <td>{@code findByAgeBetween(minAge, maxAge)}</td>
@@ -450,13 +454,13 @@ import jakarta.data.repository.Update;
  * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column</td></tr>
  *
  * <tr style="vertical-align: top"><td>{@code GreaterThan}</td>
- * <td>numeric, strings, time</td>
+ * <td>sortable basic types</td>
  * <td>Requires that the entity's attribute value be larger than the parameter value.</td>
  * <td>{@code findByStartTimeGreaterThan(startedAfter)}</td>
  * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column</td></tr>
  *
  * <tr style="vertical-align: top; background-color:#eee"><td>{@code GreaterThanEqual}</td>
- * <td>numeric, strings, time</td>
+ * <td>sortable basic types</td>
  * <td>Requires that the entity's attribute value be at least as big as the parameter value.</td>
  * <td>{@code findByAgeGreaterThanEqual(minimumAge)}</td>
  * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column</td></tr>
@@ -471,19 +475,20 @@ import jakarta.data.repository.Update;
  * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column<br>Document<br>Graph</td></tr>
  *
  * <tr style="vertical-align: top; background-color:#eee"><td>{@code In}</td>
- * <td>all attribute types</td>
- * <td>Requires that the entity's attribute value be within the list that is the parameter value.</td>
- * <td>{@code findByNameIn(names)}</td>
+ * <td>sortable basic types</td>
+ * <td>Requires that the entity's attribute value be within the {@link Set} that is
+ * the parameter value.</td>
+ * <td>{@code findByMonthIn(Set.of(Month.MAY, Month.JUNE))}</td>
  * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column<br>Document<br>Graph</td></tr>
  *
  * <tr style="vertical-align: top"><td>{@code LessThan}</td>
- * <td>numeric, strings, time</td>
+ * <td>sortable basic types</td>
  * <td>Requires that the entity's attribute value be less than the parameter value.</td>
  * <td>{@code findByStartTimeLessThan(startedBefore)}</td>
  * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column</td></tr>
  *
  * <tr style="vertical-align: top; background-color:#eee"><td>{@code LessThanEqual}</td>
- * <td>numeric, strings, time</td>
+ * <td>sortable basic types</td>
  * <td>Requires that the entity's attribute value be at least as small as the parameter value.</td>
  * <td>{@code findByAgeLessThanEqual(maximumAge)}</td>
  * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column</td></tr>
