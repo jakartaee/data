@@ -17,14 +17,11 @@
  */
 package jakarta.data.page;
 
-import jakarta.data.Sort;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 /**
  * Built-in implementation of PageRequest.
