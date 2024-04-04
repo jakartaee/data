@@ -39,7 +39,7 @@ import java.lang.annotation.Target;
  * identify and process these entities, facilitating a standardized integration across different data management
  * implementations.
  * </p>
- * <p>
+ *
  * Example of defining a custom entity annotation by a provider:
  * <pre>{@code
  * @EntityQualifier
@@ -48,8 +48,6 @@ import java.lang.annotation.Target;
  * public @interface CustomEntity {
  * }
  * }</pre>
- * </p>
- * <p>
  * Example usage of a provider-defined custom entity annotation:
  * <pre>{@code
  * @CustomEntity
@@ -57,7 +55,6 @@ import java.lang.annotation.Target;
  *     // Implementation details here
  * }
  * }</pre>
- * </p>
  *
  */
 @Target(ElementType.ANNOTATION_TYPE)
