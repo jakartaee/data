@@ -55,9 +55,22 @@ public class ExtensionTests {
     @Inject
     Directory directory;
     
-    @Assertion(id = "133", strategy="Verifies ability for a CDI BuildCompatibleExtension to handle custom entity annotations")
+    @Assertion(id = "133", strategy = "Verifies ability for a CDI BuildCompatibleExtension to handle custom entity annotations")
     public void testDataProviderWithBuildCompatibleExtension() {
         assertEquals(List.of("Skinner", "Powell", "Gibson"), directory.findLastNameByIdInOrderByAgeDesc(List.of(04L, 05L, 011L)));
+    }
+    
+    @Assertion(id = "640", strategy = "Verifies that another Jakarta Data Provider does not attempt to implement the Dictonary repository")
+    public void testDataRepositoryHonorsProviderAttribute() {
+        long id = 013L;
+        Person original = new Person(id, "Mark", "Pearson", 46);
+        Person updated = new Person(id, "Mark", "Pearson", 45);
         
+        try {
+            assertEquals(null, directory.putPerson(original));
+            assertEquals(original, directory.putPerson(updated));
+        } finally {
+            directory.deleteById(id);
+        }
     }
 }

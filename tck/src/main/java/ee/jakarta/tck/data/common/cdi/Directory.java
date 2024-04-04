@@ -15,9 +15,13 @@
  */
 package ee.jakarta.tck.data.common.cdi;
 
+import static jakarta.data.repository.By.ID;
+
 import java.util.List;
 
+import jakarta.data.repository.By;
 import jakarta.data.repository.DataRepository;
+import jakarta.data.repository.Delete;
 import jakarta.data.repository.Repository;
 
 /**
@@ -32,4 +36,11 @@ public interface Directory extends DataRepository<Person, Long> {
     public static final String PERSON_PROVIDER = "PERSON_PROVIDER";
     
     List<String> findLastNameByIdInOrderByAgeDesc(List<Long> ids);
+    
+    @Delete
+    void deleteById(@By(ID) Long id);
+    
+    @PutTCKLifecyleMethod
+    Person putPerson(Person person);
+    
 }

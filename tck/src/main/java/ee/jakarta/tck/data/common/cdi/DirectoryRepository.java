@@ -50,7 +50,16 @@ public class DirectoryRepository implements Directory {
              .sorted(Comparator.comparing((Person p) -> p.age).reversed())
              .map(p -> p.lastName)
              .collect(Collectors.toList());
+    }
 
-}
+    @Override
+    public Person putPerson(Person person) {
+        return data.put(person.id, person);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        data.remove(id);
+    }
 
 }
