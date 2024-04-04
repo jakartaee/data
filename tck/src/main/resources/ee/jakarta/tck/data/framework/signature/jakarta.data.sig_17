@@ -31,6 +31,7 @@ meth public jakarta.data.page.PageRequest<{jakarta.data.Order%0}> pageSize(int)
 meth public java.lang.String toString()
 meth public java.util.Iterator<jakarta.data.Sort<? super {jakarta.data.Order%0}>> iterator()
 meth public java.util.List<jakarta.data.Sort<? super {jakarta.data.Order%0}>> sorts()
+meth public static <%0 extends java.lang.Object> jakarta.data.Order<{%%0}> by(java.util.List<jakarta.data.Sort<? super {%%0}>>)
 supr java.lang.Object
 hfds sorts
 
@@ -122,6 +123,42 @@ intf jakarta.data.metamodel.SortableAttribute<{jakarta.data.metamodel.TextAttrib
 meth public abstract jakarta.data.Sort<{jakarta.data.metamodel.TextAttribute%0}> ascIgnoreCase()
 meth public abstract jakarta.data.Sort<{jakarta.data.metamodel.TextAttribute%0}> descIgnoreCase()
 
+CLSS public final jakarta.data.metamodel.impl.AttributeRecord<%0 extends java.lang.Object>
+cons public init(java.lang.String)
+intf jakarta.data.metamodel.Attribute<{jakarta.data.metamodel.impl.AttributeRecord%0}>
+meth public final boolean equals(java.lang.Object)
+meth public final int hashCode()
+meth public final java.lang.String toString()
+meth public java.lang.String name()
+supr java.lang.Record
+hfds name
+
+CLSS public final jakarta.data.metamodel.impl.SortableAttributeRecord<%0 extends java.lang.Object>
+cons public init(java.lang.String)
+intf jakarta.data.metamodel.SortableAttribute<{jakarta.data.metamodel.impl.SortableAttributeRecord%0}>
+meth public final boolean equals(java.lang.Object)
+meth public final int hashCode()
+meth public final java.lang.String toString()
+meth public jakarta.data.Sort<{jakarta.data.metamodel.impl.SortableAttributeRecord%0}> asc()
+meth public jakarta.data.Sort<{jakarta.data.metamodel.impl.SortableAttributeRecord%0}> desc()
+meth public java.lang.String name()
+supr java.lang.Record
+hfds name
+
+CLSS public final jakarta.data.metamodel.impl.TextAttributeRecord<%0 extends java.lang.Object>
+cons public init(java.lang.String)
+intf jakarta.data.metamodel.TextAttribute<{jakarta.data.metamodel.impl.TextAttributeRecord%0}>
+meth public final boolean equals(java.lang.Object)
+meth public final int hashCode()
+meth public final java.lang.String toString()
+meth public jakarta.data.Sort<{jakarta.data.metamodel.impl.TextAttributeRecord%0}> asc()
+meth public jakarta.data.Sort<{jakarta.data.metamodel.impl.TextAttributeRecord%0}> ascIgnoreCase()
+meth public jakarta.data.Sort<{jakarta.data.metamodel.impl.TextAttributeRecord%0}> desc()
+meth public jakarta.data.Sort<{jakarta.data.metamodel.impl.TextAttributeRecord%0}> descIgnoreCase()
+meth public java.lang.String name()
+supr java.lang.Record
+hfds name
+
 CLSS abstract interface jakarta.data.metamodel.package-info
 
 CLSS abstract interface jakarta.data.package-info
@@ -204,6 +241,59 @@ meth public static jakarta.data.page.PageRequest$Mode valueOf(java.lang.String)
 meth public static jakarta.data.page.PageRequest$Mode[] values()
 supr java.lang.Enum<jakarta.data.page.PageRequest$Mode>
 
+CLSS public final jakarta.data.page.impl.CursoredPageRecord<%0 extends java.lang.Object>
+cons public init(java.util.List<{jakarta.data.page.impl.CursoredPageRecord%0}>,java.util.List<jakarta.data.page.PageRequest$Cursor>,long,jakarta.data.page.PageRequest<{jakarta.data.page.impl.CursoredPageRecord%0}>,boolean,boolean)
+cons public init(java.util.List<{jakarta.data.page.impl.CursoredPageRecord%0}>,java.util.List<jakarta.data.page.PageRequest$Cursor>,long,jakarta.data.page.PageRequest<{jakarta.data.page.impl.CursoredPageRecord%0}>,jakarta.data.page.PageRequest<{jakarta.data.page.impl.CursoredPageRecord%0}>,jakarta.data.page.PageRequest<{jakarta.data.page.impl.CursoredPageRecord%0}>)
+intf jakarta.data.page.CursoredPage<{jakarta.data.page.impl.CursoredPageRecord%0}>
+meth public <%0 extends java.lang.Object> jakarta.data.page.PageRequest<{%%0}> nextPageRequest(java.lang.Class<{%%0}>)
+meth public <%0 extends java.lang.Object> jakarta.data.page.PageRequest<{%%0}> pageRequest(java.lang.Class<{%%0}>)
+meth public <%0 extends java.lang.Object> jakarta.data.page.PageRequest<{%%0}> previousPageRequest(java.lang.Class<{%%0}>)
+meth public boolean hasContent()
+meth public boolean hasNext()
+meth public boolean hasPrevious()
+meth public boolean hasTotals()
+meth public final boolean equals(java.lang.Object)
+meth public final int hashCode()
+meth public final java.lang.String toString()
+meth public int numberOfElements()
+meth public jakarta.data.page.PageRequest$Cursor cursor(int)
+meth public jakarta.data.page.PageRequest<{jakarta.data.page.impl.CursoredPageRecord%0}> nextPageRequest()
+meth public jakarta.data.page.PageRequest<{jakarta.data.page.impl.CursoredPageRecord%0}> pageRequest()
+meth public jakarta.data.page.PageRequest<{jakarta.data.page.impl.CursoredPageRecord%0}> previousPageRequest()
+meth public java.util.Iterator<{jakarta.data.page.impl.CursoredPageRecord%0}> iterator()
+meth public java.util.List<jakarta.data.page.PageRequest$Cursor> cursors()
+meth public java.util.List<{jakarta.data.page.impl.CursoredPageRecord%0}> content()
+meth public long totalElements()
+meth public long totalPages()
+supr java.lang.Record
+hfds content,cursors,nextPageRequest,pageRequest,previousPageRequest,totalElements
+
+CLSS public final jakarta.data.page.impl.PageRecord<%0 extends java.lang.Object>
+cons public init(jakarta.data.page.PageRequest<{jakarta.data.page.impl.PageRecord%0}>,java.util.List<{jakarta.data.page.impl.PageRecord%0}>,long)
+cons public init(jakarta.data.page.PageRequest<{jakarta.data.page.impl.PageRecord%0}>,java.util.List<{jakarta.data.page.impl.PageRecord%0}>,long,boolean)
+intf jakarta.data.page.Page<{jakarta.data.page.impl.PageRecord%0}>
+meth public <%0 extends java.lang.Object> jakarta.data.page.PageRequest<{%%0}> nextPageRequest(java.lang.Class<{%%0}>)
+meth public <%0 extends java.lang.Object> jakarta.data.page.PageRequest<{%%0}> pageRequest(java.lang.Class<{%%0}>)
+meth public <%0 extends java.lang.Object> jakarta.data.page.PageRequest<{%%0}> previousPageRequest(java.lang.Class<{%%0}>)
+meth public boolean hasContent()
+meth public boolean hasNext()
+meth public boolean hasPrevious()
+meth public boolean hasTotals()
+meth public boolean moreResults()
+meth public final boolean equals(java.lang.Object)
+meth public final int hashCode()
+meth public final java.lang.String toString()
+meth public int numberOfElements()
+meth public jakarta.data.page.PageRequest<{jakarta.data.page.impl.PageRecord%0}> nextPageRequest()
+meth public jakarta.data.page.PageRequest<{jakarta.data.page.impl.PageRecord%0}> pageRequest()
+meth public jakarta.data.page.PageRequest<{jakarta.data.page.impl.PageRecord%0}> previousPageRequest()
+meth public java.util.Iterator<{jakarta.data.page.impl.PageRecord%0}> iterator()
+meth public java.util.List<{jakarta.data.page.impl.PageRecord%0}> content()
+meth public long totalElements()
+meth public long totalPages()
+supr java.lang.Record
+hfds content,moreResults,pageRequest,totalElements
+
 CLSS abstract interface jakarta.data.page.package-info
 
 CLSS public abstract interface jakarta.data.repository.BasicRepository<%0 extends java.lang.Object, %1 extends java.lang.Object>
@@ -228,7 +318,7 @@ meth public abstract void deleteById({jakarta.data.repository.BasicRepository%1}
 CLSS public abstract interface !annotation jakarta.data.repository.By
  anno 0 java.lang.annotation.Retention(java.lang.annotation.RetentionPolicy value=RUNTIME)
  anno 0 java.lang.annotation.Target(java.lang.annotation.ElementType[] value=[PARAMETER])
-fld public final static java.lang.String ID = "#id"
+fld public final static java.lang.String ID = "id(this)"
 intf java.lang.annotation.Annotation
 meth public abstract java.lang.String value()
 
