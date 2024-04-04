@@ -24,7 +24,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Designates an annotation as an entity qualifier within the Jakarta Data specification.
+ * Designates an annotation as an entity-defining annotation type.
  * <p>
  * Annotations marked with {@code EntityQualifier} are recognized by annotation processors,
  * CDI extensions, and other components of the Jakarta Data framework as declaring entity types.
