@@ -21,7 +21,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import jakarta.data.metamodel.StaticMetamodel;
-import jakarta.data.page.PageRequest;
 import jakarta.data.repository.OrderBy;
 
 /**

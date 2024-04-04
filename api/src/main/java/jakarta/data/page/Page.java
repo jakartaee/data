@@ -17,7 +17,6 @@
  */
 package jakarta.data.page;
 
-import jakarta.data.repository.Query;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Stream;
