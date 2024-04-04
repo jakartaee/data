@@ -82,7 +82,7 @@
                         <configuration>
                             <sourceDocumentName>method-query.asciidoc</sourceDocumentName>
                             <backend>pdf</backend>
-                            <outputFile>${gen-doc-dir}/method-query-${project.version}.pdf</outputFile>
+                            <outputFile>${gen-doc-dir}/jakarta-method-name-query-${project.version}.pdf</outputFile>
                         </configuration>
                     </execution>
                     <execution>
@@ -106,7 +106,7 @@
                         <configuration>
                             <sourceDocumentName>method-query.asciidoc</sourceDocumentName>
                             <backend>html5</backend>
-                            <outputFile>${gen-doc-dir}/method-query-${project.version}.html</outputFile>
+                            <outputFile>${gen-doc-dir}/jakarta-method-name-query-${project.version}.html</outputFile>
                         </configuration>
                     </execution>
                 </executions>
