@@ -58,10 +58,10 @@ public class ExtensionTests {
     
     @Assertion(id = "133", strategy = "Verifies ability for a CDI BuildCompatibleExtension to handle custom entity annotations")
     public void testDataProviderWithBuildCompatibleExtension() {
-    	List<Person> result = directory.findByIdInOrderByAgeDesc(List.of(04L, 05L, 011L));
-    	List<String> firstNames = result.stream().map(p -> p.firstName).collect(Collectors.toList());
-    	List<String> lastNames = result.stream().map(p -> p.lastName).collect(Collectors.toList());
-    	assertEquals(List.of("Olivia", "Lauren", "Victor"), firstNames);
+        List<Person> result = directory.findByIdInOrderByAgeDesc(List.of(04L, 05L, 011L));
+        List<String> firstNames = result.stream().map(p -> p.firstName).collect(Collectors.toList());
+        List<String> lastNames = result.stream().map(p -> p.lastName).collect(Collectors.toList());
+        assertEquals(List.of("Olivia", "Lauren", "Victor"), firstNames);
         assertEquals(List.of("Skinner", "Powell", "Gibson"), lastNames);
     }
     
