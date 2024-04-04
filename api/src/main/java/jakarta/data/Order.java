@@ -37,14 +37,13 @@ import jakarta.data.repository.OrderBy;
  * sort criteria during development. For example,</p>
  *
  * <pre>
- * {@code Page<Employee>} findByYearHired(int year, {@code PageRequest<Employee>} pageRequest);
+ * Page&lt;Employee>&gt; findByYearHired(int year, PageRequest pageRequest, Order&lt;Employee&gt;);
  * ...
  * page1 = employees.findByYearHired(Year.now(),
+ *                                   PageRequest.ofSize(10).page(1)
  *                                   Order.by(_Employee.salary.desc(),
  *                                            _Employee.lastName.asc(),
- *                                            _Employee.firstName.asc())
- *                                        .page(1)
- *                                        .size(10));
+ *                                            _Employee.firstName.asc());
  * </pre>
  *
  * <p>The relative precedence of an instance of {@link Sort} belonging

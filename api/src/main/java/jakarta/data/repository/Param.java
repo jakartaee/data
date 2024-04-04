@@ -29,12 +29,12 @@ import java.lang.annotation.Target;
  * <p>For example,</p>
  *
  * <pre>
- * {@code @Repository}
- * public interface Products extends BasicRepository{@code <Product, String>} {
+ * &#64;Repository
+ * public interface Products extends BasicRepository&lt;Product, String&gt; {
  *
- *     {@code @Query("WHERE length * width * height <= :maxVolume")}
- *     {@code Page<Product>} freeShippingEligible({@code @Param}("maxVolume") float volumeLimit,
- *                                        {@code PageRequest<?>} pageRequest);
+ *     &#64;Query("WHERE length * width * height <= :maxVolume ORDER BY price ASC")
+ *     Page&lt;Product&gt; freeShippingEligible(&#64;Param("maxVolume") float volumeLimit,
+ *                                        PageRequest pageRequest);
  *
  *     ...
  * }

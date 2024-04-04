@@ -773,35 +773,27 @@ import java.util.Set;
  *
  * <pre>
  * Product[] findByNameLikeOrderByAmountSoldDescNameAsc(
- *           String pattern, {@code PageRequest<Product>} pageRequest);
+ *           String pattern, PageRequest pageRequest);
  * ...
  * page1 = products.findByNameLikeOrderByAmountSoldDescNameAsc(
- *                  "%phone%", PageRequest.of(Product.class).size(20));
+ *                  "%phone%", PageRequest.ofSize(20));
  * </pre>
  *
  * <h3>Sorting</h3>
  *
  * <p>When a page is requested with a {@code PageRequest}, dynamic sorting
  * criteria may be supplied by passing instances of {@link Sort} or {@link Order}.
- * and its overloads. For example,</p>
+ * For example,</p>
  *
  * <pre>
- * Product[] findByNameLike(String pattern, {@code PageRequest<Product>} pagination);
+ * Product[] findByNameLike(String pattern, PageRequest page, Order&lt;Product&gt; order);
  *
  * ...
  * PageRequest page1Request = PageRequest.ofSize(25);
  *
  * page1 = products.findByNameLikeAndPriceBetween(
- *                 namePattern, minPrice, maxPrice, page1Request, Order.by(Sort.desc("price"),Sort.asc("name"));
- * </pre>
- *
- * <p>An alternative when using the {@link StaticMetamodel} is to obtain the
- * page request from an {@link Order} instance, as follows,</p>
- *
- * <pre>
- * {@code PageRequest<Product>} pageRequest = Order.by(_Product.price.desc(),
- *                                             _Product.name.asc())
- *                                         .pageSize(25));
+ *                 namePattern, minPrice, maxPrice, page1Request,
+ *                 Order.by(Sort.desc("price"), Sort.asc("name"));
  * </pre>
  *
  * <p>To supply sort criteria dynamically without using pagination, an
@@ -809,13 +801,13 @@ import java.util.Set;
  * of {@link Sort} and passed to the repository find method. For example,</p>
  *
  * <pre>
- * Product[] findByNameLike(String pattern, Limit max, {@code Order<Product>} sortBy);
+ * Product[] findByNameLike(String pattern, Limit max, Order&lt;Product&gt; sortBy);
  *
  * ...
- * found = products.findByNameLike(namePattern, Limit.of(25), Order.by(
- *                                 Sort.desc("price"),
- *                                 Sort.desc("amountSold"),
- *                                 Sort.asc("name")));
+ * found = products.findByNameLike(namePattern, Limit.of(25),
+ *                                 Order.by(Sort.desc("price"),
+ *                                          Sort.desc("amountSold"),
+ *                                          Sort.asc("name")));
  * </pre>
  *
  * <p>Generic, untyped {@link Sort} criteria can be supplied directly to a

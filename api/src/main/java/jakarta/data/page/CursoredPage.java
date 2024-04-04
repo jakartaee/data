@@ -57,13 +57,13 @@ import java.util.NoSuchElementException;
  * &#64;OrderBy("lastName")
  * &#64;OrderBy("firstName")
  * &#64;OrderBy("id")
- * CursoredPage&lt;Employee&gt; findByHoursWorkedGreaterThan(int hours, {@code PageRequest<Employee>} pageRequest);
+ * CursoredPage&lt;Employee&gt; findByHoursWorkedGreaterThan(int hours, PageRequest pageRequest);
  * </pre>
  *
  * <p>In initial page may be requested using an offset-based page request:</p>
  *
  * <pre>
- * page = employees.findByHoursWorkedGreaterThan(1500, PageRequest.of(Employee.class).size(50));
+ * page = employees.findByHoursWorkedGreaterThan(1500, PageRequest.ofSize(50));
  * </pre>
  *
  * <p>The next page may be requested relative to the end of the current page,
@@ -87,9 +87,9 @@ import java.util.NoSuchElementException;
  *
  * <pre>
  * Employee emp = ...
- * {@code PageRequest<Employee>} pageRequest = PageRequest.of(Employee.class)
- *                                                .size(50)
- *                                                .afterKey(emp.lastName, emp.firstName, emp.id);
+ * PageRequest pageRequest =
+ *         PageRequest.ofSize(50)
+ *                    .afterKey(emp.lastName, emp.firstName, emp.id);
  * page = employees.findByHoursWorkedGreaterThan(1500, pageRequest);
  * </pre>
  *

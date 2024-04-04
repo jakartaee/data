@@ -44,7 +44,7 @@ import java.lang.annotation.Target;
  * <pre>
  * &#64;OrderBy("lastName")
  * &#64;OrderBy("firstName")
- * Person[] findByZipCode(int zipCode, {@code PageRequest<?>} pageRequest);
+ * Person[] findByZipCode(int zipCode, PageRequest pageRequest);
  * </pre>
  *
  * <p>The precise meaning of ascending and descending order is
