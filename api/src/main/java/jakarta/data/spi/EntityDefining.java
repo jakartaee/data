@@ -34,10 +34,7 @@ import java.lang.annotation.Target;
  * not use this annotation directly.
  * </p>
  * <p>
- * By marking an annotation with {@code EntityDefining}, Jakarta Data providers enable these annotations
- * to be applied to classes, indicating that they are entities. This enables Jakarta Data providers to easily
- * identify and process these entities, facilitating a standardized integration across different data management
- * implementations.
+ * This allows other Jakarta Data providers and tools to recognize and process entities declared with custom entity-defining annotations.
  * </p>
  *
  * Example of defining a custom entity annotation by a provider:
