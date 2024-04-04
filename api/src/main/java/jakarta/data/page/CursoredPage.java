@@ -112,8 +112,7 @@ import java.util.NoSuchElementException;
  *
  * <p>Sorting criteria must be specified independently of the user-provided
  * query, either via the {@link OrderBy} annotation or, or by passing
- * {@link Sort} criteria within the {@linkplain PageRequest#sorts() page
- * request}. For example:</p>
+ * {@link Sort} or {@link jakarta.data.Order}. For example:</p>
  *
  * <pre>
  * {@code @Query("WHERE ordersPlaced >= ?1 OR totalSpent >= ?2")}
@@ -121,7 +120,7 @@ import java.util.NoSuchElementException;
  * {@code @OrderBy("birthYear")}
  * {@code @OrderBy("id")}
  * {@code CursoredPage<Customer>} getTopBuyers(int minOrders, float minSpent,
- *                                     {@code PageRequest<Customer>} pageRequest);
+ *                                     {@code PageRequest} pageRequest, {@code Order<Customer>} sort);
  * </pre>
  *
  * <p>Only queries which return entities may be used with cursor-based pagination

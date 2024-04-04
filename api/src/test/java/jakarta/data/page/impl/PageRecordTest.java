@@ -52,7 +52,7 @@ class PageRecordTest {
         assertThatThrownBy(() -> page2.totalElements()).isInstanceOf(IllegalStateException.class);
         assertThatThrownBy(() -> page2.totalPages()).isInstanceOf(IllegalStateException.class);
 
-        PageRequest page5Request = PageRequest.ofSize(4);
+        PageRequest page5Request = PageRequest.ofPage(5).size(4);
         List<String> page5Content = List.of("Q", "R");
         PageRecord<String> page5 = new PageRecord<>(page5Request, page5Content, -999L); // unknown total elements
 

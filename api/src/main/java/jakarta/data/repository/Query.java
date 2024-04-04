@@ -19,7 +19,6 @@ package jakarta.data.repository;
 
 import jakarta.data.Sort;
 import jakarta.data.page.Page;
-import jakarta.data.page.PageRequest;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -116,13 +115,8 @@ import java.lang.annotation.Target;
  * <p>A query with an explicit {@code select} clause may return a type other than the entity class, as shown in the
  * example above, resulting in a {@link Page} parameterized with a query result type different to the queried entity
  * type when pagination is used. This results in a mismatch between the {@link Page} type returned by the repository
- * method and the {@link PageRequest} type accepted by the repository method. Therefore, a client must use the method
- * {@link Page#nextPageRequest(Class)}, explicitly specifying the entity class, to obtain the next page of results. For
- * example,</p>
+ * method.</p>
  *
- * <pre>
- * {@code Page<String>} page2 = people.namesOfLength(5, 10, page1.nextPageRequest(Person.class));
- * </pre>
  *
  * <p>Annotations such as {@code @Find}, {@code @Query}, {@code @Insert}, {@code @Update}, {@code @Delete}, and
  * {@code @Save} are mutually-exclusive. A given method of a repository interface may have at most one {@code @Find}
