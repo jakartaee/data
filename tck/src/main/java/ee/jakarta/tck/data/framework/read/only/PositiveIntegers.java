@@ -23,6 +23,7 @@ import java.util.stream.Stream;
 import ee.jakarta.tck.data.framework.read.only.NaturalNumber.NumberType;
 import jakarta.data.Limit;
 import jakarta.data.Order;
+import jakarta.data.Sort;
 import jakarta.data.page.CursoredPage;
 import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
@@ -45,7 +46,8 @@ public interface PositiveIntegers extends BasicRepository<NaturalNumber, Long> {
 
     CursoredPage<NaturalNumber> findByFloorOfSquareRootNotAndIdLessThanOrderByNumBitsRequiredDesc(long excludeSqrt,
                                                                                                   long eclusiveMax,
-                                                                                                  PageRequest<NaturalNumber> pagination);
+                                                                                                  PageRequest pagination,
+                                                                                                  Order<NaturalNumber> order);
 
     List<NaturalNumber> findByIsOddTrueAndIdLessThanEqualOrderByIdDesc(long max);
 
@@ -57,7 +59,7 @@ public interface PositiveIntegers extends BasicRepository<NaturalNumber, Long> {
 
     @Find
     Page<NaturalNumber> findMatching(long floorOfSquareRoot, Short numBitsRequired, NumberType numType,
-            PageRequest<NaturalNumber> pagination);
+            PageRequest pagination, Sort<?>... sorts);
 
     @Find
     Optional<NaturalNumber> findNumber(long id);
@@ -73,5 +75,7 @@ public interface PositiveIntegers extends BasicRepository<NaturalNumber, Long> {
     CursoredPage<NaturalNumber> withBitCountOrOfTypeAndBelow(@Param("bits") short bitsRequired,
                                                              @Param("type") NumberType numberType,
                                                              @Param("xmax") long exclusiveMax,
-                                                             PageRequest<?> pageRequest);
+                                                             Sort<NaturalNumber> sort1,
+                                                             Sort<NaturalNumber> sort2,
+                                                             PageRequest pageRequest);
 }
