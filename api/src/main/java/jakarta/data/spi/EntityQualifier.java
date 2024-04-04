@@ -15,7 +15,7 @@
  *
  *  SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data;
+package jakarta.data.spi;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -24,16 +24,23 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Designates an annotation as an entity-defining annotation type.
+ * Designates an annotation as an entity-defining annotation type within the Jakarta Data framework.
  * <p>
  * Annotations marked with {@code EntityQualifier} are recognized by annotation processors,
- * CDI extensions, and other components of the Jakarta Data framework as declaring entity types.
+ * CDI extensions, and other components of the Jakarta Data framework as declaring entity types. It is
+ * important to note that the {@code EntityQualifier} is intended for use by Jakarta Data providers rather
+ * than application developers. This means that while it might appear that developers can define their own
+ * entity-defining annotations, in practice, it is the responsibility of providers to declare such annotations.
+ * This approach ensures that the framework's consistency and interoperability standards are maintained.
+ * </p>
  * <p>
- * Annotations that are annotated with {@code EntityQualifier} can be applied to classes to
- * indicate that they are entities. This enables Jakarta Data providers to easily identify and
- * process these entities.
+ * By marking an annotation with {@code EntityQualifier}, Jakarta Data providers enable these annotations
+ * to be applied to classes, indicating that they are entities. This enables Jakarta Data providers to easily
+ * identify and process these entities, facilitating a standardized integration across different data management
+ * implementations.
+ * </p>
  * <p>
- * Example of defining a custom entity annotation:
+ * Example of defining a custom entity annotation by a provider:
  * <pre>{@code
  * @EntityQualifier
  * @Target(ElementType.TYPE)
@@ -41,14 +48,16 @@ import java.lang.annotation.Target;
  * public @interface CustomEntity {
  * }
  * }</pre>
- *
- * Usage example of a custom entity annotation:
+ * </p>
+ * <p>
+ * Example usage of a provider-defined custom entity annotation:
  * <pre>{@code
  * @CustomEntity
  * public class Book {
- *     // Implementation
+ *     // Implementation details here
  * }
  * }</pre>
+ * </p>
  *
  */
 @Target(ElementType.ANNOTATION_TYPE)
