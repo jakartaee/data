@@ -37,7 +37,7 @@ In particular:
 
 
 A Jakarta Data provider might define a custom entity-defining annotation.
-Custom entity-defining annotations must be marked with `@EntityDefinition`.
+Custom entity-defining annotations must be marked with `@EntityDefining`.
 This allows other Jakarta Data providers and tools to recognize and process entities declared with custom entity-defining annotations.
 
 The lifecycle methods and query methods of a repository operate on a set of entities associated with that repository.
