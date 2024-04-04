@@ -105,22 +105,8 @@ public interface Page<T> extends Iterable<T> {
      *
      * @return the request for the current page; will never be {@code null}.
      */
-    PageRequest<T> pageRequest();
+    PageRequest pageRequest();
 
-    /**
-     * <p>Returns the {@linkplain PageRequest page request} for which this page was
-     * obtained.</p>
-     *
-     * <p>This method is useful when the {@linkplain Query query language} is used
-     * to return a result of different type to the entity class that was queried,
-     * allowing the subsequent {@code PageRequest} to be cast back to the type of
-     * entity class that was queried.</p>
-     *
-     * @param <E>         entity class of the attributes that are used as sort criteria.
-     * @param entityClass entity class of the attributes that are used as sort criteria.
-     * @return the request for the current page; will never be {@code null}.
-     */
-    <E> PageRequest<E> pageRequest(Class<E> entityClass);
 
     /**
      * Returns a request for the {@linkplain PageRequest#next() next} page if
@@ -131,25 +117,9 @@ public interface Page<T> extends Iterable<T> {
      *         To avoid this exception, check for a {@code true} result of
      *         {@link #hasNext()} before invoking this method.
      */
-    PageRequest<T> nextPageRequest();
+    PageRequest nextPageRequest();
 
-    /**
-     * <p>Returns a request for the {@linkplain PageRequest#next() next} page if
-     * {@link #hasNext()} indicates there might be a next page.</p>
-     *
-     * <p>This method is useful when the {@linkplain Query query language} is used
-     * to return a result of different type to the entity class that was queried,
-     * allowing the subsequent {@code PageRequest} to be cast back to the type of
-     * entity class that was queried.</p>
-     *
-     * @param <E>         entity class of the attributes that are used as sort criteria.
-     * @param entityClass entity class of the attributes that are used as sort criteria.
-     * @return a request for the next page.
-     * @throws NoSuchElementException if it is known that there is no next page.
-     *         To avoid this exception, check for a {@code true} result of
-     *         {@link #hasNext()} before invoking this method.
-     */
-    <E> PageRequest<E> nextPageRequest(Class<E> entityClass);
+
 
     /**
      * <p>Returns a request for the {@link PageRequest#previous() previous} page,
@@ -160,25 +130,8 @@ public interface Page<T> extends Iterable<T> {
      *         To avoid this exception, check for a {@code true} result of
      *         {@link #hasPrevious()} before invoking this method.
      */
-    PageRequest<T> previousPageRequest();
+    PageRequest previousPageRequest();
 
-    /**
-     * <p>Returns a request for the {@linkplain PageRequest#previous() previous}
-     * page, if {@link #hasPrevious()} indicates there might be a previous page.</p>
-     *
-     * <p>This method is useful when the {@linkplain Query query language} is used
-     * to return a result of different type to the entity class that was queried,
-     * allowing the subsequent {@code PageRequest} to be cast back to the type of
-     * entity class that was queried.</p>
-     *
-     * @param <E>         entity class of the attributes that are used as sort criteria.
-     * @param entityClass entity class of the attributes that are used as sort criteria.
-     * @return a request for the previous page.
-     * @throws NoSuchElementException if it is known that there is no previous page.
-     *         To avoid this exception, check for a {@code true} result of
-     *         {@link #hasPrevious()} before invoking this method.
-     */
-    <E> PageRequest<E> previousPageRequest(Class<E> entityClass);
 
     /**
      * Returns {@code true} if the {@link #pageRequest()} specified that the

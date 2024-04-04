@@ -175,7 +175,7 @@ public interface CursoredPage<T> extends Page<T> {
      *         To avoid this exception, check for a {@code true} result
      *         of {@link #hasNext()} before invoking this method.
      */
-    PageRequest<T> nextPageRequest();
+    PageRequest nextPageRequest();
 
     /**
      * <p>Creates a request for the previous page in a reverse direction from
@@ -204,5 +204,5 @@ public interface CursoredPage<T> extends Page<T> {
      *         To avoid this exception, check for a {@code true} result
      *         of {@link #hasPrevious()} before invoking this method.
      */
-    PageRequest<T> previousPageRequest();
+    PageRequest previousPageRequest();
 }
