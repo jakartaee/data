@@ -28,8 +28,6 @@ import java.lang.annotation.Target;
  * <p>
  * Annotations marked with {@code EntityQualifier} are recognized by annotation processors,
  * CDI extensions, and other components of the Jakarta Data framework as qualifiers for entities.
- * This approach allows for a flexible and standardized way to define entities without relying
- * on naming conventions or other inference methods.
  * <p>
  * Annotations that are annotated with {@code EntityQualifier} can be applied to classes to
  * indicate that they are entities. This enables Jakarta Data providers to easily identify and
