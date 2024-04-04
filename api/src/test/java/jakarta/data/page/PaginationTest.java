@@ -32,14 +32,14 @@ class PaginationTest {
     void shouldThrowExceptionWhenNoKeysetValuesWereProvided() {
         assertThatIllegalArgumentException()
                 .as("Mode must be different from OFFSET when cursor is null")
-                .isThrownBy(() -> new Pagination<>(1, 10, PageRequest.Mode.CURSOR_NEXT, null, true));
+                .isThrownBy(() -> new Pagination(1, 10, PageRequest.Mode.CURSOR_NEXT, null, true));
     }
 
     @Test
     @DisplayName("Should throw UnsupportedOperationException when key is not supported")
     void shouldThrowExceptionWhenKeysetIsNotSupported() {
         assertThatThrownBy(() -> {
-            Pagination<?> pagination = new Pagination<>(1, 10,
+            Pagination pagination = new Pagination(1, 10,
                                                         PageRequest.Mode.CURSOR_NEXT,
                                                         new PageRequestCursor("me", 200),
                                                         true);

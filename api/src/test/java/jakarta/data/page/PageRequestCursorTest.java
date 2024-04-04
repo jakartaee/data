@@ -32,7 +32,7 @@ class PageRequestCursorTest {
     @Test
     @DisplayName("Should include key values in next PageRequest")
     void shouldCreatePageRequestAfterKeys() {
-        PageRequest<?> pageRequest = PageRequest.ofSize(20).afterKey("First", 2L, 3);
+        PageRequest pageRequest = PageRequest.ofSize(20).afterKey("First", 2L, 3);
 
         assertSoftly(softly -> {
             softly.assertThat(pageRequest.size()).isEqualTo(20);
@@ -49,7 +49,7 @@ class PageRequestCursorTest {
     @DisplayName("Should include key values in next PageRequest from Cursor")
     void shouldCreatePageRequestAfterCursor() {
         PageRequest.Cursor cursor = new PageRequestCursor("me", 200);
-        PageRequest<?> pageRequest = PageRequest.ofSize(35).afterCursor(cursor);
+        PageRequest pageRequest = PageRequest.ofSize(35).afterCursor(cursor);
 
         assertSoftly(softly -> {
             softly.assertThat(pageRequest.size()).isEqualTo(35);
@@ -64,7 +64,7 @@ class PageRequestCursorTest {
     @Test
     @DisplayName("Should include key values in previous PageRequest")
     void shouldCreatePageRequestBeforeKey() {
-        PageRequest<?> pageRequest = PageRequest.ofSize(30).beforeKey(1991, "123-45-6789").page(10);
+        PageRequest pageRequest = PageRequest.ofSize(30).beforeKey(1991, "123-45-6789").page(10);
 
         assertSoftly(softly -> {
             softly.assertThat(pageRequest.size()).isEqualTo(30);
@@ -80,7 +80,7 @@ class PageRequestCursorTest {
     @DisplayName("Should include key values in previous PageRequest from Cursor")
     void shouldCreatePageRequestBeforeKeysetCursor() {
         PageRequest.Cursor cursor = new PageRequestCursor(900L, 300, "testing", 120, 'T');
-        PageRequest<?> pageRequest = PageRequest.ofPage(8).beforeCursor(cursor);
+        PageRequest pageRequest = PageRequest.ofPage(8).beforeCursor(cursor);
 
         assertSoftly(softly -> {
             softly.assertThat(pageRequest.size()).isEqualTo(10);
@@ -98,11 +98,11 @@ class PageRequestCursorTest {
     @Test
     @DisplayName("Should be usable in a hashing structure")
     void shouldHash() {
-        PageRequest<?> pageRequest1 = PageRequest.ofSize(15).afterKey(1, '1', "1");
-        PageRequest<?> pageRequest2A = PageRequest.ofSize(15).afterKey(2, '2', "2");
-        PageRequest<?> pageRequest2B = PageRequest.ofSize(15).beforeKey(2, '2', "2");
-        PageRequest<?> pageRequest2C = PageRequest.ofSize(15).beforeKey(2, '2', "2");
-        Map<PageRequest<?>, Integer> map = new HashMap<>();
+        PageRequest pageRequest1 = PageRequest.ofSize(15).afterKey(1, '1', "1");
+        PageRequest pageRequest2A = PageRequest.ofSize(15).afterKey(2, '2', "2");
+        PageRequest pageRequest2B = PageRequest.ofSize(15).beforeKey(2, '2', "2");
+        PageRequest pageRequest2C = PageRequest.ofSize(15).beforeKey(2, '2', "2");
+        Map<PageRequest, Integer> map = new HashMap<>();
 
         assertSoftly(softly -> {
             softly.assertThat(pageRequest2B.hashCode()).isEqualTo(pageRequest2C.hashCode());
@@ -138,11 +138,11 @@ class PageRequestCursorTest {
     @Test
     @DisplayName("Should return true from equals if key values and other properties are equal")
     void shouldBeEqualWithSameKeyValues() {
-        PageRequest<?> pageRequest25P1S0A1 = PageRequest.ofSize(25).afterKey("keyval1", '2', 3);
-        PageRequest<?> pageRequest25P1S0B1 = PageRequest.ofSize(25).beforeKey("keyval1", '2', 3);
-        PageRequest<?> pageRequest25P1S0A1Match = PageRequest.ofSize(25).afterCursor(new PageRequestCursor("keyval1", '2', 3));
-        PageRequest<?> pageRequest25P2S0A1 = PageRequest.ofPage(2).size(25).afterCursor(new PageRequestCursor("keyval1", '2', 3));
-        PageRequest<?> pageRequest25P1S0A2 = PageRequest.ofSize(25).afterKey("keyval2", '2', 3);
+        PageRequest pageRequest25P1S0A1 = PageRequest.ofSize(25).afterKey("keyval1", '2', 3);
+        PageRequest pageRequest25P1S0B1 = PageRequest.ofSize(25).beforeKey("keyval1", '2', 3);
+        PageRequest pageRequest25P1S0A1Match = PageRequest.ofSize(25).afterCursor(new PageRequestCursor("keyval1", '2', 3));
+        PageRequest pageRequest25P2S0A1 = PageRequest.ofPage(2).size(25).afterCursor(new PageRequestCursor("keyval1", '2', 3));
+        PageRequest pageRequest25P1S0A2 = PageRequest.ofSize(25).afterKey("keyval2", '2', 3);
 
         PageRequest.Cursor cursor1 = new PageRequestCursor("keyval1", '2', 3);
         PageRequest.Cursor cursor2 = new PageRequestCursor("keyval2", '2', 3);
@@ -161,7 +161,7 @@ class PageRequestCursorTest {
             }
 
             @Override
-            public List<?> elements() {
+            public List elements() {
                 return List.of(keyset);
             }
         };
@@ -200,8 +200,8 @@ class PageRequestCursorTest {
     @Test
     @DisplayName("Key should be replaced on new instance of PageRequest")
     void shouldReplaceKey() {
-        PageRequest<?> p1 = PageRequest.ofSize(30).afterKey("last1", "fname1", 100).page(12);
-        PageRequest<?> p2 = p1.beforeKey("lname2", "fname2", 200);
+        PageRequest p1 = PageRequest.ofSize(30).afterKey("last1", "fname1", 100).page(12);
+        PageRequest p2 = p1.beforeKey("lname2", "fname2", 200);
 
         assertSoftly(softly -> {
             softly.assertThat(p1.mode()).isEqualTo(PageRequest.Mode.CURSOR_NEXT);
