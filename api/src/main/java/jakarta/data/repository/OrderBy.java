@@ -47,10 +47,16 @@ import java.lang.annotation.Target;
  * Person[] findByZipCode(int zipCode, PageRequest pageRequest);
  * </pre>
  *
- * <p>The precise meaning of ascending and descending order is
- * defined by the database, but generally ascending order for
- * numeric values means smaller numbers before larger numbers and for
- * string values means {@code A} before {@code Z}.</p>
+ * <p>The interpretation of ascending and descending order is determined
+ * by the database, but, in general:
+ * <ul>
+ * <li>ascending order for numeric values is the natural order with
+ *     smaller numbers before larger numbers,</li>
+ * <li>ascending order for string values is lexicographic order with
+ *     {@code A} before {@code Z}, and</li>
+ * <li>ascending order for boolean values places {@code false} before
+ *     {@code true}.</li>
+ * </ul>
  *
  * <p>A repository method with an {@code @OrderBy} annotation must not
  * have:</p>
