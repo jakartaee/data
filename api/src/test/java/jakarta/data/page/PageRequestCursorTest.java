@@ -27,7 +27,7 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
-class KeysetPageRequestTest {
+class PageRequestCursorTest {
 
     @Test
     @DisplayName("Should include key values in next PageRequest")
