@@ -29,7 +29,7 @@ IMPORTANT: For any NoSQL database type not covered here, such as time series dat
 
 ==== Wide-Column Databases
 
-Wide-column databases offer more query flexibility, even allowing the use of secondary indexes, albeit potentially impacting performance. When interacting with wide-column databases, Jakarta Data requires the implementation of the `BasicRepository` along with all of its methods, including Query by Method Name. However, developers should be mindful that certain query keywords, such as "And" or "Or," may not be universally supported in these databases. The full set of required keywords is documented in the section of the Jakarta Data module Javadoc that is titled "Reserved Keywords for Query by Method Name".
+Wide-column databases offer more query flexibility, even allowing the use of secondary indexes, albeit potentially impacting performance. When interacting with wide-column databases, Jakarta Data requires the implementation of the `BasicRepository` along with all of its methods. However, developers should be mindful that certain query keywords, such as "And" or "Or," may not be universally supported in these databases. The full set of required keywords is documented in the section of the Jakarta Data module Javadoc that is titled "Reserved Keywords for Query by Method Name".
 
 ==== Document Databases
 
