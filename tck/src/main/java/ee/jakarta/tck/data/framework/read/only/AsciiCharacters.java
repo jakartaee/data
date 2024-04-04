@@ -72,7 +72,7 @@ public interface AsciiCharacters extends DataRepository<AsciiCharacter, Long>, I
 
     Optional<AsciiCharacter> findByNumericValue(int id);
 
-    Page<AsciiCharacter> findByNumericValueBetween(int min, int max, PageRequest<AsciiCharacter> pagination);
+    Page<AsciiCharacter> findByNumericValueBetween(int min, int max, PageRequest pagination, Order<AsciiCharacter> order);
 
     List<AsciiCharacter> findByNumericValueLessThanEqualAndNumericValueGreaterThanEqual(int max, int min);
 

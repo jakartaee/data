@@ -43,7 +43,7 @@ public interface NaturalNumbers extends BasicRepository<NaturalNumber, Long>, Id
     long countBy();
 
     CursoredPage<NaturalNumber> findByFloorOfSquareRootOrderByIdAsc(long sqrtFloor,
-                                                                    PageRequest<NaturalNumber> pagination);
+                                                                    PageRequest pagination);
 
     Stream<NaturalNumber> findByIdBetweenOrderByNumTypeAsc(long minimum,
                                                            long maximum,
@@ -58,20 +58,23 @@ public interface NaturalNumbers extends BasicRepository<NaturalNumber, Long>, Id
     List<NaturalNumber> findByIdLessThanEqual(long maximum, Sort<?>... sorts);
 
     Page<NaturalNumber> findByIdLessThanOrderByFloorOfSquareRootDesc(long exclusiveMax,
-                                                                     PageRequest<NaturalNumber> pagination);
+                                                                     PageRequest pagination,
+                                                                     Order<NaturalNumber> order);
 
     CursoredPage<NaturalNumber> findByNumTypeAndNumBitsRequiredLessThan(NumberType type,
                                                                         short bitsUnder,
-                                                                        PageRequest<NaturalNumber> pagination);
+                                                                        Order<NaturalNumber> order,
+                                                                        PageRequest pagination);
 
     NaturalNumber[] findByNumTypeNot(NumberType notThisType, Limit limit, Order<NaturalNumber> sorts);
 
     Page<NaturalNumber> findByNumTypeAndFloorOfSquareRootLessThanEqual(NumberType type,
                                                                        long maxSqrtFloor,
-                                                                       PageRequest<NaturalNumber> pagination);
+                                                                       PageRequest pagination,
+                                                                       Sort<NaturalNumber> sort);
 
     @Query("SELECT id WHERE isOdd = true AND id BETWEEN 21 AND ?1 ORDER BY id ASC")
-    Page<Long> oddsFrom21To(long max, PageRequest<NaturalNumber> pageRequest);
+    Page<Long> oddsFrom21To(long max, PageRequest pageRequest);
 
     @Query("WHERE isOdd = false AND numType = ee.jakarta.tck.data.framework.read.only.NaturalNumber.NumberType.PRIME")
     Optional<NaturalNumber> two();

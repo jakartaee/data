@@ -352,10 +352,10 @@ public class EntityTests {
 
     @Assertion(id = "133", strategy = "Request a Page higher than the final Page, expecting an empty Page with 0 results.")
     public void testBeyondFinalPage() {
-        PageRequest<AsciiCharacter> sixth = Order.by(_AsciiCharacter.numericValue.asc()).page(6).size(10);
+        PageRequest sixth = PageRequest.ofPage(6).size(10);
         Page<AsciiCharacter> page;
         try {
-            page = characters.findByNumericValueBetween(48, 90, sixth);
+            page = characters.findByNumericValueBetween(48, 90, sixth, Order.by(_AsciiCharacter.numericValue.asc()));
         } catch (UnsupportedOperationException x) {
             // Some NoSQL databases lack the ability to count the total results
             // and therefore cannot support a return type of Page
@@ -371,9 +371,9 @@ public class EntityTests {
 
     @Assertion(id = "133", strategy = "Request a Slice higher than the final Slice, expecting an empty Slice with 0 results.")
     public void testBeyondFinalSlice() {
-        PageRequest<NaturalNumber> sixth = PageRequest.of(NaturalNumber.class).size(5).sortBy(Sort.desc("id")).page(6).withoutTotal();
+        PageRequest sixth = PageRequest.ofSize(5).page(6).withoutTotal();
         Page<NaturalNumber> page = numbers.findByNumTypeAndFloorOfSquareRootLessThanEqual(NumberType.PRIME, 8L,
-                sixth);
+                sixth, Sort.desc("id"));
         assertEquals(0, page.numberOfElements());
         assertEquals(0, page.stream().count());
         assertEquals(false, page.hasContent());
@@ -499,10 +499,11 @@ public class EntityTests {
 
     @Assertion(id = "133", strategy = "Request the last Page of up to 10 results, expecting to find the final 3.")
     public void testFinalPageOfUpTo10() {
-        PageRequest<AsciiCharacter> fifthPageRequest = Order.by(_AsciiCharacter.numericValue.asc()).pageSize(10).page(5);
+        PageRequest fifthPageRequest = PageRequest.ofSize(10).page(5);
         Page<AsciiCharacter> page;
         try {
-            page = characters.findByNumericValueBetween(48, 90, fifthPageRequest); // 'X' to 'Z'
+            page = characters.findByNumericValueBetween(48, 90, fifthPageRequest,
+                                                        Order.by(_AsciiCharacter.numericValue.asc())); // 'X' to 'Z'
         } catch (UnsupportedOperationException x) {
             // Some NoSQL databases lack the ability to count the total results
             // and therefore cannot support a return type of Page
@@ -547,9 +548,9 @@ public class EntityTests {
 
     @Assertion(id = "133", strategy = "Request the last Slice of up to 5 results, expecting to find the final 2.")
     public void testFinalSliceOfUpTo5() {
-        PageRequest<NaturalNumber> fifth = PageRequest.of(NaturalNumber.class).size(5).page(5).sortBy(Sort.desc("id")).withoutTotal();
+        PageRequest fifth = PageRequest.ofSize(5).page(5).withoutTotal();
         Page<NaturalNumber> page = numbers.findByNumTypeAndFloorOfSquareRootLessThanEqual(NumberType.PRIME, 8L,
-                fifth);
+                fifth, Sort.desc("id"));
         assertEquals(true, page.hasContent());
         assertEquals(5, page.pageRequest().page());
         assertEquals(2, page.numberOfElements());
@@ -583,9 +584,9 @@ public class EntityTests {
                           "ascending and descending sort. Verify the page contains all 12 expected entities, " +
                           "sorted according to the mixture of ascending and descending sort orders specified.")
     public void testFindAllWithPagination() {
-        PageRequest<NaturalNumber> page2request = PageRequest.of(NaturalNumber.class).page(2).size(12)
-                .sortBy(Sort.asc("floorOfSquareRoot"), Sort.desc("id"));
-        Page<NaturalNumber> page2 = positives.findAll(page2request);
+        PageRequest page2request = PageRequest.ofPage(2).size(12);
+        Page<NaturalNumber> page2 = positives.findAll(page2request,
+                                                      Order.by(Sort.asc("floorOfSquareRoot"), Sort.desc("id")));
 
         assertEquals(12, page2.numberOfElements());
         assertEquals(2, page2.pageRequest().page());
@@ -681,10 +682,10 @@ public class EntityTests {
     @Assertion(id = "133",
                strategy = "Find a page of entities, with entity attributes identified by the parameter names and matching the parameter values.")
     public void testFindPage() {
-        PageRequest<NaturalNumber> page1Request = PageRequest.of(NaturalNumber.class).size(7).sortBy(Sort.desc("id"));
+        PageRequest page1Request = PageRequest.ofSize(7);
 
         Page<NaturalNumber> page1 = positives.findMatching(9L, Short.valueOf((short) 7), NumberType.COMPOSITE,
-                                                           page1Request);
+                                                           page1Request, Sort.desc("id"));
 
         assertEquals(List.of(99L, 98L, 96L, 95L, 94L, 93L, 92L),
                      page1.stream().map(NaturalNumber::getId).collect(Collectors.toList()));
@@ -692,7 +693,7 @@ public class EntityTests {
         assertEquals(true, page1.hasNext());
 
         Page<NaturalNumber> page2 = positives.findMatching(9L, Short.valueOf((short) 7), NumberType.COMPOSITE,
-                                                           page1.nextPageRequest());
+                                                           page1.nextPageRequest(), Sort.desc("id"));
 
         assertEquals(List.of(91L, 90L, 88L, 87L, 86L, 85L, 84L),
                      page2.stream().map(NaturalNumber::getId).collect(Collectors.toList()));
@@ -700,7 +701,7 @@ public class EntityTests {
         assertEquals(true, page2.hasNext());
 
         Page<NaturalNumber> page3 = positives.findMatching(9L, Short.valueOf((short) 7), NumberType.COMPOSITE,
-                                                           page2.nextPageRequest());
+                                                           page2.nextPageRequest(), Sort.desc("id"));
 
         assertEquals(List.of(82L, 81L),
                      page3.stream().map(NaturalNumber::getId).collect(Collectors.toList()));
@@ -722,11 +723,12 @@ public class EntityTests {
         // 2, 3 requires 2 bits
         // 1 requires 1 bit
 
-        PageRequest<NaturalNumber> first8 = PageRequest.of(NaturalNumber.class).size(8).sortBy(Sort.asc("id"));
+        Order<NaturalNumber> order = Order.by(Sort.asc("id"));
+        PageRequest first8 = PageRequest.ofSize(8);
         CursoredPage<NaturalNumber> page;
 
         try {
-            page = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByNumBitsRequiredDesc(4L, 33L, first8);
+            page = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByNumBitsRequiredDesc(4L, 33L, first8, order);
         } catch (UnsupportedOperationException x) {
             // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
             // is not capable of cursor-based pagination.
@@ -739,7 +741,7 @@ public class EntityTests {
                      Arrays.toString(page.stream().map(number -> number.getId()).toArray()));
 
         try {
-            page = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByNumBitsRequiredDesc(4L, 33L, page.nextPageRequest());
+            page = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByNumBitsRequiredDesc(4L, 33L, page.nextPageRequest(), order);
         } catch (UnsupportedOperationException x) {
             // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
             // is not capable of cursor-based pagination.
@@ -752,7 +754,7 @@ public class EntityTests {
         assertEquals(8, page.numberOfElements());
 
         try {
-            page = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByNumBitsRequiredDesc(4L, 33L, page.nextPageRequest());
+            page = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByNumBitsRequiredDesc(4L, 33L, page.nextPageRequest(), order);
         } catch (UnsupportedOperationException x) {
             // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
             // is not capable of cursor-based pagination.
@@ -770,7 +772,7 @@ public class EntityTests {
                           "then request the next CursoredPage and the CursoredPage after that, " +
                           "expecting to find all results.")
     public void testFirstCursoredPageWithoutTotalOf6AndNextPages() {
-        PageRequest<NaturalNumber> first6 = PageRequest.of(NaturalNumber.class).size(6).withoutTotal();
+        PageRequest first6 = PageRequest.ofSize(6).withoutTotal();
         CursoredPage<NaturalNumber> slice;
 
         try {
@@ -817,10 +819,11 @@ public class EntityTests {
                strategy = "Request the first Page of 10 results, expecting to find all 10. " +
                           "From the Page, verify the totalElements and totalPages expected.")
     public void testFirstPageOf10() {
-        PageRequest<AsciiCharacter> first10 = Order.by(_AsciiCharacter.numericValue.asc()).pageSize(10);
+        PageRequest first10 = PageRequest.ofSize(10);
         Page<AsciiCharacter> page;
         try {
-            page = characters.findByNumericValueBetween(48, 90, first10); // '0' to 'Z'
+            page = characters.findByNumericValueBetween(48, 90, first10,
+                                                        Order.by(_AsciiCharacter.numericValue.asc())); // '0' to 'Z'
         } catch (UnsupportedOperationException x) {
             // Some NoSQL databases lack the ability to count the total results
             // and therefore cannot support a return type of Page
@@ -841,9 +844,9 @@ public class EntityTests {
 
     @Assertion(id = "133", strategy = "Request the first Slice of 5 results, expecting to find all 5.")
     public void testFirstSliceOf5() {
-        PageRequest<NaturalNumber> first5 = PageRequest.of(NaturalNumber.class).size(5).sortBy(Sort.desc("id")).withoutTotal();
+        PageRequest first5 = PageRequest.ofSize(5).withoutTotal();
         Page<NaturalNumber> page = numbers.findByNumTypeAndFloorOfSquareRootLessThanEqual(NumberType.PRIME, 8L,
-                first5);
+                first5, Sort.desc("id"));
         assertEquals(5, page.numberOfElements());
 
         Iterator<NaturalNumber> it = page.iterator();
@@ -937,13 +940,13 @@ public class EntityTests {
         //                                        ^^^ previous page ^^
         //                                                                                  ^^^^^ next page ^^^^
 
-        PageRequest<NaturalNumber> middle7 = PageRequest.of(NaturalNumber.class).size(7)
-                        .sortBy(Sort.asc("floorOfSquareRoot"), Sort.desc("id"))
+        Order<NaturalNumber> order = Order.by(Sort.asc("floorOfSquareRoot"), Sort.desc("id"));
+        PageRequest middle7 = PageRequest.ofSize(7)
                         .afterKey((short) 5, 5L, 26L); // 20th result is 26; it requires 5 bits and its square root rounds down to 5.
 
         CursoredPage<NaturalNumber> page;
         try {
-            page = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByNumBitsRequiredDesc(6L, 50L, middle7);
+            page = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByNumBitsRequiredDesc(6L, 50L, middle7, order);
         } catch (UnsupportedOperationException x) {
             // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
             // is not capable of cursor-based pagination.
@@ -963,7 +966,8 @@ public class EntityTests {
         CursoredPage<NaturalNumber> previousPage;
         try {
             previousPage = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByNumBitsRequiredDesc(6L, 50L,
-                                                                                                    page.previousPageRequest());
+                                                                                                    page.previousPageRequest(),
+                                                                                                    order);
         } catch (UnsupportedOperationException x) {
             // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
             // is not capable of cursor-based pagination.
@@ -980,7 +984,8 @@ public class EntityTests {
         CursoredPage<NaturalNumber> nextPage;
         try {
             nextPage = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByNumBitsRequiredDesc(6L, 50L,
-                                                                                                page.nextPageRequest());
+                                                                                                page.nextPageRequest(),
+                                                                                                order);
         } catch (UnsupportedOperationException x) {
             // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
             // is not capable of cursor-based pagination.
@@ -1002,7 +1007,7 @@ public class EntityTests {
         CursoredPage<NaturalNumber> page;
         try {
             // There are no positive integers less than 4 which have a square root that rounds down to something other than 1.
-            page = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByNumBitsRequiredDesc(1L, 4L, PageRequest.ofPage(1L));
+            page = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByNumBitsRequiredDesc(1L, 4L, PageRequest.ofPage(1L), Order.by());
         } catch (UnsupportedOperationException x) {
             // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
             // is not capable of cursor-based pagination.
@@ -1018,13 +1023,6 @@ public class EntityTests {
         try {
             page.nextPageRequest();
             fail("nextPageRequest must raise NoSuchElementException when current page is empty.");
-        } catch (NoSuchElementException x) {
-            // expected
-        }
-
-        try {
-            page.nextPageRequest(NaturalNumber.class);
-            fail("nextPageRequest(entityClass) must raise NoSuchElementException when current page is empty.");
         } catch (NoSuchElementException x) {
             // expected
         }
@@ -1049,13 +1047,13 @@ public class EntityTests {
         //                                  ^^^^^^^^ slice 2 ^^^^^^^^^
         //                                                                                        ^^^^^^^^ slice 3 ^^^^^^^^^
 
-        PageRequest<NaturalNumber> middle9 = PageRequest.of(NaturalNumber.class).size(9).withoutTotal()
-                             .sortBy(Sort.desc("floorOfSquareRoot"), Sort.asc("id"))
+        PageRequest middle9 = PageRequest.ofSize(9).withoutTotal()
                              .afterKey(6L, 46L); // 20th result is 46; its square root rounds down to 6.
+        Order<NaturalNumber> order = Order.by(Sort.desc("floorOfSquareRoot"), Sort.asc("id"));
 
         CursoredPage<NaturalNumber> slice;
         try {
-            slice = numbers.findByNumTypeAndNumBitsRequiredLessThan(NumberType.COMPOSITE, (short) 7, middle9);
+            slice = numbers.findByNumTypeAndNumBitsRequiredLessThan(NumberType.COMPOSITE, (short) 7, order, middle9);
         } catch (UnsupportedOperationException x) {
             // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
             // is not capable of cursor-based pagination.
@@ -1072,6 +1070,7 @@ public class EntityTests {
         try {
             previousSlice = numbers.findByNumTypeAndNumBitsRequiredLessThan(NumberType.COMPOSITE,
                                                                             (short) 7,
+                                                                            order,
                                                                             slice.previousPageRequest());
         } catch (UnsupportedOperationException x) {
             // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
@@ -1088,6 +1087,7 @@ public class EntityTests {
          try {
              nextSlice = numbers.findByNumTypeAndNumBitsRequiredLessThan(NumberType.COMPOSITE,
                                                                          (short) 7,
+                                                                         order,
                                                                          slice.nextPageRequest());
          } catch (UnsupportedOperationException x) {
              // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
@@ -1104,7 +1104,7 @@ public class EntityTests {
     @Assertion(id = "133", strategy = "Request a CursoredPage of results where none match the query, expecting an empty CursoredPage with 0 results.")
     public void testCursoredPageWithoutTotalOfNothing() {
         // There are no numbers larger than 30 which have a square root that rounds down to 3.
-        PageRequest<NaturalNumber> pagination = PageRequest.of(NaturalNumber.class).size(33).afterKey(30L).withoutTotal();
+        PageRequest pagination = PageRequest.ofSize(33).afterKey(30L).withoutTotal();
 
         CursoredPage<NaturalNumber> slice;
         try {
@@ -1209,12 +1209,12 @@ public class EntityTests {
 
         assertEquals(true, page1.hasNext());
 
-        Page<Long> page2 = numbers.oddsFrom21To(40L, page1.nextPageRequest(NaturalNumber.class));
+        Page<Long> page2 = numbers.oddsFrom21To(40L, page1.nextPageRequest());
 
         assertEquals(List.of(31L, 33L, 35L, 37L, 39L), page2.content());
 
         if (page2.hasNext()) {
-            Page<Long> page3 = numbers.oddsFrom21To(40L, page2.nextPageRequest(NaturalNumber.class));
+            Page<Long> page3 = numbers.oddsFrom21To(40L, page2.nextPageRequest());
             assertEquals(false, page3.hasContent());
             assertEquals(false, page3.hasNext());
         }
@@ -1281,8 +1281,10 @@ public class EntityTests {
                           "verfying that all results are returned and are ordered first by the static sort criteria, " +
                           "followed by the dynamic sort criteria when the value(s) being compared by the static criteria match.")
     public void testOrderByHasPrecedenceOverPageRequestSorts() {
-        PageRequest<NaturalNumber> pagination = PageRequest.of(NaturalNumber.class).size(8).sortBy(Sort.asc("numType"), Sort.desc("id"));
-        Page<NaturalNumber> page = numbers.findByIdLessThanOrderByFloorOfSquareRootDesc(25L, pagination);
+        PageRequest pagination = PageRequest.ofSize(8);
+        Order<NaturalNumber> order = Order.by(Sort.asc("numType"), Sort.desc("id"));
+
+        Page<NaturalNumber> page = numbers.findByIdLessThanOrderByFloorOfSquareRootDesc(25L, pagination, order);
 
         assertEquals(Arrays.toString(new Long[] { 23L, 19L, 17L, // square root rounds down to 4; prime
                                                   24L, 22L, 21L, 20L, 18L }), // square root rounds down to 4; composite
@@ -1290,7 +1292,7 @@ public class EntityTests {
 
         assertEquals(true, page.hasNext());
         pagination = page.nextPageRequest();
-        page = numbers.findByIdLessThanOrderByFloorOfSquareRootDesc(25L, pagination);
+        page = numbers.findByIdLessThanOrderByFloorOfSquareRootDesc(25L, pagination, order);
 
         assertEquals(Arrays.toString(new Long[] { 16L, // square root rounds down to 4; composite
                                                   13L, 11L, // square root rounds down to 3; prime
@@ -1299,7 +1301,7 @@ public class EntityTests {
 
         assertEquals(true, page.hasNext());
         pagination = page.nextPageRequest();
-        page = numbers.findByIdLessThanOrderByFloorOfSquareRootDesc(25L, pagination);
+        page = numbers.findByIdLessThanOrderByFloorOfSquareRootDesc(25L, pagination, order);
 
         assertEquals(Arrays.toString(new Long[] { 7L, 5L, // square root rounds down to 2; prime
                                                   8L, 6L, 4L, // square root rounds down to 2; composite
@@ -1309,7 +1311,7 @@ public class EntityTests {
 
         if (page.hasNext()) {
             pagination = page.nextPageRequest();
-            page = numbers.findByIdLessThanOrderByFloorOfSquareRootDesc(25L, pagination);
+            page = numbers.findByIdLessThanOrderByFloorOfSquareRootDesc(25L, pagination, order);
             assertEquals(false, page.hasContent());
         }
     }
@@ -1334,10 +1336,11 @@ public class EntityTests {
 
     @Assertion(id = "133", strategy = "Request a Page of results where none match the query, expecting an empty Page with 0 results.")
     public void testPageOfNothing() {
-        PageRequest<AsciiCharacter> pagination = Order.by(_AsciiCharacter.id.asc()).pageSize(6);
+        PageRequest pagination = PageRequest.ofSize(6);
         Page<AsciiCharacter> page;
         try {
-            page = characters.findByNumericValueBetween(150, 160, pagination);
+            page = characters.findByNumericValueBetween(150, 160, pagination,
+                                                        Order.by(_AsciiCharacter.id.asc()));
         } catch (UnsupportedOperationException x) {
             // Some NoSQL databases lack the ability to count the total results
             // and therefore cannot support a return type of Page
@@ -1402,12 +1405,14 @@ public class EntityTests {
 
     @Assertion(id = "458", strategy = "Use a repository method with a JDQL query that relies on the OR operator.")
     public void testQueryWithOr() {
-        PageRequest<?> page1Request = PageRequest.ofSize(4).sortBy(Sort.desc("numBitsRequired"), Sort.asc("id"));
+        PageRequest page1Request = PageRequest.ofSize(4);
         CursoredPage<NaturalNumber> page1;
 
         try {
             page1 = positives.withBitCountOrOfTypeAndBelow((short) 4,
                                                            NumberType.COMPOSITE, 20L,
+                                                           Sort.desc("numBitsRequired"),
+                                                           Sort.asc("id"),
                                                            page1Request);
         } catch (UnsupportedOperationException x) {
             // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
@@ -1430,6 +1435,8 @@ public class EntityTests {
         try {
             page2 = positives.withBitCountOrOfTypeAndBelow((short) 4,
                                                            NumberType.COMPOSITE, 20L,
+                                                           Sort.desc("numBitsRequired"),
+                                                           Sort.asc("id"),
                                                            page1.nextPageRequest());
         } catch (UnsupportedOperationException x) {
             // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
@@ -1446,6 +1453,8 @@ public class EntityTests {
 
         CursoredPage<NaturalNumber> page3 = positives.withBitCountOrOfTypeAndBelow((short) 4,
                                                                                    NumberType.COMPOSITE, 20L,
+                                                                                   Sort.desc("numBitsRequired"),
+                                                                                   Sort.asc("id"),
                                                                                    page2.nextPageRequest());
 
         assertEquals(List.of(14L, 15L, 4L, 6L),
@@ -1456,6 +1465,8 @@ public class EntityTests {
         if (page3.hasNext()) {
             CursoredPage<NaturalNumber> page4 = positives.withBitCountOrOfTypeAndBelow((short) 4,
                                                                                        NumberType.COMPOSITE, 20L,
+                                                                                       Sort.desc("numBitsRequired"),
+                                                                                       Sort.asc("id"),
                                                                                        page3.nextPageRequest());
             assertEquals(false, page4.hasContent());
         }
@@ -1479,9 +1490,9 @@ public class EntityTests {
 
     @Assertion(id = "133", strategy = "Request a Slice of results where none match the query, expecting an empty Slice with 0 results.")
     public void testSliceOfNothing() {
-        PageRequest<NaturalNumber> pagination =  PageRequest.of(NaturalNumber.class).size(5).sortBy(Sort.desc("id")).withoutTotal();
+        PageRequest pagination =  PageRequest.ofSize(5).withoutTotal();
         Page<NaturalNumber> page = numbers.findByNumTypeAndFloorOfSquareRootLessThanEqual(NumberType.COMPOSITE, 1L,
-                pagination);
+                pagination, Sort.desc("id"));
 
         assertEquals(false, page.hasContent());
         assertEquals(0, page.content().size());
@@ -1494,8 +1505,9 @@ public class EntityTests {
         assertEquals(Sort.ascIgnoreCase(_AsciiChar.HEXADECIMAL), _AsciiChar.hexadecimal.ascIgnoreCase());
         assertEquals(Sort.ascIgnoreCase("thisCharacter"), _AsciiChar.thisCharacter.ascIgnoreCase());
 
-        PageRequest<AsciiCharacter> pageRequest = Order.by(_AsciiChar.numericValue.asc()).pageSize(6);
-        Page<AsciiCharacter> page1 = characters.findByNumericValueBetween(68, 90, pageRequest);
+        PageRequest pageRequest = PageRequest.ofSize(6);
+        Page<AsciiCharacter> page1 = characters.findByNumericValueBetween(68, 90, pageRequest,
+                                                                          Order.by(_AsciiChar.numericValue.asc()));
 
         assertEquals(List.of('D', 'E', 'F', 'G', 'H', 'I'),
                      page1.stream()
@@ -1510,8 +1522,9 @@ public class EntityTests {
         assertEquals(Sort.ascIgnoreCase(_AsciiCharacter.HEXADECIMAL), _AsciiCharacter.hexadecimal.ascIgnoreCase());
         assertEquals(Sort.ascIgnoreCase("thisCharacter"), _AsciiCharacter.thisCharacter.ascIgnoreCase());
 
-        PageRequest<AsciiCharacter> pageRequest = Order.by(_AsciiCharacter.numericValue.asc()).pageSize(7);
-        Page<AsciiCharacter> page1 = characters.findByNumericValueBetween(100, 122, pageRequest);
+        PageRequest pageRequest = PageRequest.ofSize(7);
+        Page<AsciiCharacter> page1 = characters.findByNumericValueBetween(100, 122, pageRequest,
+                                                                          Order.by(_AsciiCharacter.numericValue.asc()));
 
         assertEquals(List.of('d', 'e', 'f', 'g', 'h', 'i', 'j'),
                      page1.stream()
@@ -1598,10 +1611,11 @@ public class EntityTests {
                strategy = "Request the third Page of 10 results, expecting to find all 10. " +
                           "Request the next Page via nextPageRequest, expecting page number 4 and another 10 results.")
     public void testThirdAndFourthPagesOf10() {
-        PageRequest<AsciiCharacter> third10 = Order.by(_AsciiCharacter.numericValue.asc()).page(3).size(10);
+        Order<AsciiCharacter> order = Order.by(_AsciiCharacter.numericValue.asc());
+        PageRequest third10 = PageRequest.ofPage(3).size(10);
         Page<AsciiCharacter> page;
         try {
-            page = characters.findByNumericValueBetween(48, 90, third10); // 'D' to 'M'
+            page = characters.findByNumericValueBetween(48, 90, third10, order); // 'D' to 'M'
         } catch (UnsupportedOperationException x) {
             // Some NoSQL databases lack the ability to count the total results
             // and therefore cannot support a return type of Page
@@ -1620,8 +1634,8 @@ public class EntityTests {
                                      .reduce("", String::concat));
 
         assertEquals(true, page.hasNext());
-        PageRequest<AsciiCharacter> fourth10 = page.nextPageRequest();
-        page = characters.findByNumericValueBetween(48, 90, fourth10); // 'N' to 'W'
+        PageRequest fourth10 = page.nextPageRequest();
+        page = characters.findByNumericValueBetween(48, 90, fourth10, order); // 'N' to 'W'
 
         assertEquals(4, page.pageRequest().page());
         assertEquals(true, page.hasContent());
@@ -1639,9 +1653,10 @@ public class EntityTests {
                strategy = "Request the third Slice of 5 results, expecting to find all 5. "
                        +  "Request the next Slice via nextPageRequest, expecting page number 4 and another 5 results.")
     public void testThirdAndFourthSlicesOf5() {
-        PageRequest<NaturalNumber> third5 = PageRequest.of(NaturalNumber.class).page(3).size(5).sortBy(Sort.desc("id")).withoutTotal();
+        PageRequest third5 = PageRequest.ofPage(3).size(5).withoutTotal();
+        Sort<NaturalNumber> sort = Sort.desc("id");
         Page<NaturalNumber> page = numbers.findByNumTypeAndFloorOfSquareRootLessThanEqual(NumberType.PRIME, 8L,
-                third5);
+                third5, sort);
 
         assertEquals(3, page.pageRequest().page());
         assertEquals(5, page.numberOfElements());
@@ -1650,9 +1665,9 @@ public class EntityTests {
                 Arrays.toString(page.stream().map(number -> number.getId()).toArray()));
 
         assertEquals(true, page.hasNext());
-        PageRequest<NaturalNumber> fourth5 = page.nextPageRequest();
+        PageRequest fourth5 = page.nextPageRequest();
 
-        page = numbers.findByNumTypeAndFloorOfSquareRootLessThanEqual(NumberType.PRIME, 8L, fourth5);
+        page = numbers.findByNumTypeAndFloorOfSquareRootLessThanEqual(NumberType.PRIME, 8L, fourth5, sort);
 
         assertEquals(4, page.pageRequest().page());
         assertEquals(5, page.numberOfElements());
