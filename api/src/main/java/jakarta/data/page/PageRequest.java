@@ -70,51 +70,31 @@ import java.util.Optional;
  * if the database is incapable of ordering the query results using the given
  * sort criteria.</p>
  *
- * @param <T> entity class of the attributes that are used as sort criteria.
  */
-public interface PageRequest<T> {
+public interface PageRequest {
 
-    /**
-     * <p>Creates a page request to use when querying on entities of the
-     * specified entity class.</p>
-     *
-     *
-     * <pre>
-     * {@code PageRequest<Car>} page1Request = PageRequest.of(Car.class).page(1).size(25);
-     * </pre>
-     *
-     *
-     * @param <T>         entity class of attributes that can be used as sort criteria.
-     * @param entityClass entity class of attributes that can be used as sort criteria.
-     * @return a new instance of {@code PageRequest}. This method never returns {@code null}.
-     */
-    static <T> PageRequest<T> of(Class<T> entityClass) {
-        return new Pagination<>(1, 10, Mode.OFFSET, null, true);
-    }
 
     /**
      * Creates a new page request with the given page number and with a default size of 10.
      *
-     * @param <T>        entity class of the attributes that are used as sort criteria.
      * @param pageNumber The page number.
      * @return a new instance of {@code PageRequest}. This method never returns {@code null}.
      * @throws IllegalArgumentException when the page number is negative or zero.
      */
-    static <T> PageRequest<T> ofPage(long pageNumber) {
-        return new Pagination<>(pageNumber, 10, Mode.OFFSET, null, true);
+    static PageRequest ofPage(long pageNumber) {
+        return new Pagination(pageNumber, 10, Mode.OFFSET, null, true);
     }
 
     /**
      * Creates a new page request for requesting pages of the specified size,
      * starting with the first page number, which is 1.
      *
-     * @param <T>         entity class of the attributes that are used as sort criteria.
      * @param maxPageSize The number of query results in a full page.
      * @return a new instance of {@code PageRequest}. This method never returns {@code null}.
      * @throws IllegalArgumentException when maximum page size is negative or zero.
      */
-    static <T> PageRequest<T> ofSize(int maxPageSize) {
-        return new Pagination<>(1, maxPageSize,  Mode.OFFSET, null, true);
+    static PageRequest ofSize(int maxPageSize) {
+        return new Pagination(1, maxPageSize,  Mode.OFFSET, null, true);
     }
 
     /**
@@ -129,7 +109,7 @@ public interface PageRequest<T> {
      *         This method never returns {@code null}.
      * @throws IllegalArgumentException if no values are provided for the key.
      */
-    PageRequest<T> afterKey(Object... key);
+    PageRequest afterKey(Object... key);
 
     /**
      * <p>Requests {@link CursoredPage cursor-based pagination} in the previous page
@@ -144,7 +124,7 @@ public interface PageRequest<T> {
      *         This method never returns {@code null}.
      * @throws IllegalArgumentException if no values are provided for the key.
      */
-    PageRequest<T> beforeKey(Object... key);
+    PageRequest beforeKey(Object... key);
 
     /**
      * <p>Requests {@link CursoredPage cursor-based pagination} in the forward direction,
@@ -158,7 +138,7 @@ public interface PageRequest<T> {
      *         This method never returns {@code null}.
      * @throws IllegalArgumentException if no key values are provided.
      */
-    PageRequest<T> afterCursor(Cursor cursor);
+    PageRequest afterCursor(Cursor cursor);
 
     /**
      * <p>Requests {@link CursoredPage cursor-based pagination} in the previous page
@@ -172,7 +152,7 @@ public interface PageRequest<T> {
      *         in the previous page direction. This method never returns {@code null}.
      * @throws IllegalArgumentException if no key values are provided.
      */
-    PageRequest<T> beforeCursor(Cursor cursor);
+    PageRequest beforeCursor(Cursor cursor);
 
     /**
      * Compares with another instance to determine if both represent the same
@@ -239,7 +219,7 @@ public interface PageRequest<T> {
      * @throws UnsupportedOperationException if this {@code PageRequest}
      *         has a {@link PageRequest.Cursor Cursor}.
      */
-    PageRequest<T> next();
+    PageRequest next();
 
     /**
      * <p>Returns the {@code PageRequest} requesting the previous page
@@ -256,7 +236,7 @@ public interface PageRequest<T> {
      * @throws UnsupportedOperationException if this {@code PageRequest}
      *         has a {@link PageRequest.Cursor Cursor}.
      */
-    PageRequest<T> previous();
+    PageRequest previous();
 
     /**
      * <p>Creates a new page request with the same pagination information,
@@ -266,7 +246,7 @@ public interface PageRequest<T> {
      * @return a new instance of {@code PageRequest}.
      *         This method never returns {@code null}.
      */
-    PageRequest<T> page(long pageNumber);
+    PageRequest page(long pageNumber);
 
     /**
      * <p>Creates a new page request with the same pagination information,
@@ -279,7 +259,7 @@ public interface PageRequest<T> {
      * @return a new instance of {@code PageRequest}.
      *         This method never returns {@code null}.
      */
-    PageRequest<T> size(int maxPageSize);
+    PageRequest size(int maxPageSize);
 
 
     /**
@@ -293,7 +273,7 @@ public interface PageRequest<T> {
      * @return a page request with {@link #requestTotal()}
      *         set to {@code false}.
      */
-    PageRequest<T> withoutTotal();
+    PageRequest withoutTotal();
 
     /**
      * Returns an otherwise-equivalent page request with
@@ -302,7 +282,7 @@ public interface PageRequest<T> {
      * @return a page request with {@link #requestTotal()}
      *         set to {@code true}.
      */
-    PageRequest<T> withTotal();
+    PageRequest withTotal();
 
     /**
      * The type of pagination: offset-based or cursor-based, which includes

@@ -38,7 +38,7 @@ import java.util.NoSuchElementException;
  * @param moreResults whether there is a (nonempty) next page of results
  * @param <T> The type of elements on the page
  */
-public record PageRecord<T>(PageRequest<T> pageRequest, List<T> content, long totalElements, boolean moreResults)
+public record PageRecord<T>(PageRequest pageRequest, List<T> content, long totalElements, boolean moreResults)
         implements Page<T> {
 
     /**
@@ -57,7 +57,7 @@ public record PageRecord<T>(PageRequest<T> pageRequest, List<T> content, long to
      *                      value indicates that a total count of elements
      *                      and pages is not available.
      */
-    public PageRecord(PageRequest<T> pageRequest, List<T> content, long totalElements) {
+    public PageRecord(PageRequest pageRequest, List<T> content, long totalElements) {
         this( pageRequest, content, totalElements,
                 content.size() == pageRequest.size()
                         && (totalElements < 0
@@ -80,13 +80,7 @@ public record PageRecord<T>(PageRequest<T> pageRequest, List<T> content, long to
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public <E> PageRequest<E> pageRequest(Class<E> entityClass) {
-        return (PageRequest<E>) pageRequest;
-    }
-
-    @Override
-    public PageRequest<T> nextPageRequest() {
+    public PageRequest nextPageRequest() {
         if ( !hasNext() )
             throw new NoSuchElementException();
         return pageRequest.next();
@@ -98,22 +92,10 @@ public record PageRecord<T>(PageRequest<T> pageRequest, List<T> content, long to
     }
 
     @Override
-    public PageRequest<T> previousPageRequest() {
+    public PageRequest previousPageRequest() {
         if ( !hasPrevious() )
             throw new NoSuchElementException();
         return pageRequest.previous();
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public <E> PageRequest<E> previousPageRequest(Class<E> entityClass) {
-        return (PageRequest<E>) previousPageRequest();
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public <E> PageRequest<E> nextPageRequest(Class<E> entityClass) {
-        return (PageRequest<E>) nextPageRequest();
     }
 
     @Override

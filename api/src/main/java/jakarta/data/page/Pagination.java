@@ -26,7 +26,7 @@ import java.util.Optional;
 /**
  * Built-in implementation of PageRequest.
  */
-record Pagination<T>(long page, int size, Mode mode, Cursor type, boolean requestTotal) implements PageRequest<T> {
+record Pagination(long page, int size, Mode mode, Cursor type, boolean requestTotal) implements PageRequest {
 
     Pagination {
         if (page < 1) {
@@ -41,33 +41,33 @@ record Pagination<T>(long page, int size, Mode mode, Cursor type, boolean reques
     }
 
     @Override
-    public PageRequest<T> withoutTotal() {
-        return new Pagination<>(page, size, mode, type, false);
+    public PageRequest withoutTotal() {
+        return new Pagination(page, size, mode, type, false);
     }
 
     @Override
-    public PageRequest<T> withTotal() {
-        return new Pagination<>(page, size, mode, type, true);
+    public PageRequest withTotal() {
+        return new Pagination(page, size, mode, type, true);
     }
 
     @Override
-    public PageRequest<T> afterKey(Object... key) {
-        return new Pagination<>(page, size, Mode.CURSOR_NEXT, new PageRequestCursor(key), requestTotal);
+    public PageRequest afterKey(Object... key) {
+        return new Pagination(page, size, Mode.CURSOR_NEXT, new PageRequestCursor(key), requestTotal);
     }
 
     @Override
-    public PageRequest<T> beforeKey(Object... key) {
-        return new Pagination<>(page, size, Mode.CURSOR_PREVIOUS, new PageRequestCursor(key), requestTotal);
+    public PageRequest beforeKey(Object... key) {
+        return new Pagination(page, size, Mode.CURSOR_PREVIOUS, new PageRequestCursor(key), requestTotal);
     }
 
     @Override
-    public PageRequest<T> afterCursor(Cursor cursor) {
-        return new Pagination<>(page, size, Mode.CURSOR_NEXT, cursor, requestTotal);
+    public PageRequest afterCursor(Cursor cursor) {
+        return new Pagination(page, size, Mode.CURSOR_NEXT, cursor, requestTotal);
     }
 
     @Override
-    public PageRequest<T> beforeCursor(Cursor cursor) {
-        return new Pagination<>(page, size, Mode.CURSOR_PREVIOUS, cursor, requestTotal);
+    public PageRequest beforeCursor(Cursor cursor) {
+        return new Pagination(page, size, Mode.CURSOR_PREVIOUS, cursor, requestTotal);
     }
 
 
@@ -90,9 +90,9 @@ record Pagination<T>(long page, int size, Mode mode, Cursor type, boolean reques
     }
 
     @Override
-    public PageRequest<T> next() {
+    public PageRequest next() {
         if (mode == Mode.OFFSET) {
-            return new Pagination<>(page + 1, this.size, Mode.OFFSET, null, requestTotal);
+            return new Pagination(page + 1, this.size, Mode.OFFSET, null, requestTotal);
         } else {
             throw new UnsupportedOperationException("Not supported for cursor-based pagination. Instead use afterKey or afterCursor " +
                     "to provide a cursor or obtain the nextPageRequest from a CursoredPage.");
@@ -100,9 +100,9 @@ record Pagination<T>(long page, int size, Mode mode, Cursor type, boolean reques
     }
 
     @Override
-    public PageRequest<T> previous() {
+    public PageRequest previous() {
         if (mode == Mode.OFFSET) {
-            return page()<=1 ? null : new Pagination<>(page - 1, this.size, Mode.OFFSET, null, requestTotal);
+            return page()<=1 ? null : new Pagination(page - 1, this.size, Mode.OFFSET, null, requestTotal);
         } else {
             throw new UnsupportedOperationException("Not supported for cursor-based pagination. Instead use beforeKey or beforeCursor " +
                     "to provide a cursor or obtain the previousPageRequest from a CursoredPage.");
@@ -122,13 +122,13 @@ record Pagination<T>(long page, int size, Mode mode, Cursor type, boolean reques
     }
 
     @Override
-    public PageRequest<T> page(long pageNumber) {
-        return new Pagination<>(pageNumber, size, mode, type, requestTotal);
+    public PageRequest page(long pageNumber) {
+        return new Pagination(pageNumber, size, mode, type, requestTotal);
     }
 
     @Override
-    public PageRequest<T> size(int maxPageSize) {
-        return new Pagination<>(page, maxPageSize, mode, type, requestTotal);
+    public PageRequest size(int maxPageSize) {
+        return new Pagination(page, maxPageSize, mode, type, requestTotal);
     }
 
 }
