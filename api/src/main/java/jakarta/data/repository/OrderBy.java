@@ -32,7 +32,7 @@ import java.lang.annotation.Target;
  * repository method, the precedence for sorting follows the order
  * in which the {@code OrderBy} annotations are specified,
  * and after that follows any sort criteria that are supplied
- * dynamically by {@link Sort} parameters, any {@link Order} parameter.</p>
+ * dynamically by {@link Sort} parameters or by any {@link Order} parameter.</p>
  *
  * <p>For example, the following sorts first by the
  * {@code lastName} attribute in ascending order,
