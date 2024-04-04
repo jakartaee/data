@@ -776,20 +776,18 @@ import jakarta.data.repository.Update;
  *
  * <h3>Sorting</h3>
  *
- * <p>When a page is requested with a {@code PageRequest}, dynamic sorting
- * criteria may be supplied via the method {@link PageRequest#sortBy(Sort)}
+ * <p>When a page is requested with a PageRequest, dynamic sorting
+ * criteria may be supplied via the method {@link Sort} or {@link Order}.
  * and its overloads. For example,</p>
  *
  * <pre>
  * Product[] findByNameLike(String pattern, {@code PageRequest<Product>} pagination);
  *
  * ...
- * {@code PageRequest<Product>} page1Request = PageRequest.of(Product.class)
- *                                                .size(25)
- *                                                .sortBy(Sort.desc("price"),
- *                                                        Sort.asc("name"));
+ * PageRequest page1Request = PageRequest.ofSize(25);
+ *
  * page1 = products.findByNameLikeAndPriceBetween(
- *                 namePattern, minPrice, maxPrice, page1Request);
+ *                 namePattern, minPrice, maxPrice, page1Request, Order.by(Sort.desc("price"),Sort.asc("name"));
  * </pre>
  *
  * <p>An alternative when using the {@link StaticMetamodel} is to obtain the
