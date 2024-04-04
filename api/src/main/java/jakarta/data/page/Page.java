@@ -28,11 +28,11 @@ import java.util.stream.StreamSupport;
  * an argument of a repository method. For example,</p>
  *
  * <pre>
- * {@code @Find}
- * {@code Page<Vehicle>} search({@code @By("make")} String make,
- *                       {@code @By("model")} String model,
- *                       {@code @By("year")} int designYear,
- *                       {@code PageRequest<Vehicle>} pageRequest);
+ * &#64;Find
+ * Page&lt;Vehicle&gt; search(&#64;By("make") String make,
+ *                      &#64;By("model") String model,
+ *                      &#64;By("year") int designYear,
+ *                      PageRequest pageRequest);
  * </pre>
  *
  * <p>If {@link PageRequest#requestTotal()} is enabled, the {@link Page} also

@@ -74,26 +74,27 @@ import java.lang.annotation.Target;
  * <p>For example,</p>
  *
  * <pre>
- * {@code @Repository}
- * public interface People extends CrudRepository{@code <Person, Long>} {
+ * &#64;Repository
+ * public interface People extends CrudRepository&lt;Person, Long&gt; {
  *
  *     // JDQL with positional parameters
- *     {@code @Query("where firstName = ?1 and lastName = ?2")}
- *     {@code List<Person>} byName(String first, String last);
+ *     &#64;Query("where firstName = ?1 and lastName = ?2")
+ *     List&lt;Person&gt; byName(String first, String last);
  *
  *     // JDQL with a named parameter
- *     {@code @Query("where firstName || ' ' || lastName like :pattern")}
- *     {@code List<Person>} byName(String pattern);
+ *     &#64;Query("where firstName || ' ' || lastName like :pattern")
+ *     List&lt;Person&gt; byName(String pattern);
  *
  *     // JPQL using a positional parameter
- *     {@code @Query("from Person where extract(year from birthdate) = ?1")}
- *     {@code List<Person>} bornIn(int year);
+ *     &#64;Query("from Person where extract(year from birthdate) = ?1")
+ *     List&lt;Person&gt; bornIn(int year);
  *
  *     // JPQL using named parameters
- *     {@code @Query("select distinct name from Person where length(name) >= :min and length(name) <= :max")}
- *     {@code Page<String>} namesOfLength({@code @Param}("min") int minLength,
- *                                {@code @Param}("max") int maxLength,
- *                                {@code PageRequest<Person>} pageRequest);
+ *     &#64;Query("select distinct name from Person " +
+ *            "where length(name) >= :min and length(name) <= :max")
+ *     Page&lt;String&gt; namesOfLength(&#64;Param("min") int minLength,
+ *                                &#64;Param("max") int maxLength,
+ *                                pageRequest);
  *
  *     ...
  * }

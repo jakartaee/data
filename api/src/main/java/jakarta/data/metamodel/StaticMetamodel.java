@@ -85,12 +85,11 @@ import jakarta.data.Sort;
  * <p>And use it to refer to entity attributes in a type-safe manner,</p>
  *
  * <pre>
- * {@code PageRequest<Product>} pageRequest = Order.by(_Person.yearOfBirth.desc(),
- *                                             _Person.name_last.asc(),
- *                                             _Person.name_first.asc(),
- *                                             _Person.ssn.asc())
- *                                         .page(1)
- *                                         .size(20);
+ * Order&lt;Person&gt; order =
+ *         Order.by(_Person.yearOfBirth.desc(),
+ *                  _Person.name_last.asc(),
+ *                  _Person.name_first.asc(),
+ *                  _Person.ssn.asc());
  * </pre>
  *
  * <p>Alternatively, an annotation processor might generate static metamodel classes
