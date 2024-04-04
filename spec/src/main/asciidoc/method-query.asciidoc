@@ -136,7 +136,7 @@ Explanation of the BNF elements:
 
 === Query by Method Name Keywords
 
-The following table lists the _Query by Method Name_ keywords that must be supported by Jakarta Data providers, except where explicitly indicated for a type of database.
+The following tables list the _Query by Method Name_ keywords that must be supported by Jakarta Data providers, except where explicitly indicated for a type of database.
 
 |===
 |Keyword |Description| Not Required For
@@ -303,13 +303,27 @@ For relational databases, the logical operator `And` takes precedence over `Or`,
 
 === Return Types
 
-Refer to the Jakarta Data module Javadoc section on "Return Types for Repository Methods" for a listing of valid return types for methods using Query by Method Name.
+The return type of a Query by Method Name is determined as indicated in the following table, where `E` is the queried entity type.
+
+|===
+|Action |Return type| Notes
+
+|`countBy...` |`long` or `int` |
+|`updateBy...`|`void`, `boolean`, `long`,`int`|
+|`existsBy...`|`boolean`|
+|`find...By...`|`E` or `Optional<E>`|For queries returning a single item (or none)
+|`find...By...`|`E[]` or `List<E>`|For queries where it is possible to return more than one item
+|`find...By...`|`Stream<E>`|The caller must call `java.util.stream.BaseStream.close()` for every stream returned by the repository method.
+|`find...By...` accepting a `PageRequest`|`Page<E>` or `CursoredPage<E>`|For use with pagination.
+|===
+
+
 
 === Persistent Field Names in Query by Method Name
 
 Section 3.2 of the Jakarta Data specification describes how names are assigned to persistent fields of an entity.
 
-For _Query by Method Name_, the use of delimiters within a compound name is optional. Delimiters may be omitted entirely from a compound name when they are not needed to disambiguate the persistent field to which the name refers. But for a given entity property name, delimiter usage must be consistent: either the delimiter must be used between every pair of persistent field names within the compound name, or it must not occur within the compound name.
+For Query by Method Name, the use of delimiters within a compound name is optional. Delimiters may be omitted entirely from a compound name when they are not needed to disambiguate the persistent field to which the name refers. But for a given entity property name, delimiter usage must be consistent: either the delimiter must be used between every pair of persistent field names within the compound name, or it must not occur within the compound name.
 
 Resolution of a persistent field involves the following steps:
 
