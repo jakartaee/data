@@ -26,7 +26,7 @@ Every abstract method of the interface is usually either:
 
 - an entity instance <<Lifecycle methods,_lifecycle method_>>,
 - an <<Annotated Query methods,_annotated query method_>>,
-- an _automatic query method_ with <<Parameter-based automatic query methods,parameter-based conditions>> or <<Query by Method Name>>, or
+- an _automatic query method_ with <<Parameter-based automatic query methods,parameter-based conditions>> or defined using the Query by Method Name extension, or
 - a <<Resource accessor methods,_resource accessor method_>>.
 
 A repository may declare lifecycle methods for a single entity type, or for multiple related entity types.
@@ -266,7 +266,7 @@ reject such a method declaration at compile time.
 
 === Special Parameters for Limits, Sorting, and Pagination
 
-An <<Annotated Query methods,annotated>>, <<Parameter-based automatic query methods,parameter-based>>, or <<Query by Method Name,method name>> query method may have _special parameters_ of type `Limit`, `Order`, `Sort`, or `PageRequest` if the method return type indicates that the method may return multiple entities, that is, if the return type is:
+An <<Annotated Query methods,annotated>>, <<Parameter-based automatic query methods,parameter-based>>, or Query by Method Name query method may have _special parameters_ of type `Limit`, `Order`, `Sort`, or `PageRequest` if the method return type indicates that the method may return multiple entities, that is, if the return type is:
 
 - an array type,
 - `List` or `Stream`, or
