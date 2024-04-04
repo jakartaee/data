@@ -17,10 +17,6 @@
  */
 package jakarta.data.page;
 
-
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -68,20 +64,6 @@ record Pagination(long page, int size, Mode mode, Cursor type, boolean requestTo
     @Override
     public PageRequest beforeCursor(Cursor cursor) {
         return new Pagination(page, size, Mode.CURSOR_PREVIOUS, cursor, requestTotal);
-    }
-
-
-    private static <E> List<E> combine(List<E> list, E element) {
-        int size = list.size();
-        if (size == 0) {
-            return java.util.List.of(element);
-        } else {
-            Object[] array = list.toArray(new Object[size + 1]);
-            array[size] = element;
-            @SuppressWarnings("unchecked")
-            List<E> newList = (List<E>) Collections.unmodifiableList(Arrays.asList(array));
-            return newList;
-        }
     }
 
     @Override
