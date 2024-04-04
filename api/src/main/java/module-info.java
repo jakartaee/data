@@ -776,7 +776,7 @@ import jakarta.data.repository.Update;
  *
  * <h3>Sorting</h3>
  *
- * <p>When a page is requested with a PageRequest, dynamic sorting
+ * <p>When a page is requested with a {@code PageRequest}, dynamic sorting
  * criteria may be supplied by passing instances of {@link Sort} or {@link Order}.
  * and its overloads. For example,</p>
  *
