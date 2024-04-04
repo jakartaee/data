@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2023, 2024 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -31,5 +31,5 @@ public interface Directory extends DataRepository<Person, Long> {
     //Self referencing provider so that this repository can be used for both WEB and CORE tests
     public static final String PERSON_PROVIDER = "PERSON_PROVIDER";
     
-    List<String> findFirstNameByIdInOrderByAgeDesc(List<Long> ids);
+    List<String> findLastNameByIdInOrderByAgeDesc(List<Long> ids);
 }

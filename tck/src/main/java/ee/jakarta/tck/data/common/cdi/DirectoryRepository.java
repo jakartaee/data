@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2023, 2024 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -43,12 +43,12 @@ public class DirectoryRepository implements Directory {
     }
 
     @Override
-    public List<String> findFirstNameByIdInOrderByAgeDesc(List<Long> ids) {
+    public List<String> findLastNameByIdInOrderByAgeDesc(List<Long> ids) {
          return data.values()
              .stream()
              .filter(p -> ids.contains(p.id))
              .sorted(Comparator.comparing((Person p) -> p.age).reversed())
-             .map(p -> p.firstName)
+             .map(p -> p.lastName)
              .collect(Collectors.toList());
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2023, 2024 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -57,7 +57,7 @@ public class ExtensionTests {
     
     @Assertion(id = "133", strategy="Verifies ability for a CDI BuildCompatibleExtension to handle custom entity annotations")
     public void testDataProviderWithBuildCompatibleExtension() {
-        assertEquals(List.of("Olivia", "Lauren", "Victor"), directory.findFirstNameByIdInOrderByAgeDesc(List.of(04L, 05L, 011L)));
+        assertEquals(List.of("Skinner", "Powell", "Gibson"), directory.findLastNameByIdInOrderByAgeDesc(List.of(04L, 05L, 011L)));
         
     }
 }
