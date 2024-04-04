@@ -32,7 +32,8 @@ import java.util.stream.StreamSupport;
  * Page&lt;Vehicle&gt; search(&#64;By("make") String make,
  *                      &#64;By("model") String model,
  *                      &#64;By("year") int designYear,
- *                      PageRequest pageRequest);
+ *                      PageRequest pageRequest,
+ *                      Order&lt;Vehicle&gt; order);
  * </pre>
  *
  * <p>If {@link PageRequest#requestTotal()} is enabled, the {@link Page} also
