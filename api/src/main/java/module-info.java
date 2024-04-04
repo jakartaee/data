@@ -636,7 +636,7 @@ import jakarta.data.repository.Update;
  * <tr style="vertical-align: top; background-color:#eee"><td>{@code countBy...}</td>
  * <td>{@code long},
  * <br>{@code int}</td>
- * <td>Jakarta Persistence providers limit the maximum to {@code Integer.MAX_VALUE}</td></tr>
+ * <td></td></tr>
  *
  * <tr style="vertical-align: top"><td>{@code deleteBy...},
  * <br>{@code updateBy...}</td>
@@ -644,7 +644,7 @@ import jakarta.data.repository.Update;
  * <br>{@code boolean},
  * <br>{@code long},
  * <br>{@code int}</td>
- * <td>Jakarta Persistence providers limit the maximum to {@code Integer.MAX_VALUE}</td></tr>
+ * <td></td></tr>
  *
  * <tr style="vertical-align: top; background-color:#eee"><td>{@code existsBy...}</td>
  * <td>{@code boolean}</td>
