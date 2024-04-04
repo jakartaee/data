@@ -91,7 +91,7 @@ import java.lang.annotation.Target;
  *
  *     // JPQL using named parameters
  *     &#64;Query("select distinct name from Person " +
- *            "where length(name) >= :min and length(name) <= :max")
+ *            "where length(name) &gt;= :min and length(name) &lt;= :max")
  *     Page&lt;String&gt; namesOfLength(&#64;Param("min") int minLength,
  *                                &#64;Param("max") int maxLength,
  *                                PageRequest pageRequest,
