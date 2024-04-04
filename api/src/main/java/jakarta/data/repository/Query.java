@@ -112,11 +112,6 @@ import java.lang.annotation.Target;
  * {@code Optional<R>}, and the query returns more than one element when executed, the method must throw
  * {@link jakarta.data.exceptions.NonUniqueResultException}.</p>
  *
- * <p>A query with an explicit {@code select} clause may return a type other than the entity class, as shown in the
- * example above, resulting in a {@link Page} parameterized with a query result type different to the queried entity
- * type when pagination is used. This results in a mismatch between the {@link Page} type returned by the repository
- * method.</p>
- *
  *
  * <p>Annotations such as {@code @Find}, {@code @Query}, {@code @Insert}, {@code @Update}, {@code @Delete}, and
  * {@code @Save} are mutually-exclusive. A given method of a repository interface may have at most one {@code @Find}
