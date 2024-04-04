@@ -27,7 +27,7 @@ import java.lang.annotation.Target;
  * Designates an annotation as an entity-defining annotation type within the Jakarta Data framework.
  * <p>
  * Annotations marked with {@code EntityQualifier} are recognized by annotation processors,
- * CDI extensions, and other components of the Jakarta Data framework as declaring an entity types.
+ * CDI extensions, and other components of the Jakarta Data framework as declaring entity types.
  * Jakarta Data providers and persistence models that provide custom entity-defining annotations
  * (entity annotations other than {@code jakarta.persistence.Entity} and {@code jakarta.nosql.Entity})
  * must annotate each custom entity-defining annotation with this annotation. Applications must
