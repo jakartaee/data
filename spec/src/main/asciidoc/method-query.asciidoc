@@ -290,7 +290,7 @@ List<Product> findByNameLikeAndYearMadeBetweenAndPriceLessThan(String namePatter
                                                                int maxYear,
                                                                float maxPrice,
                                                                Limit limit,
-                                                               Sort<?>... sorts)
+                                                               Order<Product> sortBy)
 ----
 
 ==== Patterns
