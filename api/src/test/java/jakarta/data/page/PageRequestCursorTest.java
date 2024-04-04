@@ -31,7 +31,7 @@ class PageRequestCursorTest {
 
     @Test
     @DisplayName("Should include key values in next PageRequest")
-    void shouldCreatePageRequestAfterKeyset() {
+    void shouldCreatePageRequestAfterKeys() {
         PageRequest<?> pageRequest = PageRequest.ofSize(20).afterKey("First", 2L, 3);
 
         assertSoftly(softly -> {
@@ -47,7 +47,7 @@ class PageRequestCursorTest {
 
     @Test
     @DisplayName("Should include key values in next PageRequest from Cursor")
-    void shouldCreatePageRequestAfterKeysetCursor() {
+    void shouldCreatePageRequestAfterCursor() {
         PageRequest.Cursor cursor = new PageRequestCursor("me", 200);
         PageRequest<?> pageRequest = PageRequest.ofSize(35).afterCursor(cursor);
 
@@ -63,7 +63,7 @@ class PageRequestCursorTest {
 
     @Test
     @DisplayName("Should include key values in previous PageRequest")
-    void shouldCreatePageRequestBeforeKeyset() {
+    void shouldCreatePageRequestBeforeKey() {
         PageRequest<?> pageRequest = PageRequest.ofSize(30).beforeKey(1991, "123-45-6789").page(10);
 
         assertSoftly(softly -> {
@@ -137,13 +137,11 @@ class PageRequestCursorTest {
 
     @Test
     @DisplayName("Should return true from equals if key values and other properties are equal")
-    void shouldBeEqualWithSameKeysetValues() {
+    void shouldBeEqualWithSameKeyValues() {
         PageRequest<?> pageRequest25P1S0A1 = PageRequest.ofSize(25).afterKey("keyval1", '2', 3);
         PageRequest<?> pageRequest25P1S0B1 = PageRequest.ofSize(25).beforeKey("keyval1", '2', 3);
         PageRequest<?> pageRequest25P1S0A1Match = PageRequest.ofSize(25).afterCursor(new PageRequestCursor("keyval1", '2', 3));
         PageRequest<?> pageRequest25P2S0A1 = PageRequest.ofPage(2).size(25).afterCursor(new PageRequestCursor("keyval1", '2', 3));
-        PageRequest<?> pageRequest25P1S1A1 = PageRequest.ofSize(25).afterKey("keyval1", '2', 3);
-        PageRequest<?> pageRequest25P1S2A1 = PageRequest.ofSize(25).afterKey("keyval1", '2', 3);
         PageRequest<?> pageRequest25P1S0A2 = PageRequest.ofSize(25).afterKey("keyval2", '2', 3);
 
         PageRequest.Cursor cursor1 = new PageRequestCursor("keyval1", '2', 3);
@@ -201,7 +199,7 @@ class PageRequestCursorTest {
 
     @Test
     @DisplayName("Key should be replaced on new instance of PageRequest")
-    void shouldReplaceKeyset() {
+    void shouldReplaceKey() {
         PageRequest<?> p1 = PageRequest.ofSize(30).afterKey("last1", "fname1", 100).page(12);
         PageRequest<?> p2 = p1.beforeKey("lname2", "fname2", 200);
 
