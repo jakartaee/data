@@ -35,8 +35,6 @@ In particular:
 
 - The `jakarta.nosql.Entity` annotation from the Jakarta NoSQL specification is an entity-defining annotation for Jakarta Data providers backed by NoSQL databases. Other Jakarta Data providers must not support the use of `jakarta.nosql.Entity` as an entity-defining annotation.
 
-A Jakarta Data provider might define a custom entity-defining annotation.
-The name of such a custom entity-defining annotation type must end with `Entity`. This convention allows any Jakarta Data provider to identify when a repository is associated with entity classes declared using an unrecognized entity-defining annotation.
 
 The lifecycle methods and query methods of a repository operate on a set of entities associated with that repository.
 All entities associated with a given repository should be declared using the same entity-defining annotation type.
