@@ -18,6 +18,7 @@ package ee.jakarta.tck.data.core.cdi;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -57,7 +58,11 @@ public class ExtensionTests {
     
     @Assertion(id = "133", strategy = "Verifies ability for a CDI BuildCompatibleExtension to handle custom entity annotations")
     public void testDataProviderWithBuildCompatibleExtension() {
-        assertEquals(List.of("Skinner", "Powell", "Gibson"), directory.findLastNameByIdInOrderByAgeDesc(List.of(04L, 05L, 011L)));
+    	List<Person> result = directory.findByIdInOrderByAgeDesc(List.of(04L, 05L, 011L));
+    	List<String> firstNames = result.stream().map(p -> p.firstName).collect(Collectors.toList());
+    	List<String> lastNames = result.stream().map(p -> p.lastName).collect(Collectors.toList());
+    	assertEquals(List.of("Olivia", "Lauren", "Victor"), firstNames);
+        assertEquals(List.of("Skinner", "Powell", "Gibson"), lastNames);
     }
     
     @Assertion(id = "640", strategy = "Verifies that another Jakarta Data Provider does not attempt to implement the Dictonary repository")

@@ -43,12 +43,11 @@ public class DirectoryRepository implements Directory {
     }
 
     @Override
-    public List<String> findLastNameByIdInOrderByAgeDesc(List<Long> ids) {
+    public List<Person> findByIdInOrderByAgeDesc(List<Long> ids) {
          return data.values()
              .stream()
              .filter(p -> ids.contains(p.id))
              .sorted(Comparator.comparing((Person p) -> p.age).reversed())
-             .map(p -> p.lastName)
              .collect(Collectors.toList());
     }
 

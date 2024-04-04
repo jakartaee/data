@@ -35,7 +35,7 @@ public interface Directory extends DataRepository<Person, Long> {
     //Self referencing provider so that this repository can be used for both WEB and CORE tests
     public static final String PERSON_PROVIDER = "PERSON_PROVIDER";
     
-    List<String> findLastNameByIdInOrderByAgeDesc(List<Long> ids);
+    List<Person> findByIdInOrderByAgeDesc(List<Long> ids);
     
     @Delete
     void deleteById(@By(ID) Long id);
