@@ -1,6 +1,67 @@
-=== Query by Method Name
+// Copyright (c) 2022, 2024 Contributors to the Eclipse Foundation
+//
+// This program and the accompanying materials are made available under the
+// terms of the Eclipse Public License v. 2.0 which is available at
+// http://www.eclipse.org/legal/epl-2.0.
+//
+// This Source Code may also be made available under the following Secondary
+// Licenses when the conditions for such availability set forth in the Eclipse
+// Public License v. 2.0 are satisfied: GNU General Public License, version 2
+// with the GNU Classpath Exception which is available at
+// https://www.gnu.org/software/classpath/license.html.
+//
+// SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
 
-The Query by method mechanism allows for creating query commands by naming convention.
+= Jakarta Data: Query by Method Name Extension
+:title: Jakarta Data: Query by Method Name Extension
+:pdf-theme: ../../theme/jakartaee-theme.yml
+:authors:
+:email:
+:version-label!:
+:doctype: book
+:license: Apache License v2.0
+:inceptionYear: 2022
+:source-highlighter: coderay
+:toc: left
+:toclevels: 3
+:sectnumlevels: 4
+:setanchors:
+:stem:
+ifdef::backend-pdf[]
+:pagenums:
+:numbered:
+:title-logo-image: image:jakarta_ee_logo_schooner_color_stacked_default.png[pdfwidth=4.25in,align=right]
+endif::[]
+:icons: font
+ifndef::imagesdir[:imagesdir: images]
+ifndef::sourcedir[:sourcedir: ../../main/java]
+
+:sectnums!:
+include::chapters/license/license-efsl.adoc[]
+
+:sectnums:
+
+== Introduction
+
+_Query by Method Name_ is a query language suitable for embedding in the names of methods written in Java.
+As such, its syntax is limited to the use of legal identifier characters, so the text of a query must contain neither whitespace, nor punctuation characters, nor numeric operators, nor comparison operators.
+
+Jakarta Data 1.0 offers a Query by Method Name facility as an extension to the specification, providing a migration path for existing applications written for repository frameworks which offer similar functionality.
+
+The functionality described here overlaps significantly with both:
+
+- parameter-based automatic query methods, that is, `@Find` and `@Delete`, and
+- annotated query methods, that is `@Query` and Jakarta Data Query Language or Jakarta Persistence Query Language.
+
+Therefore, these alternative approaches are strongly preferred for newly-written code.
+
+A Jakarta Data provider is required to support the Query by Method Name extension in Jakarta Data 1.0.
+
+WARNING: This functionality is considered deprecated, and the requirement that a provider support the Query by Method Name extension will be removed in a future version of Jakarta Data.
+
+== Query by Method Name
+
+The Query by Method Name mechanism allows for creating query commands by naming convention.
 
 [source,java]
 ----
@@ -37,7 +98,7 @@ Example query methods:
 - `findByCategoryNameAndPriceLessThan(String categoryName, double price)`: Find entities by 'categoryName' and 'price' properties, applying an 'And' condition.
 - `findByNameLikeOrderByPriceDescIdAsc`: Find entities by matching the 'name' property against a pattern, sorting the results by 'price' in descending order, and sorting results with the same 'price' by the 'id' in ascending order.
 
-==== BNF Grammar for Query Methods
+=== BNF Grammar for Query Methods
 
 Query methods allow developers to create database queries using method naming conventions. These methods consist of a subject, predicate, and optional order clause. This BNF notation provides a structured representation for understanding and implementing these powerful querying techniques in your applications.
 
@@ -73,7 +134,7 @@ Explanation of the BNF elements:
 - `<order-clause>`: Specifies the optional order clause, starting with "OrderBy" and followed by one or more order items.
 - `<order-item>`: Represents an ordered collection of entity attributes by which to sort results, including an optional "Asc" or "Desc" to specify the sort direction.
 
-==== Query by Method Name Keywords
+=== Query by Method Name Keywords
 
 The following table lists the _Query by Method Name_ keywords that must be supported by Jakarta Data providers, except where explicitly indicated for a type of database.
 
@@ -232,14 +293,80 @@ List<Product> findByNameLikeAndYearMadeBetweenAndPriceLessThan(String namePatter
                                                                Sort<?>... sorts)
 ----
 
-===== Patterns
+==== Patterns
 
 Wildcard characters for patterns are determined by the data access provider. For relational databases, `_` matches any one character and `%` matches 0 or more characters.
 
-===== Logical Operator Precedence
+==== Logical Operator Precedence
 
 For relational databases, the logical operator `And` takes precedence over `Or`, meaning that `And` is evaluated on conditions before `Or` when both are specified on the same method. For other database types, the precedence is limited to the capabilities of the database. For example, some graph databases are limited to precedence in traversal order.
 
-==== Return Types
+=== Return Types
 
 Refer to the Jakarta Data module Javadoc section on "Return Types for Repository Methods" for a listing of valid return types for methods using Query by Method Name.
+
+=== Persistent Field Names in Query by Method Name
+
+Section 3.2 of the Jakarta Data specification describes how names are assigned to persistent fields of an entity.
+
+For _Query by Method Name_, the use of delimiters within a compound name is optional. Delimiters may be omitted entirely from a compound name when they are not needed to disambiguate the persistent field to which the name refers. But for a given entity property name, delimiter usage must be consistent: either the delimiter must be used between every pair of persistent field names within the compound name, or it must not occur within the compound name.
+
+Resolution of a persistent field involves the following steps:
+
+1. A persistent field name is extracted from the method name according to the <<BNF Grammar for Query Methods>>. For example, if the query method name is `findByAddressZipCode`, the extracted field name is `AddressZipCode`.
+
+2. The extracted name is matched against the fields of the entity class. If the name assigned to a persistent field of the entity class matches the extracted name, ignoring case, then the extracted name resolves to that field.
+
+3. Otherwise, if no match is found among the fields of the entity, the extracted name is matched against the fields of entity classes and embedded classes reachable from the entity class, interpreting the extracted name as a compound name, as outlined in the previous section, both with and without the optional delimiter. If the compound name assigned to a persistent field matches the extracted name, also interpreted as a compound name, and ignoring case, then the extracted name resolves to that field.
+
+4. If no matching persistent field is found in either of the previous steps, the provider is permitted to reject the query method or to throw `UnsupportedOperationException` when the method is called.
+
+A persistent field name used in a _Query by Method Name_ must not contain a <<Query by Method Name Keywords,keyword>> reserved by _Query by Method Name_.
+
+==== Scenario 1: Person Repository with Unambiguous Resolution
+
+In this scenario, we have the following data model:
+
+[source,java]
+----
+class Person {
+  private Long id;
+  private MailingAddress address;
+}
+
+class MailingAddress {
+  private int zipcode;
+}
+----
+
+The `Person` entity does not have an `addressZipCode` field, so use of the delimiter is optional. It is valid to write both of the following repository methods, which have the same meaning,
+
+[source,java]
+----
+List<Person> findByAddressZipCode(int zipCode);
+List<Person> findByAddress_zipcode(int zipCode);
+----
+
+==== Scenario 2: Order Repository with Resolution that requires a Delimiter
+
+In this scenario, we have the following data model:
+
+[source,java]
+----
+class Order {
+  private Long id;
+  private String addressZipCode;
+  private MailingAddress address;
+}
+
+class MailingAddress {
+  private int zipcode;
+}
+----
+
+The `Order` entity has an `addressZipCode` field, as well as an `address` field for an embeddable class with a `zipcode` field. The method name `findByAddressZipCode` points to the `addressZipCode` field and cannot be used to navigate to the embedded class. To navigate to the `zipcode` field of the embedded class, the delimiter must be used:
+
+[source,java]
+----
+List<Order> findByAddress_zipcode(int zipCode);
+----
