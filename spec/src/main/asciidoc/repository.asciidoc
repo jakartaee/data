@@ -145,8 +145,8 @@ For example, using a named parameter:
 
 [source,java]
 ----
-@Query("where title like :title order by title")
-Page<Book> booksByTitle(String title, PageRequest<Book> pageRequest);
+@Query("where title like :title order by title asc, id asc")
+Page<Book> booksByTitle(String title, PageRequest pageRequest);
 ----
 
 [source,java]
@@ -207,12 +207,13 @@ For example:
 Book bookByIsbn(String isbn);
 
 @Find
-List<Book> booksByYear(Year year, Sort order, Limit limit);
+List<Book> booksByYear(Year year, Sort<Book> order, Limit limit);
 
 @Find
 Page<Book> find(@By("year") Year publishedIn,
                 @By("genre") Category type,
-                PageRequest<Book> pageRequest);
+                Order<Book> sortBy,
+                PageRequest pageRequest);
 ----
 
 Automatic query methods annotated with `@Find` or `@Delete` _are_ portable between providers.
@@ -276,7 +277,7 @@ A special parameter controls which query results are returned to the caller of a
 
 - a `Limit` allows the query results to be limited to a given range defined in terms of an offset and maximum number of results,
 - a `Sort` or `Order` allows the query results to be sorted by a given entity field or list of fields, respectively, and
-- a `PageRequest` combines a range with optional sorting criteria, and a parameter of this type must be declared when the repository method returns a `Page` of results, as specified below in <<Offset-based Pagination>>, or a `CursoredPage`, as specified in <<Cursor-based Pagination>>.
+- a `PageRequest` splits results into pages. A parameter of this type must be declared when the repository method returns a `Page` of results, as specified below in <<Offset-based Pagination>>, or a `CursoredPage`, as specified in <<Cursor-based Pagination>>.
 
 A repository method must throw `UnsupportedOperationException` if it has:
 
@@ -287,8 +288,6 @@ A repository method must throw `UnsupportedOperationException` if it has:
 
 Alternatively, a Jakarta Data provider is permitted to reject such a repository method declaration at compile time.
 
-A repository method must throw `IllegalArgumentException` if it is called with an argument or arguments of type `Sort` or `Order` and a separate argument of type `PageRequest` with nonempty sort criteria.
-
 A repository method must throw `DataException` if the database is incapable of ordering the query results using the given sort criteria.
 
 The following example demonstrates the use of special parameters:
@@ -298,7 +297,7 @@ The following example demonstrates the use of special parameters:
 @Repository
 public interface ProductRepository extends BasicRepository<Product, Long> {
 
-    List<Product> findByName(String name, PageRequest<Product> pageRequest);
+    Page<Product> findByName(String name, PageRequest pageRequest, Order<Product> order);
 
     List<Product> findByNameLike(String pattern, Limit max, Sort<?>... sorts);
 
@@ -319,15 +318,14 @@ Even better, the <<Type-safe Access to Entity Attributes,static metamodel>> may 
 Sort<Employee> nameAscending = _Employee.name.asc();
 ----
 
-This `PageRequest` combines sorting with a starting page and maximum page size:
+This `PageRequest` specifies a starting page and maximum page size:
 
 [source,java]
 ----
-PageRequest<Product> pageRequest =
-        PageRequest.of(Product.class)
-                   .size(20).page(1)
-                   .sortBy(_Product.price.desc());
-List<Product> first20 = products.findByName(name, pageRequest);
+PageRequest pageRequest = PageRequest.ofSize(20).page(1);
+List<Product> first20 = products.findByName(name, pageRequest,
+                            Order.by(_Product.price.desc(),
+                                     _Product.id.asc()));
 ----
 
 === Precedence of Sort Criteria
@@ -346,7 +344,7 @@ Sort criteria are provided statically for a repository method by using the `Orde
 
 ==== Dynamic Mechanisms for Sort Criteria
 
-Sort criteria are provided dynamically to repository methods either via `Sort` parameters or via a `PageRequest` or `Order` parameter that has one or more `Sort` values. `Sort` and `PageRequest` containing `Sort` must not both be provided to the same method. Similarly, `Order` and `PageRequest` containing `Sort` must not both be provided to the same method.
+Sort criteria are provided dynamically to repository methods either via `Sort` parameters or via a `Order` parameter that has one or more `Sort` values.
 
 ==== Examples of Sort Criteria Precedence
 
@@ -354,24 +352,28 @@ The following examples work through scenarios where static and dynamic sort crit
 
 [source,java]
 ----
-// Sorts first by type. When type is the same, applies the PageRequest's sort criteria
-Page<User> findByNameStartsWithOrderByType(String namePrefix, PageRequest<User> pagination);
+// Sorts first by type. When type is the same, applies the Order's sort criteria
+Page<User> findByNameStartsWithOrderByType(String namePrefix,
+                                           PageRequest pagination,
+                                           Order<User> sorts);
 
 // Sorts first by type. When type is the same, applies the criteria in the Sorts
 List<User> findByNameStartsWithOrderByType(String namePrefix, Sort<?>... sorts);
 
-// Sorts first by age. When age is the same, applies the PageRequest's sort criteria
+// Sorts first by age. When age is the same, applies the Order's sort criteria
 @OrderBy("age")
-Page<User> findByNameStartsWith(String namePrefix, PageRequest<User> pagination);
+Page<User> findByNameStartsWith(String namePrefix,
+                                PageRequest pagination,
+                                Order<User> sorts);
 
 // Sorts first by age. When age is the same, applies the criteria in the Sorts
 @OrderBy("age")
 List<User> findByNameStartsWith(String namePrefix, Sort<?>... sorts);
 
-// Sorts first by name. When name is the same, applies the PageRequest's sort criteria
+// Sorts first by name. When name is the same, applies the Order's sort criteria
 @Query("WHERE (u.age > ?1)")
 @OrderBy("name")
-CursoredPage<User> olderThan(int age, PageRequest<User> pagination);
+CursoredPage<User> olderThan(int age, PageRequest pagination, Order<User> sorts);
 ----
 
 === Pagination in Jakarta Data
@@ -466,10 +468,8 @@ Code Execution:
 People people;
 
 Page<Person> page =
-        people.findAll(PageRequest.of(Person.class)
-                                  .page(1)
-                                  .size(2)
-                                  .sortBy(Sort.asc("id")));
+        people.findAll(PageRequest.ofPage(1).size(2),
+                       Order.by(Sort.asc("id")));
 ----
 
 Resulting Page Content:
@@ -488,8 +488,9 @@ Next Page Execution:
 [source,java]
 ----
 if (page.hasNext()) {
-   PageRequest<Person> nextPageRequest = page.nextPageRequest();
-   Page<Person> page2 = people.findAll(nextPageRequest);
+   PageRequest nextPageRequest = page.nextPageRequest();
+   Page<Person> page2 = people.findAll(nextPageRequest,
+                                       Order.by(Sort.asc("id")));
 }
 ----
 
@@ -520,7 +521,7 @@ For example,
 @Repository
 public interface CustomerRepository extends BasicRepository<Customer, Long> {
   CursoredPage<Customer> findByZipcodeOrderByLastNameAscFirstNameAscIdAsc(
-                                 int zipcode, PageRequest<Customer> pageRequest);
+                                 int zipcode, PageRequest pageRequest);
 }
 ----
 
@@ -528,9 +529,7 @@ You can obtain the initial page relative to an offset and subsequent pages relat
 
 [source,java]
 ----
-PageRequest<Customer> pageRequest =
-        PageRequest.of(Customer.class)
-                   .size(50);
+PageRequest pageRequest = PageRequest.ofSize(50);
 Page<Customer> page =
         customers.findByZipcodeOrderByLastNameAscFirstNameAscIdAsc(55901, pageRequest);
 if (page.hasNext()) {
@@ -545,17 +544,15 @@ Or you can obtain the next (or previous) page relative to a known entity,
 [source,java]
 ----
 Customer c = ...
-PageRequest<Customer> p =
-        PageRequest.of(Customer.class)
-                   .size(50)
-                   .afterKey(c.lastName, c.firstName, c.id);
+PageRequest p = PageRequest.ofSize(50)
+                           .afterKey(c.lastName, c.firstName, c.id);
 page = customers.findByZipcodeOrderByLastNameAscFirstNameAscIdAsc(55902, p);
 ----
 
 The sort criteria for a repository method that performs cursor-based pagination must uniquely identify each entity and must be provided by:
 
 * `OrderBy` name pattern of the repository method (as in the examples above) or `@OrderBy` annotation(s) on the repository method.
-* `Sort` parameters of the `PageRequest` that is supplied to the repository method.
+* `Order` and `Sort` parameters of the repository method.
 
 The values of the entity attributes of the combined sort criteria define the cursor for cursor-based cursor based pagination. Within the cursor, each entity attribute has the same sorting and order of precedence that it has within the combined sort criteria.
 
@@ -611,7 +608,9 @@ Here is an example where an application uses `@Query` to provide a partial query
 @Repository
 public interface CustomerRepository extends BasicRepository<Customer, Long> {
     @Query("WHERE totalSpent / totalPurchases > ?1")
-    CursoredPage<Customer> withAveragePurchaseAbove(float minimum, PageRequest<Customer> pageRequest);
+    CursoredPage<Customer> withAveragePurchaseAbove(float minimum,
+                                                    PageRequest pageRequest,
+                                                    Order<Customer> sorts);
 }
 ----
 
@@ -619,13 +618,12 @@ Example traversal of pages:
 
 [source,java]
 ----
-PageRequest<Customer> pageRequest =
-        Order.by(_Customer.yearBorn.desc(),
-                 _Customer.name.asc(),
-                 _Customer.id.asc())
-             .pageSize(25);
+Order<Customer> order = Order.by(_Customer.yearBorn.desc(),
+                                 _Customer.name.asc(),
+                                 _Customer.id.asc());
+PageRequest pageRequest = PageRequest.ofSize(25);
 do {
-    page = customers.withAveragePurchaseAbove(50.0f, pageRequest);
+    page = customers.withAveragePurchaseAbove(50.0f, pageRequest, order);
     ...
     if (page.hasNext()) {
         pageRequest = page.nextPageRequest();
@@ -642,7 +640,9 @@ In this example, the application uses a cursor to request pages in forward and p
 ----
 @Repository
 public interface Products extends CrudRepository<Product, Long> {
-    CursoredPage<Product> findByNameLike(String namePattern, PageRequest<Product> pageRequest);
+    CursoredPage<Product> findByNameLike(String namePattern,
+                                         PageRequest pageRequest,
+                                         Order<Product> sorts);
 }
 ----
 
@@ -651,12 +651,12 @@ Obtaining the next 10 products that cost $50.00 or more:
 [source,java]
 ----
 float priceMidpoint = 50.0f;
-PageRequest<Product> pageRequest =
-        Order.by(_Product.price.asc(), _Product.id.asc())
-             .pageSize(10)
+Order<Product> order = Order.by(_Product.price.asc(),
+                                _Product.id.asc());
+PageRequest pageRequest = PageRequest.ofSize(10)
              .afterKey(priceMidpoint, 0L);
 CursoredPage<Product> moreExpensive =
-        products.findByNameLike(pattern, pageRequest);
+        products.findByNameLike(pattern, pageRequest, order);
 ----
 
 Obtaining the previous 10 products:
@@ -667,7 +667,7 @@ pageRequest = moreExpensive.hasContent()
         ? pageRequest.beforeCursor(moreExpensive.getCursor(0))
         : pageRequest.beforeKey(priceMidpoint, 1L);
 CursoredPage<Product> lessExpensive =
-        products.findByNameLike(pattern, pageRequest);
+        products.findByNameLike(pattern, pageRequest, order);
 ----
 
 ===== Example with Combined Sort Criteria
@@ -682,34 +682,34 @@ public interface Products extends CrudRepository<Product, Long> {
     @OrderBy(_Car.vehicleCondition)
     CursoredPage<Car> find(@By(_Car.make) String manufacturer,
                            @By(_Car.model) String model,
-                           PageRequest<Car> pageRequest);
+                           PageRequest pageRequest,
+                           Order<Car> sorts);
 }
 ----
 
-The above criteria does not uniquely identify `Car` entities. After sorting on the vehicle condition, finer grained sorting is provided dynamically by the `PageRequest`, in this case the vehicle price followed by the unique Vehicle Identification Number (VIN). It is a good practice for the final sort criterion to be a unique identifier of the entity to ensure a deterministic ordering.
+The above criteria does not uniquely identify `Car` entities. After sorting on the vehicle condition, finer grained sorting is provided dynamically by the `Order`, in this case the vehicle price followed by the unique Vehicle Identification Number (VIN). It is a good practice for the final sort criterion to be a unique identifier of the entity to ensure a deterministic ordering.
 
 [source,java]
 ----
-PageRequest<Car> page1Request =
-        Order.by(_Car.price.desc(), _Car.vin.asc())
-             .pageSize(25);
+Order<Car> order = Order.by(_Car.price.desc(),
+                            _Car.vin.asc())
+PageRequest page1Request = PageRequest.ofSize(25);
 CursoredPage<Car> page1 =
-        cars.find(make, model, page1Request);
+        cars.find(make, model, page1Request, order);
 ----
 
 The query results are ordered first by vehicle condition. All resulting entities with the same vehicle condition are subsequently ordered by their price in descending order. All resulting entities with the same vehicle condition and price are ordered alphabetically by their VIN. The end user requests the next page of results. If the application still has access to the page at this point, it can use `page.nextPageRequest()` to obtain a request for the next page of results. In this case, the Jakarta Data provider computes the cursor from the vehicle condition, price, and VIN of the final `Car` entity of the page and includes the cursor in the resulting `PageRequest` instance. Alternatively, the application does not need access to the page if it obtained the cursor or the vehicle condition, price, and VIN values that make up the cursor. In this case, it can construct a new `PageRequest`,
 
 [source,java]
 ----
-PageRequest<Car> page2Request =
-        Order.by(_Car.price.desc(), _Car.vin.asc())
-             .page(2) // cosmetic when using a cursor
+PageRequest page2Request = PageRequest
+             .ofPage(2) // cosmetic when using a cursor
              .size(25)
              .afterKey(lastCar.vehicleCondition,
                        lastCar.price,
                        lastCar.vin);
 CursoredPage<Car> page2 =
-        cars.find(make, model, page2Request);
+        cars.find(make, model, page2Request, order);
 ----
 
 ===== Scenario: Person Entity and People Repository
@@ -737,7 +737,8 @@ This cursor-based pagination scenario uses the same `Person` entity and example 
 @Repository
 public interface People extends BasicRepository<Person, Long> {
     @Find
-    CursoredPage<Person> findAll(PageRequest<Person> pagination);
+    CursoredPage<Person> findAll(PageRequest pagination,
+                                 Order<Person> sorts);
 }
 ----
 
@@ -748,13 +749,11 @@ Code Execution:
 @Inject
 People people;
 
-PageRequest<Person> firstPageRequest =
-        PageRequest.of(Person.class)
-                   .size(4)
-                   .sortBy(Sort.asc("name"),
-                           Sort.asc("id"));
+Order<Person> order = Order.by(Sort.asc("name"),
+                               Sort.asc("id");
+PageRequest firstPageRequest = PageRequest.ofSize(4);
 CursoredPage<Person> page =
-        people.findAll(firstPageRequest);
+        people.findAll(firstPageRequest, order);
 ----
 
 Resulting Page Content:
@@ -783,8 +782,8 @@ Next Page Execution:
 [source,java]
 ----
 if (page.hasNext()) {
-   PageRequest<Person> nextPageRequest = page.nextPageRequest();
-   CursoredPage<Person> page2 = people.findAll(nextPageRequest);
+   PageRequest nextPageRequest = page.nextPageRequest();
+   CursoredPage<Person> page2 = people.findAll(nextPageRequest, order);
 }
 ----
 

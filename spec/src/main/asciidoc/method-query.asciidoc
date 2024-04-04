@@ -361,13 +361,13 @@ List<Person> findByAddressZipCode(int zipCode);
 List<Person> findByAddress_zipcode(int zipCode);
 ----
 
-==== Scenario 2: Order Repository with Resolution that requires a Delimiter
+==== Scenario 2: Customer Repository with Resolution that requires a Delimiter
 
 In this scenario, we have the following data model:
 
 [source,java]
 ----
-class Order {
+class Customer {
   private Long id;
   private String addressZipCode;
   private MailingAddress address;
@@ -378,9 +378,9 @@ class MailingAddress {
 }
 ----
 
-The `Order` entity has an `addressZipCode` field, as well as an `address` field for an embeddable class with a `zipcode` field. The method name `findByAddressZipCode` points to the `addressZipCode` field and cannot be used to navigate to the embedded class. To navigate to the `zipcode` field of the embedded class, the delimiter must be used:
+The `Customer` entity has an `addressZipCode` field, as well as an `address` field for an embeddable class with a `zipcode` field. The method name `findByAddressZipCode` points to the `addressZipCode` field and cannot be used to navigate to the embedded class. To navigate to the `zipcode` field of the embedded class, the delimiter must be used:
 
 [source,java]
 ----
-List<Order> findByAddress_zipcode(int zipCode);
+List<Customer> findByAddress_zipcode(int zipCode);
 ----

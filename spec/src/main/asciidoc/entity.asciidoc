@@ -355,15 +355,15 @@ The rule for concatenating compound names depends on the context, and is specifi
 
 | `@Find` | Parameter name
 |`_`
-|`@Find List<Order> find(int address_zipCode);`
+|`@Find List<Person> find(int address_zipCode);`
 
 |`@Query` | Path expression within query
 |`.`
-|`@Query("FROM Order WHERE address.zipCode = ?1")`
+|`@Query("FROM Person WHERE address.zipCode = ?1")`
 
 |_Query by Method Name_ | Method name
 |`_`
-|`List<Order> findByAddress_zipCode(int zip);`
+|`List<Person> findByAddress_zipCode(int zip);`
 
 |`Sort` | String argument
 |`.` or `_`
@@ -371,7 +371,7 @@ The rule for concatenating compound names depends on the context, and is specifi
 
 |`@By` or `@OrderBy` | Annotation value
 |`.` or `_`
-|`@Find List<Order> find(@By("address.zipCode") int zip);`
+|`@Find List<Person> find(@By("address.zipCode") int zip);`
 |===
 
 NOTE: Application programmers are strongly encouraged to follow Java's camel case naming standard for fields of entities, relations, and embeddable classes, avoiding underscores in field names. The resolution algorithm for persistent field identification relies on the use of underscore as a delimiter. Adhering to the camel case naming convention ensures consistency and eliminates ambiguity.
