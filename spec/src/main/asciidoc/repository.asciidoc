@@ -36,7 +36,7 @@ A repository interface may inherit methods from a superinterface.
 A superinterface of a repository interface must either:
 
 - be one of the built-in generic repository supertypes defined by this specification, `DataRepository`, `BasicRepository`, or `CrudRepository`, or
-- be a non-generic toplevel interface with no type parameters, whose abstract methods likewise declare no type parameters.
+- be a non-generic toplevel interface with no type parameters, whose abstract methods likewise declare no type parameters, and which does not itself directly or indirectly inherit any generic interface or any interface whose abstract methods declare type parameters.
 
 A Jakarta Data implementation must treat abstract methods inherited by a repository interface as if they were directly declared by the repository interface.
 
