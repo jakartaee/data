@@ -37,8 +37,8 @@ In particular:
 
 
 A Jakarta Data provider might define a custom entity-defining annotation.
-
-To ensure interoperability within the Jakarta Data ecosystem, custom entity-defining annotations must be marked with `EntityQualifier`. This approach ensures that Jakarta Data providers can recognize and process entities declared with custom annotations, thereby maintaining consistency and flexibility in data management.
+Custom entity-defining annotations must be marked with `@EntityQualifier`. 
+This allows other Jakarta Data providers and tools to recognize and process entities declared with custom entity-defining annotations.
 
 The lifecycle methods and query methods of a repository operate on a set of entities associated with that repository.
 All entities associated with a given repository should be declared using the same entity-defining annotation type.
