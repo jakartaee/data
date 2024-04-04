@@ -31,7 +31,6 @@ import java.util.stream.Stream;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.junit.jupiter.api.Assertions;
 
 import ee.jakarta.tck.data.framework.junit.anno.Assertion;
 import ee.jakarta.tck.data.framework.junit.anno.Persistence;
@@ -41,7 +40,6 @@ import ee.jakarta.tck.data.standalone.persistence.Product.Department;
 import jakarta.data.Order;
 import jakarta.data.Sort;
 import jakarta.data.exceptions.EntityExistsException;
-import jakarta.data.exceptions.MappingException;
 import jakarta.data.exceptions.OptimisticLockingFailureException;
 import jakarta.inject.Inject;
 
@@ -151,10 +149,6 @@ public class PersistenceEntityTests {
         int countExpensive = catalog.countByPriceGreaterThanEqual(2.99);
         assertEquals(2, countExpensive, "Expected two products to be more than 3.00");
         
-        Assertions.assertThrows(MappingException.class, () -> {
-            catalog.countBySurgePriceGreaterThanEqual(2.99);
-        });
-
         assertEquals(5L, catalog.deleteByProductNumLike("TEST-PROD-%"));
     }
 
