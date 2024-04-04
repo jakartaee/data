@@ -44,6 +44,7 @@ import java.lang.annotation.Target;
  * <pre>
  * &#64;OrderBy("lastName")
  * &#64;OrderBy("firstName")
+ * &#64;OrderBy("id")
  * Person[] findByZipCode(int zipCode, PageRequest pageRequest);
  * </pre>
  *

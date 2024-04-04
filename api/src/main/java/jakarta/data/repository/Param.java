@@ -32,7 +32,7 @@ import java.lang.annotation.Target;
  * &#64;Repository
  * public interface Products extends BasicRepository&lt;Product, String&gt; {
  *
- *     &#64;Query("WHERE length * width * height <= :maxVolume ORDER BY price ASC")
+ *     &#64;Query("WHERE length * width * height <= :maxVolume ORDER BY price ASC, id ASC")
  *     Page&lt;Product&gt; freeShippingEligible(&#64;Param("maxVolume") float volumeLimit,
  *                                        PageRequest pageRequest);
  *

@@ -93,7 +93,8 @@ import java.lang.annotation.Target;
  *            "where length(name) >= :min and length(name) <= :max")
  *     Page&lt;String&gt; namesOfLength(&#64;Param("min") int minLength,
  *                                &#64;Param("max") int maxLength,
- *                                pageRequest);
+ *                                PageRequest pageRequest,
+ *                                Order&lt;Person&gt; order);
  *
  *     ...
  * }
