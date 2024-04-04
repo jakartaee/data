@@ -18,7 +18,6 @@
 package jakarta.data;
 
 import jakarta.data.metamodel.StaticMetamodel;
-import jakarta.data.page.PageRequest;
 import jakarta.data.repository.OrderBy;
 
 import java.util.Objects;
@@ -35,9 +34,6 @@ import java.util.Objects;
  * multiple entities. Parameters of type {@code Sort} must occur after
  * the method parameters representing regular parameters of the query
  * itself.</p>
- *
- * <p>Alternatively, dynamic {@code Sort} criteria may be specified when
- * requesting a {@link PageRequest#sortBy(Sort) page} of results.</p>
  *
  * <p>The parameter type {@code Sort<?>...} allows a variable number
  * of generic {@code Sort} criteria. For example,</p>

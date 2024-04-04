@@ -19,7 +19,6 @@ package jakarta.data.repository;
 
 import jakarta.data.Order;
 import jakarta.data.Sort;
-import jakarta.data.page.PageRequest;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;
@@ -33,18 +32,14 @@ import java.lang.annotation.Target;
  * repository method, the precedence for sorting follows the order
  * in which the {@code OrderBy} annotations are specified,
  * and after that follows any sort criteria that are supplied
- * dynamically by {@link Sort} parameters, any {@link Order} parameter,
- * or by a {@link PageRequest} parameter with
- * {@linkplain PageRequest#sorts() sorting criteria}.</p>
+ * dynamically by {@link Sort} parameters or by any {@link Order} parameter.</p>
  *
  * <p>For example, the following sorts first by the
  * {@code lastName} attribute in ascending order,
  * and secondly, for entities with the same {@code lastName},
  * it then sorts by the {@code firstName} attribute,
  * also in ascending order. For entities with the same
- * {@code lastName} and {@code firstName},
- * it then sorts by criteria that is specified in the
- * {@link PageRequest#sorts()}.</p>
+ * {@code lastName} and {@code firstName}.</p>
  *
  * <pre>
  * &#64;OrderBy("lastName")

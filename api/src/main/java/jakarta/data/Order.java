@@ -21,7 +21,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import jakarta.data.metamodel.StaticMetamodel;
-import jakarta.data.page.PageRequest;
 import jakarta.data.repository.OrderBy;
 
 /**
@@ -162,34 +161,7 @@ public class Order<T> implements Iterable<Sort<? super T>> {
         return sorts.iterator();
     }
 
-    /**
-     * Create a {@link PageRequest} for the specified page number
-     * of page size 10 (the default for {@code PageRequest})
-     * of the query results sorted according to any static sort criteria that
-     * is specified and the ordered list of {@link Sort} criteria
-     * that is represented by this instance.
-     *
-     * @param pageNumber requested page number.
-     * @return a request for a page of results that are sorted based on the sort criteria represented by this instance
-     *         and with the specified page number. This method never returns {@code null}.
-     */
-    public PageRequest<T> page(long pageNumber) {
-        return PageRequest.<T>ofPage(pageNumber).sortBy(sorts);
-    }
 
-    /**
-     * Create a {@link PageRequest} for the first page of the specified page size
-     * of the query results sorted according to any static sort criteria that
-     * is specified and the ordered list of {@link Sort} criteria
-     * that is represented by this instance.
-     *
-     * @param size requested size of pages.
-     * @return a request for a page of results that are sorted based on the sort criteria represented by this instance
-     *         and with the specified page size. This method never returns {@code null}.
-     */
-    public PageRequest<T> pageSize(int size) {
-        return PageRequest.<T>ofSize(size).sortBy(sorts);
-    }
 
     /**
      * Textual representation of this instance, including the result of invoking

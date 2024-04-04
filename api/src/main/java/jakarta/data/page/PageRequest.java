@@ -18,13 +18,8 @@
 package jakarta.data.page;
 
 import jakarta.data.Limit;
-import jakarta.data.Order;
-import jakarta.data.Sort;
-import jakarta.data.metamodel.StaticMetamodel;
 import jakarta.data.repository.OrderBy;
-import jakarta.data.repository.Query;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -70,76 +65,36 @@ import java.util.Optional;
  *     keyword {@code First}.</li>
  * </ul>
  *
- * <p>A repository method throws {@link IllegalArgumentException} if it
- * is called with an argument of type {@code PageRequest} with nonempty
- * sort criteria, and a separate argument or arguments of type {@link Sort}
- * or {@link Order}.</p>
  *
  * <p>A repository method throws {@link jakarta.data.exceptions.DataException}
  * if the database is incapable of ordering the query results using the given
  * sort criteria.</p>
  *
- * @param <T> entity class of the attributes that are used as sort criteria.
  */
-public interface PageRequest<T> {
+public interface PageRequest {
 
-    /**
-     * <p>Creates a page request to use when querying on entities of the
-     * specified entity class.</p>
-     *
-     * <p>This method is useful for supplying the entity type when using
-     * untyped {@link Sort} instances. For example,</p>
-     *
-     * <pre>
-     * {@code PageRequest<Car>} page1Request = PageRequest.of(Car.class).page(1).size(25).sortBy(
-     *                                          Sort.desc("price"),
-     *                                          Sort.asc("mileage"),
-     *                                          Sort.asc("vin"));
-     * </pre>
-     *
-     * <p>If using typed {@link Sort} instances from the {@link StaticMetamodel},
-     * a more concise way to create page requests is to start with the {@link Order} class,
-     * as follows:</p>
-     *
-     * <pre>
-     * {@code PageRequest<Car>} page1Request = Order.by(_Car.price.desc(),
-     *                                       _Car.mileage.asc(),
-     *                                       _Car.vin.asc())
-     *                                   .page(1)
-     *                                   .size(25);
-     * </pre>
-     *
-     * @param <T>         entity class of attributes that can be used as sort criteria.
-     * @param entityClass entity class of attributes that can be used as sort criteria.
-     * @return a new instance of {@code PageRequest}. This method never returns {@code null}.
-     */
-    static <T> PageRequest<T> of(Class<T> entityClass) {
-        return new Pagination<>(1, 10, Collections.emptyList(), Mode.OFFSET, null, true);
-    }
 
     /**
      * Creates a new page request with the given page number and with a default size of 10.
      *
-     * @param <T>        entity class of the attributes that are used as sort criteria.
      * @param pageNumber The page number.
      * @return a new instance of {@code PageRequest}. This method never returns {@code null}.
      * @throws IllegalArgumentException when the page number is negative or zero.
      */
-    static <T> PageRequest<T> ofPage(long pageNumber) {
-        return new Pagination<>(pageNumber, 10, Collections.emptyList(), Mode.OFFSET, null, true);
+    static PageRequest ofPage(long pageNumber) {
+        return new Pagination(pageNumber, 10, Mode.OFFSET, null, true);
     }
 
     /**
      * Creates a new page request for requesting pages of the specified size,
      * starting with the first page number, which is 1.
      *
-     * @param <T>         entity class of the attributes that are used as sort criteria.
      * @param maxPageSize The number of query results in a full page.
      * @return a new instance of {@code PageRequest}. This method never returns {@code null}.
      * @throws IllegalArgumentException when maximum page size is negative or zero.
      */
-    static <T> PageRequest<T> ofSize(int maxPageSize) {
-        return new Pagination<>(1, maxPageSize, Collections.emptyList(), Mode.OFFSET, null, true);
+    static PageRequest ofSize(int maxPageSize) {
+        return new Pagination(1, maxPageSize,  Mode.OFFSET, null, true);
     }
 
     /**
@@ -147,21 +102,21 @@ public interface PageRequest<T> {
      * starting after the specified key.</p>
      *
      * @param key values forming the key, the order and number of which must match the
-     *        {@link OrderBy} annotations, {@link Sort} parameters, or {@code OrderBy}
+     *        {@link OrderBy} annotations, {@link jakarta.data.Sort} parameters, or {@code OrderBy}
      *        name pattern of the repository method to which this pagination will be
      *        applied.
      * @return a new instance of {@code PageRequest} with forward cursor-based pagination.
      *         This method never returns {@code null}.
      * @throws IllegalArgumentException if no values are provided for the key.
      */
-    PageRequest<T> afterKey(Object... key);
+    PageRequest afterKey(Object... key);
 
     /**
      * <p>Requests {@link CursoredPage cursor-based pagination} in the previous page
      * direction relative to the specified key.</p>
      *
      * @param key values forming the key, the order and number of which must match the
-     *        {@link OrderBy} annotations, {@link Sort} parameters, or {@code OrderBy}
+     *        {@link OrderBy} annotations, {@link jakarta.data.Sort} parameters, or {@code OrderBy}
      *        name pattern of the repository method to which this pagination will be
      *        applied.
      * @return a new instance of {@code PageRequest} with cursor-based pagination
@@ -169,89 +124,35 @@ public interface PageRequest<T> {
      *         This method never returns {@code null}.
      * @throws IllegalArgumentException if no values are provided for the key.
      */
-    PageRequest<T> beforeKey(Object... key);
+    PageRequest beforeKey(Object... key);
 
     /**
      * <p>Requests {@link CursoredPage cursor-based pagination} in the forward direction,
      * starting after the specified key.</p>
      *
      * @param cursor cursor with key values, the order and number of which must match the
-     *        {@link OrderBy} annotations, {@link Sort} parameters, or
+     *        {@link OrderBy} annotations, {@link jakarta.data.Sort} parameters, or
      *        {@code OrderBy} name pattern of the repository method to which
      *        this pagination will be supplied.
      * @return a new instance of {@code PageRequest} with forward cursor-based pagination.
      *         This method never returns {@code null}.
      * @throws IllegalArgumentException if no key values are provided.
      */
-    PageRequest<T> afterCursor(Cursor cursor);
+    PageRequest afterCursor(Cursor cursor);
 
     /**
      * <p>Requests {@link CursoredPage cursor-based pagination} in the previous page
      * direction relative to the specified key values.</p>
      *
      * @param cursor cursor with key values, the order and number of which must match the
-     *        {@link OrderBy} annotations, {@link Sort} parameters, or
+     *        {@link OrderBy} annotations, {@link jakarta.data.Sort} parameters, or
      *        {@code OrderBy} name pattern of the repository method to which
      *        this pagination will be supplied.
      * @return a new instance of {@code PageRequest} with cursor-based pagination
      *         in the previous page direction. This method never returns {@code null}.
      * @throws IllegalArgumentException if no key values are provided.
      */
-    PageRequest<T> beforeCursor(Cursor cursor);
-
-    /**
-     * <p>Creates a new page request with the same pagination information,
-     * appending the specified {@link Sort#asc(String) ascending sort}
-     * with lower priority than all other sort criteria (if any) that have already
-     * been specified.</p>
-     *
-     * @param property name of the entity attribute upon which to sort.
-     * @return a new instance of {@code PageRequest} with the ascending sort
-     *         as its lowest priority sort criteria.
-     * @throws NullPointerException when the property is null
-     */
-    PageRequest<T> asc(String property);
-
-    /**
-     * <p>Creates a new page request with the same pagination information,
-     * appending the specified {@link Sort#ascIgnoreCase(String) case-insensitive ascending sort}
-     * with lower priority than all other sort criteria (if any) that have already
-     * been specified. The case-insensitive sort means that the respective value
-     * in the database is compared independent of case.</p>
-     *
-     * @param property name of the entity attribute upon which to sort.
-     * @return a new instance of {@code PageRequest} with the case-insensitive ascending sort
-     *         as its lowest priority sort criteria.
-     * @throws NullPointerException when the property is null
-     */
-    PageRequest<T> ascIgnoreCase(String property);
-
-    /**
-     * <p>Creates a new page request with the same pagination information,
-     * appending the specified {@link Sort#desc(String) descending sort}
-     * with lower priority than all other sort criteria (if any) that have already
-     * been specified.</p>
-     *
-     * @param property name of the entity attribute upon which to sort.
-     * @return a new instance of {@code PageRequest} with the descending sort
-     *         as its lowest priority sort criteria.
-     * @throws NullPointerException when the property is null
-     */
-    PageRequest<T> desc(String property);
-
-    /**
-     * <p>Creates a new page request with the same pagination information,
-     * appending the specified {@link Sort#descIgnoreCase(String) case-insensitive descending sort}
-     * with lower priority than all other sort criteria (if any) that have already
-     * been specified. The case-insensitive sort means that the respective value
-     * in the database is compared independent of case.</p>
-     *
-     * @param property name of the entity attribute upon which to sort.
-     * @return a new instance of {@code PageRequest} with the case-insensitive descending sort
-     *         as its lowest priority sort criteria.
-     * @throws NullPointerException when the property is null
-     */
-    PageRequest<T> descIgnoreCase(String property);
+    PageRequest beforeCursor(Cursor cursor);
 
     /**
      * Compares with another instance to determine if both represent the same
@@ -303,13 +204,6 @@ public interface PageRequest<T> {
      */
     boolean requestTotal();
 
-    /**
-     * Return the order collection if it was specified on this page request,
-     * otherwise an empty list.
-     *
-     * @return the order collection; will never be {@code null}.
-     */
-    List<Sort<? super T>> sorts();
 
     /**
      * <p>Returns the {@code PageRequest} requesting the next page if
@@ -325,7 +219,7 @@ public interface PageRequest<T> {
      * @throws UnsupportedOperationException if this {@code PageRequest}
      *         has a {@link PageRequest.Cursor Cursor}.
      */
-    PageRequest<T> next();
+    PageRequest next();
 
     /**
      * <p>Returns the {@code PageRequest} requesting the previous page
@@ -342,7 +236,7 @@ public interface PageRequest<T> {
      * @throws UnsupportedOperationException if this {@code PageRequest}
      *         has a {@link PageRequest.Cursor Cursor}.
      */
-    PageRequest<T> previous();
+    PageRequest previous();
 
     /**
      * <p>Creates a new page request with the same pagination information,
@@ -352,7 +246,7 @@ public interface PageRequest<T> {
      * @return a new instance of {@code PageRequest}.
      *         This method never returns {@code null}.
      */
-    PageRequest<T> page(long pageNumber);
+    PageRequest page(long pageNumber);
 
     /**
      * <p>Creates a new page request with the same pagination information,
@@ -365,107 +259,8 @@ public interface PageRequest<T> {
      * @return a new instance of {@code PageRequest}.
      *         This method never returns {@code null}.
      */
-    PageRequest<T> size(int maxPageSize);
+    PageRequest size(int maxPageSize);
 
-    /**
-     * <p>Creates a new page request with the same pagination information,
-     * but using the specified sort criteria. The order of precedence for
-     * sort criteria is that of any statically specified sort criteria
-     * (from the {@code OrderBy} keyword, {@link OrderBy} annotation,
-     * or {@code ORDER BY} clause of a the {@link Query} annotation),
-     * followed by the order of the {@link Iterable} that is supplied to
-     * this method.</p>
-     *
-     * @param sorts sort criteria to use.
-     * @return a new instance of {@code PageRequest}.
-     *         This method never returns {@code null}.
-     */
-    PageRequest<T> sortBy(Iterable<Sort<? super T>> sorts);
-
-    /**
-     * <p>Creates a new page request with the same pagination information,
-     * but using the specified sort criteria. The order of precedence for
-     * sort criteria is that of any statically specified sort criteria
-     * (from the {@code OrderBy} keyword, {@link OrderBy} annotation,
-     * or {@code ORDER BY} clause of a the {@link Query} annotation),
-     * followed by the order in which the {@link Sort} parameters to this
-     * method are listed.</p>
-     *
-     * @param sort sort criteria to use.
-     * @return a new instance of {@code PageRequest}.
-     *         This method never returns {@code null}.
-     */
-    PageRequest<T> sortBy(Sort<? super T> sort);
-
-    /**
-     * <p>Creates a new page request with the same pagination information,
-     * but using the specified sort criteria. The order of precedence for
-     * sort criteria is that of any statically specified sort criteria
-     * (from the {@code OrderBy} keyword, {@link OrderBy} annotation,
-     * or {@code ORDER BY} clause of a the {@link Query} annotation),
-     * followed by the order in which the {@link Sort} parameters to this
-     * method are listed.</p>
-     *
-     * @param sort1 dynamic sort criteria to use first.
-     * @param sort2 dynamic sort criteria to use second.
-     * @return a new instance of {@code PageRequest}.
-     *         This method never returns {@code null}.
-     */
-    PageRequest<T> sortBy(Sort<? super T> sort1, Sort<? super T> sort2);
-
-    /**
-     * <p>Creates a new page request with the same pagination information,
-     * but using the specified sort criteria. The order of precedence for
-     * sort criteria is that of any statically specified sort criteria
-     * (from the {@code OrderBy} keyword, {@link OrderBy} annotation,
-     * or {@code ORDER BY} clause of a the {@link Query} annotation),
-     * followed by the order in which the {@link Sort} parameters to this
-     * method are listed.</p>
-     *
-     * @param sort1 dynamic sort criteria to use first.
-     * @param sort2 dynamic sort criteria to use second.
-     * @param sort3 dynamic sort criteria to use last.
-     * @return a new instance of {@code PageRequest}.
-     *         This method never returns {@code null}.
-     */
-    PageRequest<T> sortBy(Sort<? super T> sort1, Sort<? super T> sort2, Sort<? super T> sort3);
-
-    /**
-     * <p>Creates a new page request with the same pagination information,
-     * but using the specified sort criteria. The order of precedence for
-     * sort criteria is that of any statically specified sort criteria
-     * (from the {@code OrderBy} keyword, {@link OrderBy} annotation,
-     * or {@code ORDER BY} clause of a the {@link Query} annotation),
-     * followed by the order in which the {@link Sort} parameters to this
-     * method are listed.</p>
-     *
-     * @param sort1 dynamic sort criteria to use first.
-     * @param sort2 dynamic sort criteria to use second.
-     * @param sort3 dynamic sort criteria to use third.
-     * @param sort4 dynamic sort criteria to use last.
-     * @return a new instance of {@code PageRequest}.
-     *         This method never returns {@code null}.
-     */
-    PageRequest<T> sortBy(Sort<? super T> sort1, Sort<? super T> sort2, Sort<? super T> sort3, Sort<? super T> sort4);
-
-    /**
-     * <p>Creates a new page request with the same pagination information,
-     * but using the specified sort criteria. The order of precedence for
-     * sort criteria is that of any statically specified sort criteria
-     * (from the {@code OrderBy} keyword, {@link OrderBy} annotation,
-     * or {@code ORDER BY} clause of a the {@link Query} annotation),
-     * followed by the order in which the {@link Sort} parameters to this
-     * method are listed.</p>
-     *
-     * @param sort1 dynamic sort criteria to use first.
-     * @param sort2 dynamic sort criteria to use second.
-     * @param sort3 dynamic sort criteria to use third.
-     * @param sort4 dynamic sort criteria to use fourth.
-     * @param sort5 dynamic sort criteria to use last.
-     * @return a new instance of {@code PageRequest}.
-     *         This method never returns {@code null}.
-     */
-    PageRequest<T> sortBy(Sort<? super T> sort1, Sort<? super T> sort2, Sort<? super T> sort3, Sort<? super T> sort4, Sort<? super T> sort5);
 
     /**
      * Returns an otherwise-equivalent page request with
@@ -478,7 +273,7 @@ public interface PageRequest<T> {
      * @return a page request with {@link #requestTotal()}
      *         set to {@code false}.
      */
-    PageRequest<T> withoutTotal();
+    PageRequest withoutTotal();
 
     /**
      * Returns an otherwise-equivalent page request with
@@ -487,7 +282,7 @@ public interface PageRequest<T> {
      * @return a page request with {@link #requestTotal()}
      *         set to {@code true}.
      */
-    PageRequest<T> withTotal();
+    PageRequest withTotal();
 
     /**
      * The type of pagination: offset-based or cursor-based, which includes

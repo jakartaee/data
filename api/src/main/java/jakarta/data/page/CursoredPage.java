@@ -112,8 +112,7 @@ import java.util.NoSuchElementException;
  *
  * <p>Sorting criteria must be specified independently of the user-provided
  * query, either via the {@link OrderBy} annotation or, or by passing
- * {@link Sort} criteria within the {@linkplain PageRequest#sorts() page
- * request}. For example:</p>
+ * {@link Sort} or {@link jakarta.data.Order}. For example:</p>
  *
  * <pre>
  * {@code @Query("WHERE ordersPlaced >= ?1 OR totalSpent >= ?2")}
@@ -121,7 +120,7 @@ import java.util.NoSuchElementException;
  * {@code @OrderBy("birthYear")}
  * {@code @OrderBy("id")}
  * {@code CursoredPage<Customer>} getTopBuyers(int minOrders, float minSpent,
- *                                     {@code PageRequest<Customer>} pageRequest);
+ *                                     {@code PageRequest} pageRequest, {@code Order<Customer>} sort);
  * </pre>
  *
  * <p>Only queries which return entities may be used with cursor-based pagination
@@ -175,7 +174,7 @@ public interface CursoredPage<T> extends Page<T> {
      *         To avoid this exception, check for a {@code true} result
      *         of {@link #hasNext()} before invoking this method.
      */
-    PageRequest<T> nextPageRequest();
+    PageRequest nextPageRequest();
 
     /**
      * <p>Creates a request for the previous page in a reverse direction from
@@ -204,5 +203,5 @@ public interface CursoredPage<T> extends Page<T> {
      *         To avoid this exception, check for a {@code true} result
      *         of {@link #hasPrevious()} before invoking this method.
      */
-    PageRequest<T> previousPageRequest();
+    PageRequest previousPageRequest();
 }

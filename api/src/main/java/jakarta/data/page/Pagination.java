@@ -17,19 +17,16 @@
  */
 package jakarta.data.page;
 
-import jakarta.data.Sort;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 /**
  * Built-in implementation of PageRequest.
  */
-record Pagination<T>(long page, int size, List<Sort<? super T>> sorts, Mode mode, Cursor type, boolean requestTotal) implements PageRequest<T> {
+record Pagination(long page, int size, Mode mode, Cursor type, boolean requestTotal) implements PageRequest {
 
     Pagination {
         if (page < 1) {
@@ -44,44 +41,35 @@ record Pagination<T>(long page, int size, List<Sort<? super T>> sorts, Mode mode
     }
 
     @Override
-    public PageRequest<T> withoutTotal() {
-        return new Pagination<>(page, size, sorts, mode, type, false);
+    public PageRequest withoutTotal() {
+        return new Pagination(page, size, mode, type, false);
     }
 
     @Override
-    public PageRequest<T> withTotal() {
-        return new Pagination<>(page, size, sorts, mode, type, true);
+    public PageRequest withTotal() {
+        return new Pagination(page, size, mode, type, true);
     }
 
     @Override
-    public PageRequest<T> afterKey(Object... key) {
-        return new Pagination<>(page, size, sorts, Mode.CURSOR_NEXT, new PageRequestCursor(key), requestTotal);
+    public PageRequest afterKey(Object... key) {
+        return new Pagination(page, size, Mode.CURSOR_NEXT, new PageRequestCursor(key), requestTotal);
     }
 
     @Override
-    public PageRequest<T> beforeKey(Object... key) {
-        return new Pagination<>(page, size, sorts, Mode.CURSOR_PREVIOUS, new PageRequestCursor(key), requestTotal);
+    public PageRequest beforeKey(Object... key) {
+        return new Pagination(page, size, Mode.CURSOR_PREVIOUS, new PageRequestCursor(key), requestTotal);
     }
 
     @Override
-    public PageRequest<T> afterCursor(Cursor cursor) {
-        return new Pagination<>(page, size, sorts, Mode.CURSOR_NEXT, cursor, requestTotal);
+    public PageRequest afterCursor(Cursor cursor) {
+        return new Pagination(page, size, Mode.CURSOR_NEXT, cursor, requestTotal);
     }
 
     @Override
-    public PageRequest<T> beforeCursor(Cursor cursor) {
-        return new Pagination<>(page, size, sorts, Mode.CURSOR_PREVIOUS, cursor, requestTotal);
+    public PageRequest beforeCursor(Cursor cursor) {
+        return new Pagination(page, size, Mode.CURSOR_PREVIOUS, cursor, requestTotal);
     }
 
-    @Override
-    public PageRequest<T> asc(String property) {
-        return new Pagination<>(page, size, combine(sorts, Sort.asc(property)), mode, type, requestTotal);
-    }
-
-    @Override
-    public PageRequest<T> ascIgnoreCase(String property) {
-        return new Pagination<>(page, size, combine(sorts, Sort.ascIgnoreCase(property)), mode, type, requestTotal);
-    }
 
     private static <E> List<E> combine(List<E> list, E element) {
         int size = list.size();
@@ -102,19 +90,9 @@ record Pagination<T>(long page, int size, List<Sort<? super T>> sorts, Mode mode
     }
 
     @Override
-    public PageRequest<T> desc(String property) {
-        return new Pagination<>(page, size, combine(sorts, Sort.desc(property)), mode, type, requestTotal);
-    }
-
-    @Override
-    public PageRequest<T> descIgnoreCase(String property) {
-        return new Pagination<>(page, size, combine(sorts, Sort.descIgnoreCase(property)), mode, type, requestTotal);
-    }
-
-    @Override
-    public PageRequest<T> next() {
+    public PageRequest next() {
         if (mode == Mode.OFFSET) {
-            return new Pagination<>(page + 1, this.size, this.sorts, Mode.OFFSET, null, requestTotal);
+            return new Pagination(page + 1, this.size, Mode.OFFSET, null, requestTotal);
         } else {
             throw new UnsupportedOperationException("Not supported for cursor-based pagination. Instead use afterKey or afterCursor " +
                     "to provide a cursor or obtain the nextPageRequest from a CursoredPage.");
@@ -122,9 +100,9 @@ record Pagination<T>(long page, int size, List<Sort<? super T>> sorts, Mode mode
     }
 
     @Override
-    public PageRequest<T> previous() {
+    public PageRequest previous() {
         if (mode == Mode.OFFSET) {
-            return page()<=1 ? null : new Pagination<>(page - 1, this.size, this.sorts, Mode.OFFSET, null, requestTotal);
+            return page()<=1 ? null : new Pagination(page - 1, this.size, Mode.OFFSET, null, requestTotal);
         } else {
             throw new UnsupportedOperationException("Not supported for cursor-based pagination. Instead use beforeKey or beforeCursor " +
                     "to provide a cursor or obtain the previousPageRequest from a CursoredPage.");
@@ -135,61 +113,22 @@ record Pagination<T>(long page, int size, List<Sort<? super T>> sorts, Mode mode
     public String toString() {
         StringBuilder s = new StringBuilder(mode == Mode.OFFSET ? 100 : 150)
                 .append("PageRequest{page=").append(page)
-                .append(", size=").append(size);
+                .append(", size=").append(size)
+                .append(", mode=").append(mode);
         if (type != null) {
-            s.append(", mode=").append(mode)
-            .append(", ").append(type.size()).append(" keys");
-        }
-        for (Sort<? super T> sort : sorts) {
-            s.append(", ").append(sort.property());
-            if (sort.ignoreCase()) {
-                s.append(" IGNORE CASE");
-            }
-            s.append(sort.isAscending() ? " ASC" : " DESC");
+            s.append(", ").append(type.size()).append(" keys");
         }
         return s.append("}").toString();
     }
 
     @Override
-    public PageRequest<T> page(long pageNumber) {
-        return new Pagination<>(pageNumber, size, sorts, mode, type, requestTotal);
+    public PageRequest page(long pageNumber) {
+        return new Pagination(pageNumber, size, mode, type, requestTotal);
     }
 
     @Override
-    public PageRequest<T> size(int maxPageSize) {
-        return new Pagination<>(page, maxPageSize, sorts, mode, type, requestTotal);
+    public PageRequest size(int maxPageSize) {
+        return new Pagination(page, maxPageSize, mode, type, requestTotal);
     }
 
-    @Override
-    public PageRequest<T> sortBy(Iterable<Sort<? super T>> sorts) {
-        List<Sort<? super T>> sortList = sorts instanceof List ? List.copyOf((List<Sort<? super T>>) sorts)
-                : sorts == null ? Collections.emptyList()
-                : StreamSupport.stream(sorts.spliterator(), false).collect(Collectors.toUnmodifiableList());
-        return new Pagination<>(page, size, sortList, mode, type, requestTotal);
-    }
-
-    @Override
-    public PageRequest<T> sortBy(Sort<? super T> sort) {
-        return new Pagination<>(page, size, List.of(sort), mode, type, requestTotal);
-    }
-
-    @Override
-    public PageRequest<T> sortBy(Sort<? super T> sort1, Sort<? super T> sort2) {
-        return new Pagination<>(page, size, List.of(sort1, sort2), mode, type, requestTotal);
-    }
-
-    @Override
-    public PageRequest<T> sortBy(Sort<? super T> sort1, Sort<? super T> sort2, Sort<? super T> sort3) {
-        return new Pagination<>(page, size, List.of(sort1, sort2, sort3), mode, type, requestTotal);
-    }
-
-    @Override
-    public PageRequest<T> sortBy(Sort<? super T> sort1, Sort<? super T> sort2, Sort<? super T> sort3, Sort<? super T> sort4) {
-        return new Pagination<>(page, size, List.of(sort1, sort2, sort3, sort4), mode, type, requestTotal);
-    }
-
-    @Override
-    public PageRequest<T> sortBy(Sort<? super T> sort1, Sort<? super T> sort2, Sort<? super T> sort3, Sort<? super T> sort4, Sort<? super T> sort5) {
-        return new Pagination<>(page, size, List.of(sort1, sort2, sort3, sort4, sort5), mode, type, requestTotal);
-    }
 }

@@ -167,7 +167,7 @@ public interface BasicRepository<T, K> extends DataRepository<T, K> {
      * @see PageRequest.Mode
      */
     @Find
-    Page<T> findAll(PageRequest<T> pageRequest);
+    Page<T> findAll(PageRequest pageRequest);
 
     /**
      * Deletes the entity with the given Id.
