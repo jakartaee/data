@@ -1,6 +1,6 @@
 [subs="normal"]
 ....
-Specification: {doctitle}
+Specification: {specification}
 
 Version: {revnumber}
 
