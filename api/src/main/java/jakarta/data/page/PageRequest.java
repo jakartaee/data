@@ -37,20 +37,19 @@ import java.util.Optional;
  * <pre>
  * &#64;OrderBy("age")
  * &#64;OrderBy("ssn")
- * Person[] findByAgeBetween(int minAge, int maxAge,
- *         PageRequest&lt;Person&gt; pageRequest);
+ * Person[] findByAgeBetween(int minAge, int maxAge, PageRequest pageRequest);
  * </pre>
  *
  * <p>This method might be called as follows:</p>
  *
  * <pre>
  * var page = people.findByAgeBetween(35, 59,
- *         PageRequest.of(Person.class).size(100));
+ *                PageRequest.ofSize(100));
  * var results = page.content();
  * ...
  * while (page.hasNext()) {
  *     page = people.findByAgeBetween(35, 59,
- *             page.nextPageRequest().withoutTotal());
+ *                page.nextPageRequest().withoutTotal());
  *     results = page.content();
  *   ...
  * }
@@ -64,12 +63,6 @@ import java.util.Optional;
  * <li>a parameter of type {@code PageRequest} in combination with the
  *     keyword {@code First}.</li>
  * </ul>
- *
- *
- * <p>A repository method throws {@link jakarta.data.exceptions.DataException}
- * if the database is incapable of ordering the query results using the given
- * sort criteria.</p>
- *
  */
 public interface PageRequest {
 

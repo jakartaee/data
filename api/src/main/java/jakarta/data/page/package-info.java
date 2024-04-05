@@ -30,9 +30,10 @@
  * to allow data to be read in pages,</p>
  *
  * <pre>
- * PageRequest.of(Person.class).size(25).sortBy(Sort.asc("lastName"),
- *                                              Sort.asc("firstName"),
- *                                              Sort.asc("id")); // unique identifier
+ * Order&lt;Person&gt; sorts = Order.by(Sort.asc("lastName"),
+ *                                Sort.asc("firstName"),
+ *                                Sort.asc("id")); // unique identifier
+ * Page&lt;Person&gt; page1 = people.findByAge(50, sorts, PageRequest.ofSize(25));
  * </pre>
  *
  * <p>In the example above, even if multiple people have the same last names
