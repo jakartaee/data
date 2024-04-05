@@ -618,9 +618,10 @@ Example traversal of pages:
 
 [source,java]
 ----
-Order<Customer> order = Order.by(_Customer.yearBorn.desc(),
-                                 _Customer.name.asc(),
-                                 _Customer.id.asc());
+Order<Customer> order = 
+        Order.by(_Customer.yearBorn.desc(),
+                 _Customer.name.asc(),
+                 _Customer.id.asc());
 PageRequest pageRequest = PageRequest.ofSize(25);
 do {
     page = customers.withAveragePurchaseAbove(50.0f, pageRequest, order);
