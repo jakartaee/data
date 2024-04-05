@@ -41,7 +41,7 @@ import java.util.Objects;
  * <pre>
  * Employee[] findByYearHired(int yearHired, Limit maxResults, Sort&lt;?&gt;... sortBy);
  * ...
- * highestPaidNewHires = employees.findByYearHired(Year.now(),
+ * highestPaidNewHires = employees.findByYearHired(Year.now().getValue(),
  *                                                 Limit.of(10),
  *                                                 Sort.desc("salary"),
  *                                                 Sort.asc("lastName"),
@@ -55,7 +55,7 @@ import java.util.Objects;
  * <pre>
  * Employee[] findByYearHired(int yearHired, Limit maxResults, Order&lt;Employee&gt; sortBy);
  * ...
- * highestPaidNewHires = employees.findByYearHired(Year.now(),
+ * highestPaidNewHires = employees.findByYearHired(Year.now().getValue(),
  *                                                 Limit.of(10),
  *                                                 Order.by(_Employee.salary.desc(),
  *                                                          _Employee.lastName.asc(),
