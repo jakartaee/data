@@ -104,35 +104,39 @@ Query methods allow developers to create database queries using method naming co
 
 [source,bnf]
 ----
-<query-method> ::= <subject> <predicate> [<order-clause>]
-<subject> ::= (<action> | "find" <find-expression>) [<ignored-text>] "By"
-<action> ::= "find" | "delete" | "update" | "count" | "exists"
-<find-expression> ::= "First" [<positive-integer>]
+<query-method> ::= <find> | <action>
+<find> :: = "find" [<ignored-text>] <specification> [<order-clause>]
+<action> ::= ("delete" | "update" | "count" | "exists") [<ignored-text>] <restriction>
+<specification> ::= "All" | [<limit>] "By" <predicate>
+<restriction> ::= "All" | "By" <predicate>
+<limit> ::= "First" [<positive-integer>]
 <predicate> ::= <condition> { ("And" | "Or") <condition> }
 <condition> ::= <property> ["IgnoreCase"] ["Not"] [<operator>]
 <operator> ::= "Contains" | "EndsWith" | "StartsWith" | "LessThan"| "LessThanEqual" | "GreaterThan" | "GreaterThanEqual" | "Between" | "Like" | "In" | "Null" | "True" | "False"
 <property> ::= <identifier> | <identifier> "_" <property>
 <identifier> ::= <word>
 <positive-integer> ::= <digit> { <digit> }
-<order-clause> ::= "OrderBy" { <order-item> } ( <order-item> | <property> )
+<order-clause> ::= "OrderBy" (<property> | <order-item> {<order-item>})
 <order-item> ::= <property> ("Asc" | "Desc")
 ----
 
 Explanation of the BNF elements:
 
-- `<query-method>`: Represents a query method, which consists of a subject, a predicate, and an optional order clause.
-- `<subject>`: Defines the action (e.g., "find" or "delete") followed by an optional expression and "By."
-- `<action>`: Specifies the action, such as "find" or "delete."
-- `<find-expression>`: Represents an optional expression for find operations, such as "First10."
-- `<ignored-text>`: Optional text that does not contain "By".
-- `<predicate>`: Represents the query's condition or filtering criteria, which can include multiple conditions separated by "And" or "Or."
+- `<query-method>`: May be a `find` query, or an `update`, `delete`, `count`, or `exists` operation.
+- `<find>`: A `find` query has a specification of records to be retrieved, and optional sorting.
+- `<action>`: Any other kind of operation has only a restriction to a subset of records.
+- `<specification>`: A `find` query may retrieve all records, or may restrict the records retrieved by a predicate and an optional limit.
+- `<restriction>`: Any other kind of operation may apply to all records or to a subset of records restricted by a predicate
+- `<limit>`: Limits the records retrieved by a `find` query to a hardcoded maximum, such as "First10."
+- `<ignored-text>`: Optional text that does not contain `By` or `All`.
+- `<predicate>`: Represents the query's condition or filtering criteria, which can include multiple conditions separated by `And` or `Or`.
 - `<condition>`: Specifies a property and an operator for the condition.
-- `<operator>`: Defines the operator for the condition, like "Between" or "LessThan." When absent, equality is implied.
+- `<operator>`: Defines the operator for the condition, like `Between` or "LessThan." When absent, equality is implied.
 - `<property>`: Represents a property name, which can include underscores for nested properties.
 - `<identifier>`: Represents a word (e.g., property names, action names, etc.).
 - `<positive-integer>`: Represents a whole number greater than zero.
-- `<order-clause>`: Specifies the optional order clause, starting with "OrderBy" and followed by one or more order items.
-- `<order-item>`: Represents an ordered collection of entity attributes by which to sort results, including an optional "Asc" or "Desc" to specify the sort direction.
+- `<order-clause>`: Specifies the optional order clause, starting with `OrderBy` and followed by one or more order items.
+- `<order-item>`: Represents an ordered collection of entity attributes by which to sort results, including an optional `Asc` or `Desc` to specify the sort direction.
 
 === Query by Method Name Keywords
 
@@ -306,15 +310,15 @@ For relational databases, the logical operator `And` takes precedence over `Or`,
 The return type of a Query by Method Name is determined as indicated in the following table, where `E` is the queried entity type.
 
 |===
-|Action |Return type| Notes
+|Operation |Return type| Notes
 
-|`countBy...` |`long` or `int` |
-|`updateBy...`|`void`, `boolean`, `long`,`int`|
-|`existsBy...`|`boolean`|
-|`find...By...`|`E` or `Optional<E>`|For queries returning a single item (or none)
-|`find...By...`|`E[]` or `List<E>`|For queries where it is possible to return more than one item
-|`find...By...`|`Stream<E>`|The caller must call `java.util.stream.BaseStream.close()` for every stream returned by the repository method.
-|`find...By...` accepting a `PageRequest`|`Page<E>` or `CursoredPage<E>`|For use with pagination.
+|`count` |`long` or `int` |
+|`update`|`void`, `boolean`, `long`,`int`|
+|`exists`|`boolean`|
+|`find`|`E` or `Optional<E>`|For queries returning a single item (or none)
+|`find`|`E[]` or `List<E>`|For queries where it is possible to return more than one item
+|`find`|`Stream<E>`|The caller must call `java.util.stream.BaseStream.close()` for every stream returned by the repository method.
+|`find` accepting a `PageRequest`|`Page<E>` or `CursoredPage<E>`|For use with pagination.
 |===
 
 
