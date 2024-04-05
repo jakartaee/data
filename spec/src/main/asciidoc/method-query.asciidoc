@@ -126,7 +126,7 @@ operator
     | "Null"
     | "True"
     | "False"
-property : identifier | identifier "_" property
+property : identifier ("_" identifier)*
 identifier : word
 max : digit+
 order : "OrderBy" (property | orderItem+)
