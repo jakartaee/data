@@ -43,14 +43,14 @@ import java.lang.annotation.Target;
  * &#64;Repository
  * public interface People {
  *
- *     {@code @Find}
+ *     &#64;Find
  *     Person findById(&#64;By(ID) String id); // maps to Person.ssn
  *
- *     {@code @Find}
+ *     &#64;Find
  *     List&lt;Person&gt; findNamed(&#64;By("firstName") String first,
  *                            &#64;By("lastName") String last);
  *
- *     {@code @Find}
+ *     &#64;Find
  *     Person findByCity(&#64;By("address.city") String city);
  * }
  * </pre>
@@ -67,14 +67,14 @@ import java.lang.annotation.Target;
  * &#64;Repository
  * public interface People {
  *
- *     {@code @Find}
+ *     &#64;Find
  *     Person findById(String ssn);
  *
- *     {@code @Find}
+ *     &#64;Find
  *     List&lt;Person&gt; findNamed(String firstName,
  *                            String lastname);
  *
- *     {@code @Find}
+ *     &#64;Find
  *     Person findByCity(String address_city);
  * }
  * </pre>

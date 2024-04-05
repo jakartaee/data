@@ -39,9 +39,9 @@ import java.util.List;
  * <p>Example entity:</p>
  *
  * <pre>
- * {@code @Entity}
+ * &#64;Entity
  * public class Cars {
- *     {@code @Id}
+ *     &#64;Id
  *     public long vin;
  *     public String make;
  *     public String model;
@@ -53,10 +53,10 @@ import java.util.List;
  * <p>Example repository:</p>
  *
  * <pre>
- * {@code @Repository}
- * public interface Cars extends CrudRepository{@code <Car, Long>} {
+ * &#64;Repository
+ * public interface Cars extends CrudRepository&lt;Car, Long@gt; {
  *
- *     List{@code <Car>} findByMakeAndModel(String make, String model, {@code Sort<?>...} sorts);
+ *     List&lt;Car&gt; findByMakeAndModel(String make, String model, Sort&lt;?&gt;... sorts);
  *
  *     ...
  * }
@@ -65,7 +65,7 @@ import java.util.List;
  * <p>Example usage:</p>
  *
  * <pre>
- * {@code @Inject}
+ * &#64;Inject
  * Cars cars;
  *
  * ...
@@ -73,7 +73,7 @@ import java.util.List;
  * Car car1 = ...
  * car1 = cars.insert(car1);
  *
- * List{@code <Car>} found = findByMakeAndModel(car1.make,
+ * List&lt;Car&gt; found = findByMakeAndModel(car1.make,
  *                                      car1.model,
  *                                      Sort.desc("year"),
  *                                      Sort.asc("vin"));

@@ -30,9 +30,9 @@ package jakarta.data.repository;
  * <p>Example entity:</p>
  *
  * <pre>
- * {@code @Entity}
+ * &#64;Entity
  * public class DriverLicense {
- *     {@code @Id}
+ *     &#64;Id
  *     public String licenseNum;
  *     public LocalDate expiry;
  *     ...
@@ -42,15 +42,15 @@ package jakarta.data.repository;
  * <p>Example repository:</p>
  *
  * <pre>
- * {@code @Repository}
- * public interface DriverLicenses extends DataRepository{@code <DriverLicense, String>} {
+ * &#64;Repository
+ * public interface DriverLicenses extends DataRepository&lt;DriverLicense, String&gt; {
  *
  *     boolean existsByLicenseNumAndExpiryGreaterThan(String num, LocalDate minExpiry);
  *
- *     {@code @Insert}
+ *     &#64;Insert
  *     DriverLicense register(DriverLicense l);
  *
- *     {@code @Update}
+ *     &#64;Update
  *     boolean renew(DriverLicense l);
  *
  *     ...
@@ -60,7 +60,7 @@ package jakarta.data.repository;
  * <p>Example usage:</p>
  *
  * <pre>
- * {@code @Inject}
+ * &#64;Inject
  * DriverLicenses licenses;
  *
  * ...

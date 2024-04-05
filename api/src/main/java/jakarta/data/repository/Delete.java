@@ -47,9 +47,9 @@ import java.lang.annotation.Target;
  * </p>
  * <p>For example, consider an interface representing a garage:</p>
  * <pre>
- * {@code @Repository}
+ * &#64;Repository
  * interface Garage {
- *     {@code @Delete}
+ *     &#64;Delete
  *     void unpark(Car car);
  * }
  * </pre>
@@ -69,13 +69,13 @@ import java.lang.annotation.Target;
  * </p>
  * <p>For example, consider an interface representing a garage:</p>
  * <pre>
- * {@code @Repository}
+ * &#64;Repository
  * interface Garage
  *         extends DataRepository&lt;Car,String&gt; {
- *     {@code @Delete}
+ *     &#64;Delete
  *     void unparkAll();
  *
- *     {@code @Delete}
+ *     &#64;Delete
  *     void unpark(String registration);
  * }
  * </pre>

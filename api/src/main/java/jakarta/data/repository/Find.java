@@ -45,10 +45,10 @@ import java.lang.annotation.Target;
  * </p>
  * <p>For example, consider an interface representing a garage:</p>
  * <pre>
- * {@code @Repository}
+ * &#64;Repository
  * interface Garage {
- *     {@code @Find}
- *     {@code List<Car>} getCarsWithModel(@By("model") String model);
+ *     &#64;Find
+ *     List&lt;Car&gt; getCarsWithModel(@By("model") String model);
  * }
  * </pre>
  * <p>The {@code @Find} annotation indicates that the {@code getCarsWithModel(model)} method retrieves {@code Car}

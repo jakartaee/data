@@ -74,11 +74,11 @@ import jakarta.data.Sort;
  *     public static final String NAME_LAST = "name.last";
  *     public static final String YEAROFBIRTH = "yearOfBirth";
  *
- *     public static final {@code SortableAttribute<Person>} ssn = new SortableAttributeRecord&lt;&gt;("ssn");
- *     public static final {@code Attribute<Person>} name = new AttributeRecord&lt;&gt;("name");
- *     public static final {@code TextAttribute<Person>} name_first = new TextAttributeRecord&lt;&gt;("name.first");
- *     public static final {@code TextAttribute<Person>} name_last = new TextAttributeRecord&lt;&gt;("name.last");
- *     public static final {@code SortableAttribute<Person>} yearOfBirth = new SortableAttributeRecord&lt;&gt;("yearOfBirth");
+ *     public static final SortableAttribute&lt;Person&gt; ssn = new SortableAttributeRecord&lt;&gt;("ssn");
+ *     public static final Attribute&lt;Person&gt; name = new AttributeRecord&lt;&gt;("name");
+ *     public static final TextAttribute&lt;Person&gt; name_first = new TextAttributeRecord&lt;&gt;("name.first");
+ *     public static final TextAttribute&lt;Person&gt; name_last = new TextAttributeRecord&lt;&gt;("name.last");
+ *     public static final SortableAttribute&lt;Person&gt; yearOfBirth = new SortableAttributeRecord&lt;&gt;("yearOfBirth");
  * }
  * </pre>
  *

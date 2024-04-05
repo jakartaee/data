@@ -48,9 +48,9 @@ import java.lang.annotation.Target;
  * return type can be {@code Car}. Similarly, if the parameter is of type {@code Iterable<Car>}, the return type can be
  * {@code Iterable<Car>}. Consider an interface representing a garage:</p>
  * <pre>
- * {@code @Repository}
+ * &#64;Repository
  * interface Garage {
- *     {@code @Insert}
+ *     &#64;Insert
  *     Car park(Car car);
  * }
  * </pre>
