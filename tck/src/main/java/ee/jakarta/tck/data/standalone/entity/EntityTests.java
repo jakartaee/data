@@ -113,7 +113,7 @@ public class EntityTests {
 
     @Assertion(id = "136", strategy = "Ensures that the prepopulation step for readonly entities was successful")
     public void ensureNaturalNumberPrepopulation() {
-        assertEquals(100L, numbers.countBy());
+        assertEquals(100L, numbers.countAll());
         assertTrue(numbers.findById(0L).isEmpty(), "Zero should not have been in the set of natural numbers.");
         assertFalse(numbers.findById(10L).get().isOdd());
     }
