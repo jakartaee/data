@@ -14,7 +14,7 @@ body:
       required: true
     attributes:
       label: Specification Version
-      description: What version of the Concurrency Spec are you running using?
+      description: What version of the Data Spec are you running using?
       options:
         - 1.0.0-M3
         - 1.0.0-M2

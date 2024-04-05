@@ -107,6 +107,9 @@
                             <sourceDocumentName>method-query.asciidoc</sourceDocumentName>
                             <backend>html5</backend>
                             <outputFile>${gen-doc-dir}/jakarta-method-name-query-${project.version}.html</outputFile>
+                            <attributes>
+                                <doctitle>Jakarta Data: Query by Method Name Extension</doctitle>
+                            </attributes>
                         </configuration>
                     </execution>
                 </executions>
@@ -118,6 +121,7 @@
                     <embedAssets>true</embedAssets>
                     <attributes>
                         <license>Apache License v2.0</license>
+                        <specification>Jakarta Data</specification>
                         <revnumber>${project.version}</revnumber>
                         <revremark>${revremark}</revremark>
                         <revdate>${revisiondate}</revdate>
