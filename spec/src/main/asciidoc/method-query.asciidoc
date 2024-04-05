@@ -104,39 +104,52 @@ Query methods allow developers to create database queries using method naming co
 
 [source,bnf]
 ----
-<query-method> ::= <find> | <action>
-<find> :: = "find" [<ignored-text>] <specification> [<order-clause>]
-<action> ::= ("delete" | "update" | "count" | "exists") [<ignored-text>] <restriction>
-<specification> ::= "All" | [<limit>] "By" <predicate>
-<restriction> ::= "All" | "By" <predicate>
-<limit> ::= "First" [<positive-integer>]
-<predicate> ::= <condition> { ("And" | "Or") <condition> }
-<condition> ::= <property> ["IgnoreCase"] ["Not"] [<operator>]
-<operator> ::= "Contains" | "EndsWith" | "StartsWith" | "LessThan"| "LessThanEqual" | "GreaterThan" | "GreaterThanEqual" | "Between" | "Like" | "In" | "Null" | "True" | "False"
-<property> ::= <identifier> | <identifier> "_" <property>
-<identifier> ::= <word>
-<positive-integer> ::= <digit> { <digit> }
-<order-clause> ::= "OrderBy" (<property> | <order-item> {<order-item>})
-<order-item> ::= <property> ("Asc" | "Desc")
+query ::= find | action
+find :: = "find" ignoredText? specification order?
+action ::= ("delete" | "update" | "count" | "exists") ignoredText? restriction
+specification ::= "All" | limit? "By" predicate
+restriction ::= "All" | "By" predicate
+limit ::= "First" max?
+predicate ::= condition (("And" | "Or") condition)*
+condition ::= property "IgnoreCase"? "Not"? operator?
+operator ::=
+      "Contains"
+    | "EndsWith"
+    | "StartsWith"
+    | "LessThan"
+    | "LessThanEqual"
+    | "GreaterThan"
+    | "GreaterThanEqual"
+    | "Between"
+    | "Like"
+    | "In"
+    | "Null"
+    | "True"
+    | "False"
+property ::= identifier | identifier "_" property
+identifier ::= word
+max ::= digit+
+order ::= "OrderBy" (property | orderItem+)
+orderItem ::= property ("Asc" | "Desc")
 ----
 
 Explanation of the BNF elements:
 
-- `<query-method>`: May be a `find` query, or an `update`, `delete`, `count`, or `exists` operation.
-- `<find>`: A `find` query has a specification of records to be retrieved, and optional sorting.
-- `<action>`: Any other kind of operation has only a restriction to a subset of records.
-- `<specification>`: A `find` query may retrieve all records, or may restrict the records retrieved by a predicate and an optional limit.
-- `<restriction>`: Any other kind of operation may apply to all records or to a subset of records restricted by a predicate
-- `<limit>`: Limits the records retrieved by a `find` query to a hardcoded maximum, such as "First10."
-- `<ignored-text>`: Optional text that does not contain `By` or `All`.
-- `<predicate>`: Represents the query's condition or filtering criteria, which can include multiple conditions separated by `And` or `Or`.
-- `<condition>`: Specifies a property and an operator for the condition.
-- `<operator>`: Defines the operator for the condition, like `Between` or "LessThan." When absent, equality is implied.
-- `<property>`: Represents a property name, which can include underscores for nested properties.
-- `<identifier>`: Represents a word (e.g., property names, action names, etc.).
-- `<positive-integer>`: Represents a whole number greater than zero.
-- `<order-clause>`: Specifies the optional order clause, starting with `OrderBy` and followed by one or more order items.
-- `<order-item>`: Represents an ordered collection of entity attributes by which to sort results, including an optional `Asc` or `Desc` to specify the sort direction.
+- `query`: May be a `find` query, or an `update`, `delete`, `count`, or `exists` operation.
+- `find`: A `find` query has a specification of records to be retrieved, and optional sorting.
+- `action`: Any other kind of operation has only a restriction to a subset of records.
+- `specification`: A `find` query may retrieve all records, or may restrict the records retrieved by a predicate and an optional limit.
+- `restriction`: Any other kind of operation may apply to all records or to a subset of records restricted by a predicate
+- `limit`: Limits the records retrieved by a `find` query to a hardcoded maximum, such as `First10`.
+- `ignoredText`: Optional text that does not contain `By` or `All`.
+- `predicate`: Represents the query's condition or filtering criteria, which can include multiple conditions separated by `And` or `Or`.
+- `condition`: Specifies a property and an operator for the condition.
+- `operator`: Defines the operator for the condition, like `Between` or `LessThan`. When absent, equality is implied.
+- `property`: A property name, which can include underscores for nested properties.
+- `identifier`: A legal Java identifier, not containing an underscore.
+- `max`: A whole number greater than zero.
+- `order`: Specifies that results of a `find` query should be sorted lexicographically, with respect to one or more order items.
+- `orderItem`: An field used to sort results, where `Asc` or `Desc` specifies the sorting direction.
 
 === Query by Method Name Keywords
 
