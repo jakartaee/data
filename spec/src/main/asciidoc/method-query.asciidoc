@@ -104,16 +104,16 @@ Query methods allow developers to create database queries using method naming co
 
 [source,bnf]
 ----
-query ::= find | action
-find :: = "find" ignoredText? specification order?
-action ::= ("delete" | "update" | "count" | "exists") ignoredText? restriction
-specification ::= "All" | limit? "By" predicate
-restriction ::= "All" | "By" predicate
-limit ::= "First" max?
-predicate ::= condition (("And" | "Or") condition)*
-condition ::= property "IgnoreCase"? "Not"? operator?
-operator ::=
-      "Contains"
+query : find | action
+find : "find" ignoredText? specification order?
+action : ("delete" | "update" | "count" | "exists") ignoredText? restriction
+specification : "All" | limit? "By" predicate
+restriction : "All" | "By" predicate
+limit : "First" max?
+predicate : condition (("And" | "Or") condition)*
+condition : property "IgnoreCase"? "Not"? operator?
+operator
+    : "Contains"
     | "EndsWith"
     | "StartsWith"
     | "LessThan"
@@ -126,11 +126,11 @@ operator ::=
     | "Null"
     | "True"
     | "False"
-property ::= identifier | identifier "_" property
-identifier ::= word
-max ::= digit+
-order ::= "OrderBy" (property | orderItem+)
-orderItem ::= property ("Asc" | "Desc")
+property : identifier | identifier "_" property
+identifier : word
+max : digit+
+order : "OrderBy" (property | orderItem+)
+orderItem : property ("Asc" | "Desc")
 ----
 
 Explanation of the BNF elements:
