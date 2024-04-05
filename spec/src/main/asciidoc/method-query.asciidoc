@@ -105,10 +105,10 @@ Query methods allow developers to create database queries using method naming co
 [source,bnf]
 ----
 query : find | action
-find : "find" ignoredText? specification order?
-action : ("delete" | "update" | "count" | "exists") ignoredText? restriction
-specification : "All" | limit? "By" predicate
-restriction : "All" | "By" predicate
+find : "find" specification order?
+action : ("delete" | "update" | "count" | "exists") restriction
+specification : "All" ignoredText? | limit? ignoredText? "By" predicate
+restriction : "All" ignoredText? | ignoredText? "By" predicate
 limit : "First" max?
 predicate : condition (("And" | "Or") condition)*
 condition : property "IgnoreCase"? "Not"? operator?
