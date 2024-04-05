@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2023, 2024 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -51,7 +51,7 @@ public class ValidationTests {
     
     @BeforeEach
     public void cleanup() {
-        rectangles.deleteAll();
+        rectangles.deleteEverything();
         TestPropertyUtility.waitForEventualConsistency();
     }
     
@@ -264,7 +264,7 @@ public class ValidationTests {
         assertEquals(3, rectangles.countAll(), "Number of results was incorrect");
         
         // Get
-        List<Rectangle> resultRects = rectangles.findAllOrderById();
+        List<Rectangle> resultRects = rectangles.findEverythingIdSorted();
         
         // Verify
         for(int i = 0; i < resultRects.size(); i++) {
@@ -292,7 +292,7 @@ public class ValidationTests {
         
         // Get
         resultingException = assertThrows(ConstraintViolationException.class, () -> {
-            rectangles.findAllOrderById(); //returns 4 results when max is 3
+            rectangles.findEverythingIdSorted(); //returns 4 results when max is 3
         });
         
         // Verify

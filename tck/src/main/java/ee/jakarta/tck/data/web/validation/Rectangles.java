@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2023, 2024 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -19,7 +19,9 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import jakarta.data.repository.DataRepository;
+import jakarta.data.repository.Delete;
 import jakarta.data.repository.Find;
+import jakarta.data.repository.OrderBy;
 import jakarta.data.repository.Repository;
 import jakarta.data.repository.Save;
 import jakarta.validation.Valid;
@@ -41,8 +43,11 @@ public interface Rectangles extends DataRepository<Rectangle, String> {
     @Find
     Stream<Rectangle> findAll();
     
-    void deleteAll();
+    @Delete
+    void deleteEverything();
 
+    @Find
+    @OrderBy(value = "id")
     @Size(min = 0, max = 3)
-    List<Rectangle> findAllOrderById();
+    List<Rectangle> findEverythingIdSorted();
 }
