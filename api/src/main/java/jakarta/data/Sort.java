@@ -78,10 +78,6 @@ import java.util.Objects;
  * then sorted alphabetically by last name. Employees with the same
  * salary and last name are then sorted alphabetically by first name.</p>
  *
- * <p>A repository method throws {@link IllegalArgumentException} if it is
- * called with an argument or arguments of type {@link Sort} and a separate
- * argument of type {@code PageRequest} with nonempty sort criteria.</p>
- *
  * <p>A repository method throws {@link jakarta.data.exceptions.DataException}
  * if the database is incapable of ordering the query results using the given
  * sort criteria.</p>
