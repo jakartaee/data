@@ -141,7 +141,7 @@ Explanation of the BNF elements:
 - `specification`: A `find` query may retrieve all records, or may restrict the records retrieved by a predicate and an optional limit.
 - `restriction`: Any other kind of operation may apply to all records or to a subset of records restricted by a predicate
 - `limit`: Limits the records retrieved by a `find` query to a hardcoded maximum, such as `First10`.
-- `ignoredText`: Optional text that does not contain `By` or `All`.
+- `ignoredText`: Optional text that does not contain `By`, `All`, or `First`.
 - `predicate`: Represents the query's condition or filtering criteria, which can include multiple conditions separated by `And` or `Or`.
 - `condition`: Specifies a property and an operator for the condition.
 - `operator`: Defines the operator for the condition, like `Between` or `LessThan`. When absent, equality is implied.
