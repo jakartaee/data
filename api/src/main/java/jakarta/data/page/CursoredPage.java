@@ -115,12 +115,12 @@ import java.util.NoSuchElementException;
  * {@link Sort} or {@link jakarta.data.Order}. For example:</p>
  *
  * <pre>
- * {@code @Query("WHERE ordersPlaced >= ?1 OR totalSpent >= ?2")}
- * {@code @OrderBy("zipcode")}
- * {@code @OrderBy("birthYear")}
- * {@code @OrderBy("id")}
- * {@code CursoredPage<Customer>} getTopBuyers(int minOrders, float minSpent,
- *                                     {@code PageRequest} pageRequest, {@code Order<Customer>} sort);
+ * &#64;Query("WHERE ordersPlaced &gt;= ?1 OR totalSpent &gt;= ?2")
+ * &#64;OrderBy("zipcode")
+ * &#64;OrderBy("birthYear")
+ * &#64;OrderBy("id")
+ * CursoredPage&lt;Customer&gt; getTopBuyers(int minOrders, float minSpent,
+ *                                     PageRequest pageRequest, Order&lt;Customer&gt;} sort);
  * </pre>
  *
  * <p>Only queries which return entities may be used with cursor-based pagination

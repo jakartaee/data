@@ -39,7 +39,7 @@ import java.util.Objects;
  * of generic {@code Sort} criteria. For example,</p>
  *
  * <pre>
- * Employee[] findByYearHired(int yearYired, Limit maxResults, {@code Sort<?>...} sortBy);
+ * Employee[] findByYearHired(int yearHired, Limit maxResults, Sort&lt;?&gt;... sortBy);
  * ...
  * highestPaidNewHires = employees.findByYearHired(Year.now(),
  *                                                 Limit.of(10),
@@ -53,7 +53,7 @@ import java.util.Objects;
  * variable number of typed {@code Sort} criteria. For example,</p>
  *
  * <pre>
- * Employee[] findByYearHired(int yearYired, Limit maxResults, {@code Order<Employee>} sortBy);
+ * Employee[] findByYearHired(int yearHired, Limit maxResults, Order&lt;Employee&gt; sortBy);
  * ...
  * highestPaidNewHires = employees.findByYearHired(Year.now(),
  *                                                 Limit.of(10),

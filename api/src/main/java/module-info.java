@@ -730,11 +730,11 @@ import java.util.Set;
  *
  * <pre>
  * // Query by Method Name
- * Vehicle[] findByMakeAndModelAndYear(String makerName, String model, int year, {@code Sort<?>...} sorts);
+ * Vehicle[] findByMakeAndModelAndYear(String makerName, String model, int year, Sort&lt;?&gt;... sorts);
  *
  * // parameter-based conditions
- * {@code @Find}
- * Vehicle[] searchFor(String make, String model, int year, {@code Sort<?>...} sorts);
+ * &#64;Find
+ * Vehicle[] searchFor(String make, String model, int year, Sort&lt;?&gt;... sorts);
  * </pre>
  *
  * <p>For further information, refer to the {@linkplain Find API documentation}

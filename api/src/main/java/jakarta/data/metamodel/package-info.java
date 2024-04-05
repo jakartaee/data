@@ -35,9 +35,9 @@
  *
  * &#64;StaticMetamodel(Product.class)
  * public class _Product {
- *     public static volatile {@code SortableAttribute<Product>} id;
- *     public static volatile {@code TextAttribute<Product>} name;
- *     public static volatile {@code SortableAttribute<Product>} price);
+ *     public static volatile SortableAttribute&lt;Product&gt; id;
+ *     public static volatile TextAttribute&lt;Product&gt; name;
+ *     public static volatile SortableAttribute&lt;Product&gt; price);
  * }
  *
  * ...
@@ -47,11 +47,10 @@
  *
  * ...
  *
- * {@code Pagerequest<Product>} pageRequest = Order.by(_Product.price.desc(),
- *                                           _Product.name.asc(),
- *                                           _Product.id.asc())
- *                                         .page(1)
- *                                         .size(20);
+ * Order&lt;Product&gt; order =
+ *         Order.by(_Product.price.desc(),
+ *                  _Product.name.asc(),
+ *                  _Product.id.asc());
  *
  * page1 = products.findByNameLike(namePattern, pageRequest);
  * </pre>

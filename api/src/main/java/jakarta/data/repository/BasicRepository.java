@@ -40,9 +40,9 @@ import static jakarta.data.repository.By.ID;
  * <p>Example entity:</p>
  *
  * <pre>
- * {@code @Entity}
+ * &#64;Entity
  * public class Employee {
- *     {@code @Id}
+ *     &#64;Id
  *     public int badgeNumber;
  *     public String firstName;
  *     public String lastName;
@@ -53,8 +53,8 @@ import static jakarta.data.repository.By.ID;
  * <p>Example repository:</p>
  *
  * <pre>
- * {@code @Repository}
- * public interface Employees extends BasicRepository{@code <Employee, Integer>} {
+ * &#64;Repository
+ * public interface Employees extends BasicRepository&lt;Employee, Integer&gt; {
  *
  *     boolean deleteByBadgeNumber(int badgeNum);
  *
@@ -65,7 +65,7 @@ import static jakarta.data.repository.By.ID;
  * <p>Example usage:</p>
  *
  * <pre>
- * {@code @Inject}
+ * &#64;Inject
  * Employees employees;
  *
  * ...
@@ -75,8 +75,8 @@ import static jakarta.data.repository.By.ID;
  *
  * boolean deleted = employees.deleteByBadgeNumber(emp.badgeNum);
  *
- * PageRequest{@code <Employee>} pageRequest = PageRequest.of(Employee.class).size(25).sortBy(Sort.asc("name"));
- * Page{@code <Employee>} page = people.findAll(pageRequest);
+ * PageRequest&lt;Employee&gt; pageRequest = PageRequest.of(Employee.class).size(25).sortBy(Sort.asc("name"));
+ * Page&lt;Employee&gt; page = people.findAll(pageRequest);
  * </pre>
  *
  * <p>The module Javadoc provides an {@link jakarta.data/ overview} of Jakarta Data.</p>
