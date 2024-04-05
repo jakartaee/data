@@ -66,19 +66,18 @@ import jakarta.data.Sort;
  *
  * <pre>
  * &#64;StaticMetamodel(Person.class)
- * public class _Person {
- *     // These can be uninitialized and non-final if you don't need to access them from annotations.
- *     public static final String SSN = "ssn";
- *     public static final String NAME = "name";
- *     public static final String NAME_FIRST = "name.first";
- *     public static final String NAME_LAST = "name.last";
- *     public static final String YEAROFBIRTH = "yearOfBirth";
+ * public interface _Person {
+ *     String SSN = "ssn";
+ *     String NAME = "name";
+ *     String NAME_FIRST = "name.first";
+ *     String NAME_LAST = "name.last";
+ *     String YEAROFBIRTH = "yearOfBirth";
  *
- *     public static final SortableAttribute&lt;Person&gt; ssn = new SortableAttributeRecord&lt;&gt;("ssn");
- *     public static final Attribute&lt;Person&gt; name = new AttributeRecord&lt;&gt;("name");
- *     public static final TextAttribute&lt;Person&gt; name_first = new TextAttributeRecord&lt;&gt;("name.first");
- *     public static final TextAttribute&lt;Person&gt; name_last = new TextAttributeRecord&lt;&gt;("name.last");
- *     public static final SortableAttribute&lt;Person&gt; yearOfBirth = new SortableAttributeRecord&lt;&gt;("yearOfBirth");
+ *     SortableAttribute&lt;Person&gt; ssn = new SortableAttributeRecord&lt;&gt;(SSN);
+ *     Attribute&lt;Person&gt; name = new AttributeRecord&lt;&gt;(NAME);
+ *     TextAttribute&lt;Person&gt; name_first = new TextAttributeRecord&lt;&gt;(NAME_FIRST);
+ *     TextAttribute&lt;Person&gt; name_last = new TextAttributeRecord&lt;&gt;(NAME_LAST);
+ *     SortableAttribute&lt;Person&gt; yearOfBirth = new SortableAttributeRecord&lt;&gt;(YEAROFBIRTH);
  * }
  * </pre>
  *
