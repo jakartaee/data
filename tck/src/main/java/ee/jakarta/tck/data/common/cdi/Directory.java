@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2023, 2024 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -15,9 +15,13 @@
  */
 package ee.jakarta.tck.data.common.cdi;
 
+import static jakarta.data.repository.By.ID;
+
 import java.util.List;
 
+import jakarta.data.repository.By;
 import jakarta.data.repository.DataRepository;
+import jakarta.data.repository.Delete;
 import jakarta.data.repository.Repository;
 
 /**
@@ -31,5 +35,12 @@ public interface Directory extends DataRepository<Person, Long> {
     //Self referencing provider so that this repository can be used for both WEB and CORE tests
     public static final String PERSON_PROVIDER = "PERSON_PROVIDER";
     
-    List<String> findFirstNameByIdInOrderByAgeDesc(List<Long> ids);
+    List<Person> findByIdInOrderByAgeDesc(List<Long> ids);
+    
+    @Delete
+    void deleteById(@By(ID) Long id);
+    
+    @PutTCKLifecyleMethod
+    Person putPerson(Person person);
+    
 }

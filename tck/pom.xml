@@ -303,13 +303,16 @@
             </executions>
             <configuration>
               <classes>${project.build.directory}/jakarta.data-api</classes>
-              <classes>${project.build.directory}/jimage/java.base</classes><classes>${project.build.directory}/jimage/java.base</classes>
+              <classes>${project.build.directory}/jimage/java.base</classes>
               <packages>
                   jakarta.data,
                   jakarta.data.exceptions,
                   jakarta.data.metamodel,
+                  jakarta.data.metamodel.impl,
                   jakarta.data.page,
-                  jakarta.data.repository
+                  jakarta.data.page.impl,
+                  jakarta.data.repository,
+                  jakarta.data.spi
               </packages>
               <attach>false</attach>
               <sigfile>${project.build.directory}/jakarta.data.sig_${java.version}</sigfile>

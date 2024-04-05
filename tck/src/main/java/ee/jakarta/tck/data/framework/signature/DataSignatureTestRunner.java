@@ -62,16 +62,24 @@ public class DataSignatureTestRunner extends SigTestEE {
      * Returns a list of strings where each string represents a package name. Each
      * package name will have it's signature tested by the signature test framework.
      * 
+     * TODO is there a way to construct this list at runtime?
+     * Unlikely due to lazy classloading Package.getPackages() will not contain anything 
+     * that hasn't been loaded.
+     * 
      * @return String[] The names of the packages whose signatures should be
      *         verified.
      */
     @Override
     protected String[] getPackages(String vehicleName) {
         return new String[] {
-                "jakarta.data",
-                "jakarta.data.exceptions",
-                "jakarta.data.page",
-                "jakarta.data.repository"
+                  "jakarta.data",
+                  "jakarta.data.exceptions",
+                  "jakarta.data.metamodel",
+                  "jakarta.data.metamodel.impl",
+                  "jakarta.data.page",
+                  "jakarta.data.page.impl",
+                  "jakarta.data.repository",
+                  "jakarta.data.spi"
                 };
     }
 

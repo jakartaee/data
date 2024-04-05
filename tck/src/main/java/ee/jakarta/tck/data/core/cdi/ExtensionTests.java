@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2023, 2024 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -18,6 +18,7 @@ package ee.jakarta.tck.data.core.cdi;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -55,9 +56,26 @@ public class ExtensionTests {
     @Inject
     Directory directory;
     
-    @Assertion(id = "133", strategy="Verifies ability for a CDI BuildCompatibleExtension to handle custom entity annotations")
+    @Assertion(id = "133", strategy = "Verifies ability for a CDI BuildCompatibleExtension to handle custom entity annotations")
     public void testDataProviderWithBuildCompatibleExtension() {
-        assertEquals(List.of("Olivia", "Lauren", "Victor"), directory.findFirstNameByIdInOrderByAgeDesc(List.of(04L, 05L, 011L)));
+        List<Person> result = directory.findByIdInOrderByAgeDesc(List.of(04L, 05L, 011L));
+        List<String> firstNames = result.stream().map(p -> p.firstName).collect(Collectors.toList());
+        List<String> lastNames = result.stream().map(p -> p.lastName).collect(Collectors.toList());
+        assertEquals(List.of("Olivia", "Lauren", "Victor"), firstNames);
+        assertEquals(List.of("Skinner", "Powell", "Gibson"), lastNames);
+    }
+    
+    @Assertion(id = "640", strategy = "Verifies that another Jakarta Data Provider does not attempt to implement the Dictonary repository")
+    public void testDataRepositoryHonorsProviderAttribute() {
+        long id = 013L;
+        Person original = new Person(id, "Mark", "Pearson", 46);
+        Person updated = new Person(id, "Mark", "Pearson", 45);
         
+        try {
+            assertEquals(null, directory.putPerson(original));
+            assertEquals(original, directory.putPerson(updated));
+        } finally {
+            directory.deleteById(id);
+        }
     }
 }
