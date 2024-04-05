@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2023, 2024 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -17,11 +17,7 @@ package ee.jakarta.tck.data.common.cdi;
 
 /**
  * A test entity that will be persisted to a repository.
- * Uses the custom {@code @PersonEntity} annotation.
- * 
- * @see ee.jakarta.tck.data.common.cdi.PersonEntity
  */
-@PersonEntity
 public class Person {
     public long id;
     public String firstName;

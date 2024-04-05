@@ -27,6 +27,9 @@ import jakarta.data.repository.Repository;
 /**
  * A Directory repository for testing.
  * 
+ * Uses the 'provider' attribute to ensure the mock Jakarta Data provider 
+ * from the TCK implements this repository interface.
+ * 
  * @see ee.jakarta.tck.data.common.cdi.DirectoryRepository
  */
 @Repository(provider = Directory.PERSON_PROVIDER)
