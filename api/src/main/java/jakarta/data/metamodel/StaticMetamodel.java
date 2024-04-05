@@ -35,6 +35,7 @@ import jakarta.data.Sort;
  *
  * <p>Jakarta Data defines the following conventions for static metamodel classes:</p>
  * <ul>
+ * <li>The metamodel class can be an interface or concrete class.</li>
  * <li>The name of the static metamodel class should consist of underscore ({@code _})
  *     followed by the entity class name.</li>
  * <li>Fields of type {@code String} should be named with all upper case.</li>
@@ -95,8 +96,10 @@ import jakarta.data.Sort;
  * for entities at compile time. The generated classes must be annotated with the
  * {@link jakarta.annotation.Generated @Generated} annotation. The fields may be
  * statically initialized, or they may be initialized by the provider during system
- * initialization. In the first case, the fields are declared {@code final}. In the
- * second case, the fields are declared non-{@code final} and {@code volatile}.</p>
+ * initialization. In the first case, the fields are declared {@code final} and the
+ * metamodel class can be an interface. In the second case, the fields are declared
+ * non-{@code final} and {@code volatile} and the metamodel class must be a concrete
+ * class.</p>
  *
  * <p>In cases where multiple Jakarta Data providers provide repositories for the same
  * entity type, no guarantees are made of the order in which the Jakarta Data providers

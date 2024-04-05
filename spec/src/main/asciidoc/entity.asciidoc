@@ -384,6 +384,7 @@ Jakarta Data provides a static metamodel that allows entity attributes to be acc
 
 For each entity class, the application developer or a compile-time annotation processor can define a corresponding metamodel class following a prescribed set of conventions.
 
+- The metamodel class can be an interface or concrete class.
 - The metamodel class must be annotated with `@StaticMetamodel`, specifying the entity class as its `value`.
 - The metamodel class contains one or more `public static` fields corresponding to persistent fields of the entity class.
 - The type of each of these fields must be either `java.lang.String`, `jakarta.data.metamodel.Attribute`, or a subinterface of `Attribute` from the package `jakarta.data.metamodel`.
@@ -394,7 +395,7 @@ The application can use the field values of the metamodel class to obtain artifa
 
 When an application programmer writes a static metamodel class for an entity by hand:
 
-- each field corresponding to a persistent field of an entity must have modifiers `public`, `static`, and `final`, and
+- each field corresponding to a persistent field of an entity must have modifiers `public`, `static`, and `final` (these are implicit when the metamodel class is an interface), and
 - the fields must be statically initialized.
 
 The static metamodel class is not required to include a field for every persistent field of the entity.
