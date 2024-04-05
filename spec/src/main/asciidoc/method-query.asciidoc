@@ -149,7 +149,7 @@ Explanation of the BNF elements:
 - `identifier`: A legal Java identifier, not containing an underscore.
 - `max`: A whole number greater than zero.
 - `order`: Specifies that results of a `find` query should be sorted lexicographically, with respect to one or more order items.
-- `orderItem`: An field used to sort results, where `Asc` or `Desc` specifies the sorting direction.
+- `orderItem`: A field used to sort results, where `Asc` or `Desc` specifies the sorting direction.
 
 === Query by Method Name Keywords
 
@@ -158,19 +158,19 @@ The following tables list the _Query by Method Name_ keywords that must be suppo
 |===
 |Keyword |Description| Not Required For
 
-|findBy
+|`findBy`
 |General query method returning entities.
 |Key-value, Wide-Column
 
-|deleteBy
+|`deleteBy`
 |Delete query method returning either no result (void) or the delete count.
 |Key-value, Wide-Column
 
-|countBy
+|`countBy`
 |Count projection returning a numeric result.
 |Key-value, Wide-Column
 
-|existsBy
+|`existsBy`
 |Exists projection, returning as a `boolean` result.
 |Key-value, Wide-Column
 |===
@@ -184,109 +184,109 @@ Jakarta Data implementations must support the following list of Query by Method 
 |===
 |Keyword |Description | Method signature Sample| Not Required For
 
-|And
+|`And`
 |The `And` operator requires both conditions to match.
-|findByNameAndYear
+|`findByNameAndYear`
 |Key-value, Wide-Column
 
-|Or
+|`Or`
 |The `Or` operator requires at least one of the conditions to match.
-|findByNameOrYear
+|`findByNameOrYear`
 |Key-value, Wide-Column
 
-|Not
+|`Not`
 |Negates the condition that immediately follows the `Not` keyword. When used without a subsequent keyword, means not equal to.
-|findByNameNotLike
+|`findByNameNotLike`
 |Key-value, Wide-Column
 
-|Between
+|`Between`
 |Find results where the property is between (inclusive of) two given values, with the first value being the inclusive minimum and the second value being the inclusive maximum.
-|findByDateBetween
+|`findByDateBetween`
 |Key-value, Wide-Column
 
-|Contains
+|`Contains`
 |Matches String values with the given substring, which can be a pattern.
-|findByProductNameContains
+|`findByProductNameContains`
 |Key-value, Wide-Column, Document, Graph
 
-|EndsWith
+|`EndsWith`
 |Matches String values with the given ending, which can be a pattern.
-|findByProductNameEndsWith
+|`findByProductNameEndsWith`
 |Key-value, Wide-Column, Document, Graph
 
-|First
+|`First`
 |For a query with ordered results, limits the quantity of results to the number following First, or if there is no subsequent number, to a single result.
-|findFirst10By
+|`findFirst10By`
 |Key-value, Wide-Column, Document, Graph
 
-|LessThan
+|`LessThan`
 |Find results where the property is less than the given value
-|findByAgeLessThan
+|`findByAgeLessThan`
 |Key-value, Wide-Column
 
-|GreaterThan
+|`GreaterThan`
 |Find results where the property is greater than the given value
-|findByAgeGreaterThan
+|`findByAgeGreaterThan`
 |Key-value, Wide-Column
 
-|LessThanEqual
+|`LessThanEqual`
 |Find results where the property is less than or equal to the given value
-|findByAgeLessThanEqual
+|`findByAgeLessThanEqual`
 |Key-value, Wide-Column
 
-|GreaterThanEqual
+|`GreaterThanEqual`
 |Find results where the property is greater than or equal to the given value
-|findByAgeGreaterThanEqual
+|`findByAgeGreaterThanEqual`
 |Key-value, Wide-Column
 
-|Like
+|`Like`
 |Matches String values against the given pattern.
-|findByTitleLike
+|`findByTitleLike`
 |Key-value, Wide-Column, Document, Graph
 
-|IgnoreCase
+|`IgnoreCase`
 |Requests that string values be compared independent of case for query conditions and ordering.
-|findByStreetNameIgnoreCaseLike
+|`findByStreetNameIgnoreCaseLike`
 |Key-value, Wide-Column, Document, Graph
 
-|In
+|`In`
 |Find results where the property is one of the values that are contained within the given `Set`.
-|findByIdIn
+|`findByIdIn`
 |Key-value, Wide-Column, Document, Graph
 
-|Null
+|`Null`
 |Finds results where the property has a null value.
-|findByYearRetiredNull
+|`findByYearRetiredNull`
 |Key-value, Wide-Column, Document, Graph
 
-|StartsWith
+|`StartsWith`
 |Matches String values with the given beginning, which can be a pattern.
-|findByFirstNameStartsWith
+|`findByFirstNameStartsWith`
 |Key-value, Wide-Column, Document, Graph
 
-|True
+|`True`
 |Finds results where the property has a boolean value of true.
-|findBySalariedTrue
+|`findBySalariedTrue`
 |Key-value, Wide-Column
 
-|False
+|`False`
 |Finds results where the property has a boolean value of false.
-|findByCompletedFalse
+|`findByCompletedFalse`
 |Key-value, Wide-Column
 
-|OrderBy
+|`OrderBy`
 |Specify a static sorting order followed by one or more ordered pairings of a property path and direction (`Asc` or `Desc`). The direction `Asc` can be omitted from the final property listed, in which case ascending order is implied for that property.
-|findByAgeOrderByHeightDescIdAsc findByAgeOrderById
+|`findByAgeOrderByHeightDescIdAsc` `findByAgeOrderById`
 |Key-value, Wide-Column
 
-|Desc
+|`Desc`
 |Specify a static sorting order of descending.
-|findByNameOrderByAgeDesc
+|`findByNameOrderByAgeDesc`
 |Key-value, Wide-Column
 
-|Asc
+|`Asc`
 |Specify a static sorting order of ascending.
-|findByNameOrderByAgeAsc
+|`findByNameOrderByAgeAsc`
 |Key-value, Wide-Column
 
 |===
