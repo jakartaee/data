@@ -51,7 +51,7 @@ public class ValidationTests {
     
     @BeforeEach
     public void cleanup() {
-        rectangles.deleteAllBy();
+        rectangles.deleteAll();
         TestPropertyUtility.waitForEventualConsistency();
     }
     
@@ -64,7 +64,7 @@ public class ValidationTests {
         
         TestPropertyUtility.waitForEventualConsistency();
         
-        assertEquals(1, rectangles.countBy());
+        assertEquals(1, rectangles.countAll());
         assertRectangleFields(validRect, getResults().get(0));
         
         // Save All
@@ -78,7 +78,7 @@ public class ValidationTests {
         
         TestPropertyUtility.waitForEventualConsistency();
         
-        assertEquals(4, rectangles.countBy(), "Number of results was incorrect");
+        assertEquals(4, rectangles.countAll(), "Number of results was incorrect");
         
         //validate
         List<Rectangle> resultRects = getResults();
@@ -100,7 +100,7 @@ public class ValidationTests {
         
         TestPropertyUtility.waitForEventualConsistency();
         
-        assertEquals(0, rectangles.countBy(), "No rectangles should have presisted to database while violating constraints.");
+        assertEquals(0, rectangles.countAll(), "No rectangles should have presisted to database while violating constraints.");
         assertEquals(4, resultingException.getConstraintViolations().size(), "Incorrect number of constraint violations.");
         
         // Save All
@@ -118,7 +118,7 @@ public class ValidationTests {
         
         TestPropertyUtility.waitForEventualConsistency();
         
-        assertEquals(0, rectangles.countBy(), "No rectangles should have presisted to database while violating constraints.");
+        assertEquals(0, rectangles.countAll(), "No rectangles should have presisted to database while violating constraints.");
         assertEquals(5, resultingException.getConstraintViolations().size(), "Incorrect number of constraint violations.");        
     }
     
@@ -131,7 +131,7 @@ public class ValidationTests {
         
         TestPropertyUtility.waitForEventualConsistency();
         
-        assertEquals(1, rectangles.countBy(), "Number of results was incorrect");
+        assertEquals(1, rectangles.countAll(), "Number of results was incorrect");
         assertRectangleFields(validRect, getResults().get(0));
         
         // Update
@@ -140,7 +140,7 @@ public class ValidationTests {
         
         TestPropertyUtility.waitForEventualConsistency();
         
-        assertEquals(1, rectangles.countBy(), "Number of results was incorrect");
+        assertEquals(1, rectangles.countAll(), "Number of results was incorrect");
         assertRectangleFields(updatedRect, getResults().get(0));     
     }
     
@@ -158,7 +158,7 @@ public class ValidationTests {
         
         TestPropertyUtility.waitForEventualConsistency();
         
-        assertEquals(4, rectangles.countBy(), "Number of results was incorrect");
+        assertEquals(4, rectangles.countAll(), "Number of results was incorrect");
         
         // Update All
         List<Rectangle> updatedRects = List.of(
@@ -171,7 +171,7 @@ public class ValidationTests {
         
         TestPropertyUtility.waitForEventualConsistency();
         
-        assertEquals(4, rectangles.countBy(), "Number of results was incorrect");
+        assertEquals(4, rectangles.countAll(), "Number of results was incorrect");
         
         // Verify All
         List<Rectangle> resultRects = getResults();
@@ -190,7 +190,7 @@ public class ValidationTests {
         
         TestPropertyUtility.waitForEventualConsistency();
         
-        assertEquals(1, rectangles.countBy(), "Number of results was incorrect");
+        assertEquals(1, rectangles.countAll(), "Number of results was incorrect");
         
         // Update
         Rectangle updatedInvalidRect = new Rectangle("RECT-040", -5L, -5L, -5, -5);
@@ -200,7 +200,7 @@ public class ValidationTests {
         
         TestPropertyUtility.waitForEventualConsistency();
         
-        assertEquals(1, rectangles.countBy(), "Number of results was incorrect");
+        assertEquals(1, rectangles.countAll(), "Number of results was incorrect");
         assertEquals(4, resultingException.getConstraintViolations().size());
         
         // Verify
@@ -223,7 +223,7 @@ public class ValidationTests {
         
         TestPropertyUtility.waitForEventualConsistency();
         
-        assertEquals(4, rectangles.countBy(), "Number of results was incorrect");
+        assertEquals(4, rectangles.countAll(), "Number of results was incorrect");
         
         // Update All
         List<Rectangle> invalidRects = List.of(
@@ -238,7 +238,7 @@ public class ValidationTests {
         
         TestPropertyUtility.waitForEventualConsistency();
         
-        assertEquals(4, rectangles.countBy(), "Number of results was incorrect");
+        assertEquals(4, rectangles.countAll(), "Number of results was incorrect");
         assertEquals(4, resultingException.getConstraintViolations().size());
         
         // Verify
@@ -261,10 +261,10 @@ public class ValidationTests {
         
         TestPropertyUtility.waitForEventualConsistency();
         
-        assertEquals(3, rectangles.countBy(), "Number of results was incorrect");
+        assertEquals(3, rectangles.countAll(), "Number of results was incorrect");
         
         // Get
-        List<Rectangle> resultRects = rectangles.findAllByOrderByIdAsc();
+        List<Rectangle> resultRects = rectangles.findAllOrderById();
         
         // Verify
         for(int i = 0; i < resultRects.size(); i++) {
@@ -288,11 +288,11 @@ public class ValidationTests {
         
         TestPropertyUtility.waitForEventualConsistency();
         
-        assertEquals(4, rectangles.countBy(), "Number of results was incorrect");
+        assertEquals(4, rectangles.countAll(), "Number of results was incorrect");
         
         // Get
         resultingException = assertThrows(ConstraintViolationException.class, () -> {
-            rectangles.findAllByOrderByIdAsc(); //returns 4 results when max is 3
+            rectangles.findAllOrderById(); //returns 4 results when max is 3
         });
         
         // Verify

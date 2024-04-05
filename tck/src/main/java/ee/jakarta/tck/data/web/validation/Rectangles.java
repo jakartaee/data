@@ -36,13 +36,13 @@ public interface Rectangles extends DataRepository<Rectangle, String> {
     List<Rectangle> saveAll(@Valid List<Rectangle> entities);
     
     @PositiveOrZero
-    long countBy();
+    long countAll();
 
     @Find
     Stream<Rectangle> findAll();
     
-    void deleteAllBy();
+    void deleteAll();
 
     @Size(min = 0, max = 3)
-    List<Rectangle> findAllByOrderByIdAsc();
+    List<Rectangle> findAllOrderById();
 }
