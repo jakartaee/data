@@ -106,7 +106,7 @@ Query methods allow developers to create database queries using method naming co
 ----
 query : find | action
 find : "find" limit? ignoredText? restriction? order?
-action : ("delete" | "update" | "count" | "exists") ignoredText? restriction?
+action : ("delete" | "count" | "exists") ignoredText? restriction?
 restriction : "By" predicate
 limit : "First" max?
 predicate : condition (("And" | "Or") condition)*
@@ -134,19 +134,18 @@ orderItem : property ("Asc" | "Desc")
 
 Explanation of the BNF elements:
 
-- `query`: May be a `find` query, or an `update`, `delete`, `count`, or `exists` operation.
-- `find`: A `find` query has a specification of records to be retrieved, and optional sorting.
+- `query`: May be a `find` query, or a `delete`, `count`, or `exists` operation.
+- `find`: A `find` query has an optional limit and optional restriction on records to be retrieved, and optional sorting.
 - `action`: Any other kind of operation has only a restriction to a subset of records.
-- `specification`: A `find` query may retrieve all records, or may restrict the records retrieved by a predicate and an optional limit.
-- `restriction`: Any other kind of operation may apply to all records or to a subset of records restricted by a predicate
+- `restriction`: Restricts the records returned to those which satisfy a predicate
 - `limit`: Limits the records retrieved by a `find` query to a hardcoded maximum, such as `First10`.
 - `ignoredText`: Optional text that does not contain `By`, `All`, or `First`.
-- `predicate`: Represents the query's condition or filtering criteria, which can include multiple conditions separated by `And` or `Or`.
-- `condition`: Specifies a property and an operator for the condition.
-- `operator`: Defines the operator for the condition, like `Between` or `LessThan`. When absent, equality is implied.
+- `predicate`: A filtering criteria, which may include multiple conditions separated by `And` or `Or`.
+- `condition`: A property of the queried entity and an operator.
+- `operator`: An operator belonging to a condition, for example, `Between` or `LessThan`. When absent, equality is implied.
 - `property`: A property name, which can include underscores for nested properties.
 - `identifier`: A legal Java identifier, not containing an underscore.
-- `max`: A whole number greater than zero.
+- `max`: A positive whole number.
 - `order`: Specifies that results of a `find` query should be sorted lexicographically, with respect to one or more order items.
 - `orderItem`: A field used to sort results, where `Asc` or `Desc` specifies the sorting direction.
 
@@ -154,23 +153,24 @@ Explanation of the BNF elements:
 
 The following tables list the _Query by Method Name_ keywords that must be supported by Jakarta Data providers, except where explicitly indicated for a type of database.
 
+[cols="12,~,25"]
 |===
-|Keyword |Description| Not Required For
+| Action | Description | Not Required For
 
-|`findBy`
-|General query method returning entities.
+|`find`
+|Returns entity instances representing the records which satisfy the restriction, or representing all records if there is no restriction.
 |Key-value, Wide-Column
 
-|`deleteBy`
-|Delete query method returning either no result (void) or the delete count.
+|`delete`
+|Deletes every record which satisfy the restriction, or all records if there is no restriction, and returns either no result (`void`) or the number of records deleted.
 |Key-value, Wide-Column
 
-|`countBy`
-|Count projection returning a numeric result.
+|`count`
+|Returns the number of records which satisfy the restriction, or the total number of records if there is no restriction.
 |Key-value, Wide-Column
 
-|`existsBy`
-|Exists projection, returning as a `boolean` result.
+|`exists`
+|Returns `true` if at least one record satisfies the restriction or if there is at least one record in the database when there is no restriction.
 |Key-value, Wide-Column
 |===
 
@@ -180,8 +180,9 @@ The "Not Required For" column indicates the database types for which the respect
 ====
 Jakarta Data implementations must support the following list of Query by Method Name keywords, except where indicated for a database type. A repository method must raise `java.lang.UnsupportedOperationException` or a more specific subclass of the exception if the database does not provide the requested functionality.
 
+[cols="15,~,~,25"]
 |===
-|Keyword |Description | Method signature Sample| Not Required For
+| Keyword |Description | Method signature Sample | Not Required For
 
 |`And`
 |The `And` operator requires both conditions to match.
@@ -321,16 +322,17 @@ For relational databases, the logical operator `And` takes precedence over `Or`,
 
 The return type of a Query by Method Name is determined as indicated in the following table, where `E` is the queried entity type.
 
+[cols="25,20,~"]
 |===
-|Operation |Return type| Notes
+| Operation | Return type | Notes
 
-|`count` |`long` or `int` |
-|`update`|`void`, `boolean`, `long`,`int`|
-|`exists`|`boolean`|
-|`find`|`E` or `Optional<E>`|For queries returning a single item (or none)
-|`find`|`E[]` or `List<E>`|For queries where it is possible to return more than one item
-|`find`|`Stream<E>`|The caller must call `java.util.stream.BaseStream.close()` for every stream returned by the repository method.
-|`find` accepting a `PageRequest`|`Page<E>` or `CursoredPage<E>`|For use with pagination.
+| `count` | `long` or `int` |
+| `delete`| `void`,`long`,`int` |
+| `exists`| `boolean` |
+| `find` | `E` or `Optional<E>` | For queries returning a single item (or none)
+| `find` | `E[]` or `List<E>`| For queries where it is possible to return more than one item
+| `find` | `Stream<E>` | The caller must call `java.util.stream.BaseStream.close()` for every stream returned by the repository method
+| `find` accepting a `PageRequest` | `Page<E>` or `CursoredPage<E>` | For use with pagination
 |===
 
 
