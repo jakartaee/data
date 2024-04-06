@@ -61,11 +61,11 @@ A Jakarta Data provider must ignore every repository which specifies the name of
 
 == Interoperability with other Jakarta EE Specifications
 
-This section discusses interoperability with related Jakarta EE specifications. When operating within a Jakarta EE product, the availability of other Jakarta EE technologies depends on whether the Jakarta EE Core profile, Jakarta EE Web profile, or Jakarta EE Platform is used.
+This section discusses interoperability with related Jakarta EE footnote:[Jakarta EE Platform 11, https://jakarta.ee/specifications/platform/11/] specifications. When operating within a Jakarta EE product, the availability of other Jakarta EE technologies depends on whether the Jakarta EE Core profile, Jakarta EE Web profile, or Jakarta EE Platform is used.
 
 === Jakarta Contexts and Dependency Injection
 
-Contexts and Dependency Injection (CDI) is a specification in the Jakarta EE Core profile that provides a powerful and flexible dependency injection framework for Java applications. CDI provides a programming model based around decoupled components with container-managed lifecycles and container-injected dependencies, enabling loose coupling and promoting modular and reusable code.
+Contexts and Dependency Injection footnote:[Jakarta Contexts and Dependency Injection 4.1, https://jakarta.ee/specifications/cdi/4.1/] (CDI) is a specification in the Jakarta EE Core profile that provides a powerful and flexible dependency injection framework for Java applications. CDI provides a programming model based around decoupled components with container-managed lifecycles and container-injected dependencies, enabling loose coupling and promoting modular and reusable code.
 
 In the Jakarta EE environment, CDI allows implementations of Jakarta Data repositories to be made available for injection via the `@Inject` annotation.
 
@@ -128,12 +128,12 @@ NOTE: Jakarta Data providers that wish to provide both extensions can use CDI's 
 === Jakarta Interceptors
 
 A repository interface or method of a repository interface may be annotated with an interceptor binding annotation.
-In the Jakarta EE environment--or in any other environment where Jakarta Interceptors is available and integrated with Jakarta CDI--if the repository implementation is instantiated by the CDI bean container then the interceptor binding annotation is inherited by the repository implementation. That is, the interceptor binding annotation must be treated as if it were placed directly on the repository implementation bean. The interceptors bound to the annotation are applied automatically by the implementation of Jakarta Interceptors.
+In the Jakarta EE environment--or in any other environment where Jakarta Interceptors footnote:[Jakarta Interceptors 2.2, https://jakarta.ee/specifications/interceptors/2.2/] is available and integrated with Jakarta CDI--if the repository implementation is instantiated by the CDI bean container then the interceptor binding annotation is inherited by the repository implementation. That is, the interceptor binding annotation must be treated as if it were placed directly on the repository implementation bean. The interceptors bound to the annotation are applied automatically by the implementation of Jakarta Interceptors.
 
 
 === Jakarta Transactions
 
-Work performed by a repository might occur within the scope of a transaction managed by Jakarta Transactions. This is usually transparent to the code acting as client of the repository. When:
+Work performed by a repository might occur within the scope of a transaction managed by Jakarta Transactions.footnote:[Jakarta Transactions 2.0, https://jakarta.ee/specifications/transactions/2.0/] This is usually transparent to the code acting as client of the repository. When:
 
 1. Jakarta Transactions is available,
 2. a global transaction is active on the thread of execution in which a repository operation is called, and
@@ -170,7 +170,7 @@ By supporting Jakarta NoSQL annotations, Jakarta Data providers enable Java deve
 
 === Jakarta Bean Validation
 
-Integrating with Jakarta Validation ensures data consistency within the Java layer. By applying validation rules to the data, developers can enforce constraints and business rules, preventing invalid or inconsistent information from being processed or persisted.
+Integrating with Jakarta Bean Validation footnote:[Jakarta Bean Validation 3.1, https://jakarta.ee/specifications/bean-validation/3.1/] ensures data consistency within the Java layer. By applying validation rules to the data, developers can enforce constraints and business rules, preventing invalid or inconsistent information from being processed or persisted.
 
 Using Jakarta Validation brings several advantages. It helps maintain data integrity, improves data quality, and enhances the reliability of the application. Catching validation errors early in the Java layer can identify and resolve potential issues before further processing or persistence occurs. Additionally, Jakarta Validation allows for declarative validation rules, simplifying the validation logic and promoting cleaner and more maintainable code.
 
