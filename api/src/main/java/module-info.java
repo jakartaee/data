@@ -627,8 +627,8 @@ import java.util.Set;
  * <p>The following is a table of valid return types.
  * The <b>Method</b> column shows name patterns for Query by Method Name.
  * For example, to identify the valid return types for a method,
- * {@code findNamed(String name, PageRequest pagination)}, refer to the row for
- * {@code find...By...(..., PageRequest)}.</p>
+ * {@code findByName}, that accepts a {@code PageRequest} parameter,
+ * refer to the row for {@code find...By...(..., PageRequest)}.</p>
  *
  * <table style="width: 100%">
  * <caption><b>Return Types for Query by Method Name</b></caption>
