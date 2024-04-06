@@ -34,10 +34,14 @@
  * }
  *
  * &#64;StaticMetamodel(Product.class)
- * public class _Product {
- *     public static volatile SortableAttribute&lt;Product&gt; id;
- *     public static volatile TextAttribute&lt;Product&gt; name;
- *     public static volatile SortableAttribute&lt;Product&gt; price);
+ * public interface _Product {
+ *     String ID = "id";
+ *     String NAME = "name";
+ *     String PRICE = "price";
+ *
+ *     SortableAttribute&lt;Product&gt; id = new SortableAttributeRecord&lt;&gt;(ID);
+ *     TextAttribute&lt;Product&gt; name = new TextAttributeRecord&lt;&gt;(NAME);
+ *     SortableAttribute&lt;Product&gt; price = new SortableAttributeRecord&lt;&gt;(PRICE);
  * }
  *
  * ...

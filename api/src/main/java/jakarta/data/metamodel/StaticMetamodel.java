@@ -35,6 +35,7 @@ import jakarta.data.Sort;
  *
  * <p>Jakarta Data defines the following conventions for static metamodel classes:</p>
  * <ul>
+ * <li>The metamodel class can be an interface or concrete class.</li>
  * <li>The name of the static metamodel class should consist of underscore ({@code _})
  *     followed by the entity class name.</li>
  * <li>Fields of type {@code String} should be named with all upper case.</li>
@@ -66,19 +67,18 @@ import jakarta.data.Sort;
  *
  * <pre>
  * &#64;StaticMetamodel(Person.class)
- * public class _Person {
- *     // These can be uninitialized and non-final if you don't need to access them from annotations.
- *     public static final String SSN = "ssn";
- *     public static final String NAME = "name";
- *     public static final String NAME_FIRST = "name.first";
- *     public static final String NAME_LAST = "name.last";
- *     public static final String YEAROFBIRTH = "yearOfBirth";
+ * public interface _Person {
+ *     String SSN = "ssn";
+ *     String NAME = "name";
+ *     String NAME_FIRST = "name.first";
+ *     String NAME_LAST = "name.last";
+ *     String YEAROFBIRTH = "yearOfBirth";
  *
- *     public static final SortableAttribute&lt;Person&gt; ssn = new SortableAttributeRecord&lt;&gt;("ssn");
- *     public static final Attribute&lt;Person&gt; name = new AttributeRecord&lt;&gt;("name");
- *     public static final TextAttribute&lt;Person&gt; name_first = new TextAttributeRecord&lt;&gt;("name.first");
- *     public static final TextAttribute&lt;Person&gt; name_last = new TextAttributeRecord&lt;&gt;("name.last");
- *     public static final SortableAttribute&lt;Person&gt; yearOfBirth = new SortableAttributeRecord&lt;&gt;("yearOfBirth");
+ *     SortableAttribute&lt;Person&gt; ssn = new SortableAttributeRecord&lt;&gt;(SSN);
+ *     Attribute&lt;Person&gt; name = new AttributeRecord&lt;&gt;(NAME);
+ *     TextAttribute&lt;Person&gt; name_first = new TextAttributeRecord&lt;&gt;(NAME_FIRST);
+ *     TextAttribute&lt;Person&gt; name_last = new TextAttributeRecord&lt;&gt;(NAME_LAST);
+ *     SortableAttribute&lt;Person&gt; yearOfBirth = new SortableAttributeRecord&lt;&gt;(YEAROFBIRTH);
  * }
  * </pre>
  *
@@ -96,8 +96,10 @@ import jakarta.data.Sort;
  * for entities at compile time. The generated classes must be annotated with the
  * {@link jakarta.annotation.Generated @Generated} annotation. The fields may be
  * statically initialized, or they may be initialized by the provider during system
- * initialization. In the first case, the fields are declared {@code final}. In the
- * second case, the fields are declared non-{@code final} and {@code volatile}.</p>
+ * initialization. In the first case, the fields are declared {@code final} and the
+ * metamodel class can be an interface. In the second case, the fields are declared
+ * non-{@code final} and {@code volatile} and the metamodel class must be a concrete
+ * class.</p>
  *
  * <p>In cases where multiple Jakarta Data providers provide repositories for the same
  * entity type, no guarantees are made of the order in which the Jakarta Data providers
