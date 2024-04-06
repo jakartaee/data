@@ -17,7 +17,12 @@ package ee.jakarta.tck.data.common.cdi;
 
 /**
  * A test entity that will be persisted to a repository.
+ * 
+ * Is annotated with both persistence and nosql {@code @Entity}
+ * to ensure the provider attribute of the repository is honored.
  */
+@jakarta.nosql.Entity
+@jakarta.persistence.Entity
 public class Person {
     public long id;
     public String firstName;
