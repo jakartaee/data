@@ -22,7 +22,7 @@ import java.util.Optional;
 /**
  * Built-in implementation of PageRequest.
  */
-record Pagination(long page, int size, Mode mode, Cursor type, boolean requestTotal) implements PageRequest {
+record Pagination(long page, int size, Mode mode, Cursor keys, boolean requestTotal) implements PageRequest {
 
     Pagination {
         if (page < 1) {
@@ -31,19 +31,19 @@ record Pagination(long page, int size, Mode mode, Cursor type, boolean requestTo
             throw new IllegalArgumentException("maxPageSize: " + size);
         }
 
-        if (mode != Mode.OFFSET && (type == null || type.size() == 0)) {
+        if (mode != Mode.OFFSET && (keys == null || keys.size() == 0)) {
             throw new IllegalArgumentException("No key values were provided.");
         }
     }
 
     @Override
     public PageRequest withoutTotal() {
-        return new Pagination(page, size, mode, type, false);
+        return new Pagination(page, size, mode, keys, false);
     }
 
     @Override
     public PageRequest withTotal() {
-        return new Pagination(page, size, mode, type, true);
+        return new Pagination(page, size, mode, keys, true);
     }
 
     @Override
@@ -68,7 +68,7 @@ record Pagination(long page, int size, Mode mode, Cursor type, boolean requestTo
 
     @Override
     public Optional<Cursor> cursor() {
-        return Optional.ofNullable(type);
+        return Optional.ofNullable(keys);
     }
 
     @Override
@@ -97,20 +97,20 @@ record Pagination(long page, int size, Mode mode, Cursor type, boolean requestTo
                 .append("PageRequest{page=").append(page)
                 .append(", size=").append(size)
                 .append(", mode=").append(mode);
-        if (type != null) {
-            s.append(", ").append(type.size()).append(" keys");
+        if (keys != null) {
+            s.append(", ").append(keys.size()).append(" keys");
         }
         return s.append("}").toString();
     }
 
     @Override
     public PageRequest page(long pageNumber) {
-        return new Pagination(pageNumber, size, mode, type, requestTotal);
+        return new Pagination(pageNumber, size, Mode.OFFSET, null, requestTotal);
     }
 
     @Override
     public PageRequest size(int maxPageSize) {
-        return new Pagination(page, maxPageSize, mode, type, requestTotal);
+        return new Pagination(page, maxPageSize, mode, keys, requestTotal);
     }
 
 }
