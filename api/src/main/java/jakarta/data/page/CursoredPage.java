@@ -120,7 +120,7 @@ import java.util.NoSuchElementException;
  * &#64;OrderBy("birthYear")
  * &#64;OrderBy("id")
  * CursoredPage&lt;Customer&gt; getTopBuyers(int minOrders, float minSpent,
- *                                     PageRequest pageRequest, Order&lt;Customer&gt;} sort);
+ *                                     PageRequest pageRequest);
  * </pre>
  *
  * <p>Only queries which return entities may be used with cursor-based pagination

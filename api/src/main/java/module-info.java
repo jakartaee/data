@@ -748,7 +748,7 @@ import java.util.Set;
  * The results may even be limited to a positioned range. For example,</p>
  *
  * <pre>
- * &#64;Query("WHERE (fullPrice - salePrice) / fullPrice &gt;= ?1 ORDER BY salePrice DESC")
+ * &#64;Query("WHERE (fullPrice - salePrice) / fullPrice &gt;= ?1 ORDER BY salePrice DESC, id ASC")
  * Product[] highlyDiscounted(float minPercentOff, Limit limit);
  *
  * ...
@@ -763,12 +763,16 @@ import java.util.Set;
  * allows its results to be split and retrieved in pages. For example,</p>
  *
  * <pre>
- * Product[] findByNameLikeOrderByAmountSoldDescNameAsc(
- *           String pattern, PageRequest pageRequest);
+ * Product[] findByNameLikeOrderByAmountSoldDescIdAsc(
+ *                 String pattern, PageRequest pageRequest);
  * ...
- * page1 = products.findByNameLikeOrderByAmountSoldDescNameAsc(
- *                  "%phone%", PageRequest.ofSize(20));
+ * page1 = products.findByNameLikeOrderByAmountSoldDescIdAsc(
+ *                 "%phone%", PageRequest.ofSize(20));
  * </pre>
+ *
+ * <p>When using pagination, always ensure that the ordering is consistent
+ * across invocations. One way to achieve this is to include the unique
+ * identifier in the sort criteria.</p>
  *
  * <h3>Sorting</h3>
  *
@@ -784,7 +788,7 @@ import java.util.Set;
  *
  * page1 = products.findByNameLikeAndPriceBetween(
  *                 namePattern, minPrice, maxPrice, page1Request,
- *                 Order.by(Sort.desc("price"), Sort.asc("name"));
+ *                 Order.by(Sort.desc("price"), Sort.asc("id"));
  * </pre>
  *
  * <p>To supply sort criteria dynamically without using pagination, an
@@ -798,7 +802,7 @@ import java.util.Set;
  * found = products.findByNameLike(namePattern, Limit.of(25),
  *                                 Order.by(Sort.desc("price"),
  *                                          Sort.desc("amountSold"),
- *                                          Sort.asc("name")));
+ *                                          Sort.asc("id")));
  * </pre>
  *
  * <p>Generic, untyped {@link Sort} criteria can be supplied directly to a

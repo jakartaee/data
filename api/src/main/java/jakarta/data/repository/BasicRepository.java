@@ -75,8 +75,9 @@ import static jakarta.data.repository.By.ID;
  *
  * boolean deleted = employees.deleteByBadgeNumber(emp.badgeNum);
  *
- * PageRequest&lt;Employee&gt; pageRequest = PageRequest.of(Employee.class).size(25).sortBy(Sort.asc("name"));
- * Page&lt;Employee&gt; page = people.findAll(pageRequest);
+ * PageRequest pageRequest = PageRequest.ofSize(25);
+ * Order&lt;Employee&gt; sorts = Order.by(Sort.asc("name"));
+ * Page&lt;Employee&gt; page = people.findAll(pageRequest, sorts);
  * </pre>
  *
  * <p>The module Javadoc provides an {@link jakarta.data/ overview} of Jakarta Data.</p>
