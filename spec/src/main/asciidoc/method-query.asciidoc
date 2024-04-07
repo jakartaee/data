@@ -57,6 +57,8 @@ Therefore, these alternative approaches are strongly preferred for newly-written
 
 A Jakarta Data provider is required to support the Query by Method Name extension in Jakarta Data 1.0.
 
+NOTE: A Jakarta Data provider backed by a key-value or wide-column datastore is not required to support Query by Method Name.
+
 WARNING: This functionality is considered deprecated, and the requirement that a provider support the Query by Method Name extension will be removed in a future version of Jakarta Data.
 
 == Query by Method Name
@@ -82,8 +84,8 @@ The parsing of query method names follows a specific format:
 
 - The method name consists of the subject, the predicate, and optionally the order clause.
 - The subject begins with the action (such as `find` or `delete`) and is optionally followed by an expression (for example, `First10`), followed by any number of other characters, followed by `By`.
-- The predicate defines the query's condition or filtering criteria, where multiple conditions are delimited by `And` or `Or`. For example, `PriceLessThanAndNameLike`. Each condition consists of a property name, optionally followed by `IgnoreCase` (for text properties), optionally followed by `Not`, optionally followed by an operator such as `LessThan` or `Like`. Absence of the operator implies the equality condition.
-- The order clause, which is optional, begins with `OrderBy` and is followed by one or more ordered pairings consisting of entity attribute name and direction of sorting (`Asc` or `Desc`). The direction can be omitted on the final property, in which case `Asc` is implied. Ordering of results is performed by sorting the first entity attribute according to its respective direction, where results that sort to the same position are subsequently sorted by the second entity attribute according to its respective direction, and so forth.
+- The predicate defines the condition or filtering criteria, where multiple conditions are delimited by `And` or `Or`. For example, `PriceLessThanAndNameLike`. Each condition consists of a property name, optionally followed by `IgnoreCase` (for text properties), optionally followed by `Not`, optionally followed by an operator such as `LessThan` or `Like`. Absence of the operator implies the equality condition.
+- The order clause, which is optional, begins with `OrderBy` and is followed by one or more ordered pairings consisting of entity attribute name and direction of sorting (`Asc` or `Desc`). The direction can be omitted if there is only one property, in which case `Asc` is implied. Ordering of results is performed by sorting the first entity attribute according to its respective direction, where results that sort to the same position are subsequently sorted by the second entity attribute according to its respective direction, and so forth.
 - The method name is formed by combining the subject, predicate, and order clause, in that order.
 
 NOTE: This specification uses the terms subject and predicate in a way that aligns with industry terminology rather than how they are defined in English grammar.
@@ -92,11 +94,11 @@ Queries can also handle entities with relation attributes by specifying the rela
 
 Example query methods:
 
-- `findByName(String name)`: Find entities by the 'name' property.
-- `findByAgeGreaterThan(int age)`: Find entities where 'age' is greater than the specified value.
-- `findByAuthorName(String authorName)`: Find entities by the 'authorName' property of a related entity.
-- `findByCategoryNameAndPriceLessThan(String categoryName, double price)`: Find entities by 'categoryName' and 'price' properties, applying an 'And' condition.
-- `findByNameLikeOrderByPriceDescIdAsc`: Find entities by matching the 'name' property against a pattern, sorting the results by 'price' in descending order, and sorting results with the same 'price' by the 'id' in ascending order.
+- `findByName(String name)` -- find entities by the `name` property.
+- `findByAgeGreaterThan(int age)` -- find entities where `age` is greater than the specified value.
+- `findByAuthorName(String authorName)` -- find entities by the `authorName` property of a related entity.
+- `findByCategoryNameAndPriceLessThan(String categoryName, double price)` -- find entities by `categoryName` and `price` properties, applying an `And` condition.
+- `findByNameLikeOrderByPriceDescIdAsc` -- find entities by matching the `name` property against a pattern, sorting the results by `price` in descending order, and sorting results with the same `price` by the `id` in ascending order.
 
 === BNF Grammar for Query Methods
 
@@ -132,6 +134,8 @@ order : "OrderBy" (property | orderItem+)
 orderItem : property ("Asc" | "Desc")
 ----
 
+Quoted names are considered case-sensitive keywords.
+
 Explanation of the BNF elements:
 
 - `query`: May be a `find` query, or a `delete`, `count`, or `exists` operation.
@@ -151,152 +155,139 @@ Explanation of the BNF elements:
 
 === Query by Method Name Keywords
 
-The following tables list the _Query by Method Name_ keywords that must be supported by Jakarta Data providers, except where explicitly indicated for a type of database.
+An implementation of Query by Method Name must support the following types of operation.
 
-[cols="12,~,25"]
+.Query by Method Name Actions
+[cols="12,~"]
 |===
-| Action | Description | Not Required For
+| Action | Description
 
 |`find`
 |Returns entity instances representing the records which satisfy the restriction, or representing all records if there is no restriction.
-|Key-value, Wide-Column
 
 |`delete`
 |Deletes every record which satisfy the restriction, or all records if there is no restriction, and returns either no result (`void`) or the number of records deleted.
-|Key-value, Wide-Column
 
 |`count`
 |Returns the number of records which satisfy the restriction, or the total number of records if there is no restriction.
-|Key-value, Wide-Column
 
 |`exists`
 |Returns `true` if at least one record satisfies the restriction or if there is at least one record in the database when there is no restriction.
-|Key-value, Wide-Column
 |===
 
-[NOTE]
-====
-The "Not Required For" column indicates the database types for which the respective keyword is not required or applicable.
-====
-Jakarta Data implementations must support the following list of Query by Method Name keywords, except where indicated for a database type. A repository method must raise `java.lang.UnsupportedOperationException` or a more specific subclass of the exception if the database does not provide the requested functionality.
+An implementation of Query by Method Name must support the following keywords.
 
-[cols="15,~,~,25"]
+.Query by Method Name Keywords
+[cols="15,~,~"]
 |===
-| Keyword |Description | Method signature Sample | Not Required For
+| Keyword | Description | Method signature example
 
 |`And`
 |The `And` operator requires both conditions to match.
 |`findByNameAndYear`
-|Key-value, Wide-Column
 
 |`Or`
 |The `Or` operator requires at least one of the conditions to match.
 |`findByNameOrYear`
-|Key-value, Wide-Column
 
 |`Not`
 |Negates the condition that immediately follows the `Not` keyword. When used without a subsequent keyword, means not equal to.
 |`findByNameNotLike`
-|Key-value, Wide-Column
-
-|`Between`
-|Find results where the property is between (inclusive of) two given values, with the first value being the inclusive minimum and the second value being the inclusive maximum.
-|`findByDateBetween`
-|Key-value, Wide-Column
-
-|`Contains`
-|Matches String values with the given substring, which can be a pattern.
-|`findByProductNameContains`
-|Key-value, Wide-Column, Document, Graph
-
-|`EndsWith`
-|Matches String values with the given ending, which can be a pattern.
-|`findByProductNameEndsWith`
-|Key-value, Wide-Column, Document, Graph
 
 |`First`
 |For a query with ordered results, limits the quantity of results to the number following First, or if there is no subsequent number, to a single result.
 |`findFirst10By`
-|Key-value, Wide-Column, Document, Graph
-
-|`LessThan`
-|Find results where the property is less than the given value
-|`findByAgeLessThan`
-|Key-value, Wide-Column
-
-|`GreaterThan`
-|Find results where the property is greater than the given value
-|`findByAgeGreaterThan`
-|Key-value, Wide-Column
-
-|`LessThanEqual`
-|Find results where the property is less than or equal to the given value
-|`findByAgeLessThanEqual`
-|Key-value, Wide-Column
-
-|`GreaterThanEqual`
-|Find results where the property is greater than or equal to the given value
-|`findByAgeGreaterThanEqual`
-|Key-value, Wide-Column
-
-|`Like`
-|Matches String values against the given pattern.
-|`findByTitleLike`
-|Key-value, Wide-Column, Document, Graph
-
-|`IgnoreCase`
-|Requests that string values be compared independent of case for query conditions and ordering.
-|`findByStreetNameIgnoreCaseLike`
-|Key-value, Wide-Column, Document, Graph
-
-|`In`
-|Find results where the property is one of the values that are contained within the given `Set`.
-|`findByIdIn`
-|Key-value, Wide-Column, Document, Graph
-
-|`Null`
-|Finds results where the property has a null value.
-|`findByYearRetiredNull`
-|Key-value, Wide-Column, Document, Graph
-
-|`StartsWith`
-|Matches String values with the given beginning, which can be a pattern.
-|`findByFirstNameStartsWith`
-|Key-value, Wide-Column, Document, Graph
-
-|`True`
-|Finds results where the property has a boolean value of true.
-|`findBySalariedTrue`
-|Key-value, Wide-Column
-
-|`False`
-|Finds results where the property has a boolean value of false.
-|`findByCompletedFalse`
-|Key-value, Wide-Column
 
 |`OrderBy`
 |Specify a static sorting order followed by one or more ordered pairings of a property path and direction (`Asc` or `Desc`). The direction `Asc` can be omitted from the final property listed, in which case ascending order is implied for that property.
 |`findByAgeOrderByHeightDescIdAsc` `findByAgeOrderById`
-|Key-value, Wide-Column
 
 |`Desc`
 |Specify a static sorting order of descending.
 |`findByNameOrderByAgeDesc`
-|Key-value, Wide-Column
 
 |`Asc`
 |Specify a static sorting order of ascending.
 |`findByNameOrderByAgeAsc`
-|Key-value, Wide-Column
 
 |===
 
-[NOTE]
-====
-The "Not Required For" column indicates the database types for which the respective keyword is not required or applicable.
-====
+For relational databases, the logical operator `And` takes precedence over `Or`, meaning that `And` is evaluated on conditions before `Or` when both are specified on the same method. For other database types, the precedence is limited to the capabilities of the database. For example, some graph databases are limited to precedence in traversal order.
 
-Most _Query by Method Name_ conditions require a single repository method parameter. The `Between` condition requires two parameters. `Null`, `True`, and `False` require none. The repository method parameters used for _Query by Method Name_ conditions follow the order in which the _Query by Method Name_ conditions appear within the method name.
+NOTE: An implementation of Query by Method Name backed by a document or graph database is not required to support the `First` keyword. A repository method must raise `java.lang.UnsupportedOperationException` or a more specific subclass of the exception if the database does not support this functionality. Alternatively, a Jakarta Data provider is permitted to reject such a method declaration at compilation time.
+
+=== Query by Method Name Conditions
+
+In addition to equality conditions, Query by Method Name defines the following kinds of condition.
+
+.Query by Method Name Conditions
+[cols="15,10,^12,~,~"]
+|===
+| Keyword | Property type | Parameters  | Description | Method signature example
+
+|`Between` | Any sortable type | 2
+|Find results where the property is between (inclusive of) two given values, with the first value being the inclusive minimum and the second value being the inclusive maximum.
+|`findByDateBetween`
+
+|`Contains` | `String` | 1
+|Matches string values with the given substring, which can be a pattern.
+|`findByProductNameContains`
+
+|`EndsWith` | `String` | 1
+|Matches String values with the given ending, which can be a pattern.
+|`findByProductNameEndsWith`
+
+|`LessThan` | Any sortable type | 1
+|Find results where the property is less than the given value
+|`findByAgeLessThan`
+
+|`GreaterThan` | Any sortable type | 1
+|Find results where the property is greater than the given value
+|`findByAgeGreaterThan`
+
+|`LessThanEqual` | Any sortable type | 1
+|Find results where the property is less than or equal to the given value
+|`findByAgeLessThanEqual`
+
+|`GreaterThanEqual` | Any sortable type | 1
+|Find results where the property is greater than or equal to the given value
+|`findByAgeGreaterThanEqual`
+
+|`Like` | `String` | 1
+|Matches string values against the given pattern.
+|`findByTitleLike`
+
+|`IgnoreCase` | `String` |
+|Requests that string values be compared independent of case for query conditions and ordering.
+|`findByStreetNameIgnoreCaseLike`
+
+|`In` | Any type | 1 `Set`
+|Find results where the property is one of the values that are contained within the given `Set`.
+|`findByIdIn`
+
+|`Null` | Any type | 0
+|Finds results where the property has a null value.
+|`findByYearRetiredNull`
+
+|`StartsWith` | `String` | 1
+|Matches String values with the given beginning, which can be a pattern.
+|`findByFirstNameStartsWith`
+
+|`True` | `Boolean` or `boolean` | 0
+|Finds results where the property has a boolean value of `true`.
+|`findBySalariedTrue`
+
+|`False` | `Boolean` or `boolean` | 0
+|Finds results where the property has a boolean value of `false`.
+|`findByCompletedFalse`
+
+|===
+
+Most _Query by Method Name_ conditions require a single repository method parameter. The `Between` condition requires two parameters. `Null`, `True`, and `False` require none. An `In` condition requires a parameter of type `Set<T>` where `T` is the type of the property. The repository method parameters used for _Query by Method Name_ conditions follow the order in which the _Query by Method Name_ conditions appear within the method name.
+
+Wildcard characters for patterns are determined by the data store. For relational databases, `_` matches any one character and `%` matches zero or more characters.
+
+NOTE: An implementation of Query by Method Name backed by a document or graph database is not required to support `Contains`, `EndsWith`, `StartsWith`, `Like`, `IgnoreCase`, `In`, or `Null`. A repository method must raise `java.lang.UnsupportedOperationException` or a more specific subclass of the exception if the database does not provide the requested functionality. Alternatively, a Jakarta Data provider is permitted to reject such a method declaration at compilation time.
 
 In the following example the value of the first parameter, `namePattern`, is used for `NameLike`, the values of the second and third parameters, `minYear` and `maxYear`, are used for `YearMadeBetween`, and the value of the fourth parameter, `maxPrice`, is used for `PriceLessThan`.
 
@@ -310,18 +301,11 @@ List<Product> findByNameLikeAndYearMadeBetweenAndPriceLessThan(String namePatter
                                                                Order<Product> sortBy)
 ----
 
-==== Patterns
-
-Wildcard characters for patterns are determined by the data access provider. For relational databases, `_` matches any one character and `%` matches 0 or more characters.
-
-==== Logical Operator Precedence
-
-For relational databases, the logical operator `And` takes precedence over `Or`, meaning that `And` is evaluated on conditions before `Or` when both are specified on the same method. For other database types, the precedence is limited to the capabilities of the database. For example, some graph databases are limited to precedence in traversal order.
-
 === Return Types
 
 The return type of a Query by Method Name is determined as indicated in the following table, where `E` is the queried entity type.
 
+.Repository Method Return Types
 [cols="25,20,~"]
 |===
 | Operation | Return type | Notes
@@ -353,7 +337,7 @@ Resolution of a persistent field involves the following steps:
 
 4. If no matching persistent field is found in either of the previous steps, the provider is permitted to reject the query method or to throw `UnsupportedOperationException` when the method is called.
 
-A persistent field name used in a _Query by Method Name_ must not contain a <<Query by Method Name Keywords,keyword>> reserved by _Query by Method Name_.
+A persistent field name used in a _Query by Method Name_ must not contain a keyword reserved by the <<BNF Grammar for Query Methods,grammar>>.
 
 ==== Scenario 1: Person Repository with Unambiguous Resolution
 
