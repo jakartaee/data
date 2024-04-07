@@ -47,7 +47,7 @@ A _programming model for entity classes_ specifies:
 
 Jakarta Data does not define its own programming model for entities, but instead:
 
-- is compatible with the programming models defined by the Jakarta Persistence and Jakarta NoSQL specifications, and
+- is compatible with the programming models defined by the Jakarta Persistence footnote:[Jakarta Persistence 3.2, https://jakarta.ee/specifications/persistence/3.2/] and Jakarta NoSQL footnote:[Jakarta NoSQL 1.0, https://jakarta.ee/specifications/nosql/1.0/] specifications, and
 - allows for vendor-specific entity programming models to be defined by Jakarta Data providers.
 
 This section lays out the core requirements that an entity programming model must satisfy in order to be compatible with Jakarta Data, and for the defining provider to be considered a fully-compliant implementation of this specification.
