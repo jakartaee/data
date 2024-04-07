@@ -40,7 +40,7 @@ import ee.jakarta.tck.data.framework.read.only.NaturalNumber.NumberType;
 @Repository
 public interface NaturalNumbers extends BasicRepository<NaturalNumber, Long>, IdOperations {
 
-    long countBy();
+    long countAll();
 
     CursoredPage<NaturalNumber> findByFloorOfSquareRootOrderByIdAsc(long sqrtFloor,
                                                                     PageRequest pagination);

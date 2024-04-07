@@ -362,8 +362,8 @@ import java.util.Set;
  * must have a method name that begins with one of the following prefixes and
  * must not include the {@code @Find} annotation, {@code @Query} annotation, or
  * any lifecycle annotations on the method or any data access related annotations
- * on the method parameters. Query conditions
- * are determined by the portion of the method name following the {@code By} keyword.</p>
+ * on the method parameters. Query conditions are determined by the portion of
+ * the method name following the {@code By} keyword.</p>
  *
  * <table id="methodNamePrefixes" style="width: 100%">
  * <caption><b>Query By Method Name</b></caption>
@@ -373,25 +373,21 @@ import java.util.Set;
  * <td style="vertical-align: top; width: 65%"><b>Example</b></td>
  * </tr>
  *
- * <tr style="vertical-align: top"><td>{@code countBy}</td>
+ * <tr style="vertical-align: top"><td>{@code count}</td>
  * <td>counts the number of entities</td>
  * <td>{@code countByAgeGreaterThanEqual(ageLimit)}</td></tr>
  *
- * <tr style="vertical-align: top; background-color:#eee"><td>{@code deleteBy}</td>
+ * <tr style="vertical-align: top; background-color:#eee"><td>{@code delete}</td>
  * <td>for delete operations</td>
  * <td>{@code deleteByStatus("DISCONTINUED")}</td></tr>
  *
- * <tr style="vertical-align: top"><td>{@code existsBy}</td>
+ * <tr style="vertical-align: top"><td>{@code exists}</td>
  * <td>for determining existence</td>
  * <td>{@code existsByYearHiredAndWageLessThan(2022, 60000)}</td></tr>
  *
- * <tr style="vertical-align: top; background-color:#eee"><td>{@code find...By}</td>
+ * <tr style="vertical-align: top; background-color:#eee"><td>{@code find}</td>
  * <td>for find operations</td>
  * <td>{@code findByHeightBetween(minHeight, maxHeight)}</td></tr>
- *
- * <tr style="vertical-align: top"><td>{@code updateBy}</td>
- * <td>for simple update operations</td>
- * <td>{@code updateByIdSetModifiedOnAddPrice(productId, now, 10.0)}</td></tr>
  * </table>
  *
  * <p>The conditions are defined by the portion of the repository method name
@@ -601,7 +597,7 @@ import java.util.Set;
  * {@code WithQuarter}, {@code WithSecond}, {@code WithWeek}, {@code WithYear}.
  * </p>
  * <p>
- * Reserved for find...By and count...By: {@code Distinct}.
+ * Reserved for {@code find} and {@code count}: {@code Distinct}.
  * </p>
  * <p>
  * Reserved for updates: {@code Add}, {@code Divide}, {@code Multiply}, {@code Set}, {@code Subtract}.
@@ -625,10 +621,7 @@ import java.util.Set;
  * <h3>Return types for Query by Method Name</h3>
  *
  * <p>The following is a table of valid return types.
- * The <b>Method</b> column shows name patterns for Query by Method Name.
- * For example, to identify the valid return types for a method,
- * {@code findByName}, that accepts a {@code PageRequest} parameter,
- * refer to the row for {@code find...By...(..., PageRequest)}.</p>
+ * The <b>Method</b> column shows name patterns for Query by Method Name.</p>
  *
  * <table style="width: 100%">
  * <caption><b>Return Types for Query by Method Name</b></caption>
@@ -638,39 +631,37 @@ import java.util.Set;
  * <td style="vertical-align: top"><b>Notes</b></td>
  * </tr>
  *
- * <tr style="vertical-align: top; background-color:#eee"><td>{@code countBy...}</td>
+ * <tr style="vertical-align: top; background-color:#eee"><td>{@code count}</td>
  * <td>{@code long},
  * <br>{@code int}</td>
  * <td></td></tr>
  *
- * <tr style="vertical-align: top"><td>{@code deleteBy...},
- * <br>{@code updateBy...}</td>
+ * <tr style="vertical-align: top"><td>{@code delete}</td>
  * <td>{@code void},
- * <br>{@code boolean},
  * <br>{@code long},
  * <br>{@code int}</td>
  * <td></td></tr>
  *
- * <tr style="vertical-align: top; background-color:#eee"><td>{@code existsBy...}</td>
+ * <tr style="vertical-align: top; background-color:#eee"><td>{@code exists}</td>
  * <td>{@code boolean}</td>
- * <td>For determining existence.</td></tr>
+ * <td>For determining existence</td></tr>
  *
- * <tr style="vertical-align: top"><td>{@code find...By...}</td>
+ * <tr style="vertical-align: top"><td>{@code find}</td>
  * <td>{@code E},
  * <br>{@code Optional<E>}</td>
  * <td>For queries returning a single item (or none)</td></tr>
  *
- * <tr style="vertical-align: top; background-color:#eee"><td>{@code find...By...}</td>
+ * <tr style="vertical-align: top; background-color:#eee"><td>{@code find}</td>
  * <td>{@code E[]},
  * <br>{@code List<E>}</td>
- * <td>For queries where it is possible to return more than 1 item.</td></tr>
+ * <td>For queries where it is possible to return more than 1 item</td></tr>
  *
- * <tr style="vertical-align: top"><td>{@code find...By...}</td>
+ * <tr style="vertical-align: top"><td>{@code find}</td>
  * <td>{@code Stream<E>}</td>
- * <td>The caller must arrange to {@link java.util.stream.BaseStream#close() close}
- * all streams that it obtains from repository methods.</td></tr>
+ * <td>The caller must call {@link java.util.stream.BaseStream#close() close}
+ * for every stream returned by the repository method</td></tr>
  *
- * <tr style="vertical-align: top; background-color:#eee"><td>{@code find...By...(..., PageRequest)}</td>
+ * <tr style="vertical-align: top; background-color:#eee"><td>{@code find} accepting {@link PageRequest}</td>
  * <td>{@code Page<E>}, {@code CursoredPage<E>}</td>
  * <td>For use with pagination</td></tr>
  *
