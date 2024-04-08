@@ -105,7 +105,7 @@ public interface Page<T> extends Iterable<T> {
      *
      * @return the request for the current page; will never be {@code null}.
      */
-    PageRequest pageRequest();
+    OffsetBasedPageRequest pageRequest();
 
 
     /**
@@ -117,7 +117,7 @@ public interface Page<T> extends Iterable<T> {
      *         To avoid this exception, check for a {@code true} result of
      *         {@link #hasNext()} before invoking this method.
      */
-    PageRequest nextPageRequest();
+    OffsetBasedPageRequest nextPageRequest();
 
 
 
@@ -130,7 +130,7 @@ public interface Page<T> extends Iterable<T> {
      *         To avoid this exception, check for a {@code true} result of
      *         {@link #hasPrevious()} before invoking this method.
      */
-    PageRequest previousPageRequest();
+    OffsetBasedPageRequest previousPageRequest();
 
 
     /**
