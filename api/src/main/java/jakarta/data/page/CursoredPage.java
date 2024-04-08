@@ -192,10 +192,9 @@ public interface CursoredPage<T> extends Page<T> {
      * when matching entities are added prior to the first page and the
      * previous page is requested) by assigning a page number of {@code 1}
      * to such pages. This means that there can be multiple consecutive pages
-     * numbered {@code 1} and that
-     * {@code currentPage.previousPageRequest().next().page()}
-     * cannot be relied upon to return a page number that is equal to the
-     * current page number.</p>
+     * numbered {@code 1} and that navigating to the previous page and then
+     * forward again cannot be relied upon to return a page number that is
+     * equal to the current page number.</p>
      *
      * @return pagination information for requesting the previous page.
      * @throws NoSuchElementException if the current page is empty or if

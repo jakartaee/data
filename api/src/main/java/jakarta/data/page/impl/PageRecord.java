@@ -84,7 +84,7 @@ public record PageRecord<T>(PageRequest pageRequest, List<T> content, long total
         if (!hasNext()) {
             throw new NoSuchElementException();
         }
-        return pageRequest.next();
+        return pageRequest.page(pageRequest.page() + 1);
     }
 
     @Override
@@ -97,7 +97,7 @@ public record PageRecord<T>(PageRequest pageRequest, List<T> content, long total
         if (!hasPrevious()) {
             throw new NoSuchElementException();
         }
-        return pageRequest.previous();
+        return pageRequest.page(pageRequest.page() - 1);
     }
 
     @Override

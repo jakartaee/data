@@ -197,40 +197,6 @@ public interface PageRequest {
      */
     boolean requestTotal();
 
-
-    /**
-     * <p>Returns the {@code PageRequest} requesting the next page if
-     * using offset pagination.</p>
-     *
-     * <p>If using cursor-based pagination, traversal of pages must only be done
-     * via the {@link CursoredPage#nextPageRequest()},
-     * {@link CursoredPage#previousPageRequest()}, or
-     * {@linkplain CursoredPage#cursor(int) cursor},
-     * not with this method.</p>
-     *
-     * @return The next PageRequest.
-     * @throws UnsupportedOperationException if this {@code PageRequest}
-     *         has a {@link PageRequest.Cursor Cursor}.
-     */
-    PageRequest next();
-
-    /**
-     * <p>Returns the {@code PageRequest} requesting the previous page
-     * if using offset pagination, or null if this is the first page, that
-     * is, when {@link #page()} returns {@code 1}.</p>
-     *
-     * <p>If using cursor-based pagination, traversal of pages must only be done
-     * via the {@link CursoredPage#nextPageRequest()},
-     * {@link CursoredPage#previousPageRequest()}, or
-     * {@linkplain CursoredPage#cursor(int) cursor},
-     * not with this method.</p>
-     *
-     * @return The previous PageRequest, or null if this is the first page.
-     * @throws UnsupportedOperationException if this {@code PageRequest}
-     *         has a {@link PageRequest.Cursor Cursor}.
-     */
-    PageRequest previous();
-
     /**
      * <p>Creates a new page request with the same pagination information,
      * but with the specified page number.</p>
