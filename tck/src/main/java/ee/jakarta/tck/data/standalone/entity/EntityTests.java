@@ -941,7 +941,7 @@ public class EntityTests {
         //                                                                                  ^^^^^ next page ^^^^
 
         Order<NaturalNumber> order = Order.by(Sort.asc("floorOfSquareRoot"), Sort.desc("id"));
-        PageRequest middle7 = PageRequest.ofSize(7)
+        PageRequest middle7 = PageRequest.ofPage(4).size(7)
                         .afterKey((short) 5, 5L, 26L); // 20th result is 26; it requires 5 bits and its square root rounds down to 5.
 
         CursoredPage<NaturalNumber> page;
@@ -1047,7 +1047,7 @@ public class EntityTests {
         //                                  ^^^^^^^^ slice 2 ^^^^^^^^^
         //                                                                                        ^^^^^^^^ slice 3 ^^^^^^^^^
 
-        PageRequest middle9 = PageRequest.ofSize(9).withoutTotal()
+        PageRequest middle9 = PageRequest.ofPage(4).size(9).withoutTotal()
                              .afterKey(6L, 46L); // 20th result is 46; its square root rounds down to 6.
         Order<NaturalNumber> order = Order.by(Sort.desc("floorOfSquareRoot"), Sort.asc("id"));
 
