@@ -36,11 +36,6 @@ import java.util.stream.StreamSupport;
  *                      Order&lt;Vehicle&gt; order);
  * </pre>
  *
- * <p>If {@link PageRequest#requestTotal()} is enabled, the {@link Page} also
- * contains information about the {@linkplain #totalPages total number of pages}
- * and the {@linkplain #totalElements total number of elements} that can be
- * retrieved by the query.</p>
- *
  * @param <T> the type of elements in this page.
  */
 public interface Page<T> extends Iterable<T> {
@@ -74,16 +69,6 @@ public interface Page<T> extends Iterable<T> {
     }
 
     /**
-     * Returns the number of elements on this {@code Page}, which must be no larger
-     * than the maximum {@link PageRequest#size() size} of the page request.
-     * If the number of elements in the page is smaller than the maximum page size,
-     * then there are no subsequent pages of data to read.
-     *
-     * @return the number of elements on this {@code Page}.
-     */
-    int numberOfElements();
-
-    /**
      * Returns {@code true} if it is known that there are more results or that it is
      * necessary to request a next page to determine whether there are more results,
      * so that {@link #nextPageRequest()} will definitely not return {@code null}.
@@ -109,8 +94,8 @@ public interface Page<T> extends Iterable<T> {
 
 
     /**
-     * Returns a request for the {@linkplain PageRequest#next() next} page if
-     * {@link #hasNext()} indicates there might be a next page.
+     * Returns a request for the next page if {@link #hasNext()} indicates there
+     * might be a next page.
      *
      * @return a request for the next page.
      * @throws NoSuchElementException if it is known that there is no next page.
@@ -119,11 +104,9 @@ public interface Page<T> extends Iterable<T> {
      */
     PageRequest nextPageRequest();
 
-
-
     /**
-     * <p>Returns a request for the {@link PageRequest#previous() previous} page,
-     * if {@link #hasPrevious()} indicates there might be a previous page.</p>
+     * <p>Returns a request for the previous page, if {@link #hasPrevious()}
+     * indicates there might be a previous page.</p>
      *
      * @return a request for the previous page.
      * @throws NoSuchElementException if it is known that there is no previous page.
@@ -132,6 +115,15 @@ public interface Page<T> extends Iterable<T> {
      */
     PageRequest previousPageRequest();
 
+    /**
+     * Returns the number of elements on this {@code Page}, which must be no larger
+     * than the maximum {@link PageRequest#size() size} of the page request.
+     * If the number of elements in the page is smaller than the maximum page size,
+     * then there are no subsequent pages of data to read.
+     *
+     * @return the number of elements on this {@code Page}.
+     */
+    int numberOfElements();
 
     /**
      * Returns {@code true} if the {@link #pageRequest()} specified that the
@@ -159,4 +151,5 @@ public interface Page<T> extends Iterable<T> {
      * @throws IllegalStateException if the total was not retrieved from the database.
      */
     long totalPages();
+
 }

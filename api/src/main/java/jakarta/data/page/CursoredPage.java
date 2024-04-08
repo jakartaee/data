@@ -141,7 +141,7 @@ import java.util.NoSuchElementException;
  *
  * @param <T> the type of elements in this page
  */
-public interface CursoredPage<T> extends Slice<T> {
+public interface CursoredPage<T> extends Page<T> {
     /**
      * Returns a {@link PageRequest.Cursor Cursor} for key values at the
      * specified position.
