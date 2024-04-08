@@ -141,7 +141,7 @@ import java.util.NoSuchElementException;
  *
  * @param <T> the type of elements in this page
  */
-public interface CursoredPage<T> extends Page<T> {
+public interface CursoredPage<T> extends Slice<T> {
     /**
      * Returns a {@link PageRequest.Cursor Cursor} for key values at the
      * specified position.
@@ -174,7 +174,7 @@ public interface CursoredPage<T> extends Page<T> {
      *         To avoid this exception, check for a {@code true} result
      *         of {@link #hasNext()} before invoking this method.
      */
-    PageRequest nextPageRequest();
+    CursoredPageRequest nextPageRequest();
 
     /**
      * <p>Creates a request for the previous page in a reverse direction from
@@ -202,5 +202,5 @@ public interface CursoredPage<T> extends Page<T> {
      *         To avoid this exception, check for a {@code true} result
      *         of {@link #hasPrevious()} before invoking this method.
      */
-    PageRequest previousPageRequest();
+    CursoredPageRequest previousPageRequest();
 }

@@ -43,35 +43,9 @@ import java.util.stream.StreamSupport;
  *
  * @param <T> the type of elements in this page.
  */
-public interface Page<T> extends Iterable<T> {
+public interface Page<T> extends Slice<T> {
 
-    /**
-     * Returns the page content as a {@link List}.
-     * The list is sorted according to the combined sort criteria of the repository method
-     * and the sort criteria of the page request that is supplied to the repository method,
-     * sorting first by the sort criteria of the repository method,
-     * and then by the sort criteria of the page request.
-     *
-     * @return the page content as a {@link List}; will never be {@code null}.
-     */
-    List<T> content();
 
-    /**
-     * Returns whether the {@link Page} has content at all.
-     *
-     * @return whether the {@link Page} has content at all.
-     */
-    boolean hasContent();
-
-    /**
-     * Returns a sequential stream of results, which follow the order of the sort
-     * criteria, if any were specified.
-     *
-     * @return a stream of results.
-     */
-    default Stream<T> stream() {
-        return StreamSupport.stream(spliterator(), false);
-    }
 
     /**
      * Returns the number of elements on this {@code Page}, which must be no larger
@@ -83,21 +57,7 @@ public interface Page<T> extends Iterable<T> {
      */
     int numberOfElements();
 
-    /**
-     * Returns {@code true} if it is known that there are more results or that it is
-     * necessary to request a next page to determine whether there are more results,
-     * so that {@link #nextPageRequest()} will definitely not return {@code null}.
-     * @return {@code false} if this is the last page of results.
-     */
-    boolean hasNext();
 
-    /**
-     * Returns {@code true} if it is known that there are previous results or that it
-     * is necessary to request the previous page to determine whether there are previous
-     * results, so that {@link #previousPageRequest()} will not return {@code null}.
-     * @return {@code false} if this is the first page of results.
-     */
-    boolean hasPrevious();
 
     /**
      * Returns the {@linkplain PageRequest page request} for which this
@@ -118,8 +78,6 @@ public interface Page<T> extends Iterable<T> {
      *         {@link #hasNext()} before invoking this method.
      */
     OffsetBasedPageRequest nextPageRequest();
-
-
 
     /**
      * <p>Returns a request for the previous page, if {@link #hasPrevious()}
