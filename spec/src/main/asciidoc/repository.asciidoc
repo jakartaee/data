@@ -350,38 +350,22 @@ Sort criteria are provided dynamically to repository methods either via `Sort` p
 
 ==== Examples of Sort Criteria Precedence
 
-The following examples work through scenarios where static and dynamic sort criteria are provided to the same method.
+In the following examples, the query results are sorted by `age`, using the dynamic sorting criteria passed to the `sorts` parameter to break ties between records with the same `age`.
 
 [source,java]
 ----
-// Sorts first by type. When type is the same, applies the Order's sort criteria
-@Query("where left(name,length(?1)) = ?1")
-@OrderBy(_User.TYPE)
-Page<User> findByNamePrefix(String namePrefix,
-                            PageRequest pagination,
-                            Order<User> sorts);
-
-// Sorts first by type. When type is the same, applies the criteria in the Sorts
-@Query("where left(name,length(?1)) = ?1")
-@OrderBy(_User.TYPE)
-List<User> findByNamePrefix(String namePrefix, Sort<?>... sorts);
-
-// Sorts first by age. When age is the same, applies the Order's sort criteria
-@Query("where left(name,length(?1)) = ?1")
-@OrderBy(_User.AGE)
-Page<User> findByNamePrefix(String namePrefix,
-                            PageRequest pagination,
-                            Order<User> sorts);
-
-// Sorts first by age. When age is the same, applies the criteria in the Sorts
-@Query("where left(name,length(?1)) = ?1")
-@OrderBy(_User.AGE)
-List<User> findByNamePrefix(String namePrefix, Sort<?>... sorts);
-
-// Sorts first by name. When name is the same, applies the Order's sort criteria
 @Query("WHERE u.age > ?1")
-@OrderBy(_User.NAME)
-CursoredPage<User> olderThan(int age, PageRequest pagination, Order<User> sorts);
+@OrderBy(_User.AGE)
+Page<User> findByNamePrefix(String namePrefix,
+                            PageRequest pagination,
+                            Order<User> sorts);
+----
+
+[source,java]
+----
+@Query("WHERE u.age > ?1")
+@OrderBy(_User.AGE)
+List<User> findByNamePrefix(String namePrefix, Sort<?>... sorts);
 ----
 
 === Pagination in Jakarta Data
