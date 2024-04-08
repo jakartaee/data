@@ -74,7 +74,7 @@ public interface PageRequest {
      * @return a new instance of {@code PageRequest}. This method never returns {@code null}.
      * @throws IllegalArgumentException when the page number is negative or zero.
      */
-    static PageRequest ofPage(long pageNumber) {
+    static OffsetBasedPageRequest ofPage(long pageNumber) {
         return new Pagination(pageNumber, 10, Mode.OFFSET, null, true);
     }
 
@@ -102,7 +102,7 @@ public interface PageRequest {
      *         This method never returns {@code null}.
      * @throws IllegalArgumentException if no values are provided for the key.
      */
-    PageRequest afterKey(Object... key);
+    CursoredPageRequest afterKey(Object... key);
 
     /**
      * <p>Requests {@link CursoredPage cursor-based pagination} in the previous page
@@ -117,7 +117,7 @@ public interface PageRequest {
      *         This method never returns {@code null}.
      * @throws IllegalArgumentException if no values are provided for the key.
      */
-    PageRequest beforeKey(Object... key);
+    CursoredPageRequest beforeKey(Object... key);
 
     /**
      * <p>Requests {@link CursoredPage cursor-based pagination} in the forward direction,
@@ -131,7 +131,7 @@ public interface PageRequest {
      *         This method never returns {@code null}.
      * @throws IllegalArgumentException if no key values are provided.
      */
-    PageRequest afterCursor(Cursor cursor);
+    CursoredPageRequest afterCursor(Cursor cursor);
 
     /**
      * <p>Requests {@link CursoredPage cursor-based pagination} in the previous page
@@ -145,7 +145,7 @@ public interface PageRequest {
      *         in the previous page direction. This method never returns {@code null}.
      * @throws IllegalArgumentException if no key values are provided.
      */
-    PageRequest beforeCursor(Cursor cursor);
+    CursoredPageRequest beforeCursor(Cursor cursor);
 
     /**
      * Compares with another instance to determine if both represent the same
@@ -158,26 +158,11 @@ public interface PageRequest {
     boolean equals(Object o);
 
     /**
-     * Returns the key values which are the starting point for
-     * cursor-based pagination.
-     *
-     * @return the cursor; {@link Optional#empty()} if using offset pagination.
-     */
-    Optional<Cursor> cursor();
-
-    /**
      * Returns the type of pagination.
      *
      * @return the type of pagination.
      */
     Mode mode();
-
-    /**
-     * Returns the page to be returned.
-     *
-     * @return the page to be returned.
-     */
-    long page();
 
     /**
      * Returns the requested size of each page
@@ -196,16 +181,6 @@ public interface PageRequest {
      *         be retrieved from the database.
      */
     boolean requestTotal();
-
-    /**
-     * <p>Creates a new page request with the same pagination information,
-     * but with the specified page number.</p>
-     *
-     * @param pageNumber The page number
-     * @return a new instance of {@code PageRequest}.
-     *         This method never returns {@code null}.
-     */
-    PageRequest page(long pageNumber);
 
     /**
      * <p>Creates a new page request with the same pagination information,
@@ -232,7 +207,7 @@ public interface PageRequest {
      * @return a page request with {@link #requestTotal()}
      *         set to {@code false}.
      */
-    PageRequest withoutTotal();
+    OffsetBasedPageRequest withoutTotal();
 
     /**
      * Returns an otherwise-equivalent page request with
@@ -241,7 +216,7 @@ public interface PageRequest {
      * @return a page request with {@link #requestTotal()}
      *         set to {@code true}.
      */
-    PageRequest withTotal();
+    OffsetBasedPageRequest withTotal();
 
     /**
      * The type of pagination: offset-based or cursor-based, which includes
