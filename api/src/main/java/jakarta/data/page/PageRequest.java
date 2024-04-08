@@ -21,7 +21,6 @@ import jakarta.data.Limit;
 import jakarta.data.repository.OrderBy;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * <p>A request for a single well-specified page of query results.</p>
@@ -74,7 +73,7 @@ public interface PageRequest {
      * @return a new instance of {@code PageRequest}. This method never returns {@code null}.
      * @throws IllegalArgumentException when the page number is negative or zero.
      */
-    static OffsetBasedPageRequest ofPage(long pageNumber) {
+    static OffsetPageRequest ofPage(long pageNumber) {
         return new Pagination(pageNumber, 10, Mode.OFFSET, null, true);
     }
 
@@ -207,7 +206,7 @@ public interface PageRequest {
      * @return a page request with {@link #requestTotal()}
      *         set to {@code false}.
      */
-    OffsetBasedPageRequest withoutTotal();
+    OffsetPageRequest withoutTotal();
 
     /**
      * Returns an otherwise-equivalent page request with
@@ -216,7 +215,7 @@ public interface PageRequest {
      * @return a page request with {@link #requestTotal()}
      *         set to {@code true}.
      */
-    OffsetBasedPageRequest withTotal();
+    OffsetPageRequest withTotal();
 
     /**
      * The type of pagination: offset-based or cursor-based, which includes

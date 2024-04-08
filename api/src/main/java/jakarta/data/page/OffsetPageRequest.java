@@ -17,7 +17,7 @@
  */
 package jakarta.data.page;
 
-public interface OffsetBasedPageRequest extends PageRequest {
+public interface OffsetPageRequest extends PageRequest {
 
 
     /**

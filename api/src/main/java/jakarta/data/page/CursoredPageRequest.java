@@ -27,7 +27,7 @@ public interface CursoredPageRequest extends PageRequest {
      * Returns the key values which are the starting point for
      * cursor-based pagination.
      *
-     * @return the cursor; {@link Optional#empty()} if using offset pagination.
+     * @return the cursor
      */
-    Optional<Cursor> cursor();
+    Cursor cursor();
 }
