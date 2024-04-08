@@ -22,7 +22,7 @@ import java.util.Optional;
 /**
  * Built-in implementation of PageRequest.
  */
-record Pagination(long page, int size, Mode mode, Cursor type, boolean requestTotal) implements PageRequest {
+record Pagination(long page, int size, Mode mode, Cursor type, boolean requestTotal) implements PageRequest, CursoredPageRequest, OffsetBasedPageRequest {
 
     Pagination {
         if (page < 1) {
@@ -37,32 +37,32 @@ record Pagination(long page, int size, Mode mode, Cursor type, boolean requestTo
     }
 
     @Override
-    public PageRequest withoutTotal() {
+    public OffsetBasedPageRequest withoutTotal() {
         return new Pagination(page, size, mode, type, false);
     }
 
     @Override
-    public PageRequest withTotal() {
+    public OffsetBasedPageRequest withTotal() {
         return new Pagination(page, size, mode, type, true);
     }
 
     @Override
-    public PageRequest afterKey(Object... key) {
+    public CursoredPageRequest afterKey(Object... key) {
         return new Pagination(page, size, Mode.CURSOR_NEXT, new PageRequestCursor(key), requestTotal);
     }
 
     @Override
-    public PageRequest beforeKey(Object... key) {
+    public CursoredPageRequest beforeKey(Object... key) {
         return new Pagination(page, size, Mode.CURSOR_PREVIOUS, new PageRequestCursor(key), requestTotal);
     }
 
     @Override
-    public PageRequest afterCursor(Cursor cursor) {
+    public CursoredPageRequest afterCursor(Cursor cursor) {
         return new Pagination(page, size, Mode.CURSOR_NEXT, cursor, requestTotal);
     }
 
     @Override
-    public PageRequest beforeCursor(Cursor cursor) {
+    public CursoredPageRequest beforeCursor(Cursor cursor) {
         return new Pagination(page, size, Mode.CURSOR_PREVIOUS, cursor, requestTotal);
     }
 
