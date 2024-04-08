@@ -53,20 +53,6 @@ class PageRequestTest {
     }
 
     @Test
-    @DisplayName("Should navigate next")
-    void shouldNext() {
-        PageRequest pageRequest = PageRequest.ofSize(1).page(2);
-        PageRequest next = pageRequest.next();
-
-        assertSoftly(softly -> {
-            softly.assertThat(pageRequest.page()).isEqualTo(2L);
-            softly.assertThat(pageRequest.size()).isEqualTo(1);
-            softly.assertThat(next.page()).isEqualTo(3L);
-            softly.assertThat(next.size()).isEqualTo(1);
-        });
-    }
-
-    @Test
     @DisplayName("Should create a new PageRequest at the given page with a default size of 10")
     void shouldCreatePage() {
         PageRequest pageRequest = PageRequest.ofPage(5);

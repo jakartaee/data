@@ -20,10 +20,7 @@ package jakarta.data.page;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.Collections;
-
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class PaginationTest {
 
@@ -35,16 +32,4 @@ class PaginationTest {
                 .isThrownBy(() -> new Pagination(1, 10, PageRequest.Mode.CURSOR_NEXT, null, true));
     }
 
-    @Test
-    @DisplayName("Should throw UnsupportedOperationException when key is not supported")
-    void shouldThrowExceptionWhenKeysetIsNotSupported() {
-        assertThatThrownBy(() -> {
-            Pagination pagination = new Pagination(1, 10,
-                                                        PageRequest.Mode.CURSOR_NEXT,
-                                                        new PageRequestCursor("me", 200),
-                                                        true);
-            pagination.next();
-        }).isInstanceOf(UnsupportedOperationException.class)
-                .hasMessage("Not supported for cursor-based pagination. Instead use afterKey or afterCursor to provide a cursor or obtain the nextPageRequest from a CursoredPage.");
-    }
 }
