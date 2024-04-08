@@ -73,7 +73,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <!-- TODO update M/RC versions to GA versions when available -->
-        <jakarta.annotation.version>3.0.0-M1</jakarta.annotation.version>
+        <jakarta.annotation.version>3.0.0</jakarta.annotation.version>
         <jakarta.enterprise.cdi.version>4.1.0.RC1</jakarta.enterprise.cdi.version>   
         <jakarta.inject.version>2.0.1</jakarta.inject.version>     
         <jakarta.json.bind.version>3.0.0</jakarta.json.bind.version>
