@@ -86,7 +86,7 @@ class PageRequestTest {
             softly.assertThat(pageRequest1.requestTotal()).isEqualTo(true);
         });
 
-        PageRequest pageRequest2 = PageRequest.ofSize(80).withoutTotal().page(2);
+        PageRequest pageRequest2 = PageRequest.ofPage(2).size(80).withoutTotal();
 
         assertSoftly(softly -> {
             softly.assertThat(pageRequest2.page()).isEqualTo(2L);
@@ -106,21 +106,6 @@ class PageRequestTest {
         assertThatIllegalArgumentException().isThrownBy(() -> p1.size(0));
         assertThatIllegalArgumentException().isThrownBy(() -> PageRequest.ofSize(0));
         assertThatIllegalArgumentException().isThrownBy(() -> PageRequest.ofSize(-1));
-    }
-
-
-    @Test
-    @DisplayName("Page number should be replaced on new instance of PageRequest")
-    void shouldReplacePage() {
-        PageRequest p6 = PageRequest.ofSize(75).page(6);
-        PageRequest p7 = p6.page(7);
-
-        assertSoftly(softly -> {
-            softly.assertThat(p7.page()).isEqualTo(7L);
-            softly.assertThat(p6.page()).isEqualTo(6L);
-            softly.assertThat(p7.size()).isEqualTo(75);
-            softly.assertThat(p6.size()).isEqualTo(75);
-        });
     }
 
     @Test

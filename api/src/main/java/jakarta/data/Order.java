@@ -40,7 +40,7 @@ import jakarta.data.repository.OrderBy;
  * Page&lt;Employee>&gt; findByYearHired(int year, PageRequest pageRequest, Order&lt;Employee&gt;);
  * ...
  * page1 = employees.findByYearHired(Year.now(),
- *                                   PageRequest.ofSize(10).page(1),
+ *                                   PageRequest.ofSize(10),
  *                                   Order.by(_Employee.salary.desc(),
  *                                            _Employee.lastName.asc(),
  *                                            _Employee.firstName.asc()));

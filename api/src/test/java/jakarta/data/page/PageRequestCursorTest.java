@@ -64,7 +64,7 @@ class PageRequestCursorTest {
     @Test
     @DisplayName("Should include key values in previous PageRequest")
     void shouldCreatePageRequestBeforeKey() {
-        PageRequest pageRequest = PageRequest.ofSize(30).beforeKey(1991, "123-45-6789").page(10);
+        PageRequest pageRequest = PageRequest.ofPage(10).size(30).beforeKey(1991, "123-45-6789");
 
         assertSoftly(softly -> {
             softly.assertThat(pageRequest.size()).isEqualTo(30);
@@ -200,7 +200,7 @@ class PageRequestCursorTest {
     @Test
     @DisplayName("Key should be replaced on new instance of PageRequest")
     void shouldReplaceKey() {
-        PageRequest p1 = PageRequest.ofSize(30).afterKey("last1", "fname1", 100).page(12);
+        PageRequest p1 = PageRequest.ofPage(12).size(30).afterKey("last1", "fname1", 100);
         PageRequest p2 = p1.beforeKey("lname2", "fname2", 200);
 
         assertSoftly(softly -> {

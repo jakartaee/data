@@ -322,7 +322,7 @@ This `PageRequest` specifies a starting page and maximum page size:
 
 [source,java]
 ----
-PageRequest pageRequest = PageRequest.ofSize(20).page(1);
+PageRequest pageRequest = PageRequest.ofPage(1).size(20);
 List<Product> first20 = products.findByName(name, pageRequest,
                             Order.by(_Product.price.desc(),
                                      _Product.id.asc()));

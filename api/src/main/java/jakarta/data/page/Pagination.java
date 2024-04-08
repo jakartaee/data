@@ -84,11 +84,6 @@ record Pagination(long page, int size, Mode mode, Cursor type, boolean requestTo
     }
 
     @Override
-    public PageRequest page(long pageNumber) {
-        return new Pagination(pageNumber, size, mode, type, requestTotal);
-    }
-
-    @Override
     public PageRequest size(int maxPageSize) {
         return new Pagination(page, maxPageSize, mode, type, requestTotal);
     }

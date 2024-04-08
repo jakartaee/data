@@ -371,7 +371,7 @@ public class EntityTests {
 
     @Assertion(id = "133", strategy = "Request a Slice higher than the final Slice, expecting an empty Slice with 0 results.")
     public void testBeyondFinalSlice() {
-        PageRequest sixth = PageRequest.ofSize(5).page(6).withoutTotal();
+        PageRequest sixth = PageRequest.ofPage(6).size(5).withoutTotal();
         Page<NaturalNumber> page = numbers.findByNumTypeAndFloorOfSquareRootLessThanEqual(NumberType.PRIME, 8L,
                 sixth, Sort.desc("id"));
         assertEquals(0, page.numberOfElements());
@@ -499,7 +499,7 @@ public class EntityTests {
 
     @Assertion(id = "133", strategy = "Request the last Page of up to 10 results, expecting to find the final 3.")
     public void testFinalPageOfUpTo10() {
-        PageRequest fifthPageRequest = PageRequest.ofSize(10).page(5);
+        PageRequest fifthPageRequest = PageRequest.ofPage(5).size(10);
         Page<AsciiCharacter> page;
         try {
             page = characters.findByNumericValueBetween(48, 90, fifthPageRequest,
@@ -548,7 +548,7 @@ public class EntityTests {
 
     @Assertion(id = "133", strategy = "Request the last Slice of up to 5 results, expecting to find the final 2.")
     public void testFinalSliceOfUpTo5() {
-        PageRequest fifth = PageRequest.ofSize(5).page(5).withoutTotal();
+        PageRequest fifth = PageRequest.ofPage(5).size(5).withoutTotal();
         Page<NaturalNumber> page = numbers.findByNumTypeAndFloorOfSquareRootLessThanEqual(NumberType.PRIME, 8L,
                 fifth, Sort.desc("id"));
         assertEquals(true, page.hasContent());
