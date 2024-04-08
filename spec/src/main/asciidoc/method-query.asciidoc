@@ -214,7 +214,7 @@ An implementation of Query by Method Name must support the following keywords.
 
 For relational databases, the logical operator `And` takes precedence over `Or`, meaning that `And` is evaluated on conditions before `Or` when both are specified on the same method. For other database types, the precedence is limited to the capabilities of the database. For example, some graph databases are limited to precedence in traversal order.
 
-NOTE: An implementation of Query by Method Name backed by a document or graph database is not required to support the `First` keyword. A repository method must raise `java.lang.UnsupportedOperationException` or a more specific subclass of the exception if the database does not support this functionality. Alternatively, a Jakarta Data provider is permitted to reject such a method declaration at compilation time.
+NOTE: An implementation of Query by Method Name backed by a document or graph database is not required to support the `First` keyword. A repository method must raise `java.lang.UnsupportedOperationException` or a more specific subclass of the exception if the database does not support this functionality.
 
 === Query by Method Name Conditions
 
@@ -287,7 +287,7 @@ Most _Query by Method Name_ conditions require a single repository method parame
 
 Wildcard characters for patterns are determined by the data store. For relational databases, `_` matches any one character and `%` matches zero or more characters.
 
-NOTE: An implementation of Query by Method Name backed by a document or graph database is not required to support `Contains`, `EndsWith`, `StartsWith`, `Like`, `IgnoreCase`, `In`, or `Null`. A repository method must raise `java.lang.UnsupportedOperationException` or a more specific subclass of the exception if the database does not provide the requested functionality. Alternatively, a Jakarta Data provider is permitted to reject such a method declaration at compilation time.
+NOTE: An implementation of Query by Method Name backed by a document or graph database is not required to support `Contains`, `EndsWith`, `StartsWith`, `Like`, `IgnoreCase`, `In`, or `Null`. A repository method must raise `java.lang.UnsupportedOperationException` or a more specific subclass of the exception if the database does not provide the requested functionality.
 
 In the following example the value of the first parameter, `namePattern`, is used for `NameLike`, the values of the second and third parameters, `minYear` and `maxYear`, are used for `YearMadeBetween`, and the value of the fourth parameter, `maxPrice`, is used for `PriceLessThan`.
 
