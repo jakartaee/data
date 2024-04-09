@@ -85,10 +85,9 @@ public record PageRecord<T>(PageRequest pageRequest, List<T> content, long total
             throw new NoSuchElementException();
         }
 
-        PageRequest newRequest = PageRequest.ofPage(pageRequest.page() + 1)
-                .size(pageRequest.size());
-
-        return pageRequest.requestTotal() ? newRequest.withTotal() : newRequest.withoutTotal();
+        return PageRequest.ofPage(pageRequest.page() + 1,
+                                  pageRequest.size(),
+                                  pageRequest.requestTotal());
     }
 
     @Override
@@ -102,10 +101,9 @@ public record PageRecord<T>(PageRequest pageRequest, List<T> content, long total
             throw new NoSuchElementException();
         }
 
-        PageRequest newRequest = PageRequest.ofPage(pageRequest.page() - 1)
-                .size(pageRequest.size());
-
-        return pageRequest.requestTotal() ? newRequest.withTotal() : newRequest.withoutTotal();
+        return PageRequest.ofPage(pageRequest.page() - 1,
+                pageRequest.size(),
+                pageRequest.requestTotal());
     }
 
     @Override

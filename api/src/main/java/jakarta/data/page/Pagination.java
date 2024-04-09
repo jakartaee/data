@@ -47,16 +47,6 @@ record Pagination(long page, int size, Mode mode, Cursor type, boolean requestTo
     }
 
     @Override
-    public PageRequest afterKey(Object... key) {
-        return new Pagination(page, size, Mode.CURSOR_NEXT, new PageRequestCursor(key), requestTotal);
-    }
-
-    @Override
-    public PageRequest beforeKey(Object... key) {
-        return new Pagination(page, size, Mode.CURSOR_PREVIOUS, new PageRequestCursor(key), requestTotal);
-    }
-
-    @Override
     public PageRequest afterCursor(Cursor cursor) {
         return new Pagination(page, size, Mode.CURSOR_NEXT, cursor, requestTotal);
     }

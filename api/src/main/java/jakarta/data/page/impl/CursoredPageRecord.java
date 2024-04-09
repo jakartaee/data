@@ -46,20 +46,6 @@ public record CursoredPageRecord<T>
          PageRequest nextPageRequest, PageRequest previousPageRequest)
         implements CursoredPage<T> {
 
-    private static final PageRequest after(PageRequest.Cursor newCursor, PageRequest copyFrom) {
-        PageRequest newRequest = PageRequest.ofPage(copyFrom.page() + 1)
-                .size(copyFrom.size())
-                .afterCursor(newCursor);
-        return copyFrom.requestTotal() ? newRequest.withTotal() : newRequest.withoutTotal();
-    }
-
-    private static final PageRequest before(PageRequest.Cursor newCursor, PageRequest copyFrom) {
-        PageRequest newRequest = PageRequest.ofPage(copyFrom.page() == 1 ? 1 : copyFrom.page() - 1)
-                .size(copyFrom.size())
-                .beforeCursor(newCursor);
-        return copyFrom.requestTotal() ? newRequest.withTotal() : newRequest.withoutTotal();
-    }
-
     /**
      * @param content The page content, that is, the query results, in order
      * @param cursors A list of {@link PageRequest.Cursor} instances for result,
@@ -75,8 +61,16 @@ public record CursoredPageRecord<T>
             (List<T> content, List<PageRequest.Cursor> cursors, long totalElements, PageRequest pageRequest,
             boolean firstPage, boolean lastPage) {
         this(content, cursors, totalElements, pageRequest,
-                lastPage ? null : after(cursors.get(cursors.size()-1), pageRequest),
-                firstPage ? null : before(cursors.get(0), pageRequest));
+                lastPage ? null : PageRequest.afterCursor(
+                        cursors.get(cursors.size() - 1),
+                        pageRequest.page() + 1,
+                        pageRequest.size(),
+                        pageRequest.requestTotal()),
+                firstPage ? null : PageRequest.beforeCursor(
+                        cursors.get(0),
+                        pageRequest.page() == 1 ? 1 : pageRequest.page() - 1,
+                        pageRequest.size(),
+                        pageRequest.requestTotal()));
     }
 
     @Override
