@@ -91,7 +91,7 @@ public interface PageRequest {
     }
 
     /**
-     * <p>Requests {@link CursoredPage cursor-based pagination} in the forward direction,
+     * <p>Requests {@linkplain CursoredPage cursor-based pagination} in the forward direction,
      * starting after the specified key.</p>
      *
      * @param key values forming the key, the order and number of which must match the
@@ -105,7 +105,7 @@ public interface PageRequest {
     PageRequest afterKey(Object... key);
 
     /**
-     * <p>Requests {@link CursoredPage cursor-based pagination} in the previous page
+     * <p>Requests {@linkplain CursoredPage cursor-based pagination} in the previous page
      * direction relative to the specified key.</p>
      *
      * @param key values forming the key, the order and number of which must match the
@@ -120,7 +120,7 @@ public interface PageRequest {
     PageRequest beforeKey(Object... key);
 
     /**
-     * <p>Requests {@link CursoredPage cursor-based pagination} in the forward direction,
+     * <p>Requests {@linkplain CursoredPage cursor-based pagination} in the forward direction,
      * starting after the specified key.</p>
      *
      * @param cursor cursor with key values, the order and number of which must match the
@@ -134,7 +134,7 @@ public interface PageRequest {
     PageRequest afterCursor(Cursor cursor);
 
     /**
-     * <p>Requests {@link CursoredPage cursor-based pagination} in the previous page
+     * <p>Requests {@linkplain CursoredPage cursor-based pagination} in the previous page
      * direction relative to the specified key values.</p>
      *
      * @param cursor cursor with key values, the order and number of which must match the
