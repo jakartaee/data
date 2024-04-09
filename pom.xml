@@ -52,6 +52,11 @@
         <developerConnection>scm:git:ssh://github.com:jakartaee/data.git</developerConnection>
         <url>https://github.com/jakartaee/data</url>
     </scm>
+    
+    <issueManagement>
+        <system>GitHub</system>
+        <url>https://github.com/jakartaee/data/issues</url>
+    </issueManagement>
 
     <developers>
         <developer>
