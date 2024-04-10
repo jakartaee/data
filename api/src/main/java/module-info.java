@@ -358,12 +358,14 @@ import java.util.Set;
  *
  * <h2>Query by Method Name</h2>
  *
- * <p>Repository methods following the <em>Query by Method Name</em> pattern
- * must have a method name that begins with one of the following prefixes and
- * must not include the {@code @Find} annotation, {@code @Query} annotation, or
- * any lifecycle annotations on the method or any data access related annotations
- * on the method parameters. Query conditions are determined by the portion of
- * the method name following the {@code By} keyword.</p>
+ * <p>The <em>Query by Method Name</em> pattern translates the name of the
+ * repository method into a query. The repository method must not include the
+ * {@code @Find} annotation, {@code @Query} annotation, or any life cycle
+ * annotations on the method, and it must not include any data access related
+ * annotations on the method parameters. The method name must be composed of
+ * one or more clauses that specify the query's action and optionally any
+ * restrictions for matching and ordering of results. The following table lists
+ * the method name prefixes available and shows an example query for each.</p>
  *
  * <table id="methodNamePrefixes" style="width: 100%">
  * <caption><b>Query By Method Name</b></caption>
@@ -387,19 +389,35 @@ import java.util.Set;
  *
  * <tr style="vertical-align: top; background-color:#eee"><td>{@code find}</td>
  * <td>for find operations</td>
- * <td>{@code findByHeightBetween(minHeight, maxHeight)}</td></tr>
+ * <td>{@code findByHeightBetweenOrderByAge(minHeight, maxHeight)}</td></tr>
  * </table>
  *
- * <p>The conditions are defined by the portion of the repository method name
- * (referred to as the Predicate) that follows the {@code By} keyword,
- * in the same order specified.
- * Most conditions, such as {@code Like} or {@code LessThan},
- * correspond to a single method parameter. The exceptions to this rule are
- * {@code Between}, which corresponds to two method parameters, and {@code Null},
- * {@code True}, and {@code False}, which require no method parameters.
- * Multiple conditions are delimited by the keywords {@code And}
- * and {@code Or}. The equality condition is implied when no
- * condition operator keyword is present.</p>
+ * <p>The method name must begin with an <em>action clause</em> that starts with a
+ * prefix ({@code count}, {@code delete}, {@code exists}, or {@code find}) that
+ * specifies the action of the query. The {@code find} prefix can optionally be
+ * followed by the keyword {@code First} and 0 or more digits, which limit the
+ * number of results retrieved. The remaining portion of the action clause is
+ * ignored text that must not contain reserved keywords.</p>
+ *
+ * <p>A <em>restriction clause</em> consisting of the {@code By} keyword
+ * followed by one or more conditions can optionally follow the action clause.
+ * Multiple conditions must be delimited by the {@code And} or {@code Or} keyword.
+ * Each condition consists of a case insensitive entity attribute name, optionally
+ * followed by the {@code IgnoreCase} keyword (for text properties), optionally
+ * followed by the {@code Not} keyword, optionally followed by a condition operator
+ * keyword such as {@code StartsWith}. The equality condition is implied when no
+ * condition operator keyword is present. Most of the condition operations, such as
+ * {@code Like} or {@code LessThan}, correspond to a single method parameter. The
+ * exceptions to this rule are {@code Between}, which corresponds to two method
+ * parameters, and {@code Null}, {@code True}, and {@code False}, which require
+ * no method parameters.</p>
+ *
+ * <p>A {@code find} query can optionally end with an <em>order clause</em>,
+ * consisting of the {@code OrderBy} keyword and one or more pairings of case
+ * insensitive entity attribute name followed by the {@code Asc} or {@code Desc}
+ * keyword, indicating ascending or descending sort. In the case of a single entity
+ * attribute, the paired keyword can be omitted, in which case ascending sort is
+ * implied.</p>
  *
  * <p>Key-value and Wide-Column databases raise {@link UnsupportedOperationException}
  * for queries on attributes other than the identifier/key.</p>
@@ -591,7 +609,7 @@ import java.util.Set;
  * </p>
  * <p>
  * Reserved for query conditions: {@code AbsoluteValue}, {@code CharCount},
- * {@code ElementCount}, {@code Empty}
+ * {@code ElementCount}, {@code Empty},
  * {@code Rounded}, {@code RoundedDown}, {@code RoundedUp}, {@code Trimmed},
  * {@code WithDay}, {@code WithHour}, {@code WithMinute}, {@code WithMonth},
  * {@code WithQuarter}, {@code WithSecond}, {@code WithWeek}, {@code WithYear}.
