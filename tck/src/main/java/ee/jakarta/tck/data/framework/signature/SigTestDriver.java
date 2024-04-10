@@ -100,6 +100,7 @@ public class SigTestDriver extends SignatureTestDriver {
             command.add(SMODE_FLAG);
             // command.add("bin");
             command.add("src");
+            command.add("-BootCp");
         } else {
             System.out.println("Not Setting static mode flag to allow constant checking.");
         }

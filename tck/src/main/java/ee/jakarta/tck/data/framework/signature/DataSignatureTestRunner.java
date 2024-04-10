@@ -229,8 +229,11 @@ public class DataSignatureTestRunner extends SigTestEE {
 
 //            mapFileAsProps = getSigTestDriver().loadMapFile(mapFile);
 
+            String javaVersion = System.getProperty("java.specification.version");
+            String sigRsrc = SIG_RESOURCE_PACKAGE.replace(".", "/") + "/" + SIG_FILE_NAME;
+            sigRsrc += "_" + javaVersion;
             InputStream inStreamSigFile = DataSignatureTestRunner.class.getClassLoader()
-                    .getResourceAsStream(SIG_RESOURCE_PACKAGE.replace(".", "/") + "/" + SIG_FILE_NAME);
+                    .getResourceAsStream(sigRsrc);
             File sigFile = writeStreamToSigFile(inStreamSigFile);
             log.info("signature File location is :" + sigFile.getCanonicalPath());
             signatureRepositoryDir = System.getProperty("java.io.tmpdir");
