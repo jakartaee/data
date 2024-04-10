@@ -68,7 +68,7 @@ record Pagination(long page, int size, Mode mode, Cursor type, boolean requestTo
                 .append(", size=").append(size)
                 .append(", mode=").append(mode);
         if (type != null) {
-            s.append(", ").append(type.size()).append(" keys");
+            s.append(", cursor size=").append(type.size());
         }
         return s.append("}").toString();
     }

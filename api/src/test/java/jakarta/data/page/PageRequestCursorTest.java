@@ -130,10 +130,10 @@ class PageRequestCursorTest {
         assertSoftly(softly -> {
 
             softly.assertThat(afterKeySet.toString())
-              .isEqualTo("PageRequest{page=1, size=200, mode=CURSOR_NEXT, 2 keys}");
+              .isEqualTo("PageRequest{page=1, size=200, mode=CURSOR_NEXT, cursor size=2}");
 
             softly.assertThat(beforeKeySet.toString())
-                    .isEqualTo("PageRequest{page=1, size=100, mode=CURSOR_PREVIOUS, 2 keys}");
+                    .isEqualTo("PageRequest{page=1, size=100, mode=CURSOR_PREVIOUS, cursor size=2}");
 
         });
     }
