@@ -89,7 +89,7 @@ A method name is formed by concatenating, in the following order:
 
 === Limits
 
-A `find` query may have a _limit_, for example, `First` or `First10`. Other actions may not be combined with a limit.
+A `find` query may have a _limit_, for example, `First` or `First10`. Other actions must not be combined with a limit.
 
 The limit determines the maximum number of records which may be returned by the query. If the query has an order, then the records which are returned are those which occur first after sorting.
 
@@ -110,7 +110,7 @@ The conditions belonging to the restriction determine the parameters of the meth
 
 === Orders
 
-A `find` query may have an _order_. The _order_ specifies how records should be sorted. It is formed by concatenating `OrderBy` with one or more ordered pairs of an entity attribute name and a direction of sorting, `Asc` or `Desc`. The direction may be omitted if there is only one property, in which case `Asc` is implied.
+A `find` query may have an _order_. The _order_ specifies how records must be sorted. It is formed by concatenating `OrderBy` with one or more ordered pairs of an entity attribute name and a direction of sorting, `Asc` or `Desc`. The direction may be omitted if there is only one property, in which case `Asc` is implied.
 
 The order is lexicographic, that is, ordered pairs occurring earlier take precedence. An ordered pair occurring later is only used to resolve "ties" between records which cannot be unambiguously ordered using only earlier ordered pairs.
 
