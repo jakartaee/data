@@ -109,8 +109,8 @@ public interface Page<T> extends Iterable<T> {
 
 
     /**
-     * Returns a request for the {@linkplain PageRequest#next() next} page if
-     * {@link #hasNext()} indicates there might be a next page.
+     * Returns a request for the next page if {@link #hasNext()} indicates there
+     * might be a next page.
      *
      * @return a request for the next page.
      * @throws NoSuchElementException if it is known that there is no next page.
@@ -122,8 +122,8 @@ public interface Page<T> extends Iterable<T> {
 
 
     /**
-     * <p>Returns a request for the {@link PageRequest#previous() previous} page,
-     * if {@link #hasPrevious()} indicates there might be a previous page.</p>
+     * <p>Returns a request for the previous page, if {@link #hasPrevious()}
+     * indicates there might be a previous page.</p>
      *
      * @return a request for the previous page.
      * @throws NoSuchElementException if it is known that there is no previous page.

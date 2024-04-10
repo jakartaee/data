@@ -18,6 +18,8 @@
 package jakarta.data.page;
 
 import jakarta.data.Limit;
+import jakarta.data.Order;
+import jakarta.data.Sort;
 import jakarta.data.repository.OrderBy;
 
 import java.util.List;
@@ -79,6 +81,21 @@ public interface PageRequest {
     }
 
     /**
+     * Creates a new page request without a cursor.
+     *
+     * @param pageNumber   The page number.
+     * @param maxPageSize  The number of query results in a full page.
+     * @param requestTotal Indicates whether to retrieve the
+     *                     {@linkplain Page#totalElements() total}
+     *                     number of elements available across all pages.
+     * @return a new instance of {@code PageRequest}. This method never returns {@code null}.
+     * @throws IllegalArgumentException when the page number is negative or zero.
+     */
+    static PageRequest ofPage(long pageNumber, int maxPageSize, boolean requestTotal) {
+        return new Pagination(pageNumber, maxPageSize, Mode.OFFSET, null, requestTotal);
+    }
+
+    /**
      * Creates a new page request for requesting pages of the specified size,
      * starting with the first page number, which is 1.
      *
@@ -94,30 +111,46 @@ public interface PageRequest {
      * <p>Requests {@linkplain CursoredPage cursor-based pagination} in the forward direction,
      * starting after the specified key.</p>
      *
-     * @param key values forming the key, the order and number of which must match the
-     *        {@link OrderBy} annotations, {@link jakarta.data.Sort} parameters, or {@code OrderBy}
-     *        name pattern of the repository method to which this pagination will be
-     *        applied.
+     * @param cursor       cursor with key values, the order and number of
+     *                     which must match the {@link OrderBy} annotations or
+     *                     {@code OrderBy} name pattern and the {@link Order} and
+     *                     {@link Sort} parameters of the repository method to
+     *                     which this page request will be supplied.
+     * @param pageNumber   The page number.
+     * @param maxPageSize  The number of query results in a full page.
+     * @param requestTotal Indicates whether to retrieve the
+     *                     {@linkplain Page#totalElements() total}
+     *                     number of elements available across all pages.
      * @return a new instance of {@code PageRequest} with forward cursor-based pagination.
      *         This method never returns {@code null}.
-     * @throws IllegalArgumentException if no values are provided for the key.
+     * @throws IllegalArgumentException if the cursor is null or has no values.
      */
-    PageRequest afterKey(Object... key);
+    static PageRequest afterCursor(Cursor cursor, long pageNumber, int maxPageSize, boolean requestTotal) {
+        return new Pagination(pageNumber, maxPageSize, Mode.CURSOR_NEXT, cursor, requestTotal);
+    }
 
     /**
      * <p>Requests {@linkplain CursoredPage cursor-based pagination} in the previous page
-     * direction relative to the specified key.</p>
+     * direction relative to the specified cursor.</p>
      *
-     * @param key values forming the key, the order and number of which must match the
-     *        {@link OrderBy} annotations, {@link jakarta.data.Sort} parameters, or {@code OrderBy}
-     *        name pattern of the repository method to which this pagination will be
-     *        applied.
+     * @param cursor       cursor with key values, the order and number of
+     *                     which must match the {@link OrderBy} annotations or
+     *                     {@code OrderBy} name pattern and the {@link Order} and
+     *                     {@link Sort} parameters of the repository method to
+     *                     which this page request will be supplied.
+     * @param pageNumber   The page number.
+     * @param maxPageSize  The number of query results in a full page.
+     * @param requestTotal Indicates whether to retrieve the
+     *                     {@linkplain Page#totalElements() total}
+     *                     number of elements available across all pages.
      * @return a new instance of {@code PageRequest} with cursor-based pagination
      *         in the previous page direction.
      *         This method never returns {@code null}.
-     * @throws IllegalArgumentException if no values are provided for the key.
+     * @throws IllegalArgumentException if the cursor is null or has no values.
      */
-    PageRequest beforeKey(Object... key);
+    static PageRequest beforeCursor(Cursor cursor, long pageNumber, int maxPageSize, boolean requestTotal) {
+        return new Pagination(pageNumber, maxPageSize, Mode.CURSOR_PREVIOUS, cursor, requestTotal);
+    }
 
     /**
      * <p>Requests {@linkplain CursoredPage cursor-based pagination} in the forward direction,
@@ -196,50 +229,6 @@ public interface PageRequest {
      *         be retrieved from the database.
      */
     boolean requestTotal();
-
-
-    /**
-     * <p>Returns the {@code PageRequest} requesting the next page if
-     * using offset pagination.</p>
-     *
-     * <p>If using cursor-based pagination, traversal of pages must only be done
-     * via the {@link CursoredPage#nextPageRequest()},
-     * {@link CursoredPage#previousPageRequest()}, or
-     * {@linkplain CursoredPage#cursor(int) cursor},
-     * not with this method.</p>
-     *
-     * @return The next PageRequest.
-     * @throws UnsupportedOperationException if this {@code PageRequest}
-     *         has a {@link PageRequest.Cursor Cursor}.
-     */
-    PageRequest next();
-
-    /**
-     * <p>Returns the {@code PageRequest} requesting the previous page
-     * if using offset pagination, or null if this is the first page, that
-     * is, when {@link #page()} returns {@code 1}.</p>
-     *
-     * <p>If using cursor-based pagination, traversal of pages must only be done
-     * via the {@link CursoredPage#nextPageRequest()},
-     * {@link CursoredPage#previousPageRequest()}, or
-     * {@linkplain CursoredPage#cursor(int) cursor},
-     * not with this method.</p>
-     *
-     * @return The previous PageRequest, or null if this is the first page.
-     * @throws UnsupportedOperationException if this {@code PageRequest}
-     *         has a {@link PageRequest.Cursor Cursor}.
-     */
-    PageRequest previous();
-
-    /**
-     * <p>Creates a new page request with the same pagination information,
-     * but with the specified page number.</p>
-     *
-     * @param pageNumber The page number
-     * @return a new instance of {@code PageRequest}.
-     *         This method never returns {@code null}.
-     */
-    PageRequest page(long pageNumber);
 
     /**
      * <p>Creates a new page request with the same pagination information,

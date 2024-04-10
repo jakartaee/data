@@ -18,6 +18,7 @@
 package jakarta.data.page;
 
 import jakarta.data.repository.OrderBy;
+import jakarta.data.Order;
 import jakarta.data.Sort;
 import java.util.NoSuchElementException;
 
@@ -78,12 +79,12 @@ import java.util.NoSuchElementException;
  * in an instance of {@link PageRequest.Cursor Cursor} and identifying the last
  * result on the current page.</p>
  *
- * <p>A {@link PageRequest} based on an explicit key may be constructed by
- * calling {@link PageRequest#afterKey(Object...)}. The arguments supplied
- * to this method must match the list of sorting criteria specified by
- * {@link OrderBy} annotations of the repository method, {@link Sort}
- * parameters of the page request, or {@code OrderBy} name pattern of
- * the repository method. For example:</p>
+ * <p>A {@link PageRequest} based on an explicit cursor may be constructed by
+ * calling {@link PageRequest#afterCursor(PageRequest.Cursor)}. The key component
+ * values of the cursor supplied to this method must match the list of sorting
+ * criteria specified by {@link OrderBy} annotations or {@code OrderBy} name
+ * pattern of the repository method and the {@link Sort} and {@link Order}
+ * parameters of the repository method. For example:</p>
  *
  * <pre>
  * Employee emp = ...
@@ -192,10 +193,9 @@ public interface CursoredPage<T> extends Page<T> {
      * when matching entities are added prior to the first page and the
      * previous page is requested) by assigning a page number of {@code 1}
      * to such pages. This means that there can be multiple consecutive pages
-     * numbered {@code 1} and that
-     * {@code currentPage.previousPageRequest().next().page()}
-     * cannot be relied upon to return a page number that is equal to the
-     * current page number.</p>
+     * numbered {@code 1} and that navigating to the previous page and then
+     * forward again cannot be relied upon to return a page number that is
+     * equal to the current page number.</p>
      *
      * @return pagination information for requesting the previous page.
      * @throws NoSuchElementException if the current page is empty or if

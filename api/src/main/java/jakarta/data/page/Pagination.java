@@ -47,16 +47,6 @@ record Pagination(long page, int size, Mode mode, Cursor type, boolean requestTo
     }
 
     @Override
-    public PageRequest afterKey(Object... key) {
-        return new Pagination(page, size, Mode.CURSOR_NEXT, new PageRequestCursor(key), requestTotal);
-    }
-
-    @Override
-    public PageRequest beforeKey(Object... key) {
-        return new Pagination(page, size, Mode.CURSOR_PREVIOUS, new PageRequestCursor(key), requestTotal);
-    }
-
-    @Override
     public PageRequest afterCursor(Cursor cursor) {
         return new Pagination(page, size, Mode.CURSOR_NEXT, cursor, requestTotal);
     }
@@ -72,26 +62,6 @@ record Pagination(long page, int size, Mode mode, Cursor type, boolean requestTo
     }
 
     @Override
-    public PageRequest next() {
-        if (mode == Mode.OFFSET) {
-            return new Pagination(page + 1, this.size, Mode.OFFSET, null, requestTotal);
-        } else {
-            throw new UnsupportedOperationException("Not supported for cursor-based pagination. Instead use afterKey or afterCursor " +
-                    "to provide a cursor or obtain the nextPageRequest from a CursoredPage.");
-        }
-    }
-
-    @Override
-    public PageRequest previous() {
-        if (mode == Mode.OFFSET) {
-            return page()<=1 ? null : new Pagination(page - 1, this.size, Mode.OFFSET, null, requestTotal);
-        } else {
-            throw new UnsupportedOperationException("Not supported for cursor-based pagination. Instead use beforeKey or beforeCursor " +
-                    "to provide a cursor or obtain the previousPageRequest from a CursoredPage.");
-        }
-    }
-
-    @Override
     public String toString() {
         StringBuilder s = new StringBuilder(mode == Mode.OFFSET ? 100 : 150)
                 .append("PageRequest{page=").append(page)
@@ -101,11 +71,6 @@ record Pagination(long page, int size, Mode mode, Cursor type, boolean requestTo
             s.append(", ").append(type.size()).append(" keys");
         }
         return s.append("}").toString();
-    }
-
-    @Override
-    public PageRequest page(long pageNumber) {
-        return new Pagination(pageNumber, size, mode, type, requestTotal);
     }
 
     @Override

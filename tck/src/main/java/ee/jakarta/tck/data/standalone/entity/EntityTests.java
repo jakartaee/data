@@ -65,6 +65,7 @@ import jakarta.data.exceptions.EmptyResultException;
 import jakarta.data.exceptions.NonUniqueResultException;
 import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
+import jakarta.data.page.PageRequest.Cursor;
 import jakarta.inject.Inject;
 
 /**
@@ -371,7 +372,7 @@ public class EntityTests {
 
     @Assertion(id = "133", strategy = "Request a Slice higher than the final Slice, expecting an empty Slice with 0 results.")
     public void testBeyondFinalSlice() {
-        PageRequest sixth = PageRequest.ofSize(5).page(6).withoutTotal();
+        PageRequest sixth = PageRequest.ofPage(6).size(5).withoutTotal();
         Page<NaturalNumber> page = numbers.findByNumTypeAndFloorOfSquareRootLessThanEqual(NumberType.PRIME, 8L,
                 sixth, Sort.desc("id"));
         assertEquals(0, page.numberOfElements());
@@ -499,7 +500,7 @@ public class EntityTests {
 
     @Assertion(id = "133", strategy = "Request the last Page of up to 10 results, expecting to find the final 3.")
     public void testFinalPageOfUpTo10() {
-        PageRequest fifthPageRequest = PageRequest.ofSize(10).page(5);
+        PageRequest fifthPageRequest = PageRequest.ofPage(5).size(10);
         Page<AsciiCharacter> page;
         try {
             page = characters.findByNumericValueBetween(48, 90, fifthPageRequest,
@@ -548,7 +549,7 @@ public class EntityTests {
 
     @Assertion(id = "133", strategy = "Request the last Slice of up to 5 results, expecting to find the final 2.")
     public void testFinalSliceOfUpTo5() {
-        PageRequest fifth = PageRequest.ofSize(5).page(5).withoutTotal();
+        PageRequest fifth = PageRequest.ofPage(5).size(5).withoutTotal();
         Page<NaturalNumber> page = numbers.findByNumTypeAndFloorOfSquareRootLessThanEqual(NumberType.PRIME, 8L,
                 fifth, Sort.desc("id"));
         assertEquals(true, page.hasContent());
@@ -941,8 +942,9 @@ public class EntityTests {
         //                                                                                  ^^^^^ next page ^^^^
 
         Order<NaturalNumber> order = Order.by(Sort.asc("floorOfSquareRoot"), Sort.desc("id"));
-        PageRequest middle7 = PageRequest.ofPage(4).size(7)
-                        .afterKey((short) 5, 5L, 26L); // 20th result is 26; it requires 5 bits and its square root rounds down to 5.
+        PageRequest middle7 = PageRequest.afterCursor(
+                Cursor.forKey((short) 5, 5L, 26L), // 20th result is 26; it requires 5 bits and its square root rounds down to 5.),
+                4L, 7, true);
 
         CursoredPage<NaturalNumber> page;
         try {
@@ -1047,8 +1049,9 @@ public class EntityTests {
         //                                  ^^^^^^^^ slice 2 ^^^^^^^^^
         //                                                                                        ^^^^^^^^ slice 3 ^^^^^^^^^
 
-        PageRequest middle9 = PageRequest.ofPage(4).size(9).withoutTotal()
-                             .afterKey(6L, 46L); // 20th result is 46; its square root rounds down to 6.
+        PageRequest middle9 = PageRequest.afterCursor(
+                Cursor.forKey(6L, 46L), // 20th result is 46; its square root rounds down to 6.
+                4L, 9, false);
         Order<NaturalNumber> order = Order.by(Sort.desc("floorOfSquareRoot"), Sort.asc("id"));
 
         CursoredPage<NaturalNumber> slice;
@@ -1104,7 +1107,7 @@ public class EntityTests {
     @Assertion(id = "133", strategy = "Request a CursoredPage of results where none match the query, expecting an empty CursoredPage with 0 results.")
     public void testCursoredPageWithoutTotalOfNothing() {
         // There are no numbers larger than 30 which have a square root that rounds down to 3.
-        PageRequest pagination = PageRequest.ofSize(33).afterKey(30L).withoutTotal();
+        PageRequest pagination = PageRequest.ofSize(33).afterCursor(Cursor.forKey(30L)).withoutTotal();
 
         CursoredPage<NaturalNumber> slice;
         try {
