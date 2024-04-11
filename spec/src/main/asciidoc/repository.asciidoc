@@ -544,8 +544,9 @@ Or you can obtain the next (or previous) page relative to a known entity,
 [source,java]
 ----
 Customer c = ...
-PageRequest p = PageRequest.ofSize(50)
-                           .afterKey(c.lastName, c.firstName, c.id);
+PageRequest p = PageRequest.ofPage(10)
+                           .size(50)
+                           .afterCursor(Cursor.forKey(c.lastName, c.firstName, c.id));
 page = customers.findByZipcodeOrderByLastNameAscFirstNameAscIdAsc(55902, p);
 ----
 
@@ -654,8 +655,8 @@ Obtaining the next 10 products that cost $50.00 or more:
 float priceMidpoint = 50.0f;
 Order<Product> order = Order.by(_Product.price.asc(),
                                 _Product.id.asc());
-PageRequest pageRequest = PageRequest.ofSize(10)
-             .afterKey(priceMidpoint, 0L);
+PageRequest pageRequest = PageRequest.ofPage(5).size(10)
+             .afterCursor(Cursor.forKey(priceMidpoint, 0L));
 CursoredPage<Product> moreExpensive =
         products.findByNameLike(pattern, pageRequest, order);
 ----
@@ -664,9 +665,9 @@ Obtaining the previous 10 products:
 
 [source,java]
 ----
-pageRequest = moreExpensive.hasContent()
-        ? pageRequest.beforeCursor(moreExpensive.getCursor(0))
-        : pageRequest.beforeKey(priceMidpoint, 1L);
+pageRequest = moreExpensive.hasContent() && moreExpensive.hasPrevious()
+        ? moreExpensive.previousPageRequest()
+        : pageRequest.beforeCursor(Cursor.forKey(priceMidpoint, 1L));
 CursoredPage<Product> lessExpensive =
         products.findByNameLike(pattern, pageRequest, order);
 ----
@@ -706,9 +707,9 @@ The query results are ordered first by vehicle condition. All resulting entities
 PageRequest page2Request = PageRequest
              .ofPage(2) // cosmetic when using a cursor
              .size(25)
-             .afterKey(lastCar.vehicleCondition,
-                       lastCar.price,
-                       lastCar.vin);
+             .afterCursor(Cursor.forKey(lastCar.vehicleCondition,
+                                        lastCar.price,
+                                        lastCar.vin));
 CursoredPage<Car> page2 =
         cars.find(make, model, page2Request, order);
 ----

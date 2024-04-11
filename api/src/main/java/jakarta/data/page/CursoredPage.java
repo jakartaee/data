@@ -89,8 +89,9 @@ import java.util.NoSuchElementException;
  * <pre>
  * Employee emp = ...
  * PageRequest pageRequest =
- *         PageRequest.ofSize(50)
- *                    .afterKey(emp.lastName, emp.firstName, emp.id);
+ *         PageRequest.ofPage(5)
+ *                    .size(50)
+ *                    .afterCursor(Cursor.forKey(emp.lastName, emp.firstName, emp.id));
  * page = employees.findByHoursWorkedGreaterThan(1500, pageRequest);
  * </pre>
  *
