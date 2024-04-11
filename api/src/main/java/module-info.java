@@ -412,7 +412,7 @@ import java.util.Set;
  * parameters, and {@code Null}, {@code True}, and {@code False}, which require
  * no method parameters.</p>
  *
- * <p>A {@code find} query can optionally end with an <em>order clause</em>,
+ * <p>A {@code find} query can optionally end with an <em>order</em>,
  * consisting of the {@code OrderBy} keyword and one or more pairings of case
  * insensitive entity attribute name followed by the {@code Asc} or {@code Desc}
  * keyword, indicating ascending or descending sort. In the case of a single entity
