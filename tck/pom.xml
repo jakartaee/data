@@ -128,7 +128,7 @@
     
     <!-- Test Dependencies -->
     <dependency>
-      <groupId>org.netbeans.tools</groupId>
+      <groupId>jakarta.tck</groupId>
       <artifactId>sigtest-maven-plugin</artifactId>
       <version>${sigtest.version}</version>
     </dependency>
@@ -289,7 +289,7 @@
           
           <!-- Run signature plugin to generate signature file -->
           <plugin>
-            <groupId>org.netbeans.tools</groupId>
+            <groupId>jakarta.tck</groupId>
             <artifactId>sigtest-maven-plugin</artifactId>
             <version>${sigtest.version}</version>
             <executions>
