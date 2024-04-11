@@ -4,7 +4,7 @@ This package is inherited from the Platform-TCK (https://github.com/eclipse-ee4j
 
 The latest signature files are updated in the Jakarta Data TCK Repository 
 (data/tck/src/main/resources/ee/jakarta/tck/data/framework/signature) 
-generated using sigtest-maven-plugin.jar (version 1.6).
+generated using sigtest-maven-plugin.jar (version 2.2).
 
 The signature tests are run using the sigtest-maven-plugin.jar and the framework available in this folder.
 
