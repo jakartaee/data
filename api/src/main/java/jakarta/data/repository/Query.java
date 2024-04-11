@@ -109,10 +109,13 @@ import java.lang.annotation.Target;
  *     <li>{@code Stream<R>}, or</li>
  *     <li>{@code Page<R>} or {@code CursoredPage<R>}.</li>
  * </ul>
- * <p>The method returns an object for every query result. If the return type of the annotated method is {@code R} or
- * {@code Optional<R>}, and the query returns more than one element when executed, the method must throw
- * {@link jakarta.data.exceptions.NonUniqueResultException}.</p>
- *
+ * <p>The method returns an object for every query result.</p>
+ * <ul>
+ * <li>If the return type of the annotated method is {@code R} or {@code Optional<R>} and more than one record satisfies
+ *     the query restriction, the method must throw {@link jakarta.data.exceptions.NonUniqueResultException}.</li>
+ * <li>If the return type of the annotated method is {@code R} and no record satisfies the query restriction, the method
+ *     must throw {@link jakarta.data.exceptions.EmptyResultException}.</li>
+ * </ul>
  *
  * <p>Annotations such as {@code @Find}, {@code @Query}, {@code @Insert}, {@code @Update}, {@code @Delete}, and
  * {@code @Save} are mutually-exclusive. A given method of a repository interface may have at most one {@code @Find}

@@ -66,10 +66,14 @@ import java.lang.annotation.Target;
  * </ul>
  *
  * <p>An automatic query method annotated {@code Find} returns an entity instance for every record which satisfies the
- * parameter-based conditions. If the return type of the annotated method is {@code E} or {@code Optional<E>}, and the
- * query returns more than one element when executed, the method must throw
- * {@link jakarta.data.exceptions.NonUniqueResultException}.
- * </p>
+ * parameter-based conditions.</p>
+ * <ul>
+ * <li>If the return type of the annotated method is {@code E} or {@code Optional<E>} and more than one record satisfies
+ *     the query conditions, the method must throw {@link jakarta.data.exceptions.NonUniqueResultException}.</li>
+ * <li>If the return type of the annotated method is {@code E} and no record satisfies the query conditions, the method
+ *     must throw {@link jakarta.data.exceptions.EmptyResultException}.</li>
+ * </ul>
+ *
  * <p>Annotations such as {@code @Find}, {@code @Query}, {@code @Insert}, {@code @Update}, {@code @Delete}, and
  * {@code @Save} are mutually-exclusive. A given method of a repository interface may have at most one {@code @Find}
  * annotation, lifecycle annotation, or query annotation.
