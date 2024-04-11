@@ -297,8 +297,10 @@ The following example demonstrates the use of special parameters:
 @Repository
 public interface ProductRepository extends BasicRepository<Product, Long> {
 
+    @Find
     Page<Product> findByName(String name, PageRequest pageRequest, Order<Product> order);
 
+    @Query("where name like :pattern")
     List<Product> findByNameLike(String pattern, Limit max, Sort<?>... sorts);
 
 }
@@ -348,32 +350,22 @@ Sort criteria are provided dynamically to repository methods either via `Sort` p
 
 ==== Examples of Sort Criteria Precedence
 
-The following examples work through scenarios where static and dynamic sort criteria are provided to the same method.
+In the following examples, the query results are sorted by `age`, using the dynamic sorting criteria passed to the `sorts` parameter to break ties between records with the same `age`.
 
 [source,java]
 ----
-// Sorts first by type. When type is the same, applies the Order's sort criteria
-Page<User> findByNameStartsWithOrderByType(String namePrefix,
-                                           PageRequest pagination,
-                                           Order<User> sorts);
+@Query("WHERE u.age > ?1")
+@OrderBy(_User.AGE)
+Page<User> findByNamePrefix(String namePrefix,
+                            PageRequest pagination,
+                            Order<User> sorts);
+----
 
-// Sorts first by type. When type is the same, applies the criteria in the Sorts
-List<User> findByNameStartsWithOrderByType(String namePrefix, Sort<?>... sorts);
-
-// Sorts first by age. When age is the same, applies the Order's sort criteria
-@OrderBy("age")
-Page<User> findByNameStartsWith(String namePrefix,
-                                PageRequest pagination,
-                                Order<User> sorts);
-
-// Sorts first by age. When age is the same, applies the criteria in the Sorts
-@OrderBy("age")
-List<User> findByNameStartsWith(String namePrefix, Sort<?>... sorts);
-
-// Sorts first by name. When name is the same, applies the Order's sort criteria
-@Query("WHERE (u.age > ?1)")
-@OrderBy("name")
-CursoredPage<User> olderThan(int age, PageRequest pagination, Order<User> sorts);
+[source,java]
+----
+@Query("WHERE u.age > ?1")
+@OrderBy(_User.AGE)
+List<User> findByNamePrefix(String namePrefix, Sort<?>... sorts);
 ----
 
 === Pagination in Jakarta Data
@@ -520,8 +512,11 @@ For example,
 ----
 @Repository
 public interface CustomerRepository extends BasicRepository<Customer, Long> {
-  CursoredPage<Customer> findByZipcodeOrderByLastNameAscFirstNameAscIdAsc(
-                                 int zipcode, PageRequest pageRequest);
+    @Find
+    @OrderBy(_Customer.LAST_NAME)
+    @OrderBy(_Customer.FIRST_NAME)
+    @OrderBy(_Customer.ID)
+    CursoredPage<Customer> findByZipcode(int zipcode, PageRequest pageRequest);
 }
 ----
 
@@ -531,10 +526,10 @@ You can obtain the initial page relative to an offset and subsequent pages relat
 ----
 PageRequest pageRequest = PageRequest.ofSize(50);
 Page<Customer> page =
-        customers.findByZipcodeOrderByLastNameAscFirstNameAscIdAsc(55901, pageRequest);
+        customers.findByZipcode(55901, pageRequest);
 if (page.hasNext()) {
   pageRequest = page.nextPageRequest();
-  page = customers.findByZipcodeOrderByLastNameAscFirstNameAscIdAsc(55901, pageRequest);
+  page = customers.findByZipcode(55901, pageRequest);
   ...
 }
 ----
@@ -547,24 +542,25 @@ Customer c = ...
 PageRequest p = PageRequest.ofPage(10)
                            .size(50)
                            .afterCursor(Cursor.forKey(c.lastName, c.firstName, c.id));
-page = customers.findByZipcodeOrderByLastNameAscFirstNameAscIdAsc(55902, p);
+page = customers.findByZipcode(55902, p);
 ----
 
 The sort criteria for a repository method that performs cursor-based pagination must uniquely identify each entity and must be provided by:
 
-* `OrderBy` name pattern of the repository method (as in the examples above) or `@OrderBy` annotation(s) on the repository method.
-* `Order` and `Sort` parameters of the repository method.
+* the `@OrderBy` annotation or annotations of the repository method,
+* `Order` or `Sort` parameters of the repository method, or
+* an `OrderBy` in Query by Method Name.
 
 The values of the entity attributes of the combined sort criteria define the cursor for cursor-based cursor based pagination. Within the cursor, each entity attribute has the same sorting and order of precedence that it has within the combined sort criteria.
 
 ===== Example of Appending to Queries for Cursor-based Pagination
 
-Without cursor-based pagination, a Jakarta Data provider that is based on Jakarta Persistence might compose the following JPQL for the `findByZipcodeOrderByLastNameAscFirstNameAscIdAsc` repository method from the prior example:
+Without cursor-based pagination, a Jakarta Data provider that is based on Jakarta Persistence might compose the following JPQL for the `findByZipcode()` repository method from the prior example:
 
 [source,jpaql]
 ----
 FROM Customer
-WHERE (zipCode = ?1)
+WHERE zipCode = ?1
 ORDER BY lastName ASC, firstName ASC, id ASC
 ----
 
@@ -642,6 +638,7 @@ In this example, the application uses a cursor to request pages in forward and p
 ----
 @Repository
 public interface Products extends CrudRepository<Product, Long> {
+    @Query("where name like ?1")
     CursoredPage<Product> findByNameLike(String namePattern,
                                          PageRequest pageRequest,
                                          Order<Product> sorts);
@@ -653,10 +650,13 @@ Obtaining the next 10 products that cost $50.00 or more:
 [source,java]
 ----
 float priceMidpoint = 50.0f;
-Order<Product> order = Order.by(_Product.price.asc(),
-                                _Product.id.asc());
-PageRequest pageRequest = PageRequest.ofPage(5).size(10)
-             .afterCursor(Cursor.forKey(priceMidpoint, 0L));
+Order<Product> order =
+        Order.by(_Product.price.asc(),
+                 _Product.id.asc());
+PageRequest pageRequest =
+        PageRequest.ofPage(5)
+                   .size(10)
+                   .afterCursor(Cursor.forKey(priceMidpoint, 0L));
 CursoredPage<Product> moreExpensive =
         products.findByNameLike(pattern, pageRequest, order);
 ----
@@ -665,9 +665,10 @@ Obtaining the previous 10 products:
 
 [source,java]
 ----
-pageRequest = moreExpensive.hasContent() && moreExpensive.hasPrevious()
-        ? moreExpensive.previousPageRequest()
-        : pageRequest.beforeCursor(Cursor.forKey(priceMidpoint, 1L));
+pageRequest =
+        moreExpensive.hasContent() && moreExpensive.hasPrevious()
+                ? moreExpensive.previousPageRequest()
+                : pageRequest.beforeCursor(Cursor.forKey(priceMidpoint, 1L));
 CursoredPage<Product> lessExpensive =
         products.findByNameLike(pattern, pageRequest, order);
 ----
@@ -681,7 +682,7 @@ In this example, the application uses `OrderBy` to define a subset of the sort c
 @Repository
 public interface Products extends CrudRepository<Product, Long> {
     @Find
-    @OrderBy(_Car.vehicleCondition)
+    @OrderBy(_Car.VEHICLE_CONDITION)
     CursoredPage<Car> find(@By(_Car.make) String manufacturer,
                            @By(_Car.model) String model,
                            PageRequest pageRequest,
