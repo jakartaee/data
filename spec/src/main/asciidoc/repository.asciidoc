@@ -683,8 +683,8 @@ In this example, the application uses `OrderBy` to define a subset of the sort c
 public interface Products extends CrudRepository<Product, Long> {
     @Find
     @OrderBy(_Car.VEHICLE_CONDITION)
-    CursoredPage<Car> find(@By(_Car.make) String manufacturer,
-                           @By(_Car.model) String model,
+    CursoredPage<Car> find(@By(_Car.MAKE) String manufacturer,
+                           @By(_Car.MODEL) String model,
                            PageRequest pageRequest,
                            Order<Car> sorts);
 }
