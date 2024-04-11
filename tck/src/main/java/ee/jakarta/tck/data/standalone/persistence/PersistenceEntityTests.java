@@ -331,6 +331,7 @@ public class PersistenceEntityTests {
             // expected
         }
 
+        prod2.setVersionNum(prod2InitialVersion);
         try {
             catalog.remove(prod2); // still at old version
             fail("Must raise OptimisticLockingFailureException for entity with non-matching version.");
