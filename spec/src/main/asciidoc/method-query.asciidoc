@@ -48,23 +48,6 @@ As such, its syntax is limited to the use of legal identifier characters, so the
 
 Jakarta Data 1.0 offers a Query by Method Name facility as an extension to the specification, providing a migration path for existing applications written for repository frameworks which offer similar functionality.
 
-The functionality described here overlaps significantly with both:
-
-- parameter-based automatic query methods, that is, `@Find` and `@Delete`, and
-- annotated query methods, that is `@Query` and Jakarta Data Query Language or Jakarta Persistence Query Language.
-
-Therefore, these alternative approaches are strongly preferred for newly-written code.
-
-A Jakarta Data provider is required to support the Query by Method Name extension in Jakarta Data 1.0.
-
-NOTE: A Jakarta Data provider backed by a key-value or wide-column datastore is not required to support Query by Method Name.
-
-WARNING: This functionality is considered deprecated, and the requirement that a provider support the Query by Method Name extension will be removed in a future version of Jakarta Data.
-
-== Query by Method Name
-
-The Query by Method Name mechanism allows for creating query commands by naming convention.
-
 [source,java]
 ----
 @Repository
@@ -80,29 +63,75 @@ public interface ProductRepository extends BasicRepository<Product, Long> {
 }
 ----
 
-The parsing of query method names follows a specific format:
+The functionality described here overlaps significantly with both:
 
-- The method name consists of the subject, the predicate, and optionally the order clause.
-- The subject begins with the action (such as `find` or `delete`) and is optionally followed by an expression (for example, `First10`), followed by any number of other characters, followed by `By`.
-- The predicate defines the condition or filtering criteria, where multiple conditions are delimited by `And` or `Or`. For example, `PriceLessThanAndNameLike`. Each condition consists of a property name, optionally followed by `IgnoreCase` (for text properties), optionally followed by `Not`, optionally followed by an operator such as `LessThan` or `Like`. Absence of the operator implies the equality condition.
-- The order clause, which is optional, begins with `OrderBy` and is followed by one or more ordered pairings consisting of entity attribute name and direction of sorting (`Asc` or `Desc`). The direction can be omitted if there is only one property, in which case `Asc` is implied. Ordering of results is performed by sorting the first entity attribute according to its respective direction, where results that sort to the same position are subsequently sorted by the second entity attribute according to its respective direction, and so forth.
-- The method name is formed by combining the subject, predicate, and order clause, in that order.
+- parameter-based automatic query methods, that is, `@Find` and `@Delete`, and
+- annotated query methods, that is `@Query` and Jakarta Data Query Language or Jakarta Persistence Query Language.
 
-NOTE: This specification uses the terms subject and predicate in a way that aligns with industry terminology rather than how they are defined in English grammar.
+Therefore, these alternative approaches are strongly preferred for newly-written code.
 
-Queries can also handle entities with relation attributes by specifying the relationship using dot notation, with the dot converted to underscore so that it is a valid character within the method name.
+A Jakarta Data provider is required to support the Query by Method Name extension in Jakarta Data 1.0.
 
-Example query methods:
+NOTE: A Jakarta Data provider backed by a key-value or wide-column datastore is not required to support Query by Method Name.
 
-- `findByName(String name)` -- find entities by the `name` property.
-- `findByAgeGreaterThan(int age)` -- find entities where `age` is greater than the specified value.
-- `findByAuthorName(String authorName)` -- find entities by the `authorName` property of a related entity.
-- `findByCategoryNameAndPriceLessThan(String categoryName, double price)` -- find entities by `categoryName` and `price` properties, applying an `And` condition.
-- `findByNameLikeOrderByPriceDescIdAsc` -- find entities by matching the `name` property against a pattern, sorting the results by `price` in descending order, and sorting results with the same `price` by the `id` in ascending order.
+WARNING: This functionality is considered deprecated, and the requirement that a provider support the Query by Method Name extension will be removed in a future version of Jakarta Data.
+
+== Query by Method Name
+
+In Query by Method Name, a query is expressed via a set of method naming conventions.
+
+A method name is formed by concatenating, in the following order:
+
+- an _action_, which must be `find`, `delete`, `count`, or `exists`,
+- an optional <<Limits,limit>>,
+- a optional <<Restrictions,restriction>>, and
+- an optional <<Orders,order>>.
+
+=== Limits
+
+A `find` query may have a _limit_, for example, `First` or `First10`. Other actions must not be combined with a limit.
+
+The limit determines the maximum number of records which may be returned by the query. If the query has an order, then the records which are returned are those which occur first after sorting.
+
+=== Restrictions
+
+A _restriction_ specifies the criteria used to filter records. It is formed by concatenating `By` with one or more conditions, delimited by `And` or `Or`, for example, `PriceLessThanAndNameLike`.
+
+Each _condition_ is formed by concatenating, in the following order:
+
+- a property name, which may be a compound name, as specified below in <<Persistent Field Names in Query by Method Name>>,
+- optionally, `IgnoreCase` (for text properties),
+- optionally, `Not`,
+- optionally, an operator such as `LessThan` or `Like`.
+
+Absence of an operator implies the equality condition.
+
+The conditions belonging to the restriction determine the parameters of the method, as specified below in <<Query by Method Name Conditions>>.
+
+=== Orders
+
+A `find` query may have an _order_. The _order_ specifies how records must be sorted. It is formed by concatenating `OrderBy` with one or more ordered pairs of an entity attribute name and a direction of sorting, `Asc` or `Desc`. The direction may be omitted if there is only one property, in which case `Asc` is implied.
+
+The order is lexicographic, that is, ordered pairs occurring earlier take precedence. An ordered pair occurring later is only used to resolve "ties" between records which cannot be unambiguously ordered using only earlier ordered pairs.
+
+If no order is specified, the records are not sorted.
+
+=== Example query methods
+
+The following table displays some examples of legal method signatures.
+
+[cols="40,~"]
+|===
+| `findByName(String name)` | Find entities by the `name` property.
+| `findByAgeGreaterThan(int age)` | Find entities where `age` is greater than the specified value.
+| `findByAuthorName(String authorName)` | Find entities by the `authorName` property of a related entity.
+| `findByCategoryNameAndPriceLessThan(String categoryName, double price)` | Find entities by `categoryName` and `price` properties, applying an `And` condition.
+| `findByNameLikeOrderByPriceDescIdAsc` | Find entities by matching the `name` property against a pattern, sorting the results by `price` in descending order, and sorting results with the same `price` by the `id` in ascending order.
+|===
 
 === BNF Grammar for Query Methods
 
-Query methods allow developers to create database queries using method naming conventions. These methods consist of a subject, predicate, and optional order clause. This BNF notation provides a structured representation for understanding and implementing these powerful querying techniques in your applications.
+The rules for parsing an interpreting a method name are specified by the following grammar.
 
 [source,bnf]
 ----
@@ -136,22 +165,26 @@ orderItem : property ("Asc" | "Desc")
 
 Quoted names are considered case-sensitive keywords.
 
-Explanation of the BNF elements:
+.Explanation of the BNF elements
+[cols="12,~"]
+|===
+| Rule name | Explanation
 
-- `query`: May be a `find` query, or a `delete`, `count`, or `exists` operation.
-- `find`: A `find` query has an optional limit and optional restriction on records to be retrieved, and optional sorting.
-- `action`: Any other kind of operation has only a restriction to a subset of records.
-- `restriction`: Restricts the records returned to those which satisfy a predicate
-- `limit`: Limits the records retrieved by a `find` query to a hardcoded maximum, such as `First10`.
-- `ignoredText`: Optional text that does not contain `By`, `All`, or `First`.
-- `predicate`: A filtering criteria, which may include multiple conditions separated by `And` or `Or`.
-- `condition`: A property of the queried entity and an operator.
-- `operator`: An operator belonging to a condition, for example, `Between` or `LessThan`. When absent, equality is implied.
-- `property`: A property name, which can include underscores for nested properties.
-- `identifier`: A legal Java identifier, not containing an underscore.
-- `max`: A positive whole number.
-- `order`: Specifies that results of a `find` query should be sorted lexicographically, with respect to one or more order items.
-- `orderItem`: A field used to sort results, where `Asc` or `Desc` specifies the sorting direction.
+| `query` | May be a `find` query, or a `delete`, `count`, or `exists` operation.
+| `find` | A `find` query has an optional limit and optional restriction on records to be retrieved, and optional sorting.
+| `action` | Any other kind of operation has only a restriction to a subset of records.
+| `restriction` | Restricts the records returned to those which satisfy a predicate
+| `limit` | Limits the records retrieved by a `find` query to a hardcoded maximum, such as `First10`.
+| `ignoredText`| Optional text that does not contain `By`, `All`, or `First`.
+| `predicate` | A filtering criteria, which may include multiple conditions separated by `And` or `Or`.
+| `condition` | A property of the queried entity and an operator.
+| `operator` | An operator belonging to a condition, for example, `Between` or `LessThan`. When absent, equality is implied.
+| `property` | A property name, which can include underscores for nested properties.
+| `identifier` | A legal Java identifier, not containing an underscore.
+| `max` | A positive whole number.
+| `order` | Specifies that results of a `find` query should be sorted lexicographically, with respect to one or more order items.
+| `orderItem` | A field used to sort results, where `Asc` or `Desc` specifies the sorting direction.
+|===
 
 === Query by Method Name Keywords
 
@@ -318,7 +351,6 @@ The return type of a Query by Method Name is determined as indicated in the foll
 | `find` | `Stream<E>` | The caller must call `java.util.stream.BaseStream.close()` for every stream returned by the repository method
 | `find` accepting a `PageRequest` | `Page<E>` or `CursoredPage<E>` | For use with pagination
 |===
-
 
 
 === Persistent Field Names in Query by Method Name
