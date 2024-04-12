@@ -20,7 +20,7 @@ The plugin that generates the signature file has been copied below for reference
 ```xml
   <!-- Run signature plugin to generate signature file -->
   <plugin>
-    <groupId>org.netbeans.tools</groupId>
+    <groupId>jakarta.tck</groupId>
     <artifactId>sigtest-maven-plugin</artifactId>
     <version>${sigtest.version}</version>
     <executions>
