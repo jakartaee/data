@@ -70,7 +70,7 @@ public class DataSignatureTestRunner extends SigTestEE {
      *         verified.
      */
     @Override
-    protected String[] getPackages(String vehicleName) {
+    protected String[] getPackages() {
         return new String[] {
                   "jakarta.data",
                   "jakarta.data.exceptions",
@@ -213,7 +213,6 @@ public class DataSignatureTestRunner extends SigTestEE {
         String mapFile = null;
         String packageListFile = null;
         String signatureRepositoryDir = null;
-//        Properties mapFileAsProps = null;
         try {
             InputStream inStreamMapfile = DataSignatureTestRunner.class.getClassLoader()
                     .getResourceAsStream(SIG_RESOURCE_PACKAGE.replace(".", "/") + "/" + SIG_MAP_NAME);
@@ -226,8 +225,6 @@ public class DataSignatureTestRunner extends SigTestEE {
             File pFile = writeStreamToTempFile(inStreamPackageFile, "sig-test-pkg-list", ".txt");
             packageListFile = pFile.getCanonicalPath();
             log.info("packageFile location is :" + packageListFile);
-
-//            mapFileAsProps = getSigTestDriver().loadMapFile(mapFile);
 
             // First try to find the signature file that matches the current JDK version
             String javaVersion = System.getProperty("java.specification.version");
@@ -248,9 +245,9 @@ public class DataSignatureTestRunner extends SigTestEE {
             log.info("Exception while creating temp files :" + ex);
         }
 
-        String[] packagesUnderTest = getPackages(SigTestData.getVehicle());
-        String[] classesUnderTest = getClasses(SigTestData.getVehicle());
-        String optionalPkgToIgnore = SigTestData.getOptionalTechPackagesToIgnore();
+        String[] packagesUnderTest = getPackages();
+        String[] classesUnderTest = getClasses();
+        String optionalPkgToIgnore = "";
 
         // unlisted optional packages are technology packages for those optional
         // technologies (e.g. jsr-88) that might not have been specified by the

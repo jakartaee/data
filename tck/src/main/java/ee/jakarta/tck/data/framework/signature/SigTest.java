@@ -65,7 +65,7 @@ public abstract class SigTest {
      * @return String The path and name of the package list file.
      */
     protected String getPackageFile() {
-        return getSigTestDriver().getPackageFileImpl(SigTestData.getBinDir());
+        return getSigTestDriver().getPackageFileImpl();
     }
 
     /**
@@ -82,7 +82,7 @@ public abstract class SigTest {
      * @return String The path and name of the signature map file.
      */
     protected String getMapFile() {
-        return getSigTestDriver().getMapFileImpl(SigTestData.getBinDir());
+        return getSigTestDriver().getMapFileImpl();
     }
 
     /**
@@ -95,7 +95,7 @@ public abstract class SigTest {
      * @return String The signature repository directory.
      */
     protected String getRepositoryDir() {
-        return getSigTestDriver().getRepositoryDirImpl(SigTestData.getTSHome());
+        return getSigTestDriver().getRepositoryDirImpl();
     }
 
     /**

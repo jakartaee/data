@@ -25,5 +25,8 @@
 jakarta.data
 jakarta.data.exceptions
 jakarta.data.metamodel
+jakarta.data.metamodel.impl
 jakarta.data.page
+jakarta.data.page.impl
 jakarta.data.repository
+jakarta.data.spi

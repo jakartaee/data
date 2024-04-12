@@ -79,7 +79,7 @@ public abstract class SigTestEE {
      * @return String The path and name of the package list file.
      */
     protected String getPackageFile() {
-        return getSigTestDriver().getPackageFileImpl(SigTestData.getBinDir());
+        return getSigTestDriver().getPackageFileImpl();
     }
 
     /**
@@ -98,7 +98,7 @@ public abstract class SigTestEE {
      * @return String The path and name of the signature map file.
      */
     protected String getMapFile() {
-        return getSigTestDriver().getMapFileImpl(SigTestData.getBinDir());
+        return getSigTestDriver().getMapFileImpl();
     }
 
     /**
@@ -113,7 +113,7 @@ public abstract class SigTestEE {
      * @return String The signature repository directory.
      */
     protected String getRepositoryDir() {
-        return getSigTestDriver().getRepositoryDirImpl(SigTestData.getTSHome());
+        return getSigTestDriver().getRepositoryDirImpl();
     }
 
     /**
@@ -156,10 +156,6 @@ public abstract class SigTestEE {
      * framework. TCK developers must implement this method in their signature test
      * sub-class.
      *
-     * @param vehicleName The name of the vehicle the signature tests should be
-     *                    conducted in. Valid values for this property are ejb,
-     *                    servlet, ejb and appclient.
-     *
      * @return String[] A list of packages that the developer wishes to test using
      *         the signature test framework. If the developer does not wish to test
      *         any package signatures in the specified vehicle this method should
@@ -174,7 +170,7 @@ public abstract class SigTestEE {
      *         the specified vehicle has no package signatures to be verified within
      *         it.
      */
-    protected abstract String[] getPackages(String vehicleName);
+    protected abstract String[] getPackages();
 
     /**
      * <p>
@@ -189,19 +185,13 @@ public abstract class SigTestEE {
      * vehicle, the implementation of this method must return a zero-length array.
      * </p>
      *
-     * @param vehicleName The name of the vehicle the signature tests should be
-     *                    conducted in. Valid values for this property are ejb,
-     *                    servlet, ejb and appclient.
-     *
      * @return an Array of Strings containing the individual classes the framework
      *         should test based on the specifed vehicle. The default implementation
      *         of this method returns a zero-length array no matter the vehicle
      *         specified.
      */
-    protected String[] getClasses(String vehicleName) {
-
+    protected String[] getClasses() {
         return new String[] {};
-
     } // END getClasses
 
     /**
@@ -231,11 +221,11 @@ public abstract class SigTestEE {
         SigTestResult results = null;
         String mapFile = getMapFile();
         String repositoryDir = getRepositoryDir();
-        String[] packages = getPackages(SigTestData.getVehicle());
-        String[] classes = getClasses(SigTestData.getVehicle());
+        String[] packages = getPackages();
+        String[] classes = getClasses();
         String packageFile = getPackageFile();
         String testClasspath = TestProperty.signatureClasspath.getValue();
-        String optionalPkgToIgnore = SigTestData.getOptionalTechPackagesToIgnore();
+        String optionalPkgToIgnore = "";
 
         // unlisted optional packages are technology packages for those optional
         // technologies (e.g. jsr-88) that might not have been specified by the

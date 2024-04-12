@@ -36,23 +36,23 @@ public abstract class SignatureTestDriver {
     /**
      * Implementation of the getPackageFile method defined in both the SigTest and
      * SigTestEE class.
-     * @param binDir - The directory that contains signature test package list
+     *
      * @return - Return the signature package file location
      */
-    public String getPackageFileImpl(String binDir) {
+    public String getPackageFileImpl() {
 
         String thePkgListFile = "sig-test-pkg-list.txt";
 
         System.out.println("Using the following as the SigTest Package file: " + thePkgListFile);
 
-        String theFile = binDir + File.separator + thePkgListFile;
+        String theFile = thePkgListFile;
         File ff = new File(theFile);
         if (!ff.exists()) {
             // we could not find the map file that coresponded to our SE version so
             // lets
             // try to default to use the sig-test-pkg-list.txt
             System.out.println("The SigTest Package file does not exist: " + thePkgListFile);
-            theFile = binDir + File.separator + "sig-test-pkg-list.txt";
+            theFile = "sig-test-pkg-list.txt";
             File ff2 = new File(theFile);
             if (!ff2.exists()) {
                 System.out.println("The Default SigTest Package file does not exist either: " + theFile);
@@ -68,23 +68,23 @@ public abstract class SignatureTestDriver {
     /**
      * Implementation of the getMapFile method defined in both the SigTest and
      * SigTestEE class.
-     * @param binDir - The directory that contains signature test map file
+     *
      * @return - Return the signature map file location
      */
-    public String getMapFileImpl(String binDir) {
+    public String getMapFileImpl() {
 
         String theMapFile = "sig-test.map";
 
         System.out.println("Using the following as the sig-Test map file: " + theMapFile);
 
-        String theFile = binDir + File.separator + theMapFile;
+        String theFile = theMapFile;
         File ff = new File(theFile);
         if (!ff.exists()) {
             // we could not find the map file that coresponded to our SE version so
             // lets
             // try to default to use the sig-test.map
             System.out.println("The SigTest Map file does not exist: " + theMapFile);
-            theFile = binDir + File.separator + "sig-test.map";
+            theFile = "sig-test.map";
             File ff2 = new File(theFile);
             if (!ff2.exists()) {
                 System.out.println("The SigTest Map file does not exist either: " + theFile);
@@ -104,25 +104,19 @@ public abstract class SignatureTestDriver {
      * @return - true if the passed in version matches the current Java version being used, false otherwise.
      */
     public Boolean isJavaSEVersion(String ver) {
-
         String strOSVersion = System.getProperty("java.version");
-        if (strOSVersion.startsWith(ver)) {
-            return true;
-        } else {
-            return false;
-        }
+        return strOSVersion.startsWith(ver);
     }
 
     /**
      * Implementation of the getRepositoryDir method defined in both the SigTest and
      * SigTestEE class.
-     * 
-     * @param tsHome - Location of the TS artifact
+     *
      * @return - Return the signature repo location
      */
-    public String getRepositoryDirImpl(String tsHome) {
+    public String getRepositoryDirImpl() {
 
-        return (tsHome + File.separator + "src" + File.separator + "com" + File.separator + "sun" + File.separator
+        return ("src" + File.separator + "com" + File.separator + "sun" + File.separator
                 + "ts" + File.separator + "tests" + File.separator + "signaturetest" + File.separator
                 + "signature-repository" + File.separator);
 
