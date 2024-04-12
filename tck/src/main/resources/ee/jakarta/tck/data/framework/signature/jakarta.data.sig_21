@@ -186,23 +186,21 @@ meth public java.util.stream.Stream<{jakarta.data.page.Page%0}> stream()
 CLSS public abstract interface jakarta.data.page.PageRequest
 innr public abstract interface static Cursor
 innr public final static !enum Mode
-meth public abstract !varargs jakarta.data.page.PageRequest afterKey(java.lang.Object[])
-meth public abstract !varargs jakarta.data.page.PageRequest beforeKey(java.lang.Object[])
 meth public abstract boolean equals(java.lang.Object)
 meth public abstract boolean requestTotal()
 meth public abstract int size()
 meth public abstract jakarta.data.page.PageRequest afterCursor(jakarta.data.page.PageRequest$Cursor)
 meth public abstract jakarta.data.page.PageRequest beforeCursor(jakarta.data.page.PageRequest$Cursor)
-meth public abstract jakarta.data.page.PageRequest next()
-meth public abstract jakarta.data.page.PageRequest page(long)
-meth public abstract jakarta.data.page.PageRequest previous()
 meth public abstract jakarta.data.page.PageRequest size(int)
 meth public abstract jakarta.data.page.PageRequest withTotal()
 meth public abstract jakarta.data.page.PageRequest withoutTotal()
 meth public abstract jakarta.data.page.PageRequest$Mode mode()
 meth public abstract java.util.Optional<jakarta.data.page.PageRequest$Cursor> cursor()
 meth public abstract long page()
+meth public static jakarta.data.page.PageRequest afterCursor(jakarta.data.page.PageRequest$Cursor,long,int,boolean)
+meth public static jakarta.data.page.PageRequest beforeCursor(jakarta.data.page.PageRequest$Cursor,long,int,boolean)
 meth public static jakarta.data.page.PageRequest ofPage(long)
+meth public static jakarta.data.page.PageRequest ofPage(long,int,boolean)
 meth public static jakarta.data.page.PageRequest ofSize(int)
 
 CLSS public abstract interface static jakarta.data.page.PageRequest$Cursor
