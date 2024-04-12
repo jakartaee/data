@@ -482,7 +482,7 @@ public class EntityTests {
             AsciiCharacter ch = characters.findByHexadecimalIgnoreCase("2g");
             fail("Unexpected result of findByHexadecimalIgnoreCase(2g): " + ch.getHexadecimal());
         } catch (EmptyResultException x) {
-            System.out.println("testEmptyResultException expected to catch exception " + x + ". Printing its stack trace:");
+            log.info("testEmptyResultException expected to catch exception " + x + ". Printing its stack trace:");
             x.printStackTrace(System.out);
             // test passes
         }
@@ -1244,7 +1244,7 @@ public class EntityTests {
             AsciiCharacter ch = characters.findByIsControlTrueAndNumericValueBetween(10, 15);
             fail("Unexpected result of findByIsControlTrueAndNumericValueBetween(10, 15): " + ch.getHexadecimal());
         } catch (NonUniqueResultException x) {
-            System.out.println("testNonUniqueResultException expected to catch exception " + x + ". Printing its stack trace:");
+            log.info("testNonUniqueResultException expected to catch exception " + x + ". Printing its stack trace:");
             x.printStackTrace(System.out);
             // test passes
         }

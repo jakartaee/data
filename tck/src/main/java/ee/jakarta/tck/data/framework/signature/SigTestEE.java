@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022, 2024 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -23,6 +23,7 @@ import java.io.PrintStream;
 
 import java.util.ArrayList;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 import ee.jakarta.tck.data.framework.utilities.TestProperty;
 
@@ -33,6 +34,8 @@ import ee.jakarta.tck.data.framework.utilities.TestProperty;
  * by the signature test framework within which container.
  */
 public abstract class SigTestEE {
+    
+    private static final Logger log = Logger.getLogger(SigTestEE.class.getCanonicalName());
 
     String[] sVehicles;
 
@@ -201,10 +204,10 @@ public abstract class SigTestEE {
      */
     public void setup() {
         try {
-            System.out.println("$$$ SigTestEE.setup() called");
-            System.out.println("$$$ SigTestEE.setup() complete");
+            log.info("$$$ SigTestEE.setup() called");
+            log.info("$$$ SigTestEE.setup() complete");
         } catch (Exception e) {
-            System.out.println("Unexpected exception " + e.getMessage());
+            log.info("Unexpected exception " + e.getMessage());
         }
     }
 
@@ -217,7 +220,7 @@ public abstract class SigTestEE {
      * @throws Fault When an error occurs executing the signature tests.
      */
     public void signatureTest() throws Fault {
-        System.out.println("$$$ SigTestEE.signatureTest() called");
+        log.info("$$$ SigTestEE.signatureTest() called");
         SigTestResult results = null;
         String mapFile = getMapFile();
         String repositoryDir = getRepositoryDir();
@@ -244,7 +247,7 @@ public abstract class SigTestEE {
             f.mkdirs();
 
             String javaHome = (String) sysProps.get("java.home");
-            System.out.println("Executing JImage");
+            log.info("Executing JImage");
 
             try {
                 ProcessBuilder pb = new ProcessBuilder(javaHome + "/bin/jimage", "extract", "--dir=" + jimageDir,
@@ -256,14 +259,14 @@ public abstract class SigTestEE {
                 BufferedReader out = new BufferedReader(new InputStreamReader(proc.getInputStream()));
                 String line = null;
                 while ((line = out.readLine()) != null) {
-                    System.out.println(line);
+                    log.info(line);
                 }
 
                 int rc = proc.waitFor();
-                System.out.println("JImage RC = " + rc);
+                log.info("JImage RC = " + rc);
                 out.close();
             } catch (Exception e) {
-                System.out.println("Exception while executing JImage!  Some tests may fail.");
+                log.info("Exception while executing JImage!  Some tests may fail.");
                 e.printStackTrace();
             }
         }
@@ -271,18 +274,18 @@ public abstract class SigTestEE {
         try {
             results = getSigTestDriver().executeSigTest(packageFile, mapFile, repositoryDir, packages, classes,
                     testClasspath, unlistedTechnologyPkgs, optionalPkgToIgnore);
-            System.out.println(results.toString());
+            log.info(results.toString());
             if (!results.passed()) {
-                System.out.println("results.passed() returned false");
+                log.info("results.passed() returned false");
                 throw new Exception();
             }
 
-            System.out.println("$$$ SigTestEE.signatureTest() returning");
+            log.info("$$$ SigTestEE.signatureTest() returning");
         } catch (Exception e) {
             if (results != null && !results.passed()) {
                 throw new Fault("SigTestEE.signatureTest() failed!, diffs found");
             } else {
-                System.out.println("Unexpected exception " + e.getMessage());
+                log.info("Unexpected exception " + e.getMessage());
                 throw new Fault("signatureTest failed with an unexpected exception", e);
             }
         }
@@ -296,10 +299,10 @@ public abstract class SigTestEE {
      * @throws Fault When an error occurs cleaning up the state of this test.
      */
     public void cleanup() throws Fault {
-        System.out.println("$$$ SigTestEE.cleanup() called");
+        log.info("$$$ SigTestEE.cleanup() called");
         try {
             getSigTestDriver().cleanupImpl();
-            System.out.println("$$$ SigTestEE.cleanup() returning");
+            log.info("$$$ SigTestEE.cleanup() returning");
         } catch (Exception e) {
             throw new Fault("Cleanup failed!", e);
         }
@@ -318,7 +321,7 @@ public abstract class SigTestEE {
          */
         public Fault(String msg) {
             super(msg);
-            System.out.println(msg);
+            log.info(msg);
         }
 
         /**
@@ -330,7 +333,7 @@ public abstract class SigTestEE {
         public Fault(String msg, Throwable t) {
             super(msg);
             this.t = t;
-            System.out.println(msg);
+            log.info(msg);
             t.printStackTrace();
         }
 

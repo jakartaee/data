@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022, 2024 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -23,9 +23,12 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public final class ApiCheckDriver extends SignatureTestDriver implements Serializable {
     private static final long serialVersionUID = 1L;
+    
+    private static final Logger log = Logger.getLogger(ApiCheckDriver.class.getCanonicalName());
 
     /* flags for the Diff utility argument list */
     private static final String BASE_FLAG = "-base";
@@ -112,9 +115,9 @@ public final class ApiCheckDriver extends SignatureTestDriver implements Seriali
         }
 
         // dump args for debugging aid
-        System.out.println("\nCalling:  com.sun.tdk.signaturetest.SignatureTest() with following args:");
+        log.fine("\nCalling:  com.sun.tdk.signaturetest.SignatureTest() with following args:");
         for (int ii = 0; ii < testArguments.length; ii++) {
-            System.out.println("\t  testArguments[" + ii + "] = " + testArguments[ii]);
+            log.fine("\t  testArguments[" + ii + "] = " + testArguments[ii]);
         }
 
         Method runMethod = sigTestClass.getDeclaredMethod("run",
@@ -125,14 +128,9 @@ public final class ApiCheckDriver extends SignatureTestDriver implements Seriali
 
         // currently, there is no way to determine if there are error msgs in
         // the rawmessages, so we will always dump this and call it a status.
-        System.out.println("********** Status Report '" + packageOrClassName + "' **********\n");
-        System.out.println(rawMessages);
+        log.info("********** Status Report '" + packageOrClassName + "' **********\n");
+        log.info(rawMessages);
         return sigTestInstance.toString().substring(7).startsWith("Passed.");
-    }
-
-    @Override
-    protected boolean verifyJTAJarForNoXA(String classpath, String repositoryDir) throws Exception {
-        return true;
     }
 
 } // END ApiCheckDriver

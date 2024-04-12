@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022, 2024 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -19,6 +19,7 @@ import java.io.PrintWriter;
 import java.io.PrintStream;
 
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 /**
  * This class should be extended by TCK developers that wish to create a set of
@@ -27,6 +28,8 @@ import java.util.ArrayList;
  * by the signature test framework.
  */
 public abstract class SigTest {
+    
+    private static final Logger log = Logger.getLogger(SigTest.class.getCanonicalName());
 
     protected SignatureTestDriver driver;
 
@@ -167,10 +170,10 @@ public abstract class SigTest {
      */
     public void setup() {
         try {
-            System.out.println("$$$ SigTest.setup() called");
-            System.out.println("$$$ SigTest.setup() complete");
+            log.info("$$$ SigTest.setup() called");
+            log.info("$$$ SigTest.setup() complete");
         } catch (Exception e) {
-            System.out.println("Unexpected exception " + e.getMessage());
+            log.info("Unexpected exception " + e.getMessage());
             // throw new Fault("setup failed!", e);
         }
     }
@@ -183,10 +186,10 @@ public abstract class SigTest {
      * @throws Fault When an error occurs cleaning up the state of this test.
      */
     public void cleanup() throws Fault {
-        System.out.println("$$$ SigTest.cleanup() called");
+        log.info("$$$ SigTest.cleanup() called");
         try {
             getSigTestDriver().cleanupImpl();
-            System.out.println("$$$ SigTest.cleanup() returning");
+            log.info("$$$ SigTest.cleanup() returning");
         } catch (Exception e) {
             throw new Fault("Cleanup failed!", e);
         }
@@ -203,7 +206,7 @@ public abstract class SigTest {
          */
         public Fault(String msg) {
             super(msg);
-            System.out.println(msg);
+            log.info(msg);
         }
 
         /**
@@ -215,7 +218,7 @@ public abstract class SigTest {
         public Fault(String msg, Throwable t) {
             super(msg);
             this.t = t;
-            // System.out.println(msg, t);
+            // log.info(msg, t);
         }
 
         /**
