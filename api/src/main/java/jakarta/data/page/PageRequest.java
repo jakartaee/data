@@ -69,6 +69,9 @@ import java.util.Optional;
 public interface PageRequest {
 
 
+    int SIZE = 10;
+    int FIRST_PAGE = 1;
+
     /**
      * Creates a new page request with the given page number and with a default size of 10.
      *
@@ -77,7 +80,7 @@ public interface PageRequest {
      * @throws IllegalArgumentException when the page number is negative or zero.
      */
     static PageRequest ofPage(long pageNumber) {
-        return new Pagination(pageNumber, 10, Mode.OFFSET, null, true);
+        return new Pagination(pageNumber, SIZE, Mode.OFFSET, null, true);
     }
 
     /**
@@ -104,7 +107,7 @@ public interface PageRequest {
      * @throws IllegalArgumentException when maximum page size is negative or zero.
      */
     static PageRequest ofSize(int maxPageSize) {
-        return new Pagination(1, maxPageSize,  Mode.OFFSET, null, true);
+        return new Pagination(FIRST_PAGE, maxPageSize,  Mode.OFFSET, null, true);
     }
 
     /**
