@@ -37,7 +37,7 @@
 
   <arquillian.version>1.7.0.Alpha13</arquillian.version>
   <junit.version>5.9.0</junit.version>
-  <sigtest.version>1.6</sigtest.version>
+  <sigtest.version>2.2</sigtest.version>
 
   <maven.dep.plugin.version>3.3.0</maven.dep.plugin.version>
   <maven.comp.plugin.version>3.10.1</maven.comp.plugin.version>
@@ -93,7 +93,7 @@
   </dependency>
   <!-- Signature Test Plugin -->
   <dependency>
-   <groupId>org.netbeans.tools</groupId>
+   <groupId>jakarta.tck</groupId>
    <artifactId>sigtest-maven-plugin</artifactId>
    <version>${sigtest.version}</version>
   </dependency>
