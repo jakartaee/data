@@ -73,7 +73,7 @@ public interface PageRequest {
      * to define a standard page size across paginated queries where only the page number is specified,
      * ensuring a consistent pagination behavior.
      */
-    int SIZE = 10;
+    int DEFAULT_SIZE = 10;
     /**
      * Represents the first page number in a series of pages. This constant is used to standardize the
      * starting point for pagination operations, particularly when creating new page requests with a default
@@ -89,7 +89,7 @@ public interface PageRequest {
      * @throws IllegalArgumentException when the page number is negative or zero.
      */
     static PageRequest ofPage(long pageNumber) {
-        return new Pagination(pageNumber, SIZE, Mode.OFFSET, null, true);
+        return new Pagination(pageNumber, DEFAULT_SIZE, Mode.OFFSET, null, true);
     }
 
     /**
