@@ -13,7 +13,7 @@ Knowledge of how these frameworks operate and interact will help during the proj
 
 1. **Arquillian** - Version 1.7.0.Alpha13 or later - The {APILongName} TCK can run in EE Mode and it uses Arquillian to execute tests within an Arquillian "container" for certifying against an EE Platform. You must configure an https://arquillian.org/guides/developing_a_container_adapter/[Arquillian adapter] for your target runtime.
 2. **JUnit5** - Version 5.9.0 or later - The {APILongName} TCK uses JUnit5 as the entry-point for tests and deployments using Arquillian.
-3. **Signature Test Plugin** - Version 2.2 exactly -  The {APILongName} TCK uses the Signature Test Plugin to verify API signatures used by an implementation and those release by the specification match.
+3. **Signature Test Plugin** - Version {SigPluginVersion} exactly -  The {APILongName} TCK uses the Signature Test Plugin to verify API signatures used by an implementation and those release by the specification match.
 +
 No action is needed here, but we note that the signature files were built and should be validated with the plugin with group:artifact:version coordinates: **{SigPluginGAV}**, as used by the sample runner included in the TCK zip. 
 This is a more specific direction than in earlier releases of the platform TCK, in which it was left more open for the user to use a compatible tool.
