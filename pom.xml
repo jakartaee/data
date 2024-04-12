@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
+  ~ Copyright (c) 2022, 2024 Contributors to the Eclipse Foundation
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -97,7 +97,7 @@
         <checkstyle.version>10.15.0</checkstyle.version>
         <checkstyle.excludes></checkstyle.excludes>
         <jacoco.maven.version>0.8.12</jacoco.maven.version>
-        <sigtest.version>2.2</sigtest.version> <!-- TODO update to 1.8 once this fix is added https://github.com/jtulach/netbeans-apitest/commit/72a3d3507202357589d77b293cb1e29349a0096e -->
+        <sigtest.version>2.3</sigtest.version>
         <sonar.jacoco.reportPath>../target/jacoco.exec</sonar.jacoco.reportPath>
         <sonar.maven.version>3.11.0.3922</sonar.maven.version>
     </properties>

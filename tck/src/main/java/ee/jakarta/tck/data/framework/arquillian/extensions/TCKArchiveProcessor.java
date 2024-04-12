@@ -92,7 +92,7 @@ public class TCKArchiveProcessor implements ApplicationArchiveProcessor {
             ((ClassContainer<?>) applicationArchive).addPackage(signaturePackage);
 
             // Add the sigtest plugin library
-            File sigTestDep = Maven.resolver().resolve("jakarta.tck:sigtest-maven-plugin:2.2").withoutTransitivity().asSingleFile();
+            File sigTestDep = Maven.resolver().resolve("jakarta.tck:sigtest-maven-plugin:2.3").withoutTransitivity().asSingleFile();
             log.info("Application Archive [" + applicationName + "] is being appended with library " + sigTestDep.getName());
             ((LibraryContainer<?>) applicationArchive).addAsLibrary(sigTestDep);
             
