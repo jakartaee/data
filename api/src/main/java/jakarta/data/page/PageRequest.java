@@ -222,7 +222,7 @@ public interface PageRequest {
     /**
      * Indicates that a query method which returns a {@link Page}
      * should retrieve the {@linkplain Page#totalElements() total
-     * number elements} available across all pages. This behavior
+     * number of elements} available across all pages. This behavior
      * is enabled by default. To obtain a page request with total
      * retrieval disabled, call {@link #withoutTotal()}.
      * @return {@code true} if the total number of elements should
