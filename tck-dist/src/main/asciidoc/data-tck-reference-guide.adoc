@@ -14,7 +14,7 @@
 :APIGitSite: https://github.com/jakartaee/data
 
 :TCKTestPlatform: JUnit5
-:SigPluginGAV: org.netbeans.tools:sigtest-maven-plugin:2.2
+:SigPluginGAV: jakarta.tck:sigtest-maven-plugin:2.2
 
 :JavaVersion1: 17
 :JavaVersion2: 21
