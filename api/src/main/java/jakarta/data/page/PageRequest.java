@@ -68,8 +68,17 @@ import java.util.Optional;
  */
 public interface PageRequest {
 
-
+    /**
+     * The default size of each page when no specific size is requested. This constant is used
+     * to define a standard page size across paginated queries where only the page number is specified,
+     * ensuring a consistent pagination behavior.
+     */
     int SIZE = 10;
+    /**
+     * Represents the first page number in a series of pages. This constant is used to standardize the
+     * starting point for pagination operations, particularly when creating new page requests with a default
+     * starting page, thereby ensuring that pagination always begins from the first set of results.
+     */
     int FIRST_PAGE = 1;
 
     /**
