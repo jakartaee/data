@@ -33,7 +33,7 @@ import jakarta.data.page.PageRequest;
  * For example,</p>
  *
  * <pre>
- * Product[] findByNameLike(String namePattern, Limit limit, {@code Sort<?>...} sorts);
+ * Product[] findByNameLike(String namePattern, Limit limit, Sort&lt;?&gt;... sorts);
  * 
  * ...
  * mostExpensive50 = products.findByNameLike(pattern, Limit.of(50), Sort.desc("price"));
