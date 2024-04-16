@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2023, 2024 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -37,7 +37,8 @@ public enum TestProperty {
     javaVer     (true,  "java.version",               "Full version of the java executable"),
     
     //TCK specific properties
-    profile       (true,  "jakarta.tck.profile",           "The profile name which is used for reporting and determining the run mode."),
+    profile       (false,  "jakarta.tck.profile",          "Set to 'none' to run in standalone mode. "
+            + "Optionally, set to 'core', 'web', or 'full' to differentiate between profile runs.", ""),
     pollFrequency (false, "jakarta.tck.poll.frequency",    "Time in seconds between polls of the repository to verify read-only data was successfully written. "
             + "Default: 1 second", "1"),
     pollTimeout   (false, "jakarta.tck.poll.timeout",      "Time in seconds when we will stop polling to verify read-only data was successfully written. "

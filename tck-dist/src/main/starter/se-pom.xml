@@ -155,6 +155,10 @@
       <!-- tag::logging[] -->
       <java.util.logging.config.file>${logging.config}</java.util.logging.config.file>
       <!-- end::logging[] -->
+      <!-- tag::profile[] -->
+      <!-- Required to disable arquillian deployments -->
+      <jakarta.tck.profile>none</jakarta.tck.profile>
+      <!-- end::profile[] -->
      </systemPropertyVariables>
      <!-- end::systemProperties[] -->
      <!-- Supported tags 
