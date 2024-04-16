@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022, 2024 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -22,12 +22,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 /**
  * Allows the sigtest framework to be extended using different signature test
  * implementations (e.g. ApiCheck, or SigTest)
  */
 public abstract class SignatureTestDriver {
+    
+    private static final Logger log = Logger.getLogger(SignatureTestDriver.class.getCanonicalName());
 
     private static final String SIG_FILE_EXT = ".sig";
 
@@ -36,28 +39,28 @@ public abstract class SignatureTestDriver {
     /**
      * Implementation of the getPackageFile method defined in both the SigTest and
      * SigTestEE class.
-     * @param binDir - The directory that contains signature test package list
+     *
      * @return - Return the signature package file location
      */
-    public String getPackageFileImpl(String binDir) {
+    public String getPackageFileImpl() {
 
         String thePkgListFile = "sig-test-pkg-list.txt";
 
-        System.out.println("Using the following as the SigTest Package file: " + thePkgListFile);
+        log.info("Using the following as the SigTest Package file: " + thePkgListFile);
 
-        String theFile = binDir + File.separator + thePkgListFile;
+        String theFile = thePkgListFile;
         File ff = new File(theFile);
         if (!ff.exists()) {
             // we could not find the map file that coresponded to our SE version so
             // lets
             // try to default to use the sig-test-pkg-list.txt
-            System.out.println("The SigTest Package file does not exist: " + thePkgListFile);
-            theFile = binDir + File.separator + "sig-test-pkg-list.txt";
+            log.info("The SigTest Package file does not exist: " + thePkgListFile);
+            theFile = "sig-test-pkg-list.txt";
             File ff2 = new File(theFile);
             if (!ff2.exists()) {
-                System.out.println("The Default SigTest Package file does not exist either: " + theFile);
+                log.info("The Default SigTest Package file does not exist either: " + theFile);
             } else {
-                System.out.println("Defaulting to using SigTest Package file: " + theFile);
+                log.info("Defaulting to using SigTest Package file: " + theFile);
             }
         }
 
@@ -68,28 +71,28 @@ public abstract class SignatureTestDriver {
     /**
      * Implementation of the getMapFile method defined in both the SigTest and
      * SigTestEE class.
-     * @param binDir - The directory that contains signature test map file
+     *
      * @return - Return the signature map file location
      */
-    public String getMapFileImpl(String binDir) {
+    public String getMapFileImpl() {
 
         String theMapFile = "sig-test.map";
 
-        System.out.println("Using the following as the sig-Test map file: " + theMapFile);
+        log.info("Using the following as the sig-Test map file: " + theMapFile);
 
-        String theFile = binDir + File.separator + theMapFile;
+        String theFile = theMapFile;
         File ff = new File(theFile);
         if (!ff.exists()) {
             // we could not find the map file that coresponded to our SE version so
             // lets
             // try to default to use the sig-test.map
-            System.out.println("The SigTest Map file does not exist: " + theMapFile);
-            theFile = binDir + File.separator + "sig-test.map";
+            log.info("The SigTest Map file does not exist: " + theMapFile);
+            theFile = "sig-test.map";
             File ff2 = new File(theFile);
             if (!ff2.exists()) {
-                System.out.println("The SigTest Map file does not exist either: " + theFile);
+                log.info("The SigTest Map file does not exist either: " + theFile);
             } else {
-                System.out.println("Defaulting to using SigTest Map file: " + theFile);
+                log.info("Defaulting to using SigTest Map file: " + theFile);
             }
         }
 
@@ -104,25 +107,19 @@ public abstract class SignatureTestDriver {
      * @return - true if the passed in version matches the current Java version being used, false otherwise.
      */
     public Boolean isJavaSEVersion(String ver) {
-
         String strOSVersion = System.getProperty("java.version");
-        if (strOSVersion.startsWith(ver)) {
-            return true;
-        } else {
-            return false;
-        }
+        return strOSVersion.startsWith(ver);
     }
 
     /**
      * Implementation of the getRepositoryDir method defined in both the SigTest and
      * SigTestEE class.
-     * 
-     * @param tsHome - Location of the TS artifact
+     *
      * @return - Return the signature repo location
      */
-    public String getRepositoryDirImpl(String tsHome) {
+    public String getRepositoryDirImpl() {
 
-        return (tsHome + File.separator + "src" + File.separator + "com" + File.separator + "sun" + File.separator
+        return ("src" + File.separator + "com" + File.separator + "sun" + File.separator
                 + "ts" + File.separator + "tests" + File.separator + "signaturetest" + File.separator
                 + "signature-repository" + File.separator);
 
@@ -137,9 +134,9 @@ public abstract class SignatureTestDriver {
     public void cleanupImpl() throws Exception {
 
         try {
-            System.out.println("cleanup");
+            log.info("cleanup");
         } catch (Exception e) {
-            System.out.println("Exception in cleanup method" + e);
+            log.info("Exception in cleanup method" + e);
             throw e;
         }
 
@@ -183,38 +180,38 @@ public abstract class SignatureTestDriver {
 
         SigTestResult result = new SigTestResult();
 
-        System.out.println("optionalPkgToIgnore = " + optionalPkgToIgnore);
+        log.info("optionalPkgToIgnore = " + optionalPkgToIgnore);
         String[] arrayOptionalPkgsToIgnore = null;
         if (optionalPkgToIgnore != null) {
             arrayOptionalPkgsToIgnore = optionalPkgToIgnore.split(",");
         }
 
         if (packagesUnderTest != null && packagesUnderTest.length > 0) {
-            System.out.println("********** BEGIN PACKAGE LEVEL SIGNATURE " + "VALIDATION **********\n\n");
+            log.info("********** BEGIN PACKAGE LEVEL SIGNATURE " + "VALIDATION **********\n\n");
             for (int i = 0; i < packagesUnderTest.length; i++) {
 
                 String packageName = packagesUnderTest[i];
 
-                System.out.println("********** BEGIN VALIDATE PACKAGE '" + packagesUnderTest[i] + "' **********\n");
+                log.info("********** BEGIN VALIDATE PACKAGE '" + packagesUnderTest[i] + "' **********\n");
 
-                System.out.println("********** VALIDATE IN STATIC MODE - TO CHECK CONSANT VALUES ****");
-                System.out.println("Static mode supports checks of static constants values ");
+                log.info("********** VALIDATE IN STATIC MODE - TO CHECK CONSANT VALUES ****");
+                log.info("Static mode supports checks of static constants values ");
 
                 String[] args = createTestArguments(packageListFile, mapFile, signatureRepositoryDir, packageName,
                         classpath, true);
                 dumpTestArguments(args);
 
                 if (runSignatureTest(packageName, args)) {
-                    System.out.println("********** Package '" + packageName + "' - PASSED (STATIC MODE) **********");
+                    log.info("********** Package '" + packageName + "' - PASSED (STATIC MODE) **********");
                     result.addPassedPkg(packageName + "(static mode)");
                 } else {
                     result.addFailedPkg(packageName + "(static mode)");
-                    System.out.println("********** Package '" + packageName + "' - FAILED (STATIC MODE) **********");
+                    log.info("********** Package '" + packageName + "' - FAILED (STATIC MODE) **********");
                 }
 
-                System.out.println("\n\n");
-                System.out.println("********** VALIDATE IN REFLECTIVE MODE  ****");
-                System.out.println("Reflective mode supports verification within containers (ie ejb, servlet, etc)");
+                log.info("\n\n");
+                log.info("********** VALIDATE IN REFLECTIVE MODE  ****");
+                log.info("Reflective mode supports verification within containers (ie ejb, servlet, etc)");
 
                 String[] args2 = createTestArguments(packageListFile, mapFile, signatureRepositoryDir, packageName,
                         classpath, false);
@@ -230,59 +227,51 @@ public abstract class SignatureTestDriver {
                             .println("********** Package '" + packageName + "' - FAILED (REFLECTION MODE) **********");
                 }
 
-                System.out.println("********** END VALIDATE PACKAGE '" + packagesUnderTest[i] + "' **********\n");
-
-                System.out.println("\n");
-                System.out.println("\n");
-
+                log.info("********** END VALIDATE PACKAGE '" + packagesUnderTest[i] + "' **********\n");
             }
         }
 
         if (classesUnderTest != null && classesUnderTest.length > 0) {
-            System.out.println("********** BEGIN CLASS LEVEL SIGNATURE " + "VALIDATION **********\n\n");
+            log.info("********** BEGIN CLASS LEVEL SIGNATURE " + "VALIDATION **********\n\n");
 
             for (int i = 0; i < classesUnderTest.length; i++) {
 
                 String className = classesUnderTest[i];
 
-                System.out.println("********** BEGIN VALIDATE CLASS '" + classesUnderTest[i] + "' **********\n");
+                log.info("********** BEGIN VALIDATE CLASS '" + classesUnderTest[i] + "' **********\n");
 
-                System.out.println("********** VALIDATE IN STATIC MODE - TO CHECK CONSANT VALUES ****");
-                System.out.println("Static mode supports checks of static constants values ");
+                log.info("********** VALIDATE IN STATIC MODE - TO CHECK CONSANT VALUES ****");
+                log.info("Static mode supports checks of static constants values ");
 
                 String[] args = createTestArguments(packageListFile, mapFile, signatureRepositoryDir, className,
                         classpath, true);
                 dumpTestArguments(args);
 
                 if (runSignatureTest(className, args)) {
-                    System.out.println("********** Class '" + className + "' - PASSED (STATIC MODE) **********");
+                    log.info("********** Class '" + className + "' - PASSED (STATIC MODE) **********");
                     result.addPassedClass(className + "(static mode)");
                 } else {
-                    System.out.println("********** Class '" + className + "' - FAILED (STATIC MODE) **********");
+                    log.info("********** Class '" + className + "' - FAILED (STATIC MODE) **********");
                     result.addFailedClass(className + "(static mode)");
                 }
 
-                System.out.println("\n\n");
-                System.out.println("********** VALIDATE IN REFLECTIVE MODE  ****");
-                System.out.println("Reflective mode supports verification within containers (ie ejb, servlet, etc)");
+                log.info("\n\n");
+                log.info("********** VALIDATE IN REFLECTIVE MODE  ****");
+                log.info("Reflective mode supports verification within containers (ie ejb, servlet, etc)");
 
                 String[] args2 = createTestArguments(packageListFile, mapFile, signatureRepositoryDir, className,
                         classpath, false);
                 dumpTestArguments(args2);
 
                 if (runSignatureTest(className, args2)) {
-                    System.out.println("********** Class '" + className + "' - PASSED (REFLECTION MODE) **********");
+                    log.info("********** Class '" + className + "' - PASSED (REFLECTION MODE) **********");
                     result.addPassedClass(className + "(reflection mode)");
                 } else {
-                    System.out.println("********** Class '" + className + "' - FAILED (REFLECTION MODE) **********");
+                    log.info("********** Class '" + className + "' - FAILED (REFLECTION MODE) **********");
                     result.addFailedClass(className + "(reflection mode)");
                 }
 
-                System.out.println("********** END VALIDATE CLASS '" + classesUnderTest[i] + "' **********\n");
-
-                System.out.println("\n");
-                System.out.println("\n");
-
+                log.info("********** END VALIDATE CLASS '" + classesUnderTest[i] + "' **********\n");
             }
         }
 
@@ -311,13 +300,13 @@ public abstract class SignatureTestDriver {
                 // requires us to add special handling to avoid testing 'certain' pkgs
                 // within an optional technology.
                 if (isIgnorePackageUnderTest(packageName, arrayOptionalPkgsToIgnore)) {
-                    System.out.println("Ignoring special optional technology package: " + packageName);
+                    log.info("Ignoring special optional technology package: " + packageName);
                     continue;
                 }
 
-                System.out.println("\n\n");
-                System.out.println("********** CHECK IF OPTIONAL TECHNOLOGIES EXIST IN REFLECTIVE MODE  ****");
-                System.out.println("Reflective mode supports verification within containers (ie ejb, servlet, etc)");
+                log.info("\n\n");
+                log.info("********** CHECK IF OPTIONAL TECHNOLOGIES EXIST IN REFLECTIVE MODE  ****");
+                log.info("Reflective mode supports verification within containers (ie ejb, servlet, etc)");
 
                 String[] args3 = createTestArguments(packageListFile, mapFile, signatureRepositoryDir, packageName,
                         classpath, false);
@@ -337,7 +326,7 @@ public abstract class SignatureTestDriver {
                 if (runPackageSearch(packageName, args3)) {
                     // if this passed we have an issue because it should not exist - thus
                     // should NOT pass.
-                    System.out.println("********** Package '" + packageName
+                    log.info("********** Package '" + packageName
                             + "' - WAS FOUND BUT SHOULD NOT BE (REFLECTION MODE) **********");
                     String err = "ERROR:  An area of concern has been identified.  ";
                     err += "You must run sigtests with (ts.jte) javaee.level set to ";
@@ -347,11 +336,11 @@ public abstract class SignatureTestDriver {
                     err += "all related TCK tests.  To properly pass the ";
                     err += "signature tests - you must identify all Optional Technology ";
                     err += "areas (via javaee.level) that you wish to pass signature tests for.";
-                    System.out.println(err);
+                    log.info(err);
                     result.addFailedPkg(
                             packageName + " (Undeclared Optional Technology package found in reflection mode)");
                 } else {
-                    System.out.println("********** Undeclared Optional Technology package '" + packageName
+                    log.info("********** Undeclared Optional Technology package '" + packageName
                             + "' - PASSED (REFLECTION MODE) **********");
                 }
             }
@@ -411,19 +400,6 @@ public abstract class SignatureTestDriver {
      * @throws Exception - If we cannot find packages
      */
     protected abstract boolean runPackageSearch(String packageOrClassName, String[] testArguments) throws Exception;
-
-    /**
-     * This method checks whether JTA API jar contains classes from
-     * javax.transaction.xa package
-     *
-     * @param classpath     the classpath, pointing JTA API jar
-     * @param repositoryDir the directory containing an empty signature file
-     *
-     * @return {@code true} if the package javax.transaction.xa is not found in
-     *         the JTA API jar, otherwise {@code false}
-     * @throws Exception - If we are unable to verify
-     */
-    protected abstract boolean verifyJTAJarForNoXA(String classpath, String repositoryDir) throws Exception;
 
     /**
      * Loads the specified file into a Properties object provided the specified file
@@ -600,11 +576,11 @@ public abstract class SignatureTestDriver {
     private static void dumpTestArguments(String[] params) {
 
         if (params != null && params.length > 0) {
-            System.out.println("----------------- BEGIN SIG PARAM DUMP -----------------");
+            log.fine("----------------- BEGIN SIG PARAM DUMP -----------------");
             for (int i = 0; i < params.length; i++) {
-                System.out.println("   Param[" + i + "]: " + params[i]);
+                log.fine("   Param[" + i + "]: " + params[i]);
             }
-            System.out.println("------------------ END SIG PARAM DUMP ------------------");
+            log.fine("------------------ END SIG PARAM DUMP ------------------");
         }
 
     } // END dumpTestArguments

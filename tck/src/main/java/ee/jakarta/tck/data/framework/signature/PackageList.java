@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022, 2024 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -27,6 +27,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.logging.Logger;
 
 /**
  * This class represents a package list file. A package list file is used in
@@ -58,6 +59,8 @@ import java.util.TreeSet;
  * trailing period character.
  */
 class PackageList {
+    
+    private static final Logger log = Logger.getLogger(PackageList.class.getCanonicalName());
 
     // Any line in the packageFile starting with this character is a comment
     private static final char COMMENT_CHAR = '#';
@@ -209,7 +212,7 @@ class PackageList {
         for (int i = 0; i < delPkgs.size(); i++) {
             packageName = (String) (delPkgs.get(i));
             packageNames.remove(packageName);
-            System.out.println("PackageList.removeExistingPackage() \"" + packageName + "\"");
+            log.info("PackageList.removeExistingPackage() \"" + packageName + "\"");
         }
     }
 
@@ -335,7 +338,7 @@ class PackageList {
                 String packageName = (String) i.next();
                 out.write(packageName);
                 out.newLine();
-                System.out.println("PackageList.writePkgFile() \"" + packageName + "\"");
+                log.info("PackageList.writePkgFile() \"" + packageName + "\"");
             }
         } finally {
             if (out != null) {
@@ -390,16 +393,16 @@ class PackageList {
      * Test Driver
      */
     public static void main(String[] args) throws Exception {
-        System.out.println("\n\n*** Creating package list file ***\n\n");
+        log.info("\n\n*** Creating package list file ***\n\n");
         PackageList list = new PackageList("jakarta.ejb",
                 "/home/ryano/cts-tools-master/tools/api-check/test/jakarta.ejb.sig_2.1",
                 "/home/ryano/cts-tools-master/tools/api-check/test/pkg-list.txt");
         list.writePkgListFile();
 
-        System.out.println("\n\n*** Reading sub-packages from package list file ***\n\n");
+        log.info("\n\n*** Reading sub-packages from package list file ***\n\n");
         PackageList readList = new PackageList("/home/ryano/cts-tools-master/tools/api-check/test/pkg-list.txt");
-        System.out.println(Arrays.asList(readList.getSubPackages("jakarta.ejb")));
-        System.out.println(readList.getSubPackagesFormatted("jakarta.ejb"));
+        log.info(Arrays.asList(readList.getSubPackages("jakarta.ejb")).toString());
+        log.info(readList.getSubPackagesFormatted("jakarta.ejb"));
     }
 
 } // end class PackageList
