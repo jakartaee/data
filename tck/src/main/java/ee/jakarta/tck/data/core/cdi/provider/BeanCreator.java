@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2023, 2024 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -17,8 +17,6 @@ package ee.jakarta.tck.data.core.cdi.provider;
 
 import java.util.logging.Logger;
 
-import ee.jakarta.tck.data.common.cdi.Directory;
-import ee.jakarta.tck.data.common.cdi.DirectoryRepository;
 import jakarta.enterprise.inject.Instance;
 import jakarta.enterprise.inject.build.compatible.spi.Parameters;
 import jakarta.enterprise.inject.build.compatible.spi.SyntheticBeanCreator;
@@ -26,18 +24,18 @@ import jakarta.enterprise.inject.build.compatible.spi.SyntheticBeanCreator;
 /**
  * Creates beans for repositories for which the entity class has the PersonEntity annotation.
  */
-public class PersonBeanCreator implements SyntheticBeanCreator<Object> {
+public class BeanCreator implements SyntheticBeanCreator<Object> {
     
-    private static final Logger log = Logger.getLogger(PersonBeanCreator.class.getCanonicalName());
+    private static final Logger log = Logger.getLogger(BeanCreator.class.getCanonicalName());
     
     @Override
     public Object create(Instance<Object> instance, Parameters parameters) {
-        String provider = parameters.get("provider", String.class);
-        if (provider == Directory.PERSON_PROVIDER) {
-            log.info("Creating repository for " + instance + ", provider: " + provider);
-            return new DirectoryRepository();
-        } else {
-            log.info("Bean creator does not support creating " + instance + " for provider " + provider);
+        Class<?> provider = parameters.get("impl", Class.class);
+        
+        try {
+            return provider.getConstructor().newInstance();
+        } catch (Exception e) {
+            log.warning("Error while constructing implementation of repository: " + e.getMessage());
             return null;
         }
     }

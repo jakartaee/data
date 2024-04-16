@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023, 2024 Contributors to the Eclipse Foundation
+ * Copyright (c) 2024 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -13,41 +13,38 @@
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
-package ee.jakarta.tck.data.web.validation;
+package ee.jakarta.tck.data.common.cdi;
+
+import static jakarta.data.repository.By.ID;
 
 import java.util.List;
-import java.util.stream.Stream;
+import java.util.UUID;
 
+import jakarta.data.repository.By;
 import jakarta.data.repository.DataRepository;
 import jakarta.data.repository.Delete;
 import jakarta.data.repository.Find;
-import jakarta.data.repository.OrderBy;
 import jakarta.data.repository.Repository;
-import jakarta.data.repository.Save;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.PositiveOrZero;
-import jakarta.validation.constraints.Size;
 
+/**
+ * An AddressBook repository for testing.
+ * 
+ * Uses the AddressRecord with the {@code @EntityDefining} annotation {@code TCKEntity} 
+ * to ensure the mock Jakarta Data provider from this TCK implements this repository interface.
+ * 
+ * @see ee.jakarta.tck.data.common.cdi.DirectoryRepository
+ */
 @Repository
-public interface Rectangles extends DataRepository<Rectangle, String> {
+public interface AddressBook extends DataRepository<AddressRecord, UUID>  {
     
-    @Save
-    Rectangle save(@Valid Rectangle entity);
-
-    @Save
-    List<Rectangle> saveAll(@Valid List<Rectangle> entities);
-    
-    @PositiveOrZero
-    long countAll();
+    public static final String ADDRESS_PROVIDER = "ADDRESS_PROVIDER";
 
     @Find
-    Stream<Rectangle> findAll();
+    List<AddressRecord> findById(List<UUID> ids);
     
     @Delete
-    void deleteEverything();
-
-    @Find
-    @OrderBy(value = "id")
-    @Size(min = 0, max = 3)
-    List<Rectangle> findEverythingIdSorted();
+    void deleteById(@By(ID) UUID id);
+    
+    @PutTCKLifecyleMethod
+    AddressRecord putAddress(AddressRecord address);
 }

@@ -18,6 +18,7 @@ package ee.jakarta.tck.data.core.cdi;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -25,9 +26,11 @@ import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 
+import ee.jakarta.tck.data.common.cdi.AddressBook;
+import ee.jakarta.tck.data.common.cdi.AddressRecord;
 import ee.jakarta.tck.data.common.cdi.Directory;
 import ee.jakarta.tck.data.common.cdi.Person;
-import ee.jakarta.tck.data.core.cdi.provider.DirectoryBuildCompatibleExtension;
+import ee.jakarta.tck.data.core.cdi.provider.BuildCompatibleExtensionImpl;
 import ee.jakarta.tck.data.framework.junit.anno.AnyEntity;
 import ee.jakarta.tck.data.framework.junit.anno.Assertion;
 import ee.jakarta.tck.data.framework.junit.anno.CDI;
@@ -42,8 +45,8 @@ public class ExtensionTests {
     @Deployment
     public static WebArchive createDeployment() {
         JavaArchive provider = ShrinkWrap.create(JavaArchive.class)
-                .addPackage(DirectoryBuildCompatibleExtension.class.getPackage())
-                .addAsServiceProvider(BuildCompatibleExtension.class, DirectoryBuildCompatibleExtension.class);
+                .addPackage(BuildCompatibleExtensionImpl.class.getPackage())
+                .addAsServiceProvider(BuildCompatibleExtension.class, BuildCompatibleExtensionImpl.class);
                 
         
         return ShrinkWrap.create(WebArchive.class)
@@ -56,16 +59,23 @@ public class ExtensionTests {
     @Inject
     Directory directory;
     
-    @Assertion(id = "133", strategy = "Verifies ability for a CDI BuildCompatibleExtension to handle custom entity annotations")
+    @Inject
+    AddressBook addressBook;
+    
+    @Assertion(id = "133", strategy = "Verifies ability for a CDI BuildCompatibleExtension to handle "
+            + "EntityDefining annotations and repository provider attributes.")
     public void testDataProviderWithBuildCompatibleExtension() {
         List<Person> result = directory.findByIdInOrderByAgeDesc(List.of(04L, 05L, 011L));
         List<String> firstNames = result.stream().map(p -> p.firstName).collect(Collectors.toList());
         List<String> lastNames = result.stream().map(p -> p.lastName).collect(Collectors.toList());
         assertEquals(List.of("Olivia", "Lauren", "Victor"), firstNames);
         assertEquals(List.of("Skinner", "Powell", "Gibson"), lastNames);
+        
+        
     }
     
-    @Assertion(id = "640", strategy = "Verifies that another Jakarta Data Provider does not attempt to implement the Dictonary repository")
+    @Assertion(id = "640", strategy = "Verifies that another Jakarta Data Provider does not attempt to "
+            + "implement the Dictonary repository based on provider attribute.")
     public void testDataRepositoryHonorsProviderAttribute() {
         long id = 013L;
         Person original = new Person(id, "Mark", "Pearson", 46);
@@ -76,6 +86,21 @@ public class ExtensionTests {
             assertEquals(original, directory.putPerson(updated));
         } finally {
             directory.deleteById(id);
+        }
+    }
+    
+    @Assertion(id = "640", strategy = "Verifies that another Jakarta Data Provider does not attempt to "
+            + "implement the Address repository based on the EntityDefining annotation.")
+    public void testDataRepositoryHonorsEntityDefiningAnnotation() {
+        UUID id = UUID.randomUUID();
+        AddressRecord original = new AddressRecord(id, 1057, "1st Street NW", "Rochester", "MN", 55901);
+        AddressRecord updated = new AddressRecord(id, 1057, "1st Street NW", "Rochester", "MN", 55902);
+        
+        try {
+            assertEquals(null, addressBook.putAddress(original));
+            assertEquals(original, addressBook.putAddress(updated));
+        } finally {
+            addressBook.deleteById(id);
         }
     }
 }

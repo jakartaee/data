@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023, 2024 Contributors to the Eclipse Foundation
+ * Copyright (c) 2024 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -15,29 +15,14 @@
  */
 package ee.jakarta.tck.data.common.cdi;
 
+import java.util.UUID;
+
 /**
  * A test entity that will be persisted to a repository.
+ * Uses the custom {@code @TCKEntity} annotation.
  * 
- * Is annotated with both persistence and nosql {@code @Entity}
- * to ensure the provider attribute of the repository is honored.
+ * @see ee.jakarta.tck.data.common.cdi.TCKEntity
  */
-@jakarta.nosql.Entity
-@jakarta.persistence.Entity
-public class Person {
-    public long id;
-    public String firstName;
-    public String lastName;
-    public int age;
-    
-    public Person() {
-        //blank
-    }
-
-    public Person(long id, String firstName, String lastName, int age) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.age = age;
-    }
-    
+@TCKEntity
+public record AddressRecord(UUID id, int house, String street, String city, String state, long zipCode) {
 }
