@@ -21,6 +21,7 @@ import java.util.Set;
 import jakarta.persistence.Basic;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Transient;
 import jakarta.persistence.Version;
@@ -31,7 +32,7 @@ public class Product {
         APPLIANCES, AUTOMOTIVE, CLOTHING, CRAFTS, ELECTRONICS, FURNITURE, GARDEN, GROCERY, OFFICE, PHARMACY, SPORTING_GOODS, TOOLS
     }
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private Set<Department> departments;
 
     @Basic(optional = false)
