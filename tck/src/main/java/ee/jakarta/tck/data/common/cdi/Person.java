@@ -15,6 +15,8 @@
  */
 package ee.jakarta.tck.data.common.cdi;
 
+import jakarta.persistence.Id;
+
 /**
  * A test entity that will be persisted to a repository.
  * 
@@ -24,6 +26,7 @@ package ee.jakarta.tck.data.common.cdi;
 @jakarta.nosql.Entity
 @jakarta.persistence.Entity
 public class Person {
+    @Id
     public long id;
     public String firstName;
     public String lastName;
