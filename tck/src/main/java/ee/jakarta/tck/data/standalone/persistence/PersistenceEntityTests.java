@@ -146,8 +146,8 @@ public class PersistenceEntityTests {
         
         products.stream().forEach(product -> catalog.save(product));
         
-        int countExpensive = catalog.countByPriceGreaterThanEqual(2.99);
-        assertEquals(2, countExpensive, "Expected two products to be more than 3.00");
+        long countExpensive = catalog.countByPriceGreaterThanEqual(2.99);
+        assertEquals(2L, countExpensive, "Expected two products to be more than 3.00");
         
         assertEquals(5L, catalog.deleteByProductNumLike("TEST-PROD-%"));
     }

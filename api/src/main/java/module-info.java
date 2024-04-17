@@ -650,8 +650,7 @@ import java.util.Set;
  * </tr>
  *
  * <tr style="vertical-align: top; background-color:#eee"><td>{@code count}</td>
- * <td>{@code long},
- * <br>{@code int}</td>
+ * <td>{@code long}</td>
  * <td></td></tr>
  *
  * <tr style="vertical-align: top"><td>{@code delete}</td>
@@ -954,7 +953,7 @@ import java.util.Set;
  * &#64;Repository
  * public interface Products extends CrudRepository&lt;Product, Long&gt; {
  *     // applies to the primary entity type: Product
- *     int countByPriceLessThan(float max);
+ *     long countByPriceLessThan(float max);
  * }
  * </pre>
  * </li>

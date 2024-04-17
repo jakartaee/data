@@ -34,7 +34,7 @@ public interface CustomRepository {
     @Insert
     void add(List<NaturalNumber> list);
 
-    int countByIdIn(Set<Long> ids);
+    long countByIdIn(Set<Long> ids);
 
     boolean existsByIdIn(Set<Long> ids);
 

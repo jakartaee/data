@@ -46,7 +46,7 @@ public interface AsciiCharacters extends DataRepository<AsciiCharacter, Long>, I
     @Query("ORDER BY id ASC")
     Stream<AsciiCharacter> alphabetic(Limit limit);
 
-    int countByHexadecimalNotNull();
+    long countByHexadecimalNotNull();
 
     boolean existsByThisCharacter(char ch);
 
