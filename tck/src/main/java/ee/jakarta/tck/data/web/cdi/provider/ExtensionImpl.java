@@ -42,7 +42,7 @@ import jakarta.enterprise.inject.spi.ProducerFactory;
 import jakarta.enterprise.inject.spi.WithAnnotations;
 
 /**
- * A Jakarta Data provider extension that produces the Directory repository
+ * A Jakarta Data provider extension that produces the Directory and Address repositories
  * class. This provider is only for testing and is not a real implementation.
  * This extension verifies how a Jakarta Data provider is registered as a CDI
  * extension.

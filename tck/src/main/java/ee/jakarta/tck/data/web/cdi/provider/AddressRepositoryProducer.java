@@ -27,7 +27,7 @@ import jakarta.enterprise.inject.spi.Producer;
 import jakarta.enterprise.inject.spi.ProducerFactory;
 
 /**
- * A CDI producer for the DirectoryRepository
+ * A CDI producer for the AddressRepository
  * 
  * @param <R> The repository producer (i.e. this)
  * @param <P> The type of the bean containing the producer
@@ -61,7 +61,7 @@ public class AddressRepositoryProducer<R, P> implements Producer<AddressReposito
     public AddressRepository produce(CreationalContext<AddressRepository> cc) {
         AddressRepository instance = new AddressRepository();
         
-        log.info("Directory CDI extension has been produced: " + instance);
+        log.info("Address CDI extension has been produced: " + instance);
 
         return instance;
     }
