@@ -70,6 +70,9 @@ public interface PositiveIntegers extends BasicRepository<NaturalNumber, Long> {
     @Query("Select id Where isOdd = true and (id = :id or id < :exclusiveMax) Order by id Desc")
     List<Long> oddAndEqualToOrBelow(long id, long exclusiveMax);
 
+    @Query("SELECT ID(THIS) WHERE ?1 > ID(THIS) ORDER BY ID(THIS) DESC")
+    List<Long> under(long exclusiveMax);
+
     // Per the spec: The 'and' operator has higher precedence than 'or'.
     @Query("WHERE numBitsRequired = :bits OR numType = :type AND id < :xmax")
     CursoredPage<NaturalNumber> withBitCountOrOfTypeAndBelow(@Param("bits") short bitsRequired,
