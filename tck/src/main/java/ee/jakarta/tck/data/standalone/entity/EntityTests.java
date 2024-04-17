@@ -39,7 +39,7 @@ import java.util.stream.Stream;
 import jakarta.data.page.CursoredPage;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.spec.JavaArchive;
+import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.jupiter.api.BeforeEach;
 
 import ee.jakarta.tck.data.framework.junit.anno.AnyEntity;
@@ -80,8 +80,8 @@ public class EntityTests {
     public static final Logger log = Logger.getLogger(EntityTests.class.getCanonicalName());
 
     @Deployment
-    public static JavaArchive createDeployment() {
-        return ShrinkWrap.create(JavaArchive.class)
+    public static WebArchive createDeployment() {
+        return ShrinkWrap.create(WebArchive.class)
             .addClasses(EntityTests.class, Box.class, Boxes.class);
     }
 

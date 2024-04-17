@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2023, 2024 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -22,7 +22,7 @@ import java.util.List;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.spec.JavaArchive;
+import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.jupiter.api.Assertions;
 
 import ee.jakarta.tck.data.framework.junit.anno.Assertion;
@@ -41,8 +41,8 @@ import jakarta.inject.Inject;
 public class NoSQLEntityTests {
     
     @Deployment
-    public static JavaArchive createDeployment() {
-        return ShrinkWrap.create(JavaArchive.class).addClasses(Product.class, Catalog.class);
+    public static WebArchive createDeployment() {
+        return ShrinkWrap.create(WebArchive.class).addClasses(Product.class, Catalog.class);
     }
     
     @Inject

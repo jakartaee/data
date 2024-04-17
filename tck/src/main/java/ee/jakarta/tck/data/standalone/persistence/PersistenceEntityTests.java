@@ -30,7 +30,7 @@ import java.util.stream.Stream;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.spec.JavaArchive;
+import org.jboss.shrinkwrap.api.spec.WebArchive;
 
 import ee.jakarta.tck.data.framework.junit.anno.Assertion;
 import ee.jakarta.tck.data.framework.junit.anno.Persistence;
@@ -51,8 +51,8 @@ import jakarta.inject.Inject;
 public class PersistenceEntityTests {
     
     @Deployment
-    public static JavaArchive createDeployment() {
-        return ShrinkWrap.create(JavaArchive.class).addClasses(Product.class, Catalog.class);
+    public static WebArchive createDeployment() {
+        return ShrinkWrap.create(WebArchive.class).addClasses(Product.class, Catalog.class);
     }
     
     @Inject
