@@ -169,8 +169,8 @@
       <java.util.logging.config.file>${basedir}/../logging.properties</java.util.logging.config.file>
       <!-- end::logging[] -->
       <!-- tag::profile[] -->
-      <!-- Optional, to differentiate between profile runs-->
-      <jakarta.tck.profile>[core|web|full]</jakarta.tck.profile>
+      <!-- Required, or else tests will run on client JVM -->
+      <jakarta.tck.standalone>false</jakarta.tck.standalone>
       <!-- end::profile[] -->
      </systemPropertyVariables>
      <!-- end::systemProperties[] -->

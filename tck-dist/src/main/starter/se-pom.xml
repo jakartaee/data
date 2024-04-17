@@ -156,8 +156,8 @@
       <java.util.logging.config.file>${logging.config}</java.util.logging.config.file>
       <!-- end::logging[] -->
       <!-- tag::profile[] -->
-      <!-- Required to disable arquillian deployments -->
-      <jakarta.tck.profile>none</jakarta.tck.profile>
+      <!-- Optional, tests run on client JVM by default -->
+      <jakarta.tck.standalone>true</jakarta.tck.standalone>
       <!-- end::profile[] -->
      </systemPropertyVariables>
      <!-- end::systemProperties[] -->

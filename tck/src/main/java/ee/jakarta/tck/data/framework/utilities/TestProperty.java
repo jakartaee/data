@@ -37,8 +37,8 @@ public enum TestProperty {
     javaVer     (true,  "java.version",               "Full version of the java executable"),
     
     //TCK specific properties
-    profile       (false,  "jakarta.tck.profile",          "Set to 'none' to run in standalone mode. "
-            + "Optionally, set to 'core', 'web', or 'full' to differentiate between profile runs.", ""),
+    standalone    (false,  "jakarta.tck.standalone",       "Set the run mode of the TCK. If true, run in standalone (SE) mode, if false run in EE mode. "
+            + "Default: true", "true"),
     pollFrequency (false, "jakarta.tck.poll.frequency",    "Time in seconds between polls of the repository to verify read-only data was successfully written. "
             + "Default: 1 second", "1"),
     pollTimeout   (false, "jakarta.tck.poll.timeout",      "Time in seconds when we will stop polling to verify read-only data was successfully written. "

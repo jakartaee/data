@@ -38,8 +38,8 @@ All test classes that require running on a Jakarta profile are annotated with th
 
 When running against a Jakarta profile, include the group that matches your supported profile. For example: `<groups>core<groups>`.
 
-When running against a Jakarta profile, optionally include the system property `<jakarta.tck.profile>core</jakarta.tck.profile>`.
-This will help differentiate between profile runs.
+When running against a Jakarta profile, include the system property `<jakarta.tck.standalone>false</jakarta.tck.standalone>`.
+This will ensure that Arquillian deploys test artifacts to a container and that tests are NOT run on the client JVM.
 
 ==== Entity Modes
 

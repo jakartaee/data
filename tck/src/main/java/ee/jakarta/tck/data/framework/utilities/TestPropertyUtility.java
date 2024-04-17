@@ -37,7 +37,7 @@ public class TestPropertyUtility {
      * @return - true if TCK is configured in standalone mode, false otherwise. 
      */
     public static boolean isStandalone() {
-        return TestProperty.profile.isSet() ? TestProperty.profile.equals("none") : false;
+        return Boolean.valueOf(TestProperty.standalone.getValue());
     }
     
     /**
