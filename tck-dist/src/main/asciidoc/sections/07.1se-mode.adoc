@@ -34,6 +34,9 @@ All test classes that support running in standalone mode are annotated with the 
 When running in standalone mode, include the group `<groups>standalone<groups>`.
 This will ensure that none of the core/web/full profile tests are run.
 
+When running in standalone mode, include the system property `<jakarta.tck.skip.deployment>true</jakarta.tck.skip.deployment>`.
+This will ensure that no Arquillian deployments are created and that all tests are run on the client JVM.
+
 ==== Entity Modes
 
 All test classes in the TCK are annotated with `@NoSQL`, `@Persistence`, or `@AnyEntity` annotations.
@@ -48,7 +51,7 @@ It is recommended to avoid using `<excludedGroups>` as the surefire plugin has a
 where excluded groups do not have precedence over included groups. 
 
 Therefore, if you wanted to run standalone tests with a NoSQL entities you would 
-configure `<groups>standalone & nosql<groups>`.
+configure `<groups><![CDATA[standalone & nosql]]><groups>`.
 
 ==== Standalone Logging
 
@@ -62,5 +65,5 @@ Example se-pom.xml:
 
 [source, xml]
 ----
-include::{starterLoc}/se-pom.xml[tags=systemProperties;!signature;!standalone;!entity]
+include::{starterLoc}/se-pom.xml[tags=systemProperties;!signature;!standalone;!entity;!profile]
 ----

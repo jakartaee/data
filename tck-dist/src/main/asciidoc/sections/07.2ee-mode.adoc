@@ -38,6 +38,9 @@ All test classes that require running on a Jakarta profile are annotated with th
 
 When running against a Jakarta profile, include the group that matches your supported profile. For example: `<groups>core<groups>`.
 
+When running against a Jakarta profile, optionally include the system property `<jakarta.tck.skip.deployment>false</jakarta.tck.skip.deployment>`.
+By default Arquillian will deploy test artifacts to a container.
+
 ==== Entity Modes
 
 All test classes in the TCK are annotated with `@NoSQL`, `@Persistence`, or `@AnyEntity` annotations.
@@ -52,7 +55,7 @@ It is recommended to avoid using `<excludedGroups>` as the surefire plugin has a
 where excluded groups do not have precedence over included groups. 
 
 Therefore, if you wanted to run core profile tests with a NoSQL entities you would 
-configure `<groups>core & nosql<groups>`.
+configure `<groups><![CDATA[core & nosql]]><groups>`.
 
 ==== Configure Arquillian
 
@@ -64,7 +67,7 @@ It is possible to configure the surefire plugin to past variables to the Arquill
 
 [source, xml]
 ----
-include::{starterLoc}/ee-pom.xml[tags=systemProperties;!logging;!signature;!standalone;!entity]
+include::{starterLoc}/ee-pom.xml[tags=systemProperties;!logging;!signature;!standalone;!entity;!profile]
 ----
 
 ==== Configure Jakarta EE Platform Server
@@ -84,7 +87,7 @@ Example ee-pom.xml:
 
 [source, xml]
 ----
-include::{starterLoc}/ee-pom.xml[tags=systemProperties;!arquillian;!signature;!standalone;!entity]
+include::{starterLoc}/ee-pom.xml[tags=systemProperties;!arquillian;!signature;!standalone;!entity;!profile]
 ----
 
 To enable logging for the Server side of tests, set the same system property on the JVM running your application server.

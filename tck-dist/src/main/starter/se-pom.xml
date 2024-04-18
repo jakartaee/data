@@ -155,6 +155,10 @@
       <!-- tag::logging[] -->
       <java.util.logging.config.file>${logging.config}</java.util.logging.config.file>
       <!-- end::logging[] -->
+      <!-- tag::profile[] -->
+      <!-- Required, Arquillian will deploy artifacts by default -->
+      <jakarta.tck.skip.deployment>true</jakarta.tck.skip.deployment>
+      <!-- end::profile[] -->
      </systemPropertyVariables>
      <!-- end::systemProperties[] -->
      <!-- Supported tags 
