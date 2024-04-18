@@ -15,6 +15,8 @@
  */
 package ee.jakarta.tck.data.common.cdi;
 
+import jakarta.enterprise.context.Dependent;
+
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -25,6 +27,7 @@ import java.util.stream.Collectors;
  * An implementation of the Directory repository interface.
  * Implementation is backed by an in-memory HashMap and has one function.
  */
+@Dependent
 public class DirectoryRepository implements Directory {
     
     private Map<Long, Person> data = new HashMap<Long, Person>();
