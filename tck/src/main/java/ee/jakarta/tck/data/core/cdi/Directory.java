@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 Contributors to the Eclipse Foundation
+ * Copyright (c) 2023, 2024 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -13,38 +13,33 @@
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
-package ee.jakarta.tck.data.common.cdi;
+package ee.jakarta.tck.data.core.cdi;
 
 import static jakarta.data.repository.By.ID;
 
 import java.util.List;
-import java.util.UUID;
 
 import jakarta.data.repository.By;
 import jakarta.data.repository.DataRepository;
 import jakarta.data.repository.Delete;
-import jakarta.data.repository.Find;
 import jakarta.data.repository.Repository;
 
 /**
- * An AddressBook repository for testing.
+ * A Directory repository for testing.
  * 
- * Uses the AddressRecord with the {@code @EntityDefining} annotation {@code TCKEntity} 
- * to ensure the mock Jakarta Data provider from this TCK implements this repository interface.
- * 
- * @see ee.jakarta.tck.data.common.cdi.DirectoryRepository
+ * Uses the 'provider' attribute to ensure that no Jakarta Data provider 
+ * implements this repository interface.
  */
-@Repository
-public interface AddressBook extends DataRepository<AddressRecord, UUID>  {
+@Repository(provider = Directory.PERSON_PROVIDER)
+public interface Directory extends DataRepository<Person, Long> {
     
-    public static final String ADDRESS_PROVIDER = "ADDRESS_PROVIDER";
-
-    @Find
-    List<AddressRecord> findById(List<UUID> ids);
+    // A string that is unique enough not to be used by any 
+    // Jakarta Data provider attempting to run this TCK.
+    public static final String PERSON_PROVIDER = "cb4d43ac-477a-4634-b3ee-a9ce81ea1801";
+    
+    List<Person> findByIdInOrderByAgeDesc(List<Long> ids);
     
     @Delete
-    void deleteById(@By(ID) UUID id);
+    void deleteById(@By(ID) Long id);
     
-    @PutTCKLifecyleMethod
-    AddressRecord putAddress(AddressRecord address);
 }

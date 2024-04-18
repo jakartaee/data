@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023, 2024 Contributors to the Eclipse Foundation
+ * Copyright (c) 2023 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -13,23 +13,25 @@
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
-package ee.jakarta.tck.data.common.cdi;
+package ee.jakarta.tck.data.framework.junit.anno;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import jakarta.data.spi.EntityDefining;
+import org.junit.jupiter.api.extension.ExtendWith;
+
+import ee.jakarta.tck.data.framework.junit.extensions.CDIConditionExtension;
 
 /**
- * A custom entity annotation for testing.
- * 
- * Only supported by the mock Jakarta Data provider implemented by this TCK.
+ * These are tests that require CDI for testing. 
+ * This annotation will verify that CDI is available.
+ * If CDI is not available, tests are skipped, otherwise, tests are run.
  */
-@EntityDefining
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface TCKEntity {
+@ExtendWith(CDIConditionExtension.class)
+public @interface CDIRequired {
 
 }
