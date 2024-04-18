@@ -16,6 +16,8 @@ body:
       label: Specification Version
       description: What version of the Data Spec are you running using?
       options:
+        - 1.0.0-RC1
+        - 1.0.0-M4
         - 1.0.0-M3
         - 1.0.0-M2
         - 1.0.0-M1

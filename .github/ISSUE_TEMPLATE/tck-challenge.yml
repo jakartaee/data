@@ -32,6 +32,8 @@ body:
       label: TCK Version
       description: What version of the TCK are you running against?
       options:
+        - 1.0.0-RC1
+        - 1.0.0-M4
         - 1.0.0-M3
         - 1.0.0-M2
         - 1.0.0-M1

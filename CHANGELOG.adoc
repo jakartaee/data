@@ -8,6 +8,18 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 
 == [Unreleased]
 
+== [1.0.0-RC1] - 2024-04-18
+
+=== Changed
+
+- Moved Query by Method Name to seperate file
+- Remove Order from PageRequest
+- Fixes to TCK tests
+
+=== Added
+
+- Tests for Jakarta Data Query Language (JDQL)
+
 == [1.0.0-M4] - 2024-03-22
 
 === Changed
