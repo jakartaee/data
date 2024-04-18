@@ -37,7 +37,7 @@ public enum TestProperty {
     javaVer     (true,  "java.version",               "Full version of the java executable"),
     
     //TCK specific properties
-    standalone    (false,  "jakarta.tck.standalone",       "Set the run mode of the TCK. If true, run in standalone (SE) mode, if false run in EE mode. "
+    standalone    (false,  "jakarta.tck.skip.deployment",  "If true, run in SE mode and do not use Arquillian deployment, if false run in EE mode and use Arquillian deployments. "
             + "Default: true", "true"),
     pollFrequency (false, "jakarta.tck.poll.frequency",    "Time in seconds between polls of the repository to verify read-only data was successfully written. "
             + "Default: 1 second", "1"),

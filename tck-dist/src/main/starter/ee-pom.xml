@@ -170,7 +170,7 @@
       <!-- end::logging[] -->
       <!-- tag::profile[] -->
       <!-- Required, or else tests will run on client JVM -->
-      <jakarta.tck.standalone>false</jakarta.tck.standalone>
+      <jakarta.tck.skip.deployment>false</jakarta.tck.skip.deployment>
       <!-- end::profile[] -->
      </systemPropertyVariables>
      <!-- end::systemProperties[] -->
