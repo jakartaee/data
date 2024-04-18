@@ -121,7 +121,7 @@ public class EntityTests {
 
     @Assertion(id = "136", strategy = "Ensures that multiple readonly entities will be prepopulated before testing")
     public void ensureCharacterPrepopulation() {
-        assertEquals(127, characters.countByHexadecimalNotNull());
+        assertEquals(127L, characters.countByHexadecimalNotNull());
         assertEquals('0', characters.findByNumericValue(48).get().getThisCharacter());
         assertTrue(characters.findByNumericValue(1).get().isControl());
     }
@@ -1379,7 +1379,7 @@ public class EntityTests {
 
     @Assertion(id = "133", strategy = "Use count and exists methods where the primary entity class is inferred from the lifecycle methods.")
     public void testPrimaryEntityClassDeterminedByLifeCycleMethods() {
-        assertEquals(4, customRepo.countByIdIn(Set.of(2L, 15L, 37L, -5L, 60L)));
+        assertEquals(4L, customRepo.countByIdIn(Set.of(2L, 15L, 37L, -5L, 60L)));
 
         assertEquals(true, customRepo.existsByIdIn(Set.of(17L, 14L, -1L)));
 

@@ -343,7 +343,7 @@ The return type of a Query by Method Name is determined as indicated in the foll
 |===
 | Operation | Return type | Notes
 
-| `count` | `long` or `int` |
+| `count` | `long` |
 | `delete`| `void`,`long`,`int` |
 | `exists`| `boolean` |
 | `find` | `E` or `Optional<E>` | For queries returning a single item (or none)

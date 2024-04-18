@@ -66,7 +66,7 @@ public interface Catalog extends DataRepository<Product, String> {
 
     long deleteByProductNumLike(String pattern);
 
-    int countByPriceGreaterThanEqual(Double price);
+    long countByPriceGreaterThanEqual(Double price);
 
     @Query("WHERE LENGTH(name) = ?1 AND price < ?2 ORDER BY name")
     List<Product> findByNameLengthAndPriceBelow(int nameLength, double maxPrice);

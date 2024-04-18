@@ -28,8 +28,8 @@ public interface Catalog extends DataRepository<Product, Long> {
     void save(Product product);
     void deleteById(Long id);
     
-    int countByPriceGreaterThanEqual(Double price);
-    int countBySurgePriceGreaterThanEqual(Double price);
+    long countByPriceGreaterThanEqual(Double price);
+    long countBySurgePriceGreaterThanEqual(Double price);
     
     List<Product> findByNameLike(String name); 
 }
