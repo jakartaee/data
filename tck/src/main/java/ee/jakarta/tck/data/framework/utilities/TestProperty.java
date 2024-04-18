@@ -37,13 +37,13 @@ public enum TestProperty {
     javaVer     (true,  "java.version",               "Full version of the java executable"),
     
     //TCK specific properties
-    standalone    (false,  "jakarta.tck.skip.deployment",  "If true, run in SE mode and do not use Arquillian deployment, if false run in EE mode and use Arquillian deployments. "
-            + "Default: true", "true"),
-    pollFrequency (false, "jakarta.tck.poll.frequency",    "Time in seconds between polls of the repository to verify read-only data was successfully written. "
+    skipDeployment (false,  "jakarta.tck.skip.deployment",  "If true, run in SE mode and do not use Arquillian deployment, if false run in EE mode and use Arquillian deployments. "
+            + "Default: false", "false"),
+    pollFrequency  (false, "jakarta.tck.poll.frequency",    "Time in seconds between polls of the repository to verify read-only data was successfully written. "
             + "Default: 1 second", "1"),
-    pollTimeout   (false, "jakarta.tck.poll.timeout",      "Time in seconds when we will stop polling to verify read-only data was successfully written. "
+    pollTimeout    (false, "jakarta.tck.poll.timeout",      "Time in seconds when we will stop polling to verify read-only data was successfully written. "
             + "Default: 60 seconds", "60"),
-    delay         (false, "jakarta.tck.consistency.delay", "Time in seconds after verifying read-only data was successfully written to respository "
+    delay          (false, "jakarta.tck.consistency.delay", "Time in seconds after verifying read-only data was successfully written to respository "
             + "for repository to have consistency. Default: none", ""),
     
     //Signature testing properties

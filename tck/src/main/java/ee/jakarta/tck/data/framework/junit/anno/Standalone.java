@@ -35,7 +35,7 @@ import ee.jakarta.tck.data.framework.utilities.TestProperty;
  * 
  * <p>The dynamic method in which we achieve the ability to run these tests either
  * on the client JVM or container JVM depends on both the JUnit5 Standalone tag AND 
- * the system property: {@link TestProperty#standalone}  </p>
+ * the system property: {@link TestProperty#skipDeployment}  </p>
  * 
  * <p>If this property is "true" the Arquillian extension will be ignored,
  * otherwise we will attempt to deploy the test using Arquillian.</p>

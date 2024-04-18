@@ -156,7 +156,7 @@
       <java.util.logging.config.file>${logging.config}</java.util.logging.config.file>
       <!-- end::logging[] -->
       <!-- tag::profile[] -->
-      <!-- Optional, tests run on client JVM by default -->
+      <!-- Required, Arquillian will deploy artifacts by default -->
       <jakarta.tck.skip.deployment>true</jakarta.tck.skip.deployment>
       <!-- end::profile[] -->
      </systemPropertyVariables>
