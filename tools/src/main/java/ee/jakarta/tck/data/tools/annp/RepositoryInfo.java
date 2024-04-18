@@ -18,9 +18,13 @@ import jakarta.data.repository.Repository;
 
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.DeclaredType;
+import javax.lang.model.util.Types;
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class RepositoryInfo {
     public static class MethodInfo {
@@ -129,15 +133,51 @@ public class RepositoryInfo {
     }
 
 
-    public void addQBNMethod(ExecutableElement m, QueryByNameInfo info) {
+    /**
+     * Add a Query By Name method to the repository
+     * @param m - the method
+     * @param info - parsed QBN info
+     * @param types - annotation processing types utility
+     */
+    public void addQBNMethod(ExecutableElement m, QueryByNameInfo info, Types types) {
         qbnMethods.add(m);
-        String query = ParseUtils.toQuery(info);
-        StringBuilder orderBy = new StringBuilder();
-        MethodInfo mi = new MethodInfo(m.getSimpleName().toString(), m.getReturnType().toString(), query, info.getOrderBy());
+        // Deal with generics
+        DeclaredType returnType = null;
+        if(m.getReturnType() instanceof DeclaredType) {
+            returnType = (DeclaredType) m.getReturnType();
+        }
+        String returnTypeStr = returnType == null ? m.getReturnType().toString() : toString(returnType);
+        System.out.printf("addQBNMethod: %s, returnType: %s, returnTypeStr: %s\n",
+                m.getSimpleName().toString(), returnType, returnTypeStr);
+        ParseUtils.ToQueryOptions options = ParseUtils.ToQueryOptions.NONE;
+        String methodName = m.getSimpleName().toString();
+        // Select the appropriate cast option if this is a countBy method
+        if(methodName.startsWith("count")) {
+            options = switch (returnTypeStr) {
+                case "long" -> ParseUtils.ToQueryOptions.CAST_LONG_TO_INTEGER;
+                case "int" -> ParseUtils.ToQueryOptions.CAST_COUNT_TO_INTEGER;
+                default -> ParseUtils.ToQueryOptions.NONE;
+            };
+        }
+        // Build the query string
+        String query = ParseUtils.toQuery(info, options);
+
+        MethodInfo mi = new MethodInfo(methodName, m.getReturnType().toString(), query, info.getOrderBy());
         for (VariableElement p : m.getParameters()) {
             mi.addParameter(p.asType().toString() + " " + p.getSimpleName());
         }
         addMethod(mi);
+    }
+    public String toString(DeclaredType tm) {
+        StringBuilder buf = new StringBuilder();
+        TypeElement returnTypeElement = (TypeElement) tm.asElement();
+        buf.append(returnTypeElement.getQualifiedName());
+        if (!tm.getTypeArguments().isEmpty()) {
+            buf.append('<');
+            buf.append(tm.getTypeArguments().toString());
+            buf.append(">");
+        }
+        return buf.toString();
     }
     public List<ExecutableElement> getQBNMethods() {
         return qbnMethods;

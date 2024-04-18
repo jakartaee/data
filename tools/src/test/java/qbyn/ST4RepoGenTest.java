@@ -12,13 +12,20 @@
 package qbyn;
 
 import ee.jakarta.tck.data.tools.annp.RepositoryInfo;
+import ee.jakarta.tck.data.tools.qbyn.ParseUtils;
 import ee.jakarta.tck.data.tools.qbyn.QueryByNameInfo;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.stringtemplate.v4.ST;
+import org.stringtemplate.v4.STGroup;
+import org.stringtemplate.v4.STGroupFile;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
+import static ee.jakarta.tck.data.tools.annp.AnnProcUtils.TCK_IMPORTS;
+import static ee.jakarta.tck.data.tools.annp.AnnProcUtils.TCK_OVERRIDES;
 
 public class ST4RepoGenTest {
     static String REPO_TEMPLATE = """
@@ -49,8 +56,8 @@ public class ST4RepoGenTest {
         s.add("methods", methods);
         System.out.println(s.render());
     }
-    @Test
-    public void testRepoGen() {
+
+    private RepositoryInfo createRepositoryInfo() {
         RepositoryInfo repo = new RepositoryInfo();
         repo.setFqn("org.acme.BookRepository");
         repo.setName("BookRepository");
@@ -61,11 +68,73 @@ public class ST4RepoGenTest {
         repo.addMethod(findByTitleLike);
         RepositoryInfo.MethodInfo findByNumericValue = new RepositoryInfo.MethodInfo("findByNumericValue", "Optional<AsciiCharacter>",
                 "from AsciiCharacter where numericValue = :numericValue",
-                        Collections.singletonList(new QueryByNameInfo.OrderBy("numericValue", QueryByNameInfo.OrderBySortDirection.ASC)));
+                Collections.singletonList(new QueryByNameInfo.OrderBy("numericValue", QueryByNameInfo.OrderBySortDirection.ASC)));
         findByNumericValue.addParameter("int id");
         repo.addMethod(findByNumericValue);
+        return repo;
+    }
+    @Test
+    public void testRepoGen() {
+        RepositoryInfo repo = createRepositoryInfo();
         ST st = new ST(REPO_TEMPLATE, '#', '#');
         st.add("repo", repo);
         System.out.println(st.render());
+    }
+
+    @Test
+    public void testRepoGenViaGroupFiles() {
+        STGroup repoGroup = new STGroupFile("RepoTemplate.stg");
+        ST genRepo = repoGroup.getInstanceOf("genRepo");
+        RepositoryInfo repo = createRepositoryInfo();
+        genRepo.add("repo", repo);
+        String classSrc = genRepo.render();
+        System.out.println(classSrc);
+        Assertions.assertTrue(classSrc.contains("interface BookRepository$"));
+        Assertions.assertTrue(classSrc.contains("// TODO; Implement TCK overrides"));
+    }
+
+    @Test
+    public void testRepoGenWithTckOverride() {
+        STGroup repoGroup = new STGroupFile("RepoTemplate.stg");
+        repoGroup.defineTemplate("tckImports", "import jakarta.data.Delete;\n");
+        repoGroup.defineTemplate("tckOverrides", "@Delete\nvoid deleteAllBy();\n");
+        ST genRepo = repoGroup.getInstanceOf("genRepo");
+        RepositoryInfo repo = createRepositoryInfo();
+        genRepo.add("repo", repo);
+        String classSrc = genRepo.render();
+        System.out.println(classSrc);
+        Assertions.assertTrue(classSrc.contains("interface BookRepository$"));
+        Assertions.assertTrue(!classSrc.contains("// TODO; Implement TCK overrides"));
+        Assertions.assertTrue(classSrc.contains("void deleteAllBy();"));
+        Assertions.assertTrue(classSrc.contains("import jakarta.data.Delete;"));
+    }
+
+    @Test
+    public void testRepoGenWithTckOverrideFromImport() {
+        STGroup repoGroup = new STGroupFile("RepoTemplate.stg");
+        STGroup tckGroup = new STGroupFile("org.acme.BookRepository_tck.stg");
+        tckGroup.importTemplates(repoGroup);
+        ST genRepo = tckGroup.getInstanceOf("genRepo");
+        long count = tckGroup.getTemplateNames().stream().filter(t -> t.equals(TCK_IMPORTS) | t.equals(TCK_OVERRIDES)).count();
+        System.out.printf("tckGroup.templates(%d) %s\n", count, tckGroup.getTemplateNames());
+        System.out.printf("tckGroup: %s\n", tckGroup.show());
+
+        RepositoryInfo repo = createRepositoryInfo();
+        genRepo.add("repo", repo);
+        String classSrc = genRepo.render();
+        System.out.println(classSrc);
+        Assertions.assertTrue(classSrc.contains("interface BookRepository$"));
+        Assertions.assertTrue(!classSrc.contains("// TODO; Implement TCK overrides"));
+        Assertions.assertTrue(classSrc.contains("void deleteAllBy();"));
+        Assertions.assertTrue(classSrc.contains("import jakarta.data.Delete;"));
+    }
+
+    @Test
+    public void testMissingGroupTemplate() {
+        IllegalArgumentException ex = Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            STGroup repoGroup = new STGroupFile("Rectangles_tck.stg");
+            repoGroup.getTemplateNames();
+        });
+        Assertions.assertNotNull(ex, "Load of Rectangles_tck should fail");
     }
 }

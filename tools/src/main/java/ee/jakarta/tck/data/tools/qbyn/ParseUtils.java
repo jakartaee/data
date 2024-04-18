@@ -22,10 +22,25 @@ import ee.jakarta.tck.data.tools.antlr.QBNLexer;
 import ee.jakarta.tck.data.tools.antlr.QBNParser;
 import ee.jakarta.tck.data.tools.antlr.QBNBaseListener;
 
+import java.util.Arrays;
+import java.util.HashSet;
+
 /**
  * A utility class for parsing query by name method names using the Antlr4 generated parser
  */
 public class ParseUtils {
+    /**
+     * Options for the toQuery method
+     */
+    public enum ToQueryOptions {
+        INCLUDE_ORDER_BY,
+        // select cast(count(this) as Integer)
+        CAST_COUNT_TO_INTEGER,
+        // select count(this) as Integer
+        CAST_LONG_TO_INTEGER,
+        NONE
+    }
+
     /**
      * Parse a query by name method name into a QueryByNameInfo object
      * @param queryByName the query by name method name
@@ -73,25 +88,30 @@ public class ParseUtils {
             }
 
             @Override
-            public void exitSubject(ee.jakarta.tck.data.tools.antlr.QBNParser.SubjectContext ctx) {
-                if(ctx.find() != null) {
-                    System.out.println("find: " + ctx.find().getText());
-                    System.out.println("find_expression.INTEGER: " + ctx.find_expression().INTEGER());
+            public void exitAction_query(QBNParser.Action_queryContext ctx) {
+                QueryByNameInfo.Action action = QueryByNameInfo.Action.valueOf(ctx.action().getText().toUpperCase());
+                info.setAction(action);
+                if(ctx.ignored_text() != null) {
+                    info.setIgnoredText(ctx.ignored_text().getText());
+                }
+            }
+
+            @Override
+            public void exitFind_query(QBNParser.Find_queryContext ctx) {
+                if (ctx.limit() != null) {
                     int findCount = 0;
-                    if(ctx.find_expression().INTEGER() != null) {
-                        findCount = Integer.parseInt(ctx.find_expression().INTEGER().getText());
+                    if (ctx.limit().INTEGER() != null) {
+                        findCount = Integer.parseInt(ctx.limit().INTEGER().getText());
                     }
                     info.setFindExpressionCount(findCount);
-                } else {
-                    QueryByNameInfo.Action action = QueryByNameInfo.Action.valueOf(ctx.action().getText().toUpperCase());
-                    info.setAction(action);
                 }
                 if(ctx.ignored_text() != null) {
                     info.setIgnoredText(ctx.ignored_text().getText());
                 }
             }
+
             @Override
-            public void exitOrder_clause(ee.jakarta.tck.data.tools.antlr.QBNParser.Order_clauseContext ctx) {
+            public void exitOrder(ee.jakarta.tck.data.tools.antlr.QBNParser.OrderContext ctx) {
                 int count = ctx.order_item().size();
                 if(ctx.property() != null) {
                     String property = camelCase(ctx.property().getText());
@@ -111,6 +131,11 @@ public class ParseUtils {
         return info;
     }
 
+    /**
+     * Simple function to transfer the first character of a string to lower case
+     * @param s - phrase
+     * @return camel case version of s
+     */
     public static String camelCase(String s) {
         return s.substring(0, 1).toLowerCase() + s.substring(1);
     }
@@ -119,18 +144,20 @@ public class ParseUtils {
      * Convert a QueryByNameInfo object into a JDQL query string
      * @param info - parse QBN info
      * @return toQuery(info, false)
-     * @see #toQuery(QueryByNameInfo, boolean)
+     * @see #toQuery(QueryByNameInfo, ToQueryOptions...)
      */
     public static String toQuery(QueryByNameInfo info) {
-        return toQuery(info, false);
+        return toQuery(info, ToQueryOptions.NONE);
     }
     /**
      * Convert a QueryByNameInfo object into a JDQL query string
      * @param info - parse QBN info
-     * @param includeOrderBy - if the order by clause should be included in the query
+     * @param options -
      * @return the JDQL query string
      */
-    public static String toQuery(QueryByNameInfo info, boolean includeOrderBy) {
+    public static String toQuery(QueryByNameInfo info, ToQueryOptions... options) {
+        // Collect the options into a set
+        HashSet<ToQueryOptions> optionsSet = new HashSet<>(Arrays.asList(options));
         StringBuilder sb = new StringBuilder();
         int paramIdx = 1;
         QueryByNameInfo.Action action = info.getAction();
@@ -138,13 +165,19 @@ public class ParseUtils {
             case FIND:
                 break;
             case DELETE:
-                sb.append("delete ").append(info.getEntity()).append(' ');
+                sb.append("delete ").append(info.getSimpleName()).append(' ');
                 break;
             case UPDATE:
-                sb.append("update ").append(info.getEntity()).append(' ');
+                sb.append("update ").append(info.getSimpleName()).append(' ');
                 break;
             case COUNT:
-                sb.append("select count(this) ");
+                if(optionsSet.contains(ToQueryOptions.CAST_COUNT_TO_INTEGER)) {
+                    sb.append("select cast(count(this) as Integer) ");
+                } else if(optionsSet.contains(ToQueryOptions.CAST_LONG_TO_INTEGER)) {
+                    sb.append("select count(this) as Integer ");
+                } else {
+                    sb.append("select count(this) ");
+                }
                 break;
             case EXISTS:
                 sb.append("select count(this)>0 ");
@@ -152,7 +185,7 @@ public class ParseUtils {
         }
         //
         if(info.getPredicates().isEmpty()) {
-            return sb.toString();
+            return sb.toString().trim();
         }
 
         sb.append("where ");
@@ -250,15 +283,22 @@ public class ParseUtils {
         }
 
         // If there is an orderBy clause, add it to query
-        if(includeOrderBy && !info.getOrderBy().isEmpty()) {
+        int limit = info.getFindExpressionCount() == 0 ? 1 : info.getFindExpressionCount();
+        if(optionsSet.contains(ToQueryOptions.INCLUDE_ORDER_BY) && !info.getOrderBy().isEmpty()) {
             for (QueryByNameInfo.OrderBy ob : info.getOrderBy()) {
                 sb.append(" order by ").append(ob.property).append(' ');
                 if(ob.direction != QueryByNameInfo.OrderBySortDirection.NONE) {
                     sb.append(ob.direction.name().toLowerCase());
                 }
             }
+            // We pass the find expression count as the limit
+            if(limit > 0) {
+                sb.append(" limit ").append(limit);
+            }
+        } else if(limit > 0) {
+            sb.append(" order by '' limit ").append(limit);
         }
 
-        return sb.toString();
+        return sb.toString().trim();
     }
 }

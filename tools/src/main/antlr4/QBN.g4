@@ -21,11 +21,12 @@ grammar QBN;
 package ee.jakarta.tck.data.tools.antlr;
 }
 
-query_method : subject predicate order_clause? ;
+query_method : find_query | action_query ;
 
-subject : (action | find find_expression) ignored_text? BY ;
+find_query : find limit? ignored_text? restriction? order? ;
+action_query : action ignored_text? restriction? ;
 
-action : find | delete | update | count | exists  ;
+action : delete | update | count | exists ;
 
 find : 'find' ;
 delete : 'delete' ;
@@ -33,7 +34,9 @@ update : 'update' ;
 count : 'count' ;
 exists : 'exists' ;
 
-find_expression : FIRST INTEGER? ;
+restriction : BY predicate ;
+
+limit : FIRST INTEGER? ;
 
 predicate : condition ( (AND | OR) condition )* ;
 
@@ -41,12 +44,25 @@ condition : property ignore_case? not? operator? ;
 ignore_case : IGNORE_CASE ;
 not : NOT ;
 
-operator : CONTAINS | ENDSWITH | STARTSWITH | LESSTHAN| LESSTHANEQUAL | GREATERTHAN |
-                GREATERTHANEQUAL | BETWEEN | EMPTY | LIKE | IN | NULL |
-                 TRUE | FALSE ;
+operator
+    : CONTAINS
+    | ENDSWITH
+    | STARTSWITH
+    | LESSTHAN
+    | LESSTHANEQUAL
+    | GREATERTHAN
+    | GREATERTHANEQUAL
+    | BETWEEN
+    | EMPTY
+    | LIKE
+    | IN
+    | NULL
+    | TRUE
+    | FALSE
+    ;
 property : (IDENTIFIER | IDENTIFIER '_' property)+ ;
 
-order_clause : ORDER_BY ( order_item )* ( order_item | property ) ;
+order : ORDER_BY ( property | order_item+) ;
 
 order_item : property ( ASC | DESC ) ;
 
