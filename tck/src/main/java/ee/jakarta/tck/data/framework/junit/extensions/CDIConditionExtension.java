@@ -27,7 +27,7 @@ import jakarta.enterprise.inject.spi.CDI;
 /**
  * Evaluates the availability of CDI to determine if a test class/method is enabled/disabled.
  * 
- * @see ee.jakarta.tck.data.framework.junit.anno.CDI
+ * @see ee.jakarta.tck.data.framework.junit.anno.CDIRequired
  */
 public class CDIConditionExtension implements ExecutionCondition {
 

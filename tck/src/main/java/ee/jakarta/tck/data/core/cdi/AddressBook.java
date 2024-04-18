@@ -13,16 +13,32 @@
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
-package ee.jakarta.tck.data.common.cdi;
+package ee.jakarta.tck.data.core.cdi;
 
+import static jakarta.data.repository.By.ID;
+
+import java.util.List;
 import java.util.UUID;
 
+import jakarta.data.repository.By;
+import jakarta.data.repository.DataRepository;
+import jakarta.data.repository.Delete;
+import jakarta.data.repository.Find;
+import jakarta.data.repository.Repository;
+
 /**
- * A test entity that will be persisted to a repository.
- * Uses the custom {@code @TCKEntity} annotation.
+ * An AddressBook repository for testing.
  * 
- * @see ee.jakarta.tck.data.common.cdi.TCKEntity
+ * Uses the AddressRecord with the {@code @EntityDefining} annotation {@code TCKEntity} 
+ * to ensure no Jakarta Data provider implements this repository interface.
  */
-@TCKEntity
-public record AddressRecord(UUID id, int house, String street, String city, String state, long zipCode) {
+@Repository
+public interface AddressBook extends DataRepository<AddressRecord, UUID>  {
+
+    @Find
+    List<AddressRecord> findById(List<UUID> ids);
+    
+    @Delete
+    void deleteById(@By(ID) UUID id);
+
 }
