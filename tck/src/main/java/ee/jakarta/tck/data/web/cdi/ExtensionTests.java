@@ -23,7 +23,6 @@ import java.util.stream.Collectors;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 
 import ee.jakarta.tck.data.common.cdi.AddressBook;
@@ -34,8 +33,6 @@ import ee.jakarta.tck.data.framework.junit.anno.AnyEntity;
 import ee.jakarta.tck.data.framework.junit.anno.Assertion;
 import ee.jakarta.tck.data.framework.junit.anno.CDI;
 import ee.jakarta.tck.data.framework.junit.anno.Web;
-import ee.jakarta.tck.data.web.cdi.provider.ExtensionImpl;
-import jakarta.enterprise.inject.spi.Extension;
 import jakarta.inject.Inject;
 
 @Web
@@ -44,15 +41,9 @@ import jakarta.inject.Inject;
 public class ExtensionTests { 
     @Deployment
     public static WebArchive createDeployment() {
-        JavaArchive provider = ShrinkWrap.create(JavaArchive.class)
-                .addPackage(ExtensionImpl.class.getPackage())
-                .addAsServiceProvider(Extension.class, ExtensionImpl.class);
-                
-        
         return ShrinkWrap.create(WebArchive.class)
                 .addPackage(ExtensionTests.class.getPackage())
-                .addPackage(Person.class.getPackage())
-                .addAsLibraries(provider);
+                .addPackage(Person.class.getPackage());
 
     }
     

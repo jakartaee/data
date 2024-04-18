@@ -23,19 +23,16 @@ import java.util.stream.Collectors;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 
 import ee.jakarta.tck.data.common.cdi.AddressBook;
 import ee.jakarta.tck.data.common.cdi.AddressRecord;
 import ee.jakarta.tck.data.common.cdi.Directory;
 import ee.jakarta.tck.data.common.cdi.Person;
-import ee.jakarta.tck.data.core.cdi.provider.BuildCompatibleExtensionImpl;
 import ee.jakarta.tck.data.framework.junit.anno.AnyEntity;
 import ee.jakarta.tck.data.framework.junit.anno.Assertion;
 import ee.jakarta.tck.data.framework.junit.anno.CDI;
 import ee.jakarta.tck.data.framework.junit.anno.Core;
-import jakarta.enterprise.inject.build.compatible.spi.BuildCompatibleExtension;
 import jakarta.inject.Inject;
 
 @Core
@@ -44,16 +41,9 @@ import jakarta.inject.Inject;
 public class ExtensionTests {
     @Deployment
     public static WebArchive createDeployment() {
-        JavaArchive provider = ShrinkWrap.create(JavaArchive.class)
-                .addPackage(BuildCompatibleExtensionImpl.class.getPackage())
-                .addAsServiceProvider(BuildCompatibleExtension.class, BuildCompatibleExtensionImpl.class);
-                
-        
         return ShrinkWrap.create(WebArchive.class)
                 .addPackage(ExtensionTests.class.getPackage())
-                .addPackage(Person.class.getPackage())
-                .addAsLibraries(provider);
-
+                .addPackage(Person.class.getPackage());
     }
     
     @Inject

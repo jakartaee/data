@@ -15,6 +15,8 @@
  */
 package ee.jakarta.tck.data.common.cdi;
 
+import jakarta.enterprise.context.Dependent;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +27,7 @@ import java.util.stream.Collectors;
  * An implementation of the AddressBook repository interface.
  * Implementation is backed by an in-memory HashMap.
  */
+@Dependent
 public class AddressRepository implements AddressBook {
     
     private Map<UUID, AddressRecord> data = new HashMap<UUID, AddressRecord>();
