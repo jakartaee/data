@@ -146,7 +146,7 @@ To start to use Jakarta Data, add the API as a Maven dependency:
 <dependency>
     <groupId>jakarta.data</groupId>
     <artifactId>jakarta.data-api</artifactId>
-    <version>1.0.0-M4</version>
+    <version>1.0.0-RC1</version>
 </dependency>
 ----
 
