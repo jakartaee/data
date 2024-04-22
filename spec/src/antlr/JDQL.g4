@@ -41,7 +41,7 @@ between_expression : scalar_expression 'NOT'? 'BETWEEN' scalar_expression 'AND' 
 like_expression : scalar_expression 'NOT'? 'LIKE' STRING;
 
 in_expression : state_field_path_expression 'NOT'? 'IN' '(' in_item (',' in_item)* ')';
-in_item : literal | enum_literal | input_parameter; // could simplify to just literal
+in_item : literal | enum_literal | input_parameter;
 
 null_comparison_expression : state_field_path_expression 'IS' 'NOT'? 'NULL';
 
