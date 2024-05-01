@@ -60,7 +60,7 @@
    <artifactId>jakarta.data-tck</artifactId>
    <version>${jakarta.data.tck.version}</version>
   </dependency>
-    <!-- Provided dependencies for the TCK -->
+  <!-- Provided dependencies for the TCK -->
   <dependency>
     <groupId>jakarta.servlet</groupId>
     <artifactId>jakarta.servlet-api</artifactId>
