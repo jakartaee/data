@@ -60,7 +60,7 @@
    <artifactId>jakarta.data-tck</artifactId>
    <version>${jakarta.data.tck.version}</version>
   </dependency>
-    <!-- Provided dependencies for the TCK -->
+  <!-- Provided dependencies for the TCK -->
   <dependency>
     <groupId>jakarta.servlet</groupId>
     <artifactId>jakarta.servlet-api</artifactId>
@@ -195,6 +195,23 @@
         <descriptor>src/main/assembly/assembly.xml</descriptor>
        </descriptors>
        <finalName>data-tck-${jakarta.data.tck.version}</finalName>
+      </configuration>
+     </execution>
+    </executions>
+   </plugin>
+   <plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-javadoc-plugin</artifactId>
+    <version>${maven-javadoc-plugin.vesion}</version>
+
+    <executions>
+     <execution>
+      <id>attach-javadocs</id>
+      <goals>
+       <goal>jar</goal>
+      </goals>
+      <configuration>
+       <skippedModules>jakarta.data-parent</skippedModules>
       </configuration>
      </execution>
     </executions>
