@@ -42,7 +42,10 @@ body:
       required: true
     attributes: 
       label: Technology Compatibility Kit (TCK) Validation
-      description: TCK SHA-256 fingerprint
+      description: |
+        SHA-256 Checksum
+        This is the checksum of the TCK Distribution zip, not the checksum for the TCK jar artifact.
+        Example: `shasum -a 256 jakarta.data-tck-dist-1.0.0.zip`
   - type: textarea
     id: tckResults
     validations:
