@@ -51,6 +51,8 @@ body:
             - [ ] [Modify the `draft` release on GitHub to be `pre-release` or `latest`](https://github.com/jakartaee/data/releases)
           #### Follow up
             - [ ] [Email a Jakarta steering committee member to promote the TCK Distribution publically](https://ci.eclipse.org/jakartaee-spec-committee/job/promote-release/)
+            - [ ] [Create pull request to https://github.com/jakartaee/specifications](https://github.com/jakartaee/specifications/blob/master/.github/PULL_REQUEST_TEMPLATE/pull_request_template.md)
+              - upload [generated specification documentation](https://github.com/jakartaee/data/actions/workflows/specification.yml)
             - [ ] Update versions in non-build files, such as:
               Documentation:
               - [README.adoc](https://github.com/jakartaee/data/blob/main/README.adoc)

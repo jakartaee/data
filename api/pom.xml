@@ -33,6 +33,9 @@
 
     <properties>
         <assertj.version>3.25.3</assertj.version>
+        <!-- default is the same for backward compatibility reason
+        Easy to override when building with a system property -->
+        <spec.version>1.0</spec.version>
     </properties>
 
     <dependencies>
@@ -71,6 +74,47 @@
                         <arg>-parameters</arg>
                     </compilerArgs>
                 </configuration>
+            </plugin>
+
+
+            <!-- 
+            Create Javadoc for API jar
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.6.3</version>
+                <executions>
+                    <execution>
+                        <id>attach-api-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <configuration>
+                            <source>17</source>
+                            <quiet>true</quiet>
+                            <additionalJOption>-Xdoclint:none</additionalJOption>
+                            <description>Jakarta Data API documentation</description>
+                            <doctitle>Jakarta Data API documentation</doctitle>
+                            <windowtitle>Jakarta Data API documentation</windowtitle>
+                            <header><![CDATA[<br>Jakarta Data API v${spec.version}]]></header>
+                            <bottom><![CDATA[
+Comments to: <a href="mailto:data-dev@eclipse.org">data-dev@eclipse.org</a>.<br>
+Copyright &#169; 2024 Eclipse Foundation. All rights reserved.<br>
+Use is subject to <a href="{@docRoot}/doc-files/speclicense.html" target="_top">license terms</a>.]]>
+                            </bottom>
+                            <docfilessubdirs>true</docfilessubdirs>
+                            <groups>
+                                <group>
+                                    <title>Jakarta Data API Documentation</title>
+                                    <packages>
+                                        jakarta.data
+                                    </packages>
+                                </group>
+                            </groups>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
