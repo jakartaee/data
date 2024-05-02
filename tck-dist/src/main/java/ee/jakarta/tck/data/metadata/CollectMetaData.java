@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022, 2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022, 2024 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -24,6 +24,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
 import java.util.stream.Collectors;
@@ -102,6 +103,10 @@ public class CollectMetaData {
         writeOutput(testMetaData, new File(adocGeneratedLocation, EXPECTED_OUTPUT_FILE));
         writeGitIgnore(new File(adocGeneratedLocation, ".gitignore"), RUNTIME_TESTS_FILE, CHALLENGED_TESTS_FILE, SIG_OUTPUT_FILE, EXPECTED_OUTPUT_FILE, TEST_PROPERTIES_FILE);
         writeTestProperties(new File(adocGeneratedLocation, TEST_PROPERTIES_FILE));
+        
+        for (TestMetaData data: testMetaData) {
+            debug(data.debugString());
+        }
     }
 
     /**
@@ -168,7 +173,11 @@ public class CollectMetaData {
     private static String getIndividualTests(List<TestMetaData> testMetaData) {
         StringBuffer output = new StringBuffer();
         final String nl = System.lineSeparator();
-        for(String testClass : testMetaData.stream().map(metaData -> metaData.testClass).distinct().collect(Collectors.toList())) {
+        for(String testClass : testMetaData.stream()
+              .filter(TestMetaData::isPersistence)
+              .map(metaData -> metaData.testClass)
+              .distinct()
+              .collect(Collectors.toList())) {
             List<TestMetaData> theseTests = testMetaData.stream().filter(metaData -> metaData.testClass == testClass).collect(Collectors.toList());
             long testCount = theseTests.stream().filter(metaData -> !metaData.isDisabled).count();
             long disabledCount = theseTests.stream().filter(metaData -> metaData.isDisabled).count();
@@ -193,8 +202,8 @@ public class CollectMetaData {
      * @return String output
      */
     private static String getTotalTests(List<TestMetaData> testMetaData) {
-        long totalTestCount = testMetaData.stream().filter(metaData -> !metaData.isDisabled).count();
-        long totalDisabledCount = testMetaData.stream().filter(metaData -> metaData.isDisabled).count();
+        long totalTestCount = testMetaData.stream().filter(TestMetaData::isPersistence).count();
+        long totalDisabledCount = testMetaData.stream().filter(TestMetaData::isPersistence).filter(TestMetaData::isDisabled).count();
         
         if(totalDisabledCount > 0) {
             return "[WARNING] Tests run: " + totalTestCount + ", Failures: 0, Errors: 0, Skipped: " + totalDisabledCount;    
@@ -291,11 +300,11 @@ public class CollectMetaData {
         String output =
                 """
                 |===
-                |entity type |standalone |core |web |full
+                |entity type |standalone |core |web |full |skipped
                 
-                |persistence |%d         |%d   |%d  |%d
+                |persistence |%d         |%d   |%d  |%d   |%d
                 
-                |nosql       |%d         |%d   |%d  |%d
+                |nosql       |%d         |%d   |%d  |%d   |%d
 
                 |===""".formatted(getTestCounts(testMetaData));
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputLocation))) {
@@ -318,12 +327,14 @@ public class CollectMetaData {
         results.add(core.stream().filter(TestMetaData::isPersistence).count());
         results.add(web.stream().filter(TestMetaData::isPersistence).count());
         results.add(full.stream().filter(TestMetaData::isPersistence).count());
+        results.add(testMetaData.stream().filter(Predicate.not(TestMetaData::isRunnable)).filter(TestMetaData::isPersistence).count());
         
         //NoSQL
         results.add(standalone.stream().filter(TestMetaData::isNoSQL).count());
         results.add(core.stream().filter(TestMetaData::isNoSQL).count());
         results.add(web.stream().filter(TestMetaData::isNoSQL).count());
         results.add(full.stream().filter(TestMetaData::isNoSQL).count());
+        results.add(testMetaData.stream().filter(Predicate.not(TestMetaData::isRunnable)).filter(TestMetaData::isNoSQL).count());
         
         return results.toArray();
     }
@@ -506,6 +517,10 @@ public class CollectMetaData {
     
         boolean isRunnable() {
             return ! isDisabled; 
+        }
+        
+        public String debugString() {
+            return "TestMetaData [testName=" + testName + ", isDisabled=" + isDisabled + ", tags=" + tags + "]";
         }
         
         @Override
