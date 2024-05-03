@@ -17,12 +17,13 @@
 :SigPluginVersion: 2.3
 :SigPluginGAV: jakarta.tck:sigtest-maven-plugin:{SigPluginVersion}
 
-
 :JavaVersion1: 17
 :JavaVersion2: 21
 
 :TCKProcess: 1.3
 :TCKProcessDoc: https://jakarta.ee/committees/specification/tckprocess
+
+:last-update-label!:
 
 include::sections/01preface.adoc[]
 

@@ -39,6 +39,10 @@
         <revisiondate>${maven.build.timestamp}</revisiondate>
         <revremark>Draft</revremark>
         <gen-doc-dir>${project.build.directory}/generated-docs</gen-doc-dir>
+
+        <!-- default is the same for backward compatibility reason
+        Easy to override when building with a system property -->
+        <spec.version>1.0</spec.version>
     </properties>
 
     <build>
@@ -70,7 +74,7 @@
                         <configuration>
                             <sourceDocumentName>jakarta-data.adoc</sourceDocumentName>
                             <backend>pdf</backend>
-                            <outputFile>${gen-doc-dir}/jakarta-data-${project.version}.pdf</outputFile>
+                            <outputFile>${gen-doc-dir}/jakarta-data-${spec.version}.pdf</outputFile>
                         </configuration>
                     </execution>
                     <execution>
@@ -82,7 +86,7 @@
                         <configuration>
                             <sourceDocumentName>method-query.asciidoc</sourceDocumentName>
                             <backend>pdf</backend>
-                            <outputFile>${gen-doc-dir}/jakarta-method-name-query-${project.version}.pdf</outputFile>
+                            <outputFile>${gen-doc-dir}/jakarta-method-name-query-${spec.version}.pdf</outputFile>
                         </configuration>
                     </execution>
                     <execution>
@@ -94,7 +98,7 @@
                         <configuration>
                             <sourceDocumentName>jakarta-data.adoc</sourceDocumentName>
                             <backend>html5</backend>
-                            <outputFile>${gen-doc-dir}/jakarta-data-${project.version}.html</outputFile>
+                            <outputFile>${gen-doc-dir}/jakarta-data-${spec.version}.html</outputFile>
                         </configuration>
                     </execution>
                     <execution>
@@ -106,7 +110,7 @@
                         <configuration>
                             <sourceDocumentName>method-query.asciidoc</sourceDocumentName>
                             <backend>html5</backend>
-                            <outputFile>${gen-doc-dir}/jakarta-method-name-query-${project.version}.html</outputFile>
+                            <outputFile>${gen-doc-dir}/jakarta-method-name-query-${spec.version}.html</outputFile>
                             <attributes>
                                 <doctitle>Jakarta Data: Query by Method Name Extension</doctitle>
                             </attributes>
@@ -122,7 +126,7 @@
                     <attributes>
                         <license>Apache License v2.0</license>
                         <specification>Jakarta Data</specification>
-                        <revnumber>${project.version}</revnumber>
+                        <revnumber>${spec.version}</revnumber>
                         <revremark>${revremark}</revremark>
                         <revdate>${revisiondate}</revdate>
                         <sourceHighlighter>coderay</sourceHighlighter>
