@@ -29,10 +29,12 @@
   <!-- General properties -->
   <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-  <maven.compiler.source>17</maven.compiler.source>
-  <maven.compiler.target>17</maven.compiler.target>
+  <maven.compiler.release>17</maven.compiler.release>
+  <maven.compiler.testRelease>17</maven.compiler.testRelease>
 
   <!-- Dependency and Plugin Versions -->
+  
+  <!-- Default - use local snapshot - can be overwritten by runner -->
   <jakarta.data.version>1.0.0-SNAPSHOT</jakarta.data.version>
 
   <arquillian.version>1.7.0.Alpha13</arquillian.version>
@@ -85,13 +87,13 @@
  <dependencies>
   <!-- The TCK -->
   <dependency>
-   <groupId>jakarta-data</groupId>
+   <groupId>jakarta.data</groupId>
    <artifactId>jakarta.data-tck</artifactId>
-   <version>${jakarta.data.tck.version}</version>
+   <version>${jakarta.data.version}</version>
   </dependency>
   <!-- The API -->
   <dependency>
-   <groupId>jakarta-data</groupId>
+   <groupId>jakarta.data</groupId>
    <artifactId>jakarta.data-api</artifactId>
    <version>${jakarta.data.version}</version>
   </dependency>
@@ -116,12 +118,12 @@
   <dependency>
    <groupId>jakarta.servlet</groupId>
    <artifactId>jakarta.servlet-api</artifactId>
-   <version>6.0</version>
+   <version>6.0.0</version>
   </dependency>
   <dependency>
    <groupId>jakarta.enterprise</groupId>
    <artifactId>jakarta.enterprise.cdi-api</artifactId>
-   <version>4.0</version>
+   <version>4.0.1</version>
   </dependency>
  </dependencies>
  <!-- end::testClientDep[] -->
