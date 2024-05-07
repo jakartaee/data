@@ -43,7 +43,7 @@ A _named parameter_ is a legal Java identifier prefixed with the `:` character, 
 
 An _ordinal parameter_ is a decimal integer prefixed with the `?` character, for example, `?1`.
 
-The first parameter is referred to as `?1`, and the second parameter is referred to as `?2`.
+Ordinal parameters are numbered sequentially, starting with `?1`.
 
 ==== Operators and punctuation
 
