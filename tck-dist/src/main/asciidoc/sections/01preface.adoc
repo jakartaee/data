@@ -6,7 +6,7 @@ The specification describes the job specification language, Java programming mod
 
 === Licensing
 
-The {APILongName} TCK is provided under the https://www.eclipse.org/legal/tck.php[*Eclipse Foundation Technology Compatibility Kit License - v 1.0*].
+The {APILongName} TCK is provided under the {licenseURL}[*{license}*].
 
 === Who Should Use This Guide
 
