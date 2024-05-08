@@ -45,8 +45,6 @@ An _ordinal parameter_ is a decimal integer prefixed with the `?` character, for
 
 Ordinal parameters are numbered sequentially, starting with `?1`.
 
-NOTE: Positional and named parameters must not be mixed in a single query.
-
 ==== Operators and punctuation
 
 The character sequences `+`, `-`, `*`, `/`, `||`, `=`, `<`, `>`, `<>`, `&lt;=`, `>=` are _operators_.
@@ -121,6 +119,8 @@ List<Book> booksMatchingTitle(String titlePattern);
 ----
 
 When executed, a parameter expression evaluates to the argument supplied to the parameter of the repository method.
+
+NOTE: Positional and named parameters must not be mixed in a single query.
 
 ==== Enum literals
 
