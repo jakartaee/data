@@ -67,6 +67,7 @@ Here is an essential checklist of what you will need per mode, and links to the 
 SE Mode:
 
 - The {APIShortName} API, JUnit5, and Signature Test Plugin libraries available at runtime | <<Standalone Dependencies>>
+- A dependency injection framework supported by your implementation | <<Standalone Dependencies>>
 - A logging configuration for TCK logging available at runtime | <<Standalone Logging>>
 
 EE Mode:

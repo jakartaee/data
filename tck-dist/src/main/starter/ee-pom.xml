@@ -20,7 +20,7 @@
 
  <modelVersion>4.0.0</modelVersion>
 
- <groupId>[YOUR_GROUP_ID]</groupId>
+ <groupId>jakarta.data</groupId>
  <artifactId>data-tck-runner</artifactId>
  <version>1.0-SNAPSHOT</version>
  <name>Jakarta Data TCK Runner for [YOUR_IMPL]</name>
@@ -33,9 +33,9 @@
   <maven.compiler.testRelease>17</maven.compiler.testRelease>
 
   <!-- Dependency and Plugin Versions -->
-  
-  <!-- Default - use local snapshot - can be overwritten by runner -->
-  <jakarta.data.version>1.0.0-SNAPSHOT</jakarta.data.version>
+  <jakarta.data.version>1.0.0</jakarta.data.version>
+  <jakarta.servlet.version>6.1.0</jakarta.servlet.version>
+  <jakarta.enterprise.cdi.version>4.1.0</jakarta.enterprise.cdi.version>
 
   <arquillian.version>1.7.0.Alpha13</arquillian.version>
   <junit.version>5.9.0</junit.version>
@@ -52,8 +52,11 @@
    configuration -->
   <logging.config>${project.basedir}/logging.properties</logging.config>
 
-  <!-- Output directory -->
-  <targetDirectory>${project.basedir}/target</targetDirectory>
+  <!-- jimage output directory -->
+  <jimage.dir>${project.build.directory}/jimage/</jimage.dir>
+  
+  <!-- Default execution groups - user should override -->
+  <includedTests>core</includedTests>
  </properties>
 
  <repositories>
@@ -118,12 +121,12 @@
   <dependency>
    <groupId>jakarta.servlet</groupId>
    <artifactId>jakarta.servlet-api</artifactId>
-   <version>6.0.0</version>
+   <version>6.0</version>
   </dependency>
   <dependency>
    <groupId>jakarta.enterprise</groupId>
    <artifactId>jakarta.enterprise.cdi-api</artifactId>
-   <version>4.0.1</version>
+   <version>4.0</version>
   </dependency>
  </dependencies>
  <!-- end::testClientDep[] -->
@@ -164,11 +167,11 @@
       <tck_port>[TODO]</tck_port>
       <!-- end::arquillian[] -->
       <!-- tag::signature[] -->
-      <jimage.dir>[path-to-extract-jvm-classes]</jimage.dir>
-      <signature.sigTestClasspath>[path-to]/jakarta.data-api.jar:[path-to-jimage]/java.base:[path-to-jimage]/java.rmi:[path-to-jimage]/java.sql:[path-to-jimage]/java.naming</signature.sigTestClasspath>
+      <jimage.dir>${jimage.dir}</jimage.dir>
+      <signature.sigTestClasspath>[path-to]/jakarta.data-api.jar:${jimage.dir}/java.base:${jimage.dir}/java.rmi:${jimage.dir}/java.sql:${jimage.dir}/java.naming</signature.sigTestClasspath>
       <!-- end::signature[] -->
       <!-- tag::logging[] -->
-      <java.util.logging.config.file>${basedir}/../logging.properties</java.util.logging.config.file>
+      <java.util.logging.config.file>${logging.config}</java.util.logging.config.file>
       <!-- end::logging[] -->
       <!-- tag::profile[] -->
       <!-- Optional, Arquillian will deploy artifacts by default -->
@@ -180,10 +183,7 @@
          Profiles:[core|web|full] 
          Entities:[nosql|persistence] 
          Other:   [signature] -->
-     <groups>[TODO]</groups>
-     <!-- If running back-to-back tests at different levels 
-     use this to distinguish the results -->
-     <reportNameSuffix>[OPTIONAL]</reportNameSuffix>
+     <groups>${includedTests}</groups>
      <!-- Ensure surfire plugin looks under src/main/java 
      instead of src/test/java -->
      <testSourceDirectory>${basedir}/src/main/java/</testSourceDirectory>

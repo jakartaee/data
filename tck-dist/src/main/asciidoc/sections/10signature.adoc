@@ -18,7 +18,7 @@ The {APILongName} TCK will run signature tests within a standalone or deployed a
 and not as part of a separate plugin / execution.
 This means that the signature tests will run during the maven `test` phase.
 
-You need to configure your test client with the system property `jimage.dir=<path-your-server-has-access-to>`.
+Your test client is configured with the property `jimage.dir=${project.build.directory}/jimage/`.
 This is because, when running the signature tests on JDK 9+ we need to convert the 
 JDK modules back into class files for signature testing.
 
