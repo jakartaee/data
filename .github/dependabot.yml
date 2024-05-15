@@ -9,3 +9,9 @@ updates:
     directory: /
     schedule:
       interval: daily
+
+  # TODO not sure if dependabot will recognize non-standard pom file names? 
+  - package-ecosystem: maven
+    directory: /tck-dist/src/main/starter/
+    schedule:
+      interval: daily
