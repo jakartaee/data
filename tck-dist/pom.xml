@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
- ~ Copyright (c) 2022, 2023 Contributors to the Eclipse Foundation
+ ~ Copyright (c) 2022, 2024 Contributors to the Eclipse Foundation
  ~
  ~ This program and the accompanying materials are made available under the
  ~ terms of the Eclipse Public License v. 2.0, which is available at
@@ -87,17 +87,31 @@
     </configuration>
    </plugin>
 
-   <!-- Load TCK dependency location as variable -->
    <plugin>
     <groupId>org.apache.maven.plugins</groupId>
     <artifactId>maven-dependency-plugin</artifactId>
     <version>3.6.1</version>
     <executions>
+	<!-- Load TCK dependency location as variable -->
      <execution>
       <phase>initialize</phase>
       <goals>
        <goal>properties</goal>
       </goals>
+     </execution>
+     <!-- Copy tck sources to a known location -->
+     <execution>
+       <id>get-dependency-sources</id>
+       <phase>package</phase>
+       <goals>
+         <goal>copy-dependencies</goal>
+       </goals>
+       <configuration>
+         <includeArtifactIds>jakarta.data-tck</includeArtifactIds>
+         <classifier>sources</classifier>
+         <prependGroupId>true</prependGroupId>
+         <outputDirectory>${project.build.directory}/copied-sources/</outputDirectory>
+       </configuration>
      </execution>
     </executions>
    </plugin>
@@ -119,7 +133,7 @@
     <configuration>
      <mainClass>ee.jakarta.tck.data.metadata.CollectMetaData</mainClass>
      <arguments>
-      <argument>true</argument>
+      <argument>false</argument> <!-- debug -->
       <argument>${jakarta.data:jakarta.data-tck:jar}</argument>
       <argument>${project.basedir}/src/main/asciidoc/sections/generated</argument>
      </arguments>

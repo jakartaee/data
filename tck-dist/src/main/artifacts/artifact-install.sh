@@ -3,7 +3,7 @@
 ## A sample script to install the artifact directory contents into a local maven repository
 
 POM=$(ls *.pom)
-TCK=$(ls *.jar) ## FIXME might pick up sources.jar if not careful
+TCK=$(ls *.jar | grep -v sources)
 
 NO_EXT=${POM%.*}      # jakarta.data-parent-1.0.0-SNAPSHOT.pom > jakarta.data-parent-1.0.0-SNAPSHOT
 NO_REPO=${NO_EXT#*-}  # jakarta.data-parent-1.0.0-SNAPSHOT > parent-1.0.0-SNAPSHOT
