@@ -37,13 +37,13 @@
   <jakarta.servlet.version>6.1.0</jakarta.servlet.version>
   <jakarta.enterprise.cdi.version>4.1.0</jakarta.enterprise.cdi.version>
 
-  <arquillian.version>1.7.0.Alpha13</arquillian.version>
-  <junit.version>5.9.0</junit.version>
+  <arquillian.version>1.8.0.Final</arquillian.version>
+  <junit.version>5.10.2</junit.version>
   <sigtest.version>2.3</sigtest.version>
 
   <maven.dep.plugin.version>3.3.0</maven.dep.plugin.version>
-  <maven.comp.plugin.version>3.10.1</maven.comp.plugin.version>
-  <maven.surefire.plugin.version>2.22.2</maven.surefire.plugin.version>
+  <maven.comp.plugin.version>3.13.0</maven.comp.plugin.version>
+  <maven.surefire.plugin.version>3.2.5</maven.surefire.plugin.version>
 
   <!-- Location to copy runtime dependencies to application server -->
   <application.server.lib>[path/to/appserver/lib]</application.server.lib>
@@ -121,12 +121,12 @@
   <dependency>
    <groupId>jakarta.servlet</groupId>
    <artifactId>jakarta.servlet-api</artifactId>
-   <version>6.0</version>
+   <version>${jakarta.servlet.version}</version>
   </dependency>
   <dependency>
    <groupId>jakarta.enterprise</groupId>
    <artifactId>jakarta.enterprise.cdi-api</artifactId>
-   <version>4.0</version>
+   <version>${jakarta.enterprise.cdi.version}</version>
   </dependency>
  </dependencies>
  <!-- end::testClientDep[] -->

@@ -9,7 +9,7 @@ NO_EXT=${POM%.*}      # jakarta.data-parent-1.0.0-SNAPSHOT.pom > jakarta.data-pa
 NO_REPO=${NO_EXT#*-}  # jakarta.data-parent-1.0.0-SNAPSHOT > parent-1.0.0-SNAPSHOT
 VERSION=${NO_REPO#*-} # parent-1.0.0-SNAPSHOT > 1.0.0-SNAPSHOT
 
-echo "Installing $POM with version $VERSION
+echo "Installing $POM with version $VERSION"
 mvn org.apache.maven.plugins:maven-install-plugin:3.0.0-M1:install-file \
 -Dfile=$POM \
 -DgroupId=jakarta.data \
@@ -17,6 +17,6 @@ mvn org.apache.maven.plugins:maven-install-plugin:3.0.0-M1:install-file \
 -Dversion="$VERSION" \
 -Dpackaging=pom
 
-echo "Installing $TCK
+echo "Installing $TCK"
 mvn org.apache.maven.plugins:maven-install-plugin:3.0.0-M1:install-file \
 -Dfile=$TCK
