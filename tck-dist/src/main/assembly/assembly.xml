@@ -28,7 +28,7 @@
   <files>
     <!-- This is the final EFTL license -->
     <file>
-      <source>src/main/EFTL.txt</source>
+      <source>src/main/EFTL.adoc</source>
       <destName>LICENSE</destName>
     </file>
     <!-- The readme included in the distribution zip -->
