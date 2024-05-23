@@ -300,11 +300,11 @@ public class CollectMetaData {
         String output =
                 """
                 |===
-                |entity type |standalone |core |web |full |skipped
+                |entity type |standalone |core |web |platform |skipped
                 
-                |persistence |%d         |%d   |%d  |%d   |%d
+                |persistence |%d         |%d   |%d  |%d       |%d
                 
-                |nosql       |%d         |%d   |%d  |%d   |%d
+                |nosql       |%d         |%d   |%d  |%d       |%d
 
                 |===""".formatted(getTestCounts(testMetaData));
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputLocation))) {
@@ -318,7 +318,7 @@ public class CollectMetaData {
         List<TestMetaData> standalone = runnableTestMetaData.stream().filter(TestMetaData::isStandalone).collect(Collectors.toList());
         List<TestMetaData> core = runnableTestMetaData.stream().filter(TestMetaData::isCore).collect(Collectors.toList());
         List<TestMetaData> web = runnableTestMetaData.stream().filter(TestMetaData::isWeb).collect(Collectors.toList());
-        List<TestMetaData> full = runnableTestMetaData.stream().filter(TestMetaData::isFull).collect(Collectors.toList());
+        List<TestMetaData> platform = runnableTestMetaData.stream().filter(TestMetaData::isPlatform).collect(Collectors.toList());
         
         List<Object> results = new ArrayList<>();
         
@@ -326,14 +326,14 @@ public class CollectMetaData {
         results.add(standalone.stream().filter(TestMetaData::isPersistence).count());
         results.add(core.stream().filter(TestMetaData::isPersistence).count());
         results.add(web.stream().filter(TestMetaData::isPersistence).count());
-        results.add(full.stream().filter(TestMetaData::isPersistence).count());
+        results.add(platform.stream().filter(TestMetaData::isPersistence).count());
         results.add(testMetaData.stream().filter(Predicate.not(TestMetaData::isRunnable)).filter(TestMetaData::isPersistence).count());
         
         //NoSQL
         results.add(standalone.stream().filter(TestMetaData::isNoSQL).count());
         results.add(core.stream().filter(TestMetaData::isNoSQL).count());
         results.add(web.stream().filter(TestMetaData::isNoSQL).count());
-        results.add(full.stream().filter(TestMetaData::isNoSQL).count());
+        results.add(platform.stream().filter(TestMetaData::isNoSQL).count());
         results.add(testMetaData.stream().filter(Predicate.not(TestMetaData::isRunnable)).filter(TestMetaData::isNoSQL).count());
         
         return results.toArray();
@@ -503,8 +503,8 @@ public class CollectMetaData {
             return tags.contains("web"); 
         }
         
-        boolean isFull() {
-            return tags.contains("full"); 
+        boolean isPlatform() {
+            return tags.contains("platform"); 
         }
         
         boolean isPersistence() {

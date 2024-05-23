@@ -32,7 +32,7 @@ include::{starterLoc}/se-pom.xml[tags=configJunit5;!logging;!signature;!entity]
 All test classes that support running in standalone mode are annotated with the `@Standalone` annotation.
 
 When running in standalone mode, include the group `<groups>standalone<groups>`.
-This will ensure that none of the core/web/full profile tests are run.
+This will ensure that none of the core/web/platform profile tests are run.
 
 When running in standalone mode, include the system property `<jakarta.tck.skip.deployment>true</jakarta.tck.skip.deployment>`.
 This will ensure that no Arquillian deployments are created and that all tests are run on the client JVM.
