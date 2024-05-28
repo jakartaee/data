@@ -80,6 +80,7 @@ public interface CarRepository extends BasicRepository<Car, Long> {
 
  @Find
  @OrderBy(_Car.NAME)
+ @OrderBy(_Car.VIN)
  CursoredPage<Car> type(CarType type, PageRequest pageRequest);
 
 }
