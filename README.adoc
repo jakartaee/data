@@ -63,15 +63,25 @@ Whether you use built-in repository interfaces or create custom repositories, Ja
 
 ==== Pagination
 
-Jakarta Data also supports parameters to define pagination and sorting.
+Jakarta Data supports two types of Pagination: offset and cursor-based Pagination.
+
+- **Offset Pagination**: Offset-based pagination computes pages relative to a positional offset from the beginning of the dataset given the requested page number and page size.
+
+- **Cursor-based Pagination**: Cursor-based Pagination aims to reduce missed and duplicate results across pages by querying relative to the observed values of entity properties that constitute the sorting criteria. This method uses a cursor, a pointer to a specific position in the dataset, to navigate the dataset.
+
+Example code using both pagination methods:
 
 [source,java]
 ----
-
 @Repository
 public interface CarRepository extends BasicRepository<Car, Long> {
 
  Page<Car> findByTypeOrderByName(CarType type, PageRequest pageRequest);
+
+ @Find
+ @OrderBy(_Car.NAME)
+ @OrderBy(_Car.VIN)
+ CursoredPage<Car> type(CarType type, PageRequest pageRequest);
 
 }
 ----
