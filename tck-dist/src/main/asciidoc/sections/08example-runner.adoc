@@ -7,8 +7,14 @@ Below are links to projects where the {APILongName} TCK is being used and run su
 |===
 |Project |Link |Profile(s)
 
+|Hibernate
+|https://github.com/jakartaredhat/hibernate-data-tck/tree/3e5fd4ddc68b60cc026987021d8d3e80ebed6809[hibernate-data-tck]
+|standalone
+
 |Open Liberty
-|https://github.com/OpenLiberty/open-liberty/tree/integration/dev/io.openliberty.jakarta.data.1.0_fat_tck
-|standalone, core, and web
+|https://github.com/OpenLiberty/open-liberty/tree/549a6b89005de62289df7b550aedd229dd407722/dev/io.openliberty.jakarta.data.1.0_fat_tck[open-liberty/io.openliberty.jakarta.data.1.0_fat_tck]
+|core, web, full
 
 |===
+
+// TODO add JNoSQL once implemented

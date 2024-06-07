@@ -16,7 +16,7 @@ Once the TCK is extracted, you'll see the following structure:
 ----
 data-tck-<version>-dist/
   artifacts/
-  doc/
+  docs/
   starter/
   LICENSE
   README.md
@@ -29,7 +29,7 @@ In more detail:
 ** The {TCKTestPlatform} configuration file
 ** A copy of the SignatureTest file for reference
 ** A script to copy the TCK into local maven repository.
-* `doc` contains the documentation for the TCK (i.e. this reference guide)
+* `docs` contains the documentation for the TCK (i.e. this reference guide)
 * `starter` a very basic starter maven project to get you started.
 
 === A Quick Tour of the TCK Artifacts
@@ -67,6 +67,7 @@ Here is an essential checklist of what you will need per mode, and links to the 
 SE Mode:
 
 - The {APIShortName} API, JUnit5, and Signature Test Plugin libraries available at runtime | <<Standalone Dependencies>>
+- A dependency injection framework supported by your implementation | <<Standalone Dependencies>>
 - A logging configuration for TCK logging available at runtime | <<Standalone Logging>>
 
 EE Mode:
