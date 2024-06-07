@@ -20,7 +20,7 @@
 :JavaVersion1: 17
 :JavaVersion2: 21
 
-:license: Eclipse Foundation Technology Compatibility Kit License - v1.1
+:license: Eclipse Foundation Technology Compatibility Kit License
 :licenseURL: https://www.eclipse.org/legal/tck.php
 
 :TCKProcess: 1.4.1
