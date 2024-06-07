@@ -180,7 +180,7 @@
      </systemPropertyVariables>
      <!-- end::systemProperties[] -->
      <!-- Supported tags 
-         Profiles:[core|web|full] 
+         Profiles:[core|web|platform] 
          Entities:[nosql|persistence] 
          Other:   [signature] -->
      <groups>${includedTests}</groups>

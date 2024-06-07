@@ -34,7 +34,7 @@ include::{starterLoc}/ee-pom.xml[tags=configJunit5;!arquillian;!logging;!entity]
 
 ==== Profile Mode
 
-All test classes that require running on a Jakarta profile are annotated with the `@Core`, `@Web`, or `@Full` annotation.
+All test classes that require running on a Jakarta profile are annotated with the `@Core`, `@Web`, or `@Platform` annotation.
 
 When running against a Jakarta profile, include the group that matches your supported profile. For example: `<groups>core<groups>`.
 

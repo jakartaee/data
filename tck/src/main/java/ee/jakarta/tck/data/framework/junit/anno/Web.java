@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022, 2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022, 2024 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -37,7 +37,7 @@ import ee.jakarta.tck.data.framework.junit.extensions.AssertionExtension;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Tag("web")
-@Tag("full")
+@Tag("platform")
 @ExtendWith({ ArquillianExtension.class, AssertionExtension.class })
 public @interface Web {
 }

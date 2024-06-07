@@ -10,6 +10,6 @@ $ mvn clean test
 
 === Expected Output
 
-Here is example output when successfully running (full profile + persistence entity) the starter project:
+Here is example output when successfully running (platform + persistence entity) the starter project:
 
 include::generated/expected-output.adoc[]

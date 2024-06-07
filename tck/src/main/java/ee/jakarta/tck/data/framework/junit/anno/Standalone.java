@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022, 2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022, 2024 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -30,7 +30,7 @@ import ee.jakarta.tck.data.framework.utilities.TestProperty;
 /**
  * <p>These are test classes that DO NOT depend on any Jakarta EE profile technologies.</p>
  * 
- * <p>However, when running the TCK against a core/web/full profile container these
+ * <p>However, when running the TCK against a core/web/platform profile container these
  * tests will be deployed and run on the container.</p>
  * 
  * <p>The dynamic method in which we achieve the ability to run these tests either
@@ -45,7 +45,7 @@ import ee.jakarta.tck.data.framework.utilities.TestProperty;
 @Tag("standalone")
 @Tag("core")
 @Tag("web")
-@Tag("full")
+@Tag("platform")
 @ExtendWith({ StandaloneExtension.class, AssertionExtension.class })
 public @interface Standalone {
 }

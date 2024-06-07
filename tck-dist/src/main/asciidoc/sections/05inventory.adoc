@@ -41,7 +41,7 @@ The {APILongName} TCK is a test library that includes four types of packages:
 - `ee.jakarta.tck.data.standalone.\*` these are basic API tests, or SPI tests that can run in SE Mode or EE mode.
 - `ee.jakarta.tck.data.core.\*` these are more complex integration tests that must run against at least Core Profile.
 - `ee.jakarta.tck.data.web.\*` these are more complex integration tests that must run against at least Web Profile.
-- `ee.jakarta.tck.data.full.\*` these are more complex integration tests that must run against at least Full Profile.
+- `ee.jakarta.tck.data.platform.\*` these are more complex integration tests that must run against at least Platform.
 - `ee.jakarta.tck.data.framework.\*` these are utility packages that help support the development and execution of the TCK.
 
 Tests that exist at a lower level will run on any level above, for example, all core profile tests will run against web profile.

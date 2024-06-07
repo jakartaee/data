@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022, 2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022, 2024 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -27,7 +27,7 @@ import org.jboss.shrinkwrap.api.container.LibraryContainer;
 import org.jboss.shrinkwrap.api.container.ResourceContainer;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 
-import ee.jakarta.tck.data.framework.junit.anno.Full;
+import ee.jakarta.tck.data.framework.junit.anno.Platform;
 import ee.jakarta.tck.data.framework.junit.anno.Signature;
 import ee.jakarta.tck.data.framework.junit.anno.Web;
 import ee.jakarta.tck.data.framework.junit.anno.ReadOnlyTest;
@@ -42,7 +42,7 @@ import ee.jakarta.tck.data.framework.signature.DataSignatureTestRunner;
  * 
  * <p>The read-only tests require the ee.jakarta.tck.data.framework.read.only package in the container.</p>
  * 
- * <p>The web/full profile tests require the ee.jakarta.tck.data.framework.servlet package in the container.</p>
+ * <p>The web/platform profile tests require the ee.jakarta.tck.data.framework.servlet package in the container.</p>
  * 
  * <p>The signature tests require the ee.jakarta.tck.data.framework.signature package in the container.</p>
  */
@@ -67,8 +67,8 @@ public class TCKArchiveProcessor implements ApplicationArchiveProcessor {
                 ((ClassContainer<?>) applicationArchive).addPackage(readOnlyPackage);
             }
 
-            // Add servlet packages to web/full profile tests
-            if(testClass.isAnnotationPresent(Web.class) || testClass.isAnnotationPresent(Full.class)) {
+            // Add servlet packages to web/platform profile tests
+            if(testClass.isAnnotationPresent(Web.class) || testClass.isAnnotationPresent(Platform.class)) {
                 log.info("Application Archive [" + applicationName + "] is being appended with packages [" + servletPackage +"]");
                 ((ClassContainer<?>) applicationArchive).addPackage(servletPackage);
             }

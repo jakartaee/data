@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022, 2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022, 2024 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -27,7 +27,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import ee.jakarta.tck.data.framework.junit.extensions.AssertionExtension;
 
 /**
- * <p>These are test classes that REQUIRE full profile to be executed. For these
+ * <p>These are test classes that REQUIRE platform profile to be executed. For these
  * tests to run they must deploy an application to a Jakarta EE server using the
  * Arquillian {@code @Deployment} annotation.</p>
  * 
@@ -36,7 +36,7 @@ import ee.jakarta.tck.data.framework.junit.extensions.AssertionExtension;
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Tag("full")
+@Tag("platform")
 @ExtendWith({ ArquillianExtension.class, AssertionExtension.class })
-public @interface Full {
+public @interface Platform {
 }

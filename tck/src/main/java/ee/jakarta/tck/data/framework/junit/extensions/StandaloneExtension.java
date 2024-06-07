@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022, 2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022, 2024 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -34,7 +34,7 @@ import ee.jakarta.tck.data.framework.utilities.TestPropertyUtility;
  * <p>This is a Junit5 extension class that extends ArquillianExtension</p>
  * 
  * <p>This extension will passthrough to the ArquillianExtension class when running
- * against a Jakarta EE core/web/full profiles, but will skip Arquillian
+ * against a Jakarta EE core/web/platform profiles, but will skip Arquillian
  * processing when running against a standalone implementation.</p>
  * 
  * @see org.jboss.arquillian.junit5.ArquillianExtension
