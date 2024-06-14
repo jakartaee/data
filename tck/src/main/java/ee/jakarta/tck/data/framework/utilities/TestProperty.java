@@ -31,33 +31,49 @@ import ee.jakarta.tck.data.framework.arquillian.extensions.TCKFrameworkAppender;
  */
 public enum TestProperty {    
     //Java properties that should always be set by the JVM
-    javaHome    (true,  "java.home",                  "Path to the java executable used to create the current JVM"),
-    javaSpecVer (true,  "java.specification.version", "Specification version of the java executable"),
-    javaTempDir (true,  "java.io.tmpdir",             "The path to a temporary directory where a copy of the signature file will be created"),
-    javaVer     (true,  "java.version",               "Full version of the java executable"),
+    javaHome    (true,  "java.home",
+            "Path to the java executable used to create the current JVM"),
+    javaSpecVer (true,  "java.specification.version",
+            "Specification version of the java executable"),
+    javaTempDir (true,  "java.io.tmpdir",
+            "The path to a temporary directory where a copy of the signature file will be created"),
+    javaVer     (true,  "java.version",
+            "Full version of the java executable"),
     
     //TCK specific properties
-    skipDeployment (false,  "jakarta.tck.skip.deployment",  "If true, run in SE mode and do not use Arquillian deployment, if false run in EE mode and use Arquillian deployments. "
+    skipDeployment (false,  "jakarta.tck.skip.deployment",
+            "If true, run in SE mode and do not use Arquillian deployment, if false run in EE mode and use Arquillian deployments. "
             + "Default: false", "false"),
-    pollFrequency  (false, "jakarta.tck.poll.frequency",    "Time in seconds between polls of the repository to verify read-only data was successfully written. "
+    pollFrequency  (false, "jakarta.tck.poll.frequency",
+            "Time in seconds between polls of the repository to verify read-only data was successfully written. "
             + "Default: 1 second", "1"),
-    pollTimeout    (false, "jakarta.tck.poll.timeout",      "Time in seconds when we will stop polling to verify read-only data was successfully written. "
+    pollTimeout    (false, "jakarta.tck.poll.timeout",
+            "Time in seconds when we will stop polling to verify read-only data was successfully written. "
             + "Default: 60 seconds", "60"),
-    delay          (false, "jakarta.tck.consistency.delay", "Time in seconds after verifying read-only data was successfully written to respository "
-            + "for repository to have consistency. Default: none", ""),
+    delay          (false, "jakarta.tck.consistency.delay",
+            "Time in seconds after verifying read-only data was successfully written to respository "
+            + "for repository to have consistency. "
+            + "Default: none"),
+    databaseType   (false, "jakarta.tck.database.type",
+            "The type of database being used. Valid values are " + DatabaseType.values() 
+            + " (case insenstive). The database type is used to make assertions based on the underlying database. "
+            + "Default: UNKNOWN", "UNKNOWN"),
+    databaseName   (false, "jakarta.tck.database.name",
+            "The name of database being used. The database name is used to make assertions based on the underlying database. "
+            + "Default: none"),
     
     //Signature testing properties
     signatureClasspath (false,  "signature.sigTestClasspath", "The path to the Jakarta Data API JAR used by your implementation. "
-            + "Required for standalone testing, but optional when testing on a Jakarta EE profile.", ""),
+            + "Required for standalone testing, but optional when testing on a Jakarta EE profile. "
+            + "Default: none"),
     signatureImageDir  (true,   "jimage.dir",                 "The path to a directory that is readable and writable that "
-            + "the signature test will cache Java SE modules as classes");
+            + "the signature test will cache Java SE modules as classes. "
+            + "Default: none");
     
-    private static final Logger log = Logger.getLogger(TestProperty.class.getCanonicalName());
-
     private boolean required;
     private String key;
-    private String description;
-    private String defaultValue;    
+    private String value;
+    private String description;   
     
     // CONSTRUCTORS
     private TestProperty(boolean required, String key, String description) {
@@ -68,7 +84,7 @@ public enum TestProperty {
         this.required = required;
         this.key = key;
         this.description = description;
-        this.defaultValue = defaultValue;
+        this.value = getValue(defaultValue);
     }
     
     // GETTERS
@@ -90,7 +106,6 @@ public enum TestProperty {
     }
     
     public boolean isSet() {
-        String value = getValue(false);
         if(value == null)
             return false;
         if(value.isBlank() || value.isEmpty()) {
@@ -101,11 +116,19 @@ public enum TestProperty {
     
     // CONVERTERS
     public long getLong() throws IllegalStateException, NumberFormatException {
-        return Long.parseLong(getValue());
+        return Long.parseLong(value);
     }
     
     public int getInt() throws IllegalStateException, NumberFormatException {
-        return Integer.parseInt(getValue());
+        return Integer.parseInt(value);
+    }
+    
+    public boolean getBoolean() {
+        return Boolean.parseBoolean(value);
+    }
+    
+    public DatabaseType getDatabaseType() {
+        return DatabaseType.valueOfIgnoreCase(value);
     }
     
     /**
@@ -114,35 +137,41 @@ public enum TestProperty {
      * @return the property value
      * @throws IllegalStateException if required and no property was found
      */
-    public String getValue() throws IllegalStateException {
-        return getValue(required);
-    }
-    
-    private String getValue(boolean verify) throws IllegalStateException {
-        String value = null;
-        log.fine("Searching for property: " + key);
-        
-        // Client: get property from system 
-        if(value == null) {
-            value = System.getProperty(key);
-            log.fine("Value from system: " + value);
-        }
-        
-        //Container: get property from properties file
-        if(value == null) {
-            value = TestPropertyHandler.loadProperties().getProperty(key);
-            log.fine("Value from resource file: " + value);
-        }
-        
-        //Default: get default property
-        if(value == null) {
-            value = defaultValue;
-            log.fine("Defaulting to value: " + value);
-        }
-        
-        if(verify && value == null)
+    public String getValue() {
+        if(required && value == null)
             throw new IllegalStateException("Could not obtain a value for system property: " + key);
         
         return value;
+    }
+    
+    private String getValue(String defaultVal) throws IllegalStateException {
+        final Logger log = Logger.getLogger(TestProperty.class.getCanonicalName());
+        
+        String valueLocal = null;
+        log.fine("Searching for property: " + key);
+        
+        // Client: get property from system 
+        if(valueLocal == null) {
+            valueLocal = System.getProperty(key);
+            log.fine("Value from system: " + valueLocal);
+        }
+        
+        //Container: get property from properties file
+        if(valueLocal == null) {
+            valueLocal = TestPropertyHandler.loadProperties().getProperty(key);
+            log.fine("Value from resource file: " + valueLocal);
+        }
+        
+        //Default: get default property
+        if(valueLocal == null) {
+            valueLocal = defaultVal;
+            log.fine("Value set to default: " + valueLocal);
+        }
+        
+        if (valueLocal == null) {
+            log.fine("Property was not set, value: " + null);
+        }
+        
+        return valueLocal;
     }
 }

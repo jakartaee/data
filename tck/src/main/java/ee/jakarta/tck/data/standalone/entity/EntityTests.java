@@ -57,6 +57,8 @@ import ee.jakarta.tck.data.framework.read.only.NaturalNumbers;
 import ee.jakarta.tck.data.framework.read.only.NaturalNumbersPopulator;
 import ee.jakarta.tck.data.framework.read.only.PositiveIntegers;
 import ee.jakarta.tck.data.framework.read.only.NaturalNumber.NumberType;
+import ee.jakarta.tck.data.framework.utilities.DatabaseType;
+import ee.jakarta.tck.data.framework.utilities.TestProperty;
 import ee.jakarta.tck.data.framework.utilities.TestPropertyUtility;
 import jakarta.data.Limit;
 import jakarta.data.Order;
@@ -111,6 +113,8 @@ public class EntityTests {
         assertNotNull(characters);
         AsciiCharactersPopulator.get().populate(characters);
     }
+    
+    private DatabaseType type = TestProperty.databaseType.getDatabaseType();
 
     @Assertion(id = "136", strategy = "Ensures that the prepopulation step for readonly entities was successful")
     public void ensureNaturalNumberPrepopulation() {
@@ -416,7 +420,16 @@ public class EntityTests {
 
     @Assertion(id = "133", strategy = "Use a repository method with Contains to query for a substring of a String attribute.")
     public void testContainsInString() {
-        Collection<AsciiCharacter> found = characters.findByHexadecimalContainsAndIsControlNot("4", true);
+        Collection<AsciiCharacter> found;
+        try {
+            found = characters.findByHexadecimalContainsAndIsControlNot("4", true);    
+        } catch (UnsupportedOperationException e) {
+            if(type == DatabaseType.DOCUMENT || type == DatabaseType.GRAPH) {
+                return; //passed
+            }
+            throw e;
+        }
+        
 
         assertEquals(List.of("24", "34",
                              "40", "41", "42", "43",
@@ -614,7 +627,17 @@ public class EntityTests {
     @Assertion(id = "133",
                strategy = "Use a repository method with findFirst3By that returns the first 3 results.")
     public void testFindFirst3() {
-        AsciiCharacter[] found = characters.findFirst3ByNumericValueGreaterThanEqualAndHexadecimalEndsWith(40, "4", Sort.asc("numericValue"));
+        AsciiCharacter[] found;
+        
+        try {
+        found = characters.findFirst3ByNumericValueGreaterThanEqualAndHexadecimalEndsWith(40, "4", Sort.asc("numericValue"));
+        } catch (UnsupportedOperationException e) {
+            if(type == DatabaseType.DOCUMENT || type == DatabaseType.GRAPH) {
+                return; //passed
+            }
+            throw e;
+        }
+        
         assertEquals(3, found.length);
         assertEquals('4', found[0].getThisCharacter());
         assertEquals('D', found[1].getThisCharacter());
