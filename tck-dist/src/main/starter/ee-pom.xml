@@ -43,7 +43,7 @@
 
   <maven.dep.plugin.version>3.3.0</maven.dep.plugin.version>
   <maven.comp.plugin.version>3.13.0</maven.comp.plugin.version>
-  <maven.surefire.plugin.version>3.2.5</maven.surefire.plugin.version>
+  <maven.surefire.plugin.version>3.3.0</maven.surefire.plugin.version>
 
   <!-- Location to copy runtime dependencies to application server -->
   <application.server.lib>[path/to/appserver/lib]</application.server.lib>
