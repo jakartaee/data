@@ -15,6 +15,7 @@
  */
 package ee.jakarta.tck.data.framework.utilities;
 
+import java.util.Arrays;
 import java.util.logging.Logger;
 
 import ee.jakarta.tck.data.framework.arquillian.extensions.TCKFrameworkAppender;
@@ -55,8 +56,8 @@ public enum TestProperty {
             + "for repository to have consistency. "
             + "Default: none"),
     databaseType   (false, "jakarta.tck.database.type",
-            "The type of database being used. Valid values are " + DatabaseType.values() 
-            + " (case insenstive). The database type is used to make assertions based on the underlying database. "
+            "The type of database being used. Valid values are " + Arrays.asList(DatabaseType.values()).toString()
+            + " (case insensitive). The database type is used to make assertions based on the underlying database. "
             + "Default: UNKNOWN", "UNKNOWN"),
     databaseName   (false, "jakarta.tck.database.name",
             "The name of database being used. The database name is used to make assertions based on the underlying database. "
