@@ -424,7 +424,7 @@ public class EntityTests {
         try {
             found = characters.findByHexadecimalContainsAndIsControlNot("4", true);    
         } catch (UnsupportedOperationException e) {
-            if(type == DatabaseType.DOCUMENT || type == DatabaseType.GRAPH) {
+            if(type.isKeywordSupportAtOrBelow(DatabaseType.DOCUMENT)) {
                 return; //passed
             }
             throw e;
@@ -632,7 +632,7 @@ public class EntityTests {
         try {
         found = characters.findFirst3ByNumericValueGreaterThanEqualAndHexadecimalEndsWith(40, "4", Sort.asc("numericValue"));
         } catch (UnsupportedOperationException e) {
-            if(type == DatabaseType.DOCUMENT || type == DatabaseType.GRAPH) {
+            if(type.isKeywordSupportAtOrBelow(DatabaseType.DOCUMENT)) {
                 return; //passed
             }
             throw e;
