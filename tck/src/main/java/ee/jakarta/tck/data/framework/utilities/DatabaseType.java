@@ -21,7 +21,7 @@ import java.util.Arrays;
  * This enum represents the configured DatabaseType based on the {@link TestProperty} databaseType
  */
 public enum DatabaseType {
-    UNKNOWN(Integer.MAX_VALUE), //No database type was configured
+    OTHER(Integer.MAX_VALUE), //No database type was configured
     RELATIONAL(100),
     GRAPH(50),
     DOCUMENT(40),
@@ -36,7 +36,7 @@ public enum DatabaseType {
     }
     
     public static DatabaseType valueOfIgnoreCase(String value) {
-        return Arrays.stream(DatabaseType.values()).filter(type -> type.name().equalsIgnoreCase(value)).findAny().orElse(DatabaseType.UNKNOWN);
+        return Arrays.stream(DatabaseType.values()).filter(type -> type.name().equalsIgnoreCase(value)).findAny().orElse(DatabaseType.OTHER);
     }
     
     public boolean isKeywordSupportAtOrBelow(DatabaseType benchmark) {

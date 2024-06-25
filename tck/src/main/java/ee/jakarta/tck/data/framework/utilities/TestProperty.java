@@ -56,9 +56,9 @@ public enum TestProperty {
             + "for repository to have consistency. "
             + "Default: none"),
     databaseType   (false, "jakarta.tck.database.type",
-            "The type of database being used. Valid values are " + Arrays.asList(DatabaseType.values()).toString()
-            + " (case insensitive). The database type is used to make assertions based on the underlying database. "
-            + "Default: UNKNOWN", "UNKNOWN"),
+            "The type of database being used. Valid values are " + Arrays.asList(DatabaseType.values()).toString() + " (case insensitive). "
+            + "The database type is used to make assertions based on the keywords supported by the underlying database. "
+            + "Default: OTHER", "OTHER"),
     databaseName   (false, "jakarta.tck.database.name",
             "The name of database being used. The database name is used to make assertions based on the underlying database. "
             + "Default: none"),
