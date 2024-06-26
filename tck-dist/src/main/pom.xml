@@ -30,8 +30,8 @@
  <version>1.0-SNAPSHOT</version>
   
   <modules>
-	  <module>starter/ee-pom.xml</module>
-	  <module>starter/se-pom.xml</module>
+      <module>starter/ee-pom.xml</module>
+      <module>starter/se-pom.xml</module>
   </modules>
  
  </project>

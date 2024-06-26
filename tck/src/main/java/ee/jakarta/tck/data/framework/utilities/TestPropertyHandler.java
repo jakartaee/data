@@ -83,7 +83,8 @@ public class TestPropertyHandler {
             if(prop.getKey().startsWith("java.")) {
                 continue;
             }
-            filteredProps.put(prop.getKey(), prop.getValue());
+            if(prop.isSet())
+                filteredProps.put(prop.getKey(), prop.getValue());
         }
         
         try {

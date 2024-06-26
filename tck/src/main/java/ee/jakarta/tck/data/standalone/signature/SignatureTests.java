@@ -24,6 +24,7 @@ import ee.jakarta.tck.data.framework.junit.anno.Assertion;
 import ee.jakarta.tck.data.framework.junit.anno.Signature;
 import ee.jakarta.tck.data.framework.junit.anno.Standalone;
 import ee.jakarta.tck.data.framework.signature.DataSignatureTestRunner;
+import ee.jakarta.tck.data.framework.utilities.TestProperty;
 
 @Standalone
 @AnyEntity
@@ -36,7 +37,7 @@ public class SignatureTests {
 
     @Assertion(id = "26", strategy = "Uses the sigtest-maven-plugin to execute signature tests on a Standalone JVM or on a Jakarta EE Server")
     public void testSignatures() throws Exception {
-        DataSignatureTestRunner.assertProjectSetup(true);
+        DataSignatureTestRunner.assertProjectSetup(TestProperty.skipDeployment.getBoolean());
         DataSignatureTestRunner runner = new DataSignatureTestRunner();
         runner.signatureTest();
     }

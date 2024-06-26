@@ -92,7 +92,7 @@
     <artifactId>maven-dependency-plugin</artifactId>
     <version>3.7.1</version>
     <executions>
-	<!-- Load TCK dependency location as variable -->
+    <!-- Load TCK dependency location as variable -->
      <execution>
       <phase>initialize</phase>
       <goals>
