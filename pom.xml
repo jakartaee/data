@@ -91,7 +91,7 @@
         <apache.rat.version>0.16.1</apache.rat.version>
 
         <arquillian.version>1.8.0.Final</arquillian.version>
-        <junit.version>5.10.2</junit.version>
+        <junit.version>5.10.3</junit.version>
         <pi-test.version>1.16.1</pi-test.version>
         <pitest-junit5-plugin.version>1.2.1</pitest-junit5-plugin.version>
         <checkstyle.version>10.17.0</checkstyle.version>
