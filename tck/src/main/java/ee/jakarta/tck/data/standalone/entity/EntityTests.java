@@ -377,8 +377,20 @@ public class EntityTests {
     @Assertion(id = "133", strategy = "Request a Slice higher than the final Slice, expecting an empty Slice with 0 results.")
     public void testBeyondFinalSlice() {
         PageRequest sixth = PageRequest.ofPage(6).size(5).withoutTotal();
-        Page<NaturalNumber> page = numbers.findByNumTypeAndFloorOfSquareRootLessThanEqual(NumberType.PRIME, 8L,
-                sixth, Sort.desc("id"));
+        Page<NaturalNumber> page;
+        try {
+            page = numbers.findByNumTypeAndFloorOfSquareRootLessThanEqual(
+                    NumberType.PRIME,
+                    8L,
+                    sixth,
+                    Sort.desc("id"));
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
+                return; // Key-Value databases are not capable of LessThanEqual
+            } else {
+                throw x;
+            }
+        }
         assertEquals(0, page.numberOfElements());
         assertEquals(0, page.stream().count());
         assertEquals(false, page.hasContent());
@@ -563,8 +575,20 @@ public class EntityTests {
     @Assertion(id = "133", strategy = "Request the last Slice of up to 5 results, expecting to find the final 2.")
     public void testFinalSliceOfUpTo5() {
         PageRequest fifth = PageRequest.ofPage(5).size(5).withoutTotal();
-        Page<NaturalNumber> page = numbers.findByNumTypeAndFloorOfSquareRootLessThanEqual(NumberType.PRIME, 8L,
-                fifth, Sort.desc("id"));
+        Page<NaturalNumber> page;
+        try {
+            page = numbers.findByNumTypeAndFloorOfSquareRootLessThanEqual(
+                    NumberType.PRIME,
+                    8L,
+                    fifth,
+                    Sort.desc("id"));
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
+                return; // Key-Value databases are not capable of LessThanEqual
+            } else {
+                throw x;
+            }
+        }
         assertEquals(true, page.hasContent());
         assertEquals(5, page.pageRequest().page());
         assertEquals(2, page.numberOfElements());
@@ -869,8 +893,20 @@ public class EntityTests {
     @Assertion(id = "133", strategy = "Request the first Slice of 5 results, expecting to find all 5.")
     public void testFirstSliceOf5() {
         PageRequest first5 = PageRequest.ofSize(5).withoutTotal();
-        Page<NaturalNumber> page = numbers.findByNumTypeAndFloorOfSquareRootLessThanEqual(NumberType.PRIME, 8L,
-                first5, Sort.desc("id"));
+        Page<NaturalNumber> page;
+        try {
+            page = numbers.findByNumTypeAndFloorOfSquareRootLessThanEqual(
+                    NumberType.PRIME,
+                    8L,
+                    first5,
+                    Sort.desc("id"));
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
+                return; // LessThanEqual is not available in Key-Value databases
+            } else {
+                throw x;
+            }
+        }
         assertEquals(5, page.numberOfElements());
 
         Iterator<NaturalNumber> it = page.iterator();
@@ -910,7 +946,15 @@ public class EntityTests {
 
     @Assertion(id = "133", strategy = "Use a repository method existsByIdGreaterThan confirming the correct boolean is returned.")
     public void testGreaterThanEqualExists() {
-        assertEquals(true, positives.existsByIdGreaterThan(0L));
+        try {
+            assertEquals(true, positives.existsByIdGreaterThan(0L));
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
+                return; // Key-Value databases are not capable of GreaterThan
+            } else {
+                throw x;
+            }
+        }
         assertEquals(true, positives.existsByIdGreaterThan(99L));
         assertEquals(false, positives.existsByIdGreaterThan(100L)); // doesn't exist because the table only has 1 to 100
     }
@@ -1148,7 +1192,15 @@ public class EntityTests {
 
     @Assertion(id = "133", strategy = "Use a repository method countByIdLessThan confirming the correct count is returned.")
     public void testLessThanWithCount() {
-        assertEquals(91L, positives.countByIdLessThan(92L));
+        try {
+            assertEquals(91L, positives.countByIdLessThan(92L));
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
+                return; // Key-Value databases are not capable of LessThan
+            } else {
+                throw x;
+            }
+        }
 
         assertEquals(0L, positives.countByIdLessThan(1L));
     }
@@ -1156,10 +1208,21 @@ public class EntityTests {
     @Assertion(id = "133", strategy = "Use a repository method with both Sort and Limit, and verify that the Limit caps " +
                                       "the number of results and that results are ordered according to the sort criteria.")
     public void testLimit() {
-        Collection<NaturalNumber> nums = numbers.findByIdGreaterThanEqual(60L,
-                                                        Limit.of(10),
-                                                        Order.by(Sort.asc("floorOfSquareRoot"),
-                                                                   Sort.desc("id")));
+        Collection<NaturalNumber> nums;
+        try {
+            nums = numbers.findByIdGreaterThanEqual(
+                    60L,
+                    Limit.of(10),
+                    Order.by(
+                            Sort.asc("floorOfSquareRoot"),
+                            Sort.desc("id")));
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
+                return; // Key-Value databases are not capable of GreaterThanEqual
+            } else {
+                throw x;
+            }
+        }
 
         assertEquals(Arrays.toString(new Long[] { 63L, 62L, 61L, 60L, // square root rounds down to 7
                                 80L, 79L, 78L, 77L, 76L, 75L }), // square root rounds down to 8
@@ -1175,10 +1238,21 @@ public class EntityTests {
         // 61, 67, 71, 73, 79,
         // 83, 89, ...
 
-        Collection<NaturalNumber> nums = numbers.findByIdGreaterThanEqual(40L,
-                                                        Limit.range(6, 10),
-                                                        Order.by(Sort.asc("numType"), // primes first
-                                                                   Sort.asc("id")));
+        Collection<NaturalNumber> nums;
+        try {
+            nums = numbers.findByIdGreaterThanEqual(
+                    40L,
+                    Limit.range(6, 10),
+                    Order.by(
+                            Sort.asc("numType"), // primes first
+                            Sort.asc("id")));
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
+                return; // Key-Value databases are not capable of GreaterThanEqual
+            } else {
+                throw x;
+            }
+        }
 
         assertEquals(Arrays.toString(new Long[] { 61L, 67L, 71L, 73L, 79L }),
         Arrays.toString(nums.stream().map(number -> number.getId()).toArray()));
@@ -1187,7 +1261,16 @@ public class EntityTests {
     @Assertion(id = "133", strategy = "Use a repository method with Limit and verify that the Limit caps " +
                                       "the number of results to the amount that is specified.")
     public void testLimitToOneResult() {
-        Collection<NaturalNumber> nums = numbers.findByIdGreaterThanEqual(80L, Limit.of(1), Order.by());
+        Collection<NaturalNumber> nums;
+        try {
+            nums = numbers.findByIdGreaterThanEqual(80L, Limit.of(1), Order.by());
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
+                return; // Key-Value databases are not capable of GreaterThanEqual
+            } else {
+                throw x;
+            }
+        }
 
         Iterator<NaturalNumber> it = nums.iterator();
         assertEquals(true, it.hasNext());
@@ -1250,7 +1333,19 @@ public class EntityTests {
                strategy = "Use a repository method with two Sort parameters specifying a mixture of ascending and descending order, " +
                           "and verify all results are returned and are ordered according to the sort criteria.")
     public void testMixedSort() {
-        NaturalNumber[] nums = numbers.findByIdLessThan(15L, Sort.asc("numBitsRequired"), Sort.desc("id"));
+        NaturalNumber[] nums;
+        try {
+            nums = numbers.findByIdLessThan(
+                    15L,
+                    Sort.asc("numBitsRequired"),
+                    Sort.desc("id"));
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
+                return; // Key-Value databases are not capable of LessThan
+            } else {
+                throw x;
+            }
+        }
 
         assertEquals(Arrays.toString(new Long[] { 1L, // 1 bit
                                                   3L, 2L, // 2 bits
@@ -1310,7 +1405,17 @@ public class EntityTests {
         PageRequest pagination = PageRequest.ofSize(8);
         Order<NaturalNumber> order = Order.by(Sort.asc("numType"), Sort.desc("id"));
 
-        Page<NaturalNumber> page = numbers.findByIdLessThanOrderByFloorOfSquareRootDesc(25L, pagination, order);
+        Page<NaturalNumber> page;
+        try {
+            page = numbers.findByIdLessThanOrderByFloorOfSquareRootDesc(
+                    25L, pagination, order);
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
+                return; // Key-Value databases are not capable of LessThan
+            } else {
+                throw x;
+            }
+        }
 
         assertEquals(Arrays.toString(new Long[] { 23L, 19L, 17L, // square root rounds down to 4; prime
                                                   24L, 22L, 21L, 20L, 18L }), // square root rounds down to 4; composite
@@ -1517,8 +1622,17 @@ public class EntityTests {
     @Assertion(id = "133", strategy = "Request a Slice of results where none match the query, expecting an empty Slice with 0 results.")
     public void testSliceOfNothing() {
         PageRequest pagination =  PageRequest.ofSize(5).withoutTotal();
-        Page<NaturalNumber> page = numbers.findByNumTypeAndFloorOfSquareRootLessThanEqual(NumberType.COMPOSITE, 1L,
-                pagination, Sort.desc("id"));
+        Page<NaturalNumber> page;
+        try {
+            page = numbers.findByNumTypeAndFloorOfSquareRootLessThanEqual(
+                    NumberType.COMPOSITE, 1L, pagination, Sort.desc("id"));
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
+                return; // Key-Value databases are not capable of LessThanEqual
+            } else {
+                throw x;
+            }
+        }
 
         assertEquals(false, page.hasContent());
         assertEquals(0, page.content().size());
@@ -1583,7 +1697,17 @@ public class EntityTests {
         assertEquals(Sort.descIgnoreCase("thisCharacter"), _AsciiChar.thisCharacter.descIgnoreCase());
 
         Sort<AsciiCharacter> sort = _AsciiChar.numericValue.desc();
-        AsciiCharacter[] found = characters.findFirst3ByNumericValueGreaterThanEqualAndHexadecimalEndsWith(30, "1", sort);
+        AsciiCharacter[] found;
+        try {
+            found = characters.findFirst3ByNumericValueGreaterThanEqualAndHexadecimalEndsWith(
+                    30, "1", sort);
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
+                return; // Key-Value databases are not capable of GreaterThanEqual
+            } else {
+                throw x;
+            }
+        }
         assertEquals(3, found.length);
         assertEquals('q', found[0].getThisCharacter());
         assertEquals('a', found[1].getThisCharacter());
@@ -1598,7 +1722,17 @@ public class EntityTests {
         assertEquals(Sort.descIgnoreCase("thisCharacter"), _AsciiCharacter.thisCharacter.descIgnoreCase());
 
         Sort<AsciiCharacter> sort = _AsciiCharacter.numericValue.desc();
-        AsciiCharacter[] found = characters.findFirst3ByNumericValueGreaterThanEqualAndHexadecimalEndsWith(30, "4", sort);
+        AsciiCharacter[] found;
+        try {
+            found = characters.findFirst3ByNumericValueGreaterThanEqualAndHexadecimalEndsWith(
+                    30, "4", sort);
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
+                return; // Key-Value databases are not capable of GreaterThanEqual
+            } else {
+                throw x;
+            }
+        }
         assertEquals(3, found.length);
         assertEquals('t', found[0].getThisCharacter());
         assertEquals('d', found[1].getThisCharacter());
@@ -1607,7 +1741,17 @@ public class EntityTests {
 
     @Assertion(id = "133", strategy = "Obtain multiple streams from the same List result of a repository method.")
     public void testStreamsFromList() {
-        List<AsciiCharacter> chars = characters.findByNumericValueLessThanEqualAndNumericValueGreaterThanEqual(109, 101);
+        List<AsciiCharacter> chars;
+        try {
+            chars = characters.findByNumericValueLessThanEqualAndNumericValueGreaterThanEqual(
+                    109, 101);
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
+                return; // Key-Value databases are not capable of GTE/LTE
+            } else {
+                throw x;
+            }
+        }
 
         assertEquals(Arrays.toString(new Character[] { Character.valueOf('e'),
                                                        Character.valueOf('f'),
@@ -1681,8 +1825,17 @@ public class EntityTests {
     public void testThirdAndFourthSlicesOf5() {
         PageRequest third5 = PageRequest.ofPage(3).size(5).withoutTotal();
         Sort<NaturalNumber> sort = Sort.desc("id");
-        Page<NaturalNumber> page = numbers.findByNumTypeAndFloorOfSquareRootLessThanEqual(NumberType.PRIME, 8L,
-                third5, sort);
+        Page<NaturalNumber> page;
+        try {
+            page = numbers.findByNumTypeAndFloorOfSquareRootLessThanEqual(
+                    NumberType.PRIME, 8L, third5, sort);
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
+                return; // Key-Value databases are not capable of LessThanEqual
+            } else {
+                throw x;
+            }
+        }
 
         assertEquals(3, page.pageRequest().page());
         assertEquals(5, page.numberOfElements());
@@ -1704,7 +1857,17 @@ public class EntityTests {
 
     @Assertion(id = "133", strategy = "Use a repository method with the True keyword.")
     public void testTrue() {
-        Iterable<NaturalNumber> odd = positives.findByIsOddTrueAndIdLessThanEqualOrderByIdDesc(10L);
+        Iterable<NaturalNumber> odd;
+        try {
+            odd = positives.findByIsOddTrueAndIdLessThanEqualOrderByIdDesc(10L);
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
+                return; // Key-Value databases are not capable of LessThanEqual
+            } else {
+                throw x;
+            }
+        }
+
         Iterator<NaturalNumber> it = odd.iterator();
 
         assertEquals(true, it.hasNext());
@@ -1801,10 +1964,20 @@ public class EntityTests {
                strategy = "Use a repository method with varargs Sort... specifying a mixture of ascending and descending order, " +
                           "and verify all results are returned and are ordered according to the sort criteria.")
     public void testVarargsSort() {
-        List<NaturalNumber> list = numbers.findByIdLessThanEqual(12L,
-                                                                 Sort.asc("floorOfSquareRoot"),
-                                                                 Sort.desc("numBitsRequired"),
-                                                                 Sort.asc("id"));
+        List<NaturalNumber> list;
+        try {
+            list = numbers.findByIdLessThanEqual(
+                    12L,
+                    Sort.asc("floorOfSquareRoot"),
+                    Sort.desc("numBitsRequired"),
+                    Sort.asc("id"));
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
+                return; // Key-Value databases are not capable of LessThanEqual
+            } else {
+                throw x;
+            }
+        }
 
         assertEquals(Arrays.toString(new Long[] { 2L, 3L, // square root rounds down to 1; 2 bits
                                                   1L, // square root rounds down to 1; 1 bit
