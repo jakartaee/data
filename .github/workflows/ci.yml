@@ -5,9 +5,13 @@ name: Java CI with Maven
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - 'main'
+      - 'RELEASE-*'
   pull_request:
-    branches: [ "main" ]
+    branches:
+      - 'main'
+      - 'RELEASE-*'
 
 permissions:
   contents: read
