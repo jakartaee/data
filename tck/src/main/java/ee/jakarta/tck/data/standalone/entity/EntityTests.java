@@ -423,8 +423,17 @@ public class EntityTests {
 
         assertEquals(false, characters.existsById(-2L));
 
-        assertEquals(List.of(68L, 69L, 70L, 71L, 72L),
-                     characters.withIdEqualOrAbove(68L, Limit.of(5)));
+        try {
+            assertEquals(
+                    List.of(68L, 69L, 70L, 71L, 72L),
+                    characters.withIdEqualOrAbove(68L, Limit.of(5)));
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
+                return; // Key-Value databases are not capable of >= in JDQL
+            } else {
+                throw x;
+            }
+        }
 
         assertEquals(List.of(71L, 72L, 73L, 74L, 75L),
                      numbers.withIdEqualOrAbove(71L, Limit.of(5)));
@@ -1294,7 +1303,15 @@ public class EntityTests {
     @Assertion(id = "458", strategy = "Use a repository method with a JDQL Query that specifies literal Integer values.")
     public void testLiteralInteger() {
 
-        assertEquals(24, characters.twentyFour());
+        try {
+            assertEquals(24, characters.twentyFour());
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
+                return; // Key-Value databases are not capable of <= in JDQL
+            } else {
+                throw x;
+            }
+        }
     }
 
     @Assertion(id = "458", strategy = "Use a repository method with a JDQL Query that specifies literal String values.")
@@ -1606,8 +1623,17 @@ public class EntityTests {
     @Assertion(id = "458", strategy = "Use a repository method with a JDQL query that uses parenthesis to make OR be evaluated before AND.")
     public void testQueryWithParenthesis() {
 
-        assertEquals(List.of(15L, 7L, 5L, 3L, 1L),
-                     positives.oddAndEqualToOrBelow(15L, 9L));
+        try {
+            assertEquals(
+                    List.of(15L, 7L, 5L, 3L, 1L),
+                    positives.oddAndEqualToOrBelow(15L, 9L));
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
+                return; // Key-Value databases are not capable of < in JDQL
+            } else {
+                throw x;
+            }
+        }
     }
 
     @Assertion(id = "133", strategy = "Use a repository method that returns a single entity value where a single result is found.")
