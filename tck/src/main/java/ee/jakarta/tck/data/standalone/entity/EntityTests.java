@@ -1581,7 +1581,17 @@ public class EntityTests {
         // 'NOT LIKE' excludes '@'
         // 'NOT IN' excludes 'E' and 'G'
         // 'NOT BETWEEN' excludes 'H' through 'N'.
-        Character[] abcdfo = characters.getABCDFO();
+        Character[] abcdfo;
+        try {
+            abcdfo = characters.getABCDFO();
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                return; // NoSQL databases might not be capable of Like
+            } else {
+                throw x;
+            }
+        }
+
         assertEquals(6, abcdfo.length);
         for (int i = 0; i<abcdfo.length; i++) {
             assertEquals("ABCDFO".charAt(i), abcdfo[i]);
