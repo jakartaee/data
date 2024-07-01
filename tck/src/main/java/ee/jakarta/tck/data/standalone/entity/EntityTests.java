@@ -445,12 +445,12 @@ public class EntityTests {
         try {
             found = characters.findByHexadecimalContainsAndIsControlNot("4", true);    
         } catch (UnsupportedOperationException e) {
-            if(type.isKeywordSupportAtOrBelow(DatabaseType.DOCUMENT)) {
-                return; //passed
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                return; // NoSQL databases might not be capable of Contains
+            } else {
+                throw e;
             }
-            throw e;
         }
-        
 
         assertEquals(List.of("24", "34",
                              "40", "41", "42", "43",
