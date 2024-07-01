@@ -661,7 +661,17 @@ public class EntityTests {
                strategy = "Use a repository method with findFirstBy that returns the first entity value " +
                           "where multiple results would otherwise be found.")
     public void testFindFirst() {
-        Optional<AsciiCharacter> none = characters.findFirstByHexadecimalStartsWithAndIsControlOrderByIdAsc("h", false);
+        Optional<AsciiCharacter> none;
+        try {
+            none = characters.findFirstByHexadecimalStartsWithAndIsControlOrderByIdAsc(
+                    "h", false);
+        } catch (UnsupportedOperationException e) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                return; // NoSQL databases might not be capable of StartsWith
+            } else {
+                throw e;
+            }
+        }
         assertEquals(true, none.isEmpty());
 
         AsciiCharacter ch = characters.findFirstByHexadecimalStartsWithAndIsControlOrderByIdAsc("4", false)
