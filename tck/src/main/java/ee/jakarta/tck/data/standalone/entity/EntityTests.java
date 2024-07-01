@@ -468,11 +468,19 @@ public class EntityTests {
         assertEquals("7f", del.getHexadecimal());
         assertEquals(true, del.isControl());
 
-        AsciiCharacter j = characters.findByHexadecimalIgnoreCase("6A");
-        assertEquals("6a", j.getHexadecimal());
-        assertEquals('j', j.getThisCharacter());
-        assertEquals(106, j.getNumericValue());
-        assertEquals(false, j.isControl());
+        try {
+            AsciiCharacter j = characters.findByHexadecimalIgnoreCase("6A");
+            assertEquals("6a", j.getHexadecimal());
+            assertEquals('j', j.getThisCharacter());
+            assertEquals(106, j.getNumericValue());
+            assertEquals(false, j.isControl());
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                // NoSQL databases might not be capable of IgnoreCase
+            } else {
+                throw x;
+            }
+        }
 
         AsciiCharacter d = characters.findByNumericValue(100).orElseThrow();
         assertEquals(100, d.getNumericValue());
@@ -519,6 +527,12 @@ public class EntityTests {
             log.info("testEmptyResultException expected to catch exception " + x + ". Printing its stack trace:");
             x.printStackTrace(System.out);
             // test passes
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                return; // NoSQL databases might not be capable of IgnoreCase
+            } else {
+                throw x;
+            }
         }
     }
 
@@ -983,9 +997,18 @@ public class EntityTests {
 
     @Assertion(id = "133", strategy = "Use a repository method with the IgnoreCase keyword.")
     public void testIgnoreCase() {
-        Stream<AsciiCharacter> found = characters.findByHexadecimalIgnoreCaseBetweenAndHexadecimalNotIn("4c", "5A",
-                                                                                                        Set.of("5"),
-                                                                                                        Order.by(Sort.asc("hexadecimal")));
+        Stream<AsciiCharacter> found;
+        try {
+            found = characters.findByHexadecimalIgnoreCaseBetweenAndHexadecimalNotIn(
+                    "4c", "5A", Set.of("5"),
+                    Order.by(Sort.asc("hexadecimal")));
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                return; // NoSQL databases might not be capable of IgnoreCase
+            } else {
+                throw x;
+            }
+        }
 
         assertEquals(List.of(Character.valueOf('L'), // 4c
                              Character.valueOf('M'), // 4d
@@ -1638,7 +1661,17 @@ public class EntityTests {
 
     @Assertion(id = "133", strategy = "Use a repository method that returns a single entity value where a single result is found.")
     public void testSingleEntity() {
-        AsciiCharacter ch = characters.findByHexadecimalIgnoreCase("2B");
+        AsciiCharacter ch;
+        try {
+            ch = characters.findByHexadecimalIgnoreCase("2B");
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                return; // NoSQL databases might not be capable of IgnoreCase
+            } else {
+                throw x;
+            }
+        }
+
         assertEquals('+', ch.getThisCharacter());
         assertEquals("2b", ch.getHexadecimal());
         assertEquals(43, ch.getNumericValue());
