@@ -677,12 +677,14 @@ public class EntityTests {
         AsciiCharacter[] found;
         
         try {
-        found = characters.findFirst3ByNumericValueGreaterThanEqualAndHexadecimalEndsWith(40, "4", Sort.asc("numericValue"));
+            found = characters.findFirst3ByNumericValueGreaterThanEqualAndHexadecimalEndsWith(
+                    40, "4", Sort.asc("numericValue"));
         } catch (UnsupportedOperationException e) {
-            if(type.isKeywordSupportAtOrBelow(DatabaseType.DOCUMENT)) {
-                return; //passed
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                return; // NoSQL databases might not be capable of EndsWith
+            } else {
+                throw e;
             }
-            throw e;
         }
         
         assertEquals(3, found.length);
@@ -1761,8 +1763,10 @@ public class EntityTests {
             found = characters.findFirst3ByNumericValueGreaterThanEqualAndHexadecimalEndsWith(
                     30, "1", sort);
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
-                return; // Key-Value databases are not capable of GreaterThanEqual
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                // NoSQL databases might not be capable of EndsWith
+                // Key-Value databases are not capable of GreaterThanEqual
+                return;
             } else {
                 throw x;
             }
@@ -1786,8 +1790,10 @@ public class EntityTests {
             found = characters.findFirst3ByNumericValueGreaterThanEqualAndHexadecimalEndsWith(
                     30, "4", sort);
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
-                return; // Key-Value databases are not capable of GreaterThanEqual
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                // NoSQL databases might not be capable of EndsWith
+                // Key-Value databases are not capable of GreaterThanEqual
+                return;
             } else {
                 throw x;
             }
