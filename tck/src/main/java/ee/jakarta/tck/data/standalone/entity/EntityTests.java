@@ -125,7 +125,16 @@ public class EntityTests {
 
     @Assertion(id = "136", strategy = "Ensures that multiple readonly entities will be prepopulated before testing")
     public void ensureCharacterPrepopulation() {
-        assertEquals(127L, characters.countByHexadecimalNotNull());
+        try {
+            assertEquals(127L, characters.countByHexadecimalNotNull());
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                // NoSQL databases might not be capable of the Null comparison
+            } else {
+                throw x;
+            }
+        }
+
         assertEquals('0', characters.findByNumericValue(48).get().getThisCharacter());
         assertTrue(characters.findByNumericValue(1).get().isControl());
     }
@@ -1581,9 +1590,16 @@ public class EntityTests {
 
     @Assertion(id = "458", strategy = "Use a repository method with a JDQL query that uses the NULL keyword.")
     public void testQueryWithNull() {
-
-        assertEquals("4a", characters.hex('J').orElseThrow());
-        assertEquals("44", characters.hex('D').orElseThrow());
+        try {
+            assertEquals("4a", characters.hex('J').orElseThrow());
+            assertEquals("44", characters.hex('D').orElseThrow());
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                return; // NoSQL databases might not be capable of Contains
+            } else {
+                throw x;
+            }
+        }
     }
 
     @Assertion(id = "458", strategy = "Use a repository method with a JDQL query that relies on the OR operator.")
