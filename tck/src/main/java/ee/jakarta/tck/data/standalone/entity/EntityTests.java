@@ -501,6 +501,7 @@ public class EntityTests {
         } catch (UnsupportedOperationException x) {
             if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
                 // Key-Value databases are not capable of Between
+                // Key-Value databases are not capable of True/False comparison
             } else {
                 throw x;
             }
@@ -592,7 +593,9 @@ public class EntityTests {
             even = positives.findByIsOddFalseAndIdBetween(50L, 60L);
         } catch (UnsupportedOperationException x) {
             if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
-                return; // Key-Value databases are not capable of Between
+                // Key-Value databases are not capable of Between
+                // Key-Value databases are not capable of True/False comparison
+                return;
             } else {
                 throw x;
             }
@@ -1390,7 +1393,16 @@ public class EntityTests {
     @Assertion(id = "458", strategy = "Use a repository method with a JDQL Query that specifies an enum literal and a boolean false literal.")
     public void testLiteralEnumAndLiteralFalse() {
 
-        NaturalNumber two = numbers.two().orElseThrow();
+        NaturalNumber two;
+        try {
+            two = numbers.two().orElseThrow();
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
+                return; // Key-Value databases are not capable of JDQL TRUE/FALSE
+            } else {
+                throw x;
+            }
+        }
 
         assertEquals(2L, two.getId());
         assertEquals(NumberType.PRIME, two.getNumType());
@@ -1428,7 +1440,9 @@ public class EntityTests {
             page1 = numbers.oddsFrom21To(40L, PageRequest.ofSize(5));
         } catch (UnsupportedOperationException x) {
             if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
-                return; // Key-Value databases are not capable of JDQL BETWEEN
+                // Key-Value databases are not capable of JDQL BETWEEN
+                // Key-Value databases are not capable of JDQL TRUE/FALSE
+                return;
             } else {
                 throw x;
             }
@@ -1490,7 +1504,9 @@ public class EntityTests {
             // test passes
         } catch (UnsupportedOperationException x) {
             if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
-                return; // Key-Value databases are not capable of Between
+                // Key-Value databases are not capable of Between
+                // Key-Value databases are not capable of True/False comparison
+                return;
             } else {
                 throw x;
             }
@@ -2064,7 +2080,9 @@ public class EntityTests {
             odd = positives.findByIsOddTrueAndIdLessThanEqualOrderByIdDesc(10L);
         } catch (UnsupportedOperationException x) {
             if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
-                return; // Key-Value databases are not capable of LessThanEqual
+                // Key-Value databases are not capable of LessThanEqual
+                // Key-Value databases are not capable of True/False comparison
+                return;
             } else {
                 throw x;
             }
