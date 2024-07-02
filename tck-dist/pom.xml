@@ -50,7 +50,7 @@
   <asciidoctor.maven.plugin.version>3.0.0</asciidoctor.maven.plugin.version>
   <asciidoctorj.version>2.5.13</asciidoctorj.version>
   <asciidoctorj.pdf.version>2.3.17</asciidoctorj.pdf.version>
-  <jruby.version>9.4.7.0</jruby.version>
+  <jruby.version>9.4.8.0</jruby.version>
  </properties>
 
  <dependencies>
