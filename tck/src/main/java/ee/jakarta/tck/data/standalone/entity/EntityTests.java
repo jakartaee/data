@@ -125,7 +125,16 @@ public class EntityTests {
 
     @Assertion(id = "136", strategy = "Ensures that multiple readonly entities will be prepopulated before testing")
     public void ensureCharacterPrepopulation() {
-        assertEquals(127L, characters.countByHexadecimalNotNull());
+        try {
+            assertEquals(127L, characters.countByHexadecimalNotNull());
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                // NoSQL databases might not be capable of the Null comparison
+            } else {
+                throw x;
+            }
+        }
+
         assertEquals('0', characters.findByNumericValue(48).get().getThisCharacter());
         assertTrue(characters.findByNumericValue(1).get().isControl());
     }
@@ -136,11 +145,23 @@ public class EntityTests {
     public void testBasicRepository() {
 
         // custom method from NaturalNumbers:
-        Stream<NaturalNumber> found = numbers.findByIdBetweenOrderByNumTypeAsc(50L, 59L, Order.by(Sort.asc("id")));
-        List<Long> list = found.map(NaturalNumber::getId).collect(Collectors.toList());
-        assertEquals(List.of(53L, 59L, // first 2 must be primes
-                             50L, 51L, 52L, 54L, 55L, 56L, 57L, 58L), // the remaining 8 are composite numbers
-                     list);
+        try {
+            Stream<NaturalNumber> found = numbers.findByIdBetweenOrderByNumTypeAsc(
+                    50L, 59L,
+                    Order.by(Sort.asc("id")));
+            List<Long> list = found
+                    .map(NaturalNumber::getId)
+                    .collect(Collectors.toList());
+            assertEquals(List.of(53L, 59L, // first 2 must be primes
+                    50L, 51L, 52L, 54L, 55L, 56L, 57L, 58L), // the remaining 8 are composite numbers
+                    list);
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
+                // Key-Value databases are not capable of Between
+            } else {
+                throw x;
+            }
+        }
 
         // built-in method from BasicRepository:
         assertEquals(60L, numbers.findById(60L).orElseThrow().getId());
@@ -364,6 +385,7 @@ public class EntityTests {
         } catch (UnsupportedOperationException x) {
             // Some NoSQL databases lack the ability to count the total results
             // and therefore cannot support a return type of Page
+            // Key-Value databases are not capable of Between
             return;
         }
         assertEquals(0, page.numberOfElements());
@@ -411,9 +433,17 @@ public class EntityTests {
     @Assertion(id = "133", strategy = "Use a repository that inherits some if its methods from another interface.")
     public void testCommonInterfaceQueries() {
 
-        assertEquals(4L, numbers.countByIdBetween(87L, 90L));
+        try {
+            assertEquals(4L, numbers.countByIdBetween(87L, 90L));
 
-        assertEquals(5L, characters.countByIdBetween(86L, 90L));
+            assertEquals(5L, characters.countByIdBetween(86L, 90L));
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
+                // Key-Value databases are not capable of Between
+            } else {
+                throw x;
+            }
+        }
 
         assertEquals(true, numbers.existsById(73L));
 
@@ -445,12 +475,12 @@ public class EntityTests {
         try {
             found = characters.findByHexadecimalContainsAndIsControlNot("4", true);    
         } catch (UnsupportedOperationException e) {
-            if(type.isKeywordSupportAtOrBelow(DatabaseType.DOCUMENT)) {
-                return; //passed
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                return; // NoSQL databases might not be capable of Contains
+            } else {
+                throw e;
             }
-            throw e;
         }
-        
 
         assertEquals(List.of("24", "34",
                              "40", "41", "42", "43",
@@ -463,16 +493,33 @@ public class EntityTests {
 
     @Assertion(id = "133", strategy = "Use a repository that inherits from DataRepository and defines all of its own methods.")
     public void testDataRepository() {
-        AsciiCharacter del = characters.findByIsControlTrueAndNumericValueBetween(33, 127);
-        assertEquals(127, del.getNumericValue());
-        assertEquals("7f", del.getHexadecimal());
-        assertEquals(true, del.isControl());
+        try {
+            AsciiCharacter del = characters.findByIsControlTrueAndNumericValueBetween(33, 127);
+            assertEquals(127, del.getNumericValue());
+            assertEquals("7f", del.getHexadecimal());
+            assertEquals(true, del.isControl());
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
+                // Key-Value databases are not capable of Between
+                // Key-Value databases are not capable of True/False comparison
+            } else {
+                throw x;
+            }
+        }
 
-        AsciiCharacter j = characters.findByHexadecimalIgnoreCase("6A");
-        assertEquals("6a", j.getHexadecimal());
-        assertEquals('j', j.getThisCharacter());
-        assertEquals(106, j.getNumericValue());
-        assertEquals(false, j.isControl());
+        try {
+            AsciiCharacter j = characters.findByHexadecimalIgnoreCase("6A");
+            assertEquals("6a", j.getHexadecimal());
+            assertEquals('j', j.getThisCharacter());
+            assertEquals(106, j.getNumericValue());
+            assertEquals(false, j.isControl());
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                // NoSQL databases might not be capable of IgnoreCase
+            } else {
+                throw x;
+            }
+        }
 
         AsciiCharacter d = characters.findByNumericValue(100).orElseThrow();
         assertEquals(100, d.getNumericValue());
@@ -495,7 +542,18 @@ public class EntityTests {
                strategy = "Use a repository method with one Sort parameter specifying descending order, " +
                           "and verify all results are returned and are in descending order according to the sort criteria.")
     public void testDescendingSort() {
-        Stream<AsciiCharacter> stream = characters.findByIdBetween(52L, 57L, Sort.desc("id"));
+         Stream<AsciiCharacter> stream;
+         try {
+             stream = characters.findByIdBetween(
+                    52L, 57L,
+                    Sort.desc("id"));
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
+                return; // Key-Value databases are not capable of Between
+            } else {
+                throw x;
+            }
+        }
 
         assertEquals(Arrays.toString(new Character[] { '9', '8', '7', '6', '5', '4' }),
                      Arrays.toString(stream.map(AsciiCharacter::getThisCharacter).toArray()));
@@ -519,12 +577,29 @@ public class EntityTests {
             log.info("testEmptyResultException expected to catch exception " + x + ". Printing its stack trace:");
             x.printStackTrace(System.out);
             // test passes
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                return; // NoSQL databases might not be capable of IgnoreCase
+            } else {
+                throw x;
+            }
         }
     }
 
     @Assertion(id = "133", strategy = "Use a repository method with the False keyword.")
     public void testFalse() {
-        List<NaturalNumber> even = positives.findByIsOddFalseAndIdBetween(50L, 60L);
+        List<NaturalNumber> even;
+        try {
+            even = positives.findByIsOddFalseAndIdBetween(50L, 60L);
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
+                // Key-Value databases are not capable of Between
+                // Key-Value databases are not capable of True/False comparison
+                return;
+            } else {
+                throw x;
+            }
+        }
 
         assertEquals(6L, even.stream().count());
 
@@ -542,6 +617,7 @@ public class EntityTests {
         } catch (UnsupportedOperationException x) {
             // Some NoSQL databases lack the ability to count the total results
             // and therefore cannot support a return type of Page
+            // Key-Value databases are not capable of Between
             return;
         }
 
@@ -647,7 +723,17 @@ public class EntityTests {
                strategy = "Use a repository method with findFirstBy that returns the first entity value " +
                           "where multiple results would otherwise be found.")
     public void testFindFirst() {
-        Optional<AsciiCharacter> none = characters.findFirstByHexadecimalStartsWithAndIsControlOrderByIdAsc("h", false);
+        Optional<AsciiCharacter> none;
+        try {
+            none = characters.findFirstByHexadecimalStartsWithAndIsControlOrderByIdAsc(
+                    "h", false);
+        } catch (UnsupportedOperationException e) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                return; // NoSQL databases might not be capable of StartsWith
+            } else {
+                throw e;
+            }
+        }
         assertEquals(true, none.isEmpty());
 
         AsciiCharacter ch = characters.findFirstByHexadecimalStartsWithAndIsControlOrderByIdAsc("4", false)
@@ -663,12 +749,14 @@ public class EntityTests {
         AsciiCharacter[] found;
         
         try {
-        found = characters.findFirst3ByNumericValueGreaterThanEqualAndHexadecimalEndsWith(40, "4", Sort.asc("numericValue"));
+            found = characters.findFirst3ByNumericValueGreaterThanEqualAndHexadecimalEndsWith(
+                    40, "4", Sort.asc("numericValue"));
         } catch (UnsupportedOperationException e) {
-            if(type.isKeywordSupportAtOrBelow(DatabaseType.DOCUMENT)) {
-                return; //passed
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                return; // NoSQL databases might not be capable of EndsWith
+            } else {
+                throw e;
             }
-            throw e;
         }
         
         assertEquals(3, found.length);
@@ -884,6 +972,7 @@ public class EntityTests {
         } catch (UnsupportedOperationException x) {
             // Some NoSQL databases lack the ability to count the total results
             // and therefore cannot support a return type of Page
+            // Key-Value databases are not capable of Between
             return;
         }
 
@@ -983,9 +1072,20 @@ public class EntityTests {
 
     @Assertion(id = "133", strategy = "Use a repository method with the IgnoreCase keyword.")
     public void testIgnoreCase() {
-        Stream<AsciiCharacter> found = characters.findByHexadecimalIgnoreCaseBetweenAndHexadecimalNotIn("4c", "5A",
-                                                                                                        Set.of("5"),
-                                                                                                        Order.by(Sort.asc("hexadecimal")));
+        Stream<AsciiCharacter> found;
+        try {
+            found = characters.findByHexadecimalIgnoreCaseBetweenAndHexadecimalNotIn(
+                    "4c", "5A", Set.of("5"),
+                    Order.by(Sort.asc("hexadecimal")));
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                // NoSQL databases might not be capable of IgnoreCase
+                // Key-Value databases are not capable of Between
+                return;
+            } else {
+                throw x;
+            }
+        }
 
         assertEquals(List.of(Character.valueOf('L'), // 4c
                              Character.valueOf('M'), // 4d
@@ -1293,7 +1393,16 @@ public class EntityTests {
     @Assertion(id = "458", strategy = "Use a repository method with a JDQL Query that specifies an enum literal and a boolean false literal.")
     public void testLiteralEnumAndLiteralFalse() {
 
-        NaturalNumber two = numbers.two().orElseThrow();
+        NaturalNumber two;
+        try {
+            two = numbers.two().orElseThrow();
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
+                return; // Key-Value databases are not capable of JDQL TRUE/FALSE
+            } else {
+                throw x;
+            }
+        }
 
         assertEquals(2L, two.getId());
         assertEquals(NumberType.PRIME, two.getNumType());
@@ -1326,7 +1435,18 @@ public class EntityTests {
 
     @Assertion(id = "458", strategy = "Use a repository method with a JDQL Query that specifies a boolean true literal.")
     public void testLiteralTrue() {
-        Page<Long> page1 = numbers.oddsFrom21To(40L, PageRequest.ofSize(5));
+        Page<Long> page1;
+        try {
+            page1 = numbers.oddsFrom21To(40L, PageRequest.ofSize(5));
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
+                // Key-Value databases are not capable of JDQL BETWEEN
+                // Key-Value databases are not capable of JDQL TRUE/FALSE
+                return;
+            } else {
+                throw x;
+            }
+        }
 
         assertEquals(10L, page1.totalElements());
         assertEquals(2L, page1.totalPages());
@@ -1382,6 +1502,14 @@ public class EntityTests {
             log.info("testNonUniqueResultException expected to catch exception " + x + ". Printing its stack trace:");
             x.printStackTrace(System.out);
             // test passes
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
+                // Key-Value databases are not capable of Between
+                // Key-Value databases are not capable of True/False comparison
+                return;
+            } else {
+                throw x;
+            }
         }
     }
 
@@ -1469,9 +1597,18 @@ public class EntityTests {
                           "verfying that all results are returned and are ordered first by the static sort criteria, " +
                           "followed by the dynamic sort criteria when the value(s) being compared by the static criteria match.")
     public void testOrderByHasPrecedenceOverSorts() {
-        Stream<NaturalNumber> nums = numbers.findByIdBetweenOrderByNumTypeAsc(5L, 24L,
-                                                                              Order.by(Sort.desc("floorOfSquareRoot"),
-                                                                                       Sort.asc("id")));
+        Stream<NaturalNumber> nums;
+        try {
+            nums = numbers.findByIdBetweenOrderByNumTypeAsc(
+                    5L, 24L,
+                    Order.by(Sort.desc("floorOfSquareRoot"), Sort.asc("id")));
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
+                return; // Key-Value databases are not capable of Between
+            } else {
+                throw x;
+            }
+        }
 
         assertEquals(Arrays.toString(new Long[] { 17L, 19L, 23L, // prime; square root rounds down to 4
                                                   11L, 13L, // prime; square root rounds down to 3
@@ -1492,6 +1629,7 @@ public class EntityTests {
         } catch (UnsupportedOperationException x) {
             // Some NoSQL databases lack the ability to count the total results
             // and therefore cannot support a return type of Page
+            // Key-Value databases are not capable of Between
             return;
         }
 
@@ -1537,7 +1675,19 @@ public class EntityTests {
         // 'NOT LIKE' excludes '@'
         // 'NOT IN' excludes 'E' and 'G'
         // 'NOT BETWEEN' excludes 'H' through 'N'.
-        Character[] abcdfo = characters.getABCDFO();
+        Character[] abcdfo;
+        try {
+            abcdfo = characters.getABCDFO();
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                // NoSQL databases might not be capable of Like
+                // Key-Value databases are not capable of Between
+                return;
+            } else {
+                throw x;
+            }
+        }
+
         assertEquals(6, abcdfo.length);
         for (int i = 0; i<abcdfo.length; i++) {
             assertEquals("ABCDFO".charAt(i), abcdfo[i]);
@@ -1546,9 +1696,16 @@ public class EntityTests {
 
     @Assertion(id = "458", strategy = "Use a repository method with a JDQL query that uses the NULL keyword.")
     public void testQueryWithNull() {
-
-        assertEquals("4a", characters.hex('J').orElseThrow());
-        assertEquals("44", characters.hex('D').orElseThrow());
+        try {
+            assertEquals("4a", characters.hex('J').orElseThrow());
+            assertEquals("44", characters.hex('D').orElseThrow());
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                return; // NoSQL databases might not be capable of Contains
+            } else {
+                throw x;
+            }
+        }
     }
 
     @Assertion(id = "458", strategy = "Use a repository method with a JDQL query that relies on the OR operator.")
@@ -1638,7 +1795,17 @@ public class EntityTests {
 
     @Assertion(id = "133", strategy = "Use a repository method that returns a single entity value where a single result is found.")
     public void testSingleEntity() {
-        AsciiCharacter ch = characters.findByHexadecimalIgnoreCase("2B");
+        AsciiCharacter ch;
+        try {
+            ch = characters.findByHexadecimalIgnoreCase("2B");
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                return; // NoSQL databases might not be capable of IgnoreCase
+            } else {
+                throw x;
+            }
+        }
+
         assertEquals('+', ch.getThisCharacter());
         assertEquals("2b", ch.getHexadecimal());
         assertEquals(43, ch.getNumericValue());
@@ -1672,8 +1839,18 @@ public class EntityTests {
         assertEquals(Sort.ascIgnoreCase("thisCharacter"), _AsciiChar.thisCharacter.ascIgnoreCase());
 
         PageRequest pageRequest = PageRequest.ofSize(6);
-        Page<AsciiCharacter> page1 = characters.findByNumericValueBetween(68, 90, pageRequest,
-                                                                          Order.by(_AsciiChar.numericValue.asc()));
+        Page<AsciiCharacter> page1;
+        try {
+            page1 = characters.findByNumericValueBetween(
+                    68, 90, pageRequest,
+                    Order.by(_AsciiChar.numericValue.asc()));
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
+                return; // Key-Value databases are not capable of Between
+            } else {
+                throw x;
+            }
+        }
 
         assertEquals(List.of('D', 'E', 'F', 'G', 'H', 'I'),
                      page1.stream()
@@ -1689,8 +1866,18 @@ public class EntityTests {
         assertEquals(Sort.ascIgnoreCase("thisCharacter"), _AsciiCharacter.thisCharacter.ascIgnoreCase());
 
         PageRequest pageRequest = PageRequest.ofSize(7);
-        Page<AsciiCharacter> page1 = characters.findByNumericValueBetween(100, 122, pageRequest,
-                                                                          Order.by(_AsciiCharacter.numericValue.asc()));
+        Page<AsciiCharacter> page1;
+        try {
+            page1 = characters.findByNumericValueBetween(
+                    100, 122, pageRequest,
+                    Order.by(_AsciiCharacter.numericValue.asc()));
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
+                return; // Key-Value databases are not capable of Between
+            } else {
+                throw x;
+            }
+        }
 
         assertEquals(List.of('d', 'e', 'f', 'g', 'h', 'i', 'j'),
                      page1.stream()
@@ -1728,8 +1915,10 @@ public class EntityTests {
             found = characters.findFirst3ByNumericValueGreaterThanEqualAndHexadecimalEndsWith(
                     30, "1", sort);
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
-                return; // Key-Value databases are not capable of GreaterThanEqual
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                // NoSQL databases might not be capable of EndsWith
+                // Key-Value databases are not capable of GreaterThanEqual
+                return;
             } else {
                 throw x;
             }
@@ -1753,8 +1942,10 @@ public class EntityTests {
             found = characters.findFirst3ByNumericValueGreaterThanEqualAndHexadecimalEndsWith(
                     30, "4", sort);
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
-                return; // Key-Value databases are not capable of GreaterThanEqual
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                // NoSQL databases might not be capable of EndsWith
+                // Key-Value databases are not capable of GreaterThanEqual
+                return;
             } else {
                 throw x;
             }
@@ -1815,6 +2006,7 @@ public class EntityTests {
         } catch (UnsupportedOperationException x) {
             // Some NoSQL databases lack the ability to count the total results
             // and therefore cannot support a return type of Page
+            // Key-Value databases are not capable of Between
             return;
         }
 
@@ -1888,7 +2080,9 @@ public class EntityTests {
             odd = positives.findByIsOddTrueAndIdLessThanEqualOrderByIdDesc(10L);
         } catch (UnsupportedOperationException x) {
             if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
-                return; // Key-Value databases are not capable of LessThanEqual
+                // Key-Value databases are not capable of LessThanEqual
+                // Key-Value databases are not capable of True/False comparison
+                return;
             } else {
                 throw x;
             }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2023,2024 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -31,5 +31,5 @@ public interface Catalog extends DataRepository<Product, Long> {
     long countByPriceGreaterThanEqual(Double price);
     long countBySurgePriceGreaterThanEqual(Double price);
     
-    List<Product> findByNameLike(String name); 
+    List<Product> findByName(String name);
 }
