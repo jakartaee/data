@@ -1059,8 +1059,21 @@ public class EntityTests {
 
     @Assertion(id = "133", strategy = "Use a repository method with the In keyword.")
     public void testIn() {
-        Stream<NaturalNumber> nonPrimes = positives.findByNumTypeInOrderByIdAsc(Set.of(NumberType.COMPOSITE, NumberType.ONE),
-                                                                                Limit.of(9));
+        Stream<NaturalNumber> nonPrimes;
+        try {
+            nonPrimes = positives.findByNumTypeInOrderByIdAsc(
+                    Set.of(NumberType.COMPOSITE, NumberType.ONE),
+                    Limit.of(9));
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable of In
+                // when used with entity attributes other than the Id.
+                return;
+            } else {
+                throw x;
+            }
+        }
+
         assertEquals(List.of(1L, 4L, 6L, 8L, 9L, 10L, 12L, 14L, 15L),
                      nonPrimes.map(NaturalNumber::getId).collect(Collectors.toList()));
 
@@ -1081,6 +1094,8 @@ public class EntityTests {
             if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
                 // NoSQL databases might not be capable of IgnoreCase
                 // Key-Value databases are not capable of Between
+                // Column and Key-Value databases might not be capable of In
+                // when used with entity attributes other than the Id.
                 return;
             } else {
                 throw x;
@@ -1426,11 +1441,21 @@ public class EntityTests {
     @Assertion(id = "458", strategy = "Use a repository method with a JDQL Query that specifies literal String values.")
     public void testLiteralString() {
 
-        assertEquals(List.of('J', 'K', 'L', 'M'),
-                     characters.jklOr("4d")
-                                     .map(AsciiCharacter::getThisCharacter)
-                                     .sorted()
-                                     .collect(Collectors.toList()));
+        try {
+            assertEquals(List.of('J', 'K', 'L', 'M'),
+                         characters.jklOr("4d")
+                                         .map(AsciiCharacter::getThisCharacter)
+                                         .sorted()
+                                         .collect(Collectors.toList()));
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable of JDQL IN
+                // when used with entity attributes other than the Id.
+                return;
+            } else {
+                throw x;
+            }
+        }
     }
 
     @Assertion(id = "458", strategy = "Use a repository method with a JDQL Query that specifies a boolean true literal.")
