@@ -156,8 +156,9 @@ public class EntityTests {
                     50L, 51L, 52L, 54L, 55L, 56L, 57L, 58L), // the remaining 8 are composite numbers
                     list);
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
-                // Key-Value databases are not capable of Between
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable of sorting.
+                // Key-Value databases might not be capable of Between.
             } else {
                 throw x;
             }
@@ -384,8 +385,9 @@ public class EntityTests {
             page = characters.findByNumericValueBetween(48, 90, sixth, Order.by(_AsciiCharacter.numericValue.asc()));
         } catch (UnsupportedOperationException x) {
             // Some NoSQL databases lack the ability to count the total results
-            // and therefore cannot support a return type of Page
-            // Key-Value databases are not capable of Between
+            // and therefore cannot support a return type of Page.
+            // Column and Key-Value databases might not be capable of sorting.
+            // Key-Value databases might not be capable of Between.
             return;
         }
         assertEquals(0, page.numberOfElements());
@@ -407,7 +409,8 @@ public class EntityTests {
                     sixth,
                     Sort.desc("id"));
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable of sorting.
                 // Key-Value databases might not be capable of And.
                 // Key-Value databases might not be capable of LessThanEqual.
                 return;
@@ -561,8 +564,10 @@ public class EntityTests {
                     52L, 57L,
                     Sort.desc("id"));
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
-                return; // Key-Value databases are not capable of Between
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable of sorting.
+                // Key-Value databases might not be capable of Between.
+                return;
             } else {
                 throw x;
             }
@@ -575,10 +580,19 @@ public class EntityTests {
     @Assertion(id = "458", strategy = "Use a repository method with a JDQL query that has no clauses.")
     public void testEmptyQuery() {
 
-        assertEquals(List.of('a', 'b', 'c', 'd', 'e', 'f'),
-                     characters.all(Limit.range(97, 102), Sort.asc("id"))
-                                     .map(AsciiCharacter::getThisCharacter)
-                                     .collect(Collectors.toList()));
+        try {
+            assertEquals(List.of('a', 'b', 'c', 'd', 'e', 'f'),
+                         characters.all(Limit.range(97, 102), Sort.asc("id"))
+                                         .map(AsciiCharacter::getThisCharacter)
+                                         .collect(Collectors.toList()));
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable of sorting.
+                return;
+            } else {
+                throw x;
+            }
+        }
     }
 
     @Assertion(id = "133", strategy = "Use a repository method that returns a single entity value where no result is found. Expect EmptyResultException.")
@@ -630,8 +644,9 @@ public class EntityTests {
                                                         Order.by(_AsciiCharacter.numericValue.asc())); // 'X' to 'Z'
         } catch (UnsupportedOperationException x) {
             // Some NoSQL databases lack the ability to count the total results
-            // and therefore cannot support a return type of Page
-            // Key-Value databases are not capable of Between
+            // and therefore cannot support a return type of Page.
+            // Column and Key-Value databases might not be capable of sorting.
+            // Key-Value databases might not be capable of Between.
             return;
         }
 
@@ -682,7 +697,8 @@ public class EntityTests {
                     fifth,
                     Sort.desc("id"));
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable of sorting.
                 // Key-Value databases might not be capable of And.
                 // Key-Value databases might not be capable of LessThanEqual.
                 return;
@@ -724,8 +740,20 @@ public class EntityTests {
                           "sorted according to the mixture of ascending and descending sort orders specified.")
     public void testFindAllWithPagination() {
         PageRequest page2request = PageRequest.ofPage(2).size(12);
-        Page<NaturalNumber> page2 = positives.findAll(page2request,
-                                                      Order.by(Sort.asc("floorOfSquareRoot"), Sort.desc("id")));
+        Page<NaturalNumber> page2;
+        try {
+            page2 = positives.findAll(page2request,
+                    Order.by(
+                            Sort.asc("floorOfSquareRoot"),
+                            Sort.desc("id")));
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable of sorting.
+                return;
+            } else {
+                throw x;
+            }
+        }
 
         assertEquals(12, page2.numberOfElements());
         assertEquals(2, page2.pageRequest().page());
@@ -746,6 +774,7 @@ public class EntityTests {
         } catch (UnsupportedOperationException e) {
             if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
                 // NoSQL databases might not be capable of StartsWith.
+                // Column and Key-Value databases might not be capable of sorting.
                 // Key-Value databases might not be capable of And.
                return;
             } else {
@@ -772,6 +801,7 @@ public class EntityTests {
         } catch (UnsupportedOperationException e) {
             if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
                 // NoSQL databases might not be capable of EndsWith.
+                // Column and Key-Value databases might not be capable of sorting.
                 // Key-Value databases might not be capable of And.
                 return;
             } else {
@@ -789,21 +819,35 @@ public class EntityTests {
                strategy = "Find a list of entities, querying by entity attributes with names that match the method parameter names," +
                           " with results capped by a Limit parameter and sorted according to a variable arguments Sort parameter.")
     public void testFindList() {
-        List<NaturalNumber> oddCompositeNumbers = positives.findOdd(true, NumberType.COMPOSITE,
-                                                                    Limit.of(10),
-                                                                    Order.by(Sort.asc("floorOfSquareRoot"),
-                                                                               Sort.desc("numBitsRequired"),
-                                                                               Sort.asc("id")));
-        assertEquals(List.of(9L, 15L,  // 3 <= sqrt < 4, 4 bits
-                             21L,      // 4 <= sqrt < 5, 5 bits
-                             33L, 35L, // 5 <= sqrt < 6, 6 bits
-                             25L, 27L, // 5 <= sqrt < 6, 5 bits
-                             39L, 45L, // 6 <= sqrt < 7, 6 bits
-                             49L),     // 7 <= sqrt < 8, 6 bits
-                     oddCompositeNumbers
-                                     .stream()
-                                     .map(NaturalNumber::getId)
-                                     .collect(Collectors.toList()));
+        List<NaturalNumber> oddCompositeNumbers;
+        try {
+            oddCompositeNumbers = positives.findOdd(
+                    true,
+                    NumberType.COMPOSITE,
+                    Limit.of(10),
+                    Order.by(
+                            Sort.asc("floorOfSquareRoot"),
+                            Sort.desc("numBitsRequired"),
+                            Sort.asc("id")));
+
+
+            assertEquals(List.of(9L, 15L,  // 3 <= sqrt < 4, 4 bits
+                                 21L,      // 4 <= sqrt < 5, 5 bits
+                                 33L, 35L, // 5 <= sqrt < 6, 6 bits
+                                 25L, 27L, // 5 <= sqrt < 6, 5 bits
+                                 39L, 45L, // 6 <= sqrt < 7, 6 bits
+                                 49L),     // 7 <= sqrt < 8, 6 bits
+                         oddCompositeNumbers
+                                         .stream()
+                                         .map(NaturalNumber::getId)
+                                         .collect(Collectors.toList()));
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable of sorting.
+            } else {
+                throw x;
+            }
+        }
 
         List<NaturalNumber> evenPrimeNumbers = positives.findOdd(false, NumberType.PRIME, Limit.of(9), Order.by());
 
@@ -849,8 +893,22 @@ public class EntityTests {
     public void testFindPage() {
         PageRequest page1Request = PageRequest.ofSize(7);
 
-        Page<NaturalNumber> page1 = positives.findMatching(9L, Short.valueOf((short) 7), NumberType.COMPOSITE,
-                                                           page1Request, Sort.desc("id"));
+        Page<NaturalNumber> page1;
+        try {
+            page1 = positives.findMatching(
+                    9L,
+                    Short.valueOf((short) 7),
+                    NumberType.COMPOSITE,
+                    page1Request,
+                    Sort.desc("id"));
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable of sorting.
+                return;
+            } else {
+                throw x;
+            }
+        }
 
         assertEquals(List.of(99L, 98L, 96L, 95L, 94L, 93L, 92L),
                      page1.stream().map(NaturalNumber::getId).collect(Collectors.toList()));
@@ -897,6 +955,7 @@ public class EntityTests {
         } catch (UnsupportedOperationException x) {
             // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
             // is not capable of cursor-based pagination.
+            // Column and Key-Value databases might not be capable of sorting.
             // Key-Value databases might not be capable of And.
             return;
         }
@@ -946,6 +1005,7 @@ public class EntityTests {
         } catch (UnsupportedOperationException x) {
             // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
             // is not capable of cursor-based pagination.
+            // Column and Key-Value databases might not be capable of sorting.
             return;
         }
 
@@ -992,8 +1052,9 @@ public class EntityTests {
                                                         Order.by(_AsciiCharacter.numericValue.asc())); // '0' to 'Z'
         } catch (UnsupportedOperationException x) {
             // Some NoSQL databases lack the ability to count the total results
-            // and therefore cannot support a return type of Page
-            // Key-Value databases are not capable of Between
+            // and therefore cannot support a return type of Page.
+            // Column and Key-Value databases might not be capable of sorting.
+            // Key-Value databases might not be capable of Between.
             return;
         }
 
@@ -1020,7 +1081,8 @@ public class EntityTests {
                     first5,
                     Sort.desc("id"));
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable of sorting.
                 // Key-Value databases might not be capable of And.
                 // Key-value databases might not be capable of LessThanEqual.
                 return;
@@ -1119,6 +1181,7 @@ public class EntityTests {
                 // Key-Value databases might not be capable of And.
                 // Key-Value databases might not be capable of Between.
                 // Column and Key-Value databases might not be capable of In
+                // Column and Key-Value databases might not be capable of sorting.
                 // when used with entity attributes other than the Id.
                 return;
             } else {
@@ -1167,6 +1230,7 @@ public class EntityTests {
         } catch (UnsupportedOperationException x) {
             // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
             // is not capable of cursor-based pagination.
+            // Column and Key-Value databases might not be capable of sorting.
             // Key-Value databases might not be capable of And.
             return;
         }
@@ -1229,6 +1293,7 @@ public class EntityTests {
         } catch (UnsupportedOperationException x) {
             // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
             // is not capable of cursor-based pagination.
+            // Column and Key-Value databases might not be capable of sorting.
             // Key-Value databases might not be capable of And.
             return;
         }
@@ -1277,6 +1342,7 @@ public class EntityTests {
         } catch (UnsupportedOperationException x) {
             // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
             // is not capable of cursor-based pagination.
+            // Column and Key-Value databases might not be capable of sorting.
             // Key-Value databases might not be capable of And.
             return;
         }
@@ -1333,6 +1399,7 @@ public class EntityTests {
         } catch (UnsupportedOperationException x) {
             // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
             // is not capable of cursor-based pagination.
+            // Column and Key-Value databases might not be capable of sorting.
             return;
         }
 
@@ -1368,8 +1435,10 @@ public class EntityTests {
                             Sort.asc("floorOfSquareRoot"),
                             Sort.desc("id")));
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
-                return; // Key-Value databases are not capable of GreaterThanEqual
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable of sorting.
+                // Key-Value databases are not capable of GreaterThanEqual
+                return;
             } else {
                 throw x;
             }
@@ -1398,8 +1467,10 @@ public class EntityTests {
                             Sort.asc("numType"), // primes first
                             Sort.asc("id")));
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
-                return; // Key-Value databases are not capable of GreaterThanEqual
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable of sorting.
+                // Key-Value databases are not capable of GreaterThanEqual
+                return;
             } else {
                 throw x;
             }
@@ -1532,8 +1603,10 @@ public class EntityTests {
                     Sort.asc("numBitsRequired"),
                     Sort.desc("id"));
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
-                return; // Key-Value databases are not capable of LessThan
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable of sorting.
+                // Key-Value databases might not be capable of LessThan.
+                return;
             } else {
                 throw x;
             }
@@ -1571,7 +1644,20 @@ public class EntityTests {
 
     @Assertion(id = "133", strategy = "Use a repository method with the Not keyword.")
     public void testNot() {
-        NaturalNumber[] n = numbers.findByNumTypeNot(NumberType.COMPOSITE, Limit.of(8), Order.by(Sort.asc("id")));
+        NaturalNumber[] n;
+        try {
+            n = numbers.findByNumTypeNot(
+                    NumberType.COMPOSITE,
+                    Limit.of(8),
+                    Order.by(Sort.asc("id")));
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable of sorting.
+                return;
+            } else {
+                throw x;
+            }
+        }
         assertEquals(8, n.length);
         assertEquals(1L, n[0].getId());
         assertEquals(2L, n[1].getId());
@@ -1614,8 +1700,10 @@ public class EntityTests {
             page = numbers.findByIdLessThanOrderByFloorOfSquareRootDesc(
                     25L, pagination, order);
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
-                return; // Key-Value databases are not capable of LessThan
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable of sorting.
+                // Key-Value databases might not be capable of LessThan.
+                return;
             } else {
                 throw x;
             }
@@ -1662,8 +1750,10 @@ public class EntityTests {
                     5L, 24L,
                     Order.by(Sort.desc("floorOfSquareRoot"), Sort.asc("id")));
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
-                return; // Key-Value databases are not capable of Between
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable of sorting.
+                // Key-Value databases might not be capable of Between.
+                return;
             } else {
                 throw x;
             }
@@ -1687,8 +1777,9 @@ public class EntityTests {
                                                         Order.by(_AsciiCharacter.id.asc()));
         } catch (UnsupportedOperationException x) {
             // Some NoSQL databases lack the ability to count the total results
-            // and therefore cannot support a return type of Page
-            // Key-Value databases are not capable of Between
+            // and therefore cannot support a return type of Page.
+            // Column and Key-Value databases might not be capable of sorting.
+            // Key-Value databases might not be capable of Between.
             return;
         }
 
@@ -1785,6 +1876,7 @@ public class EntityTests {
             // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
             // is not capable of cursor-based pagination.
             // Column and Key-Value databases might not be capable of JPQL OR.
+            // Column and Key-Value databases might not be capable of sorting.
             return;
         }
 
@@ -1886,7 +1978,8 @@ public class EntityTests {
             page = numbers.findByNumTypeAndFloorOfSquareRootLessThanEqual(
                     NumberType.COMPOSITE, 1L, pagination, Sort.desc("id"));
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable of sorting.
                 // Key-Value databases might not be capable of And.
                 // Key-Value databases might not be capable of LessThanEqual.
                 return;
@@ -1913,8 +2006,10 @@ public class EntityTests {
                     68, 90, pageRequest,
                     Order.by(_AsciiChar.numericValue.asc()));
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
-                return; // Key-Value databases are not capable of Between
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable of sorting.
+                // Key-Value databases might not be capable of Between.
+                return;
             } else {
                 throw x;
             }
@@ -1940,8 +2035,10 @@ public class EntityTests {
                     100, 122, pageRequest,
                     Order.by(_AsciiCharacter.numericValue.asc()));
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
-                return; // Key-Value databases are not capable of Between
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable of sorting.
+                // Key-Value databases might not be capable of Between.
+                return;
             } else {
                 throw x;
             }
@@ -1985,6 +2082,7 @@ public class EntityTests {
         } catch (UnsupportedOperationException x) {
             if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
                 // NoSQL databases might not be capable of EndsWith.
+                // Column and Key-Value databases might not be capable of sorting.
                 // Key-Value databases might not be capable of And.
                 // Key-Value databases might not be capable of GreaterThanEqual.
                 return;
@@ -2012,7 +2110,8 @@ public class EntityTests {
                     30, "4", sort);
         } catch (UnsupportedOperationException x) {
             if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
-                // NoSQL databases might not be capable of EndsWith
+                // NoSQL databases might not be capable of EndsWith.
+                // Column and Key-Value databases might not be capable of sorting.
                 // Key-Value databases might not be capable of And.
                 // Key-Value databases might not be capable of GreaterThanEqual.
                 return;
@@ -2077,8 +2176,9 @@ public class EntityTests {
             page = characters.findByNumericValueBetween(48, 90, third10, order); // 'D' to 'M'
         } catch (UnsupportedOperationException x) {
             // Some NoSQL databases lack the ability to count the total results
-            // and therefore cannot support a return type of Page
-            // Key-Value databases are not capable of Between
+            // and therefore cannot support a return type of Page.
+            // Column and Key-Value databases might not be capable of sorting.
+            // Key-Value databases might not be capable of Between.
             return;
         }
 
@@ -2120,7 +2220,8 @@ public class EntityTests {
             page = numbers.findByNumTypeAndFloorOfSquareRootLessThanEqual(
                     NumberType.PRIME, 8L, third5, sort);
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable of sorting.
                 // Key-Value databases might not be capable of And.
                 // Key-Value databases might not be capable of LessThanEqual.
                 return;
@@ -2275,8 +2376,10 @@ public class EntityTests {
                     Sort.desc("numBitsRequired"),
                     Sort.asc("id"));
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
-                return; // Key-Value databases are not capable of LessThanEqual
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable of sorting.
+                // Key-Value databases might not be capable of LessThanEqual.
+                return;
             } else {
                 throw x;
             }

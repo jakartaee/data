@@ -18,6 +18,7 @@ package ee.jakarta.tck.data.web.validation;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,6 +33,8 @@ import org.junit.jupiter.api.BeforeEach;
 import ee.jakarta.tck.data.framework.junit.anno.AnyEntity;
 import ee.jakarta.tck.data.framework.junit.anno.Assertion;
 import ee.jakarta.tck.data.framework.junit.anno.Web;
+import ee.jakarta.tck.data.framework.utilities.DatabaseType;
+import ee.jakarta.tck.data.framework.utilities.TestProperty;
 import ee.jakarta.tck.data.framework.utilities.TestPropertyUtility;
 import jakarta.inject.Inject;
 import jakarta.validation.ConstraintViolationException;
@@ -48,7 +51,9 @@ public class ValidationTests {
     
     @Inject
     private Rectangles rectangles;
-    
+
+    private DatabaseType type = TestProperty.databaseType.getDatabaseType();
+
     @BeforeEach
     public void cleanup() {
         rectangles.deleteEverything();
@@ -264,7 +269,17 @@ public class ValidationTests {
         assertEquals(3, rectangles.countAll(), "Number of results was incorrect");
         
         // Get
-        List<Rectangle> resultRects = rectangles.findEverythingIdSorted();
+        List<Rectangle> resultRects;
+        try {
+            resultRects = rectangles.findEverythingIdSorted();
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable of sorting.
+                return;
+            } else {
+                throw x;
+            }
+        }
         
         // Verify
         for(int i = 0; i < resultRects.size(); i++) {
@@ -291,10 +306,25 @@ public class ValidationTests {
         assertEquals(4, rectangles.countAll(), "Number of results was incorrect");
         
         // Get
-        resultingException = assertThrows(ConstraintViolationException.class, () -> {
+        try {
             rectangles.findEverythingIdSorted(); //returns 4 results when max is 3
-        });
-        
+            fail("Rectangles.findEverythingIdSorted did not raise ConstraintViolationException.");
+            return;
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable of sorting.
+                return;
+            } else {
+                throw x;
+            }
+        } catch (Exception x) {
+            if (x instanceof ConstraintViolationException) {
+                resultingException = (ConstraintViolationException) x;
+            } else {
+                throw x;
+            }
+        }
+
         // Verify
         assertEquals(1, resultingException.getConstraintViolations().size());
     }
