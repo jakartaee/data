@@ -1589,9 +1589,12 @@ public class EntityTests {
         try {
             found = positives.findByNumTypeOrFloorOfSquareRoot(NumberType.ONE, 2L);
         } catch (UnsupportedOperationException x) {
-            // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
-            // is not capable of the OR operation.
-            return;
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable of Or.
+                return;
+            } else {
+                throw x;
+            }
         }
 
         assertEquals(List.of(1L, 4L, 5L, 6L, 7L, 8L),
@@ -1781,6 +1784,7 @@ public class EntityTests {
         } catch (UnsupportedOperationException x) {
             // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
             // is not capable of cursor-based pagination.
+            // Column and Key-Value databases might not be capable of JPQL OR.
             return;
         }
 
@@ -1844,8 +1848,9 @@ public class EntityTests {
                     List.of(15L, 7L, 5L, 3L, 1L),
                     positives.oddAndEqualToOrBelow(15L, 9L));
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
-                // Key-Value databases are not capable of < in JDQL.
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable of JDQL OR.
+                // Key-Value databases might not be capable of < in JDQL.
                 // Key-Value databases might not be capable of JDQL AND.
                 return;
             } else {
