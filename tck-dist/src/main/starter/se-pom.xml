@@ -21,7 +21,7 @@
  <modelVersion>4.0.0</modelVersion>
 
  <groupId>jakarta.data</groupId>
- <artifactId>data-tck-runner</artifactId>
+ <artifactId>data-tck-se-runner</artifactId>
  <version>1.0-SNAPSHOT</version>
  <name>Jakarta Data TCK Runner for [YOUR_IMPL]</name>
 
@@ -129,7 +129,7 @@
  <!-- end::runtimeDep[] -->
 
  <build>
-  <directory>${targetDirectory}</directory>
+  <directory>target</directory>
   <defaultGoal>clean test</defaultGoal>
   <plugins>
    <!-- Compile plugin for any supplemental class files -->

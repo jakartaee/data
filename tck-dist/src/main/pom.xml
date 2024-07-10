@@ -28,6 +28,7 @@
  <groupId>jakarta.data</groupId>
  <artifactId>data-tck-aggregator</artifactId>
  <version>1.0-SNAPSHOT</version>
+ <packaging>pom</packaging>
   
   <modules>
       <module>starter/ee-pom.xml</module>

@@ -90,13 +90,16 @@
 
         <apache.rat.version>0.16.1</apache.rat.version>
 
-        <arquillian.version>1.8.0.Final</arquillian.version>
+        <arquillian.version>1.9.0.Final</arquillian.version>
+        <arquillian.jakarta.version>10.0.0.Final</arquillian.jakarta.version>
         <junit.version>5.10.3</junit.version>
         <pi-test.version>1.16.1</pi-test.version>
         <pitest-junit5-plugin.version>1.2.1</pitest-junit5-plugin.version>
         <checkstyle.version>10.17.0</checkstyle.version>
         <checkstyle.excludes></checkstyle.excludes>
         <jacoco.maven.version>0.8.12</jacoco.maven.version>
+        <shrinkwrap.version>1.2.6</shrinkwrap.version>
+        <shrinkwrap.resolver.version>3.3.0</shrinkwrap.resolver.version>
         <sigtest.version>2.3</sigtest.version>
         <sonar.jacoco.reportPath>../target/jacoco.exec</sonar.jacoco.reportPath>
         <sonar.maven.version>4.0.0.4121</sonar.maven.version>
@@ -115,6 +118,27 @@
                 <groupId>org.jboss.arquillian</groupId>
                 <artifactId>arquillian-bom</artifactId>
                 <version>${arquillian.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.arquillian.jakarta</groupId>
+                <artifactId>arquillian-jakarta-bom</artifactId>
+                <version>${arquillian.jakarta.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.shrinkwrap</groupId>
+                <artifactId>shrinkwrap-bom</artifactId>
+                <version>${shrinkwrap.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.shrinkwrap.resolver</groupId>
+                <artifactId>shrinkwrap-resolver-bom</artifactId>
+                <version>${shrinkwrap.resolver.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>

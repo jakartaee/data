@@ -21,7 +21,7 @@
  <modelVersion>4.0.0</modelVersion>
 
  <groupId>jakarta.data</groupId>
- <artifactId>data-tck-runner</artifactId>
+ <artifactId>data-tck-ee-runner</artifactId>
  <version>1.0-SNAPSHOT</version>
  <name>Jakarta Data TCK Runner for [YOUR_IMPL]</name>
 
@@ -38,8 +38,11 @@
   <jakarta.enterprise.cdi.version>4.1.0</jakarta.enterprise.cdi.version>
 
   <arquillian.version>1.9.0.Final</arquillian.version>
+  <arquillian.jakarta.version>10.0.0.Final</arquillian.jakarta.version>
   <junit.version>5.10.3</junit.version>
   <sigtest.version>2.3</sigtest.version>
+  <shrinkwrap.version>1.2.6</shrinkwrap.version>
+  <shrinkwrap.resolver.version>3.3.0</shrinkwrap.resolver.version>
 
   <maven.dep.plugin.version>3.3.0</maven.dep.plugin.version>
   <maven.comp.plugin.version>3.13.0</maven.comp.plugin.version>
@@ -70,6 +73,13 @@
  <dependencyManagement>
   <dependencies>
    <dependency>
+    <groupId>org.junit</groupId>
+    <artifactId>junit-bom</artifactId>
+    <version>${junit.version}</version>
+    <type>pom</type>
+    <scope>import</scope>
+   </dependency>
+   <dependency>
     <groupId>org.jboss.arquillian</groupId>
     <artifactId>arquillian-bom</artifactId>
     <version>${arquillian.version}</version>
@@ -77,9 +87,23 @@
     <scope>import</scope>
    </dependency>
    <dependency>
-    <groupId>org.junit</groupId>
-    <artifactId>junit-bom</artifactId>
-    <version>${junit.version}</version>
+    <groupId>org.jboss.arquillian.jakarta</groupId>
+    <artifactId>arquillian-jakarta-bom</artifactId>
+    <version>${arquillian.jakarta.version}</version>
+    <type>pom</type>
+    <scope>import</scope>
+   </dependency>
+   <dependency>
+    <groupId>org.jboss.shrinkwrap</groupId>
+    <artifactId>shrinkwrap-bom</artifactId>
+    <version>${shrinkwrap.version}</version>
+    <type>pom</type>
+    <scope>import</scope>
+   </dependency>
+   <dependency>
+    <groupId>org.jboss.shrinkwrap.resolver</groupId>
+    <artifactId>shrinkwrap-resolver-bom</artifactId>
+    <version>${shrinkwrap.resolver.version}</version>
     <type>pom</type>
     <scope>import</scope>
    </dependency>
@@ -132,7 +156,7 @@
  <!-- end::testClientDep[] -->
 
  <build>
-  <directory>${targetDirectory}</directory>
+  <directory>target</directory>
   <defaultGoal>clean test</defaultGoal>
   <plugins>
    <!-- Compile plugin for any supplemental class files -->
