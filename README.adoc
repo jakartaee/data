@@ -181,7 +181,7 @@ You don’t need to build from source to use the project, but you can do so with
 
 [source, Bash]
 ----
-mvn clean install
+mvn package
 ----
 == Meetings
 
