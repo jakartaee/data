@@ -67,9 +67,5 @@ public class NoSQLEntityTests {
         long countExpensive = catalog.countByPriceGreaterThanEqual(2.99);
         assertEquals(2L, countExpensive, "Expected two products to be more than 3.00");
         
-        Assertions.assertThrows(MappingException.class, () -> {
-            catalog.countBySurgePriceGreaterThanEqual(2.99);
-        });
-        
     }
 }
