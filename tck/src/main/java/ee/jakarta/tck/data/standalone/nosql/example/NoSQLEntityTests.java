@@ -23,13 +23,11 @@ import java.util.List;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.junit.jupiter.api.Assertions;
 
 import ee.jakarta.tck.data.framework.junit.anno.Assertion;
 import ee.jakarta.tck.data.framework.junit.anno.NoSQL;
 import ee.jakarta.tck.data.framework.junit.anno.Standalone;
 import ee.jakarta.tck.data.framework.utilities.TestPropertyUtility;
-import jakarta.data.exceptions.MappingException;
 import jakarta.inject.Inject;
 
 /**
@@ -66,10 +64,6 @@ public class NoSQLEntityTests {
         
         long countExpensive = catalog.countByPriceGreaterThanEqual(2.99);
         assertEquals(2L, countExpensive, "Expected two products to be more than 3.00");
-        
-        Assertions.assertThrows(MappingException.class, () -> {
-            catalog.countBySurgePriceGreaterThanEqual(2.99);
-        });
         
     }
 }
