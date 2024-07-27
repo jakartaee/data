@@ -394,8 +394,16 @@ public class EntityTests {
         assertEquals(0, page.stream().count());
         assertEquals(false, page.hasContent());
         assertEquals(false, page.iterator().hasNext());
-        assertEquals(43L, page.totalElements());
-        assertEquals(5L, page.totalPages());
+        try {
+            assertEquals(43L, page.totalElements());
+            assertEquals(5L, page.totalPages());
+        } catch (UnsupportedOperationException x) {
+            // Some NoSQL databases lack the ability to count the total results
+            // and therefore cannot support a return type of Page.
+            // Column and Key-Value databases might not be capable of sorting.
+            // Key-Value databases might not be capable of Between.
+            return;
+        }
     }
 
     @Assertion(id = "133", strategy = "Request a Slice higher than the final Slice, expecting an empty Slice with 0 results.")
