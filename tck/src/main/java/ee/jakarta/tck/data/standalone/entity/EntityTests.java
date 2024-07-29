@@ -2232,16 +2232,16 @@ public class EntityTests {
 
         assertEquals(3, page.pageRequest().page());
         assertEquals(true, page.hasContent());
+        assertEquals(10, page.numberOfElements());
         try {
-            assertEquals(10, page.numberOfElements());
             assertEquals(43L, page.totalElements());
             assertEquals(5L, page.totalPages());
         } catch (UnsupportedOperationException x) {
-            // Some NoSQL databases lack the ability to count the total results
-            // and therefore cannot support a return type of Page.
-            // Column and Key-Value databases might not be capable of sorting.
-            // Key-Value databases might not be capable of Between.
-            return;
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                // Some NoSQL databases lack the ability to count the total results
+            } else {
+                throw x;
+            }
         }
 
         assertEquals("44:D;45:E;46:F;47:G;48:H;49:I;4a:J;4b:K;4c:L;4d:M;",
