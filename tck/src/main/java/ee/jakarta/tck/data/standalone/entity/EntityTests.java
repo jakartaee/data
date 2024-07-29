@@ -1603,11 +1603,11 @@ public class EntityTests {
             assertEquals(2L, page1.totalPages());
 
         } catch (UnsupportedOperationException x) {
-            // Some NoSQL databases lack the ability to count the total results
-            // and therefore cannot support a return type of Page.
-            // Column and Key-Value databases might not be capable of sorting.
-            // Key-Value databases might not be capable of Between.
-            return;
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                // Some NoSQL databases lack the ability to count the total results
+            } else {
+                throw x;
+            }
         }
         assertEquals(List.of(21L, 23L, 25L, 27L, 29L), page1.content());
 
