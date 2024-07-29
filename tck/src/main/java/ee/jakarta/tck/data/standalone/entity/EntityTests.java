@@ -1925,17 +1925,17 @@ public class EntityTests {
                                      .map(NaturalNumber::getId)
                                      .collect(Collectors.toList()));
 
+        assertEquals(true, page1.hasTotals());
+        assertEquals(true, page1.hasNext());
         try {
-            assertEquals(true, page1.hasTotals());
-            assertEquals(true, page1.hasNext());
             assertEquals(3L, page1.totalPages());
             assertEquals(12L, page1.totalElements());
         } catch (UnsupportedOperationException x) {
-            // Some NoSQL databases lack the ability to count the total results
-            // and therefore cannot support a return type of Page.
-            // Column and Key-Value databases might not be capable of sorting.
-            // Key-Value databases might not be capable of Between.
-            return;
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                // Some NoSQL databases lack the ability to count the total results
+            } else {
+                throw x;
+            }
         }
 
         CursoredPage<NaturalNumber> page2;
