@@ -394,8 +394,16 @@ public class EntityTests {
         assertEquals(0, page.stream().count());
         assertEquals(false, page.hasContent());
         assertEquals(false, page.iterator().hasNext());
-        assertEquals(43L, page.totalElements());
-        assertEquals(5L, page.totalPages());
+        try {
+            assertEquals(43L, page.totalElements());
+            assertEquals(5L, page.totalPages());
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                // Some NoSQL databases lack the ability to count the total results
+            } else {
+                throw x;
+            }
+        }
     }
 
     @Assertion(id = "133", strategy = "Request a Slice higher than the final Slice, expecting an empty Slice with 0 results.")
@@ -682,8 +690,16 @@ public class EntityTests {
         assertEquals(5, page.pageRequest().page());
         assertEquals(true, page.hasContent());
         assertEquals(3, page.numberOfElements());
-        assertEquals(43L, page.totalElements());
-        assertEquals(5L, page.totalPages());
+        try {
+            assertEquals(43L, page.totalElements());
+            assertEquals(5L, page.totalPages());
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                // Some NoSQL databases lack the ability to count the total results
+            } else {
+                throw x;
+            }
+        }
     }
 
     @Assertion(id = "133", strategy = "Request the last Slice of up to 5 results, expecting to find the final 2.")
@@ -1061,8 +1077,16 @@ public class EntityTests {
         assertEquals(1, page.pageRequest().page());
         assertEquals(true, page.hasContent());
         assertEquals(10, page.numberOfElements());
-        assertEquals(43L, page.totalElements());
-        assertEquals(5L, page.totalPages());
+        try {
+            assertEquals(43L, page.totalElements());
+            assertEquals(5L, page.totalPages());
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                // Some NoSQL databases lack the ability to count the total results
+            } else {
+                throw x;
+            }
+        }
 
         assertEquals("30:0;31:1;32:2;33:3;34:4;35:5;36:6;37:7;38:8;39:9;", // '0' to '9'
         page.stream()
@@ -1574,9 +1598,17 @@ public class EntityTests {
             }
         }
 
-        assertEquals(10L, page1.totalElements());
-        assertEquals(2L, page1.totalPages());
+        try {
+            assertEquals(10L, page1.totalElements());
+            assertEquals(2L, page1.totalPages());
 
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                // Some NoSQL databases lack the ability to count the total results
+            } else {
+                throw x;
+            }
+        }
         assertEquals(List.of(21L, 23L, 25L, 27L, 29L), page1.content());
 
         assertEquals(true, page1.hasNext());
@@ -1788,8 +1820,16 @@ public class EntityTests {
         assertEquals(0, page.content().size());
         assertEquals(false, page.hasContent());
         assertEquals(false, page.iterator().hasNext());
-        assertEquals(0L, page.totalElements());
-        assertEquals(0L, page.totalPages());
+        try {
+            assertEquals(0L, page.totalElements());
+            assertEquals(0L, page.totalPages());
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                // Some NoSQL databases lack the ability to count the total results
+            } else {
+                throw x;
+            }
+        }
     }
 
     @Assertion(id = "458", strategy = "Use a repository method with a JDQL query that consists of only an ORDER BY clause.")
@@ -1886,9 +1926,17 @@ public class EntityTests {
                                      .collect(Collectors.toList()));
 
         assertEquals(true, page1.hasTotals());
-        assertEquals(3L, page1.totalPages());
-        assertEquals(12L, page1.totalElements());
         assertEquals(true, page1.hasNext());
+        try {
+            assertEquals(3L, page1.totalPages());
+            assertEquals(12L, page1.totalElements());
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                // Some NoSQL databases lack the ability to count the total results
+            } else {
+                throw x;
+            }
+        }
 
         CursoredPage<NaturalNumber> page2;
 
@@ -2185,8 +2233,16 @@ public class EntityTests {
         assertEquals(3, page.pageRequest().page());
         assertEquals(true, page.hasContent());
         assertEquals(10, page.numberOfElements());
-        assertEquals(43L, page.totalElements());
-        assertEquals(5L, page.totalPages());
+        try {
+            assertEquals(43L, page.totalElements());
+            assertEquals(5L, page.totalPages());
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                // Some NoSQL databases lack the ability to count the total results
+            } else {
+                throw x;
+            }
+        }
 
         assertEquals("44:D;45:E;46:F;47:G;48:H;49:I;4a:J;4b:K;4c:L;4d:M;",
                      page.stream()
@@ -2200,8 +2256,16 @@ public class EntityTests {
         assertEquals(4, page.pageRequest().page());
         assertEquals(true, page.hasContent());
         assertEquals(10, page.numberOfElements());
-        assertEquals(43L, page.totalElements());
-        assertEquals(5L, page.totalPages());
+        try {
+            assertEquals(43L, page.totalElements());
+            assertEquals(5L, page.totalPages());
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                // Some NoSQL databases lack the ability to count the total results
+            } else {
+                throw x;
+            }
+        }
 
         assertEquals("4e:N;4f:O;50:P;51:Q;52:R;53:S;54:T;55:U;56:V;57:W;",
                      page.stream()
