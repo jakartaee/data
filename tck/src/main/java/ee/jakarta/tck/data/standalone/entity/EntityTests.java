@@ -2351,43 +2351,51 @@ public class EntityTests {
     @Assertion(id = "458", strategy = "Use a repository method with a JDQL UPDATE query without a WHERE clause. " +
                                       "This method also tests the addition, subtraction, and multiplication operators.")
     public void testUpdateQueryWithoutWhereClause() {
-        // Ensure there is no data left over from other tests:
-        shared.removeAll();
+        try {
+            // Ensure there is no data left over from other tests:
+            shared.removeAll();
 
-        TestPropertyUtility.waitForEventualConsistency();
+            TestPropertyUtility.waitForEventualConsistency();
 
-        boxes.saveAll(List.of(Box.of("TestUpdateQueryWithoutWhereClause-01", 125, 117, 44),
-                              Box.of("TestUpdateQueryWithoutWhereClause-02", 173, 165, 52),
-                              Box.of("TestUpdateQueryWithoutWhereClause-03", 229, 221, 60)));
+            boxes.saveAll(List.of(Box.of("TestUpdateQueryWithoutWhereClause-01", 125, 117, 44),
+                    Box.of("TestUpdateQueryWithoutWhereClause-02", 173, 165, 52),
+                    Box.of("TestUpdateQueryWithoutWhereClause-03", 229, 221, 60)));
 
-        TestPropertyUtility.waitForEventualConsistency();
+            TestPropertyUtility.waitForEventualConsistency();
 
-        // increases length by 12, decreases width by 12, and doubles the height
-        assertEquals(3L, shared.resizeAll(12, 2));
+            // increases length by 12, decreases width by 12, and doubles the height
+            assertEquals(3L, shared.resizeAll(12, 2));
 
-        TestPropertyUtility.waitForEventualConsistency();
+            TestPropertyUtility.waitForEventualConsistency();
 
-        Box b1 = boxes.findById("TestUpdateQueryWithoutWhereClause-01").orElseThrow();
-        assertEquals(137, b1.length); // increased by 12
-        assertEquals(105, b1.width); // decreased by 12
-        assertEquals(88, b1.height); // increased by factor of 2
+            Box b1 = boxes.findById("TestUpdateQueryWithoutWhereClause-01").orElseThrow();
+            assertEquals(137, b1.length); // increased by 12
+            assertEquals(105, b1.width); // decreased by 12
+            assertEquals(88, b1.height); // increased by factor of 2
 
-        Box b2 = boxes.findById("TestUpdateQueryWithoutWhereClause-02").orElseThrow();
-        assertEquals(185, b2.length); // increased by 12
-        assertEquals(153, b2.width); // decreased by 12
-        assertEquals(104, b2.height); // increased by factor of 2
+            Box b2 = boxes.findById("TestUpdateQueryWithoutWhereClause-02").orElseThrow();
+            assertEquals(185, b2.length); // increased by 12
+            assertEquals(153, b2.width); // decreased by 12
+            assertEquals(104, b2.height); // increased by factor of 2
 
-        Box b3 = boxes.findById("TestUpdateQueryWithoutWhereClause-03").orElseThrow();
-        assertEquals(241, b3.length); // increased by 12
-        assertEquals(209, b3.width); // decreased by 12
-        assertEquals(120, b3.height); // increased by factor of 2
+            Box b3 = boxes.findById("TestUpdateQueryWithoutWhereClause-03").orElseThrow();
+            assertEquals(241, b3.length); // increased by 12
+            assertEquals(209, b3.width); // decreased by 12
+            assertEquals(120, b3.height); // increased by factor of 2
 
-        assertEquals(3, shared.removeAll());
+            assertEquals(3, shared.removeAll());
 
-        TestPropertyUtility.waitForEventualConsistency();
+            TestPropertyUtility.waitForEventualConsistency();
 
-        assertEquals(0L, shared.resizeAll(2, 1));
-    }
+            assertEquals(0L, shared.resizeAll(2, 1));
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                return;
+            } else {
+                throw x;
+            }
+        }
+}
 
     @Assertion(id = "458", strategy = "Use a repository method with a JDQL UPDATE query with a WHERE clause. " +
                                       "This method also tests the assignment and division operators.")
@@ -2402,31 +2410,38 @@ public class EntityTests {
                 throw x;
             }
         }
+        try {
+            UUID id1 = shared.create(Coordinate.of("first", 1.41d, 5.25f)).id;
+            UUID id2 = shared.create(Coordinate.of("second", 2.2d, 2.34f)).id;
 
-        UUID id1 = shared.create(Coordinate.of("first", 1.41d, 5.25f)).id;
-        UUID id2 = shared.create(Coordinate.of("second", 2.2d, 2.34f)).id;
+            TestPropertyUtility.waitForEventualConsistency();
 
-        TestPropertyUtility.waitForEventualConsistency();
+            assertEquals(true, shared.move(id1, 1.23d, 1.5f));
 
-        assertEquals(true, shared.move(id1, 1.23d, 1.5f));
+            TestPropertyUtility.waitForEventualConsistency();
 
-        TestPropertyUtility.waitForEventualConsistency();
+            Coordinate c1 = shared.withUUID(id1).orElseThrow();
+            assertEquals(1.23d, c1.x, 0.001d);
+            assertEquals(3.5f, c1.y, 0.001f); // 5.25 / 1.5 = 3.5
 
-        Coordinate c1 = shared.withUUID(id1).orElseThrow();
-        assertEquals(1.23d, c1.x, 0.001d);
-        assertEquals(3.5f, c1.y, 0.001f); // 5.25 / 1.5 = 3.5
+            Coordinate c2 = shared.withUUID(id2).orElseThrow();
+            assertEquals(2.2d, c2.x, 0.001d);
+            assertEquals(2.34f, c2.y, 0.001f);
 
-        Coordinate c2 = shared.withUUID(id2).orElseThrow();
-        assertEquals(2.2d, c2.x, 0.001d);
-        assertEquals(2.34f, c2.y, 0.001f);
+            assertEquals(2, shared.deleteIfPositive());
 
-        assertEquals(2, shared.deleteIfPositive());
+            TestPropertyUtility.waitForEventualConsistency();
 
-        TestPropertyUtility.waitForEventualConsistency();
-
-        assertEquals(false, shared.withUUID(id1).isPresent());
-        assertEquals(false, shared.withUUID(id2).isPresent());
-    }
+            assertEquals(false, shared.withUUID(id1).isPresent());
+            assertEquals(false, shared.withUUID(id2).isPresent());
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                return;
+            } else {
+                throw x;
+            }
+        }
+}
 
     @Assertion(id = "133",
                strategy = "Use a repository method with varargs Sort... specifying a mixture of ascending and descending order, " +
