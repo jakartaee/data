@@ -1988,7 +1988,7 @@ public class EntityTests {
                     List.of(15L, 7L, 5L, 3L, 1L),
                     positives.oddAndEqualToOrBelow(15L, 9L));
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.DOCUMENT)) {
                 // Column and Key-Value databases might not be capable of JDQL OR.
                 // Key-Value databases might not be capable of < in JDQL.
                 // Key-Value databases might not be capable of JDQL AND.
