@@ -2362,31 +2362,52 @@ public class EntityTests {
 
         TestPropertyUtility.waitForEventualConsistency();
 
-        // increases length by 12, decreases width by 12, and doubles the height
-        assertEquals(3L, shared.resizeAll(12, 2));
+        boolean resized;
+        try {
+            // increases length by 12, decreases width by 12, and doubles the height
+            assertEquals(3L, shared.resizeAll(12, 2));
+            resized = true;
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                // NoSQL databases might not be capable of arithmetic in updates.
+                resized = false;
+            } else {
+                throw x;
+            }
+        }
 
         TestPropertyUtility.waitForEventualConsistency();
 
-        Box b1 = boxes.findById("TestUpdateQueryWithoutWhereClause-01").orElseThrow();
-        assertEquals(137, b1.length); // increased by 12
-        assertEquals(105, b1.width); // decreased by 12
-        assertEquals(88, b1.height); // increased by factor of 2
+        if (resized) {
+            Box b1 = boxes.findById("TestUpdateQueryWithoutWhereClause-01").orElseThrow();
+            assertEquals(137, b1.length); // increased by 12
+            assertEquals(105, b1.width); // decreased by 12
+            assertEquals(88, b1.height); // increased by factor of 2
 
-        Box b2 = boxes.findById("TestUpdateQueryWithoutWhereClause-02").orElseThrow();
-        assertEquals(185, b2.length); // increased by 12
-        assertEquals(153, b2.width); // decreased by 12
-        assertEquals(104, b2.height); // increased by factor of 2
+            Box b2 = boxes.findById("TestUpdateQueryWithoutWhereClause-02").orElseThrow();
+            assertEquals(185, b2.length); // increased by 12
+            assertEquals(153, b2.width); // decreased by 12
+            assertEquals(104, b2.height); // increased by factor of 2
 
-        Box b3 = boxes.findById("TestUpdateQueryWithoutWhereClause-03").orElseThrow();
-        assertEquals(241, b3.length); // increased by 12
-        assertEquals(209, b3.width); // decreased by 12
-        assertEquals(120, b3.height); // increased by factor of 2
+            Box b3 = boxes.findById("TestUpdateQueryWithoutWhereClause-03").orElseThrow();
+            assertEquals(241, b3.length); // increased by 12
+            assertEquals(209, b3.width); // decreased by 12
+            assertEquals(120, b3.height); // increased by factor of 2
+        }
 
         assertEquals(3, shared.removeAll());
 
         TestPropertyUtility.waitForEventualConsistency();
 
-        assertEquals(0L, shared.resizeAll(2, 1));
+        try {
+            assertEquals(0L, shared.resizeAll(2, 1));
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                // NoSQL databases might not be capable of arithmetic in updates.
+            } else {
+                throw x;
+            }
+        }
     }
 
     @Assertion(id = "458", strategy = "Use a repository method with a JDQL UPDATE query with a WHERE clause. " +
@@ -2408,13 +2429,24 @@ public class EntityTests {
 
         TestPropertyUtility.waitForEventualConsistency();
 
-        assertEquals(true, shared.move(id1, 1.23d, 1.5f));
+        float c1yExpected;
+        try {
+            assertEquals(true, shared.move(id1, 1.23d, 1.5f));
+            c1yExpected = 3.5f; // 5.25 / 1.5 = 3.5
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                // NoSQL databases might not be capable of arithmetic in updates.
+                c1yExpected = 5.25f; // no change
+            } else {
+                throw x;
+            }
+        }
 
         TestPropertyUtility.waitForEventualConsistency();
 
         Coordinate c1 = shared.withUUID(id1).orElseThrow();
         assertEquals(1.23d, c1.x, 0.001d);
-        assertEquals(3.5f, c1.y, 0.001f); // 5.25 / 1.5 = 3.5
+        assertEquals(c1yExpected, c1.y, 0.001f);
 
         Coordinate c2 = shared.withUUID(id2).orElseThrow();
         assertEquals(2.2d, c2.x, 0.001d);
