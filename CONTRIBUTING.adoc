@@ -115,3 +115,12 @@ Signed-off-by: Name < e-mail address >
 Contact the project developers via the project's "dev" list.
 
 * https://dev.eclipse.org/mailman/listinfo/data-dev
+
+
+== Issues
+
+If you found a bug or have an idea, check out the following sections before submitting your contribution.
+
+=== Check the issue tracker
+
+All our issues are centralized in our https://github.com/jakartaee/data[**main repository**], it is quite likely that you will find a topic that is being discussed. Check the https://github.com/jakartaee/data/issues[**open issues**], another good way to start is https://github.com/jakartaee/data/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22[**good first issues**].
