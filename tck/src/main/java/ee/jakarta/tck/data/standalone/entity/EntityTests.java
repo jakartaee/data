@@ -1989,6 +1989,7 @@ public class EntityTests {
                     positives.oddAndEqualToOrBelow(15L, 9L));
         } catch (UnsupportedOperationException x) {
             if (type.isKeywordSupportAtOrBelow(DatabaseType.DOCUMENT)) {
+                // Document, Column, and Key-Value databases might not be capable of parentheses.
                 // Column and Key-Value databases might not be capable of JDQL OR.
                 // Key-Value databases might not be capable of < in JDQL.
                 // Key-Value databases might not be capable of JDQL AND.
