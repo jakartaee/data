@@ -54,7 +54,7 @@ import java.util.List;
  *
  * <pre>
  * &#64;Repository
- * public interface Cars extends CrudRepository&lt;Car, Long@gt; {
+ * public interface Cars extends CrudRepository&lt;Car, Long&gt; {
  *
  *     List&lt;Car&gt; findByMakeAndModel(String make, String model, Sort&lt;?&gt;... sorts);
  *
