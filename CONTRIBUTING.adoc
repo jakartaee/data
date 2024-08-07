@@ -84,7 +84,7 @@ Follow one of these two methods to add DCO to your commits:
 ==== 1. Command line
 
 Follow the steps:
-**Step 1:** Configure your local git environment adding the same name and e-mail configured at your GitHub account. It helps to sign commits manually during reviews and suggestions.
+**Step 1:** Configure your local git environment adding the same name and e-mail configured at your GitHub account. This helps to sign commits manually during reviews and suggestions.
 
 [source, Bash]
 ----
