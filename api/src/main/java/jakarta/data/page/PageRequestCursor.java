@@ -36,9 +36,10 @@ class PageRequestCursor implements PageRequest.Cursor {
      * @throws IllegalArgumentException if no key values are provided.
      */
     PageRequestCursor(Object... key) {
-        this.key = key;
-        if (key == null || key.length == 0)
+        if (key == null || key.length == 0){
             throw new IllegalArgumentException("No values were provided.");
+        }
+        this.key = Arrays.copyOf(key, key.length);
     }
 
     @Override
@@ -48,6 +49,7 @@ class PageRequestCursor implements PageRequest.Cursor {
                 && Arrays.equals(key, ((PageRequestCursor) o).key);
     }
 
+    @Override
     public Object get(int index) {
         return key[index];
     }
@@ -57,6 +59,7 @@ class PageRequestCursor implements PageRequest.Cursor {
         return Arrays.hashCode(key);
     }
 
+    @Override
     public int size() {
         return key.length;
     }
