@@ -123,7 +123,7 @@ If you found a bug or have an idea, check out the following sections before subm
 
 === Check the issue tracker
 
-All our issues are centralized in our https://github.com/jakartaee/data[**main repository**], it is quite likely that you will find a topic that is being discussed. Check the https://github.com/jakartaee/data/issues[**open issues**], another good way to start is https://github.com/jakartaee/data/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22[**good first issues**].
+Because all of our issues are centralized in our https://github.com/jakartaee/data[**main repository**], it is quite likely that you will find a similar topic that is being discussed. Check the https://github.com/jakartaee/data/issues[**open issues**]. Another good way to start is https://github.com/jakartaee/data/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22[**good first issues**].
 
 
 **Types of Commits:**
