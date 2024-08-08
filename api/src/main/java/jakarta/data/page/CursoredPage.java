@@ -160,6 +160,7 @@ public interface CursoredPage<T> extends Page<T> {
      * @return {@code false} if the current page is empty or if it is known
      *         that there is not a previous page.
      */
+    @Override
     boolean hasPrevious();
 
     /**
@@ -176,6 +177,7 @@ public interface CursoredPage<T> extends Page<T> {
      *         To avoid this exception, check for a {@code true} result
      *         of {@link #hasNext()} before invoking this method.
      */
+    @Override
     PageRequest nextPageRequest();
 
     /**
@@ -204,5 +206,6 @@ public interface CursoredPage<T> extends Page<T> {
      *         To avoid this exception, check for a {@code true} result
      *         of {@link #hasPrevious()} before invoking this method.
      */
+    @Override
     PageRequest previousPageRequest();
 }
