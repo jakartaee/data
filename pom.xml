@@ -99,7 +99,7 @@
         <checkstyle.excludes></checkstyle.excludes>
         <jacoco.maven.version>0.8.12</jacoco.maven.version>
         <shrinkwrap.version>1.2.6</shrinkwrap.version>
-        <shrinkwrap.resolver.version>3.3.0</shrinkwrap.resolver.version>
+        <shrinkwrap.resolver.version>3.3.1</shrinkwrap.resolver.version>
         <sigtest.version>2.3</sigtest.version>
         <sonar.jacoco.reportPath>../target/jacoco.exec</sonar.jacoco.reportPath>
         <sonar.maven.version>4.0.0.4121</sonar.maven.version>
