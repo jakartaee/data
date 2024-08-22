@@ -2396,7 +2396,12 @@ public class EntityTests {
             assertEquals(120, b3.height); // increased by factor of 2
         }
 
-        assertEquals(3, shared.removeAll());
+        var removeAllResult = shared.removeAll();
+
+        if (!type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+            //We don't have any guarantee of NoSQL, mainly on eventual consistency databases
+            assertEquals(3, removeAllResult);
+        }
 
         TestPropertyUtility.waitForEventualConsistency();
 
