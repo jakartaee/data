@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2023,2024 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -36,8 +36,13 @@ public class NaturalNumber implements Serializable {
     @jakarta.nosql.Column
     private Short numBitsRequired;
 
+    // Sorting on enum types is vendor-specific in Jakarta Data.
+    // Use numTypeOrdinal for sorting instead.
     @jakarta.nosql.Column
     private NumberType numType; // enum of ONE | PRIME | COMPOSITE
+
+    @jakarta.nosql.Column
+    private int numTypeOrdinal; // ordinal value of numType
 
     @jakarta.nosql.Column
     private long floorOfSquareRoot;
@@ -72,6 +77,14 @@ public class NaturalNumber implements Serializable {
 
     public void setNumType(NumberType numType) {
         this.numType = numType;
+    }
+
+    public int getNumTypeOrdinal() {
+        return numTypeOrdinal;
+    }
+
+    public void setNumTypeOrdinal(int value) {
+        numTypeOrdinal = value;
     }
 
     public long getFloorOfSquareRoot() {
