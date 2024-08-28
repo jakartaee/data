@@ -39,6 +39,7 @@ public class NaturalNumber implements Serializable {
     // Sorting on enum types is vendor-specific in Jakarta Data.
     // Use numTypeOrdinal for sorting instead.
     @jakarta.nosql.Column
+    @jakarta.persistence.Enumerated(jakarta.persistence.EnumType.STRING)
     private NumberType numType; // enum of ONE | PRIME | COMPOSITE
 
     @jakarta.nosql.Column
