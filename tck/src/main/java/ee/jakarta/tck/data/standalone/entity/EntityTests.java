@@ -2407,8 +2407,12 @@ public class EntityTests {
             var removeAllResult = shared.removeAll();
             assertEquals(3, removeAllResult);
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
-                // NoSQL databases might not be capable of arithmetic in updates.
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH) &&
+                TestProperty.delay.isSet()) {
+                // NoSQL databases with eventual consistency might not be capable
+                // of counting removed entities.
+                // Use alternative approach for removing entities.
+                boxes.deleteAll(boxes.findAll().toList());
             } else {
                 throw x;
             }
