@@ -2353,7 +2353,14 @@ public class EntityTests {
                                       "This method also tests the addition, subtraction, and multiplication operators.")
     public void testUpdateQueryWithoutWhereClause() {
         // Ensure there is no data left over from other tests:
+
+    try {
         shared.removeAll();
+    } catch (UnsupportedOperationException x) {
+        if (!type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+            throw x;
+        }
+    }
 
         TestPropertyUtility.waitForEventualConsistency();
 
@@ -2396,11 +2403,15 @@ public class EntityTests {
             assertEquals(120, b3.height); // increased by factor of 2
         }
 
-        var removeAllResult = shared.removeAll();
-
-        if (!type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
-            //We don't have any guarantee of NoSQL, mainly on eventual consistency databases
+        try {
+            var removeAllResult = shared.removeAll();
             assertEquals(3, removeAllResult);
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                // NoSQL databases might not be capable of arithmetic in updates.
+            } else {
+                throw x;
+            }
         }
 
         TestPropertyUtility.waitForEventualConsistency();
