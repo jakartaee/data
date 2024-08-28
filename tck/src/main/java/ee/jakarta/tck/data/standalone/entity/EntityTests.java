@@ -2398,7 +2398,7 @@ public class EntityTests {
 
        var removeAllResult = shared.removeAll();
         if (!type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH) && !TestProperty.delay.isSet()) {
-            // NoSQL databases might not be capable of arithmetic in updates. Skip this check.
+            // NoSQL databases might not be capable of be ACID-compliant.
             assertEquals(3, removeAllResult);
         }
         TestPropertyUtility.waitForEventualConsistency();
