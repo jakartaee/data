@@ -2354,13 +2354,19 @@ public class EntityTests {
     public void testUpdateQueryWithoutWhereClause() {
         // Ensure there is no data left over from other tests:
 
-    try {
-        shared.removeAll();
-    } catch (UnsupportedOperationException x) {
-        if (!type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
-            throw x;
+        try {
+            shared.removeAll();
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH) &&
+                TestProperty.delay.isSet()) {
+                // NoSQL databases with eventual consistency might not be capable
+                // of counting removed entities.
+                // Use alternative approach for ensuring no data is present:
+                boxes.deleteAll(boxes.findAll().toList());
+            } else {
+                throw x;
+            }
         }
-    }
 
         TestPropertyUtility.waitForEventualConsistency();
 
