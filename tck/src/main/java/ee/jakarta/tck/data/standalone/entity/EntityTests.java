@@ -2353,7 +2353,19 @@ public class EntityTests {
                                       "This method also tests the addition, subtraction, and multiplication operators.")
     public void testUpdateQueryWithoutWhereClause() {
         // Ensure there is no data left over from other tests:
-        shared.removeAll();
+
+        try {
+            shared.removeAll();
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH) && TestProperty.delay.isSet()) {
+                // NoSQL databases with eventual consistency might not be capable
+                // of counting removed entities.
+                // Use alternative approach for ensuring no data is present:
+                boxes.deleteAll(boxes.findAll().toList());
+            } else {
+                throw x;
+            }
+        }
 
         TestPropertyUtility.waitForEventualConsistency();
 
@@ -2396,7 +2408,19 @@ public class EntityTests {
             assertEquals(120, b3.height); // increased by factor of 2
         }
 
-        assertEquals(3, shared.removeAll());
+        try {
+            var removeAllResult = shared.removeAll();
+            assertEquals(3, removeAllResult);
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH) && TestProperty.delay.isSet()) {
+                // NoSQL databases with eventual consistency might not be capable
+                // of counting removed entities.
+                // Use alternative approach for removing entities.
+                boxes.deleteAll(boxes.findAll().toList());
+            } else {
+                throw x;
+            }
+        }
 
         TestPropertyUtility.waitForEventualConsistency();
 
