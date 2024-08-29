@@ -2357,7 +2357,7 @@ public class EntityTests {
         try {
             shared.removeAll();
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH) && TestProperty.delay.isSet()) {
                 // NoSQL databases with eventual consistency might not be capable
                 // of counting removed entities.
                 // Use alternative approach for ensuring no data is present:
