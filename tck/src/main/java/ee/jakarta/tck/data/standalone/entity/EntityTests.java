@@ -2354,7 +2354,19 @@ public class EntityTests {
     public void testUpdateQueryWithoutWhereClause() {
         // Ensure there is no data left over from other tests:
 
-        shared.removeAll();
+        try {
+            shared.removeAll();
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                // NoSQL databases with eventual consistency might not be capable
+                // of counting removed entities.
+                // Use alternative approach for ensuring no data is present:
+                boxes.deleteAll(boxes.findAll().toList());
+            } else {
+                throw x;
+            }
+        }
+
         TestPropertyUtility.waitForEventualConsistency();
 
         boxes.saveAll(List.of(Box.of("TestUpdateQueryWithoutWhereClause-01", 125, 117, 44),
@@ -2396,11 +2408,23 @@ public class EntityTests {
             assertEquals(120, b3.height); // increased by factor of 2
         }
 
+        try {
        var removeAllResult = shared.removeAll();
         if (!type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH) && !TestProperty.delay.isSet()) {
-            // NoSQL databases might not be capable of be ACID-compliant.
+            // NoSQL databases might not be capable of arithmetic in updates. Skip this check.
             assertEquals(3, removeAllResult);
         }
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH) ) {
+                // NoSQL databases with eventual consistency might not be capable
+                // of counting removed entities.
+                // Use alternative approach for removing entities.
+                boxes.deleteAll(boxes.findAll().toList());
+            } else {
+                throw x;
+            }
+        }
+
         TestPropertyUtility.waitForEventualConsistency();
 
         try {
