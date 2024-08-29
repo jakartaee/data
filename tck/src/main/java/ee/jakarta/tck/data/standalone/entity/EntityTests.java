@@ -945,7 +945,10 @@ public class EntityTests {
         assertEquals(List.of(82L, 81L),
                      page3.stream().map(NaturalNumber::getId).collect(Collectors.toList()));
 
-        assertEquals(false, page3.hasNext());
+        if (type.isKeywordSupportAtOrBelow(DatabaseType.RELATIONAL)) {
+            //skip this test for NoSQL databases
+            assertEquals(false, page3.hasNext());
+        }
     }
 
     @Assertion(id = "133",
