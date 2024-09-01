@@ -2481,8 +2481,19 @@ public class EntityTests {
         assertEquals(2.2d, c2.x, 0.001d);
         assertEquals(2.34f, c2.y, 0.001f);
 
+        try {
         assertEquals(2, shared.deleteIfPositive());
-
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
+                return; // Key-Value databases might not be capable of And.
+            } else if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH) && TestProperty.delay.isSet()) {
+                // NoSQL databases with eventual consistency might not be capable
+                // of counting removed entities.
+                // Use alternative approach for ensuring no data is present:
+            } else {
+                throw x;
+            }
+        }
         TestPropertyUtility.waitForEventualConsistency();
 
         assertEquals(false, shared.withUUID(id1).isPresent());
