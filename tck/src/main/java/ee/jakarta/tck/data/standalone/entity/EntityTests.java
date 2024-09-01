@@ -146,7 +146,7 @@ public class EntityTests {
 
         // custom method from NaturalNumbers:
         try {
-            Stream<NaturalNumber> found = numbers.findByIdBetweenOrderByNumTypeAsc(
+            Stream<NaturalNumber> found = numbers.findByIdBetweenOrderByNumTypeOrdinalAsc(
                     50L, 59L,
                     Order.by(Sort.asc("id")));
             List<Long> list = found
@@ -1488,7 +1488,7 @@ public class EntityTests {
                     40L,
                     Limit.range(6, 10),
                     Order.by(
-                            Sort.asc("numType"), // primes first
+                            Sort.asc("numTypeOrdinal"), // primes first
                             Sort.asc("id")));
         } catch (UnsupportedOperationException x) {
             if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
@@ -1725,7 +1725,7 @@ public class EntityTests {
                           "followed by the dynamic sort criteria when the value(s) being compared by the static criteria match.")
     public void testOrderByHasPrecedenceOverPageRequestSorts() {
         PageRequest pagination = PageRequest.ofSize(8);
-        Order<NaturalNumber> order = Order.by(Sort.asc("numType"), Sort.desc("id"));
+        Order<NaturalNumber> order = Order.by(Sort.asc("numTypeOrdinal"), Sort.desc("id"));
 
         Page<NaturalNumber> page;
         try {
@@ -1778,7 +1778,7 @@ public class EntityTests {
     public void testOrderByHasPrecedenceOverSorts() {
         Stream<NaturalNumber> nums;
         try {
-            nums = numbers.findByIdBetweenOrderByNumTypeAsc(
+            nums = numbers.findByIdBetweenOrderByNumTypeOrdinalAsc(
                     5L, 24L,
                     Order.by(Sort.desc("floorOfSquareRoot"), Sort.asc("id")));
         } catch (UnsupportedOperationException x) {

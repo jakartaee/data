@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2023,2024 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -44,11 +44,13 @@ public class NaturalNumbersPopulator implements Populator<NaturalNumbers> {
                 boolean isOdd = id % 2 == 1;
                 long sqrRoot = squareRoot(id);
                 boolean isPrime = isOdd ? isPrime(id, sqrRoot) : (id == 2);
+                NumberType numType = isOne ? NumberType.ONE : isPrime ? NumberType.PRIME : NumberType.COMPOSITE;
                 
                 inst.setId(id);
                 inst.setOdd(isOdd);
                 inst.setNumBitsRequired(bitsRequired(id));
-                inst.setNumType(isOne ? NumberType.ONE : isPrime ? NumberType.PRIME : NumberType.COMPOSITE);
+                inst.setNumType(numType);
+                inst.setNumTypeOrdinal(numType.ordinal());
                 inst.setFloorOfSquareRoot(sqrRoot);
                 
                 dictonary.add(inst);

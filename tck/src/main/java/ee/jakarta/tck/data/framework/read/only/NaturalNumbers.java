@@ -45,9 +45,9 @@ public interface NaturalNumbers extends BasicRepository<NaturalNumber, Long>, Id
     CursoredPage<NaturalNumber> findByFloorOfSquareRootOrderByIdAsc(long sqrtFloor,
                                                                     PageRequest pagination);
 
-    Stream<NaturalNumber> findByIdBetweenOrderByNumTypeAsc(long minimum,
-                                                           long maximum,
-                                                           Order<NaturalNumber> sorts);
+    Stream<NaturalNumber> findByIdBetweenOrderByNumTypeOrdinalAsc(long minimum,
+                                                                  long maximum,
+                                                                  Order<NaturalNumber> sorts);
 
     List<NaturalNumber> findByIdGreaterThanEqual(long minimum,
                                                  Limit limit,
