@@ -2448,6 +2448,7 @@ public class EntityTests {
                 // NoSQL databases with eventual consistency might not be capable
                 // of counting removed entities.
                 // Use alternative approach for ensuring no data is present:
+                shared.deleteIfPositiveWithoutReturnRecords();
             } else {
                 throw x;
             }
