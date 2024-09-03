@@ -2460,13 +2460,16 @@ public class EntityTests {
         TestPropertyUtility.waitForEventualConsistency();
 
         float c1yExpected;
+        double c1xExpected;
         try {
             assertEquals(true, shared.move(id1, 1.23d, 1.5f));
             c1yExpected = 3.5f; // 5.25 / 1.5 = 3.5
+            c1xExpected = 1.23D;
         } catch (UnsupportedOperationException x) {
             if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
                 // NoSQL databases might not be capable of arithmetic in updates.
-                c1yExpected = 5.25f; // no change
+                c1yExpected = 5.25f;
+                c1xExpected = 1.41D;// no change
             } else {
                 throw x;
             }
@@ -2475,7 +2478,7 @@ public class EntityTests {
         TestPropertyUtility.waitForEventualConsistency();
 
         Coordinate c1 = shared.withUUID(id1).orElseThrow();
-        assertEquals(1.23d, c1.x, 0.001d);
+        assertEquals(c1xExpected, c1.x, 0.001d);
         assertEquals(c1yExpected, c1.y, 0.001f);
 
         Coordinate c2 = shared.withUUID(id2).orElseThrow();
