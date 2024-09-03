@@ -47,6 +47,9 @@ public interface MultipleEntityRepo { // Do not add a primary entity type.
     @Query("DELETE FROM Coordinate WHERE x > 0.0d AND y > 0.0f")
     long deleteIfPositive();
 
+    @Query("DELETE FROM Coordinate WHERE x > 0.0d AND y > 0.0f")
+    void deleteIfPositiveWithoutReturnRecords();
+
     @Query("UPDATE Coordinate SET x = :newX, y = y / :yDivisor WHERE id = :id")
     boolean move(UUID id, double newX, float yDivisor);
 
