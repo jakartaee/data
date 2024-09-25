@@ -37,7 +37,7 @@
   <jakarta.enterprise.cdi.version>4.1.0</jakarta.enterprise.cdi.version>
 
   <arquillian.version>1.9.1.Final</arquillian.version>
-  <junit.version>5.11.0</junit.version>
+  <junit.version>5.11.1</junit.version>
   <shrinkwrap.version>1.2.6</shrinkwrap.version>
   <sigtest.version>2.3</sigtest.version>
   
