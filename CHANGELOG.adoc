@@ -8,6 +8,13 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 
 == [Unreleased]
 
+== [1.0.1] - 2024-10-2
+
+=== Changed
+
+- Update TCK tests to make compatible with NoSQL databases.
+
+
 == [1.0.0-RC1] - 2024-04-18
 
 === Changed
