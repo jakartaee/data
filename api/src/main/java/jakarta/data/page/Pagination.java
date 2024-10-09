@@ -70,7 +70,7 @@ record Pagination(long page, int size, Mode mode, Cursor type, boolean requestTo
         if (type != null) {
             s.append(", cursor size=").append(type.size());
         }
-        return s.append("}").toString();
+        return s.append('}').toString();
     }
 
     @Override

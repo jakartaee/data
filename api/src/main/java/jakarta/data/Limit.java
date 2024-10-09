@@ -68,11 +68,12 @@ public record Limit(int maxResults, long startAt) {
      * @param startAt    starting position for query results (1 is the first result).
      */
     public Limit {
-        if (startAt < 1)
+        if (startAt < 1) {
             throw new IllegalArgumentException("startAt: " + startAt);
-
-        if (maxResults < 1)
+        }
+        if (maxResults < 1) {
             throw new IllegalArgumentException("maxResults: " + maxResults);
+        }
     }
 
     // Override to provide method documentation:
