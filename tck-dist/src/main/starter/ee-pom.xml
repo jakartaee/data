@@ -39,7 +39,7 @@
 
   <arquillian.version>1.9.1.Final</arquillian.version>
   <arquillian.jakarta.version>10.0.0.Final</arquillian.jakarta.version>
-  <junit.version>5.11.2</junit.version>
+  <junit.version>5.11.3</junit.version>
   <sigtest.version>2.3</sigtest.version>
   <shrinkwrap.version>1.2.6</shrinkwrap.version>
   <shrinkwrap.resolver.version>3.3.1</shrinkwrap.resolver.version>
