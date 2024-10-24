@@ -19,7 +19,7 @@ package jakarta.data.event;
 
 /**
  * An event that occurs when an {@link jakarta.data.repository.Insert}
- * method is called, and after the record was inserted into the datastore.
+ * lifecycle method is called, and after each record is inserted into the datastore.
  *
  * @param <E> the entity type
  */
