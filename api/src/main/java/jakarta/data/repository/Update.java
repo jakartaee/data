@@ -67,6 +67,11 @@ import java.lang.annotation.Target;
  * If the database follows the BASE model, or uses an append model to write data, the annotated method behaves the same
  * as the {@code @Insert} method.
  * </p>
+ * <p>
+ * An event of type {@link jakarta.data.event.PreUpdateEvent} must be raised by the annotated lifecycle
+ * method before each record is updated. An event of type {@link jakarta.data.event.PostUpdateEvent}
+ * must be raised by the annotated lifecycle method after each record is successfully updated.
+ * </p>
  * <p>Annotations such as {@code @Find}, {@code @Query}, {@code @Insert}, {@code @Update}, {@code @Delete}, and
  * {@code @Save} are mutually-exclusive. A given method of a repository interface may have at most one {@code @Find}
  * annotation, lifecycle annotation, or query annotation.
