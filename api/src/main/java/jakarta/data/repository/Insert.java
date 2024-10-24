@@ -66,6 +66,11 @@ import java.lang.annotation.Target;
  * then the annotated method must raise {@link jakarta.data.exceptions.EntityExistsException}.
  * If the database follows the BASE model, or uses an append model to write data, this exception is not thrown.
  * </p>
+ * <p>
+ * An event of type {@link jakarta.data.event.PreInsertEvent} must be raised by the annotated method before the record
+ * is inserted. An event of type {@link jakarta.data.event.PostInsertEvent} must be raised by the annotated method after
+ * the record was successfully inserted.
+ * </p>
  * <p>Annotations such as {@code @Find}, {@code @Query}, {@code @Insert}, {@code @Update}, {@code @Delete}, and
  * {@code @Save} are mutually-exclusive. A given method of a repository interface may have at most one {@code @Find}
  * annotation, lifecycle annotation, or query annotation.
