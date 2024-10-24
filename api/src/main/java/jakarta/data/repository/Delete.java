@@ -60,9 +60,9 @@ import java.lang.annotation.Target;
  * {@link jakarta.data.exceptions.OptimisticLockingFailureException}.
  * </p>
  * <p>
- * An event of type {@link jakarta.data.event.PreDeleteEvent} must be raised by the annotated method before the record
- * is deleted. An event of type {@link jakarta.data.event.PostDeleteEvent} must be raised by the annotated method after
- * the record was successfully deleted.
+ * An event of type {@link jakarta.data.event.PreDeleteEvent} must be raised by the annotated lifecycle
+ * method before each record is deleted. An event of type {@link jakarta.data.event.PostDeleteEvent}
+ * must be raised by the annotated lifecycle method after each record is successfully deleted.
  * </p>
  *
  * <p>Alternatively, the {@code Delete} annotation may be used to annotate a repository method with no parameter of
