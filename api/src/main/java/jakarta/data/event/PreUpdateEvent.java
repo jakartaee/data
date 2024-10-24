@@ -19,7 +19,7 @@ package jakarta.data.event;
 
 /**
  * An event that occurs when an {@link jakarta.data.repository.Update}
- * method is called, but before the entity is updated in the datastore.
+ * lifecycle method is called, but before each entity is updated in the datastore.
  *
  * @param <E> the entity type
  */
