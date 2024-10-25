@@ -120,7 +120,7 @@ This integration between CDI and Jakarta Data allows for seamless management of 
 ==== CDI Events
 
 A repository implementation may raise CDI events.
-In the Jakarta EE environment, the repository implementation is required the raise the event types defined in the package `jakarta.data.event` when lifecycle methods annotated `@Insert`, `@Update`, or `@Delete` are invoked, as specified by the API documentation of these annotations.
+In the Jakarta EE environment, the repository implementation is required to raise the event types defined in the package `jakarta.data.event` when lifecycle methods annotated `@Insert`, `@Update`, or `@Delete` are invoked, as specified by the API documentation of these annotations.
 
 ==== CDI Extensions for Jakarta Data providers
 
