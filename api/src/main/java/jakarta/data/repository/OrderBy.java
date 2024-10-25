@@ -58,6 +58,13 @@ import java.lang.annotation.Target;
  * <li>ascending order for boolean values places {@code false} before
  *     {@code true}.</li>
  * </ul>
+ * 
+ * The default sort is ascending. The {@code descending} property can be
+ * used to specify the sort direction.
+ * <pre>
+ * &#64;OrderBy(value = "price", descending = true)
+ * {@code Stream<Product>} findByPriceLessThanEqual(double maxPrice);
+ * </pre>
  *
  * <p>A repository method with an {@code @OrderBy} annotation must not
  * have:</p>
