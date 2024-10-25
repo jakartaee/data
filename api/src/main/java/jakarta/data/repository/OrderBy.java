@@ -59,7 +59,7 @@ import java.lang.annotation.Target;
  *     {@code true}.</li>
  * </ul>
  * 
- * The default sort is ascending. The {@code descending} property can be
+ * The default sort order is ascending. The {@code descending} member can be
  * used to specify the sort direction.
  * <pre>
  * &#64;OrderBy(value = "price", descending = true)
