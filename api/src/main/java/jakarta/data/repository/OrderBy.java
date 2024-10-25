@@ -60,7 +60,7 @@ import java.lang.annotation.Target;
  * </ul>
  * 
  * The default sort order is ascending. The {@code descending} member can be
- * used to specify the sort direction.
+ * used to specify the sort direction.</p>
  * <pre>
  * &#64;OrderBy(value = "price", descending = true)
  * {@code Stream<Product>} findByPriceLessThanEqual(double maxPrice);
