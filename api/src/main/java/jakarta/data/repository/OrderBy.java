@@ -49,7 +49,7 @@ import java.lang.annotation.Target;
  * </pre>
  *
  * <p>The interpretation of ascending and descending order is determined
- * by the database, but, in general:
+ * by the database, but, in general:</p>
  * <ul>
  * <li>ascending order for numeric values is the natural order with
  *     smaller numbers before larger numbers,</li>
@@ -58,6 +58,13 @@ import java.lang.annotation.Target;
  * <li>ascending order for boolean values places {@code false} before
  *     {@code true}.</li>
  * </ul>
+ * 
+ * <p>The default sort order is ascending. The {@code descending} member can be
+ * used to specify the sort direction.</p>
+ * <pre>
+ * &#64;OrderBy(value = "price", descending = true)
+ * {@code Stream<Product>} findByPriceLessThanEqual(double maxPrice);
+ * </pre>
  *
  * <p>A repository method with an {@code @OrderBy} annotation must not
  * have:</p>
