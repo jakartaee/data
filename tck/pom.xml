@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
- ~ Copyright (c) 2022, 2023 Contributors to the Eclipse Foundation
+ ~ Copyright (c) 2022, 2024 Contributors to the Eclipse Foundation
  ~
  ~ This program and the accompanying materials are made available under the
  ~ terms of the Eclipse Public License v. 2.0, which is available at
@@ -197,9 +197,10 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
+        <version>3.10.1</version>
         <executions>
           <execution>
-            <id>attach-api-javadocs</id>
+            <id>attach-tck-javadocs</id>
             <goals>
               <goal>jar</goal>
             </goals>
