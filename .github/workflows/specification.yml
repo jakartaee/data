@@ -36,7 +36,7 @@ jobs:
         cp spec/target/generated-docs/jakarta-data-${{ github.event.inputs.specVersion }}.html  documentation/jakarta-data-${{ github.event.inputs.specVersion }}.html
         cp spec/target/generated-docs/jakarta-method-name-query-${{ github.event.inputs.specVersion }}.html  documentation/jakarta-method-name-query-${{ github.event.inputs.specVersion }}.html
 
-        cp -r api/target/apidocs/ documentation/apidocs
+        cp -r api/target/reports/apidocs/ documentation/apidocs
     - name: Upload documentation
       uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4.4.3
       with:
