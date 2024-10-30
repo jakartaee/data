@@ -798,7 +798,11 @@ import java.util.Set;
  * For example,</p>
  *
  * <pre>
- * Product[] findByNameLike(String pattern, PageRequest pageRequest, Order&lt;Product&gt; order);
+ * Product[] findByNameLikeAndPriceBetween(String pattern,
+ *                                         float minPrice,
+ *                                         float maxPrice,
+ *                                         PageRequest pageRequest,
+ *                                         Order&lt;Product&gt; order);
  *
  * ...
  * PageRequest page1Request = PageRequest.ofSize(25);
