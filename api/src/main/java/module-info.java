@@ -687,7 +687,9 @@ import java.util.Set;
  * <h2>Parameter-based automatic query methods</h2>
  *
  * <p>The {@link Find} annotation indicates that the repository method is
- * a parameter-based automatic query method. In this case, the method name
+ * a parameter-based automatic query method. The {@link Delete} annotation
+ * also indicates a parameter-based automatic query method when the
+ * method has no entity type parameters. In these cases, the method name
  * does not determine the semantics of the method, and the query conditions
  * are determined by the method parameters.</p>
  *
@@ -697,7 +699,8 @@ import java.util.Set;
  *     source, or a name assigned by {@link By @By}) as a persistent field
  *     or property of the entity class, or</li>
  * <li>be of type {@link jakarta.data.Limit}, {@link jakarta.data.Sort},
- *     {@link jakarta.data.Order}, or {@link jakarta.data.page.PageRequest}.</li>
+ *     {@link jakarta.data.Order}, or {@link jakarta.data.page.PageRequest}
+ *     - if the repository method is annotated with {@link Find}.</li>
  * </ul>
  *
  * <p>A parameter may be annotated with the {@link By} annotation to specify
