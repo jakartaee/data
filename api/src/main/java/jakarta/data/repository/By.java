@@ -51,7 +51,7 @@ import java.lang.annotation.Target;
  *                            &#64;By("lastName") String last);
  *
  *     &#64;Find
- *     Person findByCity(&#64;By("address.city") String city);
+ *     List&lt;Person&gt; findByCity(&#64;By("address.city") String city);
  * }
  * </pre>
  *
@@ -75,7 +75,7 @@ import java.lang.annotation.Target;
  *                            String lastname);
  *
  *     &#64;Find
- *     Person findByCity(String address_city);
+ *     List&lt;Person&gt; findByCity(String address_city);
  * }
  * </pre>
  */
