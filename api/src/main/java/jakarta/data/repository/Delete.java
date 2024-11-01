@@ -60,7 +60,7 @@ import java.lang.annotation.Target;
  * {@link jakarta.data.exceptions.OptimisticLockingFailureException}.
  * </p>
  *
- * <p>Alternatively, the {@code Delete} annotation may be used to annotate a repository method with no parameter of
+ * <p>Alternatively, the {@code Delete} annotation may be used to annotate a repository method with no parameter of an
  * entity type. Then the repository method is interpreted as a parameter-based automatic query method. The entity type
  * to be deleted is the primary entity type of the repository. The method return type must be {@code void}, {@code int},
  * or {@code long}. Every parameter of the annotated method must have exactly the same type and name (the parameter name
