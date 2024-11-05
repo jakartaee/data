@@ -17,60 +17,60 @@
  */
 package jakarta.data;
 
+
 /**
  * Enum representing common filter types used to compare, match, or restrict values in Jakarta Data queries.
  * The {@code FilterType} enum defines a set of operators to specify how values should be compared or matched
  * in data filtering, providing flexibility for various querying needs across different contexts.
  */
 public enum FilterType {
-
     /**
      * Matches records where the field value is exactly equal to the specified value.
      * Often used for precise matching on identifiers, names, or other exact-value fields.
      */
-    Equal,
+    EQUAL,
 
     /**
      * Matches records where the field value is greater than the specified value.
      * Commonly used for numerical fields (e.g., dates, prices) to retrieve values above a threshold.
      */
-    GreaterThan,
+    GREATER_THAN,
 
     /**
      * Matches records where the field value is greater than or equal to the specified value.
      * Useful for inclusive range queries to include a specified boundary.
      */
-    GreaterThanEqual,
+    GREATER_THAN_EQUAL,
 
     /**
      * Filters records where the field value is contained within a specified collection or set of values.
      * Often applied to match multiple values (e.g., category lists, status collections).
      */
-    In,
+    IN,
 
     /**
      * Matches records where the field value is less than the specified value.
      * Frequently used in numerical comparisons to retrieve values below a threshold.
      */
-    LessThan,
+    LESS_THAN,
 
     /**
      * Matches records where the field value is less than or equal to the specified value.
      * Suitable for inclusive range queries that include the specified boundary.
      */
-    LessThanEqual,
+    LESS_THAN_EQUAL,
 
     /**
      * Matches records where the field value conforms to a specified pattern, often utilizing wildcards.
      * Commonly applied to string fields, allowing partial matches (e.g., names containing a substring).
      */
-    Like,
+    LIKE,
 
     /**
-     * Matches records where the field value does not equal the specified value.
-     * Typically used to exclude specific values from results, providing inverse filtering.
+     * Matches records where the field value falls within a specified range of values.
+     * Typically used for range comparisons, such as finding dates within a start and end period.
      */
-    Not;
+    BETWEEN;
 }
 
 
