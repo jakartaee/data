@@ -25,16 +25,19 @@ import jakarta.data.Operator;
  * options such as prefix, suffix, and substring matching. This implementation
  * allows flexibility in creating pattern-based conditions directly as `Restriction` instances.
  *
- * <p>Example usage:</p>
+ * <p>Example usage with metadata attributes:</p>
  * <pre>
  * // Case-sensitive exact match
- * Restriction<Book> exactMatch = Pattern.like("title", "Jakarta");
+ * Restriction<Book> exactMatch = Pattern.like(_Book.title, "Jakarta Data");
  *
- * Restriction<Book> prefixIgnoreCase = Pattern.prefixedIgnoreCase("title", "Jak");
+ * // Case-insensitive prefix match
+ * Restriction<Book> prefixIgnoreCase = Pattern.prefixedIgnoreCase(_Book.title, "Jak");
  *
- * Restriction<Book> suffixMatch = Pattern.suffixed("title", "Data");
+ * // Case-sensitive suffix match
+ * Restriction<Book> suffixMatch = Pattern.suffixed(_Book.title, "Guide");
  *
- * Restriction<Book> substringIgnoreCase = Pattern.substringedIgnoreCase("title", "Java");
+ * // Case-insensitive substring match
+ * Restriction<Book> substringIgnoreCase = Pattern.substringedIgnoreCase(_Book.title, "Java");
  * </pre>
  *
  * @param <T> the type of the entity on which the restriction is applied.
