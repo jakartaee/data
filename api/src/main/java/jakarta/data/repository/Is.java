@@ -26,14 +26,14 @@ import jakarta.data.Operator;
  * Usage Example:
  * <pre>{@code
  * @Find
- * Page<Product> search(@Is(Conditions.Equal) String name); // Finds products where the name matches exactly.
+ * Page<Product> search(@Is(Operator.Equal) String name); // Finds products where the name matches exactly.
  * }</pre>
  *
  * Example for Negation:
  *
  * <pre>{@code
  * @Find
- * Page<Product> search(@Is(value = Conditions.Equal, not = true) String excludedName); // Excludes products with the specified name.
+ * Page<Product> search(@Is(value = Operator.Equal, not = true) String excludedName); // Excludes products with the specified name.
  * }</pre>
  *
  */
