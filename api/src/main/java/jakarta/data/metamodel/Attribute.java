@@ -50,6 +50,6 @@ public interface Attribute<T> {
      * @return a Restriction representing the condition where the attribute is null.
      */
     default Restriction<T> isNull(){
-        return new BasicRestriction<>(name(), Operator.IS_NULL, null);
+        return new BasicRestriction<>(name(), Operator.EQUAL, null);
     }
 }
