@@ -17,6 +17,7 @@
  */
 package jakarta.data.metamodel.impl;
 
+import jakarta.data.Restriction;
 import jakarta.data.metamodel.Attribute;
 
 /**
@@ -28,5 +29,15 @@ import jakarta.data.metamodel.Attribute;
  */
 public record AttributeRecord<T>(String name)
         implements Attribute<T> {
+
+    @Override
+    public Restriction<T> equal(Object value) {
+        return Restriction.equal(name, value);
+    }
+
+    @Override
+    public Restriction<T> isNull() {
+        return Restriction.isNull(name);
+    }
 }
 

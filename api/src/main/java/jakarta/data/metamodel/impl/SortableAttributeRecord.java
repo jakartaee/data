@@ -17,6 +17,7 @@
  */
 package jakarta.data.metamodel.impl;
 
+import jakarta.data.Restriction;
 import jakarta.data.Sort;
 import jakarta.data.metamodel.SortableAttribute;
 
@@ -36,6 +37,41 @@ public record SortableAttributeRecord<T>(String name)
     @Override
     public Sort<T> desc() {
         return Sort.desc(name);
+    }
+
+    @Override
+    public Restriction<T> equal(Object value) {
+        return Restriction.equal(name, value);
+    }
+
+    @Override
+    public Restriction<T> isNull() {
+        return Restriction.isNull(name);
+    }
+
+    @Override
+    public Restriction<T> greaterThan(Object value) {
+        return Restriction.greaterThan(name, value);
+    }
+
+    @Override
+    public Restriction<T> greaterThanOrEqual(Object value) {
+        return Restriction.greaterThanOrEqual(name, value);
+    }
+
+    @Override
+    public Restriction<T> lessThan(Object value) {
+        return Restriction.lessThan(name, value);
+    }
+
+    @Override
+    public Restriction<T> lessThanOrEqual(Object value) {
+        return Restriction.lessThanOrEqual(name, value);
+    }
+
+    @Override
+    public Restriction<T> between(Object start, Object end) {
+        return Restriction.between(name, start, end);
     }
 }
 
