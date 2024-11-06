@@ -56,7 +56,9 @@ public interface SortableAttribute<T> extends Attribute<T> {
      * @param value the lower bound (exclusive) for the attribute.
      * @return a Restriction representing a greater-than condition.
      */
-    Restriction<T> greaterThan(Object value);
+    default Restriction<T> greaterThan(Object value) {
+        return Restriction.greaterThan(name(), value);
+    }
 
     /**
      * Creates a restriction for values greater than or equal to the specified value.
@@ -64,7 +66,9 @@ public interface SortableAttribute<T> extends Attribute<T> {
      * @param value the lower bound (inclusive) for the attribute.
      * @return a Restriction representing a greater-than-or-equal condition.
      */
-    Restriction<T> greaterThanOrEqual(Object value);
+    default Restriction<T> greaterThanOrEqual(Object value) {
+        return Restriction.greaterThanOrEqual(name(), value);
+    }
 
     /**
      * Creates a restriction for values less than the specified value.
@@ -72,7 +76,9 @@ public interface SortableAttribute<T> extends Attribute<T> {
      * @param value the upper bound (exclusive) for the attribute.
      * @return a Restriction representing a less-than condition.
      */
-    Restriction<T> lessThan(Object value);
+    default Restriction<T> lessThan(Object value) {
+        return Restriction.lessThan(name(), value);
+    }
 
     /**
      * Creates a restriction for values less than or equal to the specified value.
@@ -80,7 +86,9 @@ public interface SortableAttribute<T> extends Attribute<T> {
      * @param value the upper bound (inclusive) for the attribute.
      * @return a Restriction representing a less-than-or-equal condition.
      */
-    Restriction<T> lessThanOrEqual(Object value);
+    default Restriction<T> lessThanOrEqual(Object value) {
+        return Restriction.lessThanOrEqual(name(), value);
+    }
 
     /**
      * Creates a restriction that matches values within the specified range.
@@ -89,6 +97,8 @@ public interface SortableAttribute<T> extends Attribute<T> {
      * @param end   the ending value of the range (inclusive).
      * @return a Restriction representing a range condition.
      */
-    Restriction<T> between(Object start, Object end);
+    default Restriction<T> between(Object start, Object end) {
+        return Restriction.between(name(), start, end);
+    }
 
 }

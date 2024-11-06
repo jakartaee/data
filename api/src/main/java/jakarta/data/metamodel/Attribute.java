@@ -40,12 +40,16 @@ public interface Attribute<T> {
      * @param value the value to match exactly.
      * @return a Restriction representing an equality condition.
      */
-    Restriction<T> equal(Object value);
+    default Restriction<T> equal(Object value) {
+        return Restriction.equal(name(), value);
+    }
 
     /**
      * Creates a restriction for checking if the attribute is null.
      *
      * @return a Restriction representing the condition where the attribute is null.
      */
-    Restriction<T> isNull();
+    default Restriction<T> isNull(){
+        return Restriction.isNull(name());
+    }
 }

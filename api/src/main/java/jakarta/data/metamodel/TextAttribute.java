@@ -44,14 +44,83 @@ public interface TextAttribute<T> extends SortableAttribute<T> {
     Sort<T> descIgnoreCase();
 
     /**
-     * Creates a `LIKE` restriction using a `Pattern` for the attribute,
-     * supporting different `LIKE` options such as prefix, suffix, and substring matching.
+     * Creates a `LIKE` restriction for an exact match on the specified text.
      *
-     * @param pattern the pattern to match, defined using the `Pattern` class.
-     * @return a Restriction representing the `LIKE` condition.
+     * @param text the text to match exactly.
+     * @return a Restriction representing a case-sensitive `LIKE` condition.
      */
-    default Restriction<T> like(Pattern<T> pattern) {
-        return pattern;
+    default Restriction<T> like(String text) {
+        return Pattern.like(name(), text);
+    }
+
+    /**
+     * Creates a case-insensitive `LIKE` restriction for an exact match on the specified text.
+     *
+     * @param text the text to match exactly.
+     * @return a Restriction representing a case-insensitive `LIKE` condition.
+     */
+    default Restriction<T> likeIgnoreCase(String text) {
+        return Pattern.likeIgnoreCase(name(), text);
+    }
+
+    /**
+     * Creates a `LIKE` restriction for values that start with the specified text.
+     *
+     * @param text the text prefix to match.
+     * @return a Restriction representing a prefix `LIKE` condition.
+     */
+    default Restriction<T> startsWith(String text) {
+        return Pattern.prefixed(name(), text);
+    }
+
+    /**
+     * Creates a case-insensitive `LIKE` restriction for values that start with the specified text.
+     *
+     * @param text the text prefix to match.
+     * @return a Restriction representing a case-insensitive prefix `LIKE` condition.
+     */
+    default Restriction<T> startsWithIgnoreCase(String text) {
+        return Pattern.prefixedIgnoreCase(name(), text);
+    }
+
+    /**
+     * Creates a `LIKE` restriction for values that contain the specified substring.
+     *
+     * @param text the substring to match.
+     * @return a Restriction representing a substring `LIKE` condition.
+     */
+    default Restriction<T> contains(String text) {
+        return Pattern.substringed(name(), text);
+    }
+
+    /**
+     * Creates a case-insensitive `LIKE` restriction for values that contain the specified substring.
+     *
+     * @param text the substring to match.
+     * @return a Restriction representing a case-insensitive substring `LIKE` condition.
+     */
+    default Restriction<T> containsIgnoreCase(String text) {
+        return Pattern.substringedIgnoreCase(name(), text);
+    }
+
+    /**
+     * Creates a `LIKE` restriction for values that end with the specified text.
+     *
+     * @param text the text suffix to match.
+     * @return a Restriction representing a suffix `LIKE` condition.
+     */
+    default Restriction<T> endsWith(String text) {
+        return Pattern.suffixed(name(), text);
+    }
+
+    /**
+     * Creates a case-insensitive `LIKE` restriction for values that end with the specified text.
+     *
+     * @param text the text suffix to match.
+     * @return a Restriction representing a case-insensitive suffix `LIKE` condition.
+     */
+    default Restriction<T> endsWithIgnoreCase(String text) {
+        return Pattern.suffixedIgnoreCase(name(), text);
     }
 
 }
