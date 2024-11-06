@@ -17,13 +17,13 @@
  */
 package jakarta.data.metamodel;
 
+import jakarta.data.Sort;
+
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-
-import jakarta.data.Sort;
 
 /**
  * <p>Annotates a class which serves as a static metamodel for an entity, enabling

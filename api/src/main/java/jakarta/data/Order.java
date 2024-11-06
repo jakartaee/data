@@ -17,11 +17,11 @@
  */
 package jakarta.data;
 
-import java.util.Iterator;
-import java.util.List;
-
 import jakarta.data.metamodel.StaticMetamodel;
 import jakarta.data.repository.OrderBy;
+
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * <p>Requests sorting on various entity attributes.</p>

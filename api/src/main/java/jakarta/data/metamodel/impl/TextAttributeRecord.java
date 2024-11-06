@@ -17,10 +17,8 @@
  */
 package jakarta.data.metamodel.impl;
 
-import jakarta.data.Restriction;
 import jakarta.data.Sort;
 import jakarta.data.metamodel.TextAttribute;
-import jakarta.data.repository.Pattern;
 
 /**
  * Record type implementing {@link jakarta.data.metamodel.TextAttribute}.

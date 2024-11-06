@@ -17,7 +17,6 @@
  */
 package jakarta.data.metamodel.impl;
 
-import jakarta.data.Restriction;
 import jakarta.data.Sort;
 import jakarta.data.metamodel.SortableAttribute;
 

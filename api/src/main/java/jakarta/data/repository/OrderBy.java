@@ -19,6 +19,7 @@ package jakarta.data.repository;
 
 import jakarta.data.Order;
 import jakarta.data.Sort;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;

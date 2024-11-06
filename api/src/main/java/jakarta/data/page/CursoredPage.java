@@ -17,9 +17,10 @@
  */
 package jakarta.data.page;
 
-import jakarta.data.repository.OrderBy;
 import jakarta.data.Order;
 import jakarta.data.Sort;
+import jakarta.data.repository.OrderBy;
+
 import java.util.NoSuchElementException;
 
 /**
