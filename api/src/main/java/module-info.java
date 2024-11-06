@@ -1075,4 +1075,5 @@ module jakarta.data {
     exports jakarta.data.exceptions;
     opens jakarta.data.repository;
     exports jakarta.data.spi;
+    opens jakarta.data.metamodel;
 }
