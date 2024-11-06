@@ -24,9 +24,10 @@ import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
 
 import java.util.List;
+
 /**
  * Repository interface that supports advanced filtering using {@link Restriction} and
- * {@link CompositeRestriction}, along with type-safe sorting capabilities using {@link Sort}.
+ * {@link CompositeRestriction}, along with type-safe sorting capabilities using the static metamodel.
  * This enables developers to construct complex queries with multiple restrictions,
  * logical operations, sorting, and pagination.
  *
@@ -38,28 +39,28 @@ import java.util.List;
  * &#64;Inject
  * DriverLicenses licenses;
  *
- * // Define individual restrictions
- * Restriction&lt;DriverLicense&gt; licenseNumRestriction = Restriction.like("licenseNum", "ABC%");
- * Restriction&lt;DriverLicense&gt; expiryRestriction = Restriction.greaterThan("expiry", LocalDate.now());
- * Restriction&lt;DriverLicense&gt; regionRestriction = Restriction.equal("region", "North");
+ * // Define individual restrictions using the static metamodel for type-safe attribute references
+ * Restriction&lt;DriverLicense&gt; licenseRestriction = _DriverLicense.license.like("ABC%");
+ * Restriction&lt;DriverLicense&gt; expiryRestriction = _DriverLicense.expiry.greaterThan(LocalDate.now());
+ * Restriction&lt;DriverLicense&gt; regionRestriction = _DriverLicense.region.equal("North");
  *
  * // Combine restrictions with AND logic using CompositeRestriction.all
  * CompositeRestriction&lt;DriverLicense&gt; andRestriction = CompositeRestriction.all(
- *     licenseNumRestriction,
+ *     licenseRestriction,
  *     expiryRestriction,
  *     regionRestriction
  * );
  *
- * // Define type-safe sorting criteria
- * Sort&lt;DriverLicense&gt; sortByExpiry = Sort.asc("expiry");
- * Sort&lt;DriverLicense&gt; sortByLicenseNumDesc = Sort.desc("licenseNum");
+ * // Define type-safe sorting criteria using the static metamodel
+ * Sort&lt;DriverLicense&gt; sortByExpiry = _DriverLicense.expiry.asc();
+ * Sort&lt;DriverLicense&gt; sortByLicenseDesc = _DriverLicense.license.desc();
  *
  * // Use the composite restriction with sorting criteria
- * List&lt;DriverLicense&gt; sortedResults = licenses.findByRestriction(andRestriction, sortByExpiry, sortByLicenseNumDesc);
+ * List&lt;DriverLicense&gt; sortedResults = licenses.findByRestriction(andRestriction, sortByExpiry, sortByLicenseDesc);
  *
  * // Paginated query with composite restriction and sorting
  * PageRequest pageRequest = PageRequest.of(0, 10);
- * Page&lt;DriverLicense&gt; pagedResults = licenses.findByRestriction(andRestriction, pageRequest, sortByExpiry, sortByLicenseNumDesc);
+ * Page&lt;DriverLicense&gt; pagedResults = licenses.findByRestriction(andRestriction, pageRequest, sortByExpiry, sortByLicenseDesc);
  *
  * // Count entities with a single restriction
  * long count = licenses.countByRestriction(expiryRestriction);
