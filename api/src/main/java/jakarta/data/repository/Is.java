@@ -17,11 +17,11 @@
  */
 package jakarta.data.repository;
 
-import jakarta.data.FilterType;
+import jakarta.data.Operator;
 
 /**
  * Annotation to specify query conditions on method parameters in Jakarta Data repository interfaces.
- * The {@code @Is} annotation, combined with the {@link FilterType} enum, enables flexible and expressive
+ * The {@code @Is} annotation, combined with the {@link Operator} enum, enables flexible and expressive
  * filtering in repository queries.
  * Usage Example:
  * <pre>{@code
@@ -42,13 +42,13 @@ public @interface Is {
     /**
      * Defines the condition to apply to the annotated parameter.
      *
-     * @return the specified {@link FilterType} value.
+     * @return the specified {@link Operator} value.
      */
-    FilterType value();
+    Operator value();
 
     /**
      * When set to true, applies the negation of the specified condition.
-     * For example, using `not = true` with {@link FilterType#Equal} will search for records
+     * For example, using `not = true` with {@link Operator#Equal} will search for records
      * where the field is not equal to the specified value.
      *
      * @return whether to negate the specified condition.

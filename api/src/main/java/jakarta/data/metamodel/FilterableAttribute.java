@@ -17,7 +17,7 @@
  */
 package jakarta.data.metamodel;
 
-import jakarta.data.Criteria;
+import jakarta.data.Restriction;
 
 import java.util.Collection;
 
@@ -48,7 +48,7 @@ public interface FilterableAttribute<T, V> extends Attribute<T> {
      * @param value the value to compare with the attribute.
      * @return a criteria condition representing "attribute = value".
      */
-    Criteria equal(V value);
+    Restriction equal(V value);
 
     /**
      * Creates an inequality condition for the attribute, excluding the specified value.
@@ -56,7 +56,7 @@ public interface FilterableAttribute<T, V> extends Attribute<T> {
      * @param value the value to exclude.
      * @return a criteria condition representing "attribute != value".
      */
-    Criteria notEqual(V value);
+    Restriction notEqual(V value);
 
     /**
      * Creates a "like" condition for textual attributes, matching the specified pattern.
@@ -65,7 +65,7 @@ public interface FilterableAttribute<T, V> extends Attribute<T> {
      * @param pattern the pattern to match, often using wildcards.
      * @return a criteria condition representing "attribute LIKE pattern".
      */
-    Criteria like(String pattern);
+    Restriction like(String pattern);
 
     /**
      * Creates a "greater than" condition for the attribute, matching values greater than the specified value.
@@ -73,7 +73,7 @@ public interface FilterableAttribute<T, V> extends Attribute<T> {
      * @param value the minimum value to match.
      * @return a criteria condition representing "attribute > value".
      */
-    Criteria greaterThan(V value);
+    Restriction greaterThan(V value);
 
     /**
      * Creates a "greater than or equal to" condition for the attribute, matching values greater than or equal to the specified value.
@@ -81,7 +81,7 @@ public interface FilterableAttribute<T, V> extends Attribute<T> {
      * @param value the minimum value to match inclusively.
      * @return a criteria condition representing "attribute >= value".
      */
-    Criteria greaterThanOrEqual(V value);
+    Restriction greaterThanOrEqual(V value);
 
     /**
      * Creates a "less than" condition for the attribute, matching values less than the specified value.
@@ -89,7 +89,7 @@ public interface FilterableAttribute<T, V> extends Attribute<T> {
      * @param value the maximum value to match.
      * @return a criteria condition representing "attribute < value".
      */
-    Criteria lessThan(V value);
+    Restriction lessThan(V value);
 
     /**
      * Creates a "less than or equal to" condition for the attribute, matching values less than or equal to the specified value.
@@ -97,7 +97,7 @@ public interface FilterableAttribute<T, V> extends Attribute<T> {
      * @param value the maximum value to match inclusively.
      * @return a criteria condition representing "attribute <= value".
      */
-    Criteria lessThanOrEqual(V value);
+    Restriction lessThanOrEqual(V value);
 
     /**
      * Creates a "between" condition for the attribute, matching values within the specified range.
@@ -106,7 +106,7 @@ public interface FilterableAttribute<T, V> extends Attribute<T> {
      * @param end   the upper bound of the range.
      * @return a criteria condition representing "attribute BETWEEN start AND end".
      */
-    Criteria between(V start, V end);
+    Restriction between(V start, V end);
 
     /**
      * Creates an "in" condition for the attribute, matching any of the specified values.
@@ -114,5 +114,5 @@ public interface FilterableAttribute<T, V> extends Attribute<T> {
      * @param values the collection of values to match.
      * @return a criteria condition representing "attribute IN (values)".
      */
-    Criteria in(Collection<V> values);
+    Restriction in(Collection<V> values);
 }

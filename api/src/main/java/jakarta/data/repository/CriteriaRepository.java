@@ -17,7 +17,7 @@
  */
 package jakarta.data.repository;
 
-import jakarta.data.Criteria;
+import jakarta.data.Restriction;
 import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
 
@@ -25,7 +25,7 @@ import java.util.List;
 
 /**
  * Repository interface that extends {@link DataRepository} to add support for dynamic filtering
- * using {@link Criteria} objects with optional pagination.
+ * using {@link Restriction} objects with optional pagination.
  *
  * <p>This repository allows flexible querying by accepting varargs of criteria conditions
  * for filtering and supports pagination to retrieve results in pages or as a full list.</p>
@@ -63,7 +63,7 @@ public interface CriteriaRepository<T, K> extends DataRepository<T, K> {
      * @param criteria    the varargs of criteria conditions to filter the results.
      * @return a page of entities that match the criteria.
      */
-    Page<T> filter(PageRequest pageRequest, Criteria... criteria);
+    Page<T> filter(PageRequest pageRequest, Restriction... criteria);
 
     /**
      * Finds all entities by applying the specified criteria conditions, returning results as a list without pagination.
@@ -71,7 +71,7 @@ public interface CriteriaRepository<T, K> extends DataRepository<T, K> {
      * @param criteria the varargs of criteria conditions to filter the results.
      * @return a list of entities that match the criteria.
      */
-    List<T> filter(Criteria... criteria);
+    List<T> filter(Restriction... criteria);
 
     /**
      * Counts entities by applying the specified criteria conditions.
@@ -79,5 +79,5 @@ public interface CriteriaRepository<T, K> extends DataRepository<T, K> {
      * @param criteria the varargs of criteria conditions to filter the results.
      * @return the count of entities that match the criteria.
      */
-    long countBy(Criteria... criteria);
+    long countBy(Restriction... criteria);
 }
