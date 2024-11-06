@@ -17,6 +17,7 @@
  */
 package jakarta.data;
 
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -28,7 +29,7 @@ import java.util.List;
  *
  * @param <T> the entity type that the restrictions apply to.
  */
-public record CompositeRestriction<T>(LogicalOperator operator, List<Restriction<T>> restrictions) {
+public record CompositeRestriction<T>(LogicalOperator operator, List<Restriction<? super T>> restrictions) implements Iterable<Restriction<? super T>> {
 
     /**
      * Constructs a composite restriction with the specified operator and list of restrictions.
@@ -40,7 +41,10 @@ public record CompositeRestriction<T>(LogicalOperator operator, List<Restriction
         restrictions = List.copyOf(restrictions); // Ensure immutability of the list
     }
 
-    // Factory methods for creating composite restrictions with AND or OR logic
+    @Override
+    public Iterator<Restriction<? super T>> iterator() {
+        return restrictions.iterator();
+    }
 
     /**
      * Creates a composite restriction where all specified restrictions must be true (AND logic).
@@ -65,4 +69,6 @@ public record CompositeRestriction<T>(LogicalOperator operator, List<Restriction
     public static <T> CompositeRestriction<T> any(Restriction<T>... restrictions) {
         return new CompositeRestriction<>(LogicalOperator.OR, List.of(restrictions));
     }
+
+
 }
