@@ -47,7 +47,7 @@ public interface TextAttribute<T> extends SortableAttribute<T> {
      * @param text the text to match.
      * @return a Restriction representing a `LIKE` condition.
      */
-    default Restriction<T> like(String text) {
+    default Pattern<T> like(String text) {
         return Pattern.like(name(), text);
     }
 
@@ -57,7 +57,7 @@ public interface TextAttribute<T> extends SortableAttribute<T> {
      * @param text the text to match exactly.
      * @return a Restriction representing a case-insensitive `LIKE` condition.
      */
-    default Restriction<T> likeIgnoreCase(String text) {
+    default Pattern<T> likeIgnoreCase(String text) {
         return Pattern.likeIgnoreCase(name(), text);
     }
 
@@ -67,7 +67,7 @@ public interface TextAttribute<T> extends SortableAttribute<T> {
      * @param text the text prefix to match.
      * @return a Restriction representing a prefix `LIKE` condition.
      */
-    default Restriction<T> startsWith(String text) {
+    default Pattern<T> startsWith(String text) {
         return Pattern.prefixed(name(), text);
     }
 
@@ -77,7 +77,7 @@ public interface TextAttribute<T> extends SortableAttribute<T> {
      * @param text the text prefix to match.
      * @return a Restriction representing a case-insensitive prefix `LIKE` condition.
      */
-    default Restriction<T> startsWithIgnoreCase(String text) {
+    default Pattern<T> startsWithIgnoreCase(String text) {
         return Pattern.prefixedIgnoreCase(name(), text);
     }
 
@@ -87,7 +87,7 @@ public interface TextAttribute<T> extends SortableAttribute<T> {
      * @param text the substring to match.
      * @return a Restriction representing a substring `LIKE` condition.
      */
-    default Restriction<T> contains(String text) {
+    default Pattern<T> contains(String text) {
         return Pattern.substringed(name(), text);
     }
 
@@ -97,7 +97,7 @@ public interface TextAttribute<T> extends SortableAttribute<T> {
      * @param text the substring to match.
      * @return a Restriction representing a case-insensitive substring `LIKE` condition.
      */
-    default Restriction<T> containsIgnoreCase(String text) {
+    default Pattern<T> containsIgnoreCase(String text) {
         return Pattern.substringedIgnoreCase(name(), text);
     }
 
@@ -107,7 +107,7 @@ public interface TextAttribute<T> extends SortableAttribute<T> {
      * @param text the text suffix to match.
      * @return a Restriction representing a suffix `LIKE` condition.
      */
-    default Restriction<T> endsWith(String text) {
+    default Pattern<T> endsWith(String text) {
         return Pattern.suffixed(name(), text);
     }
 
@@ -117,7 +117,7 @@ public interface TextAttribute<T> extends SortableAttribute<T> {
      * @param text the text suffix to match.
      * @return a Restriction representing a case-insensitive suffix `LIKE` condition.
      */
-    default Restriction<T> endsWithIgnoreCase(String text) {
+    default Pattern<T> endsWithIgnoreCase(String text) {
         return Pattern.suffixedIgnoreCase(name(), text);
     }
 

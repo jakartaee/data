@@ -93,14 +93,54 @@ public interface SortableAttribute<T> extends Attribute<T> {
     }
 
     /**
-     * Creates a restriction that matches values within the specified range.
+     * Creates a restriction for values within the specified range, inclusive of both bounds.
      *
-     * @param start the starting value of the range (inclusive).
-     * @param end   the ending value of the range (inclusive).
+     * @param lowerBound the lower bound (inclusive).
+     * @param upperBound the upper bound (inclusive).
      * @return a Restriction representing a range condition.
      */
-    default Restriction<T> between(Object start, Object end) {
-        return new BasicRestriction<>(name(), Operator.BETWEEN, List.of(start, end));
+    default Range<T> between(T lowerBound, T upperBound) {
+        return Range.between(name(), lowerBound, upperBound);
+    }
+
+    /**
+     * Creates a restriction for values greater than or equal to the specified lower bound.
+     *
+     * @param lowerBound the lower bound (inclusive).
+     * @return a Restriction representing a "greater than or equal" condition.
+     */
+    default Range<T> from(T lowerBound) {
+        return Range.from(name(), lowerBound);
+    }
+
+    /**
+     * Creates a restriction for values less than or equal to the specified upper bound.
+     *
+     * @param upperBound the upper bound (inclusive).
+     * @return a Restriction representing a "less than or equal" condition.
+     */
+    default Range<T> to(T upperBound) {
+        return Range.to(name(), upperBound);
+    }
+
+    /**
+     * Creates a restriction for values greater than the specified lower bound (exclusive).
+     *
+     * @param lowerBound the lower bound (exclusive).
+     * @return a Restriction representing a "greater than" condition.
+     */
+    default Range<T> above(T lowerBound) {
+        return Range.above(name(), lowerBound);
+    }
+
+    /**
+     * Creates a restriction for values less than the specified upper bound (exclusive).
+     *
+     * @param upperBound the upper bound (exclusive).
+     * @return a Restriction representing a "less than" condition.
+     */
+    default Range<T> below(T upperBound) {
+        return Range.below(name(), upperBound);
     }
 
 }
