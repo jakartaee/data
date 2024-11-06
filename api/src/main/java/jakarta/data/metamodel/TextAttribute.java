@@ -42,10 +42,10 @@ public interface TextAttribute<T> extends SortableAttribute<T> {
     Sort<T> descIgnoreCase();
 
     /**
-     * Creates a `LIKE` restriction for an exact match on the specified text.
+     * Creates a `LIKE` restriction for a match on the specified text.
      *
-     * @param text the text to match exactly.
-     * @return a Restriction representing a case-sensitive `LIKE` condition.
+     * @param text the text to match.
+     * @return a Restriction representing a `LIKE` condition.
      */
     default Restriction<T> like(String text) {
         return Pattern.like(name(), text);
