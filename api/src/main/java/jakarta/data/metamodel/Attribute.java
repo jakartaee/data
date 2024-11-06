@@ -17,7 +17,7 @@
  */
 package jakarta.data.metamodel;
 
-import jakarta.data.Restriction;
+import jakarta.data.Operator;
 import jakarta.data.Sort;
 
 /**
@@ -41,7 +41,7 @@ public interface Attribute<T> {
      * @return a Restriction representing an equality condition.
      */
     default Restriction<T> equal(Object value) {
-        return Restriction.equal(name(), value);
+        return new BasicRestriction<>(name(), Operator.EQUAL, value);
     }
 
     /**
@@ -50,6 +50,6 @@ public interface Attribute<T> {
      * @return a Restriction representing the condition where the attribute is null.
      */
     default Restriction<T> isNull(){
-        return Restriction.isNull(name());
+        return new BasicRestriction<>(name(), Operator.IS_NULL, null);
     }
 }

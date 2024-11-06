@@ -15,7 +15,9 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data;
+package jakarta.data.metamodel;
+
+import jakarta.data.LogicalOperator;
 
 import java.util.Iterator;
 import java.util.List;

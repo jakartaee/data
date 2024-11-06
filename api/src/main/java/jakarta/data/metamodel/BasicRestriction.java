@@ -15,7 +15,9 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data;
+package jakarta.data.metamodel;
+
+import jakarta.data.Operator;
 
 /**
  * A basic implementation of the `Restriction` interface, representing various conditions

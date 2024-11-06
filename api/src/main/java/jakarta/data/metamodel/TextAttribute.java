@@ -17,7 +17,6 @@
  */
 package jakarta.data.metamodel;
 
-import jakarta.data.Restriction;
 import jakarta.data.Sort;
 import jakarta.data.repository.Pattern;
 

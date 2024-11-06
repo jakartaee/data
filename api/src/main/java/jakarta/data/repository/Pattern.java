@@ -18,7 +18,7 @@
 package jakarta.data.repository;
 
 import jakarta.data.Operator;
-import jakarta.data.Restriction;
+import jakarta.data.metamodel.Restriction;
 
 
 

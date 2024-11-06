@@ -17,6 +17,8 @@
  */
 package jakarta.data;
 
+import jakarta.data.metamodel.Restriction;
+
 /**
  * Enum representing logical operators for combining multiple {@link Restriction} objects.
  */

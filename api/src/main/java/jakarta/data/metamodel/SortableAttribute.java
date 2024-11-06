@@ -17,8 +17,10 @@
  */
 package jakarta.data.metamodel;
 
-import jakarta.data.Restriction;
+import jakarta.data.Operator;
 import jakarta.data.Sort;
+
+import java.util.List;
 
 /**
  * Represents a sortable entity attribute in the {@link StaticMetamodel}.
@@ -57,7 +59,7 @@ public interface SortableAttribute<T> extends Attribute<T> {
      * @return a Restriction representing a greater-than condition.
      */
     default Restriction<T> greaterThan(Object value) {
-        return Restriction.greaterThan(name(), value);
+        return new BasicRestriction<>(name(), Operator.GREATER_THAN, value);
     }
 
     /**
@@ -67,7 +69,7 @@ public interface SortableAttribute<T> extends Attribute<T> {
      * @return a Restriction representing a greater-than-or-equal condition.
      */
     default Restriction<T> greaterThanOrEqual(Object value) {
-        return Restriction.greaterThanOrEqual(name(), value);
+        return new BasicRestriction<>(name(), Operator.GREATER_THAN_EQUAL, value);
     }
 
     /**
@@ -77,7 +79,7 @@ public interface SortableAttribute<T> extends Attribute<T> {
      * @return a Restriction representing a less-than condition.
      */
     default Restriction<T> lessThan(Object value) {
-        return Restriction.lessThan(name(), value);
+        return new BasicRestriction<>(name(), Operator.LESS_THAN, value);
     }
 
     /**
@@ -87,7 +89,7 @@ public interface SortableAttribute<T> extends Attribute<T> {
      * @return a Restriction representing a less-than-or-equal condition.
      */
     default Restriction<T> lessThanOrEqual(Object value) {
-        return Restriction.lessThanOrEqual(name(), value);
+        return new BasicRestriction<>(name(), Operator.LESS_THAN_EQUAL, value);
     }
 
     /**
@@ -98,7 +100,7 @@ public interface SortableAttribute<T> extends Attribute<T> {
      * @return a Restriction representing a range condition.
      */
     default Restriction<T> between(Object start, Object end) {
-        return Restriction.between(name(), start, end);
+        return new BasicRestriction<>(name(), Operator.BETWEEN, List.of(start, end));
     }
 
 }
