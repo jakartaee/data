@@ -19,100 +19,84 @@ package jakarta.data.metamodel;
 
 import jakarta.data.Restriction;
 
-import java.util.Collection;
+import java.util.function.Supplier;
 
 /**
- * Represents an entity attribute in the {@link StaticMetamodel} that supports filtering conditions.
- * This interface provides methods for defining common query conditions, allowing the attribute to be used
- * in filtering expressions such as `_Book.title.like("Jakarta Data%")`.
+ * Represents an entity attribute that supports filtering operations in repository queries,
+ * including type-safe comparisons, range restrictions, and pattern matching (e.g., LIKE queries).
+ *
+ * <p>The `FilterableAttribute` interface provides methods for creating various filtering
+ * restrictions, enabling expressive and type-safe query construction for attributes
+ * such as numeric values, dates, and strings.</p>
  *
  * <p>Example usage:</p>
- * <pre>{@code
- * // Define criteria for filtering
- * Criteria titleCriteria = _Book.title.like("Jakarta Data%");
- * Criteria dateCriteria = _Book.publicationDate.between(pastDate, LocalDate.now());
- * Criteria authorCriteria = _Book.author.equal("John Doe");
+ * <pre>
+ * // Define filtering conditions on entity attributes
+ * Restriction<Book> titleRestriction = _Book.title.like(Pattern.prefixedIgnoreCase("Jak"));
+ * Restriction<Book> dateRestriction = _Book.publicationDate.between(pastDate, LocalDate.now());
+ * </pre>
  *
- * // Apply criteria in a repository query
- * repo.books(List.of(titleCriteria, dateCriteria, authorCriteria));
- * }</pre>
- *
- * @param <T> the type of the entity class in the static metamodel.
- * @param <V> the type of the attribute's value.
+ * @param <T> the entity type that this attribute belongs to.
  */
-public interface FilterableAttribute<T, V> extends Attribute<T> {
+public interface FilterableAttribute<T> {
 
     /**
-     * Creates an equality condition for the attribute, matching the specified value.
+     * Creates an equality restriction for the attribute.
      *
-     * @param value the value to compare with the attribute.
-     * @return a criteria condition representing "attribute = value".
+     * @param value the value to match exactly.
+     * @return a Restriction representing an equality condition.
      */
-    Restriction equal(V value);
+    Restriction<T> equal(Object value);
 
     /**
-     * Creates an inequality condition for the attribute, excluding the specified value.
+     * Creates a restriction for values greater than the specified value.
      *
-     * @param value the value to exclude.
-     * @return a criteria condition representing "attribute != value".
+     * @param value the lower bound (exclusive) for the attribute.
+     * @return a Restriction representing a greater-than condition.
      */
-    Restriction notEqual(V value);
+    Restriction<T> greaterThan(Object value);
 
     /**
-     * Creates a "like" condition for textual attributes, matching the specified pattern.
-     * This is typically used for partial matches in string fields.
+     * Creates a restriction for values greater than or equal to the specified value.
      *
-     * @param pattern the pattern to match, often using wildcards.
-     * @return a criteria condition representing "attribute LIKE pattern".
+     * @param value the lower bound (inclusive) for the attribute.
+     * @return a Restriction representing a greater-than-or-equal condition.
      */
-    Restriction like(String pattern);
+    Restriction<T> greaterThanOrEqual(Object value);
 
     /**
-     * Creates a "greater than" condition for the attribute, matching values greater than the specified value.
+     * Creates a restriction for values less than the specified value.
      *
-     * @param value the minimum value to match.
-     * @return a criteria condition representing "attribute > value".
+     * @param value the upper bound (exclusive) for the attribute.
+     * @return a Restriction representing a less-than condition.
      */
-    Restriction greaterThan(V value);
+    Restriction<T> lessThan(Object value);
 
     /**
-     * Creates a "greater than or equal to" condition for the attribute, matching values greater than or equal to the specified value.
+     * Creates a restriction for values less than or equal to the specified value.
      *
-     * @param value the minimum value to match inclusively.
-     * @return a criteria condition representing "attribute >= value".
+     * @param value the upper bound (inclusive) for the attribute.
+     * @return a Restriction representing a less-than-or-equal condition.
      */
-    Restriction greaterThanOrEqual(V value);
+    Restriction<T> lessThanOrEqual(Object value);
 
     /**
-     * Creates a "less than" condition for the attribute, matching values less than the specified value.
+     * Creates a restriction that matches values within the specified range.
      *
-     * @param value the maximum value to match.
-     * @return a criteria condition representing "attribute < value".
+     * @param start the starting value of the range (inclusive).
+     * @param end   the ending value of the range (inclusive).
+     * @return a Restriction representing a range condition.
      */
-    Restriction lessThan(V value);
+    Restriction<T> between(Object start, Object end);
 
     /**
-     * Creates a "less than or equal to" condition for the attribute, matching values less than or equal to the specified value.
+     * Creates a `LIKE` restriction using a `Pattern` for the attribute,
+     * supporting different `LIKE` options such as prefix, suffix, and substring matching.
      *
-     * @param value the maximum value to match inclusively.
-     * @return a criteria condition representing "attribute <= value".
+     * @param pattern the pattern to match, defined using the `Pattern` class.
+     * @return a Restriction representing the `LIKE` condition.
      */
-    Restriction lessThanOrEqual(V value);
-
-    /**
-     * Creates a "between" condition for the attribute, matching values within the specified range.
-     *
-     * @param start the lower bound of the range.
-     * @param end   the upper bound of the range.
-     * @return a criteria condition representing "attribute BETWEEN start AND end".
-     */
-    Restriction between(V start, V end);
-
-    /**
-     * Creates an "in" condition for the attribute, matching any of the specified values.
-     *
-     * @param values the collection of values to match.
-     * @return a criteria condition representing "attribute IN (values)".
-     */
-    Restriction in(Collection<V> values);
+    default Restriction<T> like(Supplier<Restriction<T>> pattern) {
+        return pattern.get();
+    }
 }

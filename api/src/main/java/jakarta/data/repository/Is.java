@@ -29,13 +29,6 @@ import jakarta.data.Operator;
  * Page<Product> search(@Is(Operator.Equal) String name); // Finds products where the name matches exactly.
  * }</pre>
  *
- * Example for Negation:
- *
- * <pre>{@code
- * @Find
- * Page<Product> search(@Is(value = Operator.Equal, not = true) String excludedName); // Excludes products with the specified name.
- * }</pre>
- *
  */
 public @interface Is {
 
@@ -45,13 +38,4 @@ public @interface Is {
      * @return the specified {@link Operator} value.
      */
     Operator value();
-
-    /**
-     * When set to true, applies the negation of the specified condition.
-     * For example, using `not = true` with {@link Operator#Equal} will search for records
-     * where the field is not equal to the specified value.
-     *
-     * @return whether to negate the specified condition.
-     */
-    boolean not() default false;
 }
