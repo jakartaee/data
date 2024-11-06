@@ -17,68 +17,149 @@
  */
 package jakarta.data;
 
+import jakarta.data.repository.Pattern;
+
 import java.util.List;
 
 /**
- * Represents a restriction condition for repository queries, defining an entity's attribute,
- * an operator, and a comparison value for flexible query construction.
+ * Represents a condition used to filter values in repository queries.
  *
- * <p>Restrictions are used to specify filtering conditions, supporting type-safe attributes and
- * a range of operators such as {@code EQUAL}, {@code LIKE}, {@code BETWEEN}, and more.</p>
+ * <p>The `Restriction` interface defines various types of conditions, including equality,
+ * comparison, range, null checks, and pattern matching checks, to support flexible and
+ * type-safe filtering.</p>
  *
- * <p>Example usage:</p>
+ * <p>Static factory methods are provided to create instances of `Restriction` with
+ * specific conditions, using `BasicRestriction` as the underlying implementation.</p>
+ *
  * <pre>
- * Restriction<Book> titleRestriction = Restriction.like("title", "Data%");
- * Restriction<Book> dateRestriction = Restriction.between("publicationDate", pastDate, LocalDate.now());
+ * Restriction<Book> titleEquals = Restriction.equal("title", "Jakarta Data");
+ *
+ * Restriction<Book> ratingGreaterThan = Restriction.greaterThan("rating", 4.5);
+ *
+ * Restriction<Book> publicationDateRange = Restriction.between("publicationDate", pastDate, LocalDate.now());
+ *
+ * Restriction<Book> authorIsNull = Restriction.isNull("author");
+ *
+ * Restriction<Book> titleStartsWith = Restriction.like("title", "Jakarta%");
+ *
+ * Restriction<Book> titleIgnoreCase = Restriction.like("title", Pattern.prefixedIgnoreCase("Java"));
  * </pre>
  *
- * @param <T> the entity type that this restriction applies to, ensuring type-safe usage.
+ * @param <T> the type of the entity on which the restriction is applied.
  */
-public record Restriction<T>(String field, Operator operator, Object value) {
+public interface Restriction<T> {
 
     /**
-     * Constructs a restriction condition.
+     * The name of the field on which this restriction is applied.
      *
-     * @param field    the name of the field to apply the restriction to (e.g., "title" or "publicationDate").
-     * @param operator the operator defining the comparison or condition (e.g., `Operator.LIKE`).
-     * @param value    the value to compare the field against.
+     * @return the field name.
      */
-    public Restriction {
-        // Validation or processing logic can go here if needed
+    String field();
+
+    /**
+     * The operator for this restriction.
+     *
+     * @return the operator defining the restriction type.
+     */
+    Operator operator();
+
+    /**
+     * The value used in this restriction, if applicable.
+     *
+     * @return the comparison value, or null if the restriction does not use a value.
+     */
+    Object value();
+
+    // Static Factory Methods
+
+    /**
+     * Creates an equality restriction for the specified field and value.
+     * <pre>
+     * Restriction<Book> titleEquals = Restriction.equal("title", "Jakarta Data");
+     * </pre>
+     */
+    static <T> Restriction<T> equal(String field, Object value) {
+        return new BasicRestriction<>(field, Operator.EQUAL, value);
     }
 
     /**
-     * Creates a basic restriction condition.
-     *
-     * @param field    the field name of the entity.
-     * @param operator the operator defining the restriction type.
-     * @param value    the value to apply in the restriction.
-     * @return a restriction condition.
+     * Creates a restriction for values greater than the specified value.
+     * <pre>
+     * Restriction<Book> ratingGreaterThan = Restriction.greaterThan("rating", 4.5);
+     * </pre>
      */
-    public static <T> Restriction<T> where(String field, Operator operator, Object value) {
-        return new Restriction<>(field, operator, value);
+    static <T> Restriction<T> greaterThan(String field, Object value) {
+        return new BasicRestriction<>(field, Operator.GREATER_THAN, value);
     }
 
     /**
-     * Creates a LIKE restriction with a pattern.
-     *
-     * @param field   the field name of the entity.
-     * @param pattern the pattern to match.
-     * @return a LIKE restriction condition.
+     * Creates a restriction for values greater than or equal to the specified value.
+     * <pre>
+     * Restriction<Book> ratingAtLeast = Restriction.greaterThanOrEqual("rating", 4.0);
+     * </pre>
      */
-    public static <T> Restriction<T> like(String field, String pattern) {
-        return new Restriction<>(field, Operator.LIKE, pattern);
+    static <T> Restriction<T> greaterThanOrEqual(String field, Object value) {
+        return new BasicRestriction<>(field, Operator.GREATER_THAN_EQUAL, value);
     }
 
     /**
-     * Creates a BETWEEN restriction for range queries.
-     *
-     * @param field the field name of the entity.
-     * @param start the starting value of the range.
-     * @param end   the ending value of the range.
-     * @return a BETWEEN restriction condition.
+     * Creates a restriction for values less than the specified value.
+     * <pre>
+     * Restriction<Book> ratingLessThan = Restriction.lessThan("rating", 3.0);
+     * </pre>
      */
-    public static <T> Restriction<T> between(String field, Object start, Object end) {
-        return new Restriction<>(field, Operator.BETWEEN, List.of(start, end));
+    static <T> Restriction<T> lessThan(String field, Object value) {
+        return new BasicRestriction<>(field, Operator.LESS_THAN, value);
+    }
+
+    /**
+     * Creates a restriction for values less than or equal to the specified value.
+     * <pre>
+     * Restriction<Book> ratingMax = Restriction.lessThanOrEqual("rating", 5.0);
+     * </pre>
+     */
+    static <T> Restriction<T> lessThanOrEqual(String field, Object value) {
+        return new BasicRestriction<>(field, Operator.LESS_THAN_EQUAL, value);
+    }
+
+    /**
+     * Creates a restriction for a range of values between the specified start and end.
+     * <pre>
+     * Restriction<Book> publicationDateRange = Restriction.between("publicationDate", pastDate, LocalDate.now());
+     * </pre>
+     */
+    static <T> Restriction<T> between(String field, Object start, Object end) {
+        return new BasicRestriction<>(field, Operator.BETWEEN, List.of(start, end));
+    }
+
+    /**
+     * Creates a restriction to check if the specified field is null.
+     * <pre>
+     * Restriction<Book> authorIsNull = Restriction.isNull("author");
+     * </pre>
+     */
+    static <T> Restriction<T> isNull(String field) {
+        return new BasicRestriction<>(field, Operator.IS_NULL, null);
+    }
+
+
+    /**
+     * Creates a `LIKE` restriction using a simple string pattern.
+     * <pre>
+     * Restriction<Book> titleStartsWith = Restriction.like("title", "Jakarta%");
+     * </pre>
+     */
+    static <T> Restriction<T> like(String field, String pattern) {
+        return new BasicRestriction<>(field, Operator.LIKE, pattern);
+    }
+
+    /**
+     * Creates a `LIKE` restriction using a `Pattern`, supporting complex `LIKE` operations.
+     * <pre>
+     * Restriction<Book> titleIgnoreCase = Restriction.like("title", Pattern.prefixedIgnoreCase("Java"));
+     * </pre>
+     */
+    static <T> Restriction<T> like(String field, Pattern<T> pattern) {
+        return pattern;
     }
 }

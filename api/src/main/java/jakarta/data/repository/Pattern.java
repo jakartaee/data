@@ -4,30 +4,51 @@ import jakarta.data.Operator;
 import jakarta.data.Restriction;
 
 import java.util.function.Supplier;
+
+
 /**
- * Represents a pattern for SQL `LIKE` operations, encapsulating different
- * `LIKE` matching options, such as prefix, suffix, and substring matching,
- * and supplying a `Restriction` for easy use in repository queries.
+ * Represents a pattern-based restriction for matching operations, encapsulating different
+ * options such as prefix, suffix, and substring matching. This implementation
+ * allows flexibility in creating pattern-based conditions directly as `Restriction` instances.
  *
- * <p>This class supports type-safe attributes and various matching types,
- * including case-insensitive patterns.</p>
+ * <p>Example usage:</p>
+ * <pre>
+ * // Case-sensitive exact match
+ * Restriction<Book> exactMatch = Pattern.like("title", "Jakarta");
  *
- * @param <T> the type of the entity on which the restriction will be applied.
+ * Restriction<Book> prefixIgnoreCase = Pattern.prefixedIgnoreCase("title", "Jak");
+ *
+ * Restriction<Book> suffixMatch = Pattern.suffixed("title", "Data");
+ *
+ * Restriction<Book> substringIgnoreCase = Pattern.substringedIgnoreCase("title", "Java");
+ * </pre>
+ *
+ * @param <T> the type of the entity on which the restriction is applied.
  */
-public record Pattern<T>(String field, String value, boolean ignoreCase) implements Supplier<Restriction<T>> {
+public record Pattern<T>(String field, String value, boolean ignoreCase) implements Restriction<T> {
 
     /**
-     * Supplies a `Restriction` configured with this `LIKE` pattern.
+     * The operator for pattern-based restrictions, fixed as `LIKE`.
      *
-     * @return a `Restriction` representing the `LIKE` pattern.
+     * @return the `LIKE` operator.
      */
     @Override
-    public Restriction<T> get() {
-        return new Restriction<>(field, Operator.LIKE, value);
+    public Operator operator() {
+        return Operator.LIKE;
     }
 
     /**
-     * Creates a case-sensitive `LIKE` pattern for an exact match.
+     * The value of the pattern used for matching.
+     *
+     * @return the pattern value.
+     */
+    @Override
+    public String value() {
+        return value;
+    }
+
+    /**
+     * Creates a case-sensitive pattern match for an exact match.
      *
      * @param field the field to apply the pattern on.
      * @param value the value to match exactly.
@@ -38,7 +59,7 @@ public record Pattern<T>(String field, String value, boolean ignoreCase) impleme
     }
 
     /**
-     * Creates a case-insensitive `LIKE` pattern for an exact match.
+     * Creates a case-insensitive pattern match for an exact match.
      *
      * @param field the field to apply the pattern on.
      * @param value the value to match exactly.
@@ -49,7 +70,7 @@ public record Pattern<T>(String field, String value, boolean ignoreCase) impleme
     }
 
     /**
-     * Creates a `LIKE` pattern for values prefixed with the specified value.
+     * Creates a pattern match for values prefixed with the specified value.
      *
      * @param field the field to apply the pattern on.
      * @param value the prefix to match.
@@ -60,7 +81,7 @@ public record Pattern<T>(String field, String value, boolean ignoreCase) impleme
     }
 
     /**
-     * Creates a case-insensitive `LIKE` pattern for values prefixed with the specified value.
+     * Creates a case-insensitive pattern match for values prefixed with the specified value.
      *
      * @param field the field to apply the pattern on.
      * @param value the prefix to match.
@@ -71,7 +92,7 @@ public record Pattern<T>(String field, String value, boolean ignoreCase) impleme
     }
 
     /**
-     * Creates a `LIKE` pattern for values containing the specified substring.
+     * Creates a pattern match for values containing the specified substring.
      *
      * @param field the field to apply the pattern on.
      * @param value the substring to match.
@@ -82,7 +103,7 @@ public record Pattern<T>(String field, String value, boolean ignoreCase) impleme
     }
 
     /**
-     * Creates a case-insensitive `LIKE` pattern for values containing the specified substring.
+     * Creates a case-insensitive pattern match for values containing the specified substring.
      *
      * @param field the field to apply the pattern on.
      * @param value the substring to match.
@@ -93,7 +114,7 @@ public record Pattern<T>(String field, String value, boolean ignoreCase) impleme
     }
 
     /**
-     * Creates a `LIKE` pattern for values suffixed with the specified value.
+     * Creates a pattern match for values suffixed with the specified value.
      *
      * @param field the field to apply the pattern on.
      * @param value the suffix to match.
@@ -104,7 +125,7 @@ public record Pattern<T>(String field, String value, boolean ignoreCase) impleme
     }
 
     /**
-     * Creates a case-insensitive `LIKE` pattern for values suffixed with the specified value.
+     * Creates a case-insensitive pattern match for values suffixed with the specified value.
      *
      * @param field the field to apply the pattern on.
      * @param value the suffix to match.

@@ -17,6 +17,7 @@
  */
 package jakarta.data.metamodel;
 
+import jakarta.data.Restriction;
 import jakarta.data.Sort;
 
 /**
@@ -48,5 +49,46 @@ public interface SortableAttribute<T> extends Attribute<T> {
      * @return a request for a descending sort on the entity attribute.
      */
     Sort<T> desc();
+
+    /**
+     * Creates a restriction for values greater than the specified value.
+     *
+     * @param value the lower bound (exclusive) for the attribute.
+     * @return a Restriction representing a greater-than condition.
+     */
+    Restriction<T> greaterThan(Object value);
+
+    /**
+     * Creates a restriction for values greater than or equal to the specified value.
+     *
+     * @param value the lower bound (inclusive) for the attribute.
+     * @return a Restriction representing a greater-than-or-equal condition.
+     */
+    Restriction<T> greaterThanOrEqual(Object value);
+
+    /**
+     * Creates a restriction for values less than the specified value.
+     *
+     * @param value the upper bound (exclusive) for the attribute.
+     * @return a Restriction representing a less-than condition.
+     */
+    Restriction<T> lessThan(Object value);
+
+    /**
+     * Creates a restriction for values less than or equal to the specified value.
+     *
+     * @param value the upper bound (inclusive) for the attribute.
+     * @return a Restriction representing a less-than-or-equal condition.
+     */
+    Restriction<T> lessThanOrEqual(Object value);
+
+    /**
+     * Creates a restriction that matches values within the specified range.
+     *
+     * @param start the starting value of the range (inclusive).
+     * @param end   the ending value of the range (inclusive).
+     * @return a Restriction representing a range condition.
+     */
+    Restriction<T> between(Object start, Object end);
 
 }

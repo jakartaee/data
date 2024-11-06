@@ -17,6 +17,7 @@
  */
 package jakarta.data.metamodel;
 
+import jakarta.data.Restriction;
 import jakarta.data.Sort;
 
 /**
@@ -32,4 +33,19 @@ public interface Attribute<T> {
      * @return the entity attribute name.
      */
     String name();
+
+    /**
+     * Creates an equality restriction for the attribute.
+     *
+     * @param value the value to match exactly.
+     * @return a Restriction representing an equality condition.
+     */
+    Restriction<T> equal(Object value);
+
+    /**
+     * Creates a restriction for checking if the attribute is null.
+     *
+     * @return a Restriction representing the condition where the attribute is null.
+     */
+    Restriction<T> isNull();
 }

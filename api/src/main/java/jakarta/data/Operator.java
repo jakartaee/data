@@ -72,7 +72,16 @@ public enum Operator {
      * Matches records where the field value falls within a specified range.
      * Typically used for range-based comparisons, such as finding dates between a start and end date.
      */
-    BETWEEN;
+    BETWEEN,
+
+    /**
+     * Matches records where the field value is null.
+     *
+     * <p>This operator is used to filter records where the specified field
+     * does not contain a value. Commonly used to find records with unset or
+     * missing data in a particular field.</p>
+     */
+    IS_NULL
 }
 
 

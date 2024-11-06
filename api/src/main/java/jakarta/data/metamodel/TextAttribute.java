@@ -17,7 +17,10 @@
  */
 package jakarta.data.metamodel;
 
+import jakarta.data.Restriction;
 import jakarta.data.Sort;
+import jakarta.data.repository.Pattern;
+
 
 /**
  * Represents an textual entity attribute in the {@link StaticMetamodel}.
@@ -39,5 +42,16 @@ public interface TextAttribute<T> extends SortableAttribute<T> {
      * @return a request for a descending, case insensitive sort on the entity attribute.
      */
     Sort<T> descIgnoreCase();
+
+    /**
+     * Creates a `LIKE` restriction using a `Pattern` for the attribute,
+     * supporting different `LIKE` options such as prefix, suffix, and substring matching.
+     *
+     * @param pattern the pattern to match, defined using the `Pattern` class.
+     * @return a Restriction representing the `LIKE` condition.
+     */
+    default Restriction<T> like(Pattern<T> pattern) {
+        return pattern;
+    }
 
 }
