@@ -20,8 +20,6 @@ package jakarta.data.metamodel;
 import jakarta.data.Operator;
 import jakarta.data.Sort;
 
-import java.util.List;
-
 /**
  * Represents a sortable entity attribute in the {@link StaticMetamodel}.
  * Entity attribute types that are sortable include:
