@@ -65,7 +65,7 @@ public record Pattern<T>(String field, String value, boolean ignoreCase) impleme
     }
 
     /**
-     * Creates a pattern for an exact `LIKE` match on the specified value.
+     * Creates a pattern for a {@link Operator#LIKE LIKE} match on the specified value.
      * This method sets the field to `null`, allowing it to be applied
      * later to a specific attribute.
      *
