@@ -159,7 +159,7 @@ public record Pattern<T>(String field, String value, boolean ignoreCase) impleme
     }
 
     /**
-     * Returns a new `Pattern` instance with case-insensitive matching enabled.
+     * Returns a new {@code Pattern} instance with case-insensitive matching.
      * This method allows you to specify that the pattern should ignore case when matching.
      *
      * <p>Example usage:</p>
