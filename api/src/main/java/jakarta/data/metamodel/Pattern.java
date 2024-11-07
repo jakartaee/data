@@ -77,8 +77,8 @@ public record Pattern<T>(String field, String value, boolean ignoreCase) impleme
      * @param value the pattern to match.
      * @return a Pattern instance for a pattern match.
      */
-    public static <T> Pattern<T> like(String value) {
-        return like(null, value);
+    public static <T> Pattern<T> like(String pattern) {
+        return like(null, pattern);
     }
 
     /**
