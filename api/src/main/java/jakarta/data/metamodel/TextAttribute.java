@@ -52,9 +52,9 @@ public interface TextAttribute<T> extends SortableAttribute<T> {
     }
 
     /**
-     * Creates a `LIKE` restriction for a match on the specified text.
+     * Creates a `LIKE` restriction for a match on the specified pattern.
      *
-     * @param pattern the text to match.
+     * @param pattern the `Pattern` instance to match.
      * @return a Restriction representing a `LIKE` condition.
      */
     default Pattern<T> like(Pattern<T> pattern) {
