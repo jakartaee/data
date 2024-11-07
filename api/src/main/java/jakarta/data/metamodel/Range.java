@@ -51,7 +51,7 @@ import java.util.List;
  *
  * @param <T> the type of the entity's attribute on which the range is applied.
  */
-public record Range<T>(String field, T lowerBound, T upperBound, boolean open) implements Restriction<T> {
+public record Range<T>(String field, T lowerBound, T upperBound, boolean open) implements BasicRestriction<T> {
 
     @Override
     public String field() {

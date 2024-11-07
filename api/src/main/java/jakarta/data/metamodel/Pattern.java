@@ -42,7 +42,7 @@ import jakarta.data.Operator;
  *
  * @param <T> the type of the entity on which the restriction is applied.
  */
-public record Pattern<T>(String field, String value, boolean ignoreCase) implements Restriction<T> {
+public record Pattern<T>(String field, String value, boolean ignoreCase) implements BasicRestriction<T> {
 
     /**
      * The operator for pattern-based restrictions, fixed as `LIKE`.

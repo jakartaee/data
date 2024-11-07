@@ -17,26 +17,23 @@
  */
 package jakarta.data.metamodel;
 
-import jakarta.data.LogicalOperator;
-
 import java.util.Iterator;
 import java.util.List;
 
 /**
  * A composite restriction representing a collection of individual {@link Restriction}
- * and {@link LogicalOperator} instances, combined under a single logical operation.
+ * and {@link Restrict} instances, combined under a single logical operation.
  *
  * <p>This record allows multiple restrictions to be treated as a single entity, making
  * it easy to pass complex conditions to repository methods.</p>
  *
  * @param <T> the entity type that the restrictions apply to.
  */
-public record CompositeRestriction<T>(LogicalOperator operator, List<Restriction<? super T>> restrictions) implements Iterable<Restriction<? super T>> {
+public record CompositeRestriction<T>(Restrict type, List<Restriction<? extends T>> restrictions) implements Iterable<Restriction<? extends T>>, MultipleRestriction<T> {
 
     /**
      * Constructs a composite restriction with the specified operator and list of restrictions.
      *
-     * @param operator     the logical operator (AND or OR) to apply between the restrictions.
      * @param restrictions the list of restrictions to combine.
      */
     public CompositeRestriction {
@@ -44,7 +41,7 @@ public record CompositeRestriction<T>(LogicalOperator operator, List<Restriction
     }
 
     @Override
-    public Iterator<Restriction<? super T>> iterator() {
+    public Iterator<Restriction<? extends T>> iterator() {
         return restrictions.iterator();
     }
 
@@ -57,7 +54,7 @@ public record CompositeRestriction<T>(LogicalOperator operator, List<Restriction
      */
     @SafeVarargs
     public static <T> CompositeRestriction<T> all(Restriction<T>... restrictions) {
-        return new CompositeRestriction<>(LogicalOperator.AND, List.of(restrictions));
+        return new CompositeRestriction<>(Restrict.ALL, List.of(restrictions));
     }
 
     /**
@@ -69,8 +66,7 @@ public record CompositeRestriction<T>(LogicalOperator operator, List<Restriction
      */
     @SafeVarargs
     public static <T> CompositeRestriction<T> any(Restriction<T>... restrictions) {
-        return new CompositeRestriction<>(LogicalOperator.OR, List.of(restrictions));
+        return new CompositeRestriction<>(Restrict.ANY, List.of(restrictions));
     }
-
 
 }

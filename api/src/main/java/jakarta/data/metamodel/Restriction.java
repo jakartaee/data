@@ -17,54 +17,22 @@
  */
 package jakarta.data.metamodel;
 
-import jakarta.data.Operator;
 
 /**
  * Represents a condition used to filter values in repository queries.
  *
- * <p>The `Restriction` interface defines various types of conditions, including equality,
- * comparison, range, null checks, and pattern matching checks, to support flexible and
- * type-safe filtering.</p>
+ * <p>The `Restriction` interface serves as a general contract for defining filter conditions,
+ * supporting various operations such as equality, comparisons, range, null checks,
+ * and pattern matching. Implementations of `Restriction` can be used to construct
+ * flexible and type-safe filtering logic in repository queries.</p>
  *
- * <p>Static factory methods are provided to create instances of `Restriction` with
- * specific conditions, using `BasicRestriction` as the underlying implementation.</p>
- *
- * <pre>
- * Restriction<Book> titleEquals = Restriction.equal("title", "Jakarta Data");
- *
- * Restriction<Book> ratingGreaterThan = Restriction.greaterThan("rating", 4.5);
- *
- * Restriction<Book> publicationDateRange = Restriction.between("publicationDate", pastDate, LocalDate.now());
- *
- * Restriction<Book> authorIsNull = Restriction.isNull("author");
- *
- * Restriction<Book> titleStartsWith = Restriction.like("title", "Jakarta%");
- *
- * Restriction<Book> titleIgnoreCase = Restriction.like("title", Pattern.prefixedIgnoreCase("Java"));
- * </pre>
+ * <p>Subtypes include {@link BasicRestriction}, which handles single-field conditions,
+ * and {@link MultipleRestriction}, which combines multiple restrictions
+ * using logical operators.</p>
  *
  * @param <T> the type of the entity on which the restriction is applied.
  */
 public interface Restriction<T> {
 
-    /**
-     * The name of the field on which this restriction is applied.
-     *
-     * @return the field name.
-     */
-    String field();
 
-    /**
-     * The operator for this restriction.
-     *
-     * @return the operator defining the restriction type.
-     */
-    Operator operator();
-
-    /**
-     * The value used in this restriction, if applicable.
-     *
-     * @return the comparison value, or null if the restriction does not use a value.
-     */
-    Object value();
 }

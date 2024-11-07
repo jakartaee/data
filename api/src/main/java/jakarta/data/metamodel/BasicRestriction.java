@@ -20,23 +20,36 @@ package jakarta.data.metamodel;
 import jakarta.data.Operator;
 
 /**
- * A basic implementation of the `Restriction` interface, representing various conditions
- * used in repository queries, including equality, comparison, and range checks.
+ * A basic restriction applied to a single field, representing conditions such as equality,
+ * comparisons, range checks, and pattern matches.
+ *
+ * <p>The `BasicRestriction` interface provides methods for defining simple, singular restrictions
+ * based on a specific field, an operator, and an optional comparison value. This interface supports
+ * common operators (e.g., EQUAL, GREATER_THAN) and serves as a foundation for filtering
+ * logic on individual fields.</p>
  *
  * @param <T> the type of the entity on which the restriction is applied.
  */
-public record BasicRestriction<T>(String field, Operator operator, Object value) implements Restriction<T> {
+public interface BasicRestriction<T> extends Restriction<T> {
 
     /**
-     * Constructs a `BasicRestriction` with the specified field, operator, and value.
+     * The name of the field on which this restriction is applied.
      *
-     * @param field    the name of the field to apply the restriction to.
-     * @param operator the operator defining the comparison or condition.
-     * @param value    the value to compare the field against (optional for null checks).
+     * @return the field name as a String.
      */
-    public BasicRestriction {
-        if (field == null || operator == null) {
-            throw new IllegalArgumentException("Field and operator must not be null.");
-        }
-    }
+    String field();
+
+    /**
+     * The operator defining the type of comparison or condition for this restriction.
+     *
+     * @return the operator representing the restriction type (e.g., EQUAL, LIKE, BETWEEN).
+     */
+    Operator operator();
+
+    /**
+     * The value used for comparison in this restriction, if applicable.
+     *
+     * @return the comparison value, or {@code null} if the restriction does not use a value (e.g., IS_NULL).
+     */
+    Object value();
 }

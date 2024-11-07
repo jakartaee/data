@@ -57,7 +57,7 @@ public interface SortableAttribute<T> extends Attribute<T> {
      * @return a Restriction representing a greater-than condition.
      */
     default Restriction<T> greaterThan(Object value) {
-        return new BasicRestriction<>(name(), Operator.GREATER_THAN, value);
+        return new SimpleRestriction<>(name(), Operator.GREATER_THAN, value);
     }
 
     /**
@@ -67,7 +67,7 @@ public interface SortableAttribute<T> extends Attribute<T> {
      * @return a Restriction representing a greater-than-or-equal condition.
      */
     default Restriction<T> greaterThanOrEqual(Object value) {
-        return new BasicRestriction<>(name(), Operator.GREATER_THAN_EQUAL, value);
+        return new SimpleRestriction<>(name(), Operator.GREATER_THAN_EQUAL, value);
     }
 
     /**
@@ -77,7 +77,7 @@ public interface SortableAttribute<T> extends Attribute<T> {
      * @return a Restriction representing a less-than condition.
      */
     default Restriction<T> lessThan(Object value) {
-        return new BasicRestriction<>(name(), Operator.LESS_THAN, value);
+        return new SimpleRestriction<>(name(), Operator.LESS_THAN, value);
     }
 
     /**
@@ -87,7 +87,7 @@ public interface SortableAttribute<T> extends Attribute<T> {
      * @return a Restriction representing a less-than-or-equal condition.
      */
     default Restriction<T> lessThanOrEqual(Object value) {
-        return new BasicRestriction<>(name(), Operator.LESS_THAN_EQUAL, value);
+        return new SimpleRestriction<>(name(), Operator.LESS_THAN_EQUAL, value);
     }
 
     /**
