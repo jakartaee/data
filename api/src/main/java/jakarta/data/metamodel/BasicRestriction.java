@@ -23,7 +23,7 @@ import jakarta.data.Operator;
  * A basic restriction applied to a single field, representing conditions such as equality,
  * comparisons, range checks, and pattern matches.
  *
- * <p>The `BasicRestriction` interface provides methods for defining simple, singular restrictions
+ * <p>The {@code BasicRestriction} interface provides methods for defining simple, singular restrictions
  * based on a specific field, an operator, and an optional comparison value. This interface supports
  * common operators (e.g., EQUAL, GREATER_THAN) and serves as a foundation for filtering
  * logic on individual fields.</p>
