@@ -65,90 +65,112 @@ public record Pattern<T>(String field, String value, boolean ignoreCase) impleme
     }
 
     /**
-     * Creates a case-sensitive pattern match for an exact match.
+     * Creates a pattern for an exact `LIKE` match on the specified value.
+     * This method sets the field to `null`, allowing it to be applied
+     * later to a specific attribute.
      *
-     * @param field the field to apply the pattern on.
-     * @param value the value to match exactly.
-     * @return a Pattern for an exact match.
+     * <p>Example usage:</p>
+     * <pre>
+     * Restriction<Book> titlePattern = _Book.title.like(Pattern.like("Jakarta"));
+     * </pre>
+     *
+     * @param value the exact text to match.
+     * @return a Pattern instance for an exact match.
      */
-    public static <T> Pattern<T> like(String field, String value) {
+    public static <T> Pattern<T> like(String value) {
+        return like(null, value);
+    }
+
+    /**
+     * Creates a pattern for a `LIKE` match where values start with the specified prefix.
+     * The `field` is set to `null` initially, allowing it to be assigned to an attribute later.
+     *
+     * <p>Example usage:</p>
+     * <pre>
+     * Restriction<Book> titlePattern = _Book.title.like(Pattern.startsWith("Hibernate"));
+     * </pre>
+     *
+     * @param value the prefix to match at the beginning of the field's value.
+     * @return a Pattern instance for a prefix match.
+     */
+    public static <T> Pattern<T> startsWith(String value) {
+        return startsWith(null, value);
+    }
+
+    /**
+     * Creates a pattern for a `LIKE` match where values contain the specified substring.
+     * This method initializes the field to `null`, allowing the pattern to be applied to
+     * a specific attribute later.
+     *
+     * <p>Example usage:</p>
+     * <pre>
+     * Restriction<Book> descriptionPattern = _Book.description.like(Pattern.contains("Java"));
+     * </pre>
+     *
+     * @param value the substring to match within the field's value.
+     * @return a Pattern instance for a substring match.
+     */
+    public static <T> Pattern<T> contains(String value) {
+        return contains(null, value);
+    }
+
+    /**
+     * Creates a pattern for a `LIKE` match where values end with the specified suffix.
+     * The field is set to `null`, allowing assignment to a specific attribute later.
+     *
+     * <p>Example usage:</p>
+     * <pre>
+     * Restriction<Book> titlePattern = _Book.title.like(Pattern.endsWith("Guide"));
+     * </pre>
+     *
+     * @param value the suffix to match at the end of the field's value.
+     * @return a Pattern instance for a suffix match.
+     */
+    public static <T> Pattern<T> endsWith(String value) {
+        return endsWith(null, value);
+    }
+
+    static <T> Pattern<T> endsWith(String field, String value) {
+        return endsWith(field, value);
+    }
+
+    static <T> Pattern<T> contains(String field, String value) {
+        return new Pattern<>(field, "%" + value + "%", false);
+    }
+
+    static <T> Pattern<T> startsWith(String field, String value) {
+        return new Pattern<>(field, value + "%", false);
+    }
+
+    static <T> Pattern<T> suffixed(String field, String value) {
+        return new Pattern<>(field, "%" + value, false);
+    }
+
+    static <T> Pattern<T> substringed(String field, String value) {
+        return new Pattern<>(field, "%" + value + "%", false);
+    }
+
+    static <T> Pattern<T> like(String field, String value) {
         return new Pattern<>(field, value, false);
     }
 
-    /**
-     * Creates a case-insensitive pattern match for an exact match.
-     *
-     * @param field the field to apply the pattern on.
-     * @param value the value to match exactly.
-     * @return a Pattern for a case-insensitive exact match.
-     */
-    public static <T> Pattern<T> likeIgnoreCase(String field, String value) {
-        return new Pattern<>(field, value, true);
-    }
-
-    /**
-     * Creates a pattern match for values prefixed with the specified value.
-     *
-     * @param field the field to apply the pattern on.
-     * @param value the prefix to match.
-     * @return a Pattern for prefix matching.
-     */
-    public static <T> Pattern<T> prefixed(String field, String value) {
+    static <T> Pattern<T> prefixed(String field, String value) {
         return new Pattern<>(field, value + "%", false);
     }
 
     /**
-     * Creates a case-insensitive pattern match for values prefixed with the specified value.
+     * Returns a new `Pattern` instance with case-insensitive matching enabled.
+     * This method allows you to specify that the pattern should ignore case when matching.
      *
-     * @param field the field to apply the pattern on.
-     * @param value the prefix to match.
-     * @return a Pattern for case-insensitive prefix matching.
-     */
-    public static <T> Pattern<T> prefixedIgnoreCase(String field, String value) {
-        return new Pattern<>(field, value + "%", true);
-    }
-
-    /**
-     * Creates a pattern match for values containing the specified substring.
+     * <p>Example usage:</p>
+     * <pre>
+     * // Case-insensitive prefix match
+     * Restriction<Book> titlePattern = _Book.title.like(Pattern.startsWith("Hibernate").ignoringCase());
+     * </pre>
      *
-     * @param field the field to apply the pattern on.
-     * @param value the substring to match.
-     * @return a Pattern for substring matching.
+     * @return a new Pattern instance with `ignoreCase` set to `true`.
      */
-    public static <T> Pattern<T> substringed(String field, String value) {
-        return new Pattern<>(field, "%" + value + "%", false);
-    }
-
-    /**
-     * Creates a case-insensitive pattern match for values containing the specified substring.
-     *
-     * @param field the field to apply the pattern on.
-     * @param value the substring to match.
-     * @return a Pattern for case-insensitive substring matching.
-     */
-    public static <T> Pattern<T> substringedIgnoreCase(String field, String value) {
-        return new Pattern<>(field, "%" + value + "%", true);
-    }
-
-    /**
-     * Creates a pattern match for values suffixed with the specified value.
-     *
-     * @param field the field to apply the pattern on.
-     * @param value the suffix to match.
-     * @return a Pattern for suffix matching.
-     */
-    public static <T> Pattern<T> suffixed(String field, String value) {
-        return new Pattern<>(field, "%" + value, false);
-    }
-
-    /**
-     * Creates a case-insensitive pattern match for values suffixed with the specified value.
-     *
-     * @param field the field to apply the pattern on.
-     * @param value the suffix to match.
-     * @return a Pattern for case-insensitive suffix matching.
-     */
-    public static <T> Pattern<T> suffixedIgnoreCase(String field, String value) {
-        return new Pattern<>(field, "%" + value, true);
+    public Pattern<T> ignoringCase() {
+        return new Pattern<>(field, value, true);
     }
 }
