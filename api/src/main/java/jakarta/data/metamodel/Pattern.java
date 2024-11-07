@@ -30,7 +30,7 @@ import jakarta.data.Operator;
  * // Case-insensitive prefix match
  * Restriction<Book> prefixIgnoreCase = Pattern.prefixedIgnoreCase(_Book.title, "Jak");
  *
- * // Case-sensitive suffix match
+ * // Suffix match
  * Restriction<Book> suffixMatch = Pattern.suffixed(_Book.title, "Guide");
  *
  * // Case-insensitive substring match
