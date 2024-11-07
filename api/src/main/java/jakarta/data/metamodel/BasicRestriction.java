@@ -20,7 +20,7 @@ package jakarta.data.metamodel;
 import jakarta.data.Operator;
 
 /**
- * A basic restriction applied to a single field, representing conditions such as equality,
+ * A basic restriction applies to a single field, representing conditions such as equality,
  * comparisons, range checks, and pattern matches.
  *
  * <p>The {@code BasicRestriction} interface provides methods for defining simple, singular restrictions
