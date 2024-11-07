@@ -20,7 +20,7 @@ package jakarta.data.metamodel;
 import java.util.List;
 
 /**
- * A composite restriction that combines multiple `Restriction` instances using logical operators.
+ * A composite restriction that combines multiple {@link Restriction} instances using logical operators.
  *
  * <p>The `MultipleRestriction` interface allows for combining multiple restrictions, enabling complex
  * filtering scenarios where multiple conditions must be satisfied. Each contained `Restriction`
