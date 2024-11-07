@@ -23,7 +23,7 @@ import jakarta.data.Operator;
 /**
  * Represents a pattern-based restriction for matching operations, encapsulating different
  * options such as prefix, suffix, and substring matching. This implementation
- * allows flexibility in creating pattern-based conditions directly as `Restriction` instances.
+ * allows flexibility in creating pattern-based conditions directly as {@link Restriction} instances.
  *
  * <p>Example usage with metadata attributes:</p>
  * <pre>
