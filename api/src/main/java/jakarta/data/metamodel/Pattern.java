@@ -71,7 +71,7 @@ public record Pattern<T>(String field, String value, boolean ignoreCase) impleme
      *
      * <p>Example usage:</p>
      * <pre>
-     * Restriction<Book> titlePattern = _Book.title.like(Pattern.like("Jakarta"));
+     * Restriction<Book> titlePattern = _Book.title.like(Pattern.like("Jakarta %"));
      * </pre>
      *
      * @param value the pattern to match.
