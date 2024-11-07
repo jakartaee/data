@@ -27,9 +27,6 @@ import jakarta.data.Operator;
  *
  * <p>Example usage with metadata attributes:</p>
  * <pre>
- * // Case-sensitive exact match
- * Restriction<Book> exactMatch = Pattern.like(_Book.title, "Jakarta Data");
- *
  * // Case-insensitive prefix match
  * Restriction<Book> prefixIgnoreCase = Pattern.prefixedIgnoreCase(_Book.title, "Jak");
  *
