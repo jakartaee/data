@@ -74,8 +74,8 @@ public record Pattern<T>(String field, String value, boolean ignoreCase) impleme
      * Restriction<Book> titlePattern = _Book.title.like(Pattern.like("Jakarta"));
      * </pre>
      *
-     * @param value the exact text to match.
-     * @return a Pattern instance for an exact match.
+     * @param value the pattern to match.
+     * @return a Pattern instance for a pattern match.
      */
     public static <T> Pattern<T> like(String value) {
         return like(null, value);
