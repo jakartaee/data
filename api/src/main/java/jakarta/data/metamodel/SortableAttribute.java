@@ -18,6 +18,8 @@
 package jakarta.data.metamodel;
 
 import jakarta.data.Sort;
+import jakarta.data.restrict.Restrict;
+import jakarta.data.restrict.Restriction;
 
 /**
  * Represents a sortable entity attribute in the {@link StaticMetamodel}.
@@ -49,4 +51,19 @@ public interface SortableAttribute<T> extends Attribute<T> {
      */
     Sort<T> desc();
 
+    default Restriction.Basic<T> greaterThan(Comparable<Object> value) {
+        return Restrict.greaterThan(value, name());
+    }
+
+    default Restriction.Basic<T> greaterThanEqual(Comparable<Object> value) {
+        return Restrict.greaterThanEqual(value, name());
+    }
+
+    default Restriction.Basic<T> lessThan(Comparable<Object> value) {
+        return Restrict.lessThan(value, name());
+    }
+
+    default Restriction.Basic<T> lessThanEqual(Comparable<Object> value) {
+        return Restrict.lessThanEqual(value, name());
+    }
 }

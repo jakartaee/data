@@ -18,6 +18,8 @@
 package jakarta.data.metamodel;
 
 import jakarta.data.Sort;
+import jakarta.data.restrict.Restrict;
+import jakarta.data.restrict.Restriction;
 
 /**
  * Represents an textual entity attribute in the {@link StaticMetamodel}.
@@ -33,11 +35,32 @@ public interface TextAttribute<T> extends SortableAttribute<T> {
      */
     Sort<T> ascIgnoreCase();
 
+    default Restriction.Basic<T> contains(String substringPattern) {
+        return Restrict.contains(substringPattern, name());
+    }
+
     /**
      * Obtain a request for a descending, case insensitive {@link Sort} based on the entity attribute.
      *
      * @return a request for a descending, case insensitive sort on the entity attribute.
      */
     Sort<T> descIgnoreCase();
+
+    default Restriction.Basic<T> endsWith(String suffixPattern) {
+        return Restrict.endsWith(suffixPattern, name());
+    }
+
+    // TODO once we have Pattern:
+    //default Restriction.Basic<T> like(Pattern pattern) {
+    //    return Restrict.like(pattern, name());
+    //}
+
+    default Restriction.Basic<T> like(String pattern) {
+        return Restrict.like(pattern, name());
+    }
+
+    default Restriction.Basic<T> startsWith(String prefixPattern) {
+        return Restrict.startsWith(prefixPattern, name());
+    }
 
 }

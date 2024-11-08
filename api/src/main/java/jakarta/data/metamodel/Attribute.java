@@ -17,7 +17,10 @@
  */
 package jakarta.data.metamodel;
 
-import jakarta.data.Sort;
+import java.util.Set;
+
+import jakarta.data.restrict.Restrict;
+import jakarta.data.restrict.Restriction;
 
 /**
  * Represents an entity attribute in the {@link StaticMetamodel}.
@@ -25,6 +28,22 @@ import jakarta.data.Sort;
  * @param <T> entity class of the static metamodel.
  */
 public interface Attribute<T> {
+
+    default Restriction.Basic<T> equal(Object value) {
+        return Restrict.equal(value, name());
+    }
+
+    default Restriction.Basic<T> in(Object... values) {
+        if (values == null || values.length == 0)
+            throw new IllegalArgumentException("values are required");
+
+        return Restrict.in(Set.of(values), name());
+    }
+
+    default Restriction.Basic<T> isNull() {
+        return Restrict.equal(null, name());
+    }
+
     /**
      * Obtain the entity attribute name, suitable for use wherever the specification requires
      * an entity attribute name. For example, as the parameter to {@link Sort#asc(String)}.
@@ -32,4 +51,12 @@ public interface Attribute<T> {
      * @return the entity attribute name.
      */
     String name();
+
+    // TODO once we add negation?
+
+    // not
+
+    // notIn
+
+    // notNull
 }
