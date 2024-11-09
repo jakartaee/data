@@ -20,26 +20,29 @@ package jakarta.data;
 import java.util.List;
 import java.util.Set;
 
+import jakarta.data.Restriction.Composite;
 import jakarta.data.Restriction.Operator;
 
 // TODO document
 // This is one of two places from which to obtain restrictions.
 // The other place is from static metamodel attributes.
-public enum Restrict {
-    ALL,
-    ANY;
+public class Restrict {
 
     // used internally for more readable code
     private static final boolean NOT = true;
 
+    // prevent instantiation
+    private Restrict() {
+    }
+
     @SafeVarargs
     public static <T> Restriction<T> all(Restriction<T>... restrictions) {
-        return new CompositeRestriction<>(ALL, List.of(restrictions));
+        return new CompositeRestriction<>(Composite.Type.ALL, List.of(restrictions));
     }
 
     @SafeVarargs
     public static <T> Restriction<T> any(Restriction<T>... restrictions) {
-        return new CompositeRestriction<>(ANY, List.of(restrictions));
+        return new CompositeRestriction<>(Composite.Type.ANY, List.of(restrictions));
     }
 
     public static <T> Restriction<T> between(Comparable<Object> min,

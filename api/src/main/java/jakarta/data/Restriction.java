@@ -33,7 +33,12 @@ public interface Restriction<T> {
     interface Composite<T> extends Restriction<T> {
         List<Restriction<T>> restrictions();
 
-        Restrict type();
+        Type type();
+
+        enum Type {
+            ALL,
+            ANY
+        }
     }
 
     interface Text<T> extends Basic<T> {

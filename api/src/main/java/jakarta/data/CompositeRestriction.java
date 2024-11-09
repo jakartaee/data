@@ -24,12 +24,12 @@ import java.util.List;
 // the Restrict.any(...) or Restrict.all(...) methods
 
 record CompositeRestriction<T>(
-        Restrict type,
+        Composite.Type type,
         List<Restriction<T>> restrictions,
         boolean isNegated) implements Restriction.Composite<T> {
 
     CompositeRestriction(
-            Restrict type,
+            Composite.Type type,
             List<Restriction<T>> restrictions) {
         this(type, restrictions, false);
     }
