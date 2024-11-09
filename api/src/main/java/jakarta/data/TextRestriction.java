@@ -21,13 +21,23 @@ package jakarta.data;
 // The proper way for users to obtain instances is via
 // the static metamodel or Restrict.* methods 
 
-record BasicRestriction<T>(
+record TextRestriction<T>(
         String field,
         boolean isNegated,
         Operator comparison,
-        Object value) implements Restriction.Basic<T> {
+        boolean isAnyCase,
+        Object value) implements Restriction.Text<T> {
 
-    BasicRestriction(String field, Operator comparison, Object value) {
-        this(field, false, comparison, value);
+    TextRestriction(String field, boolean negated, Operator comparison, Object value) {
+        this(field, negated, comparison, false, value);
+    }
+
+    TextRestriction(String field, Operator comparison, Object value) {
+        this(field, false, comparison, false, value);
+    }
+
+    @Override
+    public Restriction<T> ignoreCase() {
+        return new TextRestriction<>(field, isNegated, comparison, true, value);
     }
 }

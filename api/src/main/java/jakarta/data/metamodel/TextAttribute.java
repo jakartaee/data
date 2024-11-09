@@ -35,7 +35,7 @@ public interface TextAttribute<T> extends SortableAttribute<T> {
      */
     Sort<T> ascIgnoreCase();
 
-    default Restriction.Basic<T> contains(String substringPattern) {
+    default Restriction.Text<T> contains(String substringPattern) {
         return Restrict.contains(substringPattern, name());
     }
 
@@ -46,36 +46,60 @@ public interface TextAttribute<T> extends SortableAttribute<T> {
      */
     Sort<T> descIgnoreCase();
 
-    default Restriction.Basic<T> endsWith(String suffixPattern) {
+    default Restriction.Text<T> endsWith(String suffixPattern) {
         return Restrict.endsWith(suffixPattern, name());
     }
 
+    default Restriction.Text<T> equalTo(String value) {
+        return Restrict.equalTo(value, name());
+    }
+
+    default Restriction.Text<T> greaterThan(String value) {
+        return Restrict.greaterThan(value, name());
+    }
+
+    default Restriction.Text<T> greaterThanEqual(String value) {
+        return Restrict.greaterThanEqual(value, name());
+    }
+
+    default Restriction.Text<T> lessThan(String value) {
+        return Restrict.lessThan(value, name());
+    }
+
+    default Restriction.Text<T> lessThanEqual(String value) {
+        return Restrict.lessThanEqual(value, name());
+    }
+
     // TODO once we have Pattern:
-    //default Restriction.Basic<T> like(Pattern pattern) {
+    //default Restriction.Text<T> like(Pattern pattern) {
     //    return Restrict.like(pattern, name());
     //}
 
-    default Restriction.Basic<T> like(String pattern) {
+    default Restriction.Text<T> like(String pattern) {
         return Restrict.like(pattern, name());
     }
 
-    default Restriction.Basic<T> notContains(String substringPattern) {
+    default Restriction.Text<T> not(String value) {
+        return Restrict.not(value, name());
+    }
+
+    default Restriction.Text<T> notContains(String substringPattern) {
         return Restrict.notContains(substringPattern, name());
     }
 
-    default Restriction.Basic<T> notEndsWith(String suffixPattern) {
+    default Restriction.Text<T> notEndsWith(String suffixPattern) {
         return Restrict.notEndsWith(suffixPattern, name());
     }
 
-    default Restriction.Basic<T> notLike(String pattern) {
+    default Restriction.Text<T> notLike(String pattern) {
         return Restrict.notLike(pattern, name());
     }
 
-    default Restriction.Basic<T> notStartsWith(String prefixPattern) {
+    default Restriction.Text<T> notStartsWith(String prefixPattern) {
         return Restrict.notStartsWith(prefixPattern, name());
     }
 
-    default Restriction.Basic<T> startsWith(String prefixPattern) {
+    default Restriction.Text<T> startsWith(String prefixPattern) {
         return Restrict.startsWith(prefixPattern, name());
     }
 

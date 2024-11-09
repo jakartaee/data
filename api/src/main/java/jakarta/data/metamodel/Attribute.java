@@ -29,18 +29,18 @@ import jakarta.data.Restriction;
  */
 public interface Attribute<T> {
 
-    default Restriction.Basic<T> equalTo(Object value) {
+    default Restriction<T> equalTo(Object value) {
         return Restrict.equalTo(value, name());
     }
 
-    default Restriction.Basic<T> in(Object... values) {
+    default Restriction<T> in(Object... values) {
         if (values == null || values.length == 0)
             throw new IllegalArgumentException("values are required");
 
         return Restrict.in(Set.of(values), name());
     }
 
-    default Restriction.Basic<T> isNull() {
+    default Restriction<T> isNull() {
         return Restrict.equalTo(null, name());
     }
 
@@ -52,18 +52,18 @@ public interface Attribute<T> {
      */
     String name();
 
-    default Restriction.Basic<T> not(Object value) {
+    default Restriction<T> not(Object value) {
         return Restrict.not(value, name());
     }
 
-    default Restriction.Basic<T> notIn(Object... values) {
+    default Restriction<T> notIn(Object... values) {
         if (values == null || values.length == 0)
             throw new IllegalArgumentException("values are required");
 
         return Restrict.notIn(Set.of(values), name());
     }
 
-    default Restriction.Basic<T> notNull() {
+    default Restriction<T> notNull() {
         return Restrict.not(null, name());
     }
 }

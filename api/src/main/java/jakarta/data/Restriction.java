@@ -20,16 +20,12 @@ package jakarta.data;
 import java.util.List;
 
 public interface Restriction<T> {
+    boolean isNegated();
+
     interface Basic<T> extends Restriction<T> {
         Operator comparison();
 
         String field();
-
-        Basic<T> ignoreCase();
-
-        boolean isAnyCase();
-
-        boolean isNegated();
 
         Object value();
     }
@@ -38,8 +34,10 @@ public interface Restriction<T> {
         List<Restriction<T>> restrictions();
 
         Restrict type();
+    }
 
-        boolean isNegated();
+    interface Text<T> extends Basic<T> {
+        Restriction<T> ignoreCase();
     }
 
     enum Operator {
