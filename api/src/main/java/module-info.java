@@ -1072,7 +1072,6 @@ module jakarta.data {
     exports jakarta.data.page;
     exports jakarta.data.page.impl;
     exports jakarta.data.repository;
-    exports jakarta.data.restrict;
     exports jakarta.data.exceptions;
     opens jakarta.data.repository;
     exports jakarta.data.spi;

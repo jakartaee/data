@@ -13,12 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * SPDX-License-Identifier: Apache-2.0
+ *  SPDX-License-Identifier: Apache-2.0
  */
+package jakarta.data;
 
-/**
- * <p>TODO - documentation</p>
- *
- * <p>The module Javadoc provides an {@link jakarta.data/ overview} of Jakarta Data.</p>
- */
-package jakarta.data.restrict;
+import java.util.List;
+
+// Internal implementation class.
+// The proper way for users to obtain instances is via
+// the Restrict.any(...) or Restrict.all(...) methods
+
+record CompositeRestriction<T>(
+        Restrict type,
+        List<Restriction<T>> restrictions,
+        boolean isNegated) implements Restriction.Composite<T> {
+
+    CompositeRestriction(
+            Restrict type,
+            List<Restriction<T>> restrictions) {
+        this(type, restrictions, false);
+    }
+}

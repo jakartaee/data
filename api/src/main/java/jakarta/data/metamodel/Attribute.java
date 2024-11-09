@@ -19,8 +19,8 @@ package jakarta.data.metamodel;
 
 import java.util.Set;
 
-import jakarta.data.restrict.Restrict;
-import jakarta.data.restrict.Restriction;
+import jakarta.data.Restrict;
+import jakarta.data.Restriction;
 
 /**
  * Represents an entity attribute in the {@link StaticMetamodel}.
@@ -29,8 +29,8 @@ import jakarta.data.restrict.Restriction;
  */
 public interface Attribute<T> {
 
-    default Restriction.Basic<T> equal(Object value) {
-        return Restrict.equal(value, name());
+    default Restriction.Basic<T> equalTo(Object value) {
+        return Restrict.equalTo(value, name());
     }
 
     default Restriction.Basic<T> in(Object... values) {
@@ -41,7 +41,7 @@ public interface Attribute<T> {
     }
 
     default Restriction.Basic<T> isNull() {
-        return Restrict.equal(null, name());
+        return Restrict.equalTo(null, name());
     }
 
     /**
@@ -52,11 +52,18 @@ public interface Attribute<T> {
      */
     String name();
 
-    // TODO once we add negation?
+    default Restriction.Basic<T> not(Object value) {
+        return Restrict.not(value, name());
+    }
 
-    // not
+    default Restriction.Basic<T> notIn(Object... values) {
+        if (values == null || values.length == 0)
+            throw new IllegalArgumentException("values are required");
 
-    // notIn
+        return Restrict.notIn(Set.of(values), name());
+    }
 
-    // notNull
+    default Restriction.Basic<T> notNull() {
+        return Restrict.not(null, name());
+    }
 }

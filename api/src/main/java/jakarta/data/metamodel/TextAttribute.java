@@ -17,9 +17,9 @@
  */
 package jakarta.data.metamodel;
 
+import jakarta.data.Restrict;
+import jakarta.data.Restriction;
 import jakarta.data.Sort;
-import jakarta.data.restrict.Restrict;
-import jakarta.data.restrict.Restriction;
 
 /**
  * Represents an textual entity attribute in the {@link StaticMetamodel}.
@@ -57,6 +57,22 @@ public interface TextAttribute<T> extends SortableAttribute<T> {
 
     default Restriction.Basic<T> like(String pattern) {
         return Restrict.like(pattern, name());
+    }
+
+    default Restriction.Basic<T> notContains(String substringPattern) {
+        return Restrict.notContains(substringPattern, name());
+    }
+
+    default Restriction.Basic<T> notEndsWith(String suffixPattern) {
+        return Restrict.notEndsWith(suffixPattern, name());
+    }
+
+    default Restriction.Basic<T> notLike(String pattern) {
+        return Restrict.notLike(pattern, name());
+    }
+
+    default Restriction.Basic<T> notStartsWith(String prefixPattern) {
+        return Restrict.notStartsWith(prefixPattern, name());
     }
 
     default Restriction.Basic<T> startsWith(String prefixPattern) {

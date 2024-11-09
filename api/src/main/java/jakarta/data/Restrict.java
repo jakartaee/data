@@ -15,13 +15,13 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.restrict;
+package jakarta.data;
 
 import java.util.List;
 import java.util.Set;
 
-import jakarta.data.restrict.Restriction.Basic;
-import jakarta.data.restrict.Restriction.Operator;
+import jakarta.data.Restriction.Basic;
+import jakarta.data.Restriction.Operator;
 
 // TODO document
 // This is one of two places from which to obtain restrictions.
@@ -29,6 +29,9 @@ import jakarta.data.restrict.Restriction.Operator;
 public enum Restrict {
     ALL,
     ANY;
+
+    // used internally for more readable code
+    private static final boolean NOT = true;
 
     @SafeVarargs
     public static <T> Restriction<T> all(Restriction<T>... restrictions) {
@@ -38,6 +41,13 @@ public enum Restrict {
     @SafeVarargs
     public static <T> Restriction<T> any(Restriction<T>... restrictions) {
         return new CompositeRestriction<>(ANY, List.of(restrictions));
+    }
+
+    public static <T> Restriction<T> between(Comparable<Object> min,
+                                             Comparable<Object> max,
+                                             String field) {
+        return all(greaterThanEqual(min, field),
+                   lessThanEqual(max, field));
     }
 
     // TODO Need to think more about how to best cover negation of multiple
@@ -51,7 +61,7 @@ public enum Restrict {
         return new BasicRestriction<>(field, Operator.ENDS_WITH, suffixPattern);
     }
 
-    public static <T> Basic<T> equal(Object value, String field) {
+    public static <T> Basic<T> equalTo(Object value, String field) {
         return new BasicRestriction<>(field, Operator.EQUAL, value);
     }
 
@@ -84,7 +94,29 @@ public enum Restrict {
         return new BasicRestriction<>(field, Operator.LIKE, pattern);
     }
 
-    // TODO not, notLike, notIn, ...
+    public static <T> Basic<T> not(Object value, String field) {
+        return new BasicRestriction<>(field, NOT, Operator.EQUAL, value);
+    }
+
+    public static <T> Basic<T> notContains(String substringPattern, String field) {
+        return new BasicRestriction<>(field, NOT, Operator.CONTAINS, substringPattern);
+    }
+
+    public static <T> Basic<T> notEndsWith(String suffixPattern, String field) {
+        return new BasicRestriction<>(field, NOT, Operator.ENDS_WITH, suffixPattern);
+    }
+
+    public static <T> Basic<T> notIn(Set<Object> values, String field) {
+        return new BasicRestriction<>(field, NOT, Operator.IN, values);
+    }
+
+    public static <T> Basic<T> notLike(String pattern, String field) {
+        return new BasicRestriction<>(field, NOT, Operator.LIKE, pattern);
+    }
+
+    public static <T> Basic<T> notStartsWith(String prefixPattern, String field) {
+        return new BasicRestriction<>(field, NOT, Operator.STARTS_WITH, prefixPattern);
+    }
 
     public static <T> Basic<T> startsWith(String prefixPattern, String field) {
         return new BasicRestriction<>(field, Operator.STARTS_WITH, prefixPattern);
