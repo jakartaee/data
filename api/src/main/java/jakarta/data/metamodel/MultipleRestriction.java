@@ -22,9 +22,9 @@ import java.util.List;
 /**
  * A composite restriction that combines multiple {@link Restriction} instances using logical operators.
  *
- * <p>The `MultipleRestriction` interface allows for combining multiple restrictions, enabling complex
- * filtering scenarios where multiple conditions must be satisfied. Each contained `Restriction`
- * can be evaluated based on the logical operator specified by the `Restrict` type.</p>
+ * <p>The {@code MultipleRestriction} interface allows for combining multiple restrictions, enabling complex
+ * filtering scenarios where multiple conditions must be satisfied. Each contained {@link Restriction}
+ * can be evaluated based on the logical operator specified by the {@link Restrict} type.</p>
  *
  * <p>This interface is useful for defining AND/OR conditions where multiple fields and restrictions
  * are evaluated together in a repository query.</p>
