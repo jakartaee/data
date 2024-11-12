@@ -15,9 +15,9 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.metamodel;
+package jakarta.data;
 
-import jakarta.data.Operator;
+import jakarta.data.metamodel.Restriction;
 
 
 /**
@@ -30,29 +30,8 @@ import jakarta.data.Operator;
  * Restriction<Book> prefixIgnoreCase = _Book.title.endsWith("Guide");
  * </pre>
  *
- * @param <T> the type of the entity on which the restriction is applied.
  */
-public record Pattern<T>(String field, String value, boolean ignoreCase) implements BasicRestriction<T> {
-
-    /**
-     * The operator for pattern-based restrictions, fixed as `LIKE`.
-     *
-     * @return the `LIKE` operator.
-     */
-    @Override
-    public Operator operator() {
-        return Operator.LIKE;
-    }
-
-    /**
-     * The value of the pattern used for matching.
-     *
-     * @return the pattern value.
-     */
-    @Override
-    public String value() {
-        return value;
-    }
+public record Pattern(String value, boolean ignoreCase) {
 
     /**
      * Creates a pattern for a {@link Operator#LIKE LIKE} match on the specified value.
@@ -61,8 +40,8 @@ public record Pattern<T>(String field, String value, boolean ignoreCase) impleme
      *
      * @return a Pattern instance for a pattern match.
      */
-    public static <T> Pattern<T> like(String pattern) {
-        return like(null, pattern);
+    public static Pattern like(String pattern) {
+        return new Pattern(pattern, false);
     }
 
     /**
@@ -72,8 +51,8 @@ public record Pattern<T>(String field, String value, boolean ignoreCase) impleme
      * @param value the prefix to match at the beginning of the field's value.
      * @return a Pattern instance for a prefix match.
      */
-    public static <T> Pattern<T> startsWith(String value) {
-        return startsWith(null, value);
+    public static Pattern startsWith(String value) {
+        return new Pattern( value + "%", false);
     }
 
     /**
@@ -84,8 +63,8 @@ public record Pattern<T>(String field, String value, boolean ignoreCase) impleme
      * @param value the substring to match within the field's value.
      * @return a Pattern instance for a substring match.
      */
-    public static <T> Pattern<T> contains(String value) {
-        return contains(null, value);
+    public static Pattern contains(String value) {
+        return new Pattern("%" + value + "%", false);
     }
 
     /**
@@ -96,28 +75,8 @@ public record Pattern<T>(String field, String value, boolean ignoreCase) impleme
      * @param value the suffix to match at the end of the field's value.
      * @return a Pattern instance for a suffix match.
      */
-    public static <T> Pattern<T> endsWith(String value) {
-        return endsWith(null, value);
-    }
-
-    static <T> Pattern<T> endsWith(String field, String value) {
-        return endsWith(field, value);
-    }
-
-    static <T> Pattern<T> contains(String field, String value) {
-        return new Pattern<>(field, "%" + value + "%", false);
-    }
-
-    static <T> Pattern<T> startsWith(String field, String value) {
-        return new Pattern<>(field, value + "%", false);
-    }
-
-    static <T> Pattern<T> like(String field, String value) {
-        return new Pattern<>(field, value, false);
-    }
-
-    static <T> Pattern<T> prefixed(String field, String value) {
-        return new Pattern<>(field, value + "%", false);
+    public static Pattern endsWith(String value) {
+        return new Pattern(value + "%", false);
     }
 
     /**
@@ -131,7 +90,7 @@ public record Pattern<T>(String field, String value, boolean ignoreCase) impleme
      *
      * @return a new Pattern instance with `ignoreCase` set to `true`.
      */
-    public Pattern<T> ignoringCase() {
-        return new Pattern<>(field, value, true);
+    public Pattern ignoringCase() {
+        return new Pattern(value, true);
     }
 }

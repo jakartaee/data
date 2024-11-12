@@ -1076,4 +1076,5 @@ module jakarta.data {
     opens jakarta.data.repository;
     exports jakarta.data.spi;
     opens jakarta.data.metamodel;
+    opens jakarta.data;
 }

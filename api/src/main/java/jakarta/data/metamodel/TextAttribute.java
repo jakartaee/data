@@ -17,11 +17,14 @@
  */
 package jakarta.data.metamodel;
 
+import jakarta.data.Operator;
+import jakarta.data.Pattern;
 import jakarta.data.Sort;
+import jakarta.data.metamodel.impl.BasicRestrictionRecord;
 
 
 /**
- * Represents an textual entity attribute in the {@link StaticMetamodel}.
+ * Represents a textual entity attribute in the {@link StaticMetamodel}.
  *
  * @param <T> entity class of the static metamodel.
  */
@@ -47,8 +50,8 @@ public interface TextAttribute<T> extends SortableAttribute<T> {
      * @param text the text to match.
      * @return a Restriction representing a `LIKE` condition.
      */
-    default Pattern<T> like(String text) {
-        return Pattern.like(name(), text);
+    default Restriction<T> like(String text) {
+        return new BasicRestrictionRecord<>(name(), Operator.LIKE, text);
     }
 
     /**
@@ -57,8 +60,8 @@ public interface TextAttribute<T> extends SortableAttribute<T> {
      * @param pattern the `Pattern` instance to match.
      * @return a Restriction representing a `LIKE` condition.
      */
-    default Pattern<T> like(Pattern<T> pattern) {
-        return new Pattern<>(name(), pattern.value(), pattern.ignoreCase());
+    default Restriction<T> like(Pattern pattern) {
+        return new BasicRestrictionRecord<>(name(), Operator.LIKE, pattern.value());
     }
 
     /**
@@ -67,8 +70,9 @@ public interface TextAttribute<T> extends SortableAttribute<T> {
      * @param text the text prefix to match.
      * @return a Restriction representing a prefix `LIKE` condition.
      */
-    default Pattern<T> startsWith(String text) {
-        return Pattern.prefixed(name(), text);
+    default Restriction<T> startsWith(String text) {
+        var pattern = Pattern.startsWith(text);
+        return new BasicRestrictionRecord<>(name(), Operator.LIKE, pattern.value());
     }
 
     /**
@@ -77,8 +81,9 @@ public interface TextAttribute<T> extends SortableAttribute<T> {
      * @param text the substring to match.
      * @return a Restriction representing a substring `LIKE` condition.
      */
-    default Pattern<T> contains(String text) {
-        return Pattern.contains(name(), text);
+    default Restriction<T> contains(String text) {
+        var pattern = Pattern.contains(text);
+        return new BasicRestrictionRecord<>(name(), Operator.LIKE, pattern.value());
     }
 
 
@@ -88,8 +93,9 @@ public interface TextAttribute<T> extends SortableAttribute<T> {
      * @param text the text suffix to match.
      * @return a Restriction representing a suffix `LIKE` condition.
      */
-    default Pattern<T> endsWith(String text) {
-        return Pattern.endsWith(name(), text);
+    default Restriction<T> endsWith(String text) {
+        var pattern = Pattern.endsWith(text);
+        return new BasicRestrictionRecord<>(name(), Operator.LIKE, pattern.value());
     }
 
 }
