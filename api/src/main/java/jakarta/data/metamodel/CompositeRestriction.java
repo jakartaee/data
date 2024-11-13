@@ -17,56 +17,33 @@
  */
 package jakarta.data.metamodel;
 
-import java.util.Iterator;
 import java.util.List;
 
 /**
- * A composite restriction representing a collection of individual {@link Restriction}
- * and {@link Restrict} instances, combined under a single logical operation.
+ * A composite restriction that combines multiple {@link Restriction} instances using logical operators.
  *
- * <p>This record allows multiple restrictions to be treated as a single entity, making
- * it easy to pass complex conditions to repository methods.</p>
+ * <p>The {@code MultipleRestriction} interface allows for combining multiple restrictions, enabling complex
+ * filtering scenarios where multiple conditions must be satisfied. Each contained {@link Restriction}
+ * can be evaluated based on the logical operator specified by the {@link CompositeRestrictionType} type.</p>
  *
- * @param <T> the entity type that the restrictions apply to.
+ * <p>This interface is useful for defining AND/OR conditions where multiple fields and restrictions
+ * are evaluated together in a repository query.</p>
+ *
+ * @param <T> the type of the entity on which the restriction is applied.
  */
-public record CompositeRestriction<T>(Restrict type, List<Restriction<? extends T>> restrictions) implements Iterable<Restriction<? extends T>>, MultipleRestriction<T> {
+public interface CompositeRestriction<T> extends Restriction<T> {
 
     /**
-     * Constructs a composite restriction with the specified operator and list of restrictions.
+     * The list of restrictions that are combined in this composite restriction.
      *
-     * @param restrictions the list of restrictions to combine.
+     * @return a list of individual restrictions.
      */
-    public CompositeRestriction {
-        restrictions = List.copyOf(restrictions); // Ensure immutability of the list
-    }
-
-    @Override
-    public Iterator<Restriction<? extends T>> iterator() {
-        return restrictions.iterator();
-    }
+    List<Restriction<? extends T>> restrictions();
 
     /**
-     * Creates a composite restriction where all specified restrictions must be true (AND logic).
+     * The logical operator used to combine the contained restrictions, such as AND or OR.
      *
-     * @param restrictions the individual restrictions to combine.
-     * @param <T>          the entity type that the restrictions apply to.
-     * @return a CompositeRestriction representing the AND combination of the provided restrictions.
+     * @return the logical combination type for this composite restriction.
      */
-    @SafeVarargs
-    public static <T> CompositeRestriction<T> all(Restriction<T>... restrictions) {
-        return new CompositeRestriction<>(Restrict.ALL, List.of(restrictions));
-    }
-
-    /**
-     * Creates a composite restriction where any of the specified restrictions may be true (OR logic).
-     *
-     * @param restrictions the individual restrictions to combine.
-     * @param <T>          the entity type that the restrictions apply to.
-     * @return a CompositeRestriction representing the OR combination of the provided restrictions.
-     */
-    @SafeVarargs
-    public static <T> CompositeRestriction<T> any(Restriction<T>... restrictions) {
-        return new CompositeRestriction<>(Restrict.ANY, List.of(restrictions));
-    }
-
+    CompositeRestrictionType type();
 }

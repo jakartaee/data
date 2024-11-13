@@ -27,7 +27,7 @@ package jakarta.data.metamodel;
  * flexible and type-safe filtering logic in repository queries.</p>
  *
  * <p>Subtypes include {@link BasicRestriction}, which handles single-field conditions,
- * and {@link MultipleRestriction}, which combines multiple restrictions
+ * and {@link CompositeRestriction}, which combines multiple restrictions
  * using logical operators.</p>
  *
  * @param <T> the type of the entity on which the restriction is applied.

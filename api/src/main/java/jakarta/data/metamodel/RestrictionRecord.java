@@ -25,7 +25,7 @@ import jakarta.data.Operator;
  *
  * @param <T> the type of the entity on which the restriction is applied.
  */
-public record SimpleRestriction<T>(String field, Operator operator, Object value) implements Restriction<T> {
+record RestrictionRecord<T>(String field, Operator operator, Object value) implements Restriction<T> {
 
     /**
      * Constructs a `BasicRestriction` with the specified field, operator, and value.
@@ -34,7 +34,7 @@ public record SimpleRestriction<T>(String field, Operator operator, Object value
      * @param operator the operator defining the comparison or condition.
      * @param value    the value to compare the field against (optional for null checks).
      */
-    public SimpleRestriction {
+    public RestrictionRecord {
         if (field == null || operator == null) {
             throw new IllegalArgumentException("Field and operator must not be null.");
         }

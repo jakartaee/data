@@ -41,7 +41,7 @@ public interface Attribute<T> {
      * @return a Restriction representing an equality condition.
      */
     default Restriction<T> equal(Object value) {
-        return new SimpleRestriction<>(name(), Operator.EQUAL, value);
+        return new RestrictionRecord<>(name(), Operator.EQUAL, value);
     }
 
     /**
@@ -50,6 +50,6 @@ public interface Attribute<T> {
      * @return a Restriction representing the condition where the attribute is null.
      */
     default Restriction<T> isNull(){
-        return new SimpleRestriction<>(name(), Operator.EQUAL, null);
+        return new RestrictionRecord<>(name(), Operator.EQUAL, null);
     }
 }

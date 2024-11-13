@@ -27,10 +27,10 @@ package jakarta.data.metamodel;
  *   <li><b>ANY</b> - Requires that at least one of the contained restrictions is satisfied (logical OR).</li>
  * </ul>
  *
- * <p>This enum is typically used in {@link MultipleRestriction} to specify how its list of
+ * <p>This enum is typically used in {@link CompositeRestriction} to specify how its list of
  * restrictions should be combined, allowing for flexible and complex query conditions.</p>
  */
-public enum Restrict {
+public enum CompositeRestrictionType {
     /**
      * Requires that all contained restrictions must be satisfied (logical AND).
      */
