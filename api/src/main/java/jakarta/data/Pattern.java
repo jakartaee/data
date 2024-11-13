@@ -21,75 +21,126 @@ import jakarta.data.metamodel.Restriction;
 
 
 /**
- * Represents a pattern-based restriction for matching operations, encapsulating different
- * options such as prefix, suffix, and substring matching. This implementation
- * allows flexibility in creating pattern-based conditions directly as {@link Restriction} instances.
+ * Represents a pattern-based restriction for matching operations, supporting options
+ * such as exact match, prefix, suffix, and substring matching. This implementation
+ * provides flexibility in creating pattern-based conditions directly as {@link Restriction} instances.
  *
  * <p>Example usage with metadata attributes:</p>
  * <pre>
- * Restriction<Book> prefixIgnoreCase = _Book.title.endsWith("Guide");
- * </pre>
+ * // Match for values starting with "Guide"
+ * Restriction<Book> prefixMatch = _Book.title.startsWith("Guide");
  *
+ * // Match for values containing "Java"
+ * Restriction<Book> containsMatch = _Book.title.contains(Pattern.contains("Java"));
+ * </pre>
  */
-public record Pattern(String value, boolean ignoreCase) {
+public record Pattern(String pattern, boolean caseSensitive) {
 
     /**
-     * Creates a pattern for a {@link Operator#LIKE LIKE} match on the specified value.
-     * This method sets the field to `null`, allowing it to be applied
-     * later to a specific attribute.
+     * Creates a pattern for an exact match with the specified literal.
      *
-     * @return a Pattern instance for a pattern match.
-     */
-    public static Pattern like(String pattern) {
-        return new Pattern(pattern, false);
-    }
-
-    /**
-     * Creates a pattern for a `LIKE` match where values start with the specified prefix.
-     *
-     * @param prefixPattern the prefix pattern to match at the beginning of the field's value.
-     * @return a Pattern instance for a prefix match.
-     */
-    public static Pattern startsWith(String prefixPattern) {
-        return new Pattern(prefixPattern + "%");
-    }
-
-    /**
-     * Creates a pattern for a `LIKE` match where values contain the specified substring.
-     * This method initializes the field to `null`, allowing the pattern to be applied to
-     * a specific attribute later.
-     *
-     * @param value the substring to match within the field's value.
-     * @return a Pattern instance for a substring match.
-     */
-    public static Pattern contains(String value) {
-        return new Pattern("%" + value + "%", false);
-    }
-
-    /**
-     * Creates a pattern for a `LIKE` match where values end with the specified suffix.
-     * The field is set to `null`, allowing assignment to a specific attribute later.
-     *
-     *
-     * @param value the suffix to match at the end of the field's value.
-     * @return a Pattern instance for a suffix match.
-     */
-    public static Pattern endsWith(String value) {
-        return new Pattern(value + "%", false);
-    }
-
-    /**
-     * Returns a new {@code Pattern} instance with case-insensitive matching.
-     * This method allows you to specify that the pattern should ignore case when matching.
-     *
+     * <p>Example usage:</p>
      * <pre>
-     * // Case-insensitive prefix match
-     * Restriction<Book> titlePattern = Pattern.startsWith("Hibernate").ignoringCase();
+     * Restriction<Book> exactMatch = _Book.title.is(Pattern.is("Java Guide"));
      * </pre>
      *
-     * @return a new Pattern instance with `ignoreCase` set to `true`.
+     * @param literal the exact text to match.
+     * @return a {@code Pattern} instance for an exact match.
      */
-    public Pattern ignoringCase() {
-        return new Pattern(value, true);
+    public static Pattern is(String literal) {
+        return new Pattern(escape(literal), true);
+    }
+
+    /**
+     * Creates a pattern for a match based on the specified custom pattern.
+     *
+     * <p>Example usage:</p>
+     * <pre>
+     * Restriction<Book> customPatternMatch = _Book.title.matches(Pattern.matches("Ja%_a"));
+     * </pre>
+     *
+     * @param pattern the pattern to match.
+     * @return a {@code Pattern} instance for a custom match.
+     */
+    public static Pattern matches(String pattern) {
+        return new Pattern(pattern, true);
+    }
+
+    /**
+     * Creates a pattern using custom single and multi-character wildcards.
+     * Allows replacing placeholders in the pattern with standard SQL wildcards.
+     *
+     * <p>Example usage:</p>
+     * <pre>
+     * Restriction<Book> wildcardMatch = _Book.title.matches(Pattern.matches("Ja?a%", '?', '*'));
+     * </pre>
+     *
+     * @param pattern           the custom pattern to match.
+     * @param characterWildcard the character to use as a single-character wildcard.
+     * @param stringWildcard    the character to use as a multi-character wildcard.
+     * @return a {@code Pattern} instance for a custom match with specified wildcards.
+     */
+    public static Pattern matches(String pattern, char characterWildcard, char stringWildcard) {
+        final String standardized = escape(pattern)
+                .replace(characterWildcard, '_')
+                .replace(stringWildcard, '%');
+        return new Pattern(standardized, true);
+    }
+
+    /**
+     * Creates a pattern for a match where values start with the specified prefix.
+     *
+     * <p>Example usage:</p>
+     * <pre>
+     * Restriction<Book> prefixMatch = _Book.title.startsWith(Pattern.startsWith("Hibernate"));
+     * </pre>
+     *
+     * @param prefix the prefix to match at the beginning of the value.
+     * @return a {@code Pattern} instance for a prefix match.
+     */
+    public static Pattern startsWith(String prefix) {
+        return new Pattern(escape(prefix) + '%', true);
+    }
+
+    /**
+     * Creates a pattern for a match where values end with the specified suffix.
+     *
+     * <p>Example usage:</p>
+     * <pre>
+     * Restriction<Book> suffixMatch = _Book.title.endsWith(Pattern.endsWith("Guide"));
+     * </pre>
+     *
+     * @param suffix the suffix to match at the end of the value.
+     * @return a {@code Pattern} instance for a suffix match.
+     */
+    public static Pattern endsWith(String suffix) {
+        return new Pattern('%' + escape(suffix), true);
+    }
+
+    /**
+     * Creates a pattern for a match where values contain the specified substring.
+     *
+     * <p>Example usage:</p>
+     * <pre>
+     * Restriction<Book> substringMatch = _Book.title.contains(Pattern.contains("Java"));
+     * </pre>
+     *
+     * @param substring the substring to match within the value.
+     * @return a {@code Pattern} instance for a substring match.
+     */
+    public static Pattern contains(String substring) {
+        return new Pattern('%' + escape(substring) + '%', true);
+    }
+
+    /**
+     * Escapes special characters in the pattern, such as underscores and percent signs,
+     * to ensure literal matches for these characters.
+     *
+     * @param literal the text to escape.
+     * @return the escaped text with special characters handled.
+     */
+    private static String escape(String literal) {
+        return literal.replace("_", "\\_").replace("%", "\\%");
     }
 }
+
