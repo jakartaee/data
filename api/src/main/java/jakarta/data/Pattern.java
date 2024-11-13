@@ -46,13 +46,12 @@ public record Pattern(String value, boolean ignoreCase) {
 
     /**
      * Creates a pattern for a `LIKE` match where values start with the specified prefix.
-     * The `field` is set to `null` initially, allowing it to be assigned to an attribute later.
      *
-     * @param value the prefix to match at the beginning of the field's value.
+     * @param prefixPattern the prefix pattern to match at the beginning of the field's value.
      * @return a Pattern instance for a prefix match.
      */
-    public static Pattern startsWith(String value) {
-        return new Pattern( value + "%", false);
+    public static Pattern startsWith(String prefixPattern) {
+        return new Pattern(prefixPattern + "%");
     }
 
     /**
