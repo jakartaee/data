@@ -34,7 +34,7 @@ import jakarta.data.metamodel.Restriction;
  * Restriction<Book> containsMatch = _Book.title.contains(Pattern.contains("Java"));
  * </pre>
  */
-public record Pattern(String pattern, boolean caseSensitive) {
+public record Pattern(String value, boolean caseSensitive) {
 
     /**
      * Creates a pattern for an exact match with the specified literal.
