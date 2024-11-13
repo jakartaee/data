@@ -138,4 +138,76 @@ public final class Restrict {
     public static <T> Restriction<T> in(Set<Object> values, String field) {
         return new RestrictionRecord<>(field, Operator.IN, values);
     }
+
+    /**
+     * Creates a restriction that matches field values containing the specified substring.
+     *
+     * <p>Example usage:</p>
+     * <pre>
+     * Restriction<Book> containsMatch = Restrict.contains("Java", "title");
+     * </pre>
+     *
+     * @param value the substring to search for within the field's value.
+     * @param field the name of the field to apply the restriction on.
+     * @param <T> the entity type.
+     * @return a restriction that matches values containing the specified substring.
+     */
+    public static <T> Restriction<T> contains(String value, String field) {
+        var contains = Pattern.contains(value);
+        return new RestrictionRecord<>(field, Operator.LIKE, contains.value());
+    }
+
+    /**
+     * Creates a restriction that matches field values starting with the specified prefix.
+     *
+     * <p>Example usage:</p>
+     * <pre>
+     * Restriction<Book> startsWithMatch = Restrict.startsWith("Guide", "title");
+     * </pre>
+     *
+     * @param value the prefix to match at the beginning of the field's value.
+     * @param field the name of the field to apply the restriction on.
+     * @param <T> the entity type.
+     * @return a restriction that matches values starting with the specified prefix.
+     */
+    public static <T> Restriction<T> startsWith(String value, String field) {
+        var contains = Pattern.startsWith(value);
+        return new RestrictionRecord<>(field, Operator.LIKE, contains.value());
+    }
+
+    /**
+     * Creates a restriction that matches field values ending with the specified suffix.
+     *
+     * <p>Example usage:</p>
+     * <pre>
+     * Restriction<Book> endsWithMatch = Restrict.endsWith("Guide", "title");
+     * </pre>
+     *
+     * @param value the suffix to match at the end of the field's value.
+     * @param field the name of the field to apply the restriction on.
+     * @param <T> the entity type.
+     * @return a restriction that matches values ending with the specified suffix.
+     */
+    public static <T> Restriction<T> endsWith(String value, String field) {
+        var contains = Pattern.endsWith(value);
+        return new RestrictionRecord<>(field, Operator.LIKE, contains.value());
+    }
+
+    /**
+     * Creates a restriction that matches field values ending with the specified pattern.
+     *
+     * <p>Example usage:</p>
+     * <pre>
+     * Pattern pattern = Pattern.endsWith("Guide");
+     * Restriction<Book> endsWithPatternMatch = Restrict.endsWith(pattern, "title");
+     * </pre>
+     *
+     * @param pattern the pattern to match at the end of the field's value.
+     * @param field the name of the field to apply the restriction on.
+     * @param <T> the entity type.
+     * @return a restriction that matches values ending with the specified pattern.
+     */
+    public static <T> Restriction<T> endsWith(Pattern pattern, String field) {
+        return new RestrictionRecord<>(field, Operator.LIKE, pattern.value());
+    }
 }

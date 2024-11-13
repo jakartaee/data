@@ -19,6 +19,7 @@ package jakarta.data.metamodel;
 
 import jakarta.data.Operator;
 import jakarta.data.Pattern;
+import jakarta.data.Restrict;
 import jakarta.data.Restriction;
 import jakarta.data.Sort;
 import jakarta.data.metamodel.impl.BasicRestrictionRecord;
@@ -72,8 +73,7 @@ public interface TextAttribute<T> extends SortableAttribute<T> {
      * @return a Restriction representing a prefix `LIKE` condition.
      */
     default Restriction<T> startsWith(String text) {
-        var pattern = Pattern.startsWith(text);
-        return new BasicRestrictionRecord<>(name(), Operator.LIKE, pattern.value());
+        return Restrict.startsWith(text, name());
     }
 
     /**
@@ -83,8 +83,7 @@ public interface TextAttribute<T> extends SortableAttribute<T> {
      * @return a Restriction representing a substring `LIKE` condition.
      */
     default Restriction<T> contains(String text) {
-        var pattern = Pattern.contains(text);
-        return new BasicRestrictionRecord<>(name(), Operator.LIKE, pattern.value());
+        return Restrict.contains(text, name());
     }
 
 
@@ -95,8 +94,7 @@ public interface TextAttribute<T> extends SortableAttribute<T> {
      * @return a Restriction representing a suffix `LIKE` condition.
      */
     default Restriction<T> endsWith(String text) {
-        var pattern = Pattern.endsWith(text);
-        return new BasicRestrictionRecord<>(name(), Operator.LIKE, pattern.value());
+        return Restrict.endsWith(text, name());
     }
 
 }
