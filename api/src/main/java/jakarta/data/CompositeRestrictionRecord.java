@@ -29,7 +29,8 @@ import java.util.List;
  *
  * @param <T> the entity type that the restrictions apply to.
  */
-record CompositeRestrictionRecord<T>(CompositeRestrictionType type, List<Restriction<? extends T>> restrictions) implements Iterable<Restriction<? extends T>>, CompositeRestriction<T> {
+record CompositeRestrictionRecord<T>(CompositeRestrictionType type, List<Restriction<? extends T>> restrictions)
+        implements Iterable<Restriction<? extends T>>, CompositeRestriction<T> {
 
     /**
      * Constructs a composite restriction with the specified operator and list of restrictions.
