@@ -18,6 +18,8 @@
 package jakarta.data.metamodel;
 
 import jakarta.data.Operator;
+import jakarta.data.Restriction;
+import jakarta.data.RestrictionRecord;
 import jakarta.data.Sort;
 
 /**

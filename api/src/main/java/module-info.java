@@ -1066,6 +1066,7 @@ import java.util.Set;
  * of the repository operation.</p>
  */
 module jakarta.data {
+    requires java.management;
     exports jakarta.data;
     exports jakarta.data.metamodel;
     exports jakarta.data.metamodel.impl;

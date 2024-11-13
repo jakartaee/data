@@ -15,9 +15,7 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.metamodel;
-
-import jakarta.data.Operator;
+package jakarta.data;
 
 /**
  * A basic implementation of the `Restriction` interface, representing various conditions
@@ -25,7 +23,7 @@ import jakarta.data.Operator;
  *
  * @param <T> the type of the entity on which the restriction is applied.
  */
-record RestrictionRecord<T>(String field, Operator operator, Object value) implements Restriction<T> {
+record RestrictionRecord<T>(String field, Operator operator, Object value) implements BasicRestriction<T> {
 
     /**
      * Constructs a `BasicRestriction` with the specified field, operator, and value.

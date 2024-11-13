@@ -21,7 +21,7 @@ package jakarta.data;
 /**
  * Represents a pattern for use in string matching conditions. This class supports options
  * such as exact match, prefix, suffix, and substring matching. It is intended to be used
- * with attributes that apply the pattern to create a {@link jakarta.data.metamodel.Restriction}.
+ * with attributes that apply the pattern to create a {@link Restriction}.
  *
  * <p>Example usage:</p>
  * <pre>

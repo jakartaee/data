@@ -17,7 +17,9 @@
  */
 package jakarta.data.metamodel;
 
+import jakarta.data.BasicRestriction;
 import jakarta.data.Operator;
+import jakarta.data.Restriction;
 
 import java.util.List;
 
@@ -25,7 +27,7 @@ import java.util.List;
  * Represents a range-based restriction for repository queries, allowing comparisons within
  * a specified range or boundary on a particular entity attribute.
  *
- * <p>This class implements {@link Restriction<T>} and provides flexible factory methods
+ * <p>This class implements {@link Restriction <T>} and provides flexible factory methods
  * to create range-based conditions, supporting inclusive and exclusive bounds.</p>
  *
  * <p>Usage examples:</p>

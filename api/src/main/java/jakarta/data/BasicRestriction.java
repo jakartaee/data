@@ -15,9 +15,7 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.metamodel;
-
-import jakarta.data.Operator;
+package jakarta.data;
 
 /**
  * A basic restriction applies to a single field, representing conditions such as equality,

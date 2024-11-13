@@ -19,6 +19,7 @@ package jakarta.data.metamodel;
 
 import jakarta.data.Operator;
 import jakarta.data.Pattern;
+import jakarta.data.Restriction;
 import jakarta.data.Sort;
 import jakarta.data.metamodel.impl.BasicRestrictionRecord;
 

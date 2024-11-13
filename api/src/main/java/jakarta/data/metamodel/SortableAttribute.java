@@ -17,7 +17,8 @@
  */
 package jakarta.data.metamodel;
 
-import jakarta.data.Operator;
+import jakarta.data.Restrict;
+import jakarta.data.Restriction;
 import jakarta.data.Sort;
 
 /**
@@ -57,7 +58,7 @@ public interface SortableAttribute<T> extends Attribute<T> {
      * @return a Restriction representing a greater-than condition.
      */
     default Restriction<T> greaterThan(Object value) {
-        return new RestrictionRecord<>(name(), Operator.GREATER_THAN, value);
+        return  Restrict.greaterThan(value, name());
     }
 
     /**
@@ -66,8 +67,8 @@ public interface SortableAttribute<T> extends Attribute<T> {
      * @param value the lower bound (inclusive) for the attribute.
      * @return a Restriction representing a greater-than-or-equal condition.
      */
-    default Restriction<T> greaterThanOrEqual(Object value) {
-        return new RestrictionRecord<>(name(), Operator.GREATER_THAN_EQUAL, value);
+    default Restriction<T> greaterThanEqual(Object value) {
+        return  Restrict.greaterThanEqual(value, name());
     }
 
     /**
@@ -77,7 +78,7 @@ public interface SortableAttribute<T> extends Attribute<T> {
      * @return a Restriction representing a less-than condition.
      */
     default Restriction<T> lessThan(Object value) {
-        return new RestrictionRecord<>(name(), Operator.LESS_THAN, value);
+        return  Restrict.lessThan(value, name());
     }
 
     /**
@@ -87,7 +88,7 @@ public interface SortableAttribute<T> extends Attribute<T> {
      * @return a Restriction representing a less-than-or-equal condition.
      */
     default Restriction<T> lessThanOrEqual(Object value) {
-        return new RestrictionRecord<>(name(), Operator.LESS_THAN_EQUAL, value);
+        return  Restrict.lessThanEqual(value, name());
     }
 
     /**

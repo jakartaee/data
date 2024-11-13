@@ -18,7 +18,7 @@
 package jakarta.data.metamodel.impl;
 
 import jakarta.data.Operator;
-import jakarta.data.metamodel.BasicRestriction;
+import jakarta.data.BasicRestriction;
 
 public record BasicRestrictionRecord<T>(String field, Operator operator, Object value) implements BasicRestriction<T> {
 
