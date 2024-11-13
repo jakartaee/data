@@ -17,31 +17,29 @@
  */
 package jakarta.data;
 
-import jakarta.data.metamodel.Restriction;
-
 
 /**
- * Represents a pattern-based restriction for matching operations, supporting options
- * such as exact match, prefix, suffix, and substring matching. This implementation
- * provides flexibility in creating pattern-based conditions directly as {@link Restriction} instances.
+ * Represents a pattern for use in string matching conditions. This class supports options
+ * such as exact match, prefix, suffix, and substring matching. It is intended to be used
+ * with attributes that apply the pattern to create a {@link jakarta.data.metamodel.Restriction}.
  *
- * <p>Example usage with metadata attributes:</p>
+ * <p>Example usage:</p>
  * <pre>
- * // Match for values starting with "Guide"
- * Restriction<Book> prefixMatch = _Book.title.startsWith("Guide");
+ * // Pattern for a case-sensitive prefix match for values starting with "Guide"
+ * Pattern prefixMatch = Pattern.startsWith("Guide");
  *
- * // Match for values containing "Java"
- * Restriction<Book> containsMatch = _Book.title.contains(Pattern.contains("Java"));
+ * // Pattern for matching values containing "Java"
+ * Pattern containsMatch = Pattern.contains("Java");
  * </pre>
  */
-public record Pattern(String value, boolean caseSensitive) {
+public record Pattern(String pattern, boolean caseSensitive) {
 
     /**
      * Creates a pattern for an exact match with the specified literal.
      *
      * <p>Example usage:</p>
      * <pre>
-     * Restriction<Book> exactMatch = _Book.title.is(Pattern.is("Java Guide"));
+     * Pattern exactMatch = Pattern.is("Java Guide");
      * </pre>
      *
      * @param literal the exact text to match.
@@ -52,11 +50,11 @@ public record Pattern(String value, boolean caseSensitive) {
     }
 
     /**
-     * Creates a pattern for a match based on the specified custom pattern.
+     * Creates a pattern for a custom match.
      *
      * <p>Example usage:</p>
      * <pre>
-     * Restriction<Book> customPatternMatch = _Book.title.matches(Pattern.matches("Ja%_a"));
+     * Pattern customPatternMatch = Pattern.matches("Ja%_a");
      * </pre>
      *
      * @param pattern the pattern to match.
@@ -68,11 +66,10 @@ public record Pattern(String value, boolean caseSensitive) {
 
     /**
      * Creates a pattern using custom single and multi-character wildcards.
-     * Allows replacing placeholders in the pattern with standard SQL wildcards.
      *
      * <p>Example usage:</p>
      * <pre>
-     * Restriction<Book> wildcardMatch = _Book.title.matches(Pattern.matches("Ja?a%", '?', '*'));
+     * Pattern wildcardMatch = Pattern.matches("Ja?a%", '?', '*');
      * </pre>
      *
      * @param pattern           the custom pattern to match.
@@ -92,7 +89,7 @@ public record Pattern(String value, boolean caseSensitive) {
      *
      * <p>Example usage:</p>
      * <pre>
-     * Restriction<Book> prefixMatch = _Book.title.startsWith(Pattern.startsWith("Hibernate"));
+     * Pattern prefixMatch = Pattern.startsWith("Hibernate");
      * </pre>
      *
      * @param prefix the prefix to match at the beginning of the value.
@@ -107,7 +104,7 @@ public record Pattern(String value, boolean caseSensitive) {
      *
      * <p>Example usage:</p>
      * <pre>
-     * Restriction<Book> suffixMatch = _Book.title.endsWith(Pattern.endsWith("Guide"));
+     * Pattern suffixMatch = Pattern.endsWith("Guide");
      * </pre>
      *
      * @param suffix the suffix to match at the end of the value.
@@ -122,7 +119,7 @@ public record Pattern(String value, boolean caseSensitive) {
      *
      * <p>Example usage:</p>
      * <pre>
-     * Restriction<Book> substringMatch = _Book.title.contains(Pattern.contains("Java"));
+     * Pattern substringMatch = Pattern.contains("Java");
      * </pre>
      *
      * @param substring the substring to match within the value.
@@ -143,4 +140,5 @@ public record Pattern(String value, boolean caseSensitive) {
         return literal.replace("_", "\\_").replace("%", "\\%");
     }
 }
+
 
