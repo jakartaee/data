@@ -29,6 +29,7 @@ import jakarta.data.Restriction.Operator;
 public class Restrict {
 
     // used internally for more readable code
+    private static final boolean ESCAPED = true;
     private static final boolean NOT = true;
 
     // prevent instantiation
@@ -55,12 +56,14 @@ public class Restrict {
     // TODO Need to think more about how to best cover negation of multiple
     // and then make negation of Single consistent with it
 
-    public static <T> Restriction.Text<T> contains(String substringPattern, String field) {
-        return new TextRestriction<>(field, Operator.CONTAINS, substringPattern);
+    public static <T> Restriction.Text<T> contains(String substring, String field) {
+        return new TextRestriction<>(field, Operator.LIKE, ESCAPED,
+                                     toLikeEscaped(true, substring, true));
     }
 
-    public static <T> Restriction.Text<T> endsWith(String suffixPattern, String field) {
-        return new TextRestriction<>(field, Operator.ENDS_WITH, suffixPattern);
+    public static <T> Restriction.Text<T> endsWith(String suffix, String field) {
+        return new TextRestriction<>(field, Operator.LIKE, ESCAPED,
+                                     toLikeEscaped(true, suffix, false));
     }
 
     public static <T> Restriction<T> equalTo(Object value, String field) {
@@ -109,7 +112,7 @@ public class Restrict {
 
     // TODO once Pattern is added
     //public static <T> Restriction.Text<T> like(Pattern pattern, String field) {
-    //    return new TextRestriction<>(field, Operator.LIKE, pattern);
+    //    return new TextRestriction<>(field, Operator.LIKE, ESCAPED, pattern);
     //}
 
     public static <T> Restriction.Text<T> like(String pattern, String field) {
@@ -124,12 +127,14 @@ public class Restrict {
         return new TextRestriction<>(field, NOT, Operator.EQUAL, value);
     }
 
-    public static <T> Restriction.Text<T> notContains(String substringPattern, String field) {
-        return new TextRestriction<>(field, NOT, Operator.CONTAINS, substringPattern);
+    public static <T> Restriction.Text<T> notContains(String substring, String field) {
+        return new TextRestriction<>(field, NOT, Operator.LIKE, ESCAPED,
+                                     toLikeEscaped(true, substring, true));
     }
 
-    public static <T> Restriction.Text<T> notEndsWith(String suffixPattern, String field) {
-        return new TextRestriction<>(field, NOT, Operator.ENDS_WITH, suffixPattern);
+    public static <T> Restriction.Text<T> notEndsWith(String suffix, String field) {
+        return new TextRestriction<>(field, NOT, Operator.LIKE, ESCAPED,
+                                     toLikeEscaped(true, suffix, false));
     }
 
     public static <T> Restriction<T> notIn(Set<Object> values, String field) {
@@ -140,11 +145,45 @@ public class Restrict {
         return new TextRestriction<>(field, NOT, Operator.LIKE, pattern);
     }
 
-    public static <T> Restriction.Text<T> notStartsWith(String prefixPattern, String field) {
-        return new TextRestriction<>(field, NOT, Operator.STARTS_WITH, prefixPattern);
+    public static <T> Restriction.Text<T> notStartsWith(String prefix, String field) {
+        return new TextRestriction<>(field, NOT, Operator.LIKE, ESCAPED,
+                                     toLikeEscaped(false, prefix, true));
     }
 
-    public static <T> Restriction.Text<T> startsWith(String prefixPattern, String field) {
-        return new TextRestriction<>(field, Operator.STARTS_WITH, prefixPattern);
+    public static <T> Restriction.Text<T> startsWith(String prefix, String field) {
+        return new TextRestriction<>(field, Operator.LIKE, ESCAPED,
+                                     toLikeEscaped(false, prefix, true));
+    }
+
+    /**
+     * Converts the literal pattern into an escaped LIKE pattern.
+     * This method prepends a % character if previous characters are allowed,
+     * escapes (_, %, \) within the literal by inserting \ prior to each,
+     * and then appends a % character if subsequent characters are allowed.
+     *
+     * @param allowPrevious whether to allow characters prior to the text.
+     * @param literal text that is not escaped that must be matched.
+     * @param allowSubsequent whether to allow more characters after the text.
+     * @return escaped pattern.
+     */
+    private static String toLikeEscaped(boolean allowPrevious,
+                                        String literal,
+                                        boolean allowSubsequent) {
+        int length = literal.length();
+        StringBuilder s = new StringBuilder(length + 10);
+        if (allowPrevious) {
+            s.append('%');
+        }
+        for (int i = 0; i < length; i++) {
+            char ch = literal.charAt(i);
+            if (ch == '_' || ch == '%' || ch == '\\') {
+                s.append('\\');
+            }
+            s.append(ch);
+        }
+        if (allowSubsequent) {
+            s.append('%');
+        }
+        return s.toString();
     }
 }

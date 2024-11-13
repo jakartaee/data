@@ -43,18 +43,19 @@ public interface Restriction<T> {
 
     interface Text<T> extends Basic<T> {
         Restriction<T> ignoreCase();
+
+        boolean isAnyCase();
+
+        boolean isEscaped();
     }
 
     enum Operator {
-        CONTAINS,
-        ENDS_WITH,
         EQUAL,
         GREATER_THAN,
         GREATER_THAN_EQUAL,
         IN,
         LESS_THAN,
         LESS_THAN_EQUAL,
-        LIKE,
-        STARTS_WITH
+        LIKE
     }
 }

@@ -35,8 +35,8 @@ public interface TextAttribute<T> extends SortableAttribute<T> {
      */
     Sort<T> ascIgnoreCase();
 
-    default Restriction.Text<T> contains(String substringPattern) {
-        return Restrict.contains(substringPattern, name());
+    default Restriction.Text<T> contains(String substring) {
+        return Restrict.contains(substring, name());
     }
 
     /**
@@ -46,8 +46,8 @@ public interface TextAttribute<T> extends SortableAttribute<T> {
      */
     Sort<T> descIgnoreCase();
 
-    default Restriction.Text<T> endsWith(String suffixPattern) {
-        return Restrict.endsWith(suffixPattern, name());
+    default Restriction.Text<T> endsWith(String suffix) {
+        return Restrict.endsWith(suffix, name());
     }
 
     default Restriction.Text<T> equalTo(String value) {
@@ -83,24 +83,24 @@ public interface TextAttribute<T> extends SortableAttribute<T> {
         return Restrict.not(value, name());
     }
 
-    default Restriction.Text<T> notContains(String substringPattern) {
-        return Restrict.notContains(substringPattern, name());
+    default Restriction.Text<T> notContains(String substring) {
+        return Restrict.notContains(substring, name());
     }
 
-    default Restriction.Text<T> notEndsWith(String suffixPattern) {
-        return Restrict.notEndsWith(suffixPattern, name());
+    default Restriction.Text<T> notEndsWith(String suffix) {
+        return Restrict.notEndsWith(suffix, name());
     }
 
     default Restriction.Text<T> notLike(String pattern) {
         return Restrict.notLike(pattern, name());
     }
 
-    default Restriction.Text<T> notStartsWith(String prefixPattern) {
-        return Restrict.notStartsWith(prefixPattern, name());
+    default Restriction.Text<T> notStartsWith(String prefix) {
+        return Restrict.notStartsWith(prefix, name());
     }
 
-    default Restriction.Text<T> startsWith(String prefixPattern) {
-        return Restrict.startsWith(prefixPattern, name());
+    default Restriction.Text<T> startsWith(String prefix) {
+        return Restrict.startsWith(prefix, name());
     }
 
 }

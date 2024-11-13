@@ -26,14 +26,23 @@ record TextRestriction<T>(
         boolean isNegated,
         Operator comparison,
         boolean isAnyCase,
+        boolean isEscaped,
         Object value) implements Restriction.Text<T> {
 
+    TextRestriction(String field, boolean negated, Operator comparison, boolean escaped, Object value) {
+        this(field, negated, comparison, false, escaped, value);
+    }
+
     TextRestriction(String field, boolean negated, Operator comparison, Object value) {
-        this(field, negated, comparison, false, value);
+        this(field, negated, comparison, false, false, value);
+    }
+
+    TextRestriction(String field, Operator comparison, boolean escaped, Object value) {
+        this(field, false, comparison, false, escaped, value);
     }
 
     TextRestriction(String field, Operator comparison, Object value) {
-        this(field, false, comparison, false, value);
+        this(field, false, comparison, false, false, value);
     }
 
     @Override
