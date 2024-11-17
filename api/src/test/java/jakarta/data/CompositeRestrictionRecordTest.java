@@ -21,7 +21,6 @@ package jakarta.data;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
