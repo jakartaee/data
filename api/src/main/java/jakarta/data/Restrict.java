@@ -28,9 +28,15 @@ import jakarta.data.Restriction.Operator;
 // The other place is from static metamodel attributes.
 public class Restrict {
 
+    private static final char CHAR_WILDCARD = '_';
+
+    private static final char ESCAPE_CHAR = '\\';
+
     // used internally for more readable code
     private static final boolean ESCAPED = true;
     private static final boolean NOT = true;
+
+    private static final char STRING_WILDCARD = '%';
 
     // prevent instantiation
     private Restrict() {
@@ -57,13 +63,13 @@ public class Restrict {
     // and then make negation of Single consistent with it
 
     public static <T> Restriction.Text<T> contains(String substring, String field) {
-        return new TextRestriction<>(field, Operator.LIKE, ESCAPED,
-                                     toLikeEscaped(true, substring, true));
+        String pattern = toLikeEscaped(CHAR_WILDCARD, STRING_WILDCARD, true, substring, true);
+        return new TextRestriction<>(field, Operator.LIKE, ESCAPED, pattern);
     }
 
     public static <T> Restriction.Text<T> endsWith(String suffix, String field) {
-        return new TextRestriction<>(field, Operator.LIKE, ESCAPED,
-                                     toLikeEscaped(true, suffix, false));
+        String pattern = toLikeEscaped(CHAR_WILDCARD, STRING_WILDCARD, true, suffix, false);
+        return new TextRestriction<>(field, Operator.LIKE, ESCAPED, pattern);
     }
 
     public static <T> Restriction<T> equalTo(Object value, String field) {
@@ -110,13 +116,21 @@ public class Restrict {
         return new TextRestriction<>(field, Operator.LESS_THAN_EQUAL, value);
     }
 
-    // TODO once Pattern is added
+    // TODO this would be possible if Pattern is added, but is it even useful?
     //public static <T> Restriction.Text<T> like(Pattern pattern, String field) {
     //    return new TextRestriction<>(field, Operator.LIKE, ESCAPED, pattern);
     //}
 
     public static <T> Restriction.Text<T> like(String pattern, String field) {
         return new TextRestriction<>(field, Operator.LIKE, pattern);
+    }
+
+    public static <T> Restriction.Text<T> like(String pattern,
+                                               char charWildcard,
+                                               char stringWildcard,
+                                               String field) {
+        String p = toLikeEscaped(charWildcard, stringWildcard, false, pattern, false);
+        return new TextRestriction<>(field, Operator.LIKE, ESCAPED, p);
     }
 
     public static <T> Restriction<T> not(Object value, String field) {
@@ -128,13 +142,13 @@ public class Restrict {
     }
 
     public static <T> Restriction.Text<T> notContains(String substring, String field) {
-        return new TextRestriction<>(field, NOT, Operator.LIKE, ESCAPED,
-                                     toLikeEscaped(true, substring, true));
+        String pattern = toLikeEscaped(CHAR_WILDCARD, STRING_WILDCARD, true, substring, true);
+        return new TextRestriction<>(field, NOT, Operator.LIKE, ESCAPED, pattern);
     }
 
     public static <T> Restriction.Text<T> notEndsWith(String suffix, String field) {
-        return new TextRestriction<>(field, NOT, Operator.LIKE, ESCAPED,
-                                     toLikeEscaped(true, suffix, false));
+        String pattern = toLikeEscaped(CHAR_WILDCARD, STRING_WILDCARD, true, suffix, false);
+        return new TextRestriction<>(field, NOT, Operator.LIKE, ESCAPED, pattern);
     }
 
     public static <T> Restriction<T> notIn(Set<Object> values, String field) {
@@ -145,44 +159,72 @@ public class Restrict {
         return new TextRestriction<>(field, NOT, Operator.LIKE, pattern);
     }
 
+    public static <T> Restriction.Text<T> notLike(String pattern,
+                                                  char charWildcard,
+                                                  char stringWildcard,
+                                                  String field) {
+        String p = toLikeEscaped(charWildcard, stringWildcard, false, pattern, false);
+        return new TextRestriction<>(field, NOT, Operator.LIKE, ESCAPED, p);
+    }
+
     public static <T> Restriction.Text<T> notStartsWith(String prefix, String field) {
-        return new TextRestriction<>(field, NOT, Operator.LIKE, ESCAPED,
-                                     toLikeEscaped(false, prefix, true));
+        String pattern = toLikeEscaped(CHAR_WILDCARD, STRING_WILDCARD, false, prefix, true);
+        return new TextRestriction<>(field, NOT, Operator.LIKE, ESCAPED, pattern);
     }
 
     public static <T> Restriction.Text<T> startsWith(String prefix, String field) {
-        return new TextRestriction<>(field, Operator.LIKE, ESCAPED,
-                                     toLikeEscaped(false, prefix, true));
+        String pattern = toLikeEscaped(CHAR_WILDCARD, STRING_WILDCARD, false, prefix, true);
+        return new TextRestriction<>(field, Operator.LIKE, ESCAPED, pattern);
     }
 
     /**
      * Converts the literal pattern into an escaped LIKE pattern.
      * This method prepends a % character if previous characters are allowed,
-     * escapes (_, %, \) within the literal by inserting \ prior to each,
+     * escapes the charWildcard (typically _), the stringWildcard (typically %),
+     * and the \ character within the literal by inserting \ prior to each,
      * and then appends a % character if subsequent characters are allowed.
      *
-     * @param allowPrevious whether to allow characters prior to the text.
-     * @param literal text that is not escaped that must be matched.
+     * @param charWildcard    single character wildcard, typically _.
+     * @param stringWildcard  0 or more character wildcard, typically %.
+     * @param allowPrevious   whether to allow characters prior to the text.
+     * @param literal text    that is not escaped that must be matched.
      * @param allowSubsequent whether to allow more characters after the text.
      * @return escaped pattern.
+     * @throws IllegalArgumentException if the same character is supplied for
+     *                                  both wildcard types.
      */
-    private static String toLikeEscaped(boolean allowPrevious,
+    private static String toLikeEscaped(char charWildcard,
+                                        char stringWildcard,
+                                        boolean allowPrevious,
                                         String literal,
                                         boolean allowSubsequent) {
+        if (charWildcard == stringWildcard)
+            throw new IllegalArgumentException(
+                    "Cannot use the same character (" + charWildcard +
+                    ") for both types of wildcards.");
+
         int length = literal.length();
         StringBuilder s = new StringBuilder(length + 10);
         if (allowPrevious) {
-            s.append('%');
+            s.append(STRING_WILDCARD);
         }
         for (int i = 0; i < length; i++) {
             char ch = literal.charAt(i);
-            if (ch == '_' || ch == '%' || ch == '\\') {
-                s.append('\\');
+            if (ch == charWildcard) {
+                s.append(ESCAPE_CHAR)
+                 .append(CHAR_WILDCARD);
+            } else if (ch == stringWildcard) {
+                s.append(ESCAPE_CHAR)
+                 .append(STRING_WILDCARD);
+            } else if (ch == ESCAPE_CHAR) {
+                s.append(ESCAPE_CHAR)
+                 .append(ESCAPE_CHAR);
+            } else {
+                s.append(ch);
             }
-            s.append(ch);
         }
         if (allowSubsequent) {
-            s.append('%');
+            s.append(STRING_WILDCARD);
         }
         return s.toString();
     }

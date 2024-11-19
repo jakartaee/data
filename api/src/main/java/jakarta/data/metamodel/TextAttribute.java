@@ -79,6 +79,12 @@ public interface TextAttribute<T> extends SortableAttribute<T> {
         return Restrict.like(pattern, name());
     }
 
+    default Restriction.Text<T> like(String pattern,
+                                     char charWildcard,
+                                     char stringWildcard) {
+        return Restrict.like(pattern, charWildcard, stringWildcard, name());
+    }
+
     default Restriction.Text<T> not(String value) {
         return Restrict.not(value, name());
     }
@@ -93,6 +99,12 @@ public interface TextAttribute<T> extends SortableAttribute<T> {
 
     default Restriction.Text<T> notLike(String pattern) {
         return Restrict.notLike(pattern, name());
+    }
+
+    default Restriction.Text<T> notLike(String pattern,
+                                        char charWildcard,
+                                        char stringWildcard) {
+        return Restrict.notLike(pattern, charWildcard, stringWildcard, name());
     }
 
     default Restriction.Text<T> notStartsWith(String prefix) {
