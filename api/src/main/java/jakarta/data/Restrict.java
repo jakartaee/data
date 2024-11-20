@@ -20,7 +20,6 @@ package jakarta.data;
 import java.util.List;
 import java.util.Set;
 
-import jakarta.data.Restriction.Composite;
 import jakarta.data.Restriction.Operator;
 
 // TODO document
@@ -44,12 +43,14 @@ public class Restrict {
 
     @SafeVarargs
     public static <T> Restriction<T> all(Restriction<T>... restrictions) {
-        return new CompositeRestriction<>(Composite.Type.ALL, List.of(restrictions));
+        return new CompositeRestrictionRecord<>(CompositeRestriction.Type.ALL,
+                                                List.of(restrictions));
     }
 
     @SafeVarargs
     public static <T> Restriction<T> any(Restriction<T>... restrictions) {
-        return new CompositeRestriction<>(Composite.Type.ANY, List.of(restrictions));
+        return new CompositeRestrictionRecord<>(CompositeRestriction.Type.ANY,
+                                                List.of(restrictions));
     }
 
     public static <T> Restriction<T> between(Comparable<Object> min,
@@ -62,119 +63,119 @@ public class Restrict {
     // TODO Need to think more about how to best cover negation of multiple
     // and then make negation of Single consistent with it
 
-    public static <T> Restriction.Text<T> contains(String substring, String field) {
+    public static <T> TextRestriction<T> contains(String substring, String field) {
         String pattern = toLikeEscaped(CHAR_WILDCARD, STRING_WILDCARD, true, substring, true);
-        return new TextRestriction<>(field, Operator.LIKE, ESCAPED, pattern);
+        return new TextRestrictionRecord<>(field, Operator.LIKE, ESCAPED, pattern);
     }
 
-    public static <T> Restriction.Text<T> endsWith(String suffix, String field) {
+    public static <T> TextRestriction<T> endsWith(String suffix, String field) {
         String pattern = toLikeEscaped(CHAR_WILDCARD, STRING_WILDCARD, true, suffix, false);
-        return new TextRestriction<>(field, Operator.LIKE, ESCAPED, pattern);
+        return new TextRestrictionRecord<>(field, Operator.LIKE, ESCAPED, pattern);
     }
 
     public static <T> Restriction<T> equalTo(Object value, String field) {
-        return new BasicRestriction<>(field, Operator.EQUAL, value);
+        return new BasicRestrictionRecord<>(field, Operator.EQUAL, value);
     }
 
-    public static <T> Restriction.Text<T> equalTo(String value, String field) {
-        return new TextRestriction<>(field, Operator.EQUAL, value);
+    public static <T> TextRestriction<T> equalTo(String value, String field) {
+        return new TextRestrictionRecord<>(field, Operator.EQUAL, value);
     }
 
     public static <T> Restriction<T> greaterThan(Comparable<Object> value, String field) {
-        return new BasicRestriction<>(field, Operator.GREATER_THAN, value);
+        return new BasicRestrictionRecord<>(field, Operator.GREATER_THAN, value);
     }
 
-    public static <T> Restriction.Text<T> greaterThan(String value, String field) {
-        return new TextRestriction<>(field, Operator.GREATER_THAN, value);
+    public static <T> TextRestriction<T> greaterThan(String value, String field) {
+        return new TextRestrictionRecord<>(field, Operator.GREATER_THAN, value);
     }
 
     public static <T> Restriction<T> greaterThanEqual(Comparable<Object> value, String field) {
-        return new BasicRestriction<>(field, Operator.GREATER_THAN_EQUAL, value);
+        return new BasicRestrictionRecord<>(field, Operator.GREATER_THAN_EQUAL, value);
     }
 
-    public static <T> Restriction.Text<T> greaterThanEqual(String value, String field) {
-        return new TextRestriction<>(field, Operator.GREATER_THAN_EQUAL, value);
+    public static <T> TextRestriction<T> greaterThanEqual(String value, String field) {
+        return new TextRestrictionRecord<>(field, Operator.GREATER_THAN_EQUAL, value);
     }
 
     public static <T> Restriction<T> in(Set<Object> values, String field) {
-        return new BasicRestriction<>(field, Operator.IN, values);
+        return new BasicRestrictionRecord<>(field, Operator.IN, values);
     }
 
     public static <T> Restriction<T> lessThan(Comparable<Object> value, String field) {
-        return new BasicRestriction<>(field, Operator.LESS_THAN, value);
+        return new BasicRestrictionRecord<>(field, Operator.LESS_THAN, value);
     }
 
-    public static <T> Restriction.Text<T> lessThan(String value, String field) {
-        return new TextRestriction<>(field, Operator.LESS_THAN, value);
+    public static <T> TextRestriction<T> lessThan(String value, String field) {
+        return new TextRestrictionRecord<>(field, Operator.LESS_THAN, value);
     }
 
     public static <T> Restriction<T> lessThanEqual(Comparable<Object> value, String field) {
-        return new BasicRestriction<>(field, Operator.LESS_THAN_EQUAL, value);
+        return new BasicRestrictionRecord<>(field, Operator.LESS_THAN_EQUAL, value);
     }
 
-    public static <T> Restriction.Text<T> lessThanEqual(String value, String field) {
-        return new TextRestriction<>(field, Operator.LESS_THAN_EQUAL, value);
+    public static <T> TextRestriction<T> lessThanEqual(String value, String field) {
+        return new TextRestrictionRecord<>(field, Operator.LESS_THAN_EQUAL, value);
     }
 
     // TODO this would be possible if Pattern is added, but is it even useful?
-    //public static <T> Restriction.Text<T> like(Pattern pattern, String field) {
+    //public static <T> TextRestriction<T> like(Pattern pattern, String field) {
     //    return new TextRestriction<>(field, Operator.LIKE, ESCAPED, pattern);
     //}
 
-    public static <T> Restriction.Text<T> like(String pattern, String field) {
-        return new TextRestriction<>(field, Operator.LIKE, pattern);
+    public static <T> TextRestriction<T> like(String pattern, String field) {
+        return new TextRestrictionRecord<>(field, Operator.LIKE, pattern);
     }
 
-    public static <T> Restriction.Text<T> like(String pattern,
+    public static <T> TextRestriction<T> like(String pattern,
                                                char charWildcard,
                                                char stringWildcard,
                                                String field) {
         String p = toLikeEscaped(charWildcard, stringWildcard, false, pattern, false);
-        return new TextRestriction<>(field, Operator.LIKE, ESCAPED, p);
+        return new TextRestrictionRecord<>(field, Operator.LIKE, ESCAPED, p);
     }
 
     public static <T> Restriction<T> not(Object value, String field) {
-        return new BasicRestriction<>(field, NOT, Operator.EQUAL, value);
+        return new BasicRestrictionRecord<>(field, NOT, Operator.EQUAL, value);
     }
 
-    public static <T> Restriction.Text<T> not(String value, String field) {
-        return new TextRestriction<>(field, NOT, Operator.EQUAL, value);
+    public static <T> TextRestriction<T> not(String value, String field) {
+        return new TextRestrictionRecord<>(field, NOT, Operator.EQUAL, value);
     }
 
-    public static <T> Restriction.Text<T> notContains(String substring, String field) {
+    public static <T> TextRestriction<T> notContains(String substring, String field) {
         String pattern = toLikeEscaped(CHAR_WILDCARD, STRING_WILDCARD, true, substring, true);
-        return new TextRestriction<>(field, NOT, Operator.LIKE, ESCAPED, pattern);
+        return new TextRestrictionRecord<>(field, NOT, Operator.LIKE, ESCAPED, pattern);
     }
 
-    public static <T> Restriction.Text<T> notEndsWith(String suffix, String field) {
+    public static <T> TextRestriction<T> notEndsWith(String suffix, String field) {
         String pattern = toLikeEscaped(CHAR_WILDCARD, STRING_WILDCARD, true, suffix, false);
-        return new TextRestriction<>(field, NOT, Operator.LIKE, ESCAPED, pattern);
+        return new TextRestrictionRecord<>(field, NOT, Operator.LIKE, ESCAPED, pattern);
     }
 
     public static <T> Restriction<T> notIn(Set<Object> values, String field) {
-        return new BasicRestriction<>(field, NOT, Operator.IN, values);
+        return new BasicRestrictionRecord<>(field, NOT, Operator.IN, values);
     }
 
-    public static <T> Restriction.Text<T> notLike(String pattern, String field) {
-        return new TextRestriction<>(field, NOT, Operator.LIKE, pattern);
+    public static <T> TextRestriction<T> notLike(String pattern, String field) {
+        return new TextRestrictionRecord<>(field, NOT, Operator.LIKE, pattern);
     }
 
-    public static <T> Restriction.Text<T> notLike(String pattern,
+    public static <T> TextRestriction<T> notLike(String pattern,
                                                   char charWildcard,
                                                   char stringWildcard,
                                                   String field) {
         String p = toLikeEscaped(charWildcard, stringWildcard, false, pattern, false);
-        return new TextRestriction<>(field, NOT, Operator.LIKE, ESCAPED, p);
+        return new TextRestrictionRecord<>(field, NOT, Operator.LIKE, ESCAPED, p);
     }
 
-    public static <T> Restriction.Text<T> notStartsWith(String prefix, String field) {
+    public static <T> TextRestriction<T> notStartsWith(String prefix, String field) {
         String pattern = toLikeEscaped(CHAR_WILDCARD, STRING_WILDCARD, false, prefix, true);
-        return new TextRestriction<>(field, NOT, Operator.LIKE, ESCAPED, pattern);
+        return new TextRestrictionRecord<>(field, NOT, Operator.LIKE, ESCAPED, pattern);
     }
 
-    public static <T> Restriction.Text<T> startsWith(String prefix, String field) {
+    public static <T> TextRestriction<T> startsWith(String prefix, String field) {
         String pattern = toLikeEscaped(CHAR_WILDCARD, STRING_WILDCARD, false, prefix, true);
-        return new TextRestriction<>(field, Operator.LIKE, ESCAPED, pattern);
+        return new TextRestrictionRecord<>(field, Operator.LIKE, ESCAPED, pattern);
     }
 
     /**

@@ -13,40 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- *  SPDX-License-Identifier: Apache-2.0
+ * SPDX-License-Identifier: Apache-2.0
  */
 package jakarta.data;
 
-// Internal implementation class.
-// The proper way for users to obtain instances is via
-// the static metamodel or Restrict.* methods 
+public interface TextRestriction<T> extends BasicRestriction<T> {
+    Restriction<T> ignoreCase();
 
-record TextRestriction<T>(
-        String field,
-        boolean isNegated,
-        Operator comparison,
-        boolean isAnyCase,
-        boolean isEscaped,
-        Object value) implements Restriction.Text<T> {
+    // TODO can mention in the JavaDoc that a value of true will be ignored
+    // if the database is not not capable of case sensitive comparisons
+    boolean isCaseSensitive();
 
-    TextRestriction(String field, boolean negated, Operator comparison, boolean escaped, Object value) {
-        this(field, negated, comparison, false, escaped, value);
-    }
-
-    TextRestriction(String field, boolean negated, Operator comparison, Object value) {
-        this(field, negated, comparison, false, false, value);
-    }
-
-    TextRestriction(String field, Operator comparison, boolean escaped, Object value) {
-        this(field, false, comparison, false, escaped, value);
-    }
-
-    TextRestriction(String field, Operator comparison, Object value) {
-        this(field, false, comparison, false, false, value);
-    }
-
-    @Override
-    public Restriction<T> ignoreCase() {
-        return new TextRestriction<>(field, isNegated, comparison, true, value);
-    }
+    boolean isEscaped();
 }

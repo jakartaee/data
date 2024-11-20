@@ -17,37 +17,8 @@
  */
 package jakarta.data;
 
-import java.util.List;
-
 public interface Restriction<T> {
     boolean isNegated();
-
-    interface Basic<T> extends Restriction<T> {
-        Operator comparison();
-
-        String field();
-
-        Object value();
-    }
-
-    interface Composite<T> extends Restriction<T> {
-        List<Restriction<T>> restrictions();
-
-        Type type();
-
-        enum Type {
-            ALL,
-            ANY
-        }
-    }
-
-    interface Text<T> extends Basic<T> {
-        Restriction<T> ignoreCase();
-
-        boolean isCaseSensitive();
-
-        boolean isEscaped();
-    }
 
     enum Operator {
         EQUAL,

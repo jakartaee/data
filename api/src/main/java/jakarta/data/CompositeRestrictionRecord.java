@@ -13,19 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * SPDX-License-Identifier: Apache-2.0
+ *  SPDX-License-Identifier: Apache-2.0
  */
 package jakarta.data;
 
 import java.util.List;
 
-public interface CompositeRestriction<T> extends Restriction<T> {
-    List<Restriction<T>> restrictions();
+// Internal implementation class.
+// The proper way for users to obtain instances is via
+// the Restrict.any(...) or Restrict.all(...) methods
 
-    Type type();
+record CompositeRestrictionRecord<T>(
+        Type type,
+        List<Restriction<T>> restrictions,
+        boolean isNegated) implements CompositeRestriction<T> {
 
-    enum Type {
-        ALL,
-        ANY
+    CompositeRestrictionRecord(Type type, List<Restriction<T>> restrictions) {
+        this(type, restrictions, false);
     }
 }

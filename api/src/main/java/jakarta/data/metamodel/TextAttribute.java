@@ -18,8 +18,8 @@
 package jakarta.data.metamodel;
 
 import jakarta.data.Restrict;
-import jakarta.data.Restriction;
 import jakarta.data.Sort;
+import jakarta.data.TextRestriction;
 
 /**
  * Represents an textual entity attribute in the {@link StaticMetamodel}.
@@ -35,7 +35,7 @@ public interface TextAttribute<T> extends SortableAttribute<T> {
      */
     Sort<T> ascIgnoreCase();
 
-    default Restriction.Text<T> contains(String substring) {
+    default TextRestriction<T> contains(String substring) {
         return Restrict.contains(substring, name());
     }
 
@@ -46,72 +46,72 @@ public interface TextAttribute<T> extends SortableAttribute<T> {
      */
     Sort<T> descIgnoreCase();
 
-    default Restriction.Text<T> endsWith(String suffix) {
+    default TextRestriction<T> endsWith(String suffix) {
         return Restrict.endsWith(suffix, name());
     }
 
-    default Restriction.Text<T> equalTo(String value) {
+    default TextRestriction<T> equalTo(String value) {
         return Restrict.equalTo(value, name());
     }
 
-    default Restriction.Text<T> greaterThan(String value) {
+    default TextRestriction<T> greaterThan(String value) {
         return Restrict.greaterThan(value, name());
     }
 
-    default Restriction.Text<T> greaterThanEqual(String value) {
+    default TextRestriction<T> greaterThanEqual(String value) {
         return Restrict.greaterThanEqual(value, name());
     }
 
-    default Restriction.Text<T> lessThan(String value) {
+    default TextRestriction<T> lessThan(String value) {
         return Restrict.lessThan(value, name());
     }
 
-    default Restriction.Text<T> lessThanEqual(String value) {
+    default TextRestriction<T> lessThanEqual(String value) {
         return Restrict.lessThanEqual(value, name());
     }
 
     // TODO once we have Pattern:
-    //default Restriction.Text<T> like(Pattern pattern) {
+    //default TextRestriction<T> like(Pattern pattern) {
     //    return Restrict.like(pattern, name());
     //}
 
-    default Restriction.Text<T> like(String pattern) {
+    default TextRestriction<T> like(String pattern) {
         return Restrict.like(pattern, name());
     }
 
-    default Restriction.Text<T> like(String pattern,
-                                     char charWildcard,
-                                     char stringWildcard) {
+    default TextRestriction<T> like(String pattern,
+                                    char charWildcard,
+                                    char stringWildcard) {
         return Restrict.like(pattern, charWildcard, stringWildcard, name());
     }
 
-    default Restriction.Text<T> not(String value) {
+    default TextRestriction<T> not(String value) {
         return Restrict.not(value, name());
     }
 
-    default Restriction.Text<T> notContains(String substring) {
+    default TextRestriction<T> notContains(String substring) {
         return Restrict.notContains(substring, name());
     }
 
-    default Restriction.Text<T> notEndsWith(String suffix) {
+    default TextRestriction<T> notEndsWith(String suffix) {
         return Restrict.notEndsWith(suffix, name());
     }
 
-    default Restriction.Text<T> notLike(String pattern) {
+    default TextRestriction<T> notLike(String pattern) {
         return Restrict.notLike(pattern, name());
     }
 
-    default Restriction.Text<T> notLike(String pattern,
-                                        char charWildcard,
-                                        char stringWildcard) {
+    default TextRestriction<T> notLike(String pattern,
+                                       char charWildcard,
+                                       char stringWildcard) {
         return Restrict.notLike(pattern, charWildcard, stringWildcard, name());
     }
 
-    default Restriction.Text<T> notStartsWith(String prefix) {
+    default TextRestriction<T> notStartsWith(String prefix) {
         return Restrict.notStartsWith(prefix, name());
     }
 
-    default Restriction.Text<T> startsWith(String prefix) {
+    default TextRestriction<T> startsWith(String prefix) {
         return Restrict.startsWith(prefix, name());
     }
 

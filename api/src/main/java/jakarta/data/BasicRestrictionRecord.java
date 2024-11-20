@@ -13,19 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * SPDX-License-Identifier: Apache-2.0
+ *  SPDX-License-Identifier: Apache-2.0
  */
 package jakarta.data;
 
-import java.util.List;
+// Internal implementation class.
+// The proper way for users to obtain instances is via
+// the static metamodel or Restrict.* methods 
 
-public interface CompositeRestriction<T> extends Restriction<T> {
-    List<Restriction<T>> restrictions();
+record BasicRestrictionRecord<T>(
+        String field,
+        boolean isNegated,
+        Operator comparison,
+        Object value) implements BasicRestriction<T> {
 
-    Type type();
-
-    enum Type {
-        ALL,
-        ANY
+    BasicRestrictionRecord(String field, Operator comparison, Object value) {
+        this(field, false, comparison, value);
     }
 }

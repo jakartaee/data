@@ -13,21 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- *  SPDX-License-Identifier: Apache-2.0
+ * SPDX-License-Identifier: Apache-2.0
  */
 package jakarta.data;
 
-// Internal implementation class.
-// The proper way for users to obtain instances is via
-// the static metamodel or Restrict.* methods 
+public interface BasicRestriction<T> extends Restriction<T> {
+    Operator comparison();
 
-record BasicRestriction<T>(
-        String field,
-        boolean isNegated,
-        Operator comparison,
-        Object value) implements Restriction.Basic<T> {
+    String field();
 
-    BasicRestriction(String field, Operator comparison, Object value) {
-        this(field, false, comparison, value);
-    }
+    Object value();
 }
