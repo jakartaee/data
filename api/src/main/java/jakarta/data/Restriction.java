@@ -44,7 +44,7 @@ public interface Restriction<T> {
     interface Text<T> extends Basic<T> {
         Restriction<T> ignoreCase();
 
-        boolean isAnyCase();
+        boolean isCaseSensitive();
 
         boolean isEscaped();
     }
