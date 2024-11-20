@@ -37,8 +37,32 @@ public abstract class LifecycleEvent<E> {
     }
 
     /**
-     * The entity instance which was passed as an argument to
-     * the lifecycle method.
+     * The entity which is being processed by the lifecycle method.
+     * <ul>
+     * <li>For a {@code Pre} event, this is always the instance
+     *     which was passed as an argument to the lifecycle
+     *     method, and its state reflects the state of the
+     *     entity before execution of the lifecycle method.</li>
+     * <li>For a {@code Post} event, it may or may not be
+     *     identical to the object passed as an argument
+     *     to the lifecycle method, and it may or may not be
+     *     identical to the instance returned by the lifecycle
+     *     method, if any. If the state of the entity changes
+     *     as a result of execution of the lifecycle method,
+     *     those changes may or may not be reflected in the
+     *     entity returned by this method.</li>
+     * </ul>
+     * <p>
+     * Thus, a portable application should not assume that the
+     * state of the entity in a {@code Post} event faithfully
+     * reflects the current state of the corresponding record
+     * in the database.
+     * <p>
+     * A portable application must not mutate the state of the
+     * entity instance returned by this method. If the state
+     * of the entity instance is mutated during while event
+     * listeners are being notified, then the resulting
+     * behavior is undefined and unportable.
      */
     public E entity() {
         return entity;
