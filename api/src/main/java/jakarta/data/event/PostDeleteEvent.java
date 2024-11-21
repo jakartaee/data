@@ -18,8 +18,8 @@
 package jakarta.data.event;
 
 /**
- * An event that occurs when an {@link jakarta.data.repository.Delete}
- * lifecycle method is called, and after each record is deleted from the datastore.
+ * An event that occurs when a {@link jakarta.data.repository.Delete}
+ * lifecycle method is called, after each record is deleted from the datastore.
  *
  * @param <E> the entity type
  */
