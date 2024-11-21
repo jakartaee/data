@@ -89,7 +89,7 @@ public class Restrict {
         return new TextRestrictionRecord<>(field, Operator.GREATER_THAN, value);
     }
 
-    public static <T> Restriction<T> greaterThanEqual(Comparable<Object> value, String field) {
+    public static <T extends Comparable<T>> Restriction<T> greaterThanEqual(T value, String field) {
         return new BasicRestrictionRecord<>(field, Operator.GREATER_THAN_EQUAL, value);
     }
 
