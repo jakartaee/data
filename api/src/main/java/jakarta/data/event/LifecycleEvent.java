@@ -26,6 +26,25 @@ package jakarta.data.event;
  *     ...
  * }
  * </pre>
+ * <p>As usual for a CDI event, an observer of a {@code LifecycleEvent}
+ * is notified synchronously and immediately by default. An observer may
+ * elect to receive notifications during a phase of the transaction
+ * completion cycle by explicitly specifying a {@code TransactionPhase},
+ * for example:</p>
+ * <ul>
+ * <li>{@code @Observes(during=BEFORE_COMPLETION)} to be notified just
+ *     before transaction completion, or</li>
+ * <li>{@code @Observes(during=AFTER_SUCCESS)} to be notified after
+ *     successful completion of the transaction.</li>
+ * </ul>
+ * <p>An observer may choose to be notified asynchronously using
+ * {@code @ObservesAsync}. However, the mutable state held by the
+ * {@link #entity} is not in general safe for concurrent access,
+ * and so portable applications must not use {@code @ObservesAsync}
+ * to observe a {@code LifecycleEvent}. If the state of an entity is
+ * accessed from an asynchronous observer method for a lifecycle
+ * event, the resulting behavior is undefined and unportable.</p>
+ *
  *
  * @param <E> the entity type
  */
@@ -60,9 +79,9 @@ public abstract class LifecycleEvent<E> {
      * <p>
      * A portable application must not mutate the state of the
      * entity instance returned by this method. If the state
-     * of the entity instance is mutated during while event
-     * listeners are being notified, then the resulting
-     * behavior is undefined and unportable.
+     * of the entity instance is mutated while event listeners
+     * are being notified, the resulting behavior is undefined
+     * and unportable.
      */
     public E entity() {
         return entity;
