@@ -28,6 +28,13 @@ record CompositeRestrictionRecord<T>(
         List<Restriction<T>> restrictions,
         boolean isNegated) implements CompositeRestriction<T> {
 
+    CompositeRestrictionRecord {
+        if (restrictions == null || restrictions.isEmpty()) {
+            throw new IllegalArgumentException(
+                    "Cannot create a composite restriction without any restrictions to combine.");
+        }
+    }
+
     CompositeRestrictionRecord(Type type, List<Restriction<T>> restrictions) {
         this(type, restrictions, false);
     }

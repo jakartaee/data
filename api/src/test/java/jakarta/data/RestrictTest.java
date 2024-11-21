@@ -147,19 +147,15 @@ class RestrictTest {
 
     @Test
     void shouldEscapeToLikePatternCorrectly() {
-        String result = invokeToLikeEscaped('_', '%', true, "test_value", false);
+        String result = Restrict.endsWith("test_value", "fieldName").value();
 
         assertThat(result).isEqualTo("%test\\_value");
     }
 
     @Test
     void shouldThrowExceptionForInvalidWildcard() {
-        assertThatThrownBy(() -> invokeToLikeEscaped('_', '_', true, "value", false))
+        assertThatThrownBy(() -> Restrict.like("pattern_value", '_', '_', "fieldName"))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Cannot use the same character (_) for both types of wildcards.");
-    }
-
-    private String invokeToLikeEscaped(char charWildcard, char stringWildcard, boolean allowPrevious, String literal, boolean allowSubsequent) {
-        return Restrict.toLikeEscaped(charWildcard, stringWildcard, allowPrevious, literal, allowSubsequent);
     }
 }

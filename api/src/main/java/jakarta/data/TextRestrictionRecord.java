@@ -27,21 +27,21 @@ record TextRestrictionRecord<T>(
         Operator comparison,
         boolean isCaseSensitive,
         boolean isEscaped,
-        Object value) implements TextRestriction<T> {
+        String value) implements TextRestriction<T> {
 
-    TextRestrictionRecord(String field, boolean negated, Operator comparison, boolean escaped, Object value) {
+    TextRestrictionRecord(String field, boolean negated, Operator comparison, boolean escaped, String value) {
         this(field, negated, comparison, true, escaped, value);
     }
 
-    TextRestrictionRecord(String field, boolean negated, Operator comparison, Object value) {
+    TextRestrictionRecord(String field, boolean negated, Operator comparison, String value) {
         this(field, negated, comparison, true, false, value);
     }
 
-    TextRestrictionRecord(String field, Operator comparison, boolean escaped, Object value) {
+    TextRestrictionRecord(String field, Operator comparison, boolean escaped, String value) {
         this(field, false, comparison, true, escaped, value);
     }
 
-    TextRestrictionRecord(String field, Operator comparison, Object value) {
+    TextRestrictionRecord(String field, Operator comparison, String value) {
         this(field, false, comparison, true, false, value);
     }
 

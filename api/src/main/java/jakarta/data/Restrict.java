@@ -192,8 +192,8 @@ public class Restrict {
      * @throws IllegalArgumentException if the same character is supplied for
      *                                  both wildcard types.
      */
-    // TODO I make default package, but it should be private when we make it as Pattern
-    static String toLikeEscaped(char charWildcard,
+    // TODO could move to Pattern class
+    private static String toLikeEscaped(char charWildcard,
                                         char stringWildcard,
                                         boolean allowPrevious,
                                         String literal,

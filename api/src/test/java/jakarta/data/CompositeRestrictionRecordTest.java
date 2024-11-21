@@ -21,6 +21,8 @@ package jakarta.data;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+
 import java.util.List;
 
 
@@ -63,17 +65,10 @@ class CompositeRestrictionRecordTest {
     }
 
     @Test
-    void shouldHandleEmptyRestrictions() {
-        CompositeRestrictionRecord<String> composite = new CompositeRestrictionRecord<>(
-                CompositeRestriction.Type.ALL,
-                List.of()
-        );
-
-        SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(composite.type()).isEqualTo(CompositeRestriction.Type.ALL);
-            soft.assertThat(composite.restrictions()).isEmpty();
-            soft.assertThat(composite.isNegated()).isFalse();
-        });
+    void shouldFailIfEmptyRestrictions() {
+        assertThatThrownBy(() -> new CompositeRestrictionRecord<>(CompositeRestriction.Type.ALL, List.of()))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Cannot create a composite restriction without any restrictions to combine.");
     }
 
     @Test

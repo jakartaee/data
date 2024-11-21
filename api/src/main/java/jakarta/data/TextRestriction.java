@@ -25,4 +25,7 @@ public interface TextRestriction<T> extends BasicRestriction<T> {
     boolean isCaseSensitive();
 
     boolean isEscaped();
+
+    @Override
+    String value();
 }
