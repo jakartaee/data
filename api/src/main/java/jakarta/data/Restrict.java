@@ -20,8 +20,6 @@ package jakarta.data;
 import java.util.List;
 import java.util.Set;
 
-import jakarta.data.Restriction.Operator;
-
 // TODO document
 // This is one of two places from which to obtain restrictions.
 // The other place is from static metamodel attributes.
@@ -53,9 +51,9 @@ public class Restrict {
                                                 List.of(restrictions));
     }
 
-    public static <T> Restriction<T> between(Comparable<Object> min,
-                                             Comparable<Object> max,
-                                             String field) {
+    public static <T, V extends Comparable<V>> Restriction<T> between(V min,
+                                                                      V max,
+                                                                      String field) {
         return all(greaterThanEqual(min, field),
                    lessThanEqual(max, field));
     }
@@ -81,7 +79,7 @@ public class Restrict {
         return new TextRestrictionRecord<>(field, Operator.EQUAL, value);
     }
 
-    public static <T> Restriction<T> greaterThan(Comparable<Object> value, String field) {
+    public static <T, V extends Comparable<V>> Restriction<T> greaterThan(V value, String field) {
         return new BasicRestrictionRecord<>(field, Operator.GREATER_THAN, value);
     }
 
@@ -89,7 +87,7 @@ public class Restrict {
         return new TextRestrictionRecord<>(field, Operator.GREATER_THAN, value);
     }
 
-    public static <T extends Comparable<T>> Restriction<T> greaterThanEqual(T value, String field) {
+    public static <T, V extends Comparable<V>> Restriction<T> greaterThanEqual(V value, String field) {
         return new BasicRestrictionRecord<>(field, Operator.GREATER_THAN_EQUAL, value);
     }
 
@@ -101,7 +99,7 @@ public class Restrict {
         return new BasicRestrictionRecord<>(field, Operator.IN, values);
     }
 
-    public static <T> Restriction<T> lessThan(Comparable<Object> value, String field) {
+    public static <T, V extends Comparable<V>> Restriction<T> lessThan(V value, String field) {
         return new BasicRestrictionRecord<>(field, Operator.LESS_THAN, value);
     }
 
@@ -109,7 +107,7 @@ public class Restrict {
         return new TextRestrictionRecord<>(field, Operator.LESS_THAN, value);
     }
 
-    public static <T> Restriction<T> lessThanEqual(Comparable<Object> value, String field) {
+    public static <T, V extends Comparable<V>> Restriction<T> lessThanEqual(V value, String field) {
         return new BasicRestrictionRecord<>(field, Operator.LESS_THAN_EQUAL, value);
     }
 
@@ -134,11 +132,11 @@ public class Restrict {
         return new TextRestrictionRecord<>(field, Operator.LIKE, ESCAPED, p);
     }
 
-    public static <T> Restriction<T> not(Object value, String field) {
+    public static <T> Restriction<T> notEqualTo(Object value, String field) {
         return new BasicRestrictionRecord<>(field, NOT, Operator.EQUAL, value);
     }
 
-    public static <T> TextRestriction<T> not(String value, String field) {
+    public static <T> TextRestriction<T> notEqualTo(String value, String field) {
         return new TextRestrictionRecord<>(field, NOT, Operator.EQUAL, value);
     }
 

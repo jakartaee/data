@@ -52,8 +52,8 @@ public interface Attribute<T> {
      */
     String name();
 
-    default Restriction<T> not(Object value) {
-        return Restrict.not(value, name());
+    default Restriction<T> notEqualTo(Object value) {
+        return Restrict.notEqualTo(value, name());
     }
 
     default Restriction<T> notIn(Object... values) {
@@ -64,6 +64,6 @@ public interface Attribute<T> {
     }
 
     default Restriction<T> notNull() {
-        return Restrict.not(null, name());
+        return Restrict.notEqualTo(null, name());
     }
 }

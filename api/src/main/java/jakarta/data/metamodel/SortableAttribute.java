@@ -44,7 +44,7 @@ public interface SortableAttribute<T> extends Attribute<T> {
      */
     Sort<T> asc();
 
-    default Restriction<T> between(Comparable<Object> min, Comparable<Object> max) {
+    default <V extends Comparable<V>> Restriction<T> between(V min, V max) {
         return Restrict.between(min, max, name());
     }
 
@@ -55,19 +55,19 @@ public interface SortableAttribute<T> extends Attribute<T> {
      */
     Sort<T> desc();
 
-    default Restriction<T> greaterThan(Comparable<Object> value) {
+    default <V extends Comparable<V>> Restriction<T> greaterThan(V value) {
         return Restrict.greaterThan(value, name());
     }
 
-    default Restriction<T> greaterThanEqual(Comparable<Object> value) {
+    default <V extends Comparable<V>> Restriction<T> greaterThanEqual(V value) {
         return Restrict.greaterThanEqual(value, name());
     }
 
-    default Restriction<T> lessThan(Comparable<Object> value) {
+    default <V extends Comparable<V>> Restriction<T> lessThan(V value) {
         return Restrict.lessThan(value, name());
     }
 
-    default Restriction<T> lessThanEqual(Comparable<Object> value) {
+    default <V extends Comparable<V>> Restriction<T> lessThanEqual(V value) {
         return Restrict.lessThanEqual(value, name());
     }
 }

@@ -17,6 +17,12 @@
  */
 package jakarta.data;
 
-public interface Restriction<T> {
-    boolean isNegated();
+public enum Operator {
+    EQUAL,
+    GREATER_THAN,
+    GREATER_THAN_EQUAL,
+    IN,
+    LESS_THAN,
+    LESS_THAN_EQUAL,
+    LIKE
 }

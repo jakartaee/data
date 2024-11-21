@@ -85,16 +85,16 @@ public interface TextAttribute<T> extends SortableAttribute<T> {
         return Restrict.like(pattern, charWildcard, stringWildcard, name());
     }
 
-    default TextRestriction<T> not(String value) {
-        return Restrict.not(value, name());
-    }
-
     default TextRestriction<T> notContains(String substring) {
         return Restrict.notContains(substring, name());
     }
 
     default TextRestriction<T> notEndsWith(String suffix) {
         return Restrict.notEndsWith(suffix, name());
+    }
+
+    default TextRestriction<T> notEqualTo(String value) {
+        return Restrict.notEqualTo(value, name());
     }
 
     default TextRestriction<T> notLike(String pattern) {
