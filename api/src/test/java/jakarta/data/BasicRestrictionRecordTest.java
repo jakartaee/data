@@ -17,8 +17,59 @@
  */
 package jakarta.data;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.assertj.core.api.SoftAssertions;
+import org.junit.jupiter.api.Test;
+
 
 class BasicRestrictionRecordTest {
 
+    @Test
+    void shouldCreateBasicRestrictionWithDefaultNegation() {
+        BasicRestrictionRecord<String> restriction = new BasicRestrictionRecord<>("title", Operator.EQUAL, "Java Guide");
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(restriction.field()).isEqualTo("title");
+            soft.assertThat(restriction.isNegated()).isFalse();
+            soft.assertThat(restriction.comparison()).isEqualTo(Operator.EQUAL);
+            soft.assertThat(restriction.value()).isEqualTo("Java Guide");
+        });
+    }
+
+    @Test
+    void shouldCreateBasicRestrictionWithExplicitNegation() {
+        BasicRestrictionRecord<String> restriction = new BasicRestrictionRecord<>("title", true, Operator.EQUAL, "Java Guide");
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(restriction.field()).isEqualTo("title");
+            soft.assertThat(restriction.isNegated()).isTrue();
+            soft.assertThat(restriction.comparison()).isEqualTo(Operator.EQUAL);
+            soft.assertThat(restriction.value()).isEqualTo("Java Guide");
+        });
+    }
+
+    @Test
+    void shouldCreateBasicRestrictionWithNullValue() {
+        // Create a restriction with a null value
+        BasicRestrictionRecord<String> restriction = new BasicRestrictionRecord<>("title", Operator.EQUAL, null);
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(restriction.field()).isEqualTo("title");
+            soft.assertThat(restriction.isNegated()).isFalse();
+            soft.assertThat(restriction.comparison()).isEqualTo(Operator.EQUAL);
+            soft.assertThat(restriction.value()).isNull();
+        });
+    }
+
+    @Test
+    void shouldSupportNegatedRestrictionUsingDefaultConstructor() {
+        BasicRestrictionRecord<String> restriction = new BasicRestrictionRecord<>("author", Operator.EQUAL, "Unknown");
+        BasicRestrictionRecord<String> negatedRestriction = new BasicRestrictionRecord<>(restriction.field(), true, restriction.comparison(), restriction.value());
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(negatedRestriction.field()).isEqualTo("author");
+            soft.assertThat(negatedRestriction.isNegated()).isTrue();
+            soft.assertThat(negatedRestriction.comparison()).isEqualTo(Operator.EQUAL);
+            soft.assertThat(negatedRestriction.value()).isEqualTo("Unknown");
+        });
+    }
 }
