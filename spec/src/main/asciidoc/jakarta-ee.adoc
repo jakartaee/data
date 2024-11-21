@@ -67,6 +67,8 @@ This section discusses interoperability with related Jakarta EE footnote:[Jakart
 
 Contexts and Dependency Injection footnote:[Jakarta Contexts and Dependency Injection 4.1, https://jakarta.ee/specifications/cdi/4.1/] (CDI) is a specification in the Jakarta EE Core profile that provides a powerful and flexible dependency injection framework for Java applications. CDI provides a programming model based around decoupled components with container-managed lifecycles and container-injected dependencies, enabling loose coupling and promoting modular and reusable code.
 
+==== CDI Dependency Injection
+
 In the Jakarta EE environment, CDI allows implementations of Jakarta Data repositories to be made available for injection via the `@Inject` annotation.
 
 The following example illustrates this integration:
@@ -114,6 +116,11 @@ List<Car> cars = repository.findByType(CarType.SPORT);
 This fragment shows how the application might request injection of a `CarRepository` instance using the `@Inject` annotation, and then invoke various data access methods declared or inherited by the `CarRepository` interface, such as `save()`, `findByType()`, and `findByName()`.
 
 This integration between CDI and Jakarta Data allows for seamless management of repository instances within Jakarta EE applications.
+
+==== CDI Events
+
+A repository implementation may raise CDI events.
+In the Jakarta EE environment, the repository implementation is required to raise the event types defined in the package `jakarta.data.event` when lifecycle methods annotated `@Insert`, `@Update`, or `@Delete` are invoked, as specified by the API documentation of these annotations.
 
 ==== CDI Extensions for Jakarta Data providers
 

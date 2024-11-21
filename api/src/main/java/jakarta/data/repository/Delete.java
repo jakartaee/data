@@ -59,6 +59,11 @@ import java.lang.annotation.Target;
  * if the entity with a matching identifier does not have a matching version, the annotated method must raise
  * {@link jakarta.data.exceptions.OptimisticLockingFailureException}.
  * </p>
+ * <p>
+ * An event of type {@link jakarta.data.event.PreDeleteEvent} must be raised by the annotated lifecycle
+ * method before each record is deleted. An event of type {@link jakarta.data.event.PostDeleteEvent}
+ * must be raised by the annotated lifecycle method after each record is successfully deleted.
+ * </p>
  *
  * <p>Alternatively, the {@code Delete} annotation may be used to annotate a repository method with no parameter of an
  * entity type. Then the repository method is interpreted as a parameter-based automatic query method. The entity type
