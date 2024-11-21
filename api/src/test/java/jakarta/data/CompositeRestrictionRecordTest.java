@@ -17,8 +17,103 @@
  */
 package jakarta.data;
 
-import static org.junit.jupiter.api.Assertions.*;
+
+import org.assertj.core.api.SoftAssertions;
+import org.junit.jupiter.api.Test;
+
+import java.util.List;
+
 
 class CompositeRestrictionRecordTest {
 
+
+    @Test
+    void shouldCreateCompositeRestrictionWithDefaultNegation() {
+        Restriction<String> restriction1 = new BasicRestrictionRecord<>("title", Operator.EQUAL, "Java Guide");
+        Restriction<String> restriction2 = new BasicRestrictionRecord<>("author", Operator.EQUAL, "John Doe");
+
+        CompositeRestrictionRecord<String> composite = new CompositeRestrictionRecord<>(
+                CompositeRestriction.Type.ALL,
+                List.of(restriction1, restriction2)
+        );
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(composite.type()).isEqualTo(CompositeRestriction.Type.ALL);
+            soft.assertThat(composite.restrictions()).containsExactly(restriction1, restriction2);
+            soft.assertThat(composite.isNegated()).isFalse();
+        });
+    }
+
+    @Test
+    void shouldCreateCompositeRestrictionWithExplicitNegation() {
+        Restriction<String> restriction1 = new BasicRestrictionRecord<>("title", Operator.EQUAL, "Java Guide");
+        Restriction<String> restriction2 = new BasicRestrictionRecord<>("author", Operator.EQUAL, "John Doe");
+
+        CompositeRestrictionRecord<String> composite = new CompositeRestrictionRecord<>(
+                CompositeRestriction.Type.ANY,
+                List.of(restriction1, restriction2),
+                true
+        );
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(composite.type()).isEqualTo(CompositeRestriction.Type.ANY);
+            soft.assertThat(composite.restrictions()).containsExactly(restriction1, restriction2);
+            soft.assertThat(composite.isNegated()).isTrue();
+        });
+    }
+
+    @Test
+    void shouldHandleEmptyRestrictions() {
+        CompositeRestrictionRecord<String> composite = new CompositeRestrictionRecord<>(
+                CompositeRestriction.Type.ALL,
+                List.of()
+        );
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(composite.type()).isEqualTo(CompositeRestriction.Type.ALL);
+            soft.assertThat(composite.restrictions()).isEmpty();
+            soft.assertThat(composite.isNegated()).isFalse();
+        });
+    }
+
+    @Test
+    void shouldPreserveRestrictionsOrder() {
+        Restriction<String> restriction1 = new BasicRestrictionRecord<>("title", Operator.EQUAL, "Java Guide");
+        Restriction<String> restriction2 = new BasicRestrictionRecord<>("author", Operator.EQUAL, "John Doe");
+
+        CompositeRestrictionRecord<String> composite = new CompositeRestrictionRecord<>(
+                CompositeRestriction.Type.ALL,
+                List.of(restriction1, restriction2)
+        );
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(composite.restrictions().get(0)).isEqualTo(restriction1);
+            soft.assertThat(composite.restrictions().get(1)).isEqualTo(restriction2);
+        });
+    }
+
+    @Test
+    void shouldSupportNegationUsingDefaultConstructor() {
+        // Given multiple restrictions
+        Restriction<String> restriction1 = new BasicRestrictionRecord<>("title", Operator.EQUAL, "Java Guide");
+        Restriction<String> restriction2 = new BasicRestrictionRecord<>("author", Operator.EQUAL, "John Doe");
+
+        // When creating a composite restriction and manually setting negation
+        CompositeRestrictionRecord<String> composite = new CompositeRestrictionRecord<>(
+                CompositeRestriction.Type.ALL,
+                List.of(restriction1, restriction2)
+        );
+        CompositeRestrictionRecord<String> negatedComposite = new CompositeRestrictionRecord<>(
+                composite.type(),
+                composite.restrictions(),
+                true
+        );
+
+        // Then validate the negated composite restriction
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(negatedComposite.type()).isEqualTo(CompositeRestriction.Type.ALL);
+            soft.assertThat(negatedComposite.restrictions()).containsExactly(restriction1, restriction2);
+            soft.assertThat(negatedComposite.isNegated()).isTrue();
+        });
+    }
 }
