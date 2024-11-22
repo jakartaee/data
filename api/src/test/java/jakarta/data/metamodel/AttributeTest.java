@@ -19,7 +19,6 @@ package jakarta.data.metamodel;
 
 import jakarta.data.BasicRestriction;
 import jakarta.data.Operator;
-import jakarta.data.Restrict;
 import jakarta.data.Restriction;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
