@@ -32,12 +32,12 @@ class SortableAttributeTest {
     private final SortableAttribute<String> testAttribute = new SortableAttribute<String>() {
         @Override
         public Sort<String> asc() {
-           throw new UnsupportedOperationException("Not supported yet.");
+           throw new UnsupportedOperationException("It is not the focus of this test");
         }
 
         @Override
         public Sort<String> desc() {
-            throw new UnsupportedOperationException("Not supported yet.");
+            throw new UnsupportedOperationException("It is not the focus of this test");
         }
 
         @Override
