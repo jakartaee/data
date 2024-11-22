@@ -17,8 +17,135 @@
  */
 package jakarta.data.metamodel;
 
-import static org.junit.jupiter.api.Assertions.*;
+import jakarta.data.Operator;
+import jakarta.data.Sort;
+import jakarta.data.TextRestriction;
+import org.assertj.core.api.SoftAssertions;
+import org.junit.jupiter.api.Test;
 
 class TextAttributeTest {
 
+
+    private final TextAttribute<String> testAttribute = new TextAttribute<String>() {
+        @Override
+        public Sort<String> ascIgnoreCase() {
+            throw new UnsupportedOperationException("Not the focus of this test.");
+        }
+
+        @Override
+        public Sort<String> descIgnoreCase() {
+            throw new UnsupportedOperationException("Not the focus of this test.");
+        }
+
+        @Override
+        public Sort<String> asc() {
+            throw new UnsupportedOperationException("Not the focus of this test.");
+        }
+
+        @Override
+        public Sort<String> desc() {
+            throw new UnsupportedOperationException("Not the focus of this test.");
+        }
+
+        @Override
+        public String name() {
+            return "testAttribute";
+        }
+    };
+
+    @Test
+    void shouldCreateContainsRestriction() {
+        TextRestriction<String> restriction = testAttribute.contains("testValue");
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(restriction.field()).isEqualTo("testAttribute");
+            soft.assertThat(restriction.value()).isEqualTo("%testValue%");
+            soft.assertThat(restriction.comparison()).isEqualTo(Operator.LIKE);
+            soft.assertThat(restriction.isNegated()).isFalse();
+        });
+    }
+
+    @Test
+    void shouldCreateStartsWithRestriction() {
+        TextRestriction<String> restriction = testAttribute.startsWith("testValue");
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(restriction.field()).isEqualTo("testAttribute");
+            soft.assertThat(restriction.value()).isEqualTo("testValue%");
+            soft.assertThat(restriction.comparison()).isEqualTo(Operator.LIKE);
+            soft.assertThat(restriction.isNegated()).isFalse();
+        });
+    }
+
+    @Test
+    void shouldCreateEndsWithRestriction() {
+        TextRestriction<String> restriction = testAttribute.endsWith("testValue");
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(restriction.field()).isEqualTo("testAttribute");
+            soft.assertThat(restriction.value()).isEqualTo("%testValue");
+            soft.assertThat(restriction.comparison()).isEqualTo(Operator.LIKE);
+            soft.assertThat(restriction.isNegated()).isFalse();
+        });
+    }
+
+    @Test
+    void shouldCreateLikeRestriction() {
+        TextRestriction<String> restriction = testAttribute.like("%test%");
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(restriction.field()).isEqualTo("testAttribute");
+            soft.assertThat(restriction.value()).isEqualTo("%test%");
+            soft.assertThat(restriction.comparison()).isEqualTo(Operator.LIKE);
+            soft.assertThat(restriction.isNegated()).isFalse();
+        });
+    }
+
+    @Test
+    void shouldCreateNotContainsRestriction() {
+        TextRestriction<String> restriction = testAttribute.notContains("testValue");
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(restriction.field()).isEqualTo("testAttribute");
+            soft.assertThat(restriction.value()).isEqualTo("%testValue%");
+            soft.assertThat(restriction.comparison()).isEqualTo(Operator.LIKE);
+            soft.assertThat(restriction.isNegated()).isTrue();
+        });
+    }
+
+    @Test
+    void shouldCreateNotLikeRestriction() {
+        TextRestriction<String> restriction = testAttribute.notLike("%test%");
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(restriction.field()).isEqualTo("testAttribute");
+            soft.assertThat(restriction.value()).isEqualTo("%test%");
+            soft.assertThat(restriction.comparison()).isEqualTo(Operator.LIKE);
+            soft.assertThat(restriction.isNegated()).isTrue();
+        });
+    }
+
+    @Test
+    void shouldCreateNotStartsWithRestriction() {
+        TextRestriction<String> restriction = testAttribute.notStartsWith("testValue");
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(restriction.field()).isEqualTo("testAttribute");
+            soft.assertThat(restriction.value()).isEqualTo("testValue%");
+            soft.assertThat(restriction.comparison()).isEqualTo(Operator.LIKE);
+            soft.assertThat(restriction.isNegated()).isTrue();
+        });
+    }
+
+    @Test
+    void shouldCreateNotEndsWithRestriction() {
+        TextRestriction<String> restriction = testAttribute.notEndsWith("testValue");
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(restriction.field()).isEqualTo("testAttribute");
+            soft.assertThat(restriction.value()).isEqualTo("%testValue");
+            soft.assertThat(restriction.comparison()).isEqualTo(Operator.LIKE);
+            soft.assertThat(restriction.isNegated()).isTrue();
+        });
+    }
 }
