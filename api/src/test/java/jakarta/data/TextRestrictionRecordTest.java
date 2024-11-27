@@ -119,4 +119,11 @@ class TextRestrictionRecordTest {
             soft.assertThat(restriction.isEscaped()).isFalse();
         });
     }
+
+    @Test
+    void shouldThrowExceptionWhenFieldIsNullInTextRestriction() {
+        assertThatThrownBy(() -> new TextRestrictionRecord<>(null, Operator.LIKE, "testValue"))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("Field must not be null");
+    }
 }
