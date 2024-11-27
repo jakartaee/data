@@ -21,6 +21,8 @@ package jakarta.data;
 // The proper way for users to obtain instances is via
 // the static metamodel or Restrict.* methods 
 
+import java.util.Objects;
+
 record TextRestrictionRecord<T>(
         String field,
         boolean isNegated,
@@ -28,6 +30,10 @@ record TextRestrictionRecord<T>(
         boolean isCaseSensitive,
         boolean isEscaped,
         String value) implements TextRestriction<T> {
+
+    TextRestrictionRecord {
+        Objects.requireNonNull(field, "Field must not be null");
+    }
 
     TextRestrictionRecord(String field, boolean negated, Operator comparison, boolean escaped, String value) {
         this(field, negated, comparison, true, escaped, value);
