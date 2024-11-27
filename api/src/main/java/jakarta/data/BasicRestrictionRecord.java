@@ -21,11 +21,17 @@ package jakarta.data;
 // The proper way for users to obtain instances is via
 // the static metamodel or Restrict.* methods 
 
+import java.util.Objects;
+
 record BasicRestrictionRecord<T>(
         String field,
         boolean isNegated,
         Operator comparison,
         Object value) implements BasicRestriction<T> {
+
+    BasicRestrictionRecord {
+        Objects.requireNonNull(field, "Field must not be null");
+    }
 
     BasicRestrictionRecord(String field, Operator comparison, Object value) {
         this(field, false, comparison, value);
