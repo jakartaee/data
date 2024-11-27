@@ -20,6 +20,8 @@ package jakarta.data;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+
 
 class TextRestrictionRecordTest {
 
@@ -118,5 +120,12 @@ class TextRestrictionRecordTest {
             soft.assertThat(restriction.isCaseSensitive()).isTrue();
             soft.assertThat(restriction.isEscaped()).isFalse();
         });
+    }
+
+    @Test
+    void shouldThrowExceptionWhenFieldIsNullInTextRestriction() {
+        assertThatThrownBy(() -> new TextRestrictionRecord<>(null, Operator.LIKE, "testValue"))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("Field must not be null");
     }
 }

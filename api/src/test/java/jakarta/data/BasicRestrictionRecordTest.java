@@ -20,6 +20,8 @@ package jakarta.data;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+
 
 class BasicRestrictionRecordTest {
 
@@ -71,5 +73,12 @@ class BasicRestrictionRecordTest {
             soft.assertThat(negatedRestriction.comparison()).isEqualTo(Operator.EQUAL);
             soft.assertThat(negatedRestriction.value()).isEqualTo("Unknown");
         });
+    }
+
+    @Test
+    void shouldThrowExceptionWhenFieldIsNull() {
+        assertThatThrownBy(() -> new BasicRestrictionRecord<>(null, Operator.EQUAL, "testValue"))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("Field must not be null");
     }
 }
