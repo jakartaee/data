@@ -17,6 +17,8 @@
  */
 package jakarta.data.metamodel;
 
+import jakarta.data.Restrict;
+import jakarta.data.Restriction;
 import jakarta.data.Sort;
 
 /**
@@ -42,6 +44,10 @@ public interface SortableAttribute<T> extends Attribute<T> {
      */
     Sort<T> asc();
 
+    default <V extends Comparable<V>> Restriction<T> between(V min, V max) {
+        return Restrict.between(min, max, name());
+    }
+
     /**
      * Obtain a request for a descending {@link Sort} based on the entity attribute.
      *
@@ -49,4 +55,19 @@ public interface SortableAttribute<T> extends Attribute<T> {
      */
     Sort<T> desc();
 
+    default <V extends Comparable<V>> Restriction<T> greaterThan(V value) {
+        return Restrict.greaterThan(value, name());
+    }
+
+    default <V extends Comparable<V>> Restriction<T> greaterThanEqual(V value) {
+        return Restrict.greaterThanEqual(value, name());
+    }
+
+    default <V extends Comparable<V>> Restriction<T> lessThan(V value) {
+        return Restrict.lessThan(value, name());
+    }
+
+    default <V extends Comparable<V>> Restriction<T> lessThanEqual(V value) {
+        return Restrict.lessThanEqual(value, name());
+    }
 }
