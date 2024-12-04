@@ -146,6 +146,10 @@ When a path expression is executed, each element of the path is evaluated in tur
 
 If any element of a path expression evaluates to a null value, the whole path expression evaluates to a null value.
 
+==== Identifier expressions
+
+An _identifier expression_, with syntax given by `id_expression`, is assigned the type of the unique identifier of the queried entity and evaluates to the unique identifier of a given record. An identifier expression is a synonym for a path expression with one element matching the identifier property of the queried entity type. An identifier expression may occur in the `select` clause, in the `order` clause, or as a scalar expression in the `where` clause.
+
 ==== Function calls
 
 A _function call_ is the name of a JDQL function, followed by a parenthesized list of argument expressions, with syntax given by `function_expression`.
@@ -354,7 +358,12 @@ The `where` clause is always optional. When it is missing, there is no restricti
 
 The `select` clause, with syntax given by `select_clause`, specifies a path expression which determines the values returned by the query. The path expression is evaluated for each record which satisfies the restriction imposed by the `where` clause, as specified in <<Path expressions>>, and the value of the last element of the path expression is added to the query results.
 
-Alternatively, the `select` clause may contain a single `count(this)` aggregate expression, which evaluates to the number of records which satisfy the restriction. A query beginning with `select count(this)` always returns a single result of type `Long`, no matter how many records satisfy the conditional expression in the `where` clause.
+Alternatively, the `select` clause may contain either:
+
+- a single `count(this)` aggregate expression, which evaluates to the number of records which satisfy the restriction, or
+- a single <<Identifier expressions,identifier expression>>, which evaluates to the unique identifier of each record.
+
+ A query beginning with `select count(this)` always returns a single result of type `Long`, no matter how many records satisfy the conditional expression in the `where` clause.
 
 NOTE: If a datastore does not natively provide the ability to count query results, the Jakarta Data provider is strongly encouraged, but not required, to implement this operation by counting the query results in Java.
 
