@@ -48,10 +48,10 @@ package jakarta.data.event;
  *
  * @param <E> the entity type
  */
-public abstract class LifecycleEvent<E> {
+public class LifecycleEvent<E> {
     private final E entity;
 
-    public LifecycleEvent(E entity) {
+    protected LifecycleEvent(E entity) {
         this.entity = entity;
     }
 
