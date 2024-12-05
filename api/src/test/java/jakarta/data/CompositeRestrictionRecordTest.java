@@ -27,7 +27,9 @@ import java.util.List;
 
 
 class CompositeRestrictionRecordTest {
-
+    // A mock entity class for tests
+    static class Person {
+    }
 
     @Test
     void shouldCreateCompositeRestrictionWithDefaultNegation() {
@@ -69,6 +71,35 @@ class CompositeRestrictionRecordTest {
         assertThatThrownBy(() -> new CompositeRestrictionRecord<>(CompositeRestriction.Type.ALL, List.of()))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Cannot create a composite restriction without any restrictions to combine.");
+    }
+
+    @Test
+    void shouldNegateCompositeRestriction() {
+        Restriction<Person> ageLessThan50 = Restrict.lessThan(50, "age");
+        Restriction<Person> nameStartsWithDuke = Restrict.startsWith("Duke ", "name");
+        Restriction<Person> all = Restrict.all(ageLessThan50, nameStartsWithDuke);
+        Restriction<Person> allNegated = all.negate();
+        Restriction<Person> notAll = Restrict.not(all);
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(all.isNegated()).isEqualTo(false);
+            soft.assertThat(((CompositeRestriction<Person>) all).restrictions()
+                    .get(0).isNegated()).isEqualTo(false);
+            soft.assertThat(((CompositeRestriction<Person>) all).restrictions()
+                    .get(1).isNegated()).isEqualTo(false);
+
+            soft.assertThat(allNegated.isNegated()).isEqualTo(true);
+            soft.assertThat(((CompositeRestriction<Person>) allNegated).restrictions()
+                    .get(0).isNegated()).isEqualTo(false);
+            soft.assertThat(((CompositeRestriction<Person>) allNegated).restrictions()
+                    .get(1).isNegated()).isEqualTo(false);
+
+            soft.assertThat(notAll.isNegated()).isEqualTo(true);
+            soft.assertThat(((CompositeRestriction<Person>) notAll).restrictions()
+                    .get(0).isNegated()).isEqualTo(false);
+            soft.assertThat(((CompositeRestriction<Person>) notAll).restrictions()
+                    .get(1).isNegated()).isEqualTo(false);
+        });
     }
 
     @Test
