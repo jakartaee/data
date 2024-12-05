@@ -36,4 +36,33 @@ record BasicRestrictionRecord<T>(
     BasicRestrictionRecord(String field, Operator comparison, Object value) {
         this(field, false, comparison, value);
     }
+
+    @Override
+    public Restriction<T> negate() {
+        boolean newNegation = isNegated;
+        Operator newComparison;
+        switch (comparison) {
+            case GREATER_THAN:
+                newComparison = Operator.LESS_THAN_EQUAL;
+                break;
+            case GREATER_THAN_EQUAL:
+                newComparison = Operator.LESS_THAN;
+                break;
+            case LESS_THAN:
+                newComparison = Operator.GREATER_THAN_EQUAL;
+                break;
+            case LESS_THAN_EQUAL:
+                newComparison = Operator.GREATER_THAN;
+                break;
+            default:
+                newComparison = comparison;
+                newNegation = !isNegated;
+        }
+
+        return new BasicRestrictionRecord<>(
+                field,
+                newNegation,
+                newComparison,
+                value);
+    }
 }
