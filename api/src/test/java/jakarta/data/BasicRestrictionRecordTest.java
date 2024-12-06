@@ -83,6 +83,41 @@ class BasicRestrictionRecordTest {
     }
 
     @Test
+    void shouldNegateNegatedRestriction() {
+        Restriction<Book> titleRestriction =
+                Restrict.equalTo("A Developer's Guide to Jakarta Data", "title");
+        BasicRestriction<Book> titleRestrictionBasic =
+                (BasicRestriction<Book>) titleRestriction;
+        BasicRestriction<Book> negatedTitleRestrictionBasic =
+                (BasicRestriction<Book>) titleRestriction.negate();
+        BasicRestriction<Book> negatedNegatedTitleRestrictionBasic =
+                (BasicRestriction<Book>) negatedTitleRestrictionBasic.negate();
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(titleRestrictionBasic.comparison())
+                .isEqualTo(Operator.EQUAL);
+            soft.assertThat(titleRestrictionBasic.value())
+                .isEqualTo("A Developer's Guide to Jakarta Data");
+            soft.assertThat(titleRestrictionBasic.isNegated())
+                .isEqualTo(false);
+
+            soft.assertThat(negatedTitleRestrictionBasic.comparison())
+                .isEqualTo(Operator.EQUAL);
+            soft.assertThat(negatedTitleRestrictionBasic.value())
+                .isEqualTo("A Developer's Guide to Jakarta Data");
+            soft.assertThat(negatedTitleRestrictionBasic.isNegated())
+                .isEqualTo(true);
+
+            soft.assertThat(negatedNegatedTitleRestrictionBasic.comparison())
+                .isEqualTo(Operator.EQUAL);
+            soft.assertThat(negatedNegatedTitleRestrictionBasic.value())
+                .isEqualTo("A Developer's Guide to Jakarta Data");
+            soft.assertThat(negatedNegatedTitleRestrictionBasic.isNegated())
+                .isEqualTo(false);
+        });
+    }
+
+    @Test
     void shouldSupportNegatedRestrictionUsingDefaultConstructor() {
         BasicRestrictionRecord<String> restriction = new BasicRestrictionRecord<>("author", Operator.EQUAL, "Unknown");
         BasicRestrictionRecord<String> negatedRestriction = new BasicRestrictionRecord<>(restriction.field(), true, restriction.comparison(), restriction.value());
