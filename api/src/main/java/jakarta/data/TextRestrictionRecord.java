@@ -52,7 +52,38 @@ record TextRestrictionRecord<T>(
     }
 
     @Override
-    public Restriction<T> ignoreCase() {
+    public TextRestriction<T> ignoreCase() {
         return new TextRestrictionRecord<>(field, isNegated, comparison, false, isEscaped, value);
+    }
+
+    @Override
+    public TextRestriction<T> negate() {
+        boolean newNegation = isNegated;
+        Operator newComparison;
+        switch (comparison) {
+            case GREATER_THAN:
+                newComparison = Operator.LESS_THAN_EQUAL;
+                break;
+            case GREATER_THAN_EQUAL:
+                newComparison = Operator.LESS_THAN;
+                break;
+            case LESS_THAN:
+                newComparison = Operator.GREATER_THAN_EQUAL;
+                break;
+            case LESS_THAN_EQUAL:
+                newComparison = Operator.GREATER_THAN;
+                break;
+            default:
+                newComparison = comparison;
+                newNegation = !isNegated;
+        }
+
+        return new TextRestrictionRecord<>(
+                field,
+                newNegation,
+                newComparison,
+                isCaseSensitive,
+                isEscaped,
+                value);
     }
 }

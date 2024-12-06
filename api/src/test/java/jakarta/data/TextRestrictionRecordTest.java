@@ -20,6 +20,8 @@ package jakarta.data;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
 
+import jakarta.data.BasicRestrictionRecordTest.Book;
+
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 
@@ -100,6 +102,53 @@ class TextRestrictionRecordTest {
             soft.assertThat(restriction.value()).isEqualTo("%Java%");
             soft.assertThat(restriction.isCaseSensitive()).isTrue();
             soft.assertThat(restriction.isEscaped()).isTrue();
+        });
+    }
+
+    @Test
+    void shouldNegateLikeRestriction() {
+        TextRestriction<Book> likeJakartaEE = Restrict.like("%Jakarta EE%", "title");
+        TextRestriction<Book> notLikeJakartaEE = likeJakartaEE.negate();
+        TextRestriction<Book> anyCaseNotLikeJakartaEE = likeJakartaEE.ignoreCase().negate();
+        TextRestriction<Book> notLikeJakartaEEAnyCase = likeJakartaEE.negate().ignoreCase();
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(likeJakartaEE.isNegated()).isFalse();
+            soft.assertThat(likeJakartaEE.comparison()).isEqualTo(Operator.LIKE);
+            soft.assertThat(likeJakartaEE.isCaseSensitive()).isTrue();
+
+            soft.assertThat(notLikeJakartaEE.isNegated()).isTrue();
+            soft.assertThat(notLikeJakartaEE.comparison()).isEqualTo(Operator.LIKE);
+            soft.assertThat(notLikeJakartaEE.isCaseSensitive()).isTrue();
+
+            soft.assertThat(anyCaseNotLikeJakartaEE.isNegated()).isTrue();
+            soft.assertThat(anyCaseNotLikeJakartaEE.comparison()).isEqualTo(Operator.LIKE);
+            soft.assertThat(anyCaseNotLikeJakartaEE.isCaseSensitive()).isFalse();
+
+            soft.assertThat(notLikeJakartaEEAnyCase.isNegated()).isTrue();
+            soft.assertThat(notLikeJakartaEEAnyCase.comparison()).isEqualTo(Operator.LIKE);
+            soft.assertThat(notLikeJakartaEEAnyCase.isCaseSensitive()).isFalse();
+        });
+    }
+
+    @Test
+    void shouldNegateNegatedRestriction() {
+        TextRestriction<Book> endsWithJakartaEE = Restrict.endsWith("Jakarta EE", "title");
+        TextRestriction<Book> notEndsWithJakartaEE = endsWithJakartaEE.negate();
+        TextRestriction<Book> notNotEndsWithJakartaEE = notEndsWithJakartaEE.negate();
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(endsWithJakartaEE.isNegated()).isFalse();
+            soft.assertThat(endsWithJakartaEE.comparison()).isEqualTo(Operator.LIKE);
+            soft.assertThat(endsWithJakartaEE.value()).isEqualTo("%Jakarta EE");
+
+            soft.assertThat(notEndsWithJakartaEE.isNegated()).isTrue();
+            soft.assertThat(notEndsWithJakartaEE.comparison()).isEqualTo(Operator.LIKE);
+            soft.assertThat(notEndsWithJakartaEE.value()).isEqualTo("%Jakarta EE");
+
+            soft.assertThat(notNotEndsWithJakartaEE.isNegated()).isFalse();
+            soft.assertThat(notNotEndsWithJakartaEE.comparison()).isEqualTo(Operator.LIKE);
+            soft.assertThat(notNotEndsWithJakartaEE.value()).isEqualTo("%Jakarta EE");
         });
     }
 

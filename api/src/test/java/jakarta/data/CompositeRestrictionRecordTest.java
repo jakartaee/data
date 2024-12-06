@@ -27,7 +27,9 @@ import java.util.List;
 
 
 class CompositeRestrictionRecordTest {
-
+    // A mock entity class for tests
+    static class Person {
+    }
 
     @Test
     void shouldCreateCompositeRestrictionWithDefaultNegation() {
@@ -69,6 +71,64 @@ class CompositeRestrictionRecordTest {
         assertThatThrownBy(() -> new CompositeRestrictionRecord<>(CompositeRestriction.Type.ALL, List.of()))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Cannot create a composite restriction without any restrictions to combine.");
+    }
+
+    @Test
+    void shouldNegateCompositeRestriction() {
+        Restriction<Person> ageLessThan50 = Restrict.lessThan(50, "age");
+        Restriction<Person> nameStartsWithDuke = Restrict.startsWith("Duke ", "name");
+        Restriction<Person> all = Restrict.all(ageLessThan50, nameStartsWithDuke);
+        Restriction<Person> allNegated = all.negate();
+        Restriction<Person> notAll = Restrict.not(all);
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(all.isNegated()).isEqualTo(false);
+            soft.assertThat(((CompositeRestriction<Person>) all).restrictions()
+                    .get(0).isNegated()).isEqualTo(false);
+            soft.assertThat(((CompositeRestriction<Person>) all).restrictions()
+                    .get(1).isNegated()).isEqualTo(false);
+
+            soft.assertThat(allNegated.isNegated()).isEqualTo(true);
+            soft.assertThat(((CompositeRestriction<Person>) allNegated).restrictions()
+                    .get(0).isNegated()).isEqualTo(false);
+            soft.assertThat(((CompositeRestriction<Person>) allNegated).restrictions()
+                    .get(1).isNegated()).isEqualTo(false);
+
+            soft.assertThat(notAll.isNegated()).isEqualTo(true);
+            soft.assertThat(((CompositeRestriction<Person>) notAll).restrictions()
+                    .get(0).isNegated()).isEqualTo(false);
+            soft.assertThat(((CompositeRestriction<Person>) notAll).restrictions()
+                    .get(1).isNegated()).isEqualTo(false);
+        });
+    }
+
+    @Test
+    void shouldNegateNegatedCompositeRestriction() {
+        Restriction<Person> ageBetween20and30 = Restrict.between(20, 30, "age");
+        Restriction<Person> nameContainsDuke = Restrict.contains("Duke", "name");
+        Restriction<Person> any = Restrict.any(ageBetween20and30, nameContainsDuke);
+        Restriction<Person> anyNegated = any.negate();
+        Restriction<Person> anyNotNegated = Restrict.not(anyNegated);
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(any.isNegated()).isEqualTo(false);
+            soft.assertThat(((CompositeRestriction<Person>) any).restrictions()
+                    .get(0).isNegated()).isEqualTo(false);
+            soft.assertThat(((CompositeRestriction<Person>) any).restrictions()
+                    .get(1).isNegated()).isEqualTo(false);
+
+            soft.assertThat(anyNegated.isNegated()).isEqualTo(true);
+            soft.assertThat(((CompositeRestriction<Person>) anyNegated).restrictions()
+                    .get(0).isNegated()).isEqualTo(false);
+            soft.assertThat(((CompositeRestriction<Person>) anyNegated).restrictions()
+                    .get(1).isNegated()).isEqualTo(false);
+
+            soft.assertThat(anyNotNegated.isNegated()).isEqualTo(false);
+            soft.assertThat(((CompositeRestriction<Person>) anyNotNegated).restrictions()
+                    .get(0).isNegated()).isEqualTo(false);
+            soft.assertThat(((CompositeRestriction<Person>) anyNotNegated).restrictions()
+                    .get(1).isNegated()).isEqualTo(false);
+        });
     }
 
     @Test

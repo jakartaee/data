@@ -18,6 +18,7 @@
 package jakarta.data;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 // TODO document
@@ -130,6 +131,12 @@ public class Restrict {
                                                String field) {
         String p = toLikeEscaped(charWildcard, stringWildcard, false, pattern, false);
         return new TextRestrictionRecord<>(field, Operator.LIKE, ESCAPED, p);
+    }
+
+    // convenience method for those who would prefer to avoid .negate()
+    public static <T> Restriction<T> not(Restriction<T> restriction) {
+        Objects.requireNonNull(restriction, "Restriction must not be null");
+        return restriction.negate();
     }
 
     public static <T> Restriction<T> notEqualTo(Object value, String field) {

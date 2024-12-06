@@ -18,13 +18,16 @@
 package jakarta.data;
 
 public interface TextRestriction<T> extends BasicRestriction<T> {
-    Restriction<T> ignoreCase();
+    TextRestriction<T> ignoreCase();
 
     // TODO can mention in the JavaDoc that a value of true will be ignored
     // if the database is not not capable of case sensitive comparisons
     boolean isCaseSensitive();
 
     boolean isEscaped();
+
+    @Override
+    TextRestriction<T> negate();
 
     @Override
     String value();
