@@ -40,7 +40,7 @@ record CompositeRestrictionRecord<T>(
     }
 
     @Override
-    public Restriction<T> negate() {
+    public CompositeRestriction<T> negate() {
         return new CompositeRestrictionRecord<>(type, restrictions, !isNegated);
     }
 }

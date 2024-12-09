@@ -25,7 +25,6 @@ import java.util.Objects;
 
 record TextRestrictionRecord<T>(
         String field,
-        boolean isNegated,
         Operator comparison,
         boolean isCaseSensitive,
         boolean isEscaped,
@@ -35,53 +34,25 @@ record TextRestrictionRecord<T>(
         Objects.requireNonNull(field, "Field must not be null");
     }
 
-    TextRestrictionRecord(String field, boolean negated, Operator comparison, boolean escaped, String value) {
-        this(field, negated, comparison, true, escaped, value);
-    }
-
-    TextRestrictionRecord(String field, boolean negated, Operator comparison, String value) {
-        this(field, negated, comparison, true, false, value);
-    }
-
     TextRestrictionRecord(String field, Operator comparison, boolean escaped, String value) {
-        this(field, false, comparison, true, escaped, value);
+        this(field, comparison, true, escaped, value);
     }
 
     TextRestrictionRecord(String field, Operator comparison, String value) {
-        this(field, false, comparison, true, false, value);
+        this(field, comparison, true, false, value);
     }
 
     @Override
     public TextRestriction<T> ignoreCase() {
-        return new TextRestrictionRecord<>(field, isNegated, comparison, false, isEscaped, value);
+        return new TextRestrictionRecord<>(field, comparison, false, isEscaped, value);
     }
 
     @Override
     public TextRestriction<T> negate() {
-        boolean newNegation = isNegated;
-        Operator newComparison;
-        switch (comparison) {
-            case GREATER_THAN:
-                newComparison = Operator.LESS_THAN_EQUAL;
-                break;
-            case GREATER_THAN_EQUAL:
-                newComparison = Operator.LESS_THAN;
-                break;
-            case LESS_THAN:
-                newComparison = Operator.GREATER_THAN_EQUAL;
-                break;
-            case LESS_THAN_EQUAL:
-                newComparison = Operator.GREATER_THAN;
-                break;
-            default:
-                newComparison = comparison;
-                newNegation = !isNegated;
-        }
 
         return new TextRestrictionRecord<>(
                 field,
-                newNegation,
-                newComparison,
+                comparison.negate(),
                 isCaseSensitive,
                 isEscaped,
                 value);

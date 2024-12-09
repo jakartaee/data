@@ -32,7 +32,6 @@ public class Restrict {
 
     // used internally for more readable code
     private static final boolean ESCAPED = true;
-    private static final boolean NOT = true;
 
     private static final char STRING_WILDCARD = '%';
 
@@ -140,29 +139,29 @@ public class Restrict {
     }
 
     public static <T> Restriction<T> notEqualTo(Object value, String field) {
-        return new BasicRestrictionRecord<>(field, NOT, Operator.EQUAL, value);
+        return new BasicRestrictionRecord<>(field, Operator.NOT_EQUAL, value);
     }
 
     public static <T> TextRestriction<T> notEqualTo(String value, String field) {
-        return new TextRestrictionRecord<>(field, NOT, Operator.EQUAL, value);
+        return new TextRestrictionRecord<>(field, Operator.NOT_EQUAL, value);
     }
 
     public static <T> TextRestriction<T> notContains(String substring, String field) {
         String pattern = toLikeEscaped(CHAR_WILDCARD, STRING_WILDCARD, true, substring, true);
-        return new TextRestrictionRecord<>(field, NOT, Operator.LIKE, ESCAPED, pattern);
+        return new TextRestrictionRecord<>(field, Operator.NOT_LIKE, ESCAPED, pattern);
     }
 
     public static <T> TextRestriction<T> notEndsWith(String suffix, String field) {
         String pattern = toLikeEscaped(CHAR_WILDCARD, STRING_WILDCARD, true, suffix, false);
-        return new TextRestrictionRecord<>(field, NOT, Operator.LIKE, ESCAPED, pattern);
+        return new TextRestrictionRecord<>(field, Operator.NOT_LIKE, ESCAPED, pattern);
     }
 
     public static <T> Restriction<T> notIn(Set<Object> values, String field) {
-        return new BasicRestrictionRecord<>(field, NOT, Operator.IN, values);
+        return new BasicRestrictionRecord<>(field, Operator.NOT_IN, values);
     }
 
     public static <T> TextRestriction<T> notLike(String pattern, String field) {
-        return new TextRestrictionRecord<>(field, NOT, Operator.LIKE, pattern);
+        return new TextRestrictionRecord<>(field, Operator.NOT_LIKE, pattern);
     }
 
     public static <T> TextRestriction<T> notLike(String pattern,
@@ -170,12 +169,12 @@ public class Restrict {
                                                   char stringWildcard,
                                                   String field) {
         String p = toLikeEscaped(charWildcard, stringWildcard, false, pattern, false);
-        return new TextRestrictionRecord<>(field, NOT, Operator.LIKE, ESCAPED, p);
+        return new TextRestrictionRecord<>(field, Operator.NOT_LIKE, ESCAPED, p);
     }
 
     public static <T> TextRestriction<T> notStartsWith(String prefix, String field) {
         String pattern = toLikeEscaped(CHAR_WILDCARD, STRING_WILDCARD, false, prefix, true);
-        return new TextRestrictionRecord<>(field, NOT, Operator.LIKE, ESCAPED, pattern);
+        return new TextRestrictionRecord<>(field, Operator.NOT_LIKE, ESCAPED, pattern);
     }
 
     public static <T> TextRestriction<T> startsWith(String prefix, String field) {

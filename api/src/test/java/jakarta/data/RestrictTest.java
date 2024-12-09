@@ -37,7 +37,6 @@ class RestrictTest {
             soft.assertThat(basic.field()).isEqualTo("field");
             soft.assertThat(basic.comparison()).isEqualTo(Operator.EQUAL);
             soft.assertThat(basic.value()).isEqualTo("value");
-            soft.assertThat(basic.isNegated()).isFalse();
         });
     }
 
@@ -50,9 +49,8 @@ class RestrictTest {
         TextRestrictionRecord<String> basic = (TextRestrictionRecord<String>) restriction;
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(basic.field()).isEqualTo("field");
-            soft.assertThat(basic.comparison()).isEqualTo(Operator.EQUAL);
+            soft.assertThat(basic.comparison()).isEqualTo(Operator.NOT_EQUAL);
             soft.assertThat(basic.value()).isEqualTo("value");
-            soft.assertThat(basic.isNegated()).isTrue();
         });
     }
 
@@ -81,7 +79,6 @@ class RestrictTest {
             soft.assertThat(restriction.field()).isEqualTo("field");
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.LIKE);
             soft.assertThat(restriction.value()).isEqualTo("%substring%");
-            soft.assertThat(restriction.isNegated()).isFalse();
         });
     }
 
@@ -91,9 +88,8 @@ class RestrictTest {
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.field()).isEqualTo("field");
-            soft.assertThat(restriction.comparison()).isEqualTo(Operator.LIKE);
+            soft.assertThat(restriction.comparison()).isEqualTo(Operator.NOT_LIKE);
             soft.assertThat(restriction.value()).isEqualTo("%substring%");
-            soft.assertThat(restriction.isNegated()).isTrue();
         });
     }
 
@@ -105,7 +101,6 @@ class RestrictTest {
             soft.assertThat(restriction.field()).isEqualTo("field");
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.LIKE);
             soft.assertThat(restriction.value()).isEqualTo("prefix%");
-            soft.assertThat(restriction.isNegated()).isFalse();
         });
     }
 
@@ -115,9 +110,8 @@ class RestrictTest {
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.field()).isEqualTo("field");
-            soft.assertThat(restriction.comparison()).isEqualTo(Operator.LIKE);
+            soft.assertThat(restriction.comparison()).isEqualTo(Operator.NOT_LIKE);
             soft.assertThat(restriction.value()).isEqualTo("prefix%");
-            soft.assertThat(restriction.isNegated()).isTrue();
         });
     }
 
@@ -129,7 +123,6 @@ class RestrictTest {
             soft.assertThat(restriction.field()).isEqualTo("field");
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.LIKE);
             soft.assertThat(restriction.value()).isEqualTo("%suffix");
-            soft.assertThat(restriction.isNegated()).isFalse();
         });
     }
 
@@ -139,9 +132,8 @@ class RestrictTest {
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.field()).isEqualTo("field");
-            soft.assertThat(restriction.comparison()).isEqualTo(Operator.LIKE);
+            soft.assertThat(restriction.comparison()).isEqualTo(Operator.NOT_LIKE);
             soft.assertThat(restriction.value()).isEqualTo("%suffix");
-            soft.assertThat(restriction.isNegated()).isTrue();
         });
     }
 
