@@ -20,6 +20,11 @@ package jakarta.data;
 import java.util.List;
 
 public interface CompositeRestriction<T> extends Restriction<T> {
+    boolean isNegated();
+
+    @Override
+    CompositeRestriction<T> negate();
+
     List<Restriction<T>> restrictions();
 
     Type type();

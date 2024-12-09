@@ -40,7 +40,6 @@ class AttributeTest {
             soft.assertThat(basic.field()).isEqualTo("testAttribute");
             soft.assertThat(basic.value()).isEqualTo("testValue");
             soft.assertThat(basic.comparison()).isEqualTo(Operator.EQUAL);
-            soft.assertThat(basic.isNegated()).isFalse();
         });
     }
 
@@ -53,8 +52,7 @@ class AttributeTest {
             BasicRestriction<String> basic = (BasicRestriction<String>) restriction;
             soft.assertThat(basic.field()).isEqualTo("testAttribute");
             soft.assertThat(basic.value()).isEqualTo("testValue");
-            soft.assertThat(basic.comparison()).isEqualTo(Operator.EQUAL);
-            soft.assertThat(basic.isNegated()).isTrue();
+            soft.assertThat(basic.comparison()).isEqualTo(Operator.NOT_EQUAL);
         });
     }
 
@@ -68,7 +66,6 @@ class AttributeTest {
             soft.assertThat(basic.field()).isEqualTo("testAttribute");
             soft.assertThat(basic.value()).isEqualTo(Set.of("value1", "value2"));
             soft.assertThat(basic.comparison()).isEqualTo(Operator.IN);
-            soft.assertThat(basic.isNegated()).isFalse();
         });
     }
 
@@ -88,8 +85,7 @@ class AttributeTest {
             BasicRestriction<String> basic = (BasicRestriction<String>) restriction;
             soft.assertThat(basic.field()).isEqualTo("testAttribute");
             soft.assertThat(basic.value()).isEqualTo(Set.of("value1", "value2"));
-            soft.assertThat(basic.comparison()).isEqualTo(Operator.IN);
-            soft.assertThat(basic.isNegated()).isTrue();
+            soft.assertThat(basic.comparison()).isEqualTo(Operator.NOT_IN);
         });
     }
 
@@ -110,7 +106,6 @@ class AttributeTest {
             soft.assertThat(basic.field()).isEqualTo("testAttribute");
             soft.assertThat(basic.value()).isNull();
             soft.assertThat(basic.comparison()).isEqualTo(Operator.EQUAL);
-            soft.assertThat(basic.isNegated()).isFalse();
         });
     }
 
@@ -123,8 +118,7 @@ class AttributeTest {
             BasicRestriction<String> basic = (BasicRestriction<String>) restriction;
             soft.assertThat(basic.field()).isEqualTo("testAttribute");
             soft.assertThat(basic.value()).isNull();
-            soft.assertThat(basic.comparison()).isEqualTo(Operator.EQUAL);
-            soft.assertThat(basic.isNegated()).isTrue();
+            soft.assertThat(basic.comparison()).isEqualTo(Operator.NOT_EQUAL);
         });
     }
 }

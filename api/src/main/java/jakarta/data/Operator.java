@@ -24,5 +24,40 @@ public enum Operator {
     IN,
     LESS_THAN,
     LESS_THAN_EQUAL,
-    LIKE
+    LIKE,
+    NOT_EQUAL,
+    NOT_IN,
+    NOT_LIKE;
+
+    /**
+     * Returns the operator that is the negation of this operator.
+     *
+     * @return the operator that is the negation of this operator.
+     */
+    Operator negate() {
+        switch (this) {
+            case EQUAL:
+                return NOT_EQUAL;
+            case GREATER_THAN:
+                return LESS_THAN_EQUAL;
+            case GREATER_THAN_EQUAL:
+                return LESS_THAN;
+            case IN:
+                return NOT_IN;
+            case LESS_THAN:
+                return GREATER_THAN_EQUAL;
+            case LESS_THAN_EQUAL:
+                return GREATER_THAN;
+            case LIKE:
+                return NOT_LIKE;
+            case NOT_EQUAL:
+                return EQUAL;
+            case NOT_IN:
+                return IN;
+            case NOT_LIKE:
+                return LIKE;
+            default: // should be unreachable
+                throw new IllegalStateException(name());
+        }
+    }
 }
