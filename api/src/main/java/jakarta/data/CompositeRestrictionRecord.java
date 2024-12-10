@@ -38,4 +38,9 @@ record CompositeRestrictionRecord<T>(
     CompositeRestrictionRecord(Type type, List<Restriction<T>> restrictions) {
         this(type, restrictions, false);
     }
+
+    @Override
+    public CompositeRestriction<T> negate() {
+        return new CompositeRestrictionRecord<>(type, restrictions, !isNegated);
+    }
 }

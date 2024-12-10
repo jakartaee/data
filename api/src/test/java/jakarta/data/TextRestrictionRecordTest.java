@@ -20,6 +20,8 @@ package jakarta.data;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
 
+import jakarta.data.BasicRestrictionRecordTest.Book;
+
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 
@@ -35,7 +37,6 @@ class TextRestrictionRecordTest {
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.field()).isEqualTo("title");
-            soft.assertThat(restriction.isNegated()).isFalse();
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.LIKE);
             soft.assertThat(restriction.value()).isEqualTo("%Java%");
             soft.assertThat(restriction.isCaseSensitive()).isTrue();
@@ -47,15 +48,13 @@ class TextRestrictionRecordTest {
     void shouldCreateTextRestrictionWithExplicitNegation() {
         TextRestrictionRecord<String> restriction = new TextRestrictionRecord<>(
                 "title",
-                true,
-                Operator.LIKE,
+                Operator.NOT_LIKE,
                 "%Java%"
         );
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.field()).isEqualTo("title");
-            soft.assertThat(restriction.isNegated()).isTrue();
-            soft.assertThat(restriction.comparison()).isEqualTo(Operator.LIKE);
+            soft.assertThat(restriction.comparison()).isEqualTo(Operator.NOT_LIKE);
             soft.assertThat(restriction.value()).isEqualTo("%Java%");
             soft.assertThat(restriction.isCaseSensitive()).isTrue();
             soft.assertThat(restriction.isEscaped()).isFalse();
@@ -76,7 +75,6 @@ class TextRestrictionRecordTest {
             soft.assertThat(caseInsensitiveRestriction).isInstanceOf(TextRestrictionRecord.class);
             TextRestrictionRecord<String> textRestriction = (TextRestrictionRecord<String>) caseInsensitiveRestriction;
             soft.assertThat(textRestriction.field()).isEqualTo("title");
-            soft.assertThat(textRestriction.isNegated()).isFalse();
             soft.assertThat(textRestriction.comparison()).isEqualTo(Operator.LIKE);
             soft.assertThat(textRestriction.value()).isEqualTo("%Java%");
             soft.assertThat(textRestriction.isCaseSensitive()).isFalse();
@@ -95,7 +93,6 @@ class TextRestrictionRecordTest {
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.field()).isEqualTo("title");
-            soft.assertThat(restriction.isNegated()).isFalse();
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.LIKE);
             soft.assertThat(restriction.value()).isEqualTo("%Java%");
             soft.assertThat(restriction.isCaseSensitive()).isTrue();
@@ -104,18 +101,56 @@ class TextRestrictionRecordTest {
     }
 
     @Test
+    void shouldNegateLikeRestriction() {
+        TextRestriction<Book> likeJakartaEE = Restrict.like("%Jakarta EE%", "title");
+        TextRestriction<Book> notLikeJakartaEE = likeJakartaEE.negate();
+        TextRestriction<Book> anyCaseNotLikeJakartaEE = likeJakartaEE.ignoreCase().negate();
+        TextRestriction<Book> notLikeJakartaEEAnyCase = likeJakartaEE.negate().ignoreCase();
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(likeJakartaEE.comparison()).isEqualTo(Operator.LIKE);
+            soft.assertThat(likeJakartaEE.isCaseSensitive()).isTrue();
+
+            soft.assertThat(notLikeJakartaEE.comparison()).isEqualTo(Operator.NOT_LIKE);
+            soft.assertThat(notLikeJakartaEE.isCaseSensitive()).isTrue();
+
+            soft.assertThat(anyCaseNotLikeJakartaEE.comparison()).isEqualTo(Operator.NOT_LIKE);
+            soft.assertThat(anyCaseNotLikeJakartaEE.isCaseSensitive()).isFalse();
+
+            soft.assertThat(notLikeJakartaEEAnyCase.comparison()).isEqualTo(Operator.NOT_LIKE);
+            soft.assertThat(notLikeJakartaEEAnyCase.isCaseSensitive()).isFalse();
+        });
+    }
+
+    @Test
+    void shouldNegateNegatedRestriction() {
+        TextRestriction<Book> endsWithJakartaEE = Restrict.endsWith("Jakarta EE", "title");
+        TextRestriction<Book> notEndsWithJakartaEE = endsWithJakartaEE.negate();
+        TextRestriction<Book> notNotEndsWithJakartaEE = notEndsWithJakartaEE.negate();
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(endsWithJakartaEE.comparison()).isEqualTo(Operator.LIKE);
+            soft.assertThat(endsWithJakartaEE.value()).isEqualTo("%Jakarta EE");
+
+            soft.assertThat(notEndsWithJakartaEE.comparison()).isEqualTo(Operator.NOT_LIKE);
+            soft.assertThat(notEndsWithJakartaEE.value()).isEqualTo("%Jakarta EE");
+
+            soft.assertThat(notNotEndsWithJakartaEE.comparison()).isEqualTo(Operator.LIKE);
+            soft.assertThat(notNotEndsWithJakartaEE.value()).isEqualTo("%Jakarta EE");
+        });
+    }
+
+    @Test
     void shouldSupportNegationForTextRestriction() {
         TextRestrictionRecord<String> restriction = new TextRestrictionRecord<>(
                 "author",
-                true,
-                Operator.EQUAL,
+                Operator.NOT_EQUAL,
                 "John Doe"
         );
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.field()).isEqualTo("author");
-            soft.assertThat(restriction.isNegated()).isTrue();
-            soft.assertThat(restriction.comparison()).isEqualTo(Operator.EQUAL);
+            soft.assertThat(restriction.comparison()).isEqualTo(Operator.NOT_EQUAL);
             soft.assertThat(restriction.value()).isEqualTo("John Doe");
             soft.assertThat(restriction.isCaseSensitive()).isTrue();
             soft.assertThat(restriction.isEscaped()).isFalse();

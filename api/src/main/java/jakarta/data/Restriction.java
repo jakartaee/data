@@ -18,5 +18,5 @@
 package jakarta.data;
 
 public interface Restriction<T> {
-    boolean isNegated();
+    Restriction<T> negate();
 }

@@ -22,5 +22,8 @@ public interface BasicRestriction<T> extends Restriction<T> {
 
     String field();
 
+    @Override
+    BasicRestriction<T> negate();
+
     Object value();
 }

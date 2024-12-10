@@ -56,7 +56,6 @@ class SortableAttributeTest {
             soft.assertThat(basic.field()).isEqualTo("testAttribute");
             soft.assertThat(basic.value()).isEqualTo(10);
             soft.assertThat(basic.comparison()).isEqualTo(Operator.GREATER_THAN);
-            soft.assertThat(basic.isNegated()).isFalse();
         });
     }
 
@@ -70,7 +69,6 @@ class SortableAttributeTest {
             soft.assertThat(basic.field()).isEqualTo("testAttribute");
             soft.assertThat(basic.value()).isEqualTo(10);
             soft.assertThat(basic.comparison()).isEqualTo(Operator.GREATER_THAN_EQUAL);
-            soft.assertThat(basic.isNegated()).isFalse();
         });
     }
 
@@ -84,7 +82,6 @@ class SortableAttributeTest {
             soft.assertThat(basic.field()).isEqualTo("testAttribute");
             soft.assertThat(basic.value()).isEqualTo(10);
             soft.assertThat(basic.comparison()).isEqualTo(Operator.LESS_THAN);
-            soft.assertThat(basic.isNegated()).isFalse();
         });
     }
 
@@ -98,7 +95,6 @@ class SortableAttributeTest {
             soft.assertThat(basic.field()).isEqualTo("testAttribute");
             soft.assertThat(basic.value()).isEqualTo(10);
             soft.assertThat(basic.comparison()).isEqualTo(Operator.LESS_THAN_EQUAL);
-            soft.assertThat(basic.isNegated()).isFalse();
         });
     }
 
@@ -118,7 +114,6 @@ class SortableAttributeTest {
             soft.assertThat(lower.field()).isEqualTo("testAttribute");
             soft.assertThat(lower.value()).isEqualTo(5);
             soft.assertThat(lower.comparison()).isEqualTo(Operator.GREATER_THAN_EQUAL);
-            soft.assertThat(lower.isNegated()).isFalse();
 
             Restriction<String> upperBound = composite.restrictions().get(1);
             soft.assertThat(upperBound).isInstanceOf(BasicRestriction.class);
@@ -126,7 +121,6 @@ class SortableAttributeTest {
             soft.assertThat(upper.field()).isEqualTo("testAttribute");
             soft.assertThat(upper.value()).isEqualTo(15);
             soft.assertThat(upper.comparison()).isEqualTo(Operator.LESS_THAN_EQUAL);
-            soft.assertThat(upper.isNegated()).isFalse();
         });
     }
 }
