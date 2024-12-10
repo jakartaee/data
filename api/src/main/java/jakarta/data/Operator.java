@@ -46,6 +46,6 @@ public enum Operator {
             case NOT_EQUAL -> EQUAL;
             case NOT_IN -> IN;
             case NOT_LIKE -> LIKE;
-        }
+        };
     }
 }
