@@ -122,9 +122,7 @@ Use is subject to <a href="{@docRoot}/doc-files/speclicense.html" target="_top">
                 <version>3.26.0</version>
                 <configuration>
                     <rulesets>
-                        <ruleset>/category/java/bestpractices.xml</ruleset>
-                        <ruleset>/category/java/security.xml</ruleset>
-                        <ruleset>/category/java/performance.xml</ruleset>
+                        <ruleset>src/main/resources/rules.xml</ruleset>
                     </rulesets>
                     <failOnViolation>true</failOnViolation>
                     <printFailingErrors>true</printFailingErrors>
