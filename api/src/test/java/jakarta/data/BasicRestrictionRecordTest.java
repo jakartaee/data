@@ -24,6 +24,9 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 
 class BasicRestrictionRecordTest {
+    // A mock entity class for tests
+    static class Book {
+    }
 
     @Test
     void shouldCreateBasicRestrictionWithDefaultNegation() {
@@ -31,7 +34,6 @@ class BasicRestrictionRecordTest {
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.field()).isEqualTo("title");
-            soft.assertThat(restriction.isNegated()).isFalse();
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.EQUAL);
             soft.assertThat(restriction.value()).isEqualTo("Java Guide");
         });
@@ -39,12 +41,13 @@ class BasicRestrictionRecordTest {
 
     @Test
     void shouldCreateBasicRestrictionWithExplicitNegation() {
-        BasicRestrictionRecord<String> restriction = new BasicRestrictionRecord<>("title", true, Operator.EQUAL, "Java Guide");
+        BasicRestriction<Book> restriction =
+                (BasicRestriction<Book>) Restrict.<Book>equalTo("Java Guide", "title")
+                        .negate();
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.field()).isEqualTo("title");
-            soft.assertThat(restriction.isNegated()).isTrue();
-            soft.assertThat(restriction.comparison()).isEqualTo(Operator.EQUAL);
+            soft.assertThat(restriction.comparison()).isEqualTo(Operator.NOT_EQUAL);
             soft.assertThat(restriction.value()).isEqualTo("Java Guide");
         });
     }
@@ -56,21 +59,63 @@ class BasicRestrictionRecordTest {
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.field()).isEqualTo("title");
-            soft.assertThat(restriction.isNegated()).isFalse();
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.EQUAL);
             soft.assertThat(restriction.value()).isNull();
         });
     }
 
     @Test
+    void shouldNegateLTERestriction() {
+        Restriction<Book> numChaptersLTE10 = Restrict.lessThanEqual(10, "numChapters");
+        BasicRestriction<Book> numChaptersLTE10Basic = (BasicRestriction<Book>) numChaptersLTE10;
+        BasicRestriction<Book> numChaptersGT10Basic = (BasicRestriction<Book>) numChaptersLTE10Basic.negate();
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(numChaptersLTE10Basic.comparison()).isEqualTo(Operator.LESS_THAN_EQUAL);
+            soft.assertThat(numChaptersLTE10Basic.value()).isEqualTo(10);
+
+            soft.assertThat(numChaptersGT10Basic.comparison()).isEqualTo(Operator.GREATER_THAN);
+            soft.assertThat(numChaptersGT10Basic.value()).isEqualTo(10);
+        });
+    }
+
+    @Test
+    void shouldNegateNegatedRestriction() {
+        Restriction<Book> titleRestriction =
+                Restrict.equalTo("A Developer's Guide to Jakarta Data", "title");
+        BasicRestriction<Book> titleRestrictionBasic =
+                (BasicRestriction<Book>) titleRestriction;
+        BasicRestriction<Book> negatedTitleRestrictionBasic =
+                (BasicRestriction<Book>) titleRestriction.negate();
+        BasicRestriction<Book> negatedNegatedTitleRestrictionBasic =
+                (BasicRestriction<Book>) negatedTitleRestrictionBasic.negate();
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(titleRestrictionBasic.comparison())
+                .isEqualTo(Operator.EQUAL);
+            soft.assertThat(titleRestrictionBasic.value())
+                .isEqualTo("A Developer's Guide to Jakarta Data");
+
+            soft.assertThat(negatedTitleRestrictionBasic.comparison())
+                .isEqualTo(Operator.NOT_EQUAL);
+            soft.assertThat(negatedTitleRestrictionBasic.value())
+                .isEqualTo("A Developer's Guide to Jakarta Data");
+
+            soft.assertThat(negatedNegatedTitleRestrictionBasic.comparison())
+                .isEqualTo(Operator.EQUAL);
+            soft.assertThat(negatedNegatedTitleRestrictionBasic.value())
+                .isEqualTo("A Developer's Guide to Jakarta Data");
+        });
+    }
+
+    @Test
     void shouldSupportNegatedRestrictionUsingDefaultConstructor() {
-        BasicRestrictionRecord<String> restriction = new BasicRestrictionRecord<>("author", Operator.EQUAL, "Unknown");
-        BasicRestrictionRecord<String> negatedRestriction = new BasicRestrictionRecord<>(restriction.field(), true, restriction.comparison(), restriction.value());
+        BasicRestriction<Book> negatedRestriction =
+                (BasicRestriction<Book>) Restrict.<Book>notEqualTo((Object) "Unknown", "author");
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(negatedRestriction.field()).isEqualTo("author");
-            soft.assertThat(negatedRestriction.isNegated()).isTrue();
-            soft.assertThat(negatedRestriction.comparison()).isEqualTo(Operator.EQUAL);
+            soft.assertThat(negatedRestriction.comparison()).isEqualTo(Operator.NOT_EQUAL);
             soft.assertThat(negatedRestriction.value()).isEqualTo("Unknown");
         });
     }

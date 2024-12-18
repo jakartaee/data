@@ -25,7 +25,6 @@ import java.util.Objects;
 
 record BasicRestrictionRecord<T>(
         String field,
-        boolean isNegated,
         Operator comparison,
         Object value) implements BasicRestriction<T> {
 
@@ -33,7 +32,11 @@ record BasicRestrictionRecord<T>(
         Objects.requireNonNull(field, "Field must not be null");
     }
 
-    BasicRestrictionRecord(String field, Operator comparison, Object value) {
-        this(field, false, comparison, value);
+    @Override
+    public BasicRestriction<T> negate() {
+        return new BasicRestrictionRecord<>(
+                field,
+                comparison.negate(),
+                value);
     }
 }

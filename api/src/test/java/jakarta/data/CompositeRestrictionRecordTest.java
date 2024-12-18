@@ -27,7 +27,9 @@ import java.util.List;
 
 
 class CompositeRestrictionRecordTest {
-
+    // A mock entity class for tests
+    static class Person {
+    }
 
     @Test
     void shouldCreateCompositeRestrictionWithDefaultNegation() {
@@ -69,6 +71,44 @@ class CompositeRestrictionRecordTest {
         assertThatThrownBy(() -> new CompositeRestrictionRecord<>(CompositeRestriction.Type.ALL, List.of()))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Cannot create a composite restriction without any restrictions to combine.");
+    }
+
+    @Test
+    void shouldNegateCompositeRestriction() {
+        Restriction<Person> ageLessThan50 = Restrict.lessThan(50, "age");
+        Restriction<Person> nameStartsWithDuke = Restrict.startsWith("Duke ", "name");
+        CompositeRestriction<Person> all =
+                (CompositeRestriction<Person>) Restrict.all(ageLessThan50, nameStartsWithDuke);
+        CompositeRestriction<Person> allNegated = all.negate();
+        CompositeRestriction<Person> notAll =
+                (CompositeRestriction<Person>) Restrict.not(all);
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(all.isNegated()).isEqualTo(false);
+
+            soft.assertThat(allNegated.isNegated()).isEqualTo(true);
+
+            soft.assertThat(notAll.isNegated()).isEqualTo(true);
+        });
+    }
+
+    @Test
+    void shouldNegateNegatedCompositeRestriction() {
+        Restriction<Person> ageBetween20and30 = Restrict.between(20, 30, "age");
+        Restriction<Person> nameContainsDuke = Restrict.contains("Duke", "name");
+        CompositeRestriction<Person> any =
+                (CompositeRestriction<Person>) Restrict.any(ageBetween20and30, nameContainsDuke);
+        CompositeRestriction<Person> anyNegated = any.negate();
+        CompositeRestriction<Person> anyNotNegated =
+                (CompositeRestriction<Person>) Restrict.not(anyNegated);
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(any.isNegated()).isEqualTo(false);
+
+            soft.assertThat(anyNegated.isNegated()).isEqualTo(true);
+
+            soft.assertThat(anyNotNegated.isNegated()).isEqualTo(false);
+        });
     }
 
     @Test
