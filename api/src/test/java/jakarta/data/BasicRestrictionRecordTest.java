@@ -33,7 +33,7 @@ class BasicRestrictionRecordTest {
         BasicRestrictionRecord<String> restriction = new BasicRestrictionRecord<>("title", Operator.EQUAL, "Java Guide");
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(restriction.field()).isEqualTo("title");
+            soft.assertThat(restriction.attribute()).isEqualTo("title");
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.EQUAL);
             soft.assertThat(restriction.value()).isEqualTo("Java Guide");
         });
@@ -46,7 +46,7 @@ class BasicRestrictionRecordTest {
                         .negate();
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(restriction.field()).isEqualTo("title");
+            soft.assertThat(restriction.attribute()).isEqualTo("title");
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.NOT_EQUAL);
             soft.assertThat(restriction.value()).isEqualTo("Java Guide");
         });
@@ -58,7 +58,7 @@ class BasicRestrictionRecordTest {
         BasicRestrictionRecord<String> restriction = new BasicRestrictionRecord<>("title", Operator.EQUAL, null);
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(restriction.field()).isEqualTo("title");
+            soft.assertThat(restriction.attribute()).isEqualTo("title");
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.EQUAL);
             soft.assertThat(restriction.value()).isNull();
         });
@@ -114,16 +114,16 @@ class BasicRestrictionRecordTest {
                 (BasicRestriction<Book>) Restrict.<Book>notEqualTo((Object) "Unknown", "author");
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(negatedRestriction.field()).isEqualTo("author");
+            soft.assertThat(negatedRestriction.attribute()).isEqualTo("author");
             soft.assertThat(negatedRestriction.comparison()).isEqualTo(Operator.NOT_EQUAL);
             soft.assertThat(negatedRestriction.value()).isEqualTo("Unknown");
         });
     }
 
     @Test
-    void shouldThrowExceptionWhenFieldIsNull() {
+    void shouldThrowExceptionWhenAttributeIsNull() {
         assertThatThrownBy(() -> new BasicRestrictionRecord<>(null, Operator.EQUAL, "testValue"))
                 .isInstanceOf(NullPointerException.class)
-                .hasMessage("Field must not be null");
+                .hasMessage("Attribute must not be null");
     }
 }

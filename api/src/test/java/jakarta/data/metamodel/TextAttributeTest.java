@@ -58,7 +58,7 @@ class TextAttributeTest {
         TextRestriction<String> restriction = testAttribute.contains("testValue");
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(restriction.field()).isEqualTo("testAttribute");
+            soft.assertThat(restriction.attribute()).isEqualTo("testAttribute");
             soft.assertThat(restriction.value()).isEqualTo("%testValue%");
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.LIKE);
         });
@@ -69,7 +69,7 @@ class TextAttributeTest {
         TextRestriction<String> restriction = testAttribute.startsWith("testValue");
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(restriction.field()).isEqualTo("testAttribute");
+            soft.assertThat(restriction.attribute()).isEqualTo("testAttribute");
             soft.assertThat(restriction.value()).isEqualTo("testValue%");
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.LIKE);
         });
@@ -80,7 +80,7 @@ class TextAttributeTest {
         TextRestriction<String> restriction = testAttribute.endsWith("testValue");
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(restriction.field()).isEqualTo("testAttribute");
+            soft.assertThat(restriction.attribute()).isEqualTo("testAttribute");
             soft.assertThat(restriction.value()).isEqualTo("%testValue");
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.LIKE);
         });
@@ -91,7 +91,7 @@ class TextAttributeTest {
         TextRestriction<String> restriction = testAttribute.like("%test%");
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(restriction.field()).isEqualTo("testAttribute");
+            soft.assertThat(restriction.attribute()).isEqualTo("testAttribute");
             soft.assertThat(restriction.value()).isEqualTo("%test%");
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.LIKE);
         });
@@ -102,7 +102,7 @@ class TextAttributeTest {
         TextRestriction<String> restriction = testAttribute.notContains("testValue");
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(restriction.field()).isEqualTo("testAttribute");
+            soft.assertThat(restriction.attribute()).isEqualTo("testAttribute");
             soft.assertThat(restriction.value()).isEqualTo("%testValue%");
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.NOT_LIKE);
         });
@@ -113,7 +113,7 @@ class TextAttributeTest {
         TextRestriction<String> restriction = testAttribute.notLike("%test%");
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(restriction.field()).isEqualTo("testAttribute");
+            soft.assertThat(restriction.attribute()).isEqualTo("testAttribute");
             soft.assertThat(restriction.value()).isEqualTo("%test%");
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.NOT_LIKE);
         });
@@ -124,7 +124,7 @@ class TextAttributeTest {
         TextRestriction<String> restriction = testAttribute.notStartsWith("testValue");
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(restriction.field()).isEqualTo("testAttribute");
+            soft.assertThat(restriction.attribute()).isEqualTo("testAttribute");
             soft.assertThat(restriction.value()).isEqualTo("testValue%");
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.NOT_LIKE);
         });
@@ -135,7 +135,7 @@ class TextAttributeTest {
         TextRestriction<String> restriction = testAttribute.notEndsWith("testValue");
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(restriction.field()).isEqualTo("testAttribute");
+            soft.assertThat(restriction.attribute()).isEqualTo("testAttribute");
             soft.assertThat(restriction.value()).isEqualTo("%testValue");
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.NOT_LIKE);
         });

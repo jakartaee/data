@@ -37,7 +37,7 @@ class AttributeTest {
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
             BasicRestriction<String> basic = (BasicRestriction<String>) restriction;
-            soft.assertThat(basic.field()).isEqualTo("testAttribute");
+            soft.assertThat(basic.attribute()).isEqualTo("testAttribute");
             soft.assertThat(basic.value()).isEqualTo("testValue");
             soft.assertThat(basic.comparison()).isEqualTo(Operator.EQUAL);
         });
@@ -50,7 +50,7 @@ class AttributeTest {
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
             BasicRestriction<String> basic = (BasicRestriction<String>) restriction;
-            soft.assertThat(basic.field()).isEqualTo("testAttribute");
+            soft.assertThat(basic.attribute()).isEqualTo("testAttribute");
             soft.assertThat(basic.value()).isEqualTo("testValue");
             soft.assertThat(basic.comparison()).isEqualTo(Operator.NOT_EQUAL);
         });
@@ -63,7 +63,7 @@ class AttributeTest {
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
             BasicRestriction<String> basic = (BasicRestriction<String>) restriction;
-            soft.assertThat(basic.field()).isEqualTo("testAttribute");
+            soft.assertThat(basic.attribute()).isEqualTo("testAttribute");
             soft.assertThat(basic.value()).isEqualTo(Set.of("value1", "value2"));
             soft.assertThat(basic.comparison()).isEqualTo(Operator.IN);
         });
@@ -83,7 +83,7 @@ class AttributeTest {
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
             BasicRestriction<String> basic = (BasicRestriction<String>) restriction;
-            soft.assertThat(basic.field()).isEqualTo("testAttribute");
+            soft.assertThat(basic.attribute()).isEqualTo("testAttribute");
             soft.assertThat(basic.value()).isEqualTo(Set.of("value1", "value2"));
             soft.assertThat(basic.comparison()).isEqualTo(Operator.NOT_IN);
         });
@@ -103,7 +103,7 @@ class AttributeTest {
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
             BasicRestriction<String> basic = (BasicRestriction<String>) restriction;
-            soft.assertThat(basic.field()).isEqualTo("testAttribute");
+            soft.assertThat(basic.attribute()).isEqualTo("testAttribute");
             soft.assertThat(basic.value()).isNull();
             soft.assertThat(basic.comparison()).isEqualTo(Operator.EQUAL);
         });
@@ -116,7 +116,7 @@ class AttributeTest {
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
             BasicRestriction<String> basic = (BasicRestriction<String>) restriction;
-            soft.assertThat(basic.field()).isEqualTo("testAttribute");
+            soft.assertThat(basic.attribute()).isEqualTo("testAttribute");
             soft.assertThat(basic.value()).isNull();
             soft.assertThat(basic.comparison()).isEqualTo(Operator.NOT_EQUAL);
         });
