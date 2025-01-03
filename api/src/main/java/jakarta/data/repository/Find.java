@@ -146,5 +146,5 @@ public @interface Find {
      * }
      * </pre>
      */
-    Class<?> value = Object.class;
+    Class<?> value = void.class;
 }
