@@ -124,7 +124,7 @@ public @interface Find {
     /**
      * <p>Optionally specifies the entity type to look for in the database.</p>
      *
-     * <p>The default value, {@code Object.class}, has the special meaning of
+     * <p>The default value, {@code void.class}, has the special meaning of
      * determining the entity type from the method return type if the method
      * returns entities, and otherwise from the primary entity type of the
      * repository.</p>
