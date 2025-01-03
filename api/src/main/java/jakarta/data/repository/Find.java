@@ -26,27 +26,23 @@ import java.lang.annotation.Target;
 
 
 /**
- * <p>Annotates a repository method that returns entities or entity attributes
- * as a parameter-based automatic query method.</p>
+ * <p>Annotates a repository method to be a parameter-based automatic query method
+ * that returns entities or entity attributes.</p>
  *
  * <p>The {@code Find} annotation indicates that the annotated repository
- * method executes a query to retrieve entities or a subset of entity attributes
- * based on its parameters and the arguments assigned to those parameters.
- * The method return type identifies either:</p>
+ * method executes a query to retrieve entities (or a subset of entity attributes)
+ * based on its parameters and the arguments assigned to those parameters.</p>
  *
+ * <p>The method return type identifies one of the following:</p>
  * <ul>
  * <li>the entity type returned by the query,</li>
- * <li>a single entity attribute type returned by the query (requires
- *     {@link #value}), or</li>
+ * <li>a single entity attribute type returned by the query (requires the
+ *     {@link Select} annotation), or</li>
  * <li>a Java record type representing a subset of entity attributes returned
  *     by the query. The names of the record components and entity attributes
- *     must match, or the entity attribute names must be specified by
- *     {@link #value}.</li>
+ *     must match, or the entity attribute names must be specified by the
+ *     {@link Select} annotation.</li>
  * </ul>
- *
- * <p>Repositories with methods that return a single entity attribute or a
- * subset of entity attributes must specify a primary entity type because the
- * method return type does not indicate the entity.</p>
  *
  * <p>Each parameter of the annotated method must either:
  * </p>
@@ -126,51 +122,29 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 public @interface Find {
     /**
-     * <p>Optionally specifies the name(s) of one or more entity attributes to
-     * fetch from the database.</p>
+     * <p>Optionally specifies the entity type to look for in the database.</p>
      *
-     * <p>When a single entity attribute name is specified, the repository
-     * method returns instances of that entity attribute from entities of the
-     * primary entity type that match the restrictions imposed by the method
-     * parameters.</p>
+     * <p>The default value, {@code Object.class}, has the special meaning of
+     * determining the entity type from the method return type if the method
+     * returns entities, and otherwise from the primary entity type of the
+     * repository.</p>
      *
-     * <p>For example, to return only the {@code price} attribute of the
-     * {@code Car} entity that has the specified {@code vin} attribute,</p>
+     * <p>A repository method with the {@code Find} annotation must specify a
+     * valid entity class as the value if the method does not return entities
+     * and the repository does not otherwise define a primary entity type.</p>
+     *
+     * <p>For example,</p>
      *
      * <pre>
      * &#64;Repository
-     * public interface Cars extends BasicRepository&lt;Car, String&gt; {
-     *     &#64;Find(_Car.PRICE)
-     *     Optional&lt;Float&gt; getPrice(@By(_Car.VIN) String vehicleIdNum);
+     * public interface Vehicles {
+     *     &#64;Find(Car.class)
+     *     &#64;Select("price")
+     *     Optional&lt;Float&gt; getPrice(@By("vin") String vehicleIdNum);
+     *
+     *     ...
      * }
      * </pre>
-     *
-     * <p>When multiple entity attribute names are specified, the repository
-     * method returns Java records that represent a subset of entity attributes.
-     * The order and types of the record components must match the order
-     * and types of the specified entity attribute names.</p>
-     *
-     * <p>For example, to return only the {@code make}, {@code model}, and
-     * {@code year} attributes of a {@code Car} entity that has the specified
-     * {@code vin} attribute,</p>
-     * <pre>
-     * &#64;Repository
-     * public interface Cars extends BasicRepository&lt;Car, String&gt; {
-     *     record ModelInfo(String model,
-     *                      String manufacturer,
-     *                      int designYear) {}
-     *
-     *     &#64;Find({_Car.MODEL, _Car.MAKE, _Car.YEAR})
-     *     Optional&lt;ModelInfo&gt; getModelInfo(@By(_Car.VIN) String vehicleIdNum);
-     * }
-     * </pre>
-     *
-     * <p>The examples above use the
-     * {@linkplain jakarta.data/jakarta.data.metamodel static metamodel},
-     * to avoid hard coding String values for the entity attribute names.</p>
-     *
-     * <p>When the list of entity attribute names is empty (which is the default),
-     * the general requirements defined by {@link Find} apply.</p>
      */
-    String[] value = {};
+    Class<?> value = Object.class;
 }
