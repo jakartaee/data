@@ -70,7 +70,7 @@ import java.lang.annotation.Target;
  * </p>
  *
  * <p>A method annotated with {@code @Find} must return one of the following types,
- * where {@code E} is an entity type, entity attribute type, or record type:</p>
+ * where {@code E} is the entity type, entity attribute type, or record type inferred or explicitly specified by the {@code @Find} annotation:</p>
  * <ul>
  *     <li>{@code E}, when the method returns a single instance</li>
  *     <li>{@code Optional<E>}, when the method returns at most a single instance,</li>
