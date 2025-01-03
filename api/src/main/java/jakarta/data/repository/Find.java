@@ -122,7 +122,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 public @interface Find {
     /**
-     * <p>Optionally specifies the entity type to look for in the database.</p>
+     * <p>Optionally specifies the queried entity type.</p>
      *
      * <p>The default value, {@code void.class}, has the special meaning of
      * determining the entity type from the method return type if the method
