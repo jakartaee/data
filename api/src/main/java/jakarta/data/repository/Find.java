@@ -26,7 +26,7 @@ import java.lang.annotation.Target;
 
 
 /**
- * <p>Annotates a repository method to be a parameter-based automatic query method
+ * <p>Annotates a repository method as a parameter-based automatic query method
  * that returns entities or entity attributes.</p>
  *
  * <p>The {@code Find} annotation indicates that the annotated repository
