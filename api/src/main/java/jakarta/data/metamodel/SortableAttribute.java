@@ -44,16 +44,16 @@ public interface SortableAttribute<T> extends Attribute<T> {
      */
     Sort<T> asc();
 
-    default <V extends Comparable<V>> Restriction<T> between(V min, V max) {
-        return Restrict.between(min, max, name());
-    }
-
     /**
      * Obtain a request for a descending {@link Sort} based on the entity attribute.
      *
      * @return a request for a descending sort on the entity attribute.
      */
     Sort<T> desc();
+
+    default <V extends Comparable<V>> Restriction<T> between(V min, V max) {
+        return Restrict.between(min, max, name());
+    }
 
     default <V extends Comparable<V>> Restriction<T> greaterThan(V value) {
         return Restrict.greaterThan(value, name());
