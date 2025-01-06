@@ -147,22 +147,84 @@ public class Restrict {
     // TODO Need to think more about how to best cover negation of multiple
     // and then make negation of Single consistent with it
 
+    /**
+     * Creates a restriction to check if a text field contains the specified substring.
+     *
+     * <p>This method generates a {@link TextRestriction} that matches any value containing the given substring.
+     * It is particularly useful for "LIKE" operations with wildcards for flexible matching.</p>
+     *
+     * <pre>{@code
+     * TextRestriction<Person> restriction = Restrict.contains("Smith", "lastName");
+     * }</pre>
+     *
+     * @param <T> the type of the entity
+     * @param substring the substring to check for
+     * @param field the field name
+     * @return a {@link TextRestriction} representing the condition
+     * @throws NullPointerException if the substring or field is null
+     */
     public static <T> TextRestriction<T> contains(String substring, String field) {
         String pattern = toLikeEscaped(CHAR_WILDCARD, STRING_WILDCARD, true, substring, true);
         return new TextRestrictionRecord<>(field, Operator.LIKE, ESCAPED, pattern);
     }
 
+    /**
+     * Creates a restriction to check if a text field ends with the specified suffix.
+     *
+     * <p>This method generates a {@link TextRestriction} that matches any value ending with the given suffix.
+     * It is ideal for "LIKE" operations with trailing wildcards.</p>
+     *
+     * <pre>{@code
+     * TextRestriction<Book> restriction = Restrict.endsWith("Guide", "title");
+     * }</pre>
+     *
+     * @param <T> the type of the entity
+     * @param suffix the suffix to check for
+     * @param field the field name
+     * @return a {@link TextRestriction} representing the condition
+     * @throws NullPointerException if the suffix or field is null
+     */
     public static <T> TextRestriction<T> endsWith(String suffix, String field) {
         String pattern = toLikeEscaped(CHAR_WILDCARD, STRING_WILDCARD, true, suffix, false);
         return new TextRestrictionRecord<>(field, Operator.LIKE, ESCAPED, pattern);
     }
 
-
+    /**
+     * Creates a restriction to check if a field is equal to the specified value.
+     *
+     * <p>This method generates a {@link BasicRestriction} for fields where the value must exactly match
+     * the specified value. It is applicable to various data types.</p>
+     *
+     * <pre>{@code
+     * Restriction<Animal> restriction = Restrict.equalTo("Dog", "species");
+     * }</pre>
+     *
+     * @param <T> the type of the entity
+     * @param value the value to check for equality
+     * @param field the field name
+     * @return a {@link Restriction} representing the condition
+     * @throws NullPointerException if the value or field is null
+     */
     public static <T> Restriction<T> equalTo(Object value, String field) {
         return new BasicRestrictionRecord<>(field, Operator.EQUAL, value);
     }
 
-
+    /**
+     * Creates a restriction to check if a text field is equal to the specified value.
+     *
+     * <p>This method generates a {@link TextRestriction} for text-based fields where the value must
+     * exactly match the specified value.</p>
+     *
+     * <pre>{@code
+     * TextRestriction<Person> restriction = Restrict.equalTo("Alice", "firstName");
+     * }</pre>
+     *
+     * @param <T> the type of the entity
+     * @param value the value to check for equality
+     * @param field the field name
+     * @return a {@link TextRestriction} representing the condition
+     * @throws NullPointerException if the value or field is null
+     */
     public static <T> TextRestriction<T> equalTo(String value, String field) {
         return new TextRestrictionRecord<>(field, Operator.EQUAL, value);
     }
