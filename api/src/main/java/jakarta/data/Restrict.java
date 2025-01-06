@@ -424,15 +424,63 @@ public class Restrict {
     }
 
     // convenience method for those who would prefer to avoid .negate()
+    /**
+     * Creates a restriction that negates the provided restriction.
+     *
+     * <p>This method is a convenience for applying the logical NOT operation to an existing restriction.
+     * It inverts the logic of the given restriction by calling its {@code negate()} method.</p>
+     *
+     * <pre>{@code
+     * Restriction<Person> ageRestriction = Restrict.greaterThan(18, "age");
+     * Restriction<Person> notAgeRestriction = Restrict.not(ageRestriction);
+     * }</pre>
+     *
+     * @param <T> the type of the entity
+     * @param restriction the restriction to negate
+     * @return a new restriction representing the negated condition
+     * @throws NullPointerException if the restriction is null
+     */
     public static <T> Restriction<T> not(Restriction<T> restriction) {
         Objects.requireNonNull(restriction, "Restriction must not be null");
         return restriction.negate();
     }
 
+    /**
+     * Creates a restriction for fields that must not equal the specified value.
+     *
+     * <p>This method generates a {@link Restriction} for "NOT EQUAL" operations on fields
+     * of any object type.</p>
+     *
+     * <pre>{@code
+     * Restriction<Book> restriction = Restrict.notEqualTo("Java Concurrency in Practice", "title");
+     * }</pre>
+     *
+     * @param <T> the type of the entity
+     * @param value the value that the field must not equal
+     * @param field the field name
+     * @return a {@link Restriction} representing the condition
+     * @throws NullPointerException if the value or field is null
+     */
     public static <T> Restriction<T> notEqualTo(Object value, String field) {
         return new BasicRestrictionRecord<>(field, Operator.NOT_EQUAL, value);
     }
 
+    /**
+     * Creates a text-based restriction for fields that must not equal the specified string value.
+     *
+     * <p>This method generates a {@link TextRestriction} for "NOT EQUAL" operations specifically
+     * for text fields, allowing additional text-specific features if needed.</p>
+     *
+     * <pre>{@code
+     * TextRestriction<Animal> restriction = Restrict.notEqualTo("Lion", "species");
+     * }</pre>
+     *
+     * @param <T> the type of the entity
+     * @param value the string value that the field must not equal
+     * @param field the field name
+     * @return a {@link TextRestriction} representing the condition
+     * @throws NullPointerException if the value or field is null
+     */
     public static <T> TextRestriction<T> notEqualTo(String value, String field) {
         return new TextRestrictionRecord<>(field, Operator.NOT_EQUAL, value);
     }
