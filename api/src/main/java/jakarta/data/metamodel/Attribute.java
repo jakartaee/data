@@ -110,6 +110,17 @@ public interface Attribute<T> {
         return Restrict.notEqualTo(value, name());
     }
 
+    /**
+     * Creates a restriction where the attribute's value must not be one of the specified values.
+     *
+     * <pre>{@code
+     * Restriction<Product> categoryRestriction = _Product.category.notIn("Food", "Clothing");
+     * }</pre>
+     *
+     * @param values the values that must not match
+     * @return a {@link Restriction} representing the condition
+     * @throws IllegalArgumentException if {@code values} is null or empty
+     */
     default Restriction<T> notIn(Object... values) {
         if (values == null || values.length == 0)
             throw new IllegalArgumentException("values are required");
@@ -117,6 +128,15 @@ public interface Attribute<T> {
         return Restrict.notIn(Set.of(values), name());
     }
 
+    /**
+     * Creates a restriction where the attribute's value must not be {@code null}.
+     *
+     * <pre>{@code
+     * Restriction<Product> notNullRestriction = _Product.name.notNull();
+     * }</pre>
+     *
+     * @return a {@link Restriction} representing the condition
+     */
     default Restriction<T> notNull() {
         return Restrict.notEqualTo(null, name());
     }
