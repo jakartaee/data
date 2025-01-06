@@ -18,22 +18,36 @@
 package jakarta.data;
 
 /**
- * Represents a condition or constraint applied to a query on a specific field with a comparison operator and value.
- * The {@code BasicRestriction} interface enables the construction of detailed query restrictions,
- * allowing for the retrieval of field-specific conditions, the associated operator, and its value.
- * It is commonly used in dynamic query building and fluent API scenarios to express query constraints concisely.
+ * Represents a specific condition or restriction applied to a query.
+ * A {@code BasicRestriction} encapsulates a comparison operation ({@link Operator}),
+ * a field name, and a value. It is used to define precise query filters or criteria
+ * that target specific fields and values within a dataset. Restrictions can also
+ * be negated to dynamically adjust query logic.
+ * Example usage:
+ * <pre>{@code
+ * BasicRestriction<Person> restriction = ...
+ * String field = restriction.field(); // e.g., "name"
+ * Operator operator = restriction.comparison(); // e.g., EQUAL
+ * Object value = restriction.value(); // e.g., "John"
+ * }</pre>
  *
- * @param <T> the type of the field or entity attribute being restricted
+ * @param <T> the type of the value being restricted
  */
 public interface BasicRestriction<T> extends Restriction<T> {
 
     /**
-     * Retrieves the comparison operator used in this restriction.
+     * Returns the comparison operator associated with this restriction.
      * <p>
-     * The operator defines how the field and value are compared, such as EQUAL, GREATER_THAN, or LESS_THAN.
+     * The operator defines the logical relationship between the field and the value,
+     * such as equality, greater than, less than, or inclusion in a set.
+     * For example:
+     * <ul>
+     *   <li>{@link Operator#EQUAL} for equality (e.g., {@code field = value})</li>
+     *   <li>{@link Operator#IN} for inclusion in a set (e.g., {@code field IN (values)})</li>
+     * </ul>
      * </p>
      *
-     * @return the operator representing the type of comparison
+     * @return the {@link Operator} for this restriction
      */
     Operator comparison();
 
