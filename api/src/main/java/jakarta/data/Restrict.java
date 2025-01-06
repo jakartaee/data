@@ -21,9 +21,41 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-// TODO document
-// This is one of two places from which to obtain restrictions.
-// The other place is from static metamodel attributes.
+/**
+ * Utility class for creating and combining restrictions for entity queries.
+ * <p>
+ * The {@code Restrict} class serves as one of the primary mechanisms for constructing
+ * restrictions in Jakarta Data. It provides a collection of static methods to create
+ * restrictions for various operations, such as comparisons, patterns, and logical
+ * groupings of restrictions. These restrictions are used to define conditions for
+ * querying or filtering entity data in a type-safe and expressive manner.
+ * </p>
+ *
+ * <p>
+ * Restrictions created through this class are immutable. For example, calling
+ * {@link Restriction#negate()} does not modify the existing restriction but instead
+ * returns a new restriction instance representing the negated condition. This ensures
+ * thread-safety and predictable behavior across all operations.
+ * </p>
+ *
+ * <p>
+ * For example, to filter a list of {@code Person} entities where the name starts with "John"
+ * and age is greater than or equal to 30:
+ * <pre>{@code
+ * Restriction<Person> restriction = Restrict.all(
+ *     Restrict.startsWith("John", "name"),
+ *     Restrict.greaterThanEqual(30, "age")
+ * );
+ * Restriction<Person> negatedRestriction = restriction.negate();
+ * }</pre>
+ * </p>
+ *
+ * <p>
+ * Note: This class cannot be instantiated and should only be used via its static methods.
+ * It is complemented by static metamodel attributes, providing an alternative
+ * type-safe mechanism for defining restrictions.
+ * </p>
+ */
 public class Restrict {
 
     private static final char CHAR_WILDCARD = '_';
