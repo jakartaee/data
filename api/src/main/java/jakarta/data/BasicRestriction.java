@@ -52,24 +52,23 @@ public interface BasicRestriction<T> extends Restriction<T> {
     Operator comparison();
 
     /**
-     * Retrieves the name of the field to which this restriction is applied.
-     * <p>
-     * This allows access to the specific attribute of the entity that is being constrained.
-     * </p>
+     * Returns the name of the entity field targeted by this restriction.
+     * The field name represents the specific attribute of the entity
+     * that this restriction applies to. For example, in a query filtering
+     * {@code Person} entities by name, the field might be "name."
      *
-     * @return the name of the field as a {@code String}
+     * @return the name of the field
      */
     String field();
 
     /**
      * Returns a negated version of this restriction.
-     * <p>
      * Negating a restriction inverts its logical meaning. For instance, a restriction
      * such as "age > 18" would be negated to "age <= 18." This is useful for dynamically
      * creating logical complements of existing conditions in complex queries.
-     * </p>
      *
      * @return a new {@code BasicRestriction} representing the negated condition
+     * @see Operator#negate()
      */
     BasicRestriction<T> negate();
 
