@@ -17,22 +17,76 @@
  */
 package jakarta.data;
 
+
+/**
+ * Defines comparison operators for constructing query restrictions.
+ * These operators are used to specify conditions in queries, such as comparisons,
+ * inclusion, exclusion, and pattern matching. Each operator can be dynamically negated
+ * using the {@link #negate()} method to create logically inverted conditions,
+ * enabling flexible query construction.
+ */
 public enum Operator {
+    /**
+     * Tests for equality (e.g., field = value).
+     */
     EQUAL,
+
+    /**
+     * Tests if a value is greater than the field (e.g., field > value).
+     */
     GREATER_THAN,
+
+    /**
+     * Tests if a value is greater than or equal to the field (e.g., field >= value).
+     */
     GREATER_THAN_EQUAL,
+
+    /**
+     * Tests if a field's value is within a set of values (e.g., field IN (values)).
+     */
     IN,
+
+    /**
+     * Tests if a value is less than the field (e.g., field < value).
+     */
     LESS_THAN,
+
+    /**
+     * Tests if a value is less than or equal to the field (e.g., field <= value).
+     */
     LESS_THAN_EQUAL,
+
+    /**
+     * Matches a value against a pattern (e.g., field LIKE value).
+     */
     LIKE,
+
+    /**
+     * Tests for inequality (e.g., field != value).
+     */
     NOT_EQUAL,
+
+    /**
+     * Tests if a field's value is not within a set of values (e.g., field NOT IN (values)).
+     */
     NOT_IN,
+
+    /**
+     * Matches a value against a negated pattern (e.g., field NOT LIKE value).
+     */
     NOT_LIKE;
 
     /**
-     * Returns the operator that is the negation of this operator.
+     * Returns the logical negation of this operator.
+     * Negation inverts the operator's meaning. For example:
+     * <ul>
+     *   <li>{@code EQUAL} becomes {@code NOT_EQUAL}</li>
+     *   <li>{@code IN} becomes {@code NOT_IN}</li>
+     *   <li>{@code GREATER_THAN} becomes {@code LESS_THAN_EQUAL}</li>
+     * </ul>
+     * This is useful for dynamically constructing queries with reversed logic.
      *
-     * @return the operator that is the negation of this operator.
+     * @return the negated operator
      */
     Operator negate() {
         return switch (this) {
