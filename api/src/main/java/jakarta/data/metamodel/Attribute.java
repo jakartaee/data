@@ -25,14 +25,56 @@ import jakarta.data.Restriction;
 /**
  * Represents an entity attribute in the {@link StaticMetamodel}.
  *
- * @param <T> entity class of the static metamodel.
+ * <p>The {@code Attribute} interface defines a contract for representing attributes of entity classes
+ * in a static metamodel. This interface provides methods for building type-safe and expressive
+ * restrictions directly based on entity attributes. It is commonly used with metadata classes
+ * generated for static metamodels.</p>
+ *
+ * <p>For example, given the {@code Product} entity with a static metamodel, the following usage
+ * is possible:</p>
+ *
+ * <pre>{@code
+ * Restriction<Product> priceRestriction = _Product.price.equalTo(50.0D);
+ * Restriction<Product> notInRestriction = _Product.category.notIn("Electronics", "Books");
+ * }</pre>
+ *
+ * @param <T> the entity class to which this attribute belongs
  */
 public interface Attribute<T> {
 
+    /**
+     * Obtain the entity attribute name, suitable for use wherever the specification requires
+     * an entity attribute name. For example, as the parameter to {@link jakarta.data.Sort#asc(String)}.
+     *
+     * @return the entity attribute name.
+     */
+    String name();
+
+    /**
+     * Creates a restriction where the attribute's value must equal the specified value.
+     *
+     * <pre>{@code
+     * Restriction<Product> priceRestriction = _Product.price.equalTo(50.0D);
+     * }</pre>
+     *
+     * @param value the value to match
+     * @return a {@link Restriction} representing the condition
+     */
     default Restriction<T> equalTo(Object value) {
         return Restrict.equalTo(value, name());
     }
 
+    /**
+     * Creates a restriction where the attribute's value must be one of the specified values.
+     *
+     * <pre>{@code
+     * Restriction<Product> categoryRestriction = _Product.category.in("Electronics", "Books");
+     * }</pre>
+     *
+     * @param values the values to match
+     * @return a {@link Restriction} representing the condition
+     * @throws IllegalArgumentException if {@code values} is null or empty
+     */
     default Restriction<T> in(Object... values) {
         if (values == null || values.length == 0)
             throw new IllegalArgumentException("values are required");
@@ -40,18 +82,30 @@ public interface Attribute<T> {
         return Restrict.in(Set.of(values), name());
     }
 
+    /**
+     * Creates a restriction where the attribute's value must be {@code null}.
+     *
+     * <pre>{@code
+     * Restriction<Product> nullRestriction = _Product.description.isNull();
+     * }</pre>
+     *
+     * @return a {@link Restriction} representing the condition
+     */
     default Restriction<T> isNull() {
         return Restrict.equalTo(null, name());
     }
 
-    /**
-     * Obtain the entity attribute name, suitable for use wherever the specification requires
-     * an entity attribute name. For example, as the parameter to {@link Sort#asc(String)}.
-     *
-     * @return the entity attribute name.
-     */
-    String name();
 
+    /**
+     * Creates a restriction where the attribute's value must not equal the specified value.
+     *
+     * <pre>{@code
+     * Restriction<Product> priceRestriction = _Product.price.notEqualTo(100.0D);
+     * }</pre>
+     *
+     * @param value the value that must not match
+     * @return a {@link Restriction} representing the condition
+     */
     default Restriction<T> notEqualTo(Object value) {
         return Restrict.notEqualTo(value, name());
     }
