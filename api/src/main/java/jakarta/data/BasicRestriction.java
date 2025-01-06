@@ -62,24 +62,31 @@ public interface BasicRestriction<T> extends Restriction<T> {
     String field();
 
     /**
-     * Returns a negated version of this restriction.
-     * Negating a restriction inverts its logical meaning. For instance, a restriction
-     * such as "age > 18" would be negated to "age <= 18." This is useful for dynamically
-     * creating logical complements of existing conditions in complex queries.
+     * Returns the value associated with this restriction.
+     * The value is compared against the field using the specified {@link #comparison()} operator.
+     * For example, in a restriction like {@code name = "John"}, the value is "John."
      *
-     * @return a new {@code BasicRestriction} representing the negated condition
-     * @see Operator#negate()
-     */
-    BasicRestriction<T> negate();
-
-    /**
-     * Retrieves the value used in this restriction.
-     * <p>
-     * This value is compared with the field using the specified operator. For example,
-     * in the restriction "price > 100," the value would be {@code 100}.
-     * </p>
-     *
-     * @return the value associated with this restriction
+     * @return the value being restricted
      */
     Object value();
+
+    /**
+     * Returns a negated version of this restriction.
+     * Negating a restriction inverts its logic. For example:
+     * <ul>
+     *   <li>A restriction with {@link Operator#EQUAL} becomes {@link Operator#NOT_EQUAL}</li>
+     *   <li>A restriction with {@link Operator#IN} becomes {@link Operator#NOT_IN}</li>
+     * </ul>
+     * The negated restriction retains the same field and value but uses the negated operator.
+     * Example:
+     * <pre>{@code
+     * BasicRestriction<Person> restriction = ... // age > 30
+     * BasicRestriction<Person> negated = restriction.negate(); // age <= 30
+     * }</pre>
+     *
+     * @return a negated version of this restriction
+     * @see Operator#negate()
+     */
+    @Override
+    BasicRestriction<T> negate();
 }
