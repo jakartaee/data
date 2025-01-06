@@ -40,7 +40,7 @@ import java.lang.annotation.Target;
  * <p>For {@code update} or {@code delete} statements, the return value must be one of:</p>
  * <ul>
  * <li>{@code void}</li>
- * <li>{@code int} or {@code long}, where the value is the count of matching entities</li>
+ * <li>{@code int} or {@code long}, where the value is the number of matching entities</li>
  * </ul>
  *
  * <p>Compared to SQL, JDQL allows an abbreviated syntax for {@code select} statements:</p>
