@@ -33,6 +33,16 @@ import jakarta.data.Sort;
  * <li>{@link TextAttribute textual attributes}</li>
  * </ul>
  *
+ *  * <p>For example, given a {@code Product} entity:</p>
+ *  *
+ *  * <pre>{@code
+ *  * Sort<Product> sortByPriceAsc = _Product.price.asc();
+ *  * Sort<Product> sortByDateDesc = _Product.creationDate.desc();
+ *  *
+ *  * Restriction<Product> priceRange = _Product.price.between(50.0, 200.0);
+ *  * Restriction<Product> higherPrice = _Product.price.greaterThanEqual(100.0);
+ *  * }</pre>
+ *
  * @param <T> entity class of the static metamodel.
  */
 public interface SortableAttribute<T> extends Attribute<T> {
@@ -51,22 +61,83 @@ public interface SortableAttribute<T> extends Attribute<T> {
      */
     Sort<T> desc();
 
+    /**
+     * Creates a restriction that the attribute's value must be between the specified minimum and maximum values.
+     *
+     * <p>For example:</p>
+     * <pre>{@code
+     * Restriction<Product> priceRange = _Product.price.between(50.0, 200.0);
+     * }</pre>
+     *
+     * @param min the minimum value (inclusive)
+     * @param max the maximum value (inclusive)
+     * @param <V> the type of the values, must be comparable
+     * @return a {@link Restriction} representing the condition
+     */
     default <V extends Comparable<V>> Restriction<T> between(V min, V max) {
         return Restrict.between(min, max, name());
     }
 
+    /**
+     * Creates a restriction that the attribute's value must be greater than the specified value.
+     *
+     * <p>For example:</p>
+     * <pre>{@code
+     * Restriction<Product> higherPrice = _Product.price.greaterThan(100.0);
+     * }</pre>
+     *
+     * @param value the value to compare against
+     * @param <V>   the type of the value, must be comparable
+     * @return a {@link Restriction} representing the condition
+     */
     default <V extends Comparable<V>> Restriction<T> greaterThan(V value) {
         return Restrict.greaterThan(value, name());
     }
 
+    /**
+     * Creates a restriction that the attribute's value must be greater than or equal to the specified value.
+     *
+     * <p>For example:</p>
+     * <pre>{@code
+     * Restriction<Product> higherPrice = _Product.price.greaterThanEqual(100.0);
+     * }</pre>
+     *
+     * @param value the value to compare against
+     * @param <V>   the type of the value, must be comparable
+     * @return a {@link Restriction} representing the condition
+     */
     default <V extends Comparable<V>> Restriction<T> greaterThanEqual(V value) {
         return Restrict.greaterThanEqual(value, name());
     }
 
+    /**
+     * Creates a restriction that the attribute's value must be less than the specified value.
+     *
+     * <p>For example:</p>
+     * <pre>{@code
+     * Restriction<Product> lowerPrice = _Product.price.lessThan(100.0);
+     * }</pre>
+     *
+     * @param value the value to compare against
+     * @param <V>   the type of the value, must be comparable
+     * @return a {@link Restriction} representing the condition
+     */
     default <V extends Comparable<V>> Restriction<T> lessThan(V value) {
         return Restrict.lessThan(value, name());
     }
 
+    /**
+     * Creates a restriction that the attribute's value must be less than or equal to the specified value.
+     *
+     * <p>For example:</p>
+     * <pre>{@code
+     * Restriction<Product> lowerPrice = _Product.price.lessThanEqual(200.0);
+     * }</pre>
+     *
+     * @param value the value to compare against
+     * @param <V>   the type of the value, must be comparable
+     * @return a {@link Restriction} representing the condition
+     */
     default <V extends Comparable<V>> Restriction<T> lessThanEqual(V value) {
         return Restrict.lessThanEqual(value, name());
     }
