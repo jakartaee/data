@@ -17,6 +17,26 @@
  */
 package jakarta.data;
 
+/**
+ * Represents a condition or constraint applied to a query in Jakarta Data.
+ * The {@code Restriction} interface defines a type-safe mechanism to represent
+ * and manipulate query restrictions, such as conditions in a WHERE clause.
+ * This abstraction allows for fluent and dynamic query building while maintaining
+ * readability and flexibility in query construction.
+ *
+ * @param <T> the type of the entity or attribute to which the restriction applies
+ */
 public interface Restriction<T> {
+
+    /**
+     * Returns a negated version of the current restriction.
+     * <p>
+     * This method allows for the creation of an inverse or "NOT" version of
+     * the current condition. For example, if the restriction represents
+     * "age greater than 18," calling {@code negate()} would produce
+     * "age not greater than 18."
+     *
+     * @return a new {@code Restriction} instance representing the negated condition
+     */
     Restriction<T> negate();
 }
