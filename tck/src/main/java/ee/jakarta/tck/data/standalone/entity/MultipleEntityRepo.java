@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024 Contributors to the Eclipse Foundation
+ * Copyright (c) 2024,2025 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -51,7 +51,7 @@ public interface MultipleEntityRepo { // Do not add a primary entity type.
     void deleteIfPositiveWithoutReturnRecords();
 
     @Query("UPDATE Coordinate SET x = :newX, y = y / :yDivisor WHERE id = :id")
-    boolean move(UUID id, double newX, float yDivisor);
+    int move(UUID id, double newX, float yDivisor);
 
     @Query("WHERE id = ?1")
     Optional<Coordinate> withUUID(UUID id);

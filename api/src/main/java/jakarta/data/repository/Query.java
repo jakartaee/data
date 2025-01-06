@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022,2024 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2025 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,8 +34,14 @@ import java.lang.annotation.Target;
  *
  * <p>The required {@link #value} member specifies the JDQL or JPQL query as a string.</p>
  *
- * <p>For {@code select} statements, the return type of the query method must be consistent with the type returned by
- * the query. For {@code update} or {@code delete} statements, it must be {@code void}, {@code int} or {@code long}.</p>
+ * <p>For {@code select} statements, the return type of the query method must be
+ * consistent with the type returned by the query.</p>
+ *
+ * <p>For {@code update} or {@code delete} statements, the return value must be one of:</p>
+ * <ul>
+ * <li>{@code void}</li>
+ * <li>{@code int} or {@code long}, where the value is the count of matching entities</li>
+ * </ul>
  *
  * <p>Compared to SQL, JDQL allows an abbreviated syntax for {@code select} statements:</p>
  * <ul>
