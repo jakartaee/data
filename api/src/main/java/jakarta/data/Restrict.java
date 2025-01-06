@@ -71,11 +71,48 @@ public class Restrict {
     private Restrict() {
     }
 
+    /**
+     * Combines multiple restrictions using a logical {@link jakarta.data.CompositeRestriction.Type#ALL}.
+     *
+     * <p>This method creates a composite restriction that is only satisfied when all
+     * the provided restrictions are true. Use this for cases where multiple conditions
+     * must be met simultaneously.</p>
+     *
+     * <pre>{@code
+     * Restriction<Person> restriction = Restrict.all(
+     *     Restrict.equalTo("John", "name"),
+     *     Restrict.greaterThanEqual(30, "age")
+     * );
+     * }</pre>
+     *
+     * @param <T> the type of the entity
+     * @param restrictions the restrictions to combine
+     * @return a composite restriction that requires all conditions to be true
+     */
     @SafeVarargs
     public static <T> Restriction<T> all(Restriction<T>... restrictions) {
         return new CompositeRestrictionRecord<>(CompositeRestriction.Type.ALL,
                                                 List.of(restrictions));
     }
+
+    /**
+     * Combines multiple restrictions using a logical {@link jakarta.data.CompositeRestriction.Type#ANY}.
+     *
+     * <p>This method creates a composite restriction that is satisfied when at least
+     * one of the provided restrictions is true. Use this for cases where only one of
+     * multiple conditions needs to be met.</p>
+     *
+     * <pre>{@code
+     * Restriction<Book> restriction = Restrict.any(
+     *     Restrict.like("Java", "title"),
+     *     Restrict.greaterThan(2010, "publicationYear")
+     * );
+     * }</pre>
+     *
+     * @param <T> the type of the entity
+     * @param restrictions the restrictions to combine
+     * @return a composite restriction that requires at least one condition to be true
+     */
 
     @SafeVarargs
     public static <T> Restriction<T> any(Restriction<T>... restrictions) {
@@ -83,6 +120,23 @@ public class Restrict {
                                                 List.of(restrictions));
     }
 
+    /**
+     * Creates a restriction to check if a field is between two values.
+     *
+     * <p>This method combines two restrictions: one for greater than or equal to the
+     * lower bound and another for less than or equal to the upper bound.</p>
+     *
+     * <pre>{@code
+     * Restriction<Animal> restriction = Restrict.between(10, 20, "age");
+     * }</pre>
+     *
+     * @param <T> the type of the entity
+     * @param <V> the type of the field value
+     * @param min the minimum value (inclusive)
+     * @param max the maximum value (inclusive)
+     * @param field the field name
+     * @return a restriction for values between the specified range
+     */
     public static <T, V extends Comparable<V>> Restriction<T> between(V min,
                                                                       V max,
                                                                       String field) {
@@ -103,46 +157,189 @@ public class Restrict {
         return new TextRestrictionRecord<>(field, Operator.LIKE, ESCAPED, pattern);
     }
 
+
     public static <T> Restriction<T> equalTo(Object value, String field) {
         return new BasicRestrictionRecord<>(field, Operator.EQUAL, value);
     }
+
 
     public static <T> TextRestriction<T> equalTo(String value, String field) {
         return new TextRestrictionRecord<>(field, Operator.EQUAL, value);
     }
 
+    /**
+     * Creates a restriction to check if a field's value is greater than a specified value.
+     *
+     * <p>Use this for numeric or comparable fields.</p>
+     *
+     * <pre>{@code
+     * Restriction<Animal> restriction = Restrict.greaterThan(5, "age");
+     * }</pre>
+     *
+     * @param <T> the type of the entity
+     * @param <V> the type of the field value
+     * @param value the value to compare
+     * @param field the field name
+     * @return a restriction that matches fields greater than the specified value
+     */
     public static <T, V extends Comparable<V>> Restriction<T> greaterThan(V value, String field) {
         return new BasicRestrictionRecord<>(field, Operator.GREATER_THAN, value);
     }
 
+    /**
+     * Creates a restriction to check if a text field is greater than a specified value.
+     *
+     * <p>Primarily used for text-based comparisons, this method creates a {@link TextRestriction}
+     * for fields where the value must lexicographically exceed the given value.</p>
+     *
+     * <pre>{@code
+     * TextRestriction<Person> restriction = Restrict.greaterThan("Alice", "name");
+     * }</pre>
+     *
+     * @param <T> the type of the entity
+     * @param value the value to compare
+     * @param field the field name
+     * @return a {@link TextRestriction} representing the condition
+     * @throws NullPointerException if the value or field is null
+     */
     public static <T> TextRestriction<T> greaterThan(String value, String field) {
         return new TextRestrictionRecord<>(field, Operator.GREATER_THAN, value);
     }
 
+    /**
+     * Creates a restriction to check if a field is greater than or equal to a specified value.
+     *
+     * <p>Useful for numeric or comparable fields, this method creates a {@link BasicRestriction}
+     * for comparisons where the value must be at least the given threshold.</p>
+     *
+     * <pre>{@code
+     * Restriction<Book> restriction = Restrict.greaterThanEqual(2010, "publicationYear");
+     * }</pre>
+     *
+     * @param <T> the type of the entity
+     * @param <V> the type of the field value
+     * @param value the value to compare
+     * @param field the field name
+     * @return a {@link Restriction} representing the condition
+     * @throws NullPointerException if the value or field is null
+     */
     public static <T, V extends Comparable<V>> Restriction<T> greaterThanEqual(V value, String field) {
         return new BasicRestrictionRecord<>(field, Operator.GREATER_THAN_EQUAL, value);
     }
 
+    /**
+     * Creates a restriction to check if a text field is greater than or equal to a specified value.
+     *
+     * <p>This method is ideal for lexicographic comparisons of text-based fields.</p>
+     *
+     * <pre>{@code
+     * TextRestriction<Person> restriction = Restrict.greaterThanEqual("Alice", "name");
+     * }</pre>
+     *
+     * @param <T> the type of the entity
+     * @param value the value to compare
+     * @param field the field name
+     * @return a {@link TextRestriction} representing the condition
+     * @throws NullPointerException if the value or field is null
+     */
     public static <T> TextRestriction<T> greaterThanEqual(String value, String field) {
         return new TextRestrictionRecord<>(field, Operator.GREATER_THAN_EQUAL, value);
     }
 
+    /**
+     * Creates a restriction to check if a field is within a set of specified values.
+     *
+     * <p>Commonly used for filtering fields against a predefined list of acceptable values.</p>
+     *
+     * <pre>{@code
+     * Restriction<Animal> restriction = Restrict.in(Set.of("Cat", "Dog", "Rabbit"), "species");
+     * }</pre>
+     *
+     * @param <T> the type of the entity
+     * @param values the set of values to compare against
+     * @param field the field name
+     * @return a {@link Restriction} representing the condition
+     * @throws NullPointerException if the values or field is null
+     */
     public static <T> Restriction<T> in(Set<Object> values, String field) {
         return new BasicRestrictionRecord<>(field, Operator.IN, values);
     }
 
+    /**
+     * Creates a restriction to check if a field is less than a specified value.
+     *
+     * <p>This method is applicable to numeric or comparable fields.</p>
+     *
+     * <pre>{@code
+     * Restriction<Book> restriction = Restrict.lessThan(300, "pageCount");
+     * }</pre>
+     *
+     * @param <T> the type of the entity
+     * @param <V> the type of the field value
+     * @param value the value to compare
+     * @param field the field name
+     * @return a {@link Restriction} representing the condition
+     * @throws NullPointerException if the value or field is null
+     */
     public static <T, V extends Comparable<V>> Restriction<T> lessThan(V value, String field) {
         return new BasicRestrictionRecord<>(field, Operator.LESS_THAN, value);
     }
 
+    /**
+     * Creates a restriction to check if a text field is less than a specified value.
+     *
+     * <p>Useful for lexicographic comparisons of text fields.</p>
+     *
+     * <pre>{@code
+     * TextRestriction<Person> restriction = Restrict.lessThan("Zoe", "name");
+     * }</pre>
+     *
+     * @param <T> the type of the entity
+     * @param value the value to compare
+     * @param field the field name
+     * @return a {@link TextRestriction} representing the condition
+     * @throws NullPointerException if the value or field is null
+     */
     public static <T> TextRestriction<T> lessThan(String value, String field) {
         return new TextRestrictionRecord<>(field, Operator.LESS_THAN, value);
     }
 
+    /**
+     * Creates a restriction to check if a field is less than or equal to a specified value.
+     *
+     * <p>This method is applicable to numeric or comparable fields where the value must not exceed
+     * the specified threshold.</p>
+     *
+     * <pre>{@code
+     * Restriction<Animal> restriction = Restrict.lessThanEqual(10, "age");
+     * }</pre>
+     *
+     * @param <T> the type of the entity
+     * @param <V> the type of the field value
+     * @param value the value to compare
+     * @param field the field name
+     * @return a {@link Restriction} representing the condition
+     * @throws NullPointerException if the value or field is null
+     */
     public static <T, V extends Comparable<V>> Restriction<T> lessThanEqual(V value, String field) {
         return new BasicRestrictionRecord<>(field, Operator.LESS_THAN_EQUAL, value);
     }
 
+    /**
+     * Creates a restriction to check if a text field is less than or equal to a specified value.
+     *
+     * <p>Primarily used for lexicographic comparisons of text fields.</p>
+     *
+     * <pre>{@code
+     * TextRestriction<Book> restriction = Restrict.lessThanEqual("Advanced Java", "title");
+     * }</pre>
+     *
+     * @param <T> the type of the entity
+     * @param value the value to compare
+     * @param field the field name
+     * @return a {@link TextRestriction} representing the condition
+     * @throws NullPointerException if the value or field is null
+     */
     public static <T> TextRestriction<T> lessThanEqual(String value, String field) {
         return new TextRestrictionRecord<>(field, Operator.LESS_THAN_EQUAL, value);
     }
