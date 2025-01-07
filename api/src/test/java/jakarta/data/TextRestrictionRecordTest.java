@@ -36,7 +36,7 @@ class TextRestrictionRecordTest {
         );
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(restriction.field()).isEqualTo("title");
+            soft.assertThat(restriction.attribute()).isEqualTo("title");
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.LIKE);
             soft.assertThat(restriction.value()).isEqualTo("%Java%");
             soft.assertThat(restriction.isCaseSensitive()).isTrue();
@@ -53,7 +53,7 @@ class TextRestrictionRecordTest {
         );
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(restriction.field()).isEqualTo("title");
+            soft.assertThat(restriction.attribute()).isEqualTo("title");
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.NOT_LIKE);
             soft.assertThat(restriction.value()).isEqualTo("%Java%");
             soft.assertThat(restriction.isCaseSensitive()).isTrue();
@@ -74,7 +74,7 @@ class TextRestrictionRecordTest {
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(caseInsensitiveRestriction).isInstanceOf(TextRestrictionRecord.class);
             TextRestrictionRecord<String> textRestriction = (TextRestrictionRecord<String>) caseInsensitiveRestriction;
-            soft.assertThat(textRestriction.field()).isEqualTo("title");
+            soft.assertThat(textRestriction.attribute()).isEqualTo("title");
             soft.assertThat(textRestriction.comparison()).isEqualTo(Operator.LIKE);
             soft.assertThat(textRestriction.value()).isEqualTo("%Java%");
             soft.assertThat(textRestriction.isCaseSensitive()).isFalse();
@@ -92,7 +92,7 @@ class TextRestrictionRecordTest {
         );
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(restriction.field()).isEqualTo("title");
+            soft.assertThat(restriction.attribute()).isEqualTo("title");
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.LIKE);
             soft.assertThat(restriction.value()).isEqualTo("%Java%");
             soft.assertThat(restriction.isCaseSensitive()).isTrue();
@@ -149,7 +149,7 @@ class TextRestrictionRecordTest {
         );
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(restriction.field()).isEqualTo("author");
+            soft.assertThat(restriction.attribute()).isEqualTo("author");
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.NOT_EQUAL);
             soft.assertThat(restriction.value()).isEqualTo("John Doe");
             soft.assertThat(restriction.isCaseSensitive()).isTrue();
@@ -158,9 +158,9 @@ class TextRestrictionRecordTest {
     }
 
     @Test
-    void shouldThrowExceptionWhenFieldIsNullInTextRestriction() {
+    void shouldThrowExceptionWhenAttributeIsNullInTextRestriction() {
         assertThatThrownBy(() -> new TextRestrictionRecord<>(null, Operator.LIKE, "testValue"))
                 .isInstanceOf(NullPointerException.class)
-                .hasMessage("Field must not be null");
+                .hasMessage("Attribute must not be null");
     }
 }

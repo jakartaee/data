@@ -59,7 +59,7 @@ public interface BasicRestriction<T> extends Restriction<T> {
      *
      * @return the name of the field
      */
-    String field();
+    String attribute();
 
     /**
      * Returns the value associated with this restriction.
