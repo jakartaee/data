@@ -24,18 +24,18 @@ package jakarta.data;
 import java.util.Objects;
 
 record BasicRestrictionRecord<T>(
-        String field,
+        String attribute,
         Operator comparison,
         Object value) implements BasicRestriction<T> {
 
     BasicRestrictionRecord {
-        Objects.requireNonNull(field, "Field must not be null");
+        Objects.requireNonNull(attribute, "Attribute must not be null");
     }
 
     @Override
     public BasicRestriction<T> negate() {
         return new BasicRestrictionRecord<>(
-                field,
+                attribute,
                 comparison.negate(),
                 value);
     }

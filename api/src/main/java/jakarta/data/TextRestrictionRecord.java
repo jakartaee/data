@@ -24,14 +24,14 @@ package jakarta.data;
 import java.util.Objects;
 
 record TextRestrictionRecord<T>(
-        String field,
+        String attribute,
         Operator comparison,
         boolean isCaseSensitive,
         boolean isEscaped,
         String value) implements TextRestriction<T> {
 
     TextRestrictionRecord {
-        Objects.requireNonNull(field, "Field must not be null");
+        Objects.requireNonNull(attribute, "Attribute must not be null");
     }
 
     TextRestrictionRecord(String field, Operator comparison, boolean escaped, String value) {
@@ -44,14 +44,14 @@ record TextRestrictionRecord<T>(
 
     @Override
     public TextRestriction<T> ignoreCase() {
-        return new TextRestrictionRecord<>(field, comparison, false, isEscaped, value);
+        return new TextRestrictionRecord<>(attribute, comparison, false, isEscaped, value);
     }
 
     @Override
     public TextRestriction<T> negate() {
 
         return new TextRestrictionRecord<>(
-                field,
+                attribute,
                 comparison.negate(),
                 isCaseSensitive,
                 isEscaped,

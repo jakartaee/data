@@ -18,9 +18,9 @@
 package jakarta.data;
 
 public interface BasicRestriction<T> extends Restriction<T> {
-    Operator comparison();
+    String attribute();
 
-    String field();
+    Operator comparison();
 
     @Override
     BasicRestriction<T> negate();
