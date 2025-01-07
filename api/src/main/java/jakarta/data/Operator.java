@@ -17,16 +17,60 @@
  */
 package jakarta.data;
 
+/**
+ * Enum for comparison operators used in query restrictions.
+ *
+ * <p>Supports logical inversion through {@link #negate()}.</p>
+ */
 public enum Operator {
+    /**
+     * Equality comparison.
+     */
     EQUAL,
+
+    /**
+     * Greater-than comparison.
+     */
     GREATER_THAN,
+
+    /**
+     * Greater-than-or-equal comparison.
+     */
     GREATER_THAN_EQUAL,
+
+    /**
+     * Inclusion within a set.
+     */
     IN,
+
+    /**
+     * Less-than comparison.
+     */
     LESS_THAN,
+
+    /**
+     * Less-than-or-equal comparison.
+     */
     LESS_THAN_EQUAL,
+
+    /**
+     * Pattern matching (e.g., strings).
+     */
     LIKE,
+
+    /**
+     * Inequality comparison.
+     */
     NOT_EQUAL,
+
+    /**
+     * Exclusion from a set.
+     */
     NOT_IN,
+
+    /**
+     * Negated pattern matching.
+     */
     NOT_LIKE;
 
     /**
