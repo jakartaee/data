@@ -186,15 +186,15 @@ Each automatic query method must be assigned an entity type. The rules for infer
 
 Jakarta Data infers a query based on the parameters of the method. Each parameter must either:
 
-- have exactly the same type and name as a persistent field or property of the entity class, or
+- have exactly the same type and name as a persistent attribute of the entity class, or
 - be of type `Limit`, `Order`, `PageRequest`, or `Sort`.
 
-Parameter names map parameters to persistent fields. A repository with parameter-based automatic query methods must either:
+Parameter names map parameters to persistent attributes. A repository with parameter-based automatic query methods must either:
 
 - be compiled so that parameter names are preserved in the class file (for example, using `javac -parameters`), or
-- explicitly specify the name of the persistent field mapped by each parameter of an automatic query method using the `@By` annotation.
+- explicitly specify the name of the persistent attribute mapped by each parameter of an automatic query method using the `@By` annotation.
 
-The parameter name or explicit field name specified using `@By` may be a compound name, as specified below in <<Persistent Field Names>>.
+The attribute name specified using `@By` may be a compound name, as specified below in <<Persistent Attribute Names>>.
 
 This specification defines the built-in automatic query annotations `@Find` and `@Delete`. The semantics of these annotations are specified in their Javadoc. Note that `@Delete` is _both_ a lifecycle annotation _and_ an automatic query annotation. The signature of a repository method annotated `@Delete` must be used to disambiguate the interpretation of the `@Delete` annotation.
 
@@ -276,7 +276,7 @@ An <<Annotated Query methods,annotated>>, <<Parameter-based automatic query meth
 A special parameter controls which query results are returned to the caller of a repository method, or in what order the results are returned:
 
 - a `Limit` allows the query results to be limited to a given range defined in terms of an offset and maximum number of results,
-- a `Sort` or `Order` allows the query results to be sorted by a given entity field or list of fields, respectively, and
+- a `Sort` or `Order` allows the query results to be sorted by a given entity attribute or list of attributes, respectively, and
 - a `PageRequest` splits results into pages. A parameter of this type must be declared when the repository method returns a `Page` of results, as specified below in <<Offset-based Pagination>>, or a `CursoredPage`, as specified in <<Cursor-based Pagination>>.
 
 A repository method must throw `UnsupportedOperationException` if it has:
@@ -306,7 +306,7 @@ public interface ProductRepository extends BasicRepository<Product, Long> {
 }
 ----
 
-An instance of `Sort` may be obtained by specifying an entity field name:
+An instance of `Sort` may be obtained by specifying an entity attribute name:
 
 [source,java]
 ----
@@ -504,7 +504,7 @@ Offset pagination is a valuable tool for Java developers when dealing with large
 
 ==== Cursor-based Pagination
 
-Cursor-based pagination aims to reduce missed and duplicate results across pages by querying relative to the observed values of entity properties that constitute the sorting criteria. Cursor-based pagination can also offer an improvement in performance because it avoids fetching and ordering results from prior pages by causing those results to be non-matching. A Jakarta Data provider appends additional conditions to the query and tracks cursor-based values automatically when `CursoredPage` is used as the repository method return type. The application invokes `nextPageRequest` or `previousPageRequest` on the `CursoredPage` to obtain a `PageRequest` which keeps track of the cursor-based values.
+Cursor-based pagination aims to reduce missed and duplicate results across pages by querying relative to the observed values of entity attributes that constitute the sorting criteria. Cursor-based pagination can also offer an improvement in performance because it avoids fetching and ordering results from prior pages by causing those results to be non-matching. A Jakarta Data provider appends additional conditions to the query and tracks cursor-based values automatically when `CursoredPage` is used as the repository method return type. The application invokes `nextPageRequest` or `previousPageRequest` on the `CursoredPage` to obtain a `PageRequest` which keeps track of the cursor-based values.
 
 For example,
 
@@ -582,7 +582,7 @@ ORDER BY lastName ASC, firstName ASC, id ASC
 
 Because searching for the next page of results is relative to a last known position, it is possible with cursor-based pagination to allow some types of updates to data while pages are being traversed without causing missed results or duplicates to appear. If you add entities to a prior position in the traversal of pages, the shift forward of numerical position of existing entities will not cause duplicates entities to appear in your continued traversal of subsequent pages because cursor-based pagination does not query based on a numerical position. If you remove entities from a prior position in the traversal of pages, the shift backward of numerical position of existing entities will not cause missed entities in your continued traversal of subsequent pages because keyset pagination does not query based on a numerical position.
 
-Other types of updates to data, however, will cause duplicate or missed results. If you modify entity properties which are used as the sort criteria, cursor-based pagination cannot prevent the same entity from appearing again or never appearing due to the altered values. If you add an entity that you previously removed, whether with different values or the same values, cursor-based pagination cannot prevent the entity from being missed or possibly appearing a second time due to its changed values.
+Other types of updates to data, however, will cause duplicate or missed results. If you modify entity attributes which are used as the sort criteria, cursor-based pagination cannot prevent the same entity from appearing again or never appearing due to the altered values. If you add an entity that you previously removed, whether with different values or the same values, cursor-based pagination cannot prevent the entity from being missed or possibly appearing a second time due to its changed values.
 
 ===== Restrictions on use of Cursor-based Pagination
 

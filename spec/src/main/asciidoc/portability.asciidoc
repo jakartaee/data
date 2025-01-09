@@ -39,8 +39,8 @@ These portability considerations reflect Jakarta Data's commitment to providing 
 
 ==== Graph Databases
 
-A Graph database, a specialized NoSQL variant, excels in managing intricate data relationships, rivaling traditional relational databases. Its unique strength lies in its ability to handle both directed and undirected edges (or relationships) between vertices (or nodes) and store properties on both vertices and edges.
+A Graph database, a specialized NoSQL variant, excels in managing intricate data relationships, rivaling traditional relational databases. Its unique strength lies in its ability to handle both directed and undirected edges (or relationships) between vertices (or nodes) and store entity attributes on both vertices and edges.
 
-Graph databases excel at answering queries that return rows containing flat objects, collections, or a combination of flat objects and connections. However, portability is only guaranteed when mapping rows to classes, and when queries specified via annotations or other supported means are used. It should be noted that queries derived from keywords and combinations of mapped classes/properties will be translated into vendor-specific queries.
+Graph databases excel at answering queries that return rows containing flat objects, collections, or a combination of flat objects and connections. However, portability is only guaranteed when mapping rows to classes, and when queries specified via annotations or other supported means are used. It should be noted that queries derived from keywords and combinations of mapped classes/attributes will be translated into vendor-specific queries.
 
 It is important to note that in Jakarta Data the Graph database supports the built-in repositories: `BasicRepository` and `DataRepository`. Additionally, Query by Method Name is available, though developers should be aware that some keywords may not be universally supported. The full set of required keywords is documented in the section of the Jakarta Data module Javadoc that is titled "Reserved Keywords for Query by Method Name".
