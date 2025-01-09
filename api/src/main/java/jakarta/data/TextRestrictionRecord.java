@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 Contributors to the Eclipse Foundation
+ * Copyright (c) 2024,2025 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,12 +34,12 @@ record TextRestrictionRecord<T>(
         Objects.requireNonNull(attribute, "Attribute must not be null");
     }
 
-    TextRestrictionRecord(String field, Operator comparison, boolean escaped, String value) {
-        this(field, comparison, true, escaped, value);
+    TextRestrictionRecord(String attributeName, Operator comparison, boolean escaped, String value) {
+        this(attributeName, comparison, true, escaped, value);
     }
 
-    TextRestrictionRecord(String field, Operator comparison, String value) {
-        this(field, comparison, true, false, value);
+    TextRestrictionRecord(String attributeName, Operator comparison, String value) {
+        this(attributeName, comparison, true, false, value);
     }
 
     @Override

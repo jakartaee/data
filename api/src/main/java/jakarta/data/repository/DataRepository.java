@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2025 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ package jakarta.data.repository;
  * <p>A built-in repository supertype that is the root of all other built-in repository supertype interfaces.</p>
  *
  * <p>The type parameters of {@code DataRepository<T,K>} capture the primary entity type ({@code T})
- * for the repository and the type ({@code K}) of the field or property of the entity which uniquely
+ * for the repository and the type ({@code K}) of the attribute of the entity which uniquely
  * identifies each entity of that type.</p>
  *
  * <p>The primary entity type is used for repository methods, such as {@code countBy...}
@@ -75,7 +75,7 @@ package jakarta.data.repository;
  * <p>The module Javadoc provides an {@link jakarta.data/ overview} of Jakarta Data.</p>
  *
  * @param <T> the type of the primary entity class of the repository.
- * @param <K> the type of the unique identifier field of property of the primary entity.
+ * @param <K> the type of the unique identifier attribute of the primary entity.
  */
 public interface DataRepository<T, K> {
 

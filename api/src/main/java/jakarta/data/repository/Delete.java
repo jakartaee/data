@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023,2024 Contributors to the Eclipse Foundation
+ * Copyright (c) 2023,2025 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -69,7 +69,7 @@ import java.lang.annotation.Target;
  * entity type. Then the repository method is interpreted as a parameter-based automatic query method. The entity type
  * to be deleted is the primary entity type of the repository. The method return type must be {@code void}, {@code int},
  * or {@code long}. Every parameter of the annotated method must have exactly the same type and name (the parameter name
- * in the Java source, or a name assigned by {@link By @By}) as a persistent field or property of the entity class.
+ * in the Java source, or a name assigned by {@link By @By}) as an attribute of the entity class.
  * Parameters of type {@code Sort}, {@code Order}, {@code Limit}, and {@code PageRequest} are prohibited.
  * </p>
  * <p>For example, consider an interface representing a garage:</p>
@@ -85,7 +85,7 @@ import java.lang.annotation.Target;
  * }
  * </pre>
  * <p>Here,{@code unparkAll()} deletes every {@code Car}, while {@code unpark(String)} deletes any {@code Car} with a
- * matching value of its {@code registration} field.
+ * matching value of its {@code registration} attribute.
  * </p>
  * <p>An automatic query method annotated {@code Delete} removes every record which satisfies the parameter-based
  * conditions from the database. If the method return type is {@code int} or {@code long}, the method must return the

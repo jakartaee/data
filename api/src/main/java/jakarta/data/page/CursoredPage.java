@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022,2024 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2025 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,11 +33,11 @@ import java.util.NoSuchElementException;
  * inserted, deleted, or updated in the database between page requests.
  * Cursor-based pagination is possible when a query result set has a
  * well-defined total order, that is, when the results are sorted by a
- * list of entity fields which forms a unique key on the result set.
- * This list of entity fields must be the entity fields of the combined
+ * list of entity attributes which forms a unique key on the result set.
+ * This list of entity attributes must be the entity attributes of the combined
  * sort criteria of the repository method, in the same order of precedence.
- * This could just be the identifier field of the entity, or it might be
- * some other combination of fields which uniquely identifies each query
+ * This could just be the identifier attribute of the entity, or it might be
+ * some other combination of entity attributes which uniquely identifies each query
  * result.</p>
  *
  * <p>When cursor-based pagination is used, a {@linkplain #nextPageRequest
@@ -100,14 +100,14 @@ import java.util.NoSuchElementException;
  * vulnerable to changes made to data in between page requests. Adding or
  * removing entities is possible without causing unexpected missed or
  * duplicate results. Cursor-based pagination does not prevent misses and
- * duplicates if the entity properties which are the sort criteria for
+ * duplicates if the entity attributes which are the sort criteria for
  * existing entities are modified or if an entity is re-added with different
  * sort criteria after having previously been removed.</p>
  *
  * <h2>Cursor-based Pagination with {@code @Query}</h2>
  *
  * <p>Cursor-based pagination involves generating and appending additional
- * restrictions involving the key fields to the {@code WHERE} clause of the
+ * restrictions involving the key elements to the {@code WHERE} clause of the
  * query. For this to be possible, a user-provided JDQL or JPQL query must
  * end with a {@code WHERE} clause to which additional conditions may be
  * appended.</p>

@@ -43,7 +43,7 @@ import java.util.Set;
  * methods.</p>
  *
  * <p>The application defines simple Java objects called entities to represent
- * data in the database. Fields or accessor methods designate each entity property.
+ * data in the database. Fields or accessor methods designate each entity attribute.
  * For example,</p>
  *
  * <pre>
@@ -170,32 +170,32 @@ import java.util.Set;
  * entity classes are unannotated.</p>
  *
  * <p>Furthermore, an entity programming model must define an annotation which
- * identifies the field or property holding the unique identifier of an entity.
+ * identifies the attribute holding the unique identifier of an entity.
  * For Jakarta Persistence, it is {@code jakarta.persistence.Id} or
  * {@code jakarta.persistence.EmbeddedId}. For Jakarta NoSQL, it is
  * {@code jakarta.nosql.Id}. Alternatively, an entity programming model might
- * allow the identifier field or property to be identified via some convention.
+ * allow the identifier attribute to be identified via some convention.
  * Every entity has a unique identifier.</p>
  *
- * <p>An entity has an arbitrary number of persistent fields or properties.</p>
+ * <p>An entity has an arbitrary number of attributes.</p>
  *
- * <h3>Persistent field names</h3>
+ * <h3>Entity attribute names</h3>
  *
- * <p>Each persistent field of an entity or embeddable class is assigned a
+ * <p>Each attribute of an entity or embeddable class is assigned a
  * name:</p>
  * <ul>
- * <li>when direct field access is used, the name of a persistent field is
+ * <li>when direct field access is used, the name of an entity attribute is
  *     simply the name of the Java field, but</li>
- * <li>when property-based access is used, the name of the field is derived
+ * <li>when property-based access is used, the name of the entity attribute is derived
  *     from the accessor methods, according to JavaBeans conventions.</li>
  * </ul>
  * <p>Within a given entity class or embeddable class, names assigned to
- * persistent fields must be unique ignoring case.</p>
- * <p>Furthermore, within the context of a given entity, each persistent field
+ * entity attributes must be unique ignoring case.</p>
+ * <p>Furthermore, within the context of a given entity, each attribute
  * of an embeddable class reachable by navigation from the entity class may be
  * assigned a compound name. The compound name is obtained by concatenating the
- * names assigned to each field traversed by navigation from the entity class
- * to the persistent field of the embedded class, optionally joined by a
+ * names assigned to each attribute traversed by navigation from the entity class
+ * to the attribute of the embedded class, optionally joined by a
  * delimiter.</p>
  * <ul>
  * <li>For parameters of a {@link Find} method, the delimiter is {@code _}.
@@ -210,10 +210,10 @@ import java.util.Set;
  *     annotation the delimiter is {@code _} or {@code .}.
  * </ul>
  *
- * <p>A persistent field name used in a Query by Method Name must not contain
+ * <p>A entity attribute name used in a Query by Method Name must not contain
  * a keyword reserved by Query by Method Name.</p>
  *
- * <h3>Persistent field types (basic types)</h3>
+ * <h3>Entity attribute types (basic types)</h3>
  *
  * <p>The following is a list of valid basic entity attribute types.
  * These can be used as the types of repository method parameters
@@ -403,7 +403,7 @@ import java.util.Set;
  * followed by one or more conditions can optionally follow the action clause.
  * Multiple conditions must be delimited by the {@code And} or {@code Or} keyword.
  * Each condition consists of a case insensitive entity attribute name, optionally
- * followed by the {@code IgnoreCase} keyword (for text properties), optionally
+ * followed by the {@code IgnoreCase} keyword (for text-typed attributes), optionally
  * followed by the {@code Not} keyword, optionally followed by a condition operator
  * keyword such as {@code StartsWith}. The equality condition is implied when no
  * condition operator keyword is present. Most of the condition operations, such as
@@ -483,7 +483,7 @@ import java.util.Set;
  * <td>strings</td>
  * <td>Requires case insensitive comparison. For query conditions
  * as well as ordering, the {@code IgnoreCase} keyword can be
- * specified immediately following the entity property name.</td>
+ * specified immediately following the entity attribute name.</td>
  * <td>{@code countByStatusIgnoreCaseNotLike("%Delivered%")}
  * <br>{@code findByZipcodeOrderByStreetIgnoreCaseAscHouseNumAsc(55904)}</td>
  * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column<br>Document<br>Graph</td></tr>
@@ -696,8 +696,8 @@ import java.util.Set;
  * <p>Each parameter of the annotated method must either:</p>
  * <ul>
  * <li>have exactly the same type and name (the parameter name in the Java
- *     source, or a name assigned by {@link By @By}) as a persistent field
- *     or property of the entity class, or</li>
+ *     source, or a name assigned by {@link By @By}) as an attribute
+ *     of the entity class, or</li>
  * <li>be of type {@link jakarta.data.Limit}, {@link jakarta.data.Sort},
  *     {@link jakarta.data.Order}, or {@link jakarta.data.page.PageRequest}
  *     - if the repository method is annotated with {@link Find}.</li>

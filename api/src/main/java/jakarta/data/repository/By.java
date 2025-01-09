@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023,2024 Contributors to the Eclipse Foundation
+ * Copyright (c) 2023,2025 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,16 +25,16 @@ import java.lang.annotation.Target;
 
 /**
  * <p>Annotates a parameter of a repository method, specifying a mapping to
- * a persistent field:</p>
+ * an entity attribute:</p>
  * <ul>
- * <li>if a {@linkplain #value field name} is specified, the parameter maps
- *     to the persistent field with the specified name, or
+ * <li>if an {@linkplain #value attribute name} is specified, the parameter maps
+ *     to the entity attribute with the specified name, or
  * <li>if the special value {@value #ID} is specified, the parameter maps
- *     to the unique identifier field or property.
+ *     to the unique identifier attribute.
  * </ul>
  * <p>Arguments to the annotated parameter are compared to values of the
- * mapped persistent field.</p>
- * <p>The field name may be a compound name like {@code address.city}.</p>
+ * mapped attribute.</p>
+ * <p>The attribute name may be a compound name like {@code address.city}.</p>
  *
  * <p>For example, for a {@code Person} entity with attributes {@code ssn},
  * {@code firstName}, {@code lastName}, and {@code address} we might have:</p>
@@ -84,23 +84,25 @@ import java.lang.annotation.Target;
 public @interface By {
 
     /**
-     * The name of the persistent field mapped by the annotated parameter,
-     * or {@value #ID} to indicate the unique identifier field or property
+     * The name of the entity attribute mapped by the annotated parameter,
+     * or {@value #ID} to indicate the unique identifier attribute
      * of the entity.
      *
-     * @return the persistent field name, or {@value #ID} to indicate the
-     *         unique identifier field.
+     * @return the entity attribute name, or {@value #ID} to indicate the
+     *         unique identifier attribute.
      */
     String value();
 
     /**
-     * The special value which indicates the unique identifier field or
-     * property. The annotation {@code By(ID)} maps a parameter to the
-     * identifier.
+     * <p>
+     * The special value which indicates the unique identifier attribute.
+     * The annotation {@code By(ID)} maps a parameter to the identifier.
+     * </p>
      * <p>
      * Note that {@code id(this)} is the expression in JPQL for the
      * unique identifier of an entity with an implicit identification
      * variable.
+     * </p>
      */
     String ID = "id(this)";
 }
