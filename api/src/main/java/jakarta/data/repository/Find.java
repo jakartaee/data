@@ -44,6 +44,10 @@ import java.lang.annotation.Target;
  *     {@link Select} annotation.</li>
  * </ul>
  *
+ * <p>When returning a single entity attribute or a subset of entity attributes,
+ * the attribute types must be single-valued basic types, not multiple-valued
+ * types such as collections, arrays, or associations.</p>
+ *
  * <p>Each parameter of the annotated method must either:
  * </p>
  * <ul>

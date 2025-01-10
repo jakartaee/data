@@ -48,6 +48,13 @@ import java.lang.annotation.Target;
 @Target({ ElementType.METHOD, ElementType.RECORD_COMPONENT })
 public @interface Select {
     /**
+     * <p>Name or names of an entity attribute(s) that have a single-valued
+     * basic type. Multiple-valued types such as collections, arrays, and
+     * associations cannot be retrieved independently of the entity.</p>
+     *
+     * <p>The {@code Select} annotation can be used with repository methods
+     * that return a single entity attribute or multiple entity attributes.</p>
+     *
      * <h2>Method that returns Single Entity Attributes</h2>
      *
      * <p>Place the {@code Select} annotation on a repository find method and
