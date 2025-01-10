@@ -158,67 +158,67 @@ public record Sort<T>(String property, boolean isAscending, boolean ignoreCase) 
     /**
      * Create a {@link Sort} instance
      *
-     * @param <T>           entity class of the sortable entity attribute.
-     * @param attributeName name of the entity attribute to order by
-     * @param direction     the direction in which to order.
-     * @param ignoreCase     whether to request a case insensitive ordering.
+     * @param <T>        entity class of the sortable entity attribute.
+     * @param attribute  name of the entity attribute to order by
+     * @param direction  the direction in which to order.
+     * @param ignoreCase whether to request a case insensitive ordering.
      * @return a {@link Sort} instance. Never {@code null}.
      * @throws NullPointerException when there is a null parameter
      */
-    public static <T> Sort<T> of(String attributeName, Direction direction, boolean ignoreCase) {
+    public static <T> Sort<T> of(String attribute, Direction direction, boolean ignoreCase) {
         Objects.requireNonNull(direction, "direction is required");
-        return new Sort<>(attributeName, Direction.ASC.equals(direction), ignoreCase);
+        return new Sort<>(attribute, Direction.ASC.equals(direction), ignoreCase);
     }
 
     /**
      * Create a {@link Sort} instance with {@link Direction#ASC ascending direction}
      * that does not request case insensitive ordering.
      *
-     * @param <T>           entity class of the sortable entity attribute.
-     * @param attributeName name of the entity attribute to order by
+     * @param <T>       entity class of the sortable entity attribute.
+     * @param attribute name of the entity attribute to order by
      * @return a {@link Sort} instance. Never {@code null}.
      * @throws NullPointerException when the attribute name is null
      */
-    public static <T> Sort<T> asc(String attributeName) {
-        return new Sort<>(attributeName, true, false);
+    public static <T> Sort<T> asc(String attribute) {
+        return new Sort<>(attribute, true, false);
     }
 
     /**
      * Create a {@link Sort} instance with {@link Direction#ASC ascending direction}
      * and case insensitive ordering.
      *
-     * @param <T>           entity class of the sortable entity attribute.
-     * @param attributeName name of the entity attribute to order by.
+     * @param <T>       entity class of the sortable entity attribute.
+     * @param attribute name of the entity attribute to order by.
      * @return a {@link Sort} instance. Never {@code null}.
      * @throws NullPointerException when the attribute name is null.
      */
-    public static <T> Sort<T> ascIgnoreCase(String attributeName) {
-        return new Sort<>(attributeName, true, true);
+    public static <T> Sort<T> ascIgnoreCase(String attribute) {
+        return new Sort<>(attribute, true, true);
     }
 
     /**
      * Create a {@link Sort} instance with {@link Direction#DESC descending direction}
      * that does not request case insensitive ordering.
      *
-     * @param <T>           entity class of the sortable entity attribute.
-     * @param attributeName name of the entity attribute to order by
+     * @param <T>       entity class of the sortable entity attribute.
+     * @param attribute name of the entity attribute to order by
      * @return a {@link Sort} instance. Never {@code null}.
      * @throws NullPointerException when the attribute name is null
      */
-    public static <T> Sort<T> desc(String attributeName) {
-        return new Sort<>(attributeName, false, false);
+    public static <T> Sort<T> desc(String attribute) {
+        return new Sort<>(attribute, false, false);
     }
 
     /**
      * Create a {@link Sort} instance with {@link Direction#DESC descending direction}
      * and case insensitive ordering.
      *
-     * @param <T>           entity class of the sortable entity attribute.
-     * @param attributeName name of the entity attribute to order by.
+     * @param <T>       entity class of the sortable entity attribute.
+     * @param attribute name of the entity attribute to order by.
      * @return a {@link Sort} instance. Never {@code null}.
      * @throws NullPointerException when the attribute name is null.
      */
-    public static <T> Sort<T> descIgnoreCase(String attributeName) {
-        return new Sort<>(attributeName, false, true);
+    public static <T> Sort<T> descIgnoreCase(String attribute) {
+        return new Sort<>(attribute, false, true);
     }
 }
