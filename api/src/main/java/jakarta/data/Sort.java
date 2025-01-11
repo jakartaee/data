@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022,2024 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2025 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ import java.util.Objects;
  * <p>Requests sorting on a given entity attribute.</p>
  *
  * <p>An instance of {@code Sort} specifies a sorting criterion based
- * on an entity field, with a sorting {@linkplain Direction direction}
+ * on an entity attribute, with a sorting {@linkplain Direction direction}
  * and well-defined case sensitivity.</p>
  *
  * <p>A query method of a repository may have a parameter or parameters
@@ -83,24 +83,28 @@ import java.util.Objects;
  * sort criteria.</p>
  *
  *
- * @param <T>         entity class of the property upon which to sort.
- * @param property    name of the property to order by.
- * @param isAscending whether ordering for this property is ascending (true) or descending (false).
+ * @param <T>         entity class of the entity attribute upon which to sort.
+ * @param property    name of the entity attribute to order by.
+ * @param isAscending whether ordering for this attribute is ascending (true) or descending (false).
  * @param ignoreCase  whether or not to request case insensitive ordering from a database with case sensitive collation.
  */
 public record Sort<T>(String property, boolean isAscending, boolean ignoreCase) {
 
     /**
-     * <p>Defines sort criteria for an entity property. For more descriptive code, use:</p>
+     * <p>Defines sort criteria for an entity attribute. For more descriptive code, use:</p>
      * <ul>
-     * <li>{@link #asc(String) Sort.asc(propertyName)} for ascending sort on a property.</li>
-     * <li>{@link #ascIgnoreCase(String) Sort.ascIgnoreCase(propertyName)} for case insensitive ascending sort on a property.</li>
-     * <li>{@link #desc(String) Sort.desc(propertyName)} for descending sort on a property.</li>
-     * <li>{@link #descIgnoreCase(String) Sort.descIgnoreCase(propertyName)} for case insensitive descending sort on a property.</li>
+     * <li>{@link #asc(String) Sort.asc(attributeName)}
+     *     for ascending sort on an entity attribute.</li>
+     * <li>{@link #ascIgnoreCase(String) Sort.ascIgnoreCase(attributeName)}
+     *     for case insensitive ascending sort on an entity attribute.</li>
+     * <li>{@link #desc(String) Sort.desc(attributeName)}
+     *     for descending sort on an entity attribute.</li>
+     * <li>{@link #descIgnoreCase(String) Sort.descIgnoreCase(attributeName)}
+     *      for case insensitive descending sort on an entity attribute.</li>
      * </ul>
      *
-     * @param property    name of the property to order by.
-     * @param isAscending whether ordering for this property is ascending (true) or descending (false).
+     * @param property    name of the entity attribute to order by.
+     * @param isAscending whether ordering for this attribute is ascending (true) or descending (false).
      * @param ignoreCase  whether or not to request case insensitive ordering from a database with case sensitive collation.
      */
     public Sort {
@@ -109,9 +113,9 @@ public record Sort<T>(String property, boolean isAscending, boolean ignoreCase) 
 
     // Override to provide method documentation:
     /**
-     * Name of the property to order by.
+     * Name of the entity attribute to order by.
      *
-     * @return The property name to order by; will never be {@code null}.
+     * @return The attribute name to order by; will never be {@code null}.
      */
     public String property() {
         return property;
@@ -124,7 +128,7 @@ public record Sort<T>(String property, boolean isAscending, boolean ignoreCase) 
      * A database with case insensitive collation performs case insensitive
      * ordering regardless of the requested {@code ignoreCase} value.</p>
      *
-     * @return Returns whether or not to request case insensitive sorting for the property.
+     * @return Returns whether or not to request case insensitive sorting for the entity attribute.
      */
     public boolean ignoreCase() {
         return ignoreCase;
@@ -132,18 +136,20 @@ public record Sort<T>(String property, boolean isAscending, boolean ignoreCase) 
 
     // Override to provide method documentation:
     /**
-     * Indicates whether to sort the property in ascending order (true) or descending order (false).
+     * Indicates whether to sort the entity attribute in ascending order (true)
+     * or descending order (false).
      *
-     * @return Returns whether sorting for this property shall be ascending.
+     * @return Returns whether sorting for this attribute shall be ascending.
      */
     public boolean isAscending() {
         return isAscending;
     }
 
     /**
-     * Indicates whether to sort the property in descending order (true) or ascending order (false).
+     * Indicates whether to sort the entity attribute in descending order (true)
+     * or ascending order (false).
      *
-     * @return Returns whether sorting for this property shall be descending.
+     * @return Returns whether sorting for this attribute shall be descending.
      */
     public boolean isDescending() {
         return !isAscending;
@@ -152,67 +158,67 @@ public record Sort<T>(String property, boolean isAscending, boolean ignoreCase) 
     /**
      * Create a {@link Sort} instance
      *
-     * @param <T>        entity class of the sortable property.
-     * @param property  the property name to order by
-     * @param direction the direction in which to order.
+     * @param <T>        entity class of the sortable entity attribute.
+     * @param attribute  name of the entity attribute to order by
+     * @param direction  the direction in which to order.
      * @param ignoreCase whether to request a case insensitive ordering.
      * @return a {@link Sort} instance. Never {@code null}.
      * @throws NullPointerException when there is a null parameter
      */
-    public static <T> Sort<T> of(String property, Direction direction, boolean ignoreCase) {
+    public static <T> Sort<T> of(String attribute, Direction direction, boolean ignoreCase) {
         Objects.requireNonNull(direction, "direction is required");
-        return new Sort<>(property, Direction.ASC.equals(direction), ignoreCase);
+        return new Sort<>(attribute, Direction.ASC.equals(direction), ignoreCase);
     }
 
     /**
      * Create a {@link Sort} instance with {@link Direction#ASC ascending direction}
      * that does not request case insensitive ordering.
      *
-     * @param <T>      entity class of the sortable property.
-     * @param property the property name to order by
+     * @param <T>       entity class of the sortable entity attribute.
+     * @param attribute name of the entity attribute to order by
      * @return a {@link Sort} instance. Never {@code null}.
-     * @throws NullPointerException when the property is null
+     * @throws NullPointerException when the attribute name is null
      */
-    public static <T> Sort<T> asc(String property) {
-        return new Sort<>(property, true, false);
+    public static <T> Sort<T> asc(String attribute) {
+        return new Sort<>(attribute, true, false);
     }
 
     /**
      * Create a {@link Sort} instance with {@link Direction#ASC ascending direction}
      * and case insensitive ordering.
      *
-     * @param <T>      entity class of the sortable property.
-     * @param property the property name to order by.
+     * @param <T>       entity class of the sortable entity attribute.
+     * @param attribute name of the entity attribute to order by.
      * @return a {@link Sort} instance. Never {@code null}.
-     * @throws NullPointerException when the property is null.
+     * @throws NullPointerException when the attribute name is null.
      */
-    public static <T> Sort<T> ascIgnoreCase(String property) {
-        return new Sort<>(property, true, true);
+    public static <T> Sort<T> ascIgnoreCase(String attribute) {
+        return new Sort<>(attribute, true, true);
     }
 
     /**
      * Create a {@link Sort} instance with {@link Direction#DESC descending direction}
      * that does not request case insensitive ordering.
      *
-     * @param <T>      entity class of the sortable property.
-     * @param property the property name to order by
+     * @param <T>       entity class of the sortable entity attribute.
+     * @param attribute name of the entity attribute to order by
      * @return a {@link Sort} instance. Never {@code null}.
-     * @throws NullPointerException when the property is null
+     * @throws NullPointerException when the attribute name is null
      */
-    public static <T> Sort<T> desc(String property) {
-        return new Sort<>(property, false, false);
+    public static <T> Sort<T> desc(String attribute) {
+        return new Sort<>(attribute, false, false);
     }
 
     /**
      * Create a {@link Sort} instance with {@link Direction#DESC descending direction}
      * and case insensitive ordering.
      *
-     * @param <T>      entity class of the sortable property.
-     * @param property the property name to order by.
+     * @param <T>       entity class of the sortable entity attribute.
+     * @param attribute name of the entity attribute to order by.
      * @return a {@link Sort} instance. Never {@code null}.
-     * @throws NullPointerException when the property is null.
+     * @throws NullPointerException when the attribute name is null.
      */
-    public static <T> Sort<T> descIgnoreCase(String property) {
-        return new Sort<>(property, false, true);
+    public static <T> Sort<T> descIgnoreCase(String attribute) {
+        return new Sort<>(attribute, false, true);
     }
 }

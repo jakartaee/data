@@ -34,11 +34,11 @@ import java.lang.annotation.Target;
  * </p>
  * <ul>
  * <li>have exactly the same type and name (the parameter name in the Java source, or a name assigned by {@link By @By})
- *     as a persistent field or property of the entity class, or</li>
+ *     as an attribute of the entity class, or</li>
  * <li>be of type {@link jakarta.data.Limit}, {@link jakarta.data.Sort}, {@link jakarta.data.Order}, or
  *     {@link jakarta.data.page.PageRequest}.</li>
  * </ul>
- * <p>The query is inferred from the method parameters which match persistent fields of the entity.
+ * <p>The query is inferred from the method parameters which match attributes of the entity.
  * </p>
  * <p>There is no specific naming convention for methods annotated with {@code @Find}; they may be named arbitrarily,
  * and their names do not carry any semantic meaning defined by the Jakarta Data specification.
@@ -52,7 +52,7 @@ import java.lang.annotation.Target;
  * }
  * </pre>
  * <p>The {@code @Find} annotation indicates that the {@code getCarsWithModel(model)} method retrieves {@code Car}
- * instances with the given value of the {@code model} field.
+ * instances with the given value of the {@code model} attribute.
  * </p>
  *
  * <p>A method annotated with {@code @Find} must return one of the following types:</p>

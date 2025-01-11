@@ -58,6 +58,7 @@ The following are not goals of Jakarta Data:
 
 === Conventions
 
-The terms, _entity attribute_ and _entity property_, are used interchangeably throughout the specification.
+The term _entity attribute_, and in some places _persistent attribute_, is used through the Jakarta Data specification to refer to a field or property of an `Entity` that is persisted to a data store. The Jakarta Persistence specification also uses these terms, as well as the term _persistent fields and properties_, which has the same meaning. Additionally, the Jakarta Data specification sometimes refers to an entity attribute by its name. For example, the `price` attribute of the `Product` entity. In other cases, an entity attribute is referred to by what it represents. For example, an entity's `Id` attribute or `Version` attribute.
+ 
 
 include::project_team.adoc[]

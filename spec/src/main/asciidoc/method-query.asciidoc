@@ -1,4 +1,4 @@
-// Copyright (c) 2022, 2024 Contributors to the Eclipse Foundation
+// Copyright (c) 2022, 2025 Contributors to the Eclipse Foundation
 //
 // This program and the accompanying materials are made available under the
 // terms of the Eclipse Public License v. 2.0 which is available at
@@ -99,8 +99,8 @@ A _restriction_ specifies the criteria used to filter records. It is formed by c
 
 Each _condition_ is formed by concatenating, in the following order:
 
-- a property name, which may be a compound name, as specified below in <<Persistent Field Names in Query by Method Name>>,
-- optionally, `IgnoreCase` (for text properties),
+- an attribute name, which may be a compound name, as specified below in <<Persistent Attribute Names in Query by Method Name>>,
+- optionally, `IgnoreCase` (for text-typed attributes),
 - optionally, `Not`,
 - optionally, an operator such as `LessThan` or `Like`.
 
@@ -110,7 +110,7 @@ The conditions belonging to the restriction determine the parameters of the meth
 
 === Orders
 
-A `find` query may have an _order_. The _order_ specifies how records must be sorted. It is formed by concatenating `OrderBy` with one or more ordered pairs of an entity attribute name and a direction of sorting, `Asc` or `Desc`. The direction may be omitted if there is only one property, in which case `Asc` is implied.
+A `find` query may have an _order_. The _order_ specifies how records must be sorted. It is formed by concatenating `OrderBy` with one or more ordered pairs of an entity attribute name and a direction of sorting, `Asc` or `Desc`. The direction may be omitted if there is only one entity attribute, in which case `Asc` is implied.
 
 The order is lexicographic, that is, ordered pairs occurring earlier take precedence. An ordered pair occurring later is only used to resolve "ties" between records which cannot be unambiguously ordered using only earlier ordered pairs.
 
@@ -122,11 +122,11 @@ The following table displays some examples of legal method signatures.
 
 [cols="40,~"]
 |===
-| `findByName(String name)` | Find entities by the `name` property.
+| `findByName(String name)` | Find entities by the `name` attribute.
 | `findByAgeGreaterThan(int age)` | Find entities where `age` is greater than the specified value.
-| `findByAuthorName(String authorName)` | Find entities by the `authorName` property of a related entity.
-| `findByCategoryNameAndPriceLessThan(String categoryName, double price)` | Find entities by `categoryName` and `price` properties, applying an `And` condition.
-| `findByNameLikeOrderByPriceDescIdAsc` | Find entities by matching the `name` property against a pattern, sorting the results by `price` in descending order, and sorting results with the same `price` by the `id` in ascending order.
+| `findByAuthorName(String authorName)` | Find entities by the `authorName` attribute of a related entity.
+| `findByCategoryNameAndPriceLessThan(String categoryName, double price)` | Find entities by `categoryName` and `price` attributes, applying an `And` condition.
+| `findByNameLikeOrderByPriceDescIdAsc` | Find entities by matching the `name` attribute against a pattern, sorting the results by `price` in descending order, and sorting results with the same `price` by the `id` in ascending order.
 |===
 
 === BNF Grammar for Query Methods
@@ -141,7 +141,7 @@ action : ("delete" | "count" | "exists") ignoredText? restriction?
 restriction : "By" predicate
 limit : "First" max?
 predicate : condition (("And" | "Or") condition)*
-condition : property "IgnoreCase"? "Not"? operator?
+condition : attribute "IgnoreCase"? "Not"? operator?
 operator
     : "Contains"
     | "EndsWith"
@@ -156,11 +156,11 @@ operator
     | "Null"
     | "True"
     | "False"
-property : identifier ("_" identifier)*
+attribute : identifier ("_" identifier)*
 identifier : word
 max : digit+
-order : "OrderBy" (property | orderItem+)
-orderItem : property ("Asc" | "Desc")
+order : "OrderBy" (attribute | orderItem+)
+orderItem : attribute ("Asc" | "Desc")
 ----
 
 Quoted names are considered case-sensitive keywords.
@@ -177,13 +177,13 @@ Quoted names are considered case-sensitive keywords.
 | `limit` | Limits the records retrieved by a `find` query to a hardcoded maximum, such as `First10`.
 | `ignoredText`| Optional text that does not contain `By`, `All`, or `First`.
 | `predicate` | A filtering criteria, which may include multiple conditions separated by `And` or `Or`.
-| `condition` | A property of the queried entity and an operator.
+| `condition` | An attribute of the queried entity and an operator.
 | `operator` | An operator belonging to a condition, for example, `Between` or `LessThan`. When absent, equality is implied.
-| `property` | A property name, which can include underscores for nested properties.
+| `attribute` | An entity attribute name, which can include underscores for nested attributes.
 | `identifier` | A legal Java identifier, not containing an underscore.
 | `max` | A positive whole number.
 | `order` | Specifies that results of a `find` query should be sorted lexicographically, with respect to one or more order items.
-| `orderItem` | A field used to sort results, where `Asc` or `Desc` specifies the sorting direction.
+| `orderItem` | An entity attribute used to sort results, where `Asc` or `Desc` specifies the sorting direction.
 |===
 
 === Query by Method Name Keywords
@@ -232,7 +232,7 @@ An implementation of Query by Method Name must support the following keywords.
 |`findFirst10By`
 
 |`OrderBy`
-|Specify a static sorting order followed by one or more ordered pairings of a property path and direction (`Asc` or `Desc`). The direction `Asc` can be omitted from the final property listed, in which case ascending order is implied for that property.
+|Specify a static sorting order followed by one or more ordered pairings of an entity attribute name and direction (`Asc` or `Desc`). The direction `Asc` can be omitted from the final attribute listed, in which case ascending order is implied for that attribute.
 |`findByAgeOrderByHeightDescIdAsc` `findByAgeOrderById`
 
 |`Desc`
@@ -256,10 +256,10 @@ In addition to equality conditions, Query by Method Name defines the following k
 .Query by Method Name Conditions
 [cols="15,10,^12,~,~"]
 |===
-| Keyword | Property type | Parameters  | Description | Method signature example
+| Keyword | Attribute type | Parameters  | Description | Method signature example
 
 |`Between` | Any sortable type | 2
-|Find results where the property is between (inclusive of) two given values, with the first value being the inclusive minimum and the second value being the inclusive maximum.
+|Find results where the attribute is between (inclusive of) two given values, with the first value being the inclusive minimum and the second value being the inclusive maximum.
 |`findByDateBetween`
 
 |`Contains` | `String` | 1
@@ -271,19 +271,19 @@ In addition to equality conditions, Query by Method Name defines the following k
 |`findByProductNameEndsWith`
 
 |`LessThan` | Any sortable type | 1
-|Find results where the property is less than the given value
+|Find results where the attribute is less than the given value
 |`findByAgeLessThan`
 
 |`GreaterThan` | Any sortable type | 1
-|Find results where the property is greater than the given value
+|Find results where the attribute is greater than the given value
 |`findByAgeGreaterThan`
 
 |`LessThanEqual` | Any sortable type | 1
-|Find results where the property is less than or equal to the given value
+|Find results where the attribute is less than or equal to the given value
 |`findByAgeLessThanEqual`
 
 |`GreaterThanEqual` | Any sortable type | 1
-|Find results where the property is greater than or equal to the given value
+|Find results where the attribute is greater than or equal to the given value
 |`findByAgeGreaterThanEqual`
 
 |`Like` | `String` | 1
@@ -295,11 +295,11 @@ In addition to equality conditions, Query by Method Name defines the following k
 |`findByStreetNameIgnoreCaseLike`
 
 |`In` | Any type | 1 `Set`
-|Find results where the property is one of the values that are contained within the given `Set`.
+|Find results where the attribute is one of the values that are contained within the given `Set`.
 |`findByIdIn`
 
 |`Null` | Any type | 0
-|Finds results where the property has a null value.
+|Finds results where the attribute has a null value.
 |`findByYearRetiredNull`
 
 |`StartsWith` | `String` | 1
@@ -307,16 +307,16 @@ In addition to equality conditions, Query by Method Name defines the following k
 |`findByFirstNameStartsWith`
 
 |`True` | `Boolean` or `boolean` | 0
-|Finds results where the property has a boolean value of `true`.
+|Finds results where the attribute has a boolean value of `true`.
 |`findBySalariedTrue`
 
 |`False` | `Boolean` or `boolean` | 0
-|Finds results where the property has a boolean value of `false`.
+|Finds results where the attribute has a boolean value of `false`.
 |`findByCompletedFalse`
 
 |===
 
-Most _Query by Method Name_ conditions require a single repository method parameter. The `Between` condition requires two parameters. `Null`, `True`, and `False` require none. An `In` condition requires a parameter of type `Set<T>` where `T` is the type of the property. The repository method parameters used for _Query by Method Name_ conditions follow the order in which the _Query by Method Name_ conditions appear within the method name.
+Most _Query by Method Name_ conditions require a single repository method parameter. The `Between` condition requires two parameters. `Null`, `True`, and `False` require none. An `In` condition requires a parameter of type `Set<T>` where `T` is the type of the entity attribute. The repository method parameters used for _Query by Method Name_ conditions follow the order in which the _Query by Method Name_ conditions appear within the method name.
 
 Wildcard characters for patterns are determined by the data store. For relational databases, `_` matches any one character and `%` matches zero or more characters.
 
@@ -353,23 +353,23 @@ The return type of a Query by Method Name is determined as indicated in the foll
 |===
 
 
-=== Persistent Field Names in Query by Method Name
+=== Persistent Attribute Names in Query by Method Name
 
-Section 3.2 of the Jakarta Data specification describes how names are assigned to persistent fields of an entity.
+Section 3.2 of the Jakarta Data specification describes how names are assigned to persistent attributes of an entity.
 
-For Query by Method Name, the use of delimiters within a compound name is optional. Delimiters may be omitted entirely from a compound name when they are not needed to disambiguate the persistent field to which the name refers. But for a given entity property name, delimiter usage must be consistent: either the delimiter must be used between every pair of persistent field names within the compound name, or it must not occur within the compound name.
+For Query by Method Name, the use of delimiters within a compound name is optional. Delimiters may be omitted entirely from a compound name when they are not needed to disambiguate the persistent attribute to which the name refers. But for a given name, delimiter usage must be consistent: either the delimiter must be used between every pair of persistent attribute names within the compound name, or it must not occur within the compound name.
 
-Resolution of a persistent field involves the following steps:
+Resolution of a persistent attribute involves the following steps:
 
-1. A persistent field name is extracted from the method name according to the <<BNF Grammar for Query Methods>>. For example, if the query method name is `findByAddressZipCode`, the extracted field name is `AddressZipCode`.
+1. A persistent attribute name is extracted from the method name according to the <<BNF Grammar for Query Methods>>. For example, if the query method name is `findByAddressZipCode`, the extracted attribute name is `AddressZipCode`.
 
-2. The extracted name is matched against the fields of the entity class. If the name assigned to a persistent field of the entity class matches the extracted name, ignoring case, then the extracted name resolves to that field.
+2. The extracted name is matched against the attributes of the entity class. If the name assigned to a persistent attribute of the entity class matches the extracted name, ignoring case, then the extracted name resolves to that attribute.
 
-3. Otherwise, if no match is found among the fields of the entity, the extracted name is matched against the fields of entity classes and embedded classes reachable from the entity class, interpreting the extracted name as a compound name, as outlined in the previous section, both with and without the optional delimiter. If the compound name assigned to a persistent field matches the extracted name, also interpreted as a compound name, and ignoring case, then the extracted name resolves to that field.
+3. Otherwise, if no match is found among the attributes of the entity, the extracted name is matched against the attributes of entity classes and embedded classes reachable from the entity class, interpreting the extracted name as a compound name, as outlined in the previous section, both with and without the optional delimiter. If the compound name assigned to a persistent attribute matches the extracted name, also interpreted as a compound name, and ignoring case, then the extracted name resolves to that attribute.
 
-4. If no matching persistent field is found in either of the previous steps, the provider is permitted to reject the query method or to throw `UnsupportedOperationException` when the method is called.
+4. If no matching persistent attribute is found in either of the previous steps, the provider is permitted to reject the query method or to throw `UnsupportedOperationException` when the method is called.
 
-A persistent field name used in a _Query by Method Name_ must not contain a keyword reserved by the <<BNF Grammar for Query Methods,grammar>>.
+A persistent attribute name used in a _Query by Method Name_ must not contain a keyword reserved by the <<BNF Grammar for Query Methods,grammar>>.
 
 ==== Scenario 1: Person Repository with Unambiguous Resolution
 
@@ -387,7 +387,7 @@ class MailingAddress {
 }
 ----
 
-The `Person` entity does not have an `addressZipCode` field, so use of the delimiter is optional. It is valid to write both of the following repository methods, which have the same meaning,
+The `Person` entity does not have an `addressZipCode` attribute, so use of the delimiter is optional. It is valid to write both of the following repository methods, which have the same meaning,
 
 [source,java]
 ----
@@ -412,7 +412,7 @@ class MailingAddress {
 }
 ----
 
-The `Customer` entity has an `addressZipCode` field, as well as an `address` field for an embeddable class with a `zipcode` field. The method name `findByAddressZipCode` points to the `addressZipCode` field and cannot be used to navigate to the embedded class. To navigate to the `zipcode` field of the embedded class, the delimiter must be used:
+The `Customer` entity has an `addressZipCode` attribute, as well as an `address` attribute for an embeddable class with a `zipcode` attribute. The method name `findByAddressZipCode` points to the `addressZipCode` attribute and cannot be used to navigate to the embedded class. To navigate to the `zipcode` attribute of the embedded class, the delimiter must be used:
 
 [source,java]
 ----

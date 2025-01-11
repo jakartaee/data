@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022,2024 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2025 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -186,7 +186,7 @@ public interface BasicRepository<T, K> extends DataRepository<T, K> {
     /**
      * Deletes a given entity. Deletion is performed by matching the Id, and if the entity is
      * versioned (for example, with {@code jakarta.persistence.Version}), then also the version.
-     * Other properties of the entity do not need to match.
+     * Other attributes of the entity do not need to match.
      *
      * @param entity must not be {@code null}.
      * @throws OptimisticLockingFailureException if the entity is not found in the database for deletion
@@ -199,7 +199,7 @@ public interface BasicRepository<T, K> extends DataRepository<T, K> {
     /**
      * Deletes the given entities. Deletion of each entity is performed by matching the unique identifier,
      * and if the entity is versioned (for example, with {@code jakarta.persistence.Version}), then also
-     * the version. Other properties of the entity do not need to match.
+     * the version. Other attributes of the entity do not need to match.
      *
      * @param entities Must not be {@code null}. Must not contain {@code null} elements.
      * @throws OptimisticLockingFailureException If an entity is not found in the database for deletion

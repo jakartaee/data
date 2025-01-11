@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022,2024 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2025 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -105,7 +105,7 @@ public @interface OrderBy {
      *
      * <p>The default value is {@code false}.</p>
      *
-     * @return whether or not to request case insensitive sorting for the property.
+     * @return whether or not to request case insensitive sorting for the attribute.
      */
     boolean ignoreCase() default false;
 
