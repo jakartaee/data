@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023,2024 Contributors to the Eclipse Foundation
+ * Copyright (c) 2023,2025 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -2462,7 +2462,7 @@ public class EntityTests {
         float c1yExpected;
         double c1xExpected;
         try {
-            assertEquals(true, shared.move(id1, 1.23d, 1.5f));
+            assertEquals(1, shared.move(id1, 1.23d, 1.5f));
             c1yExpected = 3.5f; // 5.25 / 1.5 = 3.5
             c1xExpected = 1.23D;
         } catch (UnsupportedOperationException x) {
