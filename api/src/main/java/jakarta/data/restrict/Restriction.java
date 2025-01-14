@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 Contributors to the Eclipse Foundation
+ * Copyright (c) 2024,2025 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,15 +15,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data;
+package jakarta.data.restrict;
 
-public interface BasicRestriction<T> extends Restriction<T> {
-    String attribute();
-
-    Operator comparison();
-
-    @Override
-    BasicRestriction<T> negate();
-
-    Object value();
+public interface Restriction<T> {
+    Restriction<T> negate();
 }

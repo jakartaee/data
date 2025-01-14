@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 Contributors to the Eclipse Foundation
+ * Copyright (c) 2024,2025 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  *
  *  SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data;
+package jakarta.data.restrict;
 
 // Internal implementation class.
 // The proper way for users to obtain instances is via
@@ -23,20 +23,38 @@ package jakarta.data;
 
 import java.util.Objects;
 
-record BasicRestrictionRecord<T>(
+record TextRestrictionRecord<T>(
         String attribute,
         Operator comparison,
-        Object value) implements BasicRestriction<T> {
+        boolean isCaseSensitive,
+        boolean isEscaped,
+        String value) implements TextRestriction<T> {
 
-    BasicRestrictionRecord {
+    TextRestrictionRecord {
         Objects.requireNonNull(attribute, "Attribute must not be null");
     }
 
+    TextRestrictionRecord(String attributeName, Operator comparison, boolean escaped, String value) {
+        this(attributeName, comparison, true, escaped, value);
+    }
+
+    TextRestrictionRecord(String attributeName, Operator comparison, String value) {
+        this(attributeName, comparison, true, false, value);
+    }
+
     @Override
-    public BasicRestriction<T> negate() {
-        return new BasicRestrictionRecord<>(
+    public TextRestriction<T> ignoreCase() {
+        return new TextRestrictionRecord<>(attribute, comparison, false, isEscaped, value);
+    }
+
+    @Override
+    public TextRestriction<T> negate() {
+
+        return new TextRestrictionRecord<>(
                 attribute,
                 comparison.negate(),
+                isCaseSensitive,
+                isEscaped,
                 value);
     }
 }
