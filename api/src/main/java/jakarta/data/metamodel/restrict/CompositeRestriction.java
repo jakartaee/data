@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 Contributors to the Eclipse Foundation
+ * Copyright (c) 2024,2025 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,15 +15,22 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data;
+package jakarta.data.metamodel.restrict;
 
-public interface BasicRestriction<T> extends Restriction<T> {
-    String attribute();
+import java.util.List;
 
-    Operator comparison();
+public interface CompositeRestriction<T> extends Restriction<T> {
+    boolean isNegated();
 
     @Override
-    BasicRestriction<T> negate();
+    CompositeRestriction<T> negate();
 
-    Object value();
+    List<Restriction<T>> restrictions();
+
+    Type type();
+
+    enum Type {
+        ALL,
+        ANY
+    }
 }

@@ -15,7 +15,7 @@
  *
  *  SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data;
+package jakarta.data.metamodel.restrict;
 
 // Internal implementation class.
 // The proper way for users to obtain instances is via

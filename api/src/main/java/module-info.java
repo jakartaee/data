@@ -1069,6 +1069,7 @@ module jakarta.data {
     exports jakarta.data;
     exports jakarta.data.metamodel;
     exports jakarta.data.metamodel.impl;
+    exports jakarta.data.metamodel.restrict;
     exports jakarta.data.page;
     exports jakarta.data.page.impl;
     exports jakarta.data.repository;
