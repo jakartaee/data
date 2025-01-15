@@ -846,7 +846,7 @@ import java.util.Set;
  *
  * <h2>Returning subsets of entity attributes</h2>
  *
- * <p>In addition to retrieving results that are entities, repository find methds
+ * <p>In addition to retrieving results that are entities, repository find methods
  * can be written to retrieve single entity attribute results, as well as
  * multiple entity attribute results (represented as a Java record).</p>
  *
