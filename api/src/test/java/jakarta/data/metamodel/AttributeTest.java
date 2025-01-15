@@ -20,9 +20,9 @@ package jakarta.data.metamodel;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
 
-import jakarta.data.restrict.BasicRestriction;
-import jakarta.data.restrict.Operator;
-import jakarta.data.restrict.Restriction;
+import jakarta.data.metamodel.restrict.BasicRestriction;
+import jakarta.data.metamodel.restrict.Operator;
+import jakarta.data.metamodel.restrict.Restriction;
 
 import java.util.Set;
 

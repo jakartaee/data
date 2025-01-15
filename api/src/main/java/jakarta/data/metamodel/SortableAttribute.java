@@ -18,8 +18,8 @@
 package jakarta.data.metamodel;
 
 import jakarta.data.Sort;
-import jakarta.data.restrict.Restrict;
-import jakarta.data.restrict.Restriction;
+import jakarta.data.metamodel.restrict.Restrict;
+import jakarta.data.metamodel.restrict.Restriction;
 
 /**
  * Represents a sortable entity attribute in the {@link StaticMetamodel}.

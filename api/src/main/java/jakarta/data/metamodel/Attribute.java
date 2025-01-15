@@ -19,8 +19,8 @@ package jakarta.data.metamodel;
 
 import java.util.Set;
 
-import jakarta.data.restrict.Restrict;
-import jakarta.data.restrict.Restriction;
+import jakarta.data.metamodel.restrict.Restrict;
+import jakarta.data.metamodel.restrict.Restriction;
 
 /**
  * Represents an entity attribute in the {@link StaticMetamodel}.

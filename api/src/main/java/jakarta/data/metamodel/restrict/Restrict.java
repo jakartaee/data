@@ -15,7 +15,7 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.restrict;
+package jakarta.data.metamodel.restrict;
 
 import java.util.List;
 import java.util.Objects;

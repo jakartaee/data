@@ -15,8 +15,22 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.restrict;
+package jakarta.data.metamodel.restrict;
 
-public interface Restriction<T> {
-    Restriction<T> negate();
+import java.util.List;
+
+public interface CompositeRestriction<T> extends Restriction<T> {
+    boolean isNegated();
+
+    @Override
+    CompositeRestriction<T> negate();
+
+    List<Restriction<T>> restrictions();
+
+    Type type();
+
+    enum Type {
+        ALL,
+        ANY
+    }
 }

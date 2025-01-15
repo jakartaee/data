@@ -18,8 +18,8 @@
 package jakarta.data.metamodel;
 
 import jakarta.data.Sort;
-import jakarta.data.restrict.Operator;
-import jakarta.data.restrict.TextRestriction;
+import jakarta.data.metamodel.restrict.Operator;
+import jakarta.data.metamodel.restrict.TextRestriction;
 
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
