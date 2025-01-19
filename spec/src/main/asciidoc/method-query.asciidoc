@@ -334,6 +334,23 @@ List<Product> findByNameLikeAndYearMadeBetweenAndPriceLessThan(String namePatter
                                                                Order<Product> sortBy)
 ----
 
+[WARNING]
+====
+When using NoSQL databases, support for the listed method conditions may vary significantly:
+
+- **Textual Conditions**: Operators such as `Contains`, `EndsWith`, `IgnoreCase`, `Like`, and `StartsWith` depend on text processing capabilities, which are not guaranteed in NoSQL databases. The ability to handle these operations varies widely and depends on the database's support for text-based queries.
+
+- **Null Conditions**: Handling of `Null` values differs across NoSQL databases. In schemaless databases, a field's absence is often treated as non-existent rather than `Null`. This distinction can affect query behavior, as some databases may not support `Null` checks or may interpret them differently. The specification does not define how `Null` and non-existent fields are handled, as this behavior is database-specific.
+
+- **Key-Value Databases**: These databases typically only support the `=` (equals) condition, where the attribute is the key. The key attribute is generally defined by annotations like `jakarta.nosql.Id`.
+
+- **Wide-Column Databases**: These databases might not support conditions on attributes other than the key. When they support such operations, the attribute may need to be configured as a secondary index for compatibility. Handling of `Null` values may vary, as some wide-column stores may treat missing columns as `Null`, while others may not store the column at all.
+
+- **Document and Graph Databases**: These databases are generally more feature-rich and are expected to support most of the conditions described above. However, exceptions exist for text-based conditions (`Contains`, `EndsWith`, etc.), which may still depend on the database's specific capabilities. Similarly, handling of `Null` values in these databases may vary, especially when dealing with omitted fields versus explicitly set `Null` values.
+
+Developers are encouraged to consult the documentation of their chosen NoSQL database provider to confirm the supported operations and clarify the behavior of `Null` versus non-existent fields.
+====
+
 === Return Types
 
 The return type of a Query by Method Name is determined as indicated in the following table, where `E` is the queried entity type.
