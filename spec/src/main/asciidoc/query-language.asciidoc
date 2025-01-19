@@ -283,7 +283,7 @@ NOTE: Portability is maximized when Jakarta Data providers interpret equality an
 ====
 When using NoSQL databases, there are limitations to the support of equality and inequality operators:
 
-1. **Key-Value Databases**: Most key-value database providers work by querying only with the key. These providers will support only equality conditions where the field is the key. There is no guarantee that key-value database providers will support any other condition.
+1. **Key-Value Databases**: Most key-value database providers work by querying only with the key. These providers will support only equality conditions where the attribute is the key, which will be defined by an annotation, such as, `jakarta.nosql.Id`. There is no guarantee that key-value database providers will support any other condition.
 
 2. **Wide-Column Databases**: Wide-column databases may not support all equality and inequality operations. Additionally, these operations typically work only with the ID field by default. To make other fields compatible with these operations, they need to be configured as secondary indexes in the database schema.
 
