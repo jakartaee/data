@@ -279,6 +279,17 @@ The operands of an equality or inequality operator must have the same type.
 
 NOTE: Portability is maximized when Jakarta Data providers interpret equality and inequality operators in a manner consistent with the implementation of `Object.equals()` or `Comparable.compareTo()` for the assigned Java type.
 
+[WARNING]
+====
+When using NoSQL databases, there are limitations to the support of equality and inequality operators:
+
+1. **Key-Value Databases**: Most key-value database providers work by querying only with the key. These providers will support only equality conditions where the field is the key. There is no guarantee that key-value database providers will support any other condition.
+
+2. **Wide-Column Databases**: Wide-column databases may not support all equality and inequality operations. Additionally, these operations typically work only with the ID field by default. To make other fields compatible with these operations, they need to be configured as secondary indexes in the database schema.
+
+3. **Graph and Document Databases**: Given their more robust querying capabilities, these databases are expected to support all equality and inequality operators as specified.
+====
+
 ==== Ordering
 
 Every <<Basic Types,basic type>> can, in principle, be equipped with a total order. An order for a type determines the result of inequality comparisons, and the effect of the <<Order clause>>.
