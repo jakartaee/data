@@ -128,6 +128,25 @@ The order is lexicographic, that is, ordered pairs occurring earlier take preced
 
 If no order is specified, the records are not sorted.
 
+[WARNING]
+====
+When using NoSQL databases, sorting support varies by database type:
+
+- **Key-Value Databases**: Sorting is not supported for any fields. Queries are limited to operations on key attributes.
+
+- **Wide-Column Databases**: Sorting support may vary by provider. In general, sorting is not natively supported. When sorting is available, it is typically limited to:
+- The key attribute, defined by an annotation such as `jakarta.nosql.Id`.
+- Fields that are indexed as secondary indexes.
+
+- **Graph and Document Databases**: Sorting is generally supported, especially for single fields. However, behavior for compound sorting (sorting by multiple fields) may vary due to:
+- Potential instability with tied values, where sorting results for equivalent values may differ across queries.
+- Schema flexibility and mixed data types, which may affect consistent sorting behavior.
+- Dependence on indexes and internal storage order, requiring proper indexing to ensure predictable sorting.
+- The distributed nature of sharded clusters, where sorting across shards may introduce additional complexity.
+
+====
+
+
 === Example query methods
 
 The following table displays some examples of legal method signatures.
