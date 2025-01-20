@@ -308,6 +308,25 @@ For other types, there is at least some freedom in the choice of order. Usually,
 
 - This specification does not define an order for UUID values, which is provider-dependent.
 
+[WARNING]
+====
+When using NoSQL databases, sorting support varies by database type:
+
+- **Key-Value Databases**: Sorting is not supported for any fields. Queries are limited to operations on key attributes.
+
+- **Wide-Column Databases**: Sorting support may vary by provider. In general, sorting is not natively supported. When sorting is available, it is typically limited to:
+- The key attribute, defined by an annotation such as `jakarta.nosql.Id`.
+- Fields that are indexed as secondary indexes.
+
+- **Graph and Document Databases**: Sorting is generally supported, especially for single fields. However, behavior for compound sorting (sorting by multiple fields) may vary due to:
+- Potential instability with tied values, where sorting results for equivalent values may differ across queries.
+- Schema flexibility and mixed data types, which may affect consistent sorting behavior.
+- Dependence on indexes and internal storage order, requiring proper indexing to ensure predictable sorting.
+- The distributed nature of sharded clusters, where sorting across shards may introduce additional complexity.
+
+====
+
+
 ==== Logical operators
 
 The logical operators are `and`, `or`, and `not`.
@@ -321,6 +340,17 @@ This specification leaves undefined the interpretation of the `not` operator whe
 CAUTION: A compliant implementation of JDQL might feature SQL/JPQL-style ternary logic, where `not n > 0` is an unsatisfied logical expression when `n` evaluates to null, or it might feature binary logic where the same expression is considered satisfied. Application programmers should take great care when using the `not` operator with scalar expressions involving `null` values.
 
 Syntactically, logical operators are parsed with lower precedence than <<Equality and inequality operators,equality and inequality operators>> and other <<Conditional expressions,conditional expressions listed above>>. The `not` operator has higher precedence than `and` and `or`. The `and` operator has higher precedence than `or`.
+
+[WARNING]
+====
+When using NoSQL databases, the support for restrictions varies depending on the database type:
+
+- **Key-Value Databases**: These databases will not support the described restrictions. Queries in key-value databases are typically limited to operations using the key attribute only.
+- **Wide-Column Databases**: Wide-column databases typically support only the `AND` operator for conditions, primarily focusing on the key attribute annotated with `jakarta.nosql.Id`. Non-key attributes can be used if they are indexed as secondary indexes, which is important for compatibility, although support varies by database provider.
+- **Graph and Document Databases**: These databases are expected to support all the restrictions described in this section. However, precedence between `And` and `Or` operators is not guaranteed unlike relational databases. The behavior of precedence may vary significantly based on the NoSQL provider.
+
+====
+
 
 === Clauses
 
