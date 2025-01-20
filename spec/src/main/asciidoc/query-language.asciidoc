@@ -51,6 +51,20 @@ The character sequences `+`, `-`, `*`, `/`, `||`, `=`, `<`, `>`, `<>`, `&lt;=`, 
 
 The characters `(`, `)`, and `,` are _punctuation characters_.
 
+[WARNING]
+====
+When working with NoSQL databases, the support for arithmetic operations and the use of punctuation characters like parentheses for precedence may vary significantly:
+
+- **Key-Value Databases**: Arithmetic operations (`+`, `-`, `*`, `/`) are not supported. These databases are designed for simple key-based lookups and lack query capabilities for complex operations.
+
+- **Wide-Column Databases**: Arithmetic operations are generally unsupported or limited due to the reduced query capabilities of wide-column databases compared to relational, document, or graph databases. Additionally, attributes may require secondary indexing for even basic querying.
+
+- **Document and Graph Databases**: These databases typically support arithmetic operations and punctuation characters for precedence. However, the exact behavior and extent of support can vary significantly between providers.
+
+Due to the diversity of NoSQL database types and their querying capabilities, there is no guarantee that all NoSQL providers will support punctuation characters such as parentheses `(`, `)` for defining operation precedence. It is recommended to consult your NoSQL provider's documentation to confirm the supported query features and their behavior.
+====
+
+
 ==== String literals
 
 A _literal string_ is a character sequence quoted using the character `'`.
