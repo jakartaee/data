@@ -108,6 +108,18 @@ Absence of an operator implies the equality condition.
 
 The conditions belonging to the restriction determine the parameters of the method, as specified below in <<Query by Method Name Conditions>>.
 
+[WARNING]
+====
+When using NoSQL databases, the support for restrictions varies depending on the database type:
+
+- **Key-Value Databases**: These databases will not support the described restrictions. Queries in key-value databases are typically limited to operations using the key attribute only.
+
+- **Wide-Column Databases**: Wide-column databases typically support only the `AND` operator for conditions, primarily focusing on the key attribute annotated with `jakarta.nosql.Id`. Non-key attributes can be used if they are indexed as secondary indexes, which is important for compatibility, although support varies by database provider.
+
+- **Graph and Document Databases**: These databases are expected to support all the restrictions described in this section. However, precedence between `And` and `Or` operators is not guaranteed unlike relational databases. The behavior of precedence may vary significantly based on the NoSQL provider.
+
+====
+
 === Orders
 
 A `find` query may have an _order_. The _order_ specifies how records must be sorted. It is formed by concatenating `OrderBy` with one or more ordered pairs of an entity attribute name and a direction of sorting, `Asc` or `Desc`. The direction may be omitted if there is only one entity attribute, in which case `Asc` is implied.
