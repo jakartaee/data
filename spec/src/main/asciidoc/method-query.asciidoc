@@ -399,6 +399,18 @@ The return type of a Query by Method Name is determined as indicated in the foll
 | `find` accepting a `PageRequest` | `Page<E>` or `CursoredPage<E>` | For use with pagination
 |===
 
+[WARNING]
+====
+When working with NoSQL databases, the `count` operation may not be supported, depending on the database structure and capabilities:
+
+- **Key-Value Databases**: In general, the majority of Key-Value databases do not support counting. Their design focuses on retrieving values by keys rather than aggregating data.
+
+- **Other NoSQL Databases**: Support for the `count` operation varies significantly:
+- **Wide-Column Databases**: Counting might require additional configurations, such as enabling secondary indexes or performing costly full table scans, which can affect performance.
+- **Graph and Document Databases**: These databases typically support counting, though performance may vary based on factors like indexing and query complexity.
+
+====
+
 
 === Persistent Attribute Names in Query by Method Name
 
