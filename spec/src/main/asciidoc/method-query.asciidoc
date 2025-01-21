@@ -373,7 +373,7 @@ When using NoSQL databases, support for the listed method conditions may vary si
 
 - **Key-Value Databases**: These databases typically only support the `=` (equals) condition, where the attribute is the key. The key attribute is generally defined by annotations like `jakarta.nosql.Id`.
 
-- **Wide-Column Databases**: These databases might not support conditions on attributes other than the key. The attribute may need to be configured as a secondary index for compatibility when they support such operations. Handling of `Null` values may vary, as some wide-column stores may treat missing columns as `Null`, while others may not store the column at all.
+- **Wide-Column Databases**: Support for restrictions on attributes other than the `Id` attribute is not required. Some databases might allow support for restrictions on other entity attributes if a secondary index is configured. Handling of `Null` values is not required to be supported and might vary in behavior because some wide-column stores might treat missing columns as `Null`, while others might not store the column at all.
 
 - **Document and Graph Databases**: These databases are generally more feature-rich and are expected to support most of the conditions described above. However, exceptions exist for text-based conditions (`Contains`, `EndsWith`, etc.), which may still depend on the database's specific capabilities. Similarly, handling of `Null` values in these databases may vary, especially when dealing with omitted fields versus explicitly set `Null` values.
 
