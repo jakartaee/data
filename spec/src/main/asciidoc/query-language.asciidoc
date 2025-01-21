@@ -301,7 +301,7 @@ When using NoSQL databases, there are limitations to the support of equality and
 
 2. **Wide-Column Databases**: Support for equality restriction and the inequality restriction on the `Id` attribute is required. Support for restrictions on other entity attributes is not required. These operations typically work only with the `Id` by default but might be compatible for other entity attributes if secondary indexes are configured in the database schema.
 
-3. **Graph and Document Databases**: Given their more robust querying capabilities, these databases are expected to support all equality and inequality operators as specified.
+3. **Graph and Document Databases**: Support for all equality and inequality operators is required.
 ====
 
 ==== Ordering
