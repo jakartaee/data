@@ -114,7 +114,7 @@ When using NoSQL databases, the support for restrictions varies depending on the
 
 - **Key-Value Databases**: Support for the equals restriction and the `Not` restriction is required for the `Id` attribute. There is no requirement to support other types of restrictions, the `And` and `Or` keywords, or restrictions on other entity attributes. Queries in key-value databases are typically limited to operations using the `Id` attribute only.
 - **Wide-Column Databases**: Wide-column databases must support the `AND` operator but are not required to support the `Or` operator. Restrictions must be supported for the key attribute that is annotated with `jakarta.nosql.Id`. Support for restrictions on other attributes is not required. Typically they can be used if they are indexed as secondary indexes, although support varies by database provider.
-- **Graph and Document Databases**: These databases are expected to support all the restrictions described in this section. However, precedence between `And` and `Or` operators is not guaranteed unlike relational databases. The behavior of precedence may vary significantly based on the NoSQL provider.
+- **Graph and Document Databases**: The `And` and `Or` keywords and all of the restrictions described in this section must be supported. Precedence between `And` and `Or` operators is not guaranteed and may vary significantly based on the NoSQL provider.
 
 ====
 
