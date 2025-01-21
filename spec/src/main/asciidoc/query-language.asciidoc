@@ -326,7 +326,7 @@ For other types, there is at least some freedom in the choice of order. Usually,
 ====
 When using NoSQL databases, sorting support varies by database type:
 
-- **Key-Value Databases**: Sorting is not supported for any fields. Queries are limited to operations on key attributes.
+- **Key-Value Databases**: Sorting of results is not supported.
 
 - **Wide-Column Databases**: Sorting support may vary by provider. In general, sorting is not natively supported. When sorting is available, it is typically limited to:
 - The key attribute, defined by an annotation such as `jakarta.nosql.Id`.
