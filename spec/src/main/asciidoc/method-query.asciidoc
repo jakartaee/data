@@ -375,7 +375,7 @@ When using NoSQL databases, support for the listed method conditions may vary si
 
 - **Wide-Column Databases**: Support for restrictions on attributes other than the `Id` attribute is not required. Some databases might allow support for restrictions on other entity attributes if a secondary index is configured. Handling of `Null` values is not required to be supported and might vary in behavior because some wide-column stores might treat missing columns as `Null`, while others might not store the column at all.
 
-- **Document and Graph Databases**: These databases are generally more feature-rich and are expected to support most of the conditions described above. However, exceptions exist for text-based conditions (`Contains`, `EndsWith`, etc.), which may still depend on the database's specific capabilities. Similarly, handling of `Null` values in these databases may vary, especially when dealing with omitted fields versus explicitly set `Null` values.
+- **Document and Graph Databases**: These databases are generally more feature-rich. Support for the `Contains`, `EndsWith`, `IgnoreCase`, `Like`, and `StartsWith` restrictions is not required. Similarly, `Null` values are not required to be supported. Handling of `Null` in these databases may vary, especially when dealing with omitted fields versus explicitly set `Null` values.
 
 Developers are encouraged to consult the documentation of their chosen NoSQL database provider to confirm the supported operations and clarify the behavior of `Null` versus non-existent fields.
 ====
