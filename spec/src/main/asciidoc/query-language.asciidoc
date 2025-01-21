@@ -57,7 +57,7 @@ When working with NoSQL databases, the support for arithmetic operations and the
 
 - **Key-Value Databases**: Arithmetic operations (`+`, `-`, `*`, `/`) are not supported. These databases are designed for simple key-based lookups and lack query capabilities for complex operations.
 
-- **Wide-Column Databases**: Arithmetic operations are generally unsupported or limited due to the reduced query capabilities of wide-column databases compared to relational, document, or graph databases. Additionally, attributes may require secondary indexing for even basic querying.
+- **Wide-Column Databases**: Arithmetic operations are not required to be supported. Some wide-column databases might offer limited support, which might require secondary indexing even for basic querying.
 
 - **Document and Graph Databases**: These databases typically support arithmetic operations and punctuation characters for precedence. However, the exact behavior and extent of support can vary significantly between providers.
 
