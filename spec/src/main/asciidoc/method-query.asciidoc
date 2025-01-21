@@ -371,7 +371,7 @@ When using NoSQL databases, support for the listed method conditions may vary si
 
 - **Null Conditions**: The handling of `Null` values differs across NoSQL databases. In schemaless databases, a field's absence is often treated as non-existent rather than `Null`. This distinction can affect query behavior because some databases might not support `Null` checks or might interpret them differently. This specification does not make any requirements on how `Null` and non-existent fields are handled for Key-Value, Wide-Column, Document and Graph databases.
 
-- **Key-Value Databases**: These databases typically only support the `=` (equals) condition, where the attribute is the key. The key attribute is generally defined by annotations like `jakarta.nosql.Id`.
+- **Key-Value Databases**: Support is required for the `=` (equals) restriction when the attribute is the key. The key attribute is defined by `jakarta.nosql.Id`.
 
 - **Wide-Column Databases**: Support for restrictions on attributes other than the `Id` attribute is not required. Some databases might allow support for restrictions on other entity attributes if a secondary index is configured. Handling of `Null` values is not required to be supported and might vary in behavior because some wide-column stores might treat missing columns as `Null`, while others might not store the column at all.
 
