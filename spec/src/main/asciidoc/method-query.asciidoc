@@ -369,7 +369,7 @@ When using NoSQL databases, support for the listed method conditions may vary si
 
 - **Textual Conditions**: The `Contains`, `EndsWith`, `IgnoreCase`, `Like`, and `StartsWith` restrictions depend on text processing capabilities and are not required to be supported by Key-Value, Wide-Column, Document and Graph databases. The ability to handle these operations varies widely and depends on the database's support for text-based queries.
 
-- **Null Conditions**: The handling of `Null` values differs across NoSQL databases. In schemaless databases, a field's absence is often treated as non-existent rather than `Null`. This distinction can affect query behavior, as some databases may not support `Null` checks or may interpret them differently. The specification does not define how `Null` and non-existent fields are handled, as this behavior is database-specific.
+- **Null Conditions**: The handling of `Null` values differs across NoSQL databases. In schemaless databases, a field's absence is often treated as non-existent rather than `Null`. This distinction can affect query behavior because some databases might not support `Null` checks or might interpret them differently. This specification does not make any requirements on how `Null` and non-existent fields are handled for Key-Value, Wide-Column, Document and Graph databases.
 
 - **Key-Value Databases**: These databases typically only support the `=` (equals) condition, where the attribute is the key. The key attribute is generally defined by annotations like `jakarta.nosql.Id`.
 
