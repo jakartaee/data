@@ -132,9 +132,9 @@ When using NoSQL databases, sorting support varies by database type:
 
 - **Key-Value Databases**: Support for sorting of results is not required.
 
-- **Wide-Column Databases**: Sorting support may vary by provider. In general, sorting is not natively supported. When sorting is available, it is typically limited to:
-- The key attribute, defined by an annotation such as `jakarta.nosql.Id`.
-- Fields that are indexed as secondary indexes.
+- **Wide-Column Databases**: Support for sorting of results is not required. In general, sorting is not natively supported. When sorting is available, it is typically limited to:
+  * The key attribute, defined by an annotation such as `jakarta.nosql.Id`.
+  * Fields that are indexed as secondary indexes.
 
 - **Graph and Document Databases**: Sorting is generally supported, especially for single fields. However, behavior for compound sorting (sorting by multiple fields) may vary due to:
 - Potential instability with tied values, where sorting results for equivalent values may differ across queries.
