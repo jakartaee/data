@@ -434,7 +434,7 @@ When working with NoSQL databases, the `select` clause behavior may vary dependi
 
 - **Wide-Column Databases**: The ability to use a `select` clause may depend on the presence of secondary indexes. Without secondary indexes, selection is often restricted to key-based operations. Support for `count(this)` is not required.
 
-- **Graph and Document Databases**: These databases usually support flexible `select` clauses, including path expressions and aggregate functions like `count(this)`. However, performance may vary based on the size and indexing of the dataset.
+- **Graph and Document Databases**: Support for flexible `select` clauses, including path expressions and aggregate functions like `count(this)` is required. Performance might vary based on the size and indexing of the dataset.
 
 For `count(this)` in particular, if the NoSQL datastore does not natively support counting query results, the Jakarta Data provider is encouraged to implement this operation in Java. However, providers are not required to do so. If `count(this)` is unsupported, an `UnsupportedOperationException` must be thrown during query execution, or repository methods using this expression may be rejected at compilation time.
 
