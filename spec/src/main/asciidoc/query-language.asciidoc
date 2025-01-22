@@ -432,7 +432,7 @@ When working with NoSQL databases, the `select` clause behavior may vary dependi
 
 - **Key-Value Databases**: These databases generally do not support `select` clauses beyond retrieving values by their keys. Support for complex path expressions and aggregate functions like `count(this)` is not required.
 
-- **Wide-Column Databases**: The ability to use a `select` clause may depend on the presence of secondary indexes. Without secondary indexes, selection is often restricted to key-based operations.
+- **Wide-Column Databases**: The ability to use a `select` clause may depend on the presence of secondary indexes. Without secondary indexes, selection is often restricted to key-based operations. Support for `count(this)` is not required.
 
 - **Graph and Document Databases**: These databases usually support flexible `select` clauses, including path expressions and aggregate functions like `count(this)`. However, performance may vary based on the size and indexing of the dataset.
 
