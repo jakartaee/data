@@ -419,7 +419,7 @@ public class EntityTests {
         } catch (UnsupportedOperationException x) {
             if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
                 // Column and Key-Value databases might not be capable of sorting.
-                // Key-Value databases might not be capable of And.
+                // Column and Key-Value databases might not be capable of And.
                 // Key-Value databases might not be capable of LessThanEqual.
                 return;
             } else {
@@ -490,7 +490,7 @@ public class EntityTests {
         } catch (UnsupportedOperationException e) {
             if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
                 // NoSQL databases might not be capable of Contains.
-                // Key-Value databases might not be capable of And.
+                // Column and Key-Value databases might not be capable of And.
                 return;
             } else {
                 throw e;
@@ -514,8 +514,8 @@ public class EntityTests {
             assertEquals("7f", del.getHexadecimal());
             assertEquals(true, del.isControl());
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
-                // Key-Value databases might not be capable of And.
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable of And.
                 // Key-Value databases might not be capable of Between.
                 // Key-Value databases might not be capable of True/False comparison.
             } else {
@@ -627,8 +627,8 @@ public class EntityTests {
         try {
             even = positives.findByIsOddFalseAndIdBetween(50L, 60L);
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
-                // Key-Value databases might not be capable of And.
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable of And.
                 // Key-Value databases might not be capable of Between.
                 // Key-Value databases might not be capable of True/False comparison.
                 return;
@@ -715,7 +715,7 @@ public class EntityTests {
         } catch (UnsupportedOperationException x) {
             if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
                 // Column and Key-Value databases might not be capable of sorting.
-                // Key-Value databases might not be capable of And.
+                // Column and Key-Value databases might not be capable of And.
                 // Key-Value databases might not be capable of LessThanEqual.
                 return;
             } else {
@@ -791,7 +791,7 @@ public class EntityTests {
             if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
                 // NoSQL databases might not be capable of StartsWith.
                 // Column and Key-Value databases might not be capable of sorting.
-                // Key-Value databases might not be capable of And.
+                // Column and Key-Value databases might not be capable of And.
                return;
             } else {
                 throw e;
@@ -818,7 +818,7 @@ public class EntityTests {
             if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
                 // NoSQL databases might not be capable of EndsWith.
                 // Column and Key-Value databases might not be capable of sorting.
-                // Key-Value databases might not be capable of And.
+                // Column and Key-Value databases might not be capable of And.
                 return;
             } else {
                 throw e;
@@ -972,7 +972,7 @@ public class EntityTests {
             // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
             // is not capable of cursor-based pagination.
             // Column and Key-Value databases might not be capable of sorting.
-            // Key-Value databases might not be capable of And.
+            // Column and Key-Value databases might not be capable of And.
             return;
         }
 
@@ -1107,7 +1107,7 @@ public class EntityTests {
         } catch (UnsupportedOperationException x) {
             if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
                 // Column and Key-Value databases might not be capable of sorting.
-                // Key-Value databases might not be capable of And.
+                // Column and Key-Value databases might not be capable of And.
                 // Key-value databases might not be capable of LessThanEqual.
                 return;
             } else {
@@ -1202,11 +1202,11 @@ public class EntityTests {
         } catch (UnsupportedOperationException x) {
             if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
                 // NoSQL databases might not be capable of IgnoreCase
-                // Key-Value databases might not be capable of And.
+                // Column and Key-Value databases might not be capable of And.
                 // Key-Value databases might not be capable of Between.
                 // Column and Key-Value databases might not be capable of In
-                // Column and Key-Value databases might not be capable of sorting.
                 // when used with entity attributes other than the Id.
+                // Column and Key-Value databases might not be capable of sorting.
                 return;
             } else {
                 throw x;
@@ -1255,7 +1255,7 @@ public class EntityTests {
             // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
             // is not capable of cursor-based pagination.
             // Column and Key-Value databases might not be capable of sorting.
-            // Key-Value databases might not be capable of And.
+            // Column and Key-Value databases might not be capable of And.
             return;
         }
 
@@ -1318,7 +1318,7 @@ public class EntityTests {
             // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
             // is not capable of cursor-based pagination.
             // Column and Key-Value databases might not be capable of sorting.
-            // Key-Value databases might not be capable of And.
+            // Column and Key-Value databases might not be capable of And.
             return;
         }
 
@@ -1367,7 +1367,7 @@ public class EntityTests {
             // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
             // is not capable of cursor-based pagination.
             // Column and Key-Value databases might not be capable of sorting.
-            // Key-Value databases might not be capable of And.
+            // Column and Key-Value databases might not be capable of And.
             return;
         }
 
@@ -1534,8 +1534,10 @@ public class EntityTests {
         try {
             two = numbers.two().orElseThrow();
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
-                return; // Key-Value databases are not capable of JDQL TRUE/FALSE
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable of JDQL AND
+                // Key-Value databases might not be capable of JDQL TRUE/FALSE
+                return;
             } else {
                 throw x;
             }
@@ -1552,9 +1554,9 @@ public class EntityTests {
         try {
             assertEquals(24, characters.twentyFour());
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
-                // Key-Value databases are not capable of <= in JDQL.
-                // Key-Value databases might not be capable of JDQL AND.
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Key-Value databases might not be capable of <= in JDQL.
+                // Column and Key-Value databases might not be capable of JDQL AND.
                 return;
             } else {
                 throw x;
@@ -1573,7 +1575,7 @@ public class EntityTests {
                                          .collect(Collectors.toList()));
         } catch (UnsupportedOperationException x) {
             if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
-                // Key-Value databases might not be capable of JDQL AND.
+                // Column and Key-Value databases might not be capable of JDQL AND.
                 // Column and Key-Value databases might not be capable of JDQL IN
                 // when used with entity attributes other than the Id.
                 return;
@@ -1589,9 +1591,10 @@ public class EntityTests {
         try {
             page1 = numbers.oddsFrom21To(40L, PageRequest.ofSize(5));
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
-                // Key-Value databases are not capable of JDQL BETWEEN
-                // Key-Value databases are not capable of JDQL TRUE/FALSE
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable of JDQL AND
+                // Key-Value databases might not be capable of JDQL BETWEEN
+                // Key-Value databases might not be capable of JDQL TRUE/FALSE
                 return;
             } else {
                 throw x;
@@ -1663,8 +1666,8 @@ public class EntityTests {
             x.printStackTrace(System.out);
             // test passes
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
-                // Key-Value databases might not be capable of And.
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable of And.
                 // Key-Value databases might not be capable of Between.
                 // Key-Value databases might not be capable of True/False comparison.
                 return;
@@ -1871,7 +1874,7 @@ public class EntityTests {
         } catch (UnsupportedOperationException x) {
             if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
                 // NoSQL databases might not be capable of Like
-                // Key-Value databases might not be capable of And.
+                // Column and Key-Value databases might not be capable of And.
                 // Key-Value databases might not be capable of Between.
                 return;
             } else {
@@ -1893,7 +1896,7 @@ public class EntityTests {
         } catch (UnsupportedOperationException x) {
             if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
                 // NoSQL databases might not be capable of Contains.
-                // Key-Value databases might not be capable of And.
+                // Column and Key-Value databases might not be capable of And.
                 return;
             } else {
                 throw x;
@@ -1992,7 +1995,7 @@ public class EntityTests {
                 // Document, Column, and Key-Value databases might not be capable of parentheses.
                 // Column and Key-Value databases might not be capable of JDQL OR.
                 // Key-Value databases might not be capable of < in JDQL.
-                // Key-Value databases might not be capable of JDQL AND.
+                // Column and Key-Value databases might not be capable of JDQL AND.
                 return;
             } else {
                 throw x;
@@ -2029,7 +2032,7 @@ public class EntityTests {
         } catch (UnsupportedOperationException x) {
             if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
                 // Column and Key-Value databases might not be capable of sorting.
-                // Key-Value databases might not be capable of And.
+                // Column and Key-Value databases might not be capable of And.
                 // Key-Value databases might not be capable of LessThanEqual.
                 return;
             } else {
@@ -2132,7 +2135,7 @@ public class EntityTests {
             if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
                 // NoSQL databases might not be capable of EndsWith.
                 // Column and Key-Value databases might not be capable of sorting.
-                // Key-Value databases might not be capable of And.
+                // Column and Key-Value databases might not be capable of And.
                 // Key-Value databases might not be capable of GreaterThanEqual.
                 return;
             } else {
@@ -2161,7 +2164,7 @@ public class EntityTests {
             if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
                 // NoSQL databases might not be capable of EndsWith.
                 // Column and Key-Value databases might not be capable of sorting.
-                // Key-Value databases might not be capable of And.
+                // Column and Key-Value databases might not be capable of And.
                 // Key-Value databases might not be capable of GreaterThanEqual.
                 return;
             } else {
@@ -2181,8 +2184,8 @@ public class EntityTests {
             chars = characters.findByNumericValueLessThanEqualAndNumericValueGreaterThanEqual(
                     109, 101);
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
-                // Key-Value databases might not be capable of And.
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable of And.
                 // Key-Value databases might not be capable of GTE/LTE.
                 return;
             } else {
@@ -2287,7 +2290,7 @@ public class EntityTests {
         } catch (UnsupportedOperationException x) {
             if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
                 // Column and Key-Value databases might not be capable of sorting.
-                // Key-Value databases might not be capable of And.
+                // Column and Key-Value databases might not be capable of And.
                 // Key-Value databases might not be capable of LessThanEqual.
                 return;
             } else {
@@ -2319,8 +2322,8 @@ public class EntityTests {
         try {
             odd = positives.findByIsOddTrueAndIdLessThanEqualOrderByIdDesc(10L);
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
-                // Key-Value databases might not be capable of And.
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable of And.
                 // Key-Value databases might not be capable of LessThanEqual.
                 // Key-Value databases might not be capable of True/False comparison.
                 return;
@@ -2442,8 +2445,9 @@ public class EntityTests {
             // Ensure there is no data left over from other tests:
             shared.deleteIfPositive();
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
-                return; // Key-Value databases might not be capable of And.
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable of And.
+                return;
             } else if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH) && TestProperty.delay.isSet()) {
                 // NoSQL databases with eventual consistency might not be capable
                 // of counting removed entities.
@@ -2488,8 +2492,9 @@ public class EntityTests {
         try {
         assertEquals(2, shared.deleteIfPositive());
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
-                return; // Key-Value databases might not be capable of And.
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable of And.
+                return;
             } else if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH) && TestProperty.delay.isSet()) {
                 // NoSQL databases with eventual consistency might not be capable
                 // of counting removed entities.
