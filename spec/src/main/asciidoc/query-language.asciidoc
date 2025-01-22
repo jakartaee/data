@@ -332,11 +332,11 @@ When using NoSQL databases, sorting support varies by database type:
   * The key attribute, defined by an annotation such as `jakarta.nosql.Id`.
   * Fields that are indexed as secondary indexes.
 
-- **Graph and Document Databases**: Sorting is generally supported, especially for single fields. However, behavior for compound sorting (sorting by multiple fields) may vary due to:
-- Potential instability with tied values, where sorting results for equivalent values may differ across queries.
-- Schema flexibility and mixed data types, which may affect consistent sorting behavior.
-- Dependence on indexes and internal storage order, requiring proper indexing to ensure predictable sorting.
-- The distributed nature of sharded clusters, where sorting across shards may introduce additional complexity.
+- **Graph and Document Databases**: Support for sorting by a single entity attribute is required. Support for compound sorting (sorting by multiple entity attributes) is not required and may vary due to:
+  * Potential instability with tied values, where sorting for equivalent values may differ across queries.
+  * Schema flexibility and mixed data types.
+  * Dependence on indexes and internal storage order, requiring proper indexing to ensure predictable sorting.
+  * The distributed nature of sharded clusters, where sorting across shards may introduce additional complexity.
 
 ====
 
