@@ -401,7 +401,7 @@ The return type of a Query by Method Name is determined as indicated in the foll
 
 [WARNING]
 ====
-When working with NoSQL databases, the `count` operation may not be supported, depending on the database structure and capabilities:
+When working with NoSQL databases, the `count` operation might not be supported, depending on the database structure and capabilities:
 
 - **Key-Value Databases**: In general, the majority of Key-Value databases do not support counting. Their design focuses on retrieving values by keys rather than aggregating data.
 
