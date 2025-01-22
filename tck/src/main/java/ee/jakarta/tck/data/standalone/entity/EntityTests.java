@@ -1205,8 +1205,8 @@ public class EntityTests {
                 // Column and Key-Value databases might not be capable of And.
                 // Key-Value databases might not be capable of Between.
                 // Column and Key-Value databases might not be capable of In
-                // Column and Key-Value databases might not be capable of sorting.
                 // when used with entity attributes other than the Id.
+                // Column and Key-Value databases might not be capable of sorting.
                 return;
             } else {
                 throw x;
