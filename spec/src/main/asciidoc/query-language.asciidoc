@@ -359,7 +359,7 @@ Syntactically, logical operators are parsed with lower precedence than <<Equalit
 ====
 When using NoSQL databases, the support for restrictions varies depending on the database type:
 
-- **Key-Value Databases**: These databases will not support the described restrictions. Queries in key-value databases are typically limited to operations using the key attribute only.
+- **Key-Value Databases**: Support for the equality restriction is required for the `Id` attribute. There is no requirement to support other types of restrictions or restrictions on other entity attributes.
 - **Wide-Column Databases**: Wide-column databases are not required to support the `AND` operator or the `OR` operator. Restrictions must be supported for the key attribute that is annotated with `jakarta.nosql.Id`. Support for restrictions on other attributes is not required. Typically they can be used if they are indexed as secondary indexes, although support varies by database provider.
 - **Graph and Document Databases**: The `AND` and `OR` operators and all of the restrictions described in this section must be supported. Precedence between `AND` and `OR` operators is not guaranteed and may vary significantly based on the NoSQL provider.
 
