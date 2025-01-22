@@ -430,7 +430,7 @@ The `select` clause is optional in `select` statements. When it is missing, the 
 ====
 When working with NoSQL databases, the `select` clause behavior may vary depending on the database structure and capabilities:
 
-- **Key-Value Databases**: These databases generally do not support `select` clauses beyond retrieving values by their keys. Complex path expressions or aggregate functions like `count(this)` are typically unsupported.
+- **Key-Value Databases**: These databases generally do not support `select` clauses beyond retrieving values by their keys. Support for complex path expressions and aggregate functions like `count(this)` is not required.
 
 - **Wide-Column Databases**: The ability to use a `select` clause may depend on the presence of secondary indexes. Without secondary indexes, selection is often restricted to key-based operations.
 
