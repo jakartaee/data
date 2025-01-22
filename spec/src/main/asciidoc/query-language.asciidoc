@@ -297,7 +297,7 @@ NOTE: Portability is maximized when Jakarta Data providers interpret equality an
 ====
 When using NoSQL databases, there are limitations to the support of equality and inequality operators:
 
-1. **Key-Value Databases**: Support for equality and inequality restrictions on the key attribute is required. The key attribute is defined by the annotation `jakarta.nosql.Id`. Key-value databases are not required to support any other restrictions.
+1. **Key-Value Databases**: Support for the equality restriction on the key attribute is required. The key attribute is defined by the annotation `jakarta.nosql.Id`. Key-value databases are not required to support any other restrictions.
 
 2. **Wide-Column Databases**: Support for equality restriction and the inequality restriction on the `Id` attribute is required. Support for restrictions on other entity attributes is not required. These operations typically work only with the `Id` by default but might be compatible for other entity attributes if secondary indexes are configured in the database schema.
 
