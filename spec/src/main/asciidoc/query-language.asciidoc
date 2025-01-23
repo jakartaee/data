@@ -53,7 +53,7 @@ The characters `(`, `)`, and `,` are _punctuation characters_.
 
 [WARNING]
 ====
-When working with NoSQL databases, the support for arithmetic operations and the use of punctuation characters like parentheses for precedence may vary significantly:
+When working with NoSQL databases, the support for arithmetic operations and support of parentheses for precedence might vary significantly:
 
 - **Key-Value Databases**: Arithmetic operations (`+`, `-`, `*`, `/`) are not supported. These databases are designed for simple key-based lookups and lack query capabilities for complex operations.
 
