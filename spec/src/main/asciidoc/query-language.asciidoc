@@ -51,6 +51,22 @@ The character sequences `+`, `-`, `*`, `/`, `||`, `=`, `<`, `>`, `<>`, `&lt;=`, 
 
 The characters `(`, `)`, and `,` are _punctuation characters_.
 
+[WARNING]
+====
+When working with NoSQL databases, the support for arithmetic operations and support of parentheses for precedence might vary significantly:
+
+- **Key-Value Databases**: Arithmetic operations (`+`, `-`, `*`, `/`) are not supported. These databases are designed for simple key-based lookups and lack query capabilities for complex operations.
+
+- **Wide-Column Databases**: Arithmetic operations are not required to be supported. Some wide-column databases might offer limited support, which might require secondary indexing even for basic querying.
+
+- **Document Databases**: Support of arithmetic operations and support of parenthesis for precedence are not required, although databases typically offer these capabilities. Behavior and extent of support can vary significantly between providers.
+
+- **Graph Databases**: Support for arithmetic operations and parentheses for precedence are not required but is typically offered by databases. Behavior and extent of support can vary significantly between providers.
+
+Due to the diversity of NoSQL database types and their querying capabilities, there is no guarantee that all NoSQL providers will support punctuation characters such as parentheses `(`, `)` for defining operation precedence. It is recommended to consult your NoSQL provider's documentation to confirm the supported query features and their behavior.
+====
+
+
 ==== String literals
 
 A _literal string_ is a character sequence quoted using the character `'`.
@@ -279,6 +295,17 @@ The operands of an equality or inequality operator must have the same type.
 
 NOTE: Portability is maximized when Jakarta Data providers interpret equality and inequality operators in a manner consistent with the implementation of `Object.equals()` or `Comparable.compareTo()` for the assigned Java type.
 
+[WARNING]
+====
+When using NoSQL databases, there are limitations to the support of equality and inequality operators:
+
+1. **Key-Value Databases**: Support for the equality restriction on the key attribute is required. The key attribute is defined by the annotation `jakarta.nosql.Id`. Key-value databases are not required to support any other restrictions.
+
+2. **Wide-Column Databases**: Support for equality restriction and the inequality restriction on the `Id` attribute is required. Support for restrictions on other entity attributes is not required. These operations typically work only with the `Id` by default but might be compatible for other entity attributes if secondary indexes are configured in the database schema.
+
+3. **Graph and Document Databases**: Support for all equality and inequality operators is required.
+====
+
 ==== Ordering
 
 Every <<Basic Types,basic type>> can, in principle, be equipped with a total order. An order for a type determines the result of inequality comparisons, and the effect of the <<Order clause>>.
@@ -297,6 +324,25 @@ For other types, there is at least some freedom in the choice of order. Usually,
 
 - This specification does not define an order for UUID values, which is provider-dependent.
 
+[WARNING]
+====
+When using NoSQL databases, sorting support varies by database type:
+
+- **Key-Value Databases**: Sorting of results is not supported.
+
+- **Wide-Column Databases**: Support for sorting of results is not required. In general, sorting is not natively supported. When sorting is available, it is typically limited to:
+  * The key attribute, defined by an annotation such as `jakarta.nosql.Id`.
+  * Fields that are indexed as secondary indexes.
+
+- **Graph and Document Databases**: Support for sorting by a single entity attribute is required. Support for compound sorting (sorting by multiple entity attributes) is not required and may vary due to:
+  * Potential instability with tied values, where sorting for equivalent values may differ across queries.
+  * Schema flexibility and mixed data types.
+  * Dependence on indexes and internal storage order, requiring proper indexing to ensure predictable sorting.
+  * The distributed nature of sharded clusters, where sorting across shards may introduce additional complexity.
+
+====
+
+
 ==== Logical operators
 
 The logical operators are `and`, `or`, and `not`.
@@ -310,6 +356,17 @@ This specification leaves undefined the interpretation of the `not` operator whe
 CAUTION: A compliant implementation of JDQL might feature SQL/JPQL-style ternary logic, where `not n > 0` is an unsatisfied logical expression when `n` evaluates to null, or it might feature binary logic where the same expression is considered satisfied. Application programmers should take great care when using the `not` operator with scalar expressions involving `null` values.
 
 Syntactically, logical operators are parsed with lower precedence than <<Equality and inequality operators,equality and inequality operators>> and other <<Conditional expressions,conditional expressions listed above>>. The `not` operator has higher precedence than `and` and `or`. The `and` operator has higher precedence than `or`.
+
+[WARNING]
+====
+When using NoSQL databases, the support for restrictions varies depending on the database type:
+
+- **Key-Value Databases**: Support for the equality restriction is required for the `Id` attribute. There is no requirement to support other types of restrictions or restrictions on other entity attributes.
+- **Wide-Column Databases**: Wide-column databases are not required to support the `AND` operator or the `OR` operator. Restrictions must be supported for the key attribute that is annotated with `jakarta.nosql.Id`. Support for restrictions on other attributes is not required. Typically they can be used if they are indexed as secondary indexes, although support varies by database provider.
+- **Graph and Document Databases**: The `AND` and `OR` operators and all of the restrictions described in this section must be supported. Precedence between `AND` and `OR` operators is not guaranteed and may vary significantly based on the NoSQL provider.
+
+====
+
 
 === Clauses
 
@@ -370,6 +427,22 @@ NOTE: If a datastore does not natively provide the ability to count query result
 If the JDQL implementation does not support `count(this)`, it must throw `UnsupportedOperationException` when this aggregate expression occurs in a query.  Alternatively, the Jakarta Data provider is permitted to reject a repository method declaration at compilation time if its `@Query` annotation uses the unsupported aggregate expression.
 
 The `select` clause is optional in `select` statements. When it is missing, the query returns the queried entity.
+
+[WARNING]
+====
+When working with NoSQL databases, the `select` clause behavior may vary depending on the database structure and capabilities:
+
+- **Key-Value Databases**: These databases generally do not support `select` clauses beyond retrieving values by their keys. Support for complex path expressions and aggregate functions like `count(this)` is not required.
+
+- **Wide-Column Databases**: The ability to use a `select` clause may depend on the presence of secondary indexes. Without secondary indexes, selection is often restricted to key-based operations. Support for `count(this)` is not required.
+
+- **Graph and Document Databases**: Support for flexible `select` clauses, including path expressions and aggregate functions like `count(this)` is required. Performance might vary based on the size and indexing of the dataset.
+
+For `count(this)` in particular, if the NoSQL datastore does not natively support counting query results, the Jakarta Data provider is encouraged to implement this operation in Java. However, providers are not required to do so. If `count(this)` is unsupported, an `UnsupportedOperationException` must be thrown during query execution, or repository methods using this expression may be rejected at compilation time.
+
+It is advisable to review your NoSQL provider's documentation to confirm the support and performance implications of `select` clauses and aggregate functions in your queries.
+====
+
 
 ==== Set clause
 
