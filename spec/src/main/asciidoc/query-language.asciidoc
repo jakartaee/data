@@ -61,7 +61,7 @@ When working with NoSQL databases, the support for arithmetic operations and sup
 
 - **Document Databases**: Support of arithmetic operations and support of parenthesis for precedence are not required, although databases typically offer these capabilities. Behavior and extent of support can vary significantly between providers.
 
-- **Graph Databases**: Support of parentheses for precedence is required. Support for arithmetic operations is not required but is typically offered by databases. Behavior and extent of support can vary significantly between providers.
+- **Graph Databases**: Support for arithmetic operations and parentheses for precedence are not required but is typically offered by databases. Behavior and extent of support can vary significantly between providers.
 
 Due to the diversity of NoSQL database types and their querying capabilities, there is no guarantee that all NoSQL providers will support punctuation characters such as parentheses `(`, `)` for defining operation precedence. It is recommended to consult your NoSQL provider's documentation to confirm the supported query features and their behavior.
 ====
