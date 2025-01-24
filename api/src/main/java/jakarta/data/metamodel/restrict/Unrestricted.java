@@ -19,11 +19,11 @@ package jakarta.data.metamodel.restrict;
 
 import java.util.List;
 
-class EmptyRestriction<T> implements CompositeRestriction<T> {
-    static final EmptyRestriction<?> INSTANCE = new EmptyRestriction<>();
+class Unrestricted<T> implements CompositeRestriction<T> {
+    static final Unrestricted<?> INSTANCE = new Unrestricted<>();
 
     // prevent instantiation by others
-    private EmptyRestriction() {
+    private Unrestricted() {
     }
 
     @Override
@@ -33,7 +33,8 @@ class EmptyRestriction<T> implements CompositeRestriction<T> {
 
     @Override
     public CompositeRestriction<T> negate() {
-        throw new UnsupportedOperationException("Empty restriction cannot be negated.");
+        throw new UnsupportedOperationException(
+                "The absence of restrictions cannot be negated.");
     }
 
     @Override

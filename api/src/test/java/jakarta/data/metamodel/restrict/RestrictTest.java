@@ -61,22 +61,6 @@ class RestrictTest {
     }
 
     @Test
-    void shouldCreateEmptyRestriction() {
-        Restriction<Employee> unrestricted = Restrict.none();
-
-        assertThat(unrestricted).isInstanceOf(EmptyRestriction.class);
-
-        EmptyRestriction<Employee> emptyRestriction =
-                (EmptyRestriction<Employee>) unrestricted;
-
-        SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(emptyRestriction.isNegated()).isEqualTo(false);
-            soft.assertThat(emptyRestriction.restrictions()).isEmpty();
-            soft.assertThat(emptyRestriction.type()).isEqualTo(CompositeRestriction.Type.ALL);
-        });
-    }
-
-    @Test
     void shouldCreateEqualToRestriction() {
         Restriction<Employee> restriction = Restrict.equalTo("value", "attributeName");
 
@@ -188,6 +172,22 @@ class RestrictTest {
     }
 
     @Test
+    void shouldCreateUnrestricted() {
+        Restriction<Employee> restriction = Restrict.unrestricted();
+
+        assertThat(restriction).isInstanceOf(Unrestricted.class);
+
+        Unrestricted<Employee> unrestricted =
+                (Unrestricted<Employee>) restriction;
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(unrestricted.isNegated()).isEqualTo(false);
+            soft.assertThat(unrestricted.restrictions()).isEmpty();
+            soft.assertThat(unrestricted.type()).isEqualTo(CompositeRestriction.Type.ALL);
+        });
+    }
+
+    @Test
     void shouldEscapeToLikePatternCorrectly() {
         String result = Restrict.endsWith("test_value", "attributeName").value();
 
@@ -195,8 +195,8 @@ class RestrictTest {
     }
 
     @Test
-    void shouldSupplyEmptyRestrictionToRepositoryMethod() {
-        this.findByPosition("Software Engineer", Restrict.none());
+    void shouldSupplyUnrestrictedToRepositoryMethod() {
+        this.findByPosition("Software Engineer", Restrict.unrestricted());
     }
 
     @Test
@@ -207,10 +207,10 @@ class RestrictTest {
     }
 
     @Test
-    void shouldThrowExceptionForNegatingEmptyRestriction() {
-        Restriction<Employee> unrestricted = Restrict.none();
+    void shouldThrowExceptionForNegatingUnrestrictedRestriction() {
+        Restriction<Employee> unrestricted = Restrict.unrestricted();
         assertThatThrownBy(() -> unrestricted.negate())
                 .isInstanceOf(UnsupportedOperationException.class)
-                .hasMessage("Empty restriction cannot be negated.");
+                .hasMessage("The absence of restrictions cannot be negated.");
     }
 }

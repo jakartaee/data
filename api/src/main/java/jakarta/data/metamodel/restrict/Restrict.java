@@ -132,11 +132,6 @@ public class Restrict {
         return new TextRestrictionRecord<>(attribute, Operator.LIKE, ESCAPED, p);
     }
 
-    @SuppressWarnings("unchecked")
-    public static final <T> Restriction<T> none() {
-        return (Restriction<T>) EmptyRestriction.INSTANCE;
-    }
-
     // convenience method for those who would prefer to avoid .negate()
     public static <T> Restriction<T> not(Restriction<T> restriction) {
         Objects.requireNonNull(restriction, "Restriction must not be null");
@@ -238,5 +233,10 @@ public class Restrict {
             s.append(STRING_WILDCARD);
         }
         return s.toString();
+    }
+
+    @SuppressWarnings("unchecked")
+    public static final <T> Restriction<T> unrestricted() {
+        return (Restriction<T>) Unrestricted.INSTANCE;
     }
 }
