@@ -19,11 +19,11 @@ package jakarta.data.metamodel.restrict;
 
 import java.util.List;
 
-class Unrestricted<T> implements CompositeRestriction<T> {
-    static final Unrestricted<?> INSTANCE = new Unrestricted<>();
+class Unmatchable<T> implements CompositeRestriction<T> {
+    static final Unmatchable<?> INSTANCE = new Unmatchable<>();
 
     // prevent instantiation by others
-    private Unrestricted() {
+    private Unmatchable() {
     }
 
     @Override
@@ -34,7 +34,7 @@ class Unrestricted<T> implements CompositeRestriction<T> {
     @Override
     @SuppressWarnings("unchecked")
     public CompositeRestriction<T> negate() {
-        return (CompositeRestriction<T>) Unmatchable.INSTANCE;
+        return (CompositeRestriction<T>) Unrestricted.INSTANCE;
     }
 
     @Override
@@ -44,6 +44,6 @@ class Unrestricted<T> implements CompositeRestriction<T> {
 
     @Override
     public Type type() {
-        return Type.ALL;
+        return Type.ANY;
     }
 }

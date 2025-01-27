@@ -172,6 +172,23 @@ class RestrictTest {
     }
 
     @Test
+    void shouldCreateUnmatchableRestrictionWhenNegatingUnrestricted() {
+        Restriction<Employee> restriction = Restrict.unrestricted();
+        Restriction<Employee> negated = restriction.negate();
+
+        assertThat(negated).isInstanceOf(Unmatchable.class);
+
+        Unmatchable<Employee> unmatchable = (Unmatchable<Employee>) negated;
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(unmatchable.isNegated()).isEqualTo(false);
+            soft.assertThat(unmatchable.negate()).isEqualTo(restriction);
+            soft.assertThat(unmatchable.restrictions()).isEmpty();
+            soft.assertThat(unmatchable.type()).isEqualTo(CompositeRestriction.Type.ANY);
+        });
+    }
+
+    @Test
     void shouldCreateUnrestricted() {
         Restriction<Employee> restriction = Restrict.unrestricted();
 
@@ -204,13 +221,5 @@ class RestrictTest {
         assertThatThrownBy(() -> Restrict.like("pattern_value", '_', '_', "attributeName"))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Cannot use the same character (_) for both types of wildcards.");
-    }
-
-    @Test
-    void shouldThrowExceptionForNegatingUnrestrictedRestriction() {
-        Restriction<Employee> unrestricted = Restrict.unrestricted();
-        assertThatThrownBy(() -> unrestricted.negate())
-                .isInstanceOf(UnsupportedOperationException.class)
-                .hasMessage("The absence of restrictions cannot be negated.");
     }
 }
