@@ -135,6 +135,33 @@ Use is subject to <a href="{@docRoot}/doc-files/speclicense.html" target="_top">
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <version>5.1.9</version>
+                <configuration>
+                    <niceManifest>true</niceManifest>
+                    <instructions>
+                        <Bundle-Description>Jakarta Data ${spec.version} API jar</Bundle-Description>
+                        <Bundle-Name>Jakarta Data API jar</Bundle-Name>
+                        <Bundle-SymbolicName>jakarta.data-api</Bundle-SymbolicName>
+                        <Bundle-Version>${spec.version}</Bundle-Version>
+                        <Extension-Name>jakarta.data</Extension-Name>
+                        <Implementation-Version>${project.version}</Implementation-Version>
+                        <Specification-Vendor>Eclipse Foundation</Specification-Vendor>
+                        <Specification-Version>${spec.version}</Specification-Version>
+                    </instructions>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>osgi-manifest</id>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>manifest</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
