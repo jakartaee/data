@@ -21,6 +21,8 @@ package jakarta.data.metamodel.restrict;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
 
+import jakarta.data.metamodel.restrict.BasicRestrictionRecordTest.Book;
+
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 import java.util.List;
@@ -108,6 +110,27 @@ class CompositeRestrictionRecordTest {
             soft.assertThat(anyNegated.isNegated()).isEqualTo(true);
 
             soft.assertThat(anyNotNegated.isNegated()).isEqualTo(false);
+        });
+    }
+
+    @Test
+    void shouldOutputToString() {
+        Restriction<Person> namedJackKarta = Restrict
+                .all(Restrict.equalTo("Jack", "firstName"),
+                     Restrict.equalTo("Karta", "lastName"));
+
+        Restriction<Person> minorOrMissingAge = Restrict
+                .any(Restrict.lessThan(18, "age"),
+                     Restrict.equalTo(null, "name"));
+        Restriction<Person> notMinorOrMissingAge = minorOrMissingAge.negate();
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(namedJackKarta.toString()).isEqualTo("""
+                    ALL (firstName EQUAL "Jack", lastName EQUAL "Karta")\
+                    """);
+            soft.assertThat(notMinorOrMissingAge.toString()).isEqualTo("""
+                    NOT ANY (age LESS_THAN 18, name EQUAL null)\
+                    """);
         });
     }
 

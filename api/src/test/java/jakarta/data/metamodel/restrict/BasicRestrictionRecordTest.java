@@ -109,6 +109,16 @@ class BasicRestrictionRecordTest {
     }
 
     @Test
+    void shouldOutputToString() {
+        Restriction<Book> restriction = Restrict.greaterThan(100, "numPages");
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(restriction.toString())
+                .isEqualTo("numPages GREATER_THAN 100");
+        });
+    }
+
+    @Test
     void shouldSupportNegatedRestrictionUsingDefaultConstructor() {
         BasicRestriction<Book> negatedRestriction =
                 (BasicRestriction<Book>) Restrict.<Book>notEqualTo((Object) "Unknown", "author");
