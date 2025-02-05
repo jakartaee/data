@@ -234,4 +234,9 @@ public class Restrict {
         }
         return s.toString();
     }
+
+    @SuppressWarnings("unchecked")
+    public static final <T> Restriction<T> unrestricted() {
+        return (Restriction<T>) Unrestricted.INSTANCE;
+    }
 }

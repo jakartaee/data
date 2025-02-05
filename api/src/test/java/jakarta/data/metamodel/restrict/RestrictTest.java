@@ -20,19 +20,53 @@ package jakarta.data.metamodel.restrict;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
 
+import jakarta.data.metamodel.SortableAttribute;
+import jakarta.data.metamodel.TextAttribute;
+import jakarta.data.metamodel.impl.SortableAttributeRecord;
+import jakarta.data.metamodel.impl.TextAttributeRecord;
+
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
-class RestrictTest {
+import java.util.List;
 
+class RestrictTest {
+    // Mock static metamodel class for tests
+    interface _Employee {
+        String BADGENUM = "badgeNum";
+        String NAME = "name";
+        String POSITION = "position";
+        String YEARHIRED = "yearHired";
+
+        SortableAttribute<Employee> badgeNum = new SortableAttributeRecord<>(BADGENUM);
+        TextAttribute<Employee> name = new TextAttributeRecord<>(NAME);
+        TextAttribute<Employee> position = new TextAttributeRecord<>(POSITION);
+        SortableAttribute<Employee> yearHired = new SortableAttributeRecord<>(YEARHIRED);
+    }
+
+    // Mock entity class for tests
+    class Employee {
+        int badgeNum;
+        String name;
+        String position;
+        int yearHired;
+    }
+
+    /**
+     * Mock repository method for tests.
+     */
+    List<Employee> findByPosition(String position,
+                                  Restriction<Employee> restriction) {
+        return List.of();
+    }
 
     @Test
     void shouldCreateEqualToRestriction() {
-        Restriction<String> restriction = Restrict.equalTo("value", "attributeName");
+        Restriction<Employee> restriction = Restrict.equalTo("value", "attributeName");
 
         assertThat(restriction).isInstanceOf(TextRestrictionRecord.class);
 
-        TextRestrictionRecord<String> basic = (TextRestrictionRecord<String>) restriction;
+        TextRestrictionRecord<Employee> basic = (TextRestrictionRecord<Employee>) restriction;
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(basic.attribute()).isEqualTo("attributeName");
             soft.assertThat(basic.comparison()).isEqualTo(Operator.EQUAL);
@@ -42,11 +76,11 @@ class RestrictTest {
 
     @Test
     void shouldCreateNotEqualToRestriction() {
-        Restriction<String> restriction = Restrict.notEqualTo("value", "attributeName");
+        Restriction<Employee> restriction = Restrict.notEqualTo("value", "attributeName");
 
         assertThat(restriction).isInstanceOf(TextRestrictionRecord.class);
 
-        TextRestrictionRecord<String> basic = (TextRestrictionRecord<String>) restriction;
+        TextRestrictionRecord<Employee> basic = (TextRestrictionRecord<Employee>) restriction;
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(basic.attribute()).isEqualTo("attributeName");
             soft.assertThat(basic.comparison()).isEqualTo(Operator.NOT_EQUAL);
@@ -56,14 +90,14 @@ class RestrictTest {
 
     @Test
     void shouldCombineAllRestrictionsWithNegation() {
-        Restriction<String> r1 = Restrict.notEqualTo("value1", "attributeName1");
-        Restriction<String> r2 = Restrict.greaterThan(100, "attributeName2");
+        Restriction<Employee> r1 = Restrict.notEqualTo("value1", "attributeName1");
+        Restriction<Employee> r2 = Restrict.greaterThan(100, "attributeName2");
 
-        Restriction<String> combined = Restrict.all(r1, r2);
+        Restriction<Employee> combined = Restrict.all(r1, r2);
 
         assertThat(combined).isInstanceOf(CompositeRestrictionRecord.class);
 
-        CompositeRestrictionRecord<String> composite = (CompositeRestrictionRecord<String>) combined;
+        CompositeRestrictionRecord<Employee> composite = (CompositeRestrictionRecord<Employee>) combined;
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(composite.type()).isEqualTo(CompositeRestriction.Type.ALL);
             soft.assertThat(composite.restrictions()).containsExactly(r1, r2);
@@ -73,7 +107,7 @@ class RestrictTest {
 
     @Test
     void shouldCreateContainsRestriction() {
-        TextRestriction<String> restriction = Restrict.contains("substring", "attributeName");
+        TextRestriction<Employee> restriction = Restrict.contains("substring", "attributeName");
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.attribute()).isEqualTo("attributeName");
@@ -84,7 +118,7 @@ class RestrictTest {
 
     @Test
     void shouldCreateNegatedContainsRestriction() {
-        TextRestriction<String> restriction = Restrict.notContains("substring", "attributeName");
+        TextRestriction<Employee> restriction = Restrict.notContains("substring", "attributeName");
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.attribute()).isEqualTo("attributeName");
@@ -95,7 +129,7 @@ class RestrictTest {
 
     @Test
     void shouldCreateStartsWithRestriction() {
-        TextRestriction<String> restriction = Restrict.startsWith("prefix", "attributeName");
+        TextRestriction<Employee> restriction = Restrict.startsWith("prefix", "attributeName");
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.attribute()).isEqualTo("attributeName");
@@ -106,7 +140,7 @@ class RestrictTest {
 
     @Test
     void shouldCreateNegatedStartsWithRestriction() {
-        TextRestriction<String> restriction = Restrict.notStartsWith("prefix", "attributeName");
+        TextRestriction<Employee> restriction = Restrict.notStartsWith("prefix", "attributeName");
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.attribute()).isEqualTo("attributeName");
@@ -117,7 +151,7 @@ class RestrictTest {
 
     @Test
     void shouldCreateEndsWithRestriction() {
-        TextRestriction<String> restriction = Restrict.endsWith("suffix", "attributeName");
+        TextRestriction<Employee> restriction = Restrict.endsWith("suffix", "attributeName");
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.attribute()).isEqualTo("attributeName");
@@ -128,7 +162,7 @@ class RestrictTest {
 
     @Test
     void shouldCreateNegatedEndsWithRestriction() {
-        TextRestriction<String> restriction = Restrict.notEndsWith("suffix", "attributeName");
+        TextRestriction<Employee> restriction = Restrict.notEndsWith("suffix", "attributeName");
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.attribute()).isEqualTo("attributeName");
@@ -138,10 +172,48 @@ class RestrictTest {
     }
 
     @Test
+    void shouldCreateUnmatchableRestrictionWhenNegatingUnrestricted() {
+        Restriction<Employee> restriction = Restrict.unrestricted();
+        Restriction<Employee> negated = restriction.negate();
+
+        assertThat(negated).isInstanceOf(Unmatchable.class);
+
+        Unmatchable<Employee> unmatchable = (Unmatchable<Employee>) negated;
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(unmatchable.isNegated()).isEqualTo(false);
+            soft.assertThat(unmatchable.negate()).isEqualTo(restriction);
+            soft.assertThat(unmatchable.restrictions()).isEmpty();
+            soft.assertThat(unmatchable.type()).isEqualTo(CompositeRestriction.Type.ANY);
+        });
+    }
+
+    @Test
+    void shouldCreateUnrestricted() {
+        Restriction<Employee> restriction = Restrict.unrestricted();
+
+        assertThat(restriction).isInstanceOf(Unrestricted.class);
+
+        Unrestricted<Employee> unrestricted =
+                (Unrestricted<Employee>) restriction;
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(unrestricted.isNegated()).isEqualTo(false);
+            soft.assertThat(unrestricted.restrictions()).isEmpty();
+            soft.assertThat(unrestricted.type()).isEqualTo(CompositeRestriction.Type.ALL);
+        });
+    }
+
+    @Test
     void shouldEscapeToLikePatternCorrectly() {
         String result = Restrict.endsWith("test_value", "attributeName").value();
 
         assertThat(result).isEqualTo("%test\\_value");
+    }
+
+    @Test
+    void shouldSupplyUnrestrictedToRepositoryMethod() {
+        this.findByPosition("Software Engineer", Restrict.unrestricted());
     }
 
     @Test
