@@ -43,4 +43,31 @@ record CompositeRestrictionRecord<T>(
     public CompositeRestriction<T> negate() {
         return new CompositeRestrictionRecord<>(type, restrictions, !isNegated);
     }
+
+    /**
+     * Textual representation of a composite restriction.
+     * For example,
+     * <pre>ALL (price LESS_THAN 50.0, name LIKE "%Jakarta EE%")</pre>
+     *
+     * @return textual representation of a composite restriction.
+     */
+    @Override
+    public String toString() {
+        StringBuilder s = new StringBuilder(200);
+        if (isNegated) {
+            s.append("NOT ");
+        }
+        s.append(type.name()).append(" (");
+        boolean first = true;
+        for (Restriction<T> r : restrictions) {
+            if (first) {
+                first = false;
+            } else {
+                s.append(", ");
+            }
+            s.append(r);
+        }
+        s.append(')');
+        return s.toString();
+    }
 }

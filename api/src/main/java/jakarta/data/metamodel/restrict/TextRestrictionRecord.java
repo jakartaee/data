@@ -57,4 +57,31 @@ record TextRestrictionRecord<T>(
                 isEscaped,
                 value);
     }
+
+    /**
+     * Textual representation of a text restriction.
+     * For example,
+     * <pre>name LIKE_IGNORE_CASE "Jakarta EE %"</pre>
+     *
+     * @return textual representation of a text restriction.
+     */
+    @Override
+    public String toString() {
+        StringBuilder s = new StringBuilder(50);
+        s.append(attribute).append(' ')
+         .append(comparison.name());
+        if (!isCaseSensitive) {
+            s.append("_IGNORE_CASE");
+        }
+        s.append(' ');
+        if (value instanceof CharSequence) {
+            s.append('"').append(value).append('"');
+        } else {
+            s.append(value);
+        }
+        if (isEscaped) {
+            s.append(" ESCAPED");
+        }
+        return s.toString();
+    }
 }

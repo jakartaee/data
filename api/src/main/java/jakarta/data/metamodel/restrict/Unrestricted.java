@@ -42,6 +42,16 @@ class Unrestricted<T> implements CompositeRestriction<T> {
         return List.of();
     }
 
+    /**
+     * Textual representation of the unrestricted restriction.
+     *
+     * @return textual representation of the unrestricted restriction.
+     */
+    @Override
+    public String toString() {
+        return "UNRESTRICTED";
+    }
+
     @Override
     public Type type() {
         return Type.ALL;

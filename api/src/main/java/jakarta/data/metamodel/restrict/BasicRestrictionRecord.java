@@ -39,4 +39,24 @@ record BasicRestrictionRecord<T>(
                 comparison.negate(),
                 value);
     }
+
+    /**
+     * Textual representation of a basic restriction.
+     * For example,
+     * <pre>price LESS_THAN 50.0</pre>
+     *
+     * @return textual representation of a basic restriction.
+     */
+    @Override
+    public String toString() {
+        StringBuilder s = new StringBuilder();
+        s.append(attribute).append(' ')
+         .append(comparison.name()).append(' ');
+        if (value instanceof CharSequence) {
+            s.append('"').append(value).append('"');
+        } else {
+            s.append(value);
+        }
+        return s.toString();
+    }
 }
