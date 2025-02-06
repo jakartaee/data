@@ -49,14 +49,19 @@ record BasicRestrictionRecord<T>(
      */
     @Override
     public String toString() {
-        StringBuilder s = new StringBuilder();
-        s.append(attribute).append(' ')
+        String valueString = value == null ? "null" : value.toString();
+        StringBuilder builder = new StringBuilder(
+                attribute.length() +
+                comparison.name().length() +
+                valueString.length() +
+                4); // number of additional characters that might be appended
+        builder.append(attribute).append(' ')
          .append(comparison.name()).append(' ');
         if (value instanceof CharSequence) {
-            s.append('"').append(value).append('"');
+            builder.append('"').append(valueString).append('"');
         } else {
-            s.append(value);
+            builder.append(valueString);
         }
-        return s.toString();
+        return builder.toString();
     }
 }

@@ -28,6 +28,11 @@ record CompositeRestrictionRecord<T>(
         List<Restriction<T>> restrictions,
         boolean isNegated) implements CompositeRestriction<T> {
 
+    /**
+     * Initial guess of length per restriction that is being combined.
+     */
+    private static final int SINGLE_RESTRICTION_LENGTH_ESTIMATE = 100;
+
     CompositeRestrictionRecord {
         if (restrictions == null || restrictions.isEmpty()) {
             throw new IllegalArgumentException(
@@ -53,21 +58,23 @@ record CompositeRestrictionRecord<T>(
      */
     @Override
     public String toString() {
-        StringBuilder s = new StringBuilder(200);
+        StringBuilder builder = new StringBuilder(
+                restrictions.size() * SINGLE_RESTRICTION_LENGTH_ESTIMATE +
+                7); // number of additional characters that might be appended
         if (isNegated) {
-            s.append("NOT ");
+            builder.append("NOT ");
         }
-        s.append(type.name()).append(" (");
+        builder.append(type.name()).append(" (");
         boolean first = true;
-        for (Restriction<T> r : restrictions) {
+        for (Restriction<T> restriction : restrictions) {
             if (first) {
                 first = false;
             } else {
-                s.append(", ");
+                builder.append(", ");
             }
-            s.append(r);
+            builder.append(restriction);
         }
-        s.append(')');
-        return s.toString();
+        builder.append(')');
+        return builder.toString();
     }
 }

@@ -67,21 +67,26 @@ record TextRestrictionRecord<T>(
      */
     @Override
     public String toString() {
-        StringBuilder s = new StringBuilder(50);
-        s.append(attribute).append(' ')
-         .append(comparison.name());
+        String valueString = value == null ? "null" : value;
+        StringBuilder builder = new StringBuilder(
+                attribute.length() +
+                comparison.name().length() +
+                valueString.length() +
+                24); // number of additional characters that might be appended
+        builder.append(attribute).append(' ')
+               .append(comparison.name());
         if (!isCaseSensitive) {
-            s.append("_IGNORE_CASE");
+            builder.append("_IGNORE_CASE");
         }
-        s.append(' ');
-        if (value instanceof CharSequence) {
-            s.append('"').append(value).append('"');
+        builder.append(' ');
+        if (value == null) {
+            builder.append(valueString);
         } else {
-            s.append(value);
+            builder.append('"').append(valueString).append('"');
         }
         if (isEscaped) {
-            s.append(" ESCAPED");
+            builder.append(" ESCAPED");
         }
-        return s.toString();
+        return builder.toString();
     }
 }

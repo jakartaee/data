@@ -119,16 +119,16 @@ class CompositeRestrictionRecordTest {
                 .all(Restrict.equalTo("Jack", "firstName"),
                      Restrict.equalTo("Karta", "lastName"));
 
-        Restriction<Person> minorOrMissingAge = Restrict
+        Restriction<Person> minorOrMissingName = Restrict
                 .any(Restrict.lessThan(18, "age"),
                      Restrict.equalTo(null, "name"));
-        Restriction<Person> notMinorOrMissingAge = minorOrMissingAge.negate();
+        Restriction<Person> notMinorOrMissingName = minorOrMissingName.negate();
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(namedJackKarta.toString()).isEqualTo("""
                     ALL (firstName EQUAL "Jack", lastName EQUAL "Karta")\
                     """);
-            soft.assertThat(notMinorOrMissingAge.toString()).isEqualTo("""
+            soft.assertThat(notMinorOrMissingName.toString()).isEqualTo("""
                     NOT ANY (age LESS_THAN 18, name EQUAL null)\
                     """);
         });
