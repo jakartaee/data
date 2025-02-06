@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023,2024 Contributors to the Eclipse Foundation
+ * Copyright (c) 2023,2025 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -15,6 +15,8 @@
  */
 package ee.jakarta.tck.data.framework.read.only;
 
+import static jakarta.data.repository.By.ID;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -26,9 +28,11 @@ import jakarta.data.page.CursoredPage;
 import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
 import jakarta.data.repository.BasicRepository;
+import jakarta.data.repository.By;
+import jakarta.data.repository.Find;
+import jakarta.data.repository.OrderBy;
 import jakarta.data.repository.Query;
 import jakarta.data.repository.Repository;
-
 import ee.jakarta.tck.data.framework.read.only.NaturalNumber.NumberType;
 
 /**
@@ -72,6 +76,26 @@ public interface NaturalNumbers extends BasicRepository<NaturalNumber, Long>, Id
                                                                        long maxSqrtFloor,
                                                                        PageRequest pagination,
                                                                        Sort<NaturalNumber> sort);
+
+    @Find
+    NumberInfo infoByIdentifier(@By(_NaturalNumber.ID) long id);
+
+    @Find
+    NumberInfo[] infoByNumBitsNeeded(@By(_NaturalNumber.NUMBITSREQUIRED) Short bits);
+
+    @Find
+    Stream<NumberInfo> infoByOddness(@By(_NaturalNumber.IS_ODD) boolean isOdd);
+
+    @Find
+    List<NumberInfo> infoByParity(@By(_NaturalNumber.IS_ODD) boolean isOdd);
+
+    @Find
+    Optional<NumberInfo> infoIfFound(@By(ID) long id);
+
+    @Find
+    @OrderBy(ID)
+    Page<NumberInfo> infoPaginated(@By(_NaturalNumber.IS_ODD) boolean isOdd,
+                                   PageRequest pageReq);
 
     @Query("SELECT id WHERE isOdd = true AND id BETWEEN 21 AND ?1 ORDER BY id ASC")
     Page<Long> oddsFrom21To(long max, PageRequest pageRequest);

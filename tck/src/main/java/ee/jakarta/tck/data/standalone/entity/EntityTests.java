@@ -25,8 +25,10 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
@@ -55,6 +57,7 @@ import ee.jakarta.tck.data.framework.read.only.CustomRepository;
 import ee.jakarta.tck.data.framework.read.only.NaturalNumber;
 import ee.jakarta.tck.data.framework.read.only.NaturalNumbers;
 import ee.jakarta.tck.data.framework.read.only.NaturalNumbersPopulator;
+import ee.jakarta.tck.data.framework.read.only.NumberInfo;
 import ee.jakarta.tck.data.framework.read.only.PositiveIntegers;
 import ee.jakarta.tck.data.framework.read.only.NaturalNumber.NumberType;
 import ee.jakarta.tck.data.framework.utilities.DatabaseType;
@@ -2001,6 +2004,193 @@ public class EntityTests {
                 throw x;
             }
         }
+    }
+
+    @Assertion(id = "539", strategy = """
+            Use a repository method where record components define a subset of
+            entity attributes to retrieve. The respository method must return an
+            array of records.
+            """)
+    public void testRecordComponentsChooseAttributeReturnArray() {
+        NumberInfo[] found = numbers.infoByNumBitsNeeded(Short.valueOf((short) 3));
+
+        assertEquals(4, found.length); // for binary 100, 101, 110, 111
+
+        Map<Long, NumberInfo> threeBitNums = new HashMap<>();
+        for (NumberInfo info : found) {
+            assertEquals(Short.valueOf((short) 3), info.numBitsRequired());
+            assertEquals(null, threeBitNums.put(info.id(), info)); // no duplicates
+        }
+
+        NumberInfo num4 = threeBitNums.get(4L);
+        assertNotNull(num4);
+        assertEquals(false, num4.isOdd());
+        assertEquals(NumberType.COMPOSITE, num4.numType());
+
+        NumberInfo num5 = threeBitNums.get(5L);
+        assertNotNull(num5);
+        assertEquals(true, num5.isOdd());
+        assertEquals(NumberType.PRIME, num5.numType());
+
+        NumberInfo num6 = threeBitNums.get(6L);
+        assertNotNull(num6);
+        assertEquals(false, num6.isOdd());
+        assertEquals(NumberType.COMPOSITE, num6.numType());
+
+        NumberInfo num7 = threeBitNums.get(7L);
+        assertNotNull(num7);
+        assertEquals(true, num7.isOdd());
+        assertEquals(NumberType.PRIME, num7.numType());
+    }
+
+    @Assertion(id = "539", strategy = """
+            Use a repository method where record components define a subset of
+            entity attributes to retrieve. The respository method must return a
+            List of records.
+            """)
+    public void testRecordComponentsChooseAttributeReturnList() {
+        final boolean odd = true;
+        List<NumberInfo> found = numbers.infoByParity(odd);
+
+        assertEquals(50, found.size()); // half of numbers 1 to 100
+
+        Map<Long, NumberInfo> odds = new HashMap<>();
+        for (NumberInfo num : found) {
+            assertEquals(true, num.isOdd());
+            assertEquals(null, odds.put(num.id(), num)); // no duplicates allowed
+        }
+    }
+
+    @Assertion(id = "539", strategy = """
+            Use a repository method where record components define a subset of
+            entity attributes to retrieve. The respository method must return a
+            single record.
+            """)
+    public void testRecordComponentsChooseAttributeReturnOne() {
+        NumberInfo num12 = numbers.infoByIdentifier(12L);
+        assertEquals(12L, num12.id());
+        assertEquals(false, num12.isOdd());
+        assertEquals(Short.valueOf((short) 4), num12.numBitsRequired());
+        assertEquals(NumberType.COMPOSITE, num12.numType());
+
+        try {
+            NumberInfo negative2 = numbers.infoByIdentifier(-2L);
+            fail("Must raise EmptyResultException when no result is found." +
+                 "Instead: " + negative2);
+        } catch (EmptyResultException x) {
+            // expected
+        }
+    }
+
+    @Assertion(id = "539", strategy = """
+            Use a repository method where record components define a subset of
+            entity attributes to retrieve. The respository method must return an
+            Optional record.
+            """)
+    public void testRecordComponentsChooseAttributeReturnOptional() {
+        NumberInfo num61 = numbers.infoIfFound(61L).orElseThrow();
+        assertEquals(61L, num61.id());
+        assertEquals(true, num61.isOdd());
+        assertEquals(Short.valueOf((short) 6), num61.numBitsRequired());
+        assertEquals(NumberType.PRIME, num61.numType());
+
+        assertEquals(false, numbers.infoIfFound(-3L).isPresent());
+    }
+
+    @Assertion(id = "539", strategy = """
+            Use a repository method where record components define a subset of
+            entity attributes to retrieve. The respository method must return a
+            Page of records.
+            """)
+    public void testRecordComponentsChooseAttributeReturnPage() {
+        PageRequest page2Req = PageRequest.ofPage(2).size(5);
+        Page<NumberInfo> page2;
+        try {
+            page2 = numbers.infoPaginated(true, page2Req);
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable of sorting.
+                return;
+            } else {
+                throw x;
+            }
+        }
+
+        assertEquals(5, page2.numberOfElements());
+
+        NumberInfo num;
+
+        assertNotNull(num = page2.content().get(0));
+        assertEquals(11L, num.id());
+        assertEquals(Short.valueOf((short) 4), num.numBitsRequired());
+        assertEquals(true, num.isOdd());
+        assertEquals(NumberType.PRIME, num.numType());
+
+        assertNotNull(num = page2.content().get(1));
+        assertEquals(13L, num.id());
+        assertEquals(Short.valueOf((short) 4), num.numBitsRequired());
+        assertEquals(true, num.isOdd());
+        assertEquals(NumberType.PRIME, num.numType());
+
+        assertNotNull(num = page2.content().get(2));
+        assertEquals(15L, num.id());
+        assertEquals(Short.valueOf((short) 4), num.numBitsRequired());
+        assertEquals(true, num.isOdd());
+        assertEquals(NumberType.COMPOSITE, num.numType());
+
+        assertNotNull(num = page2.content().get(3));
+        assertEquals(17L, num.id());
+        assertEquals(Short.valueOf((short) 5), num.numBitsRequired());
+        assertEquals(true, num.isOdd());
+        assertEquals(NumberType.PRIME, num.numType());
+
+        assertNotNull(num = page2.content().get(4));
+        assertEquals(19L, num.id());
+        assertEquals(Short.valueOf((short) 5), num.numBitsRequired());
+        assertEquals(true, num.isOdd());
+        assertEquals(NumberType.PRIME, num.numType());
+
+        Page<NumberInfo> page1 = numbers.infoPaginated(true, page2.previousPageRequest());
+        assertEquals(5, page1.numberOfElements());
+        assertEquals(true, page1.hasNext());
+
+        assertNotNull(num = page1.content().get(0));
+        assertEquals(1L, num.id());
+        assertEquals(Short.valueOf((short) 1), num.numBitsRequired());
+        assertEquals(true, num.isOdd());
+        assertEquals(NumberType.ONE, num.numType());
+
+        Page<NumberInfo> page3 = numbers.infoPaginated(true, page2.nextPageRequest());
+        assertEquals(5, page3.numberOfElements());
+        assertEquals(true, page3.hasNext());
+
+        assertNotNull(num = page3.content().get(4));
+        assertEquals(29L, num.id());
+        assertEquals(Short.valueOf((short) 5), num.numBitsRequired());
+        assertEquals(true, num.isOdd());
+        assertEquals(NumberType.PRIME, num.numType());
+    }
+
+    @Assertion(id = "539", strategy = """
+            Use a repository method where record components define a subset of
+            entity attributes to retrieve. The respository method must return a
+            Stream of records.
+            """)
+    public void testRecordComponentsChooseAttributeReturnStream() {
+        Stream<NumberInfo> found = numbers.infoByOddness(false);
+
+        Map<Long, NumberInfo> evens = new HashMap<>();
+        found.forEach(num -> {
+            assertEquals(false, num.isOdd());
+            assertEquals(null, evens.put(num.id(), num)); // no duplicates allowed
+            if (num.id() == 2L) {
+                assertEquals(NumberType.PRIME, num.numType());
+            } else {
+                assertEquals(NumberType.COMPOSITE, num.numType());
+            }
+        });
+
+        assertEquals(50, evens.size()); // half of numbers 1 to 100
     }
 
     @Assertion(id = "133", strategy = "Use a repository method that returns a single entity value where a single result is found.")
