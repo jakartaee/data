@@ -141,6 +141,23 @@ class TextRestrictionRecordTest {
     }
 
     @Test
+    void shouldOutputToString() {
+        TextRestriction<Book> titleRestriction =
+                Restrict.contains("Jakarta Data", "title");
+        TextRestriction<Book> authorRestriction =
+                Restrict.<Book>equalTo("Myself", "author").ignoreCase().negate();
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(titleRestriction.toString()).isEqualTo("""
+                    title LIKE "%Jakarta Data%" ESCAPED\
+                    """);
+            soft.assertThat(authorRestriction.toString()).isEqualTo("""
+                    author NOT_EQUAL_IGNORE_CASE "Myself"\
+                    """);
+        });
+    }
+
+    @Test
     void shouldSupportNegationForTextRestriction() {
         TextRestrictionRecord<String> restriction = new TextRestrictionRecord<>(
                 "author",

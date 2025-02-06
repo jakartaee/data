@@ -42,6 +42,16 @@ class Unmatchable<T> implements CompositeRestriction<T> {
         return List.of();
     }
 
+    /**
+     * Textual representation of the unmatchable restriction.
+     *
+     * @return textual representation of the unmatchable restriction.
+     */
+    @Override
+    public String toString() {
+        return "UNMATCHABLE";
+    }
+
     @Override
     public Type type() {
         return Type.ANY;

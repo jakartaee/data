@@ -28,6 +28,11 @@ record CompositeRestrictionRecord<T>(
         List<Restriction<T>> restrictions,
         boolean isNegated) implements CompositeRestriction<T> {
 
+    /**
+     * Initial guess of length per restriction that is being combined.
+     */
+    private static final int SINGLE_RESTRICTION_LENGTH_ESTIMATE = 100;
+
     CompositeRestrictionRecord {
         if (restrictions == null || restrictions.isEmpty()) {
             throw new IllegalArgumentException(
@@ -42,5 +47,34 @@ record CompositeRestrictionRecord<T>(
     @Override
     public CompositeRestriction<T> negate() {
         return new CompositeRestrictionRecord<>(type, restrictions, !isNegated);
+    }
+
+    /**
+     * Textual representation of a composite restriction.
+     * For example,
+     * <pre>ALL (price LESS_THAN 50.0, name LIKE "%Jakarta EE%")</pre>
+     *
+     * @return textual representation of a composite restriction.
+     */
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder(
+                restrictions.size() * SINGLE_RESTRICTION_LENGTH_ESTIMATE +
+                7); // number of additional characters that might be appended
+        if (isNegated) {
+            builder.append("NOT ");
+        }
+        builder.append(type.name()).append(" (");
+        boolean first = true;
+        for (Restriction<T> restriction : restrictions) {
+            if (first) {
+                first = false;
+            } else {
+                builder.append(", ");
+            }
+            builder.append(restriction);
+        }
+        builder.append(')');
+        return builder.toString();
     }
 }
