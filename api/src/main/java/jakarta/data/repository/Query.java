@@ -44,6 +44,17 @@ import java.lang.annotation.Target;
  *     The value might not be precise on databases that provide eventual consistency.</li>
  * </ul>
  *
+ * <p><strong>Note on NoSQL Databases:</strong></p>
+ * <p>Update and delete operations in NoSQL databases may not support returning {@code int} or {@code long}
+ * due to their eventual consistency model. Unlike traditional ACID-compliant relational databases,
+ * many NoSQL databases do not guarantee immediate consistency across distributed nodes. As a result,
+ * the number of affected entities might not be accurately reported.</p>
+ *
+ * <p>This limitation is not tied to a specific type of NoSQL database but applies across Key-Value,
+ * Wide-Column, Document, and Graph databases. When a NoSQL provider does not support returning
+ * {@code int} or {@code long} for these operations, invoking such a method will result in an
+ * {@link UnsupportedOperationException}.</p>
+ *
  * <p>Compared to SQL, JDQL allows an abbreviated syntax for {@code select} statements:</p>
  * <ul>
  * <li>The {@code from} clause is optional in JDQL. When it is missing, the queried entity is determined by the return
