@@ -163,8 +163,16 @@ public interface Page<T> extends Iterable<T> {
      * Returns the total number of pages of query results, if the {@link #pageRequest()}
      * specified that {@linkplain PageRequest#requestTotal the total should be retrieved
      * from the database}.
+     *
+     * <p><strong>Note for NoSQL databases:</strong> The ability to determine the total number of pages
+     * is dependent on support for total element queries in the database. Key-Value and Wide-Column
+     * databases generally do not support this feature. For Graph and Document databases, support may vary
+     * by provider. If the total page count cannot be determined, calling this method will result in an
+     * {@link UnsupportedOperationException}.</p>
+     *
      * @return the total number of pages.
      * @throws IllegalStateException if the total was not retrieved from the database.
+     * @throws UnsupportedOperationException if the database does not support total page count queries.
      */
     long totalPages();
 }
