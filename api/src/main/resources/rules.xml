@@ -27,6 +27,12 @@
         <exclude name="AbstractClassWithoutAbstractMethod"/>
     </rule>
     <rule ref="category/java/security.xml"/>
-    <rule ref="category/java/performance.xml"/>
+    <rule ref="category/java/performance.xml">
+        <!-- Sure, a switch with only 2 options might be inefficient, but that
+             isn't the point. I want switch instead of if/else to enforce that if
+             someone ever adds another enum constant, the switch will cause a
+             compile error, forcing them to implement the needed handling of it. -->
+        <exclude name="TooFewBranchesForSwitch"/>
+    </rule>
 
 </ruleset>

@@ -30,17 +30,8 @@ public interface CompositeRestriction<T> extends Restriction<T> {
     Type type();
 
     enum Type {
-        ALL("AND"),
-        ANY("OR");
-
-        /**
-         * Representation of the corresponding logical operator in query language.
-         */
-        private final String qlLogicalOperator;
-
-        private Type(String qlLogicalOperator) {
-            this.qlLogicalOperator = qlLogicalOperator;
-        }
+        ALL,
+        ANY;
 
         /**
          * Representation of the composite restriction type as a query language
@@ -50,7 +41,10 @@ public interface CompositeRestriction<T> extends Restriction<T> {
          * @return the representation as a logical operator in query language.
          */
         String asQueryLanguage() {
-            return qlLogicalOperator;
+            return switch (this) {
+                case ALL -> "AND";
+                case ANY -> "OR";
+            };
         }
     }
 }
