@@ -18,16 +18,16 @@
 package jakarta.data.metamodel.restrict;
 
 public enum Operator {
-    EQUAL("="),
-    GREATER_THAN(">"),
-    GREATER_THAN_EQUAL(">="),
-    IN("IN"),
-    LESS_THAN("<"),
-    LESS_THAN_EQUAL("<="),
-    LIKE("LIKE"),
-    NOT_EQUAL("<>"),
-    NOT_IN("NOT IN"),
-    NOT_LIKE("NOT LIKE");
+    EQUAL,
+    GREATER_THAN,
+    GREATER_THAN_EQUAL,
+    IN,
+    LESS_THAN,
+    LESS_THAN_EQUAL,
+    LIKE,
+    NOT_EQUAL,
+    NOT_IN,
+    NOT_LIKE;
 
     /**
      * Representation of the operator in query language.
