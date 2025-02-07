@@ -30,15 +30,6 @@ public enum Operator {
     NOT_LIKE;
 
     /**
-     * Representation of the operator in query language.
-     */
-    private final String qlRepresentation;
-
-    private Operator(String qlRepresentation) {
-        this.qlRepresentation = qlRepresentation;
-    }
-
-    /**
      * Representation of the operator as it appears in query language.
      * For example, {@link #GREATER_THAN} is represented as {@code >}
      * in query langugae.
@@ -46,7 +37,18 @@ public enum Operator {
      * @return the representation of the operator in query language.
      */
     String asQueryLanguage() {
-        return qlRepresentation;
+        return switch (this) {
+            case EQUAL -> "=";
+            case GREATER_THAN -> ">";
+            case GREATER_THAN_EQUAL -> ">=";
+            case IN -> "IN";
+            case LESS_THAN -> "<";
+            case LESS_THAN_EQUAL -> "<=";
+            case LIKE -> "LIKE";
+            case NOT_EQUAL -> "<>";
+            case NOT_IN -> "NOT IN";
+            case NOT_LIKE -> "NOT LIKE";
+        };
     }
 
     /**
