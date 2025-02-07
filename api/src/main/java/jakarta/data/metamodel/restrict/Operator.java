@@ -18,16 +18,36 @@
 package jakarta.data.metamodel.restrict;
 
 public enum Operator {
-    EQUAL,
-    GREATER_THAN,
-    GREATER_THAN_EQUAL,
-    IN,
-    LESS_THAN,
-    LESS_THAN_EQUAL,
-    LIKE,
-    NOT_EQUAL,
-    NOT_IN,
-    NOT_LIKE;
+    EQUAL("="),
+    GREATER_THAN(">"),
+    GREATER_THAN_EQUAL(">="),
+    IN("IN"),
+    LESS_THAN("<"),
+    LESS_THAN_EQUAL("<="),
+    LIKE("LIKE"),
+    NOT_EQUAL("<>"),
+    NOT_IN("NOT IN"),
+    NOT_LIKE("NOT LIKE");
+
+    /**
+     * Representation of the operator in query language.
+     */
+    private final String qlRepresentation;
+
+    private Operator(String qlRepresentation) {
+        this.qlRepresentation = qlRepresentation;
+    }
+
+    /**
+     * Representation of the operator as it appears in query language.
+     * For example, {@link #GREATER_THAN} is represented as {@code >}
+     * in query langugae.
+     *
+     * @return the representation of the operator in query language.
+     */
+    String asQueryLanguage() {
+        return qlRepresentation;
+    }
 
     /**
      * Returns the operator that is the negation of this operator.

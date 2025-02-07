@@ -114,7 +114,7 @@ class BasicRestrictionRecordTest {
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.toString())
-                .isEqualTo("numPages GREATER_THAN 100");
+                .isEqualTo("numPages > 100");
         });
     }
 

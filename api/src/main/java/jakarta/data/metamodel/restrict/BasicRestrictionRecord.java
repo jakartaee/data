@@ -43,20 +43,21 @@ record BasicRestrictionRecord<T>(
     /**
      * Textual representation of a basic restriction.
      * For example,
-     * <pre>price LESS_THAN 50.0</pre>
+     * <pre>price < 50.0</pre>
      *
      * @return textual representation of a basic restriction.
      */
     @Override
     public String toString() {
+        String comparisonString = comparison.asQueryLanguage();
         String valueString = value == null ? "null" : value.toString();
         StringBuilder builder = new StringBuilder(
                 attribute.length() +
-                comparison.name().length() +
+                comparisonString.length() +
                 valueString.length() +
                 4); // number of additional characters that might be appended
         builder.append(attribute).append(' ')
-         .append(comparison.name()).append(' ');
+               .append(comparisonString).append(' ');
         if (value instanceof CharSequence) {
             builder.append('"').append(valueString).append('"');
         } else {
