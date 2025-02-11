@@ -167,8 +167,11 @@ public interface Page<T> extends Iterable<T> {
      * specified that {@linkplain PageRequest#requestTotal the total should be retrieved
      * from the database}.
      * @return the total number of pages.
-     * @throws IllegalStateException if the total was not retrieved from the database.
-     * @throws UnsupportedOperationException if the database does not support total page count queries.
+     * @throws IllegalStateException if the total was not retrieved from the
+     *                               database because the page was requested
+     *                               {@linkplain PageRequest#withoutTotal() without totals}.
+     * @throws UnsupportedOperationException if the database is not capable of
+     *                               retrieving a total number of elements or pages.
      */
     long totalPages();
 }
