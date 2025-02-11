@@ -154,8 +154,11 @@ public interface Page<T> extends Iterable<T> {
      * result in an {@link UnsupportedOperationException}.</p>
      *
      * @return the total number of elements across all pages.
-     * @throws IllegalStateException if the total was not retrieved from the database.
-     * @throws UnsupportedOperationException if the database does not support total element queries.
+     * @throws IllegalStateException if the total was not retrieved from the
+     *                               database because the page was requested
+     *                               {@linkplain PageRequest#withoutTotal() without totals}.
+     * @throws UnsupportedOperationException if the database is not capable of
+     *                               retrieving a total number of elements.
      */
     long totalElements();
 
