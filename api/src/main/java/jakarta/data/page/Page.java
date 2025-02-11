@@ -146,13 +146,12 @@ public interface Page<T> extends Iterable<T> {
      * Returns the total number of elements across all pages of query results, if the
      * {@link #pageRequest()} specified that {@linkplain PageRequest#requestTotal the
      * total should be retrieved from the database}.
-     *
-     * <p><strong>Note for NoSQL databases:</strong> Not all NoSQL databases support counting the total
-     * number of elements. This operation is <strong>not supported</strong> for Key-Value and Wide-Column databases.
+     * {@apiNote Not all NoSQL databases support counting the total
+     * number of elements. This operation is not supported for Key-Value and Wide-Column databases.
      * For Graph and Document databases, support for this operation may vary depending on the provider.
      * If the database does not support retrieving the total number of elements, calling this method will
      * result in an {@link UnsupportedOperationException}.</p>
-     *
+     *}
      * @return the total number of elements across all pages.
      * @throws IllegalStateException if the total was not retrieved from the
      *                               database because the page was requested
