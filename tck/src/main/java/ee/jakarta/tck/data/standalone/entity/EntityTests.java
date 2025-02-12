@@ -50,6 +50,7 @@ import ee.jakarta.tck.data.framework.junit.anno.ReadOnlyTest;
 import ee.jakarta.tck.data.framework.junit.anno.Standalone;
 import ee.jakarta.tck.data.framework.read.only._AsciiChar;
 import ee.jakarta.tck.data.framework.read.only._AsciiCharacter;
+import ee.jakarta.tck.data.framework.read.only._NaturalNumber;
 import ee.jakarta.tck.data.framework.read.only.AsciiCharacter;
 import ee.jakarta.tck.data.framework.read.only.AsciiCharacters;
 import ee.jakarta.tck.data.framework.read.only.AsciiCharactersPopulator;
@@ -59,6 +60,7 @@ import ee.jakarta.tck.data.framework.read.only.NaturalNumbers;
 import ee.jakarta.tck.data.framework.read.only.NaturalNumbersPopulator;
 import ee.jakarta.tck.data.framework.read.only.NumberInfo;
 import ee.jakarta.tck.data.framework.read.only.PositiveIntegers;
+import ee.jakarta.tck.data.framework.read.only.WholeNumber;
 import ee.jakarta.tck.data.framework.read.only.NaturalNumber.NumberType;
 import ee.jakarta.tck.data.framework.utilities.DatabaseType;
 import ee.jakarta.tck.data.framework.utilities.TestProperty;
@@ -2191,6 +2193,170 @@ public class EntityTests {
         });
 
         assertEquals(50, evens.size()); // half of numbers 1 to 100
+    }
+
+    @Assertion(id = "539", strategy = """
+            Use a repository method that selects a named subset of entity attributes
+            to retrieve as an array of records.
+            """)
+    public void testSelectEntityAttributesAsArrayOfRecord() {
+        WholeNumber[] found = numbers.wholeNumbers(2);
+
+        // 5 numbers (4, 5, 6, 7, 8) have square roots that round down to 2
+        assertEquals(5, found.length);
+
+        assertEquals(4L, found[0].value());
+        assertEquals(2L, found[0].sqrtFloor());
+        assertEquals(NumberType.COMPOSITE.ordinal(), found[0].numType());
+
+        assertEquals(5L, found[1].value());
+        assertEquals(2L, found[1].sqrtFloor());
+        assertEquals(NumberType.PRIME.ordinal(), found[1].numType());
+
+        assertEquals(6L, found[2].value());
+        assertEquals(2L, found[2].sqrtFloor());
+        assertEquals(NumberType.COMPOSITE.ordinal(), found[2].numType());
+
+        assertEquals(7L, found[3].value());
+        assertEquals(2L, found[3].sqrtFloor());
+        assertEquals(NumberType.PRIME.ordinal(), found[3].numType());
+
+        assertEquals(8L, found[4].value());
+        assertEquals(2L, found[4].sqrtFloor());
+        assertEquals(NumberType.COMPOSITE.ordinal(), found[4].numType());
+    }
+
+    @Assertion(id = "539", strategy = """
+            Use a repository method that selects a named subset of entity attributes
+            to retrieve as a List of records.
+            """)
+    public void testSelectEntityAttributesAsListOfRecord() {
+        List<WholeNumber> found = numbers.wholeNumberList(NumberType.PRIME.ordinal());
+
+        Map<Long, WholeNumber> primes = new HashMap<>();
+        for (WholeNumber num : found) {
+            assertEquals(NumberType.PRIME.ordinal(), num.numType());
+            assertEquals(null, primes.put(num.value(), num)); // no duplicates
+        }
+
+        assertEquals(25, primes.size()); // numbers 1 to 100 are in the database
+
+        // results ordered by sqrtFloor ascending, then value descending
+        // primes with sqrtFloor 1:  3  2
+        // primes with sqrtFloor 2:  7  5
+        // primes with sqrtFloor 3: 13 11
+        // primes with sqrtFloor 4: 23 19 17
+        // primes with sqrtFloor 5: 31 29
+        // primes with sqrtFloor 6: 47 43 41 37
+        // primes with sqrtFloor 7: 61 59 53
+        // primes with sqrtFloor 8: 79 73 71 67
+        // primes with sqrtFloor 9: 97 89 83
+
+        WholeNumber num3 = found.get(0);
+        assertNotNull(num3);
+        assertEquals(1L, num3.sqrtFloor());
+
+        WholeNumber num17 = found.get(8);
+        assertNotNull(num17);
+        assertEquals(4L, num17.sqrtFloor());
+
+        WholeNumber num59 = found.get(16);
+        assertNotNull(num59);
+        assertEquals(7L, num59.sqrtFloor());
+
+        WholeNumber num83 = found.get(24);
+        assertNotNull(num83);
+        assertEquals(9L, num83.sqrtFloor());
+    }
+
+    @Assertion(id = "539", strategy = """
+            Use a repository method that selects a named subset of entity attributes
+            to retrieve as an Optional record.
+            """)
+    public void testSelectEntityAttributesAsOptionalOfRecord() {
+        Optional<WholeNumber> found;
+
+        found = numbers.wholeNumberOf(85);
+
+        assertEquals(true, found.isPresent());
+        assertEquals(85L, found.get().value());
+        assertEquals(9L, found.get().sqrtFloor());
+        assertEquals(NumberType.COMPOSITE.ordinal(), found.get().numType());
+
+        found = numbers.wholeNumberOf(-150); // database only has 1 to 100
+
+        assertEquals(false, found.isPresent());
+    }
+
+    @Assertion(id = "539", strategy = """
+            Use a repository method that selects a named subset of entity attributes
+            to retrieve as a Page of record.
+            """)
+    public void testSelectEntityAttributesAsPageOfRecord() {
+        PageRequest page3Req = PageRequest.ofPage(3).size(4);
+        Page<WholeNumber> page3;
+        try {
+            page3 = numbers.wholeNumberPage(NumberType.PRIME.ordinal(),
+                                            page3Req,
+                                            Order.by(Sort.asc(_NaturalNumber.ID)));
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable of sorting.
+                return;
+            } else {
+                throw x;
+            }
+        }
+
+        assertEquals(4, page3.numberOfElements());
+
+        WholeNumber num;
+
+        assertNotNull(num = page3.content().get(0));
+        assertEquals(23L, num.value());
+        assertEquals(4L, num.sqrtFloor());
+        assertEquals(NumberType.PRIME.ordinal(), num.numType());
+
+        assertNotNull(num = page3.content().get(1));
+        assertEquals(29L, num.value());
+        assertEquals(5L, num.sqrtFloor());
+        assertEquals(NumberType.PRIME.ordinal(), num.numType());
+
+        assertNotNull(num = page3.content().get(2));
+        assertEquals(31L, num.value());
+        assertEquals(5L, num.sqrtFloor());
+        assertEquals(NumberType.PRIME.ordinal(), num.numType());
+
+        assertNotNull(num = page3.content().get(3));
+        assertEquals(37L, num.value());
+        assertEquals(6L, num.sqrtFloor());
+        assertEquals(NumberType.PRIME.ordinal(), num.numType());
+
+        Page<WholeNumber> page4;
+        page4 = numbers.wholeNumberPage(NumberType.PRIME.ordinal(),
+                                        page3.nextPageRequest(),
+                                        Order.by(Sort.asc(_NaturalNumber.ID)));
+        assertEquals(4, page4.numberOfElements());
+        assertEquals(true, page4.hasPrevious());
+        assertEquals(true, page4.hasNext());
+
+        assertNotNull(num = page4.content().get(0));
+        assertEquals(41L, num.value());
+        assertEquals(6L, num.sqrtFloor());
+        assertEquals(NumberType.PRIME.ordinal(), num.numType());
+
+        Page<WholeNumber> page2;
+        page2 = numbers.wholeNumberPage(NumberType.PRIME.ordinal(),
+                                        page3.previousPageRequest(),
+                                        Order.by(Sort.asc(_NaturalNumber.ID)));
+        assertEquals(4, page2.numberOfElements());
+        assertEquals(true, page2.hasNext());
+        assertEquals(true, page2.hasPrevious());
+
+        assertNotNull(num = page2.content().get(3));
+        assertEquals(19L, num.value());
+        assertEquals(4L, num.sqrtFloor());
+        assertEquals(NumberType.PRIME.ordinal(), num.numType());
     }
 
     @Assertion(id = "133", strategy = "Use a repository method that returns a single entity value where a single result is found.")
