@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023,2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2024 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,20 +15,20 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.metamodel;
+package jakarta.data.metamodel.impl;
 
-/**
- * Represents an entity attribute in the {@link StaticMetamodel}.
- *
- * @param <T> entity class of the static metamodel.
- */
-public interface Attribute<T> {
+import jakarta.data.Sort;
+import jakarta.data.metamodel.ComparableAttribute;
 
-    /**
-     * Obtain the entity attribute name, suitable for use wherever the specification requires
-     * an entity attribute name. For example, as the parameter to {@link jakarta.data.Sort#asc(String)}.
-     *
-     * @return the entity attribute name.
-     */
-    String name();
+public record ComparableAttributeRecord<T,V extends Comparable<V>>(String name)
+        implements ComparableAttribute<T,V> {
+    @Override
+    public Sort<T> asc() {
+        return Sort.asc(name);
+    }
+
+    @Override
+    public Sort<T> desc() {
+        return Sort.desc(name);
+    }
 }

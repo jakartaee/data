@@ -26,12 +26,12 @@ import jakarta.data.metamodel.restrict.TextRestriction;
  *
  * @param <T> entity class of the static metamodel.
  */
-public interface TextAttribute<T> extends SortableAttribute<T> {
+public interface TextAttribute<T> extends ComparableAttribute<T,String> {
 
     /**
-     * Obtain a request for an ascending, case insensitive {@link Sort} based on the entity attribute.
+     * Obtain a request for an ascending, case-insensitive {@link Sort} based on the entity attribute.
      *
-     * @return a request for an ascending, case insensitive sort on the entity attribute.
+     * @return a request for an ascending, case-insensitive sort on the entity attribute.
      */
     Sort<T> ascIgnoreCase();
 
