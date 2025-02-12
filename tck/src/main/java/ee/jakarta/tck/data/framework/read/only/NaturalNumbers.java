@@ -33,6 +33,7 @@ import jakarta.data.repository.Find;
 import jakarta.data.repository.OrderBy;
 import jakarta.data.repository.Query;
 import jakarta.data.repository.Repository;
+import jakarta.data.repository.Select;
 import ee.jakarta.tck.data.framework.read.only.NaturalNumber.NumberType;
 
 /**
@@ -102,4 +103,33 @@ public interface NaturalNumbers extends BasicRepository<NaturalNumber, Long>, Id
 
     @Query("WHERE isOdd = false AND numType = ee.jakarta.tck.data.framework.read.only.NaturalNumber.NumberType.PRIME")
     Optional<NaturalNumber> two();
+
+    @Find
+    @Select({ _NaturalNumber.NUMTYPEORDINAL,
+              _NaturalNumber.FLOOROFSQUAREROOT,
+              _NaturalNumber.ID })
+    @OrderBy(_NaturalNumber.FLOOROFSQUAREROOT)
+    @OrderBy(value = ID, descending = true)
+    List<WholeNumber> wholeNumberList(@By(_NaturalNumber.NUMTYPEORDINAL) int numType);
+
+    @Find
+    @Select({ _NaturalNumber.NUMTYPEORDINAL,
+              _NaturalNumber.FLOOROFSQUAREROOT,
+              _NaturalNumber.ID })
+    Optional<WholeNumber> wholeNumberOf(@By(ID) int id);
+
+    @Find
+    @Select({ _NaturalNumber.NUMTYPEORDINAL,
+              _NaturalNumber.FLOOROFSQUAREROOT,
+              _NaturalNumber.ID })
+    @OrderBy(ID)
+    WholeNumber[] wholeNumbers(@By(_NaturalNumber.FLOOROFSQUAREROOT) int floorOfSquareRoot);
+
+    @Find
+    @Select({ _NaturalNumber.NUMTYPEORDINAL,
+              _NaturalNumber.FLOOROFSQUAREROOT,
+              _NaturalNumber.ID })
+    Page<WholeNumber> wholeNumberPage(@By(_NaturalNumber.NUMTYPEORDINAL) int numType,
+                                      PageRequest pageReq,
+                                      Order<NaturalNumber> order);
 }
