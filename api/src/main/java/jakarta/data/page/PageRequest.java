@@ -225,11 +225,14 @@ public interface PageRequest {
      * is enabled by default. To obtain a page request with total
      * retrieval disabled, call {@link #withoutTotal()}.</p>
      *
-     * <p>The total can be requested from the database before returning
-     * the page, or the request for the total can be deferred until the
-     * {@link Page#totalElements()} or {@link Page#totalPages()} method
-     * is invoked, which can result in an exception being raised if the
-     * request fails or the database is incapable of it.</p>
+     * <p>A repository implementation might obtain a total from the 
+     * database before returning the page of results, or might defer 
+     * fetching the total until {@link Page#totalElements()} or 
+     * {@link Page#totalPages()} method is invoked. In the case of
+     * deferred fetching, the call to {@code totalElements()} or
+     * {@code totalPages()} raises an exception if the database
+     * request fails or if the database is incapable of computing
+     * totals.</p>
      *
      * @return {@code true} if the total number of elements should
      *         be retrieved from the database.
