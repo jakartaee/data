@@ -152,7 +152,7 @@ class TextRestrictionRecordTest {
                     title LIKE "%Jakarta Data%" ESCAPED\
                     """);
             soft.assertThat(authorRestriction.toString()).isEqualTo("""
-                    author NOT_EQUAL_IGNORE_CASE "Myself"\
+                    author <> "Myself" IGNORE_CASE\
                     """);
         });
     }

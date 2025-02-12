@@ -52,29 +52,33 @@ record CompositeRestrictionRecord<T>(
     /**
      * Textual representation of a composite restriction.
      * For example,
-     * <pre>ALL (price LESS_THAN 50.0, name LIKE "%Jakarta EE%")</pre>
+     * <pre>(price < 50.0) AND (name LIKE "%Jakarta EE%")</pre>
      *
      * @return textual representation of a composite restriction.
      */
     @Override
     public String toString() {
+        String logicalOperator = type.asQueryLanguage();
         StringBuilder builder = new StringBuilder(
                 restrictions.size() * SINGLE_RESTRICTION_LENGTH_ESTIMATE +
-                7); // number of additional characters that might be appended
+                6); // number of additional characters that might be appended
         if (isNegated) {
-            builder.append("NOT ");
+            builder.append("NOT (");
         }
-        builder.append(type.name()).append(" (");
+
         boolean first = true;
         for (Restriction<T> restriction : restrictions) {
             if (first) {
                 first = false;
             } else {
-                builder.append(", ");
+                builder.append(' ').append(logicalOperator).append(' ');
             }
-            builder.append(restriction);
+            builder.append('(').append(restriction).append(')');
         }
-        builder.append(')');
+
+        if (isNegated) {
+            builder.append(')');
+        }
         return builder.toString();
     }
 }
