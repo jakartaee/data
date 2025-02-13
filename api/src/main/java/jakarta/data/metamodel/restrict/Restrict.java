@@ -150,7 +150,7 @@ public class Restrict {
         return new TextRestrictionRecord<>(attribute, Operator.NOT_EQUAL, value);
     }
 
-    public static <T> UnaryRestriction<T> isNotNull(String attribute) {
+    public static <T> UnaryRestriction<T> notNull(String attribute) {
         return new UnaryRestrictionRecord<>(attribute, UnaryOperator.IS_NOT_NULL);
     }
 

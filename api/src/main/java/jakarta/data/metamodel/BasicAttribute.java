@@ -51,7 +51,7 @@ public interface BasicAttribute<T,V> extends Attribute<T> {
     }
 
     default Restriction<T> notNull() {
-        return Restrict.isNotNull(name());
+        return Restrict.notNull(name());
     }
 
 }
