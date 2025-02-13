@@ -36,8 +36,7 @@ public interface BasicAttribute<T,V> extends Attribute<T> {
     }
 
     default Restriction<T> isNull() {
-        //TODO: fix this "= NULL" is not the same thing as "IS NULL" in JDQL
-        return Restrict.equalTo(null, name());
+        return Restrict.isNull(name());
     }
 
     default Restriction<T> notEqualTo(V value) {
@@ -52,8 +51,7 @@ public interface BasicAttribute<T,V> extends Attribute<T> {
     }
 
     default Restriction<T> notNull() {
-        //TODO: fix this "<> NULL" is not the same thing as "IS NOT NULL" in JDQL
-        return Restrict.notEqualTo(null, name());
+        return Restrict.isNotNull(name());
     }
 
 }

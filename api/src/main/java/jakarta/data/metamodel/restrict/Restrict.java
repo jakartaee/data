@@ -79,6 +79,10 @@ public class Restrict {
         return new TextRestrictionRecord<>(attribute, Operator.EQUAL, value);
     }
 
+    public static <T> UnaryRestriction<T> isNull(String attribute) {
+        return new UnaryRestrictionRecord<>(attribute, UnaryOperator.IS_NULL);
+    }
+
     public static <T, V extends Comparable<V>> Restriction<T> greaterThan(V value, String attribute) {
         return new BasicRestrictionRecord<>(attribute, Operator.GREATER_THAN, value);
     }
@@ -144,6 +148,10 @@ public class Restrict {
 
     public static <T> TextRestriction<T> notEqualTo(String value, String attribute) {
         return new TextRestrictionRecord<>(attribute, Operator.NOT_EQUAL, value);
+    }
+
+    public static <T> UnaryRestriction<T> isNotNull(String attribute) {
+        return new UnaryRestrictionRecord<>(attribute, UnaryOperator.IS_NOT_NULL);
     }
 
     public static <T> TextRestriction<T> notContains(String substring, String attribute) {
