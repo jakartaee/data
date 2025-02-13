@@ -95,7 +95,7 @@ public class Restrict {
         return new TextRestrictionRecord<>(attribute, Operator.GREATER_THAN_EQUAL, value);
     }
 
-    public static <T> Restriction<T> in(Set<Object> values, String attribute) {
+    public static <T> Restriction<T> in(Set<?> values, String attribute) {
         return new BasicRestrictionRecord<>(attribute, Operator.IN, values);
     }
 
@@ -156,7 +156,7 @@ public class Restrict {
         return new TextRestrictionRecord<>(attribute, Operator.NOT_LIKE, ESCAPED, pattern);
     }
 
-    public static <T> Restriction<T> notIn(Set<Object> values, String attribute) {
+    public static <T> Restriction<T> notIn(Set<?> values, String attribute) {
         return new BasicRestrictionRecord<>(attribute, Operator.NOT_IN, values);
     }
 

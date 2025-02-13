@@ -18,8 +18,6 @@
 package jakarta.data.metamodel;
 
 import jakarta.data.Sort;
-import jakarta.data.metamodel.restrict.Restrict;
-import jakarta.data.metamodel.restrict.Restriction;
 
 /**
  * Represents a sortable entity attribute in the {@link StaticMetamodel}.
@@ -30,7 +28,7 @@ import jakarta.data.metamodel.restrict.Restriction;
  * <li>enum attributes</li>
  * <li>time attributes</li>
  * <li>boolean attributes</li>
- * <li>{@link TextAttribute textual attributes}</li>
+ * <li>{@linkplain TextAttribute textual attributes}</li>
  * </ul>
  *
  * @param <T> entity class of the static metamodel.
@@ -44,10 +42,6 @@ public interface SortableAttribute<T> extends Attribute<T> {
      */
     Sort<T> asc();
 
-    default <V extends Comparable<V>> Restriction<T> between(V min, V max) {
-        return Restrict.between(min, max, name());
-    }
-
     /**
      * Obtain a request for a descending {@link Sort} based on the entity attribute.
      *
@@ -55,19 +49,4 @@ public interface SortableAttribute<T> extends Attribute<T> {
      */
     Sort<T> desc();
 
-    default <V extends Comparable<V>> Restriction<T> greaterThan(V value) {
-        return Restrict.greaterThan(value, name());
-    }
-
-    default <V extends Comparable<V>> Restriction<T> greaterThanEqual(V value) {
-        return Restrict.greaterThanEqual(value, name());
-    }
-
-    default <V extends Comparable<V>> Restriction<T> lessThan(V value) {
-        return Restrict.lessThan(value, name());
-    }
-
-    default <V extends Comparable<V>> Restriction<T> lessThanEqual(V value) {
-        return Restrict.lessThanEqual(value, name());
-    }
 }
