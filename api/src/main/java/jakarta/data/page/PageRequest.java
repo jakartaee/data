@@ -219,11 +219,21 @@ public interface PageRequest {
     int size();
 
     /**
-     * Indicates that a query method which returns a {@link Page}
+     * <p>Indicates that a query method which returns a {@link Page}
      * should retrieve the {@linkplain Page#totalElements() total
      * number of elements} available across all pages. This behavior
      * is enabled by default. To obtain a page request with total
-     * retrieval disabled, call {@link #withoutTotal()}.
+     * retrieval disabled, call {@link #withoutTotal()}.</p>
+     *
+     * <p>A repository implementation might obtain a total from the 
+     * database before returning the page of results, or might defer 
+     * fetching the total until {@link Page#totalElements()} or 
+     * {@link Page#totalPages()} method is invoked. In the case of
+     * deferred fetching, the call to {@code totalElements()} or
+     * {@code totalPages()} raises an exception if the database
+     * request fails or if the database is incapable of computing
+     * totals.</p>
+     *
      * @return {@code true} if the total number of elements should
      *         be retrieved from the database.
      */
