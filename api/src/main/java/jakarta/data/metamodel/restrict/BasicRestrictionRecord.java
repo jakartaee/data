@@ -30,6 +30,7 @@ record BasicRestrictionRecord<T>(
 
     BasicRestrictionRecord {
         Objects.requireNonNull(attribute, "Attribute must not be null");
+        Objects.requireNonNull(value, "Value must not be null");
     }
 
     @Override
@@ -49,7 +50,7 @@ record BasicRestrictionRecord<T>(
      */
     @Override
     public String toString() {
-        String valueString = value == null ? "null" : value.toString();
+        String valueString = value.toString();
         StringBuilder builder = new StringBuilder(
                 attribute.length() +
                 comparison.name().length() +
