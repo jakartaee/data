@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024,2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2024 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,20 +15,10 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.metamodel.restrict;
+package jakarta.data.metamodel.range;
 
-public interface TextRestriction<T> extends BasicRestriction<T> {
-    TextRestriction<T> ignoreCase();
-
-    // TODO can mention in the JavaDoc that a value of true will be ignored
-    // if the database is not not capable of case sensitive comparisons
-    boolean isCaseSensitive();
-
-    boolean isEscaped();
-
-    @Override
-    TextRestriction<T> negate();
-
-    @Override
-    String value();
+public sealed interface Range<T>
+        permits Value, Enumeration,
+                LowerBound, UpperBound, Interval,
+                Pattern {
 }

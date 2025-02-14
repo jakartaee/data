@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024,2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2025 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,17 +15,9 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.metamodel.restrict;
+package jakarta.data.metamodel.range;
 
-import jakarta.data.metamodel.range.Range;
+import java.util.Set;
 
-public interface BasicRestriction<T> extends Restriction<T> {
-    String attribute();
-
-    Operator comparison();
-
-    @Override
-    BasicRestriction<T> negate();
-
-    Range<?> range();
+public record Enumeration<T>(Set<T> values) implements Range<T> {
 }
