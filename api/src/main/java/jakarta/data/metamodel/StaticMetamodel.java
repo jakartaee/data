@@ -33,13 +33,26 @@ import jakarta.data.Sort;
  * The type of each of these fields must be either {@link String}, {@link Attribute},
  * or a subinterface of {@code Attribute} defined in this package.</p>
  *
+ * <p>The following subinterfaces of {@code Attribute} are recommended to obtain
+ * the full benefit of the static metamodel:</p>
+ * <ul>
+ * <li>{@link TextAttribute} for entity attributes that represent text,
+ *     typically of type {@link String}.</li>
+ * <li>{@link ComparableAttribute} for entity attributes that represent other
+ *     sortable and comparable values, such as {@code int}, {@link Double},
+ *     {@code boolean}, {@link java.time.LocalDateTime}, and enumerations.</li>
+ * <li>{@link BasicAttribute} for other types of entity attributes, such as
+ *     collections, embeddables, and other relation attributes.</li>
+ * </ul>
+ *
  * <p>Jakarta Data defines the following conventions for static metamodel classes:</p>
  * <ul>
  * <li>The metamodel class can be an interface or concrete class.</li>
  * <li>The name of the static metamodel class should consist of underscore ({@code _})
  *     followed by the entity class name.</li>
  * <li>Fields of type {@code String} should be named with all upper case.</li>
- * <li>Fields of type {@code Attribute} should be named in lower case or mixed case.</li>
+ * <li>Fields that are subtypes of {@code Attribute} should be named in lower case
+ *     or mixed case.</li>
  * </ul>
  *
  * <p>For example, for the following entity,</p>
@@ -74,11 +87,11 @@ import jakarta.data.Sort;
  *     String NAME_LAST = "name.last";
  *     String YEAROFBIRTH = "yearOfBirth";
  *
- *     SortableAttribute&lt;Person&gt; ssn = new SortableAttributeRecord&lt;&gt;(SSN);
- *     Attribute&lt;Person&gt; name = new AttributeRecord&lt;&gt;(NAME);
+ *     ComparableAttribute&lt;Person,Long&gt; ssn = new ComparableAttributeRecord&lt;&gt;(SSN);
+ *     BasicAttribute&lt;Person,Name&gt; name = new BasicAttributeRecord&lt;&gt;(NAME);
  *     TextAttribute&lt;Person&gt; name_first = new TextAttributeRecord&lt;&gt;(NAME_FIRST);
  *     TextAttribute&lt;Person&gt; name_last = new TextAttributeRecord&lt;&gt;(NAME_LAST);
- *     SortableAttribute&lt;Person&gt; yearOfBirth = new SortableAttributeRecord&lt;&gt;(YEAROFBIRTH);
+ *     ComparableAttribute&lt;Person,Integer&gt; yearOfBirth = new ComparableAttributeRecord&lt;&gt;(YEAROFBIRTH);
  * }
  * </pre>
  *

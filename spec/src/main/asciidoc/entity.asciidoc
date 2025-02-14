@@ -423,6 +423,12 @@ The following are conventions for static metamodel classes:
 - Initialized fields must have modifiers `public`, `static`, and `final`.
 - Fields of type `String` must always be statically initialized, enabling their use in annotation values.
 
+The following subinterfaces of `Attribute` are recommended to obtain the full benefit of the static metamodel:
+
+- `TextAttribute` for entity attributes that represent text, typically of type `String`.
+- `ComparableAttribute` for entity attributes that represent other comparable values, such as `long`, `Integer`, `boolean`, `java.time.Instant`, and enumerations.
+- `BasicAttribute` for other types of entity attributes, such as collections, embeddables, and other relation attributes.
+
 ==== Example Metamodel Class and Usage
 
 Example entity class:
@@ -447,9 +453,9 @@ public class _Product {
   public static final String NAME = "name";
   public static final String PRICE = "price";
 
-  public static final SortableAttribute<Product> id = new SortableAttributeRecord<>("id");
+  public static final ComparableAttribute<Product,Long> id = new ComparableAttributeRecord<>("id");
   public static final TextAttribute<Product> name = new TextAttributeRecord<>("name");
-  public static final SortableAttribute<Product> price = new SortableAttributeRecord<>("price");
+  public static final ComparableAttribute<Product,Float> price = new ComparableAttributeRecord<>("price");
 }
 ----
 

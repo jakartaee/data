@@ -18,7 +18,21 @@
 package jakarta.data.metamodel;
 
 /**
- * Represents an entity attribute in the {@link StaticMetamodel}.
+ * <p>Supertype for {@link StaticMetamodel} fields representing entity attributes.</p>
+ *
+ * <p>The following subtypes are provided:</p>
+ * <ul>
+ * <li>{@link TextAttribute} for entity attributes that represent text,
+ *     typically of type {@link String}.</li>
+ * <li>{@link ComparableAttribute} for entity attributes that represent other
+ *     sortable and comparable values, such as {@code int}, {@link Long},
+ *     {@code boolean}, {@link java.time.LocalDateTime}, and enumerations.</li>
+ * <li>{@link SortableAttribute} for entity types that are sortable, but not
+ *     comparable. Generally this subtype is unused, but in some databases
+ *     might apply to {@code byte[]} attributes. </li>
+ * <li>{@link BasicAttribute} for other types of entity attributes, such as
+ *     collections, embeddables, and other relation attributes.</li>
+ * </ul>
  *
  * @param <T> entity class of the static metamodel.
  */

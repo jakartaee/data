@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023,2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2025 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,37 @@ package jakarta.data.metamodel;
 import jakarta.data.metamodel.restrict.Restrict;
 import jakarta.data.metamodel.restrict.Restriction;
 
+/**
+ * <p>Represents a comparable entity attribute in the {@link StaticMetamodel}.
+ * Comparable entity attributes can be sorted on in query results and can be
+ * compared against values in query restrictions.</p>
+ *
+ * <p>Entity attribute types that are comparable include:</p>
+ *
+ * <ul>
+ * <li>numeric attributes, such as {@code long}, {@link Float}, and
+ *     {@link java.math.BigInteger}</li>
+ * <li>time attributes, such as {@link java.time.LocalDateTime} and
+ *     {@link java.time.Instant}</li>
+ * <li>boolean attributes: {@code boolean} and {@link Boolean}</li>
+ * <li>enum attributes - Note that it is provider-specific whether order is
+ *     based on {@link Enum#ordinal()} or {@link Enum#name()}.
+ *     The Jakarta Persistence default of {@code ordinal} can be overridden
+ *     with the {@code jakarta.persistence.Enumerated} annotation.</li>
+ * <li>textual attributes - Use the {@link TextAttribute} subtype instead</li>
+ * </ul>
+ *
+ * <p>Primitive types such as {@code int} and {@code float} are considered
+ * comparable even though they do not implement the {@link Comparable}
+ * interface because the corresponding wrapper types, such as {@link Integer},
+ * do implement {@code Comparable}.</p>
+ *
+ * <p>Where possible, {@code ComparableAttribute}, which provides more function,
+ * is preferred over {@link SortableAttribute}.</p>
+ *
+ * @param <T> entity class of the static metamodel.
+ * @param <V> type of entity attribute (or wrapper type if primitive).
+ */
 public interface ComparableAttribute<T,V extends Comparable<V>>
         extends BasicAttribute<T,V>, SortableAttribute<T> {
 

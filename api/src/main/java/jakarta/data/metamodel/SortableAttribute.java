@@ -20,16 +20,14 @@ package jakarta.data.metamodel;
 import jakarta.data.Sort;
 
 /**
- * Represents a sortable entity attribute in the {@link StaticMetamodel}.
- * Entity attribute types that are sortable include:
+ * <p>Represents a entity attribute in the {@link StaticMetamodel}
+ * that is sortable, but not comparable.</p>
  *
- * <ul>
- * <li>numeric attributes</li>
- * <li>enum attributes</li>
- * <li>time attributes</li>
- * <li>boolean attributes</li>
- * <li>{@linkplain TextAttribute textual attributes}</li>
- * </ul>
+ * <p>Wherever possible, it is preferable to use {@link ComparableAttribute}
+ * instead because it provides more function. Use {@code SortableAttribute}
+ * only where you have an entity attribute upon which query results can be sorted,
+ * but cannot otherwise be compared within query restrictions. For some databases,
+ * entity attributes of type {@code byte[]} fall under this category.</p>
  *
  * @param <T> entity class of the static metamodel.
  */
