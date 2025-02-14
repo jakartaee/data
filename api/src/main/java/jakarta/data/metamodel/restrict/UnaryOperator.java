@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023,2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2025 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,20 +15,12 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.metamodel;
+package jakarta.data.metamodel.restrict;
 
-/**
- * Represents an entity attribute in the {@link StaticMetamodel}.
- *
- * @param <T> entity class of the static metamodel.
- */
-public interface Attribute<T> {
+public enum UnaryOperator {
+    IS_NULL, IS_NOT_NULL;
 
-    /**
-     * Obtain the entity attribute name, suitable for use wherever the specification requires
-     * an entity attribute name. For example, as the parameter to {@link jakarta.data.Sort#asc(String)}.
-     *
-     * @return the entity attribute name.
-     */
-    String name();
+    UnaryOperator negate() {
+        return this == IS_NULL ? IS_NOT_NULL : IS_NULL;
+    }
 }

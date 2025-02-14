@@ -26,12 +26,12 @@ import jakarta.data.metamodel.restrict.TextRestriction;
  *
  * @param <T> entity class of the static metamodel.
  */
-public interface TextAttribute<T> extends SortableAttribute<T> {
+public interface TextAttribute<T> extends ComparableAttribute<T,String> {
 
     /**
-     * Obtain a request for an ascending, case insensitive {@link Sort} based on the entity attribute.
+     * Obtain a request for an ascending, case-insensitive {@link Sort} based on the entity attribute.
      *
-     * @return a request for an ascending, case insensitive sort on the entity attribute.
+     * @return a request for an ascending, case-insensitive sort on the entity attribute.
      */
     Sort<T> ascIgnoreCase();
 
@@ -50,22 +50,27 @@ public interface TextAttribute<T> extends SortableAttribute<T> {
         return Restrict.endsWith(suffix, name());
     }
 
+    @Override
     default TextRestriction<T> equalTo(String value) {
         return Restrict.equalTo(value, name());
     }
 
+    @Override
     default TextRestriction<T> greaterThan(String value) {
         return Restrict.greaterThan(value, name());
     }
 
+    @Override
     default TextRestriction<T> greaterThanEqual(String value) {
         return Restrict.greaterThanEqual(value, name());
     }
 
+    @Override
     default TextRestriction<T> lessThan(String value) {
         return Restrict.lessThan(value, name());
     }
 
+    @Override
     default TextRestriction<T> lessThanEqual(String value) {
         return Restrict.lessThanEqual(value, name());
     }
@@ -93,6 +98,7 @@ public interface TextAttribute<T> extends SortableAttribute<T> {
         return Restrict.notEndsWith(suffix, name());
     }
 
+    @Override
     default TextRestriction<T> notEqualTo(String value) {
         return Restrict.notEqualTo(value, name());
     }

@@ -53,18 +53,6 @@ class BasicRestrictionRecordTest {
     }
 
     @Test
-    void shouldCreateBasicRestrictionWithNullValue() {
-        // Create a restriction with a null value
-        BasicRestrictionRecord<String> restriction = new BasicRestrictionRecord<>("title", Operator.EQUAL, null);
-
-        SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(restriction.attribute()).isEqualTo("title");
-            soft.assertThat(restriction.comparison()).isEqualTo(Operator.EQUAL);
-            soft.assertThat(restriction.value()).isNull();
-        });
-    }
-
-    @Test
     void shouldNegateLTERestriction() {
         Restriction<Book> numChaptersLTE10 = Restrict.lessThanEqual(10, "numChapters");
         BasicRestriction<Book> numChaptersLTE10Basic = (BasicRestriction<Book>) numChaptersLTE10;
@@ -135,5 +123,12 @@ class BasicRestrictionRecordTest {
         assertThatThrownBy(() -> new BasicRestrictionRecord<>(null, Operator.EQUAL, "testValue"))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("Attribute must not be null");
+    }
+
+    @Test
+    void shouldThrowExceptionWhenValueIsNull() {
+        assertThatThrownBy(() -> new BasicRestrictionRecord<>("title", Operator.EQUAL, null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("Value must not be null");
     }
 }

@@ -30,7 +30,7 @@ import org.junit.jupiter.api.Test;
 class SortableAttributeTest {
 
     //it ignores the implementation of the SortableAttribute interface and uses an anonymous class to test the methods
-    private final SortableAttribute<String> testAttribute = new SortableAttribute<String>() {
+    private final ComparableAttribute<String,Integer> testAttribute = new ComparableAttribute<>() {
         @Override
         public Sort<String> asc() {
            throw new UnsupportedOperationException("It is not the focus of this test");

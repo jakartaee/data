@@ -79,6 +79,10 @@ public class Restrict {
         return new TextRestrictionRecord<>(attribute, Operator.EQUAL, value);
     }
 
+    public static <T> UnaryRestriction<T> isNull(String attribute) {
+        return new UnaryRestrictionRecord<>(attribute, UnaryOperator.IS_NULL);
+    }
+
     public static <T, V extends Comparable<V>> Restriction<T> greaterThan(V value, String attribute) {
         return new BasicRestrictionRecord<>(attribute, Operator.GREATER_THAN, value);
     }
@@ -95,7 +99,7 @@ public class Restrict {
         return new TextRestrictionRecord<>(attribute, Operator.GREATER_THAN_EQUAL, value);
     }
 
-    public static <T> Restriction<T> in(Set<Object> values, String attribute) {
+    public static <T> Restriction<T> in(Set<?> values, String attribute) {
         return new BasicRestrictionRecord<>(attribute, Operator.IN, values);
     }
 
@@ -146,6 +150,10 @@ public class Restrict {
         return new TextRestrictionRecord<>(attribute, Operator.NOT_EQUAL, value);
     }
 
+    public static <T> UnaryRestriction<T> notNull(String attribute) {
+        return new UnaryRestrictionRecord<>(attribute, UnaryOperator.IS_NOT_NULL);
+    }
+
     public static <T> TextRestriction<T> notContains(String substring, String attribute) {
         String pattern = toLikeEscaped(CHAR_WILDCARD, STRING_WILDCARD, true, substring, true);
         return new TextRestrictionRecord<>(attribute, Operator.NOT_LIKE, ESCAPED, pattern);
@@ -156,7 +164,7 @@ public class Restrict {
         return new TextRestrictionRecord<>(attribute, Operator.NOT_LIKE, ESCAPED, pattern);
     }
 
-    public static <T> Restriction<T> notIn(Set<Object> values, String attribute) {
+    public static <T> Restriction<T> notIn(Set<?> values, String attribute) {
         return new BasicRestrictionRecord<>(attribute, Operator.NOT_IN, values);
     }
 

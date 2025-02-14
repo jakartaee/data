@@ -23,6 +23,8 @@ import org.junit.jupiter.api.Test;
 import jakarta.data.metamodel.restrict.BasicRestriction;
 import jakarta.data.metamodel.restrict.Operator;
 import jakarta.data.metamodel.restrict.Restriction;
+import jakarta.data.metamodel.restrict.UnaryOperator;
+import jakarta.data.metamodel.restrict.UnaryRestriction;
 
 import java.util.Set;
 
@@ -30,7 +32,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class AttributeTest {
 
-    private final Attribute<String> testAttribute = () -> "testAttribute";
+    private final BasicAttribute<String, String> testAttribute = () -> "testAttribute";
     @Test
     void shouldCreateEqualToRestriction() {
         Restriction<String> restriction = testAttribute.equalTo("testValue");
@@ -59,7 +61,7 @@ class AttributeTest {
 
     @Test
     void shouldCreateInRestriction() {
-        Restriction<String> restriction = testAttribute.in("value1", "value2");
+        Restriction<String> restriction = testAttribute.in(Set.of("value1", "value2"));
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
@@ -72,14 +74,14 @@ class AttributeTest {
 
     @Test
     void shouldThrowExceptionForEmptyInRestriction() {
-        assertThatThrownBy(() -> testAttribute.in())
+        assertThatThrownBy(() -> testAttribute.in(Set.of()))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("values are required");
     }
 
     @Test
     void shouldCreateNotInRestriction() {
-        Restriction<String> restriction = testAttribute.notIn("value1", "value2");
+        Restriction<String> restriction = testAttribute.notIn(Set.of("value1", "value2"));
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
@@ -92,7 +94,7 @@ class AttributeTest {
 
     @Test
     void shouldThrowExceptionForEmptyNotInRestriction() {
-        assertThatThrownBy(() -> testAttribute.notIn())
+        assertThatThrownBy(() -> testAttribute.notIn(Set.of()))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("values are required");
     }
@@ -102,11 +104,10 @@ class AttributeTest {
         Restriction<String> restriction = testAttribute.isNull();
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
-            BasicRestriction<String> basic = (BasicRestriction<String>) restriction;
+            soft.assertThat(restriction).isInstanceOf(UnaryRestriction.class);
+            UnaryRestriction<String> basic = (UnaryRestriction<String>) restriction;
             soft.assertThat(basic.attribute()).isEqualTo("testAttribute");
-            soft.assertThat(basic.value()).isNull();
-            soft.assertThat(basic.comparison()).isEqualTo(Operator.EQUAL);
+            soft.assertThat(basic.operator()).isEqualTo(UnaryOperator.IS_NULL);
         });
     }
 
@@ -115,11 +116,10 @@ class AttributeTest {
         Restriction<String> restriction = testAttribute.notNull();
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
-            BasicRestriction<String> basic = (BasicRestriction<String>) restriction;
+            soft.assertThat(restriction).isInstanceOf(UnaryRestriction.class);
+            UnaryRestriction<String> basic = (UnaryRestriction<String>) restriction;
             soft.assertThat(basic.attribute()).isEqualTo("testAttribute");
-            soft.assertThat(basic.value()).isNull();
-            soft.assertThat(basic.comparison()).isEqualTo(Operator.NOT_EQUAL);
+            soft.assertThat(basic.operator()).isEqualTo(UnaryOperator.IS_NOT_NULL);
         });
     }
 }
