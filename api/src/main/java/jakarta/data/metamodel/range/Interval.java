@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024,2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2025 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,17 +15,19 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.metamodel.restrict;
+package jakarta.data.metamodel.range;
 
-import jakarta.data.metamodel.range.Range;
+import java.util.Objects;
 
-public interface BasicRestriction<T> extends Restriction<T> {
-    String attribute();
-
-    Operator comparison();
+public record Interval<T extends Comparable<T>>(LowerBound<T> lowerBound, UpperBound<T> upperBound)
+        implements Range<T> {
+    public Interval {
+        Objects.requireNonNull(lowerBound);
+        Objects.requireNonNull(upperBound);
+    }
 
     @Override
-    BasicRestriction<T> negate();
-
-    Range<?> range();
+    public String toString() {
+        return "[" + lowerBound + ", " + upperBound + "]";
+    }
 }

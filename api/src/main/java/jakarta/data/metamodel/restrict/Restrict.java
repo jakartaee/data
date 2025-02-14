@@ -17,6 +17,13 @@
  */
 package jakarta.data.metamodel.restrict;
 
+import jakarta.data.metamodel.range.Interval;
+import jakarta.data.metamodel.range.Enumeration;
+import jakarta.data.metamodel.range.LowerBound;
+import jakarta.data.metamodel.range.Pattern;
+import jakarta.data.metamodel.range.UpperBound;
+import jakarta.data.metamodel.range.Value;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -29,9 +36,6 @@ public class Restrict {
     private static final char CHAR_WILDCARD = '_';
 
     private static final char ESCAPE_CHAR = '\\';
-
-    // used internally for more readable code
-    private static final boolean ESCAPED = true;
 
     private static final char STRING_WILDCARD = '%';
 
@@ -51,89 +55,70 @@ public class Restrict {
                                                 List.of(restrictions));
     }
 
-    public static <T, V extends Comparable<V>> Restriction<T> between(V min,
-                                                                      V max,
-                                                                      String attribute) {
-        return all(greaterThanEqual(min, attribute),
-                   lessThanEqual(max, attribute));
-    }
-
     // TODO Need to think more about how to best cover negation of multiple
     // and then make negation of Single consistent with it
 
-    public static <T> TextRestriction<T> contains(String substring, String attribute) {
+    public static <T> BasicRestriction<T> contains(String substring, String attribute) {
         String pattern = toLikeEscaped(CHAR_WILDCARD, STRING_WILDCARD, true, substring, true);
-        return new TextRestrictionRecord<>(attribute, Operator.LIKE, ESCAPED, pattern);
+        return new BasicRestrictionRecord<>(attribute, Operator.LIKE, new Pattern(pattern));
     }
 
-    public static <T> TextRestriction<T> endsWith(String suffix, String attribute) {
+    public static <T> BasicRestriction<T> endsWith(String suffix, String attribute) {
         String pattern = toLikeEscaped(CHAR_WILDCARD, STRING_WILDCARD, true, suffix, false);
-        return new TextRestrictionRecord<>(attribute, Operator.LIKE, ESCAPED, pattern);
+        return new BasicRestrictionRecord<>(attribute, Operator.LIKE, new Pattern(pattern));
     }
 
-    public static <T> Restriction<T> equalTo(Object value, String attribute) {
-        return new BasicRestrictionRecord<>(attribute, Operator.EQUAL, value);
+    public static <T> BasicRestriction<T> equalTo(Object value, String attribute) {
+        return new BasicRestrictionRecord<>(attribute, Operator.EQUAL, new Value<>(value));
     }
 
-    public static <T> TextRestriction<T> equalTo(String value, String attribute) {
-        return new TextRestrictionRecord<>(attribute, Operator.EQUAL, value);
+    public static <T> BasicRestriction<T> equalTo(String value, String attribute) {
+        return new BasicRestrictionRecord<>(attribute, Operator.EQUAL, new Value<>(value));
     }
 
     public static <T> UnaryRestriction<T> isNull(String attribute) {
         return new UnaryRestrictionRecord<>(attribute, UnaryOperator.IS_NULL);
     }
 
-    public static <T, V extends Comparable<V>> Restriction<T> greaterThan(V value, String attribute) {
-        return new BasicRestrictionRecord<>(attribute, Operator.GREATER_THAN, value);
+    public static <T, V extends Comparable<V>> BasicRestriction<T> greaterThan(V value, String attribute) {
+        return new BasicRestrictionRecord<>(attribute, Operator.GREATER_THAN, new LowerBound<>(value));
     }
 
-    public static <T> TextRestriction<T> greaterThan(String value, String attribute) {
-        return new TextRestrictionRecord<>(attribute, Operator.GREATER_THAN, value);
+    public static <T, V extends Comparable<V>> BasicRestriction<T> greaterThanEqual(V value, String attribute) {
+        return new BasicRestrictionRecord<>(attribute, Operator.GREATER_THAN_EQUAL, new LowerBound<>(value));
     }
 
-    public static <T, V extends Comparable<V>> Restriction<T> greaterThanEqual(V value, String attribute) {
-        return new BasicRestrictionRecord<>(attribute, Operator.GREATER_THAN_EQUAL, value);
+    public static <T> BasicRestriction<T> in(Set<?> values, String attribute) {
+        return new BasicRestrictionRecord<>(attribute, Operator.IN, new Enumeration<>(values));
     }
 
-    public static <T> TextRestriction<T> greaterThanEqual(String value, String attribute) {
-        return new TextRestrictionRecord<>(attribute, Operator.GREATER_THAN_EQUAL, value);
+    public static <T, V extends Comparable<V>> BasicRestriction<T> lessThan(V value, String attribute) {
+        return new BasicRestrictionRecord<>(attribute, Operator.LESS_THAN, new UpperBound<>(value));
     }
 
-    public static <T> Restriction<T> in(Set<?> values, String attribute) {
-        return new BasicRestrictionRecord<>(attribute, Operator.IN, values);
+    public static <T, V extends Comparable<V>> BasicRestriction<T> lessThanEqual(V value, String attribute) {
+        return new BasicRestrictionRecord<>(attribute, Operator.LESS_THAN_EQUAL, new UpperBound<>(value));
     }
 
-    public static <T, V extends Comparable<V>> Restriction<T> lessThan(V value, String attribute) {
-        return new BasicRestrictionRecord<>(attribute, Operator.LESS_THAN, value);
+    public static <T, V extends Comparable<V>> BasicRestriction<T> between(V lowerBound, V upperBound, String attribute) {
+        return new BasicRestrictionRecord<>(attribute, Operator.IN,
+                new Interval<>(new LowerBound<>(lowerBound), new UpperBound<>(upperBound)));
     }
 
-    public static <T> TextRestriction<T> lessThan(String value, String attribute) {
-        return new TextRestrictionRecord<>(attribute, Operator.LESS_THAN, value);
+    public static <T> BasicRestriction<T> like(Pattern pattern, String attribute) {
+        return new BasicRestrictionRecord<>(attribute, Operator.LIKE, pattern);
     }
 
-    public static <T, V extends Comparable<V>> Restriction<T> lessThanEqual(V value, String attribute) {
-        return new BasicRestrictionRecord<>(attribute, Operator.LESS_THAN_EQUAL, value);
+    public static <T> BasicRestriction<T> like(String pattern, String attribute) {
+        return new BasicRestrictionRecord<>(attribute, Operator.LIKE, new Pattern(pattern));
     }
 
-    public static <T> TextRestriction<T> lessThanEqual(String value, String attribute) {
-        return new TextRestrictionRecord<>(attribute, Operator.LESS_THAN_EQUAL, value);
-    }
-
-    // TODO this would be possible if Pattern is added, but is it even useful?
-    //public static <T> TextRestriction<T> like(Pattern pattern, String attribute) {
-    //    return new TextRestriction<>(attribute, Operator.LIKE, ESCAPED, pattern);
-    //}
-
-    public static <T> TextRestriction<T> like(String pattern, String attribute) {
-        return new TextRestrictionRecord<>(attribute, Operator.LIKE, pattern);
-    }
-
-    public static <T> TextRestriction<T> like(String pattern,
+    public static <T> BasicRestriction<T> like(String pattern,
                                                char charWildcard,
                                                char stringWildcard,
                                                String attribute) {
         String p = toLikeEscaped(charWildcard, stringWildcard, false, pattern, false);
-        return new TextRestrictionRecord<>(attribute, Operator.LIKE, ESCAPED, p);
+        return new BasicRestrictionRecord<>(attribute, Operator.LIKE, new Pattern(p));
     }
 
     // convenience method for those who would prefer to avoid .negate()
@@ -142,52 +127,57 @@ public class Restrict {
         return restriction.negate();
     }
 
-    public static <T> Restriction<T> notEqualTo(Object value, String attribute) {
-        return new BasicRestrictionRecord<>(attribute, Operator.NOT_EQUAL, value);
+    public static <T> BasicRestriction<T> notEqualTo(Object value, String attribute) {
+        return new BasicRestrictionRecord<>(attribute, Operator.NOT_EQUAL, new Value<>(value));
     }
 
-    public static <T> TextRestriction<T> notEqualTo(String value, String attribute) {
-        return new TextRestrictionRecord<>(attribute, Operator.NOT_EQUAL, value);
+    public static <T> BasicRestriction<T> notEqualTo(String value, String attribute) {
+        return new BasicRestrictionRecord<>(attribute, Operator.NOT_EQUAL, new Value<>(value));
     }
 
     public static <T> UnaryRestriction<T> notNull(String attribute) {
         return new UnaryRestrictionRecord<>(attribute, UnaryOperator.IS_NOT_NULL);
     }
 
-    public static <T> TextRestriction<T> notContains(String substring, String attribute) {
+    public static <T> BasicRestriction<T> notContains(String substring, String attribute) {
         String pattern = toLikeEscaped(CHAR_WILDCARD, STRING_WILDCARD, true, substring, true);
-        return new TextRestrictionRecord<>(attribute, Operator.NOT_LIKE, ESCAPED, pattern);
+        return new BasicRestrictionRecord<>(attribute, Operator.NOT_LIKE, new Pattern(pattern));
     }
 
-    public static <T> TextRestriction<T> notEndsWith(String suffix, String attribute) {
+    public static <T> BasicRestriction<T> notEndsWith(String suffix, String attribute) {
         String pattern = toLikeEscaped(CHAR_WILDCARD, STRING_WILDCARD, true, suffix, false);
-        return new TextRestrictionRecord<>(attribute, Operator.NOT_LIKE, ESCAPED, pattern);
+        return new BasicRestrictionRecord<>(attribute, Operator.NOT_LIKE, new Pattern(pattern));
     }
 
-    public static <T> Restriction<T> notIn(Set<?> values, String attribute) {
-        return new BasicRestrictionRecord<>(attribute, Operator.NOT_IN, values);
+    public static <T> BasicRestriction<T> notIn(Set<?> values, String attribute) {
+        return new BasicRestrictionRecord<>(attribute, Operator.NOT_IN, new Enumeration<>(values));
     }
 
-    public static <T> TextRestriction<T> notLike(String pattern, String attribute) {
-        return new TextRestrictionRecord<>(attribute, Operator.NOT_LIKE, pattern);
+    public static <T> BasicRestriction<T> notLike(String pattern, String attribute) {
+        return new BasicRestrictionRecord<>(attribute, Operator.NOT_LIKE, new Pattern(pattern));
     }
 
-    public static <T> TextRestriction<T> notLike(String pattern,
+    public static <T> BasicRestriction<T> notLike(String pattern,
                                                   char charWildcard,
                                                   char stringWildcard,
                                                   String attribute) {
         String p = toLikeEscaped(charWildcard, stringWildcard, false, pattern, false);
-        return new TextRestrictionRecord<>(attribute, Operator.NOT_LIKE, ESCAPED, p);
+        return new BasicRestrictionRecord<>(attribute, Operator.NOT_LIKE, new Pattern(p));
     }
 
-    public static <T> TextRestriction<T> notStartsWith(String prefix, String attribute) {
+    public static <T> BasicRestriction<T> notStartsWith(String prefix, String attribute) {
         String pattern = toLikeEscaped(CHAR_WILDCARD, STRING_WILDCARD, false, prefix, true);
-        return new TextRestrictionRecord<>(attribute, Operator.NOT_LIKE, ESCAPED, pattern);
+        return new BasicRestrictionRecord<>(attribute, Operator.NOT_LIKE, new Pattern(pattern));
     }
 
-    public static <T> TextRestriction<T> startsWith(String prefix, String attribute) {
+    public static <T> BasicRestriction<T> startsWith(String prefix, String attribute) {
         String pattern = toLikeEscaped(CHAR_WILDCARD, STRING_WILDCARD, false, prefix, true);
-        return new TextRestrictionRecord<>(attribute, Operator.LIKE, ESCAPED, pattern);
+        return new BasicRestrictionRecord<>(attribute, Operator.LIKE, new Pattern(pattern));
+    }
+
+    public static <T, V extends Comparable<V>> BasicRestriction<T> notBetween(V lowerBound, V upperBound, String attribute) {
+        return new BasicRestrictionRecord<>(attribute, Operator.NOT_IN,
+                new Interval<>(new LowerBound<>(lowerBound), new UpperBound<>(upperBound)));
     }
 
     /**
@@ -244,7 +234,7 @@ public class Restrict {
     }
 
     @SuppressWarnings("unchecked")
-    public static final <T> Restriction<T> unrestricted() {
+    public static <T> Restriction<T> unrestricted() {
         return (Restriction<T>) Unrestricted.INSTANCE;
     }
 }
