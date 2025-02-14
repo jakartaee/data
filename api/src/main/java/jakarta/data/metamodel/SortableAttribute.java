@@ -18,6 +18,7 @@
 package jakarta.data.metamodel;
 
 import jakarta.data.Sort;
+import jakarta.data.metamodel.impl.SortableAttributeRecord;
 
 /**
  * <p>Represents a entity attribute in the {@link StaticMetamodel}
@@ -47,4 +48,18 @@ public interface SortableAttribute<T> extends Attribute<T> {
      */
     Sort<T> desc();
 
+    /**
+     * <p>Creates a static metamodel {@code SortableAttribute} representing the
+     * entity attribute with the specified name.</p>
+     *
+     * @param <T> entity class of the static metamodel.
+     * @param name the name of the entity attribute.
+     * @return instance of {@code SortableAttribute}.
+     */
+    static <T> SortableAttribute<T> of(String name) {
+        if (name == null)
+            throw new IllegalArgumentException("entity attribute name is required");
+
+        return new SortableAttributeRecord<>(name);
+    }
 }

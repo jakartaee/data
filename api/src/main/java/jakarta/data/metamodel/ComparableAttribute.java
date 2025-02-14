@@ -17,6 +17,7 @@
  */
 package jakarta.data.metamodel;
 
+import jakarta.data.Sort;
 import jakarta.data.metamodel.restrict.Restrict;
 import jakarta.data.metamodel.restrict.Restriction;
 
@@ -78,4 +79,39 @@ public interface ComparableAttribute<T,V extends Comparable<V>>
         return Restrict.lessThanEqual(value, name());
     }
 
+    /**
+     * <p>Creates a static metamodel {@code ComparableAttribute} representing the
+     * entity attribute with the specified name.</p>
+     *
+     * @param <T> entity class of the static metamodel.
+     * @param <V> type of entity attribute (or wrapper type if primitive).
+     * @param name the name of the entity attribute.
+     * @return instance of {@code ComparableAttribute}.
+     */
+    static <T, V extends Comparable<V>> ComparableAttribute<T, V> of(String name) {
+        if (name == null)
+            throw new IllegalArgumentException("entity attribute name is required");
+
+        return new ComparableAttributeRecord<>(name);
+    }
+}
+
+/**
+ * Hidden internal implementation of ComparableAttribute.
+ *
+ * @param <T> entity class of the static metamodel.
+ * @param <V> type of entity attribute (or wrapper type if primitive).
+ */
+record ComparableAttributeRecord<T,V extends Comparable<V>>(String name)
+    implements ComparableAttribute<T,V> {
+
+    @Override
+    public Sort<T> asc() {
+        return Sort.asc(name);
+    }
+
+    @Override
+    public Sort<T> desc() {
+        return Sort.desc(name);
+    }
 }

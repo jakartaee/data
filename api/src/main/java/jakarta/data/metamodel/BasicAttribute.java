@@ -62,8 +62,33 @@ public interface BasicAttribute<T,V> extends Attribute<T> {
         return Restrict.notNull(name());
     }
 
+    /**
+     * <p>Creates a static metamodel {@code BasicAttribute} representing the
+     * entity attribute with the specified name.</p>
+     *
+     * @param <T> entity class of the static metamodel.
+     * @param <V> type of entity attribute (or wrapper type if primitive).
+     * @param name the name of the entity attribute.
+     * @return instance of {@code BasicAttribute}.
+     */
+    static <T,V> BasicAttribute<T,V> of(String name) {
+        if (name == null)
+            throw new IllegalArgumentException("entity attribute name is required");
+
+        return new BasicAttributeRecord<>(name);
+    }
+
     default Restriction<T> restrict(Constraint<V> constraint) {
         return Restrict.restrict(constraint, name());
     }
+}
 
+/**
+ * Hidden internal implementation of BasicAttribute.
+ *
+ * @param <T> entity class of the static metamodel.
+ * @param <V> type of entity attribute (or wrapper type if primitive).
+ */
+record BasicAttributeRecord<T,V>(String name)
+    implements BasicAttribute<T,V> {
 }
