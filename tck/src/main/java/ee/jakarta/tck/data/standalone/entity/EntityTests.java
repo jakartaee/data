@@ -2200,30 +2200,70 @@ public class EntityTests {
             to retrieve as an array of records.
             """)
     public void testSelectEntityAttributesAsArrayOfRecord() {
-        WholeNumber[] found = numbers.wholeNumbers(2);
+        Order<NaturalNumber> order;
+        if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+            // Column and Key-Value databases might not be capable of sorting.
+            order = Order.by();
+        } else {
+            order = Order.by(_NaturalNumber.id.desc());
+        }
+
+        WholeNumber[] found = numbers.wholeNumbers(2, order);
 
         // 5 numbers (4, 5, 6, 7, 8) have square roots that round down to 2
         assertEquals(5, found.length);
 
-        assertEquals(4L, found[0].value());
-        assertEquals(2L, found[0].sqrtFloor());
-        assertEquals(NumberType.COMPOSITE.ordinal(), found[0].numType());
+        Map<Long, Integer> valueToArrayIndex = new HashMap<>();
+        if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+            // Column and Key-Value databases might not be capable of sorting.
+            for (long expectedValue : new long[] { 4L, 5L, 6L, 7L, 8L }) {
+                int index = -1;
+                for (int i = 0; i < found.length; i++) {
+                    if (found[i].value() == expectedValue) {
+                        index = i;
+                        break;
+                    }
+                }
+                if (index == -1) {
+                    fail("Did not find WholeNumber with value of " + expectedValue);
+                } else {
+                    valueToArrayIndex.put(expectedValue, index);
+                }
+            }
+        } else {
+            // Sorted by id/value descending
+            valueToArrayIndex.put(8L, 0);
+            valueToArrayIndex.put(7L, 1);
+            valueToArrayIndex.put(6L, 2);
+            valueToArrayIndex.put(5L, 3);
+            valueToArrayIndex.put(4L, 4);
+        }
 
-        assertEquals(5L, found[1].value());
-        assertEquals(2L, found[1].sqrtFloor());
-        assertEquals(NumberType.PRIME.ordinal(), found[1].numType());
+        WholeNumber num;
+        num = found[valueToArrayIndex.get(4L)];
+        assertEquals(4L, num.value());
+        assertEquals(2L, num.sqrtFloor());
+        assertEquals(NumberType.COMPOSITE.ordinal(), num.numType());
 
-        assertEquals(6L, found[2].value());
-        assertEquals(2L, found[2].sqrtFloor());
-        assertEquals(NumberType.COMPOSITE.ordinal(), found[2].numType());
+        num = found[valueToArrayIndex.get(5L)];
+        assertEquals(5L, num.value());
+        assertEquals(2L, num.sqrtFloor());
+        assertEquals(NumberType.PRIME.ordinal(), num.numType());
 
-        assertEquals(7L, found[3].value());
-        assertEquals(2L, found[3].sqrtFloor());
-        assertEquals(NumberType.PRIME.ordinal(), found[3].numType());
+        num = found[valueToArrayIndex.get(6L)];
+        assertEquals(6L, num.value());
+        assertEquals(2L, num.sqrtFloor());
+        assertEquals(NumberType.COMPOSITE.ordinal(), num.numType());
 
-        assertEquals(8L, found[4].value());
-        assertEquals(2L, found[4].sqrtFloor());
-        assertEquals(NumberType.COMPOSITE.ordinal(), found[4].numType());
+        num = found[valueToArrayIndex.get(7L)];
+        assertEquals(7L, num.value());
+        assertEquals(2L, num.sqrtFloor());
+        assertEquals(NumberType.PRIME.ordinal(), num.numType());
+
+        num = found[valueToArrayIndex.get(8L)];
+        assertEquals(8L, num.value());
+        assertEquals(2L, num.sqrtFloor());
+        assertEquals(NumberType.COMPOSITE.ordinal(), num.numType());
     }
 
     @Assertion(id = "539", strategy = """
@@ -2231,7 +2271,17 @@ public class EntityTests {
             to retrieve as a List of records.
             """)
     public void testSelectEntityAttributesAsListOfRecord() {
-        List<WholeNumber> found = numbers.wholeNumberList(NumberType.PRIME.ordinal());
+        Order<NaturalNumber> order;
+        if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+            // Column and Key-Value databases might not be capable of sorting.
+            order = Order.by();
+        } else {
+            order = Order.by(_NaturalNumber.floorOfSquareRoot.asc(),
+                             _NaturalNumber.id.desc());
+        }
+
+        List<WholeNumber> found = numbers.wholeNumberList(NumberType.PRIME.ordinal(),
+                                                          order);
 
         Map<Long, WholeNumber> primes = new HashMap<>();
         for (WholeNumber num : found) {
@@ -2252,19 +2302,27 @@ public class EntityTests {
         // primes with sqrtFloor 8: 79 73 71 67
         // primes with sqrtFloor 9: 97 89 83
 
-        WholeNumber num3 = found.get(0);
+        WholeNumber num3 = type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)
+                        ? primes.get(3L)
+                        : found.get(0);
         assertNotNull(num3);
         assertEquals(1L, num3.sqrtFloor());
 
-        WholeNumber num17 = found.get(8);
+        WholeNumber num17 = type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)
+                        ? primes.get(17L)
+                        : found.get(8);
         assertNotNull(num17);
         assertEquals(4L, num17.sqrtFloor());
 
-        WholeNumber num59 = found.get(16);
+        WholeNumber num59 = type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)
+                        ? primes.get(59L)
+                        : found.get(16);
         assertNotNull(num59);
         assertEquals(7L, num59.sqrtFloor());
 
-        WholeNumber num83 = found.get(24);
+        WholeNumber num83 = type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)
+                        ? primes.get(83L)
+                        : found.get(24);
         assertNotNull(num83);
         assertEquals(9L, num83.sqrtFloor());
     }

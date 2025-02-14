@@ -108,9 +108,8 @@ public interface NaturalNumbers extends BasicRepository<NaturalNumber, Long>, Id
     @Select({ _NaturalNumber.NUMTYPEORDINAL,
               _NaturalNumber.FLOOROFSQUAREROOT,
               _NaturalNumber.ID })
-    @OrderBy(_NaturalNumber.FLOOROFSQUAREROOT)
-    @OrderBy(value = ID, descending = true)
-    List<WholeNumber> wholeNumberList(@By(_NaturalNumber.NUMTYPEORDINAL) int numType);
+    List<WholeNumber> wholeNumberList(@By(_NaturalNumber.NUMTYPEORDINAL) int numType,
+                                      Order<NaturalNumber> order);
 
     @Find
     @Select({ _NaturalNumber.NUMTYPEORDINAL,
@@ -122,8 +121,8 @@ public interface NaturalNumbers extends BasicRepository<NaturalNumber, Long>, Id
     @Select({ _NaturalNumber.NUMTYPEORDINAL,
               _NaturalNumber.FLOOROFSQUAREROOT,
               _NaturalNumber.ID })
-    @OrderBy(ID)
-    WholeNumber[] wholeNumbers(@By(_NaturalNumber.FLOOROFSQUAREROOT) int floorOfSquareRoot);
+    WholeNumber[] wholeNumbers(@By(_NaturalNumber.FLOOROFSQUAREROOT) int floorOfSquareRoot,
+                               Order<NaturalNumber> order);
 
     @Find
     @Select({ _NaturalNumber.NUMTYPEORDINAL,
