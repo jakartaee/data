@@ -34,4 +34,16 @@ public record Interval<T extends Comparable<T>>(LowerBound<T> lowerBound, UpperB
     public String toString() {
         return "[" + lowerBound + ", " + upperBound + "]";
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof Interval<?> that
+            && lowerBound.equals(that.lowerBound)
+            && upperBound.equals(that.upperBound);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(lowerBound, upperBound);
+    }
 }

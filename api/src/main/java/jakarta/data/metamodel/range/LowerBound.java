@@ -29,4 +29,15 @@ public record LowerBound<T extends Comparable<T>>(T bound)
     public String toString() {
         return bound.toString();
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof LowerBound<?> that
+            && bound.equals(that.bound);
+    }
+
+    @Override
+    public int hashCode() {
+        return bound.hashCode();
+    }
 }
