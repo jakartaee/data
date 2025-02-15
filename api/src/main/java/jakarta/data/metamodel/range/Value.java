@@ -17,11 +17,18 @@
  */
 package jakarta.data.metamodel.range;
 
+import jakarta.data.metamodel.restrict.Operator;
+
 import java.util.Objects;
 
 public record Value<T>(T value) implements Range<T> {
     public Value {
         Objects.requireNonNull(value, "Value must not be null");
+    }
+
+    @Override
+    public Operator operator() {
+        return Operator.EQUAL;
     }
 
     @Override

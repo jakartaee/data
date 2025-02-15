@@ -94,7 +94,7 @@ class RestrictTest {
             soft.assertThat(restriction.attribute()).isEqualTo("attributeName");
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.EQUAL);
             soft.assertThat(restriction.range()).isInstanceOf(Pattern.class);
-            soft.assertThat(restriction.range()).isEqualTo(new Pattern("value"));
+            soft.assertThat(restriction.range()).isEqualTo(Pattern.literal("value"));
         });
     }
 
@@ -106,7 +106,7 @@ class RestrictTest {
             soft.assertThat(restriction.attribute()).isEqualTo("attributeName");
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.NOT_EQUAL);
             soft.assertThat(restriction.range()).isInstanceOf(Pattern.class);
-            soft.assertThat(restriction.range()).isEqualTo(new Pattern("value"));
+            soft.assertThat(restriction.range()).isEqualTo(Pattern.literal("value"));
         });
     }
 

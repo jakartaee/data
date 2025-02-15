@@ -25,22 +25,26 @@ import jakarta.data.metamodel.range.Range;
 
 import java.util.Objects;
 
-record BasicRestrictionRecord<T>(
-        String attribute,
-        Operator comparison,
-        Range<?> range) implements BasicRestriction<T> {
+record BasicRestrictionRecord<T>(String attribute, Range<?> range, boolean negated)
+        implements BasicRestriction<T> {
 
     BasicRestrictionRecord {
         Objects.requireNonNull(attribute, "Attribute must not be null");
         Objects.requireNonNull(range, "Range must not be null");
     }
 
+    public BasicRestrictionRecord(String attribute, Range<?> range) {
+        this(attribute, range, false);
+    }
+
+    @Override
+    public Operator comparison() {
+        return negated ? range.operator().negate() : range.operator();
+    }
+
     @Override
     public BasicRestriction<T> negate() {
-        return new BasicRestrictionRecord<>(
-                attribute,
-                comparison.negate(),
-                range);
+        return new BasicRestrictionRecord<>(attribute, range, !negated);
     }
 
     /**
@@ -52,6 +56,6 @@ record BasicRestrictionRecord<T>(
      */
     @Override
     public String toString() {
-        return attribute + ' ' + comparison.asQueryLanguage() + ' ' + range;
+        return attribute + ' ' + comparison().asQueryLanguage() + ' ' + range;
     }
 }

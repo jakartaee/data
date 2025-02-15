@@ -34,7 +34,7 @@ class BasicRestrictionRecordTest {
 
     @Test
     void shouldCreateBasicRestrictionWithDefaultNegation() {
-        BasicRestrictionRecord<String> restriction = new BasicRestrictionRecord<>("title", Operator.EQUAL, new Value<>("Java Guide"));
+        BasicRestrictionRecord<String> restriction = new BasicRestrictionRecord<>("title", new Value<>("Java Guide"));
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.attribute()).isEqualTo("title");
@@ -51,7 +51,7 @@ class BasicRestrictionRecordTest {
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.attribute()).isEqualTo("title");
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.NOT_EQUAL);
-            soft.assertThat(restriction.range()).isEqualTo(new Pattern("Java Guide"));
+            soft.assertThat(restriction.range()).isEqualTo(Pattern.literal("Java Guide"));
         });
     }
 
@@ -72,13 +72,12 @@ class BasicRestrictionRecordTest {
 
     @Test
     void shouldNegateNegatedRestriction() {
-        BasicRestriction<Book> titleRestriction =
+        BasicRestriction<Book> titleRestrictionBasic =
                 Restrict.equalTo("A Developer's Guide to Jakarta Data", "title");
-        BasicRestriction<Book> titleRestrictionBasic = titleRestriction;
-        BasicRestriction<Book> negatedTitleRestrictionBasic = titleRestriction.negate();
+        BasicRestriction<Book> negatedTitleRestrictionBasic = titleRestrictionBasic.negate();
         BasicRestriction<Book> negatedNegatedTitleRestrictionBasic = negatedTitleRestrictionBasic.negate();
 
-        Range<String> expected = new Pattern("A Developer's Guide to Jakarta Data");
+        Range<String> expected = Pattern.literal("A Developer's Guide to Jakarta Data");
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(titleRestrictionBasic.comparison())
                 .isEqualTo(Operator.EQUAL);
@@ -120,14 +119,14 @@ class BasicRestrictionRecordTest {
 
     @Test
     void shouldThrowExceptionWhenAttributeIsNull() {
-        assertThatThrownBy(() -> new BasicRestrictionRecord<>(null, Operator.EQUAL, new Value<>("testValue")))
+        assertThatThrownBy(() -> new BasicRestrictionRecord<>(null, new Value<>("testValue")))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("Attribute must not be null");
     }
 
     @Test
     void shouldThrowExceptionWhenValueIsNull() {
-        assertThatThrownBy(() -> new BasicRestrictionRecord<>("title", Operator.EQUAL, null))
+        assertThatThrownBy(() -> new BasicRestrictionRecord<>("title", null))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("Range must not be null");
     }

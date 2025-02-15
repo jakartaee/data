@@ -17,6 +17,8 @@
  */
 package jakarta.data.metamodel.range;
 
+import jakarta.data.metamodel.restrict.Operator;
+
 import java.util.Objects;
 import java.util.Set;
 
@@ -24,6 +26,11 @@ public record Enumeration<T>(Set<T> values) implements Range<T> {
 
     public Enumeration {
         Objects.requireNonNull(values, "Enumerated values cannot be null");
+    }
+
+    @Override
+    public Operator operator() {
+        return Operator.IN;
     }
 
     @Override

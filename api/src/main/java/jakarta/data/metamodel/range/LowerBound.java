@@ -17,12 +17,23 @@
  */
 package jakarta.data.metamodel.range;
 
+import jakarta.data.metamodel.restrict.Operator;
+
 import java.util.Objects;
 
-public record LowerBound<T extends Comparable<T>>(T bound)
+public record LowerBound<T extends Comparable<T>>(T bound, boolean strict)
         implements Range<T> {
     public LowerBound {
         Objects.requireNonNull(bound, "Lower bound must not be null");
+    }
+
+    public LowerBound(T bound) {
+        this(bound, false);
+    }
+
+    @Override
+    public Operator operator() {
+        return strict ? Operator.GREATER_THAN : Operator.GREATER_THAN_EQUAL;
     }
 
     @Override
@@ -33,7 +44,8 @@ public record LowerBound<T extends Comparable<T>>(T bound)
     @Override
     public boolean equals(Object obj) {
         return obj instanceof LowerBound<?> that
-            && bound.equals(that.bound);
+            && bound.equals(that.bound)
+            && strict == that.strict;
     }
 
     @Override

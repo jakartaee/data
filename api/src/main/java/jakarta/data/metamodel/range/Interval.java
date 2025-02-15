@@ -17,6 +17,8 @@
  */
 package jakarta.data.metamodel.range;
 
+import jakarta.data.metamodel.restrict.Operator;
+
 import java.util.Objects;
 
 public record Interval<T extends Comparable<T>>(LowerBound<T> lowerBound, UpperBound<T> upperBound)
@@ -28,6 +30,11 @@ public record Interval<T extends Comparable<T>>(LowerBound<T> lowerBound, UpperB
 
     public Interval(T lowerBound, T upperBound) {
         this(new LowerBound<>(lowerBound), new UpperBound<>(upperBound));
+    }
+
+    @Override
+    public Operator operator() {
+        return Operator.IN;
     }
 
     @Override
