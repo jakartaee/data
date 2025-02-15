@@ -20,7 +20,7 @@ package jakarta.data.metamodel.range;
 import jakarta.data.metamodel.restrict.Operator;
 
 public sealed interface Range<T>
-        permits Value, Enumeration,
+        permits Value, Enumeration, Null,
                 LowerBound, UpperBound, Interval,
                 Pattern {
     Operator operator();
