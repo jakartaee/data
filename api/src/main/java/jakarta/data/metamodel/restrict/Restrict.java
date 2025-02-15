@@ -33,12 +33,6 @@ import java.util.Set;
 // The other place is from static metamodel attributes.
 public class Restrict {
 
-    private static final char CHAR_WILDCARD = '_';
-
-    private static final char ESCAPE_CHAR = '\\';
-
-    private static final char STRING_WILDCARD = '%';
-
     // prevent instantiation
     private Restrict() {
     }
@@ -59,13 +53,11 @@ public class Restrict {
     // and then make negation of Single consistent with it
 
     public static <T> BasicRestriction<T> contains(String substring, String attribute) {
-        String pattern = toLikeEscaped(CHAR_WILDCARD, STRING_WILDCARD, true, substring, true);
-        return new BasicRestrictionRecord<>(attribute, Operator.LIKE, new Pattern(pattern));
+        return new BasicRestrictionRecord<>(attribute, Operator.LIKE, Pattern.substring(substring));
     }
 
     public static <T> BasicRestriction<T> endsWith(String suffix, String attribute) {
-        String pattern = toLikeEscaped(CHAR_WILDCARD, STRING_WILDCARD, true, suffix, false);
-        return new BasicRestrictionRecord<>(attribute, Operator.LIKE, new Pattern(pattern));
+        return new BasicRestrictionRecord<>(attribute, Operator.LIKE, Pattern.suffix(suffix));
     }
 
     public static <T> BasicRestriction<T> equalTo(Object value, String attribute) {
@@ -101,8 +93,7 @@ public class Restrict {
     }
 
     public static <T, V extends Comparable<V>> BasicRestriction<T> between(V lowerBound, V upperBound, String attribute) {
-        return new BasicRestrictionRecord<>(attribute, Operator.IN,
-                new Interval<>(new LowerBound<>(lowerBound), new UpperBound<>(upperBound)));
+        return new BasicRestrictionRecord<>(attribute, Operator.IN, new Interval<>(lowerBound, upperBound));
     }
 
     public static <T> BasicRestriction<T> like(Pattern pattern, String attribute) {
@@ -117,8 +108,8 @@ public class Restrict {
                                                char charWildcard,
                                                char stringWildcard,
                                                String attribute) {
-        String p = toLikeEscaped(charWildcard, stringWildcard, false, pattern, false);
-        return new BasicRestrictionRecord<>(attribute, Operator.LIKE, new Pattern(p));
+        return new BasicRestrictionRecord<>(attribute, Operator.LIKE,
+                new Pattern(pattern, charWildcard, stringWildcard));
     }
 
     // convenience method for those who would prefer to avoid .negate()
@@ -140,13 +131,11 @@ public class Restrict {
     }
 
     public static <T> BasicRestriction<T> notContains(String substring, String attribute) {
-        String pattern = toLikeEscaped(CHAR_WILDCARD, STRING_WILDCARD, true, substring, true);
-        return new BasicRestrictionRecord<>(attribute, Operator.NOT_LIKE, new Pattern(pattern));
+        return new BasicRestrictionRecord<>(attribute, Operator.NOT_LIKE, Pattern.substring(substring));
     }
 
     public static <T> BasicRestriction<T> notEndsWith(String suffix, String attribute) {
-        String pattern = toLikeEscaped(CHAR_WILDCARD, STRING_WILDCARD, true, suffix, false);
-        return new BasicRestrictionRecord<>(attribute, Operator.NOT_LIKE, new Pattern(pattern));
+        return new BasicRestrictionRecord<>(attribute, Operator.NOT_LIKE, Pattern.suffix(suffix));
     }
 
     public static <T> BasicRestriction<T> notIn(Set<?> values, String attribute) {
@@ -161,76 +150,21 @@ public class Restrict {
                                                   char charWildcard,
                                                   char stringWildcard,
                                                   String attribute) {
-        String p = toLikeEscaped(charWildcard, stringWildcard, false, pattern, false);
-        return new BasicRestrictionRecord<>(attribute, Operator.NOT_LIKE, new Pattern(p));
+        return new BasicRestrictionRecord<>(attribute, Operator.NOT_LIKE,
+                new Pattern(pattern, charWildcard, stringWildcard));
     }
 
     public static <T> BasicRestriction<T> notStartsWith(String prefix, String attribute) {
-        String pattern = toLikeEscaped(CHAR_WILDCARD, STRING_WILDCARD, false, prefix, true);
-        return new BasicRestrictionRecord<>(attribute, Operator.NOT_LIKE, new Pattern(pattern));
+        return new BasicRestrictionRecord<>(attribute, Operator.NOT_LIKE, Pattern.prefix(prefix));
     }
 
     public static <T> BasicRestriction<T> startsWith(String prefix, String attribute) {
-        String pattern = toLikeEscaped(CHAR_WILDCARD, STRING_WILDCARD, false, prefix, true);
-        return new BasicRestrictionRecord<>(attribute, Operator.LIKE, new Pattern(pattern));
+        return new BasicRestrictionRecord<>(attribute, Operator.LIKE, Pattern.prefix(prefix));
     }
 
     public static <T, V extends Comparable<V>> BasicRestriction<T> notBetween(V lowerBound, V upperBound, String attribute) {
         return new BasicRestrictionRecord<>(attribute, Operator.NOT_IN,
                 new Interval<>(new LowerBound<>(lowerBound), new UpperBound<>(upperBound)));
-    }
-
-    /**
-     * Converts the literal pattern into an escaped LIKE pattern.
-     * This method prepends a % character if previous characters are allowed,
-     * escapes the charWildcard (typically _), the stringWildcard (typically %),
-     * and the \ character within the literal by inserting \ prior to each,
-     * and then appends a % character if subsequent characters are allowed.
-     *
-     * @param charWildcard    single character wildcard, typically _.
-     * @param stringWildcard  0 or more character wildcard, typically %.
-     * @param allowPrevious   whether to allow characters prior to the text.
-     * @param literal text    that is not escaped that must be matched.
-     * @param allowSubsequent whether to allow more characters after the text.
-     * @return escaped pattern.
-     * @throws IllegalArgumentException if the same character is supplied for
-     *                                  both wildcard types.
-     */
-    // TODO could move to Pattern class
-    private static String toLikeEscaped(char charWildcard,
-                                        char stringWildcard,
-                                        boolean allowPrevious,
-                                        String literal,
-                                        boolean allowSubsequent) {
-        if (charWildcard == stringWildcard)
-            throw new IllegalArgumentException(
-                    "Cannot use the same character (" + charWildcard +
-                    ") for both types of wildcards.");
-
-        int length = literal.length();
-        StringBuilder s = new StringBuilder(length + 10);
-        if (allowPrevious) {
-            s.append(STRING_WILDCARD);
-        }
-        for (int i = 0; i < length; i++) {
-            char ch = literal.charAt(i);
-            if (ch == charWildcard) {
-                s.append(ESCAPE_CHAR)
-                 .append(CHAR_WILDCARD);
-            } else if (ch == stringWildcard) {
-                s.append(ESCAPE_CHAR)
-                 .append(STRING_WILDCARD);
-            } else if (ch == ESCAPE_CHAR) {
-                s.append(ESCAPE_CHAR)
-                 .append(ESCAPE_CHAR);
-            } else {
-                s.append(ch);
-            }
-        }
-        if (allowSubsequent) {
-            s.append(STRING_WILDCARD);
-        }
-        return s.toString();
     }
 
     @SuppressWarnings("unchecked")

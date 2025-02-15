@@ -26,6 +26,10 @@ public record Interval<T extends Comparable<T>>(LowerBound<T> lowerBound, UpperB
         Objects.requireNonNull(upperBound);
     }
 
+    public Interval(T lowerBound, T upperBound) {
+        this(new LowerBound<>(lowerBound), new UpperBound<>(upperBound));
+    }
+
     @Override
     public String toString() {
         return "[" + lowerBound + ", " + upperBound + "]";
