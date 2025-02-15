@@ -17,6 +17,8 @@
  */
 package jakarta.data.metamodel.restrict;
 
+import jakarta.data.metamodel.range.Pattern;
+import jakarta.data.metamodel.range.Range;
 import jakarta.data.metamodel.range.UpperBound;
 import jakarta.data.metamodel.range.Value;
 import org.assertj.core.api.SoftAssertions;
@@ -49,7 +51,7 @@ class BasicRestrictionRecordTest {
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.attribute()).isEqualTo("title");
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.NOT_EQUAL);
-            soft.assertThat(restriction.range()).isEqualTo(new Value<>("Java Guide"));
+            soft.assertThat(restriction.range()).isEqualTo(new Pattern("Java Guide"));
         });
     }
 
@@ -76,7 +78,7 @@ class BasicRestrictionRecordTest {
         BasicRestriction<Book> negatedTitleRestrictionBasic = titleRestriction.negate();
         BasicRestriction<Book> negatedNegatedTitleRestrictionBasic = negatedTitleRestrictionBasic.negate();
 
-        Value<String> expected = new Value<>("A Developer's Guide to Jakarta Data");
+        Range<String> expected = new Pattern("A Developer's Guide to Jakarta Data");
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(titleRestrictionBasic.comparison())
                 .isEqualTo(Operator.EQUAL);

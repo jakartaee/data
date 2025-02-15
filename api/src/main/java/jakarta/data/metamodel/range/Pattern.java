@@ -47,31 +47,23 @@ public record Pattern(String pattern, boolean caseSensitive)
         return "'" + pattern + "'";
     }
 
-    public static Pattern prefix(String prefix) {
-        return prefix(prefix, true);
+    public static Pattern literal(String literal) {
+        return new Pattern(escape(literal));
     }
 
-    public static Pattern prefix(String prefix, boolean caseSensitive) {
-        return new Pattern(literal(prefix) + STRING_WILDCARD, caseSensitive);
+    public static Pattern prefix(String prefix) {
+        return new Pattern(escape(prefix) + STRING_WILDCARD);
     }
 
     public static Pattern suffix(String suffix) {
-        return suffix(suffix, true);
-    }
-
-    public static Pattern suffix(String suffix, boolean caseSensitive) {
-        return new Pattern(STRING_WILDCARD + literal(suffix), caseSensitive);
+        return new Pattern(STRING_WILDCARD + escape(suffix));
     }
 
     public static Pattern substring(String substring) {
-        return substring(substring, true);
+        return new Pattern(STRING_WILDCARD + escape(substring) + STRING_WILDCARD);
     }
 
-    public static Pattern substring(String substring, boolean caseSensitive) {
-        return new Pattern(STRING_WILDCARD + literal(substring) + STRING_WILDCARD, caseSensitive);
-    }
-
-    private static String literal(String literal) {
+    private static String escape(String literal) {
         final var result = new StringBuilder();
         for (int i = 0; i<literal.length(); i++) {
             final char ch = literal.charAt(i);

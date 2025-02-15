@@ -43,6 +43,16 @@ public interface TextAttribute<T> extends ComparableAttribute<T,String> {
      */
     Sort<T> descIgnoreCase();
 
+    @Override
+    default TextRestriction<T> equalTo(String value) {
+        return Restrict.equalTo(value, name());
+    }
+
+    @Override
+    default TextRestriction<T> notEqualTo(String value) {
+        return Restrict.notEqualTo(value, name());
+    }
+
     default TextRestriction<T> like(Pattern pattern) {
         return Restrict.like(pattern, name());
     }
