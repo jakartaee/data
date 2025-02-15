@@ -17,9 +17,11 @@
  */
 package jakarta.data.metamodel.range;
 
+import jakarta.data.metamodel.restrict.Operator;
+
 import java.util.Objects;
 
-public record Pattern(String pattern, boolean caseSensitive)
+public record Pattern(String pattern, boolean caseSensitive, boolean literal)
         implements Range<String> {
 
     public static final char CHAR_WILDCARD = '_';
@@ -31,15 +33,22 @@ public record Pattern(String pattern, boolean caseSensitive)
     }
 
     public Pattern(String pattern) {
-        this(pattern, true);
+        this(pattern, true, false);
     }
+
+
 
     public Pattern(String pattern, char charWildcard, char stringWildcard) {
         this(translate(pattern, charWildcard, stringWildcard));
     }
 
     public Pattern ignoreCase() {
-        return new Pattern(pattern, false);
+        return new Pattern(pattern, false, literal);
+    }
+
+    @Override
+    public Operator operator() {
+        return literal ? Operator.EQUAL : Operator.LIKE;
     }
 
     @Override
@@ -48,7 +57,8 @@ public record Pattern(String pattern, boolean caseSensitive)
     }
 
     public static Pattern literal(String literal) {
-        return new Pattern(escape(literal));
+        // no need to escape when literal = true
+        return new Pattern(literal, true, true);
     }
 
     public static Pattern prefix(String prefix) {
@@ -100,7 +110,8 @@ public record Pattern(String pattern, boolean caseSensitive)
     public boolean equals(Object obj) {
         return obj instanceof Pattern that
             && pattern.equals(that.pattern)
-            && caseSensitive == that.caseSensitive;
+            && caseSensitive == that.caseSensitive
+            && literal == that.literal;
     }
 
     @Override

@@ -32,7 +32,6 @@ class TextRestrictionRecordTest {
     void shouldCreateTextRestrictionWithDefaultValues() {
         TextRestrictionRecord<String> restriction = new TextRestrictionRecord<>(
                 "title",
-                Operator.LIKE,
                 new Pattern("%Java%")
         );
 
@@ -49,8 +48,8 @@ class TextRestrictionRecordTest {
     void shouldCreateTextRestrictionWithExplicitNegation() {
         TextRestrictionRecord<String> restriction = new TextRestrictionRecord<>(
                 "title",
-                Operator.NOT_LIKE,
-                new Pattern("%Java%")
+                new Pattern("%Java%"),
+                true
         );
 
         SoftAssertions.assertSoftly(soft -> {
@@ -66,7 +65,6 @@ class TextRestrictionRecordTest {
     void shouldIgnoreCaseForTextRestriction() {
         TextRestrictionRecord<String> caseInsensitiveRestriction = new TextRestrictionRecord<>(
                 "title",
-                Operator.LIKE,
                 new Pattern("%Java%").ignoreCase()
         );
 
@@ -83,7 +81,6 @@ class TextRestrictionRecordTest {
     void shouldCreateTextRestrictionWithEscapedValue() {
         TextRestrictionRecord<String> restriction = new TextRestrictionRecord<>(
                 "title",
-                Operator.LIKE,
                 new Pattern("%Java%")
         );
 
@@ -157,8 +154,8 @@ class TextRestrictionRecordTest {
     void shouldSupportNegationForTextRestriction() {
         TextRestrictionRecord<String> restriction = new TextRestrictionRecord<>(
                 "author",
-                Operator.NOT_EQUAL,
-                new Pattern("John Doe")
+                Pattern.literal("John Doe"),
+                true
         );
 
         SoftAssertions.assertSoftly(soft -> {
@@ -172,7 +169,7 @@ class TextRestrictionRecordTest {
 
     @Test
     void shouldThrowExceptionWhenAttributeIsNullInTextRestriction() {
-        assertThatThrownBy(() -> new TextRestrictionRecord<>(null, Operator.LIKE, new Pattern("testValue")))
+        assertThatThrownBy(() -> new TextRestrictionRecord<>(null, new Pattern("testValue")))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("Attribute must not be null");
     }

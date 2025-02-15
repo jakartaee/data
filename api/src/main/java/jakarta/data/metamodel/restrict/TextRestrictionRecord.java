@@ -21,30 +21,31 @@ import jakarta.data.metamodel.range.Pattern;
 
 import java.util.Objects;
 
-record TextRestrictionRecord<T>(
-        String attribute,
-        Operator comparison,
-        Pattern range) implements TextRestriction<T> {
+record TextRestrictionRecord<T>(String attribute, Pattern range, boolean negated)
+        implements TextRestriction<T> {
 
     TextRestrictionRecord {
         Objects.requireNonNull(attribute, "Attribute must not be null");
         Objects.requireNonNull(range, "Pattern must not be null");
     }
 
+    public TextRestrictionRecord(String attribute, Pattern range) {
+        this(attribute, range, false);
+    }
+
+    @Override
+    public Operator comparison() {
+        return negated ? range.operator().negate() : range.operator();
+    }
+
     @Override
     public TextRestrictionRecord<T> negate() {
-        return new TextRestrictionRecord<>(
-                attribute,
-                comparison.negate(),
-                range);
+        return new TextRestrictionRecord<>(attribute, range, !negated);
     }
 
     @Override
     public TextRestrictionRecord<T> ignoreCase() {
-        return new TextRestrictionRecord<>(
-                attribute,
-                comparison,
-                range.ignoreCase());
+        return new TextRestrictionRecord<>(attribute, range.ignoreCase(), negated);
     }
 
     /**
@@ -56,6 +57,6 @@ record TextRestrictionRecord<T>(
      */
     @Override
     public String toString() {
-        return attribute + ' ' + comparison.asQueryLanguage() + ' ' + range;
+        return attribute + ' ' + comparison().asQueryLanguage() + ' ' + range;
     }
 }
