@@ -227,6 +227,6 @@ class RestrictTest {
     void shouldThrowExceptionForInvalidWildcard() {
         assertThatThrownBy(() -> Restrict.like("pattern_value", '_', '_', "attributeName"))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Cannot use the same character (_) for both types of wildcards.");
+                .hasMessage("Cannot use the same character (_) for both wildcards.");
     }
 }
