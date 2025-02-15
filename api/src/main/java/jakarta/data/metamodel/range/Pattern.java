@@ -103,4 +103,16 @@ public record Pattern(String pattern, boolean caseSensitive)
         }
         return result.toString();
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof Pattern that
+            && pattern.equals(that.pattern)
+            && caseSensitive == that.caseSensitive;
+    }
+
+    @Override
+    public int hashCode() {
+        return pattern.hashCode();
+    }
 }

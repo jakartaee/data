@@ -28,4 +28,15 @@ public record Value<T>(T value) implements Range<T> {
     public String toString() {
         return value instanceof String ? "'" + value + "'" : value.toString();
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof Value<?> that
+            && value.equals(that.value);
+    }
+
+    @Override
+    public int hashCode() {
+        return value.hashCode();
+    }
 }
