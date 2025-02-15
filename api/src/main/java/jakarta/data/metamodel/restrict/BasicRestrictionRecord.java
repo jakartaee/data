@@ -56,6 +56,11 @@ record BasicRestrictionRecord<T>(String attribute, Range<?> range, boolean negat
      */
     @Override
     public String toString() {
-        return attribute + ' ' + comparison().asQueryLanguage() + ' ' + range;
+        final Operator comparison = comparison();
+        if (comparison.unary()) {
+            return attribute + ' ' + comparison.asQueryLanguage();
+        } else {
+            return attribute + ' ' + comparison.asQueryLanguage() + ' ' + range;
+        }
     }
 }

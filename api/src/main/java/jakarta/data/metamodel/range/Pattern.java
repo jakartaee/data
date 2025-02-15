@@ -56,6 +56,7 @@ public record Pattern(String pattern, boolean caseSensitive, boolean literal)
         return "'" + pattern + "'";
     }
 
+    //TODO: it might be better to make text literals their own type of Range
     public static Pattern literal(String literal) {
         // no need to escape when literal = true
         return new Pattern(literal, true, true);

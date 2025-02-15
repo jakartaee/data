@@ -17,9 +17,10 @@
  */
 package jakarta.data.metamodel.restrict;
 
-import jakarta.data.metamodel.range.Interval;
 import jakarta.data.metamodel.range.Enumeration;
+import jakarta.data.metamodel.range.Interval;
 import jakarta.data.metamodel.range.LowerBound;
+import jakarta.data.metamodel.range.Null;
 import jakarta.data.metamodel.range.Pattern;
 import jakarta.data.metamodel.range.UpperBound;
 import jakarta.data.metamodel.range.Value;
@@ -72,8 +73,8 @@ public class Restrict {
         return new TextRestrictionRecord<>(attribute, Pattern.literal(value));
     }
 
-    public static <T> UnaryRestriction<T> isNull(String attribute) {
-        return new UnaryRestrictionRecord<>(attribute, UnaryOperator.IS_NULL);
+    public static <T> BasicRestriction<T> isNull(String attribute) {
+        return new BasicRestrictionRecord<>(attribute, new Null<>());
     }
 
     public static <T, V extends Comparable<V>> BasicRestriction<T> greaterThan(V value, String attribute) {
@@ -126,8 +127,8 @@ public class Restrict {
         return new TextRestrictionRecord<>(attribute, Pattern.literal(value), true);
     }
 
-    public static <T> UnaryRestriction<T> notNull(String attribute) {
-        return new UnaryRestrictionRecord<>(attribute, UnaryOperator.IS_NOT_NULL);
+    public static <T> BasicRestriction<T> notNull(String attribute) {
+        return new BasicRestrictionRecord<>(attribute, new Null<>(), true);
     }
 
     public static <T> TextRestriction<T> notContains(String substring, String attribute) {
