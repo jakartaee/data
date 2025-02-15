@@ -22,6 +22,7 @@ import jakarta.data.metamodel.range.Interval;
 import jakarta.data.metamodel.range.LowerBound;
 import jakarta.data.metamodel.range.Null;
 import jakarta.data.metamodel.range.Pattern;
+import jakarta.data.metamodel.range.Range;
 import jakarta.data.metamodel.range.UpperBound;
 import jakarta.data.metamodel.range.Value;
 
@@ -52,6 +53,10 @@ public class Restrict {
 
     // TODO Need to think more about how to best cover negation of multiple
     // and then make negation of Single consistent with it
+
+    public static <T> BasicRestriction<T> restrict(Range<?> range, String attribute) {
+        return new BasicRestrictionRecord<>(attribute, range);
+    }
 
     public static <T> TextRestriction<T> contains(String substring, String attribute) {
         return new TextRestrictionRecord<>(attribute, Pattern.substring(substring));
