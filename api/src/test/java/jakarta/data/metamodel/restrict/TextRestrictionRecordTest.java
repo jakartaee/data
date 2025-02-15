@@ -67,7 +67,7 @@ class TextRestrictionRecordTest {
         TextRestrictionRecord<String> caseInsensitiveRestriction = new TextRestrictionRecord<>(
                 "title",
                 Operator.LIKE,
-                new Pattern("%Java%", false)
+                new Pattern("%Java%").ignoreCase()
         );
 
         SoftAssertions.assertSoftly(soft -> {
@@ -105,7 +105,7 @@ class TextRestrictionRecordTest {
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(likeJakartaEE.comparison()).isEqualTo(Operator.LIKE);
-            soft.assertThat(notLikeJakartaEE.range().caseSensitive()).isTrue();
+            soft.assertThat(likeJakartaEE.range().caseSensitive()).isTrue();
 
             soft.assertThat(notLikeJakartaEE.comparison()).isEqualTo(Operator.NOT_LIKE);
             soft.assertThat(notLikeJakartaEE.range().caseSensitive()).isTrue();
@@ -153,26 +153,26 @@ class TextRestrictionRecordTest {
 //        });
 //    }
 
-//    @Test
-//    void shouldSupportNegationForTextRestriction() {
-//        BasicRestrictionRecord<String> restriction = new BasicRestrictionRecord<>(
-//                "author",
-//                Operator.NOT_EQUAL,
-//                new Value<>("John Doe")
-//        );
-//
-//        SoftAssertions.assertSoftly(soft -> {
-//            soft.assertThat(restriction.attribute()).isEqualTo("author");
-//            soft.assertThat(restriction.comparison()).isEqualTo(Operator.NOT_EQUAL);
-//            soft.assertThat(((Value<?>)restriction.range()).value()).isEqualTo("John Doe");
-//            soft.assertThat(restriction.isCaseSensitive()).isTrue();
-////            soft.assertThat(restriction.isEscaped()).isFalse();
-//        });
-//    }
+    @Test
+    void shouldSupportNegationForTextRestriction() {
+        TextRestrictionRecord<String> restriction = new TextRestrictionRecord<>(
+                "author",
+                Operator.NOT_EQUAL,
+                new Pattern("John Doe")
+        );
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(restriction.attribute()).isEqualTo("author");
+            soft.assertThat(restriction.comparison()).isEqualTo(Operator.NOT_EQUAL);
+            soft.assertThat(restriction.range().pattern()).isEqualTo("John Doe");
+            soft.assertThat(restriction.range().caseSensitive()).isTrue();
+//            soft.assertThat(restriction.isEscaped()).isFalse();
+        });
+    }
 
     @Test
     void shouldThrowExceptionWhenAttributeIsNullInTextRestriction() {
-        assertThatThrownBy(() -> new BasicRestrictionRecord<>(null, Operator.LIKE, new Pattern("testValue")))
+        assertThatThrownBy(() -> new TextRestrictionRecord<>(null, Operator.LIKE, new Pattern("testValue")))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("Attribute must not be null");
     }

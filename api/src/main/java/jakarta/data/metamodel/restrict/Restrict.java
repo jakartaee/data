@@ -64,8 +64,8 @@ public class Restrict {
         return new BasicRestrictionRecord<>(attribute, Operator.EQUAL, new Value<>(value));
     }
 
-    public static <T> BasicRestriction<T> equalTo(String value, String attribute) {
-        return new BasicRestrictionRecord<>(attribute, Operator.EQUAL, new Value<>(value));
+    public static <T> TextRestriction<T> equalTo(String value, String attribute) {
+        return new TextRestrictionRecord<>(attribute, Operator.EQUAL, Pattern.literal(value));
     }
 
     public static <T> UnaryRestriction<T> isNull(String attribute) {
@@ -122,8 +122,8 @@ public class Restrict {
         return new BasicRestrictionRecord<>(attribute, Operator.NOT_EQUAL, new Value<>(value));
     }
 
-    public static <T> BasicRestriction<T> notEqualTo(String value, String attribute) {
-        return new BasicRestrictionRecord<>(attribute, Operator.NOT_EQUAL, new Value<>(value));
+    public static <T> TextRestriction<T> notEqualTo(String value, String attribute) {
+        return new TextRestrictionRecord<>(attribute, Operator.NOT_EQUAL, Pattern.literal(value));
     }
 
     public static <T> UnaryRestriction<T> notNull(String attribute) {
