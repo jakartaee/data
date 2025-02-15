@@ -47,7 +47,7 @@ class RestrictTest {
     }
 
     // Mock entity class for tests
-    class Employee {
+    static class Employee {
         int badgeNum;
         String name;
         String position;
