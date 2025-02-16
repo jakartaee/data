@@ -29,7 +29,7 @@ import java.util.Set;
 
 public sealed interface Range<T>
         permits Value, Enumeration, NullValue,
-        LowerBound, UpperBound, Interval,
+                LowerBound, UpperBound, Interval,
                 TextRange {
     Operator operator();
 
