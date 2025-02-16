@@ -17,8 +17,8 @@
  */
 package jakarta.data.metamodel.restrict;
 
-import jakarta.data.metamodel.range.Pattern;
-import jakarta.data.metamodel.range.Value;
+import jakarta.data.metamodel.range.Range;
+import jakarta.data.metamodel.range.TextRange;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
 
@@ -69,8 +69,8 @@ class RestrictTest {
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.attribute()).isEqualTo("attributeName");
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.EQUAL);
-            soft.assertThat(restriction.range()).isInstanceOf(Value.class);
-            soft.assertThat(restriction.range()).isEqualTo(new Value<>(0));
+            soft.assertThat(restriction.range()).isInstanceOf(Range.class);
+            soft.assertThat(restriction.range()).isEqualTo(Range.value(0));
         });
     }
 
@@ -81,8 +81,8 @@ class RestrictTest {
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.attribute()).isEqualTo("attributeName");
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.NOT_EQUAL);
-            soft.assertThat(restriction.range()).isInstanceOf(Value.class);
-            soft.assertThat(restriction.range()).isEqualTo(new Value<>(0));
+            soft.assertThat(restriction.range()).isInstanceOf(Range.class);
+            soft.assertThat(restriction.range()).isEqualTo(Range.value(0));
         });
     }
 
@@ -93,8 +93,8 @@ class RestrictTest {
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.attribute()).isEqualTo("attributeName");
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.EQUAL);
-            soft.assertThat(restriction.range()).isInstanceOf(Pattern.class);
-            soft.assertThat(restriction.range()).isEqualTo(Pattern.literal("value"));
+            soft.assertThat(restriction.range()).isInstanceOf(TextRange.class);
+            soft.assertThat(restriction.range()).isEqualTo(TextRange.literal("value"));
         });
     }
 
@@ -105,8 +105,8 @@ class RestrictTest {
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.attribute()).isEqualTo("attributeName");
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.NOT_EQUAL);
-            soft.assertThat(restriction.range()).isInstanceOf(Pattern.class);
-            soft.assertThat(restriction.range()).isEqualTo(Pattern.literal("value"));
+            soft.assertThat(restriction.range()).isInstanceOf(TextRange.class);
+            soft.assertThat(restriction.range()).isEqualTo(TextRange.literal("value"));
         });
     }
 

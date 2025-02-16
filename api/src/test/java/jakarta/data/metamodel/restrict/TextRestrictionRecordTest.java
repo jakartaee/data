@@ -17,7 +17,7 @@
  */
 package jakarta.data.metamodel.restrict;
 
-import jakarta.data.metamodel.range.Pattern;
+import jakarta.data.metamodel.range.TextRange;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
 
@@ -32,7 +32,7 @@ class TextRestrictionRecordTest {
     void shouldCreateTextRestrictionWithDefaultValues() {
         TextRestrictionRecord<String> restriction = new TextRestrictionRecord<>(
                 "title",
-                new Pattern("%Java%")
+                TextRange.pattern("%Java%")
         );
 
         SoftAssertions.assertSoftly(soft -> {
@@ -48,7 +48,7 @@ class TextRestrictionRecordTest {
     void shouldCreateTextRestrictionWithExplicitNegation() {
         TextRestrictionRecord<String> restriction = new TextRestrictionRecord<>(
                 "title",
-                new Pattern("%Java%"),
+                TextRange.pattern("%Java%"),
                 true
         );
 
@@ -65,7 +65,7 @@ class TextRestrictionRecordTest {
     void shouldIgnoreCaseForTextRestriction() {
         TextRestrictionRecord<String> caseInsensitiveRestriction = new TextRestrictionRecord<>(
                 "title",
-                new Pattern("%Java%").ignoreCase()
+                TextRange.pattern("%Java%").ignoreCase()
         );
 
         SoftAssertions.assertSoftly(soft -> {
@@ -81,7 +81,7 @@ class TextRestrictionRecordTest {
     void shouldCreateTextRestrictionWithEscapedValue() {
         TextRestrictionRecord<String> restriction = new TextRestrictionRecord<>(
                 "title",
-                new Pattern("%Java%")
+                TextRange.pattern("%Java%")
         );
 
         SoftAssertions.assertSoftly(soft -> {
@@ -154,7 +154,7 @@ class TextRestrictionRecordTest {
     void shouldSupportNegationForTextRestriction() {
         TextRestrictionRecord<String> restriction = new TextRestrictionRecord<>(
                 "author",
-                Pattern.literal("John Doe"),
+                TextRange.literal("John Doe"),
                 true
         );
 
@@ -169,7 +169,7 @@ class TextRestrictionRecordTest {
 
     @Test
     void shouldThrowExceptionWhenAttributeIsNullInTextRestriction() {
-        assertThatThrownBy(() -> new TextRestrictionRecord<>(null, new Pattern("testValue")))
+        assertThatThrownBy(() -> new TextRestrictionRecord<>(null, TextRange.literal("testValue")))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("Attribute must not be null");
     }

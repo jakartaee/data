@@ -17,12 +17,12 @@
  */
 package jakarta.data.metamodel.restrict;
 
-import jakarta.data.metamodel.range.Pattern;
+import jakarta.data.metamodel.range.TextRange;
 
 public interface TextRestriction<T> extends BasicRestriction<T> {
     TextRestriction<T> ignoreCase();
     @Override
     TextRestriction<T> negate();
     @Override
-    Pattern range();
+    TextRange range();
 }

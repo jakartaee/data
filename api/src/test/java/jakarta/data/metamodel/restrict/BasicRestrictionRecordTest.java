@@ -17,10 +17,7 @@
  */
 package jakarta.data.metamodel.restrict;
 
-import jakarta.data.metamodel.range.Pattern;
-import jakarta.data.metamodel.range.Range;
-import jakarta.data.metamodel.range.UpperBound;
-import jakarta.data.metamodel.range.Value;
+import jakarta.data.metamodel.range.*;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
 
@@ -34,12 +31,12 @@ class BasicRestrictionRecordTest {
 
     @Test
     void shouldCreateBasicRestrictionWithDefaultNegation() {
-        BasicRestrictionRecord<String> restriction = new BasicRestrictionRecord<>("title", new Value<>("Java Guide"));
+        BasicRestrictionRecord<String> restriction = new BasicRestrictionRecord<>("title", Range.value("Java Guide"));
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.attribute()).isEqualTo("title");
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.EQUAL);
-            soft.assertThat(restriction.range()).isEqualTo(new Value<>("Java Guide"));
+            soft.assertThat(restriction.range()).isEqualTo(Range.value("Java Guide"));
         });
     }
 
@@ -51,7 +48,7 @@ class BasicRestrictionRecordTest {
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.attribute()).isEqualTo("title");
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.NOT_EQUAL);
-            soft.assertThat(restriction.range()).isEqualTo(Pattern.literal("Java Guide"));
+            soft.assertThat(restriction.range()).isEqualTo(TextRange.literal("Java Guide"));
         });
     }
 
@@ -63,10 +60,10 @@ class BasicRestrictionRecordTest {
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(numChaptersLTE10Basic.comparison()).isEqualTo(Operator.LESS_THAN_EQUAL);
-            soft.assertThat(numChaptersLTE10Basic.range()).isEqualTo(new UpperBound<>(10));
+            soft.assertThat(numChaptersLTE10Basic.range()).isEqualTo(Range.upperBound(10));
 
             soft.assertThat(numChaptersGT10Basic.comparison()).isEqualTo(Operator.GREATER_THAN);
-            soft.assertThat(numChaptersGT10Basic.range()).isEqualTo(new UpperBound<>(10));
+            soft.assertThat(numChaptersGT10Basic.range()).isEqualTo(Range.upperBound(10));
         });
     }
 
@@ -77,7 +74,7 @@ class BasicRestrictionRecordTest {
         BasicRestriction<Book> negatedTitleRestrictionBasic = titleRestrictionBasic.negate();
         BasicRestriction<Book> negatedNegatedTitleRestrictionBasic = negatedTitleRestrictionBasic.negate();
 
-        Range<String> expected = Pattern.literal("A Developer's Guide to Jakarta Data");
+        Range<String> expected = TextRange.literal("A Developer's Guide to Jakarta Data");
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(titleRestrictionBasic.comparison())
                 .isEqualTo(Operator.EQUAL);
@@ -113,13 +110,13 @@ class BasicRestrictionRecordTest {
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(negatedRestriction.attribute()).isEqualTo("author");
             soft.assertThat(negatedRestriction.comparison()).isEqualTo(Operator.NOT_EQUAL);
-            soft.assertThat(negatedRestriction.range()).isEqualTo(new Value<>("Unknown"));
+            soft.assertThat(negatedRestriction.range()).isEqualTo(Range.value("Unknown"));
         });
     }
 
     @Test
     void shouldThrowExceptionWhenAttributeIsNull() {
-        assertThatThrownBy(() -> new BasicRestrictionRecord<>(null, new Value<>("testValue")))
+        assertThatThrownBy(() -> new BasicRestrictionRecord<>(null, Range.value("testValue")))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("Attribute must not be null");
     }

@@ -21,36 +21,46 @@ import jakarta.data.metamodel.restrict.Operator;
 
 import java.util.Objects;
 
-public record Interval<T extends Comparable<T>>(LowerBound<T> lowerBound, UpperBound<T> upperBound)
-        implements Range<T> {
-    public Interval {
-        Objects.requireNonNull(lowerBound);
-        Objects.requireNonNull(upperBound);
+public record Literal(String literal, boolean caseSensitive)
+        implements TextRange {
+
+    public Literal {
+        Objects.requireNonNull(literal, "Literal must not be null");
     }
 
-    public Interval(T lowerBound, T upperBound) {
-        this(new LowerBound<>(lowerBound), new UpperBound<>(upperBound));
+    public Literal(String literal) {
+        this(literal, true);
+    }
+
+    @Override
+    public String pattern() {
+        return literal;
+    }
+
+    @Override
+    public TextRange ignoreCase() {
+        return new Literal(literal, true);
     }
 
     @Override
     public Operator operator() {
-        return Operator.BETWEEN;
+        return Operator.EQUAL;
     }
 
     @Override
     public String toString() {
-        return "[" + lowerBound + ", " + upperBound + "]";
+        return "'" + literal + "'";
     }
 
     @Override
     public boolean equals(Object obj) {
-        return obj instanceof Interval<?> that
-            && lowerBound.equals(that.lowerBound)
-            && upperBound.equals(that.upperBound);
+        return obj instanceof Literal that
+            && literal.equals(that.literal)
+            && caseSensitive == that.caseSensitive;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(lowerBound, upperBound);
+        return literal.hashCode();
     }
 }
