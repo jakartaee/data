@@ -15,8 +15,9 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.metamodel.range;
+package jakarta.data.metamodel.range.impl;
 
+import jakarta.data.metamodel.range.TextRange;
 import jakarta.data.metamodel.restrict.Operator;
 
 import java.util.Objects;

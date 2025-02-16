@@ -15,32 +15,42 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.metamodel.range;
+package jakarta.data.metamodel.range.impl;
 
+import jakarta.data.metamodel.range.Range;
 import jakarta.data.metamodel.restrict.Operator;
 
 import java.util.Objects;
-import java.util.Set;
 
-public record Enumeration<T>(Set<T> values) implements Range<T> {
+public record LowerBound<T extends Comparable<T>>(T bound, boolean strict)
+        implements Range<T> {
+    public LowerBound {
+        Objects.requireNonNull(bound, "Lower bound must not be null");
+    }
 
-    public Enumeration {
-        Objects.requireNonNull(values, "Enumerated values cannot be null");
+    public LowerBound(T bound) {
+        this(bound, false);
     }
 
     @Override
     public Operator operator() {
-        return Operator.IN;
+        return strict ? Operator.GREATER_THAN : Operator.GREATER_THAN_EQUAL;
+    }
+
+    @Override
+    public String toString() {
+        return bound.toString();
     }
 
     @Override
     public boolean equals(Object obj) {
-        return obj instanceof Enumeration<?> that
-            && values.equals(that.values);
+        return obj instanceof LowerBound<?> that
+            && bound.equals(that.bound)
+            && strict == that.strict;
     }
 
     @Override
     public int hashCode() {
-        return values.hashCode();
+        return bound.hashCode();
     }
 }

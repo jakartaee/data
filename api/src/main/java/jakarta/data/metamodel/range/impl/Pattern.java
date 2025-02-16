@@ -15,8 +15,9 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.metamodel.range;
+package jakarta.data.metamodel.range.impl;
 
+import jakarta.data.metamodel.range.TextRange;
 import jakarta.data.metamodel.restrict.Operator;
 
 import java.util.Objects;
@@ -55,15 +56,15 @@ public record Pattern(String pattern, boolean caseSensitive)
         return "'" + pattern + "'";
     }
 
-    static Pattern prefix(String prefix) {
+    public static Pattern prefix(String prefix) {
         return new Pattern(escape(prefix) + STRING_WILDCARD);
     }
 
-    static Pattern suffix(String suffix) {
+    public static Pattern suffix(String suffix) {
         return new Pattern(STRING_WILDCARD + escape(suffix));
     }
 
-    static Pattern substring(String substring) {
+    public static Pattern substring(String substring) {
         return new Pattern(STRING_WILDCARD + escape(substring) + STRING_WILDCARD);
     }
 
