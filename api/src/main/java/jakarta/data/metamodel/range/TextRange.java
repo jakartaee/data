@@ -17,6 +17,9 @@
  */
 package jakarta.data.metamodel.range;
 
+import jakarta.data.metamodel.range.impl.Literal;
+import jakarta.data.metamodel.range.impl.Pattern;
+
 public sealed interface TextRange extends Range<String>
         permits Pattern, Literal {
     String pattern();

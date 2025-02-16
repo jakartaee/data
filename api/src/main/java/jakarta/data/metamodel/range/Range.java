@@ -17,13 +17,19 @@
  */
 package jakarta.data.metamodel.range;
 
+import jakarta.data.metamodel.range.impl.Enumeration;
+import jakarta.data.metamodel.range.impl.Interval;
+import jakarta.data.metamodel.range.impl.LowerBound;
+import jakarta.data.metamodel.range.impl.NullValue;
+import jakarta.data.metamodel.range.impl.UpperBound;
+import jakarta.data.metamodel.range.impl.Value;
 import jakarta.data.metamodel.restrict.Operator;
 
 import java.util.Set;
 
 public sealed interface Range<T>
         permits Value, Enumeration, NullValue,
-                LowerBound, UpperBound, Interval,
+        LowerBound, UpperBound, Interval,
                 TextRange {
     Operator operator();
 
