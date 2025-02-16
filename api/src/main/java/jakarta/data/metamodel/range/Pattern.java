@@ -21,8 +21,8 @@ import jakarta.data.metamodel.restrict.Operator;
 
 import java.util.Objects;
 
-public record Pattern(String pattern, boolean caseSensitive, boolean literal)
-        implements Range<String> {
+public record Pattern(String pattern, boolean caseSensitive)
+        implements TextRange {
 
     public static final char CHAR_WILDCARD = '_';
     public static final char STRING_WILDCARD = '%';
@@ -33,22 +33,21 @@ public record Pattern(String pattern, boolean caseSensitive, boolean literal)
     }
 
     public Pattern(String pattern) {
-        this(pattern, true, false);
+        this(pattern, true);
     }
-
-
 
     public Pattern(String pattern, char charWildcard, char stringWildcard) {
         this(translate(pattern, charWildcard, stringWildcard));
     }
 
+    @Override
     public Pattern ignoreCase() {
-        return new Pattern(pattern, false, literal);
+        return new Pattern(pattern, false);
     }
 
     @Override
     public Operator operator() {
-        return literal ? Operator.EQUAL : Operator.LIKE;
+        return Operator.LIKE;
     }
 
     @Override
@@ -56,21 +55,15 @@ public record Pattern(String pattern, boolean caseSensitive, boolean literal)
         return "'" + pattern + "'";
     }
 
-    //TODO: it might be better to make text literals their own type of Range
-    public static Pattern literal(String literal) {
-        // no need to escape when literal = true
-        return new Pattern(literal, true, true);
-    }
-
-    public static Pattern prefix(String prefix) {
+    static Pattern prefix(String prefix) {
         return new Pattern(escape(prefix) + STRING_WILDCARD);
     }
 
-    public static Pattern suffix(String suffix) {
+    static Pattern suffix(String suffix) {
         return new Pattern(STRING_WILDCARD + escape(suffix));
     }
 
-    public static Pattern substring(String substring) {
+    static Pattern substring(String substring) {
         return new Pattern(STRING_WILDCARD + escape(substring) + STRING_WILDCARD);
     }
 
@@ -111,8 +104,7 @@ public record Pattern(String pattern, boolean caseSensitive, boolean literal)
     public boolean equals(Object obj) {
         return obj instanceof Pattern that
             && pattern.equals(that.pattern)
-            && caseSensitive == that.caseSensitive
-            && literal == that.literal;
+            && caseSensitive == that.caseSensitive;
     }
 
     @Override

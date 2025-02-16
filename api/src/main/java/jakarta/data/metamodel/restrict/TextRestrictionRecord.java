@@ -17,11 +17,11 @@
  */
 package jakarta.data.metamodel.restrict;
 
-import jakarta.data.metamodel.range.Pattern;
+import jakarta.data.metamodel.range.TextRange;
 
 import java.util.Objects;
 
-record TextRestrictionRecord<T>(String attribute, Pattern range, boolean negated)
+record TextRestrictionRecord<T>(String attribute, TextRange range, boolean negated)
         implements TextRestriction<T> {
 
     TextRestrictionRecord {
@@ -29,7 +29,7 @@ record TextRestrictionRecord<T>(String attribute, Pattern range, boolean negated
         Objects.requireNonNull(range, "Pattern must not be null");
     }
 
-    public TextRestrictionRecord(String attribute, Pattern range) {
+    public TextRestrictionRecord(String attribute, TextRange range) {
         this(attribute, range, false);
     }
 

@@ -19,7 +19,7 @@ package jakarta.data.metamodel.range;
 
 import jakarta.data.metamodel.restrict.Operator;
 
-public record Null<T>() implements Range<T> {
+public record NullValue<T>() implements Range<T> {
     @Override
     public Operator operator() {
         return Operator.NULL;

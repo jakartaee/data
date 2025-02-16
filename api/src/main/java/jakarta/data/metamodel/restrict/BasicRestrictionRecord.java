@@ -57,10 +57,11 @@ record BasicRestrictionRecord<T>(String attribute, Range<?> range, boolean negat
     @Override
     public String toString() {
         final Operator comparison = comparison();
-        if (comparison.unary()) {
-            return attribute + ' ' + comparison.asQueryLanguage();
-        } else {
-            return attribute + ' ' + comparison.asQueryLanguage() + ' ' + range;
-        }
+        final String op = comparison.asQueryLanguage();
+        return switch (comparison.arity()) {
+            case 1 -> attribute + ' ' + op;
+            case 2,3 -> attribute + ' ' + op + ' ' + range;
+            default -> throw new UnsupportedOperationException("Unexpected arity");
+        };
     }
 }

@@ -19,9 +19,49 @@ package jakarta.data.metamodel.range;
 
 import jakarta.data.metamodel.restrict.Operator;
 
+import java.util.Set;
+
 public sealed interface Range<T>
-        permits Value, Enumeration, Null,
+        permits Value, Enumeration, NullValue,
                 LowerBound, UpperBound, Interval,
-                Pattern {
+                TextRange {
     Operator operator();
+
+    static <T> Range<T> value(T value) {
+        return new Value<>(value);
+    }
+
+    @SafeVarargs
+    static <T> Range<T> enumeration(T... values) {
+        return new Enumeration<>(Set.of(values));
+    }
+
+    static <T> Range<T> enumeration(Set<T> values) {
+        return new Enumeration<>(values);
+    }
+
+    static <T> Range<T> nullValue() {
+        return new NullValue<>();
+    }
+
+    static <T extends Comparable<T>> Range<T> lowerBound(T bound) {
+        return new LowerBound<>(bound);
+    }
+
+    static <T extends Comparable<T>> Range<T> upperBound(T bound) {
+        return new UpperBound<>(bound);
+    }
+
+    static <T extends Comparable<T>> Range<T> lowerBound(T bound, boolean strict) {
+        return new LowerBound<>(bound, strict);
+    }
+
+    static <T extends Comparable<T>> Range<T> upperBound(T bound, boolean strict) {
+        return new UpperBound<>(bound, strict);
+    }
+
+    static <T extends Comparable<T>> Range<T> interval(T lowerBound, T upperBound) {
+        return new Interval<>(lowerBound, upperBound);
+    }
+
 }

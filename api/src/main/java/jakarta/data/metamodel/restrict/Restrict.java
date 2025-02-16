@@ -17,14 +17,8 @@
  */
 package jakarta.data.metamodel.restrict;
 
-import jakarta.data.metamodel.range.Enumeration;
-import jakarta.data.metamodel.range.Interval;
-import jakarta.data.metamodel.range.LowerBound;
-import jakarta.data.metamodel.range.Null;
-import jakarta.data.metamodel.range.Pattern;
 import jakarta.data.metamodel.range.Range;
-import jakarta.data.metamodel.range.UpperBound;
-import jakarta.data.metamodel.range.Value;
+import jakarta.data.metamodel.range.TextRange;
 
 import java.util.List;
 import java.util.Objects;
@@ -59,63 +53,63 @@ public class Restrict {
     }
 
     public static <T> TextRestriction<T> contains(String substring, String attribute) {
-        return new TextRestrictionRecord<>(attribute, Pattern.substring(substring));
+        return new TextRestrictionRecord<>(attribute, TextRange.substring(substring));
     }
 
     public static <T> TextRestriction<T> startsWith(String prefix, String attribute) {
-        return new TextRestrictionRecord<>(attribute, Pattern.prefix(prefix));
+        return new TextRestrictionRecord<>(attribute, TextRange.prefix(prefix));
     }
 
     public static <T> TextRestriction<T> endsWith(String suffix, String attribute) {
-        return new TextRestrictionRecord<>(attribute, Pattern.suffix(suffix));
+        return new TextRestrictionRecord<>(attribute, TextRange.suffix(suffix));
     }
 
     public static <T> BasicRestriction<T> equalTo(Object value, String attribute) {
-        return new BasicRestrictionRecord<>(attribute, new Value<>(value));
+        return new BasicRestrictionRecord<>(attribute, Range.value(value));
     }
 
     public static <T> TextRestriction<T> equalTo(String value, String attribute) {
-        return new TextRestrictionRecord<>(attribute, Pattern.literal(value));
+        return new TextRestrictionRecord<>(attribute, TextRange.literal(value));
     }
 
     public static <T> BasicRestriction<T> isNull(String attribute) {
-        return new BasicRestrictionRecord<>(attribute, new Null<>());
+        return new BasicRestrictionRecord<>(attribute, Range.nullValue());
     }
 
     public static <T, V extends Comparable<V>> BasicRestriction<T> greaterThan(V value, String attribute) {
-        return new BasicRestrictionRecord<>(attribute, new LowerBound<>(value, true));
+        return new BasicRestrictionRecord<>(attribute, Range.lowerBound(value, true));
     }
 
     public static <T, V extends Comparable<V>> BasicRestriction<T> greaterThanEqual(V value, String attribute) {
-        return new BasicRestrictionRecord<>(attribute, new LowerBound<>(value));
+        return new BasicRestrictionRecord<>(attribute, Range.lowerBound(value));
     }
 
     public static <T> BasicRestriction<T> in(Set<?> values, String attribute) {
-        return new BasicRestrictionRecord<>(attribute, new Enumeration<>(values));
+        return new BasicRestrictionRecord<>(attribute, Range.enumeration(values));
     }
 
     public static <T, V extends Comparable<V>> BasicRestriction<T> lessThan(V value, String attribute) {
-        return new BasicRestrictionRecord<>(attribute, new UpperBound<>(value, true));
+        return new BasicRestrictionRecord<>(attribute, Range.upperBound(value, true));
     }
 
     public static <T, V extends Comparable<V>> BasicRestriction<T> lessThanEqual(V value, String attribute) {
-        return new BasicRestrictionRecord<>(attribute, new UpperBound<>(value));
+        return new BasicRestrictionRecord<>(attribute, Range.upperBound(value));
     }
 
     public static <T, V extends Comparable<V>> BasicRestriction<T> between(V lowerBound, V upperBound, String attribute) {
-        return new BasicRestrictionRecord<>(attribute, new Interval<>(lowerBound, upperBound));
+        return new BasicRestrictionRecord<>(attribute, Range.interval(lowerBound, upperBound));
     }
 
-    public static <T> TextRestriction<T> like(Pattern pattern, String attribute) {
-        return new TextRestrictionRecord<>(attribute, pattern);
+    public static <T> TextRestriction<T> like(TextRange textRange, String attribute) {
+        return new TextRestrictionRecord<>(attribute, textRange);
     }
 
     public static <T> TextRestriction<T> like(String pattern, String attribute) {
-        return new TextRestrictionRecord<>(attribute, new Pattern(pattern));
+        return new TextRestrictionRecord<>(attribute, TextRange.pattern(pattern));
     }
 
     public static <T> TextRestriction<T> like(String pattern, char charWildcard, char stringWildcard, String attribute) {
-        return new TextRestrictionRecord<>(attribute, new Pattern(pattern, charWildcard, stringWildcard));
+        return new TextRestrictionRecord<>(attribute, TextRange.pattern(pattern, charWildcard, stringWildcard));
     }
 
     // convenience method for those who would prefer to avoid .negate()
@@ -125,43 +119,43 @@ public class Restrict {
     }
 
     public static <T> BasicRestriction<T> notEqualTo(Object value, String attribute) {
-        return new BasicRestrictionRecord<>(attribute, new Value<>(value), true);
+        return new BasicRestrictionRecord<>(attribute, Range.value(value), true);
     }
 
     public static <T> TextRestriction<T> notEqualTo(String value, String attribute) {
-        return new TextRestrictionRecord<>(attribute, Pattern.literal(value), true);
+        return new TextRestrictionRecord<>(attribute, TextRange.literal(value), true);
     }
 
     public static <T> BasicRestriction<T> notNull(String attribute) {
-        return new BasicRestrictionRecord<>(attribute, new Null<>(), true);
+        return new BasicRestrictionRecord<>(attribute, Range.nullValue(), true);
     }
 
     public static <T> TextRestriction<T> notContains(String substring, String attribute) {
-        return new TextRestrictionRecord<>(attribute, Pattern.substring(substring), true);
-    }
-
-    public static <T> TextRestriction<T> notEndsWith(String suffix, String attribute) {
-        return new TextRestrictionRecord<>(attribute, Pattern.suffix(suffix), true);
-    }
-
-    public static <T> BasicRestriction<T> notIn(Set<?> values, String attribute) {
-        return new BasicRestrictionRecord<>(attribute, new Enumeration<>(values), true);
-    }
-
-    public static <T> TextRestriction<T> notLike(String pattern, String attribute) {
-        return new TextRestrictionRecord<>(attribute, new Pattern(pattern), true);
-    }
-
-    public static <T> TextRestriction<T> notLike(String pattern, char charWildcard, char stringWildcard, String attribute) {
-        return new TextRestrictionRecord<>(attribute, new Pattern(pattern, charWildcard, stringWildcard), true);
+        return new TextRestrictionRecord<>(attribute, TextRange.substring(substring), true);
     }
 
     public static <T> TextRestriction<T> notStartsWith(String prefix, String attribute) {
-        return new TextRestrictionRecord<>(attribute, Pattern.prefix(prefix), true);
+        return new TextRestrictionRecord<>(attribute, TextRange.prefix(prefix), true);
+    }
+
+    public static <T> TextRestriction<T> notEndsWith(String suffix, String attribute) {
+        return new TextRestrictionRecord<>(attribute, TextRange.suffix(suffix), true);
+    }
+
+    public static <T> BasicRestriction<T> notIn(Set<?> values, String attribute) {
+        return new BasicRestrictionRecord<>(attribute, Range.enumeration(values), true);
+    }
+
+    public static <T> TextRestriction<T> notLike(String pattern, String attribute) {
+        return new TextRestrictionRecord<>(attribute, TextRange.pattern(pattern), true);
+    }
+
+    public static <T> TextRestriction<T> notLike(String pattern, char charWildcard, char stringWildcard, String attribute) {
+        return new TextRestrictionRecord<>(attribute, TextRange.pattern(pattern, charWildcard, stringWildcard), true);
     }
 
     public static <T, V extends Comparable<V>> BasicRestriction<T> notBetween(V lowerBound, V upperBound, String attribute) {
-        return new BasicRestrictionRecord<>(attribute, new Interval<>(lowerBound, upperBound), true);
+        return new BasicRestrictionRecord<>(attribute, Range.interval(lowerBound, upperBound), true);
     }
 
     @SuppressWarnings("unchecked")
