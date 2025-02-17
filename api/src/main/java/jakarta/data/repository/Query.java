@@ -41,7 +41,10 @@ import java.lang.annotation.Target;
  * <ul>
  * <li>{@code void}</li>
  * <li>{@code int} or {@code long}, where the value is the number of matching entities.
- *     The value might not be precise on databases that provide eventual consistency.</li>
+ *     The value might not be precise on databases that provide eventual consistency,
+ *     in which case some Jakarta Data providers might choose to raise
+ *     {@link UnsupportedOperationException} instead of returning an imprecise value.
+ *     </li>
  * </ul>
  *
  * <p>Compared to SQL, JDQL allows an abbreviated syntax for {@code select} statements:</p>

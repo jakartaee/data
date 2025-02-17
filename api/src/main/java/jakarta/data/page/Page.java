@@ -146,8 +146,19 @@ public interface Page<T> extends Iterable<T> {
      * Returns the total number of elements across all pages of query results, if the
      * {@link #pageRequest()} specified that {@linkplain PageRequest#requestTotal the
      * total should be retrieved from the database}.
+     * @apiNote Not all NoSQL databases support counting the total number of
+     *          elements. This operation is not supported for Key-Value and
+     *          Wide-Column databases. For Graph and Document databases,
+     *          support for this operation may vary depending on the provider.
+     *          If the database does not support retrieving the total number
+     *          of elements, calling this method will result in an
+     *          {@link UnsupportedOperationException}.
      * @return the total number of elements across all pages.
-     * @throws IllegalStateException if the total was not retrieved from the database.
+     * @throws IllegalStateException if the total was not retrieved from the
+     *                               database because the page was requested
+     *                               {@linkplain PageRequest#withoutTotal() without totals}.
+     * @throws UnsupportedOperationException if the database is not capable of
+     *                               retrieving a total number of elements.
      */
     long totalElements();
 
@@ -156,7 +167,11 @@ public interface Page<T> extends Iterable<T> {
      * specified that {@linkplain PageRequest#requestTotal the total should be retrieved
      * from the database}.
      * @return the total number of pages.
-     * @throws IllegalStateException if the total was not retrieved from the database.
+     * @throws IllegalStateException if the total was not retrieved from the
+     *                               database because the page was requested
+     *                               {@linkplain PageRequest#withoutTotal() without totals}.
+     * @throws UnsupportedOperationException if the database is not capable of
+     *                               retrieving a total number of elements or pages.
      */
     long totalPages();
 }
