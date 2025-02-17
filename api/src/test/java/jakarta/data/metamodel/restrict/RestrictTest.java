@@ -20,10 +20,8 @@ package jakarta.data.metamodel.restrict;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
 
-import jakarta.data.metamodel.SortableAttribute;
+import jakarta.data.metamodel.ComparableAttribute;
 import jakarta.data.metamodel.TextAttribute;
-import jakarta.data.metamodel.impl.SortableAttributeRecord;
-import jakarta.data.metamodel.impl.TextAttributeRecord;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
@@ -38,10 +36,10 @@ class RestrictTest {
         String POSITION = "position";
         String YEARHIRED = "yearHired";
 
-        SortableAttribute<Employee> badgeNum = new SortableAttributeRecord<>(BADGENUM);
-        TextAttribute<Employee> name = new TextAttributeRecord<>(NAME);
-        TextAttribute<Employee> position = new TextAttributeRecord<>(POSITION);
-        SortableAttribute<Employee> yearHired = new SortableAttributeRecord<>(YEARHIRED);
+        ComparableAttribute<Employee, Integer> badgeNum = ComparableAttribute.of(BADGENUM);
+        TextAttribute<Employee> name = TextAttribute.of(NAME);
+        TextAttribute<Employee> position = TextAttribute.of(POSITION);
+        ComparableAttribute<Employee, Integer> yearHired = ComparableAttribute.of(YEARHIRED);
     }
 
     // Mock entity class for tests
