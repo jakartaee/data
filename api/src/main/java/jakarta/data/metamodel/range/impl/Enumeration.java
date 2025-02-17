@@ -15,12 +15,33 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.metamodel.restrict;
+package jakarta.data.metamodel.range.impl;
 
-public enum UnaryOperator {
-    IS_NULL, IS_NOT_NULL;
+import jakarta.data.metamodel.range.Range;
+import jakarta.data.metamodel.restrict.Operator;
 
-    UnaryOperator negate() {
-        return this == IS_NULL ? IS_NOT_NULL : IS_NULL;
+import java.util.Objects;
+import java.util.Set;
+
+public record Enumeration<T>(Set<T> values) implements Range<T> {
+
+    public Enumeration {
+        Objects.requireNonNull(values, "Enumerated values cannot be null");
+    }
+
+    @Override
+    public Operator operator() {
+        return Operator.IN;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof Enumeration<?> that
+            && values.equals(that.values);
+    }
+
+    @Override
+    public int hashCode() {
+        return values.hashCode();
     }
 }

@@ -17,6 +17,8 @@
  */
 package jakarta.data.metamodel.restrict;
 
+import jakarta.data.metamodel.range.Range;
+
 public interface BasicRestriction<T> extends Restriction<T> {
     String attribute();
 
@@ -25,5 +27,5 @@ public interface BasicRestriction<T> extends Restriction<T> {
     @Override
     BasicRestriction<T> negate();
 
-    Object value();
+    Range<?> range();
 }

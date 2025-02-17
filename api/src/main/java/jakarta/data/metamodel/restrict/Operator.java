@@ -27,7 +27,11 @@ public enum Operator {
     LIKE,
     NOT_EQUAL,
     NOT_IN,
-    NOT_LIKE;
+    NOT_LIKE,
+    NULL,
+    NOT_NULL,
+    BETWEEN,
+    NOT_BETWEEN;
 
     /**
      * Representation of the operator as it appears in query language.
@@ -48,6 +52,10 @@ public enum Operator {
             case NOT_EQUAL -> "<>";
             case NOT_IN -> "NOT IN";
             case NOT_LIKE -> "NOT LIKE";
+            case NULL -> "IS NULL";
+            case NOT_NULL -> "IS NOT NULL";
+            case BETWEEN -> "BETWEEN";
+            case NOT_BETWEEN -> "NOT BETWEEN";
         };
     }
 
@@ -68,6 +76,18 @@ public enum Operator {
             case NOT_EQUAL -> EQUAL;
             case NOT_IN -> IN;
             case NOT_LIKE -> LIKE;
+            case NULL -> NOT_NULL;
+            case NOT_NULL -> NULL;
+            case BETWEEN -> NOT_BETWEEN;
+            case NOT_BETWEEN -> BETWEEN;
+        };
+    }
+
+    int arity() {
+        return switch (this) {
+            case NULL, NOT_NULL -> 1;
+            case BETWEEN -> 3;
+            default -> 2;
         };
     }
 }

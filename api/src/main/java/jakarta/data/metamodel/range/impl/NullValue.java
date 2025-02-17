@@ -15,13 +15,14 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.metamodel.restrict;
+package jakarta.data.metamodel.range.impl;
 
-public interface UnaryRestriction<T> extends Restriction<T> {
-    String attribute();
+import jakarta.data.metamodel.range.Range;
+import jakarta.data.metamodel.restrict.Operator;
 
-    UnaryOperator operator();
-
+public record NullValue<T>() implements Range<T> {
     @Override
-    UnaryRestriction<T> negate();
+    public Operator operator() {
+        return Operator.NULL;
+    }
 }

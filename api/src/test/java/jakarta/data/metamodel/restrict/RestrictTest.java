@@ -17,6 +17,8 @@
  */
 package jakarta.data.metamodel.restrict;
 
+import jakarta.data.metamodel.range.Range;
+import jakarta.data.metamodel.range.TextRange;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
 
@@ -45,7 +47,7 @@ class RestrictTest {
     }
 
     // Mock entity class for tests
-    class Employee {
+    static class Employee {
         int badgeNum;
         String name;
         String position;
@@ -62,29 +64,49 @@ class RestrictTest {
 
     @Test
     void shouldCreateEqualToRestriction() {
-        Restriction<Employee> restriction = Restrict.equalTo("value", "attributeName");
+        BasicRestriction<Employee> restriction = Restrict.equalTo(0, "attributeName");
 
-        assertThat(restriction).isInstanceOf(TextRestrictionRecord.class);
-
-        TextRestrictionRecord<Employee> basic = (TextRestrictionRecord<Employee>) restriction;
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(basic.attribute()).isEqualTo("attributeName");
-            soft.assertThat(basic.comparison()).isEqualTo(Operator.EQUAL);
-            soft.assertThat(basic.value()).isEqualTo("value");
+            soft.assertThat(restriction.attribute()).isEqualTo("attributeName");
+            soft.assertThat(restriction.comparison()).isEqualTo(Operator.EQUAL);
+            soft.assertThat(restriction.range()).isInstanceOf(Range.class);
+            soft.assertThat(restriction.range()).isEqualTo(Range.value(0));
         });
     }
 
     @Test
     void shouldCreateNotEqualToRestriction() {
-        Restriction<Employee> restriction = Restrict.notEqualTo("value", "attributeName");
+        BasicRestriction<Employee> restriction = Restrict.notEqualTo(0, "attributeName");
 
-        assertThat(restriction).isInstanceOf(TextRestrictionRecord.class);
-
-        TextRestrictionRecord<Employee> basic = (TextRestrictionRecord<Employee>) restriction;
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(basic.attribute()).isEqualTo("attributeName");
-            soft.assertThat(basic.comparison()).isEqualTo(Operator.NOT_EQUAL);
-            soft.assertThat(basic.value()).isEqualTo("value");
+            soft.assertThat(restriction.attribute()).isEqualTo("attributeName");
+            soft.assertThat(restriction.comparison()).isEqualTo(Operator.NOT_EQUAL);
+            soft.assertThat(restriction.range()).isInstanceOf(Range.class);
+            soft.assertThat(restriction.range()).isEqualTo(Range.value(0));
+        });
+    }
+
+    @Test
+    void shouldCreateEqualToStringRestriction() {
+        TextRestriction<Employee> restriction = Restrict.equalTo("value", "attributeName");
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(restriction.attribute()).isEqualTo("attributeName");
+            soft.assertThat(restriction.comparison()).isEqualTo(Operator.EQUAL);
+            soft.assertThat(restriction.range()).isInstanceOf(TextRange.class);
+            soft.assertThat(restriction.range()).isEqualTo(TextRange.literal("value"));
+        });
+    }
+
+    @Test
+    void shouldCreateNotEqualToStringRestriction() {
+        TextRestriction<Employee> restriction = Restrict.notEqualTo("value", "attributeName");
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(restriction.attribute()).isEqualTo("attributeName");
+            soft.assertThat(restriction.comparison()).isEqualTo(Operator.NOT_EQUAL);
+            soft.assertThat(restriction.range()).isInstanceOf(TextRange.class);
+            soft.assertThat(restriction.range()).isEqualTo(TextRange.literal("value"));
         });
     }
 
@@ -112,7 +134,7 @@ class RestrictTest {
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.attribute()).isEqualTo("attributeName");
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.LIKE);
-            soft.assertThat(restriction.value()).isEqualTo("%substring%");
+            soft.assertThat(restriction.range().pattern()).isEqualTo("%substring%");
         });
     }
 
@@ -123,7 +145,7 @@ class RestrictTest {
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.attribute()).isEqualTo("attributeName");
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.NOT_LIKE);
-            soft.assertThat(restriction.value()).isEqualTo("%substring%");
+            soft.assertThat(restriction.range().pattern()).isEqualTo("%substring%");
         });
     }
 
@@ -134,7 +156,7 @@ class RestrictTest {
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.attribute()).isEqualTo("attributeName");
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.LIKE);
-            soft.assertThat(restriction.value()).isEqualTo("prefix%");
+            soft.assertThat(restriction.range().pattern()).isEqualTo("prefix%");
         });
     }
 
@@ -145,7 +167,7 @@ class RestrictTest {
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.attribute()).isEqualTo("attributeName");
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.NOT_LIKE);
-            soft.assertThat(restriction.value()).isEqualTo("prefix%");
+            soft.assertThat(restriction.range().pattern()).isEqualTo("prefix%");
         });
     }
 
@@ -156,7 +178,7 @@ class RestrictTest {
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.attribute()).isEqualTo("attributeName");
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.LIKE);
-            soft.assertThat(restriction.value()).isEqualTo("%suffix");
+            soft.assertThat(restriction.range().pattern()).isEqualTo("%suffix");
         });
     }
 
@@ -167,7 +189,7 @@ class RestrictTest {
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.attribute()).isEqualTo("attributeName");
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.NOT_LIKE);
-            soft.assertThat(restriction.value()).isEqualTo("%suffix");
+            soft.assertThat(restriction.range().pattern()).isEqualTo("%suffix");
         });
     }
 
@@ -206,7 +228,7 @@ class RestrictTest {
 
     @Test
     void shouldEscapeToLikePatternCorrectly() {
-        String result = Restrict.endsWith("test_value", "attributeName").value();
+        String result = Restrict.endsWith("test_value", "attributeName").range().pattern();
 
         assertThat(result).isEqualTo("%test\\_value");
     }
@@ -220,6 +242,6 @@ class RestrictTest {
     void shouldThrowExceptionForInvalidWildcard() {
         assertThatThrownBy(() -> Restrict.like("pattern_value", '_', '_', "attributeName"))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Cannot use the same character (_) for both types of wildcards.");
+                .hasMessage("Cannot use the same character (_) for both wildcards.");
     }
 }

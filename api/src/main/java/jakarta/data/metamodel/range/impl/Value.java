@@ -15,17 +15,36 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.metamodel.restrict;
+package jakarta.data.metamodel.range.impl;
 
-public record UnaryRestrictionRecord<T>(String attribute, UnaryOperator operator)
-        implements UnaryRestriction<T> {
+import jakarta.data.metamodel.range.Range;
+import jakarta.data.metamodel.restrict.Operator;
+
+import java.util.Objects;
+
+public record Value<T>(T value) implements Range<T> {
+    public Value {
+        Objects.requireNonNull(value, "Value must not be null");
+    }
+
     @Override
-    public UnaryRestriction<T> negate() {
-        return new UnaryRestrictionRecord<>(attribute, operator.negate());
+    public Operator operator() {
+        return Operator.EQUAL;
     }
 
     @Override
     public String toString() {
-        return attribute + " " + operator;
+        return value instanceof String ? "'" + value + "'" : value.toString();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof Value<?> that
+            && value.equals(that.value);
+    }
+
+    @Override
+    public int hashCode() {
+        return value.hashCode();
     }
 }
