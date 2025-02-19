@@ -21,7 +21,7 @@ import jakarta.data.metamodel.restrict.Operator;
 
 import java.util.Objects;
 
-record BetweenRecord<T extends Comparable<T>>(GreaterThanRecord<T> lowerBound, LessThanRecord<T> upperBound)
+record BetweenRecord<T extends Comparable<T>>(GreaterThanOrEqual<T> lowerBound, LessThanOrEqual<T> upperBound)
         implements Between<T> {
     public BetweenRecord {
         Objects.requireNonNull(lowerBound);
@@ -29,7 +29,7 @@ record BetweenRecord<T extends Comparable<T>>(GreaterThanRecord<T> lowerBound, L
     }
 
     public BetweenRecord(T lowerBound, T upperBound) {
-        this(new GreaterThanRecord<>(lowerBound), new LessThanRecord<>(upperBound));
+        this(new GreaterThanOrEqualRecord<>(lowerBound), new LessThanOrEqualRecord<>(upperBound));
     }
 
     @Override

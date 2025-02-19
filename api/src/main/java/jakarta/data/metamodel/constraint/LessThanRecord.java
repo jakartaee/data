@@ -21,19 +21,15 @@ import jakarta.data.metamodel.restrict.Operator;
 
 import java.util.Objects;
 
-record LessThanRecord<T extends Comparable<T>>(T bound, boolean strict)
+record LessThanRecord<T extends Comparable<T>>(T bound)
         implements LessThan<T> {
     public LessThanRecord {
         Objects.requireNonNull(bound, "Upper bound must not be null");
     }
 
-    public LessThanRecord(T bound) {
-        this(bound, false);
-    }
-
     @Override
     public Operator operator() {
-        return strict ? Operator.LESS_THAN : Operator.LESS_THAN_EQUAL;
+        return Operator.LESS_THAN;
     }
 
     @Override
@@ -44,8 +40,7 @@ record LessThanRecord<T extends Comparable<T>>(T bound, boolean strict)
     @Override
     public boolean equals(Object obj) {
         return obj instanceof LessThanRecord<?> that
-            && bound.equals(that.bound)
-            && strict == that.strict;
+            && bound.equals(that.bound);
     }
 
     @Override

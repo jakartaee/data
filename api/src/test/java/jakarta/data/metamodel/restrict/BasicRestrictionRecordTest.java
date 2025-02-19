@@ -60,10 +60,10 @@ class BasicRestrictionRecordTest {
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(numChaptersLTE10Basic.comparison()).isEqualTo(Operator.LESS_THAN_EQUAL);
-            soft.assertThat(numChaptersLTE10Basic.constraint()).isEqualTo(Constraint.upperBound(10));
+            soft.assertThat(numChaptersLTE10Basic.constraint()).isEqualTo(Constraint.lessThanOrEqual(10));
 
             soft.assertThat(numChaptersGT10Basic.comparison()).isEqualTo(Operator.GREATER_THAN);
-            soft.assertThat(numChaptersGT10Basic.constraint()).isEqualTo(Constraint.upperBound(10));
+            soft.assertThat(numChaptersGT10Basic.constraint()).isEqualTo(Constraint.lessThanOrEqual(10));
         });
     }
 

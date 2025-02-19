@@ -17,6 +17,6 @@
  */
 package jakarta.data.metamodel.constraint;
 
-public interface LessThan<T extends Comparable<T>> extends Constraint<T> {
+public interface GreaterThanOrEqual<T extends Comparable<T>> extends Constraint<T> {
     T bound();
 }

@@ -21,15 +21,15 @@ import jakarta.data.metamodel.restrict.Operator;
 
 import java.util.Objects;
 
-record GreaterThanRecord<T extends Comparable<T>>(T bound)
-        implements GreaterThan<T> {
-    public GreaterThanRecord {
-        Objects.requireNonNull(bound, "Lower bound must not be null");
+record LessThanOrEqualRecord<T extends Comparable<T>>(T bound)
+        implements LessThanOrEqual<T> {
+    public LessThanOrEqualRecord {
+        Objects.requireNonNull(bound, "Upper bound must not be null");
     }
 
     @Override
     public Operator operator() {
-        return Operator.GREATER_THAN;
+        return Operator.LESS_THAN_EQUAL;
     }
 
     @Override
@@ -39,7 +39,7 @@ record GreaterThanRecord<T extends Comparable<T>>(T bound)
 
     @Override
     public boolean equals(Object obj) {
-        return obj instanceof GreaterThanRecord<?> that
+        return obj instanceof LessThanOrEqualRecord<?> that
             && bound.equals(that.bound);
     }
 

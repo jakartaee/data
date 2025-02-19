@@ -29,35 +29,35 @@ public interface Constraint<T> {
     }
 
     @SafeVarargs
-    static <T> Constraint<T> enumeration(T... values) {
+    static <T> Constraint<T> in(T... values) {
         return new InRecord<>(Set.of(values));
     }
 
-    static <T> Constraint<T> enumeration(Set<T> values) {
+    static <T> Constraint<T> in(Set<T> values) {
         return new InRecord<>(values);
     }
 
-    static <T> Constraint<T> nullValue() {
+    static <T> Constraint<T> isNull() {
         return new NullRecord<>();
     }
 
-    static <T extends Comparable<T>> Constraint<T> lowerBound(T bound) {
+    static <T extends Comparable<T>> Constraint<T> greaterThan(T bound) {
         return new GreaterThanRecord<>(bound);
     }
 
-    static <T extends Comparable<T>> Constraint<T> upperBound(T bound) {
+    static <T extends Comparable<T>> Constraint<T> lessThan(T bound) {
         return new LessThanRecord<>(bound);
     }
 
-    static <T extends Comparable<T>> Constraint<T> lowerBound(T bound, boolean strict) {
-        return new GreaterThanRecord<>(bound, strict);
+    static <T extends Comparable<T>> Constraint<T> greaterThanOrEqual(T bound) {
+        return new GreaterThanOrEqualRecord<>(bound);
     }
 
-    static <T extends Comparable<T>> Constraint<T> upperBound(T bound, boolean strict) {
-        return new LessThanRecord<>(bound, strict);
+    static <T extends Comparable<T>> Constraint<T> lessThanOrEqual(T bound) {
+        return new LessThanOrEqualRecord<>(bound);
     }
 
-    static <T extends Comparable<T>> Constraint<T> interval(T lowerBound, T upperBound) {
+    static <T extends Comparable<T>> Constraint<T> between(T lowerBound, T upperBound) {
         return new BetweenRecord<>(lowerBound, upperBound);
     }
 
