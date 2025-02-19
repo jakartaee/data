@@ -17,7 +17,7 @@
  */
 package jakarta.data.metamodel;
 
-import jakarta.data.metamodel.range.Range;
+import jakarta.data.metamodel.constraint.Constraint;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
 
@@ -40,7 +40,7 @@ class AttributeTest {
             soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
             BasicRestriction<String> basic = (BasicRestriction<String>) restriction;
             soft.assertThat(basic.attribute()).isEqualTo("testAttribute");
-            soft.assertThat(basic.range()).isEqualTo(Range.value("testValue"));
+            soft.assertThat(basic.constraint()).isEqualTo(Constraint.value("testValue"));
             soft.assertThat(basic.comparison()).isEqualTo(Operator.EQUAL);
         });
     }
@@ -53,7 +53,7 @@ class AttributeTest {
             soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
             BasicRestriction<String> basic = (BasicRestriction<String>) restriction;
             soft.assertThat(basic.attribute()).isEqualTo("testAttribute");
-            soft.assertThat(basic.range()).isEqualTo(Range.value("testValue"));
+            soft.assertThat(basic.constraint()).isEqualTo(Constraint.value("testValue"));
             soft.assertThat(basic.comparison()).isEqualTo(Operator.NOT_EQUAL);
         });
     }
@@ -66,7 +66,7 @@ class AttributeTest {
             soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
             BasicRestriction<String> basic = (BasicRestriction<String>) restriction;
             soft.assertThat(basic.attribute()).isEqualTo("testAttribute");
-            soft.assertThat(basic.range()).isEqualTo(Range.enumeration("value1", "value2"));
+            soft.assertThat(basic.constraint()).isEqualTo(Constraint.enumeration("value1", "value2"));
             soft.assertThat(basic.comparison()).isEqualTo(Operator.IN);
         });
     }
@@ -86,7 +86,7 @@ class AttributeTest {
             soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
             BasicRestriction<String> basic = (BasicRestriction<String>) restriction;
             soft.assertThat(basic.attribute()).isEqualTo("testAttribute");
-            soft.assertThat(basic.range()).isEqualTo(Range.enumeration("value1", "value2"));
+            soft.assertThat(basic.constraint()).isEqualTo(Constraint.enumeration("value1", "value2"));
             soft.assertThat(basic.comparison()).isEqualTo(Operator.NOT_IN);
         });
     }

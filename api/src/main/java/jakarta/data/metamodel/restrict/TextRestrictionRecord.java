@@ -17,35 +17,35 @@
  */
 package jakarta.data.metamodel.restrict;
 
-import jakarta.data.metamodel.range.TextRange;
+import jakarta.data.metamodel.constraint.Like;
 
 import java.util.Objects;
 
-record TextRestrictionRecord<T>(String attribute, TextRange range, boolean negated)
+record TextRestrictionRecord<T>(String attribute, Like constraint, boolean negated)
         implements TextRestriction<T> {
 
     TextRestrictionRecord {
         Objects.requireNonNull(attribute, "Attribute must not be null");
-        Objects.requireNonNull(range, "Pattern must not be null");
+        Objects.requireNonNull(constraint, "Pattern must not be null");
     }
 
-    public TextRestrictionRecord(String attribute, TextRange range) {
+    public TextRestrictionRecord(String attribute, Like range) {
         this(attribute, range, false);
     }
 
     @Override
     public Operator comparison() {
-        return negated ? range.operator().negate() : range.operator();
+        return negated ? constraint.operator().negate() : constraint.operator();
     }
 
     @Override
     public TextRestrictionRecord<T> negate() {
-        return new TextRestrictionRecord<>(attribute, range, !negated);
+        return new TextRestrictionRecord<>(attribute, constraint, !negated);
     }
 
     @Override
     public TextRestrictionRecord<T> ignoreCase() {
-        return new TextRestrictionRecord<>(attribute, range.ignoreCase(), negated);
+        return new TextRestrictionRecord<>(attribute, constraint.ignoreCase(), negated);
     }
 
     /**
@@ -57,6 +57,6 @@ record TextRestrictionRecord<T>(String attribute, TextRange range, boolean negat
      */
     @Override
     public String toString() {
-        return attribute + ' ' + comparison().asQueryLanguage() + ' ' + range;
+        return attribute + ' ' + comparison().asQueryLanguage() + ' ' + constraint;
     }
 }

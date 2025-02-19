@@ -15,35 +15,34 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.metamodel.range.impl;
+package jakarta.data.metamodel.constraint;
 
-import jakarta.data.metamodel.range.TextRange;
 import jakarta.data.metamodel.restrict.Operator;
 
 import java.util.Objects;
 
-public record Pattern(String pattern, boolean caseSensitive)
-        implements TextRange {
+record LikePatternRecord(String pattern, boolean caseSensitive)
+        implements Like {
 
     public static final char CHAR_WILDCARD = '_';
     public static final char STRING_WILDCARD = '%';
     public static final char ESCAPE = '\\';
 
-    public Pattern {
+    public LikePatternRecord {
         Objects.requireNonNull(pattern, "Pattern must not be null");
     }
 
-    public Pattern(String pattern) {
+    public LikePatternRecord(String pattern) {
         this(pattern, true);
     }
 
-    public Pattern(String pattern, char charWildcard, char stringWildcard) {
+    public LikePatternRecord(String pattern, char charWildcard, char stringWildcard) {
         this(translate(pattern, charWildcard, stringWildcard));
     }
 
     @Override
-    public Pattern ignoreCase() {
-        return new Pattern(pattern, false);
+    public LikePatternRecord ignoreCase() {
+        return new LikePatternRecord(pattern, false);
     }
 
     @Override
@@ -56,16 +55,16 @@ public record Pattern(String pattern, boolean caseSensitive)
         return "'" + pattern + "'";
     }
 
-    public static Pattern prefix(String prefix) {
-        return new Pattern(escape(prefix) + STRING_WILDCARD);
+    public static LikePatternRecord prefix(String prefix) {
+        return new LikePatternRecord(escape(prefix) + STRING_WILDCARD);
     }
 
-    public static Pattern suffix(String suffix) {
-        return new Pattern(STRING_WILDCARD + escape(suffix));
+    public static LikePatternRecord suffix(String suffix) {
+        return new LikePatternRecord(STRING_WILDCARD + escape(suffix));
     }
 
-    public static Pattern substring(String substring) {
-        return new Pattern(STRING_WILDCARD + escape(substring) + STRING_WILDCARD);
+    public static LikePatternRecord substring(String substring) {
+        return new LikePatternRecord(STRING_WILDCARD + escape(substring) + STRING_WILDCARD);
     }
 
     private static String escape(String literal) {
@@ -103,7 +102,7 @@ public record Pattern(String pattern, boolean caseSensitive)
 
     @Override
     public boolean equals(Object obj) {
-        return obj instanceof Pattern that
+        return obj instanceof LikePatternRecord that
             && pattern.equals(that.pattern)
             && caseSensitive == that.caseSensitive;
     }

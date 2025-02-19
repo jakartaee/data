@@ -15,42 +15,35 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.metamodel.range.impl;
+package jakarta.data.metamodel.constraint;
 
-import jakarta.data.metamodel.range.Range;
 import jakarta.data.metamodel.restrict.Operator;
 
 import java.util.Objects;
 
-public record LowerBound<T extends Comparable<T>>(T bound, boolean strict)
-        implements Range<T> {
-    public LowerBound {
-        Objects.requireNonNull(bound, "Lower bound must not be null");
-    }
-
-    public LowerBound(T bound) {
-        this(bound, false);
+record EqualToRecord<T>(T value) implements EqualTo<T> {
+    public EqualToRecord {
+        Objects.requireNonNull(value, "Value must not be null");
     }
 
     @Override
     public Operator operator() {
-        return strict ? Operator.GREATER_THAN : Operator.GREATER_THAN_EQUAL;
+        return Operator.EQUAL;
     }
 
     @Override
     public String toString() {
-        return bound.toString();
+        return value instanceof String ? "'" + value + "'" : value.toString();
     }
 
     @Override
     public boolean equals(Object obj) {
-        return obj instanceof LowerBound<?> that
-            && bound.equals(that.bound)
-            && strict == that.strict;
+        return obj instanceof EqualToRecord<?> that
+            && value.equals(that.value);
     }
 
     @Override
     public int hashCode() {
-        return bound.hashCode();
+        return value.hashCode();
     }
 }

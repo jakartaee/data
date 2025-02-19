@@ -15,14 +15,9 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.metamodel.range.impl;
+package jakarta.data.metamodel.constraint;
 
-import jakarta.data.metamodel.range.Range;
-import jakarta.data.metamodel.restrict.Operator;
-
-public record NullValue<T>() implements Range<T> {
-    @Override
-    public Operator operator() {
-        return Operator.NULL;
-    }
+public interface Between<T extends Comparable<T>> extends Constraint<T> {
+    GreaterThan<T> lowerBound();
+    LessThan<T> upperBound();
 }

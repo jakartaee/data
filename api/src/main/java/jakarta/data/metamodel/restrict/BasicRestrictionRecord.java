@@ -21,30 +21,30 @@ package jakarta.data.metamodel.restrict;
 // The proper way for users to obtain instances is via
 // the static metamodel or Restrict.* methods 
 
-import jakarta.data.metamodel.range.Range;
+import jakarta.data.metamodel.constraint.Constraint;
 
 import java.util.Objects;
 
-record BasicRestrictionRecord<T>(String attribute, Range<?> range, boolean negated)
+record BasicRestrictionRecord<T>(String attribute, Constraint<?> constraint, boolean negated)
         implements BasicRestriction<T> {
 
     BasicRestrictionRecord {
         Objects.requireNonNull(attribute, "Attribute must not be null");
-        Objects.requireNonNull(range, "Range must not be null");
+        Objects.requireNonNull(constraint, "Range must not be null");
     }
 
-    public BasicRestrictionRecord(String attribute, Range<?> range) {
-        this(attribute, range, false);
+    public BasicRestrictionRecord(String attribute, Constraint<?> constraint) {
+        this(attribute, constraint, false);
     }
 
     @Override
     public Operator comparison() {
-        return negated ? range.operator().negate() : range.operator();
+        return negated ? constraint.operator().negate() : constraint.operator();
     }
 
     @Override
     public BasicRestriction<T> negate() {
-        return new BasicRestrictionRecord<>(attribute, range, !negated);
+        return new BasicRestrictionRecord<>(attribute, constraint, !negated);
     }
 
     /**
@@ -60,7 +60,7 @@ record BasicRestrictionRecord<T>(String attribute, Range<?> range, boolean negat
         final String op = comparison.asQueryLanguage();
         return switch (comparison.arity()) {
             case 1 -> attribute + ' ' + op;
-            case 2,3 -> attribute + ' ' + op + ' ' + range;
+            case 2,3 -> attribute + ' ' + op + ' ' + constraint;
             default -> throw new UnsupportedOperationException("Unexpected arity");
         };
     }

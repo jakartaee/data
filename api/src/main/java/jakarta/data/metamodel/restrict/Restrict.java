@@ -17,8 +17,8 @@
  */
 package jakarta.data.metamodel.restrict;
 
-import jakarta.data.metamodel.range.Range;
-import jakarta.data.metamodel.range.TextRange;
+import jakarta.data.metamodel.constraint.Constraint;
+import jakarta.data.metamodel.constraint.Like;
 
 import java.util.List;
 import java.util.Objects;
@@ -48,68 +48,68 @@ public class Restrict {
     // TODO Need to think more about how to best cover negation of multiple
     // and then make negation of Single consistent with it
 
-    public static <T> BasicRestriction<T> restrict(Range<?> range, String attribute) {
-        return new BasicRestrictionRecord<>(attribute, range);
+    public static <T> BasicRestriction<T> restrict(Constraint<?> constraint, String attribute) {
+        return new BasicRestrictionRecord<>(attribute, constraint);
     }
 
     public static <T> TextRestriction<T> contains(String substring, String attribute) {
-        return new TextRestrictionRecord<>(attribute, TextRange.substring(substring));
+        return new TextRestrictionRecord<>(attribute, Like.substring(substring));
     }
 
     public static <T> TextRestriction<T> startsWith(String prefix, String attribute) {
-        return new TextRestrictionRecord<>(attribute, TextRange.prefix(prefix));
+        return new TextRestrictionRecord<>(attribute, Like.prefix(prefix));
     }
 
     public static <T> TextRestriction<T> endsWith(String suffix, String attribute) {
-        return new TextRestrictionRecord<>(attribute, TextRange.suffix(suffix));
+        return new TextRestrictionRecord<>(attribute, Like.suffix(suffix));
     }
 
     public static <T> BasicRestriction<T> equalTo(Object value, String attribute) {
-        return new BasicRestrictionRecord<>(attribute, Range.value(value));
+        return new BasicRestrictionRecord<>(attribute, Constraint.value(value));
     }
 
     public static <T> TextRestriction<T> equalTo(String value, String attribute) {
-        return new TextRestrictionRecord<>(attribute, TextRange.literal(value));
+        return new TextRestrictionRecord<>(attribute, Like.literal(value));
     }
 
     public static <T> BasicRestriction<T> isNull(String attribute) {
-        return new BasicRestrictionRecord<>(attribute, Range.nullValue());
+        return new BasicRestrictionRecord<>(attribute, Constraint.nullValue());
     }
 
     public static <T, V extends Comparable<V>> BasicRestriction<T> greaterThan(V value, String attribute) {
-        return new BasicRestrictionRecord<>(attribute, Range.lowerBound(value, true));
+        return new BasicRestrictionRecord<>(attribute, Constraint.lowerBound(value, true));
     }
 
     public static <T, V extends Comparable<V>> BasicRestriction<T> greaterThanEqual(V value, String attribute) {
-        return new BasicRestrictionRecord<>(attribute, Range.lowerBound(value));
+        return new BasicRestrictionRecord<>(attribute, Constraint.lowerBound(value));
     }
 
     public static <T> BasicRestriction<T> in(Set<?> values, String attribute) {
-        return new BasicRestrictionRecord<>(attribute, Range.enumeration(values));
+        return new BasicRestrictionRecord<>(attribute, Constraint.enumeration(values));
     }
 
     public static <T, V extends Comparable<V>> BasicRestriction<T> lessThan(V value, String attribute) {
-        return new BasicRestrictionRecord<>(attribute, Range.upperBound(value, true));
+        return new BasicRestrictionRecord<>(attribute, Constraint.upperBound(value, true));
     }
 
     public static <T, V extends Comparable<V>> BasicRestriction<T> lessThanEqual(V value, String attribute) {
-        return new BasicRestrictionRecord<>(attribute, Range.upperBound(value));
+        return new BasicRestrictionRecord<>(attribute, Constraint.upperBound(value));
     }
 
     public static <T, V extends Comparable<V>> BasicRestriction<T> between(V lowerBound, V upperBound, String attribute) {
-        return new BasicRestrictionRecord<>(attribute, Range.interval(lowerBound, upperBound));
+        return new BasicRestrictionRecord<>(attribute, Constraint.interval(lowerBound, upperBound));
     }
 
-    public static <T> TextRestriction<T> like(TextRange textRange, String attribute) {
+    public static <T> TextRestriction<T> like(Like textRange, String attribute) {
         return new TextRestrictionRecord<>(attribute, textRange);
     }
 
     public static <T> TextRestriction<T> like(String pattern, String attribute) {
-        return new TextRestrictionRecord<>(attribute, TextRange.pattern(pattern));
+        return new TextRestrictionRecord<>(attribute, Like.pattern(pattern));
     }
 
     public static <T> TextRestriction<T> like(String pattern, char charWildcard, char stringWildcard, String attribute) {
-        return new TextRestrictionRecord<>(attribute, TextRange.pattern(pattern, charWildcard, stringWildcard));
+        return new TextRestrictionRecord<>(attribute, Like.pattern(pattern, charWildcard, stringWildcard));
     }
 
     // convenience method for those who would prefer to avoid .negate()
@@ -119,43 +119,43 @@ public class Restrict {
     }
 
     public static <T> BasicRestriction<T> notEqualTo(Object value, String attribute) {
-        return new BasicRestrictionRecord<>(attribute, Range.value(value), true);
+        return new BasicRestrictionRecord<>(attribute, Constraint.value(value), true);
     }
 
     public static <T> TextRestriction<T> notEqualTo(String value, String attribute) {
-        return new TextRestrictionRecord<>(attribute, TextRange.literal(value), true);
+        return new TextRestrictionRecord<>(attribute, Like.literal(value), true);
     }
 
     public static <T> BasicRestriction<T> notNull(String attribute) {
-        return new BasicRestrictionRecord<>(attribute, Range.nullValue(), true);
+        return new BasicRestrictionRecord<>(attribute, Constraint.nullValue(), true);
     }
 
     public static <T> TextRestriction<T> notContains(String substring, String attribute) {
-        return new TextRestrictionRecord<>(attribute, TextRange.substring(substring), true);
+        return new TextRestrictionRecord<>(attribute, Like.substring(substring), true);
     }
 
     public static <T> TextRestriction<T> notStartsWith(String prefix, String attribute) {
-        return new TextRestrictionRecord<>(attribute, TextRange.prefix(prefix), true);
+        return new TextRestrictionRecord<>(attribute, Like.prefix(prefix), true);
     }
 
     public static <T> TextRestriction<T> notEndsWith(String suffix, String attribute) {
-        return new TextRestrictionRecord<>(attribute, TextRange.suffix(suffix), true);
+        return new TextRestrictionRecord<>(attribute, Like.suffix(suffix), true);
     }
 
     public static <T> BasicRestriction<T> notIn(Set<?> values, String attribute) {
-        return new BasicRestrictionRecord<>(attribute, Range.enumeration(values), true);
+        return new BasicRestrictionRecord<>(attribute, Constraint.enumeration(values), true);
     }
 
     public static <T> TextRestriction<T> notLike(String pattern, String attribute) {
-        return new TextRestrictionRecord<>(attribute, TextRange.pattern(pattern), true);
+        return new TextRestrictionRecord<>(attribute, Like.pattern(pattern), true);
     }
 
     public static <T> TextRestriction<T> notLike(String pattern, char charWildcard, char stringWildcard, String attribute) {
-        return new TextRestrictionRecord<>(attribute, TextRange.pattern(pattern, charWildcard, stringWildcard), true);
+        return new TextRestrictionRecord<>(attribute, Like.pattern(pattern, charWildcard, stringWildcard), true);
     }
 
     public static <T, V extends Comparable<V>> BasicRestriction<T> notBetween(V lowerBound, V upperBound, String attribute) {
-        return new BasicRestrictionRecord<>(attribute, Range.interval(lowerBound, upperBound), true);
+        return new BasicRestrictionRecord<>(attribute, Constraint.interval(lowerBound, upperBound), true);
     }
 
     @SuppressWarnings("unchecked")

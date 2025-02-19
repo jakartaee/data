@@ -15,53 +15,42 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.metamodel.range.impl;
+package jakarta.data.metamodel.constraint;
 
-import jakarta.data.metamodel.range.TextRange;
 import jakarta.data.metamodel.restrict.Operator;
 
 import java.util.Objects;
 
-public record Literal(String literal, boolean caseSensitive)
-        implements TextRange {
-
-    public Literal {
-        Objects.requireNonNull(literal, "Literal must not be null");
+record BetweenRecord<T extends Comparable<T>>(GreaterThanRecord<T> lowerBound, LessThanRecord<T> upperBound)
+        implements Between<T> {
+    public BetweenRecord {
+        Objects.requireNonNull(lowerBound);
+        Objects.requireNonNull(upperBound);
     }
 
-    public Literal(String literal) {
-        this(literal, true);
-    }
-
-    @Override
-    public String pattern() {
-        return literal;
-    }
-
-    @Override
-    public TextRange ignoreCase() {
-        return new Literal(literal, true);
+    public BetweenRecord(T lowerBound, T upperBound) {
+        this(new GreaterThanRecord<>(lowerBound), new LessThanRecord<>(upperBound));
     }
 
     @Override
     public Operator operator() {
-        return Operator.EQUAL;
+        return Operator.BETWEEN;
     }
 
     @Override
     public String toString() {
-        return "'" + literal + "'";
+        return "[" + lowerBound + ", " + upperBound + "]";
     }
 
     @Override
     public boolean equals(Object obj) {
-        return obj instanceof Literal that
-            && literal.equals(that.literal)
-            && caseSensitive == that.caseSensitive;
+        return obj instanceof BetweenRecord<?> that
+            && lowerBound.equals(that.lowerBound)
+            && upperBound.equals(that.upperBound);
     }
 
     @Override
     public int hashCode() {
-        return literal.hashCode();
+        return Objects.hash(lowerBound, upperBound);
     }
 }

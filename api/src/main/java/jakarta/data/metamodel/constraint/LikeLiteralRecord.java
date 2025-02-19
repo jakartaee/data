@@ -15,43 +15,52 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.metamodel.range.impl;
+package jakarta.data.metamodel.constraint;
 
-import jakarta.data.metamodel.range.Range;
 import jakarta.data.metamodel.restrict.Operator;
 
 import java.util.Objects;
 
-public record Interval<T extends Comparable<T>>(LowerBound<T> lowerBound, UpperBound<T> upperBound)
-        implements Range<T> {
-    public Interval {
-        Objects.requireNonNull(lowerBound);
-        Objects.requireNonNull(upperBound);
+record LikeLiteralRecord(String literal, boolean caseSensitive)
+        implements Like {
+
+    public LikeLiteralRecord {
+        Objects.requireNonNull(literal, "Literal must not be null");
     }
 
-    public Interval(T lowerBound, T upperBound) {
-        this(new LowerBound<>(lowerBound), new UpperBound<>(upperBound));
+    public LikeLiteralRecord(String literal) {
+        this(literal, true);
+    }
+
+    @Override
+    public String pattern() {
+        return literal;
+    }
+
+    @Override
+    public Like ignoreCase() {
+        return new LikeLiteralRecord(literal, true);
     }
 
     @Override
     public Operator operator() {
-        return Operator.BETWEEN;
+        return Operator.EQUAL;
     }
 
     @Override
     public String toString() {
-        return "[" + lowerBound + ", " + upperBound + "]";
+        return "'" + literal + "'";
     }
 
     @Override
     public boolean equals(Object obj) {
-        return obj instanceof Interval<?> that
-            && lowerBound.equals(that.lowerBound)
-            && upperBound.equals(that.upperBound);
+        return obj instanceof LikeLiteralRecord that
+            && literal.equals(that.literal)
+            && caseSensitive == that.caseSensitive;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(lowerBound, upperBound);
+        return literal.hashCode();
     }
 }

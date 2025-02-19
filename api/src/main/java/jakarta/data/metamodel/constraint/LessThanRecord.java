@@ -15,20 +15,19 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.metamodel.range.impl;
+package jakarta.data.metamodel.constraint;
 
-import jakarta.data.metamodel.range.Range;
 import jakarta.data.metamodel.restrict.Operator;
 
 import java.util.Objects;
 
-public record UpperBound<T extends Comparable<T>>(T bound, boolean strict)
-        implements Range<T> {
-    public UpperBound {
+record LessThanRecord<T extends Comparable<T>>(T bound, boolean strict)
+        implements LessThan<T> {
+    public LessThanRecord {
         Objects.requireNonNull(bound, "Upper bound must not be null");
     }
 
-    public UpperBound(T bound) {
+    public LessThanRecord(T bound) {
         this(bound, false);
     }
 
@@ -44,7 +43,7 @@ public record UpperBound<T extends Comparable<T>>(T bound, boolean strict)
 
     @Override
     public boolean equals(Object obj) {
-        return obj instanceof UpperBound<?> that
+        return obj instanceof LessThanRecord<?> that
             && bound.equals(that.bound)
             && strict == that.strict;
     }

@@ -18,7 +18,7 @@
 package jakarta.data.metamodel;
 
 import jakarta.data.Sort;
-import jakarta.data.metamodel.range.TextRange;
+import jakarta.data.metamodel.constraint.Like;
 import jakarta.data.metamodel.restrict.Restrict;
 import jakarta.data.metamodel.restrict.TextRestriction;
 
@@ -53,7 +53,7 @@ public interface TextAttribute<T> extends ComparableAttribute<T,String> {
         return Restrict.notEqualTo(value, name());
     }
 
-    default TextRestriction<T> like(TextRange pattern) {
+    default TextRestriction<T> like(Like pattern) {
         return Restrict.like(pattern, name());
     }
 
