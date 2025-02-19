@@ -38,11 +38,11 @@ public interface Like extends Constraint<String> {
         return LikePatternRecord.substring(substring);
     }
 
-    static Like prefix(String substring) {
-        return LikePatternRecord.prefix(substring);
+    static Like prefix(String prefix) {
+        return LikePatternRecord.prefix(prefix);
     }
 
-    static Like suffix(String substring) {
-        return LikePatternRecord.suffix(substring);
+    static Like suffix(String suffix) {
+        return LikePatternRecord.suffix(suffix);
     }
 }

@@ -26,7 +26,7 @@ record TextRestrictionRecord<T>(String attribute, Like constraint, boolean negat
 
     TextRestrictionRecord {
         Objects.requireNonNull(attribute, "Attribute must not be null");
-        Objects.requireNonNull(constraint, "Pattern must not be null");
+        Objects.requireNonNull(constraint, "Constraint must not be null");
     }
 
     public TextRestrictionRecord(String attribute, Like range) {

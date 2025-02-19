@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 Contributors to the Eclipse Foundation
+ * Copyright (c) 2025 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ import java.util.Set;
 public interface Constraint<T> {
     Operator operator();
 
-    static <T> Constraint<T> value(T value) {
+    static <T> Constraint<T> equalTo(T value) {
         return new EqualToRecord<>(value);
     }
 

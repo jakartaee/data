@@ -34,8 +34,8 @@ class CompositeRestrictionRecordTest {
 
     @Test
     void shouldCreateCompositeRestrictionWithDefaultNegation() {
-        Restriction<String> restriction1 = new BasicRestrictionRecord<>("title", Constraint.value("Java Guide"));
-        Restriction<String> restriction2 = new BasicRestrictionRecord<>("author", Constraint.value("John Doe"));
+        Restriction<String> restriction1 = new BasicRestrictionRecord<>("title", Constraint.equalTo("Java Guide"));
+        Restriction<String> restriction2 = new BasicRestrictionRecord<>("author", Constraint.equalTo("John Doe"));
 
         CompositeRestrictionRecord<String> composite = new CompositeRestrictionRecord<>(
                 CompositeRestriction.Type.ALL,
@@ -51,8 +51,8 @@ class CompositeRestrictionRecordTest {
 
     @Test
     void shouldCreateCompositeRestrictionWithExplicitNegation() {
-        Restriction<String> restriction1 = new BasicRestrictionRecord<>("title", Constraint.value("Java Guide"));
-        Restriction<String> restriction2 = new BasicRestrictionRecord<>("author", Constraint.value("John Doe"));
+        Restriction<String> restriction1 = new BasicRestrictionRecord<>("title", Constraint.equalTo("Java Guide"));
+        Restriction<String> restriction2 = new BasicRestrictionRecord<>("author", Constraint.equalTo("John Doe"));
 
         CompositeRestrictionRecord<String> composite = new CompositeRestrictionRecord<>(
                 CompositeRestriction.Type.ANY,
@@ -135,8 +135,8 @@ class CompositeRestrictionRecordTest {
 
     @Test
     void shouldPreserveRestrictionsOrder() {
-        Restriction<String> restriction1 = new BasicRestrictionRecord<>("title", Constraint.value("Java Guide"));
-        Restriction<String> restriction2 = new BasicRestrictionRecord<>("author", Constraint.value("John Doe"));
+        Restriction<String> restriction1 = new BasicRestrictionRecord<>("title", Constraint.equalTo("Java Guide"));
+        Restriction<String> restriction2 = new BasicRestrictionRecord<>("author", Constraint.equalTo("John Doe"));
 
         CompositeRestrictionRecord<String> composite = new CompositeRestrictionRecord<>(
                 CompositeRestriction.Type.ALL,
@@ -152,8 +152,8 @@ class CompositeRestrictionRecordTest {
     @Test
     void shouldSupportNegationUsingDefaultConstructor() {
         // Given multiple restrictions
-        Restriction<String> restriction1 = new BasicRestrictionRecord<>("title", Constraint.value("Java Guide"));
-        Restriction<String> restriction2 = new BasicRestrictionRecord<>("author", Constraint.value("John Doe"));
+        Restriction<String> restriction1 = new BasicRestrictionRecord<>("title", Constraint.equalTo("Java Guide"));
+        Restriction<String> restriction2 = new BasicRestrictionRecord<>("author", Constraint.equalTo("John Doe"));
 
         // When creating a composite restriction and manually setting negation
         CompositeRestrictionRecord<String> composite = new CompositeRestrictionRecord<>(

@@ -16,6 +16,26 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import jakarta.data.Limit;
+import jakarta.data.Order;
+import jakarta.data.Sort;
+import jakarta.data.metamodel.StaticMetamodel;
+import jakarta.data.page.PageRequest;
+import jakarta.data.repository.BasicRepository;
+import jakarta.data.repository.By;
+import jakarta.data.repository.CrudRepository;
+import jakarta.data.repository.DataRepository;
+import jakarta.data.repository.Delete;
+import jakarta.data.repository.Find;
+import jakarta.data.repository.Insert;
+import jakarta.data.repository.OrderBy;
+import jakarta.data.repository.Param;
+import jakarta.data.repository.Query;
+import jakarta.data.repository.Repository;
+import jakarta.data.repository.Save;
+import jakarta.data.repository.Select;
+import jakarta.data.repository.Update;
+
 import java.util.Set;
 
 /**
@@ -423,7 +443,7 @@ import java.util.Set;
  *
  * <tr style="vertical-align: top"><td>{@code Between}</td>
  * <td>sortable basic types</td>
- * <td>Requires that the entity's attribute value be within the constraint specified by two parameters,
+ * <td>Requires that the entity's attribute value be within the range specified by two parameters,
  * inclusive of the parameters. The minimum is listed first, then the maximum.</td>
  * <td>{@code findByAgeBetween(minAge, maxAge)}</td>
  * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column</td></tr>
@@ -746,7 +766,7 @@ import java.util.Set;
  *
  * <p>The number of results returned by a single invocation of a repository
  * find method may be limited by adding a parameter of type {@link Limit}.
- * The results may even be limited to a positioned constraint. For example,</p>
+ * The results may even be limited to a positioned range. For example,</p>
  *
  * <pre>
  * &#64;Query("WHERE (fullPrice - salePrice) / fullPrice &gt;= ?1 ORDER BY salePrice DESC, id ASC")
@@ -755,7 +775,7 @@ import java.util.Set;
  * ...
  * first50 = products.highlyDiscounted(0.30, Limit.of(50));
  * ...
- * second50 = products.highlyDiscounted(0.30, Limit.constraint(51, 100));
+ * second50 = products.highlyDiscounted(0.30, Limit.range(51, 100));
  * </pre>
  *
  * <h3>Pagination</h3>

@@ -21,6 +21,15 @@ import jakarta.data.metamodel.restrict.Operator;
 
 record NullRecord<T>() implements Null<T> {
     @Override
+    public boolean equals(Object obj) {
+        return obj instanceof NullRecord;
+    }
+
+    @Override
+    public int hashCode() {
+        return 0;
+    }
+    @Override
     public Operator operator() {
         return Operator.NULL;
     }

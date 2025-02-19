@@ -30,7 +30,7 @@ record BasicRestrictionRecord<T>(String attribute, Constraint<?> constraint, boo
 
     BasicRestrictionRecord {
         Objects.requireNonNull(attribute, "Attribute must not be null");
-        Objects.requireNonNull(constraint, "Range must not be null");
+        Objects.requireNonNull(constraint, "Constraint must not be null");
     }
 
     public BasicRestrictionRecord(String attribute, Constraint<?> constraint) {

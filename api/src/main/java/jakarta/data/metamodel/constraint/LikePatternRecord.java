@@ -109,6 +109,6 @@ record LikePatternRecord(String pattern, boolean caseSensitive)
 
     @Override
     public int hashCode() {
-        return pattern.hashCode();
+        return Objects.hash(pattern, caseSensitive);
     }
 }

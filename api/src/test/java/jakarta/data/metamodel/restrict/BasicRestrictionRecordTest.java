@@ -31,12 +31,12 @@ class BasicRestrictionRecordTest {
 
     @Test
     void shouldCreateBasicRestrictionWithDefaultNegation() {
-        BasicRestrictionRecord<String> restriction = new BasicRestrictionRecord<>("title", Constraint.value("Java Guide"));
+        BasicRestrictionRecord<String> restriction = new BasicRestrictionRecord<>("title", Constraint.equalTo("Java Guide"));
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.attribute()).isEqualTo("title");
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.EQUAL);
-            soft.assertThat(restriction.constraint()).isEqualTo(Constraint.value("Java Guide"));
+            soft.assertThat(restriction.constraint()).isEqualTo(Constraint.equalTo("Java Guide"));
         });
     }
 
@@ -110,13 +110,13 @@ class BasicRestrictionRecordTest {
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(negatedRestriction.attribute()).isEqualTo("author");
             soft.assertThat(negatedRestriction.comparison()).isEqualTo(Operator.NOT_EQUAL);
-            soft.assertThat(negatedRestriction.constraint()).isEqualTo(Constraint.value("Unknown"));
+            soft.assertThat(negatedRestriction.constraint()).isEqualTo(Constraint.equalTo("Unknown"));
         });
     }
 
     @Test
     void shouldThrowExceptionWhenAttributeIsNull() {
-        assertThatThrownBy(() -> new BasicRestrictionRecord<>(null, Constraint.value("testValue")))
+        assertThatThrownBy(() -> new BasicRestrictionRecord<>(null, Constraint.equalTo(("testValue"))))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("Attribute must not be null");
     }
@@ -125,6 +125,6 @@ class BasicRestrictionRecordTest {
     void shouldThrowExceptionWhenValueIsNull() {
         assertThatThrownBy(() -> new BasicRestrictionRecord<>("title", null))
                 .isInstanceOf(NullPointerException.class)
-                .hasMessage("Range must not be null");
+                .hasMessage("Constraint must not be null");
     }
 }

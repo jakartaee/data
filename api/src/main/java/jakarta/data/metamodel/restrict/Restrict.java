@@ -65,7 +65,7 @@ public class Restrict {
     }
 
     public static <T> BasicRestriction<T> equalTo(Object value, String attribute) {
-        return new BasicRestrictionRecord<>(attribute, Constraint.value(value));
+        return new BasicRestrictionRecord<>(attribute, Constraint.equalTo(value));
     }
 
     public static <T> TextRestriction<T> equalTo(String value, String attribute) {
@@ -119,7 +119,7 @@ public class Restrict {
     }
 
     public static <T> BasicRestriction<T> notEqualTo(Object value, String attribute) {
-        return new BasicRestrictionRecord<>(attribute, Constraint.value(value), true);
+        return new BasicRestrictionRecord<>(attribute, Constraint.equalTo(value), true);
     }
 
     public static <T> TextRestriction<T> notEqualTo(String value, String attribute) {

@@ -70,7 +70,7 @@ class RestrictTest {
             soft.assertThat(restriction.attribute()).isEqualTo("attributeName");
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.EQUAL);
             soft.assertThat(restriction.constraint()).isInstanceOf(Constraint.class);
-            soft.assertThat(restriction.constraint()).isEqualTo(Constraint.value(0));
+            soft.assertThat(restriction.constraint()).isEqualTo(Constraint.equalTo(0));
         });
     }
 
@@ -82,7 +82,7 @@ class RestrictTest {
             soft.assertThat(restriction.attribute()).isEqualTo("attributeName");
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.NOT_EQUAL);
             soft.assertThat(restriction.constraint()).isInstanceOf(Constraint.class);
-            soft.assertThat(restriction.constraint()).isEqualTo(Constraint.value(0));
+            soft.assertThat(restriction.constraint()).isEqualTo(Constraint.equalTo(0));
         });
     }
 

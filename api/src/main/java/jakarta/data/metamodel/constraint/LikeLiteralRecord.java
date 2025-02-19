@@ -39,7 +39,7 @@ record LikeLiteralRecord(String literal, boolean caseSensitive)
 
     @Override
     public Like ignoreCase() {
-        return new LikeLiteralRecord(literal, true);
+        return new LikeLiteralRecord(literal, false);
     }
 
     @Override
