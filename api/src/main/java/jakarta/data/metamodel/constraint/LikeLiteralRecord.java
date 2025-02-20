@@ -33,13 +33,23 @@ record LikeLiteralRecord(String literal, boolean caseSensitive)
     }
 
     @Override
-    public String pattern() {
+    public String string() {
         return literal;
     }
 
     @Override
     public Like ignoreCase() {
         return new LikeLiteralRecord(literal, false);
+    }
+
+    @Override
+    public Character escape() {
+        return null;
+    }
+
+    @Override
+    public boolean pattern() {
+        return false;
     }
 
     @Override

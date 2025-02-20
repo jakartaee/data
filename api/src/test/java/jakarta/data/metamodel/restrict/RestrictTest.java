@@ -134,7 +134,7 @@ class RestrictTest {
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.attribute()).isEqualTo("attributeName");
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.LIKE);
-            soft.assertThat(restriction.constraint().pattern()).isEqualTo("%substring%");
+            soft.assertThat(restriction.constraint().string()).isEqualTo("%substring%");
         });
     }
 
@@ -145,7 +145,7 @@ class RestrictTest {
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.attribute()).isEqualTo("attributeName");
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.NOT_LIKE);
-            soft.assertThat(restriction.constraint().pattern()).isEqualTo("%substring%");
+            soft.assertThat(restriction.constraint().string()).isEqualTo("%substring%");
         });
     }
 
@@ -156,7 +156,7 @@ class RestrictTest {
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.attribute()).isEqualTo("attributeName");
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.LIKE);
-            soft.assertThat(restriction.constraint().pattern()).isEqualTo("prefix%");
+            soft.assertThat(restriction.constraint().string()).isEqualTo("prefix%");
         });
     }
 
@@ -167,7 +167,7 @@ class RestrictTest {
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.attribute()).isEqualTo("attributeName");
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.NOT_LIKE);
-            soft.assertThat(restriction.constraint().pattern()).isEqualTo("prefix%");
+            soft.assertThat(restriction.constraint().string()).isEqualTo("prefix%");
         });
     }
 
@@ -178,7 +178,7 @@ class RestrictTest {
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.attribute()).isEqualTo("attributeName");
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.LIKE);
-            soft.assertThat(restriction.constraint().pattern()).isEqualTo("%suffix");
+            soft.assertThat(restriction.constraint().string()).isEqualTo("%suffix");
         });
     }
 
@@ -189,7 +189,7 @@ class RestrictTest {
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.attribute()).isEqualTo("attributeName");
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.NOT_LIKE);
-            soft.assertThat(restriction.constraint().pattern()).isEqualTo("%suffix");
+            soft.assertThat(restriction.constraint().string()).isEqualTo("%suffix");
         });
     }
 
@@ -228,7 +228,7 @@ class RestrictTest {
 
     @Test
     void shouldEscapeToLikePatternCorrectly() {
-        String result = Restrict.endsWith("test_value", "attributeName").constraint().pattern();
+        String result = Restrict.endsWith("test_value", "attributeName").constraint().string();
 
         assertThat(result).isEqualTo("%test\\_value");
     }

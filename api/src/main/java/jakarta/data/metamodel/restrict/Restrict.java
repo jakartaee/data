@@ -112,6 +112,10 @@ public class Restrict {
         return new TextRestrictionRecord<>(attribute, Like.pattern(pattern, charWildcard, stringWildcard));
     }
 
+    public static <T> TextRestriction<T> like(String pattern, char charWildcard, char stringWildcard, char escape, String attribute) {
+        return new TextRestrictionRecord<>(attribute, Like.pattern(pattern, charWildcard, stringWildcard, escape));
+    }
+
     // convenience method for those who would prefer to avoid .negate()
     public static <T> Restriction<T> not(Restriction<T> restriction) {
         Objects.requireNonNull(restriction, "Restriction must not be null");

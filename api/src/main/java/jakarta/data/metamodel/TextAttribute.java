@@ -65,6 +65,10 @@ public interface TextAttribute<T> extends ComparableAttribute<T,String> {
         return Restrict.like(pattern, charWildcard, stringWildcard, name());
     }
 
+    default TextRestriction<T> like(String pattern, char charWildcard, char stringWildcard, char escape) {
+        return Restrict.like(pattern, charWildcard, stringWildcard, escape, name());
+    }
+
     default TextRestriction<T> notLike(String pattern) {
         return Restrict.notLike(pattern, name());
     }
