@@ -27,7 +27,13 @@ public enum Operator {
     LIKE,
     NOT_EQUAL,
     NOT_IN,
-    NOT_LIKE;
+    NOT_LIKE,
+    NOT_PREFIXED,
+    NOT_SUBSTRINGED,
+    NOT_SUFFIXED,
+    PREFIXED,
+    SUBSTRINGED,
+    SUFFIXED;
 
     /**
      * Representation of the operator as it appears in query language.
@@ -35,6 +41,9 @@ public enum Operator {
      * in query langugae.
      *
      * @return the representation of the operator in query language.
+     *         For operators that have a more complex representation in
+     *         query language, this method returns the {@link #name()}
+     *         of the operator.
      */
     String asQueryLanguage() {
         return switch (this) {
@@ -48,6 +57,12 @@ public enum Operator {
             case NOT_EQUAL -> "<>";
             case NOT_IN -> "NOT IN";
             case NOT_LIKE -> "NOT LIKE";
+            case NOT_PREFIXED -> NOT_PREFIXED.name();
+            case NOT_SUBSTRINGED -> NOT_SUBSTRINGED.name();
+            case NOT_SUFFIXED -> NOT_SUFFIXED.name();
+            case PREFIXED -> PREFIXED.name();
+            case SUBSTRINGED -> SUBSTRINGED.name();
+            case SUFFIXED -> SUFFIXED.name();
         };
     }
 
@@ -68,6 +83,12 @@ public enum Operator {
             case NOT_EQUAL -> EQUAL;
             case NOT_IN -> IN;
             case NOT_LIKE -> LIKE;
+            case NOT_PREFIXED -> PREFIXED;
+            case NOT_SUBSTRINGED -> SUBSTRINGED;
+            case NOT_SUFFIXED -> SUFFIXED;
+            case PREFIXED -> NOT_PREFIXED;
+            case SUBSTRINGED -> NOT_SUBSTRINGED;
+            case SUFFIXED -> NOT_SUFFIXED;
         };
     }
 }
