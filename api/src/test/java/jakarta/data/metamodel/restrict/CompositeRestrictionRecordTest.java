@@ -18,10 +18,9 @@
 package jakarta.data.metamodel.restrict;
 
 
+import jakarta.data.metamodel.constraint.Constraint;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
-
-import jakarta.data.metamodel.restrict.BasicRestrictionRecordTest.Book;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
@@ -35,8 +34,8 @@ class CompositeRestrictionRecordTest {
 
     @Test
     void shouldCreateCompositeRestrictionWithDefaultNegation() {
-        Restriction<String> restriction1 = new BasicRestrictionRecord<>("title", Operator.EQUAL, "Java Guide");
-        Restriction<String> restriction2 = new BasicRestrictionRecord<>("author", Operator.EQUAL, "John Doe");
+        Restriction<String> restriction1 = new BasicRestrictionRecord<>("title", Constraint.equalTo("Java Guide"));
+        Restriction<String> restriction2 = new BasicRestrictionRecord<>("author", Constraint.equalTo("John Doe"));
 
         CompositeRestrictionRecord<String> composite = new CompositeRestrictionRecord<>(
                 CompositeRestriction.Type.ALL,
@@ -52,8 +51,8 @@ class CompositeRestrictionRecordTest {
 
     @Test
     void shouldCreateCompositeRestrictionWithExplicitNegation() {
-        Restriction<String> restriction1 = new BasicRestrictionRecord<>("title", Operator.EQUAL, "Java Guide");
-        Restriction<String> restriction2 = new BasicRestrictionRecord<>("author", Operator.EQUAL, "John Doe");
+        Restriction<String> restriction1 = new BasicRestrictionRecord<>("title", Constraint.equalTo("Java Guide"));
+        Restriction<String> restriction2 = new BasicRestrictionRecord<>("author", Constraint.equalTo("John Doe"));
 
         CompositeRestrictionRecord<String> composite = new CompositeRestrictionRecord<>(
                 CompositeRestriction.Type.ANY,
@@ -121,23 +120,23 @@ class CompositeRestrictionRecordTest {
 
         Restriction<Person> minorOrMissingName = Restrict
                 .any(Restrict.lessThan(18, "age"),
-                     Restrict.equalTo(null, "name"));
+                     Restrict.equalTo("null", "name"));
         Restriction<Person> notMinorOrMissingName = minorOrMissingName.negate();
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(namedJackKarta.toString()).isEqualTo("""
-                    (firstName = "Jack") AND (lastName = "Karta")\
+                    (firstName = 'Jack') AND (lastName = 'Karta')\
                     """);
             soft.assertThat(notMinorOrMissingName.toString()).isEqualTo("""
-                    NOT ((age < 18) OR (name = null))\
+                    NOT ((age < 18) OR (name = 'null'))\
                     """);
         });
     }
 
     @Test
     void shouldPreserveRestrictionsOrder() {
-        Restriction<String> restriction1 = new BasicRestrictionRecord<>("title", Operator.EQUAL, "Java Guide");
-        Restriction<String> restriction2 = new BasicRestrictionRecord<>("author", Operator.EQUAL, "John Doe");
+        Restriction<String> restriction1 = new BasicRestrictionRecord<>("title", Constraint.equalTo("Java Guide"));
+        Restriction<String> restriction2 = new BasicRestrictionRecord<>("author", Constraint.equalTo("John Doe"));
 
         CompositeRestrictionRecord<String> composite = new CompositeRestrictionRecord<>(
                 CompositeRestriction.Type.ALL,
@@ -153,8 +152,8 @@ class CompositeRestrictionRecordTest {
     @Test
     void shouldSupportNegationUsingDefaultConstructor() {
         // Given multiple restrictions
-        Restriction<String> restriction1 = new BasicRestrictionRecord<>("title", Operator.EQUAL, "Java Guide");
-        Restriction<String> restriction2 = new BasicRestrictionRecord<>("author", Operator.EQUAL, "John Doe");
+        Restriction<String> restriction1 = new BasicRestrictionRecord<>("title", Constraint.equalTo("Java Guide"));
+        Restriction<String> restriction2 = new BasicRestrictionRecord<>("author", Constraint.equalTo("John Doe"));
 
         // When creating a composite restriction and manually setting negation
         CompositeRestrictionRecord<String> composite = new CompositeRestrictionRecord<>(

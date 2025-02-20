@@ -21,24 +21,30 @@ package jakarta.data.metamodel.restrict;
 // The proper way for users to obtain instances is via
 // the static metamodel or Restrict.* methods 
 
+import jakarta.data.metamodel.constraint.Constraint;
+
 import java.util.Objects;
 
-record BasicRestrictionRecord<T>(
-        String attribute,
-        Operator comparison,
-        Object value) implements BasicRestriction<T> {
+record BasicRestrictionRecord<T>(String attribute, Constraint<?> constraint, boolean negated)
+        implements BasicRestriction<T> {
 
     BasicRestrictionRecord {
         Objects.requireNonNull(attribute, "Attribute must not be null");
-        Objects.requireNonNull(value, "Value must not be null");
+        Objects.requireNonNull(constraint, "Constraint must not be null");
+    }
+
+    public BasicRestrictionRecord(String attribute, Constraint<?> constraint) {
+        this(attribute, constraint, false);
+    }
+
+    @Override
+    public Operator comparison() {
+        return negated ? constraint.operator().negate() : constraint.operator();
     }
 
     @Override
     public BasicRestriction<T> negate() {
-        return new BasicRestrictionRecord<>(
-                attribute,
-                comparison.negate(),
-                value);
+        return new BasicRestrictionRecord<>(attribute, constraint, !negated);
     }
 
     /**
@@ -50,20 +56,12 @@ record BasicRestrictionRecord<T>(
      */
     @Override
     public String toString() {
-        String comparisonString = comparison.asQueryLanguage();
-        String valueString = value.toString();
-        StringBuilder builder = new StringBuilder(
-                attribute.length() +
-                comparisonString.length() +
-                valueString.length() +
-                4); // number of additional characters that might be appended
-        builder.append(attribute).append(' ')
-               .append(comparisonString).append(' ');
-        if (value instanceof CharSequence) {
-            builder.append('"').append(valueString).append('"');
-        } else {
-            builder.append(valueString);
-        }
-        return builder.toString();
+        final Operator comparison = comparison();
+        final String op = comparison.asQueryLanguage();
+        return switch (comparison.arity()) {
+            case 1 -> attribute + ' ' + op;
+            case 2,3 -> attribute + ' ' + constraint;
+            default -> throw new UnsupportedOperationException("Unexpected arity");
+        };
     }
 }
