@@ -60,7 +60,7 @@ record BasicRestrictionRecord<T>(String attribute, Constraint<?> constraint, boo
         final String op = comparison.asQueryLanguage();
         return switch (comparison.arity()) {
             case 1 -> attribute + ' ' + op;
-            case 2,3 -> attribute + ' ' + op + ' ' + constraint;
+            case 2,3 -> attribute + ' ' + constraint;
             default -> throw new UnsupportedOperationException("Unexpected arity");
         };
     }

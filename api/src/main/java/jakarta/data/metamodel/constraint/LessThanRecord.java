@@ -34,7 +34,7 @@ record LessThanRecord<T extends Comparable<T>>(T bound)
 
     @Override
     public String toString() {
-        return bound.toString();
+        return "< " + bound.toString();
     }
 
     @Override

@@ -57,6 +57,6 @@ record TextRestrictionRecord<T>(String attribute, Like constraint, boolean negat
      */
     @Override
     public String toString() {
-        return attribute + ' ' + comparison().asQueryLanguage() + ' ' + constraint;
+        return attribute + ' ' + constraint;
     }
 }

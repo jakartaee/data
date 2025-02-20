@@ -39,7 +39,7 @@ record BetweenRecord<T extends Comparable<T>>(GreaterThanOrEqual<T> lowerBound, 
 
     @Override
     public String toString() {
-        return "[" + lowerBound + ", " + upperBound + "]";
+        return "BETWEEN " + lowerBound + " AND " + upperBound;
     }
 
     @Override

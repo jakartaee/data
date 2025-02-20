@@ -33,7 +33,7 @@ record EqualToRecord<T>(T value) implements EqualTo<T> {
 
     @Override
     public String toString() {
-        return value instanceof String ? "'" + value + "'" : value.toString();
+        return value instanceof String ? "= '" + value + "'" : "= " + value.toString();
     }
 
     @Override

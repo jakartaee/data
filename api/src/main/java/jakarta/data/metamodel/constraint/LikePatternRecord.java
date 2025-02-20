@@ -52,7 +52,7 @@ record LikePatternRecord(String pattern, boolean caseSensitive)
 
     @Override
     public String toString() {
-        return "'" + pattern + "'";
+        return "LIKE '" + pattern + "'" + (caseSensitive ? "" : " IGNORE CASE");
     }
 
     public static LikePatternRecord prefix(String prefix) {

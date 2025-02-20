@@ -49,7 +49,7 @@ record LikeLiteralRecord(String literal, boolean caseSensitive)
 
     @Override
     public String toString() {
-        return "'" + literal + "'";
+        return "= '" + literal + "'" + (caseSensitive ? "" : " IGNORE CASE");
     }
 
     @Override

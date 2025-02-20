@@ -33,4 +33,10 @@ record NullRecord<T>() implements Null<T> {
     public Operator operator() {
         return Operator.NULL;
     }
+
+
+    @Override
+    public String toString() {
+        return "IS NULL";
+    }
 }

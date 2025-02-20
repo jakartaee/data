@@ -43,4 +43,9 @@ record InRecord<T>(Set<T> values) implements In<T> {
     public int hashCode() {
         return values.hashCode();
     }
+
+    @Override
+    public String toString() {
+        return "IN " + values;
+    }
 }
