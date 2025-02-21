@@ -40,7 +40,8 @@ class TextRestrictionRecordTest {
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.LIKE);
             soft.assertThat(restriction.constraint().string()).isEqualTo("%Java%");
             soft.assertThat(restriction.constraint().caseSensitive()).isTrue();
-//            soft.assertThat(restriction.isEscaped()).isFalse();
+            soft.assertThat(restriction.constraint().pattern()).isTrue();
+            soft.assertThat(restriction.constraint().escape()).isNull();
         });
     }
 
@@ -57,7 +58,8 @@ class TextRestrictionRecordTest {
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.NOT_LIKE);
             soft.assertThat(restriction.constraint().string()).isEqualTo("%Java%");
             soft.assertThat(restriction.constraint().caseSensitive()).isTrue();
-//            soft.assertThat(restriction.isEscaped()).isFalse();
+            soft.assertThat(restriction.constraint().pattern()).isTrue();
+            soft.assertThat(restriction.constraint().escape()).isNull();
         });
     }
 
@@ -163,7 +165,8 @@ class TextRestrictionRecordTest {
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.NOT_EQUAL);
             soft.assertThat(restriction.constraint().string()).isEqualTo("John Doe");
             soft.assertThat(restriction.constraint().caseSensitive()).isTrue();
-//            soft.assertThat(restriction.isEscaped()).isFalse();
+            soft.assertThat(restriction.constraint().pattern()).isFalse();
+            soft.assertThat(restriction.constraint().escape()).isNull();
         });
     }
 
