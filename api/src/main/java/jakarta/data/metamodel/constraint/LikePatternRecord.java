@@ -123,11 +123,11 @@ record LikePatternRecord(String string, boolean caseSensitive, Character escape)
         return obj instanceof LikePatternRecord that
             && string.equals(that.string)
             && caseSensitive == that.caseSensitive
-            && escape.equals(that.escape);
+            && Objects.equals(escape, that.escape);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(string, caseSensitive);
+        return Objects.hash(string, caseSensitive, escape);
     }
 }
