@@ -41,11 +41,11 @@ record LikePatternRecord(String string, boolean caseSensitive, Character escape)
     }
 
     public LikePatternRecord(String pattern, char charWildcard, char stringWildcard) {
-        this(translate(pattern, charWildcard, stringWildcard));
+        this(pattern, charWildcard, stringWildcard, ESCAPE);
     }
 
     public LikePatternRecord(String pattern, char charWildcard, char stringWildcard, char escape) {
-        this(translate(pattern, charWildcard, stringWildcard), escape);
+        this(translate(pattern, charWildcard, stringWildcard, escape), escape);
     }
 
     @Override
@@ -65,7 +65,9 @@ record LikePatternRecord(String string, boolean caseSensitive, Character escape)
 
     @Override
     public String toString() {
-        return "LIKE '" + string + "'" + (caseSensitive ? "" : " IGNORE CASE");
+        return "LIKE '" + string + "'"
+                + (caseSensitive ? "" : " IGNORE CASE")
+                + (escape == null ? "" : " ESCAPE '\\'");
     }
 
     public static LikePatternRecord prefix(String prefix) {
@@ -92,9 +94,12 @@ record LikePatternRecord(String string, boolean caseSensitive, Character escape)
         return result.toString();
     }
 
-    private static String translate(String pattern, char charWildcard, char stringWildcard) {
+    private static String translate(String pattern, char charWildcard, char stringWildcard, char escape) {
         if ( charWildcard == stringWildcard ) {
             throw new IllegalArgumentException("Cannot use the same character (" + charWildcard + ") for both wildcards.");
+        }
+        if (charWildcard == escape || stringWildcard == escape) {
+            throw new IllegalArgumentException("Cannot use the same character (" + escape + ") for both a wildcard and escape character.");
         }
         final var result = new StringBuilder();
         for (int i = 0; i<pattern.length(); i++) {
@@ -104,8 +109,8 @@ record LikePatternRecord(String string, boolean caseSensitive, Character escape)
             } else if (ch == stringWildcard) {
                 result.append(STRING_WILDCARD);
             } else {
-                if (ch == STRING_WILDCARD || ch == CHAR_WILDCARD || ch == ESCAPE) {
-                    result.append(ESCAPE);
+                if (ch == STRING_WILDCARD || ch == CHAR_WILDCARD || ch == escape) {
+                    result.append(escape);
                 }
                 result.append(ch);
             }
