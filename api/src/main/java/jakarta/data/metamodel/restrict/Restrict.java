@@ -158,6 +158,10 @@ public class Restrict {
         return new TextRestrictionRecord<>(attribute, Like.pattern(pattern, charWildcard, stringWildcard), true);
     }
 
+    public static <T> TextRestriction<T> notLike(String pattern, char charWildcard, char stringWildcard, char escape, String attribute) {
+        return new TextRestrictionRecord<>(attribute, Like.pattern(pattern, charWildcard, stringWildcard, escape), true);
+    }
+
     public static <T, V extends Comparable<V>> BasicRestriction<T> notBetween(V lowerBound, V upperBound, String attribute) {
         return new BasicRestrictionRecord<>(attribute, Constraint.between(lowerBound, upperBound), true);
     }
