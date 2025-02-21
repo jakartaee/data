@@ -75,7 +75,8 @@ class TextRestrictionRecordTest {
             soft.assertThat(caseInsensitiveRestriction.comparison()).isEqualTo(Operator.LIKE);
             soft.assertThat(caseInsensitiveRestriction.constraint().string()).isEqualTo("%Java%");
             soft.assertThat(caseInsensitiveRestriction.constraint().caseSensitive()).isFalse();
-//            soft.assertThat(textRestriction.isEscaped()).isFalse();
+            soft.assertThat(caseInsensitiveRestriction.constraint().pattern()).isTrue();
+            soft.assertThat(caseInsensitiveRestriction.constraint().escape()).isNull();
         });
     }
 
@@ -91,7 +92,8 @@ class TextRestrictionRecordTest {
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.LIKE);
             soft.assertThat(restriction.constraint().string()).isEqualTo("%Java%");
             soft.assertThat(restriction.constraint().caseSensitive()).isTrue();
-//            soft.assertThat(restriction.isEscaped()).isTrue();
+            soft.assertThat(restriction.constraint().pattern()).isTrue();
+            soft.assertThat(restriction.constraint().escape()).isNull();
         });
     }
 
@@ -135,22 +137,22 @@ class TextRestrictionRecordTest {
         });
     }
 
-//    @Test
-//    void shouldOutputToString() {
-//        BasicRestriction<Book> titleRestriction =
-//                Restrict.contains("Jakarta Data", "title");
-//        BasicRestriction<Book> authorRestriction =
-//                Restrict.<Book>equalTo("Myself", "author").ignoreCase().negate();
-//
-//        SoftAssertions.assertSoftly(soft -> {
-//            soft.assertThat(titleRestriction.toString()).isEqualTo("""
-//                    title LIKE "%Jakarta Data%" ESCAPED\
-//                    """);
+    @Test
+    void shouldOutputToString() {
+        BasicRestriction<Book> titleRestriction =
+                Restrict.contains("Jakarta Data", "title");
+        BasicRestriction<Book> authorRestriction =
+                Restrict.<Book>equalTo("Myself", "author").ignoreCase().negate();
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(titleRestriction.toString()).isEqualTo("""
+                    title LIKE '%Jakarta Data%' ESCAPE '\\'\
+                    """);
 //            soft.assertThat(authorRestriction.toString()).isEqualTo("""
-//                    author <> "Myself" IGNORE_CASE\
+//                    author <> 'Myself' IGNORE_CASE\
 //                    """);
-//        });
-//    }
+        });
+    }
 
     @Test
     void shouldSupportNegationForTextRestriction() {
