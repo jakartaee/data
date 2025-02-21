@@ -98,6 +98,23 @@ class TextRestrictionRecordTest {
     }
 
     @Test
+    void shouldCreateTextRestrictionWithCustomWildcards() {
+        TextRestrictionRecord<String> restriction = new TextRestrictionRecord<>(
+                "title",
+                Like.pattern("*Java??", '?', '*', '$')
+        );
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(restriction.attribute()).isEqualTo("title");
+            soft.assertThat(restriction.comparison()).isEqualTo(Operator.LIKE);
+            soft.assertThat(restriction.constraint().string()).isEqualTo("%Java__");
+            soft.assertThat(restriction.constraint().caseSensitive()).isTrue();
+            soft.assertThat(restriction.constraint().pattern()).isTrue();
+            soft.assertThat(restriction.constraint().escape()).isEqualTo('$');
+        });
+    }
+
+    @Test
     void shouldNegateLikeRestriction() {
         TextRestriction<Book> likeJakartaEE = Restrict.like("%Jakarta EE%", "title");
         TextRestriction<Book> notLikeJakartaEE = likeJakartaEE.negate();
