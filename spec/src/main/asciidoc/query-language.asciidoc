@@ -413,7 +413,10 @@ The `where` clause is always optional. When it is missing, there is no restricti
 
 ==== Select clause
 
-The `select` clause, with syntax given by `select_clause`, specifies a path expression which determines the values returned by the query. The path expression is evaluated for each record which satisfies the restriction imposed by the `where` clause, as specified in <<Path expressions>>, and the value of the last element of the path expression is added to the query results.
+The `select` clause, with syntax given by `select_clause`, specifies one or more path expressions which determine the values returned by the query. Each path expression is evaluated for each record which satisfies the restriction imposed by the `where` clause, as specified in <<Path expressions>>, and a tuple containing the resulting values is added to the query results.
+
+NOTE: When a `select` clause contains more than one path expression, the `@Select` annotation is used to map the elements of the tuple to constructor parameters of the query return type.
+When the `select` clause contains only one path expression, the `@Select` annotation is not used, and the query directly returns the values of the path expression.
 
 Alternatively, the `select` clause may contain either:
 
