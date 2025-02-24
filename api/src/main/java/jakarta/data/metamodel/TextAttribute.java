@@ -107,8 +107,7 @@ public interface TextAttribute<T> extends ComparableAttribute<T,String> {
      * @return instance of {@code TextAttribute}.
      */
     static <T> TextAttribute<T> of(String name) {
-        if (name == null)
-            throw new IllegalArgumentException("entity attribute name is required");
+        Objects.requireNonNull(name, "entity attribute name is required");
 
         return new TextAttributeRecord<>(name);
     }
