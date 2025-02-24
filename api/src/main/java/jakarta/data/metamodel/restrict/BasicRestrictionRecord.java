@@ -21,11 +21,12 @@ package jakarta.data.metamodel.restrict;
 // The proper way for users to obtain instances is via
 // the static metamodel or Restrict.* methods 
 
+import jakarta.data.metamodel.BasicAttribute;
 import jakarta.data.metamodel.constraint.Constraint;
 
 import java.util.Objects;
 
-record BasicRestrictionRecord<T>(String attribute, Constraint<?> constraint, boolean negated)
+record BasicRestrictionRecord<T>(BasicAttribute<T,?> attribute, Constraint<?> constraint, boolean negated)
         implements BasicRestriction<T> {
 
     BasicRestrictionRecord {
@@ -33,7 +34,7 @@ record BasicRestrictionRecord<T>(String attribute, Constraint<?> constraint, boo
         Objects.requireNonNull(constraint, "Constraint must not be null");
     }
 
-    public BasicRestrictionRecord(String attribute, Constraint<?> constraint) {
+    public BasicRestrictionRecord(BasicAttribute<T,?> attribute, Constraint<?> constraint) {
         this(attribute, constraint, false);
     }
 
@@ -59,8 +60,8 @@ record BasicRestrictionRecord<T>(String attribute, Constraint<?> constraint, boo
         final Operator comparison = comparison();
         final String op = comparison.asQueryLanguage();
         return switch (comparison.arity()) {
-            case 1 -> attribute + ' ' + op;
-            case 2,3 -> attribute + ' ' + constraint;
+            case 1 -> attribute.name() + ' ' + op;
+            case 2,3 -> attribute.name() + ' ' + constraint;
             default -> throw new UnsupportedOperationException("Unexpected arity");
         };
     }

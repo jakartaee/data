@@ -19,6 +19,7 @@ package jakarta.data.metamodel;
 
 import jakarta.data.Sort;
 import jakarta.data.metamodel.constraint.Like;
+import jakarta.data.metamodel.impl.TextAttributeRecord;
 import jakarta.data.metamodel.restrict.Restrict;
 import jakarta.data.metamodel.restrict.TextRestriction;
 
@@ -49,64 +50,68 @@ public interface TextAttribute<T> extends ComparableAttribute<T,String> {
 
     @Override
     default TextRestriction<T> equalTo(String value) {
-        return Restrict.equalTo(value, name());
+        return Restrict.equalTo(value, this);
     }
 
     @Override
     default TextRestriction<T> notEqualTo(String value) {
-        return Restrict.notEqualTo(value, name());
+        return Restrict.notEqualTo(value, this);
     }
 
     default TextRestriction<T> like(Like pattern) {
-        return Restrict.like(pattern, name());
+        return Restrict.like(pattern, this);
     }
 
     default TextRestriction<T> like(String pattern) {
-        return Restrict.like(pattern, name());
+        return Restrict.like(pattern, this);
     }
 
     default TextRestriction<T> like(String pattern, char charWildcard, char stringWildcard) {
-        return Restrict.like(pattern, charWildcard, stringWildcard, name());
+        return Restrict.like(pattern, charWildcard, stringWildcard, this);
     }
 
     default TextRestriction<T> like(String pattern, char charWildcard, char stringWildcard, char escape) {
-        return Restrict.like(pattern, charWildcard, stringWildcard, escape, name());
+        return Restrict.like(pattern, charWildcard, stringWildcard, escape, this);
     }
 
     default TextRestriction<T> notLike(String pattern) {
-        return Restrict.notLike(pattern, name());
+        return Restrict.notLike(pattern, this);
     }
 
     default TextRestriction<T> notLike(String pattern, char charWildcard, char stringWildcard) {
-        return Restrict.notLike(pattern, charWildcard, stringWildcard, name());
+        return Restrict.notLike(pattern, charWildcard, stringWildcard, this);
     }
 
     default TextRestriction<T> notLike(String pattern, char charWildcard, char stringWildcard, char escape) {
-        return Restrict.notLike(pattern, charWildcard, stringWildcard, escape, name());
+        return Restrict.notLike(pattern, charWildcard, stringWildcard, escape, this);
     }
 
     default TextRestriction<T> contains(String substring) {
-        return Restrict.contains(substring, name());
+        return Restrict.contains(substring, this);
     }
 
     default TextRestriction<T> notContains(String substring) {
-        return Restrict.notContains(substring, name());
+        return Restrict.notContains(substring, this);
     }
 
     default TextRestriction<T> endsWith(String suffix) {
-        return Restrict.endsWith(suffix, name());
+        return Restrict.endsWith(suffix, this);
     }
 
     default TextRestriction<T> notEndsWith(String suffix) {
-        return Restrict.notEndsWith(suffix, name());
+        return Restrict.notEndsWith(suffix, this);
     }
 
     default TextRestriction<T> startsWith(String prefix) {
-        return Restrict.startsWith(prefix, name());
+        return Restrict.startsWith(prefix, this);
     }
 
     default TextRestriction<T> notStartsWith(String prefix) {
-        return Restrict.notStartsWith(prefix, name());
+        return Restrict.notStartsWith(prefix, this);
+    }
+
+    static <T> TextAttribute<T> of(Class<T> entity, String attribute) {
+        return new TextAttributeRecord<>(attribute);
     }
 
 }

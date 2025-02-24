@@ -17,11 +17,12 @@
  */
 package jakarta.data.metamodel.restrict;
 
+import jakarta.data.metamodel.TextAttribute;
 import jakarta.data.metamodel.constraint.Like;
 
 import java.util.Objects;
 
-record TextRestrictionRecord<T>(String attribute, Like constraint, boolean negated)
+record TextRestrictionRecord<T>(TextAttribute<T> attribute, Like constraint, boolean negated)
         implements TextRestriction<T> {
 
     TextRestrictionRecord {
@@ -29,7 +30,7 @@ record TextRestrictionRecord<T>(String attribute, Like constraint, boolean negat
         Objects.requireNonNull(constraint, "Constraint must not be null");
     }
 
-    public TextRestrictionRecord(String attribute, Like range) {
+    public TextRestrictionRecord(TextAttribute<T> attribute, Like range) {
         this(attribute, range, false);
     }
 
@@ -57,6 +58,6 @@ record TextRestrictionRecord<T>(String attribute, Like constraint, boolean negat
      */
     @Override
     public String toString() {
-        return attribute + ' ' + constraint;
+        return attribute.name() + ' ' + constraint;
     }
 }

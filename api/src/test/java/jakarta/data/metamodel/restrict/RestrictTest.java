@@ -17,6 +17,8 @@
  */
 package jakarta.data.metamodel.restrict;
 
+import jakarta.data.metamodel.BasicAttribute;
+import jakarta.data.metamodel.ComparableAttribute;
 import jakarta.data.metamodel.constraint.Constraint;
 import jakarta.data.metamodel.constraint.Like;
 import org.assertj.core.api.SoftAssertions;
@@ -64,10 +66,11 @@ class RestrictTest {
 
     @Test
     void shouldCreateEqualToRestriction() {
-        BasicRestriction<Employee> restriction = Restrict.equalTo(0, "attributeName");
+        BasicRestriction<Employee> restriction = Restrict.equalTo(0,
+                BasicAttribute.of(Employee.class,"attributeName", Integer.class));
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(restriction.attribute()).isEqualTo("attributeName");
+            soft.assertThat(restriction.attribute().name()).isEqualTo("attributeName");
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.EQUAL);
             soft.assertThat(restriction.constraint()).isInstanceOf(Constraint.class);
             soft.assertThat(restriction.constraint()).isEqualTo(Constraint.equalTo(0));
@@ -76,10 +79,11 @@ class RestrictTest {
 
     @Test
     void shouldCreateNotEqualToRestriction() {
-        BasicRestriction<Employee> restriction = Restrict.notEqualTo(0, "attributeName");
+        BasicRestriction<Employee> restriction = Restrict.notEqualTo(0,
+                BasicAttribute.of(Employee.class,"attributeName", Integer.class));
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(restriction.attribute()).isEqualTo("attributeName");
+            soft.assertThat(restriction.attribute().name()).isEqualTo("attributeName");
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.NOT_EQUAL);
             soft.assertThat(restriction.constraint()).isInstanceOf(Constraint.class);
             soft.assertThat(restriction.constraint()).isEqualTo(Constraint.equalTo(0));
@@ -88,10 +92,10 @@ class RestrictTest {
 
     @Test
     void shouldCreateEqualToStringRestriction() {
-        TextRestriction<Employee> restriction = Restrict.equalTo("value", "attributeName");
+        TextRestriction<Employee> restriction = Restrict.equalTo("value", TextAttribute.of(Employee.class,"attributeName"));
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(restriction.attribute()).isEqualTo("attributeName");
+            soft.assertThat(restriction.attribute().name()).isEqualTo("attributeName");
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.EQUAL);
             soft.assertThat(restriction.constraint()).isInstanceOf(Like.class);
             soft.assertThat(restriction.constraint()).isEqualTo(Like.literal("value"));
@@ -100,10 +104,10 @@ class RestrictTest {
 
     @Test
     void shouldCreateNotEqualToStringRestriction() {
-        TextRestriction<Employee> restriction = Restrict.notEqualTo("value", "attributeName");
+        TextRestriction<Employee> restriction = Restrict.notEqualTo("value", TextAttribute.of(Employee.class,"attributeName"));
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(restriction.attribute()).isEqualTo("attributeName");
+            soft.assertThat(restriction.attribute().name()).isEqualTo("attributeName");
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.NOT_EQUAL);
             soft.assertThat(restriction.constraint()).isInstanceOf(Like.class);
             soft.assertThat(restriction.constraint()).isEqualTo(Like.literal("value"));
@@ -112,8 +116,8 @@ class RestrictTest {
 
     @Test
     void shouldCombineAllRestrictionsWithNegation() {
-        Restriction<Employee> r1 = Restrict.notEqualTo("value1", "attributeName1");
-        Restriction<Employee> r2 = Restrict.greaterThan(100, "attributeName2");
+        Restriction<Employee> r1 = Restrict.notEqualTo("value1", TextAttribute.of(Employee.class,"attributeName1"));
+        Restriction<Employee> r2 = Restrict.greaterThan(100, ComparableAttribute.of(Employee.class,"attributeName1", Integer.class));
 
         Restriction<Employee> combined = Restrict.all(r1, r2);
 
@@ -129,10 +133,10 @@ class RestrictTest {
 
     @Test
     void shouldCreateContainsRestriction() {
-        TextRestriction<Employee> restriction = Restrict.contains("substring", "attributeName");
+        TextRestriction<Employee> restriction = Restrict.contains("substring", TextAttribute.of(Employee.class,"attributeName"));
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(restriction.attribute()).isEqualTo("attributeName");
+            soft.assertThat(restriction.attribute().name()).isEqualTo("attributeName");
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.LIKE);
             soft.assertThat(restriction.constraint().string()).isEqualTo("%substring%");
         });
@@ -140,10 +144,10 @@ class RestrictTest {
 
     @Test
     void shouldCreateNegatedContainsRestriction() {
-        TextRestriction<Employee> restriction = Restrict.notContains("substring", "attributeName");
+        TextRestriction<Employee> restriction = Restrict.notContains("substring", TextAttribute.of(Employee.class,"attributeName"));
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(restriction.attribute()).isEqualTo("attributeName");
+            soft.assertThat(restriction.attribute().name()).isEqualTo("attributeName");
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.NOT_LIKE);
             soft.assertThat(restriction.constraint().string()).isEqualTo("%substring%");
         });
@@ -151,10 +155,10 @@ class RestrictTest {
 
     @Test
     void shouldCreateStartsWithRestriction() {
-        TextRestriction<Employee> restriction = Restrict.startsWith("prefix", "attributeName");
+        TextRestriction<Employee> restriction = Restrict.startsWith("prefix", TextAttribute.of(Employee.class,"attributeName"));
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(restriction.attribute()).isEqualTo("attributeName");
+            soft.assertThat(restriction.attribute().name()).isEqualTo("attributeName");
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.LIKE);
             soft.assertThat(restriction.constraint().string()).isEqualTo("prefix%");
         });
@@ -162,10 +166,10 @@ class RestrictTest {
 
     @Test
     void shouldCreateNegatedStartsWithRestriction() {
-        TextRestriction<Employee> restriction = Restrict.notStartsWith("prefix", "attributeName");
+        TextRestriction<Employee> restriction = Restrict.notStartsWith("prefix", TextAttribute.of(Employee.class,"attributeName"));
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(restriction.attribute()).isEqualTo("attributeName");
+            soft.assertThat(restriction.attribute().name()).isEqualTo("attributeName");
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.NOT_LIKE);
             soft.assertThat(restriction.constraint().string()).isEqualTo("prefix%");
         });
@@ -173,10 +177,10 @@ class RestrictTest {
 
     @Test
     void shouldCreateEndsWithRestriction() {
-        TextRestriction<Employee> restriction = Restrict.endsWith("suffix", "attributeName");
+        TextRestriction<Employee> restriction = Restrict.endsWith("suffix", TextAttribute.of(Employee.class,"attributeName"));
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(restriction.attribute()).isEqualTo("attributeName");
+            soft.assertThat(restriction.attribute().name()).isEqualTo("attributeName");
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.LIKE);
             soft.assertThat(restriction.constraint().string()).isEqualTo("%suffix");
         });
@@ -184,10 +188,10 @@ class RestrictTest {
 
     @Test
     void shouldCreateNegatedEndsWithRestriction() {
-        TextRestriction<Employee> restriction = Restrict.notEndsWith("suffix", "attributeName");
+        TextRestriction<Employee> restriction = Restrict.notEndsWith("suffix", TextAttribute.of(Employee.class,"attributeName"));
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(restriction.attribute()).isEqualTo("attributeName");
+            soft.assertThat(restriction.attribute().name()).isEqualTo("attributeName");
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.NOT_LIKE);
             soft.assertThat(restriction.constraint().string()).isEqualTo("%suffix");
         });
@@ -228,7 +232,7 @@ class RestrictTest {
 
     @Test
     void shouldEscapeToLikePatternCorrectly() {
-        String result = Restrict.endsWith("test_value", "attributeName").constraint().string();
+        String result = Restrict.endsWith("test_value", TextAttribute.of(Employee.class,"attributeName")).constraint().string();
 
         assertThat(result).isEqualTo("%test\\_value");
     }
@@ -240,7 +244,7 @@ class RestrictTest {
 
     @Test
     void shouldThrowExceptionForInvalidWildcard() {
-        assertThatThrownBy(() -> Restrict.like("pattern_value", '_', '_', "attributeName"))
+        assertThatThrownBy(() -> TextAttribute.of(Employee.class,"attributeName").like("pattern_value", '_', '_'))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Cannot use the same character (_) for both wildcards.");
     }

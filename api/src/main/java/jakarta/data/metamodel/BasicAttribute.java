@@ -18,45 +18,50 @@
 package jakarta.data.metamodel;
 
 import jakarta.data.metamodel.constraint.Constraint;
+import jakarta.data.metamodel.impl.BasicAttributeRecord;
+import jakarta.data.metamodel.restrict.BasicRestriction;
 import jakarta.data.metamodel.restrict.Restrict;
-import jakarta.data.metamodel.restrict.Restriction;
 
 import java.util.Set;
 
 public interface BasicAttribute<T,V> extends Attribute<T> {
 
-    default Restriction<T> equalTo(V value) {
-        return Restrict.equalTo(value, name());
+    default BasicRestriction<T> equalTo(V value) {
+        return Restrict.equalTo(value, this);
     }
 
-    default Restriction<T> in(Set<V> values) {
+    default BasicRestriction<T> in(Set<V> values) {
         if (values == null || values.isEmpty())
             throw new IllegalArgumentException("values are required");
 
-        return Restrict.in(values, name());
+        return Restrict.in(values, this);
     }
 
-    default Restriction<T> isNull() {
-        return Restrict.isNull(name());
+    default BasicRestriction<T> isNull() {
+        return Restrict.isNull(this);
     }
 
-    default Restriction<T> notEqualTo(V value) {
-        return Restrict.notEqualTo(value, name());
+    default BasicRestriction<T> notEqualTo(V value) {
+        return Restrict.notEqualTo(value, this);
     }
 
-    default Restriction<T> notIn(Set<V> values) {
+    default BasicRestriction<T> notIn(Set<V> values) {
         if (values == null || values.isEmpty())
             throw new IllegalArgumentException("values are required");
 
-        return Restrict.notIn(values, name());
+        return Restrict.notIn(values, this);
     }
 
-    default Restriction<T> notNull() {
-        return Restrict.notNull(name());
+    default BasicRestriction<T> notNull() {
+        return Restrict.notNull(this);
     }
 
-    default Restriction<T> restrict(Constraint<V> constraint) {
-        return Restrict.restrict(constraint, name());
+    default BasicRestriction<T> restrict(Constraint<V> constraint) {
+        return Restrict.restrict(constraint, this);
+    }
+
+    static <T,V> BasicAttribute<T,V> of(Class<T> entity, String attribute, Class<V> type) {
+        return new BasicAttributeRecord<>(attribute);
     }
 
 }

@@ -18,6 +18,8 @@
 package jakarta.data.metamodel.restrict;
 
 
+import jakarta.data.metamodel.ComparableAttribute;
+import jakarta.data.metamodel.TextAttribute;
 import jakarta.data.metamodel.constraint.Constraint;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
@@ -34,8 +36,8 @@ class CompositeRestrictionRecordTest {
 
     @Test
     void shouldCreateCompositeRestrictionWithDefaultNegation() {
-        Restriction<String> restriction1 = new BasicRestrictionRecord<>("title", Constraint.equalTo("Java Guide"));
-        Restriction<String> restriction2 = new BasicRestrictionRecord<>("author", Constraint.equalTo("John Doe"));
+        Restriction<String> restriction1 = new BasicRestrictionRecord<>(TextAttribute.of(String.class,"title"), Constraint.equalTo("Java Guide"));
+        Restriction<String> restriction2 = new BasicRestrictionRecord<>(TextAttribute.of(String.class,"author"), Constraint.equalTo("John Doe"));
 
         CompositeRestrictionRecord<String> composite = new CompositeRestrictionRecord<>(
                 CompositeRestriction.Type.ALL,
@@ -51,8 +53,8 @@ class CompositeRestrictionRecordTest {
 
     @Test
     void shouldCreateCompositeRestrictionWithExplicitNegation() {
-        Restriction<String> restriction1 = new BasicRestrictionRecord<>("title", Constraint.equalTo("Java Guide"));
-        Restriction<String> restriction2 = new BasicRestrictionRecord<>("author", Constraint.equalTo("John Doe"));
+        Restriction<String> restriction1 = new BasicRestrictionRecord<>(TextAttribute.of(String.class,"title"), Constraint.equalTo("Java Guide"));
+        Restriction<String> restriction2 = new BasicRestrictionRecord<>(TextAttribute.of(String.class,"author"), Constraint.equalTo("John Doe"));
 
         CompositeRestrictionRecord<String> composite = new CompositeRestrictionRecord<>(
                 CompositeRestriction.Type.ANY,
@@ -76,8 +78,10 @@ class CompositeRestrictionRecordTest {
 
     @Test
     void shouldNegateCompositeRestriction() {
-        Restriction<Person> ageLessThan50 = Restrict.lessThan(50, "age");
-        Restriction<Person> nameStartsWithDuke = Restrict.startsWith("Duke ", "name");
+        Restriction<Person> ageLessThan50 = Restrict.lessThan(50,
+                ComparableAttribute.of(Person.class,"age", Integer.class));
+        Restriction<Person> nameStartsWithDuke = Restrict.startsWith("Duke ",
+                TextAttribute.of(Person.class,"name"));
         CompositeRestriction<Person> all =
                 (CompositeRestriction<Person>) Restrict.all(ageLessThan50, nameStartsWithDuke);
         CompositeRestriction<Person> allNegated = all.negate();
@@ -95,8 +99,10 @@ class CompositeRestrictionRecordTest {
 
     @Test
     void shouldNegateNegatedCompositeRestriction() {
-        Restriction<Person> ageBetween20and30 = Restrict.between(20, 30, "age");
-        Restriction<Person> nameContainsDuke = Restrict.contains("Duke", "name");
+        Restriction<Person> ageBetween20and30 = Restrict.between(20, 30,
+                ComparableAttribute.of(Person.class,"age", Integer.class));
+        Restriction<Person> nameContainsDuke = Restrict.contains("Duke",
+                TextAttribute.of(Person.class,"name"));
         CompositeRestriction<Person> any =
                 (CompositeRestriction<Person>) Restrict.any(ageBetween20and30, nameContainsDuke);
         CompositeRestriction<Person> anyNegated = any.negate();
@@ -115,12 +121,12 @@ class CompositeRestrictionRecordTest {
     @Test
     void shouldOutputToString() {
         Restriction<Person> namedJackKarta = Restrict
-                .all(Restrict.equalTo("Jack", "firstName"),
-                     Restrict.equalTo("Karta", "lastName"));
+                .all(TextAttribute.of(Person.class, "firstName").equalTo("Jack"),
+                        TextAttribute.of(Person.class, "lastName").equalTo("Karta"));
 
         Restriction<Person> minorOrMissingName = Restrict
-                .any(Restrict.lessThan(18, "age"),
-                     Restrict.equalTo("null", "name"));
+                .any(ComparableAttribute.of(Person.class, "age", Integer.class).lessThan(18),
+                     TextAttribute.of(Person.class, "name").equalTo("null"));
         Restriction<Person> notMinorOrMissingName = minorOrMissingName.negate();
 
         SoftAssertions.assertSoftly(soft -> {
@@ -135,8 +141,8 @@ class CompositeRestrictionRecordTest {
 
     @Test
     void shouldPreserveRestrictionsOrder() {
-        Restriction<String> restriction1 = new BasicRestrictionRecord<>("title", Constraint.equalTo("Java Guide"));
-        Restriction<String> restriction2 = new BasicRestrictionRecord<>("author", Constraint.equalTo("John Doe"));
+        Restriction<String> restriction1 = new BasicRestrictionRecord<>(TextAttribute.of(String.class,"title"), Constraint.equalTo("Java Guide"));
+        Restriction<String> restriction2 = new BasicRestrictionRecord<>(TextAttribute.of(String.class,"author"), Constraint.equalTo("John Doe"));
 
         CompositeRestrictionRecord<String> composite = new CompositeRestrictionRecord<>(
                 CompositeRestriction.Type.ALL,
@@ -152,8 +158,8 @@ class CompositeRestrictionRecordTest {
     @Test
     void shouldSupportNegationUsingDefaultConstructor() {
         // Given multiple restrictions
-        Restriction<String> restriction1 = new BasicRestrictionRecord<>("title", Constraint.equalTo("Java Guide"));
-        Restriction<String> restriction2 = new BasicRestrictionRecord<>("author", Constraint.equalTo("John Doe"));
+        Restriction<String> restriction1 = new BasicRestrictionRecord<>(TextAttribute.of(String.class,"title"), Constraint.equalTo("Java Guide"));
+        Restriction<String> restriction2 = new BasicRestrictionRecord<>(TextAttribute.of(String.class,"author"), Constraint.equalTo("John Doe"));
 
         // When creating a composite restriction and manually setting negation
         CompositeRestrictionRecord<String> composite = new CompositeRestrictionRecord<>(

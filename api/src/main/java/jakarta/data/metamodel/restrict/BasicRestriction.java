@@ -17,10 +17,11 @@
  */
 package jakarta.data.metamodel.restrict;
 
+import jakarta.data.metamodel.BasicAttribute;
 import jakarta.data.metamodel.constraint.Constraint;
 
 public interface BasicRestriction<T> extends Restriction<T> {
-    String attribute();
+    BasicAttribute<T,?> attribute();
 
     Operator comparison();
 
