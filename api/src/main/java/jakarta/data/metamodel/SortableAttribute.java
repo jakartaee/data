@@ -57,8 +57,7 @@ public interface SortableAttribute<T> extends Attribute<T> {
      * @return instance of {@code SortableAttribute}.
      */
     static <T> SortableAttribute<T> of(String name) {
-        if (name == null)
-            throw new IllegalArgumentException("entity attribute name is required");
+        Objects.requireNonNull(name, "entity attribute name is required");
 
         return new SortableAttributeRecord<>(name);
     }
