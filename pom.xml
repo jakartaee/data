@@ -111,7 +111,7 @@
                 <groupId>org.junit</groupId>
                 <artifactId>junit-bom</artifactId>
                 <version>${junit.version}</version>
-                <type>pom</type>
+                <type>bom</type>
                 <scope>import</scope>
             </dependency>
             <dependency>
