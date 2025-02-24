@@ -47,8 +47,38 @@ public interface TextAttribute<T> extends ComparableAttribute<T,String> {
     Sort<T> descIgnoreCase();
 
     @Override
+    default TextRestriction<T> between(String min, String max) {
+        return Restrict.between(min, max, name());
+    }
+
+    @Override
     default TextRestriction<T> equalTo(String value) {
         return Restrict.equalTo(value, name());
+    }
+
+    @Override
+    default TextRestriction<T> greaterThan(String value) {
+        return Restrict.greaterThan(value, name());
+    }
+
+    @Override
+    default TextRestriction<T> greaterThanEqual(String value) {
+        return Restrict.greaterThanEqual(value, name());
+    }
+
+    @Override
+    default TextRestriction<T> lessThan(String value) {
+        return Restrict.lessThan(value, name());
+    }
+
+    @Override
+    default TextRestriction<T> lessThanEqual(String value) {
+        return Restrict.lessThanEqual(value, name());
+    }
+
+    @Override
+    default TextRestriction<T> notBetween(String min, String max) {
+        return Restrict.notBetween(min, max, name());
     }
 
     @Override

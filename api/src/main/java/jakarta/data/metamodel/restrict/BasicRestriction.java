@@ -22,8 +22,6 @@ import jakarta.data.metamodel.constraint.Constraint;
 public interface BasicRestriction<T> extends Restriction<T> {
     String attribute();
 
-    Operator comparison();
-
     @Override
     BasicRestriction<T> negate();
 

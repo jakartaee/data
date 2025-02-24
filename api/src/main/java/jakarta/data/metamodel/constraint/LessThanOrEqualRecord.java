@@ -17,8 +17,6 @@
  */
 package jakarta.data.metamodel.constraint;
 
-import jakarta.data.metamodel.restrict.Operator;
-
 import java.util.Objects;
 
 record LessThanOrEqualRecord<T extends Comparable<T>>(T bound)
@@ -28,8 +26,8 @@ record LessThanOrEqualRecord<T extends Comparable<T>>(T bound)
     }
 
     @Override
-    public Operator operator() {
-        return Operator.LESS_THAN_EQUAL;
+    public GreaterThan<T> negate() {
+        return GreaterThan.bound(bound);
     }
 
     @Override

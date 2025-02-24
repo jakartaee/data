@@ -18,37 +18,30 @@
 package jakarta.data.metamodel.constraint;
 
 public interface Like extends Constraint<String> {
-    String string();
-    boolean caseSensitive();
-    boolean pattern();
+    String pattern();
     Character escape();
-    Like ignoreCase();
-
-    static Like literal(String literal) {
-        return new LikeLiteralRecord(literal);
-    }
 
     static Like pattern(String pattern) {
-        return new LikePatternRecord(pattern);
+        return new LikeRecord(pattern);
     }
 
     static Like pattern(String pattern, char charWildcard, char stringWildcard) {
-        return new LikePatternRecord(pattern, charWildcard, stringWildcard);
+        return new LikeRecord(pattern, charWildcard, stringWildcard);
     }
 
     static Like pattern(String pattern, char charWildcard, char stringWildcard, char escape) {
-        return new LikePatternRecord(pattern, charWildcard, stringWildcard, escape);
+        return new LikeRecord(pattern, charWildcard, stringWildcard, escape);
     }
 
     static Like substring(String substring) {
-        return LikePatternRecord.substring(substring);
+        return LikeRecord.substring(substring);
     }
 
     static Like prefix(String prefix) {
-        return LikePatternRecord.prefix(prefix);
+        return LikeRecord.prefix(prefix);
     }
 
     static Like suffix(String suffix) {
-        return LikePatternRecord.suffix(suffix);
+        return LikeRecord.suffix(suffix);
     }
 }

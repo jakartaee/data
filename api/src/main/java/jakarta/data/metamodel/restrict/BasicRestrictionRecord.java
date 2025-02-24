@@ -25,7 +25,7 @@ import jakarta.data.metamodel.constraint.Constraint;
 
 import java.util.Objects;
 
-record BasicRestrictionRecord<T>(String attribute, Constraint<?> constraint, boolean negated)
+record BasicRestrictionRecord<T>(String attribute, Constraint<?> constraint)
         implements BasicRestriction<T> {
 
     BasicRestrictionRecord {
@@ -33,18 +33,9 @@ record BasicRestrictionRecord<T>(String attribute, Constraint<?> constraint, boo
         Objects.requireNonNull(constraint, "Constraint must not be null");
     }
 
-    public BasicRestrictionRecord(String attribute, Constraint<?> constraint) {
-        this(attribute, constraint, false);
-    }
-
-    @Override
-    public Operator comparison() {
-        return negated ? constraint.operator().negate() : constraint.operator();
-    }
-
     @Override
     public BasicRestriction<T> negate() {
-        return new BasicRestrictionRecord<>(attribute, constraint, !negated);
+        return new BasicRestrictionRecord<>(attribute, constraint.negate());
     }
 
     /**
@@ -56,12 +47,6 @@ record BasicRestrictionRecord<T>(String attribute, Constraint<?> constraint, boo
      */
     @Override
     public String toString() {
-        final Operator comparison = comparison();
-        final String op = comparison.asQueryLanguage();
-        return switch (comparison.arity()) {
-            case 1 -> attribute + ' ' + op;
-            case 2,3 -> attribute + ' ' + constraint;
-            default -> throw new UnsupportedOperationException("Unexpected arity");
-        };
+        return attribute + ' ' + constraint;
     }
 }

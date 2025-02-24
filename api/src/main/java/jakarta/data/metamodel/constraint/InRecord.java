@@ -17,8 +17,6 @@
  */
 package jakarta.data.metamodel.constraint;
 
-import jakarta.data.metamodel.restrict.Operator;
-
 import java.util.Objects;
 import java.util.Set;
 
@@ -26,11 +24,9 @@ record InRecord<T>(Set<T> values) implements In<T> {
 
     public InRecord {
         Objects.requireNonNull(values, "Enumerated values cannot be null");
-    }
-
-    @Override
-    public Operator operator() {
-        return Operator.IN;
+        for (T value : values) {
+            Objects.requireNonNull(value, "value must not be null");
+        }
     }
 
     @Override
@@ -42,6 +38,11 @@ record InRecord<T>(Set<T> values) implements In<T> {
     @Override
     public int hashCode() {
         return values.hashCode();
+    }
+
+    @Override
+    public NotIn<T> negate() {
+        return NotIn.values(values);
     }
 
     @Override

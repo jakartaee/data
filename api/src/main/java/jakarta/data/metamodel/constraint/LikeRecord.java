@@ -17,72 +17,55 @@
  */
 package jakarta.data.metamodel.constraint;
 
-import jakarta.data.metamodel.restrict.Operator;
-
 import java.util.Objects;
 
-record LikePatternRecord(String string, boolean caseSensitive, Character escape)
+record LikeRecord(String pattern, Character escape)
         implements Like {
 
     public static final char CHAR_WILDCARD = '_';
     public static final char STRING_WILDCARD = '%';
     public static final char ESCAPE = '\\';
 
-    public LikePatternRecord {
-        Objects.requireNonNull(string, "Pattern must not be null");
+    public LikeRecord {
+        Objects.requireNonNull(pattern, "Pattern must not be null");
     }
 
-    public LikePatternRecord(String pattern) {
-        this(pattern, true, null);
+    public LikeRecord(String pattern) {
+        this(pattern, null);
     }
 
-    public LikePatternRecord(String pattern, Character escape) {
-        this(pattern, true, escape);
-    }
-
-    public LikePatternRecord(String pattern, char charWildcard, char stringWildcard) {
+    public LikeRecord(String pattern, char charWildcard, char stringWildcard) {
         this(pattern, charWildcard, stringWildcard, ESCAPE);
     }
 
-    public LikePatternRecord(String pattern, char charWildcard, char stringWildcard, char escape) {
+    public LikeRecord(String pattern, char charWildcard, char stringWildcard, char escape) {
         this(translate(pattern, charWildcard, stringWildcard, escape), escape);
     }
 
     @Override
-    public LikePatternRecord ignoreCase() {
-        return new LikePatternRecord(string, false, escape);
-    }
-
-    @Override
-    public boolean pattern() {
-        return true;
-    }
-
-    @Override
-    public Operator operator() {
-        return Operator.LIKE;
+    public NotLike negate() {
+        return new NotLikeRecord(pattern, escape);
     }
 
     @Override
     public String toString() {
-        return "LIKE '" + string + "'"
-                + (caseSensitive ? "" : " IGNORE CASE")
+        return "LIKE '" + pattern + "'"
                 + (escape == null ? "" : " ESCAPE '\\'");
     }
 
-    public static LikePatternRecord prefix(String prefix) {
-        return new LikePatternRecord(escape(prefix) + STRING_WILDCARD, ESCAPE);
+    public static LikeRecord prefix(String prefix) {
+        return new LikeRecord(escape(prefix) + STRING_WILDCARD, ESCAPE);
     }
 
-    public static LikePatternRecord suffix(String suffix) {
-        return new LikePatternRecord(STRING_WILDCARD + escape(suffix), ESCAPE);
+    public static LikeRecord suffix(String suffix) {
+        return new LikeRecord(STRING_WILDCARD + escape(suffix), ESCAPE);
     }
 
-    public static LikePatternRecord substring(String substring) {
-        return new LikePatternRecord(STRING_WILDCARD + escape(substring) + STRING_WILDCARD, ESCAPE);
+    public static LikeRecord substring(String substring) {
+        return new LikeRecord(STRING_WILDCARD + escape(substring) + STRING_WILDCARD, ESCAPE);
     }
 
-    private static String escape(String literal) {
+    static String escape(String literal) {
         final var result = new StringBuilder();
         for (int i = 0; i<literal.length(); i++) {
             final char ch = literal.charAt(i);
@@ -94,7 +77,7 @@ record LikePatternRecord(String string, boolean caseSensitive, Character escape)
         return result.toString();
     }
 
-    private static String translate(String pattern, char charWildcard, char stringWildcard, char escape) {
+    static String translate(String pattern, char charWildcard, char stringWildcard, char escape) {
         if ( charWildcard == stringWildcard ) {
             throw new IllegalArgumentException("Cannot use the same character (" + charWildcard + ") for both wildcards.");
         }
@@ -120,14 +103,13 @@ record LikePatternRecord(String string, boolean caseSensitive, Character escape)
 
     @Override
     public boolean equals(Object obj) {
-        return obj instanceof LikePatternRecord that
-            && string.equals(that.string)
-            && caseSensitive == that.caseSensitive
+        return obj instanceof LikeRecord that
+            && pattern.equals(that.pattern)
             && Objects.equals(escape, that.escape);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(string, caseSensitive, escape);
+        return Objects.hash(pattern, escape);
     }
 }

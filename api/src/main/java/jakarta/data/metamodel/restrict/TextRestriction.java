@@ -17,12 +17,14 @@
  */
 package jakarta.data.metamodel.restrict;
 
-import jakarta.data.metamodel.constraint.Like;
+import jakarta.data.metamodel.constraint.Constraint;
 
 public interface TextRestriction<T> extends BasicRestriction<T> {
     TextRestriction<T> ignoreCase();
     @Override
     TextRestriction<T> negate();
     @Override
-    Like constraint();
+    Constraint<String> constraint();
+
+    boolean isCaseSensitive();
 }
