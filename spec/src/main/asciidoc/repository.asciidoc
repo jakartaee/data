@@ -818,3 +818,42 @@ The following order, with the lower number having higher precedence, is used whe
 
 A repository method that does not fit any of the above patterns and is not handled as a vendor-specific extension to the specification must either result in an error at build time or raise `UnsupportedOperationException` at runtime.
 
+=== Asynchronous repositories
+
+An _asynchronous repository method_ is a repository method which returns an object representing a value which will be eventually obtained from the database, but which might not yet be available.
+An asynchronous repository method is permitted to return such an object immediately, and access the database asynchronously.
+
+An asynchronous repository method has a signature of form:
+
+[source,java]
+F<R> m(P1 p1, P2 p2, ...)
+
+where:
+
+- `R m(P1 p1, P2 p2, ...)` is a legal repository method signature according to the previous sections of this chapter, or, in the special case that `R` is the type `Void`, `void m(P1 p1, P2 p2, ...)` is a legal repository method signature according to the previous sections of this chapter, and
+- `F<T>` is a parameterized type representing a value which might not yet have been computed and which is supported by the Jakarta Data provider.
+
+NOTE: Every Jakarta Data is encouraged, but not required, to support asynchronous repository methods returning `java.util.CompletionStage`.
+
+For example, the following is an asynchronous parameter-based query method:
+
+[source,java]
+----
+@Find
+CompletionStage<Book> bookByIsbn(String isbn);
+----
+
+This method is an asynchronous lifecycle method:
+
+[source,java]
+----
+@Insert
+CompletionStage<Void> insertBook(Book book);
+----
+
+
+An _asynchronous repository_ is a repository which declares asynchronous repository methods.
+A Jakarta Data provider is not required to support mixing synchronous and asynchronous repository methods within the same repository interface.
+
+NOTE: An asynchronous repository might be backed by a thread pool, or it might be implemented using reactive streams.
+Such implementation details are concerns of the Jakarta Data provider, and are beyond the scope of this specification.
