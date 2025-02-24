@@ -17,6 +17,8 @@
  */
 package jakarta.data.metamodel;
 
+import java.util.Objects;
+
 import jakarta.data.Sort;
 import jakarta.data.metamodel.restrict.Restrict;
 import jakarta.data.metamodel.restrict.Restriction;

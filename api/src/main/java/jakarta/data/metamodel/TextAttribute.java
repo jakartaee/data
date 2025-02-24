@@ -17,6 +17,8 @@
  */
 package jakarta.data.metamodel;
 
+import java.util.Objects;
+
 import jakarta.data.Sort;
 import jakarta.data.metamodel.constraint.Like;
 import jakarta.data.metamodel.impl.TextAttributeRecord;
