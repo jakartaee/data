@@ -72,8 +72,7 @@ public interface BasicAttribute<T,V> extends Attribute<T> {
      * @return instance of {@code BasicAttribute}.
      */
     static <T,V> BasicAttribute<T,V> of(String name) {
-        if (name == null)
-            throw new IllegalArgumentException("entity attribute name is required");
+        Objects.requireNonNull(name, "entity attribute name is required");
 
         return new BasicAttributeRecord<>(name);
     }
