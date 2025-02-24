@@ -57,6 +57,16 @@ public class _AsciiCharacter {
         private TextAttr(String name) {
             this(name, Sort.asc(name), Sort.ascIgnoreCase(name), Sort.desc(name), Sort.descIgnoreCase(name));
         }
+
+        @Override
+        public boolean caseSensitive() {
+            return true;
+        }
+
+        @Override
+        public TextAttribute<AsciiCharacter> ignoreCase() {
+            throw new UnsupportedOperationException();
+        }
     };
 
     // Avoids the checkstyle error,

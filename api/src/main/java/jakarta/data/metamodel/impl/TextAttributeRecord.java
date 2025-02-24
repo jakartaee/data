@@ -26,8 +26,18 @@ import jakarta.data.metamodel.TextAttribute;
  *
  * @param name the name of the attribute
  */
-public record TextAttributeRecord<T>(String name)
+public record TextAttributeRecord<T>(String name, boolean caseSensitive)
         implements TextAttribute<T> {
+
+    public TextAttributeRecord(String name) {
+        this(name, true);
+    }
+
+    @Override
+    public TextAttribute<T> ignoreCase() {
+        return new TextAttributeRecord<>(name, false);
+    }
+
     @Override
     public Sort<T> asc() {
         return Sort.asc(name);

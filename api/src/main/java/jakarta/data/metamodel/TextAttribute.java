@@ -29,6 +29,10 @@ import jakarta.data.metamodel.restrict.TextRestriction;
  */
 public interface TextAttribute<T> extends ComparableAttribute<T,String> {
 
+    TextAttribute<T> ignoreCase();
+
+    boolean caseSensitive();
+
     /**
      * Obtain a request for an ascending, case-insensitive {@link Sort} based on the entity attribute.
      *
