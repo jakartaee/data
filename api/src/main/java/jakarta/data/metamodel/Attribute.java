@@ -28,8 +28,8 @@ package jakarta.data.metamodel;
  *     sortable and comparable values, such as {@code int}, {@link Long},
  *     {@code boolean}, {@link java.time.LocalDateTime}, and enumerations.</li>
  * <li>{@link SortableAttribute} for entity types that are sortable, but not
- *     comparable. Generally this subtype is unused, but in some databases
- *     might apply to {@code byte[]} attributes. </li>
+ *     comparable. Generally this subtype is unused but is applicable for
+ *     databases that allow sorting on {@code byte[]} attributes. </li>
  * <li>{@link BasicAttribute} for other types of entity attributes, such as
  *     collections, embeddables, and other relation attributes.</li>
  * </ul>
