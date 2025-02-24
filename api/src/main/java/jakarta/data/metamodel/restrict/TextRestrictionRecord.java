@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024,2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2025 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,76 +17,46 @@
  */
 package jakarta.data.metamodel.restrict;
 
-// Internal implementation class.
-// The proper way for users to obtain instances is via
-// the static metamodel or Restrict.* methods 
+import jakarta.data.metamodel.constraint.Like;
 
 import java.util.Objects;
 
-record TextRestrictionRecord<T>(
-        String attribute,
-        Operator comparison,
-        boolean isCaseSensitive,
-        boolean isEscaped,
-        String value) implements TextRestriction<T> {
+record TextRestrictionRecord<T>(String attribute, Like constraint, boolean negated)
+        implements TextRestriction<T> {
 
     TextRestrictionRecord {
         Objects.requireNonNull(attribute, "Attribute must not be null");
+        Objects.requireNonNull(constraint, "Constraint must not be null");
     }
 
-    TextRestrictionRecord(String attributeName, Operator comparison, boolean escaped, String value) {
-        this(attributeName, comparison, true, escaped, value);
-    }
-
-    TextRestrictionRecord(String attributeName, Operator comparison, String value) {
-        this(attributeName, comparison, true, false, value);
+    public TextRestrictionRecord(String attribute, Like range) {
+        this(attribute, range, false);
     }
 
     @Override
-    public TextRestriction<T> ignoreCase() {
-        return new TextRestrictionRecord<>(attribute, comparison, false, isEscaped, value);
+    public Operator comparison() {
+        return negated ? constraint.operator().negate() : constraint.operator();
     }
 
     @Override
-    public TextRestriction<T> negate() {
+    public TextRestrictionRecord<T> negate() {
+        return new TextRestrictionRecord<>(attribute, constraint, !negated);
+    }
 
-        return new TextRestrictionRecord<>(
-                attribute,
-                comparison.negate(),
-                isCaseSensitive,
-                isEscaped,
-                value);
+    @Override
+    public TextRestrictionRecord<T> ignoreCase() {
+        return new TextRestrictionRecord<>(attribute, constraint.ignoreCase(), negated);
     }
 
     /**
-     * Textual representation of a text restriction.
+     * Textual representation of a basic restriction.
      * For example,
-     * <pre>name LIKE "Jakarta EE %" IGNORE_CASE</pre>
+     * <pre>price < 50.0</pre>
      *
-     * @return textual representation of a text restriction.
+     * @return textual representation of a basic restriction.
      */
     @Override
     public String toString() {
-        String comparisonString = comparison.asQueryLanguage();
-        String valueString = value == null ? "null" : value;
-        StringBuilder builder = new StringBuilder(
-                attribute.length() +
-                comparisonString.length() +
-                valueString.length() +
-                24); // number of additional characters that might be appended
-        builder.append(attribute).append(' ')
-               .append(comparisonString).append(' ');
-        if (value == null) {
-            builder.append(valueString);
-        } else {
-            builder.append('"').append(valueString).append('"');
-        }
-        if (isEscaped) {
-            builder.append(" ESCAPED");
-        }
-        if (!isCaseSensitive) {
-            builder.append(" IGNORE_CASE");
-        }
-        return builder.toString();
+        return attribute + ' ' + constraint;
     }
 }

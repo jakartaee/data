@@ -15,13 +15,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.metamodel.restrict;
+package jakarta.data.metamodel.constraint;
 
-public interface UnaryRestriction<T> extends Restriction<T> {
-    String attribute();
-
-    UnaryOperator operator();
-
-    @Override
-    UnaryRestriction<T> negate();
+public interface EqualTo<T> extends Constraint<T> {
+    T value();
 }

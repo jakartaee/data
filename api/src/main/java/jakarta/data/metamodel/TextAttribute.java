@@ -18,6 +18,7 @@
 package jakarta.data.metamodel;
 
 import jakarta.data.Sort;
+import jakarta.data.metamodel.constraint.Like;
 import jakarta.data.metamodel.restrict.Restrict;
 import jakarta.data.metamodel.restrict.TextRestriction;
 
@@ -35,10 +36,6 @@ public interface TextAttribute<T> extends ComparableAttribute<T,String> {
      */
     Sort<T> ascIgnoreCase();
 
-    default TextRestriction<T> contains(String substring) {
-        return Restrict.contains(substring, name());
-    }
-
     /**
      * Obtain a request for a descending, case insensitive {@link Sort} based on the entity attribute.
      *
@@ -46,56 +43,9 @@ public interface TextAttribute<T> extends ComparableAttribute<T,String> {
      */
     Sort<T> descIgnoreCase();
 
-    default TextRestriction<T> endsWith(String suffix) {
-        return Restrict.endsWith(suffix, name());
-    }
-
     @Override
     default TextRestriction<T> equalTo(String value) {
         return Restrict.equalTo(value, name());
-    }
-
-    @Override
-    default TextRestriction<T> greaterThan(String value) {
-        return Restrict.greaterThan(value, name());
-    }
-
-    @Override
-    default TextRestriction<T> greaterThanEqual(String value) {
-        return Restrict.greaterThanEqual(value, name());
-    }
-
-    @Override
-    default TextRestriction<T> lessThan(String value) {
-        return Restrict.lessThan(value, name());
-    }
-
-    @Override
-    default TextRestriction<T> lessThanEqual(String value) {
-        return Restrict.lessThanEqual(value, name());
-    }
-
-    // TODO once we have Pattern:
-    //default TextRestriction<T> like(Pattern pattern) {
-    //    return Restrict.like(pattern, name());
-    //}
-
-    default TextRestriction<T> like(String pattern) {
-        return Restrict.like(pattern, name());
-    }
-
-    default TextRestriction<T> like(String pattern,
-                                    char charWildcard,
-                                    char stringWildcard) {
-        return Restrict.like(pattern, charWildcard, stringWildcard, name());
-    }
-
-    default TextRestriction<T> notContains(String substring) {
-        return Restrict.notContains(substring, name());
-    }
-
-    default TextRestriction<T> notEndsWith(String suffix) {
-        return Restrict.notEndsWith(suffix, name());
     }
 
     @Override
@@ -103,22 +53,56 @@ public interface TextAttribute<T> extends ComparableAttribute<T,String> {
         return Restrict.notEqualTo(value, name());
     }
 
+    default TextRestriction<T> like(Like pattern) {
+        return Restrict.like(pattern, name());
+    }
+
+    default TextRestriction<T> like(String pattern) {
+        return Restrict.like(pattern, name());
+    }
+
+    default TextRestriction<T> like(String pattern, char charWildcard, char stringWildcard) {
+        return Restrict.like(pattern, charWildcard, stringWildcard, name());
+    }
+
+    default TextRestriction<T> like(String pattern, char charWildcard, char stringWildcard, char escape) {
+        return Restrict.like(pattern, charWildcard, stringWildcard, escape, name());
+    }
+
     default TextRestriction<T> notLike(String pattern) {
         return Restrict.notLike(pattern, name());
     }
 
-    default TextRestriction<T> notLike(String pattern,
-                                       char charWildcard,
-                                       char stringWildcard) {
+    default TextRestriction<T> notLike(String pattern, char charWildcard, char stringWildcard) {
         return Restrict.notLike(pattern, charWildcard, stringWildcard, name());
     }
 
-    default TextRestriction<T> notStartsWith(String prefix) {
-        return Restrict.notStartsWith(prefix, name());
+    default TextRestriction<T> notLike(String pattern, char charWildcard, char stringWildcard, char escape) {
+        return Restrict.notLike(pattern, charWildcard, stringWildcard, escape, name());
+    }
+
+    default TextRestriction<T> contains(String substring) {
+        return Restrict.contains(substring, name());
+    }
+
+    default TextRestriction<T> notContains(String substring) {
+        return Restrict.notContains(substring, name());
+    }
+
+    default TextRestriction<T> endsWith(String suffix) {
+        return Restrict.endsWith(suffix, name());
+    }
+
+    default TextRestriction<T> notEndsWith(String suffix) {
+        return Restrict.notEndsWith(suffix, name());
     }
 
     default TextRestriction<T> startsWith(String prefix) {
         return Restrict.startsWith(prefix, name());
+    }
+
+    default TextRestriction<T> notStartsWith(String prefix) {
+        return Restrict.notStartsWith(prefix, name());
     }
 
 }

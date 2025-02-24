@@ -20,7 +20,6 @@ package jakarta.data.metamodel;
 import jakarta.data.Sort;
 import jakarta.data.metamodel.restrict.Operator;
 import jakarta.data.metamodel.restrict.TextRestriction;
-
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
 
@@ -60,7 +59,7 @@ class TextAttributeTest {
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.attribute()).isEqualTo("testAttribute");
-            soft.assertThat(restriction.value()).isEqualTo("%testValue%");
+            soft.assertThat(restriction.constraint().string()).isEqualTo("%testValue%");
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.LIKE);
         });
     }
@@ -71,7 +70,7 @@ class TextAttributeTest {
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.attribute()).isEqualTo("testAttribute");
-            soft.assertThat(restriction.value()).isEqualTo("testValue%");
+            soft.assertThat(restriction.constraint().string()).isEqualTo("testValue%");
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.LIKE);
         });
     }
@@ -82,7 +81,7 @@ class TextAttributeTest {
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.attribute()).isEqualTo("testAttribute");
-            soft.assertThat(restriction.value()).isEqualTo("%testValue");
+            soft.assertThat(restriction.constraint().string()).isEqualTo("%testValue");
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.LIKE);
         });
     }
@@ -93,7 +92,7 @@ class TextAttributeTest {
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.attribute()).isEqualTo("testAttribute");
-            soft.assertThat(restriction.value()).isEqualTo("%test%");
+            soft.assertThat(restriction.constraint().string()).isEqualTo("%test%");
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.LIKE);
         });
     }
@@ -104,7 +103,7 @@ class TextAttributeTest {
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.attribute()).isEqualTo("testAttribute");
-            soft.assertThat(restriction.value()).isEqualTo("%testValue%");
+            soft.assertThat(restriction.constraint().string()).isEqualTo("%testValue%");
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.NOT_LIKE);
         });
     }
@@ -115,7 +114,7 @@ class TextAttributeTest {
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.attribute()).isEqualTo("testAttribute");
-            soft.assertThat(restriction.value()).isEqualTo("%test%");
+            soft.assertThat(restriction.constraint().string()).isEqualTo("%test%");
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.NOT_LIKE);
         });
     }
@@ -126,7 +125,7 @@ class TextAttributeTest {
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.attribute()).isEqualTo("testAttribute");
-            soft.assertThat(restriction.value()).isEqualTo("testValue%");
+            soft.assertThat(restriction.constraint().string()).isEqualTo("testValue%");
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.NOT_LIKE);
         });
     }
@@ -137,7 +136,7 @@ class TextAttributeTest {
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.attribute()).isEqualTo("testAttribute");
-            soft.assertThat(restriction.value()).isEqualTo("%testValue");
+            soft.assertThat(restriction.constraint().string()).isEqualTo("%testValue");
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.NOT_LIKE);
         });
     }

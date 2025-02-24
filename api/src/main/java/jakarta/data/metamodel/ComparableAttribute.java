@@ -27,6 +27,10 @@ public interface ComparableAttribute<T,V extends Comparable<V>>
         return Restrict.between(min, max, name());
     }
 
+    default Restriction<T> notBetween(V min, V max) {
+        return Restrict.notBetween(min, max, name());
+    }
+
     default Restriction<T> greaterThan(V value) {
         return Restrict.greaterThan(value, name());
     }

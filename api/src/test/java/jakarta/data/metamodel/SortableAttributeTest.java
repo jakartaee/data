@@ -18,8 +18,8 @@
 package jakarta.data.metamodel;
 
 import jakarta.data.Sort;
+import jakarta.data.metamodel.constraint.Constraint;
 import jakarta.data.metamodel.restrict.BasicRestriction;
-import jakarta.data.metamodel.restrict.CompositeRestriction;
 import jakarta.data.metamodel.restrict.Operator;
 import jakarta.data.metamodel.restrict.Restriction;
 
@@ -55,7 +55,7 @@ class SortableAttributeTest {
             soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
             BasicRestriction<String> basic = (BasicRestriction<String>) restriction;
             soft.assertThat(basic.attribute()).isEqualTo("testAttribute");
-            soft.assertThat(basic.value()).isEqualTo(10);
+            soft.assertThat(basic.constraint()).isEqualTo(Constraint.greaterThan(10));
             soft.assertThat(basic.comparison()).isEqualTo(Operator.GREATER_THAN);
         });
     }
@@ -68,7 +68,7 @@ class SortableAttributeTest {
             soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
             BasicRestriction<String> basic = (BasicRestriction<String>) restriction;
             soft.assertThat(basic.attribute()).isEqualTo("testAttribute");
-            soft.assertThat(basic.value()).isEqualTo(10);
+            soft.assertThat(basic.constraint()).isEqualTo(Constraint.greaterThanOrEqual(10));
             soft.assertThat(basic.comparison()).isEqualTo(Operator.GREATER_THAN_EQUAL);
         });
     }
@@ -81,7 +81,7 @@ class SortableAttributeTest {
             soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
             BasicRestriction<String> basic = (BasicRestriction<String>) restriction;
             soft.assertThat(basic.attribute()).isEqualTo("testAttribute");
-            soft.assertThat(basic.value()).isEqualTo(10);
+            soft.assertThat(basic.constraint()).isEqualTo(Constraint.lessThan(10));
             soft.assertThat(basic.comparison()).isEqualTo(Operator.LESS_THAN);
         });
     }
@@ -94,7 +94,7 @@ class SortableAttributeTest {
             soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
             BasicRestriction<String> basic = (BasicRestriction<String>) restriction;
             soft.assertThat(basic.attribute()).isEqualTo("testAttribute");
-            soft.assertThat(basic.value()).isEqualTo(10);
+            soft.assertThat(basic.constraint()).isEqualTo(Constraint.lessThanOrEqual(10));
             soft.assertThat(basic.comparison()).isEqualTo(Operator.LESS_THAN_EQUAL);
         });
     }
@@ -104,24 +104,12 @@ class SortableAttributeTest {
         Restriction<String> restriction = testAttribute.between(5, 15);
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(restriction).isInstanceOf(CompositeRestriction.class);
-            CompositeRestriction<String> composite = (CompositeRestriction<String>) restriction;
-            soft.assertThat(composite.type()).isEqualTo(CompositeRestriction.Type.ALL);
-            soft.assertThat(composite.restrictions()).hasSize(2);
+            soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
+            BasicRestriction<String> composite = (BasicRestriction<String>) restriction;
 
-            Restriction<String> lowerBound = composite.restrictions().get(0);
-            soft.assertThat(lowerBound).isInstanceOf(BasicRestriction.class);
-            BasicRestriction<String> lower = (BasicRestriction<String>) lowerBound;
-            soft.assertThat(lower.attribute()).isEqualTo("testAttribute");
-            soft.assertThat(lower.value()).isEqualTo(5);
-            soft.assertThat(lower.comparison()).isEqualTo(Operator.GREATER_THAN_EQUAL);
-
-            Restriction<String> upperBound = composite.restrictions().get(1);
-            soft.assertThat(upperBound).isInstanceOf(BasicRestriction.class);
-            BasicRestriction<String> upper = (BasicRestriction<String>) upperBound;
-            soft.assertThat(upper.attribute()).isEqualTo("testAttribute");
-            soft.assertThat(upper.value()).isEqualTo(15);
-            soft.assertThat(upper.comparison()).isEqualTo(Operator.LESS_THAN_EQUAL);
+            soft.assertThat(composite.attribute()).isEqualTo("testAttribute");
+            soft.assertThat(composite.constraint()).isEqualTo(Constraint.between(5,15));
+            soft.assertThat(composite.comparison()).isEqualTo(Operator.BETWEEN);
         });
     }
 }

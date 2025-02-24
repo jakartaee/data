@@ -15,14 +15,37 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.metamodel.restrict;
+package jakarta.data.metamodel.constraint;
 
-import jakarta.data.metamodel.constraint.Like;
+import jakarta.data.metamodel.restrict.Operator;
 
-public interface TextRestriction<T> extends BasicRestriction<T> {
-    TextRestriction<T> ignoreCase();
+import java.util.Objects;
+import java.util.Set;
+
+record InRecord<T>(Set<T> values) implements In<T> {
+
+    public InRecord {
+        Objects.requireNonNull(values, "Enumerated values cannot be null");
+    }
+
     @Override
-    TextRestriction<T> negate();
+    public Operator operator() {
+        return Operator.IN;
+    }
+
     @Override
-    Like constraint();
+    public boolean equals(Object obj) {
+        return obj instanceof InRecord<?> that
+            && values.equals(that.values);
+    }
+
+    @Override
+    public int hashCode() {
+        return values.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "IN " + values;
+    }
 }

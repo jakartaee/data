@@ -15,12 +15,28 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.metamodel.restrict;
+package jakarta.data.metamodel.constraint;
 
-public enum UnaryOperator {
-    IS_NULL, IS_NOT_NULL;
+import jakarta.data.metamodel.restrict.Operator;
 
-    UnaryOperator negate() {
-        return this == IS_NULL ? IS_NOT_NULL : IS_NULL;
+record NullRecord<T>() implements Null<T> {
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof NullRecord;
+    }
+
+    @Override
+    public int hashCode() {
+        return 0;
+    }
+    @Override
+    public Operator operator() {
+        return Operator.NULL;
+    }
+
+
+    @Override
+    public String toString() {
+        return "IS NULL";
     }
 }

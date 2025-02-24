@@ -17,6 +17,7 @@
  */
 package jakarta.data.metamodel;
 
+import jakarta.data.metamodel.constraint.Constraint;
 import jakarta.data.metamodel.restrict.Restrict;
 import jakarta.data.metamodel.restrict.Restriction;
 
@@ -52,6 +53,10 @@ public interface BasicAttribute<T,V> extends Attribute<T> {
 
     default Restriction<T> notNull() {
         return Restrict.notNull(name());
+    }
+
+    default Restriction<T> restrict(Constraint<V> constraint) {
+        return Restrict.restrict(constraint, name());
     }
 
 }
