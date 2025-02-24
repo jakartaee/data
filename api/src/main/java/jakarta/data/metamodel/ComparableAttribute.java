@@ -89,8 +89,7 @@ public interface ComparableAttribute<T,V extends Comparable<V>>
      * @return instance of {@code ComparableAttribute}.
      */
     static <T, V extends Comparable<V>> ComparableAttribute<T, V> of(String name) {
-        if (name == null)
-            throw new IllegalArgumentException("entity attribute name is required");
+        Objects.requireNonNull(name, "entity attribute name is required");
 
         return new ComparableAttributeRecord<>(name);
     }
