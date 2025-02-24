@@ -26,7 +26,7 @@ import java.util.Set;
 
 /**
  * <p>Represents an entity attribute in the {@link StaticMetamodel}
- * that is not sortable or comparable.</p>
+ * that is neither sortable nor comparable.</p>
  *
  * @param <T> entity class of the static metamodel.
  * @param <V> type of entity attribute (or wrapper type if primitive).
