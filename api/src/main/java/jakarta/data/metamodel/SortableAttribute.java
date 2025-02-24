@@ -24,11 +24,12 @@ import jakarta.data.metamodel.impl.SortableAttributeRecord;
  * <p>Represents a entity attribute in the {@link StaticMetamodel}
  * that is sortable, but not comparable.</p>
  *
- * <p>Wherever possible, it is preferable to use {@link ComparableAttribute}
- * instead because it provides more function. Use {@code SortableAttribute}
- * only where you have an entity attribute upon which query results can be sorted,
- * but cannot otherwise be compared within query restrictions. For some databases,
- * entity attributes of type {@code byte[]} fall under this category.</p>
+ *<p>A {@code SortableAttribute} may be used to sort query results.
+ * When an attribute type is a subtype of {@link java.lang.Comparable>, 
+ * use of {@link ComparableAttribute} is usually preferred, since a
+ * {@code SortableAttribute} may not not used in order-based query 
+ * restrictions. Direct use of {@code SortableAttribute} is appropriate 
+ * for attributes of type {@code byte[]}.</p>
  *
  * @param <T> entity class of the static metamodel.
  */
