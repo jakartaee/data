@@ -150,5 +150,5 @@ public @interface Find {
      * }
      * </pre>
      */
-    Class<?> value = void.class;
+    Class<?> value() default void.class;
 }
