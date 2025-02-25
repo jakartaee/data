@@ -17,6 +17,7 @@
  */
 package jakarta.data.metamodel;
 
+import jakarta.data.metamodel.impl.ComparableAttributeRecord;
 import jakarta.data.metamodel.restrict.Restrict;
 import jakarta.data.metamodel.restrict.Restriction;
 
@@ -24,27 +25,31 @@ public interface ComparableAttribute<T,V extends Comparable<V>>
         extends BasicAttribute<T,V>, SortableAttribute<T> {
 
     default Restriction<T> between(V min, V max) {
-        return Restrict.between(min, max, name());
+        return Restrict.between(min, max, this);
     }
 
     default Restriction<T> notBetween(V min, V max) {
-        return Restrict.notBetween(min, max, name());
+        return Restrict.notBetween(min, max, this);
     }
 
     default Restriction<T> greaterThan(V value) {
-        return Restrict.greaterThan(value, name());
+        return Restrict.greaterThan(value, this);
     }
 
     default Restriction<T> greaterThanEqual(V value) {
-        return Restrict.greaterThanEqual(value, name());
+        return Restrict.greaterThanEqual(value, this);
     }
 
     default Restriction<T> lessThan(V value) {
-        return Restrict.lessThan(value, name());
+        return Restrict.lessThan(value, this);
     }
 
     default Restriction<T> lessThanEqual(V value) {
-        return Restrict.lessThanEqual(value, name());
+        return Restrict.lessThanEqual(value, this);
+    }
+
+    static <T,V extends Comparable<V>>  ComparableAttribute<T,V> of(Class<T> entity, String attribute, Class<V> type) {
+        return new ComparableAttributeRecord<>(attribute);
     }
 
 }

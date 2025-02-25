@@ -57,6 +57,21 @@ public class _AsciiCharacter {
         private TextAttr(String name) {
             this(name, Sort.asc(name), Sort.ascIgnoreCase(name), Sort.desc(name), Sort.descIgnoreCase(name));
         }
+
+        @Override
+        public TextAttribute<AsciiCharacter> lowercased() {
+            return null;
+        }
+
+        @Override
+        public TextAttribute<AsciiCharacter> uppercased() {
+            return null;
+        }
+
+        @Override
+        public Case casing() {
+            return null;
+        }
     };
 
     // Avoids the checkstyle error,
