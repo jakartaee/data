@@ -20,7 +20,12 @@ package jakarta.data.metamodel;
 import java.util.Objects;
 
 import jakarta.data.Sort;
-import jakarta.data.metamodel.restrict.Restrict;
+import jakarta.data.metamodel.constraint.Between;
+import jakarta.data.metamodel.constraint.GreaterThan;
+import jakarta.data.metamodel.constraint.GreaterThanOrEqual;
+import jakarta.data.metamodel.constraint.LessThan;
+import jakarta.data.metamodel.constraint.LessThanOrEqual;
+import jakarta.data.metamodel.constraint.NotBetween;
 import jakarta.data.metamodel.restrict.Restriction;
 
 /**
@@ -58,27 +63,27 @@ public interface ComparableAttribute<T,V extends Comparable<V>>
         extends BasicAttribute<T,V>, SortableAttribute<T> {
 
     default Restriction<T> between(V min, V max) {
-        return Restrict.between(min, max, name());
+        return new BasicRestrictionRecord<>(name(), Between.bounds(min, max));
     }
 
     default Restriction<T> notBetween(V min, V max) {
-        return Restrict.notBetween(min, max, name());
+        return new BasicRestrictionRecord<>(name(), NotBetween.bounds(min, max));
     }
 
     default Restriction<T> greaterThan(V value) {
-        return Restrict.greaterThan(value, name());
+        return new BasicRestrictionRecord<>(name(), GreaterThan.bound(value));
     }
 
     default Restriction<T> greaterThanEqual(V value) {
-        return Restrict.greaterThanEqual(value, name());
+        return new BasicRestrictionRecord<>(name(), GreaterThanOrEqual.min(value));
     }
 
     default Restriction<T> lessThan(V value) {
-        return Restrict.lessThan(value, name());
+        return new BasicRestrictionRecord<>(name(), LessThan.bound(value));
     }
 
     default Restriction<T> lessThanEqual(V value) {
-        return Restrict.lessThanEqual(value, name());
+        return new BasicRestrictionRecord<>(name(), LessThanOrEqual.max(value));
     }
 
     /**

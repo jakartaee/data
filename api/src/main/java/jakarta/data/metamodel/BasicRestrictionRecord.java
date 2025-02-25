@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2024,2025 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,44 +15,39 @@
  *
  *  SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.metamodel.restrict;
+package jakarta.data.metamodel;
+
+// Internal implementation class.
+// The proper way for users to obtain instances is via
+// the static metamodel or Restrict.* methods 
 
 import jakarta.data.metamodel.constraint.Constraint;
+import jakarta.data.metamodel.restrict.BasicRestriction;
 
 import java.util.Objects;
 
-record TextRestrictionRecord<T>(String attribute, Constraint<String> constraint, boolean isCaseSensitive)
-        implements TextRestriction<T> {
+record BasicRestrictionRecord<T>(String attribute, Constraint<?> constraint)
+        implements BasicRestriction<T> {
 
-    TextRestrictionRecord {
+    BasicRestrictionRecord {
         Objects.requireNonNull(attribute, "Attribute must not be null");
         Objects.requireNonNull(constraint, "Constraint must not be null");
     }
 
-    TextRestrictionRecord(String attribute, Constraint<String> constraint) {
-        this(attribute, constraint, true);
-    }
-
     @Override
-    public TextRestrictionRecord<T> negate() {
-        return new TextRestrictionRecord<>(attribute, constraint.negate(), isCaseSensitive);
-    }
-
-    @Override
-    public TextRestrictionRecord<T> ignoreCase() {
-        return new TextRestrictionRecord<>(attribute, constraint, false);
+    public BasicRestriction<T> negate() {
+        return new BasicRestrictionRecord<>(attribute, constraint.negate());
     }
 
     /**
-     * Textual representation of a text restriction.
+     * Textual representation of a basic restriction.
      * For example,
-     * <pre>title LIKE '%JAKARTA EE%' IGNORE CASE</pre>
+     * <pre>price < 50.0</pre>
      *
      * @return textual representation of a basic restriction.
      */
     @Override
     public String toString() {
-        return attribute + ' ' + constraint +
-                (isCaseSensitive ? "" : " IGNORE CASE");
+        return attribute + ' ' + constraint;
     }
 }

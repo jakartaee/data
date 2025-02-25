@@ -20,9 +20,17 @@ package jakarta.data.metamodel;
 import java.util.Objects;
 
 import jakarta.data.Sort;
+import jakarta.data.metamodel.constraint.Between;
+import jakarta.data.metamodel.constraint.EqualTo;
+import jakarta.data.metamodel.constraint.GreaterThan;
+import jakarta.data.metamodel.constraint.GreaterThanOrEqual;
+import jakarta.data.metamodel.constraint.LessThan;
+import jakarta.data.metamodel.constraint.LessThanOrEqual;
 import jakarta.data.metamodel.constraint.Like;
+import jakarta.data.metamodel.constraint.NotBetween;
+import jakarta.data.metamodel.constraint.NotEqualTo;
+import jakarta.data.metamodel.constraint.NotLike;
 import jakarta.data.metamodel.impl.TextAttributeRecord;
-import jakarta.data.metamodel.restrict.Restrict;
 import jakarta.data.metamodel.restrict.TextRestriction;
 
 /**
@@ -48,86 +56,91 @@ public interface TextAttribute<T> extends ComparableAttribute<T,String> {
 
     @Override
     default TextRestriction<T> between(String min, String max) {
-        return Restrict.between(min, max, name());
+        return new TextRestrictionRecord<>(name(), Between.bounds(min, max));
     }
 
     @Override
     default TextRestriction<T> equalTo(String value) {
-        return Restrict.equalTo(value, name());
+        return new TextRestrictionRecord<>(name(), EqualTo.value(value));
     }
 
     @Override
     default TextRestriction<T> greaterThan(String value) {
-        return Restrict.greaterThan(value, name());
+        return new TextRestrictionRecord<>(name(), GreaterThan.bound(value));
     }
 
     @Override
     default TextRestriction<T> greaterThanEqual(String value) {
-        return Restrict.greaterThanEqual(value, name());
+        return new TextRestrictionRecord<>(name(), GreaterThanOrEqual.min(value));
     }
 
     @Override
     default TextRestriction<T> lessThan(String value) {
-        return Restrict.lessThan(value, name());
+        return new TextRestrictionRecord<>(name(), LessThan.bound(value));
     }
 
     @Override
     default TextRestriction<T> lessThanEqual(String value) {
-        return Restrict.lessThanEqual(value, name());
+        return new TextRestrictionRecord<>(name(), LessThanOrEqual.max(value));
     }
 
     @Override
     default TextRestriction<T> notBetween(String min, String max) {
-        return Restrict.notBetween(min, max, name());
+        return new TextRestrictionRecord<>(name(), NotBetween.bounds(min, max));
     }
 
     @Override
     default TextRestriction<T> notEqualTo(String value) {
-        return Restrict.notEqualTo(value, name());
+        return new TextRestrictionRecord<>(name(), NotEqualTo.value(value));
     }
 
     default TextRestriction<T> like(Like pattern) {
-        return Restrict.like(pattern, name());
+        return new TextRestrictionRecord<>(name(), pattern);
+
     }
 
     default TextRestriction<T> like(String pattern) {
-        return Restrict.like(pattern, name());
+        return new TextRestrictionRecord<>(name(), Like.pattern(pattern));
     }
 
     default TextRestriction<T> like(String pattern, char charWildcard, char stringWildcard) {
-        return Restrict.like(pattern, charWildcard, stringWildcard, name());
+        Like constraint = Like.pattern(pattern, charWildcard, stringWildcard);
+        return new TextRestrictionRecord<>(name(), constraint);
     }
 
     default TextRestriction<T> like(String pattern, char charWildcard, char stringWildcard, char escape) {
-        return Restrict.like(pattern, charWildcard, stringWildcard, escape, name());
+        Like constraint = Like.pattern(pattern, charWildcard, stringWildcard, escape);
+        return new TextRestrictionRecord<>(name(), constraint);
     }
 
     default TextRestriction<T> notLike(String pattern) {
-        return Restrict.notLike(pattern, name());
+        return new TextRestrictionRecord<>(name(), NotLike.pattern(pattern));
     }
 
     default TextRestriction<T> notLike(String pattern, char charWildcard, char stringWildcard) {
-        return Restrict.notLike(pattern, charWildcard, stringWildcard, name());
+        NotLike constraint = NotLike.pattern(pattern, charWildcard, stringWildcard);
+        return new TextRestrictionRecord<>(name(), constraint);
     }
 
     default TextRestriction<T> notLike(String pattern, char charWildcard, char stringWildcard, char escape) {
-        return Restrict.notLike(pattern, charWildcard, stringWildcard, escape, name());
+        NotLike constraint = NotLike.pattern(pattern, charWildcard, stringWildcard, escape);
+        return new TextRestrictionRecord<>(name(), constraint);
     }
 
     default TextRestriction<T> contains(String substring) {
-        return Restrict.contains(substring, name());
+        return new TextRestrictionRecord<>(name(), Like.substring(substring));
     }
 
     default TextRestriction<T> notContains(String substring) {
-        return Restrict.notContains(substring, name());
+        return new TextRestrictionRecord<>(name(), NotLike.substring(substring));
     }
 
     default TextRestriction<T> endsWith(String suffix) {
-        return Restrict.endsWith(suffix, name());
+        return new TextRestrictionRecord<>(name(), Like.suffix(suffix));
     }
 
     default TextRestriction<T> notEndsWith(String suffix) {
-        return Restrict.notEndsWith(suffix, name());
+        return new TextRestrictionRecord<>(name(), NotLike.suffix(suffix));
     }
 
     /**
@@ -147,11 +160,11 @@ public interface TextAttribute<T> extends ComparableAttribute<T,String> {
     }
 
     default TextRestriction<T> startsWith(String prefix) {
-        return Restrict.startsWith(prefix, name());
+        return new TextRestrictionRecord<>(name(), Like.prefix(prefix));
     }
 
     default TextRestriction<T> notStartsWith(String prefix) {
-        return Restrict.notStartsWith(prefix, name());
+        return new TextRestrictionRecord<>(name(), NotLike.prefix(prefix));
     }
 
 }

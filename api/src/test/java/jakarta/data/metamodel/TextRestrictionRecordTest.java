@@ -15,17 +15,18 @@
  *
  *  SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.metamodel.restrict;
+package jakarta.data.metamodel;
 
+import jakarta.data.metamodel.BasicRestrictionRecordTest.Book;
 import jakarta.data.metamodel.constraint.EqualTo;
 import jakarta.data.metamodel.constraint.Like;
 import jakarta.data.metamodel.constraint.NotEqualTo;
 import jakarta.data.metamodel.constraint.NotLike;
+import jakarta.data.metamodel.restrict.BasicRestriction;
+import jakarta.data.metamodel.restrict.TextRestriction;
 
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
-
-import jakarta.data.metamodel.restrict.BasicRestrictionRecordTest.Book;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
@@ -120,7 +121,8 @@ class TextRestrictionRecordTest {
 
     @Test
     void shouldNegateLikeRestriction() {
-        TextRestriction<Book> likeJakartaEE = Restrict.like("%Jakarta EE%", "title");
+        TextRestriction<Book> likeJakartaEE =
+                new TextRestrictionRecord<Book>("title", Like.substring("Jakarta EE"));
         TextRestriction<Book> notLikeJakartaEE = likeJakartaEE.negate();
         TextRestriction<Book> anyCaseNotLikeJakartaEE = likeJakartaEE.ignoreCase().negate();
         TextRestriction<Book> notLikeJakartaEEAnyCase = likeJakartaEE.negate().ignoreCase();
@@ -135,7 +137,8 @@ class TextRestrictionRecordTest {
 
     @Test
     void shouldNegateNegatedRestriction() {
-        TextRestriction<Book> endsWithJakartaEE = Restrict.endsWith("Jakarta EE", "title");
+        TextRestriction<Book> endsWithJakartaEE =
+                new TextRestrictionRecord<Book>("title", Like.suffix("Jakarta EE"));
         TextRestriction<Book> notEndsWithJakartaEE = endsWithJakartaEE.negate();
         TextRestriction<Book> notNotEndsWithJakartaEE = notEndsWithJakartaEE.negate();
 
@@ -157,9 +160,10 @@ class TextRestrictionRecordTest {
     @Test
     void shouldOutputToString() {
         BasicRestriction<Book> titleRestriction =
-                Restrict.contains("Jakarta Data", "title");
+                new TextRestrictionRecord<Book>("title", Like.substring("Jakarta Data"));
         BasicRestriction<Book> authorRestriction =
-                Restrict.<Book>equalTo("Myself", "author").ignoreCase().negate();
+                new TextRestrictionRecord<Book>("author", EqualTo.value("Myself"))
+                        .ignoreCase().negate();
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(titleRestriction.toString()).isEqualTo("""

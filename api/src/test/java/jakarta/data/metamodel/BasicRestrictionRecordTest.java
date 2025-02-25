@@ -15,9 +15,12 @@
  *
  *  SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.metamodel.restrict;
+package jakarta.data.metamodel;
 
 import jakarta.data.metamodel.constraint.*;
+import jakarta.data.metamodel.restrict.BasicRestriction;
+import jakarta.data.metamodel.restrict.Restriction;
+
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
 
@@ -41,7 +44,8 @@ class BasicRestrictionRecordTest {
 
     @Test
     void shouldCreateBasicRestrictionWithExplicitNegation() {
-        BasicRestriction<Book> restriction = Restrict.<Book>equalTo("Java Guide", "title")
+        BasicRestriction<Book> restriction =
+                new BasicRestrictionRecord<Book>("title", EqualTo.value("Java Guide"))
                         .negate();
 
         SoftAssertions.assertSoftly(soft -> {
@@ -52,8 +56,8 @@ class BasicRestrictionRecordTest {
 
     @Test
     void shouldNegateLTERestriction() {
-        BasicRestriction<Book> numChaptersLTE10 = Restrict.lessThanEqual(10, "numChapters");
-        BasicRestriction<Book> numChaptersLTE10Basic = numChaptersLTE10;
+        BasicRestriction<Book> numChaptersLTE10Basic =
+                new BasicRestrictionRecord<Book>("numChapters", LessThanOrEqual.max(10));
         BasicRestriction<Book> numChaptersGT10Basic = numChaptersLTE10Basic.negate();
 
         SoftAssertions.assertSoftly(soft -> {
@@ -66,7 +70,9 @@ class BasicRestrictionRecordTest {
     @Test
     void shouldNegateNegatedRestriction() {
         BasicRestriction<Book> titleRestrictionBasic =
-                Restrict.equalTo("A Developer's Guide to Jakarta Data", "title");
+                new BasicRestrictionRecord<Book>(
+                        "title",
+                        EqualTo.value("A Developer's Guide to Jakarta Data"));
         BasicRestriction<Book> negatedTitleRestrictionBasic = titleRestrictionBasic.negate();
         BasicRestriction<Book> negatedNegatedTitleRestrictionBasic = negatedTitleRestrictionBasic.negate();
 
@@ -84,7 +90,8 @@ class BasicRestrictionRecordTest {
 
     @Test
     void shouldOutputToString() {
-        Restriction<Book> restriction = Restrict.greaterThan(100, "numPages");
+        Restriction<Book> restriction =
+                new BasicRestrictionRecord<Book>("numPages", GreaterThan.bound(100));
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.toString())
@@ -94,7 +101,8 @@ class BasicRestrictionRecordTest {
 
     @Test
     void shouldSupportNegatedRestrictionUsingDefaultConstructor() {
-        BasicRestriction<Book> negatedRestriction = Restrict.notEqualTo((Object) "Unknown", "author");
+        BasicRestriction<Book> negatedRestriction =
+                new BasicRestrictionRecord<Book>("author", NotEqualTo.value("Unknown"));
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(negatedRestriction.attribute()).isEqualTo("author");
