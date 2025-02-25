@@ -18,6 +18,7 @@
 package jakarta.data.metamodel;
 
 import jakarta.data.Sort;
+import jakarta.data.metamodel.impl.SortableAttributeRecord;
 
 /**
  * Represents a sortable entity attribute in the {@link StaticMetamodel}.
@@ -48,5 +49,9 @@ public interface SortableAttribute<T> extends Attribute<T> {
      * @return a request for a descending sort on the entity attribute.
      */
     Sort<T> desc();
+
+    static <T> SortableAttribute<T> of(Class<T> entity, String attribute) {
+        return new SortableAttributeRecord<>(attribute);
+    }
 
 }
