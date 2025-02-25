@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023, 2024 Contributors to the Eclipse Foundation
+ * Copyright (c) 2023, 2025 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -37,7 +37,7 @@ public class TestPropertyUtility {
      * @return - true if TCK is configured in standalone mode, false otherwise. 
      */
     public static boolean skipDeployment() {
-        return Boolean.valueOf(TestProperty.skipDeployment.getValue());
+        return TestProperty.skipDeployment.getBoolean();
     }
     
     /**

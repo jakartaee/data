@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022, 2024 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022, 2025 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -16,6 +16,7 @@
 package ee.jakarta.tck.data.framework.junit.extensions;
 
 import java.lang.reflect.Method;
+import java.util.function.Predicate;
 import java.util.logging.Logger;
 
 import org.jboss.arquillian.junit5.ArquillianExtension;
@@ -44,10 +45,13 @@ public class StandaloneExtension extends ArquillianExtension implements BeforeAl
         BeforeEachCallback, AfterEachCallback, InvocationInterceptor, TestExecutionExceptionHandler {
     
     private static final Logger log = Logger.getLogger(StandaloneExtension.class.getCanonicalName());
+    
+    private static final Predicate<ExtensionContext> IS_INSIDE_ARQUILLIAN = 
+            (context -> Boolean.parseBoolean(context.getConfigurationParameter(RUNNING_INSIDE_ARQUILLIAN).orElse("false")));
 
     @Override
     public void beforeAll(ExtensionContext context) throws Exception {
-        if (TestPropertyUtility.skipDeployment()) {
+        if (shouldSkip(context)) {
             log.info("Running tests in standalone mode, arquillian will not create or deploy archives for test class: " + context.getTestClass().get().getCanonicalName());
             return;
         }
@@ -56,7 +60,7 @@ public class StandaloneExtension extends ArquillianExtension implements BeforeAl
 
     @Override
     public void afterAll(ExtensionContext context) throws Exception {
-        if (TestPropertyUtility.skipDeployment()) {
+        if (shouldSkip(context)) {
             return;
         }
         super.afterAll(context);
@@ -64,7 +68,7 @@ public class StandaloneExtension extends ArquillianExtension implements BeforeAl
 
     @Override
     public void beforeEach(ExtensionContext context) throws Exception {
-        if (TestPropertyUtility.skipDeployment()) {
+        if (shouldSkip(context)) {
             return;
         }
         super.beforeEach(context);
@@ -72,7 +76,7 @@ public class StandaloneExtension extends ArquillianExtension implements BeforeAl
 
     @Override
     public void afterEach(ExtensionContext context) throws Exception {
-        if (TestPropertyUtility.skipDeployment()) {
+        if (shouldSkip(context)) {
             return;
         }
         super.afterEach(context);
@@ -81,7 +85,7 @@ public class StandaloneExtension extends ArquillianExtension implements BeforeAl
     @Override
     public void interceptTestTemplateMethod(Invocation<Void> invocation,
             ReflectiveInvocationContext<Method> invocationContext, ExtensionContext extensionContext) throws Throwable {
-        if (TestPropertyUtility.skipDeployment()) {
+        if (shouldSkip(extensionContext)) {
             invocation.proceed();
             return;
         }
@@ -91,7 +95,7 @@ public class StandaloneExtension extends ArquillianExtension implements BeforeAl
     @Override
     public void interceptTestMethod(Invocation<Void> invocation, ReflectiveInvocationContext<Method> invocationContext,
             ExtensionContext extensionContext) throws Throwable {
-        if (TestPropertyUtility.skipDeployment()) {
+        if (shouldSkip(extensionContext)) {
             invocation.proceed();
             return;
         }
@@ -101,7 +105,7 @@ public class StandaloneExtension extends ArquillianExtension implements BeforeAl
     @Override
     public void interceptBeforeEachMethod(Invocation<Void> invocation,
             ReflectiveInvocationContext<Method> invocationContext, ExtensionContext extensionContext) throws Throwable {
-        if (TestPropertyUtility.skipDeployment()) {
+        if (shouldSkip(extensionContext)) {
             invocation.proceed();
             return;
         }
@@ -111,7 +115,7 @@ public class StandaloneExtension extends ArquillianExtension implements BeforeAl
     @Override
     public void interceptAfterEachMethod(Invocation<Void> invocation,
             ReflectiveInvocationContext<Method> invocationContext, ExtensionContext extensionContext) throws Throwable {
-        if (TestPropertyUtility.skipDeployment()) {
+        if (shouldSkip(extensionContext)) {
             invocation.proceed();
             return;
         }
@@ -121,7 +125,7 @@ public class StandaloneExtension extends ArquillianExtension implements BeforeAl
     @Override
     public void interceptBeforeAllMethod(Invocation<Void> invocation,
             ReflectiveInvocationContext<Method> invocationContext, ExtensionContext extensionContext) throws Throwable {
-        if (TestPropertyUtility.skipDeployment()) {
+        if (shouldSkip(extensionContext)) {
             invocation.proceed();
             return;
         }
@@ -131,7 +135,7 @@ public class StandaloneExtension extends ArquillianExtension implements BeforeAl
     @Override
     public void interceptAfterAllMethod(Invocation<Void> invocation,
             ReflectiveInvocationContext<Method> invocationContext, ExtensionContext extensionContext) throws Throwable {
-        if (TestPropertyUtility.skipDeployment()) {
+        if (shouldSkip(extensionContext)) {
             invocation.proceed();
             return;
         }
@@ -140,10 +144,18 @@ public class StandaloneExtension extends ArquillianExtension implements BeforeAl
 
     @Override
     public void handleTestExecutionException(ExtensionContext context, Throwable throwable) throws Throwable {
-        if (TestPropertyUtility.skipDeployment()) {
+        if (shouldSkip(context)) {
             throw throwable;
         }
         super.handleTestExecutionException(context, throwable);
+    }
+    
+    private static final boolean shouldSkip(ExtensionContext context) {
+        //If we are inside the container, then we should never skip.
+        if(IS_INSIDE_ARQUILLIAN.test(context)) {
+            return false;
+        }
+        return TestPropertyUtility.skipDeployment();
     }
 
 }
