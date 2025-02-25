@@ -59,13 +59,18 @@ public class _AsciiCharacter {
         }
 
         @Override
-        public boolean caseSensitive() {
-            return true;
+        public TextAttribute<AsciiCharacter> lowercased() {
+            return null;
         }
 
         @Override
-        public TextAttribute<AsciiCharacter> ignoreCase() {
-            throw new UnsupportedOperationException();
+        public TextAttribute<AsciiCharacter> uppercased() {
+            return null;
+        }
+
+        @Override
+        public Case casing() {
+            return null;
         }
     };
 

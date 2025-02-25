@@ -71,10 +71,6 @@ public class Restrict {
         return new BasicRestrictionRecord<>(attribute, Constraint.equalTo(value));
     }
 
-    public static <T> TextRestriction<T> equalTo(String value, TextAttribute<T> attribute) {
-        return new TextRestrictionRecord<>(attribute, Like.literal(value));
-    }
-
     public static <T> BasicRestriction<T> isNull(BasicAttribute<T,?> attribute) {
         return new BasicRestrictionRecord<>(attribute, Constraint.isNull());
     }
@@ -127,10 +123,6 @@ public class Restrict {
 
     public static <T,V> BasicRestriction<T> notEqualTo(V value, BasicAttribute<T,V> attribute) {
         return new BasicRestrictionRecord<>(attribute, Constraint.equalTo(value), true);
-    }
-
-    public static <T> TextRestriction<T> notEqualTo(String value, TextAttribute<T> attribute) {
-        return new TextRestrictionRecord<>(attribute, Like.literal(value), true);
     }
 
     public static <T> BasicRestriction<T> notNull(BasicAttribute<T,?> attribute) {

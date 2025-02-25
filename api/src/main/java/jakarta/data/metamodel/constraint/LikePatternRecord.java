@@ -54,11 +54,6 @@ record LikePatternRecord(String string, boolean caseSensitive, Character escape)
     }
 
     @Override
-    public boolean pattern() {
-        return true;
-    }
-
-    @Override
     public Operator operator() {
         return Operator.LIKE;
     }

@@ -30,9 +30,13 @@ import jakarta.data.metamodel.restrict.TextRestriction;
  */
 public interface TextAttribute<T> extends ComparableAttribute<T,String> {
 
-    TextAttribute<T> ignoreCase();
+    TextAttribute<T> lowercased();
 
-    boolean caseSensitive();
+    TextAttribute<T> uppercased();
+
+    enum Case { FREE, UPPER, LOWER }
+
+    Case casing();
 
     /**
      * Obtain a request for an ascending, case-insensitive {@link Sort} based on the entity attribute.
@@ -47,16 +51,6 @@ public interface TextAttribute<T> extends ComparableAttribute<T,String> {
      * @return a request for a descending, case insensitive sort on the entity attribute.
      */
     Sort<T> descIgnoreCase();
-
-    @Override
-    default TextRestriction<T> equalTo(String value) {
-        return Restrict.equalTo(value, this);
-    }
-
-    @Override
-    default TextRestriction<T> notEqualTo(String value) {
-        return Restrict.notEqualTo(value, this);
-    }
 
     default TextRestriction<T> like(Like pattern) {
         return Restrict.like(pattern, this);

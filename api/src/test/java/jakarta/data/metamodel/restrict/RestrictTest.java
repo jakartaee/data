@@ -20,7 +20,7 @@ package jakarta.data.metamodel.restrict;
 import jakarta.data.metamodel.BasicAttribute;
 import jakarta.data.metamodel.ComparableAttribute;
 import jakarta.data.metamodel.constraint.Constraint;
-import jakarta.data.metamodel.constraint.Like;
+import jakarta.data.metamodel.constraint.EqualTo;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
 
@@ -92,25 +92,25 @@ class RestrictTest {
 
     @Test
     void shouldCreateEqualToStringRestriction() {
-        TextRestriction<Employee> restriction = Restrict.equalTo("value", TextAttribute.of(Employee.class,"attributeName"));
+        BasicRestriction<Employee> restriction = Restrict.equalTo("value", TextAttribute.of(Employee.class,"attributeName"));
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.attribute().name()).isEqualTo("attributeName");
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.EQUAL);
-            soft.assertThat(restriction.constraint()).isInstanceOf(Like.class);
-            soft.assertThat(restriction.constraint()).isEqualTo(Like.literal("value"));
+            soft.assertThat(restriction.constraint()).isInstanceOf(EqualTo.class);
+            soft.assertThat(restriction.constraint()).isEqualTo(Constraint.equalTo("value"));
         });
     }
 
     @Test
     void shouldCreateNotEqualToStringRestriction() {
-        TextRestriction<Employee> restriction = Restrict.notEqualTo("value", TextAttribute.of(Employee.class,"attributeName"));
+        BasicRestriction<Employee> restriction = Restrict.notEqualTo("value", TextAttribute.of(Employee.class,"attributeName"));
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.attribute().name()).isEqualTo("attributeName");
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.NOT_EQUAL);
-            soft.assertThat(restriction.constraint()).isInstanceOf(Like.class);
-            soft.assertThat(restriction.constraint()).isEqualTo(Like.literal("value"));
+            soft.assertThat(restriction.constraint()).isInstanceOf(EqualTo.class);
+            soft.assertThat(restriction.constraint()).isEqualTo(Constraint.equalTo("value"));
         });
     }
 

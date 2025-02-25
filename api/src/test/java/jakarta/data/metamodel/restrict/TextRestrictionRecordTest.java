@@ -41,7 +41,6 @@ class TextRestrictionRecordTest {
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.LIKE);
             soft.assertThat(restriction.constraint().string()).isEqualTo("%Java%");
             soft.assertThat(restriction.constraint().caseSensitive()).isTrue();
-            soft.assertThat(restriction.constraint().pattern()).isTrue();
             soft.assertThat(restriction.constraint().escape()).isNull();
         });
     }
@@ -59,7 +58,6 @@ class TextRestrictionRecordTest {
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.NOT_LIKE);
             soft.assertThat(restriction.constraint().string()).isEqualTo("%Java%");
             soft.assertThat(restriction.constraint().caseSensitive()).isTrue();
-            soft.assertThat(restriction.constraint().pattern()).isTrue();
             soft.assertThat(restriction.constraint().escape()).isNull();
         });
     }
@@ -76,7 +74,6 @@ class TextRestrictionRecordTest {
             soft.assertThat(caseInsensitiveRestriction.comparison()).isEqualTo(Operator.LIKE);
             soft.assertThat(caseInsensitiveRestriction.constraint().string()).isEqualTo("%Java%");
             soft.assertThat(caseInsensitiveRestriction.constraint().caseSensitive()).isFalse();
-            soft.assertThat(caseInsensitiveRestriction.constraint().pattern()).isTrue();
             soft.assertThat(caseInsensitiveRestriction.constraint().escape()).isNull();
         });
     }
@@ -93,7 +90,6 @@ class TextRestrictionRecordTest {
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.LIKE);
             soft.assertThat(restriction.constraint().string()).isEqualTo("%Java%");
             soft.assertThat(restriction.constraint().caseSensitive()).isTrue();
-            soft.assertThat(restriction.constraint().pattern()).isTrue();
             soft.assertThat(restriction.constraint().escape()).isNull();
         });
     }
@@ -110,7 +106,6 @@ class TextRestrictionRecordTest {
             soft.assertThat(restriction.comparison()).isEqualTo(Operator.LIKE);
             soft.assertThat(restriction.constraint().string()).isEqualTo("%Java__");
             soft.assertThat(restriction.constraint().caseSensitive()).isTrue();
-            soft.assertThat(restriction.constraint().pattern()).isTrue();
             soft.assertThat(restriction.constraint().escape()).isEqualTo('$');
         });
     }
@@ -160,7 +155,7 @@ class TextRestrictionRecordTest {
         BasicRestriction<Book> titleRestriction =
                 TextAttribute.of(Book.class, "title").contains("Jakarta Data");
         BasicRestriction<Book> authorRestriction =
-                TextAttribute.of(Book.class, "author").ignoreCase().equalTo("Myself").negate();
+                TextAttribute.of(Book.class, "author").uppercased().equalTo("MYSELF").negate();
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(titleRestriction.toString()).isEqualTo("""
@@ -176,23 +171,22 @@ class TextRestrictionRecordTest {
     void shouldSupportNegationForTextRestriction() {
         TextRestrictionRecord<String> restriction = new TextRestrictionRecord<>(
                 TextAttribute.of(String.class, "author"),
-                Like.literal("John Doe"),
+                Like.pattern("John Doe"),
                 true
         );
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.attribute().name()).isEqualTo("author");
-            soft.assertThat(restriction.comparison()).isEqualTo(Operator.NOT_EQUAL);
+            soft.assertThat(restriction.comparison()).isEqualTo(Operator.NOT_LIKE);
             soft.assertThat(restriction.constraint().string()).isEqualTo("John Doe");
             soft.assertThat(restriction.constraint().caseSensitive()).isTrue();
-            soft.assertThat(restriction.constraint().pattern()).isFalse();
             soft.assertThat(restriction.constraint().escape()).isNull();
         });
     }
 
     @Test
     void shouldThrowExceptionWhenAttributeIsNullInTextRestriction() {
-        assertThatThrownBy(() -> new TextRestrictionRecord<>(null, Like.literal("testValue")))
+        assertThatThrownBy(() -> new TextRestrictionRecord<>(null, Like.pattern("testValue")))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("Attribute must not be null");
     }
