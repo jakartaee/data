@@ -19,11 +19,11 @@ package jakarta.data.metamodel.restrict;
 
 import jakarta.data.metamodel.constraint.Constraint;
 
-public interface BasicRestriction<T> extends Restriction<T> {
+public interface BasicRestriction<T, V> extends Restriction<T> {
     String attribute();
 
     @Override
-    BasicRestriction<T> negate();
+    BasicRestriction<T, V> negate();
 
-    Constraint<?> constraint();
+    Constraint<V> constraint();
 }

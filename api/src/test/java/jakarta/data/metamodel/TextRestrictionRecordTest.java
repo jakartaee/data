@@ -159,9 +159,9 @@ class TextRestrictionRecordTest {
 
     @Test
     void shouldOutputToString() {
-        BasicRestriction<Book> titleRestriction =
+        TextRestriction<Book> titleRestriction =
                 new TextRestrictionRecord<Book>("title", Like.substring("Jakarta Data"));
-        BasicRestriction<Book> authorRestriction =
+        TextRestriction<Book> authorRestriction =
                 new TextRestrictionRecord<Book>("author", EqualTo.value("Myself"))
                         .ignoreCase().negate();
 

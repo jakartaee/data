@@ -69,8 +69,8 @@ class RestrictTest {
 
     @Test
     void shouldCreateEqualToRestriction() {
-        BasicRestriction<Employee> restriction =
-                (BasicRestriction<Employee>) _Employee.yearHired.equalTo(2020);
+        BasicRestriction<Employee, Integer> restriction =
+                (BasicRestriction<Employee, Integer>) _Employee.yearHired.equalTo(2020);
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.attribute()).isEqualTo("yearHired");
@@ -81,8 +81,8 @@ class RestrictTest {
 
     @Test
     void shouldCreateNotEqualToRestriction() {
-        BasicRestriction<Employee> restriction =
-                (BasicRestriction<Employee>) _Employee.badgeNum.notEqualTo(0);
+        BasicRestriction<Employee, Integer> restriction =
+                (BasicRestriction<Employee, Integer>) _Employee.badgeNum.notEqualTo(0);
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.attribute()).isEqualTo("badgeNum");

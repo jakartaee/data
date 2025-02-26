@@ -26,8 +26,8 @@ import jakarta.data.metamodel.restrict.BasicRestriction;
 
 import java.util.Objects;
 
-record BasicRestrictionRecord<T>(String attribute, Constraint<?> constraint)
-        implements BasicRestriction<T> {
+record BasicRestrictionRecord<T, V>(String attribute, Constraint<V> constraint)
+        implements BasicRestriction<T, V> {
 
     BasicRestrictionRecord {
         Objects.requireNonNull(attribute, "Attribute must not be null");
@@ -35,7 +35,7 @@ record BasicRestrictionRecord<T>(String attribute, Constraint<?> constraint)
     }
 
     @Override
-    public BasicRestriction<T> negate() {
+    public BasicRestriction<T, V> negate() {
         return new BasicRestrictionRecord<>(attribute, constraint.negate());
     }
 
