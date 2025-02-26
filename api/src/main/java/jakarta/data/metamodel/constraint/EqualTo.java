@@ -18,5 +18,10 @@
 package jakarta.data.metamodel.constraint;
 
 public interface EqualTo<T> extends Constraint<T> {
+
+    static <T> EqualTo<T> value(T value) {
+        return new EqualToRecord<>(value);
+    }
+
     T value();
 }

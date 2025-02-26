@@ -19,30 +19,23 @@ package jakarta.data.metamodel.constraint;
 
 import java.util.Objects;
 
-record GreaterThanOrEqualRecord<T extends Comparable<T>>(T bound)
-        implements GreaterThanOrEqual<T> {
-    public GreaterThanOrEqualRecord {
-        Objects.requireNonNull(bound, "Lower bound must not be null");
+record NotBetweenRecord<T extends Comparable<T>>(T lowerBound, T upperBound)
+    implements NotBetween<T> {
+
+    NotBetweenRecord {
+        Objects.requireNonNull(lowerBound, "lowerBound must not be null");
+        Objects.requireNonNull(upperBound, "upperBound must not be null");
     }
 
     @Override
-    public LessThan<T> negate() {
-        return LessThan.bound(bound);
+    public Between<T> negate() {
+        return Between.bounds(lowerBound, upperBound);
     }
 
     @Override
     public String toString() {
-        return ">= " + bound.toString();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        return obj instanceof GreaterThanOrEqualRecord<?> that
-            && bound.equals(that.bound);
-    }
-
-    @Override
-    public int hashCode() {
-        return bound.hashCode();
+        return lowerBound instanceof String
+                ? "NOT BETWEEN '" + lowerBound + "' AND '" + upperBound + "'"
+                : "NOT BETWEEN " + lowerBound + " AND " + upperBound;
     }
 }

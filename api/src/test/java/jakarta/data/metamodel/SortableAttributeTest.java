@@ -18,9 +18,13 @@
 package jakarta.data.metamodel;
 
 import jakarta.data.Sort;
+import jakarta.data.metamodel.constraint.Between;
 import jakarta.data.metamodel.constraint.Constraint;
+import jakarta.data.metamodel.constraint.GreaterThan;
+import jakarta.data.metamodel.constraint.GreaterThanOrEqual;
+import jakarta.data.metamodel.constraint.LessThan;
+import jakarta.data.metamodel.constraint.LessThanOrEqual;
 import jakarta.data.metamodel.restrict.BasicRestriction;
-import jakarta.data.metamodel.restrict.Operator;
 import jakarta.data.metamodel.restrict.Restriction;
 
 import org.assertj.core.api.SoftAssertions;
@@ -28,16 +32,23 @@ import org.junit.jupiter.api.Test;
 
 
 class SortableAttributeTest {
+    // Mock entity class for tests
+    static class Person {
+        String firstName;
+        String lastName;
+        int ssn;
+        int testAttribute;
+    }
 
     //it ignores the implementation of the SortableAttribute interface and uses an anonymous class to test the methods
-    private final ComparableAttribute<String,Integer> testAttribute = new ComparableAttribute<>() {
+    private final ComparableAttribute<Person, Integer> testAttribute = new ComparableAttribute<>() {
         @Override
-        public Sort<String> asc() {
+        public Sort<Person> asc() {
            throw new UnsupportedOperationException("It is not the focus of this test");
         }
 
         @Override
-        public Sort<String> desc() {
+        public Sort<Person> desc() {
             throw new UnsupportedOperationException("It is not the focus of this test");
         }
 
@@ -49,67 +60,67 @@ class SortableAttributeTest {
 
     @Test
     void shouldCreateGreaterThanRestriction() {
-        Restriction<String> restriction = testAttribute.greaterThan(10);
+        Restriction<Person> restriction = testAttribute.greaterThan(10);
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
-            BasicRestriction<String> basic = (BasicRestriction<String>) restriction;
+            BasicRestriction<Person, Integer> basic = (BasicRestriction<Person, Integer>) restriction;
             soft.assertThat(basic.attribute()).isEqualTo("testAttribute");
+            soft.assertThat(basic.constraint()).isInstanceOf(GreaterThan.class);
             soft.assertThat(basic.constraint()).isEqualTo(Constraint.greaterThan(10));
-            soft.assertThat(basic.comparison()).isEqualTo(Operator.GREATER_THAN);
         });
     }
 
     @Test
     void shouldCreateGreaterThanEqualRestriction() {
-        Restriction<String> restriction = testAttribute.greaterThanEqual(10);
+        Restriction<Person> restriction = testAttribute.greaterThanEqual(10);
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
-            BasicRestriction<String> basic = (BasicRestriction<String>) restriction;
+            BasicRestriction<Person, Integer> basic = (BasicRestriction<Person, Integer>) restriction;
             soft.assertThat(basic.attribute()).isEqualTo("testAttribute");
+            soft.assertThat(basic.constraint()).isInstanceOf(GreaterThanOrEqual.class);
             soft.assertThat(basic.constraint()).isEqualTo(Constraint.greaterThanOrEqual(10));
-            soft.assertThat(basic.comparison()).isEqualTo(Operator.GREATER_THAN_EQUAL);
         });
     }
 
     @Test
     void shouldCreateLessThanRestriction() {
-        Restriction<String> restriction = testAttribute.lessThan(10);
+        Restriction<Person> restriction = testAttribute.lessThan(10);
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
-            BasicRestriction<String> basic = (BasicRestriction<String>) restriction;
+            BasicRestriction<Person, Integer> basic = (BasicRestriction<Person, Integer>) restriction;
             soft.assertThat(basic.attribute()).isEqualTo("testAttribute");
+            soft.assertThat(basic.constraint()).isInstanceOf(LessThan.class);
             soft.assertThat(basic.constraint()).isEqualTo(Constraint.lessThan(10));
-            soft.assertThat(basic.comparison()).isEqualTo(Operator.LESS_THAN);
         });
     }
 
     @Test
     void shouldCreateLessThanOrEqualRestriction() {
-        Restriction<String> restriction = testAttribute.lessThanEqual(10);
+        Restriction<Person> restriction = testAttribute.lessThanEqual(10);
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
-            BasicRestriction<String> basic = (BasicRestriction<String>) restriction;
+            BasicRestriction<Person, Integer> basic = (BasicRestriction<Person, Integer>) restriction;
             soft.assertThat(basic.attribute()).isEqualTo("testAttribute");
+            soft.assertThat(basic.constraint()).isInstanceOf(LessThanOrEqual.class);
             soft.assertThat(basic.constraint()).isEqualTo(Constraint.lessThanOrEqual(10));
-            soft.assertThat(basic.comparison()).isEqualTo(Operator.LESS_THAN_EQUAL);
         });
     }
 
     @Test
     void shouldCreateBetweenRestriction() {
-        Restriction<String> restriction = testAttribute.between(5, 15);
+        Restriction<Person> restriction = testAttribute.between(5, 15);
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
-            BasicRestriction<String> composite = (BasicRestriction<String>) restriction;
+            BasicRestriction<Person, Integer> basic = (BasicRestriction<Person, Integer>) restriction;
 
-            soft.assertThat(composite.attribute()).isEqualTo("testAttribute");
-            soft.assertThat(composite.constraint()).isEqualTo(Constraint.between(5,15));
-            soft.assertThat(composite.comparison()).isEqualTo(Operator.BETWEEN);
+            soft.assertThat(basic.attribute()).isEqualTo("testAttribute");
+            soft.assertThat(basic.constraint()).isInstanceOf(Between.class);
+            soft.assertThat(basic.constraint()).isEqualTo(Constraint.between(5,15));
         });
     }
 }

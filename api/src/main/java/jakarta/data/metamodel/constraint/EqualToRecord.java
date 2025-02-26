@@ -17,8 +17,6 @@
  */
 package jakarta.data.metamodel.constraint;
 
-import jakarta.data.metamodel.restrict.Operator;
-
 import java.util.Objects;
 
 record EqualToRecord<T>(T value) implements EqualTo<T> {
@@ -27,8 +25,8 @@ record EqualToRecord<T>(T value) implements EqualTo<T> {
     }
 
     @Override
-    public Operator operator() {
-        return Operator.EQUAL;
+    public NotEqualTo<T> negate() {
+        return NotEqualTo.value(value);
     }
 
     @Override

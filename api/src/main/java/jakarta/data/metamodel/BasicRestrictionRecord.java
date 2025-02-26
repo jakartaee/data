@@ -15,36 +15,28 @@
  *
  *  SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.metamodel.restrict;
+package jakarta.data.metamodel;
 
 // Internal implementation class.
 // The proper way for users to obtain instances is via
 // the static metamodel or Restrict.* methods 
 
 import jakarta.data.metamodel.constraint.Constraint;
+import jakarta.data.metamodel.restrict.BasicRestriction;
 
 import java.util.Objects;
 
-record BasicRestrictionRecord<T>(String attribute, Constraint<?> constraint, boolean negated)
-        implements BasicRestriction<T> {
+record BasicRestrictionRecord<T, V>(String attribute, Constraint<V> constraint)
+        implements BasicRestriction<T, V> {
 
     BasicRestrictionRecord {
         Objects.requireNonNull(attribute, "Attribute must not be null");
         Objects.requireNonNull(constraint, "Constraint must not be null");
     }
 
-    public BasicRestrictionRecord(String attribute, Constraint<?> constraint) {
-        this(attribute, constraint, false);
-    }
-
     @Override
-    public Operator comparison() {
-        return negated ? constraint.operator().negate() : constraint.operator();
-    }
-
-    @Override
-    public BasicRestriction<T> negate() {
-        return new BasicRestrictionRecord<>(attribute, constraint, !negated);
+    public BasicRestriction<T, V> negate() {
+        return new BasicRestrictionRecord<>(attribute, constraint.negate());
     }
 
     /**
@@ -56,12 +48,6 @@ record BasicRestrictionRecord<T>(String attribute, Constraint<?> constraint, boo
      */
     @Override
     public String toString() {
-        final Operator comparison = comparison();
-        final String op = comparison.asQueryLanguage();
-        return switch (comparison.arity()) {
-            case 1 -> attribute + ' ' + op;
-            case 2,3 -> attribute + ' ' + constraint;
-            default -> throw new UnsupportedOperationException("Unexpected arity");
-        };
+        return attribute + ' ' + constraint;
     }
 }
