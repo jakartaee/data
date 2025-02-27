@@ -17,8 +17,6 @@
  */
 package jakarta.data.metamodel.constraint;
 
-import jakarta.data.metamodel.restrict.Operator;
-
 import java.util.Objects;
 
 record BetweenRecord<T extends Comparable<T>>(T lowerBound, T upperBound)
@@ -26,11 +24,6 @@ record BetweenRecord<T extends Comparable<T>>(T lowerBound, T upperBound)
     public BetweenRecord {
         Objects.requireNonNull(lowerBound);
         Objects.requireNonNull(upperBound);
-    }
-
-    @Override
-    public Operator operator() {
-        return Operator.BETWEEN;
     }
 
     @Override
@@ -48,5 +41,10 @@ record BetweenRecord<T extends Comparable<T>>(T lowerBound, T upperBound)
     @Override
     public int hashCode() {
         return Objects.hash(lowerBound, upperBound);
+    }
+
+    @Override
+    public NotBetween<T> negate() {
+        return NotBetween.bounds(lowerBound, upperBound);
     }
 }

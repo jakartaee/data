@@ -18,4 +18,9 @@
 package jakarta.data.metamodel.constraint;
 
 public interface Null<T> extends Constraint<T> {
+
+    @SuppressWarnings("unchecked")
+    static <T> Null<T> instance() {
+        return (Null<T>) NullRecord.INSTANCE;
+    }
 }

@@ -17,32 +17,10 @@
  */
 package jakarta.data.metamodel.constraint;
 
-import java.util.Objects;
+public interface NotNull<T> extends Constraint<T> {
 
-record GreaterThanOrEqualRecord<T extends Comparable<T>>(T bound)
-        implements GreaterThanOrEqual<T> {
-    public GreaterThanOrEqualRecord {
-        Objects.requireNonNull(bound, "Lower bound must not be null");
-    }
-
-    @Override
-    public LessThan<T> negate() {
-        return LessThan.bound(bound);
-    }
-
-    @Override
-    public String toString() {
-        return ">= " + bound.toString();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        return obj instanceof GreaterThanOrEqualRecord<?> that
-            && bound.equals(that.bound);
-    }
-
-    @Override
-    public int hashCode() {
-        return bound.hashCode();
+    @SuppressWarnings("unchecked")
+    static <T> NotNull<T> instance() {
+        return (NotNull<T>) NotNullRecord.INSTANCE;
     }
 }

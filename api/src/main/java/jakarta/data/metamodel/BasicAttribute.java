@@ -18,7 +18,11 @@
 package jakarta.data.metamodel;
 
 import jakarta.data.metamodel.constraint.Constraint;
-import jakarta.data.metamodel.restrict.Restrict;
+import jakarta.data.metamodel.constraint.In;
+import jakarta.data.metamodel.constraint.NotEqualTo;
+import jakarta.data.metamodel.constraint.NotIn;
+import jakarta.data.metamodel.constraint.NotNull;
+import jakarta.data.metamodel.constraint.Null;
 import jakarta.data.metamodel.restrict.Restriction;
 
 import java.util.Set;
@@ -26,37 +30,37 @@ import java.util.Set;
 public interface BasicAttribute<T,V> extends Attribute<T> {
 
     default Restriction<T> equalTo(V value) {
-        return Restrict.equalTo(value, name());
+        return new BasicRestrictionRecord<>(name(), Constraint.equalTo(value));
     }
 
     default Restriction<T> in(Set<V> values) {
         if (values == null || values.isEmpty())
             throw new IllegalArgumentException("values are required");
 
-        return Restrict.in(values, name());
+        return new BasicRestrictionRecord<>(name(), In.values(values));
     }
 
     default Restriction<T> isNull() {
-        return Restrict.isNull(name());
+        return new BasicRestrictionRecord<>(name(), Null.instance());
     }
 
     default Restriction<T> notEqualTo(V value) {
-        return Restrict.notEqualTo(value, name());
+        return new BasicRestrictionRecord<>(name(), NotEqualTo.value(value));
     }
 
     default Restriction<T> notIn(Set<V> values) {
         if (values == null || values.isEmpty())
             throw new IllegalArgumentException("values are required");
 
-        return Restrict.notIn(values, name());
+        return new BasicRestrictionRecord<>(name(), NotIn.values(values));
     }
 
     default Restriction<T> notNull() {
-        return Restrict.notNull(name());
+        return new BasicRestrictionRecord<>(name(), NotNull.instance());
     }
 
     default Restriction<T> restrict(Constraint<V> constraint) {
-        return Restrict.restrict(constraint, name());
+        return new BasicRestrictionRecord<>(name(), constraint);
     }
 
 }

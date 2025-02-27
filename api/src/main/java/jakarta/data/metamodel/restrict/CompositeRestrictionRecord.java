@@ -19,6 +19,8 @@ package jakarta.data.metamodel.restrict;
 
 import java.util.List;
 
+import jakarta.data.metamodel.restrict.CompositeRestriction.Type;
+
 // Internal implementation class.
 // The proper way for users to obtain instances is via
 // the Restrict.any(...) or Restrict.all(...) methods

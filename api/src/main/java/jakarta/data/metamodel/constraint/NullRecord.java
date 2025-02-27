@@ -17,9 +17,9 @@
  */
 package jakarta.data.metamodel.constraint;
 
-import jakarta.data.metamodel.restrict.Operator;
-
 record NullRecord<T>() implements Null<T> {
+    static final NullRecord<?> INSTANCE = new NullRecord<>();
+
     @Override
     public boolean equals(Object obj) {
         return obj instanceof NullRecord;
@@ -29,11 +29,11 @@ record NullRecord<T>() implements Null<T> {
     public int hashCode() {
         return 0;
     }
-    @Override
-    public Operator operator() {
-        return Operator.NULL;
-    }
 
+    @Override
+    public NotNull<T> negate() {
+        return NotNull.instance();
+    }
 
     @Override
     public String toString() {

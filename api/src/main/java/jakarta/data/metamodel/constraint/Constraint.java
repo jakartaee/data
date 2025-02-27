@@ -17,12 +17,9 @@
  */
 package jakarta.data.metamodel.constraint;
 
-import jakarta.data.metamodel.restrict.Operator;
-
 import java.util.Set;
 
 public interface Constraint<T> {
-    Operator operator();
 
     static <T> Constraint<T> equalTo(T value) {
         return new EqualToRecord<>(value);
@@ -61,4 +58,38 @@ public interface Constraint<T> {
         return new BetweenRecord<>(lowerBound, upperBound);
     }
 
+    Constraint<T> negate();
+
+    static <T extends Comparable<T>> Constraint<T> notBetween(T lowerBound, T upperBound) {
+        return NotBetween.bounds(lowerBound, upperBound);
+    }
+
+    static <T> NotEqualTo<T> notEqualTo(T value) {
+        return NotEqualTo.value(value);
+    }
+
+    @SafeVarargs
+    static <T> Constraint<T> notIn(T... values) {
+        return NotIn.values(values);
+    }
+
+    static <T> Constraint<T> notIn(Set<T> values) {
+        return NotIn.values(values);
+    }
+
+    static NotLike notLike(String pattern) {
+        return NotLike.pattern(pattern);
+    }
+
+    static NotLike notLike(String pattern, char charWildcard, char stringWildcard) {
+        return NotLike.pattern(pattern, charWildcard, stringWildcard);
+    }
+
+    static NotLike notLike(String pattern, char charWildcard, char stringWildcard, char escape) {
+        return NotLike.pattern(pattern, charWildcard, stringWildcard, escape);
+    }
+
+    static <T> Constraint<T> notNull() {
+        return NotNull.instance();
+    }
 }
