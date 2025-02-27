@@ -2196,6 +2196,78 @@ public class EntityTests {
     }
 
     @Assertion(id = "539", strategy = """
+            Use a repository method that selects a single entity attribute as
+            an array of long.
+            """)
+    public void testSelectEntityAttributeAsArrayOfLong() {
+
+        long[] found = positives.requiringBits(Short.valueOf((short) 4));
+
+        assertEquals(List.of(8L, 9L, 10L, 11L, 12L, 13L, 14L, 15L),
+                     Arrays.stream(found)
+                                     .sorted()
+                                     .mapToObj(Long::valueOf)
+                                     .collect(Collectors.toList()));
+
+        long[] notFound = positives.requiringBits(Short.valueOf((short) 0));
+
+        assertEquals(0, notFound.length);
+    }
+
+    @Assertion(id = "539", strategy = """
+            Use a repository method that selects a single entity attribute as
+            an Optional.
+            """)
+    public void testSelectEntityAttributeAsOptional() {
+
+        assertEquals(NumberType.COMPOSITE, positives.typeOfNumber(18).orElseThrow());
+
+        assertEquals(NumberType.PRIME, positives.typeOfNumber(19).orElseThrow());
+
+        assertEquals(NumberType.ONE, positives.typeOfNumber(1).orElseThrow());
+
+        assertEquals(false, positives.typeOfNumber(0).isPresent());
+    }
+
+    @Assertion(id = "539", strategy = """
+            Use a repository method that selects a single entity attribute as a Page.
+            """)
+    public void testSelectEntityAttributeAsPage() {
+        final boolean ODD = true;
+
+        PageRequest page4Request = PageRequest.ofPage(4).size(5);
+        Page<Long> page4;
+        try {
+            page4 = positives.withParity(ODD, page4Request);
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable of sorting.
+                return;
+            } else {
+                throw x;
+            }
+        }
+
+        assertEquals(List.of(31L, 33L, 35L, 37L, 39L),
+                     page4.content());
+
+        Page<Long> page3 = positives.withParity(ODD, page4.previousPageRequest());
+
+        assertEquals(List.of(21L, 23L, 25L, 27L, 29L),
+                page3.content());
+
+        Page<Long> page2 = positives.withParity(ODD, page3.previousPageRequest());
+
+        assertEquals(List.of(11L, 13L, 15L, 17L, 19L),
+                page2.content());
+
+        Page<Long> page5 = positives.withParity(ODD, page4.nextPageRequest());
+
+        assertEquals(List.of(41L, 43L, 45L, 47L, 49L),
+                page5.content());
+    }
+
+    @Assertion(id = "539", strategy = """
             Use a repository method that selects a named subset of entity attributes
             to retrieve as an array of records.
             """)
