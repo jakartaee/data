@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
- ~ Copyright (c) 2022, 2024 Contributors to the Eclipse Foundation
+ ~ Copyright (c) 2022, 2025 Contributors to the Eclipse Foundation
  ~
  ~ This program and the accompanying materials are made available under the
  ~ terms of the Eclipse Public License v. 2.0, which is available at
@@ -47,6 +47,10 @@
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.platform</groupId>
+      <artifactId>junit-platform-launcher</artifactId>
     </dependency>
     
     <!-- Data API -->
