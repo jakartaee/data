@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023,2024 Contributors to the Eclipse Foundation
+ * Copyright (c) 2023,2025 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -15,6 +15,8 @@
  */
 package ee.jakarta.tck.data.framework.read.only;
 
+import static jakarta.data.repository.By.ID;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -28,10 +30,13 @@ import jakarta.data.page.CursoredPage;
 import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
 import jakarta.data.repository.Find;
+import jakarta.data.repository.OrderBy;
 import jakarta.data.repository.Param;
 import jakarta.data.repository.Query;
 import jakarta.data.repository.BasicRepository;
+import jakarta.data.repository.By;
 import jakarta.data.repository.Repository;
+import jakarta.data.repository.Select;
 
 /**
  * This is a read only repository that shares the same data (and entity type)
@@ -70,6 +75,14 @@ public interface PositiveIntegers extends BasicRepository<NaturalNumber, Long> {
     @Query("Select id Where isOdd = true and (id = :id or id < :exclusiveMax) Order by id Desc")
     List<Long> oddAndEqualToOrBelow(long id, long exclusiveMax);
 
+    @Find
+    @Select(_NaturalNumber.ID)
+    long[] requiringBits(Short numBitsRequired);
+
+    @Find
+    @Select(_NaturalNumber.NUMTYPE)
+    Optional<NumberType> typeOfNumber(@By(ID) long num);
+
     // Per the spec: The 'and' operator has higher precedence than 'or'.
     @Query("WHERE numBitsRequired = :bits OR numType = :type AND id < :xmax")
     CursoredPage<NaturalNumber> withBitCountOrOfTypeAndBelow(@Param("bits") short bitsRequired,
@@ -78,4 +91,9 @@ public interface PositiveIntegers extends BasicRepository<NaturalNumber, Long> {
                                                              Sort<NaturalNumber> sort1,
                                                              Sort<NaturalNumber> sort2,
                                                              PageRequest pageRequest);
+
+    @Find
+    @Select(_NaturalNumber.ID)
+    @OrderBy(_NaturalNumber.ID)
+    Page<Long> withParity(boolean isOdd, PageRequest pageReq);
 }
