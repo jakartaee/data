@@ -2216,6 +2216,42 @@ public class EntityTests {
 
     @Assertion(id = "539", strategy = """
             Use a repository method that selects a single entity attribute as
+            an List of long. The entity type is identified by the Find annotation.
+            """)
+    public void testSelectEntityAttributeAsListOfLong() {
+
+        List<Long> found = shared.withTruncatedSqrt(7);
+
+        assertEquals(List.of(49L, 50L, 51L, 52L, 53L, 54L, 55L, 56L,
+                             57L, 58L, 59L, 60L, 61L, 62L, 63L),
+                     found.stream()
+                                     .sorted()
+                                     .collect(Collectors.toList()));
+
+        assertEquals(List.of(), shared.withTruncatedSqrt(0));
+    }
+
+    @Assertion(id = "539", strategy = """
+            Use a repository method that selects a single entity attribute as
+            an int value. The entity type is identified by the Find annotation.
+            """)
+    public void testSelectEntityAttributeAsOne() {
+
+        assertEquals(30, shared.valueOf("1e"));
+
+        assertEquals(42, shared.valueOf("2a"));
+
+        try {
+            int value = shared.valueOf("-4c");
+            fail("Should not be able to find a value that is not in the database: " +
+                 value);
+        } catch (EmptyResultException x) {
+            // expected
+        }
+    }
+
+    @Assertion(id = "539", strategy = """
+            Use a repository method that selects a single entity attribute as
             an Optional.
             """)
     public void testSelectEntityAttributeAsOptional() {
@@ -2233,12 +2269,12 @@ public class EntityTests {
             Use a repository method that selects a single entity attribute as a Page.
             """)
     public void testSelectEntityAttributeAsPage() {
-        final boolean ODD = true;
+        final boolean odd = true;
 
         PageRequest page4Request = PageRequest.ofPage(4).size(5);
         Page<Long> page4;
         try {
-            page4 = positives.withParity(ODD, page4Request);
+            page4 = positives.withParity(odd, page4Request);
         } catch (UnsupportedOperationException x) {
             if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
                 // Column and Key-Value databases might not be capable of sorting.
@@ -2251,20 +2287,38 @@ public class EntityTests {
         assertEquals(List.of(31L, 33L, 35L, 37L, 39L),
                      page4.content());
 
-        Page<Long> page3 = positives.withParity(ODD, page4.previousPageRequest());
+        Page<Long> page3 = positives.withParity(odd, page4.previousPageRequest());
 
         assertEquals(List.of(21L, 23L, 25L, 27L, 29L),
                 page3.content());
 
-        Page<Long> page2 = positives.withParity(ODD, page3.previousPageRequest());
+        Page<Long> page2 = positives.withParity(odd, page3.previousPageRequest());
 
         assertEquals(List.of(11L, 13L, 15L, 17L, 19L),
                 page2.content());
 
-        Page<Long> page5 = positives.withParity(ODD, page4.nextPageRequest());
+        Page<Long> page5 = positives.withParity(odd, page4.nextPageRequest());
 
         assertEquals(List.of(41L, 43L, 45L, 47L, 49L),
                 page5.content());
+    }
+
+    @Assertion(id = "539", strategy = """
+            Use a repository method that selects a single entity attribute as
+            a Stream of long. The entity type is identified by the Find annotation.
+            """)
+    public void testSelectEntityAttributeAsStreamOfLong() {
+
+        Stream<Long> found = shared.withBitRequirementOf(Short.valueOf((short) 5));
+
+        assertEquals(List.of(16L, 17L, 18L, 19L, 20L, 21L, 22L, 23L,
+                             24L, 25L, 26L, 27L, 28L, 29L, 30L, 31L),
+                     found
+                                     .sorted()
+                                     .collect(Collectors.toList()));
+
+        assertEquals(0L,
+                     shared.withBitRequirementOf(Short.valueOf((short) -1)).count());
     }
 
     @Assertion(id = "539", strategy = """
