@@ -237,7 +237,7 @@ import java.util.Set;
  * <br>{@code int} and {@link Integer}
  * <br>{@code long} and {@link Long}
  * <br>{@code short} and {@link Short}</td>
- * <td></td></tr>
+ * <td>Boolean values are sorted such that {@code false} &lt; {@code true}.</td></tr>
  *
  * <tr style="vertical-align: top"><td>Binary data</td>
  * <td>{@code byte[]}</td>
