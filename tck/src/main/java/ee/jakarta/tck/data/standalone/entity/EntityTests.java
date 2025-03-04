@@ -54,6 +54,7 @@ import ee.jakarta.tck.data.framework.read.only._NaturalNumber;
 import ee.jakarta.tck.data.framework.read.only.AsciiCharacter;
 import ee.jakarta.tck.data.framework.read.only.AsciiCharacters;
 import ee.jakarta.tck.data.framework.read.only.AsciiCharactersPopulator;
+import ee.jakarta.tck.data.framework.read.only.CardinalNumber;
 import ee.jakarta.tck.data.framework.read.only.CustomRepository;
 import ee.jakarta.tck.data.framework.read.only.NaturalNumber;
 import ee.jakarta.tck.data.framework.read.only.NaturalNumbers;
@@ -2193,6 +2194,119 @@ public class EntityTests {
         });
 
         assertEquals(50, evens.size()); // half of numbers 1 to 100
+    }
+
+    @Assertion(id = "539", strategy = """
+            Use a repository method that returns an array of a record type,
+            where record components are annotated to select a subset of entity
+            attributes.
+            """)
+    public void testReturnArrayOfRecordThatSelectsAttributes() {
+        CardinalNumber[] found;
+
+        found = numbers.cardinalNumbers(Short.valueOf((short) 5));
+
+        assertEquals(List.of("16 COMPOSITE (5 bits)",
+                             "17 PRIME (5 bits)",
+                             "18 COMPOSITE (5 bits)",
+                             "19 PRIME (5 bits)",
+                             "20 COMPOSITE (5 bits)",
+                             "21 COMPOSITE (5 bits)",
+                             "22 COMPOSITE (5 bits)",
+                             "23 PRIME (5 bits)",
+                             "24 COMPOSITE (5 bits)",
+                             "25 COMPOSITE (5 bits)",
+                             "26 COMPOSITE (5 bits)",
+                             "27 COMPOSITE (5 bits)",
+                             "28 COMPOSITE (5 bits)",
+                             "29 PRIME (5 bits)",
+                             "30 COMPOSITE (5 bits)",
+                             "31 PRIME (5 bits)"),
+                     Arrays.stream(found)
+                             .map(CardinalNumber::toString)
+                             .sorted()
+                             .collect(Collectors.toList()));
+
+        found = numbers.cardinalNumbers(Short.valueOf((short) 0));
+
+        assertEquals(0, found.length);
+    }
+
+    @Assertion(id = "539", strategy = """
+            Use a repository method that returns an Optional of a record type,
+            where record components are annotated to select a subset of entity
+            attributes.
+            """)
+    public void testReturnOptionalOfRecordThatSelectsAttributes() {
+        Optional<CardinalNumber> found;
+
+        found = numbers.cardinalNumberOptional(79);
+
+        assertEquals(true, found.isPresent());
+        assertEquals(79L, found.get().value());
+        assertEquals(Short.valueOf((short) 7), found.get().numBitsRequired());
+        assertEquals(NumberType.PRIME.ordinal(), found.get().numType());
+
+        found = numbers.cardinalNumberOptional(0); // database only has 1 to 100
+
+        assertEquals(false, found.isPresent());
+    }
+
+    @Assertion(id = "539", strategy = """
+            Use a repository method that returns a Page of a record type,
+            where record components are annotated to select a subset of entity
+            attributes.
+            """)
+    public void testReturnPageOfRecordThatSelectsAttributes() {
+        Page<CardinalNumber> page1;
+
+        try {
+            page1 = numbers.cardinalNumberPage(9L, PageRequest.ofSize(7));
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable of sorting.
+                return;
+            } else {
+                throw x;
+            }
+        }
+
+        assertEquals(List.of("83 PRIME (7 bits)",
+                             "89 PRIME (7 bits)",
+                             "97 PRIME (7 bits)",
+                             "81 COMPOSITE (7 bits)",
+                             "82 COMPOSITE (7 bits)",
+                             "84 COMPOSITE (7 bits)",
+                             "85 COMPOSITE (7 bits)"),
+                     page1.stream()
+                             .map(CardinalNumber::toString)
+                             .collect(Collectors.toList()));
+
+        Page<CardinalNumber> page2 = numbers
+                .cardinalNumberPage(9L, page1.nextPageRequest());
+
+        assertEquals(List.of("86 COMPOSITE (7 bits)",
+                             "87 COMPOSITE (7 bits)",
+                             "88 COMPOSITE (7 bits)",
+                             "90 COMPOSITE (7 bits)",
+                             "91 COMPOSITE (7 bits)",
+                             "92 COMPOSITE (7 bits)",
+                             "93 COMPOSITE (7 bits)"),
+                     page2.stream()
+                             .map(CardinalNumber::toString)
+                             .collect(Collectors.toList()));
+
+        Page<CardinalNumber> page3 = numbers
+                .cardinalNumberPage(9L, page2.nextPageRequest());
+
+        assertEquals(List.of("94 COMPOSITE (7 bits)",
+                             "95 COMPOSITE (7 bits)",
+                             "96 COMPOSITE (7 bits)",
+                             "98 COMPOSITE (7 bits)",
+                             "99 COMPOSITE (7 bits)"),
+                     page3.stream()
+                             .map(CardinalNumber::toString)
+                             .collect(Collectors.toList()));
     }
 
     @Assertion(id = "539", strategy = """

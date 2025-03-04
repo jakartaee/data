@@ -45,6 +45,20 @@ import ee.jakarta.tck.data.framework.read.only.NaturalNumber.NumberType;
 @Repository
 public interface NaturalNumbers extends BasicRepository<NaturalNumber, Long>, IdOperations {
 
+    @Find
+    Optional<CardinalNumber> cardinalNumberOptional(int id);
+
+    @Find
+    @OrderBy(_NaturalNumber.NUMTYPEORDINAL)
+    @OrderBy(_NaturalNumber.NUMBITSREQUIRED)
+    @OrderBy(_NaturalNumber.ID)
+    Page<CardinalNumber> cardinalNumberPage(
+            @By(_NaturalNumber.FLOOROFSQUAREROOT) long sqrtFloor,
+            PageRequest pageReq);
+
+    @Find
+    CardinalNumber[] cardinalNumbers(@By(_NaturalNumber.NUMBITSREQUIRED) Short bits);
+
     long countAll();
 
     CursoredPage<NaturalNumber> findByFloorOfSquareRootOrderByIdAsc(long sqrtFloor,
