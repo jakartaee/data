@@ -1114,8 +1114,7 @@ import java.util.Set;
  *
  * <h2>Jakarta Concurrency</h2>
  *
- * <p>When Jakarta Concurrency is available, a repository method that returns
- * {@code void}, {@link CompletionStage}, or {@link CompletableFuture} can be
+ * <p>When Jakarta Concurrency is available, an asynchronous repository method may be
  * annotated with {@code jakarta.enterprise.concurrent.Asynchronous} to cause the
  * method to run asynchronously to the method invoker, as outlined by the section
  * titled Asynchronous Methods in the Jakarta Concurrency specification.
