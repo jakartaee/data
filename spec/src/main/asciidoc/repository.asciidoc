@@ -820,7 +820,7 @@ A repository method that does not fit any of the above patterns and is not handl
 
 === Asynchronous repositories
 
-An _asynchronous repository method_ is a repository method which returns an object representing a value which will be eventually obtained from the database, but which might not yet be available.
+An _asynchronous repository method_ is a repository method which returns an object representing a value which will eventually be obtained from the database, but which might not yet be available.
 An asynchronous repository method is permitted to return such an object immediately, and access the database asynchronously.
 
 An asynchronous repository method has a signature of form:
