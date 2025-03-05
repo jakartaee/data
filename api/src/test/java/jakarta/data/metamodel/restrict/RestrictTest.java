@@ -239,12 +239,13 @@ class RestrictTest {
 
     @Test
     void shouldIgnoreCase() {
-        TextRestriction<Employee> restriction = _Employee.position.contains("SOFTWARE")
-                .ignoreCase();
+        // TODO TextRestriction.ignoreCase vs TextAttribute.upper/lowercased
+        TextRestriction<Employee> restriction = _Employee.position.contains("SOFTWARE");
+        //        .ignoreCase();
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.attribute()).isEqualTo(_Employee.POSITION);
-            soft.assertThat(restriction.isCaseSensitive()).isFalse();
+            //soft.assertThat(restriction.isCaseSensitive()).isFalse();
             soft.assertThat(restriction.constraint()).isEqualTo(Like.substring("SOFTWARE"));
         });
     }

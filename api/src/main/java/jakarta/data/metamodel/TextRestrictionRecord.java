@@ -22,7 +22,7 @@ import jakarta.data.metamodel.restrict.TextRestriction;
 
 import java.util.Objects;
 
-record TextRestrictionRecord<T>(String attribute, Constraint<String> constraint, boolean isCaseSensitive)
+record TextRestrictionRecord<T>(String attribute, Constraint<String> constraint)
         implements TextRestriction<T> {
 
     TextRestrictionRecord {
@@ -30,30 +30,20 @@ record TextRestrictionRecord<T>(String attribute, Constraint<String> constraint,
         Objects.requireNonNull(constraint, "Constraint must not be null");
     }
 
-    TextRestrictionRecord(String attribute, Constraint<String> constraint) {
-        this(attribute, constraint, true);
-    }
-
     @Override
     public TextRestrictionRecord<T> negate() {
-        return new TextRestrictionRecord<>(attribute, constraint.negate(), isCaseSensitive);
-    }
-
-    @Override
-    public TextRestrictionRecord<T> ignoreCase() {
-        return new TextRestrictionRecord<>(attribute, constraint, false);
+        return new TextRestrictionRecord<>(attribute, constraint.negate());
     }
 
     /**
      * Textual representation of a text restriction.
      * For example,
-     * <pre>title LIKE '%JAKARTA EE%' IGNORE CASE</pre>
+     * <pre>title LIKE '%JAKARTA EE%'</pre>
      *
-     * @return textual representation of a basic restriction.
+     * @return textual representation of a text restriction.
      */
     @Override
     public String toString() {
-        return attribute + ' ' + constraint +
-                (isCaseSensitive ? "" : " IGNORE CASE");
+        return attribute + ' ' + constraint;
     }
 }
