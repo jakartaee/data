@@ -17,19 +17,22 @@
  */
 package jakarta.data.metamodel;
 
+import java.util.Objects;
+
 import jakarta.data.Sort;
+import jakarta.data.metamodel.impl.SortableAttributeRecord;
 
 /**
- * Represents a sortable entity attribute in the {@link StaticMetamodel}.
- * Entity attribute types that are sortable include:
+ * <p>Represents a entity attribute in the {@link StaticMetamodel}
+ * that is sortable, but not comparable.</p>
  *
- * <ul>
- * <li>numeric attributes</li>
- * <li>enum attributes</li>
- * <li>time attributes</li>
- * <li>boolean attributes</li>
- * <li>{@linkplain TextAttribute textual attributes}</li>
- * </ul>
+ *<p>A {@code SortableAttribute} may be used to sort query results.
+ * When an attribute type (or if a primitive, its wrapper class)
+ * is a subtype of {@link java.lang.Comparable},
+ * use of {@link ComparableAttribute} is usually preferred, since a
+ * {@code SortableAttribute} cannot be used in order-based query
+ * restrictions. Direct use of {@code SortableAttribute} is appropriate 
+ * for attributes of type {@code byte[]}.</p>
  *
  * @param <T> entity class of the static metamodel.
  */
@@ -49,4 +52,24 @@ public interface SortableAttribute<T> extends Attribute<T> {
      */
     Sort<T> desc();
 
+    /**
+     * <p>Creates a static metamodel {@code SortableAttribute} representing the
+     * entity attribute with the specified name.</p>
+     *
+     * @param <T> entity class of the static metamodel.
+     * @param <V> type of entity attribute (or wrapper type if primitive).
+     * @param entityClass   the entity class.
+     * @param name          the name of the entity attribute.
+     * @param attributeType type of the entity attribute.
+     * @return instance of {@code SortableAttribute}.
+     */
+    static <T, V> SortableAttribute<T> of(Class<T> entityClass,
+                                          String name,
+                                          Class<V> attributeType) {
+        Objects.requireNonNull(entityClass, "entity class is required");
+        Objects.requireNonNull(name, "entity attribute name is required");
+        Objects.requireNonNull(attributeType, "entity attribute type is required");
+
+        return new SortableAttributeRecord<>(name);
+    }
 }

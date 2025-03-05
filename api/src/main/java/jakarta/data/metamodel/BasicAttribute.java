@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023,2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2025 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,8 +21,16 @@ import jakarta.data.metamodel.constraint.Constraint;
 import jakarta.data.metamodel.restrict.Restrict;
 import jakarta.data.metamodel.restrict.Restriction;
 
+import java.util.Objects;
 import java.util.Set;
 
+/**
+ * <p>Represents an entity attribute in the {@link StaticMetamodel}
+ * that is neither sortable nor comparable.</p>
+ *
+ * @param <T> entity class of the static metamodel.
+ * @param <V> type of entity attribute (or wrapper type if primitive).
+ */
 public interface BasicAttribute<T,V> extends Attribute<T> {
 
     default Restriction<T> equalTo(V value) {
@@ -55,8 +63,38 @@ public interface BasicAttribute<T,V> extends Attribute<T> {
         return Restrict.notNull(name());
     }
 
+    /**
+     * <p>Creates a static metamodel {@code BasicAttribute} representing the
+     * entity attribute with the specified name.</p>
+     *
+     * @param <T> entity class of the static metamodel.
+     * @param <V> type of entity attribute (or wrapper type if primitive).
+     * @param entityClass   the entity class.
+     * @param name          the name of the entity attribute.
+     * @param attributeType type of the entity attribute.
+     * @return instance of {@code BasicAttribute}.
+     */
+    static <T,V> BasicAttribute<T,V> of(Class<T> entityClass,
+                                        String name,
+                                        Class<V> attributeType) {
+        Objects.requireNonNull(entityClass, "entity class is required");
+        Objects.requireNonNull(name, "entity attribute name is required");
+        Objects.requireNonNull(attributeType, "entity attribute type is required");
+
+        return new BasicAttributeRecord<>(name);
+    }
+
     default Restriction<T> restrict(Constraint<V> constraint) {
         return Restrict.restrict(constraint, name());
     }
+}
 
+/**
+ * Hidden internal implementation of BasicAttribute.
+ *
+ * @param <T> entity class of the static metamodel.
+ * @param <V> type of entity attribute (or wrapper type if primitive).
+ */
+record BasicAttributeRecord<T,V>(String name)
+    implements BasicAttribute<T,V> {
 }

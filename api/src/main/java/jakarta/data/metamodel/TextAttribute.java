@@ -17,8 +17,11 @@
  */
 package jakarta.data.metamodel;
 
+import java.util.Objects;
+
 import jakarta.data.Sort;
 import jakarta.data.metamodel.constraint.Like;
+import jakarta.data.metamodel.impl.TextAttributeRecord;
 import jakarta.data.metamodel.restrict.Restrict;
 import jakarta.data.metamodel.restrict.TextRestriction;
 
@@ -95,6 +98,22 @@ public interface TextAttribute<T> extends ComparableAttribute<T,String> {
 
     default TextRestriction<T> notEndsWith(String suffix) {
         return Restrict.notEndsWith(suffix, name());
+    }
+
+    /**
+     * <p>Creates a static metamodel {@code TextAttribute} representing the
+     * entity attribute with the specified name.</p>
+     *
+     * @param <T> entity class of the static metamodel.
+     * @param entityClass the entity class.
+     * @param name        the name of the entity attribute.
+     * @return instance of {@code TextAttribute}.
+     */
+    static <T> TextAttribute<T> of(Class<T> entityClass, String name) {
+        Objects.requireNonNull(entityClass, "entity class is required");
+        Objects.requireNonNull(name, "entity attribute name is required");
+
+        return new TextAttributeRecord<>(name);
     }
 
     default TextRestriction<T> startsWith(String prefix) {

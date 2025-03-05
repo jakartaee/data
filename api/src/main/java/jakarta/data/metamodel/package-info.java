@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023,2024 Contributors to the Eclipse Foundation
+ * Copyright (c) 2023,2025 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,9 +39,12 @@
  *     String NAME = "name";
  *     String PRICE = "price";
  *
- *     SortableAttribute&lt;Product&gt; id = new SortableAttributeRecord&lt;&gt;(ID);
- *     TextAttribute&lt;Product&gt; name = new TextAttributeRecord&lt;&gt;(NAME);
- *     SortableAttribute&lt;Product&gt; price = new SortableAttributeRecord&lt;&gt;(PRICE);
+ *     ComparableAttribute&lt;Product,Long&gt; id = ComparableAttribute.of(
+ *             Product.class, ID, long.class);
+ *     TextAttribute&lt;Product&gt; name = TextAttribute.of(
+ *             Product.class, NAME);
+ *     ComparableAttribute&lt;Product,Float&gt; price = ComparableAttribute.of(
+ *             Product.class, PRICE, float.class);
  * }
  *
  * ...
