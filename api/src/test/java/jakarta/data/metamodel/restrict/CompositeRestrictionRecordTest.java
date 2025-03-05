@@ -39,11 +39,16 @@ class CompositeRestrictionRecordTest {
         String NAME = "name";
         String TITLEOFFIRSTBOOK = "titleOfFirstBook";
 
-        ComparableAttribute<Author, Integer> age = new ComparableAttributeRecord<>(AGE);
-        TextAttribute<Author> firstName = new TextAttributeRecord<>(FIRSTNAME);
-        TextAttribute<Author> lastName = new TextAttributeRecord<>(LASTNAME);
-        TextAttribute<Author> name = new TextAttributeRecord<>(NAME);
-        TextAttribute<Author> titleOfFirstBook = new TextAttributeRecord<>(TITLEOFFIRSTBOOK);
+        ComparableAttribute<Author, Integer> age = ComparableAttribute.of(
+                Author.class, AGE, int.class);
+        TextAttribute<Author> firstName = TextAttribute.of(
+                Author.class, FIRSTNAME);
+        TextAttribute<Author> lastName = TextAttribute.of(
+                Author.class, LASTNAME);
+        TextAttribute<Author> name = TextAttribute.of(
+                Author.class, NAME);
+        TextAttribute<Author> titleOfFirstBook = TextAttribute.of(
+                Author.class, TITLEOFFIRSTBOOK);
     }
 
     // A mock entity class for tests
