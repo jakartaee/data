@@ -13,11 +13,14 @@ where_clause : 'WHERE' conditional_expression;
 set_clause : 'SET' update_item (',' update_item)*;
 update_item : state_field_path_expression '=' (scalar_expression | 'NULL');
 
-select_clause : 'SELECT' select_item;
+select_clause : 'SELECT' (select_item | select_items);
 select_item
     : state_field_path_expression
     | id_expression
     | aggregate_expression
+    ;
+select_items
+    : state_field_path_expression {, state_field_path_expression}+
     ;
 
 orderby_clause : 'ORDER' 'BY' orderby_item (',' orderby_item)*;
