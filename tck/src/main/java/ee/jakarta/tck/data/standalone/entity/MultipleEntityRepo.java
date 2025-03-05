@@ -15,12 +15,21 @@
  */
 package ee.jakarta.tck.data.standalone.entity;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Stream;
 
+import ee.jakarta.tck.data.framework.read.only.AsciiCharacter;
+import ee.jakarta.tck.data.framework.read.only.NaturalNumber;
+import ee.jakarta.tck.data.framework.read.only._AsciiCharacter;
+import ee.jakarta.tck.data.framework.read.only._NaturalNumber;
+import jakarta.data.repository.By;
+import jakarta.data.repository.Find;
 import jakarta.data.repository.Insert;
 import jakarta.data.repository.Query;
 import jakarta.data.repository.Repository;
+import jakarta.data.repository.Select;
 
 /**
  * A repository that performs operations on different types of entities.
@@ -52,6 +61,18 @@ public interface MultipleEntityRepo { // Do not add a primary entity type.
 
     @Query("UPDATE Coordinate SET x = :newX, y = y / :yDivisor WHERE id = :id")
     int move(UUID id, double newX, float yDivisor);
+
+    @Find(AsciiCharacter.class)
+    @Select(_AsciiCharacter.NUMERICVALUE)
+    int valueOf(String hexadecimal);
+
+    @Find(NaturalNumber.class)
+    @Select("id")
+    Stream<Long> withBitRequirementOf(Short numBitsRequired);
+
+    @Find(NaturalNumber.class)
+    @Select("id")
+    List<Long> withTruncatedSqrt(@By(_NaturalNumber.FLOOROFSQUAREROOT) long floor);
 
     @Query("WHERE id = ?1")
     Optional<Coordinate> withUUID(UUID id);
