@@ -415,8 +415,8 @@ The `where` clause is always optional. When it is missing, there is no restricti
 
 The `select` clause, with syntax given by `select_clause`, specifies one or more path expressions which determine the values returned by the query. Each path expression is evaluated for each record which satisfies the restriction imposed by the `where` clause, as specified in <<Path expressions>>, and a tuple containing the resulting values is added to the query results.
 
-NOTE: When a `select` clause contains more than one path expression, the `@Select` annotation is used to map the elements of the tuple to constructor parameters of the query return type.
-When the `select` clause contains only one path expression, the `@Select` annotation is not used, and the query directly returns the values of the path expression.
+NOTE: When a `select` clause contains more than one item, the query return type must be a Java `record` type, and the elements of the tuple are repackaged as an instance of the query return type by calling a constructor of the `record`, passing the elements in the same order they occur in the `select` list.
+When the `select` clause contains only one item, the query directly returns the values of the path expression.
 
 Alternatively, the `select` clause may contain either:
 
