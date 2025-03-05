@@ -36,6 +36,8 @@ import jakarta.data.repository.Save;
 import jakarta.data.repository.Select;
 import jakarta.data.repository.Update;
 
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionStage;
 import java.util.Set;
 
 /**
@@ -1109,6 +1111,39 @@ import java.util.Set;
  * {@code @Transactional} is called in an environment where both Jakarta Transactions and
  * Jakarta CDI are available, the semantics of this annotation are observed during execution
  * of the repository operation.</p>
+ *
+ * <h2>Jakarta Concurrency</h2>
+ *
+ * <p>When Jakarta Concurrency is available, a repository method that returns
+ * {@code void}, {@link CompletionStage}, or {@link CompletableFuture} can be
+ * annotated with {@code jakarta.enterprise.concurrent.Asynchronous} to cause the
+ * method to run asynchronously to the method invoker, as outlined by the section
+ * titled Asynchronous Methods in the Jakarta Concurrency specification.
+ * A {@code CompletionStage} or {@code CompletableFuture} return type must be
+ * parameterized with a type that would be a valid return type for a
+ * non-asynchronous repository method.</p>
+ *
+ * <p>For example, in the following example, the {@code setPriceAsync} method
+ * immediately returns a {@code CompletableFuture<Integer>} to the caller.
+ * When the {@code UPDATE} finishes, the {@code CompletableFuture} completes
+ * with a value of {@code 1} or {@code 0} depending on whether a matching record
+ * is found in the database. If an error occurs, the {@code CompletableFuture}
+ * {@linkplain CompletableFuture#completeExceptionally completes exceptionally}
+ * with the error.</p>
+ *
+ * <pre>
+ * import jakarta.data.*;
+ * import jakarta.enterprise.concurrent.Asynchronous;
+ * import java.util.concurrent.CompletableFuture;
+ *
+ * &#64;Repository
+ * public interface Products extends BasicRepository&lt;Product, Long&gt; {
+ *
+ *     &#64;Asynchronous
+ *     &#64;Query("UPDATE Product SET price=?1 WHERE id=?2")
+ *     CompletableFuture&lt;Integer&gt; setPriceAsync(float newPrice, Long productId);
+ * }
+ * </pre>
  */
 module jakarta.data {
     exports jakarta.data;
