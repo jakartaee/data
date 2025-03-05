@@ -38,10 +38,14 @@ class RestrictTest {
         String POSITION = "position";
         String YEARHIRED = "yearHired";
 
-        ComparableAttribute<Employee, Integer> badgeNum = ComparableAttribute.of(BADGENUM);
-        TextAttribute<Employee> name = TextAttribute.of(NAME);
-        TextAttribute<Employee> position = TextAttribute.of(POSITION);
-        ComparableAttribute<Employee, Integer> yearHired = ComparableAttribute.of(YEARHIRED);
+        ComparableAttribute<Employee, Integer> badgeNum = ComparableAttribute.of(
+                Employee.class, BADGENUM, int.class);
+        TextAttribute<Employee> name = TextAttribute.of(
+                Employee.class, NAME);
+        TextAttribute<Employee> position = TextAttribute.of(
+                Employee.class, POSITION);
+        ComparableAttribute<Employee, Integer> yearHired = ComparableAttribute.of(
+                Employee.class, YEARHIRED, int.class);
     }
 
     // Mock entity class for tests

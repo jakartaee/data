@@ -105,10 +105,12 @@ public interface TextAttribute<T> extends ComparableAttribute<T,String> {
      * entity attribute with the specified name.</p>
      *
      * @param <T> entity class of the static metamodel.
-     * @param name the name of the entity attribute.
+     * @param entityClass the entity class.
+     * @param name        the name of the entity attribute.
      * @return instance of {@code TextAttribute}.
      */
-    static <T> TextAttribute<T> of(String name) {
+    static <T> TextAttribute<T> of(Class<T> entityClass, String name) {
+        Objects.requireNonNull(entityClass, "entity class is required");
         Objects.requireNonNull(name, "entity attribute name is required");
 
         return new TextAttributeRecord<>(name);

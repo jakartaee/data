@@ -57,11 +57,18 @@ public interface SortableAttribute<T> extends Attribute<T> {
      * entity attribute with the specified name.</p>
      *
      * @param <T> entity class of the static metamodel.
-     * @param name the name of the entity attribute.
+     * @param <V> type of entity attribute (or wrapper type if primitive).
+     * @param entityClass   the entity class.
+     * @param name          the name of the entity attribute.
+     * @param attributeType type of the entity attribute.
      * @return instance of {@code SortableAttribute}.
      */
-    static <T> SortableAttribute<T> of(String name) {
+    static <T, V> SortableAttribute<T> of(Class<T> entityClass,
+                                          String name,
+                                          Class<V> attributeType) {
+        Objects.requireNonNull(entityClass, "entity class is required");
         Objects.requireNonNull(name, "entity attribute name is required");
+        Objects.requireNonNull(attributeType, "entity attribute type is required");
 
         return new SortableAttributeRecord<>(name);
     }

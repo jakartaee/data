@@ -400,7 +400,7 @@ When an application programmer writes a static metamodel class for an entity by 
 
 The static metamodel class is not required to include a field for every persistent attribute of the entity.
 
-A convenience implementation of each subinterface of `Attribute` is provided by the `.of(name)` method of each subinterface.
+A convenience implementation of each subinterface of `Attribute` is provided by the `.of` method of each subinterface.
 
 ==== Compile-time Annotation Processor Requirements for a Metamodel Class
 
@@ -453,9 +453,12 @@ public interface _Product {
   String NAME = "name";
   String PRICE = "price";
 
-  ComparableAttribute<Product,Long> id = ComparableAttribute.of(ID);
-  TextAttribute<Product> name = TextAttribute.of(NAME);
-  ComparableAttribute<Product,Float> price = ComparableAttribute.of(PRICE);
+  ComparableAttribute<Product,Long> id = ComparableAttribute.of(
+          Product.class, ID, long.class);
+  TextAttribute<Product> name = TextAttribute.of(
+          Product.class, NAME);
+  ComparableAttribute<Product,Float> price = ComparableAttribute.of(
+          Product.class, PRICE, float.class);
 }
 ----
 

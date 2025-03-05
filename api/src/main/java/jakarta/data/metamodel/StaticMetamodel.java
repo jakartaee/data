@@ -87,11 +87,16 @@ import jakarta.data.Sort;
  *     String NAME_LAST = "name.last";
  *     String YEAROFBIRTH = "yearOfBirth";
  *
- *     ComparableAttribute&lt;Person,Long&gt; ssn = ComparableAttribute.of(SSN);
- *     BasicAttribute&lt;Person,Name&gt; name = BasicAttribute.of(NAME);
- *     TextAttribute&lt;Person&gt; name_first = TextAttribute.of(NAME_FIRST);
- *     TextAttribute&lt;Person&gt; name_last = TextAttribute.of(NAME_LAST);
- *     ComparableAttribute&lt;Person,Integer&gt; yearOfBirth = ComparableAttribute.of(YEAROFBIRTH);
+ *     ComparableAttribute&lt;Person,Long&gt; ssn = ComparableAttribute.of(
+ *             Person.class, SSN, long.class);
+ *     BasicAttribute&lt;Person,Name&gt; name = BasicAttribute.of(
+ *             Person.class, NAME, Name.class);
+ *     TextAttribute&lt;Person&gt; name_first = TextAttribute.of(
+ *             Person.class, NAME_FIRST);
+ *     TextAttribute&lt;Person&gt; name_last = TextAttribute.of(
+ *             Person.class, NAME_LAST);
+ *     ComparableAttribute&lt;Person,Integer&gt; yearOfBirth = ComparableAttribute.of(
+ *             Person.class, YEAROFBIRTH, int.class);
  * }
  * </pre>
  *

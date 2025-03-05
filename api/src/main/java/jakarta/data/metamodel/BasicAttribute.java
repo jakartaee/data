@@ -69,11 +69,17 @@ public interface BasicAttribute<T,V> extends Attribute<T> {
      *
      * @param <T> entity class of the static metamodel.
      * @param <V> type of entity attribute (or wrapper type if primitive).
-     * @param name the name of the entity attribute.
+     * @param entityClass   the entity class.
+     * @param name          the name of the entity attribute.
+     * @param attributeType type of the entity attribute.
      * @return instance of {@code BasicAttribute}.
      */
-    static <T,V> BasicAttribute<T,V> of(String name) {
+    static <T,V> BasicAttribute<T,V> of(Class<T> entityClass,
+                                        String name,
+                                        Class<V> attributeType) {
+        Objects.requireNonNull(entityClass, "entity class is required");
         Objects.requireNonNull(name, "entity attribute name is required");
+        Objects.requireNonNull(attributeType, "entity attribute type is required");
 
         return new BasicAttributeRecord<>(name);
     }
