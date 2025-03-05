@@ -833,7 +833,7 @@ where:
 - `R m(P1 p1, P2 p2, ...)` is a legal repository method signature according to the previous sections of this chapter, or, in the special case that `R` is the type `java.lang.Void`, `void m(P1 p1, P2 p2, ...)` is a legal repository method signature according to the previous sections of this chapter, and
 - `F` is a parameterized type representing a value which might not yet have been computed and which is supported by the Jakarta Data provider.
 
-NOTE: Every Jakarta Data provider is encouraged, but not required, to support asynchronous repository methods returning `java.util.CompletionStage`.
+NOTE: Every Jakarta Data provider is encouraged, but not required, to support asynchronous repository methods returning `java.util.concurrent.CompletionStage`.
 
 For example, the following is an asynchronous parameter-based query method:
 
