@@ -15,13 +15,14 @@
  *
  *  SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.metamodel.restrict;
+package jakarta.data.metamodel;
 
-import jakarta.data.metamodel.constraint.Like;
+import jakarta.data.metamodel.constraint.Constraint;
+import jakarta.data.metamodel.restrict.TextRestriction;
 
 import java.util.Objects;
 
-record TextRestrictionRecord<T>(String attribute, Like constraint, boolean negated)
+record TextRestrictionRecord<T>(String attribute, Constraint<String> constraint)
         implements TextRestriction<T> {
 
     TextRestrictionRecord {
@@ -29,31 +30,17 @@ record TextRestrictionRecord<T>(String attribute, Like constraint, boolean negat
         Objects.requireNonNull(constraint, "Constraint must not be null");
     }
 
-    public TextRestrictionRecord(String attribute, Like range) {
-        this(attribute, range, false);
-    }
-
-    @Override
-    public Operator comparison() {
-        return negated ? constraint.operator().negate() : constraint.operator();
-    }
-
     @Override
     public TextRestrictionRecord<T> negate() {
-        return new TextRestrictionRecord<>(attribute, constraint, !negated);
-    }
-
-    @Override
-    public TextRestrictionRecord<T> ignoreCase() {
-        return new TextRestrictionRecord<>(attribute, constraint.ignoreCase(), negated);
+        return new TextRestrictionRecord<>(attribute, constraint.negate());
     }
 
     /**
-     * Textual representation of a basic restriction.
+     * Textual representation of a text restriction.
      * For example,
-     * <pre>price < 50.0</pre>
+     * <pre>title LIKE '%JAKARTA EE%'</pre>
      *
-     * @return textual representation of a basic restriction.
+     * @return textual representation of a text restriction.
      */
     @Override
     public String toString() {

@@ -20,5 +20,15 @@ package jakarta.data.metamodel.constraint;
 import java.util.Set;
 
 public interface In<T> extends Constraint<T> {
+
+    static <T> In<T> values(Set<T> values) {
+        return new InRecord<>(values);
+    }
+
+    @SafeVarargs
+    static <T> In<T> values(T... values) {
+        return new InRecord<>(Set.of(values));
+    }
+
     Set<T> values();
 }
