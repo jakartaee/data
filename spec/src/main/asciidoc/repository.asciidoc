@@ -835,15 +835,19 @@ where:
 
 NOTE: Every Jakarta Data provider is encouraged, but not required, to support asynchronous repository methods returning `java.util.concurrent.CompletionStage`.
 
-For example, the following is an asynchronous parameter-based query method:
+NOTE: A repository method annotated with the `@Asynchronous` annotation from the Jakarta Concurrency specification is permitted to declare the return type `java.util.concurrent.CompletionStage`. 
+In this case, the Jakarta Data provider must synchronously return an already-completed `CompletionStage` so that the Jakarta Concurrency provider is able to control the asynchronous behavior.
+
+For example, the following is an asynchronous parameter-based query method that relies on the Jakarta Concurrency `@Asynchronous` interceptor to control the asynchronous behavior:
 
 [source,java]
 ----
+@Asynchronous
 @Find
 CompletionStage<Book> bookByIsbn(String isbn);
 ----
 
-This method is an asynchronous lifecycle method:
+This method is an asynchronous lifecycle method that relies on the Jakarta Data provider to control the asynchronous behavior:
 
 [source,java]
 ----
@@ -853,7 +857,9 @@ CompletionStage<Void> insertBook(Book book);
 
 
 An _asynchronous repository_ is a repository which declares asynchronous repository methods.
-A Jakarta Data provider is not required to support mixing synchronous and asynchronous repository methods within the same repository interface.
+A repository may declare a mixture of synchronous and asynchronous repository methods if every asynchronous method is annotated with the `@Asynchronous` annotation, so that Jakarta Concurrency provides the asynchronous behavior. 
+Otherwise, the Jakarta Data provider is not required to support mixing synchronous and asynchronous repository methods within the same repository interface. 
+The `@Asynchronous` annotation must not be used on repositories implemented using reactive streams.
 
 NOTE: An asynchronous repository might be backed by a thread pool, or it might be implemented using reactive streams.
 Such implementation details are concerns of the Jakarta Data provider, and are beyond the scope of this specification.
