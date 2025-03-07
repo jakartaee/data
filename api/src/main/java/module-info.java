@@ -1118,8 +1118,8 @@ import java.util.Set;
  * annotated with {@code jakarta.enterprise.concurrent.Asynchronous} to cause the
  * method to run asynchronously to the method invoker, as outlined by the section
  * titled <em>Asynchronous Methods</em> in the Jakarta Concurrency specification.
- * A {@code CompletionStage} return type must be parameterized with a type that
- * would be a valid return type for a non-asynchronous repository method.</p>
+ * The return type must be {@code CompletionStage<R>} where {@code R} is a type 
+ * that would be a valid return type for a non-asynchronous repository method.</p>
  *
  * <p>For example, in the following example, the {@code setPriceAsync} method
  * immediately returns a {@code CompletionStage<Integer>} to the caller.
