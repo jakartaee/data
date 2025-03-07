@@ -23,5 +23,9 @@ public interface EqualTo<T> extends Constraint<T> {
         return new EqualToRecord<>(value);
     }
 
+    EqualTo<T> ignoreCase();
+
+    boolean isCaseSensitive();
+
     T value();
 }

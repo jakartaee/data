@@ -23,5 +23,9 @@ public interface GreaterThanOrEqual<T extends Comparable<T>> extends Constraint<
         return new GreaterThanOrEqualRecord<>(minimum);
     }
 
+    GreaterThanOrEqual<T> ignoreCase();
+
     T bound();
+
+    boolean isCaseSensitive();
 }

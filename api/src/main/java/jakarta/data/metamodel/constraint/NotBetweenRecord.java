@@ -19,7 +19,10 @@ package jakarta.data.metamodel.constraint;
 
 import java.util.Objects;
 
-record NotBetweenRecord<T extends Comparable<T>>(T lowerBound, T upperBound)
+record NotBetweenRecord<T extends Comparable<T>>(
+        T lowerBound,
+        T upperBound,
+        boolean isCaseSensitive)
     implements NotBetween<T> {
 
     NotBetweenRecord {
@@ -27,15 +30,30 @@ record NotBetweenRecord<T extends Comparable<T>>(T lowerBound, T upperBound)
         Objects.requireNonNull(upperBound, "upperBound must not be null");
     }
 
+    NotBetweenRecord(T lowerBound, T upperBound) {
+        this(lowerBound, upperBound, lowerBound instanceof String);
+    }
+
+    @Override
+    public NotBetween<T> ignoreCase() {
+        if (!(lowerBound instanceof String)) {
+            throw new UnsupportedOperationException(
+                   "Cannot ignore case of a " + lowerBound.getClass().getName() +
+                    " typed attribute");
+        }
+        return new NotBetweenRecord<>(lowerBound, upperBound, false);
+    }
+
     @Override
     public Between<T> negate() {
-        return Between.bounds(lowerBound, upperBound);
+        return new BetweenRecord<>(lowerBound, upperBound, isCaseSensitive);
     }
 
     @Override
     public String toString() {
         return lowerBound instanceof String
-                ? "NOT BETWEEN '" + lowerBound + "' AND '" + upperBound + "'"
+                ? "NOT BETWEEN '" + lowerBound + "' AND '" + upperBound + "'" +
+                        (isCaseSensitive ? "" : " IGNORE CASE")
                 : "NOT BETWEEN " + lowerBound + " AND " + upperBound;
     }
 }

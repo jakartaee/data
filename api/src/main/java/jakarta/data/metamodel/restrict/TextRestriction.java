@@ -20,8 +20,12 @@ package jakarta.data.metamodel.restrict;
 import jakarta.data.metamodel.constraint.Constraint;
 
 public interface TextRestriction<T> extends BasicRestriction<T, String> {
+
+    TextRestriction<T> ignoreCase();
+
     @Override
     TextRestriction<T> negate();
+
     @Override
     Constraint<String> constraint();
 }

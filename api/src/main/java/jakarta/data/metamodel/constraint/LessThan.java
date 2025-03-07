@@ -23,5 +23,9 @@ public interface LessThan<T extends Comparable<T>> extends Constraint<T> {
         return new LessThanRecord<>(upperBound);
     }
 
+    LessThan<T> ignoreCase();
+
     T bound();
+
+    boolean isCaseSensitive();
 }

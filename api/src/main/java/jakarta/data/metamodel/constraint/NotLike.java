@@ -52,7 +52,11 @@ public interface NotLike extends Constraint<String> {
                                  ESCAPE);
     }
 
+    NotLike ignoreCase();
+
     Character escape();
+
+    boolean isCaseSensitive();
 
     String pattern();
 }

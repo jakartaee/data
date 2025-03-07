@@ -23,5 +23,9 @@ public interface GreaterThan<T extends Comparable<T>> extends Constraint<T> {
         return new GreaterThanRecord<>(lowerBound);
     }
 
+    GreaterThan<T> ignoreCase();
+
     T bound();
+
+    boolean isCaseSensitive();
 }

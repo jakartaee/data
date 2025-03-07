@@ -19,30 +19,35 @@ package jakarta.data.metamodel.constraint;
 
 import java.util.Objects;
 
-record LessThanRecord<T extends Comparable<T>>(T bound)
+record LessThanRecord<T extends Comparable<T>>(T bound, boolean isCaseSensitive)
         implements LessThan<T> {
     public LessThanRecord {
         Objects.requireNonNull(bound, "Upper bound must not be null");
     }
 
+    LessThanRecord(T bound) {
+        this(bound, bound instanceof String);
+    }
+
+    @Override
+    public LessThan<T> ignoreCase() {
+        if (!(bound instanceof String)) {
+            throw new UnsupportedOperationException(
+                    "Cannot ignore case of a " + bound.getClass().getName() +
+                    " typed attribute");
+        }
+        return new LessThanRecord<>(bound, false);
+    }
+
     @Override
     public GreaterThanOrEqual<T> negate() {
-        return GreaterThanOrEqual.min(bound);
+        return new GreaterThanOrEqualRecord<>(bound, isCaseSensitive);
     }
 
     @Override
     public String toString() {
-        return "< " + bound.toString();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        return obj instanceof LessThanRecord<?> that
-            && bound.equals(that.bound);
-    }
-
-    @Override
-    public int hashCode() {
-        return bound.hashCode();
+        return bound instanceof String
+                ? "< '" + bound + (isCaseSensitive ? "'" : "' IGNORE CASE")
+                : "< " + bound;
     }
 }

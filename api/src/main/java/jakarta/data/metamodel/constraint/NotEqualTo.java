@@ -23,5 +23,9 @@ public interface NotEqualTo<T> extends Constraint<T> {
         return new NotEqualToRecord<>(value);
     }
 
+    NotEqualTo<T> ignoreCase();
+
+    boolean isCaseSensitive();
+
     T value();
 }
