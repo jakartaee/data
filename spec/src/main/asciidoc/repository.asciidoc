@@ -857,3 +857,4 @@ A Jakarta Data provider is not required to support mixing synchronous and asynch
 
 NOTE: An asynchronous repository might be backed by a thread pool, or it might be implemented using reactive streams.
 Such implementation details are concerns of the Jakarta Data provider, and are beyond the scope of this specification.
+
