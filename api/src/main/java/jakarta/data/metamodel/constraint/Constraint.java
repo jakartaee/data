@@ -22,7 +22,7 @@ import java.util.Set;
 public interface Constraint<T> {
 
     static <T> Constraint<T> equalTo(T value) {
-        return new EqualToRecord<>(value);
+        return EqualTo.value(value);
     }
 
     @SafeVarargs
@@ -38,24 +38,24 @@ public interface Constraint<T> {
         return new NullRecord<>();
     }
 
-    static <T extends Comparable<T>> Constraint<T> greaterThan(T bound) {
-        return new GreaterThanRecord<>(bound);
+    static <T extends Comparable<T>> GreaterThan<T> greaterThan(T bound) {
+        return GreaterThan.bound(bound);
     }
 
-    static <T extends Comparable<T>> Constraint<T> lessThan(T bound) {
-        return new LessThanRecord<>(bound);
+    static <T extends Comparable<T>> LessThan<T> lessThan(T bound) {
+        return LessThan.bound(bound);
     }
 
-    static <T extends Comparable<T>> Constraint<T> greaterThanOrEqual(T bound) {
-        return new GreaterThanOrEqualRecord<>(bound);
+    static <T extends Comparable<T>> GreaterThanOrEqual<T> greaterThanOrEqual(T bound) {
+        return GreaterThanOrEqual.min(bound);
     }
 
-    static <T extends Comparable<T>> Constraint<T> lessThanOrEqual(T bound) {
-        return new LessThanOrEqualRecord<>(bound);
+    static <T extends Comparable<T>> LessThanOrEqual<T> lessThanOrEqual(T bound) {
+        return LessThanOrEqual.max(bound);
     }
 
-    static <T extends Comparable<T>> Constraint<T> between(T lowerBound, T upperBound) {
-        return new BetweenRecord<>(lowerBound, upperBound);
+    static <T extends Comparable<T>> Between<T> between(T lowerBound, T upperBound) {
+        return Between.bounds(lowerBound, upperBound);
     }
 
     Constraint<T> negate();

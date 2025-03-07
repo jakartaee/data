@@ -18,11 +18,17 @@
 package jakarta.data.metamodel.constraint;
 
 public interface Like extends Constraint<String> {
+
+    Like ignoreCase();
+
+    boolean isCaseSensitive();
+
     String pattern();
+
     Character escape();
 
     static Like pattern(String pattern) {
-        return new LikeRecord(pattern);
+        return new LikeRecord(pattern, null);
     }
 
     static Like pattern(String pattern, char charWildcard, char stringWildcard) {

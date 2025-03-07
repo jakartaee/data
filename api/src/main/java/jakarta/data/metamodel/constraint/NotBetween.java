@@ -23,6 +23,10 @@ public interface NotBetween<T extends Comparable<T>> extends Constraint<T> {
         return new NotBetweenRecord<>(lower, upper);
     }
 
+    NotBetween<T> ignoreCase();
+
+    boolean isCaseSensitive();
+
     T lowerBound();
 
     T upperBound();
