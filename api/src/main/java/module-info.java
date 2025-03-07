@@ -1118,8 +1118,9 @@ import java.util.Set;
  * annotated with {@code jakarta.enterprise.concurrent.Asynchronous} to cause the
  * method to run asynchronously to the method invoker, as outlined by the section
  * titled <em>Asynchronous Methods</em> in the Jakarta Concurrency specification.
- * The return type must be {@code CompletionStage<R>} where {@code R} is a type 
- * that would be a valid return type for a non-asynchronous repository method.</p>
+ * The return type must be {@code void} or {@code CompletionStage<R>} where
+ * {@code R} is a type that would be a valid return type for a non-asynchronous
+ * repository method.</p>
  *
  * <p>In the following example, the method {@code setPriceAsync()}
  * immediately returns a {@code CompletionStage<Integer>} to the caller.
@@ -1132,12 +1133,15 @@ import java.util.Set;
  * <pre>
  * import jakarta.data.*;
  * import jakarta.enterprise.concurrent.Asynchronous;
+ * import jakarta.transaction.Transactional;
+ * import jakarta.transaction.Transactional.TxType;
  * import java.util.concurrent.CompletionStage;
  *
  * &#64;Repository
  * public interface Products extends BasicRepository&lt;Product, Long&gt; {
  *
  *     &#64;Asynchronous
+ *     &#64;Transactional(TxType.REQUIRES_NEW)
  *     &#64;Query("UPDATE Product SET price=?1 WHERE id=?2")
  *     CompletionStage&lt;Integer&gt; setPriceAsync(float newPrice, Long productId);
  * }
