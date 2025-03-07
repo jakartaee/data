@@ -1123,7 +1123,7 @@ import java.util.Set;
  *
  * <p>In the following example, the method {@code setPriceAsync()}
  * immediately returns a {@code CompletionStage<Integer>} to the caller.
- * When the {@code UPDATE} finishes, the {@code CompletionStage} completes
+ * After the operation is performed by the database, the {@code CompletionStage} completes
  * with a value of {@code 1} or {@code 0} depending on whether a matching record
  * is found in the database. If an error occurs, the {@code CompletionStage}
  * {@linkplain CompletableFuture#completeExceptionally completes exceptionally}
