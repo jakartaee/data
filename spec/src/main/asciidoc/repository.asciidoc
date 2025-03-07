@@ -854,7 +854,9 @@ CompletionStage<Void> insertBook(Book book);
 
 
 An _asynchronous repository_ is a repository which declares asynchronous repository methods.
-A mixture of synchronous and asynchronous repository methods can be used within the same repository if all of the asynchronous methods are annotated with the `@Asynchronous` annotation to have the Jakarta Concurrency provider handle the asynchronous behavior. Otherwise, the Jakarta Data provider is not required to support mixing synchronous and asynchronous repository methods within the same repository interface. The `@Asynchronous` annotation must not be used on repositories implemented using reactive streams.
+A repository may declare a mixture of synchronous and asynchronous repository methods if every asynchronous method is annotated with the `@Asynchronous` annotation, so that Jakarta Concurrency provides the asynchronous behavior. 
+Otherwise, the Jakarta Data provider is not required to support mixing synchronous and asynchronous repository methods within the same repository interface. 
+The `@Asynchronous` annotation must not be used on repositories implemented using reactive streams.
 
 NOTE: An asynchronous repository might be backed by a thread pool, or it might be implemented using reactive streams.
 Such implementation details are concerns of the Jakarta Data provider, and are beyond the scope of this specification.
