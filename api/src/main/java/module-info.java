@@ -1121,7 +1121,7 @@ import java.util.Set;
  * The return type must be {@code CompletionStage<R>} where {@code R} is a type 
  * that would be a valid return type for a non-asynchronous repository method.</p>
  *
- * <p>For example, in the following example, the {@code setPriceAsync} method
+ * <p>In the following example, the method {@code setPriceAsync()}
  * immediately returns a {@code CompletionStage<Integer>} to the caller.
  * When the {@code UPDATE} finishes, the {@code CompletionStage} completes
  * with a value of {@code 1} or {@code 0} depending on whether a matching record
