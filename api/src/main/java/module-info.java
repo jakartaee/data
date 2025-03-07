@@ -1117,7 +1117,7 @@ import java.util.Set;
  * <p>When Jakarta Concurrency is available, an asynchronous repository method may be
  * annotated with {@code jakarta.enterprise.concurrent.Asynchronous} to cause the
  * method to run asynchronously to the method invoker, as outlined by the section
- * titled Asynchronous Methods in the Jakarta Concurrency specification.
+ * titled <em>Asynchronous Methods</em> in the Jakarta Concurrency specification.
  * A {@code CompletionStage} return type must be parameterized with a type that
  * would be a valid return type for a non-asynchronous repository method.</p>
  *
