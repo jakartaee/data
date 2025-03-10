@@ -47,6 +47,12 @@ public interface AsciiCharacters extends DataRepository<AsciiCharacter, Long>, I
     @Query("ORDER BY id ASC")
     Stream<AsciiCharacter> alphabetic(Limit limit);
 
+    @Find(NaturalNumber.class)
+    CardinalNumber cardinalNumberOf(@By(_NaturalNumber.ID) long value);
+
+    @Find(NaturalNumber.class)
+    Stream<CardinalNumber> cardinalNumberStream(long floorOfSquareRoot);
+
     long countByHexadecimalNotNull();
 
     boolean existsByThisCharacter(char ch);
