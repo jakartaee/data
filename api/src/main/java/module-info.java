@@ -856,7 +856,7 @@ import java.util.Set;
  *
  * <p>The {@link Select} annotation chooses the entity attribute.
  * The result type within the repository method return type must be consistent
- * with the entity attribute type. For example, if a {@code Person} entity
+ * with the entity attribute type. For example, if a {@code Weather} entity
  * has attributes including {@code year}, {@code month}, {@code day}, and
  * {@code precipitation}, of which the latter is of type {@code float},</p>
  *
