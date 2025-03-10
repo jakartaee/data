@@ -42,7 +42,7 @@
   <junit.version>5.12.0</junit.version>
   <sigtest.version>2.6</sigtest.version>
   <shrinkwrap.version>1.2.6</shrinkwrap.version>
-  <shrinkwrap.resolver.version>3.3.3</shrinkwrap.resolver.version>
+  <shrinkwrap.resolver.version>3.3.4</shrinkwrap.resolver.version>
 
   <maven.dep.plugin.version>3.3.0</maven.dep.plugin.version>
   <maven.comp.plugin.version>3.14.0</maven.comp.plugin.version>
