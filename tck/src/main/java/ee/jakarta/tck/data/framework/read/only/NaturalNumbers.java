@@ -78,6 +78,17 @@ public interface NaturalNumbers extends BasicRepository<NaturalNumber, Long>, Id
                                                                        PageRequest pagination,
                                                                        Sort<NaturalNumber> sort);
 
+    @Find(AsciiCharacter.class) // this is not the primary entity type
+    Optional<HexInfo> hexadecimalInfo(int numericValue);
+
+    @Find(AsciiCharacter.class) // this is not the primary entity type
+    HexInfo[] hexadecimalOfControlChars(@By("isControl") boolean isControlChar);
+
+    @Find(AsciiCharacter.class) // this is not the primary entity type
+    @SuppressWarnings("unchecked")
+    Page<HexInfo> hexadecimalPage(PageRequest pageReq,
+                                  Sort<AsciiCharacter>... sorts);
+
     @Find
     NumberInfo infoByIdentifier(@By(_NaturalNumber.ID) long id);
 

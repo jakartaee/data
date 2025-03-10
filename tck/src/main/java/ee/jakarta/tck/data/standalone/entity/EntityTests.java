@@ -55,6 +55,7 @@ import ee.jakarta.tck.data.framework.read.only.AsciiCharacter;
 import ee.jakarta.tck.data.framework.read.only.AsciiCharacters;
 import ee.jakarta.tck.data.framework.read.only.AsciiCharactersPopulator;
 import ee.jakarta.tck.data.framework.read.only.CustomRepository;
+import ee.jakarta.tck.data.framework.read.only.HexInfo;
 import ee.jakarta.tck.data.framework.read.only.NaturalNumber;
 import ee.jakarta.tck.data.framework.read.only.NaturalNumbers;
 import ee.jakarta.tck.data.framework.read.only.NaturalNumbersPopulator;
@@ -782,6 +783,118 @@ public class EntityTests {
         assertEquals(List.of(11L, 10L, 9L, // square root rounds down to 3
                              24L, 23L, 22L, 21L, 20L, 19L, 18L, 17L, 16L), // square root rounds down to 4
                      page2.stream().map(n -> n.getId()).collect(Collectors.toList()));
+    }
+
+    @Assertion(id = "539", strategy = """
+            Use a repository method that uses the value of Find to identify the type
+            of entity and retrieves a subset of entity's attributes, as defined by
+            the names of record components. Results are returned in an array of record.
+            """)
+    public void testFindEntityAsRecordReturnArray() {
+
+        HexInfo[] array = numbers.hexadecimalOfControlChars(true);
+        Arrays.sort(array);
+
+        assertEquals(List.of("1(1)", "2(2)", "3(3)", "4(4)", "5(5)",
+                             "6(6)", "7(7)", "8(8)", "9(9)", "a(10)",
+                             "b(11)", "c(12)", "d(13)", "e(14)", "f(15)",
+                             "10(16)", "11(17)", "12(18)", "13(19)", "14(20)",
+                             "15(21)", "16(22)", "17(23)", "18(24)", "19(25)",
+                             "1a(26)", "1b(27)", "1c(28)", "1d(29)", "1e(30)",
+                             "1f(31)", "7f(127)"),
+                     Arrays.stream(array)
+                                 .map(HexInfo::toString)
+                                 .collect(Collectors.toList()));
+    }
+
+    @Assertion(id = "539", strategy = """
+            Use a repository method that uses the value of Find to identify the type
+            of entity and retrieves a subset of entity's attributes, as defined by
+            the names of record components. The result is returned as an Optional.
+            """)
+    public void testFindEntityAsRecordReturnOptional() {
+        HexInfo hex;
+        hex = numbers.hexadecimalInfo(61).orElseThrow();
+        assertEquals("3d", hex.hexadecimal());
+        assertEquals(61, hex.numericValue());
+
+        assertEquals(false, numbers.hexadecimalInfo(-5).isPresent());
+
+        hex = numbers.hexadecimalInfo(95).orElseThrow();
+        assertEquals("5f", hex.hexadecimal());
+        assertEquals(95, hex.numericValue());
+    }
+
+    @Assertion(id = "539", strategy = """
+            Use a repository method that uses the value of Find to identify the type
+            of entity and retrieves a subset of entity's attributes, as defined by
+            the names of record components. Results are return as a Page of record.
+            """)
+    public void testFindEntityAsRecordReturnPage() {
+        PageRequest page8Request = PageRequest.ofPage(8).size(10);
+
+        @SuppressWarnings("unchecked")
+        Sort<AsciiCharacter>[] numAscending =
+                new Sort[] { Sort.asc(_AsciiCharacter.NUMERICVALUE) };
+
+        Page<HexInfo> page8;
+        try {
+            page8 = numbers.hexadecimalPage(page8Request, numAscending);
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable of sorting.
+                return;
+            } else {
+                throw x;
+            }
+        }
+
+        assertEquals(List.of("47(71)", "48(72)", "49(73)", "4a(74)", "4b(75)",
+                             "4c(76)", "4d(77)", "4e(78)", "4f(79)", "50(80)"),
+                     page8.stream()
+                                 .map(HexInfo::toString)
+                                 .collect(Collectors.toList()));
+
+        Page<HexInfo> page7 = numbers.hexadecimalPage(page8.previousPageRequest(),
+                                                      numAscending);
+
+        assertEquals(List.of("3d(61)", "3e(62)", "3f(63)", "40(64)", "41(65)",
+                             "42(66)", "43(67)", "44(68)", "45(69)", "46(70)"),
+        page7.stream()
+                    .map(HexInfo::toString)
+                    .collect(Collectors.toList()));
+
+        Page<HexInfo> page9 = numbers.hexadecimalPage(page8.nextPageRequest(),
+                                                      numAscending);
+
+        assertEquals(List.of("51(81)", "52(82)", "53(83)", "54(84)", "55(85)",
+                             "56(86)", "57(87)", "58(88)", "59(89)", "5a(90)"),
+        page9.stream()
+                    .map(HexInfo::toString)
+                    .collect(Collectors.toList()));
+    }
+
+    @Assertion(id = "539", strategy = """
+            Use a repository method that uses the value of Find to identify the type
+            of entity and retrieves a subset of entity's attributes, as defined by
+            the Select annotation. Results are returned as a List of record.
+            """)
+    public void testFindEntitySelectAsRecordReturnList() {
+
+        List<WholeNumber> found = characters.wholeNumbers(Short.valueOf((short) 4));
+
+        assertEquals(List.of("8 COMPOSITE √8 >= 2",
+                             "9 COMPOSITE √9 >= 3",
+                             "10 COMPOSITE √10 >= 3",
+                             "11 PRIME √11 >= 3",
+                             "12 COMPOSITE √12 >= 3",
+                             "13 PRIME √13 >= 3",
+                             "14 COMPOSITE √14 >= 3",
+                             "15 COMPOSITE √15 >= 3"),
+                     found.stream()
+                                 .sorted()
+                                 .map(WholeNumber::toString)
+                                 .collect(Collectors.toList()));
     }
 
     @Assertion(id = "133",
