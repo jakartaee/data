@@ -36,6 +36,8 @@ import jakarta.data.repository.Save;
 import jakarta.data.repository.Select;
 import jakarta.data.repository.Update;
 
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionStage;
 import java.util.Set;
 
 /**
@@ -1109,6 +1111,41 @@ import java.util.Set;
  * {@code @Transactional} is called in an environment where both Jakarta Transactions and
  * Jakarta CDI are available, the semantics of this annotation are observed during execution
  * of the repository operation.</p>
+ *
+ * <h2>Jakarta Concurrency</h2>
+ *
+ * <p>When Jakarta Concurrency is available, an asynchronous repository method may be
+ * annotated with {@code jakarta.enterprise.concurrent.Asynchronous} to cause the
+ * method to run asynchronously to the method invoker, as outlined by the section
+ * titled <em>Asynchronous Methods</em> in the Jakarta Concurrency specification.
+ * The return type must be {@code void} or {@code CompletionStage<R>} where
+ * {@code R} is a type that would be a valid return type for a non-asynchronous
+ * repository method.</p>
+ *
+ * <p>In the following example, the method {@code setPriceAsync()}
+ * immediately returns a {@code CompletionStage<Integer>} to the caller.
+ * After the operation is performed by the database, the {@code CompletionStage} completes
+ * with a value of {@code 1} or {@code 0} depending on whether a matching record
+ * is found in the database. If an error occurs, the {@code CompletionStage}
+ * {@linkplain CompletableFuture#completeExceptionally completes exceptionally}
+ * with the error.</p>
+ *
+ * <pre>
+ * import jakarta.data.*;
+ * import jakarta.enterprise.concurrent.Asynchronous;
+ * import jakarta.transaction.Transactional;
+ * import jakarta.transaction.Transactional.TxType;
+ * import java.util.concurrent.CompletionStage;
+ *
+ * &#64;Repository
+ * public interface Products extends BasicRepository&lt;Product, Long&gt; {
+ *
+ *     &#64;Asynchronous
+ *     &#64;Transactional(TxType.REQUIRES_NEW)
+ *     &#64;Query("UPDATE Product SET price=?1 WHERE id=?2")
+ *     CompletionStage&lt;Integer&gt; setPriceAsync(float newPrice, Long productId);
+ * }
+ * </pre>
  */
 module jakarta.data {
     exports jakarta.data;
