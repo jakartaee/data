@@ -31,6 +31,7 @@ import jakarta.data.repository.Find;
 import jakarta.data.repository.Query;
 import jakarta.data.repository.Repository;
 import jakarta.data.repository.Save;
+import jakarta.data.repository.Select;
 
 /**
  * This is a read only repository that represents the set of AsciiCharacters from 0-256.
@@ -106,4 +107,10 @@ public interface AsciiCharacters extends DataRepository<AsciiCharacter, Long>, I
 
     @Query("SELECT COUNT(THIS) WHERE numericValue <= 97 AND numericValue >= 74")
     long twentyFour();
+
+    @Find(NaturalNumber.class) // this is not the primary entity type
+    @Select({ _NaturalNumber.NUMTYPEORDINAL,
+              _NaturalNumber.FLOOROFSQUAREROOT,
+              _NaturalNumber.ID })
+    List<WholeNumber> wholeNumbers(Short numBitsRequired);
 }

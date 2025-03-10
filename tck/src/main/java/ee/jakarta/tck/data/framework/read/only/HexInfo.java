@@ -15,26 +15,20 @@
  */
 package ee.jakarta.tck.data.framework.read.only;
 
-import ee.jakarta.tck.data.framework.read.only.NaturalNumber.NumberType;
-
 /**
- * A record that contains a subset of the attributes of the NaturalNumber entity.
- * where the record component names do not match the corresponding entity attribute
- * names.
+ * A record that contains a subset of the attributes of the AsciiCharacter entity.
+ * where the record component names are an exact match of the entity attribute names.
  */
-public record WholeNumber(
-        int numType,
-        long sqrtFloor,        
-        long value) implements Comparable<WholeNumber> {
+public record HexInfo (
+        String hexadecimal,
+        int numericValue) implements Comparable<HexInfo> {
 
     @Override
-    public int compareTo(WholeNumber other) {
-        return Long.compare(value, other.value);
+    public int compareTo(HexInfo other) {
+        return numericValue - other.numericValue;
     }
 
     public String toString() {
-        return value +
-                " " + NumberType.values()[numType] +
-                " √" + value + " >= " + sqrtFloor;
+        return hexadecimal + '(' + numericValue + ')';
     }
 }
