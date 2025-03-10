@@ -34,8 +34,12 @@ import java.lang.annotation.Target;
  *
  * <p>The required {@link #value} member specifies the JDQL or JPQL query as a string.</p>
  *
- * <p>For {@code select} statements, the return type of the query method must be consistent with the type returned by
- * the query. For queries with an explicit {@code select} clause:</p>
+ * <p>For {@code select} statements, the return type of the query method must be
+ * consistent with the type returned by the query. An explicit {@code SELECT} clause
+ * can be omitted when the query returns the entity or a Java record for which the
+ * record component names all map to entity attribute names, either by having the
+ * same name as the entity attribute or via the record component being annotated with
+ * the {@link Select} annotation. For queries with an explicit {@code select} clause:</p>
  * <ul>
  * <li>if the {@code select} list contains more than one item, the query return type must be a Java record type, and the
  *     elements of the tuple are repackaged as an instance of the query return type by calling a constructor of the

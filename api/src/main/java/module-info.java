@@ -913,6 +913,19 @@ import java.util.Set;
  * Optional&lt;Name&gt; getName(long socialSecurityNum);
  * </pre>
  *
+ * <p>If all record components have names that match the entity attributes or
+ * map to a valid entity attribute name via the {@link Select} annotation,
+ * then the {@code SELECT} clause can be omitted. For example,</p>
+ *
+ * <pre>
+ * public record Name(String firstName,
+ *                    String middleName,
+ *                    String &#64;Select("lastName") String surname) {}
+ *
+ * &#64;Query("FROM Person WHERE ssn=?1")
+ * Optional&lt;Name&gt; getName(long socialSecurityNum);
+ * </pre>
+ *
  * <h2>Repository default methods</h2>
  *
  * <p>A repository interface may declare any number of {@code default} methods
