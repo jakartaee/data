@@ -2423,6 +2423,46 @@ public class EntityTests {
     }
 
     @Assertion(id = "539", strategy = """
+            Use a repository method that returns a record type, where the record
+            components are annotated to select a subset of entity attributes.
+            The Find annotation value is needed to identify the entity.
+            """)
+    public void testReturnRecordThatSelectsAttributesFindEntity() {
+
+        CardinalNumber found = characters.cardinalNumberOf(59L);
+
+        assertEquals(59L, found.value());
+        assertEquals(Short.valueOf((short) 6), found.numBitsRequired());
+        assertEquals(NumberType.PRIME.ordinal(), found.numType());
+
+        try {
+            found = characters.cardinalNumberOf(0); // database only has 1 to 100
+        } catch (EmptyResultException x) {
+            // expected
+        }
+    }
+
+    @Assertion(id = "539", strategy = """
+            Use a repository method that returns a Stream of record type,
+            where the record components are annotated to select a subset of entity
+            attributes. The Find annotation value is needed to identify the entity.
+            """)
+    public void testReturnStreamOfRecordThatSelectsAttributesFindEntity() {
+
+        Stream<CardinalNumber> stream = characters.cardinalNumberStream(3L);
+
+        assertEquals(List.of("4 COMPOSITE (3 bits)",
+                             "5 PRIME (3 bits)",
+                             "6 COMPOSITE (3 bits)",
+                             "7 PRIME (3 bits)",
+                             "8 COMPOSITE (4 bits)"),
+                     stream
+                         .map(CardinalNumber::toString)
+                         .sorted()
+                         .collect(Collectors.toList()));
+    }
+
+    @Assertion(id = "539", strategy = """
             Use a repository method that selects a single entity attribute as
             an array of long.
             """)
@@ -2529,7 +2569,6 @@ public class EntityTests {
         assertEquals(List.of(41L, 43L, 45L, 47L, 49L),
                      page5.content());
     }
-
 
     @Assertion(id = "539", strategy = """
             Use a repository method that selects a single entity attribute as
