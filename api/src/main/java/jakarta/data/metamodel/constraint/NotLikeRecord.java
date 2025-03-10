@@ -19,20 +19,31 @@ package jakarta.data.metamodel.constraint;
 
 import java.util.Objects;
 
-record NotLikeRecord(String pattern, Character escape) implements NotLike {
+record NotLikeRecord(String pattern, Character escape, boolean isCaseSensitive)
+        implements NotLike {
 
     NotLikeRecord {
         Objects.requireNonNull(pattern, "pattern must not be null");
     }
 
+    NotLikeRecord(String pattern, Character escape) {
+        this(pattern, escape, true);
+    }
+
+    @Override
+    public NotLike ignoreCase() {
+        return new NotLikeRecord(pattern, escape, false);
+    }
+
     @Override
     public Like negate() {
-        return new LikeRecord(pattern, escape);
+        return new LikeRecord(pattern, escape, isCaseSensitive);
     }
 
     @Override
     public String toString() {
         return "NOT LIKE '" + pattern + "'" +
-               (escape == null ? "" : " ESCAPE '\\'");
+               (escape == null ? "" : " ESCAPE '\\'") +
+               (isCaseSensitive ? "" : " IGNORE CASE");
     }
 }
