@@ -854,9 +854,10 @@ import java.util.Set;
  *
  * <h3>Single entity attribute result type</h3>
  *
- * <p>The {@link Select} annotation chooses the entity attribute.
+ * <p>For {@link Find} methods,
+ * the {@link Select} annotation chooses the entity attribute.
  * The result type within the repository method return type must be consistent
- * with the entity attribute type. For example, if a {@code Person} entity
+ * with the entity attribute type. For example, if a {@code Weather} entity
  * has attributes including {@code year}, {@code month}, {@code day}, and
  * {@code precipitation}, of which the latter is of type {@code float},</p>
  *
@@ -868,9 +869,19 @@ import java.util.Set;
  *                             &#64;By("year") int year);
  * </pre>
  *
+ * <p>For {@link Query} methods, the {@code SELECT} clause specifies a single
+ * entity attribute. For example,</p>
+ *
+ * <pre>
+ * &#64;Query("SELECT precipitation FROM Weather " +
+ *        " WHERE month=?1 AND year=?2" +
+ *        " ORDER BY precipitation ASC")
+ * List&lt;Float&gt; precipitationIn(Month monthOfYear, int year);
+ * </pre>
+ *
  * <h3>Multiple entity attributes result type</h3>
  *
- * <p>The repository method return type includes a Java record to represent a
+ * <p>For {@link Find} methods, a Java record return type represents a
  * subset of entity attributes. If the record component names do not match the
  * entity attribute names, use the {@link Select} annotation to indicate the
  * entity attribute name. For example, if a {@code Person} entity has attributes
@@ -887,6 +898,33 @@ import java.util.Set;
  *
  * <p>The entity class value that is supplied to the {@link Find} annotation can
  * be omitted if it is the same as the primary entity type of the repository.</p>
+ *
+ * <p>For {@link Query} methods, the {@code SELECT} clause lists the entity
+ * attributes and the method returns a Java record, which must have a constructor
+ * accepting the entity attributes in the order listed within the {@code SELECT}
+ * clause. For example,</p>
+ *
+ * <pre>
+ * public record Name(String firstName,
+ *                    String middleName,
+ *                    String surname) {}
+ *
+ * &#64;Query("SELECT firstName, middleName, lastName FROM Person WHERE ssn=?1")
+ * Optional&lt;Name&gt; getName(long socialSecurityNum);
+ * </pre>
+ *
+ * <p>If all record components have names that match the entity attributes or
+ * map to a valid entity attribute name via the {@link Select} annotation,
+ * then the {@code SELECT} clause can be omitted. For example,</p>
+ *
+ * <pre>
+ * public record Name(String firstName,
+ *                    String middleName,
+ *                    String &#64;Select("lastName") String surname) {}
+ *
+ * &#64;Query("FROM Person WHERE ssn=?1")
+ * Optional&lt;Name&gt; getName(long socialSecurityNum);
+ * </pre>
  *
  * <h2>Repository default methods</h2>
  *
