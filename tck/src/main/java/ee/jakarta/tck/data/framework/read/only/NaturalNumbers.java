@@ -45,6 +45,9 @@ import ee.jakarta.tck.data.framework.read.only.NaturalNumber.NumberType;
 @Repository
 public interface NaturalNumbers extends BasicRepository<NaturalNumber, Long>, IdOperations {
 
+    @Query("WHERE ID(THIS)=:id")
+    CardinalNumber cardinalNumberOf(long id);
+
     @Find
     Optional<CardinalNumber> cardinalNumberOptional(int id);
 
@@ -58,6 +61,9 @@ public interface NaturalNumbers extends BasicRepository<NaturalNumber, Long>, Id
 
     @Find
     CardinalNumber[] cardinalNumbers(@By(_NaturalNumber.NUMBITSREQUIRED) Short bits);
+
+    @Query("FROM NaturalNumber WHERE floorOfSquareRoot=?1")
+    Stream<CardinalNumber> cardinalNumberStream(long sqrtFloor);
 
     long countAll();
 

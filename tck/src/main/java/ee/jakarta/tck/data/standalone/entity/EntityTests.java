@@ -2102,6 +2102,46 @@ public class EntityTests {
         }
     }
 
+    @Assertion(id = "539", strategy = """
+            Use a repository method with a Query that does not include a SELECT
+            clause, instead relying on the Select annotation of the Java record
+            result to determine the subset of entity attributes to retrieve
+            from the database.
+            """)
+    public void testQueryWithoutSelectReturnsRecordWithSelect() {
+
+        CardinalNumber num = numbers.cardinalNumberOf(76L);
+
+        assertEquals(76L, num.value());
+        assertEquals(NumberType.COMPOSITE.ordinal(), num.numType());
+        assertEquals(Short.valueOf((short) 7), num.numBitsRequired());
+    }
+
+    @Assertion(id = "539", strategy = """
+            Use a repository method with a Query that does not include a SELECT
+            clause, instead relying on the Select annotation of the Stream of
+            Java record result to determine the subset of entity attributes to
+            retrieve from the database.
+            """)
+    public void testQueryWithoutSelectReturnsStreamOfRecordWithSelect() {
+
+        assertEquals(List.of("25 COMPOSITE (5 bits)",
+                             "26 COMPOSITE (5 bits)",
+                             "27 COMPOSITE (5 bits)",
+                             "28 COMPOSITE (5 bits)",
+                             "29 PRIME (5 bits)",
+                             "30 COMPOSITE (5 bits)",
+                             "31 PRIME (5 bits)",
+                             "32 COMPOSITE (6 bits)",
+                             "33 COMPOSITE (6 bits)",
+                             "34 COMPOSITE (6 bits)",
+                             "35 COMPOSITE (6 bits)"),
+                     numbers.cardinalNumberStream(5L)
+                             .map(CardinalNumber::toString)
+                             .sorted()
+                             .collect(Collectors.toList()));
+    }
+
     @Assertion(id = "458", strategy = "Use a repository method with a JDQL query that uses parenthesis to make OR be evaluated before AND.")
     public void testQueryWithParenthesis() {
 
