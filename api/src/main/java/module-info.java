@@ -786,7 +786,7 @@ import java.util.Set;
  * allows its results to be split and retrieved in pages. For example,</p>
  *
  * <pre>
- * Product[] findByNameLikeOrderByAmountSoldDescIdAsc(
+ * Page&lt;Product&gt; findByNameLikeOrderByAmountSoldDescIdAsc(
  *                 String pattern, PageRequest pageRequest);
  * ...
  * page1 = products.findByNameLikeOrderByAmountSoldDescIdAsc(
@@ -804,11 +804,11 @@ import java.util.Set;
  * For example,</p>
  *
  * <pre>
- * Product[] findByNameLikeAndPriceBetween(String pattern,
- *                                         float minPrice,
- *                                         float maxPrice,
- *                                         PageRequest pageRequest,
- *                                         Order&lt;Product&gt; order);
+ * Page&lt;Product&gt; findByNameLikeAndPriceBetween(String pattern,
+ *                                             float minPrice,
+ *                                             float maxPrice,
+ *                                             PageRequest pageRequest,
+ *                                             Order&lt;Product&gt; order);
  *
  * ...
  * PageRequest page1Request = PageRequest.ofSize(25);
