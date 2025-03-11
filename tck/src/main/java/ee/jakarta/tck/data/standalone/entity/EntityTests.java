@@ -2104,6 +2104,52 @@ public class EntityTests {
 
     @Assertion(id = "539", strategy = """
             Use a repository method with a Query that does not include a SELECT
+            clause, instead relying on the record component names of the array of
+            Java record result to determine the subset of entity attributes to
+            retrieve from the database.
+            """)
+    public void testQueryWithoutSelectReturnsArrayOfRecord() {
+
+        assertEquals(List.of("9 is ODD COMPOSITE and requires 4 bits",
+                             "10 is EVEN COMPOSITE and requires 4 bits",
+                             "11 is ODD PRIME and requires 4 bits",
+                             "12 is EVEN COMPOSITE and requires 4 bits",
+                             "13 is ODD PRIME and requires 4 bits",
+                             "14 is EVEN COMPOSITE and requires 4 bits",
+                             "15 is ODD COMPOSITE and requires 4 bits"),
+                     Arrays.stream(numbers.numberArray(3L))
+                             .sorted(Comparator.comparing(n -> n.id()))
+                             .map(n -> n.id() +
+                                     " is " + (n.isOdd() ? "ODD" : "EVEN") +
+                                     " " + n.numType() +
+                                     " and requires " + n.numBitsRequired() + " bits")
+                             .collect(Collectors.toList()));
+    }
+
+    @Assertion(id = "539", strategy = """
+            Use a repository method with a Query that does not include a SELECT
+            clause, instead relying on the record component names of the List of
+            Java record result to determine the subset of entity attributes to
+            retrieve from the database.
+            """)
+    public void testQueryWithoutSelectReturnsListOfRecord() {
+
+        assertEquals(List.of("4 is EVEN COMPOSITE and requires 3 bits",
+                             "5 is ODD PRIME and requires 3 bits",
+                             "6 is EVEN COMPOSITE and requires 3 bits",
+                             "7 is ODD PRIME and requires 3 bits"),
+                     numbers.numberList(Short.valueOf((short) 3))
+                             .stream()
+                             .map(n -> n.id() +
+                                     " is " + (n.isOdd() ? "ODD" : "EVEN") +
+                                     " " + n.numType() +
+                                     " and requires " + n.numBitsRequired() + " bits")
+                             .sorted()
+                             .collect(Collectors.toList()));
+    }
+
+    @Assertion(id = "539", strategy = """
+            Use a repository method with a Query that does not include a SELECT
             clause, instead relying on the Select annotation of the Java record
             result to determine the subset of entity attributes to retrieve
             from the database.
