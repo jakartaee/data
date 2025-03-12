@@ -920,7 +920,7 @@ import java.util.Set;
  * <pre>
  * public record Name(String firstName,
  *                    String middleName,
- *                    String &#64;Select("lastName") String surname) {}
+ *                    &#64;Select("lastName") String surname) {}
  *
  * &#64;Query("FROM Person WHERE ssn=?1")
  * Optional&lt;Name&gt; getName(long socialSecurityNum);
