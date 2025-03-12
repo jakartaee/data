@@ -39,19 +39,19 @@ import java.util.Optional;
  * <pre>
  * &#64;OrderBy("age")
  * &#64;OrderBy("ssn")
- * Person[] findByAgeBetween(int minAge, int maxAge, PageRequest pageRequest);
+ * Page&lt;Person&gt; findByAgeBetween(int minAge, int maxAge, PageRequest pageRequest);
  * </pre>
  *
  * <p>This method might be called as follows:</p>
  *
  * <pre>
- * var page = people.findByAgeBetween(35, 59,
- *                PageRequest.ofSize(100));
- * var results = page.content();
+ * Page&lt;Person&gt; page = people.findByAgeBetween(35, 59,
+ *                     PageRequest.ofSize(100));
+ * List&lt;Person&gt; results = page.content();
  * ...
  * while (page.hasNext()) {
  *     page = people.findByAgeBetween(35, 59,
- *                page.nextPageRequest().withoutTotal());
+ *                     page.nextPageRequest().withoutTotal());
  *     results = page.content();
  *   ...
  * }
