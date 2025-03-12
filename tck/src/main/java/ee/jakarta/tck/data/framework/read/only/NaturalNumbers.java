@@ -136,6 +136,15 @@ public interface NaturalNumbers extends BasicRepository<NaturalNumber, Long>, Id
     @Query("FROM NaturalNumber WHERE numBitsRequired=:numBits")
     List<NumberInfo> numberList(@Param("numBits") Short bits);
 
+    @Query("SELECT numTypeOrdinal, floorOfSquareRoot, id WHERE id=?1")
+    Optional<WholeNumber> numberOptional(long id);
+
+    @Query("SELECT numTypeOrdinal, floorOfSquareRoot, id" +
+           " FROM  NaturalNumber" +
+           " WHERE numBitsRequired=floorOfSquareRoot" +
+           " ORDER BY id DESC")
+    Page<WholeNumber> numberPage(PageRequest pageReq);
+
     @Query("SELECT id WHERE isOdd = true AND id BETWEEN 21 AND ?1 ORDER BY id ASC")
     Page<Long> oddsFrom21To(long max, PageRequest pageRequest);
 
