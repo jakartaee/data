@@ -241,6 +241,17 @@ public interface PageRequest {
 
     /**
      * <p>Creates a new page request with the same pagination information,
+     * but with the specified page number.</p>
+     *
+     * @param pageNumber the page number.
+     * @return a new instance of {@code PageRequest}.
+     *         This method never returns {@code null}.
+     * @since 1.1
+     */
+    PageRequest page(long pageNumber);
+
+    /**
+     * <p>Creates a new page request with the same pagination information,
      * but with the specified maximum page size. When a page is retrieved
      * from the database, the number of elements in the page must be equal
      * to the maximum page size unless there is an insufficient number of
