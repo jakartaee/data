@@ -19,7 +19,7 @@ package jakarta.data.metamodel.constraint;
 
 import java.util.Objects;
 
-record LikeRecord(String pattern, Character escape)
+record LikeRecord(String pattern, Character escape, boolean isCaseSensitive)
         implements Like {
 
     public static final char CHAR_WILDCARD = '_';
@@ -30,8 +30,8 @@ record LikeRecord(String pattern, Character escape)
         Objects.requireNonNull(pattern, "Pattern must not be null");
     }
 
-    public LikeRecord(String pattern) {
-        this(pattern, null);
+    LikeRecord(String pattern, Character escape) {
+        this(pattern, escape, true);
     }
 
     public LikeRecord(String pattern, char charWildcard, char stringWildcard) {
@@ -43,14 +43,20 @@ record LikeRecord(String pattern, Character escape)
     }
 
     @Override
+    public Like ignoreCase() {
+        return new LikeRecord(pattern, escape, false);
+    }
+
+    @Override
     public NotLike negate() {
-        return new NotLikeRecord(pattern, escape);
+        return new NotLikeRecord(pattern, escape, isCaseSensitive);
     }
 
     @Override
     public String toString() {
-        return "LIKE '" + pattern + "'"
-                + (escape == null ? "" : " ESCAPE '\\'");
+        return "LIKE '" + pattern + "'" +
+               (escape == null ? "" : " ESCAPE '\\'" +
+               (isCaseSensitive ? "" : " IGNORE CASE"));
     }
 
     public static LikeRecord prefix(String prefix) {
