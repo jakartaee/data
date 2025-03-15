@@ -2102,6 +2102,92 @@ public class EntityTests {
         }
     }
 
+    @Assertion(id = "539", strategy = """
+            Use a repository method with a Query that does not include a SELECT
+            clause, instead relying on the record component names of the array of
+            Java record result to determine the subset of entity attributes to
+            retrieve from the database.
+            """)
+    public void testQueryWithoutSelectReturnsArrayOfRecord() {
+
+        assertEquals(List.of("9 is ODD COMPOSITE and requires 4 bits",
+                             "10 is EVEN COMPOSITE and requires 4 bits",
+                             "11 is ODD PRIME and requires 4 bits",
+                             "12 is EVEN COMPOSITE and requires 4 bits",
+                             "13 is ODD PRIME and requires 4 bits",
+                             "14 is EVEN COMPOSITE and requires 4 bits",
+                             "15 is ODD COMPOSITE and requires 4 bits"),
+                     Arrays.stream(numbers.numberArray(3L))
+                             .sorted(Comparator.comparing(n -> n.id()))
+                             .map(n -> n.id() +
+                                     " is " + (n.isOdd() ? "ODD" : "EVEN") +
+                                     " " + n.numType() +
+                                     " and requires " + n.numBitsRequired() + " bits")
+                             .collect(Collectors.toList()));
+    }
+
+    @Assertion(id = "539", strategy = """
+            Use a repository method with a Query that does not include a SELECT
+            clause, instead relying on the record component names of the List of
+            Java record result to determine the subset of entity attributes to
+            retrieve from the database.
+            """)
+    public void testQueryWithoutSelectReturnsListOfRecord() {
+
+        assertEquals(List.of("4 is EVEN COMPOSITE and requires 3 bits",
+                             "5 is ODD PRIME and requires 3 bits",
+                             "6 is EVEN COMPOSITE and requires 3 bits",
+                             "7 is ODD PRIME and requires 3 bits"),
+                     numbers.numberList(Short.valueOf((short) 3))
+                             .stream()
+                             .map(n -> n.id() +
+                                     " is " + (n.isOdd() ? "ODD" : "EVEN") +
+                                     " " + n.numType() +
+                                     " and requires " + n.numBitsRequired() + " bits")
+                             .sorted()
+                             .collect(Collectors.toList()));
+    }
+
+    @Assertion(id = "539", strategy = """
+            Use a repository method with a Query that does not include a SELECT
+            clause, instead relying on the Select annotation of the Java record
+            result to determine the subset of entity attributes to retrieve
+            from the database.
+            """)
+    public void testQueryWithoutSelectReturnsRecordWithSelect() {
+
+        CardinalNumber num = numbers.cardinalNumberOf(76L);
+
+        assertEquals(76L, num.value());
+        assertEquals(NumberType.COMPOSITE.ordinal(), num.numType());
+        assertEquals(Short.valueOf((short) 7), num.numBitsRequired());
+    }
+
+    @Assertion(id = "539", strategy = """
+            Use a repository method with a Query that does not include a SELECT
+            clause, instead relying on the Select annotation of the Stream of
+            Java record result to determine the subset of entity attributes to
+            retrieve from the database.
+            """)
+    public void testQueryWithoutSelectReturnsStreamOfRecordWithSelect() {
+
+        assertEquals(List.of("25 COMPOSITE (5 bits)",
+                             "26 COMPOSITE (5 bits)",
+                             "27 COMPOSITE (5 bits)",
+                             "28 COMPOSITE (5 bits)",
+                             "29 PRIME (5 bits)",
+                             "30 COMPOSITE (5 bits)",
+                             "31 PRIME (5 bits)",
+                             "32 COMPOSITE (6 bits)",
+                             "33 COMPOSITE (6 bits)",
+                             "34 COMPOSITE (6 bits)",
+                             "35 COMPOSITE (6 bits)"),
+                     numbers.cardinalNumberStream(5L)
+                             .map(CardinalNumber::toString)
+                             .sorted()
+                             .collect(Collectors.toList()));
+    }
+
     @Assertion(id = "458", strategy = "Use a repository method with a JDQL query that uses parenthesis to make OR be evaluated before AND.")
     public void testQueryWithParenthesis() {
 
@@ -2120,6 +2206,80 @@ public class EntityTests {
                 throw x;
             }
         }
+    }
+
+    @Assertion(id = "539", strategy = """
+            Use a repository method with a Query that includes a SELECT clause
+            and returns an Optional Java record result.
+            """)
+    public void testQueryWithSelectReturnsOptionalOfRecord() {
+
+        WholeNumber number = numbers.numberOptional(53L).orElseThrow();
+
+        assertEquals(53L, number.value());
+        assertEquals(NumberType.PRIME.ordinal(), number.numType());
+        assertEquals(7L, number.sqrtFloor());
+    }
+
+    @Assertion(id = "539", strategy = """
+            Use a repository method with a Query that includes a SELECT clause
+            and returns a Page of Java record results.
+            """)
+    public void testQueryWithSelectReturnsPageOfRecord() {
+        PageRequest page3Req = PageRequest.ofPage(3).size(6);
+        Page<WholeNumber> page3;
+        try {
+            page3 = numbers.numberPage(page3Req);
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable of sorting.
+                return;
+            } else {
+                throw x;
+            }
+        }
+
+        assertEquals(List.of("36 COMPOSITE √36 >= 6",
+                             "31 PRIME √31 >= 5",
+                             "30 COMPOSITE √30 >= 5",
+                             "29 PRIME √29 >= 5",
+                             "28 COMPOSITE √28 >= 5",
+                             "27 COMPOSITE √27 >= 5"),
+                     page3.stream()
+                             .map(WholeNumber::toString)
+                             .collect(Collectors.toList()));
+
+        try {
+            assertEquals(21L, page3.totalElements());
+            assertEquals(4L, page3.totalPages());
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                // Some NoSQL databases lack the ability to count the total results
+            } else {
+                throw x;
+            }
+        }
+
+        Page<WholeNumber> page4 = numbers.numberPage(page3.nextPageRequest());
+
+        assertEquals(List.of("26 COMPOSITE √26 >= 5",
+                             "25 COMPOSITE √25 >= 5",
+                             "1 ONE √1 >= 1"),
+                     page4.stream()
+                             .map(WholeNumber::toString)
+                             .collect(Collectors.toList()));
+
+        Page<WholeNumber> page2 = numbers.numberPage(page3.previousPageRequest());
+
+        assertEquals(List.of("42 COMPOSITE √42 >= 6",
+                             "41 PRIME √41 >= 6",
+                             "40 COMPOSITE √40 >= 6",
+                             "39 COMPOSITE √39 >= 6",
+                             "38 COMPOSITE √38 >= 6",
+                             "37 PRIME √37 >= 6"),
+        page2.stream()
+                .map(WholeNumber::toString)
+                .collect(Collectors.toList()));
     }
 
     @Assertion(id = "539", strategy = """
