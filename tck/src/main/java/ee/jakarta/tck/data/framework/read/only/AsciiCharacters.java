@@ -115,8 +115,8 @@ public interface AsciiCharacters extends DataRepository<AsciiCharacter, Long>, I
     long twentyFour();
 
     @Find(NaturalNumber.class) // this is not the primary entity type
-    @Select({ _NaturalNumber.NUMTYPEORDINAL,
-              _NaturalNumber.FLOOROFSQUAREROOT,
-              _NaturalNumber.ID })
+    @Select(_NaturalNumber.NUMTYPEORDINAL)
+    @Select(_NaturalNumber.FLOOROFSQUAREROOT)
+    @Select(_NaturalNumber.ID)
     List<WholeNumber> wholeNumbers(Short numBitsRequired);
 }

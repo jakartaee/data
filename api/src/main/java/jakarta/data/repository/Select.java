@@ -19,6 +19,7 @@ package jakarta.data.repository;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
+import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
@@ -30,13 +31,16 @@ import java.lang.annotation.Target;
  * <p>This annotation can be specified on a repository find method or
  * on a record component.</p>
  *
- * <p>When used on a repository find method, the {@link value} of this annotation
- * must be the name(s) of one or more entity attributes to use as query results
- * when an entity matches the restrictions imposed by the method.</p>
+ * <p>When used on a repository find method that returns an entity attribute
+ * type, at most one {@code Select} annotation can annotate the method.</p>
  *
- * <p>When used on a record component, the {@link value} of this annotation
- * must be the name of the entity attribute to which the record component
- * corresponds. This value is used for all repository methods that lack this
+ * <p>When used on a repository find method that returns a Java record type,
+ * multiple {@code Select} annotations may annotate the method, one for each
+ * record component. The number and order of {@code Select} annotations must
+ * match the number and order of record components.</p>
+ *
+ * <p>When used on a record component, the {@code Select} annotation
+ * value is used for all repository methods that lack this
  * annotation and for which the record is the result type.</p>
  *
  * <p>This annotation must not be used in other locations.</p>
@@ -44,11 +48,12 @@ import java.lang.annotation.Target;
  * @see Find
  */
 @Documented
+@Repeatable(Select.List.class)
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.METHOD, ElementType.RECORD_COMPONENT })
 public @interface Select {
     /**
-     * <p>Name or names of an entity attribute(s) that have a single-valued
+     * <p>Name of an entity attribute that has a single-valued
      * basic type. Multiple-valued types such as collections, arrays, and
      * associations cannot be retrieved independently of the entity.</p>
      *
@@ -82,8 +87,8 @@ public @interface Select {
      *
      * <h3>Annotating a Repository Method</h3>
      *
-     * <p>Place the {@code Select} annotation on a repository find method and
-     * assign the annotation value to be the names of multiple entity attributes,
+     * <p>Place one or more {@code Select} annotations on a repository find method
+     * and assign the annotation values to be the names of entity attributes,
      * corresponding to the order and types of the components of the Java record
      * that is used for the result type.</p>
      *
@@ -99,7 +104,9 @@ public @interface Select {
      *                      int designYear) {}
      *
      *     &#64;Find
-     *     &#64;Select({_Car.MODEL, _Car.MAKE, _Car.YEAR})
+     *     &#64;Select(_Car.MODEL)
+     *     &#64;Select(_Car.MAKE)
+     *     &#64;Select(_Car.YEAR)
      *     Optional&lt;ModelInfo&gt; getModelInfo(@By(_Car.VIN) String vehicleIdNum);
      * }
      * </pre>
@@ -131,5 +138,23 @@ public @interface Select {
      * {@linkplain jakarta.data/jakarta.data.metamodel static metamodel},
      * to avoid hard coding String values for the entity attribute names.</p>
      */
-    String[] value();
+    String value();
+
+    /**
+     * Enables multiple {@link Select} annotations on a repository {@link Find}
+     * method that returns a Java record type. Multiple {@code Select} annotations
+     * must not be used on any other types of method.
+     */
+    @Documented
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target(ElementType.METHOD) // RECORD_COMPONENT is intentionally omitted
+    @interface List {
+        /**
+         * Returns a list of annotations with the first corresponding to the first
+         * record component, the second to the second record component, and so forth.
+         *
+         * @return list of annotations.
+         */
+        Select[] value();
+    }
 }

@@ -130,29 +130,29 @@ public interface NaturalNumbers extends BasicRepository<NaturalNumber, Long>, Id
     Optional<NaturalNumber> two();
 
     @Find
-    @Select({ _NaturalNumber.NUMTYPEORDINAL,
-              _NaturalNumber.FLOOROFSQUAREROOT,
-              _NaturalNumber.ID })
+    @Select(_NaturalNumber.NUMTYPEORDINAL)
+    @Select(_NaturalNumber.FLOOROFSQUAREROOT)
+    @Select(_NaturalNumber.ID)
     List<WholeNumber> wholeNumberList(@By(_NaturalNumber.NUMTYPEORDINAL) int numType,
                                       Order<NaturalNumber> order);
 
     @Find
-    @Select({ _NaturalNumber.NUMTYPEORDINAL,
-              _NaturalNumber.FLOOROFSQUAREROOT,
-              _NaturalNumber.ID })
+    @Select(_NaturalNumber.NUMTYPEORDINAL)
+    @Select(_NaturalNumber.FLOOROFSQUAREROOT)
+    @Select(_NaturalNumber.ID)
     Optional<WholeNumber> wholeNumberOf(@By(ID) int id);
 
     @Find
-    @Select({ _NaturalNumber.NUMTYPEORDINAL,
-              _NaturalNumber.FLOOROFSQUAREROOT,
-              _NaturalNumber.ID })
+    @Select(_NaturalNumber.NUMTYPEORDINAL)
+    @Select(_NaturalNumber.FLOOROFSQUAREROOT)
+    @Select(_NaturalNumber.ID)
     WholeNumber[] wholeNumbers(@By(_NaturalNumber.FLOOROFSQUAREROOT) int floorOfSquareRoot,
                                Order<NaturalNumber> order);
 
     @Find
-    @Select({ _NaturalNumber.NUMTYPEORDINAL,
-              _NaturalNumber.FLOOROFSQUAREROOT,
-              _NaturalNumber.ID })
+    @Select(_NaturalNumber.NUMTYPEORDINAL)
+    @Select(_NaturalNumber.FLOOROFSQUAREROOT)
+    @Select(_NaturalNumber.ID)
     Page<WholeNumber> wholeNumberPage(@By(_NaturalNumber.NUMTYPEORDINAL) int numType,
                                       PageRequest pageReq,
                                       Order<NaturalNumber> order);
