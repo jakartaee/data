@@ -31,6 +31,7 @@ import jakarta.data.repository.BasicRepository;
 import jakarta.data.repository.By;
 import jakarta.data.repository.Find;
 import jakarta.data.repository.OrderBy;
+import jakarta.data.repository.Param;
 import jakarta.data.repository.Query;
 import jakarta.data.repository.Repository;
 import jakarta.data.repository.Select;
@@ -45,6 +46,9 @@ import ee.jakarta.tck.data.framework.read.only.NaturalNumber.NumberType;
 @Repository
 public interface NaturalNumbers extends BasicRepository<NaturalNumber, Long>, IdOperations {
 
+    @Query("WHERE ID(THIS)=:id")
+    CardinalNumber cardinalNumberOf(long id);
+
     @Find
     Optional<CardinalNumber> cardinalNumberOptional(int id);
 
@@ -58,6 +62,9 @@ public interface NaturalNumbers extends BasicRepository<NaturalNumber, Long>, Id
 
     @Find
     CardinalNumber[] cardinalNumbers(@By(_NaturalNumber.NUMBITSREQUIRED) Short bits);
+
+    @Query("FROM NaturalNumber WHERE floorOfSquareRoot=?1")
+    Stream<CardinalNumber> cardinalNumberStream(long sqrtFloor);
 
     long countAll();
 
@@ -122,6 +129,21 @@ public interface NaturalNumbers extends BasicRepository<NaturalNumber, Long>, Id
     @OrderBy(ID)
     Page<NumberInfo> infoPaginated(@By(_NaturalNumber.IS_ODD) boolean isOdd,
                                    PageRequest pageReq);
+
+    @Query("WHERE floorOfSquareRoot=?1")
+    NumberInfo[] numberArray(long sqrtFloor);
+
+    @Query("FROM NaturalNumber WHERE numBitsRequired=:numBits")
+    List<NumberInfo> numberList(@Param("numBits") Short bits);
+
+    @Query("SELECT numTypeOrdinal, floorOfSquareRoot, id WHERE id=?1")
+    Optional<WholeNumber> numberOptional(long id);
+
+    @Query("SELECT numTypeOrdinal, floorOfSquareRoot, id" +
+           " FROM  NaturalNumber" +
+           " WHERE numBitsRequired=floorOfSquareRoot" +
+           " ORDER BY id DESC")
+    Page<WholeNumber> numberPage(PageRequest pageReq);
 
     @Query("SELECT id WHERE isOdd = true AND id BETWEEN 21 AND ?1 ORDER BY id ASC")
     Page<Long> oddsFrom21To(long max, PageRequest pageRequest);

@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <!--
-  ~ Copyright (c) 2022 Contributors to the Eclipse Foundation
+  ~ Copyright (c) 2022,2025 Contributors to the Eclipse Foundation
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -23,7 +23,8 @@
 <module name="Checker">
 
     <module name="FileLength">
-        <property name="max" value="3500"/>
+        <!-- increased the limit to allow for test classes -->
+        <property name="max" value="5000"/>
         <property name="fileExtensions" value="java"/>
     </module>
 
