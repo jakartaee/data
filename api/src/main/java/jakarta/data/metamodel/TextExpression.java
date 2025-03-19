@@ -33,7 +33,7 @@ public interface TextExpression<T> extends ComparableExpression<T,String> {
     TextExpression<T> left(int length);
     TextExpression<T> right(int length);
 
-    Expression<T,Integer> length();
+    NumericExpression<T,Integer> length();
 
     @Override
     Restriction<T> equalTo(String value);
