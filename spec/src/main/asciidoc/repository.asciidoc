@@ -111,7 +111,7 @@ Book mergeBook(Book book);
 Such lifecycle methods are not portable between Jakarta Data providers.
 ====
 
-=== Annotated Query methods
+=== Annotated query methods
 
 An _annotated query method_ is an abstract method annotated by a _query annotation_ type.
 The query annotation specifies a query in some datastore-native query language.
@@ -817,6 +817,15 @@ The following order, with the lower number having higher precedence, is used whe
 5. If the method is named according to the conventions of _Query by Method Name_, then the method is implemented according to the Query by Method Name extension to this specification.
 
 A repository method that does not fit any of the above patterns and is not handled as a vendor-specific extension to the specification must either result in an error at build time or raise `UnsupportedOperationException` at runtime.
+
+=== Null arguments to repository methods
+
+When a repository method is called with a null value as an argument to one of its parameters, the repository implementation might throw an exception:
+
+- when a <<_lifecycle_methods,lifecycle method>> is called with a null entity instance, the repository implementation must throw `NullPointerException`, or
+- when an <<_annotated_query_methods,annotated>> or <<_parameter_based_automatic_query_methods,parameter-based>> query method is called with a null argument, the repository implementation is permitted, but not required, to throw an appropriate exception type.
+
+NOTE: The behavior of a query method when the method is called with a null argument is not defined by this specification, and is not portable between Jakarta Data providers.
 
 === Asynchronous repositories
 
