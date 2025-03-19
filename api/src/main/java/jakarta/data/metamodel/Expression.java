@@ -17,6 +17,7 @@
  */
 package jakarta.data.metamodel;
 
+import jakarta.data.metamodel.constraint.Constraint;
 import jakarta.data.metamodel.restrict.Restriction;
 
 import java.util.Set;
@@ -29,5 +30,7 @@ public interface Expression<T,V> {
     Restriction<T> notIn(Set<V> values);
     Restriction<T> isNull();
     Restriction<T> notNull();
+
+    Restriction<T> satisfies(Constraint<V> constraint);
 
 }
