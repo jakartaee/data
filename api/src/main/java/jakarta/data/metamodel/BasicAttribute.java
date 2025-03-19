@@ -35,12 +35,13 @@ import java.util.Set;
  * @param <T> entity class of the static metamodel.
  * @param <V> type of entity attribute (or wrapper type if primitive).
  */
-public interface BasicAttribute<T,V> extends Attribute<T> {
+public interface BasicAttribute<T,V> extends Attribute<T>, Expression<T,V> {
 
     default Restriction<T> equalTo(V value) {
         return new BasicRestrictionRecord<>(name(), Constraint.equalTo(value));
     }
 
+    @Override
     default Restriction<T> in(Set<V> values) {
         if (values == null || values.isEmpty())
             throw new IllegalArgumentException("values are required");
@@ -48,14 +49,17 @@ public interface BasicAttribute<T,V> extends Attribute<T> {
         return new BasicRestrictionRecord<>(name(), In.values(values));
     }
 
+    @Override
     default Restriction<T> isNull() {
         return new BasicRestrictionRecord<>(name(), Null.instance());
     }
 
+    @Override
     default Restriction<T> notEqualTo(V value) {
         return new BasicRestrictionRecord<>(name(), NotEqualTo.value(value));
     }
 
+    @Override
     default Restriction<T> notIn(Set<V> values) {
         if (values == null || values.isEmpty())
             throw new IllegalArgumentException("values are required");
@@ -63,6 +67,7 @@ public interface BasicAttribute<T,V> extends Attribute<T> {
         return new BasicRestrictionRecord<>(name(), NotIn.values(values));
     }
 
+    @Override
     default Restriction<T> notNull() {
         return new BasicRestrictionRecord<>(name(), NotNull.instance());
     }

@@ -38,7 +38,7 @@ import jakarta.data.metamodel.restrict.TextRestriction;
  *
  * @param <T> entity class of the static metamodel.
  */
-public interface TextAttribute<T> extends ComparableAttribute<T,String> {
+public interface TextAttribute<T> extends ComparableAttribute<T,String>, TextExpression<T> {
 
     /**
      * Obtain a request for an ascending, case-insensitive {@link Sort} based on the entity attribute.
@@ -94,51 +94,62 @@ public interface TextAttribute<T> extends ComparableAttribute<T,String> {
         return new TextRestrictionRecord<>(name(), NotEqualTo.value(value));
     }
 
+    @Override
     default TextRestriction<T> like(Like pattern) {
         return new TextRestrictionRecord<>(name(), pattern);
 
     }
 
+    @Override
     default TextRestriction<T> like(String pattern) {
         return new TextRestrictionRecord<>(name(), Like.pattern(pattern));
     }
 
+    @Override
     default TextRestriction<T> like(String pattern, char charWildcard, char stringWildcard) {
         Like constraint = Like.pattern(pattern, charWildcard, stringWildcard);
         return new TextRestrictionRecord<>(name(), constraint);
     }
 
+    @Override
     default TextRestriction<T> like(String pattern, char charWildcard, char stringWildcard, char escape) {
         Like constraint = Like.pattern(pattern, charWildcard, stringWildcard, escape);
         return new TextRestrictionRecord<>(name(), constraint);
     }
 
+    @Override
     default TextRestriction<T> notLike(String pattern) {
         return new TextRestrictionRecord<>(name(), NotLike.pattern(pattern));
     }
 
+    @Override
     default TextRestriction<T> notLike(String pattern, char charWildcard, char stringWildcard) {
         NotLike constraint = NotLike.pattern(pattern, charWildcard, stringWildcard);
         return new TextRestrictionRecord<>(name(), constraint);
     }
 
+    @Override
     default TextRestriction<T> notLike(String pattern, char charWildcard, char stringWildcard, char escape) {
         NotLike constraint = NotLike.pattern(pattern, charWildcard, stringWildcard, escape);
         return new TextRestrictionRecord<>(name(), constraint);
     }
 
+    @Override
     default TextRestriction<T> contains(String substring) {
         return new TextRestrictionRecord<>(name(), Like.substring(substring));
     }
 
+    @Override
     default TextRestriction<T> notContains(String substring) {
         return new TextRestrictionRecord<>(name(), NotLike.substring(substring));
     }
 
+    @Override
     default TextRestriction<T> endsWith(String suffix) {
         return new TextRestrictionRecord<>(name(), Like.suffix(suffix));
     }
 
+    @Override
     default TextRestriction<T> notEndsWith(String suffix) {
         return new TextRestrictionRecord<>(name(), NotLike.suffix(suffix));
     }

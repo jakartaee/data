@@ -60,28 +60,34 @@ import jakarta.data.metamodel.restrict.Restriction;
  * @param <V> type of entity attribute (or wrapper type if primitive).
  */
 public interface ComparableAttribute<T,V extends Comparable<V>>
-        extends BasicAttribute<T,V>, SortableAttribute<T> {
+        extends BasicAttribute<T,V>, SortableAttribute<T>, ComparableExpression<T,V> {
 
+    @Override
     default Restriction<T> between(V min, V max) {
         return new BasicRestrictionRecord<>(name(), Between.bounds(min, max));
     }
 
+    @Override
     default Restriction<T> notBetween(V min, V max) {
         return new BasicRestrictionRecord<>(name(), NotBetween.bounds(min, max));
     }
 
+    @Override
     default Restriction<T> greaterThan(V value) {
         return new BasicRestrictionRecord<>(name(), GreaterThan.bound(value));
     }
 
+    @Override
     default Restriction<T> greaterThanEqual(V value) {
         return new BasicRestrictionRecord<>(name(), GreaterThanOrEqual.min(value));
     }
 
+    @Override
     default Restriction<T> lessThan(V value) {
         return new BasicRestrictionRecord<>(name(), LessThan.bound(value));
     }
 
+    @Override
     default Restriction<T> lessThanEqual(V value) {
         return new BasicRestrictionRecord<>(name(), LessThanOrEqual.max(value));
     }
