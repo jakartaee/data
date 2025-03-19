@@ -72,6 +72,11 @@ public interface BasicAttribute<T,V> extends Attribute<T>, Expression<T,V> {
         return new BasicRestrictionRecord<>(name(), NotNull.instance());
     }
 
+    @Override
+    default Restriction<T> satisfies(Constraint<V> constraint) {
+        return new BasicRestrictionRecord<>(name(), constraint);
+    }
+
     /**
      * <p>Creates a static metamodel {@code BasicAttribute} representing the
      * entity attribute with the specified name.</p>
