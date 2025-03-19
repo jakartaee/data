@@ -17,9 +17,9 @@
  */
 package jakarta.data.metamodel.constraint;
 
-public interface LessThanOrEqual<T extends Comparable<T>> extends Constraint<T> {
+public interface LessThanOrEqual<T extends Comparable<?>> extends Constraint<T> {
 
-    static <T extends Comparable<T>> LessThanOrEqual<T> max(T maximum) {
+    static <T extends Comparable<?>> LessThanOrEqual<T> max(T maximum) {
         return new LessThanOrEqualRecord<>(maximum);
     }
 

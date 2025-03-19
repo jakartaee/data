@@ -23,7 +23,7 @@ import jakarta.data.metamodel.constraint.NotEqualTo;
 import jakarta.data.metamodel.constraint.NotIn;
 import jakarta.data.metamodel.constraint.NotNull;
 import jakarta.data.metamodel.constraint.Null;
-import jakarta.data.metamodel.restrict.Restriction;
+import jakarta.data.metamodel.restrict.BasicRestriction;
 
 import java.util.Objects;
 import java.util.Set;
@@ -37,12 +37,12 @@ import java.util.Set;
  */
 public interface BasicAttribute<T,V> extends Attribute<T>, Expression<T,V> {
 
-    default Restriction<T> equalTo(V value) {
+    default BasicRestriction<T,V> equalTo(V value) {
         return new BasicRestrictionRecord<>(name(), Constraint.equalTo(value));
     }
 
     @Override
-    default Restriction<T> in(Set<V> values) {
+    default BasicRestriction<T,V> in(Set<V> values) {
         if (values == null || values.isEmpty())
             throw new IllegalArgumentException("values are required");
 
@@ -50,17 +50,17 @@ public interface BasicAttribute<T,V> extends Attribute<T>, Expression<T,V> {
     }
 
     @Override
-    default Restriction<T> isNull() {
+    default BasicRestriction<T,V> isNull() {
         return new BasicRestrictionRecord<>(name(), Null.instance());
     }
 
     @Override
-    default Restriction<T> notEqualTo(V value) {
+    default BasicRestriction<T,V> notEqualTo(V value) {
         return new BasicRestrictionRecord<>(name(), NotEqualTo.value(value));
     }
 
     @Override
-    default Restriction<T> notIn(Set<V> values) {
+    default BasicRestriction<T,V> notIn(Set<V> values) {
         if (values == null || values.isEmpty())
             throw new IllegalArgumentException("values are required");
 
@@ -68,12 +68,12 @@ public interface BasicAttribute<T,V> extends Attribute<T>, Expression<T,V> {
     }
 
     @Override
-    default Restriction<T> notNull() {
+    default BasicRestriction<T,V> notNull() {
         return new BasicRestrictionRecord<>(name(), NotNull.instance());
     }
 
     @Override
-    default Restriction<T> satisfies(Constraint<V> constraint) {
+    default BasicRestriction<T,V> satisfies(Constraint<V> constraint) {
         return new BasicRestrictionRecord<>(name(), constraint);
     }
 
@@ -98,7 +98,7 @@ public interface BasicAttribute<T,V> extends Attribute<T>, Expression<T,V> {
         return new BasicAttributeRecord<>(name);
     }
 
-    default Restriction<T> restrict(Constraint<V> constraint) {
+    default BasicRestriction<T,V> restrict(Constraint<V> constraint) {
         return new BasicRestrictionRecord<>(name(), constraint);
     }
 }

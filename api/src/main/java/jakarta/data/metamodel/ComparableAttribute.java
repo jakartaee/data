@@ -26,7 +26,7 @@ import jakarta.data.metamodel.constraint.GreaterThanOrEqual;
 import jakarta.data.metamodel.constraint.LessThan;
 import jakarta.data.metamodel.constraint.LessThanOrEqual;
 import jakarta.data.metamodel.constraint.NotBetween;
-import jakarta.data.metamodel.restrict.Restriction;
+import jakarta.data.metamodel.restrict.BasicRestriction;
 
 /**
  * <p>Represents a comparable entity attribute in the {@link StaticMetamodel}.
@@ -59,36 +59,36 @@ import jakarta.data.metamodel.restrict.Restriction;
  * @param <T> entity class of the static metamodel.
  * @param <V> type of entity attribute (or wrapper type if primitive).
  */
-public interface ComparableAttribute<T,V extends Comparable<V>>
+public interface ComparableAttribute<T,V extends Comparable<?>>
         extends BasicAttribute<T,V>, SortableAttribute<T>, ComparableExpression<T,V> {
 
     @Override
-    default Restriction<T> between(V min, V max) {
+    default BasicRestriction<T,V> between(V min, V max) {
         return new BasicRestrictionRecord<>(name(), Between.bounds(min, max));
     }
 
     @Override
-    default Restriction<T> notBetween(V min, V max) {
+    default BasicRestriction<T,V> notBetween(V min, V max) {
         return new BasicRestrictionRecord<>(name(), NotBetween.bounds(min, max));
     }
 
     @Override
-    default Restriction<T> greaterThan(V value) {
+    default BasicRestriction<T,V> greaterThan(V value) {
         return new BasicRestrictionRecord<>(name(), GreaterThan.bound(value));
     }
 
     @Override
-    default Restriction<T> greaterThanEqual(V value) {
+    default BasicRestriction<T,V> greaterThanEqual(V value) {
         return new BasicRestrictionRecord<>(name(), GreaterThanOrEqual.min(value));
     }
 
     @Override
-    default Restriction<T> lessThan(V value) {
+    default BasicRestriction<T,V> lessThan(V value) {
         return new BasicRestrictionRecord<>(name(), LessThan.bound(value));
     }
 
     @Override
-    default Restriction<T> lessThanEqual(V value) {
+    default BasicRestriction<T,V> lessThanEqual(V value) {
         return new BasicRestrictionRecord<>(name(), LessThanOrEqual.max(value));
     }
 
@@ -103,7 +103,7 @@ public interface ComparableAttribute<T,V extends Comparable<V>>
      * @param attributeType type of the entity attribute.
      * @return instance of {@code ComparableAttribute}.
      */
-    static <T, V extends Comparable<V>> ComparableAttribute<T, V> of(
+    static <T, V extends Comparable<?>> ComparableAttribute<T, V> of(
             Class<T> entityClass,
             String name,
             Class<V> attributeType) {
@@ -121,7 +121,7 @@ public interface ComparableAttribute<T,V extends Comparable<V>>
  * @param <T> entity class of the static metamodel.
  * @param <V> type of entity attribute (or wrapper type if primitive).
  */
-record ComparableAttributeRecord<T,V extends Comparable<V>>(String name)
+record ComparableAttributeRecord<T,V extends Comparable<?>>(String name)
     implements ComparableAttribute<T,V> {
 
     @Override

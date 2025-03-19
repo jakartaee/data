@@ -38,29 +38,29 @@ public interface Constraint<T> {
         return new NullRecord<>();
     }
 
-    static <T extends Comparable<T>> Constraint<T> greaterThan(T bound) {
+    static <T extends Comparable<?>> Constraint<T> greaterThan(T bound) {
         return new GreaterThanRecord<>(bound);
     }
 
-    static <T extends Comparable<T>> Constraint<T> lessThan(T bound) {
+    static <T extends Comparable<?>> Constraint<T> lessThan(T bound) {
         return new LessThanRecord<>(bound);
     }
 
-    static <T extends Comparable<T>> Constraint<T> greaterThanOrEqual(T bound) {
+    static <T extends Comparable<?>> Constraint<T> greaterThanOrEqual(T bound) {
         return new GreaterThanOrEqualRecord<>(bound);
     }
 
-    static <T extends Comparable<T>> Constraint<T> lessThanOrEqual(T bound) {
+    static <T extends Comparable<?>> Constraint<T> lessThanOrEqual(T bound) {
         return new LessThanOrEqualRecord<>(bound);
     }
 
-    static <T extends Comparable<T>> Constraint<T> between(T lowerBound, T upperBound) {
+    static <T extends Comparable<?>> Constraint<T> between(T lowerBound, T upperBound) {
         return new BetweenRecord<>(lowerBound, upperBound);
     }
 
     Constraint<T> negate();
 
-    static <T extends Comparable<T>> Constraint<T> notBetween(T lowerBound, T upperBound) {
+    static <T extends Comparable<?>> Constraint<T> notBetween(T lowerBound, T upperBound) {
         return NotBetween.bounds(lowerBound, upperBound);
     }
 
