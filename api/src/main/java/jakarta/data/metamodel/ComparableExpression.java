@@ -19,7 +19,7 @@ package jakarta.data.metamodel;
 
 import jakarta.data.metamodel.restrict.Restriction;
 
-public interface ComparableExpression<T,V extends Comparable<V>>
+public interface ComparableExpression<T,V extends Comparable<?>>
         extends Expression<T, V> {
     Restriction<T> between(V min, V max);
 

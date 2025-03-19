@@ -19,7 +19,7 @@ package jakarta.data.metamodel.constraint;
 
 import java.util.Objects;
 
-record LessThanRecord<T extends Comparable<T>>(T bound)
+record LessThanRecord<T extends Comparable<?>>(T bound)
         implements LessThan<T> {
     public LessThanRecord {
         Objects.requireNonNull(bound, "Upper bound must not be null");
