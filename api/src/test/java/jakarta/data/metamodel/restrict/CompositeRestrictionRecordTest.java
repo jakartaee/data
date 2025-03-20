@@ -19,8 +19,6 @@ package jakarta.data.metamodel.restrict;
 
 import jakarta.data.metamodel.ComparableAttribute;
 import jakarta.data.metamodel.TextAttribute;
-import jakarta.data.metamodel.impl.ComparableAttributeRecord;
-import jakarta.data.metamodel.impl.TextAttributeRecord;
 
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;

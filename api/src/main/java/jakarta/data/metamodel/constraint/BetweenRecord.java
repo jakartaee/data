@@ -19,7 +19,7 @@ package jakarta.data.metamodel.constraint;
 
 import java.util.Objects;
 
-record BetweenRecord<T extends Comparable<T>>(T lowerBound, T upperBound)
+record BetweenRecord<T extends Comparable<?>>(T lowerBound, T upperBound)
         implements Between<T> {
     public BetweenRecord {
         Objects.requireNonNull(lowerBound);

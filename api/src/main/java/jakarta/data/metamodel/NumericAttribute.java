@@ -15,13 +15,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.metamodel.constraint;
+package jakarta.data.metamodel;
 
-public interface LessThanOrEqual<T extends Comparable<?>> extends Constraint<T> {
-
-    static <T extends Comparable<?>> LessThanOrEqual<T> max(T maximum) {
-        return new LessThanOrEqualRecord<>(maximum);
-    }
-
-    T bound();
+public interface NumericAttribute<T,N extends Number & Comparable<N>>
+        extends BasicAttribute<T,N>, NumericExpression<T, N> {
 }

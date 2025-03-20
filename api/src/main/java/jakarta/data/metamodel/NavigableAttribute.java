@@ -15,13 +15,9 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.metamodel.restrict;
+package jakarta.data.metamodel;
 
-import jakarta.data.metamodel.constraint.Constraint;
+public interface NavigableAttribute<T,U>
+        extends Attribute<T>, NavigableExpression<T,U> {
 
-public interface TextRestriction<T> extends BasicRestriction<T, String> {
-    @Override
-    TextRestriction<T> negate();
-    @Override
-    Constraint<String> constraint();
 }

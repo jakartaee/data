@@ -17,16 +17,7 @@
  */
 package jakarta.data.metamodel;
 
-import jakarta.data.metamodel.constraint.Constraint;
-import jakarta.data.metamodel.constraint.In;
-import jakarta.data.metamodel.constraint.NotEqualTo;
-import jakarta.data.metamodel.constraint.NotIn;
-import jakarta.data.metamodel.constraint.NotNull;
-import jakarta.data.metamodel.constraint.Null;
-import jakarta.data.metamodel.restrict.Restriction;
-
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * <p>Represents an entity attribute in the {@link StaticMetamodel}
@@ -35,37 +26,7 @@ import java.util.Set;
  * @param <T> entity class of the static metamodel.
  * @param <V> type of entity attribute (or wrapper type if primitive).
  */
-public interface BasicAttribute<T,V> extends Attribute<T> {
-
-    default Restriction<T> equalTo(V value) {
-        return new BasicRestrictionRecord<>(name(), Constraint.equalTo(value));
-    }
-
-    default Restriction<T> in(Set<V> values) {
-        if (values == null || values.isEmpty())
-            throw new IllegalArgumentException("values are required");
-
-        return new BasicRestrictionRecord<>(name(), In.values(values));
-    }
-
-    default Restriction<T> isNull() {
-        return new BasicRestrictionRecord<>(name(), Null.instance());
-    }
-
-    default Restriction<T> notEqualTo(V value) {
-        return new BasicRestrictionRecord<>(name(), NotEqualTo.value(value));
-    }
-
-    default Restriction<T> notIn(Set<V> values) {
-        if (values == null || values.isEmpty())
-            throw new IllegalArgumentException("values are required");
-
-        return new BasicRestrictionRecord<>(name(), NotIn.values(values));
-    }
-
-    default Restriction<T> notNull() {
-        return new BasicRestrictionRecord<>(name(), NotNull.instance());
-    }
+public interface BasicAttribute<T,V> extends Attribute<T>, Expression<T,V> {
 
     /**
      * <p>Creates a static metamodel {@code BasicAttribute} representing the
@@ -86,10 +47,6 @@ public interface BasicAttribute<T,V> extends Attribute<T> {
         Objects.requireNonNull(attributeType, "entity attribute type is required");
 
         return new BasicAttributeRecord<>(name);
-    }
-
-    default Restriction<T> restrict(Constraint<V> constraint) {
-        return new BasicRestrictionRecord<>(name(), constraint);
     }
 }
 
