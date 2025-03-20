@@ -128,8 +128,7 @@ class BasicRestrictionRecordTest {
 
     @Test
     void shouldSupportNegatedRestrictionUsingDefaultConstructor() {
-        BasicRestriction<Book, String> negatedRestriction =
-                (BasicRestriction<Book, String>) _Book.author.notEqualTo("Unknown");
+        BasicRestriction<Book, String> negatedRestriction = _Book.author.notEqualTo("Unknown");
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(negatedRestriction.attribute()).isEqualTo("author");
@@ -146,7 +145,7 @@ class BasicRestrictionRecordTest {
 
     @Test
     void shouldThrowExceptionWhenValueIsNull() {
-        assertThatThrownBy(() -> _Book.title.equalTo(null))
+        assertThatThrownBy(() -> _Book.title.equalTo((String) null))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("Value must not be null");
     }
