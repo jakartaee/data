@@ -19,16 +19,37 @@ package jakarta.data.metamodel;
 
 public interface NumericExpression<T, N extends Number & Comparable<N>>
         extends ComparableExpression<T, N> {
-    NumericExpression<T,N> abs();
-    NumericExpression<T,N> negated();
 
-    NumericExpression<T,N> plus(N other);
-    NumericExpression<T,N> minus(N other);
-    NumericExpression<T,N> times(N other);
-    NumericExpression<T,N> divide(N other);
+    default  NumericExpression<T,N> abs() {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
+    default NumericExpression<T,N> negated() {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
 
-    NumericExpression<T,N> plus(Expression<T,N> other);
-    NumericExpression<T,N> minus(Expression<T,N> other);
-    NumericExpression<T,N> times(Expression<T,N> other);
-    NumericExpression<T,N> divide(Expression<T,N> other);
+    default NumericExpression<T,N> plus(N other) {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
+    default NumericExpression<T,N> minus(N other) {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
+    default  NumericExpression<T,N> times(N other) {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
+    default NumericExpression<T,N> divide(N other) {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
+
+    default NumericExpression<T,N> plus(Expression<T,N> other) {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
+    default NumericExpression<T,N> minus(Expression<T,N> other) {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
+    default NumericExpression<T,N> times(Expression<T,N> other) {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
+    default NumericExpression<T,N> divide(Expression<T,N> other) {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
 }

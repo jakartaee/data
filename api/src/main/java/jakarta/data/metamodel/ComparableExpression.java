@@ -17,19 +17,55 @@
  */
 package jakarta.data.metamodel;
 
+import jakarta.data.metamodel.constraint.Between;
+import jakarta.data.metamodel.constraint.GreaterThan;
+import jakarta.data.metamodel.constraint.GreaterThanOrEqual;
+import jakarta.data.metamodel.constraint.LessThan;
+import jakarta.data.metamodel.constraint.LessThanOrEqual;
+import jakarta.data.metamodel.constraint.NotBetween;
+import jakarta.data.metamodel.restrict.BasicRestriction;
 import jakarta.data.metamodel.restrict.Restriction;
 
 public interface ComparableExpression<T,V extends Comparable<?>>
         extends Expression<T, V> {
-    Restriction<T> between(V min, V max);
 
-    Restriction<T> notBetween(V min, V max);
+    default BasicRestriction<T,V> between(V min, V max) {
+        return new BasicRestrictionRecord<>(this, Between.bounds(min, max));
+    }
 
-    Restriction<T> greaterThan(V value);
+    default BasicRestriction<T,V> notBetween(V min, V max) {
+        return new BasicRestrictionRecord<>(this, NotBetween.bounds(min, max));
+    }
 
-    Restriction<T> greaterThanEqual(V value);
+    default BasicRestriction<T,V> greaterThan(V value) {
+        return new BasicRestrictionRecord<>(this, GreaterThan.bound(value));
+    }
 
-    Restriction<T> lessThan(V value);
+    default BasicRestriction<T,V> greaterThanEqual(V value) {
+        return new BasicRestrictionRecord<>(this, GreaterThanOrEqual.min(value));
+    }
 
-    Restriction<T> lessThanEqual(V value);
+    default BasicRestriction<T,V> lessThan(V value) {
+        return new BasicRestrictionRecord<>(this, LessThan.bound(value));
+    }
+
+    default BasicRestriction<T,V> lessThanEqual(V value) {
+        return new BasicRestrictionRecord<>(this, LessThanOrEqual.max(value));
+    }
+
+    default Restriction<T> greaterThan(Expression<T,V> value) {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
+
+    default Restriction<T> greaterThanEqual(Expression<T,V> value) {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
+
+    default Restriction<T> lessThan(Expression<T,V> value) {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
+
+    default Restriction<T> lessThanEqual(Expression<T,V> value) {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
 }

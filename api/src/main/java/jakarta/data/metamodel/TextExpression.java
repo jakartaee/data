@@ -18,49 +18,96 @@
 package jakarta.data.metamodel;
 
 import jakarta.data.metamodel.constraint.Like;
-import jakarta.data.metamodel.restrict.Restriction;
+import jakarta.data.metamodel.constraint.NotLike;
+import jakarta.data.metamodel.restrict.BasicRestriction;
 
 public interface TextExpression<T> extends ComparableExpression<T,String> {
 
-    TextExpression<T> prepend(String string);
-    TextExpression<T> append(String string);
-    TextExpression<T> prepend(Expression<T,String> string);
-    TextExpression<T> append(Expression<T,String> string);
+    default TextExpression<T> prepend(String string) {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
+    default TextExpression<T> append(String string) {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
+    default TextExpression<T> prepend(Expression<T,String> string) {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
+    default TextExpression<T> append(Expression<T,String> string) {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
 
-    TextExpression<T> upper();
-    TextExpression<T> lower();
+    default TextExpression<T> upper() {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
+    default TextExpression<T> lower() {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
 
-    TextExpression<T> left(int length);
-    TextExpression<T> right(int length);
+    default TextExpression<T> left(int length) {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
+    default TextExpression<T> right(int length) {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
 
-    NumericExpression<T,Integer> length();
+    default NumericExpression<T,Integer> length() {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
 
-    @Override
-    Restriction<T> equalTo(String value);
-    @Override
-    Restriction<T> notEqualTo(String value);
+    default BasicRestriction<T,String> like(Like pattern) {
+        return new BasicRestrictionRecord<>(this, pattern);
+    }
 
-    Restriction<T> between(String min, String max);
-    Restriction<T> notBetween(String min, String max);
+    default BasicRestriction<T,String> like(String pattern) {
+        return new BasicRestrictionRecord<>(this, Like.pattern(pattern));
+    }
 
-    Restriction<T> greaterThan(String value);
-    Restriction<T> greaterThanEqual(String value);
-    Restriction<T> lessThan(String value);
-    Restriction<T> lessThanEqual(String value);
+    default BasicRestriction<T,String> like(String pattern, char charWildcard, char stringWildcard) {
+        Like constraint = Like.pattern(pattern, charWildcard, stringWildcard);
+        return new BasicRestrictionRecord<>(this, constraint);
+    }
 
-    Restriction<T> like(Like pattern);
-    Restriction<T> like(String pattern);
-    Restriction<T> like(String pattern, char charWildcard, char stringWildcard);
-    Restriction<T> like(String pattern, char charWildcard, char stringWildcard, char escape);
-    Restriction<T> notLike(String pattern);
-    Restriction<T> notLike(String pattern, char charWildcard, char stringWildcard);
-    Restriction<T> notLike(String pattern, char charWildcard, char stringWildcard, char escape);
+    default BasicRestriction<T,String> like(String pattern, char charWildcard, char stringWildcard, char escape) {
+        Like constraint = Like.pattern(pattern, charWildcard, stringWildcard, escape);
+        return new BasicRestrictionRecord<>(this, constraint);
+    }
 
-    Restriction<T> contains(String substring);
-    Restriction<T> notContains(String substring);
+    default BasicRestriction<T,String> notLike(String pattern) {
+        return new BasicRestrictionRecord<>(this, NotLike.pattern(pattern));
+    }
 
-    Restriction<T> startsWith(String prefix);
-    Restriction<T> notStartsWith(String prefix);
-    Restriction<T> endsWith(String suffix);
-    Restriction<T> notEndsWith(String suffix);
+    default BasicRestriction<T,String> notLike(String pattern, char charWildcard, char stringWildcard) {
+        NotLike constraint = NotLike.pattern(pattern, charWildcard, stringWildcard);
+        return new BasicRestrictionRecord<>(this, constraint);
+    }
+
+    default BasicRestriction<T,String> notLike(String pattern, char charWildcard, char stringWildcard, char escape) {
+        NotLike constraint = NotLike.pattern(pattern, charWildcard, stringWildcard, escape);
+        return new BasicRestrictionRecord<>(this, constraint);
+    }
+
+    default BasicRestriction<T,String> contains(String substring) {
+        return new BasicRestrictionRecord<>(this, Like.substring(substring));
+    }
+
+    default BasicRestriction<T,String> notContains(String substring) {
+        return new BasicRestrictionRecord<>(this, NotLike.substring(substring));
+    }
+
+    default BasicRestriction<T,String> startsWith(String prefix) {
+        return new BasicRestrictionRecord<>(this, Like.prefix(prefix));
+    }
+
+    default BasicRestriction<T,String> notStartsWith(String prefix) {
+        return new BasicRestrictionRecord<>(this, NotLike.prefix(prefix));
+    }
+
+    default BasicRestriction<T,String> endsWith(String suffix) {
+        return new BasicRestrictionRecord<>(this, Like.suffix(suffix));
+    }
+
+    default BasicRestriction<T,String> notEndsWith(String suffix) {
+        return new BasicRestrictionRecord<>(this, NotLike.suffix(suffix));
+    }
+
 }

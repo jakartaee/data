@@ -17,21 +17,10 @@
  */
 package jakarta.data.metamodel;
 
-import java.util.Objects;
-
 import jakarta.data.Sort;
-import jakarta.data.metamodel.constraint.Between;
-import jakarta.data.metamodel.constraint.EqualTo;
-import jakarta.data.metamodel.constraint.GreaterThan;
-import jakarta.data.metamodel.constraint.GreaterThanOrEqual;
-import jakarta.data.metamodel.constraint.LessThan;
-import jakarta.data.metamodel.constraint.LessThanOrEqual;
-import jakarta.data.metamodel.constraint.Like;
-import jakarta.data.metamodel.constraint.NotBetween;
-import jakarta.data.metamodel.constraint.NotEqualTo;
-import jakarta.data.metamodel.constraint.NotLike;
 import jakarta.data.metamodel.impl.TextAttributeRecord;
-import jakarta.data.metamodel.restrict.BasicRestriction;
+
+import java.util.Objects;
 
 /**
  * Represents an textual entity attribute in the {@link StaticMetamodel}.
@@ -54,106 +43,6 @@ public interface TextAttribute<T> extends ComparableAttribute<T,String>, TextExp
      */
     Sort<T> descIgnoreCase();
 
-    @Override
-    default BasicRestriction<T,String> between(String min, String max) {
-        return new BasicRestrictionRecord<>(name(), Between.bounds(min, max));
-    }
-
-    @Override
-    default BasicRestriction<T,String> equalTo(String value) {
-        return new BasicRestrictionRecord<>(name(), EqualTo.value(value));
-    }
-
-    @Override
-    default BasicRestriction<T,String> greaterThan(String value) {
-        return new BasicRestrictionRecord<>(name(), GreaterThan.bound(value));
-    }
-
-    @Override
-    default BasicRestriction<T,String> greaterThanEqual(String value) {
-        return new BasicRestrictionRecord<>(name(), GreaterThanOrEqual.min(value));
-    }
-
-    @Override
-    default BasicRestriction<T,String> lessThan(String value) {
-        return new BasicRestrictionRecord<>(name(), LessThan.bound(value));
-    }
-
-    @Override
-    default BasicRestriction<T,String> lessThanEqual(String value) {
-        return new BasicRestrictionRecord<>(name(), LessThanOrEqual.max(value));
-    }
-
-    @Override
-    default BasicRestriction<T,String> notBetween(String min, String max) {
-        return new BasicRestrictionRecord<>(name(), NotBetween.bounds(min, max));
-    }
-
-    @Override
-    default BasicRestriction<T,String> notEqualTo(String value) {
-        return new BasicRestrictionRecord<>(name(), NotEqualTo.value(value));
-    }
-
-    @Override
-    default BasicRestriction<T,String> like(Like pattern) {
-        return new BasicRestrictionRecord<>(name(), pattern);
-
-    }
-
-    @Override
-    default BasicRestriction<T,String> like(String pattern) {
-        return new BasicRestrictionRecord<>(name(), Like.pattern(pattern));
-    }
-
-    @Override
-    default BasicRestriction<T,String> like(String pattern, char charWildcard, char stringWildcard) {
-        Like constraint = Like.pattern(pattern, charWildcard, stringWildcard);
-        return new BasicRestrictionRecord<>(name(), constraint);
-    }
-
-    @Override
-    default BasicRestriction<T,String> like(String pattern, char charWildcard, char stringWildcard, char escape) {
-        Like constraint = Like.pattern(pattern, charWildcard, stringWildcard, escape);
-        return new BasicRestrictionRecord<>(name(), constraint);
-    }
-
-    @Override
-    default BasicRestriction<T,String> notLike(String pattern) {
-        return new BasicRestrictionRecord<>(name(), NotLike.pattern(pattern));
-    }
-
-    @Override
-    default BasicRestriction<T,String> notLike(String pattern, char charWildcard, char stringWildcard) {
-        NotLike constraint = NotLike.pattern(pattern, charWildcard, stringWildcard);
-        return new BasicRestrictionRecord<>(name(), constraint);
-    }
-
-    @Override
-    default BasicRestriction<T,String> notLike(String pattern, char charWildcard, char stringWildcard, char escape) {
-        NotLike constraint = NotLike.pattern(pattern, charWildcard, stringWildcard, escape);
-        return new BasicRestrictionRecord<>(name(), constraint);
-    }
-
-    @Override
-    default BasicRestriction<T,String> contains(String substring) {
-        return new BasicRestrictionRecord<>(name(), Like.substring(substring));
-    }
-
-    @Override
-    default BasicRestriction<T,String> notContains(String substring) {
-        return new BasicRestrictionRecord<>(name(), NotLike.substring(substring));
-    }
-
-    @Override
-    default BasicRestriction<T,String> endsWith(String suffix) {
-        return new BasicRestrictionRecord<>(name(), Like.suffix(suffix));
-    }
-
-    @Override
-    default BasicRestriction<T,String> notEndsWith(String suffix) {
-        return new BasicRestrictionRecord<>(name(), NotLike.suffix(suffix));
-    }
-
     /**
      * <p>Creates a static metamodel {@code TextAttribute} representing the
      * entity attribute with the specified name.</p>
@@ -168,14 +57,6 @@ public interface TextAttribute<T> extends ComparableAttribute<T,String>, TextExp
         Objects.requireNonNull(name, "entity attribute name is required");
 
         return new TextAttributeRecord<>(name);
-    }
-
-    default BasicRestriction<T,String> startsWith(String prefix) {
-        return new BasicRestrictionRecord<>(name(), Like.prefix(prefix));
-    }
-
-    default BasicRestriction<T,String> notStartsWith(String prefix) {
-        return new BasicRestrictionRecord<>(name(), NotLike.prefix(prefix));
     }
 
 }
