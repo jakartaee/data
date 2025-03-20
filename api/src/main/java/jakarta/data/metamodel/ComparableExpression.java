@@ -24,7 +24,6 @@ import jakarta.data.metamodel.constraint.LessThan;
 import jakarta.data.metamodel.constraint.LessThanOrEqual;
 import jakarta.data.metamodel.constraint.NotBetween;
 import jakarta.data.metamodel.restrict.BasicRestriction;
-import jakarta.data.metamodel.restrict.Restriction;
 
 public interface ComparableExpression<T,V extends Comparable<?>>
         extends Expression<T, V> {
@@ -53,19 +52,21 @@ public interface ComparableExpression<T,V extends Comparable<?>>
         return new BasicRestrictionRecord<>(this, LessThanOrEqual.max(value));
     }
 
-    default Restriction<T> greaterThan(Expression<T,V> value) {
-        throw new UnsupportedOperationException("not yet implemented");
-    }
+    // Leave for later, since we need a new kind of Restriction for these
 
-    default Restriction<T> greaterThanEqual(Expression<T,V> value) {
-        throw new UnsupportedOperationException("not yet implemented");
-    }
-
-    default Restriction<T> lessThan(Expression<T,V> value) {
-        throw new UnsupportedOperationException("not yet implemented");
-    }
-
-    default Restriction<T> lessThanEqual(Expression<T,V> value) {
-        throw new UnsupportedOperationException("not yet implemented");
-    }
+//    default Restriction<T> greaterThan(Expression<T,V> value) {
+//        throw new UnsupportedOperationException("not yet implemented");
+//    }
+//
+//    default Restriction<T> greaterThanEqual(Expression<T,V> value) {
+//        throw new UnsupportedOperationException("not yet implemented");
+//    }
+//
+//    default Restriction<T> lessThan(Expression<T,V> value) {
+//        throw new UnsupportedOperationException("not yet implemented");
+//    }
+//
+//    default Restriction<T> lessThanEqual(Expression<T,V> value) {
+//        throw new UnsupportedOperationException("not yet implemented");
+//    }
 }

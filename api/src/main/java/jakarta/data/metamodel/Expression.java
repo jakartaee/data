@@ -24,7 +24,6 @@ import jakarta.data.metamodel.constraint.NotIn;
 import jakarta.data.metamodel.constraint.NotNull;
 import jakarta.data.metamodel.constraint.Null;
 import jakarta.data.metamodel.restrict.BasicRestriction;
-import jakarta.data.metamodel.restrict.Restriction;
 
 import java.util.Set;
 
@@ -32,10 +31,6 @@ public interface Expression<T,V> {
 
     default BasicRestriction<T,V> equalTo(V value) {
         return new BasicRestrictionRecord<>(this, Constraint.equalTo(value));
-    }
-
-    default Restriction<T> equalTo(Expression<T,V> expression) {
-        throw new UnsupportedOperationException("not yet implemented");
     }
 
     default BasicRestriction<T,V> in(Set<V> values) {
@@ -53,10 +48,6 @@ public interface Expression<T,V> {
         return new BasicRestrictionRecord<>(this, NotEqualTo.value(value));
     }
 
-    default Restriction<T> notEqualTo(Expression<T,V> expression) {
-        throw new UnsupportedOperationException("not yet implemented");
-    }
-
     default BasicRestriction<T,V> notIn(Set<V> values) {
         if (values == null || values.isEmpty())
             throw new IllegalArgumentException("values are required");
@@ -68,8 +59,18 @@ public interface Expression<T,V> {
         return new BasicRestrictionRecord<>(this, NotNull.instance());
     }
 
+    // TODO: should this be called restrict() ?
     default BasicRestriction<T,V> satisfies(Constraint<V> constraint) {
         return new BasicRestrictionRecord<>(this, constraint);
     }
 
+    // Leave for later, since we need a new kind of Restriction for these
+
+//    default Restriction<T> equalTo(Expression<T,V> expression) {
+//        throw new UnsupportedOperationException("not yet implemented");
+//    }
+//
+//    default Restriction<T> notEqualTo(Expression<T,V> expression) {
+//        throw new UnsupportedOperationException("not yet implemented");
+//    }
 }

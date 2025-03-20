@@ -29,12 +29,15 @@ public interface TextExpression<T> extends ComparableExpression<T,String> {
     default TextExpression<T> append(String string) {
         throw new UnsupportedOperationException("not yet implemented");
     }
-    default TextExpression<T> prepend(Expression<T,String> string) {
-        throw new UnsupportedOperationException("not yet implemented");
-    }
-    default TextExpression<T> append(Expression<T,String> string) {
-        throw new UnsupportedOperationException("not yet implemented");
-    }
+
+    // We could leave these two for later
+
+//    default TextExpression<T> prepend(Expression<T,String> string) {
+//        throw new UnsupportedOperationException("not yet implemented");
+//    }
+//    default TextExpression<T> append(Expression<T,String> string) {
+//        throw new UnsupportedOperationException("not yet implemented");
+//    }
 
     default TextExpression<T> upper() {
         throw new UnsupportedOperationException("not yet implemented");
