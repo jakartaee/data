@@ -29,7 +29,6 @@ import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
 
 import jakarta.data.metamodel.restrict.BasicRestriction;
-import jakarta.data.metamodel.restrict.Restriction;
 
 import java.util.Set;
 
@@ -47,40 +46,37 @@ class AttributeTest {
     private final BasicAttribute<Person, String> testAttribute = () -> "testAttribute";
     @Test
     void shouldCreateEqualToRestriction() {
-        Restriction<Person> restriction = testAttribute.equalTo("testValue");
+        BasicRestriction<Person, String> restriction = testAttribute.equalTo("testValue");
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
-            BasicRestriction<Person, String> basic = (BasicRestriction<Person, String>) restriction;
-            soft.assertThat(basic.attribute()).isEqualTo("testAttribute");
-            soft.assertThat(basic.constraint()).isInstanceOf(EqualTo.class);
-            soft.assertThat(basic.constraint()).isEqualTo(Constraint.equalTo("testValue"));
+            soft.assertThat(restriction.attribute()).isEqualTo("testAttribute");
+            soft.assertThat(restriction.constraint()).isInstanceOf(EqualTo.class);
+            soft.assertThat(restriction.constraint()).isEqualTo(Constraint.equalTo("testValue"));
         });
     }
 
     @Test
     void shouldCreateNotEqualToRestriction() {
-        Restriction<Person> restriction = testAttribute.notEqualTo("testValue");
+        BasicRestriction<Person, String> restriction = testAttribute.notEqualTo("testValue");
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
-            BasicRestriction<Person, String> basic = (BasicRestriction<Person, String>) restriction;
-            soft.assertThat(basic.attribute()).isEqualTo("testAttribute");
-            soft.assertThat(basic.constraint()).isInstanceOf(NotEqualTo.class);
-            soft.assertThat(basic.constraint()).isEqualTo(NotEqualTo.value("testValue"));
+            soft.assertThat(restriction.attribute()).isEqualTo("testAttribute");
+            soft.assertThat(restriction.constraint()).isInstanceOf(NotEqualTo.class);
+            soft.assertThat(restriction.constraint()).isEqualTo(NotEqualTo.value("testValue"));
         });
     }
 
     @Test
     void shouldCreateInRestriction() {
-        Restriction<Person> restriction = testAttribute.in(Set.of("value1", "value2"));
+        BasicRestriction<Person, String> restriction = testAttribute.in(Set.of("value1", "value2"));
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
-            BasicRestriction<Person, String> basic = (BasicRestriction<Person, String>) restriction;
-            soft.assertThat(basic.attribute()).isEqualTo("testAttribute");
-            soft.assertThat(basic.constraint()).isInstanceOf(In.class);
-            soft.assertThat(basic.constraint()).isEqualTo(Constraint.in("value1", "value2"));
+            soft.assertThat(restriction.attribute()).isEqualTo("testAttribute");
+            soft.assertThat(restriction.constraint()).isInstanceOf(In.class);
+            soft.assertThat(restriction.constraint()).isEqualTo(Constraint.in("value1", "value2"));
         });
     }
 
@@ -93,14 +89,13 @@ class AttributeTest {
 
     @Test
     void shouldCreateNotInRestriction() {
-        Restriction<Person> restriction = testAttribute.notIn(Set.of("value1", "value2"));
+        BasicRestriction<Person, String> restriction = testAttribute.notIn(Set.of("value1", "value2"));
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
-            BasicRestriction<Person, String> basic = (BasicRestriction<Person, String>) restriction;
-            soft.assertThat(basic.attribute()).isEqualTo("testAttribute");
-            soft.assertThat(basic.constraint()).isInstanceOf(NotIn.class);
-            soft.assertThat(basic.constraint()).isEqualTo(NotIn.values("value1", "value2"));
+            soft.assertThat(restriction.attribute()).isEqualTo("testAttribute");
+            soft.assertThat(restriction.constraint()).isInstanceOf(NotIn.class);
+            soft.assertThat(restriction.constraint()).isEqualTo(NotIn.values("value1", "value2"));
         });
     }
 
@@ -113,25 +108,23 @@ class AttributeTest {
 
     @Test
     void shouldCreateIsNullRestriction() {
-        Restriction<Person> restriction = testAttribute.isNull();
+        BasicRestriction<Person, String> restriction = testAttribute.isNull();
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
-            BasicRestriction<Person, String> basic = (BasicRestriction<Person, String>) restriction;
-            soft.assertThat(basic.attribute()).isEqualTo("testAttribute");
-            soft.assertThat(basic.constraint()).isInstanceOf(Null.class);
+            soft.assertThat(restriction.attribute()).isEqualTo("testAttribute");
+            soft.assertThat(restriction.constraint()).isInstanceOf(Null.class);
         });
     }
 
     @Test
     void shouldCreateNotNullRestriction() {
-        Restriction<Person> restriction = testAttribute.notNull();
+        BasicRestriction<Person, String> restriction = testAttribute.notNull();
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
-            BasicRestriction<Person, String> basic = (BasicRestriction<Person, String>) restriction;
-            soft.assertThat(basic.attribute()).isEqualTo("testAttribute");
-            soft.assertThat(basic.constraint()).isInstanceOf(NotNull.class);
+            soft.assertThat(restriction.attribute()).isEqualTo("testAttribute");
+            soft.assertThat(restriction.constraint()).isInstanceOf(NotNull.class);
         });
     }
 }

@@ -27,7 +27,7 @@ import org.junit.jupiter.api.Test;
 class TextAttributeTest {
 
 
-    private final TextAttribute<String> testAttribute = new TextAttribute<String>() {
+    private final TextAttribute<String> testAttribute = new TextAttribute<>() {
         @Override
         public Sort<String> ascIgnoreCase() {
             throw new UnsupportedOperationException("Not the focus of this test.");

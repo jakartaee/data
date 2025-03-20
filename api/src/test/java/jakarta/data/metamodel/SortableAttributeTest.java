@@ -60,67 +60,61 @@ class SortableAttributeTest {
 
     @Test
     void shouldCreateGreaterThanRestriction() {
-        Restriction<Person> restriction = testAttribute.greaterThan(10);
+        BasicRestriction<Person, Integer> restriction = testAttribute.greaterThan(10);
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
-            BasicRestriction<Person, Integer> basic = (BasicRestriction<Person, Integer>) restriction;
-            soft.assertThat(basic.attribute()).isEqualTo("testAttribute");
-            soft.assertThat(basic.constraint()).isInstanceOf(GreaterThan.class);
-            soft.assertThat(basic.constraint()).isEqualTo(Constraint.greaterThan(10));
+            soft.assertThat(restriction.attribute()).isEqualTo("testAttribute");
+            soft.assertThat(restriction.constraint()).isInstanceOf(GreaterThan.class);
+            soft.assertThat(restriction.constraint()).isEqualTo(Constraint.greaterThan(10));
         });
     }
 
     @Test
     void shouldCreateGreaterThanEqualRestriction() {
-        Restriction<Person> restriction = testAttribute.greaterThanEqual(10);
+        BasicRestriction<Person, Integer> restriction = testAttribute.greaterThanEqual(10);
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
-            BasicRestriction<Person, Integer> basic = (BasicRestriction<Person, Integer>) restriction;
-            soft.assertThat(basic.attribute()).isEqualTo("testAttribute");
-            soft.assertThat(basic.constraint()).isInstanceOf(GreaterThanOrEqual.class);
-            soft.assertThat(basic.constraint()).isEqualTo(Constraint.greaterThanOrEqual(10));
+            soft.assertThat(restriction.attribute()).isEqualTo("testAttribute");
+            soft.assertThat(restriction.constraint()).isInstanceOf(GreaterThanOrEqual.class);
+            soft.assertThat(restriction.constraint()).isEqualTo(Constraint.greaterThanOrEqual(10));
         });
     }
 
     @Test
     void shouldCreateLessThanRestriction() {
-        Restriction<Person> restriction = testAttribute.lessThan(10);
+        BasicRestriction<Person, Integer> restriction = testAttribute.lessThan(10);
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
-            BasicRestriction<Person, Integer> basic = (BasicRestriction<Person, Integer>) restriction;
-            soft.assertThat(basic.attribute()).isEqualTo("testAttribute");
-            soft.assertThat(basic.constraint()).isInstanceOf(LessThan.class);
-            soft.assertThat(basic.constraint()).isEqualTo(Constraint.lessThan(10));
+            soft.assertThat(restriction.attribute()).isEqualTo("testAttribute");
+            soft.assertThat(restriction.constraint()).isInstanceOf(LessThan.class);
+            soft.assertThat(restriction.constraint()).isEqualTo(Constraint.lessThan(10));
         });
     }
 
     @Test
     void shouldCreateLessThanOrEqualRestriction() {
-        Restriction<Person> restriction = testAttribute.lessThanEqual(10);
+        BasicRestriction<Person, Integer> restriction = testAttribute.lessThanEqual(10);
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
-            BasicRestriction<Person, Integer> basic = (BasicRestriction<Person, Integer>) restriction;
-            soft.assertThat(basic.attribute()).isEqualTo("testAttribute");
-            soft.assertThat(basic.constraint()).isInstanceOf(LessThanOrEqual.class);
-            soft.assertThat(basic.constraint()).isEqualTo(Constraint.lessThanOrEqual(10));
+            soft.assertThat(restriction.attribute()).isEqualTo("testAttribute");
+            soft.assertThat(restriction.constraint()).isInstanceOf(LessThanOrEqual.class);
+            soft.assertThat(restriction.constraint()).isEqualTo(Constraint.lessThanOrEqual(10));
         });
     }
 
     @Test
     void shouldCreateBetweenRestriction() {
-        Restriction<Person> restriction = testAttribute.between(5, 15);
+        BasicRestriction<Person, Integer> restriction = testAttribute.between(5, 15);
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
-            BasicRestriction<Person, Integer> basic = (BasicRestriction<Person, Integer>) restriction;
-
-            soft.assertThat(basic.attribute()).isEqualTo("testAttribute");
-            soft.assertThat(basic.constraint()).isInstanceOf(Between.class);
-            soft.assertThat(basic.constraint()).isEqualTo(Constraint.between(5,15));
+            soft.assertThat(restriction.attribute()).isEqualTo("testAttribute");
+            soft.assertThat(restriction.constraint()).isInstanceOf(Between.class);
+            soft.assertThat(restriction.constraint()).isEqualTo(Constraint.between(5,15));
         });
     }
 }
