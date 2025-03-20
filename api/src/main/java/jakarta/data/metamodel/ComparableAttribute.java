@@ -17,16 +17,9 @@
  */
 package jakarta.data.metamodel;
 
-import java.util.Objects;
-
 import jakarta.data.Sort;
-import jakarta.data.metamodel.constraint.Between;
-import jakarta.data.metamodel.constraint.GreaterThan;
-import jakarta.data.metamodel.constraint.GreaterThanOrEqual;
-import jakarta.data.metamodel.constraint.LessThan;
-import jakarta.data.metamodel.constraint.LessThanOrEqual;
-import jakarta.data.metamodel.constraint.NotBetween;
-import jakarta.data.metamodel.restrict.BasicRestriction;
+
+import java.util.Objects;
 
 /**
  * <p>Represents a comparable entity attribute in the {@link StaticMetamodel}.
@@ -61,36 +54,6 @@ import jakarta.data.metamodel.restrict.BasicRestriction;
  */
 public interface ComparableAttribute<T,V extends Comparable<?>>
         extends BasicAttribute<T,V>, SortableAttribute<T>, ComparableExpression<T,V> {
-
-    @Override
-    default BasicRestriction<T,V> between(V min, V max) {
-        return new BasicRestrictionRecord<>(name(), Between.bounds(min, max));
-    }
-
-    @Override
-    default BasicRestriction<T,V> notBetween(V min, V max) {
-        return new BasicRestrictionRecord<>(name(), NotBetween.bounds(min, max));
-    }
-
-    @Override
-    default BasicRestriction<T,V> greaterThan(V value) {
-        return new BasicRestrictionRecord<>(name(), GreaterThan.bound(value));
-    }
-
-    @Override
-    default BasicRestriction<T,V> greaterThanEqual(V value) {
-        return new BasicRestrictionRecord<>(name(), GreaterThanOrEqual.min(value));
-    }
-
-    @Override
-    default BasicRestriction<T,V> lessThan(V value) {
-        return new BasicRestrictionRecord<>(name(), LessThan.bound(value));
-    }
-
-    @Override
-    default BasicRestriction<T,V> lessThanEqual(V value) {
-        return new BasicRestrictionRecord<>(name(), LessThanOrEqual.max(value));
-    }
 
     /**
      * <p>Creates a static metamodel {@code ComparableAttribute} representing the

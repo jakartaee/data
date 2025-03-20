@@ -26,17 +26,22 @@ import jakarta.data.metamodel.restrict.BasicRestriction;
 
 import java.util.Objects;
 
-record BasicRestrictionRecord<T, V>(String attribute, Constraint<V> constraint)
+record BasicRestrictionRecord<T, V>(Expression<T,V> expression,  Constraint<V> constraint)
         implements BasicRestriction<T, V> {
 
     BasicRestrictionRecord {
-        Objects.requireNonNull(attribute, "Attribute must not be null");
+        Objects.requireNonNull(expression, "Expression must not be null");
         Objects.requireNonNull(constraint, "Constraint must not be null");
     }
 
     @Override
+    public String attribute() {
+        return expression instanceof Attribute<?> att ? att.name() : null;
+    }
+
+    @Override
     public BasicRestriction<T, V> negate() {
-        return new BasicRestrictionRecord<>(attribute, constraint.negate());
+        return new BasicRestrictionRecord<>(expression, constraint.negate());
     }
 
     /**
@@ -48,6 +53,7 @@ record BasicRestrictionRecord<T, V>(String attribute, Constraint<V> constraint)
      */
     @Override
     public String toString() {
-        return attribute + ' ' + constraint;
+        return (expression instanceof Attribute<?> att ? att.name() : expression.toString())
+                + " " + constraint;
     }
 }

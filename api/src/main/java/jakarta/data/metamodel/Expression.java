@@ -18,19 +18,58 @@
 package jakarta.data.metamodel;
 
 import jakarta.data.metamodel.constraint.Constraint;
+import jakarta.data.metamodel.constraint.In;
+import jakarta.data.metamodel.constraint.NotEqualTo;
+import jakarta.data.metamodel.constraint.NotIn;
+import jakarta.data.metamodel.constraint.NotNull;
+import jakarta.data.metamodel.constraint.Null;
+import jakarta.data.metamodel.restrict.BasicRestriction;
 import jakarta.data.metamodel.restrict.Restriction;
 
 import java.util.Set;
 
 public interface Expression<T,V> {
 
-    Restriction<T> equalTo(V value);
-    Restriction<T> notEqualTo(V value);
-    Restriction<T> in(Set<V> values);
-    Restriction<T> notIn(Set<V> values);
-    Restriction<T> isNull();
-    Restriction<T> notNull();
+    default BasicRestriction<T,V> equalTo(V value) {
+        return new BasicRestrictionRecord<>(this, Constraint.equalTo(value));
+    }
 
-    Restriction<T> satisfies(Constraint<V> constraint);
+    default Restriction<T> equalTo(Expression<T,V> expression) {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
+
+    default BasicRestriction<T,V> in(Set<V> values) {
+        if (values == null || values.isEmpty())
+            throw new IllegalArgumentException("values are required");
+
+        return new BasicRestrictionRecord<>(this, In.values(values));
+    }
+
+    default BasicRestriction<T,V> isNull() {
+        return new BasicRestrictionRecord<>(this, Null.instance());
+    }
+
+    default BasicRestriction<T,V> notEqualTo(V value) {
+        return new BasicRestrictionRecord<>(this, NotEqualTo.value(value));
+    }
+
+    default Restriction<T> notEqualTo(Expression<T,V> expression) {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
+
+    default BasicRestriction<T,V> notIn(Set<V> values) {
+        if (values == null || values.isEmpty())
+            throw new IllegalArgumentException("values are required");
+
+        return new BasicRestrictionRecord<>(this, NotIn.values(values));
+    }
+
+    default BasicRestriction<T,V> notNull() {
+        return new BasicRestrictionRecord<>(this, NotNull.instance());
+    }
+
+    default BasicRestriction<T,V> satisfies(Constraint<V> constraint) {
+        return new BasicRestrictionRecord<>(this, constraint);
+    }
 
 }

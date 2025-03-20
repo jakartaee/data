@@ -19,12 +19,20 @@ package jakarta.data.metamodel;
 
 public interface NavigableExpression<T,U> {
 
-    <V> NavigableExpression<T, V> navigate(NavigableAttribute<V, V> attribute);
+    default <V> NavigableExpression<T, V> navigate(NavigableAttribute<V, V> attribute) {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
 
-    TextExpression<T> navigate(TextAttribute<U> attribute);
+    default TextExpression<T> navigate(TextAttribute<U> attribute) {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
 
-    <C extends Comparable<C>> ComparableExpression<T, C> navigate(ComparableAttribute<U, C> attribute);
+    default  <C extends Comparable<C>> ComparableExpression<T, C> navigate(ComparableAttribute<U, C> attribute) {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
 
-    <N extends Number & Comparable<N>> NumericExpression<T, N> navigate(NumericAttribute<U, N> attribute);
+    default <N extends Number & Comparable<N>> NumericExpression<T, N> navigate(NumericAttribute<U, N> attribute) {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
 
 }
