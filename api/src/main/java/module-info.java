@@ -16,6 +16,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import java.util.Set;
+// Although these appear to be unused, these imports are needed by Javadoc.
 import jakarta.data.Limit;
 import jakarta.data.Order;
 import jakarta.data.Sort;
@@ -415,12 +417,11 @@ import java.util.Set;
  * parameters, and {@code Null}, {@code True}, and {@code False}, which require
  * no method parameters.</p>
  *
- * <p>A {@code find} query can optionally end with an <em>order</em>,
- * consisting of the {@code OrderBy} keyword and one or more pairings of case
- * insensitive entity attribute name followed by the {@code Asc} or {@code Desc}
- * keyword, indicating ascending or descending sort. In the case of a single entity
- * attribute, the paired keyword can be omitted, in which case ascending sort is
- * implied.</p>
+ * <p>A {@code find} query can optionally end with an <em>order</em>, consisting of
+ * the {@code OrderBy} keyword and one or more pairings of case-insensitive entity
+ * attribute name followed by the {@code Asc} or {@code Desc} keyword, indicating
+ * ascending or descending sort. In the case of a single entity attribute, the
+ * paired keyword can be omitted, in which case ascending sort is implied.</p>
  *
  * <p>Key-value and Wide-Column databases raise {@link UnsupportedOperationException}
  * for queries on attributes other than the identifier/key.</p>
@@ -1139,7 +1140,7 @@ import java.util.Set;
  * transaction enlistment, then the repository operation is performed within the context of
  * the global transaction.</p>
  *
- * <p>The repository operation must not not commit or roll back a transaction which was
+ * <p>The repository operation must not commit or roll back a transaction which was
  * already associated with the thread in which the repository operation was called, but it
  * might cause the transaction to be marked for rollback if the repository operation fails,
  * that is, it may set the transaction status to {@code Status.STATUS_MARKED_ROLLBACK}.</p>
