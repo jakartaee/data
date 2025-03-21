@@ -19,19 +19,35 @@ package jakarta.data.metamodel.constraint;
 
 import java.util.Objects;
 
-record NotEqualToRecord<T>(T value) implements NotEqualTo<T> {
+record NotEqualToRecord<T>(T value, boolean isCaseSensitive) implements NotEqualTo<T> {
 
     NotEqualToRecord {
         Objects.requireNonNull(value, "value must not be null");
     }
 
+    NotEqualToRecord(T value) {
+        this(value, value instanceof String);
+    }
+
+    @Override
+    public NotEqualTo<T> ignoreCase() {
+        if (!(value instanceof String)) {
+            throw new UnsupportedOperationException(
+                   "Cannot ignore case of a " + value.getClass().getName() +
+                    " typed attribute");
+        }
+        return new NotEqualToRecord<>(value, false);
+    }
+
     @Override
     public EqualTo<T> negate() {
-        return EqualTo.value(value);
+        return new EqualToRecord<>(value, isCaseSensitive);
     }
 
     @Override
     public String toString() {
-        return value instanceof String ? "<> '" + value + "'" : "<> " + value;
+        return value instanceof String
+                ? "<> '" + value + (isCaseSensitive ? "'" : "' IGNORE CASE")
+                : "<> " + value;
     }
 }
