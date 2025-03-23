@@ -46,6 +46,8 @@ import java.lang.annotation.Target;
  * <p>This annotation must not be used in other locations.</p>
  *
  * @see Find
+ *
+ * @since 1.1
  */
 @Documented
 @Repeatable(Select.List.class)
