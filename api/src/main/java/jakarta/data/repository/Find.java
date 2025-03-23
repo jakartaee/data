@@ -84,6 +84,7 @@ import java.lang.annotation.Target;
  *     <li>{@code Page<E>}, or</li>
  *     <li>{@code CursoredPage<E>} (only allowed when {@code E} is the entity type).</li>
  * </ul>
+ * <p>The number of query results may be limited using the {@link First} annotation.</p>
  *
  * <p>For example, if a {@code Car} entity has attribute names including {@code make},
  * {@code model}, {@code year}, and {@code vin}, a repository can use a Java record
@@ -120,6 +121,8 @@ import java.lang.annotation.Target;
  *
  * @see By
  * @see OrderBy
+ * @see First
+ * @see Select
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)

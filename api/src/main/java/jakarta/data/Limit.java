@@ -45,7 +45,9 @@ import jakarta.data.page.PageRequest;
  * <ul>
  * <li>more than one parameter of type {@code Limit},</li>
  * <li>a parameter of type {@code Limit} and a parameter of type
- *     {@link PageRequest}, or</li>
+ *     {@link PageRequest},</li>
+ * <li>a {@link jakarta.data.repository.First @First} annotation
+ *     and a parameter of type {@code Limit}, or</li>
  * <li>a parameter of type {@code Limit} in combination with the
  *     {@code First} keyword.
  * </ul>

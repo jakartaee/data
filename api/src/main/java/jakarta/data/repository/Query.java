@@ -131,6 +131,7 @@ import java.lang.annotation.Target;
  *     <li>{@code Page<R>} or {@code CursoredPage<R>}.</li>
  * </ul>
  * <p>The method returns an object for every query result.</p>
+ * <p>The number of query results may be limited using the {@link First} annotation.</p>
  * <ul>
  * <li>If the return type of the annotated method is {@code R} or {@code Optional<R>} and more than one record satisfies
  *     the query restriction, the method must throw {@link jakarta.data.exceptions.NonUniqueResultException}.</li>
@@ -143,6 +144,8 @@ import java.lang.annotation.Target;
  * annotation, lifecycle annotation, or query annotation.
  *
  * @see Param
+ * @see First
+ * @see Select
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
