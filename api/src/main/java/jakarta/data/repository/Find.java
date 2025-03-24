@@ -48,6 +48,14 @@ import java.lang.annotation.Target;
  * the attribute types must be single-valued basic types, not multiple-valued
  * types such as collections, arrays, or associations.</p>
  *
+ * <p>If the method return type is not an entity type, the queried entity type
+ * is determined by:</p>
+ * <ul>
+ * <li>the {@link #value entity class} explicitly specified by the annotation,
+ *     if any, or
+ * <li>the primary entity type of the repository, if any.
+ * </ul>
+ *
  * <p>Each parameter of the annotated method must either:
  * </p>
  * <ul>
