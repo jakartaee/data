@@ -143,8 +143,8 @@ public @interface Find {
      * &#64;Repository
      * public interface Vehicles {
      *     &#64;Find(Car.class)
-     *     &#64;Select("price")
-     *     Optional&lt;Float&gt; getPrice(@By("vin") String vehicleIdNum);
+     *     &#64;Select(_Car.PRICE)
+     *     Optional&lt;Float&gt; getPrice(@By(_Car.VIN) String vehicleIdNum);
      *
      *     ...
      * }
