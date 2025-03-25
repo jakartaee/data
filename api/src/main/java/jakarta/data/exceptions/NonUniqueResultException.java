@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2025 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,11 +17,20 @@
  */
 package jakarta.data.exceptions;
 
+import jakarta.data.repository.Find;
+import jakarta.data.repository.First;
+import jakarta.data.repository.Query;
+
 /**
- * This exception is raised when execution of a repository method with a singular
- * return type finds multiple results. This error may be circumvented using the
- * {@code findFirst...} method name pattern or by supplying {@code Limit.of(1)}
- * as a parameter to explicitly request only the first result.
+ * <p>This exception is raised when execution of a repository method with a singular
+ * return type finds multiple results.</p>
+ *
+ * <p>This error can be circumvented by applying the {@link First @First} annotation
+ * to a repository {@link Find} or {@link Query} method to explicitly request that
+ * at most one result be returned.
+ * Alternatively, if using the Query by Method Name pattern, the
+ * {@code findFirst...} method name pattern can be used to explicitly request that
+ * at most one result be returned.</p>
  */
 public class NonUniqueResultException extends DataException {
     private static final long serialVersionUID = 7742411163016495764L;
