@@ -27,48 +27,49 @@ import java.lang.annotation.Target;
 
 /**
  * <p>Annotates a repository method as a parameter-based automatic query method
- * that returns entities or entity attributes.</p>
+ * that returns entity instances or entity attribute values.</p>
  *
  * <p>The {@code Find} annotation indicates that the annotated repository
- * method executes a query to retrieve entities (or a subset of entity attributes)
- * based on its parameters and the arguments assigned to those parameters.</p>
+ * method executes a query against a certain entity type, filtering records
+ * based on its parameters and the arguments assigned to its parameters.</p>
  *
- * <p>The method return type identifies one of the following:</p>
  * <ul>
- * <li>the entity type returned by the query,</li>
- * <li>a single entity attribute type returned by the query (requires the
- *     {@link Select} annotation), or</li>
- * <li>a Java record type representing a subset of entity attributes returned
- *     by the query. The names of the record components and entity attributes
- *     must match, or the entity attribute names must be specified by the
- *     {@link Select} annotation.</li>
+ * <li>If the method return involves an entity type, according to the rules
+ *     specified below, the return type determines the queried entity type.</li>
+ * <li>Otherwise, if the method return type does not involve an entity type,
+ *     the queried entity type is the {@linkplain #value entity class explicitly
+ *     specified by the annotation}, if any, or the primary entity type of the
+ *     repository.</li>
  * </ul>
  *
- * <p>When returning a single entity attribute or a subset of entity attributes,
- * the attribute types must be single-valued basic types, not multiple-valued
- * types such as collections, arrays, or associations.</p>
- *
- * <p>If the method return type is not an entity type, the queried entity type
- * is determined by:</p>
+ * <p>The return type of the annotated repository method must involve either:</p>
  * <ul>
- * <li>the {@link #value entity class} explicitly specified by the annotation,
- *     if any, or
- * <li>the primary entity type of the repository, if any.
+ * <li>the queried entity type itself,</li>
+ * <li>the type of the attribute of the queried entity type specified by the
+ *     {@link Select} annotation, or</li>
+ * <li>a Java record type packaging the entity attributes returned by the
+ *     query. The names and types of the record components must match the
+ *     names and types of attributes of the queried entity, or the attribute
+ *     names must be explicitly specified by the {@link Select} annotation.</li>
  * </ul>
+ * <p>When the return type is not the queried entity type, every returned
+ * attribute must be a basic attribute.</p>
  *
- * <p>Each parameter of the annotated method must either:
- * </p>
+ * <p>Each parameter of the annotated method must either:</p>
  * <ul>
- * <li>have exactly the same type and name (the parameter name in the Java source, or a name assigned by {@link By @By})
- *     as an attribute of the entity class, or</li>
- * <li>be of type {@link jakarta.data.Limit}, {@link jakarta.data.Sort}, {@link jakarta.data.Order}, or
- *     {@link jakarta.data.page.PageRequest}.</li>
+ * <li>have exactly the same type and name (the parameter name in the Java source,
+ *     or a name assigned by {@link By @By}) as an attribute of the entity class,
+ *     or</li>
+ * <li>be of type {@link jakarta.data.Limit}, {@link jakarta.data.Sort},
+ *     {@link jakarta.data.Order}, or {@link jakarta.data.page.PageRequest}.</li>
  * </ul>
- * <p>The query is inferred from the method parameters which match attributes of the entity.
- * </p>
- * <p>There is no specific naming convention for methods annotated with {@code @Find}; they may be named arbitrarily,
- * and their names do not carry any semantic meaning defined by the Jakarta Data specification.
- * </p>
+ * <p>The query is inferred from the method parameters which match attributes of
+ *  entity.</p>
+ *
+ * <p>There is no specific naming convention for methods annotated with {@code @Find};
+ * they may be named arbitrarily, and their names do not carry any semantic meaning
+ * defined by the Jakarta Data specification.</p>
+ *
  * <p>For example, consider an interface representing a garage:</p>
  * <pre>
  * &#64;Repository
@@ -77,12 +78,14 @@ import java.lang.annotation.Target;
  *     List&lt;Car&gt; getCarsWithModel(@By("model") String model);
  * }
  * </pre>
- * <p>The {@code @Find} annotation indicates that the {@code getCarsWithModel(model)} method retrieves {@code Car}
- * instances with the given value of the {@code model} attribute.
- * </p>
+ * <p>The {@code @Find} annotation indicates that the {@code getCarsWithModel(model)}
+ * method retrieves {@code Car} instances with the given value of the {@code model}
+ * attribute.</p>
  *
  * <p>A method annotated with {@code @Find} must return one of the following types,
- * where {@code E} is the entity type, entity attribute type, or record type inferred or explicitly specified by the {@code @Find} annotation:</p>
+ * where {@code E} is the type returned by the query, either the queried entity type
+ * inferred or {@linkplain #value explicitly specified}, the type of the attribute of
+ * the entity specified using {@link Select#value @Select}, or a record type:</p>
  * <ul>
  *     <li>{@code E}, when the method returns a single instance</li>
  *     <li>{@code Optional<E>}, when the method returns at most a single instance,</li>
@@ -113,11 +116,11 @@ import java.lang.annotation.Target;
  * which satisfies the parameter-based conditions.</p>
  * <ul>
  * <li>If the return type of the annotated method is {@code E} (the entity type,
- *     entity attribute type, or record type) or {@code Optional<E>}
- *     and more than one database record satisfies the query conditions, the method
- *     must throw {@link jakarta.data.exceptions.NonUniqueResultException}.</li>
+ *     entity attribute type, or record type) or {@code Optional<E>}, and more
+ *     than one database record satisfies the query conditions, the method must
+ *     throw {@link jakarta.data.exceptions.NonUniqueResultException}.</li>
  * <li>If the return type of the annotated method is {@code E} (the entity type,
- *     entity attribute type, or record type) and no database record satisfies
+ *     entity attribute type, or record type), and no database record satisfies
  *     the query conditions, the method must throw
  *     {@link jakarta.data.exceptions.EmptyResultException}.</li>
  * </ul>
