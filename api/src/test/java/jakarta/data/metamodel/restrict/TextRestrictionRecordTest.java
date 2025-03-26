@@ -58,8 +58,7 @@ class TextRestrictionRecordTest {
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.attribute()).isEqualTo("title");
-            // TODO TextRestriction.ignoreCase vs TextAttribute.upper/lowercased
-            //soft.assertThat(restriction.isCaseSensitive()).isTrue();
+            soft.assertThat(((Like) restriction.constraint()).isCaseSensitive()).isTrue();
             soft.assertThat(constraint.pattern()).isEqualTo("%Java%");
             soft.assertThat(constraint.escape()).isNull();
         });
@@ -73,8 +72,7 @@ class TextRestrictionRecordTest {
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.attribute()).isEqualTo("title");
-            // TODO TextRestriction.ignoreCase vs TextAttribute.upper/lowercased
-            //soft.assertThat(restriction.isCaseSensitive()).isTrue();
+            soft.assertThat(((NotLike) restriction.constraint()).isCaseSensitive()).isTrue();
             soft.assertThat(constraint.pattern()).isEqualTo("%Java%");
             soft.assertThat(constraint.escape()).isNull();
         });
@@ -84,13 +82,12 @@ class TextRestrictionRecordTest {
     void shouldIgnoreCaseForTextRestriction() {
         TextRestriction<Book> restriction = _Book.title.like("%Java%");
 
-        // TODO TextRestriction.ignoreCase vs TextAttribute.upper/lowercased
-        //TextRestriction<String> caseInsensitiveRestriction = restriction.ignoreCase();
+        TextRestriction<Book> caseInsensitiveRestriction = restriction.ignoreCase();
         Like constraint = (Like) restriction.constraint();
 
         SoftAssertions.assertSoftly(soft -> {
-        //    soft.assertThat(caseInsensitiveRestriction.attribute()).isEqualTo("title");
-        //    soft.assertThat(caseInsensitiveRestriction.isCaseSensitive()).isFalse();
+            soft.assertThat(caseInsensitiveRestriction.attribute()).isEqualTo("title");
+            soft.assertThat(((Like) caseInsensitiveRestriction.constraint()).isCaseSensitive()).isFalse();
             soft.assertThat(constraint.pattern()).isEqualTo("%Java%");
             soft.assertThat(constraint.escape()).isNull();
         });
@@ -104,8 +101,7 @@ class TextRestrictionRecordTest {
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.attribute()).isEqualTo("title");
-            // TODO TextRestriction.ignoreCase vs TextAttribute.upper/lowercased
-            //soft.assertThat(restriction.isCaseSensitive()).isTrue();
+            soft.assertThat(((Like) restriction.constraint()).isCaseSensitive()).isTrue();
             soft.assertThat(constraint.pattern()).isEqualTo("%Java%");
             soft.assertThat(constraint.escape()).isNull();
         });
@@ -119,8 +115,7 @@ class TextRestrictionRecordTest {
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.attribute()).isEqualTo("title");
-            // TODO TextRestriction.ignoreCase vs TextAttribute.upper/lowercased
-            //soft.assertThat(restriction.isCaseSensitive()).isTrue();
+            soft.assertThat(((Like) restriction.constraint()).isCaseSensitive()).isTrue();
             soft.assertThat(constraint.pattern()).isEqualTo("%Java__");
             soft.assertThat(constraint.escape()).isEqualTo('$');
         });
@@ -130,16 +125,15 @@ class TextRestrictionRecordTest {
     void shouldNegateLikeRestriction() {
         TextRestriction<Book> likeJakartaEE = _Book.title.endsWith("Jakarta EE");
         TextRestriction<Book> notLikeJakartaEE = likeJakartaEE.negate();
-        // TODO TextRestriction.ignoreCase vs TextAttribute.upper/lowercased
-        //TextRestriction<Book> anyCaseNotLikeJakartaEE = likeJakartaEE.ignoreCase().negate();
-        //TextRestriction<Book> notLikeJakartaEEAnyCase = likeJakartaEE.negate().ignoreCase();
+        TextRestriction<Book> anyCaseNotLikeJakartaEE = likeJakartaEE.ignoreCase().negate();
+        TextRestriction<Book> notLikeJakartaEEAnyCase = likeJakartaEE.negate().ignoreCase();
 
-        //SoftAssertions.assertSoftly(soft -> {
-        //    soft.assertThat(likeJakartaEE.isCaseSensitive()).isTrue();
-        //    soft.assertThat(notLikeJakartaEE.isCaseSensitive()).isTrue();
-        //    soft.assertThat(anyCaseNotLikeJakartaEE.isCaseSensitive()).isFalse();
-        //    soft.assertThat(notLikeJakartaEEAnyCase.isCaseSensitive()).isFalse();
-        //});
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(((Like) likeJakartaEE.constraint()).isCaseSensitive()).isTrue();
+            soft.assertThat(((NotLike) notLikeJakartaEE.constraint()).isCaseSensitive()).isTrue();
+            soft.assertThat(((NotLike) anyCaseNotLikeJakartaEE.constraint()).isCaseSensitive()).isFalse();
+            soft.assertThat(((NotLike) notLikeJakartaEEAnyCase.constraint()).isCaseSensitive()).isFalse();
+        });
     }
 
     @Test
@@ -167,8 +161,7 @@ class TextRestrictionRecordTest {
     void shouldOutputToString() {
         TextRestriction<Book> titleRestriction = _Book.title.contains("Jakarta Data");
         TextRestriction<Book> authorRestriction = _Book.author.equalTo("Myself")
-                // TODO TextRestriction.ignoreCase vs TextAttribute.upper/lowercased
-                //        .ignoreCase()
+                        .ignoreCase()
                         .negate();
 
         SoftAssertions.assertSoftly(soft -> {
@@ -176,7 +169,7 @@ class TextRestrictionRecordTest {
                     title LIKE '%Jakarta Data%' ESCAPE '\\'\
                     """);
             soft.assertThat(authorRestriction.toString()).isEqualTo("""
-                    author <> 'Myself'\
+                    author <> 'Myself' IGNORE CASE\
                     """);
         });
     }
@@ -189,8 +182,7 @@ class TextRestrictionRecordTest {
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.attribute()).isEqualTo("author");
-            // TODO TextRestriction.ignoreCase vs TextAttribute.upper/lowercased
-            //soft.assertThat(restriction.isCaseSensitive()).isTrue();
+            soft.assertThat(constraint.isCaseSensitive()).isTrue();
             soft.assertThat(constraint.value()).isEqualTo("John Doe");
         });
     }

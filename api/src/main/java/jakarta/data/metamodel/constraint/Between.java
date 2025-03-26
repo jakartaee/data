@@ -23,6 +23,10 @@ public interface Between<T extends Comparable<T>> extends Constraint<T> {
         return new BetweenRecord<>(lower, upper);
     }
 
+    Between<T> ignoreCase();
+
+    boolean isCaseSensitive();
+
     T lowerBound();
     T upperBound();
 }
