@@ -21,6 +21,7 @@ import java.util.Set;
 import jakarta.data.Limit;
 import jakarta.data.Order;
 import jakarta.data.Sort;
+import jakarta.data.exceptions.NonUniqueResultException;
 import jakarta.data.metamodel.StaticMetamodel;
 import jakarta.data.page.PageRequest;
 import jakarta.data.repository.BasicRepository;
@@ -29,6 +30,7 @@ import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.DataRepository;
 import jakarta.data.repository.Delete;
 import jakarta.data.repository.Find;
+import jakarta.data.repository.First;
 import jakarta.data.repository.Insert;
 import jakarta.data.repository.OrderBy;
 import jakarta.data.repository.Param;
@@ -745,10 +747,11 @@ import java.util.Set;
  *
  * <pre>
  * // Query by Method Name
- * Vehicle[] findByMakeAndModelAndYear(String makerName, String model, int year, Sort&lt;?&gt;... sorts);
+ * Vehicle[] findFirst50ByMakeAndModelAndYear(String makerName, String model, int year, Sort&lt;?&gt;... sorts);
  *
  * // parameter-based conditions
  * &#64;Find
+ * &#64;First(50)
  * Vehicle[] searchFor(String make, String model, int year, Sort&lt;?&gt;... sorts);
  * </pre>
  *
@@ -845,6 +848,22 @@ import java.util.Set;
  *                                 Sort.desc("price"),
  *                                 Sort.desc("amountSold"),
  *                                 Sort.asc("name"));
+ * </pre>
+ *
+ * <h2>Maximum number of results</h2>
+ *
+ * <p>Apply the {@link First @First} annotation to a repository {@link Find} or
+ * {@link Query} method to establish a maximum number of results across all
+ * usage of the method. The default value of 1 allows you to avoid the
+ * {@link NonUniqueResultException} that would normally occurs when multiple
+ * entities match a query that is performed by a repository method that has a
+ * singular result type. For example,</p>
+ *
+ * <pre>
+ * &#64;Find
+ * &#64;First
+ * &#64;OrderBy("hourlyWage")
+ * Optional&lt;Employee&gt; withLowestWage(String jobRole);
  * </pre>
  *
  * <h2>Returning subsets of entity attributes</h2>
