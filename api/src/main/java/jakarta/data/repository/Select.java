@@ -30,7 +30,7 @@ import java.lang.annotation.Target;
  * query method.</p>
  *
  * <p>This annotation may be applied to a repository method annotated
- * {@code @Find}, or to a component of a record type.</p>
+ * {@code @Find} or to a component of a record type.</p>
  *
  * <ul>
  * <li>At most one {@code @Select} annotation may be applied to a repository
