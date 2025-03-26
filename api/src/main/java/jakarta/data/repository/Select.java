@@ -33,9 +33,9 @@ import java.lang.annotation.Target;
  * {@code @Find} or to a component of a record type.</p>
  *
  * <ul>
- * <li>At most one {@code @Select} annotation may be applied to a repository
+ * <li>At most one {@code @Select} annotation may be applied to a {@code @Find}
  * method that returns an entity attribute type.</li>
- * <li>Multiple {@code @Select} annotations may be applied to a repository
+ * <li>Multiple {@code @Select} annotations may be applied to a {@code @Find}
  * method which returns a record type, one annotation for each component of
  * the record type. The number and order of {@code @Select} annotations must
  * match the number and order of record components.</li>
@@ -43,8 +43,8 @@ import java.lang.annotation.Target;
  * of a record type. When applied to a record component, the {@code Select}
  * annotation affects every {@link Find @Find} method which returns the
  * record type and which does not have a {@code @Select} annotation, and
- * every {@link Query @Query} method which returns the record type and does
- * not have an explicit {@code SELECT} clause.</li>
+ * affects every {@link Query @Query} method which returns the record type
+ * and does not have an explicit {@code SELECT} clause.</li>
  * </ul>
  *
  * <p>This annotation must not be used in other locations.</p>
