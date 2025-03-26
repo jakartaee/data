@@ -64,7 +64,7 @@ import java.lang.annotation.Target;
  *     {@link jakarta.data.Order}, or {@link jakarta.data.page.PageRequest}.</li>
  * </ul>
  * <p>The query is inferred from the method parameters which match attributes of
- *  entity.</p>
+ * the entity.</p>
  *
  * <p>There is no specific naming convention for methods annotated with {@code @Find};
  * they may be named arbitrarily, and their names do not carry any semantic meaning
