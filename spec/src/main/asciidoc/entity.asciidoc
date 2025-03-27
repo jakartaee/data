@@ -108,7 +108,7 @@ Support for property-based access is not required by this specification.
 Jakarta Data distinguishes three kinds of persistent attributes within entity classes.
 
 - A _basic attribute_ holds a value belonging to some fundamental data type supported natively by the Jakarta Data Provider. Support for the set of basic types enumerated in the next section below is mandatory for all Jakarta Data providers.
-- An _embedded fattribute_ allows the inclusion of the state of a finer-grained Java class within the state of an entity. The type of an embedded attribute is often a user-written Java class. Support for embedded attributes varies depending on the Jakarta Data provider and the database type.
+- An _embedded attribute_ allows the inclusion of the state of a finer-grained Java class within the state of an entity. The type of an embedded attribute is often a user-written Java class. Support for embedded attributes varies depending on the Jakarta Data provider and the database type.
 - An _association attribute_ implements an association between entity types. Support for association attributes varies depending on the Jakarta Data provider and the database type.
 
 ==== Basic Types

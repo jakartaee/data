@@ -25,23 +25,29 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * <p>Determines which entity attribute(s) are returned by a {@link Find}
- * operation.</p>
+ * <p>Determines the attribute or attributes of an entity which are returned
+ * by a {@linkplain Find parameter-based} or {@linkplain Query annotated}
+ * query method.</p>
  *
- * <p>This annotation can be specified on a repository find method or
- * on a record component.</p>
+ * <p>This annotation may be applied to a repository method annotated
+ * {@code @Find} or to a component of a record type.</p>
  *
- * <p>When used on a repository find method that returns an entity attribute
- * type, at most one {@code Select} annotation can annotate the method.</p>
- *
- * <p>When used on a repository find method that returns a Java record type,
- * multiple {@code Select} annotations may annotate the method, one for each
- * record component. The number and order of {@code Select} annotations must
- * match the number and order of record components.</p>
- *
- * <p>When used on a record component, the {@code Select} annotation
- * value is used for all repository methods that lack this
- * annotation and for which the record is the result type.</p>
+ * <ul>
+ * <li>At most one {@code @Select} annotation may be applied to a {@code @Find}
+ * method that returns an entity attribute type.</li>
+ * <li>Multiple {@code @Select} annotations may be applied to a {@code @Find}
+ * method which returns a record type, one annotation for each component of
+ * the record type. The number and order of {@code @Select} annotations must
+ * match the number and order of record components.</li>
+ * <li>At most one {@code @Select} annotation may be applied to a component
+ * of a record type. When applied to a record component, the {@code Select}
+ * annotation affects:<ul>
+ * <li>every {@link Find @Find} method which returns the record type and
+ *     which does not have a {@code @Select} annotation, and</li>
+ * <li>every {@link Query @Query} method which returns the record type
+ *     and does not have an explicit {@code SELECT} clause.</li>
+ * </ul></li>
+ * </ul>
  *
  * <p>This annotation must not be used in other locations.</p>
  *
