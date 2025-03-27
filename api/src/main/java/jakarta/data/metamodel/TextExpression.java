@@ -19,42 +19,46 @@ package jakarta.data.metamodel;
 
 import jakarta.data.metamodel.constraint.Like;
 import jakarta.data.metamodel.constraint.NotLike;
+import jakarta.data.metamodel.function.NumericFunction;
+import jakarta.data.metamodel.function.NumericFunctionRecord;
+import jakarta.data.metamodel.function.TextFunction;
+import jakarta.data.metamodel.function.TextFunctionRecord;
 import jakarta.data.metamodel.restrict.BasicRestriction;
 
 public interface TextExpression<T> extends ComparableExpression<T,String> {
 
-    default TextExpression<T> prepend(String string) {
-        throw new UnsupportedOperationException("not yet implemented");
+    default TextFunction<T> prepend(String string) {
+        return new TextFunctionRecord<>("concat", string, this);
     }
-    default TextExpression<T> append(String string) {
-        throw new UnsupportedOperationException("not yet implemented");
+    default TextFunction<T> append(String string) {
+        return new TextFunctionRecord<>("concat", this, string);
     }
 
     // We could leave these two for later
 
-//    default TextExpression<T> prepend(Expression<T,String> string) {
+//    default TextFunction<T> prepend(Expression<T,String> string) {
 //        throw new UnsupportedOperationException("not yet implemented");
 //    }
-//    default TextExpression<T> append(Expression<T,String> string) {
+//    default TextFunction<T> append(Expression<T,String> string) {
 //        throw new UnsupportedOperationException("not yet implemented");
 //    }
 
-    default TextExpression<T> upper() {
-        throw new UnsupportedOperationException("not yet implemented");
+    default TextFunction<T> upper() {
+        return new TextFunctionRecord<>("upper", this);
     }
-    default TextExpression<T> lower() {
-        throw new UnsupportedOperationException("not yet implemented");
-    }
-
-    default TextExpression<T> left(int length) {
-        throw new UnsupportedOperationException("not yet implemented");
-    }
-    default TextExpression<T> right(int length) {
-        throw new UnsupportedOperationException("not yet implemented");
+    default TextFunction<T> lower() {
+        return new TextFunctionRecord<>("lower", this);
     }
 
-    default NumericExpression<T,Integer> length() {
-        throw new UnsupportedOperationException("not yet implemented");
+    default TextFunction<T> left(int length) {
+        return new TextFunctionRecord<>("left", this, length);
+    }
+    default TextFunction<T> right(int length) {
+        return new TextFunctionRecord<>("right", this, length);
+    }
+
+    default NumericFunction<T,Integer> length() {
+        return new NumericFunctionRecord<>("length", this);
     }
 
     default BasicRestriction<T,String> like(Like pattern) {

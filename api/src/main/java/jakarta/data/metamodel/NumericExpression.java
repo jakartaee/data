@@ -17,39 +17,42 @@
  */
 package jakarta.data.metamodel;
 
+import jakarta.data.metamodel.function.NumericFunction;
+import jakarta.data.metamodel.function.NumericFunctionRecord;
+
 public interface NumericExpression<T, N extends Number & Comparable<N>>
         extends ComparableExpression<T, N> {
 
-    default  NumericExpression<T,N> abs() {
-        throw new UnsupportedOperationException("not yet implemented");
+    default NumericFunction<T,N> abs() {
+        return new NumericFunctionRecord<>("abs", this);
     }
-    default NumericExpression<T,N> negated() {
-        throw new UnsupportedOperationException("not yet implemented");
-    }
-
-    default NumericExpression<T,N> plus(N other) {
-        throw new UnsupportedOperationException("not yet implemented");
-    }
-    default NumericExpression<T,N> minus(N other) {
-        throw new UnsupportedOperationException("not yet implemented");
-    }
-    default  NumericExpression<T,N> times(N other) {
-        throw new UnsupportedOperationException("not yet implemented");
-    }
-    default NumericExpression<T,N> divide(N other) {
-        throw new UnsupportedOperationException("not yet implemented");
+    default NumericFunction<T,N> negated() {
+        return new NumericFunctionRecord<>("neg", this);
     }
 
-    default NumericExpression<T,N> plus(Expression<T,N> other) {
-        throw new UnsupportedOperationException("not yet implemented");
+    default NumericFunction<T,N> plus(N other) {
+        return new NumericFunctionRecord<>("plus", this, other);
     }
-    default NumericExpression<T,N> minus(Expression<T,N> other) {
-        throw new UnsupportedOperationException("not yet implemented");
+    default NumericFunction<T,N> minus(N other) {
+        return new NumericFunctionRecord<>("minus", this, other);
     }
-    default NumericExpression<T,N> times(Expression<T,N> other) {
-        throw new UnsupportedOperationException("not yet implemented");
+    default NumericFunction<T,N> times(N other) {
+        return new NumericFunctionRecord<>("times", this, other);
     }
-    default NumericExpression<T,N> divide(Expression<T,N> other) {
-        throw new UnsupportedOperationException("not yet implemented");
+    default NumericFunction<T,N> divide(N other) {
+        return new NumericFunctionRecord<>("divide", this, other);
+    }
+
+    default NumericFunction<T,N> plus(Expression<T,N> other) {
+        return new NumericFunctionRecord<>("plus", this, other);
+    }
+    default NumericFunction<T,N> minus(Expression<T,N> other) {
+        return new NumericFunctionRecord<>("minus", this, other);
+    }
+    default NumericFunction<T,N> times(Expression<T,N> other) {
+        return new NumericFunctionRecord<>("times", this, other);
+    }
+    default NumericFunction<T,N> divide(Expression<T,N> other) {
+        return new NumericFunctionRecord<>("divide", this, other);
     }
 }
