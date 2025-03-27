@@ -41,10 +41,12 @@ import java.lang.annotation.Target;
  * match the number and order of record components.</li>
  * <li>At most one {@code @Select} annotation may be applied to a component
  * of a record type. When applied to a record component, the {@code Select}
- * annotation affects every {@link Find @Find} method which returns the
- * record type and which does not have a {@code @Select} annotation, and
- * affects every {@link Query @Query} method which returns the record type
- * and does not have an explicit {@code SELECT} clause.</li>
+ * annotation affects:<ul>
+ * <li>every {@link Find @Find} method which returns the record type and
+ *     which does not have a {@code @Select} annotation, and</li>
+ * <li>every {@link Query @Query} method which returns the record type
+ *     and does not have an explicit {@code SELECT} clause.</li>
+ * </ul></li>
  * </ul>
  *
  * <p>This annotation must not be used in other locations.</p>
