@@ -17,18 +17,8 @@
  */
 package jakarta.data.metamodel.impl;
 
-import jakarta.data.Sort;
-import jakarta.data.metamodel.ComparableAttribute;
+import jakarta.data.metamodel.NavigableAttribute;
 
-public record ComparableAttributeRecord<T,V extends Comparable<?>>(String name)
-        implements ComparableAttribute<T,V> {
-    @Override
-    public Sort<T> asc() {
-        return Sort.asc(name);
-    }
-
-    @Override
-    public Sort<T> desc() {
-        return Sort.desc(name);
-    }
+public record NavigableAttributeRecord<T,U>(String name)
+        implements NavigableAttribute<T,U> {
 }

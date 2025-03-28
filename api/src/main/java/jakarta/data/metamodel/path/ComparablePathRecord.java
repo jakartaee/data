@@ -15,9 +15,13 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.metamodel;
+package jakarta.data.metamodel.path;
 
-record NumericPathRecord<T,U,N extends Number & Comparable<N>>
-        (NavigableExpression<T,U> expression, NumericAttribute<U,N> attribute)
-        implements NumericExpression<T,N>, PathExpression<T,U> {
+import jakarta.data.metamodel.ComparableAttribute;
+import jakarta.data.metamodel.ComparableExpression;
+import jakarta.data.metamodel.NavigableExpression;
+
+record ComparablePathRecord<T,U,C extends Comparable<?>>
+        (NavigableExpression<T,U> expression, ComparableAttribute<U, C> attribute)
+        implements ComparableExpression<T,C>, ComparablePath<T,U,C> {
 }

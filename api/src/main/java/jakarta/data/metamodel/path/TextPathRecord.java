@@ -15,9 +15,13 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.metamodel;
+package jakarta.data.metamodel.path;
+
+import jakarta.data.metamodel.NavigableExpression;
+import jakarta.data.metamodel.TextAttribute;
+import jakarta.data.metamodel.TextExpression;
 
 record TextPathRecord<T,U>
         (NavigableExpression<T,U> expression, TextAttribute<U> attribute)
-        implements TextExpression<T>, PathExpression<T,U> {
+        implements TextExpression<T>, TextPath<T,U> {
 }

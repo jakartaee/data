@@ -17,22 +17,27 @@
  */
 package jakarta.data.metamodel;
 
+import jakarta.data.metamodel.path.ComparablePath;
+import jakarta.data.metamodel.path.NavigablePath;
+import jakarta.data.metamodel.path.NumericPath;
+import jakarta.data.metamodel.path.TextPath;
+
 public interface NavigableExpression<T,U> {
 
     default <V> NavigableExpression<T, V> navigate(NavigableAttribute<U, V> attribute) {
-        return new NavigablePathRecord<>(this, attribute);
+        return NavigablePath.of(this, attribute);
     }
 
     default TextExpression<T> navigate(TextAttribute<U> attribute) {
-        return new TextPathRecord<>(this, attribute);
+        return TextPath.of(this, attribute);
     }
 
     default  <C extends Comparable<C>> ComparableExpression<T, C> navigate(ComparableAttribute<U, C> attribute) {
-        return new ComparablePathRecord<>(this, attribute);
+        return ComparablePath.of(this, attribute);
     }
 
     default <N extends Number & Comparable<N>> NumericExpression<T, N> navigate(NumericAttribute<U, N> attribute) {
-        return new NumericPathRecord<>(this, attribute);
+        return NumericPath.of(this, attribute);
     }
 
 }

@@ -15,10 +15,17 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.metamodel;
+package jakarta.data.metamodel.path;
 
-record NavigablePathRecord<T,U,V>
-        (NavigableExpression<T,U> expression, NavigableAttribute<U,V> attribute)
-        implements NavigableExpression<T,V>, PathExpression<T,U> {
+import jakarta.data.metamodel.NavigableExpression;
+import jakarta.data.metamodel.NumericAttribute;
+import jakarta.data.metamodel.NumericExpression;
+import jakarta.data.metamodel.Path;
 
+public interface NumericPath<T,U,N extends Number & Comparable<N>>
+        extends Path<T,U>, NumericExpression<T,N> {
+    static <T,U, N extends Number & Comparable<N>> NumericPath<T, U, N>
+    of(NavigableExpression<T, U> expression, NumericAttribute<U, N> attribute) {
+        return new NumericPathRecord<>(expression, attribute);
+    }
 }

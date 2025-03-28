@@ -15,9 +15,10 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.metamodel;
+package jakarta.data.metamodel.impl;
 
-public interface PathExpression<T,U> {
-    NavigableExpression<T,U> expression();
-    Attribute<U> attribute();
+import jakarta.data.metamodel.NumericAttribute;
+
+public record NumericAttributeRecord<T,V extends Number & Comparable<V>>(String name)
+        implements NumericAttribute<T,V> {
 }

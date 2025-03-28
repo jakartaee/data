@@ -17,6 +17,8 @@
  */
 package jakarta.data.metamodel;
 
+import jakarta.data.metamodel.impl.BasicAttributeRecord;
+
 import java.util.Objects;
 
 /**
@@ -50,12 +52,3 @@ public interface BasicAttribute<T,V> extends Attribute<T>, Expression<T,V> {
     }
 }
 
-/**
- * Hidden internal implementation of BasicAttribute.
- *
- * @param <T> entity class of the static metamodel.
- * @param <V> type of entity attribute (or wrapper type if primitive).
- */
-record BasicAttributeRecord<T,V>(String name)
-    implements BasicAttribute<T,V> {
-}

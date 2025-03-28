@@ -17,7 +17,7 @@
  */
 package jakarta.data.metamodel;
 
-import jakarta.data.Sort;
+import jakarta.data.metamodel.impl.ComparableAttributeRecord;
 
 import java.util.Objects;
 
@@ -78,22 +78,3 @@ public interface ComparableAttribute<T,V extends Comparable<?>>
     }
 }
 
-/**
- * Hidden internal implementation of ComparableAttribute.
- *
- * @param <T> entity class of the static metamodel.
- * @param <V> type of entity attribute (or wrapper type if primitive).
- */
-record ComparableAttributeRecord<T,V extends Comparable<?>>(String name)
-    implements ComparableAttribute<T,V> {
-
-    @Override
-    public Sort<T> asc() {
-        return Sort.asc(name);
-    }
-
-    @Override
-    public Sort<T> desc() {
-        return Sort.desc(name);
-    }
-}

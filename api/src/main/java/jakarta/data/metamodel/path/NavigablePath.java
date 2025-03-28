@@ -15,21 +15,15 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.metamodel;
+package jakarta.data.metamodel.path;
 
-import jakarta.data.metamodel.impl.NumericAttributeRecord;
+import jakarta.data.metamodel.NavigableAttribute;
+import jakarta.data.metamodel.NavigableExpression;
+import jakarta.data.metamodel.Path;
 
-import java.util.Objects;
-
-public interface NumericAttribute<T,N extends Number & Comparable<N>>
-        extends BasicAttribute<T,N>, NumericExpression<T, N> {
-    static <T,N extends Number & Comparable<N>> NumericAttribute<T,N>
-    of(Class<T> entityClass, String name, Class<N> attributeType) {
-        Objects.requireNonNull(entityClass, "entity class is required");
-        Objects.requireNonNull(name, "entity attribute name is required");
-        Objects.requireNonNull(attributeType, "entity attribute type is required");
-
-        return new NumericAttributeRecord<>(name);
+public interface NavigablePath<T,U,V>
+        extends Path<T,U>, NavigableExpression<T,V> {
+    static <T,U,V> NavigablePath<T,U,V> of(NavigableExpression<T, U> expression, NavigableAttribute<U,V> attribute) {
+        return new NavigablePathRecord<>(expression, attribute);
     }
 }
-

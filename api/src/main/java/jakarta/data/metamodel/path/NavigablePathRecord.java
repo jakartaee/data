@@ -15,20 +15,13 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.metamodel.impl;
+package jakarta.data.metamodel.path;
 
-import jakarta.data.Sort;
-import jakarta.data.metamodel.ComparableAttribute;
+import jakarta.data.metamodel.NavigableAttribute;
+import jakarta.data.metamodel.NavigableExpression;
 
-public record ComparableAttributeRecord<T,V extends Comparable<?>>(String name)
-        implements ComparableAttribute<T,V> {
-    @Override
-    public Sort<T> asc() {
-        return Sort.asc(name);
-    }
+record NavigablePathRecord<T,U,V>
+        (NavigableExpression<T,U> expression, NavigableAttribute<U,V> attribute)
+        implements NavigableExpression<T,V>, NavigablePath<T,U,V> {
 
-    @Override
-    public Sort<T> desc() {
-        return Sort.desc(name);
-    }
 }

@@ -17,19 +17,7 @@
  */
 package jakarta.data.metamodel;
 
-import jakarta.data.metamodel.impl.NumericAttributeRecord;
-
-import java.util.Objects;
-
-public interface NumericAttribute<T,N extends Number & Comparable<N>>
-        extends BasicAttribute<T,N>, NumericExpression<T, N> {
-    static <T,N extends Number & Comparable<N>> NumericAttribute<T,N>
-    of(Class<T> entityClass, String name, Class<N> attributeType) {
-        Objects.requireNonNull(entityClass, "entity class is required");
-        Objects.requireNonNull(name, "entity attribute name is required");
-        Objects.requireNonNull(attributeType, "entity attribute type is required");
-
-        return new NumericAttributeRecord<>(name);
-    }
+public interface Path<T,U> {
+    NavigableExpression<T,U> expression();
+    Attribute<U> attribute();
 }
-
