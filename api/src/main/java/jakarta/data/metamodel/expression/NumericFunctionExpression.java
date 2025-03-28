@@ -24,6 +24,11 @@ import java.util.List;
 
 public interface NumericFunctionExpression<T, N extends Number & Comparable<N>>
         extends FunctionExpression<T,N>, NumericExpression<T,N> {
+
+    String ABS = "abs";
+    String NEG = "neg";
+    String LENGTH = "length";
+
     static <T,N extends Number & Comparable<N>> NumericFunctionExpression<T, N>
     of(String name, TextExpression<T> argument) {
         return new NumericFunctionExpressionRecord<>(name, List.of(argument));

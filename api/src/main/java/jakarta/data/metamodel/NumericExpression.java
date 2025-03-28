@@ -20,6 +20,8 @@ package jakarta.data.metamodel;
 import jakarta.data.metamodel.expression.NumericFunctionExpression;
 import jakarta.data.metamodel.expression.NumericOperatorExpression;
 
+import static jakarta.data.metamodel.expression.NumericFunctionExpression.ABS;
+import static jakarta.data.metamodel.expression.NumericFunctionExpression.NEG;
 import static jakarta.data.metamodel.expression.NumericOperatorExpression.Operator.DIVIDE;
 import static jakarta.data.metamodel.expression.NumericOperatorExpression.Operator.MINUS;
 import static jakarta.data.metamodel.expression.NumericOperatorExpression.Operator.PLUS;
@@ -29,10 +31,10 @@ public interface NumericExpression<T, N extends Number & Comparable<N>>
         extends ComparableExpression<T, N> {
 
     default NumericExpression<T,N> abs() {
-        return NumericFunctionExpression.of("abs", this);
+        return NumericFunctionExpression.of(ABS, this);
     }
     default NumericExpression<T,N> negated() {
-        return NumericFunctionExpression.of("neg", this);
+        return NumericFunctionExpression.of(NEG, this);
     }
 
     default NumericExpression<T,N> plus(N other) {

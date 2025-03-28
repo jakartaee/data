@@ -23,6 +23,13 @@ import java.util.List;
 
 public interface TextFunctionExpression<T>
         extends FunctionExpression<T,String>, TextExpression<T> {
+
+    String CONCAT = "concat";
+    String UPPER = "upper";
+    String LOWER = "lower";
+    String LEFT = "left";
+    String RIGHT = "right";
+
     static <T> TextFunctionExpression<T> of(String name, TextExpression<T> argument) {
         return new TextFunctionExpressionRecord<>(name, List.of(argument));
     }

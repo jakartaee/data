@@ -24,38 +24,45 @@ import jakarta.data.metamodel.expression.TextFunctionExpression;
 import jakarta.data.metamodel.restrict.BasicRestriction;
 import jakarta.data.metamodel.restrict.Restriction;
 
+import static jakarta.data.metamodel.expression.NumericFunctionExpression.LENGTH;
+import static jakarta.data.metamodel.expression.TextFunctionExpression.CONCAT;
+import static jakarta.data.metamodel.expression.TextFunctionExpression.LEFT;
+import static jakarta.data.metamodel.expression.TextFunctionExpression.LOWER;
+import static jakarta.data.metamodel.expression.TextFunctionExpression.RIGHT;
+import static jakarta.data.metamodel.expression.TextFunctionExpression.UPPER;
+
 public interface TextExpression<T> extends ComparableExpression<T,String> {
 
     default TextExpression<T> prepend(String string) {
-        return TextFunctionExpression.of("concat", string, this);
+        return TextFunctionExpression.of(CONCAT, string, this);
     }
     default TextExpression<T> append(String string) {
-        return TextFunctionExpression.of("concat", this, string);
+        return TextFunctionExpression.of(CONCAT, this, string);
     }
 
     default TextExpression<T> prepend(TextExpression<T> string) {
-        return TextFunctionExpression.of("concat", string, this);
+        return TextFunctionExpression.of(CONCAT, string, this);
     }
     default TextExpression<T> append(TextExpression<T> string) {
-        return TextFunctionExpression.of("concat", string, this);
+        return TextFunctionExpression.of(CONCAT, string, this);
     }
 
     default TextExpression<T> upper() {
-        return TextFunctionExpression.of("upper", this);
+        return TextFunctionExpression.of(UPPER, this);
     }
     default TextExpression<T> lower() {
-        return TextFunctionExpression.of("lower", this);
+        return TextFunctionExpression.of(LOWER, this);
     }
 
     default TextExpression<T> left(int length) {
-        return TextFunctionExpression.of("left", this, length);
+        return TextFunctionExpression.of(LEFT, this, length);
     }
     default TextExpression<T> right(int length) {
-        return TextFunctionExpression.of("right", this, length);
+        return TextFunctionExpression.of(RIGHT, this, length);
     }
 
     default NumericExpression<T,Integer> length() {
-        return NumericFunctionExpression.of("length", this);
+        return NumericFunctionExpression.of(LENGTH, this);
     }
 
     default Restriction<T> like(Like pattern) {
