@@ -29,6 +29,8 @@ import java.util.Set;
 
 public interface Expression<T,V> {
 
+    // QUESTION: do we really need to expose BasicRestriction here
+
     default BasicRestriction<T,V> equalTo(V value) {
         return new BasicRestrictionRecord<>(this, Constraint.equalTo(value));
     }

@@ -28,6 +28,8 @@ import jakarta.data.metamodel.restrict.BasicRestriction;
 public interface ComparableExpression<T,V extends Comparable<?>>
         extends Expression<T, V> {
 
+    // QUESTION: do we really need to expose BasicRestriction here
+
     default BasicRestriction<T,V> between(V min, V max) {
         return new BasicRestrictionRecord<>(this, Between.bounds(min, max));
     }

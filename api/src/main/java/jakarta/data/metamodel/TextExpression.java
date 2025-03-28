@@ -25,6 +25,8 @@ import jakarta.data.metamodel.restrict.BasicRestriction;
 
 public interface TextExpression<T> extends ComparableExpression<T,String> {
 
+    // QUESTION: do we really need to expose TextFunctionExpression & BasicRestriction here
+
     default TextFunctionExpression<T> prepend(String string) {
         return TextFunctionExpression.of("concat", string, this);
     }

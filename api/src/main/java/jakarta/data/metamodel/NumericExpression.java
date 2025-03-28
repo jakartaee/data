@@ -28,6 +28,8 @@ import static jakarta.data.metamodel.expression.NumericOperatorExpression.Operat
 public interface NumericExpression<T, N extends Number & Comparable<N>>
         extends ComparableExpression<T, N> {
 
+    // QUESTION: do we really need to expose NumericFunctionExpression & NumericOperatorExpression here
+
     default NumericFunctionExpression<T,N> abs() {
         return NumericFunctionExpression.of("abs", this);
     }
