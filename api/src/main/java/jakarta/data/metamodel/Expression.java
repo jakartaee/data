@@ -32,38 +32,38 @@ public interface Expression<T,V> {
     // QUESTION: do we really need to expose BasicRestriction here
 
     default BasicRestriction<T,V> equalTo(V value) {
-        return new BasicRestrictionRecord<>(this, Constraint.equalTo(value));
+        return BasicRestriction.of(this, Constraint.equalTo(value));
     }
 
     default BasicRestriction<T,V> in(Set<V> values) {
         if (values == null || values.isEmpty())
             throw new IllegalArgumentException("values are required");
 
-        return new BasicRestrictionRecord<>(this, In.values(values));
+        return BasicRestriction.of(this, In.values(values));
     }
 
     default BasicRestriction<T,V> isNull() {
-        return new BasicRestrictionRecord<>(this, Null.instance());
+        return BasicRestriction.of(this, Null.instance());
     }
 
     default BasicRestriction<T,V> notEqualTo(V value) {
-        return new BasicRestrictionRecord<>(this, NotEqualTo.value(value));
+        return BasicRestriction.of(this, NotEqualTo.value(value));
     }
 
     default BasicRestriction<T,V> notIn(Set<V> values) {
         if (values == null || values.isEmpty())
             throw new IllegalArgumentException("values are required");
 
-        return new BasicRestrictionRecord<>(this, NotIn.values(values));
+        return BasicRestriction.of(this, NotIn.values(values));
     }
 
     default BasicRestriction<T,V> notNull() {
-        return new BasicRestrictionRecord<>(this, NotNull.instance());
+        return BasicRestriction.of(this, NotNull.instance());
     }
 
     // TODO: should this be called restrict() ?
     default BasicRestriction<T,V> satisfies(Constraint<V> constraint) {
-        return new BasicRestrictionRecord<>(this, constraint);
+        return BasicRestriction.of(this, constraint);
     }
 
     // Leave for later, since we need a new kind of Restriction for these

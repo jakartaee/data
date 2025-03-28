@@ -15,18 +15,19 @@
  *
  *  SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.metamodel;
+package jakarta.data.metamodel.restrict;
 
 // Internal implementation class.
 // The proper way for users to obtain instances is via
 // the static metamodel or Restrict.* methods 
 
+import jakarta.data.metamodel.Attribute;
+import jakarta.data.metamodel.Expression;
 import jakarta.data.metamodel.constraint.Constraint;
-import jakarta.data.metamodel.restrict.BasicRestriction;
 
 import java.util.Objects;
 
-record BasicRestrictionRecord<T, V>(Expression<T,V> expression,  Constraint<V> constraint)
+record BasicRestrictionRecord<T, V>(Expression<T,V> expression, Constraint<V> constraint)
         implements BasicRestriction<T, V> {
 
     BasicRestrictionRecord {
@@ -41,7 +42,7 @@ record BasicRestrictionRecord<T, V>(Expression<T,V> expression,  Constraint<V> c
 
     @Override
     public BasicRestriction<T, V> negate() {
-        return new BasicRestrictionRecord<>(expression, constraint.negate());
+        return BasicRestriction.of(expression, constraint.negate());
     }
 
     /**

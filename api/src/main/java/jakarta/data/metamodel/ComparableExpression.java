@@ -31,27 +31,27 @@ public interface ComparableExpression<T,V extends Comparable<?>>
     // QUESTION: do we really need to expose BasicRestriction here
 
     default BasicRestriction<T,V> between(V min, V max) {
-        return new BasicRestrictionRecord<>(this, Between.bounds(min, max));
+        return BasicRestriction.of(this, Between.bounds(min, max));
     }
 
     default BasicRestriction<T,V> notBetween(V min, V max) {
-        return new BasicRestrictionRecord<>(this, NotBetween.bounds(min, max));
+        return BasicRestriction.of(this, NotBetween.bounds(min, max));
     }
 
     default BasicRestriction<T,V> greaterThan(V value) {
-        return new BasicRestrictionRecord<>(this, GreaterThan.bound(value));
+        return BasicRestriction.of(this, GreaterThan.bound(value));
     }
 
     default BasicRestriction<T,V> greaterThanEqual(V value) {
-        return new BasicRestrictionRecord<>(this, GreaterThanOrEqual.min(value));
+        return BasicRestriction.of(this, GreaterThanOrEqual.min(value));
     }
 
     default BasicRestriction<T,V> lessThan(V value) {
-        return new BasicRestrictionRecord<>(this, LessThan.bound(value));
+        return BasicRestriction.of(this, LessThan.bound(value));
     }
 
     default BasicRestriction<T,V> lessThanEqual(V value) {
-        return new BasicRestrictionRecord<>(this, LessThanOrEqual.max(value));
+        return BasicRestriction.of(this, LessThanOrEqual.max(value));
     }
 
     // Leave for later, since we need a new kind of Restriction for these

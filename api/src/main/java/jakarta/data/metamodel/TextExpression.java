@@ -60,59 +60,59 @@ public interface TextExpression<T> extends ComparableExpression<T,String> {
     }
 
     default BasicRestriction<T,String> like(Like pattern) {
-        return new BasicRestrictionRecord<>(this, pattern);
+        return BasicRestriction.of(this, pattern);
     }
 
     default BasicRestriction<T,String> like(String pattern) {
-        return new BasicRestrictionRecord<>(this, Like.pattern(pattern));
+        return BasicRestriction.of(this, Like.pattern(pattern));
     }
 
     default BasicRestriction<T,String> like(String pattern, char charWildcard, char stringWildcard) {
         Like constraint = Like.pattern(pattern, charWildcard, stringWildcard);
-        return new BasicRestrictionRecord<>(this, constraint);
+        return BasicRestriction.of(this, constraint);
     }
 
     default BasicRestriction<T,String> like(String pattern, char charWildcard, char stringWildcard, char escape) {
         Like constraint = Like.pattern(pattern, charWildcard, stringWildcard, escape);
-        return new BasicRestrictionRecord<>(this, constraint);
+        return BasicRestriction.of(this, constraint);
     }
 
     default BasicRestriction<T,String> notLike(String pattern) {
-        return new BasicRestrictionRecord<>(this, NotLike.pattern(pattern));
+        return BasicRestriction.of(this, NotLike.pattern(pattern));
     }
 
     default BasicRestriction<T,String> notLike(String pattern, char charWildcard, char stringWildcard) {
         NotLike constraint = NotLike.pattern(pattern, charWildcard, stringWildcard);
-        return new BasicRestrictionRecord<>(this, constraint);
+        return BasicRestriction.of(this, constraint);
     }
 
     default BasicRestriction<T,String> notLike(String pattern, char charWildcard, char stringWildcard, char escape) {
         NotLike constraint = NotLike.pattern(pattern, charWildcard, stringWildcard, escape);
-        return new BasicRestrictionRecord<>(this, constraint);
+        return BasicRestriction.of(this, constraint);
     }
 
     default BasicRestriction<T,String> contains(String substring) {
-        return new BasicRestrictionRecord<>(this, Like.substring(substring));
+        return BasicRestriction.of(this, Like.substring(substring));
     }
 
     default BasicRestriction<T,String> notContains(String substring) {
-        return new BasicRestrictionRecord<>(this, NotLike.substring(substring));
+        return BasicRestriction.of(this, NotLike.substring(substring));
     }
 
     default BasicRestriction<T,String> startsWith(String prefix) {
-        return new BasicRestrictionRecord<>(this, Like.prefix(prefix));
+        return BasicRestriction.of(this, Like.prefix(prefix));
     }
 
     default BasicRestriction<T,String> notStartsWith(String prefix) {
-        return new BasicRestrictionRecord<>(this, NotLike.prefix(prefix));
+        return BasicRestriction.of(this, NotLike.prefix(prefix));
     }
 
     default BasicRestriction<T,String> endsWith(String suffix) {
-        return new BasicRestrictionRecord<>(this, Like.suffix(suffix));
+        return BasicRestriction.of(this, Like.suffix(suffix));
     }
 
     default BasicRestriction<T,String> notEndsWith(String suffix) {
-        return new BasicRestrictionRecord<>(this, NotLike.suffix(suffix));
+        return BasicRestriction.of(this, NotLike.suffix(suffix));
     }
 
 }
