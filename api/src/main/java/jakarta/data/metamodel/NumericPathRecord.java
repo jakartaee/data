@@ -17,22 +17,7 @@
  */
 package jakarta.data.metamodel;
 
-public interface NavigableExpression<T,U> {
-
-    default <V> NavigableExpression<T, V> navigate(NavigableAttribute<U, V> attribute) {
-        return new NavigablePathRecord<>(this, attribute);
-    }
-
-    default TextExpression<T> navigate(TextAttribute<U> attribute) {
-        return new TextPathRecord<>(this, attribute);
-    }
-
-    default  <C extends Comparable<C>> ComparableExpression<T, C> navigate(ComparableAttribute<U, C> attribute) {
-        return new ComparablePathRecord<>(this, attribute);
-    }
-
-    default <N extends Number & Comparable<N>> NumericExpression<T, N> navigate(NumericAttribute<U, N> attribute) {
-        return new NumericPathRecord<>(this, attribute);
-    }
-
+record NumericPathRecord<T,U,N extends Number & Comparable<N>>
+        (NavigableExpression<T,U> expression, NumericAttribute<U,N> attribute)
+        implements NumericExpression<T,N>, PathExpression<T,U> {
 }
