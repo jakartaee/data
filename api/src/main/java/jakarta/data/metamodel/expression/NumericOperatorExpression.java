@@ -20,7 +20,8 @@ package jakarta.data.metamodel.expression;
 import jakarta.data.metamodel.Expression;
 import jakarta.data.metamodel.NumericExpression;
 
-public interface NumericOperatorExpression<T, N extends Number & Comparable<N>> {
+public interface NumericOperatorExpression<T, N extends Number & Comparable<N>>
+        extends NumericExpression<T,N> {
     enum Operator {
         PLUS, MINUS, TIMES, DIVIDE
     }
