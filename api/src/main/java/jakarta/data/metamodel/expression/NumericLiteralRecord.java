@@ -15,13 +15,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.metamodel.function;
+package jakarta.data.metamodel.expression;
 
-import jakarta.data.metamodel.Expression;
-
-import java.util.List;
-
-public interface Function<T,V> extends Expression<T,V> {
-    String name();
-    List<? extends Expression<T,?>> arguments();
+record NumericLiteralRecord<T, N extends Number & Comparable<N>>
+        (N value) implements NumericLiteral<T,N> {
 }

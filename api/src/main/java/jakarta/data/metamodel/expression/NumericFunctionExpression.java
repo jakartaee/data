@@ -15,10 +15,21 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.metamodel.function;
+package jakarta.data.metamodel.expression;
 
 import jakarta.data.metamodel.NumericExpression;
+import jakarta.data.metamodel.TextExpression;
 
-public interface NumericFunction<T, N extends Number & Comparable<N>>
-        extends Function<T,N>, NumericExpression<T,N> {
+import java.util.List;
+
+public interface NumericFunctionExpression<T, N extends Number & Comparable<N>>
+        extends FunctionExpression<T,N>, NumericExpression<T,N> {
+    static <T,N extends Number & Comparable<N>> NumericFunctionExpression<T, N>
+    of(String name, TextExpression<T> argument) {
+        return new NumericFunctionExpressionRecord<>(name, List.of(argument));
+    }
+    static <T,N extends Number & Comparable<N>> NumericFunctionExpression<T, N>
+    of(String name, NumericExpression<T,N> argument) {
+        return new NumericFunctionExpressionRecord<>(name, List.of(argument));
+    }
 }

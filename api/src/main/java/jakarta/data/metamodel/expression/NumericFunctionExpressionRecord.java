@@ -15,26 +15,13 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.metamodel.function;
+package jakarta.data.metamodel.expression;
 
 import jakarta.data.metamodel.Expression;
-import jakarta.data.metamodel.TextExpression;
 
 import java.util.List;
 
-public record NumericFunctionRecord<T, N extends Number & Comparable<N>>
+record NumericFunctionExpressionRecord<T, N extends Number & Comparable<N>>
         (String name, List<Expression<T,?>> arguments)
-        implements NumericFunction<T,N> {
-    public NumericFunctionRecord(String name, TextExpression<T> argument) {
-        this(name, List.of(argument));
-    }
-    public NumericFunctionRecord(String name, Expression<T, N> argument) {
-        this(name, List.of(argument));
-    }
-    public NumericFunctionRecord(String name, Expression<T, N> argument, N literal) {
-        this(name, List.of(argument, new LiteralRecord<>(literal)));
-    }
-    public NumericFunctionRecord(String name, Expression<T, N> argument, Expression<T, N> expression) {
-        this(name, List.of(argument, expression));
-    }
+        implements NumericFunctionExpression<T,N> {
 }

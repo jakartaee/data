@@ -15,7 +15,11 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.metamodel.function;
+package jakarta.data.metamodel.expression;
 
-public record LiteralRecord<T,V>(V value) implements Literal<T,V> {
+import jakarta.data.metamodel.NumericExpression;
+
+record NumericOperatorExpressionRecord<T, N extends Number & Comparable<N>>
+        (Operator operator, NumericExpression<T,N> left, NumericExpression<T,N> right)
+        implements NumericOperatorExpression<T,N> {
 }

@@ -17,42 +17,47 @@
  */
 package jakarta.data.metamodel;
 
-import jakarta.data.metamodel.function.NumericFunction;
-import jakarta.data.metamodel.function.NumericFunctionRecord;
+import jakarta.data.metamodel.expression.NumericFunctionExpression;
+import jakarta.data.metamodel.expression.NumericOperatorExpression;
+
+import static jakarta.data.metamodel.expression.NumericOperatorExpression.Operator.DIVIDE;
+import static jakarta.data.metamodel.expression.NumericOperatorExpression.Operator.MINUS;
+import static jakarta.data.metamodel.expression.NumericOperatorExpression.Operator.PLUS;
+import static jakarta.data.metamodel.expression.NumericOperatorExpression.Operator.TIMES;
 
 public interface NumericExpression<T, N extends Number & Comparable<N>>
         extends ComparableExpression<T, N> {
 
-    default NumericFunction<T,N> abs() {
-        return new NumericFunctionRecord<>("abs", this);
+    default NumericFunctionExpression<T,N> abs() {
+        return NumericFunctionExpression.of("abs", this);
     }
-    default NumericFunction<T,N> negated() {
-        return new NumericFunctionRecord<>("neg", this);
-    }
-
-    default NumericFunction<T,N> plus(N other) {
-        return new NumericFunctionRecord<>("plus", this, other);
-    }
-    default NumericFunction<T,N> minus(N other) {
-        return new NumericFunctionRecord<>("minus", this, other);
-    }
-    default NumericFunction<T,N> times(N other) {
-        return new NumericFunctionRecord<>("times", this, other);
-    }
-    default NumericFunction<T,N> divide(N other) {
-        return new NumericFunctionRecord<>("divide", this, other);
+    default NumericFunctionExpression<T,N> negated() {
+        return NumericFunctionExpression.of("neg", this);
     }
 
-    default NumericFunction<T,N> plus(Expression<T,N> other) {
-        return new NumericFunctionRecord<>("plus", this, other);
+    default NumericOperatorExpression<T,N> plus(N other) {
+        return NumericOperatorExpression.of(PLUS, this, other);
     }
-    default NumericFunction<T,N> minus(Expression<T,N> other) {
-        return new NumericFunctionRecord<>("minus", this, other);
+    default NumericOperatorExpression<T,N> minus(N other) {
+        return NumericOperatorExpression.of(MINUS, this, other);
     }
-    default NumericFunction<T,N> times(Expression<T,N> other) {
-        return new NumericFunctionRecord<>("times", this, other);
+    default NumericOperatorExpression<T,N> times(N other) {
+        return NumericOperatorExpression.of(TIMES, this, other);
     }
-    default NumericFunction<T,N> divide(Expression<T,N> other) {
-        return new NumericFunctionRecord<>("divide", this, other);
+    default NumericOperatorExpression<T,N> divide(N other) {
+        return NumericOperatorExpression.of(DIVIDE, this, other);
+    }
+
+    default NumericOperatorExpression<T,N> plus(NumericExpression<T,N> other) {
+        return NumericOperatorExpression.of(PLUS, this, other);
+    }
+    default NumericOperatorExpression<T,N> minus(NumericExpression<T,N> other) {
+        return NumericOperatorExpression.of(MINUS, this, other);
+    }
+    default NumericOperatorExpression<T,N> times(NumericExpression<T,N> other) {
+        return NumericOperatorExpression.of(TIMES, this, other);
+    }
+    default NumericOperatorExpression<T,N> divide(NumericExpression<T,N> other) {
+        return NumericOperatorExpression.of(DIVIDE, this, other);
     }
 }

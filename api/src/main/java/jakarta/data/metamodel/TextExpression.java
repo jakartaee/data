@@ -19,46 +19,42 @@ package jakarta.data.metamodel;
 
 import jakarta.data.metamodel.constraint.Like;
 import jakarta.data.metamodel.constraint.NotLike;
-import jakarta.data.metamodel.function.NumericFunction;
-import jakarta.data.metamodel.function.NumericFunctionRecord;
-import jakarta.data.metamodel.function.TextFunction;
-import jakarta.data.metamodel.function.TextFunctionRecord;
+import jakarta.data.metamodel.expression.NumericFunctionExpression;
+import jakarta.data.metamodel.expression.TextFunctionExpression;
 import jakarta.data.metamodel.restrict.BasicRestriction;
 
 public interface TextExpression<T> extends ComparableExpression<T,String> {
 
-    default TextFunction<T> prepend(String string) {
-        return new TextFunctionRecord<>("concat", string, this);
+    default TextFunctionExpression<T> prepend(String string) {
+        return TextFunctionExpression.of("concat", string, this);
     }
-    default TextFunction<T> append(String string) {
-        return new TextFunctionRecord<>("concat", this, string);
-    }
-
-    // We could leave these two for later
-
-//    default TextFunction<T> prepend(Expression<T,String> string) {
-//        throw new UnsupportedOperationException("not yet implemented");
-//    }
-//    default TextFunction<T> append(Expression<T,String> string) {
-//        throw new UnsupportedOperationException("not yet implemented");
-//    }
-
-    default TextFunction<T> upper() {
-        return new TextFunctionRecord<>("upper", this);
-    }
-    default TextFunction<T> lower() {
-        return new TextFunctionRecord<>("lower", this);
+    default TextFunctionExpression<T> append(String string) {
+        return TextFunctionExpression.of("concat", this, string);
     }
 
-    default TextFunction<T> left(int length) {
-        return new TextFunctionRecord<>("left", this, length);
+    default TextFunctionExpression<T> prepend(TextExpression<T> string) {
+        return TextFunctionExpression.of("concat", string, this);
     }
-    default TextFunction<T> right(int length) {
-        return new TextFunctionRecord<>("right", this, length);
+    default TextFunctionExpression<T> append(TextExpression<T> string) {
+        return TextFunctionExpression.of("concat", string, this);
     }
 
-    default NumericFunction<T,Integer> length() {
-        return new NumericFunctionRecord<>("length", this);
+    default TextFunctionExpression<T> upper() {
+        return TextFunctionExpression.of("upper", this);
+    }
+    default TextFunctionExpression<T> lower() {
+        return TextFunctionExpression.of("lower", this);
+    }
+
+    default TextFunctionExpression<T> left(int length) {
+        return TextFunctionExpression.of("left", this, length);
+    }
+    default TextFunctionExpression<T> right(int length) {
+        return TextFunctionExpression.of("right", this, length);
+    }
+
+    default NumericFunctionExpression<T,Integer> length() {
+        return NumericFunctionExpression.of("length", this);
     }
 
     default BasicRestriction<T,String> like(Like pattern) {

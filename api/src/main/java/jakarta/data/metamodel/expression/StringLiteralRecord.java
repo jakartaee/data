@@ -15,9 +15,9 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.metamodel.function;
+package jakarta.data.metamodel.expression;
 
-import jakarta.data.metamodel.TextExpression;
+record StringLiteralRecord<T>(String value)
+        implements StringLiteral<T> {
 
-public interface TextFunction<T> extends Function<T,String>, TextExpression<T> {
 }
