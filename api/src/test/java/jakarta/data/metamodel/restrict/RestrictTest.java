@@ -93,7 +93,8 @@ class RestrictTest {
 
     @Test
     void shouldCreateEqualToStringRestriction() {
-        BasicRestriction<Employee,String> restriction = _Employee.position.equalTo("Software Engineer");
+        BasicRestriction<Employee,String> restriction =
+                (BasicRestriction<Employee, String>) _Employee.position.equalTo("Software Engineer");
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.attribute()).isEqualTo("position");
@@ -104,7 +105,8 @@ class RestrictTest {
 
     @Test
     void shouldCreateNotEqualToStringRestriction() {
-        BasicRestriction<Employee,String> restriction = _Employee.position.notEqualTo("Manager");
+        BasicRestriction<Employee,String> restriction =
+                (BasicRestriction<Employee, String>) _Employee.position.notEqualTo("Manager");
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.attribute()).isEqualTo("position");
@@ -132,7 +134,8 @@ class RestrictTest {
 
     @Test
     void shouldCreateContainsRestriction() {
-        BasicRestriction<Employee,String> restriction = _Employee.position.contains("Manager");
+        BasicRestriction<Employee,String> restriction =
+                (BasicRestriction<Employee, String>) _Employee.position.contains("Manager");
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.attribute()).isEqualTo("position");
@@ -143,7 +146,8 @@ class RestrictTest {
 
     @Test
     void shouldCreateNegatedContainsRestriction() {
-        BasicRestriction<Employee,String> restriction = _Employee.position.notContains("Director");
+        BasicRestriction<Employee,String> restriction =
+                (BasicRestriction<Employee, String>) _Employee.position.notContains("Director");
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.attribute()).isEqualTo("position");
@@ -154,7 +158,8 @@ class RestrictTest {
 
     @Test
     void shouldCreateStartsWithRestriction() {
-        BasicRestriction<Employee,String> restriction = _Employee.position.startsWith("Director");
+        BasicRestriction<Employee,String> restriction =
+                (BasicRestriction<Employee, String>) _Employee.position.startsWith("Director");
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.attribute()).isEqualTo("position");
@@ -165,7 +170,8 @@ class RestrictTest {
 
     @Test
     void shouldCreateNegatedStartsWithRestriction() {
-        BasicRestriction<Employee,String> restriction = _Employee.position.notStartsWith("Manager");
+        BasicRestriction<Employee,String> restriction =
+                (BasicRestriction<Employee, String>) _Employee.position.notStartsWith("Manager");
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.attribute()).isEqualTo("position");
@@ -176,7 +182,8 @@ class RestrictTest {
 
     @Test
     void shouldCreateEndsWithRestriction() {
-        BasicRestriction<Employee,String> restriction = _Employee.position.endsWith("Manager");
+        BasicRestriction<Employee,String> restriction =
+                (BasicRestriction<Employee,String>) _Employee.position.endsWith("Manager");
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.attribute()).isEqualTo("position");
@@ -187,7 +194,8 @@ class RestrictTest {
 
     @Test
     void shouldCreateNegatedEndsWithRestriction() {
-        BasicRestriction<Employee,String> restriction = _Employee.position.notEndsWith("Supervisor");
+        BasicRestriction<Employee,String> restriction =
+                (BasicRestriction<Employee, String>) _Employee.position.notEndsWith("Supervisor");
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.attribute()).isEqualTo("position");
@@ -231,7 +239,7 @@ class RestrictTest {
 
     @Test
     void shouldEscapeToLikePatternCorrectly() {
-        Like like = (Like) _Employee.position.endsWith("test_value").constraint();
+        Like like = (Like) ((BasicRestriction<Employee,String>) _Employee.position.endsWith("test_value")).constraint();
         String result = like.pattern();
 
         assertThat(result).isEqualTo("%test\\_value");
@@ -240,7 +248,8 @@ class RestrictTest {
     @Test
     void shouldIgnoreCase() {
         // TODO TextRestriction.ignoreCase vs TextAttribute.upper/lowercased
-        BasicRestriction<Employee,String> restriction = _Employee.position.contains("SOFTWARE");
+        BasicRestriction<Employee,String> restriction =
+                (BasicRestriction<Employee, String>) _Employee.position.contains("SOFTWARE");
         //        .ignoreCase();
 
         SoftAssertions.assertSoftly(soft -> {

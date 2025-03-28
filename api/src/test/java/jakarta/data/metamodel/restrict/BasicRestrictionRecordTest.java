@@ -128,7 +128,8 @@ class BasicRestrictionRecordTest {
 
     @Test
     void shouldSupportNegatedRestrictionUsingDefaultConstructor() {
-        BasicRestriction<Book, String> negatedRestriction = _Book.author.notEqualTo("Unknown");
+        BasicRestriction<Book, String> negatedRestriction =
+                (BasicRestriction<Book, String>) _Book.author.notEqualTo("Unknown");
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(negatedRestriction.attribute()).isEqualTo("author");

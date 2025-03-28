@@ -17,7 +17,6 @@
  */
 package jakarta.data.metamodel;
 
-import jakarta.data.Sort;
 import jakarta.data.metamodel.constraint.Between;
 import jakarta.data.metamodel.constraint.Constraint;
 import jakarta.data.metamodel.constraint.GreaterThan;
@@ -25,7 +24,6 @@ import jakarta.data.metamodel.constraint.GreaterThanOrEqual;
 import jakarta.data.metamodel.constraint.LessThan;
 import jakarta.data.metamodel.constraint.LessThanOrEqual;
 import jakarta.data.metamodel.restrict.BasicRestriction;
-import jakarta.data.metamodel.restrict.Restriction;
 
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
@@ -50,7 +48,8 @@ class SortableAttributeTest {
 
     @Test
     void shouldCreateGreaterThanRestriction() {
-        BasicRestriction<Person, Integer> restriction = testAttribute.greaterThan(10);
+        BasicRestriction<Person, Integer> restriction =
+                (BasicRestriction<Person, Integer>) testAttribute.greaterThan(10);
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
@@ -62,7 +61,8 @@ class SortableAttributeTest {
 
     @Test
     void shouldCreateGreaterThanEqualRestriction() {
-        BasicRestriction<Person, Integer> restriction = testAttribute.greaterThanEqual(10);
+        BasicRestriction<Person, Integer> restriction =
+                (BasicRestriction<Person, Integer>) testAttribute.greaterThanEqual(10);
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
@@ -74,7 +74,8 @@ class SortableAttributeTest {
 
     @Test
     void shouldCreateLessThanRestriction() {
-        BasicRestriction<Person, Integer> restriction = testAttribute.lessThan(10);
+        BasicRestriction<Person, Integer> restriction =
+                (BasicRestriction<Person, Integer>) testAttribute.lessThan(10);
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
@@ -86,7 +87,8 @@ class SortableAttributeTest {
 
     @Test
     void shouldCreateLessThanOrEqualRestriction() {
-        BasicRestriction<Person, Integer> restriction = testAttribute.lessThanEqual(10);
+        BasicRestriction<Person, Integer> restriction =
+                (BasicRestriction<Person, Integer>) testAttribute.lessThanEqual(10);
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
@@ -98,7 +100,8 @@ class SortableAttributeTest {
 
     @Test
     void shouldCreateBetweenRestriction() {
-        BasicRestriction<Person, Integer> restriction = testAttribute.between(5, 15);
+        BasicRestriction<Person, Integer> restriction =
+                (BasicRestriction<Person, Integer>) testAttribute.between(5, 15);
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);

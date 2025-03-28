@@ -52,7 +52,8 @@ class TextRestrictionRecordTest {
 
     @Test
     void shouldCreateTextRestrictionWithDefaultValues() {
-        BasicRestriction<Book,String> restriction = _Book.title.like("%Java%");
+        BasicRestriction<Book,String> restriction =
+                (BasicRestriction<Book, String>) _Book.title.like("%Java%");
 
         Like constraint = (Like) restriction.constraint();
 
@@ -67,7 +68,8 @@ class TextRestrictionRecordTest {
 
     @Test
     void shouldCreateTextRestrictionWithExplicitNegation() {
-        BasicRestriction<Book,String> restriction = _Book.title.like("%Java%").negate();
+        BasicRestriction<Book,String> restriction =
+                (BasicRestriction<Book, String>) _Book.title.like("%Java%").negate();
 
         NotLike constraint = (NotLike) restriction.constraint();
 
@@ -82,7 +84,8 @@ class TextRestrictionRecordTest {
 
     @Test
     void shouldIgnoreCaseForTextRestriction() {
-        BasicRestriction<Book,String> restriction = _Book.title.like("%Java%");
+        BasicRestriction<Book,String> restriction =
+                (BasicRestriction<Book, String>) _Book.title.like("%Java%");
 
         // TODO TextRestriction.ignoreCase vs TextAttribute.upper/lowercased
         //BasicRestriction<Book,String> caseInsensitiveRestriction = restriction.ignoreCase();
@@ -98,7 +101,8 @@ class TextRestrictionRecordTest {
 
     @Test
     void shouldCreateTextRestrictionWithEscapedValue() {
-        BasicRestriction<Book,String> restriction = _Book.title.like("%Java%");
+        BasicRestriction<Book,String> restriction =
+                (BasicRestriction<Book, String>) _Book.title.like("%Java%");
 
         Like constraint = (Like) restriction.constraint();
 
@@ -113,7 +117,8 @@ class TextRestrictionRecordTest {
 
     @Test
     void shouldCreateTextRestrictionWithCustomWildcards() {
-        BasicRestriction<Book,String> restriction = _Book.title.like("*Java??", '?', '*', '$');
+        BasicRestriction<Book,String> restriction =
+                (BasicRestriction<Book, String>) _Book.title.like("*Java??", '?', '*', '$');
 
         Like constraint = (Like) restriction.constraint();
 
@@ -128,7 +133,8 @@ class TextRestrictionRecordTest {
 
     @Test
     void shouldNegateLikeRestriction() {
-        BasicRestriction<Book,String> likeJakartaEE = _Book.title.endsWith("Jakarta EE");
+        BasicRestriction<Book,String> likeJakartaEE =
+                (BasicRestriction<Book, String>) _Book.title.endsWith("Jakarta EE");
         BasicRestriction<Book,String> notLikeJakartaEE = likeJakartaEE.negate();
         // TODO TextRestriction.ignoreCase vs TextAttribute.upper/lowercased
         //BasicRestriction<Book,String> anyCaseNotLikeJakartaEE = likeJakartaEE.ignoreCase().negate();
@@ -144,7 +150,8 @@ class TextRestrictionRecordTest {
 
     @Test
     void shouldNegateNegatedRestriction() {
-        BasicRestriction<Book,String> endsWithJakartaEE = _Book.title.endsWith("Jakarta EE");
+        BasicRestriction<Book,String> endsWithJakartaEE =
+                (BasicRestriction<Book, String>) _Book.title.endsWith("Jakarta EE");
         BasicRestriction<Book,String> notEndsWithJakartaEE = endsWithJakartaEE.negate();
         BasicRestriction<Book,String> notNotEndsWithJakartaEE = notEndsWithJakartaEE.negate();
 
@@ -165,8 +172,10 @@ class TextRestrictionRecordTest {
 
     @Test
     void shouldOutputToString() {
-        BasicRestriction<Book,String> titleRestriction = _Book.title.contains("Jakarta Data");
-        BasicRestriction<Book,String> authorRestriction = _Book.author.equalTo("Myself")
+        BasicRestriction<Book,String> titleRestriction =
+                (BasicRestriction<Book, String>) _Book.title.contains("Jakarta Data");
+        BasicRestriction<Book,String> authorRestriction =
+                (BasicRestriction<Book, String>) _Book.author.equalTo("Myself")
                 // TODO TextRestriction.ignoreCase vs TextAttribute.upper/lowercased
                 //        .ignoreCase()
                         .negate();
@@ -183,7 +192,8 @@ class TextRestrictionRecordTest {
 
     @Test
     void shouldSupportNegationForTextRestriction() {
-        BasicRestriction<Book,String> restriction = _Book.author.equalTo("John Doe").negate();
+        BasicRestriction<Book,String> restriction =
+                (BasicRestriction<Book, String>) _Book.author.equalTo("John Doe").negate();
 
         NotEqualTo<String> constraint = (NotEqualTo<String>) restriction.constraint();
 

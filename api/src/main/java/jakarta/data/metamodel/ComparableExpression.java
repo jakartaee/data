@@ -24,33 +24,32 @@ import jakarta.data.metamodel.constraint.LessThan;
 import jakarta.data.metamodel.constraint.LessThanOrEqual;
 import jakarta.data.metamodel.constraint.NotBetween;
 import jakarta.data.metamodel.restrict.BasicRestriction;
+import jakarta.data.metamodel.restrict.Restriction;
 
 public interface ComparableExpression<T,V extends Comparable<?>>
         extends Expression<T, V> {
 
-    // QUESTION: do we really need to expose BasicRestriction here
-
-    default BasicRestriction<T,V> between(V min, V max) {
+    default Restriction<T> between(V min, V max) {
         return BasicRestriction.of(this, Between.bounds(min, max));
     }
 
-    default BasicRestriction<T,V> notBetween(V min, V max) {
+    default Restriction<T> notBetween(V min, V max) {
         return BasicRestriction.of(this, NotBetween.bounds(min, max));
     }
 
-    default BasicRestriction<T,V> greaterThan(V value) {
+    default Restriction<T> greaterThan(V value) {
         return BasicRestriction.of(this, GreaterThan.bound(value));
     }
 
-    default BasicRestriction<T,V> greaterThanEqual(V value) {
+    default Restriction<T> greaterThanEqual(V value) {
         return BasicRestriction.of(this, GreaterThanOrEqual.min(value));
     }
 
-    default BasicRestriction<T,V> lessThan(V value) {
+    default Restriction<T> lessThan(V value) {
         return BasicRestriction.of(this, LessThan.bound(value));
     }
 
-    default BasicRestriction<T,V> lessThanEqual(V value) {
+    default Restriction<T> lessThanEqual(V value) {
         return BasicRestriction.of(this, LessThanOrEqual.max(value));
     }
 

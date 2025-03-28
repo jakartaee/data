@@ -24,45 +24,44 @@ import jakarta.data.metamodel.constraint.NotIn;
 import jakarta.data.metamodel.constraint.NotNull;
 import jakarta.data.metamodel.constraint.Null;
 import jakarta.data.metamodel.restrict.BasicRestriction;
+import jakarta.data.metamodel.restrict.Restriction;
 
 import java.util.Set;
 
 public interface Expression<T,V> {
 
-    // QUESTION: do we really need to expose BasicRestriction here
-
-    default BasicRestriction<T,V> equalTo(V value) {
+    default Restriction<T> equalTo(V value) {
         return BasicRestriction.of(this, Constraint.equalTo(value));
     }
 
-    default BasicRestriction<T,V> in(Set<V> values) {
+    default Restriction<T> in(Set<V> values) {
         if (values == null || values.isEmpty())
             throw new IllegalArgumentException("values are required");
 
         return BasicRestriction.of(this, In.values(values));
     }
 
-    default BasicRestriction<T,V> isNull() {
+    default Restriction<T> isNull() {
         return BasicRestriction.of(this, Null.instance());
     }
 
-    default BasicRestriction<T,V> notEqualTo(V value) {
+    default Restriction<T> notEqualTo(V value) {
         return BasicRestriction.of(this, NotEqualTo.value(value));
     }
 
-    default BasicRestriction<T,V> notIn(Set<V> values) {
+    default Restriction<T> notIn(Set<V> values) {
         if (values == null || values.isEmpty())
             throw new IllegalArgumentException("values are required");
 
         return BasicRestriction.of(this, NotIn.values(values));
     }
 
-    default BasicRestriction<T,V> notNull() {
+    default Restriction<T> notNull() {
         return BasicRestriction.of(this, NotNull.instance());
     }
 
     // TODO: should this be called restrict() ?
-    default BasicRestriction<T,V> satisfies(Constraint<V> constraint) {
+    default Restriction<T> satisfies(Constraint<V> constraint) {
         return BasicRestriction.of(this, constraint);
     }
 

@@ -46,7 +46,8 @@ class AttributeTest {
     private final BasicAttribute<Person, String> testAttribute = () -> "testAttribute";
     @Test
     void shouldCreateEqualToRestriction() {
-        BasicRestriction<Person, String> restriction = testAttribute.equalTo("testValue");
+        BasicRestriction<Person, String> restriction =
+                (BasicRestriction<Person, String>) testAttribute.equalTo("testValue");
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
@@ -58,7 +59,8 @@ class AttributeTest {
 
     @Test
     void shouldCreateNotEqualToRestriction() {
-        BasicRestriction<Person, String> restriction = testAttribute.notEqualTo("testValue");
+        BasicRestriction<Person, String> restriction =
+                (BasicRestriction<Person, String>) testAttribute.notEqualTo("testValue");
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
@@ -70,7 +72,8 @@ class AttributeTest {
 
     @Test
     void shouldCreateInRestriction() {
-        BasicRestriction<Person, String> restriction = testAttribute.in(Set.of("value1", "value2"));
+        BasicRestriction<Person, String> restriction =
+                (BasicRestriction<Person, String>) testAttribute.in(Set.of("value1", "value2"));
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
@@ -89,7 +92,8 @@ class AttributeTest {
 
     @Test
     void shouldCreateNotInRestriction() {
-        BasicRestriction<Person, String> restriction = testAttribute.notIn(Set.of("value1", "value2"));
+        BasicRestriction<Person, String> restriction =
+                (BasicRestriction<Person, String>) testAttribute.notIn(Set.of("value1", "value2"));
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
@@ -108,7 +112,8 @@ class AttributeTest {
 
     @Test
     void shouldCreateIsNullRestriction() {
-        BasicRestriction<Person, String> restriction = testAttribute.isNull();
+        BasicRestriction<Person, String> restriction =
+                (BasicRestriction<Person, String>) testAttribute.isNull();
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
@@ -119,7 +124,8 @@ class AttributeTest {
 
     @Test
     void shouldCreateNotNullRestriction() {
-        BasicRestriction<Person, String> restriction = testAttribute.notNull();
+        BasicRestriction<Person, String> restriction =
+                (BasicRestriction<Person, String>) testAttribute.notNull();
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);

@@ -24,8 +24,6 @@ import jakarta.data.metamodel.path.TextPath;
 
 public interface NavigableExpression<T,U> {
 
-    // QUESTION: should these operations expose NavigablePath, TextPath, ComparablePath, NumericPath
-
     default <V> NavigableExpression<T, V> navigate(NavigableAttribute<U, V> attribute) {
         return NavigablePath.of(this, attribute);
     }

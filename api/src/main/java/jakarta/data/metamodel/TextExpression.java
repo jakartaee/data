@@ -22,96 +22,95 @@ import jakarta.data.metamodel.constraint.NotLike;
 import jakarta.data.metamodel.expression.NumericFunctionExpression;
 import jakarta.data.metamodel.expression.TextFunctionExpression;
 import jakarta.data.metamodel.restrict.BasicRestriction;
+import jakarta.data.metamodel.restrict.Restriction;
 
 public interface TextExpression<T> extends ComparableExpression<T,String> {
 
-    // QUESTION: do we really need to expose TextFunctionExpression & BasicRestriction here
-
-    default TextFunctionExpression<T> prepend(String string) {
+    default TextExpression<T> prepend(String string) {
         return TextFunctionExpression.of("concat", string, this);
     }
-    default TextFunctionExpression<T> append(String string) {
+    default TextExpression<T> append(String string) {
         return TextFunctionExpression.of("concat", this, string);
     }
 
-    default TextFunctionExpression<T> prepend(TextExpression<T> string) {
+    default TextExpression<T> prepend(TextExpression<T> string) {
         return TextFunctionExpression.of("concat", string, this);
     }
-    default TextFunctionExpression<T> append(TextExpression<T> string) {
+    default TextExpression<T> append(TextExpression<T> string) {
         return TextFunctionExpression.of("concat", string, this);
     }
 
-    default TextFunctionExpression<T> upper() {
+    default TextExpression<T> upper() {
         return TextFunctionExpression.of("upper", this);
     }
-    default TextFunctionExpression<T> lower() {
+    default TextExpression<T> lower() {
         return TextFunctionExpression.of("lower", this);
     }
 
-    default TextFunctionExpression<T> left(int length) {
+    default TextExpression<T> left(int length) {
         return TextFunctionExpression.of("left", this, length);
     }
-    default TextFunctionExpression<T> right(int length) {
+    default TextExpression<T> right(int length) {
         return TextFunctionExpression.of("right", this, length);
     }
 
-    default NumericFunctionExpression<T,Integer> length() {
+    default NumericExpression<T,Integer> length() {
         return NumericFunctionExpression.of("length", this);
     }
 
-    default BasicRestriction<T,String> like(Like pattern) {
+    default Restriction<T> like(Like pattern) {
         return BasicRestriction.of(this, pattern);
     }
 
-    default BasicRestriction<T,String> like(String pattern) {
+    default Restriction<T> like(String pattern) {
         return BasicRestriction.of(this, Like.pattern(pattern));
     }
 
-    default BasicRestriction<T,String> like(String pattern, char charWildcard, char stringWildcard) {
+    default Restriction<T> like(String pattern, char charWildcard, char stringWildcard) {
         Like constraint = Like.pattern(pattern, charWildcard, stringWildcard);
         return BasicRestriction.of(this, constraint);
     }
 
-    default BasicRestriction<T,String> like(String pattern, char charWildcard, char stringWildcard, char escape) {
+    default Restriction<T> like(String pattern, char charWildcard, char stringWildcard, char escape) {
         Like constraint = Like.pattern(pattern, charWildcard, stringWildcard, escape);
         return BasicRestriction.of(this, constraint);
     }
 
-    default BasicRestriction<T,String> notLike(String pattern) {
+    default Restriction<T> notLike(String pattern) {
         return BasicRestriction.of(this, NotLike.pattern(pattern));
     }
 
-    default BasicRestriction<T,String> notLike(String pattern, char charWildcard, char stringWildcard) {
+    default Restriction<T> notLike(String pattern, char charWildcard, char stringWildcard) {
         NotLike constraint = NotLike.pattern(pattern, charWildcard, stringWildcard);
         return BasicRestriction.of(this, constraint);
     }
 
-    default BasicRestriction<T,String> notLike(String pattern, char charWildcard, char stringWildcard, char escape) {
+    default Restriction<T> notLike(String pattern, char charWildcard, char stringWildcard, char escape) {
         NotLike constraint = NotLike.pattern(pattern, charWildcard, stringWildcard, escape);
         return BasicRestriction.of(this, constraint);
     }
 
-    default BasicRestriction<T,String> contains(String substring) {
+    default Restriction<T> contains(String substring) {
         return BasicRestriction.of(this, Like.substring(substring));
     }
 
-    default BasicRestriction<T,String> notContains(String substring) {
+    default Restriction<T> notContains(String substring) {
         return BasicRestriction.of(this, NotLike.substring(substring));
     }
 
-    default BasicRestriction<T,String> startsWith(String prefix) {
+    default Restriction<T> startsWith(String prefix) {
         return BasicRestriction.of(this, Like.prefix(prefix));
     }
 
-    default BasicRestriction<T,String> notStartsWith(String prefix) {
+    default Restriction<T> notStartsWith(String prefix) {
         return BasicRestriction.of(this, NotLike.prefix(prefix));
     }
 
-    default BasicRestriction<T,String> endsWith(String suffix) {
+    default Restriction<T> endsWith(String suffix) {
         return BasicRestriction.of(this, Like.suffix(suffix));
     }
 
-    default BasicRestriction<T,String> notEndsWith(String suffix) {
+    default Restriction<T> notEndsWith(String suffix) {
         return BasicRestriction.of(this, NotLike.suffix(suffix));
     }
 
