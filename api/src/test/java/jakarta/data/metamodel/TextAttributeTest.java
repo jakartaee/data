@@ -29,26 +29,6 @@ class TextAttributeTest {
 
     private final TextAttribute<String> testAttribute = new TextAttribute<>() {
         @Override
-        public Sort<String> ascIgnoreCase() {
-            throw new UnsupportedOperationException("Not the focus of this test.");
-        }
-
-        @Override
-        public Sort<String> descIgnoreCase() {
-            throw new UnsupportedOperationException("Not the focus of this test.");
-        }
-
-        @Override
-        public Sort<String> asc() {
-            throw new UnsupportedOperationException("Not the focus of this test.");
-        }
-
-        @Override
-        public Sort<String> desc() {
-            throw new UnsupportedOperationException("Not the focus of this test.");
-        }
-
-        @Override
         public String name() {
             return "testAttribute";
         }

@@ -43,16 +43,6 @@ class SortableAttributeTest {
     //it ignores the implementation of the SortableAttribute interface and uses an anonymous class to test the methods
     private final ComparableAttribute<Person, Integer> testAttribute = new ComparableAttribute<>() {
         @Override
-        public Sort<Person> asc() {
-           throw new UnsupportedOperationException("It is not the focus of this test");
-        }
-
-        @Override
-        public Sort<Person> desc() {
-            throw new UnsupportedOperationException("It is not the focus of this test");
-        }
-
-        @Override
         public String name() {
             return "testAttribute";
         }

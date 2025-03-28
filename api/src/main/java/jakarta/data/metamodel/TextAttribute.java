@@ -34,14 +34,18 @@ public interface TextAttribute<T> extends ComparableAttribute<T,String>, TextExp
      *
      * @return a request for an ascending, case-insensitive sort on the entity attribute.
      */
-    Sort<T> ascIgnoreCase();
+    default Sort<T> ascIgnoreCase() {
+        return Sort.ascIgnoreCase(name());
+    }
 
     /**
      * Obtain a request for a descending, case insensitive {@link Sort} based on the entity attribute.
      *
      * @return a request for a descending, case insensitive sort on the entity attribute.
      */
-    Sort<T> descIgnoreCase();
+    default Sort<T> descIgnoreCase() {
+        return Sort.descIgnoreCase(name());
+    }
 
     /**
      * <p>Creates a static metamodel {@code TextAttribute} representing the
