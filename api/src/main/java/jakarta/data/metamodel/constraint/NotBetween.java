@@ -17,9 +17,9 @@
  */
 package jakarta.data.metamodel.constraint;
 
-public interface NotBetween<T extends Comparable<T>> extends Constraint<T> {
+public interface NotBetween<T extends Comparable<?>> extends Constraint<T> {
 
-    static <T extends Comparable<T>> NotBetween<T> bounds(T lower, T upper) {
+    static <T extends Comparable<?>> NotBetween<T> bounds(T lower, T upper) {
         return new NotBetweenRecord<>(lower, upper);
     }
 

@@ -17,16 +17,9 @@
  */
 package jakarta.data.metamodel;
 
-import java.util.Objects;
+import jakarta.data.metamodel.impl.ComparableAttributeRecord;
 
-import jakarta.data.Sort;
-import jakarta.data.metamodel.constraint.Between;
-import jakarta.data.metamodel.constraint.GreaterThan;
-import jakarta.data.metamodel.constraint.GreaterThanOrEqual;
-import jakarta.data.metamodel.constraint.LessThan;
-import jakarta.data.metamodel.constraint.LessThanOrEqual;
-import jakarta.data.metamodel.constraint.NotBetween;
-import jakarta.data.metamodel.restrict.Restriction;
+import java.util.Objects;
 
 /**
  * <p>Represents a comparable entity attribute in the {@link StaticMetamodel}.
@@ -59,32 +52,8 @@ import jakarta.data.metamodel.restrict.Restriction;
  * @param <T> entity class of the static metamodel.
  * @param <V> type of entity attribute (or wrapper type if primitive).
  */
-public interface ComparableAttribute<T,V extends Comparable<V>>
-        extends BasicAttribute<T,V>, SortableAttribute<T> {
-
-    default Restriction<T> between(V min, V max) {
-        return new BasicRestrictionRecord<>(name(), Between.bounds(min, max));
-    }
-
-    default Restriction<T> notBetween(V min, V max) {
-        return new BasicRestrictionRecord<>(name(), NotBetween.bounds(min, max));
-    }
-
-    default Restriction<T> greaterThan(V value) {
-        return new BasicRestrictionRecord<>(name(), GreaterThan.bound(value));
-    }
-
-    default Restriction<T> greaterThanEqual(V value) {
-        return new BasicRestrictionRecord<>(name(), GreaterThanOrEqual.min(value));
-    }
-
-    default Restriction<T> lessThan(V value) {
-        return new BasicRestrictionRecord<>(name(), LessThan.bound(value));
-    }
-
-    default Restriction<T> lessThanEqual(V value) {
-        return new BasicRestrictionRecord<>(name(), LessThanOrEqual.max(value));
-    }
+public interface ComparableAttribute<T,V extends Comparable<?>>
+        extends BasicAttribute<T,V>, SortableAttribute<T>, ComparableExpression<T,V> {
 
     /**
      * <p>Creates a static metamodel {@code ComparableAttribute} representing the
@@ -97,7 +66,7 @@ public interface ComparableAttribute<T,V extends Comparable<V>>
      * @param attributeType type of the entity attribute.
      * @return instance of {@code ComparableAttribute}.
      */
-    static <T, V extends Comparable<V>> ComparableAttribute<T, V> of(
+    static <T, V extends Comparable<?>> ComparableAttribute<T, V> of(
             Class<T> entityClass,
             String name,
             Class<V> attributeType) {
@@ -109,22 +78,3 @@ public interface ComparableAttribute<T,V extends Comparable<V>>
     }
 }
 
-/**
- * Hidden internal implementation of ComparableAttribute.
- *
- * @param <T> entity class of the static metamodel.
- * @param <V> type of entity attribute (or wrapper type if primitive).
- */
-record ComparableAttributeRecord<T,V extends Comparable<V>>(String name)
-    implements ComparableAttribute<T,V> {
-
-    @Override
-    public Sort<T> asc() {
-        return Sort.asc(name);
-    }
-
-    @Override
-    public Sort<T> desc() {
-        return Sort.desc(name);
-    }
-}

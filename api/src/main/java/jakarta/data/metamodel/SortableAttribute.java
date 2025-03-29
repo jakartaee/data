@@ -43,14 +43,18 @@ public interface SortableAttribute<T> extends Attribute<T> {
      *
      * @return a request for an ascending sort on the entity attribute.
      */
-    Sort<T> asc();
+    default Sort<T> asc() {
+        return Sort.asc(name());
+    }
 
     /**
      * Obtain a request for a descending {@link Sort} based on the entity attribute.
      *
      * @return a request for a descending sort on the entity attribute.
      */
-    Sort<T> desc();
+    default Sort<T> desc() {
+        return Sort.desc(name());
+    }
 
     /**
      * <p>Creates a static metamodel {@code SortableAttribute} representing the

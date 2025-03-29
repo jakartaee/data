@@ -15,28 +15,34 @@
  *
  *  SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.metamodel;
+package jakarta.data.metamodel.restrict;
 
 // Internal implementation class.
 // The proper way for users to obtain instances is via
 // the static metamodel or Restrict.* methods 
 
+import jakarta.data.metamodel.Attribute;
+import jakarta.data.metamodel.Expression;
 import jakarta.data.metamodel.constraint.Constraint;
-import jakarta.data.metamodel.restrict.BasicRestriction;
 
 import java.util.Objects;
 
-record BasicRestrictionRecord<T, V>(String attribute, Constraint<V> constraint)
+record BasicRestrictionRecord<T, V>(Expression<T,V> expression, Constraint<V> constraint)
         implements BasicRestriction<T, V> {
 
     BasicRestrictionRecord {
-        Objects.requireNonNull(attribute, "Attribute must not be null");
+        Objects.requireNonNull(expression, "Expression must not be null");
         Objects.requireNonNull(constraint, "Constraint must not be null");
     }
 
     @Override
+    public String attribute() {
+        return expression instanceof Attribute<?> att ? att.name() : null;
+    }
+
+    @Override
     public BasicRestriction<T, V> negate() {
-        return new BasicRestrictionRecord<>(attribute, constraint.negate());
+        return BasicRestriction.of(expression, constraint.negate());
     }
 
     /**
@@ -48,6 +54,7 @@ record BasicRestrictionRecord<T, V>(String attribute, Constraint<V> constraint)
      */
     @Override
     public String toString() {
-        return attribute + ' ' + constraint;
+        return (expression instanceof Attribute<?> att ? att.name() : expression.toString())
+                + " " + constraint;
     }
 }

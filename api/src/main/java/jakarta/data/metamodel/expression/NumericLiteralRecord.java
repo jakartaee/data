@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 Contributors to the Eclipse Foundation
+ * Copyright (c) 2025 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,16 +15,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.metamodel.impl;
+package jakarta.data.metamodel.expression;
 
-import jakarta.data.metamodel.TextAttribute;
-
-/**
- * Record type implementing {@link jakarta.data.metamodel.TextAttribute}.
- * This may be used to simplify implementation of the static metamodel.
- *
- * @param name the name of the attribute
- */
-public record TextAttributeRecord<T>(String name)
-        implements TextAttribute<T> {
+record NumericLiteralRecord<T, N extends Number & Comparable<N>>
+        (N value) implements NumericLiteral<T,N> {
 }

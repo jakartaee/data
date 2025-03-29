@@ -17,46 +17,21 @@
  */
 package jakarta.data.metamodel;
 
-import jakarta.data.Sort;
 import jakarta.data.metamodel.constraint.Like;
 import jakarta.data.metamodel.constraint.NotLike;
-import jakarta.data.metamodel.restrict.TextRestriction;
+import jakarta.data.metamodel.restrict.BasicRestriction;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
 
 class TextAttributeTest {
 
 
-    private final TextAttribute<String> testAttribute = new TextAttribute<String>() {
-        @Override
-        public Sort<String> ascIgnoreCase() {
-            throw new UnsupportedOperationException("Not the focus of this test.");
-        }
-
-        @Override
-        public Sort<String> descIgnoreCase() {
-            throw new UnsupportedOperationException("Not the focus of this test.");
-        }
-
-        @Override
-        public Sort<String> asc() {
-            throw new UnsupportedOperationException("Not the focus of this test.");
-        }
-
-        @Override
-        public Sort<String> desc() {
-            throw new UnsupportedOperationException("Not the focus of this test.");
-        }
-
-        @Override
-        public String name() {
-            return "testAttribute";
-        }
-    };
+    private final TextAttribute<String> testAttribute = () -> "testAttribute";
 
     @Test
     void shouldCreateContainsRestriction() {
-        TextRestriction<String> restriction = testAttribute.contains("testValue");
+        BasicRestriction<String,String> restriction =
+                (BasicRestriction<String, String>) testAttribute.contains("testValue");
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.attribute()).isEqualTo("testAttribute");
@@ -67,7 +42,8 @@ class TextAttributeTest {
 
     @Test
     void shouldCreateStartsWithRestriction() {
-        TextRestriction<String> restriction = testAttribute.startsWith("testValue");
+        BasicRestriction<String,String> restriction =
+                (BasicRestriction<String, String>) testAttribute.startsWith("testValue");
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.attribute()).isEqualTo("testAttribute");
@@ -78,7 +54,8 @@ class TextAttributeTest {
 
     @Test
     void shouldCreateEndsWithRestriction() {
-        TextRestriction<String> restriction = testAttribute.endsWith("testValue");
+        BasicRestriction<String,String> restriction =
+                (BasicRestriction<String,String>) testAttribute.endsWith("testValue");
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.attribute()).isEqualTo("testAttribute");
@@ -89,7 +66,8 @@ class TextAttributeTest {
 
     @Test
     void shouldCreateLikeRestriction() {
-        TextRestriction<String> restriction = testAttribute.like("%test%");
+        BasicRestriction<String,String> restriction =
+                (BasicRestriction<String, String>) testAttribute.like("%test%");
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.attribute()).isEqualTo("testAttribute");
@@ -100,7 +78,8 @@ class TextAttributeTest {
 
     @Test
     void shouldCreateNotContainsRestriction() {
-        TextRestriction<String> restriction = testAttribute.notContains("testValue");
+        BasicRestriction<String,String> restriction =
+                (BasicRestriction<String, String>) testAttribute.notContains("testValue");
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.attribute()).isEqualTo("testAttribute");
@@ -111,7 +90,8 @@ class TextAttributeTest {
 
     @Test
     void shouldCreateNotLikeRestriction() {
-        TextRestriction<String> restriction = testAttribute.notLike("%test%");
+        BasicRestriction<String,String> restriction =
+                (BasicRestriction<String, String>) testAttribute.notLike("%test%");
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.attribute()).isEqualTo("testAttribute");
@@ -122,7 +102,8 @@ class TextAttributeTest {
 
     @Test
     void shouldCreateNotStartsWithRestriction() {
-        TextRestriction<String> restriction = testAttribute.notStartsWith("testValue");
+        BasicRestriction<String,String> restriction =
+                (BasicRestriction<String, String>) testAttribute.notStartsWith("testValue");
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.attribute()).isEqualTo("testAttribute");
@@ -133,7 +114,8 @@ class TextAttributeTest {
 
     @Test
     void shouldCreateNotEndsWithRestriction() {
-        TextRestriction<String> restriction = testAttribute.notEndsWith("testValue");
+        BasicRestriction<String,String> restriction =
+                (BasicRestriction<String, String>) testAttribute.notEndsWith("testValue");
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.attribute()).isEqualTo("testAttribute");

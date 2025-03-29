@@ -15,13 +15,17 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.metamodel.constraint;
+package jakarta.data.metamodel.path;
 
-public interface LessThanOrEqual<T extends Comparable<?>> extends Constraint<T> {
+import jakarta.data.metamodel.ComparableAttribute;
+import jakarta.data.metamodel.ComparableExpression;
+import jakarta.data.metamodel.NavigableExpression;
+import jakarta.data.metamodel.Path;
 
-    static <T extends Comparable<?>> LessThanOrEqual<T> max(T maximum) {
-        return new LessThanOrEqualRecord<>(maximum);
+public interface ComparablePath<T,U,C extends Comparable<?>>
+    extends Path<T,U>, ComparableExpression<T,C> {
+    static <T,U,C extends Comparable<C>> ComparablePath<T, U, C>
+    of(NavigableExpression<T, U> expression, ComparableAttribute<U,C> attribute) {
+        return new ComparablePathRecord<>(expression, attribute);
     }
-
-    T bound();
 }

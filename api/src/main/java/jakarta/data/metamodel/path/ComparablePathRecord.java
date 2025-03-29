@@ -15,13 +15,13 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.metamodel.restrict;
+package jakarta.data.metamodel.path;
 
-import jakarta.data.metamodel.constraint.Constraint;
+import jakarta.data.metamodel.ComparableAttribute;
+import jakarta.data.metamodel.ComparableExpression;
+import jakarta.data.metamodel.NavigableExpression;
 
-public interface TextRestriction<T> extends BasicRestriction<T, String> {
-    @Override
-    TextRestriction<T> negate();
-    @Override
-    Constraint<String> constraint();
+record ComparablePathRecord<T,U,C extends Comparable<?>>
+        (NavigableExpression<T,U> expression, ComparableAttribute<U, C> attribute)
+        implements ComparableExpression<T,C>, ComparablePath<T,U,C> {
 }

@@ -17,7 +17,6 @@
  */
 package jakarta.data.metamodel.impl;
 
-import jakarta.data.Sort;
 import jakarta.data.metamodel.SortableAttribute;
 
 /**
@@ -28,14 +27,5 @@ import jakarta.data.metamodel.SortableAttribute;
  */
 public record SortableAttributeRecord<T>(String name)
         implements SortableAttribute<T> {
-    @Override
-    public Sort<T> asc() {
-        return Sort.asc(name);
-    }
-
-    @Override
-    public Sort<T> desc() {
-        return Sort.desc(name);
-    }
 }
 
