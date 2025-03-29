@@ -25,6 +25,10 @@ import jakarta.data.metamodel.TextAttribute;
  *
  * @param name the name of the attribute
  */
-public record TextAttributeRecord<T>(String name)
+public record TextAttributeRecord<T>(Class<T> declaringType, String name)
         implements TextAttribute<T> {
+    @Deprecated(since = "1.1")
+    public TextAttributeRecord(String name) {
+        this(null, name);
+    }
 }

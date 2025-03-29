@@ -45,4 +45,11 @@ public interface Attribute<T> {
      * @return the entity attribute name.
      */
     String name();
+
+    /**
+     * Obtain the Java class which declares this entity attribute.
+     * @return the declaring class
+     * @since 1.1
+     */
+    Class<T> declaringType();
 }

@@ -25,7 +25,11 @@ import jakarta.data.metamodel.SortableAttribute;
  *
  * @param name the name of the attribute
  */
-public record SortableAttributeRecord<T>(String name)
+public record SortableAttributeRecord<T>(Class<T> declaringType, String name)
         implements SortableAttribute<T> {
+    @Deprecated(since = "1.1")
+    public SortableAttributeRecord(String name) {
+        this(null, name);
+    }
 }
 
