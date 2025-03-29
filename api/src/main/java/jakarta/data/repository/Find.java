@@ -34,7 +34,7 @@ import java.lang.annotation.Target;
  * based on its parameters and the arguments assigned to its parameters.</p>
  *
  * <ul>
- * <li>If the method return involves an entity type, according to the rules
+ * <li>If the method return type involves an entity type, according to the rules
  *     specified below, the return type determines the queried entity type.</li>
  * <li>Otherwise, if the method return type does not involve an entity type,
  *     the queried entity type is the {@linkplain #value entity class explicitly
