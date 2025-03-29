@@ -37,7 +37,7 @@
   <jakarta.servlet.version>6.1.0</jakarta.servlet.version>
   <jakarta.enterprise.cdi.version>4.1.0</jakarta.enterprise.cdi.version>
 
-  <arquillian.version>1.9.3.Final</arquillian.version>
+  <arquillian.version>1.9.4.Final</arquillian.version>
   <arquillian.jakarta.version>10.0.0.Final</arquillian.jakarta.version>
   <junit.version>5.12.1</junit.version>
   <sigtest.version>2.6</sigtest.version>
