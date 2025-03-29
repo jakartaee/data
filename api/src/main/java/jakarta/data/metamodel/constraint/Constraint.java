@@ -21,47 +21,10 @@ import java.util.Set;
 
 public interface Constraint<T> {
 
-    static <T> Constraint<T> equalTo(T value) {
-        return new EqualToRecord<>(value);
-    }
-
-    @SafeVarargs
-    static <T> Constraint<T> in(T... values) {
-        return new InRecord<>(Set.of(values));
-    }
-
-    static <T> Constraint<T> in(Set<T> values) {
-        return new InRecord<>(values);
-    }
-
-    static <T> Constraint<T> isNull() {
-        return new NullRecord<>();
-    }
-
-    static <T extends Comparable<?>> Constraint<T> greaterThan(T bound) {
-        return new GreaterThanRecord<>(bound);
-    }
-
-    static <T extends Comparable<?>> Constraint<T> lessThan(T bound) {
-        return new LessThanRecord<>(bound);
-    }
-
-    static <T extends Comparable<?>> Constraint<T> greaterThanOrEqual(T bound) {
-        return new GreaterThanOrEqualRecord<>(bound);
-    }
-
-    static <T extends Comparable<?>> Constraint<T> lessThanOrEqual(T bound) {
-        return new LessThanOrEqualRecord<>(bound);
-    }
-
-    static <T extends Comparable<?>> Constraint<T> between(T lowerBound, T upperBound) {
-        return new BetweenRecord<>(lowerBound, upperBound);
-    }
-
     Constraint<T> negate();
 
-    static <T extends Comparable<?>> Constraint<T> notBetween(T lowerBound, T upperBound) {
-        return NotBetween.bounds(lowerBound, upperBound);
+    static <T> EqualTo<T> equalTo(T value) {
+        return EqualTo.value(value);
     }
 
     static <T> NotEqualTo<T> notEqualTo(T value) {
@@ -69,12 +32,33 @@ public interface Constraint<T> {
     }
 
     @SafeVarargs
-    static <T> Constraint<T> notIn(T... values) {
+    static <T> In<T> in(T... values) {
+        return In.values(values);
+    }
+
+    static <T> In<T> in(Set<T> values) {
+        return In.values(values);
+    }
+
+    @SafeVarargs
+    static <T> NotIn<T> notIn(T... values) {
         return NotIn.values(values);
     }
 
-    static <T> Constraint<T> notIn(Set<T> values) {
+    static <T> NotIn<T> notIn(Set<T> values) {
         return NotIn.values(values);
+    }
+
+    static Like like(String pattern) {
+        return Like.pattern(pattern);
+    }
+
+    static Like like(String pattern, char charWildcard, char stringWildcard) {
+        return Like.pattern(pattern, charWildcard, stringWildcard);
+    }
+
+    static Like like(String pattern, char charWildcard, char stringWildcard, char escape) {
+        return Like.pattern(pattern, charWildcard, stringWildcard, escape);
     }
 
     static NotLike notLike(String pattern) {
@@ -89,7 +73,35 @@ public interface Constraint<T> {
         return NotLike.pattern(pattern, charWildcard, stringWildcard, escape);
     }
 
-    static <T> Constraint<T> notNull() {
+    static <T> Null<T> isNull() {
+        return Null.instance();
+    }
+
+    static <T> NotNull<T> notNull() {
         return NotNull.instance();
+    }
+
+    static <T extends Comparable<?>> GreaterThan<T> greaterThan(T bound) {
+        return GreaterThan.bound(bound);
+    }
+
+    static <T extends Comparable<?>> LessThan<T> lessThan(T bound) {
+        return LessThan.bound(bound);
+    }
+
+    static <T extends Comparable<?>> GreaterThanOrEqual<T> greaterThanOrEqual(T bound) {
+        return GreaterThanOrEqual.min(bound);
+    }
+
+    static <T extends Comparable<?>> LessThanOrEqual<T> lessThanOrEqual(T bound) {
+        return LessThanOrEqual.max(bound);
+    }
+
+    static <T extends Comparable<?>> Between<T> between(T lowerBound, T upperBound) {
+        return Between.bounds(lowerBound, upperBound);
+    }
+
+    static <T extends Comparable<?>> NotBetween<T> notBetween(T lowerBound, T upperBound) {
+        return NotBetween.bounds(lowerBound, upperBound);
     }
 }
