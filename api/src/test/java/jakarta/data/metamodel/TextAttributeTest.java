@@ -26,7 +26,7 @@ import org.junit.jupiter.api.Test;
 class TextAttributeTest {
 
 
-    private final TextAttribute<String> testAttribute = () -> "testAttribute";
+    private final TextAttribute<String> testAttribute = TextAttribute.of(String.class, "testAttribute");
 
     @Test
     void shouldCreateContainsRestriction() {
