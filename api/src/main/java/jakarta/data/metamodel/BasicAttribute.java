@@ -48,7 +48,7 @@ public interface BasicAttribute<T,V> extends Attribute<T>, Expression<T,V> {
         Objects.requireNonNull(name, "entity attribute name is required");
         Objects.requireNonNull(attributeType, "entity attribute type is required");
 
-        return new BasicAttributeRecord<>(name);
+        return new BasicAttributeRecord<>(entityClass, name);
     }
 }
 

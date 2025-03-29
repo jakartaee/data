@@ -60,7 +60,7 @@ public interface TextAttribute<T> extends ComparableAttribute<T,String>, TextExp
         Objects.requireNonNull(entityClass, "entity class is required");
         Objects.requireNonNull(name, "entity attribute name is required");
 
-        return new TextAttributeRecord<>(name);
+        return new TextAttributeRecord<>(entityClass, name);
     }
 
 }

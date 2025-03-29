@@ -26,7 +26,11 @@ import jakarta.data.metamodel.Attribute;
  * @param <T> entity class of the static metamodel.
  * @param name the name of the attribute
  */
-public record AttributeRecord<T>(String name)
+public record AttributeRecord<T>(Class<T> declaringType, String name)
         implements Attribute<T> {
+    @Deprecated(since = "1.1")
+    public AttributeRecord(String name) {
+        this(null, name);
+    }
 }
 

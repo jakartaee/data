@@ -43,7 +43,8 @@ class AttributeTest {
         int testAttribute;
     }
 
-    private final BasicAttribute<Person, String> testAttribute = () -> "testAttribute";
+    private final BasicAttribute<Person, String> testAttribute =
+            BasicAttribute.of(Person.class, "testAttribute", String.class);
     @Test
     void shouldCreateEqualToRestriction() {
         BasicRestriction<Person, String> restriction =
