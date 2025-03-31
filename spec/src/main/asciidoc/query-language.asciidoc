@@ -508,17 +508,7 @@ A `delete` statement, with syntax given by `delete_statement`, deletes each reco
 
 [WARNING]
 ====
-Support for `delete` statements varies significantly across NoSQL databases.
-
-In general:
-
-- **Key-Value databases** often only support delete operations by key. Queries with complex `where` clauses may not be supported, and returning the count of deleted records is typically not possible.
-- **Wide-Column databases** may have limited support for deletions with conditions beyond the primary key or partition key. Additionally, support for returning a count of deleted records may require the use of secondary indexes or may be entirely unsupported.
-- **Document and Graph databases** are more likely to support conditional deletes. However, the behavior and performance characteristics (especially around consistency and the returned delete count) can differ between providers.
-
-Due to the _eventual persistence_ behavior common in many NoSQL databases, even when a delete operation appears to succeed, the underlying system may not provide an accurate or immediate count of affected records. As a result, the returned count may be imprecise or delayed.
-
-If a NoSQL provider does not support the execution of conditional deletes or cannot determine the number of deleted records reliably, a `delete` operation that returns an `int` or `long` must throw an `UnsupportedOperationException`.
+If a NoSQL database is not capable of the execution of conditional deletes or cannot determine the number of deleted records reliably for a `delete` operation that returns an `int` or `long`, the `delete` operation must throw an `UnsupportedOperationException`.
 ====
 
 === Syntax
