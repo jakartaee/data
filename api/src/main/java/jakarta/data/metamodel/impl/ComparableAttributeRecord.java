@@ -19,6 +19,7 @@ package jakarta.data.metamodel.impl;
 
 import jakarta.data.metamodel.ComparableAttribute;
 
-public record ComparableAttributeRecord<T,V extends Comparable<?>>(String name)
+public record ComparableAttributeRecord<T,V extends Comparable<?>>
+        (Class<T> declaringType, String name)
         implements ComparableAttribute<T,V> {
 }

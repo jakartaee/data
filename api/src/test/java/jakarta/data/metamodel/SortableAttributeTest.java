@@ -39,12 +39,8 @@ class SortableAttributeTest {
     }
 
     //it ignores the implementation of the SortableAttribute interface and uses an anonymous class to test the methods
-    private final ComparableAttribute<Person, Integer> testAttribute = new ComparableAttribute<>() {
-        @Override
-        public String name() {
-            return "testAttribute";
-        }
-    };
+    private final ComparableAttribute<Person, Integer> testAttribute =
+            ComparableAttribute.of(Person.class, "testAttribute", Integer.class);
 
     @Test
     void shouldCreateGreaterThanRestriction() {

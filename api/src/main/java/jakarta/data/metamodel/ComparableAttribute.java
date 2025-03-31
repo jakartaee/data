@@ -74,7 +74,7 @@ public interface ComparableAttribute<T,V extends Comparable<?>>
         Objects.requireNonNull(name, "entity attribute name is required");
         Objects.requireNonNull(attributeType, "entity attribute type is required");
 
-        return new ComparableAttributeRecord<>(name);
+        return new ComparableAttributeRecord<>(entityClass, name);
     }
 }
 

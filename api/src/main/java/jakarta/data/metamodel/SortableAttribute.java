@@ -74,6 +74,6 @@ public interface SortableAttribute<T> extends Attribute<T> {
         Objects.requireNonNull(name, "entity attribute name is required");
         Objects.requireNonNull(attributeType, "entity attribute type is required");
 
-        return new SortableAttributeRecord<>(name);
+        return new SortableAttributeRecord<>(entityClass, name);
     }
 }

@@ -30,7 +30,7 @@ public interface NavigableAttribute<T,U>
         Objects.requireNonNull(name, "entity attribute name is required");
         Objects.requireNonNull(attributeType, "entity attribute type is required");
 
-        return new NavigableAttributeRecord<>(name);
+        return new NavigableAttributeRecord<>(entityClass, name);
     }
 }
 
