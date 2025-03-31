@@ -25,7 +25,7 @@ A concrete method may call other methods of the repository, including abstract m
 Every abstract method of the interface is usually either:
 
 - an entity instance <<Lifecycle methods,_lifecycle method_>>,
-- an <<Annotated Query methods,_annotated query method_>>,
+- an <<Annotated query methods,_annotated query method_>>,
 - an _automatic query method_ with <<Parameter-based automatic query methods,parameter-based conditions>> or defined using the Query by Method Name extension, or
 - a <<Resource accessor methods,_resource accessor method_>>.
 
@@ -267,7 +267,7 @@ reject such a method declaration at compile time.
 
 === Special Parameters for Limits, Sorting, and Pagination
 
-An <<Annotated Query methods,annotated>>, <<Parameter-based automatic query methods,parameter-based>>, or Query by Method Name query method may have _special parameters_ of type `Limit`, `Order`, `Sort`, or `PageRequest` if the method return type indicates that the method may return multiple entities, that is, if the return type is:
+An <<Annotated query methods,annotated>>, <<Parameter-based automatic query methods,parameter-based>>, or Query by Method Name query method may have _special parameters_ of type `Limit`, `Order`, `Sort`, or `PageRequest` if the method return type indicates that the method may return multiple entities, that is, if the return type is:
 
 - an array type,
 - `List` or `Stream`, or
@@ -814,7 +814,7 @@ The following order, with the lower number having higher precedence, is used whe
 
 1. If the method is a Java `default` method, then its provided implementation is used.
 2. If the method has a <<Resource accessor methods,_resource accessor method_>> return type recognized by the Jakarta Data provider, then the method is implemented as a resource accessor method.
-3. If the method is annotated with a <<Annotated Query methods,query annotation>> recognized by the Jakarta Data provider, such as `@Query`, then the method is implemented to execute the query specified by the query annotation.
+3. If the method is annotated with a <<Annotated query methods,query annotation>> recognized by the Jakarta Data provider, such as `@Query`, then the method is implemented to execute the query specified by the query annotation.
 4. If the method is annotated with an <<Parameter-based automatic query methods,automatic query annotation>>, such as `@Find`, or with a <<Lifecycle methods,lifecycle annotation>> declaring the type of operation, for example, with `@Insert`, `@Update`, `@Save`, or `@Delete`, and the provider recognizes the annotation, then the annotation determines how the method is implemented, possibly with the help of other annotations present on the method parameters, for example, any `@By` annotations of the parameters.
 5. If the method is named according to the conventions of _Query by Method Name_, then the method is implemented according to the Query by Method Name extension to this specification.
 

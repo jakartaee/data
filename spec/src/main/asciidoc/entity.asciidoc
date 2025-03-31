@@ -334,7 +334,7 @@ For example, Jakarta Persistence allows the entity name to be specified via the 
 
 ==== Persistent Attribute Names
 
-Each persistent attribute of an entity, as defined above in <<Persistent Attributes>>, or of an embeddable class, as defined in <<Embedded Attributes and Embeddable Classes>>, must be assigned a name, allowing the persistent attribute to be referenced by an <<Parameter-based automatic query methods,automatic query method>>, a Query by Method Name, or from a query specified within the <<Annotated Query methods,`@Query` annotation>>.
+Each persistent attribute of an entity, as defined above in <<Persistent Attributes>>, or of an embeddable class, as defined in <<Embedded Attributes and Embeddable Classes>>, must be assigned a name, allowing the persistent attribute to be referenced by an <<Parameter-based automatic query methods,automatic query method>>, a Query by Method Name, or from a query specified within the <<Annotated query methods,`@Query` annotation>>.
 
 - when direct field access is used, the name of a persistent attribute is simply the name of the Java field, but
 - when property-based access is used, the name of the attribute is derived from the accessor methods.
