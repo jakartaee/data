@@ -487,19 +487,9 @@ An `update` statement, with syntax given by `update_statement`, updates each rec
 
 [WARNING]
 ====
-Support for `update` statements varies across NoSQL databases.
+If a NoSQL database is not capable of conditional updates or cannot determine the number of matching records reliably for an `update` operation that returns an `int` or `long`, the `update` operation must throw an `UnsupportedOperationException`.
 
-In particular:
-
-- **Key-Value databases** typically only support updates by key. They do not allow conditional updates using a `where` clause, and returning the number of updated records is generally unsupported.
-- **Wide-Column databases** may restrict updates to records identified by primary or partition keys. Conditional updates or returning update counts may not be supported unless secondary indexes are used.
-- **Document and Graph databases** are more likely to support conditional updates and return the number of updated records. However, the semantics and consistency guarantees may vary depending on the provider.
-
-Due to the _eventual persistence_ behavior common in many NoSQL databases, returning the number of updated records as an `int` or `long` might not be supported. Even when supported, the value may be imprecise, reflecting an estimate or partial result rather than an exact count.
-
-Additionally, in databases with **append-only semantics**—such as many time-series and wide-column databases—the `update` operation may behave more like an `insert`, and repeated updates to the same record may not overwrite previous values.
-
-In such cases, the Jakarta Data provider must throw an `UnsupportedOperationException` when a repository method declares an `int` or `long` return type for an update query that the data store cannot fulfill accurately.
+Additionally, in databases with **append-only semantics**—such as many time-series and wide-column databases—the `update` operation may behave more like an `insert`, and repeated updates to the same record might not overwrite previous values.
 ====
 
 ==== Delete statements
