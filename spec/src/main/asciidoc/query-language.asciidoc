@@ -495,7 +495,7 @@ In particular:
 - **Wide-Column databases** may restrict updates to records identified by primary or partition keys. Conditional updates or returning update counts may not be supported unless secondary indexes are used.
 - **Document and Graph databases** are more likely to support conditional updates and return the number of updated records. However, the semantics and consistency guarantees may vary depending on the provider.
 
-Due to the **eventual persistence** behavior common in many NoSQL databases, returning the number of updated records as an `int` or `long` might not be supported. Even when supported, the value may be **imprecise**, reflecting an estimate or partial result rather than an exact count.
+Due to the _eventual persistence_ behavior common in many NoSQL databases, returning the number of updated records as an `int` or `long` might not be supported. Even when supported, the value may be imprecise, reflecting an estimate or partial result rather than an exact count.
 
 Additionally, in databases with **append-only semantics**—such as many time-series and wide-column databases—the `update` operation may behave more like an `insert`, and repeated updates to the same record may not overwrite previous values.
 
