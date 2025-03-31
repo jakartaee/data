@@ -25,11 +25,11 @@ In Jakarta Data, a Repository provides a structured and organized way to interac
 
 As employed in Jakarta Data, the Repository pattern exhibits several key characteristics that make it a powerful tool for managing data access within Java applications. These characteristics collectively define how repositories function within Jakarta Data, providing a structured and domain-centric approach to working with data. These key characteristics offer insight into how repositories simplify data access and enhance the maintainability of code.
 
-- **Abstraction:** Repositories abstract the details of how data is stored, enabling the developer to focus on the application's domain logic without being tightly coupled to a specific database technology.
+Abstraction:: Repositories abstract the details of how data is stored, enabling the developer to focus on the application's domain logic without being tightly coupled to a specific database technology.
 
-- **Structured Data Access:** Jakarta Data repositories offer a structured and consistent way to perform data access operations. This structured approach ensures that the codebase remains organized and maintainable.
+Structured data access:: Jakarta Data repositories offer a structured and consistent way to perform data access operations. This structured approach ensures that the codebase remains organized and maintainable.
 
-- **Domain-Centric:** Repositories are designed to be domain-centric, aligning with the application's domain model. It means that data access operations are closely tied to business entities, making code more intuitive and expressive.
+Domain-centric:: Repositories are designed to be domain-centric, aligning with the application's domain model. It means that data access operations are closely tied to business entities, making code more intuitive and expressive.
 
 In summary, the Repository pattern in Jakarta Data offers a structured and domain-centric approach to data access, providing a balance between abstraction and ease of use. It simplifies data access by encapsulating the details of the data source while aligning closely with the application's domain model. It makes it a valuable choice for many Java developers, especially in projects where a clean separation of concerns and maintainable codebase are essential.
 
@@ -39,27 +39,27 @@ Within the context of Jakarta Data, the repository plays a pivotal role in simpl
 
 Several characteristics define repositories:
 
-- **Reduced Boilerplate Code:** One of the primary goals of a repository abstraction is to significantly reduce the boilerplate code required to implement data access layers for diverse persistence stores. This reduction in repetitive code enhances code maintainability and developer productivity.
+Reduced boilerplate code:: One of the primary goals of a repository abstraction is to significantly reduce the boilerplate code required to implement data access layers for diverse persistence stores. This reduction in repetitive code enhances code maintainability and developer productivity.
 
-- **Jakarta Data Annotations:** In Jakarta Data, repositories are defined as interfaces and are annotated with the `@Repository` annotation. This annotation serves as a marker to indicate that the interface represents a repository.
+Jakarta Data annotations:: In Jakarta Data, repositories are defined as interfaces and are annotated with the `@Repository` annotation. This annotation serves as a marker to indicate that the interface represents a repository.
 
-- **Built-In Interfaces:** The Jakarta Data specification provides a set of built-in interfaces from which repositories can inherit. These built-in interfaces offer a convenient way to include a variety of pre-defined methods for common operations. They also declare the entity type to use for methods where the entity type cannot otherwise be inferred.
+Built-in interfaces:: The Jakarta Data specification provides a set of built-in interfaces from which repositories can inherit. These built-in interfaces offer a convenient way to include a variety of pre-defined methods for common operations. They also declare the entity type to use for methods where the entity type cannot otherwise be inferred.
 
-- **Data Retrieval and Modification:** Repositories facilitate data retrieval and modification operations. This includes querying for persistent instances in the data store, creating new persistent instances in the data store, removing existing persistent instances, and modifying the state of persistent instances. Conventionally, these operations are named insert, update, save and delete for modifying operations and find, count, and exists for retrieval operations.
+Data retrieval and modification:: Repositories facilitate data retrieval and modification operations. This includes querying for persistent instances in the data store, creating new persistent instances in the data store, removing existing persistent instances, and modifying the state of persistent instances. Conventionally, these operations are named insert, update, save and delete for modifying operations and find, count, and exists for retrieval operations.
 
-- **Subset of Data:** Repositories may expose only a subset of the full data set available in the data store, providing a focused and controlled access point to the data.
+Subset of data:: Repositories may expose only a subset of the full data set available in the data store, providing a focused and controlled access point to the data.
 
-- **Entity Associations:** Entities within a repository may have associations between them, especially in the case of relational data access. However, this specification does not define the semantics of associations between entities belonging to different repositories.
+Entity associations:: Entities within a repository may have associations between them, especially in the case of relational data access. However, this specification does not define the semantics of associations between entities belonging to different repositories.
 
-- **Stateless Repositories:** Repositories are stateless. This specification does not address the definition of repositories that externalize Jakarta Persistence-style stateful persistence contexts.
+Stateless repositories:: Repositories are stateless. This specification does not address the definition of repositories that externalize Jakarta Persistence-style stateful persistence contexts.
 
 Repositories in Jakarta Data serve as efficient gateways for managing and interacting with persistent data, offering a simplified and consistent approach to data access and modification within Java applications.
 
 The application must provide the following when using repositories in Jakarta Data:
 
-1. **Entity Classes and Mappings:** Developers define a set of entity classes and mappings tailored to a specific data store. These entities represent the data structure and schema, offering a powerful means to interact with the underlying data.
+Entity classes and mappings:: Developers define a set of entity classes and mappings tailored to a specific data store. These entities represent the data structure and schema, offering a powerful means to interact with the underlying data.
 
-2. **Repository Interfaces:** Jakarta Data enables the creation of one or more repository interfaces, following predefined rules that include the guidelines set forth by this specification. These interfaces are the gateways to accessing and manipulating the data, offering a structured and efficient way to perform data operations.
+Repository interfaces:: Jakarta Data enables the creation of one or more repository interfaces, following predefined rules that include the guidelines set forth by this specification. These interfaces are the gateways to accessing and manipulating the data, offering a structured and efficient way to perform data operations.
 
 An implementation of Jakarta Data, specifically tailored to the chosen data store, assumes the responsibility of implementing each repository interface. This symbiotic relationship between developers and Jakarta Data ensures that data access and manipulation remain consistent, efficient, and aligned with best practices.
 

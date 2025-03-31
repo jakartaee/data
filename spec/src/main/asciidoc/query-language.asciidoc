@@ -55,13 +55,13 @@ The characters `(`, `)`, and `,` are _punctuation characters_.
 ====
 When working with NoSQL databases, the support for arithmetic operations and support of parentheses for precedence might vary significantly:
 
-- **Key-Value Databases**: Arithmetic operations (`+`, `-`, `*`, `/`) are not supported. These databases are designed for simple key-based lookups and lack query capabilities for complex operations.
+Key-value databases:: Arithmetic operations (`+`, `-`, `*`, `/`) are not supported. These databases are designed for simple key-based lookups and lack query capabilities for complex operations.
 
-- **Wide-Column Databases**: Arithmetic operations are not required to be supported. Some wide-column databases might offer limited support, which might require secondary indexing even for basic querying.
+Wide-column databases:: Arithmetic operations are not required to be supported. Some wide-column databases might offer limited support, which might require secondary indexing even for basic querying.
 
-- **Document Databases**: Support of arithmetic operations and support of parenthesis for precedence are not required, although databases typically offer these capabilities. Behavior and extent of support can vary significantly between providers.
+Document Databases:: Support of arithmetic operations and support of parenthesis for precedence are not required, although databases typically offer these capabilities. Behavior and extent of support can vary significantly between providers.
 
-- **Graph Databases**: Support for arithmetic operations and parentheses for precedence are not required but is typically offered by databases. Behavior and extent of support can vary significantly between providers.
+Graph Databases:: Support for arithmetic operations and parentheses for precedence are not required but is typically offered by databases. Behavior and extent of support can vary significantly between providers.
 
 Due to the diversity of NoSQL database types and their querying capabilities, there is no guarantee that all NoSQL providers will support punctuation characters such as parentheses `(`, `)` for defining operation precedence. It is recommended to consult your NoSQL provider's documentation to confirm the supported query features and their behavior.
 ====
@@ -328,13 +328,13 @@ For other types, there is at least some freedom in the choice of order. Usually,
 ====
 When using NoSQL databases, sorting support varies by database type:
 
-- **Key-Value Databases**: Sorting of results is not supported.
+Key-value databases:: Sorting of results is not supported.
 
-- **Wide-Column Databases**: Support for sorting of results is not required. In general, sorting is not natively supported. When sorting is available, it is typically limited to:
+Wide-column databases:: Support for sorting of results is not required. In general, sorting is not natively supported. When sorting is available, it is typically limited to:
   * The key attribute, defined by an annotation such as `jakarta.nosql.Id`.
   * Fields that are indexed as secondary indexes.
 
-- **Graph and Document Databases**: Support for sorting by a single entity attribute is required. Support for compound sorting (sorting by multiple entity attributes) is not required and may vary due to:
+Graph and document databases:: Support for sorting by a single entity attribute is required. Support for compound sorting (sorting by multiple entity attributes) is not required and may vary due to:
   * Potential instability with tied values, where sorting for equivalent values may differ across queries.
   * Schema flexibility and mixed data types.
   * Dependence on indexes and internal storage order, requiring proper indexing to ensure predictable sorting.
@@ -361,9 +361,9 @@ Syntactically, logical operators are parsed with lower precedence than <<Equalit
 ====
 When using NoSQL databases, the support for restrictions varies depending on the database type:
 
-- **Key-Value Databases**: Support for the equality restriction is required for the `Id` attribute. There is no requirement to support other types of restrictions or restrictions on other entity attributes.
-- **Wide-Column Databases**: Wide-column databases are not required to support the `AND` operator or the `OR` operator. Restrictions must be supported for the key attribute that is annotated with `jakarta.nosql.Id`. Support for restrictions on other attributes is not required. Typically they can be used if they are indexed as secondary indexes, although support varies by database provider.
-- **Graph and Document Databases**: The `AND` and `OR` operators and all of the restrictions described in this section must be supported. Precedence between `AND` and `OR` operators is not guaranteed and may vary significantly based on the NoSQL provider.
+Key-value databases:: Support for the equality restriction is required for the `Id` attribute. There is no requirement to support other types of restrictions or restrictions on other entity attributes.
+Wide-column databases:: Wide-column databases are not required to support the `AND` operator or the `OR` operator. Restrictions must be supported for the key attribute that is annotated with `jakarta.nosql.Id`. Support for restrictions on other attributes is not required. Typically they can be used if they are indexed as secondary indexes, although support varies by database provider.
+Graph and document databases:: The `AND` and `OR` operators and all of the restrictions described in this section must be supported. Precedence between `AND` and `OR` operators is not guaranteed and may vary significantly based on the NoSQL provider.
 
 ====
 
@@ -435,11 +435,11 @@ The `select` clause is optional in `select` statements. When it is missing, the 
 ====
 When working with NoSQL databases, the `select` clause behavior may vary depending on the database structure and capabilities:
 
-- **Key-Value Databases**: These databases generally do not support `select` clauses beyond retrieving values by their keys. Support for complex path expressions and aggregate functions like `count(this)` is not required.
+Key-value databases:: These databases generally do not support `select` clauses beyond retrieving values by their keys. Support for complex path expressions and aggregate functions like `count(this)` is not required.
 
-- **Wide-Column Databases**: The ability to use a `select` clause may depend on the presence of secondary indexes. Without secondary indexes, selection is often restricted to key-based operations. Support for `count(this)` is not required.
+Wide-column databases:: The ability to use a `select` clause may depend on the presence of secondary indexes. Without secondary indexes, selection is often restricted to key-based operations. Support for `count(this)` is not required.
 
-- **Graph and Document Databases**: Support for flexible `select` clauses, including path expressions and aggregate functions like `count(this)` is required. Performance might vary based on the size and indexing of the dataset.
+Graph and document databases:: Support for flexible `select` clauses, including path expressions and aggregate functions like `count(this)` is required. Performance might vary based on the size and indexing of the dataset.
 
 For `count(this)` in particular, if the NoSQL datastore does not natively support counting query results, the Jakarta Data provider is encouraged to implement this operation in Java. However, providers are not required to do so. If `count(this)` is unsupported, an `UnsupportedOperationException` must be thrown during query execution, or repository methods using this expression may be rejected at compilation time.
 

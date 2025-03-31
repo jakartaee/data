@@ -112,9 +112,9 @@ The conditions belonging to the restriction determine the parameters of the meth
 ====
 When using NoSQL databases, the support for restrictions varies depending on the database type:
 
-- **Key-Value Databases**: Support for the equals restriction is required for the `Id` attribute. There is no requirement to support other types of restrictions, the `And` and `Or` keywords, or restrictions on other entity attributes. Queries in key-value databases are typically limited to operations using the `Id` attribute only.
-- **Wide-Column Databases**: Wide-column databases must support the `AND` operator but are not required to support the `Or` operator. Restrictions must be supported for the key attribute that is annotated with `jakarta.nosql.Id`. Support for restrictions on other attributes is not required. Typically they can be used if they are indexed as secondary indexes, although support varies by database provider.
-- **Graph and Document Databases**: The `And` and `Or` keywords and all of the restrictions described in this section must be supported. Precedence between `And` and `Or` operators is not guaranteed and may vary significantly based on the NoSQL provider.
+Key-value databases:: Support for the equals restriction is required for the `Id` attribute. There is no requirement to support other types of restrictions, the `And` and `Or` keywords, or restrictions on other entity attributes. Queries in key-value databases are typically limited to operations using the `Id` attribute only.
+Wide-column databases:: Wide-column databases must support the `AND` operator but are not required to support the `Or` operator. Restrictions must be supported for the key attribute that is annotated with `jakarta.nosql.Id`. Support for restrictions on other attributes is not required. Typically they can be used if they are indexed as secondary indexes, although support varies by database provider.
+Graph and document databases:: The `And` and `Or` keywords and all of the restrictions described in this section must be supported. Precedence between `And` and `Or` operators is not guaranteed and may vary significantly based on the NoSQL provider.
 
 ====
 
@@ -130,13 +130,13 @@ If no order is specified, the records are not sorted.
 ====
 When using NoSQL databases, sorting support varies by database type:
 
-- **Key-Value Databases**: Support for sorting of results is not required.
+Key-value databases:: Support for sorting of results is not required.
 
-- **Wide-Column Databases**: Support for sorting of results is not required. In general, sorting is not natively supported. When sorting is available, it is typically limited to:
+Wide-column databases:: Support for sorting of results is not required. In general, sorting is not natively supported. When sorting is available, it is typically limited to:
   * The key attribute, defined by an annotation such as `jakarta.nosql.Id`.
   * Fields that are indexed as secondary indexes.
 
-- **Graph and Document Databases**: Support for sorting by a single entity attribute is required. Support for compound sorting (sorting by multiple entity attributes) is not required and may vary due to:
+Graph and document databases:: Support for sorting by a single entity attribute is required. Support for compound sorting (sorting by multiple entity attributes) is not required and may vary due to:
   * Potential instability with tied values, where sorting for equivalent values may differ across queries.
   * Schema flexibility and mixed data types.
   * Dependence on indexes and internal storage order, requiring proper indexing to ensure predictable sorting.
@@ -367,15 +367,15 @@ List<Product> findByNameLikeAndYearMadeBetweenAndPriceLessThan(String namePatter
 ====
 When using NoSQL databases, support for the listed method conditions may vary significantly:
 
-- **Textual Conditions**: The `Contains`, `EndsWith`, `IgnoreCase`, `Like`, and `StartsWith` restrictions depend on text processing capabilities and are not required to be supported by Key-Value, Wide-Column, Document and Graph databases. The ability to handle these operations varies widely and depends on the database's support for text-based queries.
+Textual conditions:: The `Contains`, `EndsWith`, `IgnoreCase`, `Like`, and `StartsWith` restrictions depend on text processing capabilities and are not required to be supported by Key-Value, Wide-Column, Document and Graph databases. The ability to handle these operations varies widely and depends on the database's support for text-based queries.
 
-- **Null Conditions**: The handling of `Null` values differs across NoSQL databases. In schemaless databases, a field's absence is often treated as non-existent rather than `Null`. This distinction can affect query behavior because some databases might not support `Null` checks or might interpret them differently. This specification does not make any requirements on how `Null` and non-existent fields are handled for Key-Value, Wide-Column, Document and Graph databases.
+Null conditions:: The handling of `Null` values differs across NoSQL databases. In schemaless databases, a field's absence is often treated as non-existent rather than `Null`. This distinction can affect query behavior because some databases might not support `Null` checks or might interpret them differently. This specification does not make any requirements on how `Null` and non-existent fields are handled for Key-Value, Wide-Column, Document and Graph databases.
 
-- **Key-Value Databases**: Support is required for the `=` (equals) restriction when the attribute is the key. The key attribute is defined by `jakarta.nosql.Id`.
+Key-value databases:: Support is required for the `=` (equals) restriction when the attribute is the key. The key attribute is defined by `jakarta.nosql.Id`.
 
-- **Wide-Column Databases**: Support for restrictions on attributes other than the `Id` attribute is not required. Some databases might allow support for restrictions on other entity attributes if a secondary index is configured. Handling of `Null` values is not required to be supported and might vary in behavior because some wide-column stores might treat missing columns as `Null`, while others might not store the column at all.
+Wide-column databases:: Support for restrictions on attributes other than the `Id` attribute is not required. Some databases might allow support for restrictions on other entity attributes if a secondary index is configured. Handling of `Null` values is not required to be supported and might vary in behavior because some wide-column stores might treat missing columns as `Null`, while others might not store the column at all.
 
-- **Document and Graph Databases**: These databases are generally more feature-rich. Support for the `Contains`, `EndsWith`, `IgnoreCase`, `Like`, and `StartsWith` restrictions is not required. Similarly, `Null` values are not required to be supported. Handling of `Null` in these databases may vary, especially when dealing with omitted fields versus explicitly set `Null` values.
+Graph and document databases:: These databases are generally more feature-rich. Support for the `Contains`, `EndsWith`, `IgnoreCase`, `Like`, and `StartsWith` restrictions is not required. Similarly, `Null` values are not required to be supported. Handling of `Null` in these databases may vary, especially when dealing with omitted fields versus explicitly set `Null` values.
 
 Developers are encouraged to consult the documentation of their chosen NoSQL database provider to confirm the supported operations and clarify the behavior of `Null` versus non-existent fields.
 ====
@@ -403,10 +403,10 @@ The return type of a Query by Method Name is determined as indicated in the foll
 ====
 When working with NoSQL databases, the `count` operation might not be supported, depending on the database structure and capabilities:
 
-- **Key-Value Databases**: Support for count is not required. The majority of Key-Value databases do not support counting. Their design focuses on retrieving values by keys rather than aggregating data.
+Key-value databases:: Support for count is not required. The majority of Key-Value databases do not support counting. Their design focuses on retrieving values by keys rather than aggregating data.
 
-- **Wide-Column Databases**: Support for count is not required. For databases that are capable of returning a count, it might require additional configuration, such as enabling secondary indexes or performing costly full table scans, which can affect performance.
-- **Graph and Document Databases**: Support for count is required. Performance might vary based on factors like indexing and query complexity.
+Wide-column databases:: Support for count is not required. For databases that are capable of returning a count, it might require additional configuration, such as enabling secondary indexes or performing costly full table scans, which can affect performance.
+Graph and document databases:: Support for count is required. Performance might vary based on factors like indexing and query complexity.
 
 ====
 
