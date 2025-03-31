@@ -38,24 +38,37 @@ public class _AsciiCharacter {
     public static final SortableAttribute<AsciiCharacter> numericValue = new NumericAttr("numericValue");
     public static final TextAttribute<AsciiCharacter> thisCharacter = new TextAttr("thisCharacter");
 
-    private static record BooleanAttr(String name, Sort<AsciiCharacter> asc, Sort<AsciiCharacter> desc)
+    private record BooleanAttr(String name, Sort<AsciiCharacter> asc, Sort<AsciiCharacter> desc)
             implements SortableAttribute<AsciiCharacter> {
         private BooleanAttr(String name) {
             this(name, Sort.asc(name), Sort.desc(name));
         }
+        @Override
+        public Class<AsciiCharacter> declaringType() {
+            return AsciiCharacter.class;
+        }
     };
 
-    private static record NumericAttr(String name, Sort<AsciiCharacter> asc, Sort<AsciiCharacter> desc)
+    private record NumericAttr(String name, Sort<AsciiCharacter> asc, Sort<AsciiCharacter> desc)
             implements SortableAttribute<AsciiCharacter> {
         private NumericAttr(String name) {
             this(name, Sort.asc(name), Sort.desc(name));
         }
+
+        @Override
+        public Class<AsciiCharacter> declaringType() {
+            return AsciiCharacter.class;
+        }
     };
 
-    private static record TextAttr(String name, Sort<AsciiCharacter> asc, Sort<AsciiCharacter> ascIgnoreCase,
+    private record TextAttr(String name, Sort<AsciiCharacter> asc, Sort<AsciiCharacter> ascIgnoreCase,
             Sort<AsciiCharacter> desc, Sort<AsciiCharacter> descIgnoreCase) implements TextAttribute<AsciiCharacter> {
         private TextAttr(String name) {
             this(name, Sort.asc(name), Sort.ascIgnoreCase(name), Sort.desc(name), Sort.descIgnoreCase(name));
+        }
+        @Override
+        public Class<AsciiCharacter> declaringType() {
+            return AsciiCharacter.class;
         }
     };
 
