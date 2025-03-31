@@ -19,7 +19,7 @@ package jakarta.data.metamodel.expression;
 
 import jakarta.data.metamodel.NumericExpression;
 
-public record NumericCastRecord<T, N extends Number & Comparable<N>>
+record NumericCastRecord<T, N extends Number & Comparable<N>>
         (NumericExpression<T,?> expression, Class<N> type)
         implements NumericCast<T,N> {
 }
