@@ -6,7 +6,7 @@ NOTE: A Jakarta Data provider backed by access to a relational database might ch
 
 === Type system
 
-Every expression in a JDQL query is assigned a Java type. An implementation of JDQL is required to support the Java types listed in <<Basic Types>>, that is: primitive types, `String`, `LocalDate`, `LocalDateTime`, `LocalTime`, and `Instant`, `java.util.UUID`, `java.math.BigInteger` and `java.math.BigDecimal`, `byte[]`, and  `enum` types.
+Every expression in a JDQL query is assigned a Java type. An implementation of JDQL is required to support the Java types listed in <<Basic types>>, that is: primitive types, `String`, `LocalDate`, `LocalDateTime`, `LocalTime`, and `Instant`, `java.util.UUID`, `java.math.BigInteger` and `java.math.BigDecimal`, `byte[]`, and  `enum` types.
 
 NOTE: An implementation of JDQL is permitted and encouraged to support additional types. Use of such types is not guaranteed to be portable between implementations.
 
@@ -153,7 +153,7 @@ A _path expression_ is a period-separated list of Java identifiers, with syntax 
 
 The type of the whole path expression is the type of the last element of the list. For example, `pages` is assigned the type `int`, `address` is assigned the type `org.example.Address`, and `address.street` is assigned the type `java.lang.String`.
 
-NOTE: Typically, the last element of a path expression is assigned a <<Basic Types,basic type>>. Non-terminal path elements are usually assigned an embeddable type, if the element references an <<Embedded Attributes and Embeddable Classes,embedded attribute>>, or an entity type, if the element references an <<Entity Associations,association attribute>>. However, since a Jakarta Data provider is not required to support embedded attributes or associations, a JDQL implementation is not required to support compound path expressions.
+NOTE: Typically, the last element of a path expression is assigned a <<Basic types,basic type>>. Non-terminal path elements are usually assigned an embeddable type, if the element references an <<Embedded attributes and embeddable classes,embedded attribute>>, or an entity type, if the element references an <<Entity Associations,association attribute>>. However, since a Jakarta Data provider is not required to support embedded attributes or associations, a JDQL implementation is not required to support compound path expressions.
 
 When a path expression is executed, each element of the path is evaluated in turn:
 
@@ -308,7 +308,7 @@ When using NoSQL databases, there are limitations to the support of equality and
 
 ==== Ordering
 
-Every <<Basic Types,basic type>> can, in principle, be equipped with a total order. An order for a type determines the result of inequality comparisons, and the effect of the <<Order clause>>.
+Every <<Basic types,basic type>> can, in principle, be equipped with a total order. An order for a type determines the result of inequality comparisons, and the effect of the <<Order clause>>.
 
 For numeric types, and for date, time, and datetime types, the total order is unique and completely determined by the semantics of the type. JDQL implementations must sort these types according to their natural order, that is, the order in JDQL must agree with the order defined by Java.
 
@@ -383,7 +383,7 @@ The interpretation and effect of each clause in this list is influenced by claus
 
 ==== From clause
 
-The `from` clause, with syntax given by `from_clause`, specifies an _entity name_ which identifies the queried entity. Path expressions occurring in later clauses are interpreted with respect to this entity. That is, the first element of each path expression in the query must be a persistent attribute of the entity named in the `from` clause. The entity name is a Java identifier, usually the unqualified name of the entity class, as specified in <<Entity Names>>.
+The `from` clause, with syntax given by `from_clause`, specifies an _entity name_ which identifies the queried entity. Path expressions occurring in later clauses are interpreted with respect to this entity. That is, the first element of each path expression in the query must be a persistent attribute of the entity named in the `from` clause. The entity name is a Java identifier, usually the unqualified name of the entity class, as specified in <<Entity names>>.
 
 NOTE: The syntax of the `update` statement is irregular, with the `from` keyword implied. That is, the syntax _should_ be `update from Entity`, but for historical reasons it is simply `update Entity`.
 

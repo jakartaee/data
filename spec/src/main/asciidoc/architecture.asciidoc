@@ -74,7 +74,7 @@ A Java developer creates an interface, marks it with the `@Repository` annotatio
 
 NOTE: Jakarta Data allows applications to intermix the two approaches by defining methods annotated with `@Insert`, `@Update`, `@Delete`, or `@Save` on repositories which inherit the built-in supertypes.
 
-==== Repositories with Built-in Supertypes
+==== Repositories with built-in supertypes
 
 Jakarta Data defines a hierarchy of built-in interfaces which user-defined repositories may inherit. At the root of this hierarchy is the `DataRepository` interface. A repository is permitted to extend one or more of the members of the hierarchy, or none at all. When a repository extends a built-in interface, the implementation of every method inherited from the built-in interface must preserve the semantics specified by the built-in interface.
 
@@ -126,7 +126,7 @@ public interface Garage extends BasicRepository<Car, String> {
 }
 ----
 
-==== Repositories without Built-in Supertypes
+==== Repositories without built-in supertypes
 
 Alternatively, Jakarta Data allows a custom repository interface which does not extend any built-in type. This option:
 

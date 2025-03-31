@@ -5,7 +5,7 @@ Jakarta Data offers varying degrees of portability depending on the database and
 
 The portability that is offered by Jakarta Data pertains to usage of the Jakarta Data API by application code, enabling application code that restricts itself to the Jakarta Data API to remain the same when used with any Jakarta Data provider running against the same database. Jakarta Data relies on external persistence specifications such as Jakarta Persistence and Jakarta NoSQL to standardize entity models. Jakarta Data does not place any requirements on the format of data to make persisted data and other database artifacts portable across providers. Jakarta Data does not offer any means to migrate data that is persisted by one provider to a form that is usable by another provider.
 
-=== Portability for Relational Databases
+=== Portability for relational databases
 
 A Jakarta Data provider backed by access to relational data must support the built-in lifecycle annotations `@Insert`, `@Update`, and `@Delete`, along with the built-in repository types `BasicRepository` and `CrudRepository`. It must also fully support Jakarta Data query methods, including pagination, ordering, and limiting, subject to the caveat that follows.
 
@@ -17,27 +17,27 @@ A Jakarta Data provider is not required to supply an implementation of a reposit
 
 If the provider is backed by JDBC, it should support resource accessor methods of type `java.sql.Connection`.
 
-=== Portability for NoSQL Databases
+=== Portability for NoSQL databases
 
 Portability in Jakarta Data extends to various NoSQL databases, each presenting unique challenges and capabilities. Jakarta Data aims to provide a consistent experience across these NoSQL database types. This section covers the key portability aspects for four categories of NoSQL databases: key-value, wide-column, document, and graph databases.
 
-==== Key-Value Databases
+==== Key-value Databases
 
 Key-value databases resemble dictionaries or Maps in Java, where data is primarily accessed using a key. In such databases, queries unrelated to keys are typically limited. To ensure a minimum level of support, Jakarta Data mandates the implementation of `BasicRepository` built-in methods that require an identifier or a key. However, the deleteAll and count methods are not required. Methods relying on complex queries, which are defined as queries that do not use the Key or identifier, raise `java.lang.UnsupportedOperationException` due to the fundamental nature of key-value databases.
 
 IMPORTANT: For any NoSQL database type not covered here, such as time series databases, the Key-value support serves as the minimum required level of compatibility.
 
-==== Wide-Column Databases
+==== Wide-column databases
 
 Wide-column databases offer more query flexibility, even allowing the use of secondary indexes, albeit potentially impacting performance. When interacting with wide-column databases, Jakarta Data requires the implementation of the `BasicRepository` along with all of its methods. However, developers should be mindful that certain query keywords, such as "And" or "Or," may not be universally supported in these databases. The full set of required keywords is documented in the section of the Jakarta Data module Javadoc that is titled "Reserved Keywords for Query by Method Name".
 
-==== Document Databases
+==== Document databases
 
 Document databases provide query flexibility akin to relational databases, offering robust query capabilities. They encourage denormalization for performance optimization. When interfacing with document databases, Jakarta Data goes a step further by supporting both built-in repositories: `BasicRepository` and `CrudRepository`. Additionally, Query by Method Name is available, though developers should be aware that some keywords may not be universally supported.  The full set of required keywords is documented in the section of the Jakarta Data module Javadoc that is titled "Reserved Keywords for Query by Method Name".
 
 These portability considerations reflect Jakarta Data's commitment to providing a consistent data access experience across diverse NoSQL database types. While specific capabilities and query support may vary, Jakarta Data aims to simplify data access, promoting flexibility and compatibility in NoSQL database interactions.
 
-==== Graph Databases
+==== Graph databases
 
 A Graph database, a specialized NoSQL variant, excels in managing intricate data relationships, rivaling traditional relational databases. Its unique strength lies in its ability to handle both directed and undirected edges (or relationships) between vertices (or nodes) and store entity attributes on both vertices and edges.
 

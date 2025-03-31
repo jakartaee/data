@@ -99,7 +99,7 @@ A _restriction_ specifies the criteria used to filter records. It is formed by c
 
 Each _condition_ is formed by concatenating, in the following order:
 
-- an attribute name, which may be a compound name, as specified below in <<Persistent Attribute Names in Query by Method Name>>,
+- an attribute name, which may be a compound name, as specified below in <<Persistent attribute names in Query by Method Name>>,
 - optionally, `IgnoreCase` (for text-typed attributes),
 - optionally, `Not`,
 - optionally, an operator such as `LessThan` or `Like`.
@@ -411,11 +411,11 @@ When working with NoSQL databases, the `count` operation might not be supported,
 ====
 
 
-=== Persistent Attribute Names in Query by Method Name
+=== Persistent attribute names in Query by Method Name
 
 Section 3.2 of the Jakarta Data specification describes how names are assigned to persistent attributes of an entity.
 
-For Query by Method Name, the use of delimiters within a compound name is optional. Delimiters may be omitted entirely from a compound name when they are not needed to disambiguate the persistent attribute to which the name refers. But for a given name, delimiter usage must be consistent: either the delimiter must be used between every pair of persistent attribute names within the compound name, or it must not occur within the compound name.
+For Query by Method Name, the use of delimiters within a compound name is optional. Delimiters may be omitted entirely from a compound name when they are not needed to disambiguate the persistent attribute to which the name refers. But for a given name, delimiter usage must be consistent: either the delimiter must be used between every pair of Persistent attribute names within the compound name, or it must not occur within the compound name.
 
 Resolution of a persistent attribute involves the following steps:
 

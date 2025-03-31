@@ -85,11 +85,11 @@ public interface CarRepository extends BasicRepository<Car, Long> {
 }
 ----
 
-Here, a `CarRepository` interface extends the `BasicRepository` interface provided by Jakarta Data, which pre-defines a set of basic operations for entities, as described in <<Repositories with Built-in Supertypes>>.
+Here, a `CarRepository` interface extends the `BasicRepository` interface provided by Jakarta Data, which pre-defines a set of basic operations for entities, as described in <<Repositories with built-in supertypes>>.
 
 The `@Repository` annotation instructs the Jakarta Data provider to:
 
-- generate an implementation of the repository interface, as defined in <<Repository Interfaces>>, and
+- generate an implementation of the repository interface, as defined in <<Repository interfaces>>, and
 - make the implementation available as a CDI bean, either by registering the implementation class itself as a bean, or by registering a producer or producer factory.
 
 The repository implementation bean must have:
