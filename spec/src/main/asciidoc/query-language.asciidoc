@@ -508,7 +508,7 @@ A `delete` statement, with syntax given by `delete_statement`, deletes each reco
 
 [WARNING]
 ====
-Support for delete statements may vary significantly across NoSQL databases.
+Support for `delete` statements varies significantly across NoSQL databases.
 
 In general:
 
