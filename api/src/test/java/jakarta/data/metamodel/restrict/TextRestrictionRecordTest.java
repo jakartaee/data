@@ -21,6 +21,8 @@ import jakarta.data.metamodel.TextAttribute;
 import jakarta.data.metamodel.constraint.Like;
 import jakarta.data.metamodel.constraint.NotEqualTo;
 import jakarta.data.metamodel.constraint.NotLike;
+import jakarta.data.mock.entity.Book;
+import jakarta.data.mock.entity._Book;
 
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
@@ -29,26 +31,6 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 
 class TextRestrictionRecordTest {
-    // A mock static metamodel class for tests
-    interface _Book {
-        String AUTHOR = "author";
-        String ID = "id";
-        String TITLE = "title";
-
-        TextAttribute<Book> author = TextAttribute.of(
-                Book.class, AUTHOR);
-        TextAttribute<Book> id = TextAttribute.of(
-                Book.class, ID);
-        TextAttribute<Book> title = TextAttribute.of(
-                Book.class, TITLE);
-    }
-
-    // A mock entity class for tests
-    static class Book {
-        String author;
-        String id;
-        String title;
-    }
 
     @Test
     void shouldCreateTextRestrictionWithDefaultValues() {
