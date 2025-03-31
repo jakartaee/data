@@ -516,7 +516,7 @@ In general:
 - **Wide-Column databases** may have limited support for deletions with conditions beyond the primary key or partition key. Additionally, support for returning a count of deleted records may require the use of secondary indexes or may be entirely unsupported.
 - **Document and Graph databases** are more likely to support conditional deletes. However, the behavior and performance characteristics (especially around consistency and the returned delete count) can differ between providers.
 
-Due to the **eventual persistence** behavior that is common in many NoSQL databases, even when a delete operation appears to succeed, the underlying system may not provide an accurate or immediate count of affected records. As a result, the returned count may be **imprecise** or delayed.
+Due to the _eventual persistence_ behavior common in many NoSQL databases, even when a delete operation appears to succeed, the underlying system may not provide an accurate or immediate count of affected records. As a result, the returned count may be imprecise or delayed.
 
 If a NoSQL provider does not support the execution of conditional deletes or cannot determine the number of deleted records reliably, a `delete` operation that returns an `int` or `long` must throw an `UnsupportedOperationException`.
 ====
