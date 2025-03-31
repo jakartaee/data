@@ -268,7 +268,7 @@ create table Person (
 NOTE: Support for embeddable classes and embedded attributes is not required by this specification.
 However, every Jakarta Data provider is strongly encouraged to provide support for embeddable classes within its entity programming model.
 
-==== Entity Associations
+==== Entity associations
 
 An association attribute is an attribute of an entity class whose declared type is also an entity class.
 Given an instance of the first entity class, its association attribute holds a reference to an instance of a second entity class.

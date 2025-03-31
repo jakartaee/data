@@ -21,7 +21,7 @@ If the provider is backed by JDBC, it should support resource accessor methods o
 
 Portability in Jakarta Data extends to various NoSQL databases, each presenting unique challenges and capabilities. Jakarta Data aims to provide a consistent experience across these NoSQL database types. This section covers the key portability aspects for four categories of NoSQL databases: key-value, wide-column, document, and graph databases.
 
-==== Key-value Databases
+==== Key-value databases
 
 Key-value databases resemble dictionaries or Maps in Java, where data is primarily accessed using a key. In such databases, queries unrelated to keys are typically limited. To ensure a minimum level of support, Jakarta Data mandates the implementation of `BasicRepository` built-in methods that require an identifier or a key. However, the deleteAll and count methods are not required. Methods relying on complex queries, which are defined as queries that do not use the Key or identifier, raise `java.lang.UnsupportedOperationException` due to the fundamental nature of key-value databases.
 

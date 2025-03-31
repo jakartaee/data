@@ -153,7 +153,7 @@ A _path expression_ is a period-separated list of Java identifiers, with syntax 
 
 The type of the whole path expression is the type of the last element of the list. For example, `pages` is assigned the type `int`, `address` is assigned the type `org.example.Address`, and `address.street` is assigned the type `java.lang.String`.
 
-NOTE: Typically, the last element of a path expression is assigned a <<Basic types,basic type>>. Non-terminal path elements are usually assigned an embeddable type, if the element references an <<Embedded attributes and embeddable classes,embedded attribute>>, or an entity type, if the element references an <<Entity Associations,association attribute>>. However, since a Jakarta Data provider is not required to support embedded attributes or associations, a JDQL implementation is not required to support compound path expressions.
+NOTE: Typically, the last element of a path expression is assigned a <<Basic types,basic type>>. Non-terminal path elements are usually assigned an embeddable type, if the element references an <<Embedded attributes and embeddable classes,embedded attribute>>, or an entity type, if the element references an <<Entity associations,association attribute>>. However, since a Jakarta Data provider is not required to support embedded attributes or associations, a JDQL implementation is not required to support compound path expressions.
 
 When a path expression is executed, each element of the path is evaluated in turn:
 

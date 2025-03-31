@@ -1,10 +1,10 @@
-== Jakarta Data Providers
+== Jakarta Data providers
 
 A Jakarta Data provider might come as an integrated component of a Jakarta EE container, or it might be a separate component that integrates with the Jakarta EE container via standard or proprietary SPIs.
 For example, a Jakarta Data provider might use a CDI portable extension to integrate with dependency injection.
 The role of the Jakarta Data provider is to supply implementations of application-defined repositories.
 
-=== Providers and Repositories
+=== Providers and repositories
 
 A Jakarta Data provider must supply an implementation of each repository interface which either:
 
@@ -24,7 +24,7 @@ It is the responsibility of the application developer to ensure that each reposi
 If the application developer fails to disambiguate the provider for every repository in the application, the behavior is undefined by this specification.
 ====
 
-=== Provider support for Entities
+=== Provider support for entities
 
 A Jakarta Data provider typically supports one entity-defining annotation type, but it may support multiple entity-defining annotation types.
 A provider may even have no entity-defining annotation and feature a programming model for entity classes where the entity classes are unannotated.
@@ -52,14 +52,14 @@ On the other hand, if an entity class is annotated with an entity-defining annot
 This allows an entity class to be compiled with multiple entity-defining annotations, each targeting a different Jakarta Data provider, and have the provider automatically disambiguated at runtime based on the availability of the entity-defining annotations.
 ====
 
-=== Provider Name
+=== Provider name
 
 The entity-defining annotation type is the preferred way to avoid conflicts between Jakarta Data providers.
 But when multiple Jakarta Data providers support the same entity-defining annotation, the application must disambiguate the Jakarta Data provider for a repository by explicitly specifying the `provider` attribute of the `Repository` annotation.
 
 A Jakarta Data provider must ignore every repository which specifies the name of a different `provider` in its `@Repository` annotation.
 
-== Interoperability with other Jakarta EE Specifications
+== Interoperability with other Jakarta EE specifications
 
 This section discusses interoperability with related Jakarta EE footnote:[Jakarta EE Platform 11, https://jakarta.ee/specifications/platform/11/] specifications. When operating within a Jakarta EE product, the availability of other Jakarta EE technologies depends on whether the Jakarta EE Core profile, Jakarta EE Web profile, or Jakarta EE Platform is used.
 
@@ -67,7 +67,7 @@ This section discusses interoperability with related Jakarta EE footnote:[Jakart
 
 Contexts and Dependency Injection footnote:[Jakarta Contexts and Dependency Injection 4.1, https://jakarta.ee/specifications/cdi/4.1/] (CDI) is a specification in the Jakarta EE Core profile that provides a powerful and flexible dependency injection framework for Java applications. CDI provides a programming model based around decoupled components with container-managed lifecycles and container-injected dependencies, enabling loose coupling and promoting modular and reusable code.
 
-==== CDI Dependency Injection
+==== CDI dependency injection
 
 In the Jakarta EE environment, CDI allows implementations of Jakarta Data repositories to be made available for injection via the `@Inject` annotation.
 
@@ -117,12 +117,12 @@ This fragment shows how the application might request injection of a `CarReposit
 
 This integration between CDI and Jakarta Data allows for seamless management of repository instances within Jakarta EE applications.
 
-==== CDI Events
+==== CDI events
 
 A repository implementation may raise CDI events.
 In the Jakarta EE environment, the repository implementation is required to raise the event types defined in the package `jakarta.data.event` when lifecycle methods annotated `@Insert`, `@Update`, or `@Delete` are invoked, as specified by the API documentation of these annotations.
 
-==== CDI Extensions for Jakarta Data providers
+==== CDI extensions for Jakarta Data providers
 
 In environments where CDI Full or CDI Lite is available, Jakarta Data providers can make use of a CDI extension--an implementation of `jakarta.enterprise.inject.spi.Extension` or `jakarta.enterprise.inject.build.compatible.spi.BuildCompatibleExtension`--to discover interfaces annotated with `@Repository` and make their implementations available for injection.
 

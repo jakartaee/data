@@ -48,7 +48,7 @@ Jakarta Data is guided by a set of clear and well-defined objectives to simplify
 
 * **Seamless Integration:** Jakarta Data enables seamless integration between Java applications and various persistence layers, making it easier for developers to work with different databases and storage sources without extensive customization.
 
-=== Non-Goals
+=== Non-goals
 
 The following are not goals of Jakarta Data:
 
