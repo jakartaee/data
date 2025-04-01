@@ -21,10 +21,47 @@ import jakarta.data.metamodel.impl.NumericAttributeRecord;
 
 import java.util.Objects;
 
+/**
+ * <p>Represents a {@linkplain Number numeric} entity attribute in the {@link StaticMetamodel}.
+ * Numeric entity attributes can be sorted on in query results and can be
+ * compared against values in query restrictions. They can also be used as
+ * and within numeric expressions involving various arithmetic operations.
+ * </p>
+ *
+ * <p>Entity attribute types that are considered numeric include:</p>
+ *
+ * <ul>
+ * <li>numeric primitve types: {@code byte}, {@code double}, {@code float},
+ *     {@code int}, {@code long}, {@code short}</li>
+ * <li>numeric wrapper types: {@link Byte}, {@link Double}, {@link Float},
+ *     {@link Integer}, {@link Long}, {@link Short}</li>
+ * <li>{@link java.math.BigDecimal} and {@link java.math.BigInteger}</li>
+ * </ul>
+ *
+ * <p>Where possible, {@code NumericAttribute}, which provides more function,
+ * is preferred over {@link ComparableAttribute} and {@link SortableAttribute}.
+ * </p>
+ *
+ * @param <T> entity class of the static metamodel.
+ * @param <N> type of entity attribute (or wrapper type if primitive).
+ */
+
 public interface NumericAttribute<T,N extends Number & Comparable<N>>
-        extends BasicAttribute<T,N>, NumericExpression<T, N> {
-    static <T,N extends Number & Comparable<N>> NumericAttribute<T,N>
-    of(Class<T> entityClass, String name, Class<N> attributeType) {
+        extends ComparableAttribute<T,N>, NumericExpression<T, N> {
+
+    /**
+     * <p>Creates a static metamodel {@code NumericAttribute} representing the
+     * entity attribute with the specified name.</p>
+     *
+     * @param <T> entity class of the static metamodel.
+     * @param <N> type of entity attribute (or wrapper type if primitive).
+     * @param entityClass   the entity class.
+     * @param name          the name of the entity attribute.
+     * @param attributeType type of the entity attribute.
+     * @return instance of {@code NumericAttribute}.
+     */
+    static <T,N extends Number & Comparable<N>> NumericAttribute<T,N> of(
+            Class<T> entityClass, String name, Class<N> attributeType) {
         Objects.requireNonNull(entityClass, "entity class is required");
         Objects.requireNonNull(name, "entity attribute name is required");
         Objects.requireNonNull(attributeType, "entity attribute type is required");

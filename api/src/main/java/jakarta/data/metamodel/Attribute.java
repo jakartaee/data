@@ -24,12 +24,18 @@ package jakarta.data.metamodel;
  * <ul>
  * <li>{@link TextAttribute} for entity attributes that represent text,
  *     typically of type {@link String}.</li>
+ * <li>{@link NumericAttribute} for entity attributes that represent numeric
+ *     values, such as {@code int}, {@link Long}, and {@link java.math.BigDecimal}.
+ *     </li>
  * <li>{@link ComparableAttribute} for entity attributes that represent other
- *     sortable and comparable values, such as {@code int}, {@link Long},
- *     {@code boolean}, {@link java.time.LocalDateTime}, and enumerations.</li>
+ *     sortable and comparable values, such as {@code boolean},
+ *     {@link java.time.LocalDateTime}, and enumerations.</li>
  * <li>{@link SortableAttribute} for entity types that are sortable, but not
  *     comparable. Generally this subtype is unused but is applicable for
- *     databases that allow sorting on {@code byte[]} attributes. </li>
+ *     databases that allow sorting on attributes of type {@code byte[]}.</li>
+ * <li>{@link NavigableAttribute} for entity attributes that have attributes
+ *     of their own. This is used for embeddables and associations to other
+ *     entities.</li>
  * <li>{@link BasicAttribute} for other types of entity attributes, such as
  *     collections, embeddables, and other relation attributes.</li>
  * </ul>

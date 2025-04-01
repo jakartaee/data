@@ -38,11 +38,15 @@ import jakarta.data.Sort;
  * <ul>
  * <li>{@link TextAttribute} for entity attributes that represent text,
  *     typically of type {@link String}.</li>
+ * <li>{@link NumericAttribute} for entity attributes of numeric types, such as
+ *     {@code int}, {@link Double}, and {@link java.math.BigInteger}.</li>
  * <li>{@link ComparableAttribute} for entity attributes that represent other
- *     sortable and comparable values, such as {@code int}, {@link Double},
+ *     sortable and comparable values, such as
  *     {@code boolean}, {@link java.time.LocalDateTime}, and enumerations.</li>
+ * <li>{@link NavigableAttribute} for entity attributes that are embeddables
+ *     or relations.</li>
  * <li>{@link BasicAttribute} for other types of entity attributes, such as
- *     collections, embeddables, and other relation attributes.</li>
+ *     collections.</li>
  * </ul>
  *
  * <p>Jakarta Data defines the following conventions for static metamodel classes:</p>
@@ -87,15 +91,15 @@ import jakarta.data.Sort;
  *     String NAME_LAST = "name.last";
  *     String YEAROFBIRTH = "yearOfBirth";
  *
- *     ComparableAttribute&lt;Person,Long&gt; ssn = ComparableAttribute.of(
+ *     NumericAttribute&lt;Person,Long&gt; ssn = NumericAttribute.of(
  *             Person.class, SSN, long.class);
- *     BasicAttribute&lt;Person,Name&gt; name = BasicAttribute.of(
+ *     NavigableAttribute&lt;Person,Name&gt; name = NavigableAttribute.of(
  *             Person.class, NAME, Name.class);
  *     TextAttribute&lt;Person&gt; name_first = TextAttribute.of(
  *             Person.class, NAME_FIRST);
  *     TextAttribute&lt;Person&gt; name_last = TextAttribute.of(
  *             Person.class, NAME_LAST);
- *     ComparableAttribute&lt;Person,Integer&gt; yearOfBirth = ComparableAttribute.of(
+ *     NumericAttribute&lt;Person,Integer&gt; yearOfBirth = NumericAttribute.of(
  *             Person.class, YEAROFBIRTH, int.class);
  * }
  * </pre>
@@ -124,6 +128,9 @@ import jakarta.data.Sort;
  * attempt to initialize the fields of the static metamodel class for that entity.</p>
  *
  */
+// TODO potentially replace  _Person.name_first and _Person.name_last in the above
+//      with usage of NavigableAttribute after the design of it is further along
+//      and we are more certain there won't be changes to it.
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
