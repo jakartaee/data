@@ -57,6 +57,11 @@ public interface Attribute<T> {
      * @since 1.1
      */
     default Class<T> declaringType() {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException(getClass().getName() + """
+                 was obtained in a way that does not identify the entity class\
+                 that declares the attribute. Static metamodel classes should\
+                 use the .of method that is defined on the Attribute subtype\
+                 to provide the entity class.\
+                """);
     }
 }
