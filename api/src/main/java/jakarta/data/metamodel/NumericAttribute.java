@@ -22,7 +22,7 @@ import jakarta.data.metamodel.impl.NumericAttributeRecord;
 import java.util.Objects;
 
 /**
- * <p>Represents a numeric entity attribute in the {@link StaticMetamodel}.
+ * <p>Represents a {@linkplain Number numeric} entity attribute in the {@link StaticMetamodel}.
  * Numeric entity attributes can be sorted on in query results and can be
  * compared against values in query restrictions. They can also be used as
  * and within numeric expressions involving various arithmetic operations.
