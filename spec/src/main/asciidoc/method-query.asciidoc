@@ -415,7 +415,7 @@ Graph and document databases:: Support for count is required. Performance might 
 
 Section 3.2 of the Jakarta Data specification describes how names are assigned to persistent attributes of an entity.
 
-For Query by Method Name, the use of delimiters within a compound name is optional. Delimiters may be omitted entirely from a compound name when they are not needed to disambiguate the persistent attribute to which the name refers. But for a given name, delimiter usage must be consistent: either the delimiter must be used between every pair of Persistent attribute names within the compound name, or it must not occur within the compound name.
+For Query by Method Name, the use of delimiters within a compound name is optional. Delimiters may be omitted entirely from a compound name when they are not needed to disambiguate the persistent attribute to which the name refers. But for a given name, delimiter usage must be consistent: either the delimiter must be used between every pair of persistent attribute names within the compound name, or it must not occur within the compound name.
 
 Resolution of a persistent attribute involves the following steps:
 
