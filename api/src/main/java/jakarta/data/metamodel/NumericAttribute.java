@@ -47,7 +47,7 @@ import java.util.Objects;
  */
 
 public interface NumericAttribute<T,N extends Number & Comparable<N>>
-        extends BasicAttribute<T,N>, NumericExpression<T, N> {
+        extends ComparableAttribute<T,N>, NumericExpression<T, N> {
 
     /**
      * <p>Creates a static metamodel {@code NumericAttribute} representing the
