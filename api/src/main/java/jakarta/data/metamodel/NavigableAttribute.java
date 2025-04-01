@@ -22,7 +22,7 @@ import jakarta.data.metamodel.impl.NavigableAttributeRecord;
 import java.util.Objects;
 
 /**
- * <p>Represents an entity attribute that is an embeddable or relation.
+ * <p>Represents an entity attribute that is an embeddable or association to another entity.
  * These types of entity attributes have attributes of their own that can
  * be navigated to.</p>
  *
