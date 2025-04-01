@@ -32,7 +32,7 @@ package jakarta.data.metamodel;
  *     {@link java.time.LocalDateTime}, and enumerations.</li>
  * <li>{@link SortableAttribute} for entity types that are sortable, but not
  *     comparable. Generally this subtype is unused but is applicable for
- *     databases that allow sorting on {@code byte[]} attributes.</li>
+ *     databases that allow sorting on attributes of type {@code byte[]}.</li>
  * <li>{@link NavigableAttribute} for entity attributes that have attributes
  *     of their own. This is used for embeddables and relation attributes of
  *     entities.</li>
