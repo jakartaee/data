@@ -90,7 +90,7 @@
 
         <apache.rat.version>0.16.1</apache.rat.version>
 
-        <arquillian.version>1.9.3.Final</arquillian.version>
+        <arquillian.version>1.9.4.Final</arquillian.version>
         <arquillian.jakarta.version>10.0.0.Final</arquillian.jakarta.version>
         <junit.version>5.12.0</junit.version>
         <pi-test.version>1.19.0</pi-test.version>
