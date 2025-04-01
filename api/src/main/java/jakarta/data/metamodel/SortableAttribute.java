@@ -28,7 +28,7 @@ import jakarta.data.metamodel.impl.SortableAttributeRecord;
  *
  *<p>A {@code SortableAttribute} may be used to sort query results.
  * When an attribute type is a numeric type, {@link NumericAttribute}
- * is preferred. When an attribute type is a {@link String},
+ * is preferred. When an attribute type is {@link String},
  * {@link TextAttribute} is preferred. When an attribute (or if a primitive,
  * its wrapper class) is a subtype of {@link java.lang.Comparable},
  * use of {@link ComparableAttribute} is usually preferred, since a
