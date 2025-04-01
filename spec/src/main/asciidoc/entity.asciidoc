@@ -426,7 +426,9 @@ The following are conventions for static metamodel classes:
 The following subinterfaces of `Attribute` are recommended to obtain the full benefit of the static metamodel:
 
 - `TextAttribute` for entity attributes that represent text, typically of type `String`.
-- `ComparableAttribute` for entity attributes that represent other comparable values, such as `long`, `Integer`, `boolean`, `java.time.Instant`, and enumerations.
+- `NumericAttribute` for entity attributes of numeric types, such as `long`, `Integer`, and `BigDecimal`.
+- `ComparableAttribute` for entity attributes that represent other comparable values, such as `boolean`, `java.time.Instant`, and enumerations.
+- `NavigableAttribute` for entity attributes that are embeddables or relations.
 - `BasicAttribute` for other types of entity attributes, such as collections, embeddables, and other relation attributes.
 
 ==== Example Metamodel Class and Usage
@@ -453,11 +455,11 @@ public interface _Product {
   String NAME = "name";
   String PRICE = "price";
 
-  ComparableAttribute<Product,Long> id = ComparableAttribute.of(
+  NumericAttribute<Product,Long> id = NumericAttribute.of(
           Product.class, ID, long.class);
   TextAttribute<Product> name = TextAttribute.of(
           Product.class, NAME);
-  ComparableAttribute<Product,Float> price = ComparableAttribute.of(
+  NumericAttribute<Product,Float> price = NumericAttribute.of(
           Product.class, PRICE, float.class);
 }
 ----

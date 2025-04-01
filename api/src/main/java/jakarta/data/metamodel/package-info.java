@@ -39,11 +39,11 @@
  *     String NAME = "name";
  *     String PRICE = "price";
  *
- *     ComparableAttribute&lt;Product,Long&gt; id = ComparableAttribute.of(
+ *     NumericAttribute&lt;Product,Long&gt; id = NumericAttribute.of(
  *             Product.class, ID, long.class);
  *     TextAttribute&lt;Product&gt; name = TextAttribute.of(
  *             Product.class, NAME);
- *     ComparableAttribute&lt;Product,Float&gt; price = ComparableAttribute.of(
+ *     NumericAttribute&lt;Product,Float&gt; price = NumericAttribute.of(
  *             Product.class, PRICE, float.class);
  * }
  *
