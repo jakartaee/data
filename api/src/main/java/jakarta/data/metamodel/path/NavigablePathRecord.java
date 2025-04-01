@@ -22,6 +22,6 @@ import jakarta.data.metamodel.NavigableExpression;
 
 record NavigablePathRecord<T,U,V>
         (NavigableExpression<T,U> expression, NavigableAttribute<U,V> attribute)
-        implements NavigableExpression<T,V>, NavigablePath<T,U,V> {
+        implements NavigablePath<T,U,V> {
 
 }

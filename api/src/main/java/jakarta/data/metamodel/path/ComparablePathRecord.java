@@ -18,10 +18,9 @@
 package jakarta.data.metamodel.path;
 
 import jakarta.data.metamodel.ComparableAttribute;
-import jakarta.data.metamodel.ComparableExpression;
 import jakarta.data.metamodel.NavigableExpression;
 
 record ComparablePathRecord<T,U,C extends Comparable<?>>
         (NavigableExpression<T,U> expression, ComparableAttribute<U, C> attribute)
-        implements ComparableExpression<T,C>, ComparablePath<T,U,C> {
+        implements ComparablePath<T,U,C> {
 }
