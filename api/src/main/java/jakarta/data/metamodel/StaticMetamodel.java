@@ -41,7 +41,7 @@ import jakarta.data.Sort;
  * <li>{@link NumericAttribute} for entity attributes of numeric types, such as
  *     {@code int}, {@link Double}, and {@link java.math.BigInteger}.</li>
  * <li>{@link ComparableAttribute} for entity attributes that represent other
- *     sortable and comparable values, such as ,
+ *     sortable and comparable values, such as
  *     {@code boolean}, {@link java.time.LocalDateTime}, and enumerations.</li>
  * <li>{@link NavigableAttribute} for entity attributes that are embeddables
  *     or relations.</li>
