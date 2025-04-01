@@ -34,7 +34,7 @@ package jakarta.data.metamodel;
  *     comparable. Generally this subtype is unused but is applicable for
  *     databases that allow sorting on attributes of type {@code byte[]}.</li>
  * <li>{@link NavigableAttribute} for entity attributes that have attributes
- *     of their own. This is used for embeddables and relation attributes of
+ *     of their own. This is used for embeddables and associations to other
  *     entities.</li>
  * <li>{@link BasicAttribute} for other types of entity attributes, such as
  *     collections, embeddables, and other relation attributes.</li>
