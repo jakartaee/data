@@ -45,7 +45,7 @@ import java.util.Objects;
  * <p>Where possible, {@code ComparableAttribute}, which provides more function,
  * is preferred over {@link SortableAttribute}. Likewise, subtypes of
  * {@code ComparableAttribute}, such as {@link NumericAttribute} and
- * {@link TextAttribute} are preferred over {@code ComparableAttribute}.</p>
+ * {@link TextAttribute}, are preferred over {@code ComparableAttribute}.</p>
  *
  * @param <T> entity class of the static metamodel.
  * @param <V> type of entity attribute (or wrapper type if primitive).
