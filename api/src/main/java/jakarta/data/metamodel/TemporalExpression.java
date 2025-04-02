@@ -49,25 +49,4 @@ public interface TemporalExpression<T, V extends Temporal & Comparable<? extends
     // We need to also consider if it is okay to have some methods that wouldn't
     // apply to LocalDate or LocalTime, or if we should have more specific types
     // instead of Temporal.
-
-    // TODO methods to compare with other TemporalExpressions need to be added,
-    // but similar methods are commented out elsewhere, so doing that here as well,
-
-    // default Restriction<T> between(TemporalExpression<T,V> min,
-    //                               TemporalExpression<T,V> max)
-
-    // default Restriction<T> equalTo(TemporalExpression<T,V> value)
-
-    // default Restriction<T> greaterThan(TemporalExpression<T,V> value)
-
-    // default Restriction<T> greaterThanEqual(TemporalExpression<T,V> value)
-
-    // default Restriction<T> lessThan(TemporalExpression<T,V> value)
-
-    // default Restriction<T> lessThanEqual(TemporalExpression<T,V> value)
-
-    // default Restriction<T> notBetween(TemporalExpression<T,V> min,
-    //                                  TemporalExpression<T,V> max)
-
-    // default Restriction<T> notEqualTo(TemporalExpression<T,V> value)
 }
