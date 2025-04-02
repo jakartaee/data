@@ -19,42 +19,35 @@ package jakarta.data.metamodel.constraint;
 
 import static jakarta.data.metamodel.constraint.LikeRecord.ESCAPE;
 import static jakarta.data.metamodel.constraint.LikeRecord.STRING_WILDCARD;
-import static jakarta.data.metamodel.constraint.LikeRecord.translate;
 
 public interface NotLike extends Constraint<String> {
 
     static NotLike pattern(String pattern) {
-        return new NotLikeRecord(pattern, null);
+        return new NotLikeRecord(pattern);
     }
 
     static NotLike pattern(String pattern, char charWildcard, char stringWildcard) {
-        return new NotLikeRecord(translate(pattern, charWildcard, stringWildcard, ESCAPE),
-                                 ESCAPE);
+        return new NotLikeRecord(pattern, charWildcard, stringWildcard);
     }
 
     static NotLike pattern(String pattern, char charWildcard, char stringWildcard, char escape) {
-        return new NotLikeRecord(translate(pattern, charWildcard, stringWildcard, escape),
-                                 escape);
+        return new NotLikeRecord(pattern, charWildcard, stringWildcard, escape);
     }
 
     static NotLike prefix(String prefix) {
-        return new NotLikeRecord(LikeRecord.escape(prefix) + STRING_WILDCARD,
-                                 ESCAPE);
+        return new NotLikeRecord(LikeRecord.escape(prefix) + STRING_WILDCARD, ESCAPE);
     }
 
     static NotLike substring(String substring) {
-        return new NotLikeRecord(STRING_WILDCARD + LikeRecord.escape(substring) + STRING_WILDCARD,
-                                 ESCAPE);
+        return new NotLikeRecord(STRING_WILDCARD + LikeRecord.escape(substring) + STRING_WILDCARD, ESCAPE);
     }
 
     static NotLike suffix(String suffix) {
-        return new NotLikeRecord(STRING_WILDCARD + LikeRecord.escape(suffix),
-                                 ESCAPE);
+        return new NotLikeRecord(STRING_WILDCARD + LikeRecord.escape(suffix), ESCAPE);
     }
 
     static NotLike literal(String suffix) {
-        return new NotLikeRecord(LikeRecord.escape(suffix),
-                                 ESCAPE);
+        return new NotLikeRecord(LikeRecord.escape(suffix), ESCAPE);
     }
 
     Character escape();

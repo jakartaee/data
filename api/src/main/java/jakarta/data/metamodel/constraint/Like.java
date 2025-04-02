@@ -17,6 +17,9 @@
  */
 package jakarta.data.metamodel.constraint;
 
+import static jakarta.data.metamodel.constraint.LikeRecord.ESCAPE;
+import static jakarta.data.metamodel.constraint.LikeRecord.STRING_WILDCARD;
+
 public interface Like extends Constraint<String> {
     String pattern();
     Character escape();
@@ -34,18 +37,18 @@ public interface Like extends Constraint<String> {
     }
 
     static Like substring(String substring) {
-        return LikeRecord.substring(substring);
+        return new LikeRecord(STRING_WILDCARD + LikeRecord.escape(substring) + STRING_WILDCARD, ESCAPE);
     }
 
     static Like prefix(String prefix) {
-        return LikeRecord.prefix(prefix);
+        return new LikeRecord(LikeRecord.escape(prefix) + STRING_WILDCARD, ESCAPE);
     }
 
     static Like suffix(String suffix) {
-        return LikeRecord.suffix(suffix);
+        return new LikeRecord(STRING_WILDCARD + LikeRecord.escape(suffix), ESCAPE);
     }
 
     static Like literal(String suffix) {
-        return LikeRecord.literal(suffix);
+        return new LikeRecord(LikeRecord.escape(suffix), ESCAPE);
     }
 }

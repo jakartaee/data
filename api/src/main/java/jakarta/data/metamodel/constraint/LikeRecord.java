@@ -26,19 +26,19 @@ record LikeRecord(String pattern, Character escape)
     public static final char STRING_WILDCARD = '%';
     public static final char ESCAPE = '\\';
 
-    public LikeRecord {
+    LikeRecord {
         Objects.requireNonNull(pattern, "Pattern must not be null");
     }
 
-    public LikeRecord(String pattern) {
+    LikeRecord(String pattern) {
         this(pattern, null);
     }
 
-    public LikeRecord(String pattern, char charWildcard, char stringWildcard) {
+    LikeRecord(String pattern, char charWildcard, char stringWildcard) {
         this(pattern, charWildcard, stringWildcard, ESCAPE);
     }
 
-    public LikeRecord(String pattern, char charWildcard, char stringWildcard, char escape) {
+    LikeRecord(String pattern, char charWildcard, char stringWildcard, char escape) {
         this(translate(pattern, charWildcard, stringWildcard, escape), escape);
     }
 
@@ -51,22 +51,6 @@ record LikeRecord(String pattern, Character escape)
     public String toString() {
         return "LIKE '" + pattern + "'"
                 + (escape == null ? "" : " ESCAPE '\\'");
-    }
-
-    public static LikeRecord prefix(String prefix) {
-        return new LikeRecord(escape(prefix) + STRING_WILDCARD, ESCAPE);
-    }
-
-    public static LikeRecord suffix(String suffix) {
-        return new LikeRecord(STRING_WILDCARD + escape(suffix), ESCAPE);
-    }
-
-    public static LikeRecord literal(String suffix) {
-        return new LikeRecord(escape(suffix), ESCAPE);
-    }
-
-    public static LikeRecord substring(String substring) {
-        return new LikeRecord(STRING_WILDCARD + escape(substring) + STRING_WILDCARD, ESCAPE);
     }
 
     static String escape(String literal) {
