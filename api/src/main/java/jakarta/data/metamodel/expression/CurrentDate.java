@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024,2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2025 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,22 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- *  SPDX-License-Identifier: Apache-2.0
+ * SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.mock.entity;
+package jakarta.data.metamodel.expression;
 
-import java.time.Instant;
+import jakarta.data.metamodel.TemporalExpression;
+
 import java.time.LocalDate;
 
-/**
- * A mock entity class for tests
- */
-public class Book {
-    String author;
-    Instant copyrightDate;
-    String id;
-    int numChapters;
-    int numPages;
-    LocalDate publicationDate;
-    String title;
+public interface CurrentDate<T> extends TemporalExpression<T,LocalDate> {
+
+    static <T> CurrentDate<T> of() {
+        return new CurrentDate<>() {};
+    }
 }
