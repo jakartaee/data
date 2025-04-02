@@ -44,4 +44,8 @@ public interface Like extends Constraint<String> {
     static Like suffix(String suffix) {
         return LikeRecord.suffix(suffix);
     }
+
+    static Like literal(String suffix) {
+        return LikeRecord.literal(suffix);
+    }
 }

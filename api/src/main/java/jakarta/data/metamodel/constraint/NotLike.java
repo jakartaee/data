@@ -52,6 +52,11 @@ public interface NotLike extends Constraint<String> {
                                  ESCAPE);
     }
 
+    static NotLike literal(String suffix) {
+        return new NotLikeRecord(LikeRecord.escape(suffix),
+                                 ESCAPE);
+    }
+
     Character escape();
 
     String pattern();

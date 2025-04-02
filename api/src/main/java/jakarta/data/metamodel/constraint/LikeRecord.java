@@ -61,6 +61,10 @@ record LikeRecord(String pattern, Character escape)
         return new LikeRecord(STRING_WILDCARD + escape(suffix), ESCAPE);
     }
 
+    public static LikeRecord literal(String suffix) {
+        return new LikeRecord(escape(suffix), ESCAPE);
+    }
+
     public static LikeRecord substring(String substring) {
         return new LikeRecord(STRING_WILDCARD + escape(substring) + STRING_WILDCARD, ESCAPE);
     }
