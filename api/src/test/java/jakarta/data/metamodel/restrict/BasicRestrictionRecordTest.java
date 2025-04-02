@@ -18,9 +18,9 @@
 package jakarta.data.metamodel.restrict;
 
 import jakarta.data.metamodel.BasicAttribute;
-import jakarta.data.metamodel.ComparableAttribute;
-import jakarta.data.metamodel.TextAttribute;
 import jakarta.data.metamodel.constraint.*;
+import jakarta.data.mock.entity.Book;
+import jakarta.data.mock.entity._Book;
 
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
@@ -29,34 +29,6 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 
 class BasicRestrictionRecordTest {
-    // A mock static metamodel class for tests
-    interface _Book {
-        String AUTHOR = "author";
-        String ID = "id";
-        String NUMCHAPTERS = "numChapters";
-        String NUMPAGES = "numPages";
-        String TITLE = "title";
-
-        BasicAttribute<Book, String> author = BasicAttribute.of(
-                Book.class, AUTHOR, String.class);
-        TextAttribute<Book> id = TextAttribute.of(
-                Book.class, ID);
-        ComparableAttribute<Book, Integer> numChapters = ComparableAttribute.of(
-                Book.class, NUMCHAPTERS, int.class);
-        ComparableAttribute<Book, Integer> numPages = ComparableAttribute.of(
-                Book.class, NUMPAGES, int.class);
-        BasicAttribute<Book, String> title = BasicAttribute.of(
-                Book.class, TITLE, String.class);
-    }
-
-    // A mock entity class for tests
-    static class Book {
-        String author;
-        String id;
-        int numChapters;
-        int numPages;
-        String title;
-    }
 
     @Test
     void shouldCreateBasicRestrictionWithDefaultNegation() {
