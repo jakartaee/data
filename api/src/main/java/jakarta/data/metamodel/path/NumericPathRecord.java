@@ -19,9 +19,8 @@ package jakarta.data.metamodel.path;
 
 import jakarta.data.metamodel.NavigableExpression;
 import jakarta.data.metamodel.NumericAttribute;
-import jakarta.data.metamodel.NumericExpression;
 
 record NumericPathRecord<T,U,N extends Number & Comparable<N>>
         (NavigableExpression<T,U> expression, NumericAttribute<U,N> attribute)
-        implements NumericExpression<T,N>, NumericPath<T,U,N> {
+        implements NumericPath<T,U,N> {
 }
