@@ -40,9 +40,12 @@ import jakarta.data.Sort;
  *     typically of type {@link String}.</li>
  * <li>{@link NumericAttribute} for entity attributes of numeric types, such as
  *     {@code int}, {@link Double}, and {@link java.math.BigInteger}.</li>
+ * <li>{@link TemporalAttribute} for entity attributes of temporal types, such as
+ *     {@link java.time.LocalDate}, {@link java.time.LocalTime}, and
+ *     {@link java.time.Instant}.</li>
  * <li>{@link ComparableAttribute} for entity attributes that represent other
- *     sortable and comparable values, such as
- *     {@code boolean}, {@link java.time.LocalDateTime}, and enumerations.</li>
+ *     sortable and comparable values, such as {@code boolean} and enumerations.
+ *     </li>
  * <li>{@link NavigableAttribute} for entity attributes that are embeddables
  *     or relations.</li>
  * <li>{@link BasicAttribute} for other types of entity attributes, such as
@@ -64,13 +67,13 @@ import jakarta.data.Sort;
  * <pre>
  * &#64;Entity
  * public class Person {
- *     &#64;Id
- *     public long ssn;
+ *     public LocalDate dateOfBirth;
  *
  *     &#64;Embedded
  *     public Name name;
  *
- *     public int yearOfBirth;
+ *     &#64;Id
+ *     public long ssn;
  * }
  *
  * &#64;Embeddable
@@ -85,22 +88,22 @@ import jakarta.data.Sort;
  * <pre>
  * &#64;StaticMetamodel(Person.class)
  * public interface _Person {
- *     String SSN = "ssn";
+ *     String DATEOFBIRTH = "dateOfBirth";
  *     String NAME = "name";
  *     String NAME_FIRST = "name.first";
  *     String NAME_LAST = "name.last";
- *     String YEAROFBIRTH = "yearOfBirth";
+ *     String SSN = "ssn";
  *
- *     NumericAttribute&lt;Person,Long&gt; ssn = NumericAttribute.of(
- *             Person.class, SSN, long.class);
+ *     TemporalAttribute&lt;Person,LocalDate&gt; dateOfBirth = TemporalAttribute.of(
+ *             Person.class, DATEOFBIRTH, LocalDate.class);
  *     NavigableAttribute&lt;Person,Name&gt; name = NavigableAttribute.of(
  *             Person.class, NAME, Name.class);
  *     TextAttribute&lt;Person&gt; name_first = TextAttribute.of(
  *             Person.class, NAME_FIRST);
  *     TextAttribute&lt;Person&gt; name_last = TextAttribute.of(
  *             Person.class, NAME_LAST);
- *     NumericAttribute&lt;Person,Integer&gt; yearOfBirth = NumericAttribute.of(
- *             Person.class, YEAROFBIRTH, int.class);
+ *     NumericAttribute&lt;Person,Long&gt; ssn = NumericAttribute.of(
+ *             Person.class, SSN, long.class);
  * }
  * </pre>
  *
@@ -108,7 +111,7 @@ import jakarta.data.Sort;
  *
  * <pre>
  * Order&lt;Person&gt; order =
- *         Order.by(_Person.yearOfBirth.desc(),
+ *         Order.by(_Person.dateOfBirth.desc(),
  *                  _Person.name_last.asc(),
  *                  _Person.name_first.asc(),
  *                  _Person.ssn.asc());

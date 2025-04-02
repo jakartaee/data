@@ -427,9 +427,10 @@ The following subinterfaces of `Attribute` are recommended to obtain the full be
 
 - `TextAttribute` for entity attributes that represent text, typically of type `String`.
 - `NumericAttribute` for entity attributes of numeric types, such as `long`, `Integer`, and `BigDecimal`.
-- `ComparableAttribute` for entity attributes that represent other comparable values, such as `boolean`, `java.time.Instant`, and enumerations.
-- `NavigableAttribute` for entity attributes that are embeddables or relations.
-- `BasicAttribute` for other types of entity attributes, such as collections, embeddables, and other relation attributes.
+- `TemporalAttribute` for entity attributes of temporal types, such as `LocalDateTime`, and `Instant`.
+- `ComparableAttribute` for entity attributes that represent other comparable values, such as `boolean` and enumerations.
+- `NavigableAttribute` for entity attributes that are embeddables or associations.
+- `BasicAttribute` for other types of entity attributes, such as collections.
 
 ==== Example metamodel class and usage
 
