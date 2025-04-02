@@ -17,8 +17,12 @@
  */
 package jakarta.data.metamodel;
 
+import jakarta.data.metamodel.expression.NumericCast;
 import jakarta.data.metamodel.expression.NumericFunctionExpression;
 import jakarta.data.metamodel.expression.NumericOperatorExpression;
+
+import java.math.BigDecimal;
+import java.math.BigInteger;
 
 import static jakarta.data.metamodel.expression.NumericFunctionExpression.ABS;
 import static jakarta.data.metamodel.expression.NumericFunctionExpression.NEG;
@@ -61,5 +65,18 @@ public interface NumericExpression<T, N extends Number & Comparable<N>>
     }
     default NumericExpression<T,N> divide(NumericExpression<T,N> other) {
         return NumericOperatorExpression.of(DIVIDE, this, other);
+    }
+
+    default NumericExpression<T,Long> asLong() {
+        return NumericCast.of(this, Long.class);
+    }
+    default NumericExpression<T,Double> asDouble() {
+        return NumericCast.of(this, Double.class);
+    }
+    default NumericExpression<T,BigInteger> asBigInteger() {
+        return NumericCast.of(this, BigInteger.class);
+    }
+    default NumericExpression<T,BigDecimal> asBigDecimal() {
+        return NumericCast.of(this, BigDecimal.class);
     }
 }
