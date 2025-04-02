@@ -23,7 +23,7 @@ import java.time.LocalDate;
 
 public interface CurrentDate<T> extends TemporalExpression<T,LocalDate> {
 
-    static <T> CurrentDate<T> of() {
+    static <T> CurrentDate<T> now() {
         return new CurrentDate<>() {};
     }
 }
