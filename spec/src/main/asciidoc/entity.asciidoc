@@ -12,7 +12,7 @@
 //
 // SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
 
-== Entity Classes
+== Entity classes
 
 The notion of an _entity_ is the fundamental building block with which a data model may be constructed.
 Abstractly, an entity (or _entity type_) is a schema for data.
@@ -38,7 +38,7 @@ In Jakarta Data, the concrete definition of an entity may be understood to encom
 
 NOTE: A Jakarta Data provider might allow the state of a single Jakarta Data entity to be stored across multiple entities in the data store. For example, in Jakarta Persistence, the `@SecondaryTable` annotation allows the state of an entity to be mapped across more than one database table.
 
-=== Programming Model for Entity Classes
+=== Programming model for entity classes
 
 A _programming model for entity classes_ specifies:
 
@@ -67,7 +67,7 @@ In a given entity programming model, entity classes might always be mutable, or 
 
 In either case, an entity programming model might place restrictions on the visibility of fields and property accessors of an entity class.
 
-==== Entity Inheritance
+==== Entity inheritance
 
 An entity programming model might support inheritance between entities.
 Two entities are related by inheritance if:
@@ -85,7 +85,7 @@ For example, in a relational datastore, all entities in the hierarchy might be s
 
 Support for entity inheritance is not required by this specification.
 
-==== Persistent Attributes
+==== Persistent attributes
 
 An attribute of an entity class may or may not represent state which is persistent in the datastore.
 A _persistent attribute_ has some corresponding representation in the data schema of the entity, for example, it might map to a column or columns in a relational database table.
@@ -111,7 +111,7 @@ Jakarta Data distinguishes three kinds of persistent attributes within entity cl
 - An _embedded attribute_ allows the inclusion of the state of a finer-grained Java class within the state of an entity. The type of an embedded attribute is often a user-written Java class. Support for embedded attributes varies depending on the Jakarta Data provider and the database type.
 - An _association attribute_ implements an association between entity types. Support for association attributes varies depending on the Jakarta Data provider and the database type.
 
-==== Basic Types
+==== Basic types
 
 Every Jakarta Data provider must support the following basic types within its programming model:
 
@@ -161,7 +161,7 @@ In addition to the types listed above, an entity programming model might support
 
 NOTE: Many key-value, wide-column, document, and relational databases feature native support for arrays or even associative arrays of these basic types. Unfortunately, the semantics of such types--along with their performance characteristics--are extremely nonuniform, and so support for such types is left undefined by the Jakarta Data specification.
 
-==== Embedded Attributes and Embeddable Classes
+==== Embedded attributes and embeddable classes
 
 An _embeddable class_ differs from an entity class in that:
 
@@ -268,7 +268,7 @@ create table Person (
 NOTE: Support for embeddable classes and embedded attributes is not required by this specification.
 However, every Jakarta Data provider is strongly encouraged to provide support for embeddable classes within its entity programming model.
 
-==== Entity Associations
+==== Entity associations
 
 An association attribute is an attribute of an entity class whose declared type is also an entity class.
 Given an instance of the first entity class, its association attribute holds a reference to an instance of a second entity class.
@@ -321,20 +321,20 @@ create table Book (
 
 NOTE: Support for entity associations is not required by this specification.
 
-=== Entity Names and Persistent Attribute Names
+=== Entity names and persistent attribute names
 
 Entities and their persistent attributes may be referenced by name in the query language defined in <<Jakarta Data Query Language>>.
 
-==== Entity Names
+==== Entity names
 
 Each entity must be assigned an _entity name_ by the provider.
 By default, this must be the unqualified Java class name of the entity class.
 A programming model for entity classes might provide a way to explicitly specify an entity name.
 For example, Jakarta Persistence allows the entity name to be specified via the `name` member of the `@Entity` annotation.
 
-==== Persistent Attribute Names
+==== Persistent attribute names
 
-Each persistent attribute of an entity, as defined above in <<Persistent Attributes>>, or of an embeddable class, as defined in <<Embedded Attributes and Embeddable Classes>>, must be assigned a name, allowing the persistent attribute to be referenced by an <<Parameter-based automatic query methods,automatic query method>>, a Query by Method Name, or from a query specified within the <<Annotated Query methods,`@Query` annotation>>.
+Each persistent attribute of an entity, as defined above in <<Persistent attributes>>, or of an embeddable class, as defined in <<Embedded attributes and embeddable classes>>, must be assigned a name, allowing the persistent attribute to be referenced by an <<Parameter-based automatic query methods,automatic query method>>, a Query by Method Name, or from a query specified within the <<Annotated query methods,`@Query` annotation>>.
 
 - when direct field access is used, the name of a persistent attribute is simply the name of the Java field, but
 - when property-based access is used, the name of the attribute is derived from the accessor methods.
@@ -378,7 +378,7 @@ NOTE: Application programmers are strongly encouraged to follow Java's camel cas
 
 
 
-=== Type-safe Access to Entity Attributes
+=== Type-safe access to entity attributes
 
 Jakarta Data provides a static metamodel that allows entity attributes to be accessed by applications in a type-safe manner.
 
@@ -391,7 +391,7 @@ For each entity class, the application developer or a compile-time annotation pr
 
 The application can use the field values of the metamodel class to obtain artifacts relating to the entity attribute in a type-safe manner, for example, `_Book.title.asc()` or `Sort.asc(_Book.title.name())` or `Sort.asc(_Book.TITLE)` rather than `Sort.asc("title")`.
 
-==== Application Requirements for a Metamodel Class
+==== Application requirements for a metamodel class
 
 When an application programmer writes a static metamodel class for an entity by hand:
 
@@ -402,17 +402,17 @@ The static metamodel class is not required to include a field for every persiste
 
 A convenience implementation of each subinterface of `Attribute` is provided by the `.of` method of each subinterface.
 
-==== Compile-time Annotation Processor Requirements for a Metamodel Class
+==== Compile-time annotation processor requirements for a metamodel class
 
 When an annotation processor generates a static metamodel class for an entity:
 
 - the metamodel class must be annotated with `jakarta.annotation.Generated`,
 - each field corresponding to a persistent attribute of an entity must have modifiers `public`, `static`, and either `final` or `volatile`,
-- the name of each field, ignoring case, must match the name of an entity attribute, according to the conventions specified below in <<Conventions for Metamodel Fields>>, and with the `_` character in the field name delimiting the attribute names of hierarchical structures or relationships, such as embedded classes.
+- the name of each field, ignoring case, must match the name of an entity attribute, according to the conventions specified below in <<Conventions for metamodel fields>>, and with the `_` character in the field name delimiting the attribute names of hierarchical structures or relationships, such as embedded classes.
 
 The fields may be statically initialized, or they may be initialized by the provider during system initialization.
 
-==== Conventions for Metamodel Fields
+==== Conventions for metamodel fields
 
 The following are conventions for static metamodel classes:
 
@@ -431,7 +431,7 @@ The following subinterfaces of `Attribute` are recommended to obtain the full be
 - `NavigableAttribute` for entity attributes that are embeddables or relations.
 - `BasicAttribute` for other types of entity attributes, such as collections, embeddables, and other relation attributes.
 
-==== Example Metamodel Class and Usage
+==== Example metamodel class and usage
 
 Example entity class:
 

@@ -12,7 +12,7 @@
 //
 // SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
 
-== Repository Interfaces
+== Repository interfaces
 
 A Jakarta Data repository is a Java interface annotated with `@Repository`.
 A repository interface may declare:
@@ -25,7 +25,7 @@ A concrete method may call other methods of the repository, including abstract m
 Every abstract method of the interface is usually either:
 
 - an entity instance <<Lifecycle methods,_lifecycle method_>>,
-- an <<Annotated Query methods,_annotated query method_>>,
+- an <<Annotated query methods,_annotated query method_>>,
 - an _automatic query method_ with <<Parameter-based automatic query methods,parameter-based conditions>> or defined using the Query by Method Name extension, or
 - a <<Resource accessor methods,_resource accessor method_>>.
 
@@ -194,7 +194,7 @@ Parameter names map parameters to persistent attributes. A repository with param
 - be compiled so that parameter names are preserved in the class file (for example, using `javac -parameters`), or
 - explicitly specify the name of the persistent attribute mapped by each parameter of an automatic query method using the `@By` annotation.
 
-The attribute name specified using `@By` may be a compound name, as specified below in <<Persistent Attribute Names>>.
+The attribute name specified using `@By` may be a compound name, as specified below in <<Persistent attribute names>>.
 
 This specification defines the built-in automatic query annotations `@Find` and `@Delete`. The semantics of these annotations are specified in their Javadoc. Note that `@Delete` is _both_ a lifecycle annotation _and_ an automatic query annotation. The signature of a repository method annotated `@Delete` must be used to disambiguate the interpretation of the `@Delete` annotation.
 
@@ -252,7 +252,7 @@ default void cleanup() {
 
 A repository may have at most one resource accessor method.
 
-=== Conflicting Repository Method Annotations
+=== Conflicting repository method annotations
 
 Annotations like `@Find`, `@Query`, `@Insert`, `@Update`, `@Delete`, and `@Save` are mutually-exclusive. A given method of a repository interface may have at most one:
 
@@ -265,9 +265,9 @@ If a method of a repository interface has more than one such annotation, the ann
 reject such a method declaration at compile time.
 
 
-=== Special Parameters for Limits, Sorting, and Pagination
+=== Special parameters for limits, sorting, and pagination
 
-An <<Annotated Query methods,annotated>>, <<Parameter-based automatic query methods,parameter-based>>, or Query by Method Name query method may have _special parameters_ of type `Limit`, `Order`, `Sort`, or `PageRequest` if the method return type indicates that the method may return multiple entities, that is, if the return type is:
+An <<Annotated query methods,annotated>>, <<Parameter-based automatic query methods,parameter-based>>, or Query by Method Name query method may have _special parameters_ of type `Limit`, `Order`, `Sort`, or `PageRequest` if the method return type indicates that the method may return multiple entities, that is, if the return type is:
 
 - an array type,
 - `List` or `Stream`, or
@@ -277,7 +277,7 @@ A special parameter controls which query results are returned to the caller of a
 
 - a `Limit` allows the query results to be limited to a given range defined in terms of an offset and maximum number of results,
 - a `Sort` or `Order` allows the query results to be sorted by a given entity attribute or list of attributes, respectively, and
-- a `PageRequest` splits results into pages. A parameter of this type must be declared when the repository method returns a `Page` of results, as specified below in <<Offset-based Pagination>>, or a `CursoredPage`, as specified in <<Cursor-based Pagination>>.
+- a `PageRequest` splits results into pages. A parameter of this type must be declared when the repository method returns a `Page` of results, as specified below in <<Offset-based pagination>>, or a `CursoredPage`, as specified in <<Cursor-based pagination>>.
 
 A repository method must throw `UnsupportedOperationException` if it has:
 
@@ -315,7 +315,7 @@ An instance of `Sort` may be obtained by specifying an entity attribute name:
 Sort nameAscending = Sort.asc("name");
 ----
 
-Even better, the <<Type-safe Access to Entity Attributes,static metamodel>> may be used to obtain an instance of `Sort` in a typesafe way:
+Even better, the <<Type-safe access to entity attributes,static metamodel>> may be used to obtain an instance of `Sort` in a typesafe way:
 
 [source,java]
 ----
@@ -332,25 +332,25 @@ List<Product> first20 = products.findByName(name, pageRequest,
                                      _Product.id.asc()));
 ----
 
-=== Precedence of Sort Criteria
+=== Precedence of sort criteria
 
 The specification defines different ways of providing sort criteria on queries. This section discusses how these different mechanisms relate to each other.
 
-==== Sort Criteria within Query Language
+==== Sort criteria within query language
 
 Sort criteria can be hard-coded directly within query language by making use of the `@Query` annotation. A repository method that is annotated with `@Query` with a value that contains an `ORDER BY` clause (or query language equivalent) must not provide sort criteria via the other mechanisms.
 
 A repository method that is annotated with `@Query` with a value that does not contain an `ORDER BY` clause and ends with a `WHERE` clause (or query language equivalents to these) can use other mechanisms that are defined by this specification for providing sort criteria.
 
-==== Static Mechanisms for Sort Criteria
+==== Static mechanisms for sort criteria
 
 Sort criteria are provided statically for a repository method by using the `OrderBy` keyword or by annotating the method with one or more `@OrderBy` annotations. The `OrderBy` keyword cannot be intermixed with the `@OrderBy` annotation or the `@Query` annotation. Static sort criteria takes precedence over dynamic sort criteria in that static sort criteria are evaluated first. When static sort criteria sorts entities to the same position, dynamic sort criteria are applied to further order those entities.
 
-==== Dynamic Mechanisms for Sort Criteria
+==== Dynamic mechanisms for sort criteria
 
 Sort criteria are provided dynamically to repository methods either via `Sort` parameters or via a `Order` parameter that has one or more `Sort` values.
 
-==== Examples of Sort Criteria Precedence
+==== Examples of sort criteria precedence
 
 In the following examples, the query results are sorted by `age`, using the dynamic sorting criteria passed to the `sorts` parameter to break ties between records with the same `age`.
 
@@ -386,7 +386,7 @@ The critical differences between offset-based and cursor-based pagination lie in
 - Offset-based pagination uses a fixed page size and retrieves data based on page number and size.
 - Cursor-based pagination relies on a unique key or unique combination of values (the key) for an entity relative to which it determines the next page or previous page.
 
-==== Offset-based Pagination
+==== Offset-based pagination
 
 Offset pagination is a popular method for managing and retrieving large datasets efficiently. It is based on dividing the dataset into pages containing a specified number of elements. This method allows developers to retrieve a subset of the dataset by identifying the page number and the maximum number of elements per page.
 
@@ -394,15 +394,15 @@ Offset pagination is motivated by the need to provide efficient navigation throu
 
 Offset pagination offers several key features that make it a valuable approach for managing and retrieving large datasets in a controlled and efficient manner:
 
-- *Page Size*: The maximum number of elements to be included in each page is known as the page size. This parameter determines the subset of data retrieved with each pagination request.
+- _Page size:_ The maximum number of elements to be included in each page is known as the page size. This parameter determines the subset of data retrieved with each pagination request.
 
-- *Page Number*: The page number indicates which subset of the dataset to retrieve. It typically starts from 1, representing the first page, and increments with each subsequent page.
+- _Page number:_ The page number indicates which subset of the dataset to retrieve. It typically starts from 1, representing the first page, and increments with each subsequent page.
 
-- *Efficient Navigation*: Offset pagination allows efficient dataset navigation. By specifying the desired page and page size, developers can control the data retrieved, optimizing memory usage and processing time.
+- _Efficient navigation:_ Offset pagination allows efficient dataset navigation. By specifying the desired page and page size, developers can control the data retrieved, optimizing memory usage and processing time.
 
-- *Sequential Order*: Elements are retrieved sequentially based on predefined criteria, such as ascending or descending order of a specific attribute, like an ID.
+- _Sequential order:_ Elements are retrieved sequentially based on predefined criteria, such as ascending or descending order of a specific attribute, like an ID.
 
-===== Requirements when using Offset Pagination
+===== Requirements when using offset pagination
 
 The following requirements must be met when using offset-based pagination:
 
@@ -415,7 +415,7 @@ The following requirements must be met when using offset-based pagination:
 * Except for the highest numbered page, the Jakarta Data provider must return full pages consisting of the maximum page size number of entities.
 * Page numbers for offset pagination are computed by taking the entity's 1-based offset after sorting, dividing it by the maximum page size, and rounding up. For example, the 52nd entity is on page 6 when the maximum page size is 10, because 52 / 10 rounded up is 6. Note that the first page number is always 1.
 
-===== Scenario: Person Entity and People Repository
+===== Scenario: Person entity and People repository
 
 Consider a scenario with a `Person` entity and a corresponding `People` repository:
 
@@ -504,7 +504,7 @@ In this scenario, each page represents a subset of the dataset, and developers c
 
 Offset pagination is a valuable tool for Java developers when dealing with large datasets, providing control, efficiency, and a seamless user experience.
 
-==== Cursor-based Pagination
+==== Cursor-based pagination
 
 Cursor-based pagination aims to reduce missed and duplicate results across pages by querying relative to the observed values of entity attributes that constitute the sorting criteria. Cursor-based pagination can also offer an improvement in performance because it avoids fetching and ordering results from prior pages by causing those results to be non-matching. A Jakarta Data provider appends additional conditions to the query and tracks cursor-based values automatically when `CursoredPage` is used as the repository method return type. The application invokes `nextPageRequest` or `previousPageRequest` on the `CursoredPage` to obtain a `PageRequest` which keeps track of the cursor-based values.
 
@@ -555,7 +555,7 @@ The sort criteria for a repository method that performs cursor-based pagination 
 
 The values of the entity attributes of the combined sort criteria define the cursor for cursor-based cursor based pagination. Within the cursor, each entity attribute has the same sorting and order of precedence that it has within the combined sort criteria.
 
-===== Example of Appending to Queries for Cursor-based Pagination
+===== Example of appending to queries for cursor-based pagination
 
 Without cursor-based pagination, a Jakarta Data provider that is based on Jakarta Persistence might compose the following JPQL for the `findByZipcode()` repository method from the prior example:
 
@@ -580,13 +580,13 @@ WHERE (zipCode = ?1)
 ORDER BY lastName ASC, firstName ASC, id ASC
 ----
 
-===== Avoiding Missed and Duplicate Results
+===== Avoiding missed and duplicate results
 
 Because searching for the next page of results is relative to a last known position, it is possible with cursor-based pagination to allow some types of updates to data while pages are being traversed without causing missed results or duplicates to appear. If you add entities to a prior position in the traversal of pages, the shift forward of numerical position of existing entities will not cause duplicates entities to appear in your continued traversal of subsequent pages because cursor-based pagination does not query based on a numerical position. If you remove entities from a prior position in the traversal of pages, the shift backward of numerical position of existing entities will not cause missed entities in your continued traversal of subsequent pages because keyset pagination does not query based on a numerical position.
 
 Other types of updates to data, however, will cause duplicate or missed results. If you modify entity attributes which are used as the sort criteria, cursor-based pagination cannot prevent the same entity from appearing again or never appearing due to the altered values. If you add an entity that you previously removed, whether with different values or the same values, cursor-based pagination cannot prevent the entity from being missed or possibly appearing a second time due to its changed values.
 
-===== Restrictions on use of Cursor-based Pagination
+===== Restrictions on use of cursor-based pagination
 
 * The repository method signature must return `CursoredPage`. A repository method with return type of `CursoredPage` must raise `UnsupportedOperationException` if the database is incapable of cursor-based pagination.
 * The contents of the `CursoredPage` returned by the repository method must be entities, not entity attributes, records containing a subset of entity attributes, or any other values that are not the entity itself.
@@ -599,7 +599,7 @@ Other types of updates to data, however, will cause duplicate or missed results.
 * A next or previous page can end up being empty. You cannot obtain a next or previous `PageRequest` from an empty page because there are no key values relative to which to query.
 * A repository method that is annotated with `@Query` and performs cursor-based pagination must omit the `ORDER BY` clause from the provided query and instead must supply the sort criteria via `@OrderBy` annotations or `Sort` criteria of `PageRequest`. The provided query must end with a `WHERE` clause to which additional conditions can be appended by the Jakarta Data provider. The Jakarta Data provider is not expected to parse query text that is provided by the application.
 
-===== Cursor-based Pagination Example with Sorts
+===== Cursor-based pagination example with sorts
 
 Here is an example where an application uses `@Query` to provide a partial query to which the Jakarta Data provider can generate and append additional query conditions and an `ORDER BY` clause.
 
@@ -633,7 +633,7 @@ do {
 while (page.hasNext());
 ----
 
-===== Example with Before/After Cursor
+===== Example with before/after cursor
 
 In this example, the application uses a cursor to request pages in forward and previous direction from a specific value, which is the price for a matching product.
 
@@ -676,7 +676,7 @@ CursoredPage<Product> lessExpensive =
         products.findByNameLike(pattern, pageRequest, order);
 ----
 
-===== Example with Combined Sort Criteria
+===== Example with combined sort criteria
 
 In this example, the application uses `OrderBy` to define a subset of the sort criteria during development time, but also uses `Sort` to dynamically determine more fine-grained sorting when all of the static sort criteria matches. In this case the repository query is written to always order `Car` entities with a vehicle condition of `VehicleCondition.NEW` ahead of those with `VehicleCondition.USED`.
 
@@ -808,13 +808,13 @@ Resulting Page Content:
 
 It should be noted, the above result is different than what would be retrieved with offset-based pagination, where the removal of an entity from the first page shifts the offset for entries 5 through 8 to start from `{"id":9, "name":"Harlene Branigan"}`, skipping over `{"id":8, "name":"Danita Pilipyak"}` that becomes offset position 4 after the removal. Cursor-based pagination does not skip the entity because it queries relative to a cursor position, starting from the next entity after `{"id":2, "name":"Corri Davidou"}`.
 
-=== Precedence of Repository Methods
+=== Precedence of repository methods
 
 The following order, with the lower number having higher precedence, is used when interpreting the meaning of repository methods.
 
 1. If the method is a Java `default` method, then its provided implementation is used.
 2. If the method has a <<Resource accessor methods,_resource accessor method_>> return type recognized by the Jakarta Data provider, then the method is implemented as a resource accessor method.
-3. If the method is annotated with a <<Annotated Query methods,query annotation>> recognized by the Jakarta Data provider, such as `@Query`, then the method is implemented to execute the query specified by the query annotation.
+3. If the method is annotated with a <<Annotated query methods,query annotation>> recognized by the Jakarta Data provider, such as `@Query`, then the method is implemented to execute the query specified by the query annotation.
 4. If the method is annotated with an <<Parameter-based automatic query methods,automatic query annotation>>, such as `@Find`, or with a <<Lifecycle methods,lifecycle annotation>> declaring the type of operation, for example, with `@Insert`, `@Update`, `@Save`, or `@Delete`, and the provider recognizes the annotation, then the annotation determines how the method is implemented, possibly with the help of other annotations present on the method parameters, for example, any `@By` annotations of the parameters.
 5. If the method is named according to the conventions of _Query by Method Name_, then the method is implemented according to the Query by Method Name extension to this specification.
 
