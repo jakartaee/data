@@ -29,18 +29,16 @@ import jakarta.data.metamodel.expression.CurrentTime;
 public interface TemporalExpression<T, V extends Temporal & Comparable<? extends Temporal>>
         extends ComparableExpression<T, V> {
 
-    // TODO How much does it matter to be able to supply the entity class?
-    // For now, I included it in one place (here) and not in the other (.of)
-    static <T> TemporalExpression<T, LocalDate> currentDate(Class<T> entityClass) {
-        return CurrentDate.of();
+    static <T> TemporalExpression<T, LocalDate> currentDate() {
+        return CurrentDate.now();
     }
 
-    static <T> TemporalExpression<T, LocalDateTime> currentDateTime(Class<T> entityClass) {
-        return CurrentDateTime.of();
+    static <T> TemporalExpression<T, LocalDateTime> currentDateTime() {
+        return CurrentDateTime.now();
     }
 
-    static <T> TemporalExpression<T, LocalTime> currentTime(Class<T> entityClass) {
-        return CurrentTime.of();
+    static <T> TemporalExpression<T, LocalTime> currentTime() {
+        return CurrentTime.now();
     }
 
     // TODO add methods to obtain the year, month, day, hour, and so forth
