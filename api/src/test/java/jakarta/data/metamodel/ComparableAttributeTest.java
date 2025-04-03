@@ -29,7 +29,7 @@ import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
 
 
-class SortableAttributeTest {
+class ComparableAttributeTest {
     // Mock entity class for tests
     static class Person {
         String firstName;
@@ -38,7 +38,6 @@ class SortableAttributeTest {
         int testAttribute;
     }
 
-    //it ignores the implementation of the SortableAttribute interface and uses an anonymous class to test the methods
     private final ComparableAttribute<Person, Integer> testAttribute =
             ComparableAttribute.of(Person.class, "testAttribute", Integer.class);
 
