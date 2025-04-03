@@ -69,11 +69,12 @@ class RestrictTest {
 
     @Test
     void shouldCreateEqualToRestriction() {
+        @SuppressWarnings("unchecked")
         BasicRestriction<Employee, Integer> restriction =
                 (BasicRestriction<Employee, Integer>) _Employee.yearHired.equalTo(2020);
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(restriction.attribute()).isEqualTo("yearHired");
+            soft.assertThat(restriction.expression()).isEqualTo(_Employee.yearHired);
             soft.assertThat(restriction.constraint()).isInstanceOf(EqualTo.class);
             soft.assertThat(restriction.constraint()).isEqualTo(Constraint.equalTo(2020));
         });
@@ -81,11 +82,12 @@ class RestrictTest {
 
     @Test
     void shouldCreateNotEqualToRestriction() {
+        @SuppressWarnings("unchecked")
         BasicRestriction<Employee, Integer> restriction =
                 (BasicRestriction<Employee, Integer>) _Employee.badgeNum.notEqualTo(0);
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(restriction.attribute()).isEqualTo("badgeNum");
+            soft.assertThat(restriction.expression()).isEqualTo(_Employee.badgeNum);
             soft.assertThat(restriction.constraint()).isInstanceOf(NotEqualTo.class);
             soft.assertThat(restriction.constraint()).isEqualTo(NotEqualTo.value(0));
         });
@@ -93,11 +95,12 @@ class RestrictTest {
 
     @Test
     void shouldCreateEqualToStringRestriction() {
+        @SuppressWarnings("unchecked")
         BasicRestriction<Employee,String> restriction =
                 (BasicRestriction<Employee, String>) _Employee.position.equalTo("Software Engineer");
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(restriction.attribute()).isEqualTo("position");
+            soft.assertThat(restriction.expression()).isEqualTo(_Employee.position);
             soft.assertThat(restriction.constraint()).isInstanceOf(EqualTo.class);
             soft.assertThat(restriction.constraint()).isEqualTo(EqualTo.value("Software Engineer"));
         });
@@ -105,11 +108,12 @@ class RestrictTest {
 
     @Test
     void shouldCreateNotEqualToStringRestriction() {
+        @SuppressWarnings("unchecked")
         BasicRestriction<Employee,String> restriction =
                 (BasicRestriction<Employee, String>) _Employee.position.notEqualTo("Manager");
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(restriction.attribute()).isEqualTo("position");
+            soft.assertThat(restriction.expression()).isEqualTo(_Employee.position);
             soft.assertThat(restriction.constraint()).isInstanceOf(NotEqualTo.class);
             soft.assertThat(restriction.constraint()).isEqualTo(NotEqualTo.value("Manager"));
         });
@@ -134,11 +138,12 @@ class RestrictTest {
 
     @Test
     void shouldCreateContainsRestriction() {
+        @SuppressWarnings("unchecked")
         BasicRestriction<Employee,String> restriction =
                 (BasicRestriction<Employee, String>) _Employee.position.contains("Manager");
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(restriction.attribute()).isEqualTo("position");
+            soft.assertThat(restriction.expression()).isEqualTo(_Employee.position);
             soft.assertThat(restriction.constraint()).isInstanceOf(Like.class);
             soft.assertThat(((Like) restriction.constraint()).pattern()).isEqualTo("%Manager%");
         });
@@ -146,11 +151,12 @@ class RestrictTest {
 
     @Test
     void shouldCreateNegatedContainsRestriction() {
+        @SuppressWarnings("unchecked")
         BasicRestriction<Employee,String> restriction =
                 (BasicRestriction<Employee, String>) _Employee.position.notContains("Director");
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(restriction.attribute()).isEqualTo("position");
+            soft.assertThat(restriction.expression()).isEqualTo(_Employee.position);
             soft.assertThat(restriction.constraint()).isInstanceOf(NotLike.class);
             soft.assertThat(((NotLike) restriction.constraint()).pattern()).isEqualTo("%Director%");
         });
@@ -158,11 +164,12 @@ class RestrictTest {
 
     @Test
     void shouldCreateStartsWithRestriction() {
+        @SuppressWarnings("unchecked")
         BasicRestriction<Employee,String> restriction =
                 (BasicRestriction<Employee, String>) _Employee.position.startsWith("Director");
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(restriction.attribute()).isEqualTo("position");
+            soft.assertThat(restriction.expression()).isEqualTo(_Employee.position);
             soft.assertThat(restriction.constraint()).isInstanceOf(Like.class);
             soft.assertThat(((Like) restriction.constraint()).pattern()).isEqualTo("Director%");
         });
@@ -170,11 +177,12 @@ class RestrictTest {
 
     @Test
     void shouldCreateNegatedStartsWithRestriction() {
+        @SuppressWarnings("unchecked")
         BasicRestriction<Employee,String> restriction =
                 (BasicRestriction<Employee, String>) _Employee.position.notStartsWith("Manager");
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(restriction.attribute()).isEqualTo("position");
+            soft.assertThat(restriction.expression()).isEqualTo(_Employee.position);
             soft.assertThat(restriction.constraint()).isInstanceOf(NotLike.class);
             soft.assertThat(((NotLike) restriction.constraint()).pattern()).isEqualTo("Manager%");
         });
@@ -182,11 +190,12 @@ class RestrictTest {
 
     @Test
     void shouldCreateEndsWithRestriction() {
+        @SuppressWarnings("unchecked")
         BasicRestriction<Employee,String> restriction =
                 (BasicRestriction<Employee,String>) _Employee.position.endsWith("Manager");
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(restriction.attribute()).isEqualTo("position");
+            soft.assertThat(restriction.expression()).isEqualTo(_Employee.position);
             soft.assertThat(restriction.constraint()).isInstanceOf(Like.class);
             soft.assertThat(((Like) restriction.constraint()).pattern()).isEqualTo("%Manager");
         });
@@ -194,11 +203,12 @@ class RestrictTest {
 
     @Test
     void shouldCreateNegatedEndsWithRestriction() {
+        @SuppressWarnings("unchecked")
         BasicRestriction<Employee,String> restriction =
                 (BasicRestriction<Employee, String>) _Employee.position.notEndsWith("Supervisor");
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(restriction.attribute()).isEqualTo("position");
+            soft.assertThat(restriction.expression()).isEqualTo(_Employee.position);
             soft.assertThat(restriction.constraint()).isInstanceOf(NotLike.class);
             soft.assertThat(((NotLike) restriction.constraint()).pattern()).isEqualTo("%Supervisor");
         });
@@ -239,7 +249,9 @@ class RestrictTest {
 
     @Test
     void shouldEscapeToLikePatternCorrectly() {
-        Like like = (Like) ((BasicRestriction<Employee,String>) _Employee.position.endsWith("test_value")).constraint();
+        @SuppressWarnings("unchecked")
+        Like like = (Like) ((BasicRestriction<Employee,String>)
+                _Employee.position.endsWith("test_value")).constraint();
         String result = like.pattern();
 
         assertThat(result).isEqualTo("%test\\_value");
@@ -248,12 +260,13 @@ class RestrictTest {
     @Test
     void shouldIgnoreCase() {
         // TODO TextRestriction.ignoreCase vs TextAttribute.upper/lowercased
+        @SuppressWarnings("unchecked")
         BasicRestriction<Employee,String> restriction =
                 (BasicRestriction<Employee, String>) _Employee.position.contains("SOFTWARE");
         //        .ignoreCase();
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(restriction.attribute()).isEqualTo(_Employee.POSITION);
+            soft.assertThat(restriction.expression()).isEqualTo(_Employee.position);
             //soft.assertThat(restriction.isCaseSensitive()).isFalse();
             soft.assertThat(restriction.constraint()).isEqualTo(Like.substring("SOFTWARE"));
         });
