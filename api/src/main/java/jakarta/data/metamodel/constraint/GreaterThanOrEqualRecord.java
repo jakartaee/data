@@ -34,15 +34,4 @@ record GreaterThanOrEqualRecord<T extends Comparable<?>>(T bound)
     public String toString() {
         return ">= " + bound.toString();
     }
-
-    @Override
-    public boolean equals(Object obj) {
-        return obj instanceof GreaterThanOrEqualRecord<?> that
-            && bound.equals(that.bound);
-    }
-
-    @Override
-    public int hashCode() {
-        return bound.hashCode();
-    }
 }

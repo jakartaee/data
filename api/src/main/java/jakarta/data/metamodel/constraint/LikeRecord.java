@@ -100,16 +100,4 @@ record LikeRecord(String pattern, Character escape)
         }
         return result.toString();
     }
-
-    @Override
-    public boolean equals(Object obj) {
-        return obj instanceof LikeRecord that
-            && pattern.equals(that.pattern)
-            && Objects.equals(escape, that.escape);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(pattern, escape);
-    }
 }

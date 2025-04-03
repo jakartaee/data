@@ -33,15 +33,4 @@ record EqualToRecord<T>(T value) implements EqualTo<T> {
     public String toString() {
         return value instanceof String ? "= '" + value + "'" : "= " + value.toString();
     }
-
-    @Override
-    public boolean equals(Object obj) {
-        return obj instanceof EqualToRecord<?> that
-            && value.equals(that.value);
-    }
-
-    @Override
-    public int hashCode() {
-        return value.hashCode();
-    }
 }
