@@ -32,18 +32,6 @@ record BetweenRecord<T extends Comparable<?>>(T lowerBound, T upperBound)
     }
 
     @Override
-    public boolean equals(Object obj) {
-        return obj instanceof BetweenRecord<?> that
-            && lowerBound.equals(that.lowerBound)
-            && upperBound.equals(that.upperBound);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(lowerBound, upperBound);
-    }
-
-    @Override
     public NotBetween<T> negate() {
         return NotBetween.bounds(lowerBound, upperBound);
     }

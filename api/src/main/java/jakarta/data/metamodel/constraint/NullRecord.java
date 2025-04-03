@@ -21,16 +21,6 @@ record NullRecord<T>() implements Null<T> {
     static final NullRecord<?> INSTANCE = new NullRecord<>();
 
     @Override
-    public boolean equals(Object obj) {
-        return obj instanceof NullRecord;
-    }
-
-    @Override
-    public int hashCode() {
-        return 0;
-    }
-
-    @Override
     public NotNull<T> negate() {
         return NotNull.instance();
     }

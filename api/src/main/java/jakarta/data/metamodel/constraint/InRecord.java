@@ -30,17 +30,6 @@ record InRecord<T>(Set<T> values) implements In<T> {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        return obj instanceof InRecord<?> that
-            && values.equals(that.values);
-    }
-
-    @Override
-    public int hashCode() {
-        return values.hashCode();
-    }
-
-    @Override
     public NotIn<T> negate() {
         return NotIn.values(values);
     }
