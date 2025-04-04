@@ -36,11 +36,6 @@ record BasicRestrictionRecord<T, V>(Expression<T,V> expression, Constraint<V> co
     }
 
     @Override
-    public String attribute() {
-        return expression instanceof Attribute<?> att ? att.name() : null;
-    }
-
-    @Override
     public BasicRestriction<T, V> negate() {
         return BasicRestriction.of(expression, constraint.negate());
     }

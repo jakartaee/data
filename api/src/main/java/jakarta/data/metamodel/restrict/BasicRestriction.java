@@ -21,7 +21,6 @@ import jakarta.data.metamodel.Expression;
 import jakarta.data.metamodel.constraint.Constraint;
 
 public interface BasicRestriction<T, V> extends Restriction<T> {
-    String attribute();
 
     @Override
     BasicRestriction<T, V> negate();

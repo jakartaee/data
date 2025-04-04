@@ -78,9 +78,6 @@ class ExpressionTest {
             (NumericLiteral<Book, Integer>) leftArgs.get(1);
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(restriction.attribute())
-                .isNull(); // restriction on an expression that is not an attribute
-
             soft.assertThat(leftExpression.name())
                 .isEqualTo(TextFunctionExpression.LEFT);
 
@@ -122,9 +119,6 @@ class ExpressionTest {
             (NumericFunctionExpression<Book, Integer>) restriction.expression();
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(restriction.attribute())
-                .isNull(); // restriction on an expression that is not an attribute
-
             soft.assertThat(lengthExpression.name())
                 .isEqualTo(NumericFunctionExpression.LENGTH);
 

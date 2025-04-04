@@ -34,13 +34,14 @@ class TextRestrictionRecordTest {
 
     @Test
     void shouldCreateTextRestrictionWithDefaultValues() {
+        @SuppressWarnings("unchecked")
         BasicRestriction<Book,String> restriction =
                 (BasicRestriction<Book, String>) _Book.title.like("%Java%");
 
         Like constraint = (Like) restriction.constraint();
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(restriction.attribute()).isEqualTo("title");
+            soft.assertThat(restriction.expression()).isEqualTo(_Book.title);
             // TODO TextRestriction.ignoreCase vs TextAttribute.upper/lowercased
             //soft.assertThat(restriction.isCaseSensitive()).isTrue();
             soft.assertThat(constraint.pattern()).isEqualTo("%Java%");
@@ -50,13 +51,14 @@ class TextRestrictionRecordTest {
 
     @Test
     void shouldCreateTextRestrictionWithExplicitNegation() {
+        @SuppressWarnings("unchecked")
         BasicRestriction<Book,String> restriction =
                 (BasicRestriction<Book, String>) _Book.title.like("%Java%").negate();
 
         NotLike constraint = (NotLike) restriction.constraint();
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(restriction.attribute()).isEqualTo("title");
+            soft.assertThat(restriction.expression()).isEqualTo(_Book.title);
             // TODO TextRestriction.ignoreCase vs TextAttribute.upper/lowercased
             //soft.assertThat(restriction.isCaseSensitive()).isTrue();
             soft.assertThat(constraint.pattern()).isEqualTo("%Java%");
@@ -66,6 +68,7 @@ class TextRestrictionRecordTest {
 
     @Test
     void shouldIgnoreCaseForTextRestriction() {
+        @SuppressWarnings("unchecked")
         BasicRestriction<Book,String> restriction =
                 (BasicRestriction<Book, String>) _Book.title.like("%Java%");
 
@@ -74,7 +77,7 @@ class TextRestrictionRecordTest {
         Like constraint = (Like) restriction.constraint();
 
         SoftAssertions.assertSoftly(soft -> {
-        //    soft.assertThat(caseInsensitiveRestriction.attribute()).isEqualTo("title");
+        //    soft.assertThat(caseInsensitiveRestriction.expression()).isEqualTo(_Book.title);
         //    soft.assertThat(caseInsensitiveRestriction.isCaseSensitive()).isFalse();
             soft.assertThat(constraint.pattern()).isEqualTo("%Java%");
             soft.assertThat(constraint.escape()).isNull();
@@ -83,13 +86,14 @@ class TextRestrictionRecordTest {
 
     @Test
     void shouldCreateTextRestrictionWithEscapedValue() {
+        @SuppressWarnings("unchecked")
         BasicRestriction<Book,String> restriction =
                 (BasicRestriction<Book, String>) _Book.title.like("%Java%");
 
         Like constraint = (Like) restriction.constraint();
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(restriction.attribute()).isEqualTo("title");
+            soft.assertThat(restriction.expression()).isEqualTo(_Book.title);
             // TODO TextRestriction.ignoreCase vs TextAttribute.upper/lowercased
             //soft.assertThat(restriction.isCaseSensitive()).isTrue();
             soft.assertThat(constraint.pattern()).isEqualTo("%Java%");
@@ -99,13 +103,14 @@ class TextRestrictionRecordTest {
 
     @Test
     void shouldCreateTextRestrictionWithCustomWildcards() {
+        @SuppressWarnings("unchecked")
         BasicRestriction<Book,String> restriction =
                 (BasicRestriction<Book, String>) _Book.title.like("*Java??", '?', '*', '$');
 
         Like constraint = (Like) restriction.constraint();
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(restriction.attribute()).isEqualTo("title");
+            soft.assertThat(restriction.expression()).isEqualTo(_Book.title);
             // TODO TextRestriction.ignoreCase vs TextAttribute.upper/lowercased
             //soft.assertThat(restriction.isCaseSensitive()).isTrue();
             soft.assertThat(constraint.pattern()).isEqualTo("%Java__");
@@ -115,6 +120,7 @@ class TextRestrictionRecordTest {
 
     @Test
     void shouldNegateLikeRestriction() {
+        @SuppressWarnings("unchecked")
         BasicRestriction<Book,String> likeJakartaEE =
                 (BasicRestriction<Book, String>) _Book.title.endsWith("Jakarta EE");
         BasicRestriction<Book,String> notLikeJakartaEE = likeJakartaEE.negate();
@@ -132,6 +138,7 @@ class TextRestrictionRecordTest {
 
     @Test
     void shouldNegateNegatedRestriction() {
+        @SuppressWarnings("unchecked")
         BasicRestriction<Book,String> endsWithJakartaEE =
                 (BasicRestriction<Book, String>) _Book.title.endsWith("Jakarta EE");
         BasicRestriction<Book,String> notEndsWithJakartaEE = endsWithJakartaEE.negate();
@@ -154,8 +161,10 @@ class TextRestrictionRecordTest {
 
     @Test
     void shouldOutputToString() {
+        @SuppressWarnings("unchecked")
         BasicRestriction<Book,String> titleRestriction =
                 (BasicRestriction<Book, String>) _Book.title.contains("Jakarta Data");
+        @SuppressWarnings("unchecked")
         BasicRestriction<Book,String> authorRestriction =
                 (BasicRestriction<Book, String>) _Book.author.equalTo("Myself")
                 // TODO TextRestriction.ignoreCase vs TextAttribute.upper/lowercased
@@ -174,13 +183,14 @@ class TextRestrictionRecordTest {
 
     @Test
     void shouldSupportNegationForTextRestriction() {
+        @SuppressWarnings("unchecked")
         BasicRestriction<Book,String> restriction =
                 (BasicRestriction<Book, String>) _Book.author.equalTo("John Doe").negate();
 
         NotEqualTo<String> constraint = (NotEqualTo<String>) restriction.constraint();
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(restriction.attribute()).isEqualTo("author");
+            soft.assertThat(restriction.expression()).isEqualTo(_Book.author);
             // TODO TextRestriction.ignoreCase vs TextAttribute.upper/lowercased
             //soft.assertThat(restriction.isCaseSensitive()).isTrue();
             soft.assertThat(constraint.value()).isEqualTo("John Doe");
