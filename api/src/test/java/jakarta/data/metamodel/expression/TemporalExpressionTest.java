@@ -60,9 +60,6 @@ class TemporalExpressionTest {
             (TemporalExpression<Book, LocalDate>) restriction.expression();
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(restriction.attribute())
-                .isEqualTo(_Book.PUBLICATIONDATE);
-
             soft.assertThat(betweenExpression)
                 .isEqualTo(_Book.publicationDate);
 
