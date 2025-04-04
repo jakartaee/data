@@ -67,11 +67,11 @@ public interface Expression<T,V> {
 
     // Leave for later, since we need a new kind of Restriction for these
 
-//    default Restriction<T> equalTo(Expression<T,V> expression) {
+//    default Restriction<T> equalTo(Expression<? super T,V> expression) {
 //        throw new UnsupportedOperationException("not yet implemented");
 //    }
 //
-//    default Restriction<T> notEqualTo(Expression<T,V> expression) {
+//    default Restriction<T> notEqualTo(Expression<? super T,V> expression) {
 //        throw new UnsupportedOperationException("not yet implemented");
 //    }
 }

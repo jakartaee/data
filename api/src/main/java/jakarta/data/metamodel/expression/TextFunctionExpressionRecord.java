@@ -21,6 +21,6 @@ import jakarta.data.metamodel.Expression;
 
 import java.util.List;
 
-record TextFunctionExpressionRecord<T>(String name, List<? extends Expression<T,?>> arguments)
+record TextFunctionExpressionRecord<T>(String name, List<? extends Expression<? super T,?>> arguments)
         implements TextFunctionExpression<T> {
 }

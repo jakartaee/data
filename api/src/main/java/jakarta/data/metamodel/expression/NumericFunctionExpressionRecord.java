@@ -22,6 +22,6 @@ import jakarta.data.metamodel.Expression;
 import java.util.List;
 
 record NumericFunctionExpressionRecord<T, N extends Number & Comparable<N>>
-        (String name, List<Expression<T,?>> arguments)
+        (String name, List<Expression<? super T,?>> arguments)
         implements NumericFunctionExpression<T,N> {
 }

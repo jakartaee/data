@@ -40,10 +40,10 @@ public interface TextExpression<T> extends ComparableExpression<T,String> {
         return TextFunctionExpression.of(CONCAT, this, string);
     }
 
-    default TextExpression<T> prepend(TextExpression<T> string) {
+    default TextExpression<T> prepend(TextExpression<? super T> string) {
         return TextFunctionExpression.of(CONCAT, string, this);
     }
-    default TextExpression<T> append(TextExpression<T> string) {
+    default TextExpression<T> append(TextExpression<? super T> string) {
         return TextFunctionExpression.of(CONCAT, string, this);
     }
 
