@@ -30,19 +30,19 @@ public interface TextFunctionExpression<T>
     String LEFT = "left";
     String RIGHT = "right";
 
-    static <T> TextFunctionExpression<T> of(String name, TextExpression<T> argument) {
+    static <T> TextFunctionExpression<T> of(String name, TextExpression<? super T> argument) {
         return new TextFunctionExpressionRecord<>(name, List.of(argument));
     }
-    static <T> TextFunctionExpression<T> of(String name, TextExpression<T> left, String right) {
+    static <T> TextFunctionExpression<T> of(String name, TextExpression<? super T> left, String right) {
         return new TextFunctionExpressionRecord<>(name, List.of(left, StringLiteral.of(right)));
     }
-    static <T> TextFunctionExpression<T> of(String name, String left, TextExpression<T> right) {
+    static <T> TextFunctionExpression<T> of(String name, String left, TextExpression<? super T> right) {
         return new TextFunctionExpressionRecord<>(name, List.of(StringLiteral.of(left), right));
     }
-    static <T> TextFunctionExpression<T> of(String name, TextExpression<T> left, TextExpression<T> right) {
+    static <T> TextFunctionExpression<T> of(String name, TextExpression<? super T> left, TextExpression<? super T> right) {
         return new TextFunctionExpressionRecord<>(name, List.of(left, right));
     }
-    static <T> TextFunctionExpression<T> of(String name, TextExpression<T> left, int literal) {
+    static <T> TextFunctionExpression<T> of(String name, TextExpression<? super T> left, int literal) {
         return new TextFunctionExpressionRecord<>(name, List.of(left, NumericLiteral.of(literal)));
     }
 }

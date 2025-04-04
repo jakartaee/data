@@ -39,7 +39,6 @@ class ExpressionTest {
         Restriction<Book> titleWithEE =
             _Book.title.left(10).right(2).upper().equalTo("EE");
 
-        @SuppressWarnings("unchecked")
         BasicRestriction<Book, String> restriction =
             (BasicRestriction<Book, String>) titleWithEE;
 
@@ -48,14 +47,14 @@ class ExpressionTest {
         TextFunctionExpression<Book> upperExpression =
             (TextFunctionExpression<Book>) restriction.expression();
 
-        List<? extends Expression<Book, ?>> upperArgs = upperExpression.arguments();
+        List<? extends Expression<? super Book, ?>> upperArgs = upperExpression.arguments();
         assertEquals(1, upperArgs.size());
 
         @SuppressWarnings("unchecked")
         TextFunctionExpression<Book> rightExpression =
             (TextFunctionExpression<Book>) upperArgs.get(0);
 
-        List<? extends Expression<Book, ?>> rightArgs = rightExpression.arguments();
+        List<? extends Expression<? super Book, ?>> rightArgs = rightExpression.arguments();
         assertEquals(2, rightArgs.size());
 
         assertEquals(true, rightArgs.get(1) instanceof NumericLiteral);
@@ -68,7 +67,7 @@ class ExpressionTest {
         TextFunctionExpression<Book> leftExpression =
             (TextFunctionExpression<Book>) rightArgs.get(0);
 
-        List<? extends Expression<Book, ?>> leftArgs = leftExpression.arguments();
+        List<? extends Expression<? super Book, ?>> leftArgs = leftExpression.arguments();
         assertEquals(2, leftArgs.size());
 
         assertEquals(true, leftArgs.get(1) instanceof NumericLiteral);

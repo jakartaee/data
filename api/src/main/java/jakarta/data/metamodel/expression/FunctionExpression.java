@@ -23,5 +23,5 @@ import java.util.List;
 
 public interface FunctionExpression<T,V> extends Expression<T,V> {
     String name();
-    List<? extends Expression<T,?>> arguments();
+    List<? extends Expression<? super T,?>> arguments();
 }

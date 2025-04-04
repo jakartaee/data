@@ -30,11 +30,11 @@ public interface NumericFunctionExpression<T, N extends Number & Comparable<N>>
     String LENGTH = "length";
 
     static <T,N extends Number & Comparable<N>> NumericFunctionExpression<T, N>
-    of(String name, TextExpression<T> argument) {
+    of(String name, TextExpression<? super T> argument) {
         return new NumericFunctionExpressionRecord<>(name, List.of(argument));
     }
     static <T,N extends Number & Comparable<N>> NumericFunctionExpression<T, N>
-    of(String name, NumericExpression<T,N> argument) {
+    of(String name, NumericExpression<? super T,N> argument) {
         return new NumericFunctionExpressionRecord<>(name, List.of(argument));
     }
 }
