@@ -17,8 +17,6 @@
  */
 package jakarta.data.metamodel.expression;
 
-import jakarta.data.metamodel.TextExpression;
-
 import java.util.List;
 
 public interface TextFunctionExpression<T>

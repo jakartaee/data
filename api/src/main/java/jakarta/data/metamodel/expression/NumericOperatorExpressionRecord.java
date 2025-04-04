@@ -17,8 +17,6 @@
  */
 package jakarta.data.metamodel.expression;
 
-import jakarta.data.metamodel.NumericExpression;
-
 record NumericOperatorExpressionRecord<T, N extends Number & Comparable<N>>
         (Operator operator, NumericExpression<T,N> left, NumericExpression<T,N> right)
         implements NumericOperatorExpression<T,N> {

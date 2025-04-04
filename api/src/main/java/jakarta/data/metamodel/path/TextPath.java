@@ -17,10 +17,9 @@
  */
 package jakarta.data.metamodel.path;
 
-import jakarta.data.metamodel.NavigableExpression;
-import jakarta.data.metamodel.Path;
 import jakarta.data.metamodel.TextAttribute;
-import jakarta.data.metamodel.TextExpression;
+import jakarta.data.metamodel.expression.NavigableExpression;
+import jakarta.data.metamodel.expression.TextExpression;
 
 public interface TextPath<T,U>
         extends Path<T,U>, TextExpression<T> {

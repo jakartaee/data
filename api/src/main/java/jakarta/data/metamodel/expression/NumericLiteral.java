@@ -17,8 +17,6 @@
  */
 package jakarta.data.metamodel.expression;
 
-import jakarta.data.metamodel.NumericExpression;
-
 public interface NumericLiteral<T, N extends Number & Comparable<N>>
         extends NumericExpression<T,N> {
     N value();

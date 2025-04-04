@@ -18,8 +18,7 @@
 package jakarta.data.metamodel.path;
 
 import jakarta.data.metamodel.NavigableAttribute;
-import jakarta.data.metamodel.NavigableExpression;
-import jakarta.data.metamodel.Path;
+import jakarta.data.metamodel.expression.NavigableExpression;
 
 public interface NavigablePath<T,U,V>
         extends Path<T,U>, NavigableExpression<T,V> {

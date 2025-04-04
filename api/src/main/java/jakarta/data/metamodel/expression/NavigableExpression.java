@@ -15,8 +15,12 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.metamodel;
+package jakarta.data.metamodel.expression;
 
+import jakarta.data.metamodel.ComparableAttribute;
+import jakarta.data.metamodel.NavigableAttribute;
+import jakarta.data.metamodel.NumericAttribute;
+import jakarta.data.metamodel.TextAttribute;
 import jakarta.data.metamodel.path.ComparablePath;
 import jakarta.data.metamodel.path.NavigablePath;
 import jakarta.data.metamodel.path.NumericPath;

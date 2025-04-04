@@ -18,6 +18,7 @@
 package jakarta.data.metamodel;
 
 import jakarta.data.Sort;
+import jakarta.data.metamodel.expression.TextExpression;
 import jakarta.data.metamodel.impl.TextAttributeRecord;
 
 import java.util.Objects;

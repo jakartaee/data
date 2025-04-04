@@ -15,11 +15,7 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.metamodel;
-
-import jakarta.data.metamodel.expression.NumericCast;
-import jakarta.data.metamodel.expression.NumericFunctionExpression;
-import jakarta.data.metamodel.expression.NumericOperatorExpression;
+package jakarta.data.metamodel.expression;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;

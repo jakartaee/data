@@ -22,8 +22,8 @@ package jakarta.data.metamodel.restrict;
 // the static metamodel or Restrict.* methods 
 
 import jakarta.data.metamodel.Attribute;
-import jakarta.data.metamodel.Expression;
 import jakarta.data.metamodel.constraint.Constraint;
+import jakarta.data.metamodel.expression.Expression;
 
 import java.util.Objects;
 
