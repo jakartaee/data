@@ -17,8 +17,6 @@
  */
 package jakarta.data.metamodel.expression;
 
-import jakarta.data.metamodel.TextExpression;
-
 public interface StringLiteral<T> extends TextExpression<T> {
     String value();
 

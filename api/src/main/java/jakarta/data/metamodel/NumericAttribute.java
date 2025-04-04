@@ -17,6 +17,7 @@
  */
 package jakarta.data.metamodel;
 
+import jakarta.data.metamodel.expression.NumericExpression;
 import jakarta.data.metamodel.impl.NumericAttributeRecord;
 
 import java.util.Objects;

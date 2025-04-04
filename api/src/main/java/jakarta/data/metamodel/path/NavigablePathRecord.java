@@ -18,7 +18,7 @@
 package jakarta.data.metamodel.path;
 
 import jakarta.data.metamodel.NavigableAttribute;
-import jakarta.data.metamodel.NavigableExpression;
+import jakarta.data.metamodel.expression.NavigableExpression;
 
 record NavigablePathRecord<T,U,V>
         (NavigableExpression<T,U> expression, NavigableAttribute<U,V> attribute)

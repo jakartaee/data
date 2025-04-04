@@ -17,8 +17,8 @@
  */
 package jakarta.data.metamodel.restrict;
 
-import jakarta.data.metamodel.Expression;
 import jakarta.data.metamodel.constraint.Constraint;
+import jakarta.data.metamodel.expression.Expression;
 
 public interface BasicRestriction<T, V> extends Restriction<T> {
 

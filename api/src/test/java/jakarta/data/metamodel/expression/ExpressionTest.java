@@ -17,7 +17,6 @@
  */
 package jakarta.data.metamodel.expression;
 
-import jakarta.data.metamodel.Expression;
 import jakarta.data.metamodel.constraint.*;
 import jakarta.data.metamodel.restrict.BasicRestriction;
 import jakarta.data.metamodel.restrict.Restriction;

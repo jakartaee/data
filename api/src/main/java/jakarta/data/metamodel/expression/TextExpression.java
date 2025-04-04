@@ -15,12 +15,10 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.metamodel;
+package jakarta.data.metamodel.expression;
 
 import jakarta.data.metamodel.constraint.Like;
 import jakarta.data.metamodel.constraint.NotLike;
-import jakarta.data.metamodel.expression.NumericFunctionExpression;
-import jakarta.data.metamodel.expression.TextFunctionExpression;
 import jakarta.data.metamodel.restrict.BasicRestriction;
 import jakarta.data.metamodel.restrict.Restriction;
 
