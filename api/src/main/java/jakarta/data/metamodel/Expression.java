@@ -24,7 +24,7 @@ import jakarta.data.metamodel.constraint.NotEqualTo;
 import jakarta.data.metamodel.constraint.NotIn;
 import jakarta.data.metamodel.constraint.NotNull;
 import jakarta.data.metamodel.constraint.Null;
-import jakarta.data.metamodel.restrict.BasicRestriction;
+import jakarta.data.metamodel.restrict.ValueRestriction;
 import jakarta.data.metamodel.restrict.ExpressionRestriction;
 import jakarta.data.metamodel.restrict.Restriction;
 
@@ -33,7 +33,7 @@ import java.util.Set;
 public interface Expression<T,V> {
 
     default Restriction<T> equalTo(V value) {
-        return BasicRestriction.of(this, EqualTo.value(value));
+        return ValueRestriction.of(this, EqualTo.value(value));
     }
 
     default Restriction<T> equalTo(Expression<? super T,V> expression) {
@@ -44,7 +44,7 @@ public interface Expression<T,V> {
         if (values == null || values.isEmpty())
             throw new IllegalArgumentException("values are required");
 
-        return BasicRestriction.of(this, In.values(values));
+        return ValueRestriction.of(this, In.values(values));
     }
 
     default Restriction<T> in(
@@ -52,7 +52,7 @@ public interface Expression<T,V> {
         if (values == null || values.length == 0)
             throw new IllegalArgumentException("Values are required.");
 
-        return BasicRestriction.of(this, In.values(values));
+        return ValueRestriction.of(this, In.values(values));
     }
 
     default Restriction<T> in(
@@ -64,11 +64,11 @@ public interface Expression<T,V> {
     }
 
     default Restriction<T> isNull() {
-        return BasicRestriction.of(this, Null.instance());
+        return ValueRestriction.of(this, Null.instance());
     }
 
     default Restriction<T> notEqualTo(V value) {
-        return BasicRestriction.of(this, NotEqualTo.value(value));
+        return ValueRestriction.of(this, NotEqualTo.value(value));
     }
 
     default Restriction<T> notEqualTo(Expression<? super T,V> expression) {
@@ -79,7 +79,7 @@ public interface Expression<T,V> {
         if (values == null || values.isEmpty())
             throw new IllegalArgumentException("values are required");
 
-        return BasicRestriction.of(this, NotIn.values(values));
+        return ValueRestriction.of(this, NotIn.values(values));
     }
 
     default Restriction<T> notIn(
@@ -87,7 +87,7 @@ public interface Expression<T,V> {
         if (values == null || values.length == 0)
             throw new IllegalArgumentException("Values are required.");
 
-        return BasicRestriction.of(this, NotIn.values(values));
+        return ValueRestriction.of(this, NotIn.values(values));
     }
 
     default Restriction<T> notIn(
@@ -99,11 +99,11 @@ public interface Expression<T,V> {
     }
 
     default Restriction<T> notNull() {
-        return BasicRestriction.of(this, NotNull.instance());
+        return ValueRestriction.of(this, NotNull.instance());
     }
 
     // TODO: should this be called restrict() ?
     default Restriction<T> satisfies(Constraint<V> constraint) {
-        return BasicRestriction.of(this, constraint);
+        return ValueRestriction.of(this, constraint);
     }
 }

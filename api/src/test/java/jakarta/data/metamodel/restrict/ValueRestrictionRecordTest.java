@@ -28,13 +28,13 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 
-class BasicRestrictionRecordTest {
+class ValueRestrictionRecordTest {
 
     @Test
-    void shouldCreateBasicRestrictionWithDefaultNegation() {
+    void shouldCreateValueRestrictionWithDefaultNegation() {
         @SuppressWarnings("unchecked")
-        BasicRestriction<Book, String> restriction =
-                (BasicRestriction<Book, String>) _Book.title.equalTo("Java Guide");
+        ValueRestriction<Book, String> restriction =
+                (ValueRestriction<Book, String>) _Book.title.equalTo("Java Guide");
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.expression()).isEqualTo(_Book.title);
@@ -43,10 +43,10 @@ class BasicRestrictionRecordTest {
     }
 
     @Test
-    void shouldCreateBasicRestrictionWithExplicitNegation() {
+    void shouldCreateValueRestrictionWithExplicitNegation() {
         @SuppressWarnings("unchecked")
-        BasicRestriction<Book, String> restriction =
-                (BasicRestriction<Book, String>) _Book.title.equalTo("Java Guide")
+        ValueRestriction<Book, String> restriction =
+                (ValueRestriction<Book, String>) _Book.title.equalTo("Java Guide")
                         .negate();
 
         SoftAssertions.assertSoftly(soft -> {
@@ -58,9 +58,9 @@ class BasicRestrictionRecordTest {
     @Test
     void shouldNegateLTERestriction() {
         @SuppressWarnings("unchecked")
-        BasicRestriction<Book, Integer> numChaptersLTE10Basic =
-                (BasicRestriction<Book, Integer>) _Book.numChapters.lessThanEqual(10);
-        BasicRestriction<Book, Integer> numChaptersGT10Basic = numChaptersLTE10Basic.negate();
+        ValueRestriction<Book, Integer> numChaptersLTE10Basic =
+                (ValueRestriction<Book, Integer>) _Book.numChapters.lessThanEqual(10);
+        ValueRestriction<Book, Integer> numChaptersGT10Basic = numChaptersLTE10Basic.negate();
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(numChaptersLTE10Basic.constraint()).isEqualTo(LessThanOrEqual.max(10));
@@ -72,11 +72,11 @@ class BasicRestrictionRecordTest {
     @Test
     void shouldNegateNegatedRestriction() {
         @SuppressWarnings("unchecked")
-        BasicRestriction<Book, String> titleRestrictionBasic =
-                (BasicRestriction<Book, String>) _Book.title.equalTo("A Developer's Guide to Jakarta Data");
-        BasicRestriction<Book, String> negatedTitleRestrictionBasic =
+        ValueRestriction<Book, String> titleRestrictionBasic =
+                (ValueRestriction<Book, String>) _Book.title.equalTo("A Developer's Guide to Jakarta Data");
+        ValueRestriction<Book, String> negatedTitleRestrictionBasic =
                 titleRestrictionBasic.negate();
-        BasicRestriction<Book, String> negatedNegatedTitleRestrictionBasic =
+        ValueRestriction<Book, String> negatedNegatedTitleRestrictionBasic =
                 negatedTitleRestrictionBasic.negate();
 
         SoftAssertions.assertSoftly(soft -> {
@@ -95,7 +95,7 @@ class BasicRestrictionRecordTest {
     void shouldOutputToString() {
         @SuppressWarnings("unchecked")
         Restriction<Book> restriction =
-                (BasicRestriction<Book, Integer>) _Book.numPages.greaterThan(100);
+                (ValueRestriction<Book, Integer>) _Book.numPages.greaterThan(100);
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.toString())
@@ -106,8 +106,8 @@ class BasicRestrictionRecordTest {
     @Test
     void shouldSupportNegatedRestrictionUsingDefaultConstructor() {
         @SuppressWarnings("unchecked")
-        BasicRestriction<Book, String> negatedRestriction =
-                (BasicRestriction<Book, String>) _Book.author.notEqualTo("Unknown");
+        ValueRestriction<Book, String> negatedRestriction =
+                (ValueRestriction<Book, String>) _Book.author.notEqualTo("Unknown");
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(negatedRestriction.expression()).isEqualTo(_Book.author);

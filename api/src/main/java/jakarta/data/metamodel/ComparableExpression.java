@@ -23,7 +23,7 @@ import jakarta.data.metamodel.constraint.GreaterThanOrEqual;
 import jakarta.data.metamodel.constraint.LessThan;
 import jakarta.data.metamodel.constraint.LessThanOrEqual;
 import jakarta.data.metamodel.constraint.NotBetween;
-import jakarta.data.metamodel.restrict.BasicRestriction;
+import jakarta.data.metamodel.restrict.ValueRestriction;
 import jakarta.data.metamodel.restrict.ExpressionRestriction;
 import jakarta.data.metamodel.restrict.Restriction;
 
@@ -38,7 +38,7 @@ public interface ComparableExpression<T,V extends Comparable<?>>
         extends Expression<T, V>, Comparable<ComparableExpression<T, V>> {
 
     default Restriction<T> between(V min, V max) {
-        return BasicRestriction.of(this, Between.bounds(min, max));
+        return ValueRestriction.of(this, Between.bounds(min, max));
     }
 
     default Restriction<T> between(ComparableExpression<? super T, V> minExpression,
@@ -48,7 +48,7 @@ public interface ComparableExpression<T,V extends Comparable<?>>
     }
 
     default Restriction<T> greaterThan(V value) {
-        return BasicRestriction.of(this, GreaterThan.bound(value));
+        return ValueRestriction.of(this, GreaterThan.bound(value));
     }
 
     default Restriction<T> greaterThan(ComparableExpression<? super T, V> expression) {
@@ -56,7 +56,7 @@ public interface ComparableExpression<T,V extends Comparable<?>>
     }
 
     default Restriction<T> greaterThanEqual(V value) {
-        return BasicRestriction.of(this, GreaterThanOrEqual.min(value));
+        return ValueRestriction.of(this, GreaterThanOrEqual.min(value));
     }
 
     default Restriction<T> greaterThanEqual(ComparableExpression<? super T, V> expression) {
@@ -64,7 +64,7 @@ public interface ComparableExpression<T,V extends Comparable<?>>
     }
 
     default Restriction<T> lessThan(V value) {
-        return BasicRestriction.of(this, LessThan.bound(value));
+        return ValueRestriction.of(this, LessThan.bound(value));
     }
 
     default Restriction<T> lessThan(ComparableExpression<? super T, V> expression) {
@@ -72,7 +72,7 @@ public interface ComparableExpression<T,V extends Comparable<?>>
     }
 
     default Restriction<T> lessThanEqual(V value) {
-        return BasicRestriction.of(this, LessThanOrEqual.max(value));
+        return ValueRestriction.of(this, LessThanOrEqual.max(value));
     }
 
     default Restriction<T> lessThanEqual(ComparableExpression<? super T, V> expression) {
@@ -80,7 +80,7 @@ public interface ComparableExpression<T,V extends Comparable<?>>
     }
 
     default Restriction<T> notBetween(V min, V max) {
-        return BasicRestriction.of(this, NotBetween.bounds(min, max));
+        return ValueRestriction.of(this, NotBetween.bounds(min, max));
     }
 
     default Restriction<T> notBetween(ComparableExpression<? super T, V> minExpression,

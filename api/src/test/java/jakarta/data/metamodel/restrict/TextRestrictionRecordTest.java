@@ -35,8 +35,8 @@ class TextRestrictionRecordTest {
     @Test
     void shouldCreateTextRestrictionWithDefaultValues() {
         @SuppressWarnings("unchecked")
-        BasicRestriction<Book,String> restriction =
-                (BasicRestriction<Book, String>) _Book.title.like("%Java%");
+        ValueRestriction<Book,String> restriction =
+                (ValueRestriction<Book, String>) _Book.title.like("%Java%");
 
         Like constraint = (Like) restriction.constraint();
 
@@ -52,8 +52,8 @@ class TextRestrictionRecordTest {
     @Test
     void shouldCreateTextRestrictionWithExplicitNegation() {
         @SuppressWarnings("unchecked")
-        BasicRestriction<Book,String> restriction =
-                (BasicRestriction<Book, String>) _Book.title.like("%Java%").negate();
+        ValueRestriction<Book,String> restriction =
+                (ValueRestriction<Book, String>) _Book.title.like("%Java%").negate();
 
         NotLike constraint = (NotLike) restriction.constraint();
 
@@ -69,11 +69,11 @@ class TextRestrictionRecordTest {
     @Test
     void shouldIgnoreCaseForTextRestriction() {
         @SuppressWarnings("unchecked")
-        BasicRestriction<Book,String> restriction =
-                (BasicRestriction<Book, String>) _Book.title.like("%Java%");
+        ValueRestriction<Book,String> restriction =
+                (ValueRestriction<Book, String>) _Book.title.like("%Java%");
 
         // TODO TextRestriction.ignoreCase vs TextAttribute.upper/lowercased
-        //BasicRestriction<Book,String> caseInsensitiveRestriction = restriction.ignoreCase();
+        //ValueRestriction<Book,String> caseInsensitiveRestriction = restriction.ignoreCase();
         Like constraint = (Like) restriction.constraint();
 
         SoftAssertions.assertSoftly(soft -> {
@@ -87,8 +87,8 @@ class TextRestrictionRecordTest {
     @Test
     void shouldCreateTextRestrictionWithEscapedValue() {
         @SuppressWarnings("unchecked")
-        BasicRestriction<Book,String> restriction =
-                (BasicRestriction<Book, String>) _Book.title.like("%Java%");
+        ValueRestriction<Book,String> restriction =
+                (ValueRestriction<Book, String>) _Book.title.like("%Java%");
 
         Like constraint = (Like) restriction.constraint();
 
@@ -104,8 +104,8 @@ class TextRestrictionRecordTest {
     @Test
     void shouldCreateTextRestrictionWithCustomWildcards() {
         @SuppressWarnings("unchecked")
-        BasicRestriction<Book,String> restriction =
-                (BasicRestriction<Book, String>) _Book.title.like("*Java??", '?', '*', '$');
+        ValueRestriction<Book,String> restriction =
+                (ValueRestriction<Book, String>) _Book.title.like("*Java??", '?', '*', '$');
 
         Like constraint = (Like) restriction.constraint();
 
@@ -121,12 +121,12 @@ class TextRestrictionRecordTest {
     @Test
     void shouldNegateLikeRestriction() {
         @SuppressWarnings("unchecked")
-        BasicRestriction<Book,String> likeJakartaEE =
-                (BasicRestriction<Book, String>) _Book.title.endsWith("Jakarta EE");
-        BasicRestriction<Book,String> notLikeJakartaEE = likeJakartaEE.negate();
+        ValueRestriction<Book,String> likeJakartaEE =
+                (ValueRestriction<Book, String>) _Book.title.endsWith("Jakarta EE");
+        ValueRestriction<Book,String> notLikeJakartaEE = likeJakartaEE.negate();
         // TODO TextRestriction.ignoreCase vs TextAttribute.upper/lowercased
-        //BasicRestriction<Book,String> anyCaseNotLikeJakartaEE = likeJakartaEE.ignoreCase().negate();
-        //BasicRestriction<Book,String> notLikeJakartaEEAnyCase = likeJakartaEE.negate().ignoreCase();
+        //ValueRestriction<Book,String> anyCaseNotLikeJakartaEE = likeJakartaEE.ignoreCase().negate();
+        //ValueRestriction<Book,String> notLikeJakartaEEAnyCase = likeJakartaEE.negate().ignoreCase();
 
         //SoftAssertions.assertSoftly(soft -> {
         //    soft.assertThat(likeJakartaEE.isCaseSensitive()).isTrue();
@@ -139,10 +139,10 @@ class TextRestrictionRecordTest {
     @Test
     void shouldNegateNegatedRestriction() {
         @SuppressWarnings("unchecked")
-        BasicRestriction<Book,String> endsWithJakartaEE =
-                (BasicRestriction<Book, String>) _Book.title.endsWith("Jakarta EE");
-        BasicRestriction<Book,String> notEndsWithJakartaEE = endsWithJakartaEE.negate();
-        BasicRestriction<Book,String> notNotEndsWithJakartaEE = notEndsWithJakartaEE.negate();
+        ValueRestriction<Book,String> endsWithJakartaEE =
+                (ValueRestriction<Book, String>) _Book.title.endsWith("Jakarta EE");
+        ValueRestriction<Book,String> notEndsWithJakartaEE = endsWithJakartaEE.negate();
+        ValueRestriction<Book,String> notNotEndsWithJakartaEE = notEndsWithJakartaEE.negate();
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(endsWithJakartaEE.constraint()).isInstanceOf(Like.class);
@@ -162,11 +162,11 @@ class TextRestrictionRecordTest {
     @Test
     void shouldOutputToString() {
         @SuppressWarnings("unchecked")
-        BasicRestriction<Book,String> titleRestriction =
-                (BasicRestriction<Book, String>) _Book.title.contains("Jakarta Data");
+        ValueRestriction<Book,String> titleRestriction =
+                (ValueRestriction<Book, String>) _Book.title.contains("Jakarta Data");
         @SuppressWarnings("unchecked")
-        BasicRestriction<Book,String> authorRestriction =
-                (BasicRestriction<Book, String>) _Book.author.equalTo("Myself")
+        ValueRestriction<Book,String> authorRestriction =
+                (ValueRestriction<Book, String>) _Book.author.equalTo("Myself")
                 // TODO TextRestriction.ignoreCase vs TextAttribute.upper/lowercased
                 //        .ignoreCase()
                         .negate();
@@ -184,8 +184,8 @@ class TextRestrictionRecordTest {
     @Test
     void shouldSupportNegationForTextRestriction() {
         @SuppressWarnings("unchecked")
-        BasicRestriction<Book,String> restriction =
-                (BasicRestriction<Book, String>) _Book.author.equalTo("John Doe").negate();
+        ValueRestriction<Book,String> restriction =
+                (ValueRestriction<Book, String>) _Book.author.equalTo("John Doe").negate();
 
         NotEqualTo<String> constraint = (NotEqualTo<String>) restriction.constraint();
 
