@@ -19,7 +19,7 @@ package jakarta.data.metamodel.expression;
 
 import jakarta.data.metamodel.Expression;
 import jakarta.data.metamodel.constraint.*;
-import jakarta.data.metamodel.restrict.BasicRestriction;
+import jakarta.data.metamodel.restrict.ValueRestriction;
 import jakarta.data.metamodel.restrict.ExpressionRestriction;
 import jakarta.data.metamodel.restrict.Restriction;
 import jakarta.data.mock.entity.Book;
@@ -62,8 +62,9 @@ class ExpressionTest {
         Restriction<Book> titleWithEE =
             _Book.title.left(10).right(2).upper().equalTo("EE");
 
-        BasicRestriction<Book, String> restriction =
-            (BasicRestriction<Book, String>) titleWithEE;
+        @SuppressWarnings("unchecked")
+        ValueRestriction<Book, String> restriction =
+            (ValueRestriction<Book, String>) titleWithEE;
 
         Constraint<String> constraint = restriction.constraint();
 
@@ -132,8 +133,8 @@ class ExpressionTest {
         Restriction<Book> titleUpTo50Chars = _Book.title.length().lessThanEqual(50);
 
         @SuppressWarnings("unchecked")
-        BasicRestriction<Book, Integer> restriction =
-            (BasicRestriction<Book, Integer>) titleUpTo50Chars;
+        ValueRestriction<Book, Integer> restriction =
+            (ValueRestriction<Book, Integer>) titleUpTo50Chars;
 
         Constraint<Integer> constraint = restriction.constraint();
 

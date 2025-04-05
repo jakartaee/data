@@ -20,15 +20,15 @@ package jakarta.data.metamodel.restrict;
 import jakarta.data.metamodel.Expression;
 import jakarta.data.metamodel.constraint.Constraint;
 
-public interface BasicRestriction<T, V> extends Restriction<T> {
+public interface ValueRestriction<T, V> extends Restriction<T> {
 
     @Override
-    BasicRestriction<T, V> negate();
+    ValueRestriction<T, V> negate();
 
     Expression<T,V> expression();
     Constraint<V> constraint();
 
-    static <T,V> BasicRestriction<T, V> of(Expression<T,V> expression,  Constraint<V> constraint) {
-        return new BasicRestrictionRecord<>(expression, constraint);
+    static <T,V> ValueRestriction<T, V> of(Expression<T,V> expression,  Constraint<V> constraint) {
+        return new ValueRestrictionRecord<>(expression, constraint);
     }
 }
