@@ -17,10 +17,23 @@
  */
 package jakarta.data.metamodel.path;
 
+import java.util.Objects;
+
+import jakarta.data.metamodel.ComparableExpression;
 import jakarta.data.metamodel.NavigableExpression;
 import jakarta.data.metamodel.TextAttribute;
 
 record TextPathRecord<T,U>
         (NavigableExpression<T,U> expression, TextAttribute<U> attribute)
         implements TextPath<T,U> {
+
+    TextPathRecord {
+        Objects.requireNonNull(expression, "Expression is required.");
+        Objects.requireNonNull(attribute, "Entity attribute is required.");
+    }
+
+    @Override
+    public int compareTo(ComparableExpression<T, String> o) {
+        throw new UnsupportedOperationException("Not comparable.");
+    }
 }

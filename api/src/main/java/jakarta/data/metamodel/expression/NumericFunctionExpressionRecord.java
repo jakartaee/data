@@ -17,11 +17,43 @@
  */
 package jakarta.data.metamodel.expression;
 
+import jakarta.data.metamodel.ComparableExpression;
 import jakarta.data.metamodel.Expression;
 
 import java.util.List;
+import java.util.Objects;
 
 record NumericFunctionExpressionRecord<T, N extends Number & Comparable<N>>
         (String name, List<Expression<? super T,?>> arguments)
         implements NumericFunctionExpression<T,N> {
+
+    NumericFunctionExpressionRecord {
+        Objects.requireNonNull(name, "Function name is required.");
+        Objects.requireNonNull(arguments, "Function arguments is required.");
+    }
+
+    @Override
+    public int compareTo(ComparableExpression<T, N> other) {
+        if (getClass().equals(other.getClass())) {
+            NumericFunctionExpressionRecord<T, N> another =
+                    (NumericFunctionExpressionRecord<T,N>) other;
+            int comp = name.compareTo(another.name);
+            if (comp == 0) {
+                comp = Integer.compare(arguments.size(), another.arguments.size());
+            }
+            for (int i = 0; comp == 0 && i < arguments.size(); i++) {
+                if (arguments.get(i) instanceof ComparableExpression &&
+                    another.arguments.get(i) instanceof ComparableExpression) {
+                    comp = ((ComparableExpression) arguments.get(i)).compareTo(
+                            (ComparableExpression) another.arguments.get(i));
+                } else {
+                    throw new UnsupportedOperationException(
+                            "Not comparable: " + arguments + ", " + another.arguments);
+                }
+            }
+            return comp;
+        } else {
+            return getClass().getName().compareTo(other.getClass().getName());
+        }
+    }
 }

@@ -19,6 +19,7 @@ package jakarta.data.mock.entity;
 
 import jakarta.data.metamodel.BasicAttribute;
 import jakarta.data.metamodel.ComparableAttribute;
+import jakarta.data.metamodel.NumericAttribute;
 import jakarta.data.metamodel.TextAttribute;
 
 /**
@@ -35,9 +36,9 @@ public interface _Book {
             Book.class, AUTHOR, String.class);
     TextAttribute<Book> id = TextAttribute.of(
             Book.class, ID);
-    ComparableAttribute<Book, Integer> numChapters = ComparableAttribute.of(
+    NumericAttribute<Book, Integer> numChapters = NumericAttribute.of(
             Book.class, NUMCHAPTERS, int.class);
-    ComparableAttribute<Book, Integer> numPages = ComparableAttribute.of(
+    NumericAttribute<Book, Integer> numPages = NumericAttribute.of(
             Book.class, NUMPAGES, int.class);
     TextAttribute<Book> title = TextAttribute.of(
             Book.class, TITLE);

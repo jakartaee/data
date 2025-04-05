@@ -20,6 +20,7 @@ package jakarta.data.metamodel.expression;
 import jakarta.data.metamodel.Expression;
 import jakarta.data.metamodel.constraint.*;
 import jakarta.data.metamodel.restrict.BasicRestriction;
+import jakarta.data.metamodel.restrict.ExpressionRestriction;
 import jakarta.data.metamodel.restrict.Restriction;
 import jakarta.data.mock.entity.Book;
 import jakarta.data.mock.entity._Book;
@@ -32,6 +33,28 @@ import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
 
 class ExpressionTest {
+
+    @Test
+    void shouldCompareWithOtherEntityAttribute() {
+        Restriction<Book> autobiographies =
+                _Book.title.equalTo(_Book.author);
+
+        @SuppressWarnings("unchecked")
+        ExpressionRestriction<Book, Expression<Book, String>, String> restriction =
+                (ExpressionRestriction<Book, Expression<Book, String>, String>)
+                        autobiographies;
+
+        EqualTo<Expression<Book, String>> equalToConstraint =
+                (EqualTo<Expression<Book, String>>) restriction.constraint();
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(restriction.expression())
+                .isEqualTo(_Book.title);
+
+            soft.assertThat(equalToConstraint.value())
+                .isEqualTo(_Book.author);
+        });
+    }
 
     @Test
     void shouldRestrictLast2ofFirst10Chars() {

@@ -17,7 +17,23 @@
  */
 package jakarta.data.metamodel.expression;
 
+import java.util.Objects;
+
+import jakarta.data.metamodel.ComparableExpression;
+
 record StringLiteralRecord<T>(String value)
         implements StringLiteral<T> {
 
+    StringLiteralRecord {
+        Objects.requireNonNull(value, "Value is required.");
+    }
+
+    @Override
+    public int compareTo(ComparableExpression<T, String> other) {
+        if (getClass().equals(other.getClass())) {
+            return value.compareTo(((StringLiteralRecord<T>) other).value);
+        } else {
+            return getClass().getName().compareTo(other.getClass().getName());
+        }
+    }
 }
