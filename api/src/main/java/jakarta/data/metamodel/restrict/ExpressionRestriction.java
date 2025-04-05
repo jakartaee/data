@@ -15,25 +15,24 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.metamodel.expression;
+package jakarta.data.metamodel.restrict;
 
-import java.util.Objects;
+import jakarta.data.metamodel.Expression;
+import jakarta.data.metamodel.constraint.Constraint;
 
-import jakarta.data.metamodel.ComparableExpression;
-
-record NumericLiteralRecord<T, N extends Number & Comparable<N>>
-        (N value) implements NumericLiteral<T,N> {
-
-    NumericLiteralRecord {
-        Objects.requireNonNull(value, "Value is required.");
-    }
+public interface ExpressionRestriction<T, U extends Expression<T,V>, V>
+        extends Restriction<T> {
 
     @Override
-    public int compareTo(ComparableExpression<T, N> other) {
-        if (getClass().equals(other.getClass())) {
-            return value.compareTo(((NumericLiteralRecord<T, N>) other).value);
-        } else {
-            return getClass().getName().compareTo(other.getClass().getName());
-        }
+    ExpressionRestriction<T,U,V> negate();
+
+    Expression<T,V> expression();
+
+    Constraint<U> constraint();
+
+    static <T, U extends Expression<T,V>, V> ExpressionRestriction<T,U,V> of(
+            Expression<T,V> expression,
+            Constraint<U> constraint) {
+        return new ExpressionRestrictionRecord<>(expression, constraint);
     }
 }

@@ -24,50 +24,68 @@ import jakarta.data.metamodel.constraint.LessThan;
 import jakarta.data.metamodel.constraint.LessThanOrEqual;
 import jakarta.data.metamodel.constraint.NotBetween;
 import jakarta.data.metamodel.restrict.BasicRestriction;
+import jakarta.data.metamodel.restrict.ExpressionRestriction;
 import jakarta.data.metamodel.restrict.Restriction;
 
+// We need ComparableExpression to be supplied as a constraint value to
+// LessThan/GreaterThan/... and so forth, but these constraint values are
+// required to be Comparable. For the most part, we could make
+// ComparableExpression be Comparable to satisfy that, although we never
+// use its compareTo method. We should look into whether there are better
+// options, but doing this at least temporarily could be a path forward
+// for now.
 public interface ComparableExpression<T,V extends Comparable<?>>
-        extends Expression<T, V> {
+        extends Expression<T, V>, Comparable<ComparableExpression<T, V>> {
 
     default Restriction<T> between(V min, V max) {
         return BasicRestriction.of(this, Between.bounds(min, max));
     }
 
-    default Restriction<T> notBetween(V min, V max) {
-        return BasicRestriction.of(this, NotBetween.bounds(min, max));
+    default Restriction<T> between(ComparableExpression<? super T, V> minExpression,
+                                   ComparableExpression<? super T, V> maxExpression) {
+        return ExpressionRestriction
+                .of(this, Between.bounds(minExpression, maxExpression));
     }
 
     default Restriction<T> greaterThan(V value) {
         return BasicRestriction.of(this, GreaterThan.bound(value));
     }
 
+    default Restriction<T> greaterThan(ComparableExpression<? super T, V> expression) {
+        return ExpressionRestriction.of(this, GreaterThan.bound(expression));
+    }
+
     default Restriction<T> greaterThanEqual(V value) {
         return BasicRestriction.of(this, GreaterThanOrEqual.min(value));
+    }
+
+    default Restriction<T> greaterThanEqual(ComparableExpression<? super T, V> expression) {
+        return ExpressionRestriction.of(this, GreaterThanOrEqual.min(expression));
     }
 
     default Restriction<T> lessThan(V value) {
         return BasicRestriction.of(this, LessThan.bound(value));
     }
 
+    default Restriction<T> lessThan(ComparableExpression<? super T, V> expression) {
+        return ExpressionRestriction.of(this, LessThan.bound(expression));
+    }
+
     default Restriction<T> lessThanEqual(V value) {
         return BasicRestriction.of(this, LessThanOrEqual.max(value));
     }
 
-    // Leave for later, since we need a new kind of Restriction for these
+    default Restriction<T> lessThanEqual(ComparableExpression<? super T, V> expression) {
+        return ExpressionRestriction.of(this, LessThanOrEqual.max(expression));
+    }
 
-//    default Restriction<T> greaterThan(Expression<? super T,V> value) {
-//        throw new UnsupportedOperationException("not yet implemented");
-//    }
-//
-//    default Restriction<T> greaterThanEqual(Expression<? super T,V> value) {
-//        throw new UnsupportedOperationException("not yet implemented");
-//    }
-//
-//    default Restriction<T> lessThan(Expression<? super T,V> value) {
-//        throw new UnsupportedOperationException("not yet implemented");
-//    }
-//
-//    default Restriction<T> lessThanEqual(Expression<? super T,V> value) {
-//        throw new UnsupportedOperationException("not yet implemented");
-//    }
+    default Restriction<T> notBetween(V min, V max) {
+        return BasicRestriction.of(this, NotBetween.bounds(min, max));
+    }
+
+    default Restriction<T> notBetween(ComparableExpression<? super T, V> minExpression,
+                                      ComparableExpression<? super T, V> maxExpression) {
+        return ExpressionRestriction
+                .of(this, NotBetween.bounds(minExpression, maxExpression));
+    }
 }

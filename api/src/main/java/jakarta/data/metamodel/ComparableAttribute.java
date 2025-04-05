@@ -79,5 +79,20 @@ public interface ComparableAttribute<T,V extends Comparable<?>>
 
         return new ComparableAttributeRecord<>(entityClass, name);
     }
+
+    @Override
+    default int compareTo(ComparableExpression<T, V> other) {
+        if (getClass().equals(other.getClass())) {
+            ComparableAttribute<T, V> another = (ComparableAttribute<T,V>) other;
+            int comp = declaringType().getName().compareTo(
+                    another.declaringType().getName());
+            if (comp == 0) {
+                comp = name().compareTo(another.name());
+            }
+            return comp;
+        } else {
+            return getClass().getName().compareTo(other.getClass().getName());
+        }
+    }
 }
 

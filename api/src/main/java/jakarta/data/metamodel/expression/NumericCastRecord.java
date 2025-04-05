@@ -17,9 +17,32 @@
  */
 package jakarta.data.metamodel.expression;
 
+import java.util.Objects;
+
+import jakarta.data.metamodel.ComparableExpression;
 import jakarta.data.metamodel.NumericExpression;
 
 record NumericCastRecord<T, N extends Number & Comparable<N>>
         (NumericExpression<T,?> expression, Class<N> type)
         implements NumericCast<T,N> {
+
+    NumericCastRecord {
+        Objects.requireNonNull(expression, "Expression is required.");
+        Objects.requireNonNull(type, "Attribute type is required.");
+    }
+
+    @Override
+    public int compareTo(ComparableExpression<T, N> other) {
+        if (getClass().equals(other.getClass())) {
+            NumericCastRecord<T, N> another = (NumericCastRecord<T,N>) other;
+            int comp = type.getName().compareTo(
+                    another.type.getName());
+            if (comp == 0) {
+                comp = expression.compareTo((NumericCastRecord) another.expression);
+            }
+            return comp;
+        } else {
+            return getClass().getName().compareTo(other.getClass().getName());
+        }
+    }
 }
