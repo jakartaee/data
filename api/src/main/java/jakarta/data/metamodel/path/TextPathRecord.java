@@ -33,7 +33,17 @@ record TextPathRecord<T,U>
     }
 
     @Override
-    public int compareTo(ComparableExpression<T, String> o) {
-        throw new UnsupportedOperationException("Not comparable.");
+    public int compareTo(ComparableExpression<T, String> other) {
+        if (getClass().equals(other.getClass())) {
+            @SuppressWarnings("unchecked")
+            TextPathRecord<T,U> another = (TextPathRecord<T,U>) other;
+            int comp = expression.compareTo(another.expression);
+            if (comp == 0) {
+                comp = attribute.compareTo(another.attribute);
+            }
+            return comp;
+        } else {
+            return getClass().getName().compareTo(other.getClass().getName());
+        }
     }
 }
