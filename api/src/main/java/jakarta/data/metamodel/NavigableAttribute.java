@@ -50,5 +50,20 @@ public interface NavigableAttribute<T,U>
 
         return new NavigableAttributeRecord<>(entityClass, name);
     }
+
+    @Override
+    default int compareTo(NavigableExpression<T, U> other) {
+        if (getClass().equals(other.getClass())) {
+            NavigableAttribute<T,U> another = (NavigableAttribute<T,U>) other;
+            int comp = declaringType().getName().compareTo(
+                    another.declaringType().getName());
+            if (comp == 0) {
+                comp = name().compareTo(another.name());
+            }
+            return comp;
+        } else {
+            return getClass().getName().compareTo(other.getClass().getName());
+        }
+    }
 }
 

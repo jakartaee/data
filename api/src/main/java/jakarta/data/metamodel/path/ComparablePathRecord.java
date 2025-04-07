@@ -34,6 +34,16 @@ record ComparablePathRecord<T,U,C extends Comparable<?>>
 
     @Override
     public int compareTo(ComparableExpression<T, C> other) {
-        throw new UnsupportedOperationException("Not comparable.");
+        if (getClass().equals(other.getClass())) {
+            @SuppressWarnings("unchecked")
+            ComparablePathRecord<T,U,C> another = (ComparablePathRecord<T,U,C>) other;
+            int comp = expression.compareTo(another.expression);
+            if (comp == 0) {
+                comp = attribute.compareTo(another.attribute);
+            }
+            return comp;
+        } else {
+            return getClass().getName().compareTo(other.getClass().getName());
+        }
     }
 }

@@ -34,6 +34,16 @@ record NumericPathRecord<T,U,N extends Number & Comparable<N>>
 
     @Override
     public int compareTo(ComparableExpression<T, N> other) {
-        throw new UnsupportedOperationException("Not comparable.");
+        if (getClass().equals(other.getClass())) {
+            @SuppressWarnings("unchecked")
+            NumericPathRecord<T,U,N> another = (NumericPathRecord<T,U,N>) other;
+            int comp = expression.compareTo(another.expression);
+            if (comp == 0) {
+                comp = attribute.compareTo(another.attribute);
+            }
+            return comp;
+        } else {
+            return getClass().getName().compareTo(other.getClass().getName());
+        }
     }
 }
