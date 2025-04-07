@@ -17,6 +17,7 @@
  */
 package jakarta.data.metamodel.expression;
 
+import jakarta.data.metamodel.ComparableExpression;
 import jakarta.data.metamodel.NumericExpression;
 import jakarta.data.metamodel.TextExpression;
 
@@ -37,4 +38,7 @@ public interface NumericFunctionExpression<T, N extends Number & Comparable<N>>
     of(String name, NumericExpression<? super T,N> argument) {
         return new NumericFunctionExpressionRecord<>(name, List.of(argument));
     }
+
+    @Override
+    List<? extends ComparableExpression<T,?>> arguments();
 }
