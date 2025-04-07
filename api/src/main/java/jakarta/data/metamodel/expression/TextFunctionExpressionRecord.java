@@ -18,12 +18,13 @@
 package jakarta.data.metamodel.expression;
 
 import jakarta.data.metamodel.ComparableExpression;
-import jakarta.data.metamodel.Expression;
 
 import java.util.List;
 import java.util.Objects;
 
-record TextFunctionExpressionRecord<T>(String name, List<? extends Expression<? super T,?>> arguments)
+record TextFunctionExpressionRecord<T>(
+        String name,
+        List<? extends ComparableExpression<? super T,?>> arguments)
         implements TextFunctionExpression<T> {
 
     TextFunctionExpressionRecord {
@@ -41,14 +42,8 @@ record TextFunctionExpressionRecord<T>(String name, List<? extends Expression<? 
                 comp = Integer.compare(arguments.size(), another.arguments.size());
             }
             for (int i = 0; comp == 0 && i < arguments.size(); i++) {
-                if (arguments.get(i) instanceof ComparableExpression &&
-                    another.arguments.get(i) instanceof ComparableExpression) {
-                    comp = ((ComparableExpression) arguments.get(i)).compareTo(
-                            (ComparableExpression) another.arguments.get(i));
-                } else {
-                    throw new UnsupportedOperationException(
-                            "Not comparable: " + arguments + ", " + another.arguments);
-                }
+                comp = ((ComparableExpression) arguments.get(i))
+                        .compareTo((ComparableExpression) another.arguments.get(i));
             }
             return comp;
         } else {

@@ -17,6 +17,7 @@
  */
 package jakarta.data.metamodel.expression;
 
+import jakarta.data.metamodel.ComparableExpression;
 import jakarta.data.metamodel.TextExpression;
 
 import java.util.List;
@@ -45,4 +46,7 @@ public interface TextFunctionExpression<T>
     static <T> TextFunctionExpression<T> of(String name, TextExpression<? super T> left, int literal) {
         return new TextFunctionExpressionRecord<>(name, List.of(left, NumericLiteral.of(literal)));
     }
+
+    @Override
+    List<? extends ComparableExpression<T,?>> arguments();
 }
