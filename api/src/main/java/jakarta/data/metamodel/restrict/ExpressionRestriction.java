@@ -20,7 +20,7 @@ package jakarta.data.metamodel.restrict;
 import jakarta.data.metamodel.Expression;
 import jakarta.data.metamodel.constraint.Constraint;
 
-public interface ExpressionRestriction<T, U extends Expression<T,V>, V>
+public interface ExpressionRestriction<T, U extends Expression<? super T,V>, V>
         extends Restriction<T> {
 
     @Override
@@ -30,7 +30,7 @@ public interface ExpressionRestriction<T, U extends Expression<T,V>, V>
 
     Constraint<U> constraint();
 
-    static <T, U extends Expression<T,V>, V> ExpressionRestriction<T,U,V> of(
+    static <T, U extends Expression<? super T,V>, V> ExpressionRestriction<T,U,V> of(
             Expression<T,V> expression,
             Constraint<U> constraint) {
         return new ExpressionRestrictionRecord<>(expression, constraint);

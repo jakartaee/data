@@ -40,5 +40,5 @@ public interface NumericFunctionExpression<T, N extends Number & Comparable<N>>
     }
 
     @Override
-    List<? extends ComparableExpression<T,?>> arguments();
+    List<? extends ComparableExpression<? super T,?>> arguments();
 }

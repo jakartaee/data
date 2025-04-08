@@ -26,7 +26,7 @@ import java.util.Objects;
  * Internal implementation class.
  * The proper way for users to obtain instances is via the static metamodel
  */
-record ExpressionRestrictionRecord<T, U extends Expression<T,V>, V>(
+record ExpressionRestrictionRecord<T, U extends Expression<? super T,V>, V>(
         Expression<T,V> expression,
         Constraint<U> constraint)
         implements ExpressionRestriction<T,U,V> {

@@ -41,8 +41,9 @@ public interface ComparableExpression<T,V extends Comparable<?>>
         return ValueRestriction.of(this, Between.bounds(min, max));
     }
 
-    default Restriction<T> between(ComparableExpression<? super T, V> minExpression,
-                                   ComparableExpression<? super T, V> maxExpression) {
+    default <U extends ComparableExpression<? super T, V>> Restriction<T> between(
+        U minExpression,
+        U maxExpression) {
         return ExpressionRestriction
                 .of(this, Between.bounds(minExpression, maxExpression));
     }
@@ -83,8 +84,9 @@ public interface ComparableExpression<T,V extends Comparable<?>>
         return ValueRestriction.of(this, NotBetween.bounds(min, max));
     }
 
-    default Restriction<T> notBetween(ComparableExpression<? super T, V> minExpression,
-                                      ComparableExpression<? super T, V> maxExpression) {
+    default <U extends ComparableExpression<? super T, V>> Restriction<T> notBetween(
+            U minExpression,
+            U maxExpression) {
         return ExpressionRestriction
                 .of(this, NotBetween.bounds(minExpression, maxExpression));
     }
