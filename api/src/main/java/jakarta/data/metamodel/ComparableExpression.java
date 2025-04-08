@@ -55,19 +55,19 @@ public interface ComparableExpression<T,V extends Comparable<?>>
 
     // Leave for later, since we need a new kind of Restriction for these
 
-//    default Restriction<T> greaterThan(Expression<T,V> value) {
+//    default Restriction<T> greaterThan(Expression<? super T,V> value) {
 //        throw new UnsupportedOperationException("not yet implemented");
 //    }
 //
-//    default Restriction<T> greaterThanEqual(Expression<T,V> value) {
+//    default Restriction<T> greaterThanEqual(Expression<? super T,V> value) {
 //        throw new UnsupportedOperationException("not yet implemented");
 //    }
 //
-//    default Restriction<T> lessThan(Expression<T,V> value) {
+//    default Restriction<T> lessThan(Expression<? super T,V> value) {
 //        throw new UnsupportedOperationException("not yet implemented");
 //    }
 //
-//    default Restriction<T> lessThanEqual(Expression<T,V> value) {
+//    default Restriction<T> lessThanEqual(Expression<? super T,V> value) {
 //        throw new UnsupportedOperationException("not yet implemented");
 //    }
 }
