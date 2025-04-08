@@ -19,7 +19,8 @@ package jakarta.data.metamodel.expression;
 
 import jakarta.data.metamodel.Expression;
 import jakarta.data.metamodel.constraint.*;
-import jakarta.data.metamodel.restrict.BasicRestriction;
+import jakarta.data.metamodel.restrict.ValueRestriction;
+import jakarta.data.metamodel.restrict.ExpressionRestriction;
 import jakarta.data.metamodel.restrict.Restriction;
 import jakarta.data.mock.entity.Book;
 import jakarta.data.mock.entity._Book;
@@ -34,13 +35,36 @@ import org.junit.jupiter.api.Test;
 class ExpressionTest {
 
     @Test
+    void shouldCompareWithOtherEntityAttribute() {
+        Restriction<Book> autobiographies =
+                _Book.title.equalTo(_Book.author);
+
+        @SuppressWarnings("unchecked")
+        ExpressionRestriction<Book, Expression<Book, String>, String> restriction =
+                (ExpressionRestriction<Book, Expression<Book, String>, String>)
+                        autobiographies;
+
+        EqualTo<Expression<Book, String>> equalToConstraint =
+                (EqualTo<Expression<Book, String>>) restriction.constraint();
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(restriction.expression())
+                .isEqualTo(_Book.title);
+
+            soft.assertThat(equalToConstraint.value())
+                .isEqualTo(_Book.author);
+        });
+    }
+
+    @Test
     void shouldRestrictLast2ofFirst10Chars() {
 
         Restriction<Book> titleWithEE =
             _Book.title.left(10).right(2).upper().equalTo("EE");
 
-        BasicRestriction<Book, String> restriction =
-            (BasicRestriction<Book, String>) titleWithEE;
+        @SuppressWarnings("unchecked")
+        ValueRestriction<Book, String> restriction =
+            (ValueRestriction<Book, String>) titleWithEE;
 
         Constraint<String> constraint = restriction.constraint();
 
@@ -109,8 +133,8 @@ class ExpressionTest {
         Restriction<Book> titleUpTo50Chars = _Book.title.length().lessThanEqual(50);
 
         @SuppressWarnings("unchecked")
-        BasicRestriction<Book, Integer> restriction =
-            (BasicRestriction<Book, Integer>) titleUpTo50Chars;
+        ValueRestriction<Book, Integer> restriction =
+            (ValueRestriction<Book, Integer>) titleUpTo50Chars;
 
         Constraint<Integer> constraint = restriction.constraint();
 

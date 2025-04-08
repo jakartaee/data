@@ -17,10 +17,33 @@
  */
 package jakarta.data.metamodel.path;
 
+import java.util.Objects;
+
 import jakarta.data.metamodel.ComparableAttribute;
+import jakarta.data.metamodel.ComparableExpression;
 import jakarta.data.metamodel.NavigableExpression;
 
 record ComparablePathRecord<T,U,C extends Comparable<?>>
         (NavigableExpression<T,U> expression, ComparableAttribute<U, C> attribute)
         implements ComparablePath<T,U,C> {
+
+    ComparablePathRecord {
+        Objects.requireNonNull(expression, "Expression is required.");
+        Objects.requireNonNull(attribute, "Entity attribute is required.");
+    }
+
+    @Override
+    public int compareTo(ComparableExpression<T, C> other) {
+        if (getClass().equals(other.getClass())) {
+            @SuppressWarnings("unchecked")
+            ComparablePathRecord<T,U,C> another = (ComparablePathRecord<T,U,C>) other;
+            int comp = expression.compareTo(another.expression);
+            if (comp == 0) {
+                comp = attribute.compareTo(another.attribute);
+            }
+            return comp;
+        } else {
+            return getClass().getName().compareTo(other.getClass().getName());
+        }
+    }
 }

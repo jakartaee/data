@@ -17,6 +17,23 @@
  */
 package jakarta.data.metamodel.expression;
 
+import java.util.Objects;
+
+import jakarta.data.metamodel.ComparableExpression;
+
 record NumericLiteralRecord<T, N extends Number & Comparable<N>>
         (N value) implements NumericLiteral<T,N> {
+
+    NumericLiteralRecord {
+        Objects.requireNonNull(value, "Value is required.");
+    }
+
+    @Override
+    public int compareTo(ComparableExpression<T, N> other) {
+        if (getClass().equals(other.getClass())) {
+            return value.compareTo(((NumericLiteralRecord<T, N>) other).value);
+        } else {
+            return getClass().getName().compareTo(other.getClass().getName());
+        }
+    }
 }

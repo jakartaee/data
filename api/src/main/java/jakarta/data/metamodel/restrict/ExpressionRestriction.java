@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024,2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2025 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,15 +20,19 @@ package jakarta.data.metamodel.restrict;
 import jakarta.data.metamodel.Expression;
 import jakarta.data.metamodel.constraint.Constraint;
 
-public interface BasicRestriction<T, V> extends Restriction<T> {
+public interface ExpressionRestriction<T, U extends Expression<? super T,V>, V>
+        extends Restriction<T> {
 
     @Override
-    BasicRestriction<T, V> negate();
+    ExpressionRestriction<T,U,V> negate();
 
     Expression<T,V> expression();
-    Constraint<V> constraint();
 
-    static <T,V> BasicRestriction<T, V> of(Expression<T,V> expression,  Constraint<V> constraint) {
-        return new BasicRestrictionRecord<>(expression, constraint);
+    Constraint<U> constraint();
+
+    static <T, U extends Expression<? super T,V>, V> ExpressionRestriction<T,U,V> of(
+            Expression<T,V> expression,
+            Constraint<U> constraint) {
+        return new ExpressionRestrictionRecord<>(expression, constraint);
     }
 }

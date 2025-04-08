@@ -22,7 +22,8 @@ import jakarta.data.metamodel.path.NavigablePath;
 import jakarta.data.metamodel.path.NumericPath;
 import jakarta.data.metamodel.path.TextPath;
 
-public interface NavigableExpression<T,U> {
+public interface NavigableExpression<T,U>
+        extends Comparable<NavigableExpression<T,U>> {
 
     default <V> NavigableExpression<T, V> navigate(NavigableAttribute<U, V> attribute) {
         return NavigablePath.of(this, attribute);

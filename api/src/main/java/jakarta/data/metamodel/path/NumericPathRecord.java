@@ -17,10 +17,33 @@
  */
 package jakarta.data.metamodel.path;
 
+import java.util.Objects;
+
+import jakarta.data.metamodel.ComparableExpression;
 import jakarta.data.metamodel.NavigableExpression;
 import jakarta.data.metamodel.NumericAttribute;
 
 record NumericPathRecord<T,U,N extends Number & Comparable<N>>
         (NavigableExpression<T,U> expression, NumericAttribute<U,N> attribute)
         implements NumericPath<T,U,N> {
+
+    NumericPathRecord {
+        Objects.requireNonNull(expression, "Expression is required.");
+        Objects.requireNonNull(attribute, "Entity attribute is required.");
+    }
+
+    @Override
+    public int compareTo(ComparableExpression<T, N> other) {
+        if (getClass().equals(other.getClass())) {
+            @SuppressWarnings("unchecked")
+            NumericPathRecord<T,U,N> another = (NumericPathRecord<T,U,N>) other;
+            int comp = expression.compareTo(another.expression);
+            if (comp == 0) {
+                comp = attribute.compareTo(another.attribute);
+            }
+            return comp;
+        } else {
+            return getClass().getName().compareTo(other.getClass().getName());
+        }
+    }
 }
