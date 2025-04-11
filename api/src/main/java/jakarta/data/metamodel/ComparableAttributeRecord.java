@@ -15,10 +15,9 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.metamodel.impl;
+package jakarta.data.metamodel;
 
-import jakarta.data.metamodel.BasicAttribute;
-
-public record BasicAttributeRecord<T,V>(Class<T> declaringType, String name)
-        implements BasicAttribute<T,V> {
+record ComparableAttributeRecord<T,V extends Comparable<?>>
+        (Class<T> declaringType, String name)
+        implements ComparableAttribute<T,V> {
 }

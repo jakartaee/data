@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024,2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2025 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,18 +15,9 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.metamodel.impl;
+package jakarta.data.metamodel;
 
-import jakarta.data.metamodel.TextAttribute;
-
-/**
- * @deprecated For more complete access to the static metamodel, use the
- * {@link jakarta.data.metamodel.TextAttribute#of(Class, String)} method
- * to obtain instances of {@link TextAttribute}.
- *
- * @param name the name of the attribute
- */
-@Deprecated(since = "1.1")
-public record TextAttributeRecord<T>(String name)
-        implements TextAttribute<T> {
+record SortableAttributeRecord<T>(Class<T> declaringType, String name)
+        implements SortableAttribute<T> {
 }
+
