@@ -17,8 +17,6 @@
  */
 package jakarta.data.metamodel;
 
-import jakarta.data.metamodel.impl.TemporalAttributeRecord;
-
 import java.time.temporal.Temporal;
 import java.util.Objects;
 

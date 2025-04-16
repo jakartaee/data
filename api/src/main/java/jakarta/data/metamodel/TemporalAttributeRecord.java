@@ -15,13 +15,12 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.metamodel.impl;
+package jakarta.data.metamodel;
 
 import java.time.temporal.Temporal;
 
-import jakarta.data.metamodel.TemporalAttribute;
-
-public record TemporalAttributeRecord<T,V extends Temporal & Comparable<? extends Temporal>>
-        (Class<T> declaringType, String name)
+record TemporalAttributeRecord<T,V extends Temporal & Comparable<? extends Temporal>>(
+        Class<T> declaringType,
+        String name)
         implements TemporalAttribute<T,V> {
 }

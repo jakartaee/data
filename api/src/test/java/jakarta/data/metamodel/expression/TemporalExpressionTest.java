@@ -34,8 +34,8 @@ class TemporalExpressionTest {
 
     @Test
     void shouldRestrictLessThanCurrentDate() {
-        TemporalExpression<Book, LocalDate> today =
-            TemporalExpression.currentDate();
+        TemporalExpression<Object, LocalDate> today =
+            TemporalExpression.localDate();
 
         // TODO write the test once comparisons with expressions are added
         //Restriction<Book> beforeCurrentDate =
