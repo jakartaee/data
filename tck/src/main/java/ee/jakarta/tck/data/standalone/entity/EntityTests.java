@@ -743,7 +743,7 @@ public class EntityTests {
         assertEquals(NumberType.PRIME, number.getNumType());
         assertEquals(1L, number.getFloorOfSquareRoot());
         assertTrue(number.isOdd());
-        assertEquals(Short.valueOf((short) 2), number.getNumBitsRequired());
+        assertEquals((short) 2, number.getNumBitsRequired());
 
         // second result
         assertTrue(it.hasNext());
@@ -752,7 +752,7 @@ public class EntityTests {
         assertEquals(NumberType.PRIME, number.getNumType());
         assertEquals(1L, number.getFloorOfSquareRoot());
         assertFalse(number.isOdd());
-        assertEquals(Short.valueOf((short) 2), number.getNumBitsRequired());
+        assertEquals((short) 2, number.getNumBitsRequired());
 
         assertFalse(it.hasNext());
     }
@@ -883,7 +883,7 @@ public class EntityTests {
             """)
     public void testFindEntitySelectAsRecordReturnList() {
 
-        List<WholeNumber> found = characters.wholeNumbers(Short.valueOf((short) 4));
+        List<WholeNumber> found = characters.wholeNumbers((short) 4);
 
         assertEquals(List.of("8 COMPOSITE √8 >= 2",
                              "9 COMPOSITE √9 >= 3",
@@ -991,7 +991,7 @@ public class EntityTests {
         NaturalNumber num = evenPrimeNumbers.get(0);
         assertEquals(2L, num.getId());
         assertEquals(1L, num.getFloorOfSquareRoot());
-        assertEquals(Short.valueOf((short) 2), num.getNumBitsRequired());
+        assertEquals((short) 2, num.getNumBitsRequired());
         assertEquals(NumberType.PRIME, num.getNumType());
         assertFalse(num.isOdd());
     }
@@ -1015,7 +1015,7 @@ public class EntityTests {
 
         assertEquals(67L, num.getId());
         assertEquals(8L, num.getFloorOfSquareRoot());
-        assertEquals(Short.valueOf((short) 7), num.getNumBitsRequired());
+        assertEquals((short) 7, num.getNumBitsRequired());
         assertEquals(NumberType.PRIME, num.getNumType());
         assertTrue(num.isOdd());
 
@@ -1033,7 +1033,7 @@ public class EntityTests {
         try {
             page1 = positives.findMatching(
                     9L,
-                    Short.valueOf((short) 7),
+                    (short) 7,
                     NumberType.COMPOSITE,
                     page1Request,
                     Sort.desc("id"));
@@ -1051,7 +1051,7 @@ public class EntityTests {
 
         assertTrue(page1.hasNext());
 
-        Page<NaturalNumber> page2 = positives.findMatching(9L, Short.valueOf((short) 7), NumberType.COMPOSITE,
+        Page<NaturalNumber> page2 = positives.findMatching(9L, (short) 7, NumberType.COMPOSITE,
                                                            page1.nextPageRequest(), Sort.desc("id"));
 
         assertEquals(List.of(91L, 90L, 88L, 87L, 86L, 85L, 84L),
@@ -1059,7 +1059,7 @@ public class EntityTests {
 
         assertTrue(page2.hasNext());
 
-        Page<NaturalNumber> page3 = positives.findMatching(9L, Short.valueOf((short) 7), NumberType.COMPOSITE,
+        Page<NaturalNumber> page3 = positives.findMatching(9L, (short) 7, NumberType.COMPOSITE,
                                                            page2.nextPageRequest(), Sort.desc("id"));
 
         assertEquals(List.of(82L, 81L),
@@ -1245,7 +1245,7 @@ public class EntityTests {
         assertEquals(NumberType.PRIME, number.getNumType());
         assertEquals(8L, number.getFloorOfSquareRoot());
         assertTrue(number.isOdd());
-        assertEquals(Short.valueOf((short) 7), number.getNumBitsRequired());
+        assertEquals((short) 7, number.getNumBitsRequired());
 
         // second result
         assertTrue(it.hasNext());
@@ -1266,7 +1266,7 @@ public class EntityTests {
         assertEquals(NumberType.PRIME, number.getNumType());
         assertEquals(7L, number.getFloorOfSquareRoot());
         assertTrue(number.isOdd());
-        assertEquals(Short.valueOf((short) 6), number.getNumBitsRequired());
+        assertEquals((short) 6, number.getNumBitsRequired());
 
         assertFalse(it.hasNext());
     }
@@ -1333,21 +1333,21 @@ public class EntityTests {
             }
         }
 
-        assertEquals(List.of(Character.valueOf('L'), // 4c
-                             Character.valueOf('M'), // 4d
-                             Character.valueOf('N'), // 4e
-                             Character.valueOf('O'), // 4f
-                             Character.valueOf('P'), // 50
-                             Character.valueOf('Q'), // 51
-                             Character.valueOf('R'), // 52
-                             Character.valueOf('S'), // 53
-                             Character.valueOf('T'), // 54
-                             Character.valueOf('U'), // 55
-                             Character.valueOf('V'), // 56
-                             Character.valueOf('W'), // 57
-                             Character.valueOf('X'), // 58
-                             Character.valueOf('Y'), // 59
-                             Character.valueOf('Z')), // 5a
+        assertEquals(List.of('L', // 4c
+                             'M', // 4d
+                             'N', // 4e
+                             'O', // 4f
+                             'P', // 50
+                             'Q', // 51
+                             'R', // 52
+                             'S', // 53
+                             'T', // 54
+                             'U', // 55
+                             'V', // 56
+                             'W', // 57
+                             'X', // 58
+                             'Y', // 59
+                             'Z'), // 5a
                      found.map(AsciiCharacter::getThisCharacter).collect(Collectors.toList()));
     }
 
@@ -1665,7 +1665,7 @@ public class EntityTests {
 
         assertEquals(2L, two.getId());
         assertEquals(NumberType.PRIME, two.getNumType());
-        assertEquals(Short.valueOf((short) 2), two.getNumBitsRequired());
+        assertEquals((short) 2, two.getNumBitsRequired());
     }
 
     @Assertion(id = "458", strategy = "Use a repository method with a JDQL Query that specifies literal Integer values.")
@@ -2139,7 +2139,7 @@ public class EntityTests {
                              "5 is ODD PRIME and requires 3 bits",
                              "6 is EVEN COMPOSITE and requires 3 bits",
                              "7 is ODD PRIME and requires 3 bits"),
-                     numbers.numberList(Short.valueOf((short) 3))
+                     numbers.numberList((short) 3)
                              .stream()
                              .map(n -> n.id() +
                                      " is " + (n.isOdd() ? "ODD" : "EVEN") +
@@ -2161,7 +2161,7 @@ public class EntityTests {
 
         assertEquals(76L, num.value());
         assertEquals(NumberType.COMPOSITE.ordinal(), num.numType());
-        assertEquals(Short.valueOf((short) 7), num.numBitsRequired());
+        assertEquals((short) 7, num.numBitsRequired());
     }
 
     @Assertion(id = "539", strategy = """
@@ -2289,13 +2289,13 @@ public class EntityTests {
             array of records.
             """)
     public void testRecordComponentsChooseAttributeReturnArray() {
-        NumberInfo[] found = numbers.infoByNumBitsNeeded(Short.valueOf((short) 3));
+        NumberInfo[] found = numbers.infoByNumBitsNeeded((short) 3);
 
         assertEquals(4, found.length); // for binary 100, 101, 110, 111
 
         Map<Long, NumberInfo> threeBitNums = new HashMap<>();
         for (NumberInfo info : found) {
-            assertEquals(Short.valueOf((short) 3), info.numBitsRequired());
+            assertEquals((short) 3, info.numBitsRequired());
             assertNull(threeBitNums.put(info.id(), info)); // no duplicates
         }
 
@@ -2347,7 +2347,7 @@ public class EntityTests {
         NumberInfo num12 = numbers.infoByIdentifier(12L);
         assertEquals(12L, num12.id());
         assertFalse(num12.isOdd());
-        assertEquals(Short.valueOf((short) 4), num12.numBitsRequired());
+        assertEquals((short) 4, num12.numBitsRequired());
         assertEquals(NumberType.COMPOSITE, num12.numType());
 
         try {
@@ -2368,7 +2368,7 @@ public class EntityTests {
         NumberInfo num61 = numbers.infoIfFound(61L).orElseThrow();
         assertEquals(61L, num61.id());
         assertTrue(num61.isOdd());
-        assertEquals(Short.valueOf((short) 6), num61.numBitsRequired());
+        assertEquals((short) 6, num61.numBitsRequired());
         assertEquals(NumberType.PRIME, num61.numType());
 
         assertFalse(numbers.infoIfFound(-3L).isPresent());
@@ -2399,31 +2399,31 @@ public class EntityTests {
 
         assertNotNull(num = page2.content().get(0));
         assertEquals(11L, num.id());
-        assertEquals(Short.valueOf((short) 4), num.numBitsRequired());
+        assertEquals((short) 4, num.numBitsRequired());
         assertTrue(num.isOdd());
         assertEquals(NumberType.PRIME, num.numType());
 
         assertNotNull(num = page2.content().get(1));
         assertEquals(13L, num.id());
-        assertEquals(Short.valueOf((short) 4), num.numBitsRequired());
+        assertEquals((short) 4, num.numBitsRequired());
         assertTrue(num.isOdd());
         assertEquals(NumberType.PRIME, num.numType());
 
         assertNotNull(num = page2.content().get(2));
         assertEquals(15L, num.id());
-        assertEquals(Short.valueOf((short) 4), num.numBitsRequired());
+        assertEquals((short) 4, num.numBitsRequired());
         assertTrue(num.isOdd());
         assertEquals(NumberType.COMPOSITE, num.numType());
 
         assertNotNull(num = page2.content().get(3));
         assertEquals(17L, num.id());
-        assertEquals(Short.valueOf((short) 5), num.numBitsRequired());
+        assertEquals((short) 5, num.numBitsRequired());
         assertTrue(num.isOdd());
         assertEquals(NumberType.PRIME, num.numType());
 
         assertNotNull(num = page2.content().get(4));
         assertEquals(19L, num.id());
-        assertEquals(Short.valueOf((short) 5), num.numBitsRequired());
+        assertEquals((short) 5, num.numBitsRequired());
         assertTrue(num.isOdd());
         assertEquals(NumberType.PRIME, num.numType());
 
@@ -2433,7 +2433,7 @@ public class EntityTests {
 
         assertNotNull(num = page1.content().get(0));
         assertEquals(1L, num.id());
-        assertEquals(Short.valueOf((short) 1), num.numBitsRequired());
+        assertEquals((short) 1, num.numBitsRequired());
         assertTrue(num.isOdd());
         assertEquals(NumberType.ONE, num.numType());
 
@@ -2443,7 +2443,7 @@ public class EntityTests {
 
         assertNotNull(num = page3.content().get(4));
         assertEquals(29L, num.id());
-        assertEquals(Short.valueOf((short) 5), num.numBitsRequired());
+        assertEquals((short) 5, num.numBitsRequired());
         assertTrue(num.isOdd());
         assertEquals(NumberType.PRIME, num.numType());
     }
@@ -2478,7 +2478,7 @@ public class EntityTests {
     public void testReturnArrayOfRecordThatSelectsAttributes() {
         CardinalNumber[] found;
 
-        found = numbers.cardinalNumbers(Short.valueOf((short) 5));
+        found = numbers.cardinalNumbers((short) 5);
 
         assertEquals(List.of("16 COMPOSITE (5 bits)",
                              "17 PRIME (5 bits)",
@@ -2501,7 +2501,7 @@ public class EntityTests {
                              .sorted()
                              .collect(Collectors.toList()));
 
-        found = numbers.cardinalNumbers(Short.valueOf((short) 0));
+        found = numbers.cardinalNumbers((short) 0);
 
         assertEquals(0, found.length);
     }
@@ -2518,7 +2518,7 @@ public class EntityTests {
 
         assertTrue(found.isPresent());
         assertEquals(79L, found.get().value());
-        assertEquals(Short.valueOf((short) 7), found.get().numBitsRequired());
+        assertEquals((short) 7, found.get().numBitsRequired());
         assertEquals(NumberType.PRIME.ordinal(), found.get().numType());
 
         found = numbers.cardinalNumberOptional(0); // database only has 1 to 100
@@ -2593,7 +2593,7 @@ public class EntityTests {
         CardinalNumber found = characters.cardinalNumberOf(59L);
 
         assertEquals(59L, found.value());
-        assertEquals(Short.valueOf((short) 6), found.numBitsRequired());
+        assertEquals((short) 6, found.numBitsRequired());
         assertEquals(NumberType.PRIME.ordinal(), found.numType());
 
         try {
@@ -2629,7 +2629,7 @@ public class EntityTests {
             """)
     public void testSelectEntityAttributeAsArrayOfLong() {
 
-        long[] found = positives.requiringBits(Short.valueOf((short) 4));
+        long[] found = positives.requiringBits((short) 4);
 
         assertEquals(List.of(8L, 9L, 10L, 11L, 12L, 13L, 14L, 15L),
                      Arrays.stream(found)
@@ -2637,7 +2637,7 @@ public class EntityTests {
                                      .mapToObj(Long::valueOf)
                                      .collect(Collectors.toList()));
 
-        long[] notFound = positives.requiringBits(Short.valueOf((short) 0));
+        long[] notFound = positives.requiringBits((short) 0);
 
         assertEquals(0, notFound.length);
     }
@@ -2737,7 +2737,7 @@ public class EntityTests {
             """)
     public void testSelectEntityAttributeAsStreamOfLong() {
 
-        Stream<Long> found = shared.withBitRequirementOf(Short.valueOf((short) 5));
+        Stream<Long> found = shared.withBitRequirementOf((short) 5);
 
         assertEquals(List.of(16L, 17L, 18L, 19L, 20L, 21L, 22L, 23L,
                              24L, 25L, 26L, 27L, 28L, 29L, 30L, 31L),
@@ -2746,7 +2746,7 @@ public class EntityTests {
                                      .collect(Collectors.toList()));
 
         assertEquals(0L,
-                     shared.withBitRequirementOf(Short.valueOf((short) -1)).count());
+                     shared.withBitRequirementOf((short) -1).count());
     }
 
     @Assertion(id = "539", strategy = """
@@ -3161,15 +3161,15 @@ public class EntityTests {
             }
         }
 
-        assertEquals(Arrays.toString(new Character[] { Character.valueOf('e'),
-                                                       Character.valueOf('f'),
-                                                       Character.valueOf('g'),
-                                                       Character.valueOf('h'),
-                                                       Character.valueOf('i'),
-                                                       Character.valueOf('j'),
-                                                       Character.valueOf('k'),
-                                                       Character.valueOf('l'),
-                                                       Character.valueOf('m') }),
+        assertEquals(Arrays.toString(new Character[] { 'e',
+                                                       'f',
+                                                       'g',
+                                                       'h',
+                                                       'i',
+                                                       'j',
+                                                       'k',
+                                                       'l',
+                                                       'm' }),
                      Arrays.toString(chars.stream().map(AsciiCharacter::getThisCharacter).sorted().toArray()));
 
         assertEquals(101 + 102 + 103 + 104 + 105 + 106 + 107 + 108 + 109,
