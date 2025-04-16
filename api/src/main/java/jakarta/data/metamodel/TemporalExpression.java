@@ -29,15 +29,15 @@ import jakarta.data.metamodel.expression.CurrentTime;
 public interface TemporalExpression<T, V extends Temporal & Comparable<? extends Temporal>>
         extends ComparableExpression<T, V> {
 
-    static <T> TemporalExpression<T, LocalDate> currentDate() {
+    static TemporalExpression<Object, LocalDate> localDate() {
         return CurrentDate.now();
     }
 
-    static <T> TemporalExpression<T, LocalDateTime> currentDateTime() {
+    static TemporalExpression<Object, LocalDateTime> localDateTime() {
         return CurrentDateTime.now();
     }
 
-    static <T> TemporalExpression<T, LocalTime> currentTime() {
+    static TemporalExpression<Object, LocalTime> localTime() {
         return CurrentTime.now();
     }
 
