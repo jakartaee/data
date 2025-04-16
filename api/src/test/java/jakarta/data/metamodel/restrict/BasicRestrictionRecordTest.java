@@ -32,7 +32,6 @@ class BasicRestrictionRecordTest {
 
     @Test
     void shouldCreateBasicRestrictionWithDefaultNegation() {
-        @SuppressWarnings("unchecked")
         BasicRestriction<Book, String> restriction =
                 (BasicRestriction<Book, String>) _Book.title.equalTo("Java Guide");
 
@@ -44,7 +43,6 @@ class BasicRestrictionRecordTest {
 
     @Test
     void shouldCreateBasicRestrictionWithExplicitNegation() {
-        @SuppressWarnings("unchecked")
         BasicRestriction<Book, String> restriction =
                 (BasicRestriction<Book, String>) _Book.title.equalTo("Java Guide")
                         .negate();
@@ -57,7 +55,6 @@ class BasicRestrictionRecordTest {
 
     @Test
     void shouldNegateLTERestriction() {
-        @SuppressWarnings("unchecked")
         BasicRestriction<Book, Integer> numChaptersLTE10Basic =
                 (BasicRestriction<Book, Integer>) _Book.numChapters.lessThanEqual(10);
         BasicRestriction<Book, Integer> numChaptersGT10Basic = numChaptersLTE10Basic.negate();
@@ -71,7 +68,6 @@ class BasicRestrictionRecordTest {
 
     @Test
     void shouldNegateNegatedRestriction() {
-        @SuppressWarnings("unchecked")
         BasicRestriction<Book, String> titleRestrictionBasic =
                 (BasicRestriction<Book, String>) _Book.title.equalTo("A Developer's Guide to Jakarta Data");
         BasicRestriction<Book, String> negatedTitleRestrictionBasic =
@@ -93,9 +89,7 @@ class BasicRestrictionRecordTest {
 
     @Test
     void shouldOutputToString() {
-        @SuppressWarnings("unchecked")
-        Restriction<Book> restriction =
-                (BasicRestriction<Book, Integer>) _Book.numPages.greaterThan(100);
+        Restriction<Book> restriction = _Book.numPages.greaterThan(100);
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.toString())
@@ -105,7 +99,6 @@ class BasicRestrictionRecordTest {
 
     @Test
     void shouldSupportNegatedRestrictionUsingDefaultConstructor() {
-        @SuppressWarnings("unchecked")
         BasicRestriction<Book, String> negatedRestriction =
                 (BasicRestriction<Book, String>) _Book.author.notEqualTo("Unknown");
 
