@@ -17,9 +17,12 @@
  */
 package jakarta.data.metamodel;
 
+import java.time.temporal.Temporal;
+
 import jakarta.data.metamodel.path.ComparablePath;
 import jakarta.data.metamodel.path.NavigablePath;
 import jakarta.data.metamodel.path.NumericPath;
+import jakarta.data.metamodel.path.TemporalPath;
 import jakarta.data.metamodel.path.TextPath;
 
 public interface NavigableExpression<T,U> {
@@ -38,6 +41,11 @@ public interface NavigableExpression<T,U> {
 
     default <N extends Number & Comparable<N>> NumericExpression<T, N> navigate(NumericAttribute<U, N> attribute) {
         return NumericPath.of(this, attribute);
+    }
+
+    default <V extends Temporal & Comparable<? extends Temporal>> TemporalExpression<T, V> navigate(
+            TemporalAttribute<U, V> attribute) {
+        return TemporalPath.of(this, attribute);
     }
 
 }

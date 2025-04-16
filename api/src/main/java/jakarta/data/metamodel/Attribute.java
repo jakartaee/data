@@ -27,9 +27,11 @@ package jakarta.data.metamodel;
  * <li>{@link NumericAttribute} for entity attributes that represent numeric
  *     values, such as {@code int}, {@link Long}, and {@link java.math.BigDecimal}.
  *     </li>
+ * <li>{@link TemporalAttribute} for entity attributes that represent temporal
+ *     values, such as {@link java.time.LocalDateTime} and
+ *     {@link java.time.Instant}.</li>
  * <li>{@link ComparableAttribute} for entity attributes that represent other
- *     sortable and comparable values, such as {@code boolean},
- *     {@link java.time.LocalDateTime}, and enumerations.</li>
+ *     sortable and comparable values, such as {@code boolean} and enumerations.</li>
  * <li>{@link SortableAttribute} for entity types that are sortable, but not
  *     comparable. Generally this subtype is unused but is applicable for
  *     databases that allow sorting on attributes of type {@code byte[]}.</li>
