@@ -47,7 +47,6 @@ class AttributeTest {
             BasicAttribute.of(Person.class, "testAttribute", String.class);
     @Test
     void shouldCreateEqualToRestriction() {
-        @SuppressWarnings("unchecked")
         BasicRestriction<Person, String> restriction =
                 (BasicRestriction<Person, String>) testAttribute.equalTo("testValue");
 
@@ -61,7 +60,6 @@ class AttributeTest {
 
     @Test
     void shouldCreateNotEqualToRestriction() {
-        @SuppressWarnings("unchecked")
         BasicRestriction<Person, String> restriction =
                 (BasicRestriction<Person, String>) testAttribute.notEqualTo("testValue");
 
@@ -75,7 +73,6 @@ class AttributeTest {
 
     @Test
     void shouldCreateInRestriction() {
-        @SuppressWarnings("unchecked")
         BasicRestriction<Person, String> restriction =
                 (BasicRestriction<Person, String>) testAttribute.in(Set.of("value1", "value2"));
 
@@ -96,7 +93,6 @@ class AttributeTest {
 
     @Test
     void shouldCreateNotInRestriction() {
-        @SuppressWarnings("unchecked")
         BasicRestriction<Person, String> restriction =
                 (BasicRestriction<Person, String>) testAttribute.notIn(Set.of("value1", "value2"));
 
@@ -117,7 +113,6 @@ class AttributeTest {
 
     @Test
     void shouldCreateIsNullRestriction() {
-        @SuppressWarnings("unchecked")
         BasicRestriction<Person, String> restriction =
                 (BasicRestriction<Person, String>) testAttribute.isNull();
 
@@ -130,7 +125,6 @@ class AttributeTest {
 
     @Test
     void shouldCreateNotNullRestriction() {
-        @SuppressWarnings("unchecked")
         BasicRestriction<Person, String> restriction =
                 (BasicRestriction<Person, String>) testAttribute.notNull();
 

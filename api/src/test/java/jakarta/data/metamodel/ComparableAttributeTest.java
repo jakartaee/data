@@ -43,7 +43,6 @@ class ComparableAttributeTest {
 
     @Test
     void shouldCreateGreaterThanRestriction() {
-        @SuppressWarnings("unchecked")
         BasicRestriction<Person, Integer> restriction =
                 (BasicRestriction<Person, Integer>) testAttribute.greaterThan(10);
 
@@ -57,7 +56,6 @@ class ComparableAttributeTest {
 
     @Test
     void shouldCreateGreaterThanEqualRestriction() {
-        @SuppressWarnings("unchecked")
         BasicRestriction<Person, Integer> restriction =
                 (BasicRestriction<Person, Integer>) testAttribute.greaterThanEqual(10);
 
@@ -71,7 +69,6 @@ class ComparableAttributeTest {
 
     @Test
     void shouldCreateLessThanRestriction() {
-        @SuppressWarnings("unchecked")
         BasicRestriction<Person, Integer> restriction =
                 (BasicRestriction<Person, Integer>) testAttribute.lessThan(10);
 
@@ -85,7 +82,6 @@ class ComparableAttributeTest {
 
     @Test
     void shouldCreateLessThanOrEqualRestriction() {
-        @SuppressWarnings("unchecked")
         BasicRestriction<Person, Integer> restriction =
                 (BasicRestriction<Person, Integer>) testAttribute.lessThanEqual(10);
 
@@ -99,7 +95,6 @@ class ComparableAttributeTest {
 
     @Test
     void shouldCreateBetweenRestriction() {
-        @SuppressWarnings("unchecked")
         BasicRestriction<Person, Integer> restriction =
                 (BasicRestriction<Person, Integer>) testAttribute.between(5, 15);
 

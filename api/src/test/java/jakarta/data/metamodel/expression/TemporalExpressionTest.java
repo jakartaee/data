@@ -50,7 +50,6 @@ class TemporalExpressionTest {
             _Book.publicationDate.between(LocalDate.of(2025, Month.APRIL, 1),
                                           LocalDate.of(2025, Month.APRIL, 30));
 
-        @SuppressWarnings("unchecked")
         BasicRestriction<Book, LocalDate> restriction =
             (BasicRestriction<Book, LocalDate>) publishedInApril2025;
 

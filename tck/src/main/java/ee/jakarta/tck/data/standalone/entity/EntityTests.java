@@ -15,12 +15,6 @@
  */
 package ee.jakarta.tck.data.standalone.entity;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
-
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -76,6 +70,13 @@ import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
 import jakarta.data.page.PageRequest.Cursor;
 import jakarta.inject.Inject;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Execute a test with an entity that is dual annotated which means this test
@@ -186,31 +187,31 @@ public class EntityTests {
                                                     Box.of("TestBasicRepositoryMethods-03", 33, 56, 65),
                                                     Box.of("TestBasicRepositoryMethods-04", 45, 28, 53)));
         Iterator<Box> savedIt = saved.iterator();
-        assertEquals(true, savedIt.hasNext());
+        assertTrue(savedIt.hasNext());
         Box box1 = savedIt.next();
         assertEquals("TestBasicRepositoryMethods-01", box1.boxIdentifier);
         assertEquals(119, box1.length);
         assertEquals(120, box1.width);
         assertEquals(169, box1.height);
-        assertEquals(true, savedIt.hasNext());
+        assertTrue(savedIt.hasNext());
         Box box2 = savedIt.next();
         assertEquals("TestBasicRepositoryMethods-02", box2.boxIdentifier);
         assertEquals(20, box2.length);
         assertEquals(21, box2.width);
         assertEquals(29, box2.height);
-        assertEquals(true, savedIt.hasNext());
+        assertTrue(savedIt.hasNext());
         Box box3 = savedIt.next();
         assertEquals("TestBasicRepositoryMethods-03", box3.boxIdentifier);
         assertEquals(33, box3.length);
         assertEquals(56, box3.width);
         assertEquals(65, box3.height);
-        assertEquals(true, savedIt.hasNext());
+        assertTrue(savedIt.hasNext());
         Box box4 = savedIt.next();
         assertEquals("TestBasicRepositoryMethods-04", box4.boxIdentifier);
         assertEquals(45, box4.length);
         assertEquals(28, box4.width);
         assertEquals(53, box4.height);
-        assertEquals(false, savedIt.hasNext());
+        assertFalse(savedIt.hasNext());
 
         TestPropertyUtility.waitForEventualConsistency();
 
@@ -247,7 +248,7 @@ public class EntityTests {
 
         // BasicRepository.findAll
         Stream<Box> stream = boxes.findAll();
-        List<Box> list = stream.sorted(Comparator.comparing(b -> b.boxIdentifier)).collect(Collectors.toList());
+        List<Box> list = stream.sorted(Comparator.comparing(b -> b.boxIdentifier)).toList();
         assertEquals(2, list.size());
         box4 = list.get(0);
         assertEquals("TestBasicRepositoryMethods-03", box3.boxIdentifier);
@@ -266,7 +267,7 @@ public class EntityTests {
         TestPropertyUtility.waitForEventualConsistency();
 
         // BasicRepository.findById
-        assertEquals(false, boxes.findById("TestBasicRepositoryMethods-03").isPresent());
+        assertFalse(boxes.findById("TestBasicRepositoryMethods-03").isPresent());
         box5 = boxes.findById("TestBasicRepositoryMethods-05").orElseThrow();
         assertEquals("TestBasicRepositoryMethods-05", box5.boxIdentifier);
         assertEquals(153, box5.length);
@@ -289,31 +290,31 @@ public class EntityTests {
                                                     Box.of("TestBasicRepositoryMethods-03", 33, 56, 65),
                                                     Box.of("TestBasicRepositoryMethods-04", 45, 28, 53)));
         Iterator<Box> savedIt = saved.iterator();
-        assertEquals(true, savedIt.hasNext());
+        assertTrue(savedIt.hasNext());
         Box box1 = savedIt.next();
         assertEquals("TestBasicRepositoryMethods-01", box1.boxIdentifier);
         assertEquals(119, box1.length);
         assertEquals(120, box1.width);
         assertEquals(169, box1.height);
-        assertEquals(true, savedIt.hasNext());
+        assertTrue(savedIt.hasNext());
         Box box2 = savedIt.next();
         assertEquals("TestBasicRepositoryMethods-02", box2.boxIdentifier);
         assertEquals(20, box2.length);
         assertEquals(21, box2.width);
         assertEquals(29, box2.height);
-        assertEquals(true, savedIt.hasNext());
+        assertTrue(savedIt.hasNext());
         Box box3 = savedIt.next();
         assertEquals("TestBasicRepositoryMethods-03", box3.boxIdentifier);
         assertEquals(33, box3.length);
         assertEquals(56, box3.width);
         assertEquals(65, box3.height);
-        assertEquals(true, savedIt.hasNext());
+        assertTrue(savedIt.hasNext());
         Box box4 = savedIt.next();
         assertEquals("TestBasicRepositoryMethods-04", box4.boxIdentifier);
         assertEquals(45, box4.length);
         assertEquals(28, box4.width);
         assertEquals(53, box4.height);
-        assertEquals(false, savedIt.hasNext());
+        assertFalse(savedIt.hasNext());
 
         TestPropertyUtility.waitForEventualConsistency();
 
@@ -350,7 +351,7 @@ public class EntityTests {
 
         // BasicRepository.findAll
         Stream<Box> stream = boxes.findAll();
-        List<Box> list = stream.sorted(Comparator.comparing(b -> b.boxIdentifier)).collect(Collectors.toList());
+        List<Box> list = stream.sorted(Comparator.comparing(b -> b.boxIdentifier)).toList();
         assertEquals(2, list.size());
         box4 = list.get(0);
         assertEquals("TestBasicRepositoryMethods-03", box3.boxIdentifier);
@@ -369,7 +370,7 @@ public class EntityTests {
         TestPropertyUtility.waitForEventualConsistency();
 
         // BasicRepository.findById
-        assertEquals(false, boxes.findById("TestBasicRepositoryMethods-03").isPresent());
+        assertFalse(boxes.findById("TestBasicRepositoryMethods-03").isPresent());
         box5 = boxes.findById("TestBasicRepositoryMethods-05").orElseThrow();
         assertEquals("TestBasicRepositoryMethods-05", box5.boxIdentifier);
         assertEquals(153, box5.length);
@@ -399,8 +400,8 @@ public class EntityTests {
         }
         assertEquals(0, page.numberOfElements());
         assertEquals(0, page.stream().count());
-        assertEquals(false, page.hasContent());
-        assertEquals(false, page.iterator().hasNext());
+        assertFalse(page.hasContent());
+        assertFalse(page.iterator().hasNext());
         try {
             assertEquals(43L, page.totalElements());
             assertEquals(5L, page.totalPages());
@@ -435,8 +436,8 @@ public class EntityTests {
         }
         assertEquals(0, page.numberOfElements());
         assertEquals(0, page.stream().count());
-        assertEquals(false, page.hasContent());
-        assertEquals(false, page.iterator().hasNext());
+        assertFalse(page.hasContent());
+        assertFalse(page.iterator().hasNext());
     }
 
     @Assertion(id = "133", strategy = "Use a parameter-based find operation that uses the By annotation to identify the entity attribute names.")
@@ -445,9 +446,9 @@ public class EntityTests {
         assertEquals('L', ch.getThisCharacter());
         assertEquals("4c", ch.getHexadecimal());
         assertEquals(76L, ch.getId());
-        assertEquals(false, ch.isControl());
+        assertFalse(ch.isControl());
 
-        assertEquals(true, characters.find('M', "4b").isEmpty());
+        assertTrue(characters.find('M', "4b").isEmpty());
     }
 
     @Assertion(id = "133", strategy = "Use a repository that inherits some if its methods from another interface.")
@@ -465,13 +466,13 @@ public class EntityTests {
             }
         }
 
-        assertEquals(true, numbers.existsById(73L));
+        assertTrue(numbers.existsById(73L));
 
-        assertEquals(true, characters.existsById(74L));
+        assertTrue(characters.existsById(74L));
 
-        assertEquals(false, numbers.existsById(-1L));
+        assertFalse(numbers.existsById(-1L));
 
-        assertEquals(false, characters.existsById(-2L));
+        assertFalse(characters.existsById(-2L));
 
         try {
             assertEquals(
@@ -519,7 +520,7 @@ public class EntityTests {
             AsciiCharacter del = characters.findByIsControlTrueAndNumericValueBetween(33, 127);
             assertEquals(127, del.getNumericValue());
             assertEquals("7f", del.getHexadecimal());
-            assertEquals(true, del.isControl());
+            assertTrue(del.isControl());
         } catch (UnsupportedOperationException x) {
             if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
                 // Column and Key-Value databases might not be capable of And.
@@ -535,7 +536,7 @@ public class EntityTests {
             assertEquals("6a", j.getHexadecimal());
             assertEquals('j', j.getThisCharacter());
             assertEquals(106, j.getNumericValue());
-            assertEquals(false, j.isControl());
+            assertFalse(j.isControl());
         } catch (UnsupportedOperationException x) {
             if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
                 // NoSQL databases might not be capable of IgnoreCase
@@ -548,9 +549,9 @@ public class EntityTests {
         assertEquals(100, d.getNumericValue());
         assertEquals('d', d.getThisCharacter());
         assertEquals("64", d.getHexadecimal());
-        assertEquals(false, d.isControl());
+        assertFalse(d.isControl());
 
-        assertEquals(true, characters.existsByThisCharacter('D'));
+        assertTrue(characters.existsByThisCharacter('D'));
     }
 
     @Assertion(id = "133", strategy = "Use a default method from a repository interface where the default method invokes other repository methods.")
@@ -668,13 +669,13 @@ public class EntityTests {
         Iterator<AsciiCharacter> it = page.iterator();
 
         // first result
-        assertEquals(true, it.hasNext());
+        assertTrue(it.hasNext());
         AsciiCharacter ch = it.next();
         assertEquals('X', ch.getThisCharacter());
         assertEquals("58", ch.getHexadecimal());
         assertEquals(88L, ch.getId());
         assertEquals(88, ch.getNumericValue());
-        assertEquals(false, ch.isControl());
+        assertFalse(ch.isControl());
 
         // second result
         ch = it.next();
@@ -682,7 +683,7 @@ public class EntityTests {
         assertEquals("59", ch.getHexadecimal());
         assertEquals(89L, ch.getId());
         assertEquals(89, ch.getNumericValue());
-        assertEquals(false, ch.isControl());
+        assertFalse(ch.isControl());
 
         // third result
         ch = it.next();
@@ -690,12 +691,12 @@ public class EntityTests {
         assertEquals("5a", ch.getHexadecimal());
         assertEquals(90L, ch.getId());
         assertEquals(90, ch.getNumericValue());
-        assertEquals(false, ch.isControl());
+        assertFalse(ch.isControl());
 
-        assertEquals(false, it.hasNext());
+        assertFalse(it.hasNext());
 
         assertEquals(5, page.pageRequest().page());
-        assertEquals(true, page.hasContent());
+        assertTrue(page.hasContent());
         assertEquals(3, page.numberOfElements());
         try {
             assertEquals(43L, page.totalElements());
@@ -729,31 +730,31 @@ public class EntityTests {
                 throw x;
             }
         }
-        assertEquals(true, page.hasContent());
+        assertTrue(page.hasContent());
         assertEquals(5, page.pageRequest().page());
         assertEquals(2, page.numberOfElements());
 
         Iterator<NaturalNumber> it = page.iterator();
 
         // first result
-        assertEquals(true, it.hasNext());
+        assertTrue(it.hasNext());
         NaturalNumber number = it.next();
         assertEquals(3L, number.getId());
         assertEquals(NumberType.PRIME, number.getNumType());
         assertEquals(1L, number.getFloorOfSquareRoot());
-        assertEquals(true, number.isOdd());
+        assertTrue(number.isOdd());
         assertEquals(Short.valueOf((short) 2), number.getNumBitsRequired());
 
         // second result
-        assertEquals(true, it.hasNext());
+        assertTrue(it.hasNext());
         number = it.next();
         assertEquals(2L, number.getId());
         assertEquals(NumberType.PRIME, number.getNumType());
         assertEquals(1L, number.getFloorOfSquareRoot());
-        assertEquals(false, number.isOdd());
+        assertFalse(number.isOdd());
         assertEquals(Short.valueOf((short) 2), number.getNumBitsRequired());
 
-        assertEquals(false, it.hasNext());
+        assertFalse(it.hasNext());
     }
 
     @Assertion(id = "133",
@@ -783,7 +784,7 @@ public class EntityTests {
 
         assertEquals(List.of(11L, 10L, 9L, // square root rounds down to 3
                              24L, 23L, 22L, 21L, 20L, 19L, 18L, 17L, 16L), // square root rounds down to 4
-                     page2.stream().map(n -> n.getId()).collect(Collectors.toList()));
+                     page2.stream().map(NaturalNumber::getId).collect(Collectors.toList()));
     }
 
     @Assertion(id = "539", strategy = """
@@ -819,7 +820,7 @@ public class EntityTests {
         assertEquals("3d", hex.hexadecimal());
         assertEquals(61, hex.numericValue());
 
-        assertEquals(false, numbers.hexadecimalInfo(-5).isPresent());
+        assertFalse(numbers.hexadecimalInfo(-5).isPresent());
 
         hex = numbers.hexadecimalInfo(95).orElseThrow();
         assertEquals("5f", hex.hexadecimal());
@@ -916,7 +917,7 @@ public class EntityTests {
                 throw e;
             }
         }
-        assertEquals(true, none.isEmpty());
+        assertTrue(none.isEmpty());
 
         AsciiCharacter ch = characters.findFirstByHexadecimalStartsWithAndIsControlOrderByIdAsc("4", false)
                         .orElseThrow();
@@ -992,7 +993,7 @@ public class EntityTests {
         assertEquals(1L, num.getFloorOfSquareRoot());
         assertEquals(Short.valueOf((short) 2), num.getNumBitsRequired());
         assertEquals(NumberType.PRIME, num.getNumType());
-        assertEquals(false, num.isOdd());
+        assertFalse(num.isOdd());
     }
 
     @Assertion(id = "133",
@@ -1016,11 +1017,11 @@ public class EntityTests {
         assertEquals(8L, num.getFloorOfSquareRoot());
         assertEquals(Short.valueOf((short) 7), num.getNumBitsRequired());
         assertEquals(NumberType.PRIME, num.getNumType());
-        assertEquals(true, num.isOdd());
+        assertTrue(num.isOdd());
 
         Optional<NaturalNumber> opt = positives.findNumber(-40L);
 
-        assertEquals(false, opt.isPresent());
+        assertFalse(opt.isPresent());
     }
 
     @Assertion(id = "133",
@@ -1048,7 +1049,7 @@ public class EntityTests {
         assertEquals(List.of(99L, 98L, 96L, 95L, 94L, 93L, 92L),
                      page1.stream().map(NaturalNumber::getId).collect(Collectors.toList()));
 
-        assertEquals(true, page1.hasNext());
+        assertTrue(page1.hasNext());
 
         Page<NaturalNumber> page2 = positives.findMatching(9L, Short.valueOf((short) 7), NumberType.COMPOSITE,
                                                            page1.nextPageRequest(), Sort.desc("id"));
@@ -1056,7 +1057,7 @@ public class EntityTests {
         assertEquals(List.of(91L, 90L, 88L, 87L, 86L, 85L, 84L),
                      page2.stream().map(NaturalNumber::getId).collect(Collectors.toList()));
 
-        assertEquals(true, page2.hasNext());
+        assertTrue(page2.hasNext());
 
         Page<NaturalNumber> page3 = positives.findMatching(9L, Short.valueOf((short) 7), NumberType.COMPOSITE,
                                                            page2.nextPageRequest(), Sort.desc("id"));
@@ -1064,7 +1065,7 @@ public class EntityTests {
         assertEquals(List.of(82L, 81L),
                      page3.stream().map(NaturalNumber::getId).collect(Collectors.toList()));
 
-        assertEquals(false, page3.hasNext());
+        assertFalse(page3.hasNext());
     }
 
     @Assertion(id = "133",
@@ -1098,7 +1099,7 @@ public class EntityTests {
         assertEquals(8, page.numberOfElements());
 
         assertEquals(Arrays.toString(new Long[] { 32L, 25L, 26L, 27L, 28L, 29L, 30L, 31L }),
-                     Arrays.toString(page.stream().map(number -> number.getId()).toArray()));
+                     Arrays.toString(page.stream().map(NaturalNumber::getId).toArray()));
 
         try {
             page = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByNumBitsRequiredDesc(4L, 33L, page.nextPageRequest(), order);
@@ -1109,7 +1110,7 @@ public class EntityTests {
         }
 
         assertEquals(Arrays.toString(new Long[] { 8L, 9L, 10L, 11L, 12L, 13L, 14L, 15L }),
-                     Arrays.toString(page.stream().map(number -> number.getId()).toArray()));
+                     Arrays.toString(page.stream().map(NaturalNumber::getId).toArray()));
 
         assertEquals(8, page.numberOfElements());
 
@@ -1124,7 +1125,7 @@ public class EntityTests {
         assertEquals(7, page.numberOfElements());
 
         assertEquals(Arrays.toString(new Long[] { 4L, 5L, 6L, 7L, 2L, 3L, 1L }),
-                     Arrays.toString(page.stream().map(number -> number.getId()).toArray()));
+                     Arrays.toString(page.stream().map(NaturalNumber::getId).toArray()));
     }
 
     @Assertion(id = "133",
@@ -1145,7 +1146,7 @@ public class EntityTests {
         }
 
         assertEquals(Arrays.toString(new Long[] { 49L, 50L, 51L, 52L, 53L, 54L }),
-                     Arrays.toString(slice.stream().map(number -> number.getId()).toArray()));
+                     Arrays.toString(slice.stream().map(NaturalNumber::getId).toArray()));
 
         assertEquals(6, slice.numberOfElements());
 
@@ -1160,7 +1161,7 @@ public class EntityTests {
         assertEquals(6, slice.numberOfElements());
 
         assertEquals(Arrays.toString(new Long[] { 55L, 56L, 57L, 58L, 59L, 60L }),
-                     Arrays.toString(slice.stream().map(number -> number.getId()).toArray()));
+                     Arrays.toString(slice.stream().map(NaturalNumber::getId).toArray()));
 
         try {
             slice = numbers.findByFloorOfSquareRootOrderByIdAsc(7L, slice.nextPageRequest());
@@ -1171,7 +1172,7 @@ public class EntityTests {
         }
 
         assertEquals(Arrays.toString(new Long[] { 61L, 62L, 63L }),
-                     Arrays.toString(slice.stream().map(number -> number.getId()).toArray()));
+                     Arrays.toString(slice.stream().map(NaturalNumber::getId).toArray()));
 
         assertEquals(3, slice.numberOfElements());
     }
@@ -1194,7 +1195,7 @@ public class EntityTests {
         }
 
         assertEquals(1, page.pageRequest().page());
-        assertEquals(true, page.hasContent());
+        assertTrue(page.hasContent());
         assertEquals(10, page.numberOfElements());
         try {
             assertEquals(43L, page.totalElements());
@@ -1238,42 +1239,42 @@ public class EntityTests {
         Iterator<NaturalNumber> it = page.iterator();
 
         // first result
-        assertEquals(true, it.hasNext());
+        assertTrue(it.hasNext());
         NaturalNumber number = it.next();
         assertEquals(79L, number.getId());
         assertEquals(NumberType.PRIME, number.getNumType());
         assertEquals(8L, number.getFloorOfSquareRoot());
-        assertEquals(true, number.isOdd());
+        assertTrue(number.isOdd());
         assertEquals(Short.valueOf((short) 7), number.getNumBitsRequired());
 
         // second result
-        assertEquals(true, it.hasNext());
+        assertTrue(it.hasNext());
         assertEquals(73L, it.next().getId());
 
         // third result
-        assertEquals(true, it.hasNext());
+        assertTrue(it.hasNext());
         assertEquals(71L, it.next().getId());
 
         // fourth result
-        assertEquals(true, it.hasNext());
+        assertTrue(it.hasNext());
         assertEquals(67L, it.next().getId());
 
         // fifth result
-        assertEquals(true, it.hasNext());
+        assertTrue(it.hasNext());
         number = it.next();
         assertEquals(61L, number.getId());
         assertEquals(NumberType.PRIME, number.getNumType());
         assertEquals(7L, number.getFloorOfSquareRoot());
-        assertEquals(true, number.isOdd());
+        assertTrue(number.isOdd());
         assertEquals(Short.valueOf((short) 6), number.getNumBitsRequired());
 
-        assertEquals(false, it.hasNext());
+        assertFalse(it.hasNext());
     }
 
     @Assertion(id = "133", strategy = "Use a repository method existsByIdGreaterThan confirming the correct boolean is returned.")
     public void testGreaterThanEqualExists() {
         try {
-            assertEquals(true, positives.existsByIdGreaterThan(0L));
+            assertTrue(positives.existsByIdGreaterThan(0L));
         } catch (UnsupportedOperationException x) {
             if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
                 return; // Key-Value databases are not capable of GreaterThan
@@ -1281,8 +1282,8 @@ public class EntityTests {
                 throw x;
             }
         }
-        assertEquals(true, positives.existsByIdGreaterThan(99L));
-        assertEquals(false, positives.existsByIdGreaterThan(100L)); // doesn't exist because the table only has 1 to 100
+        assertTrue(positives.existsByIdGreaterThan(99L));
+        assertFalse(positives.existsByIdGreaterThan(100L)); // doesn't exist because the table only has 1 to 100
     }
 
     @Assertion(id = "133", strategy = "Use a repository method with the In keyword.")
@@ -1382,11 +1383,11 @@ public class EntityTests {
                                                   8L, // 4 bits required, square root rounds down to 2
                                                   15L, 14L, 13L, 12L, 11L // 4 bits required, square root rounds down to 3
         }),
-                     Arrays.toString(page.stream().map(number -> number.getId()).toArray()));
+                     Arrays.toString(page.stream().map(NaturalNumber::getId).toArray()));
 
         assertEquals(7, page.numberOfElements());
 
-        assertEquals(true, page.hasPrevious());
+        assertTrue(page.hasPrevious());
 
         CursoredPage<NaturalNumber> previousPage;
         try {
@@ -1402,7 +1403,7 @@ public class EntityTests {
         assertEquals(Arrays.toString(new Long[] { 16L, // 4 bits required, square root rounds down to 4
                                                   31L, 30L, 29L, 28L, 27L, 26L // 5 bits required, square root rounds down to 5
         }),
-                     Arrays.toString(previousPage.stream().map(number -> number.getId()).toArray()));
+                     Arrays.toString(previousPage.stream().map(NaturalNumber::getId).toArray()));
 
         assertEquals(7, previousPage.numberOfElements());
 
@@ -1421,7 +1422,7 @@ public class EntityTests {
                                                   7L, 6L, 5L, 4L, // 3 bits required, square root rounds down to 2
                                                   3L // 2 bits required, square root rounds down to 1
         }),
-                     Arrays.toString(nextPage.stream().map(number -> number.getId()).toArray()));
+                     Arrays.toString(nextPage.stream().map(NaturalNumber::getId).toArray()));
 
         assertEquals(7, nextPage.numberOfElements());
     }
@@ -1441,9 +1442,9 @@ public class EntityTests {
             return;
         }
 
-        assertEquals(false, page.hasContent());
-        assertEquals(false, page.hasNext());
-        assertEquals(false, page.hasPrevious());
+        assertFalse(page.hasContent());
+        assertFalse(page.hasNext());
+        assertFalse(page.hasPrevious());
         assertEquals(0, page.content().size());
         assertEquals(0, page.numberOfElements());
 
@@ -1491,11 +1492,11 @@ public class EntityTests {
         }
 
         assertEquals(Arrays.toString(new Long[] { 48L, 25L, 26L, 27L, 28L, 30L, 32L, 33L, 34L }),
-                     Arrays.toString(slice.stream().map(number -> number.getId()).toArray()));
+                     Arrays.toString(slice.stream().map(NaturalNumber::getId).toArray()));
 
         assertEquals(9, slice.numberOfElements());
 
-        assertEquals(true, slice.hasPrevious());
+        assertTrue(slice.hasPrevious());
         CursoredPage<NaturalNumber> previousSlice;
         try {
             previousSlice = numbers.findByNumTypeAndNumBitsRequiredLessThan(NumberType.COMPOSITE,
@@ -1509,7 +1510,7 @@ public class EntityTests {
         }
 
          assertEquals(Arrays.toString(new Long[] { 63L, 36L, 38L, 39L, 40L, 42L, 44L, 45L, 46L }),
-                      Arrays.toString(previousSlice.stream().map(number -> number.getId()).toArray()));
+                      Arrays.toString(previousSlice.stream().map(NaturalNumber::getId).toArray()));
 
          assertEquals(9, previousSlice.numberOfElements());
 
@@ -1526,7 +1527,7 @@ public class EntityTests {
          }
 
          assertEquals(Arrays.toString(new Long[] { 35L, 16L, 18L, 20L, 21L, 22L, 24L, 9L, 10L }),
-                      Arrays.toString(nextSlice.stream().map(number -> number.getId()).toArray()));
+                      Arrays.toString(nextSlice.stream().map(NaturalNumber::getId).toArray()));
 
          assertEquals(9, nextSlice.numberOfElements());
     }
@@ -1546,7 +1547,7 @@ public class EntityTests {
             return;
         }
 
-        assertEquals(false, slice.hasContent());
+        assertFalse(slice.hasContent());
         assertEquals(0, slice.content().size());
         assertEquals(0, slice.numberOfElements());
     }
@@ -1589,7 +1590,7 @@ public class EntityTests {
 
         assertEquals(Arrays.toString(new Long[] { 63L, 62L, 61L, 60L, // square root rounds down to 7
                                 80L, 79L, 78L, 77L, 76L, 75L }), // square root rounds down to 8
-        Arrays.toString(nums.stream().map(number -> number.getId()).toArray()));
+        Arrays.toString(nums.stream().map(NaturalNumber::getId).toArray()));
     }
 
     @Assertion(id = "133", strategy = "Use a repository method with both Sort and Limit, where the Limit is a range, " +
@@ -1620,7 +1621,7 @@ public class EntityTests {
         }
 
         assertEquals(Arrays.toString(new Long[] { 61L, 67L, 71L, 73L, 79L }),
-        Arrays.toString(nums.stream().map(number -> number.getId()).toArray()));
+        Arrays.toString(nums.stream().map(NaturalNumber::getId).toArray()));
     }
 
     @Assertion(id = "133", strategy = "Use a repository method with Limit and verify that the Limit caps " +
@@ -1638,12 +1639,12 @@ public class EntityTests {
         }
 
         Iterator<NaturalNumber> it = nums.iterator();
-        assertEquals(true, it.hasNext());
+        assertTrue(it.hasNext());
 
         NaturalNumber num = it.next();
-        assertEquals(true, num.getId() >= 80L);
+        assertTrue(num.getId() >= 80L);
 
-        assertEquals(false, it.hasNext());
+        assertFalse(it.hasNext());
     }
 
     @Assertion(id = "458", strategy = "Use a repository method with a JDQL Query that specifies an enum literal and a boolean false literal.")
@@ -1733,7 +1734,7 @@ public class EntityTests {
         }
         assertEquals(List.of(21L, 23L, 25L, 27L, 29L), page1.content());
 
-        assertEquals(true, page1.hasNext());
+        assertTrue(page1.hasNext());
 
         Page<Long> page2 = numbers.oddsFrom21To(40L, page1.nextPageRequest());
 
@@ -1741,8 +1742,8 @@ public class EntityTests {
 
         if (page2.hasNext()) {
             Page<Long> page3 = numbers.oddsFrom21To(40L, page2.nextPageRequest());
-            assertEquals(false, page3.hasContent());
-            assertEquals(false, page3.hasNext());
+            assertFalse(page3.hasContent());
+            assertFalse(page3.hasNext());
         }
     }
 
@@ -1770,7 +1771,7 @@ public class EntityTests {
                                                   3L, 2L, // 2 bits
                                                   7L, 6L, 5L, 4L, // 3 bits
                                                   14L, 13L, 12L, 11L, 10L, 9L, 8L }), // 4 bits
-                     Arrays.toString(Stream.of(nums).map(number -> number.getId()).toArray()));
+                     Arrays.toString(Stream.of(nums).map(NaturalNumber::getId).toArray()));
     }
 
     @Assertion(id = "133",
@@ -1865,18 +1866,18 @@ public class EntityTests {
 
         assertEquals(Arrays.toString(new Long[] { 23L, 19L, 17L, // square root rounds down to 4; prime
                                                   24L, 22L, 21L, 20L, 18L }), // square root rounds down to 4; composite
-                     Arrays.toString(page.stream().map(number -> number.getId()).toArray()));
+                     Arrays.toString(page.stream().map(NaturalNumber::getId).toArray()));
 
-        assertEquals(true, page.hasNext());
+        assertTrue(page.hasNext());
         pagination = page.nextPageRequest();
         page = numbers.findByIdLessThanOrderByFloorOfSquareRootDesc(25L, pagination, order);
 
         assertEquals(Arrays.toString(new Long[] { 16L, // square root rounds down to 4; composite
                                                   13L, 11L, // square root rounds down to 3; prime
                                                   15L, 14L, 12L, 10L, 9L }), // square root rounds down to 3; composite
-                     Arrays.toString(page.stream().map(number -> number.getId()).toArray()));
+                     Arrays.toString(page.stream().map(NaturalNumber::getId).toArray()));
 
-        assertEquals(true, page.hasNext());
+        assertTrue(page.hasNext());
         pagination = page.nextPageRequest();
         page = numbers.findByIdLessThanOrderByFloorOfSquareRootDesc(25L, pagination, order);
 
@@ -1884,12 +1885,12 @@ public class EntityTests {
                                                   8L, 6L, 4L, // square root rounds down to 2; composite
                                                   1L, // square root rounds down to 1; one
                                                   3L, 2L }), // square root rounds down to 1; prime
-                     Arrays.toString(page.stream().map(number -> number.getId()).toArray()));
+                     Arrays.toString(page.stream().map(NaturalNumber::getId).toArray()));
 
         if (page.hasNext()) {
             pagination = page.nextPageRequest();
             page = numbers.findByIdLessThanOrderByFloorOfSquareRootDesc(25L, pagination, order);
-            assertEquals(false, page.hasContent());
+            assertFalse(page.hasContent());
         }
     }
 
@@ -1919,7 +1920,7 @@ public class EntityTests {
                                                   16L, 18L, 20L, 21L, 22L, 24L, // composite; square root rounds down to 4
                                                   9L, 10L, 12L, 14L, 15L, // composite; square root rounds down to 3
                                                   6L, 8L }), // composite; square root rounds down to 2
-                     Arrays.toString(nums.map(number -> number.getId()).toArray()));
+                     Arrays.toString(nums.map(NaturalNumber::getId).toArray()));
     }
 
     @Assertion(id = "133", strategy = "Request a Page of results where none match the query, expecting an empty Page with 0 results.")
@@ -1940,8 +1941,8 @@ public class EntityTests {
         assertEquals(0, page.numberOfElements());
         assertEquals(0, page.stream().count());
         assertEquals(0, page.content().size());
-        assertEquals(false, page.hasContent());
-        assertEquals(false, page.iterator().hasNext());
+        assertFalse(page.hasContent());
+        assertFalse(page.iterator().hasNext());
         try {
             assertEquals(0L, page.totalElements());
             assertEquals(0L, page.totalPages());
@@ -1976,9 +1977,9 @@ public class EntityTests {
     public void testPrimaryEntityClassDeterminedByLifeCycleMethods() {
         assertEquals(4L, customRepo.countByIdIn(Set.of(2L, 15L, 37L, -5L, 60L)));
 
-        assertEquals(true, customRepo.existsByIdIn(Set.of(17L, 14L, -1L)));
+        assertTrue(customRepo.existsByIdIn(Set.of(17L, 14L, -1L)));
 
-        assertEquals(false, customRepo.existsByIdIn(Set.of(-10L, -12L, -14L)));
+        assertFalse(customRepo.existsByIdIn(Set.of(-10L, -12L, -14L)));
     }
 
     @Assertion(id = "458", strategy = "Use a repository method with a JDQL query that uses the NOT operator with LIKE, IN, and BETWEEN.")
@@ -2047,8 +2048,8 @@ public class EntityTests {
                                      .map(NaturalNumber::getId)
                                      .collect(Collectors.toList()));
 
-        assertEquals(true, page1.hasTotals());
-        assertEquals(true, page1.hasNext());
+        assertTrue(page1.hasTotals());
+        assertTrue(page1.hasNext());
         try {
             assertEquals(3L, page1.totalPages());
             assertEquals(12L, page1.totalElements());
@@ -2079,7 +2080,7 @@ public class EntityTests {
                                      .map(NaturalNumber::getId)
                                      .collect(Collectors.toList()));
 
-        assertEquals(true, page2.hasNext());
+        assertTrue(page2.hasNext());
 
         CursoredPage<NaturalNumber> page3 = positives.withBitCountOrOfTypeAndBelow((short) 4,
                                                                                    NumberType.COMPOSITE, 20L,
@@ -2098,7 +2099,7 @@ public class EntityTests {
                                                                                        Sort.desc("numBitsRequired"),
                                                                                        Sort.asc("id"),
                                                                                        page3.nextPageRequest());
-            assertEquals(false, page4.hasContent());
+            assertFalse(page4.hasContent());
         }
     }
 
@@ -2295,27 +2296,27 @@ public class EntityTests {
         Map<Long, NumberInfo> threeBitNums = new HashMap<>();
         for (NumberInfo info : found) {
             assertEquals(Short.valueOf((short) 3), info.numBitsRequired());
-            assertEquals(null, threeBitNums.put(info.id(), info)); // no duplicates
+            assertNull(threeBitNums.put(info.id(), info)); // no duplicates
         }
 
         NumberInfo num4 = threeBitNums.get(4L);
         assertNotNull(num4);
-        assertEquals(false, num4.isOdd());
+        assertFalse(num4.isOdd());
         assertEquals(NumberType.COMPOSITE, num4.numType());
 
         NumberInfo num5 = threeBitNums.get(5L);
         assertNotNull(num5);
-        assertEquals(true, num5.isOdd());
+        assertTrue(num5.isOdd());
         assertEquals(NumberType.PRIME, num5.numType());
 
         NumberInfo num6 = threeBitNums.get(6L);
         assertNotNull(num6);
-        assertEquals(false, num6.isOdd());
+        assertFalse(num6.isOdd());
         assertEquals(NumberType.COMPOSITE, num6.numType());
 
         NumberInfo num7 = threeBitNums.get(7L);
         assertNotNull(num7);
-        assertEquals(true, num7.isOdd());
+        assertTrue(num7.isOdd());
         assertEquals(NumberType.PRIME, num7.numType());
     }
 
@@ -2332,8 +2333,8 @@ public class EntityTests {
 
         Map<Long, NumberInfo> odds = new HashMap<>();
         for (NumberInfo num : found) {
-            assertEquals(true, num.isOdd());
-            assertEquals(null, odds.put(num.id(), num)); // no duplicates allowed
+            assertTrue(num.isOdd());
+            assertNull(odds.put(num.id(), num)); // no duplicates allowed
         }
     }
 
@@ -2345,7 +2346,7 @@ public class EntityTests {
     public void testRecordComponentsChooseAttributeReturnOne() {
         NumberInfo num12 = numbers.infoByIdentifier(12L);
         assertEquals(12L, num12.id());
-        assertEquals(false, num12.isOdd());
+        assertFalse(num12.isOdd());
         assertEquals(Short.valueOf((short) 4), num12.numBitsRequired());
         assertEquals(NumberType.COMPOSITE, num12.numType());
 
@@ -2366,11 +2367,11 @@ public class EntityTests {
     public void testRecordComponentsChooseAttributeReturnOptional() {
         NumberInfo num61 = numbers.infoIfFound(61L).orElseThrow();
         assertEquals(61L, num61.id());
-        assertEquals(true, num61.isOdd());
+        assertTrue(num61.isOdd());
         assertEquals(Short.valueOf((short) 6), num61.numBitsRequired());
         assertEquals(NumberType.PRIME, num61.numType());
 
-        assertEquals(false, numbers.infoIfFound(-3L).isPresent());
+        assertFalse(numbers.infoIfFound(-3L).isPresent());
     }
 
     @Assertion(id = "539", strategy = """
@@ -2399,51 +2400,51 @@ public class EntityTests {
         assertNotNull(num = page2.content().get(0));
         assertEquals(11L, num.id());
         assertEquals(Short.valueOf((short) 4), num.numBitsRequired());
-        assertEquals(true, num.isOdd());
+        assertTrue(num.isOdd());
         assertEquals(NumberType.PRIME, num.numType());
 
         assertNotNull(num = page2.content().get(1));
         assertEquals(13L, num.id());
         assertEquals(Short.valueOf((short) 4), num.numBitsRequired());
-        assertEquals(true, num.isOdd());
+        assertTrue(num.isOdd());
         assertEquals(NumberType.PRIME, num.numType());
 
         assertNotNull(num = page2.content().get(2));
         assertEquals(15L, num.id());
         assertEquals(Short.valueOf((short) 4), num.numBitsRequired());
-        assertEquals(true, num.isOdd());
+        assertTrue(num.isOdd());
         assertEquals(NumberType.COMPOSITE, num.numType());
 
         assertNotNull(num = page2.content().get(3));
         assertEquals(17L, num.id());
         assertEquals(Short.valueOf((short) 5), num.numBitsRequired());
-        assertEquals(true, num.isOdd());
+        assertTrue(num.isOdd());
         assertEquals(NumberType.PRIME, num.numType());
 
         assertNotNull(num = page2.content().get(4));
         assertEquals(19L, num.id());
         assertEquals(Short.valueOf((short) 5), num.numBitsRequired());
-        assertEquals(true, num.isOdd());
+        assertTrue(num.isOdd());
         assertEquals(NumberType.PRIME, num.numType());
 
         Page<NumberInfo> page1 = numbers.infoPaginated(true, page2.previousPageRequest());
         assertEquals(5, page1.numberOfElements());
-        assertEquals(true, page1.hasNext());
+        assertTrue(page1.hasNext());
 
         assertNotNull(num = page1.content().get(0));
         assertEquals(1L, num.id());
         assertEquals(Short.valueOf((short) 1), num.numBitsRequired());
-        assertEquals(true, num.isOdd());
+        assertTrue(num.isOdd());
         assertEquals(NumberType.ONE, num.numType());
 
         Page<NumberInfo> page3 = numbers.infoPaginated(true, page2.nextPageRequest());
         assertEquals(5, page3.numberOfElements());
-        assertEquals(true, page3.hasNext());
+        assertTrue(page3.hasNext());
 
         assertNotNull(num = page3.content().get(4));
         assertEquals(29L, num.id());
         assertEquals(Short.valueOf((short) 5), num.numBitsRequired());
-        assertEquals(true, num.isOdd());
+        assertTrue(num.isOdd());
         assertEquals(NumberType.PRIME, num.numType());
     }
 
@@ -2457,8 +2458,8 @@ public class EntityTests {
 
         Map<Long, NumberInfo> evens = new HashMap<>();
         found.forEach(num -> {
-            assertEquals(false, num.isOdd());
-            assertEquals(null, evens.put(num.id(), num)); // no duplicates allowed
+            assertFalse(num.isOdd());
+            assertNull(evens.put(num.id(), num)); // no duplicates allowed
             if (num.id() == 2L) {
                 assertEquals(NumberType.PRIME, num.numType());
             } else {
@@ -2515,14 +2516,14 @@ public class EntityTests {
 
         found = numbers.cardinalNumberOptional(79);
 
-        assertEquals(true, found.isPresent());
+        assertTrue(found.isPresent());
         assertEquals(79L, found.get().value());
         assertEquals(Short.valueOf((short) 7), found.get().numBitsRequired());
         assertEquals(NumberType.PRIME.ordinal(), found.get().numType());
 
         found = numbers.cardinalNumberOptional(0); // database only has 1 to 100
 
-        assertEquals(false, found.isPresent());
+        assertFalse(found.isPresent());
     }
 
     @Assertion(id = "539", strategy = """
@@ -2689,7 +2690,7 @@ public class EntityTests {
 
         assertEquals(NumberType.ONE, positives.typeOfNumber(1).orElseThrow());
 
-        assertEquals(false, positives.typeOfNumber(0).isPresent());
+        assertFalse(positives.typeOfNumber(0).isPresent());
     }
 
     @Assertion(id = "539", strategy = """
@@ -2839,7 +2840,7 @@ public class EntityTests {
         Map<Long, WholeNumber> primes = new HashMap<>();
         for (WholeNumber num : found) {
             assertEquals(NumberType.PRIME.ordinal(), num.numType());
-            assertEquals(null, primes.put(num.value(), num)); // no duplicates
+            assertNull(primes.put(num.value(), num)); // no duplicates
         }
 
         assertEquals(25, primes.size()); // numbers 1 to 100 are in the database
@@ -2889,14 +2890,14 @@ public class EntityTests {
 
         found = numbers.wholeNumberOf(85);
 
-        assertEquals(true, found.isPresent());
+        assertTrue(found.isPresent());
         assertEquals(85L, found.get().value());
         assertEquals(9L, found.get().sqrtFloor());
         assertEquals(NumberType.COMPOSITE.ordinal(), found.get().numType());
 
         found = numbers.wholeNumberOf(-150); // database only has 1 to 100
 
-        assertEquals(false, found.isPresent());
+        assertFalse(found.isPresent());
     }
 
     @Assertion(id = "539", strategy = """
@@ -2948,8 +2949,8 @@ public class EntityTests {
                                         page3.nextPageRequest(),
                                         Order.by(Sort.asc(_NaturalNumber.ID)));
         assertEquals(4, page4.numberOfElements());
-        assertEquals(true, page4.hasPrevious());
-        assertEquals(true, page4.hasNext());
+        assertTrue(page4.hasPrevious());
+        assertTrue(page4.hasNext());
 
         assertNotNull(num = page4.content().get(0));
         assertEquals(41L, num.value());
@@ -2961,8 +2962,8 @@ public class EntityTests {
                                         page3.previousPageRequest(),
                                         Order.by(Sort.asc(_NaturalNumber.ID)));
         assertEquals(4, page2.numberOfElements());
-        assertEquals(true, page2.hasNext());
-        assertEquals(true, page2.hasPrevious());
+        assertTrue(page2.hasNext());
+        assertTrue(page2.hasPrevious());
 
         assertNotNull(num = page2.content().get(3));
         assertEquals(19L, num.value());
@@ -2986,7 +2987,7 @@ public class EntityTests {
         assertEquals('+', ch.getThisCharacter());
         assertEquals("2b", ch.getHexadecimal());
         assertEquals(43, ch.getNumericValue());
-        assertEquals(false, ch.isControl());
+        assertFalse(ch.isControl());
     }
 
     @Assertion(id = "133", strategy = "Request a Slice of results where none match the query, expecting an empty Slice with 0 results.")
@@ -3007,7 +3008,7 @@ public class EntityTests {
             }
         }
 
-        assertEquals(false, page.hasContent());
+        assertFalse(page.hasContent());
         assertEquals(0, page.content().size());
         assertEquals(0, page.numberOfElements());
     }
@@ -3169,7 +3170,7 @@ public class EntityTests {
                                                        Character.valueOf('k'),
                                                        Character.valueOf('l'),
                                                        Character.valueOf('m') }),
-                     Arrays.toString(chars.stream().map(ch -> ch.getThisCharacter()).sorted().toArray()));
+                     Arrays.toString(chars.stream().map(AsciiCharacter::getThisCharacter).sorted().toArray()));
 
         assertEquals(101 + 102 + 103 + 104 + 105 + 106 + 107 + 108 + 109,
                      chars.stream().mapToInt(AsciiCharacter::getNumericValue).sum());
@@ -3180,7 +3181,7 @@ public class EntityTests {
                      sorted);
 
         List<AsciiCharacter> empty = characters.findByNumericValueLessThanEqualAndNumericValueGreaterThanEqual(115, 120);
-        assertEquals(false, empty.iterator().hasNext());
+        assertFalse(empty.iterator().hasNext());
         assertEquals(0L, empty.stream().count());
     }
 
@@ -3202,7 +3203,7 @@ public class EntityTests {
         }
 
         assertEquals(3, page.pageRequest().page());
-        assertEquals(true, page.hasContent());
+        assertTrue(page.hasContent());
         assertEquals(10, page.numberOfElements());
         try {
             assertEquals(43L, page.totalElements());
@@ -3220,12 +3221,12 @@ public class EntityTests {
                                      .map(c -> c.getHexadecimal() + ':' + c.getThisCharacter() + ';')
                                      .reduce("", String::concat));
 
-        assertEquals(true, page.hasNext());
+        assertTrue(page.hasNext());
         PageRequest fourth10 = page.nextPageRequest();
         page = characters.findByNumericValueBetween(48, 90, fourth10, order); // 'N' to 'W'
 
         assertEquals(4, page.pageRequest().page());
-        assertEquals(true, page.hasContent());
+        assertTrue(page.hasContent());
         assertEquals(10, page.numberOfElements());
         try {
             assertEquals(43L, page.totalElements());
@@ -3269,9 +3270,9 @@ public class EntityTests {
         assertEquals(5, page.numberOfElements());
 
         assertEquals(Arrays.toString(new Long[] { 37L, 31L, 29L, 23L, 19L }),
-                Arrays.toString(page.stream().map(number -> number.getId()).toArray()));
+                Arrays.toString(page.stream().map(NaturalNumber::getId).toArray()));
 
-        assertEquals(true, page.hasNext());
+        assertTrue(page.hasNext());
         PageRequest fourth5 = page.nextPageRequest();
 
         page = numbers.findByNumTypeAndFloorOfSquareRootLessThanEqual(NumberType.PRIME, 8L, fourth5, sort);
@@ -3280,7 +3281,7 @@ public class EntityTests {
         assertEquals(5, page.numberOfElements());
 
         assertEquals(Arrays.toString(new Long[] { 17L, 13L, 11L, 7L, 5L }),
-                Arrays.toString(page.stream().map(number -> number.getId()).toArray()));
+                Arrays.toString(page.stream().map(NaturalNumber::getId).toArray()));
     }
 
     @Assertion(id = "133", strategy = "Use a repository method with the True keyword.")
@@ -3301,22 +3302,22 @@ public class EntityTests {
 
         Iterator<NaturalNumber> it = odd.iterator();
 
-        assertEquals(true, it.hasNext());
+        assertTrue(it.hasNext());
         assertEquals(9L, it.next().getId());
 
-        assertEquals(true, it.hasNext());
+        assertTrue(it.hasNext());
         assertEquals(7L, it.next().getId());
 
-        assertEquals(true, it.hasNext());
+        assertTrue(it.hasNext());
         assertEquals(5L, it.next().getId());
 
-        assertEquals(true, it.hasNext());
+        assertTrue(it.hasNext());
         assertEquals(3L, it.next().getId());
 
-        assertEquals(true, it.hasNext());
+        assertTrue(it.hasNext());
         assertEquals(1L, it.next().getId());
 
-        assertEquals(false, it.hasNext());
+        assertFalse(it.hasNext());
     }
 
     @Assertion(id = "458", strategy = "Use a repository method with a JDQL UPDATE query without a WHERE clause. " +
@@ -3473,8 +3474,8 @@ public class EntityTests {
         }
         TestPropertyUtility.waitForEventualConsistency();
 
-        assertEquals(false, shared.withUUID(id1).isPresent());
-        assertEquals(false, shared.withUUID(id2).isPresent());
+        assertFalse(shared.withUUID(id1).isPresent());
+        assertFalse(shared.withUUID(id2).isPresent());
     }
 
     @Assertion(id = "133",
@@ -3503,6 +3504,6 @@ public class EntityTests {
                                                   8L, // square root rounds down to 2; 4 bits
                                                   4L, 5L, 6L, 7L, // square root rounds down to 2; 3 bits
                                                   9L, 10L, 11L, 12L }), // square root rounds down to 3; 4 bits
-                     Arrays.toString(list.stream().map(number -> number.getId()).toArray()));
+                     Arrays.toString(list.stream().map(NaturalNumber::getId).toArray()));
     }
 }

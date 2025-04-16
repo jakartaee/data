@@ -35,7 +35,6 @@ class TextAttributeTest {
 
     @Test
     void shouldCreateContainsRestriction() {
-        @SuppressWarnings("unchecked")
         BasicRestriction<Author,String> restriction =
                 (BasicRestriction<Author, String>) testAttribute.contains("testValue");
 
@@ -48,7 +47,6 @@ class TextAttributeTest {
 
     @Test
     void shouldCreateStartsWithRestriction() {
-        @SuppressWarnings("unchecked")
         BasicRestriction<Author,String> restriction =
                 (BasicRestriction<Author, String>) testAttribute.startsWith("testValue");
 
@@ -61,7 +59,6 @@ class TextAttributeTest {
 
     @Test
     void shouldCreateEndsWithRestriction() {
-        @SuppressWarnings("unchecked")
         BasicRestriction<Author,String> restriction =
                 (BasicRestriction<Author,String>) testAttribute.endsWith("testValue");
 
@@ -74,7 +71,6 @@ class TextAttributeTest {
 
     @Test
     void shouldCreateLikeRestriction() {
-        @SuppressWarnings("unchecked")
         BasicRestriction<Author,String> restriction =
                 (BasicRestriction<Author, String>) testAttribute.like("%test%");
 
@@ -87,7 +83,6 @@ class TextAttributeTest {
 
     @Test
     void shouldCreateNotContainsRestriction() {
-        @SuppressWarnings("unchecked")
         BasicRestriction<Author,String> restriction =
                 (BasicRestriction<Author, String>) testAttribute.notContains("testValue");
 
@@ -100,7 +95,6 @@ class TextAttributeTest {
 
     @Test
     void shouldCreateNotLikeRestriction() {
-        @SuppressWarnings("unchecked")
         BasicRestriction<Author,String> restriction =
                 (BasicRestriction<Author, String>) testAttribute.notLike("%test%");
 
@@ -113,7 +107,6 @@ class TextAttributeTest {
 
     @Test
     void shouldCreateNotStartsWithRestriction() {
-        @SuppressWarnings("unchecked")
         BasicRestriction<Author,String> restriction =
                 (BasicRestriction<Author, String>) testAttribute.notStartsWith("testValue");
 
@@ -126,7 +119,6 @@ class TextAttributeTest {
 
     @Test
     void shouldCreateNotEndsWithRestriction() {
-        @SuppressWarnings("unchecked")
         BasicRestriction<Author,String> restriction =
                 (BasicRestriction<Author, String>) testAttribute.notEndsWith("testValue");
 

@@ -34,7 +34,6 @@ class TextRestrictionRecordTest {
 
     @Test
     void shouldCreateTextRestrictionWithDefaultValues() {
-        @SuppressWarnings("unchecked")
         BasicRestriction<Book,String> restriction =
                 (BasicRestriction<Book, String>) _Book.title.like("%Java%");
 
@@ -51,7 +50,6 @@ class TextRestrictionRecordTest {
 
     @Test
     void shouldCreateTextRestrictionWithExplicitNegation() {
-        @SuppressWarnings("unchecked")
         BasicRestriction<Book,String> restriction =
                 (BasicRestriction<Book, String>) _Book.title.like("%Java%").negate();
 
@@ -68,7 +66,6 @@ class TextRestrictionRecordTest {
 
     @Test
     void shouldIgnoreCaseForTextRestriction() {
-        @SuppressWarnings("unchecked")
         BasicRestriction<Book,String> restriction =
                 (BasicRestriction<Book, String>) _Book.title.like("%Java%");
 
@@ -86,7 +83,6 @@ class TextRestrictionRecordTest {
 
     @Test
     void shouldCreateTextRestrictionWithEscapedValue() {
-        @SuppressWarnings("unchecked")
         BasicRestriction<Book,String> restriction =
                 (BasicRestriction<Book, String>) _Book.title.like("%Java%");
 
@@ -103,7 +99,6 @@ class TextRestrictionRecordTest {
 
     @Test
     void shouldCreateTextRestrictionWithCustomWildcards() {
-        @SuppressWarnings("unchecked")
         BasicRestriction<Book,String> restriction =
                 (BasicRestriction<Book, String>) _Book.title.like("*Java??", '?', '*', '$');
 
@@ -120,7 +115,6 @@ class TextRestrictionRecordTest {
 
     @Test
     void shouldNegateLikeRestriction() {
-        @SuppressWarnings("unchecked")
         BasicRestriction<Book,String> likeJakartaEE =
                 (BasicRestriction<Book, String>) _Book.title.endsWith("Jakarta EE");
         BasicRestriction<Book,String> notLikeJakartaEE = likeJakartaEE.negate();
@@ -138,7 +132,6 @@ class TextRestrictionRecordTest {
 
     @Test
     void shouldNegateNegatedRestriction() {
-        @SuppressWarnings("unchecked")
         BasicRestriction<Book,String> endsWithJakartaEE =
                 (BasicRestriction<Book, String>) _Book.title.endsWith("Jakarta EE");
         BasicRestriction<Book,String> notEndsWithJakartaEE = endsWithJakartaEE.negate();
@@ -161,10 +154,8 @@ class TextRestrictionRecordTest {
 
     @Test
     void shouldOutputToString() {
-        @SuppressWarnings("unchecked")
         BasicRestriction<Book,String> titleRestriction =
                 (BasicRestriction<Book, String>) _Book.title.contains("Jakarta Data");
-        @SuppressWarnings("unchecked")
         BasicRestriction<Book,String> authorRestriction =
                 (BasicRestriction<Book, String>) _Book.author.equalTo("Myself")
                 // TODO TextRestriction.ignoreCase vs TextAttribute.upper/lowercased
@@ -183,7 +174,6 @@ class TextRestrictionRecordTest {
 
     @Test
     void shouldSupportNegationForTextRestriction() {
-        @SuppressWarnings("unchecked")
         BasicRestriction<Book,String> restriction =
                 (BasicRestriction<Book, String>) _Book.author.equalTo("John Doe").negate();
 

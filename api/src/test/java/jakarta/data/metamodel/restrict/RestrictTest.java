@@ -69,7 +69,6 @@ class RestrictTest {
 
     @Test
     void shouldCreateEqualToRestriction() {
-        @SuppressWarnings("unchecked")
         BasicRestriction<Employee, Integer> restriction =
                 (BasicRestriction<Employee, Integer>) _Employee.yearHired.equalTo(2020);
 
@@ -82,7 +81,6 @@ class RestrictTest {
 
     @Test
     void shouldCreateNotEqualToRestriction() {
-        @SuppressWarnings("unchecked")
         BasicRestriction<Employee, Integer> restriction =
                 (BasicRestriction<Employee, Integer>) _Employee.badgeNum.notEqualTo(0);
 
@@ -95,7 +93,6 @@ class RestrictTest {
 
     @Test
     void shouldCreateEqualToStringRestriction() {
-        @SuppressWarnings("unchecked")
         BasicRestriction<Employee,String> restriction =
                 (BasicRestriction<Employee, String>) _Employee.position.equalTo("Software Engineer");
 
@@ -108,7 +105,6 @@ class RestrictTest {
 
     @Test
     void shouldCreateNotEqualToStringRestriction() {
-        @SuppressWarnings("unchecked")
         BasicRestriction<Employee,String> restriction =
                 (BasicRestriction<Employee, String>) _Employee.position.notEqualTo("Manager");
 
@@ -138,7 +134,6 @@ class RestrictTest {
 
     @Test
     void shouldCreateContainsRestriction() {
-        @SuppressWarnings("unchecked")
         BasicRestriction<Employee,String> restriction =
                 (BasicRestriction<Employee, String>) _Employee.position.contains("Manager");
 
@@ -151,7 +146,6 @@ class RestrictTest {
 
     @Test
     void shouldCreateNegatedContainsRestriction() {
-        @SuppressWarnings("unchecked")
         BasicRestriction<Employee,String> restriction =
                 (BasicRestriction<Employee, String>) _Employee.position.notContains("Director");
 
@@ -164,7 +158,6 @@ class RestrictTest {
 
     @Test
     void shouldCreateStartsWithRestriction() {
-        @SuppressWarnings("unchecked")
         BasicRestriction<Employee,String> restriction =
                 (BasicRestriction<Employee, String>) _Employee.position.startsWith("Director");
 
@@ -177,7 +170,6 @@ class RestrictTest {
 
     @Test
     void shouldCreateNegatedStartsWithRestriction() {
-        @SuppressWarnings("unchecked")
         BasicRestriction<Employee,String> restriction =
                 (BasicRestriction<Employee, String>) _Employee.position.notStartsWith("Manager");
 
@@ -190,7 +182,6 @@ class RestrictTest {
 
     @Test
     void shouldCreateEndsWithRestriction() {
-        @SuppressWarnings("unchecked")
         BasicRestriction<Employee,String> restriction =
                 (BasicRestriction<Employee,String>) _Employee.position.endsWith("Manager");
 
@@ -203,7 +194,6 @@ class RestrictTest {
 
     @Test
     void shouldCreateNegatedEndsWithRestriction() {
-        @SuppressWarnings("unchecked")
         BasicRestriction<Employee,String> restriction =
                 (BasicRestriction<Employee, String>) _Employee.position.notEndsWith("Supervisor");
 
@@ -249,7 +239,6 @@ class RestrictTest {
 
     @Test
     void shouldEscapeToLikePatternCorrectly() {
-        @SuppressWarnings("unchecked")
         Like like = (Like) ((BasicRestriction<Employee,String>)
                 _Employee.position.endsWith("test_value")).constraint();
         String result = like.pattern();
@@ -260,7 +249,6 @@ class RestrictTest {
     @Test
     void shouldIgnoreCase() {
         // TODO TextRestriction.ignoreCase vs TextAttribute.upper/lowercased
-        @SuppressWarnings("unchecked")
         BasicRestriction<Employee,String> restriction =
                 (BasicRestriction<Employee, String>) _Employee.position.contains("SOFTWARE");
         //        .ignoreCase();

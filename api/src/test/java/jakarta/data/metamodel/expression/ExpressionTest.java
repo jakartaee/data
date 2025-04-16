@@ -24,12 +24,13 @@ import jakarta.data.metamodel.restrict.Restriction;
 import jakarta.data.mock.entity.Book;
 import jakarta.data.mock.entity._Book;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import java.util.List;
 
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 class ExpressionTest {
 
@@ -57,7 +58,7 @@ class ExpressionTest {
         List<? extends Expression<? super Book, ?>> rightArgs = rightExpression.arguments();
         assertEquals(2, rightArgs.size());
 
-        assertEquals(true, rightArgs.get(1) instanceof NumericLiteral);
+        assertInstanceOf(NumericLiteral.class, rightArgs.get(1));
 
         @SuppressWarnings("unchecked")
         NumericLiteral<Book, Integer> rightArg1 =
@@ -70,7 +71,7 @@ class ExpressionTest {
         List<? extends Expression<? super Book, ?>> leftArgs = leftExpression.arguments();
         assertEquals(2, leftArgs.size());
 
-        assertEquals(true, leftArgs.get(1) instanceof NumericLiteral);
+        assertInstanceOf(NumericLiteral.class, leftArgs.get(1));
 
         @SuppressWarnings("unchecked")
         NumericLiteral<Book, Integer> leftArg1 =
@@ -108,7 +109,6 @@ class ExpressionTest {
 
         Restriction<Book> titleUpTo50Chars = _Book.title.length().lessThanEqual(50);
 
-        @SuppressWarnings("unchecked")
         BasicRestriction<Book, Integer> restriction =
             (BasicRestriction<Book, Integer>) titleUpTo50Chars;
 
