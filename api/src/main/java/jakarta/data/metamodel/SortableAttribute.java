@@ -20,7 +20,6 @@ package jakarta.data.metamodel;
 import java.util.Objects;
 
 import jakarta.data.Sort;
-import jakarta.data.metamodel.impl.SortableAttributeRecord;
 
 /**
  * <p>Represents a entity attribute in the {@link StaticMetamodel}

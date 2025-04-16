@@ -17,8 +17,6 @@
  */
 package jakarta.data.metamodel;
 
-import jakarta.data.metamodel.impl.BasicAttributeRecord;
-
 import java.util.Objects;
 
 /**

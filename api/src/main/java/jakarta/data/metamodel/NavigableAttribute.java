@@ -17,8 +17,6 @@
  */
 package jakarta.data.metamodel;
 
-import jakarta.data.metamodel.impl.NavigableAttributeRecord;
-
 import java.util.Objects;
 
 /**

@@ -15,11 +15,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.metamodel.impl;
+package jakarta.data.metamodel;
 
-import jakarta.data.metamodel.NumericAttribute;
-
-public record NumericAttributeRecord<T,V extends Number & Comparable<V>>
-        (Class<T> declaringType, String name)
-        implements NumericAttribute<T,V> {
+record NavigableAttributeRecord<T,U>(Class<T> declaringType, String name)
+        implements NavigableAttribute<T,U> {
 }

@@ -17,8 +17,6 @@
  */
 package jakarta.data.metamodel;
 
-import jakarta.data.metamodel.impl.ComparableAttributeRecord;
-
 import java.util.Objects;
 
 /**

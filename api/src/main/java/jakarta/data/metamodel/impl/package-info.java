@@ -15,10 +15,6 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
+
+@Deprecated(since = "1.1")
 package jakarta.data.metamodel.impl;
-
-import jakarta.data.metamodel.NavigableAttribute;
-
-public record NavigableAttributeRecord<T,U>(Class<T> declaringType, String name)
-        implements NavigableAttribute<T,U> {
-}

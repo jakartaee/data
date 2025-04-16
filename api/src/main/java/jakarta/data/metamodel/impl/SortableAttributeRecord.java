@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 Contributors to the Eclipse Foundation
+ * Copyright (c) 2024,2025 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,19 +17,21 @@
  */
 package jakarta.data.metamodel.impl;
 
+import jakarta.data.metamodel.NumericAttribute;
 import jakarta.data.metamodel.SortableAttribute;
+import jakarta.data.metamodel.TextAttribute;
 
 /**
- * Record type implementing {@link jakarta.data.metamodel.SortableAttribute}.
- * This may be used to simplify implementation of the static metamodel.
+ * @deprecated For more complete access to the static metamodel, use the
+ * most specific subtype of {@link SortableAttribute} that applies to the
+ * entity attribute, such as
+ * {@link TextAttribute#of(Class, String) TextAttribute} or
+ * {@link NumericAttribute#of(Class, String, Class) NumericAttribute}.
  *
  * @param name the name of the attribute
  */
-public record SortableAttributeRecord<T>(Class<T> declaringType, String name)
+@Deprecated(since = "1.1")
+public record SortableAttributeRecord<T>(String name)
         implements SortableAttribute<T> {
-    @Deprecated(since = "1.1")
-    public SortableAttributeRecord(String name) {
-        this(null, name);
-    }
 }
 
