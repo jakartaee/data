@@ -31,7 +31,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 class BasicRestrictionRecordTest {
 
     @Test
-    void shouldCreateValueRestrictionWithDefaultNegation() {
+    void shouldCreateBasicRestrictionWithDefaultNegation() {
         @SuppressWarnings("unchecked")
         BasicRestriction<Book, String> restriction =
                 (BasicRestriction<Book, String>) _Book.title.equalTo("Java Guide");
@@ -43,7 +43,7 @@ class BasicRestrictionRecordTest {
     }
 
     @Test
-    void shouldCreateValueRestrictionWithExplicitNegation() {
+    void shouldCreateBasicRestrictionWithExplicitNegation() {
         @SuppressWarnings("unchecked")
         BasicRestriction<Book, String> restriction =
                 (BasicRestriction<Book, String>) _Book.title.equalTo("Java Guide")
