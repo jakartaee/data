@@ -17,10 +17,14 @@
  */
 package jakarta.data.metamodel.constraint;
 
+import jakarta.data.metamodel.ComparableExpression;
+
 import java.util.Objects;
 
-record BetweenRecord<T extends Comparable<?>>(T lowerBound, T upperBound)
-        implements Between<T> {
+record BetweenRecord<V extends Comparable<?>>(
+        ComparableExpression<?, V> lowerBound,
+        ComparableExpression<?, V> upperBound)
+        implements Between<V> {
     public BetweenRecord {
         Objects.requireNonNull(lowerBound);
         Objects.requireNonNull(upperBound);
@@ -32,7 +36,7 @@ record BetweenRecord<T extends Comparable<?>>(T lowerBound, T upperBound)
     }
 
     @Override
-    public NotBetween<T> negate() {
+    public NotBetween<V> negate() {
         return NotBetween.bounds(lowerBound, upperBound);
     }
 }

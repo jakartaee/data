@@ -31,18 +31,4 @@ record NavigablePathRecord<T,U,V>
         Objects.requireNonNull(attribute, "Entity attribute is required.");
     }
 
-    @Override
-    public int compareTo(NavigableExpression<T, V> other) {
-        if (getClass().equals(other.getClass())) {
-            @SuppressWarnings("unchecked")
-            NavigablePathRecord<T,U,V> another = (NavigablePathRecord<T,U,V>) other;
-            int comp = expression.compareTo(another.expression);
-            if (comp == 0) {
-                comp = attribute.compareTo(another.attribute);
-            }
-            return comp;
-        } else {
-            return getClass().getName().compareTo(other.getClass().getName());
-        }
-    }
 }

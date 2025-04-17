@@ -19,7 +19,6 @@ package jakarta.data.metamodel.expression;
 
 import java.util.Objects;
 
-import jakarta.data.metamodel.ComparableExpression;
 import jakarta.data.metamodel.NumericExpression;
 
 record NumericOperatorExpressionRecord<T, N extends Number & Comparable<N>>
@@ -32,21 +31,4 @@ record NumericOperatorExpressionRecord<T, N extends Number & Comparable<N>>
         Objects.requireNonNull(left, "Right side expression is required.");
     }
 
-    @Override
-    public int compareTo(ComparableExpression<T, N> other) {
-        if (getClass().equals(other.getClass())) {
-            NumericOperatorExpressionRecord<T, N> another =
-                    (NumericOperatorExpressionRecord<T,N>) other;
-            int comp = left.compareTo(another.left);
-            if (comp == 0) {
-                comp = operator.compareTo(another.operator);
-                if (comp == 0) {
-                    comp = right.compareTo(another.right);
-                }
-            }
-            return comp;
-        } else {
-            return getClass().getName().compareTo(other.getClass().getName());
-        }
-    }
 }

@@ -28,13 +28,13 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 
-class ValueRestrictionRecordTest {
+class BasicRestrictionRecordTest {
 
     @Test
     void shouldCreateValueRestrictionWithDefaultNegation() {
         @SuppressWarnings("unchecked")
-        ValueRestriction<Book, String> restriction =
-                (ValueRestriction<Book, String>) _Book.title.equalTo("Java Guide");
+        BasicRestriction<Book, String> restriction =
+                (BasicRestriction<Book, String>) _Book.title.equalTo("Java Guide");
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.expression()).isEqualTo(_Book.title);
@@ -45,8 +45,8 @@ class ValueRestrictionRecordTest {
     @Test
     void shouldCreateValueRestrictionWithExplicitNegation() {
         @SuppressWarnings("unchecked")
-        ValueRestriction<Book, String> restriction =
-                (ValueRestriction<Book, String>) _Book.title.equalTo("Java Guide")
+        BasicRestriction<Book, String> restriction =
+                (BasicRestriction<Book, String>) _Book.title.equalTo("Java Guide")
                         .negate();
 
         SoftAssertions.assertSoftly(soft -> {
@@ -58,9 +58,9 @@ class ValueRestrictionRecordTest {
     @Test
     void shouldNegateLTERestriction() {
         @SuppressWarnings("unchecked")
-        ValueRestriction<Book, Integer> numChaptersLTE10Basic =
-                (ValueRestriction<Book, Integer>) _Book.numChapters.lessThanEqual(10);
-        ValueRestriction<Book, Integer> numChaptersGT10Basic = numChaptersLTE10Basic.negate();
+        BasicRestriction<Book, Integer> numChaptersLTE10Basic =
+                (BasicRestriction<Book, Integer>) _Book.numChapters.lessThanEqual(10);
+        BasicRestriction<Book, Integer> numChaptersGT10Basic = numChaptersLTE10Basic.negate();
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(numChaptersLTE10Basic.constraint()).isEqualTo(LessThanOrEqual.max(10));
@@ -72,11 +72,11 @@ class ValueRestrictionRecordTest {
     @Test
     void shouldNegateNegatedRestriction() {
         @SuppressWarnings("unchecked")
-        ValueRestriction<Book, String> titleRestrictionBasic =
-                (ValueRestriction<Book, String>) _Book.title.equalTo("A Developer's Guide to Jakarta Data");
-        ValueRestriction<Book, String> negatedTitleRestrictionBasic =
+        BasicRestriction<Book, String> titleRestrictionBasic =
+                (BasicRestriction<Book, String>) _Book.title.equalTo("A Developer's Guide to Jakarta Data");
+        BasicRestriction<Book, String> negatedTitleRestrictionBasic =
                 titleRestrictionBasic.negate();
-        ValueRestriction<Book, String> negatedNegatedTitleRestrictionBasic =
+        BasicRestriction<Book, String> negatedNegatedTitleRestrictionBasic =
                 negatedTitleRestrictionBasic.negate();
 
         SoftAssertions.assertSoftly(soft -> {
@@ -95,7 +95,7 @@ class ValueRestrictionRecordTest {
     void shouldOutputToString() {
         @SuppressWarnings("unchecked")
         Restriction<Book> restriction =
-                (ValueRestriction<Book, Integer>) _Book.numPages.greaterThan(100);
+                (BasicRestriction<Book, Integer>) _Book.numPages.greaterThan(100);
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.toString())
@@ -106,8 +106,8 @@ class ValueRestrictionRecordTest {
     @Test
     void shouldSupportNegatedRestrictionUsingDefaultConstructor() {
         @SuppressWarnings("unchecked")
-        ValueRestriction<Book, String> negatedRestriction =
-                (ValueRestriction<Book, String>) _Book.author.notEqualTo("Unknown");
+        BasicRestriction<Book, String> negatedRestriction =
+                (BasicRestriction<Book, String>) _Book.author.notEqualTo("Unknown");
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(negatedRestriction.expression()).isEqualTo(_Book.author);
@@ -126,6 +126,6 @@ class ValueRestrictionRecordTest {
     void shouldThrowExceptionWhenValueIsNull() {
         assertThatThrownBy(() -> _Book.title.equalTo((String) null))
                 .isInstanceOf(NullPointerException.class)
-                .hasMessage("Value must not be null");
+                .hasMessage("Value is required.");
     }
 }

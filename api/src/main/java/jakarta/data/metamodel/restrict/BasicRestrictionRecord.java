@@ -27,17 +27,17 @@ import jakarta.data.metamodel.constraint.Constraint;
 
 import java.util.Objects;
 
-record ValueRestrictionRecord<T, V>(Expression<T,V> expression, Constraint<V> constraint)
-        implements ValueRestriction<T, V> {
+record BasicRestrictionRecord<T, V>(Expression<T,V> expression, Constraint<V> constraint)
+        implements BasicRestriction<T, V> {
 
-    ValueRestrictionRecord {
+    BasicRestrictionRecord {
         Objects.requireNonNull(expression, "Expression must not be null");
         Objects.requireNonNull(constraint, "Constraint must not be null");
     }
 
     @Override
-    public ValueRestriction<T, V> negate() {
-        return ValueRestriction.of(expression, constraint.negate());
+    public BasicRestriction<T, V> negate() {
+        return BasicRestriction.of(expression, constraint.negate());
     }
 
     /**

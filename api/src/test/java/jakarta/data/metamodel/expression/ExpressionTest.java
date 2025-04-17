@@ -19,8 +19,7 @@ package jakarta.data.metamodel.expression;
 
 import jakarta.data.metamodel.Expression;
 import jakarta.data.metamodel.constraint.*;
-import jakarta.data.metamodel.restrict.ValueRestriction;
-import jakarta.data.metamodel.restrict.ExpressionRestriction;
+import jakarta.data.metamodel.restrict.BasicRestriction;
 import jakarta.data.metamodel.restrict.Restriction;
 import jakarta.data.mock.entity.Book;
 import jakarta.data.mock.entity._Book;
@@ -40,18 +39,17 @@ class ExpressionTest {
                 _Book.title.equalTo(_Book.author);
 
         @SuppressWarnings("unchecked")
-        ExpressionRestriction<Book, Expression<Book, String>, String> restriction =
-                (ExpressionRestriction<Book, Expression<Book, String>, String>)
-                        autobiographies;
+        BasicRestriction<Book, String> restriction =
+                (BasicRestriction<Book, String>) autobiographies;
 
-        EqualTo<Expression<Book, String>> equalToConstraint =
-                (EqualTo<Expression<Book, String>>) restriction.constraint();
+        EqualTo<String> equalToConstraint =
+                (EqualTo<String>) restriction.constraint();
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.expression())
                 .isEqualTo(_Book.title);
 
-            soft.assertThat(equalToConstraint.value())
+            soft.assertThat(equalToConstraint.expression())
                 .isEqualTo(_Book.author);
         });
     }
@@ -63,10 +61,11 @@ class ExpressionTest {
             _Book.title.left(10).right(2).upper().equalTo("EE");
 
         @SuppressWarnings("unchecked")
-        ValueRestriction<Book, String> restriction =
-            (ValueRestriction<Book, String>) titleWithEE;
+        BasicRestriction<Book, String> restriction =
+            (BasicRestriction<Book, String>) titleWithEE;
 
-        Constraint<String> constraint = restriction.constraint();
+        EqualTo<String> constraint = (EqualTo<String>) restriction.constraint();
+        StringLiteral<?> literal = (StringLiteral<?>) constraint.expression();
 
         TextFunctionExpression<Book> upperExpression =
             (TextFunctionExpression<Book>) restriction.expression();
@@ -119,10 +118,7 @@ class ExpressionTest {
             soft.assertThat(upperExpression.name())
                 .isEqualTo(TextFunctionExpression.UPPER);
 
-            soft.assertThat(constraint)
-                .isInstanceOf(EqualTo.class);
-
-            soft.assertThat(((EqualTo<String>) constraint).value())
+            soft.assertThat(literal.value())
                 .isEqualTo("EE");
         });
     }
@@ -133,10 +129,14 @@ class ExpressionTest {
         Restriction<Book> titleUpTo50Chars = _Book.title.length().lessThanEqual(50);
 
         @SuppressWarnings("unchecked")
-        ValueRestriction<Book, Integer> restriction =
-            (ValueRestriction<Book, Integer>) titleUpTo50Chars;
+        BasicRestriction<Book, Integer> restriction =
+            (BasicRestriction<Book, Integer>) titleUpTo50Chars;
 
-        Constraint<Integer> constraint = restriction.constraint();
+        LessThanOrEqual<Integer> constraint =
+            (LessThanOrEqual<Integer>) restriction.constraint();
+
+        NumericLiteral<?, Integer> literal =
+            (NumericLiteral<?, Integer>) constraint.bound();
 
         NumericFunctionExpression<Book, Integer> lengthExpression =
             (NumericFunctionExpression<Book, Integer>) restriction.expression();
@@ -151,10 +151,7 @@ class ExpressionTest {
             soft.assertThat(lengthExpression.arguments().get(0))
                 .isEqualTo(_Book.title);
 
-            soft.assertThat(constraint)
-                .isInstanceOf(LessThanOrEqual.class);
-
-            soft.assertThat(((LessThanOrEqual<Integer>) constraint).bound())
+            soft.assertThat(literal.value())
                 .isEqualTo(50);
         });
     }

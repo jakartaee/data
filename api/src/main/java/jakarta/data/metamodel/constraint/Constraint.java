@@ -19,33 +19,33 @@ package jakarta.data.metamodel.constraint;
 
 import java.util.Set;
 
-public interface Constraint<T> {
+public interface Constraint<V> {
 
-    Constraint<T> negate();
+    Constraint<V> negate();
 
-    static <T> EqualTo<T> equalTo(T value) {
+    static <V> EqualTo<V> equalTo(V value) {
         return EqualTo.value(value);
     }
 
-    static <T> NotEqualTo<T> notEqualTo(T value) {
+    static <V> NotEqualTo<V> notEqualTo(V value) {
         return NotEqualTo.value(value);
     }
 
     @SafeVarargs
-    static <T> In<T> in(T... values) {
+    static <V> In<V> in(V... values) {
         return In.values(values);
     }
 
-    static <T> In<T> in(Set<T> values) {
+    static <V> In<V> in(Set<V> values) {
         return In.values(values);
     }
 
     @SafeVarargs
-    static <T> NotIn<T> notIn(T... values) {
+    static <V> NotIn<V> notIn(V... values) {
         return NotIn.values(values);
     }
 
-    static <T> NotIn<T> notIn(Set<T> values) {
+    static <V> NotIn<V> notIn(Set<V> values) {
         return NotIn.values(values);
     }
 
@@ -73,35 +73,35 @@ public interface Constraint<T> {
         return NotLike.pattern(pattern, charWildcard, stringWildcard, escape);
     }
 
-    static <T> Null<T> isNull() {
+    static <V> Null<V> isNull() {
         return Null.instance();
     }
 
-    static <T> NotNull<T> notNull() {
+    static <V> NotNull<V> notNull() {
         return NotNull.instance();
     }
 
-    static <T extends Comparable<?>> GreaterThan<T> greaterThan(T bound) {
+    static <V extends Comparable<?>> GreaterThan<V> greaterThan(V bound) {
         return GreaterThan.bound(bound);
     }
 
-    static <T extends Comparable<?>> LessThan<T> lessThan(T bound) {
+    static <V extends Comparable<?>> LessThan<V> lessThan(V bound) {
         return LessThan.bound(bound);
     }
 
-    static <T extends Comparable<?>> GreaterThanOrEqual<T> greaterThanOrEqual(T bound) {
+    static <V extends Comparable<?>> GreaterThanOrEqual<V> greaterThanOrEqual(V bound) {
         return GreaterThanOrEqual.min(bound);
     }
 
-    static <T extends Comparable<?>> LessThanOrEqual<T> lessThanOrEqual(T bound) {
+    static <V extends Comparable<?>> LessThanOrEqual<V> lessThanOrEqual(V bound) {
         return LessThanOrEqual.max(bound);
     }
 
-    static <T extends Comparable<?>> Between<T> between(T lowerBound, T upperBound) {
+    static <V extends Comparable<?>> Between<V> between(V lowerBound, V upperBound) {
         return Between.bounds(lowerBound, upperBound);
     }
 
-    static <T extends Comparable<?>> NotBetween<T> notBetween(T lowerBound, T upperBound) {
+    static <V extends Comparable<?>> NotBetween<V> notBetween(V lowerBound, V upperBound) {
         return NotBetween.bounds(lowerBound, upperBound);
     }
 }

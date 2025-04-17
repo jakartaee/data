@@ -17,9 +17,9 @@
  */
 package jakarta.data.metamodel.expression;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Objects;
-
-import jakarta.data.metamodel.ComparableExpression;
 
 record NumericLiteralRecord<T, N extends Number & Comparable<N>>
         (N value) implements NumericLiteral<T,N> {
@@ -29,11 +29,22 @@ record NumericLiteralRecord<T, N extends Number & Comparable<N>>
     }
 
     @Override
-    public int compareTo(ComparableExpression<T, N> other) {
-        if (getClass().equals(other.getClass())) {
-            return value.compareTo(((NumericLiteralRecord<T, N>) other).value);
+    public String toString() {
+        // TODO can use switch after compilation is switched to Java 21
+        String suffix;
+        if (value instanceof Long) {
+            suffix = "L";
+        } else if (value instanceof Float) {
+            suffix = "F";
+        } else if (value instanceof Double) {
+            suffix = "D";
+        } else if (value instanceof BigInteger) {
+            suffix = "BI";
+        } else if (value instanceof BigDecimal) {
+            suffix = "BD";
         } else {
-            return getClass().getName().compareTo(other.getClass().getName());
+            suffix = "";
         }
+        return value.toString() + suffix;
     }
 }

@@ -32,22 +32,4 @@ record NumericFunctionExpressionRecord<T, N extends Number & Comparable<N>>(
         Objects.requireNonNull(arguments, "Function arguments is required.");
     }
 
-    @Override
-    public int compareTo(ComparableExpression<T, N> other) {
-        if (getClass().equals(other.getClass())) {
-            NumericFunctionExpressionRecord<T, N> another =
-                    (NumericFunctionExpressionRecord<T,N>) other;
-            int comp = name.compareTo(another.name);
-            if (comp == 0) {
-                comp = Integer.compare(arguments.size(), another.arguments.size());
-            }
-            for (int i = 0; comp == 0 && i < arguments.size(); i++) {
-                comp = ((ComparableExpression) arguments.get(i))
-                        .compareTo((ComparableExpression) another.arguments.get(i));
-            }
-            return comp;
-        } else {
-            return getClass().getName().compareTo(other.getClass().getName());
-        }
-    }
 }

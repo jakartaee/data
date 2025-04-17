@@ -17,9 +17,8 @@
  */
 package jakarta.data.metamodel.expression;
 
-import jakarta.data.metamodel.NumericExpression;
 import jakarta.data.metamodel.constraint.*;
-import jakarta.data.metamodel.restrict.ExpressionRestriction;
+import jakarta.data.metamodel.restrict.BasicRestriction;
 import jakarta.data.metamodel.restrict.Restriction;
 import jakarta.data.mock.entity.Book;
 import jakarta.data.mock.entity._Book;
@@ -36,13 +35,12 @@ class NumericExpressionTest {
                         .greaterThanEqual(_Book.numChapters);
 
         @SuppressWarnings("unchecked")
-        ExpressionRestriction<Book, NumericExpression<Book, Integer>, Integer> restriction =
-                (ExpressionRestriction<Book, NumericExpression<Book, Integer>, Integer>)
+        BasicRestriction<Book, Integer> restriction =
+                (BasicRestriction<Book, Integer>)
                         averageChapterAtLeastAsLongAsNumChapters;
 
-        GreaterThanOrEqual<NumericExpression<Book, Integer>> gteNumChapters =
-                (GreaterThanOrEqual<NumericExpression<Book, Integer>>)
-                        restriction.constraint();
+        GreaterThanOrEqual<Integer> gteNumChapters =
+                (GreaterThanOrEqual<Integer>) restriction.constraint();
 
         NumericOperatorExpression<Book, Integer> divide =
                 (NumericOperatorExpression<Book, Integer>) restriction.expression();
@@ -69,13 +67,13 @@ class NumericExpressionTest {
                         _Book.title.length());
 
         @SuppressWarnings("unchecked")
-        ExpressionRestriction<Book, NumericExpression<Book, Integer>, Integer> restriction =
-                (ExpressionRestriction<Book, NumericExpression<Book, Integer>, Integer>)
-                        fewerChaptersThanCharsInTitle;
+        BasicRestriction<Book, Integer> restriction =
+                (BasicRestriction<Book, Integer>) fewerChaptersThanCharsInTitle;
 
-        LessThan<NumericExpression<Book, Integer>> lessThanLength =
-                (LessThan<NumericExpression<Book, Integer>>) restriction.constraint();
+        LessThan<Integer> lessThanLength =
+                (LessThan<Integer>) restriction.constraint();
 
+        @SuppressWarnings("unchecked")
         NumericFunctionExpression<Book, Integer> lengthExpression =
                 (NumericFunctionExpression<Book, Integer>) lessThanLength.bound();
 

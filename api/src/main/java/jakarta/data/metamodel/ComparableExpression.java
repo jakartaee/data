@@ -23,71 +23,65 @@ import jakarta.data.metamodel.constraint.GreaterThanOrEqual;
 import jakarta.data.metamodel.constraint.LessThan;
 import jakarta.data.metamodel.constraint.LessThanOrEqual;
 import jakarta.data.metamodel.constraint.NotBetween;
-import jakarta.data.metamodel.restrict.ValueRestriction;
-import jakarta.data.metamodel.restrict.ExpressionRestriction;
+import jakarta.data.metamodel.restrict.BasicRestriction;
 import jakarta.data.metamodel.restrict.Restriction;
 
-// We need ComparableExpression to be supplied as a constraint value to
-// LessThan/GreaterThan/... and so forth, but these constraint values are
-// required to be Comparable. For the most part, we could make
-// ComparableExpression be Comparable to satisfy that, although we never
-// use its compareTo method. We should look into whether there are better
-// options, but doing this at least temporarily could be a path forward
-// for now.
 public interface ComparableExpression<T,V extends Comparable<?>>
-        extends Expression<T, V>, Comparable<ComparableExpression<T, V>> {
+        extends Expression<T, V> {
 
     default Restriction<T> between(V min, V max) {
-        return ValueRestriction.of(this, Between.bounds(min, max));
+        return BasicRestriction.of(this, Between.bounds(min, max));
     }
 
     default <U extends ComparableExpression<? super T, V>> Restriction<T> between(
         U minExpression,
         U maxExpression) {
-        return ExpressionRestriction
-                .of(this, Between.bounds(minExpression, maxExpression));
+        return BasicRestriction.of(
+                this,
+                Between.bounds(minExpression, maxExpression));
     }
 
     default Restriction<T> greaterThan(V value) {
-        return ValueRestriction.of(this, GreaterThan.bound(value));
+        return BasicRestriction.of(this, GreaterThan.bound(value));
     }
 
     default Restriction<T> greaterThan(ComparableExpression<? super T, V> expression) {
-        return ExpressionRestriction.of(this, GreaterThan.bound(expression));
+        return BasicRestriction.of(this, GreaterThan.bound(expression));
     }
 
     default Restriction<T> greaterThanEqual(V value) {
-        return ValueRestriction.of(this, GreaterThanOrEqual.min(value));
+        return BasicRestriction.of(this, GreaterThanOrEqual.min(value));
     }
 
     default Restriction<T> greaterThanEqual(ComparableExpression<? super T, V> expression) {
-        return ExpressionRestriction.of(this, GreaterThanOrEqual.min(expression));
+        return BasicRestriction.of(this, GreaterThanOrEqual.min(expression));
     }
 
     default Restriction<T> lessThan(V value) {
-        return ValueRestriction.of(this, LessThan.bound(value));
+        return BasicRestriction.of(this, LessThan.bound(value));
     }
 
     default Restriction<T> lessThan(ComparableExpression<? super T, V> expression) {
-        return ExpressionRestriction.of(this, LessThan.bound(expression));
+        return BasicRestriction.of(this, LessThan.bound(expression));
     }
 
     default Restriction<T> lessThanEqual(V value) {
-        return ValueRestriction.of(this, LessThanOrEqual.max(value));
+        return BasicRestriction.of(this, LessThanOrEqual.max(value));
     }
 
     default Restriction<T> lessThanEqual(ComparableExpression<? super T, V> expression) {
-        return ExpressionRestriction.of(this, LessThanOrEqual.max(expression));
+        return BasicRestriction.of(this, LessThanOrEqual.max(expression));
     }
 
     default Restriction<T> notBetween(V min, V max) {
-        return ValueRestriction.of(this, NotBetween.bounds(min, max));
+        return BasicRestriction.of(this, NotBetween.bounds(min, max));
     }
 
     default <U extends ComparableExpression<? super T, V>> Restriction<T> notBetween(
             U minExpression,
             U maxExpression) {
-        return ExpressionRestriction
-                .of(this, NotBetween.bounds(minExpression, maxExpression));
+        return BasicRestriction.of(
+                this,
+                NotBetween.bounds(minExpression, maxExpression));
     }
 }

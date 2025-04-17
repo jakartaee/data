@@ -15,24 +15,20 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.metamodel.restrict;
+package jakarta.data.metamodel.expression;
 
 import jakarta.data.metamodel.Expression;
-import jakarta.data.metamodel.constraint.Constraint;
 
-public interface ExpressionRestriction<T, U extends Expression<? super T,V>, V>
-        extends Restriction<T> {
+public interface Literal<T, V> extends Expression<T, V> {
+    V value();
 
-    @Override
-    ExpressionRestriction<T,U,V> negate();
-
-    Expression<T,V> expression();
-
-    Constraint<U> constraint();
-
-    static <T, U extends Expression<? super T,V>, V> ExpressionRestriction<T,U,V> of(
-            Expression<T,V> expression,
-            Constraint<U> constraint) {
-        return new ExpressionRestrictionRecord<>(expression, constraint);
+    @SuppressWarnings("unchecked")
+    static <T, V> Literal<T, V> of(V value) {
+        if (value instanceof Comparable c) {
+            return (Literal<T, V>) ComparableLiteral.of(c);
+        } else {
+            return new LiteralRecord<>(value);
+        }
     }
+
 }

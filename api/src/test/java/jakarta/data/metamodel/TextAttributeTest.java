@@ -19,7 +19,8 @@ package jakarta.data.metamodel;
 
 import jakarta.data.metamodel.constraint.Like;
 import jakarta.data.metamodel.constraint.NotLike;
-import jakarta.data.metamodel.restrict.ValueRestriction;
+import jakarta.data.metamodel.expression.StringLiteral;
+import jakarta.data.metamodel.restrict.BasicRestriction;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
 
@@ -36,104 +37,122 @@ class TextAttributeTest {
     @Test
     void shouldCreateContainsRestriction() {
         @SuppressWarnings("unchecked")
-        ValueRestriction<Author,String> restriction =
-                (ValueRestriction<Author, String>) testAttribute.contains("testValue");
+        BasicRestriction<Author,String> restriction =
+                (BasicRestriction<Author, String>) testAttribute.contains("testValue");
+
+        Like like = (Like) restriction.constraint();
+        StringLiteral<?> literal = ((StringLiteral<?>) like.pattern());
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.expression()).isEqualTo(testAttribute);
-            soft.assertThat(restriction.constraint()).isInstanceOf(Like.class);
-            soft.assertThat(((Like) restriction.constraint()).pattern()).isEqualTo("%testValue%");
+            soft.assertThat(literal.value()).isEqualTo("%testValue%");
         });
     }
 
     @Test
     void shouldCreateStartsWithRestriction() {
         @SuppressWarnings("unchecked")
-        ValueRestriction<Author,String> restriction =
-                (ValueRestriction<Author, String>) testAttribute.startsWith("testValue");
+        BasicRestriction<Author,String> restriction =
+                (BasicRestriction<Author, String>) testAttribute.startsWith("testValue");
+
+        Like like = (Like) restriction.constraint();
+        StringLiteral<?> literal = ((StringLiteral<?>) like.pattern());
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.expression()).isEqualTo(testAttribute);
-            soft.assertThat(restriction.constraint()).isInstanceOf(Like.class);
-            soft.assertThat(((Like) restriction.constraint()).pattern()).isEqualTo("testValue%");
+            soft.assertThat(literal.value()).isEqualTo("testValue%");
         });
     }
 
     @Test
     void shouldCreateEndsWithRestriction() {
         @SuppressWarnings("unchecked")
-        ValueRestriction<Author,String> restriction =
-                (ValueRestriction<Author,String>) testAttribute.endsWith("testValue");
+        BasicRestriction<Author,String> restriction =
+                (BasicRestriction<Author,String>) testAttribute.endsWith("testValue");
+
+        Like like = (Like) restriction.constraint();
+        StringLiteral<?> literal = ((StringLiteral<?>) like.pattern());
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.expression()).isEqualTo(testAttribute);
-            soft.assertThat(restriction.constraint()).isInstanceOf(Like.class);
-            soft.assertThat(((Like) restriction.constraint()).pattern()).isEqualTo("%testValue");
+            soft.assertThat(literal.value()).isEqualTo("%testValue");
         });
     }
 
     @Test
     void shouldCreateLikeRestriction() {
         @SuppressWarnings("unchecked")
-        ValueRestriction<Author,String> restriction =
-                (ValueRestriction<Author, String>) testAttribute.like("%test%");
+        BasicRestriction<Author,String> restriction =
+                (BasicRestriction<Author, String>) testAttribute.like("%test%");
+
+        Like like = (Like) restriction.constraint();
+        StringLiteral<?> literal = ((StringLiteral<?>) like.pattern());
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.expression()).isEqualTo(testAttribute);
             soft.assertThat(restriction.constraint()).isInstanceOf(Like.class);
-            soft.assertThat(((Like) restriction.constraint()).pattern()).isEqualTo("%test%");
+            soft.assertThat(literal.value()).isEqualTo("%test%");
         });
     }
 
     @Test
     void shouldCreateNotContainsRestriction() {
         @SuppressWarnings("unchecked")
-        ValueRestriction<Author,String> restriction =
-                (ValueRestriction<Author, String>) testAttribute.notContains("testValue");
+        BasicRestriction<Author,String> restriction =
+                (BasicRestriction<Author, String>) testAttribute.notContains("testValue");
+
+        NotLike notLike = (NotLike) restriction.constraint();
+        StringLiteral<?> literal = ((StringLiteral<?>) notLike.pattern());
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.expression()).isEqualTo(testAttribute);
             soft.assertThat(restriction.constraint()).isInstanceOf(NotLike.class);
-            soft.assertThat(((NotLike) restriction.constraint()).pattern()).isEqualTo("%testValue%");
+            soft.assertThat(literal.value()).isEqualTo("%testValue%");
         });
     }
 
     @Test
     void shouldCreateNotLikeRestriction() {
         @SuppressWarnings("unchecked")
-        ValueRestriction<Author,String> restriction =
-                (ValueRestriction<Author, String>) testAttribute.notLike("%test%");
+        BasicRestriction<Author,String> restriction =
+                (BasicRestriction<Author, String>) testAttribute.notLike("%test%");
+
+        NotLike notLike = (NotLike) restriction.constraint();
+        StringLiteral<?> literal = ((StringLiteral<?>) notLike.pattern());
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.expression()).isEqualTo(testAttribute);
-            soft.assertThat(restriction.constraint()).isInstanceOf(NotLike.class);
-            soft.assertThat(((NotLike) restriction.constraint()).pattern()).isEqualTo("%test%");
+            soft.assertThat(literal.value()).isEqualTo("%test%");
         });
     }
 
     @Test
     void shouldCreateNotStartsWithRestriction() {
         @SuppressWarnings("unchecked")
-        ValueRestriction<Author,String> restriction =
-                (ValueRestriction<Author, String>) testAttribute.notStartsWith("testValue");
+        BasicRestriction<Author,String> restriction =
+                (BasicRestriction<Author, String>) testAttribute.notStartsWith("testValue");
+
+        NotLike notLike = (NotLike) restriction.constraint();
+        StringLiteral<?> literal = ((StringLiteral<?>) notLike.pattern());
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.expression()).isEqualTo(testAttribute);
-            soft.assertThat(restriction.constraint()).isInstanceOf(NotLike.class);
-            soft.assertThat(((NotLike) restriction.constraint()).pattern()).isEqualTo("testValue%");
+            soft.assertThat(literal.value()).isEqualTo("testValue%");
         });
     }
 
     @Test
     void shouldCreateNotEndsWithRestriction() {
         @SuppressWarnings("unchecked")
-        ValueRestriction<Author,String> restriction =
-                (ValueRestriction<Author, String>) testAttribute.notEndsWith("testValue");
+        BasicRestriction<Author,String> restriction =
+                (BasicRestriction<Author, String>) testAttribute.notEndsWith("testValue");
+
+        NotLike notLike = (NotLike) restriction.constraint();
+        StringLiteral<?> literal = ((StringLiteral<?>) notLike.pattern());
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.expression()).isEqualTo(testAttribute);
-            soft.assertThat(restriction.constraint()).isInstanceOf(NotLike.class);
-            soft.assertThat(((NotLike) restriction.constraint()).pattern()).isEqualTo("%testValue");
+            soft.assertThat(literal.value()).isEqualTo("%testValue");
         });
     }
 }
