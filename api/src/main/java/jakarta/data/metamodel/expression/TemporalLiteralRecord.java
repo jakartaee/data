@@ -17,17 +17,34 @@
  */
 package jakarta.data.metamodel.expression;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.temporal.Temporal;
 import java.util.Objects;
 
-record StringLiteralRecord<T>(String value)
-        implements StringLiteral<T> {
+record TemporalLiteralRecord<T, V extends Temporal & Comparable<? extends Temporal>>(
+        V value)
+        implements TemporalLiteral<T, V> {
 
-    StringLiteralRecord {
+    TemporalLiteralRecord {
         Objects.requireNonNull(value, "Value is required.");
     }
 
     @Override
     public String toString() {
-        return '\'' + value + '\'';
+        // TODO can use a switch statement after updating to Java 21
+        if (value instanceof Instant ||
+            value instanceof LocalDateTime) {
+            return "TIMESTAMP('" + value + "')";
+        } else if (value instanceof LocalDate) {
+            return "DATE('" + value + "')";
+        } else if (value instanceof LocalTime) {
+            return "TIME('" + value + "')";
+        } else {
+            return value.toString();
+        }
     }
+
 }

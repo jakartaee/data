@@ -17,6 +17,34 @@
  */
 package jakarta.data.metamodel.expression;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.Objects;
+
 record NumericLiteralRecord<T, N extends Number & Comparable<N>>
         (N value) implements NumericLiteral<T,N> {
+
+    NumericLiteralRecord {
+        Objects.requireNonNull(value, "Value is required.");
+    }
+
+    @Override
+    public String toString() {
+        // TODO can use switch after compilation is switched to Java 21
+        String suffix;
+        if (value instanceof Long) {
+            suffix = "L";
+        } else if (value instanceof Float) {
+            suffix = "F";
+        } else if (value instanceof Double) {
+            suffix = "D";
+        } else if (value instanceof BigInteger) {
+            suffix = "BI";
+        } else if (value instanceof BigDecimal) {
+            suffix = "BD";
+        } else {
+            suffix = "";
+        }
+        return value.toString() + suffix;
+    }
 }

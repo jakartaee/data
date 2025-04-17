@@ -33,41 +33,55 @@ public interface ComparableExpression<T,V extends Comparable<?>>
         return BasicRestriction.of(this, Between.bounds(min, max));
     }
 
-    default Restriction<T> notBetween(V min, V max) {
-        return BasicRestriction.of(this, NotBetween.bounds(min, max));
+    default <U extends ComparableExpression<? super T, V>> Restriction<T> between(
+        U minExpression,
+        U maxExpression) {
+        return BasicRestriction.of(
+                this,
+                Between.bounds(minExpression, maxExpression));
     }
 
     default Restriction<T> greaterThan(V value) {
         return BasicRestriction.of(this, GreaterThan.bound(value));
     }
 
+    default Restriction<T> greaterThan(ComparableExpression<? super T, V> expression) {
+        return BasicRestriction.of(this, GreaterThan.bound(expression));
+    }
+
     default Restriction<T> greaterThanEqual(V value) {
         return BasicRestriction.of(this, GreaterThanOrEqual.min(value));
+    }
+
+    default Restriction<T> greaterThanEqual(ComparableExpression<? super T, V> expression) {
+        return BasicRestriction.of(this, GreaterThanOrEqual.min(expression));
     }
 
     default Restriction<T> lessThan(V value) {
         return BasicRestriction.of(this, LessThan.bound(value));
     }
 
+    default Restriction<T> lessThan(ComparableExpression<? super T, V> expression) {
+        return BasicRestriction.of(this, LessThan.bound(expression));
+    }
+
     default Restriction<T> lessThanEqual(V value) {
         return BasicRestriction.of(this, LessThanOrEqual.max(value));
     }
 
-    // Leave for later, since we need a new kind of Restriction for these
+    default Restriction<T> lessThanEqual(ComparableExpression<? super T, V> expression) {
+        return BasicRestriction.of(this, LessThanOrEqual.max(expression));
+    }
 
-//    default Restriction<T> greaterThan(Expression<? super T,V> value) {
-//        throw new UnsupportedOperationException("not yet implemented");
-//    }
-//
-//    default Restriction<T> greaterThanEqual(Expression<? super T,V> value) {
-//        throw new UnsupportedOperationException("not yet implemented");
-//    }
-//
-//    default Restriction<T> lessThan(Expression<? super T,V> value) {
-//        throw new UnsupportedOperationException("not yet implemented");
-//    }
-//
-//    default Restriction<T> lessThanEqual(Expression<? super T,V> value) {
-//        throw new UnsupportedOperationException("not yet implemented");
-//    }
+    default Restriction<T> notBetween(V min, V max) {
+        return BasicRestriction.of(this, NotBetween.bounds(min, max));
+    }
+
+    default <U extends ComparableExpression<? super T, V>> Restriction<T> notBetween(
+            U minExpression,
+            U maxExpression) {
+        return BasicRestriction.of(
+                this,
+                NotBetween.bounds(minExpression, maxExpression));
+    }
 }

@@ -17,11 +17,18 @@
  */
 package jakarta.data.metamodel.constraint;
 
-public interface EqualTo<T> extends Constraint<T> {
+import jakarta.data.metamodel.Expression;
+import jakarta.data.metamodel.expression.Literal;
 
-    static <T> EqualTo<T> value(T value) {
-        return new EqualToRecord<>(value);
+public interface EqualTo<V> extends Constraint<V> {
+
+    static <V> EqualTo<V> expression(Expression<?, V> expression) {
+        return new EqualToRecord<>(expression);
     }
 
-    T value();
+    static <V> EqualTo<V> value(V value) {
+        return new EqualToRecord<>(Literal.of(value));
+    }
+
+    Expression<?, V> expression();
 }

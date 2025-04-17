@@ -17,18 +17,77 @@
  */
 package jakarta.data.metamodel.constraint;
 
+import java.util.LinkedHashSet;
+import java.util.Objects;
 import java.util.Set;
 
-public interface In<T> extends Constraint<T> {
+import jakarta.data.metamodel.Expression;
+import jakarta.data.metamodel.expression.Literal;
+public interface In<V> extends Constraint<V> {
 
-    static <T> In<T> values(Set<T> values) {
-        return new InRecord<>(values);
+    @SafeVarargs
+    static <V> In<V> values(V... values) {
+        Objects.requireNonNull(values, "Values are required.");
+
+        if (values.length == 0) {
+            throw new IllegalArgumentException("Array of values must not be empty.");
+        }
+
+        Set<Expression<?, V>> expressions = new LinkedHashSet<>(values.length);
+        for (V value : values) {
+            Objects.requireNonNull(value, "Value must not be null.");
+            expressions.add(Literal.of(value));
+        }
+
+        return new InRecord<>(expressions);
+    }
+
+    static <V> In<V> values(Set<V> values) {
+        Objects.requireNonNull(values, "Values are required.");
+
+        if (values.isEmpty()) {
+            throw new IllegalArgumentException("Values must not be empty.");
+        }
+
+        Set<Expression<?, V>> expressions = new LinkedHashSet<>(values.size());
+        for (V value : values) {
+            Objects.requireNonNull(value, "Value must not be null.");
+            expressions.add(Literal.of(value));
+        }
+
+        return new InRecord<>(expressions);
+    }
+
+    static <V> In<V> expressions(Set<Expression<?, V>> expressions) {
+        Objects.requireNonNull(expressions, "Value expressions are required.");
+
+        if (expressions.isEmpty()) {
+            throw new IllegalArgumentException(
+                    "Value expressions must not be empty.");
+        }
+
+        for (Expression<?, V> expression : expressions) {
+            Objects.requireNonNull(expression, "Value expression must not be null.");
+        }
+
+        return new InRecord<>(expressions);
     }
 
     @SafeVarargs
-    static <T> In<T> values(T... values) {
-        return new InRecord<>(Set.of(values));
+    static <V> In<V> expressions(Expression<?, V>... expressions) {
+        Objects.requireNonNull(expressions, "Value expressions are required.");
+
+        if (expressions.length == 0) {
+            throw new IllegalArgumentException(
+                    "Array of value expressions must not be empty.");
+        }
+
+        for (Expression<?, V> expression : expressions) {
+            Objects.requireNonNull(expression, "Value expression must not be null.");
+        }
+
+        return new InRecord<>(Set.of(expressions));
     }
 
-    Set<T> values();
+    Set<Expression<?, V>> expressions();
 }

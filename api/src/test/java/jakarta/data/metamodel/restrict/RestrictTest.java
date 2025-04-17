@@ -27,6 +27,7 @@ import jakarta.data.metamodel.constraint.EqualTo;
 import jakarta.data.metamodel.constraint.Like;
 import jakarta.data.metamodel.constraint.NotEqualTo;
 import jakarta.data.metamodel.constraint.NotLike;
+import jakarta.data.metamodel.expression.StringLiteral;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
@@ -142,10 +143,12 @@ class RestrictTest {
         BasicRestriction<Employee,String> restriction =
                 (BasicRestriction<Employee, String>) _Employee.position.contains("Manager");
 
+        Like constraint = (Like) restriction.constraint();
+        StringLiteral<?> literal = (StringLiteral<?>) constraint.pattern();
+
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.expression()).isEqualTo(_Employee.position);
-            soft.assertThat(restriction.constraint()).isInstanceOf(Like.class);
-            soft.assertThat(((Like) restriction.constraint()).pattern()).isEqualTo("%Manager%");
+            soft.assertThat(literal.value()).isEqualTo("%Manager%");
         });
     }
 
@@ -155,10 +158,12 @@ class RestrictTest {
         BasicRestriction<Employee,String> restriction =
                 (BasicRestriction<Employee, String>) _Employee.position.notContains("Director");
 
+        NotLike constraint = (NotLike) restriction.constraint();
+        StringLiteral<?> literal = (StringLiteral<?>) constraint.pattern();
+
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.expression()).isEqualTo(_Employee.position);
-            soft.assertThat(restriction.constraint()).isInstanceOf(NotLike.class);
-            soft.assertThat(((NotLike) restriction.constraint()).pattern()).isEqualTo("%Director%");
+            soft.assertThat(literal.value()).isEqualTo("%Director%");
         });
     }
 
@@ -168,10 +173,12 @@ class RestrictTest {
         BasicRestriction<Employee,String> restriction =
                 (BasicRestriction<Employee, String>) _Employee.position.startsWith("Director");
 
+        Like constraint = (Like) restriction.constraint();
+        StringLiteral<?> literal = (StringLiteral<?>) constraint.pattern();
+
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.expression()).isEqualTo(_Employee.position);
-            soft.assertThat(restriction.constraint()).isInstanceOf(Like.class);
-            soft.assertThat(((Like) restriction.constraint()).pattern()).isEqualTo("Director%");
+            soft.assertThat(literal.value()).isEqualTo("Director%");
         });
     }
 
@@ -181,10 +188,12 @@ class RestrictTest {
         BasicRestriction<Employee,String> restriction =
                 (BasicRestriction<Employee, String>) _Employee.position.notStartsWith("Manager");
 
+        NotLike constraint = (NotLike) restriction.constraint();
+        StringLiteral<?> literal = (StringLiteral<?>) constraint.pattern();
+
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.expression()).isEqualTo(_Employee.position);
-            soft.assertThat(restriction.constraint()).isInstanceOf(NotLike.class);
-            soft.assertThat(((NotLike) restriction.constraint()).pattern()).isEqualTo("Manager%");
+            soft.assertThat(literal.value()).isEqualTo("Manager%");
         });
     }
 
@@ -194,10 +203,12 @@ class RestrictTest {
         BasicRestriction<Employee,String> restriction =
                 (BasicRestriction<Employee,String>) _Employee.position.endsWith("Manager");
 
+        Like constraint = (Like) restriction.constraint();
+        StringLiteral<?> literal = (StringLiteral<?>) constraint.pattern();
+
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.expression()).isEqualTo(_Employee.position);
-            soft.assertThat(restriction.constraint()).isInstanceOf(Like.class);
-            soft.assertThat(((Like) restriction.constraint()).pattern()).isEqualTo("%Manager");
+            soft.assertThat(literal.value()).isEqualTo("%Manager");
         });
     }
 
@@ -207,10 +218,12 @@ class RestrictTest {
         BasicRestriction<Employee,String> restriction =
                 (BasicRestriction<Employee, String>) _Employee.position.notEndsWith("Supervisor");
 
+        NotLike constraint = (NotLike) restriction.constraint();
+        StringLiteral<?> literal = (StringLiteral<?>) constraint.pattern();
+
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.expression()).isEqualTo(_Employee.position);
-            soft.assertThat(restriction.constraint()).isInstanceOf(NotLike.class);
-            soft.assertThat(((NotLike) restriction.constraint()).pattern()).isEqualTo("%Supervisor");
+            soft.assertThat(literal.value()).isEqualTo("%Supervisor");
         });
     }
 
@@ -252,9 +265,9 @@ class RestrictTest {
         @SuppressWarnings("unchecked")
         Like like = (Like) ((BasicRestriction<Employee,String>)
                 _Employee.position.endsWith("test_value")).constraint();
-        String result = like.pattern();
+        StringLiteral<?> literal = (StringLiteral<?>) like.pattern();
 
-        assertThat(result).isEqualTo("%test\\_value");
+        assertThat(literal.value()).isEqualTo("%test\\_value");
     }
 
     @Test

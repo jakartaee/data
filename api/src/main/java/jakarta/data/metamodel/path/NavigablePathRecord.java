@@ -17,11 +17,18 @@
  */
 package jakarta.data.metamodel.path;
 
+import java.util.Objects;
+
 import jakarta.data.metamodel.NavigableAttribute;
 import jakarta.data.metamodel.NavigableExpression;
 
 record NavigablePathRecord<T,U,V>
         (NavigableExpression<T,U> expression, NavigableAttribute<U,V> attribute)
         implements NavigablePath<T,U,V> {
+
+    NavigablePathRecord {
+        Objects.requireNonNull(expression, "Expression is required.");
+        Objects.requireNonNull(attribute, "Entity attribute is required.");
+    }
 
 }

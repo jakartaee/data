@@ -17,11 +17,20 @@
  */
 package jakarta.data.metamodel.constraint;
 
-public interface LessThan<T extends Comparable<?>> extends Constraint<T> {
+import jakarta.data.metamodel.ComparableExpression;
+import jakarta.data.metamodel.expression.ComparableLiteral;
 
-    static <T extends Comparable<?>> LessThan<T> bound(T upperBound) {
+public interface LessThan<V extends Comparable<?>> extends Constraint<V> {
+
+    static <V extends Comparable<?>> LessThan<V> bound(
+            V upperBound) {
+        return new LessThanRecord<>(ComparableLiteral.of(upperBound));
+    }
+
+    static <V extends Comparable<?>> LessThan<V> bound(
+            ComparableExpression<?, V> upperBound) {
         return new LessThanRecord<>(upperBound);
     }
 
-    T bound();
+    ComparableExpression<?, V> bound();
 }

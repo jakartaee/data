@@ -17,28 +17,10 @@
  */
 package jakarta.data.metamodel.constraint;
 
-import java.util.Objects;
+import jakarta.data.metamodel.TextExpression;
 
-import static jakarta.data.metamodel.constraint.LikeRecord.ESCAPE;
-import static jakarta.data.metamodel.constraint.LikeRecord.translate;
-
-record NotLikeRecord(String pattern, Character escape) implements NotLike {
-
-    NotLikeRecord {
-        Objects.requireNonNull(pattern, "pattern must not be null");
-    }
-
-    NotLikeRecord(String pattern) {
-        this(pattern, null);
-    }
-
-    NotLikeRecord(String pattern, char charWildcard, char stringWildcard) {
-        this(pattern, charWildcard, stringWildcard, ESCAPE);
-    }
-
-    NotLikeRecord(String pattern, char charWildcard, char stringWildcard, char escape) {
-        this(translate(pattern, charWildcard, stringWildcard, escape), escape);
-    }
+record NotLikeRecord(TextExpression<?> pattern, Character escape)
+        implements NotLike {
 
     @Override
     public Like negate() {
@@ -47,7 +29,7 @@ record NotLikeRecord(String pattern, Character escape) implements NotLike {
 
     @Override
     public String toString() {
-        return "NOT LIKE '" + pattern + "'" +
-               (escape == null ? "" : " ESCAPE '\\'");
+        return "NOT LIKE " + pattern +
+                (escape == null ? "" : " ESCAPE '" + escape + "'");
     }
 }

@@ -34,15 +34,38 @@ import org.junit.jupiter.api.Test;
 class ExpressionTest {
 
     @Test
+    void shouldCompareWithOtherEntityAttribute() {
+        Restriction<Book> autobiographies =
+                _Book.title.equalTo(_Book.author);
+
+        @SuppressWarnings("unchecked")
+        BasicRestriction<Book, String> restriction =
+                (BasicRestriction<Book, String>) autobiographies;
+
+        EqualTo<String> equalToConstraint =
+                (EqualTo<String>) restriction.constraint();
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(restriction.expression())
+                .isEqualTo(_Book.title);
+
+            soft.assertThat(equalToConstraint.expression())
+                .isEqualTo(_Book.author);
+        });
+    }
+
+    @Test
     void shouldRestrictLast2ofFirst10Chars() {
 
         Restriction<Book> titleWithEE =
             _Book.title.left(10).right(2).upper().equalTo("EE");
 
+        @SuppressWarnings("unchecked")
         BasicRestriction<Book, String> restriction =
             (BasicRestriction<Book, String>) titleWithEE;
 
-        Constraint<String> constraint = restriction.constraint();
+        EqualTo<String> constraint = (EqualTo<String>) restriction.constraint();
+        StringLiteral<?> literal = (StringLiteral<?>) constraint.expression();
 
         TextFunctionExpression<Book> upperExpression =
             (TextFunctionExpression<Book>) restriction.expression();
@@ -95,10 +118,7 @@ class ExpressionTest {
             soft.assertThat(upperExpression.name())
                 .isEqualTo(TextFunctionExpression.UPPER);
 
-            soft.assertThat(constraint)
-                .isInstanceOf(EqualTo.class);
-
-            soft.assertThat(((EqualTo<String>) constraint).value())
+            soft.assertThat(literal.value())
                 .isEqualTo("EE");
         });
     }
@@ -112,7 +132,11 @@ class ExpressionTest {
         BasicRestriction<Book, Integer> restriction =
             (BasicRestriction<Book, Integer>) titleUpTo50Chars;
 
-        Constraint<Integer> constraint = restriction.constraint();
+        LessThanOrEqual<Integer> constraint =
+            (LessThanOrEqual<Integer>) restriction.constraint();
+
+        NumericLiteral<?, Integer> literal =
+            (NumericLiteral<?, Integer>) constraint.bound();
 
         NumericFunctionExpression<Book, Integer> lengthExpression =
             (NumericFunctionExpression<Book, Integer>) restriction.expression();
@@ -127,10 +151,7 @@ class ExpressionTest {
             soft.assertThat(lengthExpression.arguments().get(0))
                 .isEqualTo(_Book.title);
 
-            soft.assertThat(constraint)
-                .isInstanceOf(LessThanOrEqual.class);
-
-            soft.assertThat(((LessThanOrEqual<Integer>) constraint).bound())
+            soft.assertThat(literal.value())
                 .isEqualTo(50);
         });
     }

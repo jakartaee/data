@@ -37,10 +37,29 @@ class TemporalExpressionTest {
         TemporalExpression<Object, LocalDate> today =
             TemporalExpression.localDate();
 
-        // TODO write the test once comparisons with expressions are added
-        //Restriction<Book> beforeCurrentDate =
-        //    _Book.publicationDate.lessThan(today);
-        // ...
+        Restriction<Book> beforeCurrentDate =
+            _Book.publicationDate.lessThan(today);
+
+        @SuppressWarnings("unchecked")
+        BasicRestriction<Book, LocalDate> restriction =
+            (BasicRestriction<Book, LocalDate>) beforeCurrentDate;
+
+        TemporalExpression<Book, LocalDate> lessThanExpression =
+                (TemporalExpression<Book, LocalDate>) restriction.expression();
+
+        LessThan<LocalDate> lessThan =
+            (LessThan<LocalDate>) restriction.constraint();
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(lessThanExpression)
+                .isEqualTo(_Book.publicationDate);
+
+            soft.assertThat(lessThan.bound())
+                .isInstanceOf(CurrentDate.class);
+
+            soft.assertThat(lessThan.bound())
+                .isEqualTo(today);
+        });
     }
 
     @Test
@@ -54,7 +73,14 @@ class TemporalExpressionTest {
         BasicRestriction<Book, LocalDate> restriction =
             (BasicRestriction<Book, LocalDate>) publishedInApril2025;
 
-        Constraint<LocalDate> constraint = restriction.constraint();
+        Between<LocalDate> constraint =
+            (Between<LocalDate>) restriction.constraint();
+
+        TemporalLiteral<?, LocalDate> lowerLiteral =
+            (TemporalLiteral<?, LocalDate>) constraint.lowerBound();
+
+        TemporalLiteral<?, LocalDate> upperLiteral =
+            (TemporalLiteral<?, LocalDate>) constraint.upperBound();
 
         TemporalExpression<Book, LocalDate> betweenExpression =
             (TemporalExpression<Book, LocalDate>) restriction.expression();
@@ -63,13 +89,10 @@ class TemporalExpressionTest {
             soft.assertThat(betweenExpression)
                 .isEqualTo(_Book.publicationDate);
 
-            soft.assertThat(constraint)
-                .isInstanceOf(Between.class);
-
-            soft.assertThat(((Between<LocalDate>) constraint).lowerBound())
+            soft.assertThat(lowerLiteral.value())
                 .isEqualTo(LocalDate.of(2025, Month.APRIL, 1));
 
-            soft.assertThat(((Between<LocalDate>) constraint).upperBound())
+            soft.assertThat(upperLiteral.value())
                 .isEqualTo(LocalDate.of(2025, Month.APRIL, 30));
         });
     }

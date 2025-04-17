@@ -19,18 +19,21 @@ package jakarta.data.metamodel.constraint;
 
 import java.util.Objects;
 
-record EqualToRecord<T>(T value) implements EqualTo<T> {
+import jakarta.data.metamodel.Expression;
+
+record EqualToRecord<V>(Expression<?, V> expression)
+        implements EqualTo<V> {
     public EqualToRecord {
-        Objects.requireNonNull(value, "Value must not be null");
+        Objects.requireNonNull(expression, "Value expression must not be null");
     }
 
     @Override
-    public NotEqualTo<T> negate() {
-        return NotEqualTo.value(value);
+    public NotEqualTo<V> negate() {
+        return NotEqualTo.expression(expression);
     }
 
     @Override
     public String toString() {
-        return value instanceof String ? "= '" + value + "'" : "= " + value.toString();
+        return "= " + expression.toString();
     }
 }

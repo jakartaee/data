@@ -15,20 +15,19 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.metamodel.path;
+package jakarta.data.metamodel.expression;
 
 import java.util.Objects;
 
-import jakarta.data.metamodel.ComparableAttribute;
-import jakarta.data.metamodel.NavigableExpression;
+record LiteralRecord<T, V>(V value) implements Literal<T,V> {
 
-record ComparablePathRecord<T,U,C extends Comparable<?>>
-        (NavigableExpression<T,U> expression, ComparableAttribute<U, C> attribute)
-        implements ComparablePath<T,U,C> {
+    LiteralRecord {
+        Objects.requireNonNull(value, "Value is required.");
+    }
 
-    ComparablePathRecord {
-        Objects.requireNonNull(expression, "Expression is required.");
-        Objects.requireNonNull(attribute, "Entity attribute is required.");
+    @Override
+    public String toString() {
+        return value.toString();
     }
 
 }

@@ -17,11 +17,18 @@
  */
 package jakarta.data.metamodel.constraint;
 
-public interface NotEqualTo<T> extends Constraint<T> {
+import jakarta.data.metamodel.Expression;
+import jakarta.data.metamodel.expression.Literal;
 
-    static <T> NotEqualTo<T> value(T value) {
-        return new NotEqualToRecord<>(value);
+public interface NotEqualTo<V> extends Constraint<V> {
+
+    static <V> NotEqualTo<V> expression(Expression<?, V> expression) {
+        return new NotEqualToRecord<>(expression);
     }
 
-    T value();
+    static <V> NotEqualTo<V> value(V value) {
+        return new NotEqualToRecord<>(Literal.of(value));
+    }
+
+    Expression<?, V> expression();
 }
