@@ -20,12 +20,13 @@ of the project committers and various contributors.
 
 ==== Project leads
 
-* https://projects.eclipse.org/content/nathan-rauh-committer-jakarta-data[Nathan Rauh]
-* https://projects.eclipse.org/content/otavio-santana-committer-jakarta-data[Otavio Santana]
+* https://projects.eclipse.org/projects/ee4j.data/PL/nrauhi2d[Nathan Rauh]
+* https://projects.eclipse.org/projects/ee4j.data/PL/osantanatrg[Otavio Santana]
 
 ==== Committers
 
-* https://projects.eclipse.org/content/denis-stepanov-committer-jakarta-data[Denis Stepanov]
+
+* https://projects.eclipse.org/projects/ee4j.data/CM/denisstepanov[Denis Stepanov]
 * https://projects.eclipse.org/content/dmitry-kornilov-committer-jakarta-data[Dmitry Kornilov]
 * https://projects.eclipse.org/content/emily-jiang-committer-jakarta-data[Emily Jiang]
 * https://projects.eclipse.org/content/gavin-king-committer-jakarta-data[Gavin King]
