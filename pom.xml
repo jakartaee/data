@@ -37,7 +37,7 @@
         applications applying Java® and data engine technologies. It helps them create scalable applications while
         maintaining low coupling with the underlying persistence technology.
     </description>
-    <url>www.eclipse.org/ee4j/data</url>
+    <url>https://projects.eclipse.org/projects/ee4j.data</url>
 
 
     <licenses>
