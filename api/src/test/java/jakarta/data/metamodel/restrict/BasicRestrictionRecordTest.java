@@ -224,7 +224,7 @@ class BasicRestrictionRecordTest {
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.expression()).isEqualTo(_Book.title);
-            soft.assertThat(restriction.constraint()).isEqualTo(Like.value("%Java%"));
+            soft.assertThat(restriction.constraint()).isEqualTo(Like.pattern("%Java%"));
             soft.assertThat(restriction.constraint()).isInstanceOf(Like.class);
         });
 
@@ -237,12 +237,8 @@ class BasicRestrictionRecordTest {
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.expression()).isEqualTo(_Book.title);
-            soft.assertThat(restriction.constraint()).isEqualTo(NotLike.value("%Java%"));
+            soft.assertThat(restriction.constraint()).isEqualTo(NotLike.pattern("%Java%"));
             soft.assertThat(restriction.constraint()).isInstanceOf(NotLike.class);
         });
     }
-
-
-
-
 }
