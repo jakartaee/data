@@ -155,4 +155,18 @@ class BasicRestrictionRecordTest {
     }
 
 
+    @Test
+    void shouldCreateNullRestriction() {
+        BasicRestriction<Book, String> restriction =
+                (BasicRestriction<Book, String>) _Book.title.isNull();
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(restriction.expression()).isEqualTo(_Book.title);
+            soft.assertThat(restriction.constraint()).isEqualTo(Null.instance());
+            soft.assertThat(restriction.constraint()).isInstanceOf(Null.class);
+        });
+    }
+
+
+
 }
