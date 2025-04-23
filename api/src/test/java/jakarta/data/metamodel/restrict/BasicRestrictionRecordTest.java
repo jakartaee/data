@@ -129,4 +129,19 @@ class BasicRestrictionRecordTest {
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("Value must not be null");
     }
+
+    @Test
+    void shouldCreateGreaterThanOrEqualRestriction() {
+        @SuppressWarnings("unchecked")
+        BasicRestriction<Book, Integer> restriction =
+                (BasicRestriction<Book, Integer>) _Book.numPages.greaterThanEqual(200);
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(restriction.expression()).isEqualTo(_Book.numPages);
+            soft.assertThat(restriction.constraint()).isEqualTo(GreaterThanOrEqual.min(200));
+            soft.assertThat(restriction.constraint()).isInstanceOf(GreaterThanOrEqual.class);
+        });
+    }
+
+
 }
