@@ -154,7 +154,6 @@ class BasicRestrictionRecordTest {
         });
     }
 
-
     @Test
     void shouldCreateNullRestriction() {
         BasicRestriction<Book, String> restriction =
