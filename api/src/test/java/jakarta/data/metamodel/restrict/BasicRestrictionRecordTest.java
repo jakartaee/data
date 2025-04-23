@@ -37,7 +37,7 @@ class BasicRestrictionRecordTest {
     @Test
     @DisplayName("should create an EqualTo restriction by default when using 'equalTo' without negation")
     void shouldCreateBasicRestrictionWithDefaultNegation() {
-        BasicRestriction<Book, String> restriction = (BasicRestriction<Book, String>) _Book.title.equalTo("Java Guide");
+        var restriction = (BasicRestriction<Book, String>) _Book.title.equalTo("Java Guide");
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.expression()).isEqualTo(_Book.title);
@@ -49,7 +49,7 @@ class BasicRestrictionRecordTest {
     @Test
     @DisplayName("should negate an EqualTo restriction into NotEqualTo using 'negate'")
     void shouldCreateBasicRestrictionWithExplicitNegation() {
-        BasicRestriction<Book, String> restriction = (BasicRestriction<Book, String>) _Book.title.equalTo("Java Guide").negate();
+        var restriction = (BasicRestriction<Book, String>) _Book.title.equalTo("Java Guide").negate();
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.expression()).isEqualTo(_Book.title);
@@ -61,8 +61,8 @@ class BasicRestrictionRecordTest {
     @Test
     @DisplayName("should negate LessThanOrEqual into GreaterThan")
     void shouldNegateLTERestriction() {
-        BasicRestriction<Book, Integer> lessThanEqual = (BasicRestriction<Book, Integer>) _Book.numChapters.lessThanEqual(10);
-        BasicRestriction<Book, Integer> negated = lessThanEqual.negate();
+        var lessThanEqual = (BasicRestriction<Book, Integer>) _Book.numChapters.lessThanEqual(10);
+        var negated = lessThanEqual.negate();
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(lessThanEqual.expression()).isEqualTo(_Book.numChapters);
@@ -78,8 +78,8 @@ class BasicRestrictionRecordTest {
     @Test
     @DisplayName("should return to the original constraint after double negation")
     void shouldNegateNegatedRestriction() {
-        BasicRestriction<Book, String> original = (BasicRestriction<Book, String>) _Book.title.equalTo("A Developer's Guide to Jakarta Data");
-        BasicRestriction<Book, String> doubleNegated = original.negate().negate();
+        var original = (BasicRestriction<Book, String>) _Book.title.equalTo("A Developer's Guide to Jakarta Data");
+        var doubleNegated = original.negate().negate();
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(original.expression()).isEqualTo(_Book.title);
@@ -95,7 +95,7 @@ class BasicRestrictionRecordTest {
     @Test
     @DisplayName("should format toString output for greaterThan correctly")
     void shouldOutputToString() {
-        BasicRestriction<Book, Integer> restriction = (BasicRestriction<Book, Integer>) _Book.numPages.greaterThan(100);
+        var restriction = (BasicRestriction<Book, Integer>) _Book.numPages.greaterThan(100);
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.expression()).isEqualTo(_Book.numPages);
@@ -108,7 +108,7 @@ class BasicRestrictionRecordTest {
     @Test
     @DisplayName("should create NotEqualTo from 'notEqualTo' method directly")
     void shouldSupportNegatedRestrictionUsingDefaultConstructor() {
-        BasicRestriction<Book, String> restriction = (BasicRestriction<Book, String>) _Book.author.notEqualTo("Unknown");
+        var restriction = (BasicRestriction<Book, String>) _Book.author.notEqualTo("Unknown");
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.expression()).isEqualTo(_Book.author);
@@ -136,7 +136,7 @@ class BasicRestrictionRecordTest {
     @Test
     @DisplayName("should create GreaterThanOrEqual restriction correctly")
     void shouldCreateGreaterThanOrEqualRestriction() {
-        BasicRestriction<Book, Integer> restriction = (BasicRestriction<Book, Integer>) _Book.numPages.greaterThanEqual(200);
+        var restriction = (BasicRestriction<Book, Integer>) _Book.numPages.greaterThanEqual(200);
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.expression()).isEqualTo(_Book.numPages);
@@ -148,7 +148,7 @@ class BasicRestrictionRecordTest {
     @Test
     @DisplayName("should create LessThan restriction correctly")
     void shouldCreateLessThanRestriction() {
-        BasicRestriction<Book, Integer> restriction = (BasicRestriction<Book, Integer>) _Book.numPages.lessThan(50);
+        var restriction = (BasicRestriction<Book, Integer>) _Book.numPages.lessThan(50);
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.expression()).isEqualTo(_Book.numPages);
@@ -160,7 +160,7 @@ class BasicRestrictionRecordTest {
     @Test
     @DisplayName("should create Null constraint correctly")
     void shouldCreateNullRestriction() {
-        BasicRestriction<Book, String> restriction = (BasicRestriction<Book, String>) _Book.title.isNull();
+        var restriction = (BasicRestriction<Book, String>) _Book.title.isNull();
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.expression()).isEqualTo(_Book.title);
@@ -172,7 +172,7 @@ class BasicRestrictionRecordTest {
     @DisplayName("should create NotNull constraint correctly")
     @Test
     void shouldCreateNotNullRestriction() {
-        BasicRestriction<Book, String> restriction = (BasicRestriction<Book, String>) _Book.title.isNull().negate();
+        var restriction = (BasicRestriction<Book, String>) _Book.title.isNull().negate();
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.expression()).isEqualTo(_Book.title);
@@ -184,7 +184,7 @@ class BasicRestrictionRecordTest {
     @DisplayName("should create Between constraint correctly")
     @Test
     void shouldCreateBetweenRestriction() {
-        BasicRestriction<Book, Integer> restriction = (BasicRestriction<Book, Integer>) _Book.numChapters.between(5, 15);
+        var restriction = (BasicRestriction<Book, Integer>) _Book.numChapters.between(5, 15);
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.expression()).isEqualTo(_Book.numChapters);
@@ -196,7 +196,7 @@ class BasicRestrictionRecordTest {
     @DisplayName("should create In constraint correctly")
     @Test
     void shouldCreateInRestriction() {
-        BasicRestriction<Book, String> restriction = (BasicRestriction<Book, String>) _Book.author.in(Set.of("Alice", "Bob"));
+        var restriction = (BasicRestriction<Book, String>) _Book.author.in(Set.of("Alice", "Bob"));
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.expression()).isEqualTo(_Book.author);
@@ -208,7 +208,7 @@ class BasicRestrictionRecordTest {
     @DisplayName("should create NotIn constraint correctly")
     @Test
     void shouldCreateNotInRestriction() {
-        BasicRestriction<Book, String> restriction = (BasicRestriction<Book, String>) _Book.author.in(Set.of("Alice", "Bob")).negate();
+        var restriction = (BasicRestriction<Book, String>) _Book.author.in(Set.of("Alice", "Bob")).negate();
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.expression()).isEqualTo(_Book.author);
@@ -220,7 +220,7 @@ class BasicRestrictionRecordTest {
     @DisplayName("should create Like constraint correctly")
     @Test
     void shouldCreateLikeRestriction() {
-        BasicRestriction<Book, String> restriction = (BasicRestriction<Book, String>) _Book.title.like("%Java%");
+        var restriction = (BasicRestriction<Book, String>) _Book.title.like("%Java%");
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.expression()).isEqualTo(_Book.title);
@@ -233,7 +233,7 @@ class BasicRestrictionRecordTest {
     @DisplayName("should create NotLike constraint correctly")
     @Test
     void shouldCreateNotLikeRestriction() {
-        BasicRestriction<Book, String> restriction = (BasicRestriction<Book, String>) _Book.title.like("%Java%").negate();
+        var restriction = (BasicRestriction<Book, String>) _Book.title.like("%Java%").negate();
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.expression()).isEqualTo(_Book.title);
@@ -245,7 +245,7 @@ class BasicRestrictionRecordTest {
     @DisplayName("should create NotBetween constraint correctly")
     @Test
     void shouldCreateNotBetweenRestriction() {
-        BasicRestriction<Book, Integer> restriction = (BasicRestriction<Book, Integer>) _Book.numChapters.between(5, 15).negate();
+        var restriction = (BasicRestriction<Book, Integer>) _Book.numChapters.between(5, 15).negate();
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.expression()).isEqualTo(_Book.numChapters);
