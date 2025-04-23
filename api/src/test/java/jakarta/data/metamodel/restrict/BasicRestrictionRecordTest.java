@@ -26,6 +26,8 @@ import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.Set;
+
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 
@@ -194,11 +196,11 @@ class BasicRestrictionRecordTest {
     @DisplayName("should create In constraint correctly")
     @Test
     void shouldCreateInRestriction() {
-        BasicRestriction<Book, String> restriction = (BasicRestriction<Book, String>) _Book.author.in("Alice", "Bob");
+        BasicRestriction<Book, String> restriction = (BasicRestriction<Book, String>) _Book.author.in(Set.of("Alice", "Bob"));
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.expression()).isEqualTo(_Book.author);
-            soft.assertThat(restriction.constraint()).isEqualTo(In.listOf("Alice", "Bob"));
+            soft.assertThat(restriction.constraint()).isEqualTo(In.values("Alice", "Bob"));
             soft.assertThat(restriction.constraint()).isInstanceOf(In.class);
         });
     }
@@ -206,11 +208,11 @@ class BasicRestrictionRecordTest {
     @DisplayName("should create NotIn constraint correctly")
     @Test
     void shouldCreateNotInRestriction() {
-        BasicRestriction<Book, String> restriction = (BasicRestriction<Book, String>) _Book.author.in("Alice", "Bob").negate();
+        BasicRestriction<Book, String> restriction = (BasicRestriction<Book, String>) _Book.author.in(Set.of("Alice", "Bob")).negate();
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.expression()).isEqualTo(_Book.author);
-            soft.assertThat(restriction.constraint()).isEqualTo(NotIn.listOf("Alice", "Bob"));
+            soft.assertThat(restriction.constraint()).isEqualTo(NotIn.values("Alice", "Bob"));
             soft.assertThat(restriction.constraint()).isInstanceOf(NotIn.class);
         });
     }
