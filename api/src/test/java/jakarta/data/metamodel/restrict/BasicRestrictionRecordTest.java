@@ -241,4 +241,17 @@ class BasicRestrictionRecordTest {
             soft.assertThat(restriction.constraint()).isInstanceOf(NotLike.class);
         });
     }
+
+    @DisplayName("should create NotBetween constraint correctly")
+    @Test
+    void shouldCreateNotBetweenRestriction() {
+        BasicRestriction<Book, Integer> restriction = (BasicRestriction<Book, Integer>) _Book.numChapters.between(5, 15).negate();
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(restriction.expression()).isEqualTo(_Book.numChapters);
+            soft.assertThat(restriction.constraint()).isEqualTo(NotBetween.bounds(5, 15));
+            soft.assertThat(restriction.constraint()).isInstanceOf(NotBetween.class);
+        });
+    }
+
 }
