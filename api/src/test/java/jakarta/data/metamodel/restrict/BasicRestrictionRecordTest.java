@@ -31,6 +31,7 @@ import java.util.Set;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 
+@SuppressWarnings("unchecked")
 class BasicRestrictionRecordTest {
 
 
