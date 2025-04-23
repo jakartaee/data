@@ -39,6 +39,7 @@ class BasicRestrictionRecordTest {
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.expression()).isEqualTo(_Book.title);
             soft.assertThat(restriction.constraint()).isEqualTo(EqualTo.value("Java Guide"));
+            soft.assertThat(restriction.constraint()).isInstanceOf(EqualTo.class);
         });
     }
 
