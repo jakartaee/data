@@ -167,4 +167,29 @@ class BasicRestrictionRecordTest {
         });
     }
 
+    @DisplayName("should create NotNull constraint correctly")
+    @Test
+    void shouldCreateNotNullRestriction() {
+        BasicRestriction<Book, String> restriction = (BasicRestriction<Book, String>) _Book.title.isNull().negate();
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(restriction.expression()).isEqualTo(_Book.title);
+            soft.assertThat(restriction.constraint()).isEqualTo(NotNull.instance());
+            soft.assertThat(restriction.constraint()).isInstanceOf(NotNull.class);
+        });
+    }
+
+    @DisplayName("should create Between constraint correctly")
+    @Test
+    void shouldCreateBetweenRestriction() {
+        BasicRestriction<Book, Integer> restriction = (BasicRestriction<Book, Integer>) _Book.numChapters.between(5, 15);
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(restriction.expression()).isEqualTo(_Book.numChapters);
+            soft.assertThat(restriction.constraint()).isEqualTo(Between.bounds(5, 15));
+            soft.assertThat(restriction.constraint()).isInstanceOf(Between.class);
+        });
+    }
+
+
 }
