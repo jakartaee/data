@@ -132,7 +132,6 @@ class BasicRestrictionRecordTest {
 
     @Test
     void shouldCreateGreaterThanOrEqualRestriction() {
-        @SuppressWarnings("unchecked")
         BasicRestriction<Book, Integer> restriction =
                 (BasicRestriction<Book, Integer>) _Book.numPages.greaterThanEqual(200);
 
@@ -140,6 +139,18 @@ class BasicRestrictionRecordTest {
             soft.assertThat(restriction.expression()).isEqualTo(_Book.numPages);
             soft.assertThat(restriction.constraint()).isEqualTo(GreaterThanOrEqual.min(200));
             soft.assertThat(restriction.constraint()).isInstanceOf(GreaterThanOrEqual.class);
+        });
+    }
+
+    @Test
+    void shouldCreateLessThanRestriction() {
+        BasicRestriction<Book, Integer> restriction =
+                (BasicRestriction<Book, Integer>) _Book.numPages.lessThan(50);
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(restriction.expression()).isEqualTo(_Book.numPages);
+            soft.assertThat(restriction.constraint()).isEqualTo(LessThan.bound(50));
+            soft.assertThat(restriction.constraint()).isInstanceOf(LessThan.class);
         });
     }
 
