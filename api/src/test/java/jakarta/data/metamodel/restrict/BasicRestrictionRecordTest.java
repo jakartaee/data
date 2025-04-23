@@ -191,5 +191,56 @@ class BasicRestrictionRecordTest {
         });
     }
 
+    @DisplayName("should create In constraint correctly")
+    @Test
+    void shouldCreateInRestriction() {
+        BasicRestriction<Book, String> restriction = (BasicRestriction<Book, String>) _Book.author.in("Alice", "Bob");
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(restriction.expression()).isEqualTo(_Book.author);
+            soft.assertThat(restriction.constraint()).isEqualTo(In.listOf("Alice", "Bob"));
+            soft.assertThat(restriction.constraint()).isInstanceOf(In.class);
+        });
+    }
+
+    @DisplayName("should create NotIn constraint correctly")
+    @Test
+    void shouldCreateNotInRestriction() {
+        BasicRestriction<Book, String> restriction = (BasicRestriction<Book, String>) _Book.author.in("Alice", "Bob").negate();
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(restriction.expression()).isEqualTo(_Book.author);
+            soft.assertThat(restriction.constraint()).isEqualTo(NotIn.listOf("Alice", "Bob"));
+            soft.assertThat(restriction.constraint()).isInstanceOf(NotIn.class);
+        });
+    }
+
+    @DisplayName("should create Like constraint correctly")
+    @Test
+    void shouldCreateLikeRestriction() {
+        BasicRestriction<Book, String> restriction = (BasicRestriction<Book, String>) _Book.title.like("%Java%");
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(restriction.expression()).isEqualTo(_Book.title);
+            soft.assertThat(restriction.constraint()).isEqualTo(Like.value("%Java%"));
+            soft.assertThat(restriction.constraint()).isInstanceOf(Like.class);
+        });
+
+    }
+
+    @DisplayName("should create NotLike constraint correctly")
+    @Test
+    void shouldCreateNotLikeRestriction() {
+        BasicRestriction<Book, String> restriction = (BasicRestriction<Book, String>) _Book.title.like("%Java%").negate();
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(restriction.expression()).isEqualTo(_Book.title);
+            soft.assertThat(restriction.constraint()).isEqualTo(NotLike.value("%Java%"));
+            soft.assertThat(restriction.constraint()).isInstanceOf(NotLike.class);
+        });
+    }
+
+
+
 
 }
