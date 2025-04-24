@@ -17,7 +17,6 @@
  */
 package jakarta.data.metamodel.restrict;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -45,7 +44,7 @@ record CompositeRestrictionRecord<T>(
     }
 
     CompositeRestrictionRecord(Type type, List<Restriction<T>> restrictions) {
-        this(type, new ArrayList<>(restrictions), false);
+        this(type, restrictions, false);
     }
 
     @Override
