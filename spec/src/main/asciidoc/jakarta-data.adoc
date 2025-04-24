@@ -14,7 +14,7 @@
 
 = Jakarta Data
 :title: Jakarta Data
-:pdf-theme: ../../theme/jakartaee-theme.yml
+:pdf-theme: {docdir}/../../theme/jakartaee-theme.yml
 :authors:
 :email:
 :version-label!:

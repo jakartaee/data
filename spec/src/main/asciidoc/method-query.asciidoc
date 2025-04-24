@@ -14,7 +14,7 @@
 
 = Jakarta Data: Query by Method Name Extension
 :title: Jakarta Data: Query by Method Name Extension
-:pdf-theme: ../../theme/jakartaee-theme.yml
+:pdf-theme: {docdir}/../../theme/jakartaee-theme.yml
 :authors:
 :email:
 :version-label!:
