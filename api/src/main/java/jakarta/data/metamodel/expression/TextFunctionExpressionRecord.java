@@ -17,10 +17,19 @@
  */
 package jakarta.data.metamodel.expression;
 
-import jakarta.data.metamodel.Expression;
+import jakarta.data.metamodel.ComparableExpression;
 
 import java.util.List;
+import java.util.Objects;
 
-record TextFunctionExpressionRecord<T>(String name, List<? extends Expression<? super T,?>> arguments)
+record TextFunctionExpressionRecord<T>(
+        String name,
+        List<ComparableExpression<? super T,?>> arguments)
         implements TextFunctionExpression<T> {
+
+    TextFunctionExpressionRecord {
+        Objects.requireNonNull(name, "Function name is required.");
+        Objects.requireNonNull(arguments, "Function arguments is required.");
+    }
+
 }

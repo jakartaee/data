@@ -17,11 +17,11 @@
  */
 package jakarta.data.metamodel.constraint;
 
-record NullRecord<T>() implements Null<T> {
+record NullRecord<V>() implements Null<V> {
     static final NullRecord<?> INSTANCE = new NullRecord<>();
 
     @Override
-    public NotNull<T> negate() {
+    public NotNull<V> negate() {
         return NotNull.instance();
     }
 

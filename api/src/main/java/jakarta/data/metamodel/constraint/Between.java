@@ -17,12 +17,40 @@
  */
 package jakarta.data.metamodel.constraint;
 
-public interface Between<T extends Comparable<?>> extends Constraint<T> {
+import jakarta.data.metamodel.ComparableExpression;
+import jakarta.data.metamodel.expression.ComparableLiteral;
 
-    static <T extends Comparable<?>> Between<T> bounds(T lower, T upper) {
-        return new BetweenRecord<>(lower, upper);
+public interface Between<V extends Comparable<?>> extends Constraint<V> {
+
+    static <V extends Comparable<?>> Between<V> bounds(
+            V lower,
+            V upper) {
+        return new BetweenRecord<>(ComparableLiteral.of(lower),
+                                   ComparableLiteral.of(upper));
     }
 
-    T lowerBound();
-    T upperBound();
+    static <V extends Comparable<?>> Between<V> bounds(
+            V lower,
+            ComparableExpression<?, V> upper) {
+        return new BetweenRecord<>(ComparableLiteral.of(lower),
+                                   upper);
+    }
+
+    static <V extends Comparable<?>> Between<V> bounds(
+            ComparableExpression<?, V> lower,
+            V upper) {
+        return new BetweenRecord<>(lower,
+                                   ComparableLiteral.of(upper));
+    }
+
+    static <V extends Comparable<?>> Between<V> bounds(
+            ComparableExpression<?, V> lower,
+            ComparableExpression<?, V> upper) {
+        return new BetweenRecord<>(lower,
+                                   upper);
+    }
+
+    ComparableExpression<?, V> lowerBound();
+
+    ComparableExpression<?, V> upperBound();
 }

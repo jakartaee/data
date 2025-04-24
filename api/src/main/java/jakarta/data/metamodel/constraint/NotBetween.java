@@ -17,13 +17,38 @@
  */
 package jakarta.data.metamodel.constraint;
 
-public interface NotBetween<T extends Comparable<?>> extends Constraint<T> {
+import jakarta.data.metamodel.ComparableExpression;
+import jakarta.data.metamodel.expression.ComparableLiteral;
 
-    static <T extends Comparable<?>> NotBetween<T> bounds(T lower, T upper) {
-        return new NotBetweenRecord<>(lower, upper);
+public interface NotBetween<V extends Comparable<?>> extends Constraint<V> {
+
+    static <V extends Comparable<?>> NotBetween<V> bounds(V lower, V upper) {
+        return new NotBetweenRecord<>(ComparableLiteral.of(lower),
+                                      ComparableLiteral.of(upper));
     }
 
-    T lowerBound();
+    static <V extends Comparable<?>> NotBetween<V> bounds(
+            V lower,
+            ComparableExpression<?, V> upper) {
+        return new NotBetweenRecord<>(ComparableLiteral.of(lower),
+                                      upper);
+    }
 
-    T upperBound();
+    static <V extends Comparable<?>> NotBetween<V> bounds(
+            ComparableExpression<?, V> lower,
+            V upper) {
+        return new NotBetweenRecord<>(lower,
+                                      ComparableLiteral.of(upper));
+    }
+
+    static <V extends Comparable<?>> NotBetween<V> bounds(
+            ComparableExpression<?, V> lower,
+            ComparableExpression<?, V> upper) {
+        return new NotBetweenRecord<>(lower,
+                                      upper);
+    }
+
+    ComparableExpression<?, V> lowerBound();
+
+    ComparableExpression<?, V> upperBound();
 }

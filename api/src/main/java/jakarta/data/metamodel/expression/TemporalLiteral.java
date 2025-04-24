@@ -15,20 +15,18 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.metamodel.path;
+package jakarta.data.metamodel.expression;
 
-import java.util.Objects;
+import java.time.temporal.Temporal;
 
-import jakarta.data.metamodel.ComparableAttribute;
-import jakarta.data.metamodel.NavigableExpression;
+import jakarta.data.metamodel.TemporalExpression;
 
-record ComparablePathRecord<T,U,C extends Comparable<?>>
-        (NavigableExpression<T,U> expression, ComparableAttribute<U, C> attribute)
-        implements ComparablePath<T,U,C> {
+public interface TemporalLiteral<T, V extends Temporal & Comparable<? extends Temporal>>
+        extends ComparableLiteral<T, V>, TemporalExpression<T, V> {
 
-    ComparablePathRecord {
-        Objects.requireNonNull(expression, "Expression is required.");
-        Objects.requireNonNull(attribute, "Entity attribute is required.");
+    static <T, V extends Temporal & Comparable<? extends Temporal>> TemporalLiteral<T, V> of(
+            V value) {
+        return new TemporalLiteralRecord<>(value);
     }
 
 }
