@@ -234,7 +234,7 @@ class BasicRestrictionRecordTest {
     @DisplayName("should create NotIn, using Set, constraint correctly")
     @Test
     void shouldCreateNotInAsSetRestriction() {
-        var restriction = (BasicRestriction<Book, String>) _Book.author.in(List.of("Alice", "Bob")).negate();
+        var restriction = (BasicRestriction<Book, String>) _Book.author.in(Set.of("Alice", "Bob")).negate();
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.expression()).isEqualTo(_Book.author);
