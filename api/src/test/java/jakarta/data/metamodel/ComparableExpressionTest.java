@@ -138,4 +138,55 @@ class ComparableExpressionTest {
         });
     }
 
+    @DisplayName("should create Restriction with greaterThan expression")
+    @Test
+    void shouldCreateGreaterThanExpressionRestriction() {
+        var restriction = _Person.age.greaterThan(_Person.age);
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
+            soft.assertThat(((BasicRestriction<?, ?>) restriction).constraint())
+                    .isEqualTo(GreaterThan.bound(_Person.age));
+        });
+    }
+
+    @DisplayName("should create Restriction with greaterThanEqual expression")
+    @Test
+    void shouldCreateGreaterThanEqualExpressionRestriction() {
+        var restriction = _Person.age.greaterThanEqual(_Person.age);
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
+            soft.assertThat(((BasicRestriction<?, ?>) restriction).constraint())
+                    .isEqualTo(GreaterThanOrEqual.min(_Person.age));
+        });
+    }
+
+    @DisplayName("should create Restriction with lessThan expression")
+    @Test
+    void shouldCreateLessThanExpressionRestriction() {
+        var restriction = _Person.age.lessThan(_Person.age);
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
+            soft.assertThat(((BasicRestriction<?, ?>) restriction).constraint())
+                    .isEqualTo(LessThan.bound(_Person.age));
+        });
+    }
+
+    @DisplayName("should create Restriction with lessThanEqual expression")
+    @Test
+    void shouldCreateLessThanEqualExpressionRestriction() {
+        var restriction = _Person.age.lessThanEqual(_Person.age);
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
+            soft.assertThat(((BasicRestriction<?, ?>) restriction).constraint())
+                    .isEqualTo(LessThanOrEqual.max(_Person.age));
+        });
+    }
+
+
+
+
 }
