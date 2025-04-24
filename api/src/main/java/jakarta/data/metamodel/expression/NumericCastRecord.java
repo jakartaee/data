@@ -26,8 +26,8 @@ record NumericCastRecord<T, N extends Number & Comparable<N>>
         implements NumericCast<T,N> {
 
     NumericCastRecord {
-        Objects.requireNonNull(expression, "Expression is required.");
-        Objects.requireNonNull(type, "Attribute type is required.");
+        Objects.requireNonNull(expression, "Expression is required");
+        Objects.requireNonNull(type, "Attribute type is required");
     }
 
 }

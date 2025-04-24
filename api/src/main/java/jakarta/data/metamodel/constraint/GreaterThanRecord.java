@@ -25,7 +25,7 @@ record GreaterThanRecord<V extends Comparable<?>>(
         ComparableExpression<?, V> bound)
         implements GreaterThan<V> {
     public GreaterThanRecord {
-        Objects.requireNonNull(bound, "Lower bound is required.");
+        Objects.requireNonNull(bound, "Lower bound is required");
     }
 
     @Override

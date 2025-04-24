@@ -28,8 +28,8 @@ record NumericFunctionExpressionRecord<T, N extends Number & Comparable<N>>(
         implements NumericFunctionExpression<T,N> {
 
     NumericFunctionExpressionRecord {
-        Objects.requireNonNull(name, "Function name is required.");
-        Objects.requireNonNull(arguments, "Function arguments is required.");
+        Objects.requireNonNull(name, "Function name is required");
+        Objects.requireNonNull(arguments, "Function arguments are required");
     }
 
 }

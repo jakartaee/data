@@ -31,15 +31,15 @@ public interface In<V> extends Constraint<V> {
 
     @SafeVarargs
     static <V> In<V> values(V... values) {
-        Objects.requireNonNull(values, "Values are required.");
+        Objects.requireNonNull(values, "Values are required");
 
         if (values.length == 0) {
-            throw new IllegalArgumentException("Array of values must not be empty.");
+            throw new IllegalArgumentException("Array of values must not be empty");
         }
 
         List<Expression<?, V>> expressions = new ArrayList<>(values.length);
         for (V value : values) {
-            Objects.requireNonNull(value, "Value must not be null.");
+            Objects.requireNonNull(value, "Value must not be null");
             expressions.add(Literal.of(value));
         }
 
@@ -47,15 +47,15 @@ public interface In<V> extends Constraint<V> {
     }
 
     static <V> In<V> values(Collection<V> values) {
-        Objects.requireNonNull(values, "Values are required.");
+        Objects.requireNonNull(values, "Values are required");
 
         if (values.isEmpty()) {
-            throw new IllegalArgumentException("Values must not be empty.");
+            throw new IllegalArgumentException("Values must not be empty");
         }
 
         List<Expression<?, V>> expressions = new ArrayList<>(values.size());
         for (V value : values) {
-            Objects.requireNonNull(value, "Value must not be null.");
+            Objects.requireNonNull(value, "Value must not be null");
             expressions.add(Literal.of(value));
         }
 
@@ -63,15 +63,15 @@ public interface In<V> extends Constraint<V> {
     }
 
     static <V> In<V> expressions(List<Expression<?, V>> expressions) {
-        Objects.requireNonNull(expressions, "Value expressions are required.");
+        Objects.requireNonNull(expressions, "Value expressions are required");
 
         if (expressions.isEmpty()) {
             throw new IllegalArgumentException(
-                    "Value expressions must not be empty.");
+                    "Value expressions must not be empty");
         }
 
         for (Expression<?, V> expression : expressions) {
-            Objects.requireNonNull(expression, "Value expression must not be null.");
+            Objects.requireNonNull(expression, "Value expression must not be null");
         }
 
         return new InRecord<>(List.copyOf(expressions));
@@ -79,15 +79,15 @@ public interface In<V> extends Constraint<V> {
 
     @SafeVarargs
     static <V> In<V> expressions(Expression<?, V>... expressions) {
-        Objects.requireNonNull(expressions, "Value expressions are required.");
+        Objects.requireNonNull(expressions, "Value expressions are required");
 
         if (expressions.length == 0) {
             throw new IllegalArgumentException(
-                    "Array of value expressions must not be empty.");
+                    "Array of value expressions must not be empty");
         }
 
         for (Expression<?, V> expression : expressions) {
-            Objects.requireNonNull(expression, "Value expression must not be null.");
+            Objects.requireNonNull(expression, "Value expression must not be null");
         }
 
         return new InRecord<>(List.of(expressions));

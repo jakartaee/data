@@ -23,7 +23,7 @@ record ComparableLiteralRecord<T, V extends Comparable<?>>(V value)
         implements ComparableLiteral<T,V> {
 
     ComparableLiteralRecord {
-        Objects.requireNonNull(value, "Value is required.");
+        Objects.requireNonNull(value, "Value is required");
     }
 
     @Override

@@ -25,7 +25,7 @@ record LessThanOrEqualRecord<V extends Comparable<?>>(
         ComparableExpression<?, V> bound)
         implements LessThanOrEqual<V> {
     public LessThanOrEqualRecord {
-        Objects.requireNonNull(bound, "Upper bound is required.");
+        Objects.requireNonNull(bound, "Upper bound is required");
     }
 
     @Override

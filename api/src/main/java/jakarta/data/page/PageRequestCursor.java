@@ -39,7 +39,7 @@ class PageRequestCursor implements PageRequest.Cursor {
     PageRequestCursor(Object... key) {
         this.key = key;
         if (key == null || key.length == 0){
-            throw new IllegalArgumentException("No values were provided.");
+            throw new IllegalArgumentException("No values were provided");
         }
     }
 

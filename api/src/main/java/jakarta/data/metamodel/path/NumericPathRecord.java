@@ -27,8 +27,8 @@ record NumericPathRecord<T,U,N extends Number & Comparable<N>>
         implements NumericPath<T,U,N> {
 
     NumericPathRecord {
-        Objects.requireNonNull(expression, "Expression is required.");
-        Objects.requireNonNull(attribute, "Entity attribute is required.");
+        Objects.requireNonNull(expression, "Expression is required");
+        Objects.requireNonNull(attribute, "Entity attribute is required");
     }
 
 }

@@ -32,7 +32,7 @@ record Pagination(long page, int size, Mode mode, Cursor type, boolean requestTo
         }
 
         if (mode != Mode.OFFSET && (type == null || type.size() == 0)) {
-            throw new IllegalArgumentException("No key values were provided.");
+            throw new IllegalArgumentException("No key values were provided");
         }
     }
 

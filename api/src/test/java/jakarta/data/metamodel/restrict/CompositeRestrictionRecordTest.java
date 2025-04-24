@@ -112,7 +112,8 @@ class CompositeRestrictionRecordTest {
     void shouldFailIfEmptyRestrictions() {
         assertThatThrownBy(() -> new CompositeRestrictionRecord<>(CompositeRestriction.Type.ALL, List.of()))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Cannot create a composite restriction without any restrictions to combine.");
+                .hasMessage("Cannot create a composite restriction without" +
+                            " any restrictions to combine");
     }
 
     @Test

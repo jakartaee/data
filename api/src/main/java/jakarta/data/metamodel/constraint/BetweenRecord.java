@@ -26,8 +26,8 @@ record BetweenRecord<V extends Comparable<?>>(
         ComparableExpression<?, V> upperBound)
         implements Between<V> {
     public BetweenRecord {
-        Objects.requireNonNull(lowerBound, "Lower bound is required.");
-        Objects.requireNonNull(upperBound, "Upper bound is required.");
+        Objects.requireNonNull(lowerBound, "Lower bound is required");
+        Objects.requireNonNull(upperBound, "Upper bound is required");
     }
 
     @Override

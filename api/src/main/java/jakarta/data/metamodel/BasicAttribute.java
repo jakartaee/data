@@ -42,9 +42,9 @@ public interface BasicAttribute<T,V> extends Attribute<T>, Expression<T,V> {
     static <T,V> BasicAttribute<T,V> of(Class<T> entityClass,
                                         String name,
                                         Class<V> attributeType) {
-        Objects.requireNonNull(entityClass, "Entity class is required.");
-        Objects.requireNonNull(name, "Entity attribute name is required.");
-        Objects.requireNonNull(attributeType, "Entity attribute type is required.");
+        Objects.requireNonNull(entityClass, "Entity class is required");
+        Objects.requireNonNull(name, "Entity attribute name is required");
+        Objects.requireNonNull(attributeType, "Entity attribute type is required");
 
         return new BasicAttributeRecord<>(entityClass, name);
     }

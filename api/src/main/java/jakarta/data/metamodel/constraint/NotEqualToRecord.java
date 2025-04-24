@@ -26,7 +26,7 @@ record NotEqualToRecord<V>(
         implements NotEqualTo<V> {
 
     NotEqualToRecord {
-        Objects.requireNonNull(expression, "Value expression is required.");
+        Objects.requireNonNull(expression, "Value expression is required");
     }
 
     @Override
