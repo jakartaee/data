@@ -65,11 +65,10 @@ public interface Expression<T,V> {
         return BasicRestriction.of(this, NotIn.values(values));
     }
 
-    default Restriction<T> notIn(Set<T> values) {
+    default Restriction<T> notIn(Set<V> values) {
         if (values == null || values.isEmpty()){
             throw new IllegalArgumentException("values are required");
         }
-
         return BasicRestriction.of(this, NotIn.values(values));
     }
 
