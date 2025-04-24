@@ -77,7 +77,7 @@ class AttributeTest {
     void shouldCreateInRestriction() {
         @SuppressWarnings("unchecked")
         BasicRestriction<Person, String> restriction =
-                (BasicRestriction<Person, String>) testAttribute.in(Set.of("value1", "value2"));
+                (BasicRestriction<Person, String>) testAttribute.in("value1", "value2");
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
@@ -98,7 +98,7 @@ class AttributeTest {
     void shouldCreateNotInRestriction() {
         @SuppressWarnings("unchecked")
         BasicRestriction<Person, String> restriction =
-                (BasicRestriction<Person, String>) testAttribute.notIn(Set.of("value1", "value2"));
+                (BasicRestriction<Person, String>) testAttribute.notIn("value1", "value2");
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);

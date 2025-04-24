@@ -27,7 +27,7 @@ import jakarta.data.metamodel.constraint.Null;
 import jakarta.data.metamodel.restrict.BasicRestriction;
 import jakarta.data.metamodel.restrict.Restriction;
 
-import java.util.Set;
+import java.util.Collection;
 
 public interface Expression<T,V> {
 
@@ -39,20 +39,20 @@ public interface Expression<T,V> {
         return BasicRestriction.of(this, EqualTo.expression(expression));
     }
 
-    default Restriction<T> in(Set<V> values) {
+    default Restriction<T> in(Collection<V> values) {
         if (values == null || values.isEmpty())
             throw new IllegalArgumentException("values are required");
 
         return BasicRestriction.of(this, In.values(values));
     }
 
-    default Restriction<T> in(
-            @SuppressWarnings("unchecked") V... values) {
+    @SuppressWarnings("unchecked")
+    default Restriction<T> in(V... values) {
         return BasicRestriction.of(this, In.values(values));
     }
 
-    default Restriction<T> in(
-            @SuppressWarnings("unchecked") Expression<? super T,V>... expressions) {
+    @SuppressWarnings("unchecked")
+    default Restriction<T> in(Expression<? super T,V>... expressions) {
         return BasicRestriction.of(this, In.expressions(expressions));
     }
 
@@ -68,20 +68,20 @@ public interface Expression<T,V> {
         return BasicRestriction.of(this, NotEqualTo.expression(expression));
     }
 
-    default Restriction<T> notIn(Set<V> values) {
+    default Restriction<T> notIn(Collection<V> values) {
         if (values == null || values.isEmpty())
             throw new IllegalArgumentException("values are required");
 
         return BasicRestriction.of(this, NotIn.values(values));
     }
 
-    default Restriction<T> notIn(
-            @SuppressWarnings("unchecked") V... values) {
+    @SuppressWarnings("unchecked")
+    default Restriction<T> notIn(V... values) {
         return BasicRestriction.of(this, NotIn.values(values));
     }
 
-    default Restriction<T> notIn(
-            @SuppressWarnings("unchecked") Expression<? super T,V>... expressions) {
+    @SuppressWarnings("unchecked")
+    default Restriction<T> notIn(Expression<? super T,V>... expressions) {
         return BasicRestriction.of(this, NotIn.expressions(expressions));
     }
 
