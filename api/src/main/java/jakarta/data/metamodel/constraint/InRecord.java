@@ -17,15 +17,15 @@
  */
 package jakarta.data.metamodel.constraint;
 
-import java.util.Set;
+import java.util.List;
 
 import jakarta.data.metamodel.Expression;
 
-record InRecord<V>(Set<Expression<?, V>> expressions) implements In<V> {
+record InRecord<V>(List<Expression<?, V>> expressions) implements In<V> {
 
     @Override
     public NotIn<V> negate() {
-        return NotIn.expressions(expressions);
+        return new NotInRecord<>(expressions);
     }
 
     @Override
