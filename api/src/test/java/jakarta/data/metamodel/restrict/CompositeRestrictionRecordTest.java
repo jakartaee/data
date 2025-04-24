@@ -211,4 +211,22 @@ class CompositeRestrictionRecordTest {
             soft.assertThat(negated.restrictions()).allSatisfy(restriction -> soft.assertThat(restriction).isNotNull());
         });
     }
+
+    @DisplayName("should consider two identical composite restrictions as equal")
+    @Test
+    void shouldEqualIdenticalCompositeRestriction() {
+        var titleRestriction = _Author.titleOfFirstBook.equalTo("Java Guide");
+        var nameRestriction = _Author.name.equalTo("John Doe");
+
+        CompositeRestrictionRecord<Author> composite1 = new CompositeRestrictionRecord<>(
+                CompositeRestriction.Type.ALL, List.of(titleRestriction, nameRestriction));
+        CompositeRestrictionRecord<Author> composite2 = new CompositeRestrictionRecord<>(
+                CompositeRestriction.Type.ALL, List.of(titleRestriction, nameRestriction));
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(composite1).isEqualTo(composite2);
+            soft.assertThat(composite1.hashCode()).isEqualTo(composite2.hashCode());
+        });
+    }
+
 }
