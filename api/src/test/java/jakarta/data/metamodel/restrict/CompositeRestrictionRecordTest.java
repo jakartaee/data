@@ -267,6 +267,23 @@ class CompositeRestrictionRecordTest {
                 .isInstanceOf(NullPointerException.class);
     }
 
+    @DisplayName("should compare deeply equal nested composite restrictions")
+    @Test
+    void shouldEqualNestedComposites() {
+        var first = _Author.name.equalTo("Alice");
+        var second = _Author.name.equalTo("Bob");
+
+        var inner = (CompositeRestriction<Author>) Restrict.any(first, second);
+        var outer1 = (CompositeRestriction<Author>) Restrict.all(inner);
+        var outer2 = (CompositeRestriction<Author>) Restrict.all(inner);
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(outer1).isEqualTo(outer2);
+            soft.assertThat(outer1.hashCode()).isEqualTo(outer2.hashCode());
+        });
+    }
+
+
 
 
 }
