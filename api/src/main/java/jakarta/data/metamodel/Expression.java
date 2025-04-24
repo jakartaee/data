@@ -26,7 +26,6 @@ import jakarta.data.metamodel.constraint.Null;
 import jakarta.data.metamodel.restrict.BasicRestriction;
 import jakarta.data.metamodel.restrict.Restriction;
 
-import java.util.Set;
 
 public interface Expression<T,V> {
 
