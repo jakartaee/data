@@ -61,8 +61,8 @@ class CompositeRestrictionRecordTest {
     @Test
     @DisplayName("should create composite restriction with default negation (false)")
     void shouldCreateCompositeRestrictionWithDefaultNegation() {
-        Restriction<Author> titleRestriction = _Author.titleOfFirstBook.equalTo("Java Guide");
-        Restriction<Author> nameRestriction = _Author.name.equalTo("John Doe");
+        var titleRestriction = _Author.titleOfFirstBook.equalTo("Java Guide");
+        var nameRestriction = _Author.name.equalTo("John Doe");
 
         CompositeRestrictionRecord<Author> composite = new CompositeRestrictionRecord<>(
                 CompositeRestriction.Type.ALL, List.of(titleRestriction, nameRestriction));
@@ -89,8 +89,8 @@ class CompositeRestrictionRecordTest {
     @Test
     @DisplayName("should create composite restriction with explicit negation (true)")
     void shouldCreateCompositeRestrictionWithExplicitNegation() {
-        Restriction<Author> titleRestriction = _Author.titleOfFirstBook.equalTo("Java Guide");
-        Restriction<Author> nameRestriction = _Author.name.equalTo("John Doe");
+        var titleRestriction = _Author.titleOfFirstBook.equalTo("Java Guide");
+        var nameRestriction = _Author.name.equalTo("John Doe");
 
         CompositeRestrictionRecord<Author> composite = new CompositeRestrictionRecord<>(
                 CompositeRestriction.Type.ANY, List.of(titleRestriction, nameRestriction), true);
@@ -119,8 +119,8 @@ class CompositeRestrictionRecordTest {
     @Test
     @DisplayName("should negate a composite restriction and support 'not' syntax")
     void shouldNegateCompositeRestriction() {
-        Restriction<Author> ageLessThan50 = _Author.age.lessThan(50);
-        Restriction<Author> nameStartsWithDuke = _Author.name.startsWith("Duke ");
+        var ageLessThan50 = _Author.age.lessThan(50);
+        var nameStartsWithDuke = _Author.name.startsWith("Duke ");
 
         CompositeRestriction<Author> all = (CompositeRestriction<Author>) Restrict.all(ageLessThan50, nameStartsWithDuke);
         CompositeRestriction<Author> negated = all.negate();
@@ -138,8 +138,8 @@ class CompositeRestrictionRecordTest {
     @Test
     @DisplayName("should negate a negated composite restriction and return to original")
     void shouldNegateNegatedCompositeRestriction() {
-        Restriction<Author> ageBetween20and30 = _Author.age.between(20, 30);
-        Restriction<Author> nameContainsDuke = _Author.name.contains("Duke");
+        var ageBetween20and30 = _Author.age.between(20, 30);
+        var nameContainsDuke = _Author.name.contains("Duke");
 
         CompositeRestriction<Author> any = (CompositeRestriction<Author>) Restrict.any(ageBetween20and30, nameContainsDuke);
         CompositeRestriction<Author> negated = any.negate();
@@ -155,8 +155,8 @@ class CompositeRestrictionRecordTest {
     @Test
     @DisplayName("should correctly format toString for nested AND/OR composite restrictions")
     void shouldOutputToString() {
-        Restriction<Author> firstNameIsJack = _Author.firstName.equalTo("Jack");
-        Restriction<Author> lastNameIsKarta = _Author.lastName.equalTo("Karta");
+        var firstNameIsJack = _Author.firstName.equalTo("Jack");
+        var lastNameIsKarta = _Author.lastName.equalTo("Karta");
 
         Restriction<Author> ageUnder18 = _Author.age.lessThan(18);
         Restriction<Author> nameIsNullString = _Author.name.equalTo("null");
@@ -174,8 +174,8 @@ class CompositeRestrictionRecordTest {
     @Test
     @DisplayName("should preserve the order of restrictions in composite")
     void shouldPreserveRestrictionsOrder() {
-        Restriction<Author> titleRestriction = _Author.titleOfFirstBook.equalTo("Java Guide");
-        Restriction<Author> nameRestriction = _Author.name.equalTo("John Doe");
+        var titleRestriction = _Author.titleOfFirstBook.equalTo("Java Guide");
+        var nameRestriction = _Author.name.equalTo("John Doe");
 
         CompositeRestrictionRecord<Author> composite = new CompositeRestrictionRecord<>(
                 CompositeRestriction.Type.ALL, List.of(titleRestriction, nameRestriction));
@@ -190,8 +190,8 @@ class CompositeRestrictionRecordTest {
     @Test
     @DisplayName("should support manual negation using constructor")
     void shouldSupportNegationUsingDefaultConstructor() {
-        Restriction<Author> titleRestriction = _Author.titleOfFirstBook.equalTo("Java Guide");
-        Restriction<Author> nameRestriction = _Author.name.equalTo("John Doe");
+        var titleRestriction = _Author.titleOfFirstBook.equalTo("Java Guide");
+        var nameRestriction = _Author.name.equalTo("John Doe");
 
         CompositeRestrictionRecord<Author> original = new CompositeRestrictionRecord<>(
                 CompositeRestriction.Type.ALL, List.of(titleRestriction, nameRestriction));
