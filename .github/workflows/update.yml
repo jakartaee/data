@@ -8,11 +8,10 @@ jobs:
   update:
     runs-on: ubuntu-latest
 
-    # TODO update once 25-ea is available
     strategy:
       max-parallel: 1
       matrix:
-        java-version: [ '17', '21' ]
+        java-version: [ '21', '25' ]
 
     steps:
     - name: Checkout source

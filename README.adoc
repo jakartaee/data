@@ -171,13 +171,13 @@ This project is governed by the Eclipse Foundation Community Code of Conduct. By
 
 == Getting Help
 
-Having trouble with Jakarta Data? We’d love to help!
+Having trouble with Jakarta Data? We'd love to help!
 
 Report Jakarta Data bugs at https://github.com/jakartaee/data/issues.
 
 == Building from Source
 
-You don’t need to build from source to use the project, but you can do so with Maven and Java 17 or higher.
+You don't need to build from source to use the project, but you can do so with Maven and Java 21 or higher.
 
 [source, Bash]
 ----
