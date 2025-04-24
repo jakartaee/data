@@ -21,7 +21,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 
 import jakarta.data.metamodel.BasicAttribute;
-import jakarta.data.metamodel.ComparableAttribute;
+import jakarta.data.metamodel.NumericAttribute;
 import jakarta.data.metamodel.TemporalAttribute;
 import jakarta.data.metamodel.TextAttribute;
 
@@ -43,9 +43,9 @@ public interface _Book {
             Book.class, COPYRIGHTDATE, Instant.class);
     TextAttribute<Book> id = TextAttribute.of(
             Book.class, ID);
-    ComparableAttribute<Book, Integer> numChapters = ComparableAttribute.of(
+    NumericAttribute<Book, Integer> numChapters = NumericAttribute.of(
             Book.class, NUMCHAPTERS, int.class);
-    ComparableAttribute<Book, Integer> numPages = ComparableAttribute.of(
+    NumericAttribute<Book, Integer> numPages = NumericAttribute.of(
             Book.class, NUMPAGES, int.class);
     TemporalAttribute<Book, LocalDate> publicationDate = TemporalAttribute.of(
             Book.class, PUBLICATIONDATE, LocalDate.class);

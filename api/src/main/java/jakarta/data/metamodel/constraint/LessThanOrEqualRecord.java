@@ -19,14 +19,17 @@ package jakarta.data.metamodel.constraint;
 
 import java.util.Objects;
 
-record LessThanOrEqualRecord<T extends Comparable<?>>(T bound)
-        implements LessThanOrEqual<T> {
+import jakarta.data.metamodel.ComparableExpression;
+
+record LessThanOrEqualRecord<V extends Comparable<?>>(
+        ComparableExpression<?, V> bound)
+        implements LessThanOrEqual<V> {
     public LessThanOrEqualRecord {
         Objects.requireNonNull(bound, "Upper bound must not be null");
     }
 
     @Override
-    public GreaterThan<T> negate() {
+    public GreaterThan<V> negate() {
         return GreaterThan.bound(bound);
     }
 

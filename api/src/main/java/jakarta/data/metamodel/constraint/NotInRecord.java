@@ -17,25 +17,19 @@
  */
 package jakarta.data.metamodel.constraint;
 
-import java.util.Objects;
 import java.util.Set;
 
-record NotInRecord<T>(Set<T> values) implements NotIn<T> {
+import jakarta.data.metamodel.Expression;
 
-    NotInRecord {
-        Objects.requireNonNull(values, "values must not be null");
-        for (T value : values) {
-            Objects.requireNonNull(value, "value must not be null");
-        }
-    }
+record NotInRecord<V>(Set<Expression<?, V>> expressions) implements NotIn<V> {
 
     @Override
-    public In<T> negate() {
-        return In.values(values);
+    public In<V> negate() {
+        return In.expressions(expressions);
     }
 
     @Override
     public String toString() {
-        return "NOT IN " + values;
+        return "NOT IN " + expressions;
     }
 }
