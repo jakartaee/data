@@ -89,7 +89,7 @@ class AttributeTest {
 
     @Test
     void shouldThrowExceptionForEmptyInRestriction() {
-        assertThatThrownBy(() -> testAttribute.in())
+        assertThatThrownBy(() -> testAttribute.in((Set<String>) null))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("values are required");
     }
@@ -110,7 +110,7 @@ class AttributeTest {
 
     @Test
     void shouldThrowExceptionForEmptyNotInRestriction() {
-        assertThatThrownBy(() -> testAttribute.notIn())
+        assertThatThrownBy(() -> testAttribute.notIn((Set<String>) null))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("values are required");
     }

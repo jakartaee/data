@@ -73,13 +73,11 @@ public interface Expression<T,V> {
         return BasicRestriction.of(this, NotIn.values(values));
     }
 
-    default Restriction<T> notIn(
-            @SuppressWarnings("unchecked") V... values) {
+    default Restriction<T> notIn(@SuppressWarnings("unchecked") V... values) {
         return BasicRestriction.of(this, NotIn.values(values));
     }
 
-    default Restriction<T> notIn(
-            @SuppressWarnings("unchecked") Expression<? super T,V>... expressions) {
+    default Restriction<T> notIn(@SuppressWarnings("unchecked") Expression<? super T,V>... expressions) {
         return BasicRestriction.of(this, NotIn.expressions(expressions));
     }
 
