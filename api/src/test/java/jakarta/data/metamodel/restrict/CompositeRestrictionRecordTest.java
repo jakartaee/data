@@ -238,7 +238,7 @@ class CompositeRestrictionRecordTest {
 
         assertThatThrownBy(() -> new CompositeRestrictionRecord<>(
                 CompositeRestriction.Type.ANY, restrictionsWithNull))
-                .isInstanceOf(NullPointerException.class); 
+                .isInstanceOf(NullPointerException.class);
     }
 
     @DisplayName("should support composite restriction with a single restriction")
@@ -255,6 +255,16 @@ class CompositeRestrictionRecordTest {
             soft.assertThat(composite.isNegated()).isFalse();
             soft.assertThat(composite.toString()).isEqualTo("(age >= 30)");
         });
+    }
+
+    @DisplayName("should throw NullPointerException if composite type is null")
+    @Test
+    void shouldThrowIfCompositeTypeIsNull() {
+        Restriction<Author> restriction = _Author.name.equalTo("Duke");
+        List<Restriction<Author>> restrictions = List.of(restriction);
+
+        assertThatThrownBy(() -> new CompositeRestrictionRecord<>(null, restrictions))
+                .isInstanceOf(NullPointerException.class);
     }
 
 
