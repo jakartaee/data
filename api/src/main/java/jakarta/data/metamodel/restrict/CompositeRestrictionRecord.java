@@ -17,6 +17,7 @@
  */
 package jakarta.data.metamodel.restrict;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -39,11 +40,12 @@ record CompositeRestrictionRecord<T>(
             throw new IllegalArgumentException(
                     "Cannot create a composite restriction without any restrictions to combine.");
         }
+        Objects.requireNonNull(type, "type must not be null");
         restrictions.forEach(r -> Objects.requireNonNull(r, "Restriction must not be null"));
     }
 
     CompositeRestrictionRecord(Type type, List<Restriction<T>> restrictions) {
-        this(type, restrictions, false);
+        this(type, new ArrayList<>(restrictions), false);
     }
 
     @Override
