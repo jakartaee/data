@@ -197,7 +197,7 @@ class BasicRestrictionRecordTest {
     @DisplayName("should create In constraint correctly")
     @Test
     void shouldCreateInRestriction() {
-        var restriction = (BasicRestriction<Book, String>) _Book.author.in(Set.of("Alice", "Bob"));
+        var restriction = (BasicRestriction<Book, String>) _Book.author.in("Alice", "Bob");
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.expression()).isEqualTo(_Book.author);
@@ -209,7 +209,7 @@ class BasicRestrictionRecordTest {
     @DisplayName("should create NotIn constraint correctly")
     @Test
     void shouldCreateNotInRestriction() {
-        var restriction = (BasicRestriction<Book, String>) _Book.author.in(Set.of("Alice", "Bob")).negate();
+        var restriction = (BasicRestriction<Book, String>) _Book.author.in("Alice", "Bob").negate();
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.expression()).isEqualTo(_Book.author);

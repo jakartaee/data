@@ -34,18 +34,10 @@ public interface Expression<T,V> {
         return BasicRestriction.of(this, Constraint.equalTo(value));
     }
 
-    default Restriction<T> in(Set<V> values) {
-        if (values == null || values.isEmpty()){
+    default Restriction<T> in(V... values) {
+        if (values == null || values.length == 0){
             throw new IllegalArgumentException("values are required");
         }
-
-        return BasicRestriction.of(this, In.values(values));
-    }
-
-    default Restriction<T> in(V... values) {
-        if (values == null || values.isEmpty())
-            throw new IllegalArgumentException("values are required");
-
         return BasicRestriction.of(this, In.values(values));
     }
 
@@ -57,9 +49,10 @@ public interface Expression<T,V> {
         return BasicRestriction.of(this, NotEqualTo.value(value));
     }
 
-    default Restriction<T> notIn(Set<V> values) {
-        if (values == null || values.isEmpty())
+    default Restriction<T> notIn(V... values) {
+        if (values == null || values.length == 0){
             throw new IllegalArgumentException("values are required");
+        }
 
         return BasicRestriction.of(this, NotIn.values(values));
     }

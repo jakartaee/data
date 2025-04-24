@@ -77,7 +77,7 @@ class AttributeTest {
     void shouldCreateInRestriction() {
         @SuppressWarnings("unchecked")
         BasicRestriction<Person, String> restriction =
-                (BasicRestriction<Person, String>) testAttribute.in(Set.of("value1", "value2"));
+                (BasicRestriction<Person, String>) testAttribute.in("value1", "value2");
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
@@ -89,7 +89,7 @@ class AttributeTest {
 
     @Test
     void shouldThrowExceptionForEmptyInRestriction() {
-        assertThatThrownBy(() -> testAttribute.in(Set.of()))
+        assertThatThrownBy(() -> testAttribute.in())
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("values are required");
     }
