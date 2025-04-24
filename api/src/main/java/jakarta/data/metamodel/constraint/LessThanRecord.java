@@ -24,7 +24,7 @@ import java.util.Objects;
 record LessThanRecord<V extends Comparable<?>>(ComparableExpression<?, V> bound)
         implements LessThan<V> {
     public LessThanRecord {
-        Objects.requireNonNull(bound, "Upper bound must not be null");
+        Objects.requireNonNull(bound, "Upper bound is required.");
     }
 
     @Override

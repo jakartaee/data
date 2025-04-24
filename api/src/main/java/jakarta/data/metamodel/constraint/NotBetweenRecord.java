@@ -27,8 +27,8 @@ record NotBetweenRecord<V extends Comparable<?>>(
     implements NotBetween<V> {
 
     NotBetweenRecord {
-        Objects.requireNonNull(lowerBound, "lowerBound must not be null");
-        Objects.requireNonNull(upperBound, "upperBound must not be null");
+        Objects.requireNonNull(lowerBound, "Lower bound is required.");
+        Objects.requireNonNull(upperBound, "Upper bound is required.");
     }
 
     @Override

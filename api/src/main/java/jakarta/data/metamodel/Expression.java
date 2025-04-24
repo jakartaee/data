@@ -41,7 +41,7 @@ public interface Expression<T,V> {
 
     default Restriction<T> in(Collection<V> values) {
         if (values == null || values.isEmpty())
-            throw new IllegalArgumentException("values are required");
+            throw new IllegalArgumentException("Values are required.");
 
         return BasicRestriction.of(this, In.values(values));
     }
@@ -70,7 +70,7 @@ public interface Expression<T,V> {
 
     default Restriction<T> notIn(Collection<V> values) {
         if (values == null || values.isEmpty())
-            throw new IllegalArgumentException("values are required");
+            throw new IllegalArgumentException("Values are required.");
 
         return BasicRestriction.of(this, NotIn.values(values));
     }

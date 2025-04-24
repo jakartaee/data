@@ -44,9 +44,9 @@ public interface NavigableAttribute<T,U>
     static <T,U> NavigableAttribute<T,U> of(Class<T> entityClass,
                                             String name,
                                             Class<U> attributeType) {
-        Objects.requireNonNull(entityClass, "entity class is required");
-        Objects.requireNonNull(name, "entity attribute name is required");
-        Objects.requireNonNull(attributeType, "entity attribute type is required");
+        Objects.requireNonNull(entityClass, "Entity class is required.");
+        Objects.requireNonNull(name, "Entity attribute name is required.");
+        Objects.requireNonNull(attributeType, "Entity attribute type is required.");
 
         return new NavigableAttributeRecord<>(entityClass, name);
     }
