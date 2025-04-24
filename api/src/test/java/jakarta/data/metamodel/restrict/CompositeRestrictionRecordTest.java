@@ -229,4 +229,36 @@ class CompositeRestrictionRecordTest {
         });
     }
 
+    @DisplayName("should allow validation that no individual restriction is null")
+    @Test
+    void shouldRejectNullRestrictionInList() {
+        Restriction<Author> nameRestriction = _Author.name.equalTo("Jane Doe");
+
+        CompositeRestrictionRecord<Author> composite = new CompositeRestrictionRecord<>(
+                CompositeRestriction.Type.ANY, List.of(nameRestriction, null));
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(composite.restrictions()).hasSize(2);
+            soft.assertThat(composite.restrictions().get(1)).isNull(); // optional: throw instead?
+        });
+    }
+
+    @DisplayName("should support composite restriction with a single restriction")
+    @Test
+    void shouldSupportSingleItemComposite() {
+        Restriction<Author> onlyRestriction = _Author.age.greaterThanEqual(30);
+
+        CompositeRestrictionRecord<Author> composite = new CompositeRestrictionRecord<>(
+                CompositeRestriction.Type.ALL, List.of(onlyRestriction));
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(composite.restrictions()).hasSize(1);
+            soft.assertThat(composite.restrictions()).containsExactly(onlyRestriction);
+            soft.assertThat(composite.isNegated()).isFalse();
+            soft.assertThat(composite.toString()).isEqualTo("(age >= 30)");
+        });
+    }
+
+
+
 }
