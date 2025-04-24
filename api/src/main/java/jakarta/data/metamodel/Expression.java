@@ -26,6 +26,8 @@ import jakarta.data.metamodel.constraint.Null;
 import jakarta.data.metamodel.restrict.BasicRestriction;
 import jakarta.data.metamodel.restrict.Restriction;
 
+import java.util.Set;
+
 
 public interface Expression<T,V> {
 
@@ -35,6 +37,13 @@ public interface Expression<T,V> {
 
     default Restriction<T> in(V... values) {
         if (values == null || values.length == 0){
+            throw new IllegalArgumentException("values are required");
+        }
+        return BasicRestriction.of(this, In.values(values));
+    }
+
+    default Restriction<T> in(Set<V> values) {
+        if (values == null || values.isEmpty()){
             throw new IllegalArgumentException("values are required");
         }
         return BasicRestriction.of(this, In.values(values));
@@ -50,6 +59,14 @@ public interface Expression<T,V> {
 
     default Restriction<T> notIn(V... values) {
         if (values == null || values.length == 0){
+            throw new IllegalArgumentException("values are required");
+        }
+
+        return BasicRestriction.of(this, NotIn.values(values));
+    }
+
+    default Restriction<T> notIn(Set<T> values) {
+        if (values == null || values.isEmpty()){
             throw new IllegalArgumentException("values are required");
         }
 
