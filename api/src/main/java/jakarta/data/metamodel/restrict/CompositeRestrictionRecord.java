@@ -18,6 +18,7 @@
 package jakarta.data.metamodel.restrict;
 
 import java.util.List;
+import java.util.Objects;
 
 // Internal implementation class.
 // The proper way for users to obtain instances is via
@@ -38,6 +39,7 @@ record CompositeRestrictionRecord<T>(
             throw new IllegalArgumentException(
                     "Cannot create a composite restriction without any restrictions to combine.");
         }
+        restrictions.forEach(r -> Objects.requireNonNull(r, "Restriction must not be null"));
     }
 
     CompositeRestrictionRecord(Type type, List<Restriction<T>> restrictions) {
