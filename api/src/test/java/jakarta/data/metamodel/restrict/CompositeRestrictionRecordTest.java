@@ -229,18 +229,16 @@ class CompositeRestrictionRecordTest {
         });
     }
 
-    @DisplayName("should allow validation that no individual restriction is null")
+    @DisplayName("should throw NPE if a null restriction is included in the list")
     @Test
-    void shouldRejectNullRestrictionInList() {
-        Restriction<Author> nameRestriction = _Author.name.equalTo("Jane Doe");
+    void shouldThrowIfNullRestrictionIncluded() {
+        List<Restriction<Author>> restrictionsWithNull = new java.util.ArrayList<>();
+        restrictionsWithNull.add(_Author.name.equalTo("Jane Doe"));
+        restrictionsWithNull.add(null);
 
-        CompositeRestrictionRecord<Author> composite = new CompositeRestrictionRecord<>(
-                CompositeRestriction.Type.ANY, List.of(nameRestriction, null));
-
-        SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(composite.restrictions()).hasSize(2);
-            soft.assertThat(composite.restrictions().get(1)).isNull(); // optional: throw instead?
-        });
+        assertThatThrownBy(() -> new CompositeRestrictionRecord<>(
+                CompositeRestriction.Type.ANY, restrictionsWithNull))
+                .isInstanceOf(NullPointerException.class); 
     }
 
     @DisplayName("should support composite restriction with a single restriction")
