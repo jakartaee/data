@@ -35,6 +35,14 @@ public interface Expression<T,V> {
     }
 
     default Restriction<T> in(Set<V> values) {
+        if (values == null || values.isEmpty()){
+            throw new IllegalArgumentException("values are required");
+        }
+
+        return BasicRestriction.of(this, In.values(values));
+    }
+
+    default Restriction<T> in(V... values) {
         if (values == null || values.isEmpty())
             throw new IllegalArgumentException("values are required");
 
