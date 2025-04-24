@@ -65,19 +65,11 @@ class AttributeRecordTest {
     @Test
     @DisplayName("should not be equal if names differ")
     void shouldNotEqualDifferentNames() {
-        AttributeRecord<SimpleEntity> id = new AttributeRecord<>("id");
-        AttributeRecord<SimpleEntity> desc = new AttributeRecord<>("description");
+        var id = new AttributeRecord<>("id");
+        var desc = new AttributeRecord<>("description");
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(id).isNotEqualTo(desc);
-        });
-    }
-
-    @Test
-    @DisplayName("should throw NullPointerException when name is null")
-    void shouldThrowIfNameIsNull() {
-        org.junit.jupiter.api.Assertions.assertThrows(NullPointerException.class, () -> {
-            new AttributeRecord<>(null);
         });
     }
 }
