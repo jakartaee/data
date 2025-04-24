@@ -218,6 +218,30 @@ class BasicRestrictionRecordTest {
         });
     }
 
+    @DisplayName("should create In, using Set, constraint correctly")
+    @Test
+    void shouldCreateInAsSetRestriction() {
+        var restriction = (BasicRestriction<Book, String>) _Book.author.in(Set.of("Alice", "Bob"));
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(restriction.expression()).isEqualTo(_Book.author);
+            soft.assertThat(restriction.constraint()).isEqualTo(In.values("Alice", "Bob"));
+            soft.assertThat(restriction.constraint()).isInstanceOf(In.class);
+        });
+    }
+
+    @DisplayName("should create NotIn, using Set, constraint correctly")
+    @Test
+    void shouldCreateNotInAsSetRestriction() {
+        var restriction = (BasicRestriction<Book, String>) _Book.author.in(Set.of("Alice", "Bob")).negate();
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(restriction.expression()).isEqualTo(_Book.author);
+            soft.assertThat(restriction.constraint()).isEqualTo(NotIn.values("Alice", "Bob"));
+            soft.assertThat(restriction.constraint()).isInstanceOf(NotIn.class);
+        });
+    }
+
     @DisplayName("should create Like constraint correctly")
     @Test
     void shouldCreateLikeRestriction() {
