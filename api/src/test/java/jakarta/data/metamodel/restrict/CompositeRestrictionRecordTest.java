@@ -122,9 +122,9 @@ class CompositeRestrictionRecordTest {
         var ageLessThan50 = _Author.age.lessThan(50);
         var nameStartsWithDuke = _Author.name.startsWith("Duke ");
 
-        CompositeRestriction<Author> all = (CompositeRestriction<Author>) Restrict.all(ageLessThan50, nameStartsWithDuke);
-        CompositeRestriction<Author> negated = all.negate();
-        CompositeRestriction<Author> fromNot = (CompositeRestriction<Author>) Restrict.not(all);
+        var all = (CompositeRestriction<Author>) Restrict.all(ageLessThan50, nameStartsWithDuke);
+        var negated = all.negate();
+        var fromNot = (CompositeRestriction<Author>) Restrict.not(all);
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(all.isNegated()).isFalse();
@@ -141,9 +141,9 @@ class CompositeRestrictionRecordTest {
         var ageBetween20and30 = _Author.age.between(20, 30);
         var nameContainsDuke = _Author.name.contains("Duke");
 
-        CompositeRestriction<Author> any = (CompositeRestriction<Author>) Restrict.any(ageBetween20and30, nameContainsDuke);
-        CompositeRestriction<Author> negated = any.negate();
-        CompositeRestriction<Author> unNegated = (CompositeRestriction<Author>) Restrict.not(negated);
+        var any = (CompositeRestriction<Author>) Restrict.any(ageBetween20and30, nameContainsDuke);
+        var negated = any.negate();
+        var unNegated = (CompositeRestriction<Author>) Restrict.not(negated);
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(any.isNegated()).isFalse();
@@ -158,12 +158,12 @@ class CompositeRestrictionRecordTest {
         var firstNameIsJack = _Author.firstName.equalTo("Jack");
         var lastNameIsKarta = _Author.lastName.equalTo("Karta");
 
-        Restriction<Author> ageUnder18 = _Author.age.lessThan(18);
-        Restriction<Author> nameIsNullString = _Author.name.equalTo("null");
+        var ageUnder18 = _Author.age.lessThan(18);
+        var nameIsNullString = _Author.name.equalTo("null");
 
-        Restriction<Author> namedJackKarta = Restrict.all(firstNameIsJack, lastNameIsKarta);
-        Restriction<Author> minorOrMissing = Restrict.any(ageUnder18, nameIsNullString);
-        Restriction<Author> notMinorOrMissing = minorOrMissing.negate();
+        var namedJackKarta = Restrict.all(firstNameIsJack, lastNameIsKarta);
+        var minorOrMissing = Restrict.any(ageUnder18, nameIsNullString);
+        var notMinorOrMissing = minorOrMissing.negate();
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(namedJackKarta.toString()).isEqualTo("(firstName = 'Jack') AND (lastName = 'Karta')");
@@ -177,7 +177,7 @@ class CompositeRestrictionRecordTest {
         var titleRestriction = _Author.titleOfFirstBook.equalTo("Java Guide");
         var nameRestriction = _Author.name.equalTo("John Doe");
 
-        CompositeRestrictionRecord<Author> composite = new CompositeRestrictionRecord<>(
+        var composite = new CompositeRestrictionRecord<>(
                 CompositeRestriction.Type.ALL, List.of(titleRestriction, nameRestriction));
 
         SoftAssertions.assertSoftly(soft -> {
@@ -193,10 +193,10 @@ class CompositeRestrictionRecordTest {
         var titleRestriction = _Author.titleOfFirstBook.equalTo("Java Guide");
         var nameRestriction = _Author.name.equalTo("John Doe");
 
-        CompositeRestrictionRecord<Author> original = new CompositeRestrictionRecord<>(
+        var original = new CompositeRestrictionRecord<>(
                 CompositeRestriction.Type.ALL, List.of(titleRestriction, nameRestriction));
 
-        CompositeRestrictionRecord<Author> negated = new CompositeRestrictionRecord<>(
+        var negated = new CompositeRestrictionRecord<>(
                 original.type(), original.restrictions(), true);
 
         SoftAssertions.assertSoftly(soft -> {
@@ -218,9 +218,9 @@ class CompositeRestrictionRecordTest {
         var titleRestriction = _Author.titleOfFirstBook.equalTo("Java Guide");
         var nameRestriction = _Author.name.equalTo("John Doe");
 
-        CompositeRestrictionRecord<Author> composite1 = new CompositeRestrictionRecord<>(
+        var composite1 = new CompositeRestrictionRecord<>(
                 CompositeRestriction.Type.ALL, List.of(titleRestriction, nameRestriction));
-        CompositeRestrictionRecord<Author> composite2 = new CompositeRestrictionRecord<>(
+        var composite2 = new CompositeRestrictionRecord<>(
                 CompositeRestriction.Type.ALL, List.of(titleRestriction, nameRestriction));
 
         SoftAssertions.assertSoftly(soft -> {
@@ -244,9 +244,9 @@ class CompositeRestrictionRecordTest {
     @DisplayName("should support composite restriction with a single restriction")
     @Test
     void shouldSupportSingleItemComposite() {
-        Restriction<Author> onlyRestriction = _Author.age.greaterThanEqual(30);
+        var onlyRestriction = _Author.age.greaterThanEqual(30);
 
-        CompositeRestrictionRecord<Author> composite = new CompositeRestrictionRecord<>(
+        var composite = new CompositeRestrictionRecord<>(
                 CompositeRestriction.Type.ALL, List.of(onlyRestriction));
 
         SoftAssertions.assertSoftly(soft -> {
@@ -261,7 +261,7 @@ class CompositeRestrictionRecordTest {
     @Test
     void shouldThrowIfCompositeTypeIsNull() {
         Restriction<Author> restriction = _Author.name.equalTo("Duke");
-        List<Restriction<Author>> restrictions = List.of(restriction);
+        var restrictions = List.of(restriction);
 
         assertThatThrownBy(() -> new CompositeRestrictionRecord<>(null, restrictions))
                 .isInstanceOf(NullPointerException.class);
@@ -282,8 +282,5 @@ class CompositeRestrictionRecordTest {
             soft.assertThat(outer1.hashCode()).isEqualTo(outer2.hashCode());
         });
     }
-
-
-
 
 }
