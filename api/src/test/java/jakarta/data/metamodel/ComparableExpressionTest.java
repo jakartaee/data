@@ -20,6 +20,9 @@ package jakarta.data.metamodel;
 import jakarta.data.metamodel.constraint.Between;
 import jakarta.data.metamodel.constraint.GreaterThan;
 import jakarta.data.metamodel.constraint.GreaterThanOrEqual;
+import jakarta.data.metamodel.constraint.LessThan;
+import jakarta.data.metamodel.constraint.LessThanOrEqual;
+import jakarta.data.metamodel.constraint.NotBetween;
 import jakarta.data.metamodel.restrict.BasicRestriction;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
@@ -85,4 +88,56 @@ class ComparableExpressionTest {
                     .isEqualTo(Between.bounds(min, max));
         });
     }
+
+    @DisplayName("should create Restriction with lessThan value")
+    @Test
+    void shouldCreateLessThanRestriction() {
+        var restriction = _Person.age.lessThan(40);
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
+            soft.assertThat(((BasicRestriction<?, ?>) restriction).constraint())
+                    .isEqualTo(LessThan.bound(40));
+        });
+    }
+
+    @DisplayName("should create Restriction with lessThanEqual value")
+    @Test
+    void shouldCreateLessThanEqualRestriction() {
+        var restriction = _Person.age.lessThanEqual(60);
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
+            soft.assertThat(((BasicRestriction<?, ?>) restriction).constraint())
+                    .isEqualTo(LessThanOrEqual.max(60));
+        });
+    }
+
+    @DisplayName("should create Restriction with notBetween values")
+    @Test
+    void shouldCreateNotBetweenValueRestriction() {
+        var restriction = _Person.age.between(18, 30).negate();
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
+            soft.assertThat(((BasicRestriction<?, ?>) restriction).constraint())
+                    .isEqualTo(NotBetween.bounds(18, 30));
+        });
+
+    }
+
+    @DisplayName("should create Restriction with notBetween expressions")
+    @Test
+    void shouldCreateNotBetweenExpressionRestriction() {
+        var restriction = _Person.age.between(_Person.age, _Person.age).negate();
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
+            soft.assertThat(((BasicRestriction<?, ?>) restriction).constraint())
+                    .isEqualTo(NotBetween.bounds(_Person.age, _Person.age));
+        });
+    }
+
+
+
 }
