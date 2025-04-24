@@ -69,8 +69,6 @@ class TextAttributeRecordTest {
         var idAttribute = new TextAttributeRecord<SimpleEntity>("id");
         var nameAttribute = new TextAttributeRecord<SimpleEntity>("name");
 
-        SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(idAttribute).isNotEqualTo(nameAttribute);
-        });
+        SoftAssertions.assertSoftly(soft -> soft.assertThat(idAttribute).isNotEqualTo(nameAttribute));
     }
 }

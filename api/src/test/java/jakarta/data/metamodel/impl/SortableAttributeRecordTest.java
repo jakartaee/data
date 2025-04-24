@@ -68,9 +68,7 @@ class SortableAttributeRecordTest {
         var idAttribute = new SortableAttributeRecord<SimpleEntity>("id");
         var nameAttribute = new SortableAttributeRecord<SimpleEntity>("name");
 
-        SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(idAttribute).isNotEqualTo(nameAttribute);
-        });
+        SoftAssertions.assertSoftly(soft -> soft.assertThat(idAttribute).isNotEqualTo(nameAttribute));
     }
 
 }

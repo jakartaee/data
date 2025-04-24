@@ -67,8 +67,6 @@ class AttributeRecordTest {
         var id = new AttributeRecord<>("id");
         var desc = new AttributeRecord<>("description");
 
-        SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(id).isNotEqualTo(desc);
-        });
+        SoftAssertions.assertSoftly(soft -> soft.assertThat(id).isNotEqualTo(desc));
     }
 }
