@@ -226,7 +226,7 @@ class BasicRestrictionRecordTest {
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.expression()).isEqualTo(_Book.author);
-            soft.assertThat(restriction.constraint()).isEqualTo(In.values("Alice", "Bob"));
+            soft.assertThat(restriction.constraint()).isEqualTo(In.values(Set.of("Alice", "Bob")));
             soft.assertThat(restriction.constraint()).isInstanceOf(In.class);
         });
     }
@@ -238,7 +238,7 @@ class BasicRestrictionRecordTest {
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.expression()).isEqualTo(_Book.author);
-            soft.assertThat(restriction.constraint()).isEqualTo(NotIn.values("Alice", "Bob"));
+            soft.assertThat(restriction.constraint()).isEqualTo(NotIn.values(Set.of("Alice", "Bob")));
             soft.assertThat(restriction.constraint()).isInstanceOf(NotIn.class);
         });
     }
