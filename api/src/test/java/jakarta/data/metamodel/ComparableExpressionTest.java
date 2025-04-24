@@ -17,9 +17,10 @@
  */
 package jakarta.data.metamodel;
 
-import jakarta.data.metamodel.constraint.*;
+import jakarta.data.metamodel.constraint.Between;
+import jakarta.data.metamodel.constraint.GreaterThan;
+import jakarta.data.metamodel.constraint.GreaterThanOrEqual;
 import jakarta.data.metamodel.restrict.BasicRestriction;
-import jakarta.data.metamodel.restrict.Restriction;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
