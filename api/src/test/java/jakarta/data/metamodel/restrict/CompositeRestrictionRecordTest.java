@@ -21,6 +21,7 @@ import jakarta.data.metamodel.ComparableAttribute;
 import jakarta.data.metamodel.TextAttribute;
 
 import org.assertj.core.api.SoftAssertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
@@ -58,41 +59,39 @@ class CompositeRestrictionRecordTest {
     }
 
     @Test
+    @DisplayName("should create composite restriction with default negation (false)")
     void shouldCreateCompositeRestrictionWithDefaultNegation() {
-        Restriction<Author> restriction1 = _Author.titleOfFirstBook.equalTo("Java Guide");
-        Restriction<Author> restriction2 = _Author.name.equalTo("John Doe");
+        Restriction<Author> r1 = _Author.titleOfFirstBook.equalTo("Java Guide");
+        Restriction<Author> r2 = _Author.name.equalTo("John Doe");
 
         CompositeRestrictionRecord<Author> composite = new CompositeRestrictionRecord<>(
-                CompositeRestriction.Type.ALL,
-                List.of(restriction1, restriction2)
-        );
+                CompositeRestriction.Type.ALL, List.of(r1, r2));
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(composite.type()).isEqualTo(CompositeRestriction.Type.ALL);
-            soft.assertThat(composite.restrictions()).containsExactly(restriction1, restriction2);
+            soft.assertThat(composite.restrictions()).containsExactly(r1, r2);
             soft.assertThat(composite.isNegated()).isFalse();
         });
     }
 
     @Test
+    @DisplayName("should create composite restriction with explicit negation (true)")
     void shouldCreateCompositeRestrictionWithExplicitNegation() {
-        Restriction<Author> restriction1 = _Author.titleOfFirstBook.equalTo("Java Guide");
-        Restriction<Author> restriction2 = _Author.name.equalTo("John Doe");
+        Restriction<Author> r1 = _Author.titleOfFirstBook.equalTo("Java Guide");
+        Restriction<Author> r2 = _Author.name.equalTo("John Doe");
 
         CompositeRestrictionRecord<Author> composite = new CompositeRestrictionRecord<>(
-                CompositeRestriction.Type.ANY,
-                List.of(restriction1, restriction2),
-                true
-        );
+                CompositeRestriction.Type.ANY, List.of(r1, r2), true);
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(composite.type()).isEqualTo(CompositeRestriction.Type.ANY);
-            soft.assertThat(composite.restrictions()).containsExactly(restriction1, restriction2);
+            soft.assertThat(composite.restrictions()).containsExactly(r1, r2);
             soft.assertThat(composite.isNegated()).isTrue();
         });
     }
 
     @Test
+    @DisplayName("should throw exception when composite restriction is created without restrictions")
     void shouldFailIfEmptyRestrictions() {
         assertThatThrownBy(() -> new CompositeRestrictionRecord<>(CompositeRestriction.Type.ALL, List.of()))
                 .isInstanceOf(IllegalArgumentException.class)
@@ -100,102 +99,89 @@ class CompositeRestrictionRecordTest {
     }
 
     @Test
+    @DisplayName("should negate a composite restriction and support 'not' syntax")
     void shouldNegateCompositeRestriction() {
-        Restriction<Author> ageLessThan50 = _Author.age.lessThan(50);
-        Restriction<Author> nameStartsWithDuke = _Author.name.startsWith("Duke ");
-        CompositeRestriction<Author> all =
-                (CompositeRestriction<Author>) Restrict.all(ageLessThan50, nameStartsWithDuke);
-        CompositeRestriction<Author> allNegated = all.negate();
-        CompositeRestriction<Author> notAll =
-                (CompositeRestriction<Author>) Restrict.not(all);
+        Restriction<Author> age = _Author.age.lessThan(50);
+        Restriction<Author> name = _Author.name.startsWith("Duke ");
+
+        CompositeRestriction<Author> all = (CompositeRestriction<Author>) Restrict.all(age, name);
+        CompositeRestriction<Author> negated = all.negate();
+        CompositeRestriction<Author> fromNot = (CompositeRestriction<Author>) Restrict.not(all);
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(all.isNegated()).isEqualTo(false);
-
-            soft.assertThat(allNegated.isNegated()).isEqualTo(true);
-
-            soft.assertThat(notAll.isNegated()).isEqualTo(true);
+            soft.assertThat(all.isNegated()).isFalse();
+            soft.assertThat(negated.isNegated()).isTrue();
+            soft.assertThat(fromNot.isNegated()).isTrue();
         });
     }
 
     @Test
+    @DisplayName("should negate a negated composite restriction and return to original")
     void shouldNegateNegatedCompositeRestriction() {
-        Restriction<Author> ageBetween20and30 = _Author.age.between(20, 30);
-        Restriction<Author> nameContainsDuke = _Author.name.contains("Duke");
-        CompositeRestriction<Author> any =
-                (CompositeRestriction<Author>) Restrict.any(ageBetween20and30, nameContainsDuke);
-        CompositeRestriction<Author> anyNegated = any.negate();
-        CompositeRestriction<Author> anyNotNegated =
-                (CompositeRestriction<Author>) Restrict.not(anyNegated);
+        Restriction<Author> r1 = _Author.age.between(20, 30);
+        Restriction<Author> r2 = _Author.name.contains("Duke");
+
+        CompositeRestriction<Author> any = (CompositeRestriction<Author>) Restrict.any(r1, r2);
+        CompositeRestriction<Author> negated = any.negate();
+        CompositeRestriction<Author> unNegated = (CompositeRestriction<Author>) Restrict.not(negated);
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(any.isNegated()).isEqualTo(false);
-
-            soft.assertThat(anyNegated.isNegated()).isEqualTo(true);
-
-            soft.assertThat(anyNotNegated.isNegated()).isEqualTo(false);
+            soft.assertThat(any.isNegated()).isFalse();
+            soft.assertThat(negated.isNegated()).isTrue();
+            soft.assertThat(unNegated.isNegated()).isFalse();
         });
     }
 
     @Test
+    @DisplayName("should correctly format toString for nested AND/OR composite restrictions")
     void shouldOutputToString() {
-        Restriction<Author> namedJackKarta = Restrict
-                .all(_Author.firstName.equalTo("Jack"),
-                     _Author.lastName.equalTo("Karta"));
+        Restriction<Author> jackKarta = Restrict.all(
+                _Author.firstName.equalTo("Jack"),
+                _Author.lastName.equalTo("Karta"));
 
-        Restriction<Author> minorOrMissingName = Restrict
-                .any(_Author.age.lessThan(18),
-                     _Author.name.equalTo("null"));
-        Restriction<Author> notMinorOrMissingName = minorOrMissingName.negate();
+        Restriction<Author> minorOrMissing = Restrict.any(
+                _Author.age.lessThan(18),
+                _Author.name.equalTo("null"));
+
+        Restriction<Author> notMinorOrMissing = minorOrMissing.negate();
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(namedJackKarta.toString()).isEqualTo("""
-                    (firstName = 'Jack') AND (lastName = 'Karta')\
-                    """);
-            soft.assertThat(notMinorOrMissingName.toString()).isEqualTo("""
-                    NOT ((age < 18) OR (name = 'null'))\
-                    """);
+            soft.assertThat(jackKarta.toString()).isEqualTo("(firstName = 'Jack') AND (lastName = 'Karta')");
+            soft.assertThat(notMinorOrMissing.toString()).isEqualTo("NOT ((age < 18) OR (name = 'null'))");
         });
     }
 
     @Test
+    @DisplayName("should preserve the order of restrictions in composite")
     void shouldPreserveRestrictionsOrder() {
-        Restriction<Author> restriction1 = _Author.titleOfFirstBook.equalTo("Java Guide");
-        Restriction<Author> restriction2 = _Author.name.equalTo("John Doe");
+        Restriction<Author> r1 = _Author.titleOfFirstBook.equalTo("Java Guide");
+        Restriction<Author> r2 = _Author.name.equalTo("John Doe");
 
         CompositeRestrictionRecord<Author> composite = new CompositeRestrictionRecord<>(
-                CompositeRestriction.Type.ALL,
-                List.of(restriction1, restriction2)
-        );
+                CompositeRestriction.Type.ALL, List.of(r1, r2));
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(composite.restrictions().get(0)).isEqualTo(restriction1);
-            soft.assertThat(composite.restrictions().get(1)).isEqualTo(restriction2);
+            soft.assertThat(composite.restrictions().get(0)).isEqualTo(r1);
+            soft.assertThat(composite.restrictions().get(1)).isEqualTo(r2);
         });
     }
 
     @Test
+    @DisplayName("should support manual negation using constructor")
     void shouldSupportNegationUsingDefaultConstructor() {
-        // Given multiple restrictions
-        Restriction<Author> restriction1 = _Author.titleOfFirstBook.equalTo("Java Guide");
-        Restriction<Author> restriction2 = _Author.name.equalTo("John Doe");
+        Restriction<Author> r1 = _Author.titleOfFirstBook.equalTo("Java Guide");
+        Restriction<Author> r2 = _Author.name.equalTo("John Doe");
 
-        // When creating a composite restriction and manually setting negation
-        CompositeRestrictionRecord<Author> composite = new CompositeRestrictionRecord<>(
-                CompositeRestriction.Type.ALL,
-                List.of(restriction1, restriction2)
-        );
-        CompositeRestrictionRecord<Author> negatedComposite = new CompositeRestrictionRecord<>(
-                composite.type(),
-                composite.restrictions(),
-                true
-        );
+        CompositeRestrictionRecord<Author> original = new CompositeRestrictionRecord<>(
+                CompositeRestriction.Type.ALL, List.of(r1, r2));
 
-        // Then validate the negated composite restriction
+        CompositeRestrictionRecord<Author> negated = new CompositeRestrictionRecord<>(
+                original.type(), original.restrictions(), true);
+
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(negatedComposite.type()).isEqualTo(CompositeRestriction.Type.ALL);
-            soft.assertThat(negatedComposite.restrictions()).containsExactly(restriction1, restriction2);
-            soft.assertThat(negatedComposite.isNegated()).isTrue();
+            soft.assertThat(negated.type()).isEqualTo(CompositeRestriction.Type.ALL);
+            soft.assertThat(negated.restrictions()).containsExactly(r1, r2);
+            soft.assertThat(negated.isNegated()).isTrue();
         });
     }
 }
