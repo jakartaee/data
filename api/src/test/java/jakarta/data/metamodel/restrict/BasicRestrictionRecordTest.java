@@ -27,6 +27,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Set;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
@@ -197,7 +198,7 @@ class BasicRestrictionRecordTest {
     @DisplayName("should create In constraint correctly")
     @Test
     void shouldCreateInRestriction() {
-        var restriction = (BasicRestriction<Book, String>) _Book.author.in(List.of("Alice", "Bob"));
+        var restriction = (BasicRestriction<Book, String>) _Book.author.in("Alice", "Bob");
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.expression()).isEqualTo(_Book.author);
@@ -209,11 +210,35 @@ class BasicRestrictionRecordTest {
     @DisplayName("should create NotIn constraint correctly")
     @Test
     void shouldCreateNotInRestriction() {
-        var restriction = (BasicRestriction<Book, String>) _Book.author.in(List.of("Alice", "Bob")).negate();
+        var restriction = (BasicRestriction<Book, String>) _Book.author.in("Alice", "Bob").negate();
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.expression()).isEqualTo(_Book.author);
             soft.assertThat(restriction.constraint()).isEqualTo(NotIn.values("Alice", "Bob"));
+            soft.assertThat(restriction.constraint()).isInstanceOf(NotIn.class);
+        });
+    }
+
+    @DisplayName("should create In, using Set, constraint correctly")
+    @Test
+    void shouldCreateInAsSetRestriction() {
+        var restriction = (BasicRestriction<Book, String>) _Book.author.in(Set.of("Alice", "Bob"));
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(restriction.expression()).isEqualTo(_Book.author);
+            soft.assertThat(restriction.constraint()).isEqualTo(In.values(Set.of("Alice", "Bob")));
+            soft.assertThat(restriction.constraint()).isInstanceOf(In.class);
+        });
+    }
+
+    @DisplayName("should create NotIn, using Set, constraint correctly")
+    @Test
+    void shouldCreateNotInAsSetRestriction() {
+        var restriction = (BasicRestriction<Book, String>) _Book.author.in(Set.of("Alice", "Bob")).negate();
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(restriction.expression()).isEqualTo(_Book.author);
+            soft.assertThat(restriction.constraint()).isEqualTo(NotIn.values(Set.of("Alice", "Bob")));
             soft.assertThat(restriction.constraint()).isInstanceOf(NotIn.class);
         });
     }
