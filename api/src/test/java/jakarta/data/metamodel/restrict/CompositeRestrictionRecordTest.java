@@ -74,7 +74,6 @@ class CompositeRestrictionRecordTest {
             soft.assertThat(composite.type()).isEqualTo(CompositeRestriction.Type.ALL);
             soft.assertThat(composite.type()).isNotNull();
             soft.assertThat(composite.isNegated()).isFalse();
-            soft.assertThat(composite.isNegated()).isInstanceOf(Boolean.class);
 
             soft.assertThat(composite.restrictions()).containsExactly(titleRestriction, nameRestriction);
             soft.assertThat(composite.restrictions()).hasSize(2);
