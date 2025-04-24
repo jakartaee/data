@@ -47,7 +47,6 @@ class SortableAttributeRecordTest {
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(attribute.name()).isEqualTo("name");
             soft.assertThat(attribute).isInstanceOf(SortableAttribute.class);
-            soft.assertThat(attribute.name()).isNotBlank();
         });
     }
 

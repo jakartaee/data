@@ -48,7 +48,6 @@ class TextAttributeRecordTest {
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(attribute.name()).isEqualTo("name");
             soft.assertThat(attribute).isInstanceOf(TextAttribute.class);
-            soft.assertThat(attribute.name()).isNotBlank();
         });
     }
 

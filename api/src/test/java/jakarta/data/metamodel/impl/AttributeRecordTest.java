@@ -46,7 +46,6 @@ class AttributeRecordTest {
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(attribute.name()).isEqualTo("id");
             soft.assertThat(attribute).isInstanceOf(Attribute.class);
-            soft.assertThat(attribute.name()).isNotBlank();
         });
     }
 
