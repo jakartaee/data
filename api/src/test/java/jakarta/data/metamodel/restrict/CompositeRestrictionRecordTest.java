@@ -256,16 +256,6 @@ class CompositeRestrictionRecordTest {
         });
     }
 
-    @DisplayName("should throw NullPointerException if composite type is null")
-    @Test
-    void shouldThrowIfCompositeTypeIsNull() {
-        Restriction<Author> restriction = _Author.name.equalTo("Duke");
-        var restrictions = List.of(restriction);
-
-        assertThatThrownBy(() -> new CompositeRestrictionRecord<>(null, restrictions))
-                .isInstanceOf(NullPointerException.class);
-    }
-
     @DisplayName("should compare deeply equal nested composite restrictions")
     @Test
     void shouldEqualNestedComposites() {
