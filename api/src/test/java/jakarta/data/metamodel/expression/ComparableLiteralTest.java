@@ -140,7 +140,7 @@ class ComparableLiteralTest {
     }
 
     @DisplayName("should create a ComparableLiteral for all supported types")
-    @ParameterizedTest(name = "{index} => value={0} ({0.class.simpleName})")
+    @ParameterizedTest(name = "[{index}] value = {0}")
     @MethodSource("supportedLiterals")
     void shouldCreateLiteralsFromAllSupportedTypes(Object input) {
         @SuppressWarnings("unchecked")
