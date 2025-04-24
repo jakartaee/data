@@ -26,6 +26,7 @@ import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
@@ -233,7 +234,7 @@ class BasicRestrictionRecordTest {
     @DisplayName("should create NotIn, using Set, constraint correctly")
     @Test
     void shouldCreateNotInAsSetRestriction() {
-        var restriction = (BasicRestriction<Book, String>) _Book.author.in(Set.of("Alice", "Bob")).negate();
+        var restriction = (BasicRestriction<Book, String>) _Book.author.in(List.of("Alice", "Bob")).negate();
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.expression()).isEqualTo(_Book.author);

@@ -17,12 +17,15 @@
  */
 package jakarta.data.metamodel.constraint;
 
-import java.util.LinkedHashSet;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 import jakarta.data.metamodel.Expression;
 import jakarta.data.metamodel.expression.Literal;
+
+import static java.util.Collections.unmodifiableList;
 
 public interface NotIn<V> extends Constraint<V> {
 
@@ -34,32 +37,32 @@ public interface NotIn<V> extends Constraint<V> {
             throw new IllegalArgumentException("Array of values must not be empty.");
         }
 
-        Set<Expression<?, V>> expressions = new LinkedHashSet<>(values.length);
+        final List<Expression<?, V>> expressions = new ArrayList<>(values.length);
         for (V value : values) {
             Objects.requireNonNull(value, "Value must not be null.");
             expressions.add(Literal.of(value));
         }
 
-        return new NotInRecord<>(expressions);
+        return new NotInRecord<>(unmodifiableList(expressions));
     }
 
-    static <V> NotIn<V> values(Set<V> values) {
+    static <V> NotIn<V> values(Collection<V> values) {
         Objects.requireNonNull(values, "Values are required.");
 
         if (values.isEmpty()) {
             throw new IllegalArgumentException("Values must not be empty.");
         }
 
-        Set<Expression<?, V>> expressions = new LinkedHashSet<>(values.size());
+        final List<Expression<?, V>> expressions = new ArrayList<>(values.size());
         for (V value : values) {
             Objects.requireNonNull(value, "Value must not be null.");
             expressions.add(Literal.of(value));
         }
 
-        return new NotInRecord<>(expressions);
+        return new NotInRecord<>(unmodifiableList(expressions));
     }
 
-    static <V> NotIn<V> expressions(Set<Expression<?, V>> expressions) {
+    static <V> NotIn<V> expressions(List<Expression<?, V>> expressions) {
         Objects.requireNonNull(expressions, "Value expressions are required.");
 
         if (expressions.isEmpty()) {
@@ -70,7 +73,7 @@ public interface NotIn<V> extends Constraint<V> {
             Objects.requireNonNull(expression, "Value expression must not be null.");
         }
 
-        return new NotInRecord<>(expressions);
+        return new NotInRecord<>(List.copyOf(expressions));
     }
 
     @SafeVarargs
@@ -86,8 +89,8 @@ public interface NotIn<V> extends Constraint<V> {
             Objects.requireNonNull(expression, "Value expression must not be null.");
         }
 
-        return new NotInRecord<>(Set.of(expressions));
+        return new NotInRecord<>(List.of(expressions));
     }
 
-    Set<Expression<?, V>> expressions();
+    List<Expression<?, V>> expressions();
 }
