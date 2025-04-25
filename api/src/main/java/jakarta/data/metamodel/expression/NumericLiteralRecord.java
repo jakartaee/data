@@ -25,7 +25,7 @@ record NumericLiteralRecord<T, N extends Number & Comparable<N>>
         (N value) implements NumericLiteral<T,N> {
 
     NumericLiteralRecord {
-        Objects.requireNonNull(value, "Value is required");
+        Objects.requireNonNull(value, "The value is required");
     }
 
     @Override

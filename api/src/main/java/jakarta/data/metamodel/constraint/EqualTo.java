@@ -17,16 +17,20 @@
  */
 package jakarta.data.metamodel.constraint;
 
+import java.util.Objects;
+
 import jakarta.data.metamodel.Expression;
 import jakarta.data.metamodel.expression.Literal;
 
 public interface EqualTo<V> extends Constraint<V> {
 
     static <V> EqualTo<V> expression(Expression<?, V> expression) {
+        Objects.requireNonNull(expression, "The expression is required");
         return new EqualToRecord<>(expression);
     }
 
     static <V> EqualTo<V> value(V value) {
+        Objects.requireNonNull(value, "The value is required");
         return new EqualToRecord<>(Literal.of(value));
     }
 

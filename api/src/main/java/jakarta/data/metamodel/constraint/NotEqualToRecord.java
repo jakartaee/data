@@ -17,17 +17,11 @@
  */
 package jakarta.data.metamodel.constraint;
 
-import java.util.Objects;
-
 import jakarta.data.metamodel.Expression;
 
 record NotEqualToRecord<V>(
         Expression<?, V> expression)
         implements NotEqualTo<V> {
-
-    NotEqualToRecord {
-        Objects.requireNonNull(expression, "Value expression is required");
-    }
 
     @Override
     public EqualTo<V> negate() {

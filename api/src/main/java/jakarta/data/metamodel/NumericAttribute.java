@@ -60,9 +60,9 @@ public interface NumericAttribute<T,N extends Number & Comparable<N>>
      */
     static <T,N extends Number & Comparable<N>> NumericAttribute<T,N> of(
             Class<T> entityClass, String name, Class<N> attributeType) {
-        Objects.requireNonNull(entityClass, "Entity class is required");
-        Objects.requireNonNull(name, "Entity attribute name is required");
-        Objects.requireNonNull(attributeType, "Entity attribute type is required");
+        Objects.requireNonNull(entityClass, "The entityClass is required");
+        Objects.requireNonNull(name, "The name is required");
+        Objects.requireNonNull(attributeType, "The attributeType is required");
 
         return new NumericAttributeRecord<>(entityClass, name);
     }

@@ -17,6 +17,8 @@
  */
 package jakarta.data.metamodel.expression;
 
+import java.util.Objects;
+
 import jakarta.data.metamodel.Expression;
 import jakarta.data.metamodel.NumericExpression;
 
@@ -31,6 +33,7 @@ public interface NumericOperatorExpression<T, N extends Number & Comparable<N>>
 
     static <T, N extends Number & Comparable<N>>
     NumericOperatorExpression<T,N> of(Operator operator, NumericExpression<T, N> left, N right) {
+        Objects.requireNonNull(left, "The right value is required");
         return new NumericOperatorExpressionRecord<>(operator, left, NumericLiteral.of(right));
     }
     static <T, N extends Number & Comparable<N>>

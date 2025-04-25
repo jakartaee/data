@@ -23,7 +23,7 @@ record StringLiteralRecord<T>(String value)
         implements StringLiteral<T> {
 
     StringLiteralRecord {
-        Objects.requireNonNull(value, "Value is required");
+        Objects.requireNonNull(value, "The value is required");
     }
 
     @Override

@@ -22,6 +22,7 @@ import jakarta.data.metamodel.NumericExpression;
 import jakarta.data.metamodel.TextExpression;
 
 import java.util.List;
+import java.util.Objects;
 
 public interface NumericFunctionExpression<T, N extends Number & Comparable<N>>
         extends FunctionExpression<T,N>, NumericExpression<T,N> {
@@ -32,10 +33,12 @@ public interface NumericFunctionExpression<T, N extends Number & Comparable<N>>
 
     static <T,N extends Number & Comparable<N>> NumericFunctionExpression<T, N>
     of(String name, TextExpression<? super T> argument) {
+        Objects.requireNonNull(argument, "The argument is required");
         return new NumericFunctionExpressionRecord<>(name, List.of(argument));
     }
     static <T,N extends Number & Comparable<N>> NumericFunctionExpression<T, N>
     of(String name, NumericExpression<? super T,N> argument) {
+        Objects.requireNonNull(argument, "The argument is required");
         return new NumericFunctionExpressionRecord<>(name, List.of(argument));
     }
 

@@ -56,8 +56,8 @@ public interface TextAttribute<T> extends ComparableAttribute<T,String>, TextExp
      * @return instance of {@code TextAttribute}.
      */
     static <T> TextAttribute<T> of(Class<T> entityClass, String name) {
-        Objects.requireNonNull(entityClass, "Entity class is required");
-        Objects.requireNonNull(name, "Entity attribute name is required");
+        Objects.requireNonNull(entityClass, "The entityClass is required");
+        Objects.requireNonNull(name, "The name is required");
 
         return new TextAttributeRecord<>(entityClass, name);
     }

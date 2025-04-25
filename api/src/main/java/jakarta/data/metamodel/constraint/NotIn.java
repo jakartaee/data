@@ -31,10 +31,10 @@ public interface NotIn<V> extends Constraint<V> {
 
     @SafeVarargs
     static <V> NotIn<V> values(V... values) {
-        Objects.requireNonNull(values, "Values are required");
+        Objects.requireNonNull(values, "The values are required");
 
         if (values.length == 0) {
-            throw new IllegalArgumentException("Array of values must not be empty");
+            throw new IllegalArgumentException("The values must not be empty");
         }
 
         final List<Expression<?, V>> expressions = new ArrayList<>(values.length);
@@ -47,15 +47,15 @@ public interface NotIn<V> extends Constraint<V> {
     }
 
     static <V> NotIn<V> values(Collection<V> values) {
-        Objects.requireNonNull(values, "Values are required");
+        Objects.requireNonNull(values, "The values are required");
 
         if (values.isEmpty()) {
-            throw new IllegalArgumentException("Values must not be empty");
+            throw new IllegalArgumentException("The values must not be empty");
         }
 
         final List<Expression<?, V>> expressions = new ArrayList<>(values.size());
         for (V value : values) {
-            Objects.requireNonNull(value, "Value must not be null");
+            Objects.requireNonNull(value, "The value must not be null");
             expressions.add(Literal.of(value));
         }
 
@@ -63,14 +63,14 @@ public interface NotIn<V> extends Constraint<V> {
     }
 
     static <V> NotIn<V> expressions(List<Expression<?, V>> expressions) {
-        Objects.requireNonNull(expressions, "Value expressions are required");
+        Objects.requireNonNull(expressions, "The expressions are required");
 
         if (expressions.isEmpty()) {
-            throw new IllegalArgumentException("Value expressions must not be empty");
+            throw new IllegalArgumentException("The expressions must not be empty");
         }
 
         for (Expression<?, V> expression : expressions) {
-            Objects.requireNonNull(expression, "Value expression must not be null");
+            Objects.requireNonNull(expression, "The expression must not be null");
         }
 
         return new NotInRecord<>(List.copyOf(expressions));
@@ -78,15 +78,15 @@ public interface NotIn<V> extends Constraint<V> {
 
     @SafeVarargs
     static <V> NotIn<V> expressions(Expression<?, V>... expressions) {
-        Objects.requireNonNull(expressions, "Value expressions are required");
+        Objects.requireNonNull(expressions, "The expressions are required");
 
         if (expressions.length == 0) {
             throw new IllegalArgumentException(
-                    "Array of value expressions must not be empty");
+                    "The expressions must not be empty");
         }
 
         for (Expression<?, V> expression : expressions) {
-            Objects.requireNonNull(expression, "Value expression must not be null");
+            Objects.requireNonNull(expression, "The expression must not be null");
         }
 
         return new NotInRecord<>(List.of(expressions));

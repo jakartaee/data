@@ -29,7 +29,7 @@ record TemporalLiteralRecord<T, V extends Temporal & Comparable<? extends Tempor
         implements TemporalLiteral<T, V> {
 
     TemporalLiteralRecord {
-        Objects.requireNonNull(value, "Value is required");
+        Objects.requireNonNull(value, "The value is required");
     }
 
     @Override

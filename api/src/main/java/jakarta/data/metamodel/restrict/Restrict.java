@@ -43,7 +43,7 @@ public class Restrict {
 
     // convenience method for those who would prefer to avoid .negate()
     public static <T> Restriction<T> not(Restriction<T> restriction) {
-        Objects.requireNonNull(restriction, "Restriction is required");
+        Objects.requireNonNull(restriction, "The restriction is required");
         return restriction.negate();
     }
 

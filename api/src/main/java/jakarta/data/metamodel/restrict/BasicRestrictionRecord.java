@@ -31,8 +31,8 @@ record BasicRestrictionRecord<T, V>(Expression<T,V> expression, Constraint<V> co
         implements BasicRestriction<T, V> {
 
     BasicRestrictionRecord {
-        Objects.requireNonNull(expression, "Expression is required");
-        Objects.requireNonNull(constraint, "Constraint is required");
+        Objects.requireNonNull(expression, "The expression is required");
+        Objects.requireNonNull(constraint, "The constraint is required");
     }
 
     @Override

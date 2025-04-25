@@ -27,8 +27,8 @@ record TextPathRecord<T,U>
         implements TextPath<T,U> {
 
     TextPathRecord {
-        Objects.requireNonNull(expression, "Expression is required");
-        Objects.requireNonNull(attribute, "Entity attribute is required");
+        Objects.requireNonNull(expression, "The expression is required");
+        Objects.requireNonNull(attribute, "The attribute is required");
     }
 
 }
