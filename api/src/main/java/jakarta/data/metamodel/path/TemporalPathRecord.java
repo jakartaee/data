@@ -18,6 +18,7 @@
 package jakarta.data.metamodel.path;
 
 import java.time.temporal.Temporal;
+import java.util.Objects;
 
 import jakarta.data.metamodel.NavigableExpression;
 import jakarta.data.metamodel.TemporalAttribute;
@@ -25,4 +26,9 @@ import jakarta.data.metamodel.TemporalAttribute;
 record TemporalPathRecord<T,U,V extends Temporal & Comparable<? extends Temporal>>(
         NavigableExpression<T,U> expression,
         TemporalAttribute<U,V> attribute) implements TemporalPath<T,U,V> {
+
+    TemporalPathRecord {
+        Objects.requireNonNull(expression, "The expression is required");
+        Objects.requireNonNull(attribute, "The attribute is required");
+    }
 }

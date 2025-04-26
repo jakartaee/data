@@ -124,7 +124,7 @@ class BasicRestrictionRecordTest {
     void shouldThrowExceptionWhenAttributeIsNull() {
         assertThatThrownBy(() -> BasicAttribute.of(Book.class, null, Object.class).equalTo("testValue"))
                 .isInstanceOf(NullPointerException.class)
-                .hasMessage("entity attribute name is required");
+                .hasMessage("The name is required");
     }
 
     @Test
@@ -132,7 +132,7 @@ class BasicRestrictionRecordTest {
     void shouldThrowExceptionWhenValueIsNull() {
         assertThatThrownBy(() -> _Book.title.equalTo((String) null))
                 .isInstanceOf(NullPointerException.class)
-                .hasMessage("Value is required.");
+                .hasMessage("The value is required");
     }
 
     @Test

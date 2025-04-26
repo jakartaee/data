@@ -37,9 +37,10 @@ record CompositeRestrictionRecord<T>(
     CompositeRestrictionRecord {
         if (restrictions == null || restrictions.isEmpty()) {
             throw new IllegalArgumentException(
-                    "Cannot create a composite restriction without any restrictions to combine.");
+                    "Cannot create a composite restriction without any restrictions to combine");
         }
-        restrictions.forEach(r -> Objects.requireNonNull(r, "Restriction must not be null"));
+        restrictions.forEach(
+                r -> Objects.requireNonNull(r, "Restriction must not be null"));
     }
 
     CompositeRestrictionRecord(Type type, List<Restriction<T>> restrictions) {

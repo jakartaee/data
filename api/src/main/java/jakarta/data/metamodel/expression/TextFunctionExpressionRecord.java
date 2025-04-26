@@ -28,8 +28,7 @@ record TextFunctionExpressionRecord<T>(
         implements TextFunctionExpression<T> {
 
     TextFunctionExpressionRecord {
-        Objects.requireNonNull(name, "Function name is required.");
-        Objects.requireNonNull(arguments, "Function arguments is required.");
+        Objects.requireNonNull(name, "The name is required");
     }
 
 }

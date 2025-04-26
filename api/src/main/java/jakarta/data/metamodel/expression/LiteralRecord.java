@@ -22,7 +22,7 @@ import java.util.Objects;
 record LiteralRecord<T, V>(V value) implements Literal<T,V> {
 
     LiteralRecord {
-        Objects.requireNonNull(value, "Value is required.");
+        Objects.requireNonNull(value, "The value is required");
     }
 
     @Override

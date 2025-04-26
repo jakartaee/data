@@ -26,9 +26,9 @@ record NumericOperatorExpressionRecord<T, N extends Number & Comparable<N>>
         implements NumericOperatorExpression<T,N> {
 
     NumericOperatorExpressionRecord {
-        Objects.requireNonNull(operator, "Operator is required.");
-        Objects.requireNonNull(left, "Left side expression is required.");
-        Objects.requireNonNull(left, "Right side expression is required.");
+        Objects.requireNonNull(operator, "The operator is required");
+        Objects.requireNonNull(left, "The left expression is required");
+        Objects.requireNonNull(left, "The right expression is required");
     }
 
 }

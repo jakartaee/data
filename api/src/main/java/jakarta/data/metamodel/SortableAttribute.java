@@ -71,9 +71,9 @@ public interface SortableAttribute<T> extends Attribute<T> {
     static <T, V> SortableAttribute<T> of(Class<T> entityClass,
                                           String name,
                                           Class<V> attributeType) {
-        Objects.requireNonNull(entityClass, "entity class is required");
-        Objects.requireNonNull(name, "entity attribute name is required");
-        Objects.requireNonNull(attributeType, "entity attribute type is required");
+        Objects.requireNonNull(entityClass, "The entityClass is required");
+        Objects.requireNonNull(name, "The name is required");
+        Objects.requireNonNull(attributeType, "The attributeType is required");
 
         return new SortableAttributeRecord<>(entityClass, name);
     }

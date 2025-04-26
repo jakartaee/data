@@ -108,7 +108,7 @@ public record Sort<T>(String property, boolean isAscending, boolean ignoreCase) 
      * @param ignoreCase  whether or not to request case insensitive ordering from a database with case sensitive collation.
      */
     public Sort {
-        Objects.requireNonNull(property, "property is required");
+        Objects.requireNonNull(property, "The property is required");
     }
 
     // Override to provide method documentation:
@@ -166,7 +166,7 @@ public record Sort<T>(String property, boolean isAscending, boolean ignoreCase) 
      * @throws NullPointerException when there is a null parameter
      */
     public static <T> Sort<T> of(String attribute, Direction direction, boolean ignoreCase) {
-        Objects.requireNonNull(direction, "direction is required");
+        Objects.requireNonNull(direction, "The direction is required");
         return new Sort<>(attribute, Direction.ASC.equals(direction), ignoreCase);
     }
 

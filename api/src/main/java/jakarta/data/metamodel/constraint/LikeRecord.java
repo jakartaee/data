@@ -51,10 +51,14 @@ record LikeRecord(TextExpression<?> pattern, Character escape)
 
     static String translate(String pattern, char charWildcard, char stringWildcard, char escape) {
         if ( charWildcard == stringWildcard ) {
-            throw new IllegalArgumentException("Cannot use the same character (" + charWildcard + ") for both wildcards.");
+            throw new IllegalArgumentException(
+                    "Cannot use the same character (" + charWildcard +
+                    ") for both wildcards");
         }
         if (charWildcard == escape || stringWildcard == escape) {
-            throw new IllegalArgumentException("Cannot use the same character (" + escape + ") for both a wildcard and escape character.");
+            throw new IllegalArgumentException(
+                    "Cannot use the same character (" + escape +
+                    ") for both a wildcard and escape character");
         }
         final var result = new StringBuilder();
         for (int i = 0; i<pattern.length(); i++) {

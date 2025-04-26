@@ -294,6 +294,6 @@ class RestrictTest {
     void shouldThrowExceptionForInvalidWildcard() {
         assertThatThrownBy(() -> _Employee.name.like("pattern_value", '_', '_'))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Cannot use the same character (_) for both wildcards.");
+                .hasMessage("Cannot use the same character (_) for both wildcards");
     }
 }
