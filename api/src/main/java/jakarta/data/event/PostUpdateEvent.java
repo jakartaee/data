@@ -18,8 +18,8 @@
 package jakarta.data.event;
 
 /**
- * An event that occurs when an {@link jakarta.data.repository.Update}
- * lifecycle method is called, after each entity is updated in the datastore.
+ * An event that occurs when an {@link jakarta.data.repository.Update} lifecycle
+ * method is called, after each entity is updated in the datastore.
  *
  * @param <E> the entity type
  */

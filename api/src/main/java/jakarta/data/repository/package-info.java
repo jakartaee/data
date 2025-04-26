@@ -16,12 +16,14 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 /**
- * <p>A repository is an interface annotated with {@link jakarta.data.repository.Repository} that defines
- * operations on entities. Entities represent data in the persistent store.
- * In Domain-driven design, a repository participates in the domain but abstracts away storage
- * and infrastructure details.</p>
+ * <p>A repository is an interface annotated with
+ * {@link jakarta.data.repository.Repository} that defines
+ * operations on entities. Entities represent data in the persistent store. In
+ * Domain-driven design, a repository participates in the domain but abstracts
+ * away storage and infrastructure details.</p>
  *
- * <p>Repository interfaces can optionally inherit from built-in interfaces within this package,</p>
+ * <p>Repository interfaces can optionally inherit from built-in interfaces
+ * within this package,</p>
  *
  * <ul>
  * <li>{@link jakarta.data.repository.DataRepository} - root of the hierarchy, allows the entity type to be specified as a type parameter.</li>

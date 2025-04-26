@@ -23,7 +23,8 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 /**
- * <p>A page contains the data that is retrieved to satisfy a given page request.
+ * <p>A page contains the data that is retrieved to satisfy a given page
+ * request.
  * An instance of {@code Page} is obtained by supplying a {@link PageRequest} as
  * an argument of a repository method. For example,</p>
  *
@@ -46,11 +47,11 @@ import java.util.stream.StreamSupport;
 public interface Page<T> extends Iterable<T> {
 
     /**
-     * Returns the page content as a {@link List}.
-     * The list is sorted according to the combined sort criteria of the repository method
-     * and the sort criteria of the page request that is supplied to the repository method,
-     * sorting first by the sort criteria of the repository method,
-     * and then by the sort criteria of the page request.
+     * Returns the page content as a {@link List}. The list is sorted according
+     * to the combined sort criteria of the repository method and the sort
+     * criteria of the page request that is supplied to the repository method,
+     * sorting first by the sort criteria of the repository method, and then by
+     * the sort criteria of the page request.
      *
      * @return the page content as a {@link List}; will never be {@code null}.
      */
@@ -64,8 +65,8 @@ public interface Page<T> extends Iterable<T> {
     boolean hasContent();
 
     /**
-     * Returns a sequential stream of results, which follow the order of the sort
-     * criteria, if any were specified.
+     * Returns a sequential stream of results, which follow the order of the
+     * sort criteria, if any were specified.
      *
      * @return a stream of results.
      */
@@ -74,36 +75,38 @@ public interface Page<T> extends Iterable<T> {
     }
 
     /**
-     * Returns the number of elements on this {@code Page}, which must be no larger
-     * than the maximum {@link PageRequest#size() size} of the page request.
-     * If the number of elements in the page is smaller than the maximum page size,
-     * then there are no subsequent pages of data to read.
+     * Returns the number of elements on this {@code Page}, which must be no
+     * larger than the maximum {@link PageRequest#size() size} of the page
+     * request. If the number of elements in the page is smaller than the
+     * maximum page size, then there are no subsequent pages of data to read.
      *
      * @return the number of elements on this {@code Page}.
      */
     int numberOfElements();
 
     /**
-     * Returns {@code true} if it is known that there are more results or that it is
-     * necessary to request a next page to determine whether there are more results,
-     * so that {@link #nextPageRequest()} will definitely not return {@code null}.
+     * Returns {@code true} if it is known that there are more results or that
+     * it is necessary to request a next page to determine whether there are
+     * more results, so that {@link #nextPageRequest()} will definitely not
+     * return {@code null}.
      *
      * @return {@code false} if this is the last page of results.
      */
     boolean hasNext();
 
     /**
-     * Returns {@code true} if it is known that there are previous results or that it
-     * is necessary to request the previous page to determine whether there are previous
-     * results, so that {@link #previousPageRequest()} will not return {@code null}.
+     * Returns {@code true} if it is known that there are previous results or
+     * that it is necessary to request the previous page to determine whether
+     * there are previous results, so that {@link #previousPageRequest()} will
+     * not return {@code null}.
      *
      * @return {@code false} if this is the first page of results.
      */
     boolean hasPrevious();
 
     /**
-     * Returns the {@linkplain PageRequest page request} for which this
-     * page was obtained.
+     * Returns the {@linkplain PageRequest page request} for which this page was
+     * obtained.
      *
      * @return the request for the current page; will never be {@code null}.
      */
@@ -116,8 +119,9 @@ public interface Page<T> extends Iterable<T> {
      *
      * @return a request for the next page.
      * @throws NoSuchElementException if it is known that there is no next page.
-     *                                To avoid this exception, check for a {@code true} result of
-     *                                {@link #hasNext()} before invoking this method.
+     *                                To avoid this exception, check for a
+     *                                {@code true} result of {@link #hasNext()}
+     *                                before invoking this method.
      */
     PageRequest nextPageRequest();
 
@@ -127,17 +131,19 @@ public interface Page<T> extends Iterable<T> {
      * indicates there might be a previous page.</p>
      *
      * @return a request for the previous page.
-     * @throws NoSuchElementException if it is known that there is no previous page.
-     *                                To avoid this exception, check for a {@code true} result of
-     *                                {@link #hasPrevious()} before invoking this method.
+     * @throws NoSuchElementException if it is known that there is no previous
+     *                                page. To avoid this exception, check for a
+     *                                {@code true} result of
+     *                                {@link #hasPrevious()} before invoking
+     *                                this method.
      */
     PageRequest previousPageRequest();
 
 
     /**
      * Returns {@code true} if the {@link #pageRequest()} specified that the
-     * {@linkplain PageRequest#requestTotal total number of elements should
-     * be retrieved from the database}, and that it is therefore safe to call
+     * {@linkplain PageRequest#requestTotal total number of elements should be
+     * retrieved from the database}, and that it is therefore safe to call
      * {@link #totalElements()} or {@link #totalPages()}.
      *
      * @return {@code true} if totals are available.
@@ -145,37 +151,46 @@ public interface Page<T> extends Iterable<T> {
     boolean hasTotals();
 
     /**
-     * Returns the total number of elements across all pages of query results, if the
-     * {@link #pageRequest()} specified that {@linkplain PageRequest#requestTotal the
-     * total should be retrieved from the database}.
+     * Returns the total number of elements across all pages of query results,
+     * if the {@link #pageRequest()} specified that
+     * {@linkplain PageRequest#requestTotal the total should be retrieved from
+     * the database}.
      *
      * @return the total number of elements across all pages.
-     * @throws IllegalStateException         if the total was not retrieved from the
-     *                                       database because the page was requested
-     *                                       {@linkplain PageRequest#withoutTotal() without totals}.
+     * @throws IllegalStateException         if the total was not retrieved from
+     *                                       the database because the page was
+     *                                       requested
+     *                                       {@linkplain
+     *                                       PageRequest#withoutTotal() without
+     *                                       totals}.
      * @throws UnsupportedOperationException if the database is not capable of
-     *                                       retrieving a total number of elements.
+     *                                       retrieving a total number of
+     *                                       elements.
      * @apiNote Not all NoSQL databases support counting the total number of
-     * elements. This operation is not supported for Key-Value and
-     * Wide-Column databases. For Graph and Document databases,
-     * support for this operation may vary depending on the provider.
-     * If the database does not support retrieving the total number
-     * of elements, calling this method will result in an
-     * {@link UnsupportedOperationException}.
+     * elements. This operation is not supported for Key-Value and Wide-Column
+     * databases. For Graph and Document databases, support for this operation
+     * may vary depending on the provider. If the database does not support
+     * retrieving the total number of elements, calling this method will result
+     * in an {@link UnsupportedOperationException}.
      */
     long totalElements();
 
     /**
-     * Returns the total number of pages of query results, if the {@link #pageRequest()}
-     * specified that {@linkplain PageRequest#requestTotal the total should be retrieved
-     * from the database}.
+     * Returns the total number of pages of query results, if the
+     * {@link #pageRequest()} specified that
+     * {@linkplain PageRequest#requestTotal the total should be retrieved from
+     * the database}.
      *
      * @return the total number of pages.
-     * @throws IllegalStateException         if the total was not retrieved from the
-     *                                       database because the page was requested
-     *                                       {@linkplain PageRequest#withoutTotal() without totals}.
+     * @throws IllegalStateException         if the total was not retrieved from
+     *                                       the database because the page was
+     *                                       requested
+     *                                       {@linkplain
+     *                                       PageRequest#withoutTotal() without
+     *                                       totals}.
      * @throws UnsupportedOperationException if the database is not capable of
-     *                                       retrieving a total number of elements or pages.
+     *                                       retrieving a total number of
+     *                                       elements or pages.
      */
     long totalPages();
 }

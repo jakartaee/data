@@ -26,14 +26,13 @@ import java.util.Objects;
  * <p>Requests sorting on a given entity attribute.</p>
  *
  * <p>An instance of {@code Sort} specifies a sorting criterion based
- * on an entity attribute, with a sorting {@linkplain Direction direction}
- * and well-defined case sensitivity.</p>
+ * on an entity attribute, with a sorting {@linkplain Direction direction} and
+ * well-defined case sensitivity.</p>
  *
  * <p>A query method of a repository may have a parameter or parameters
- * of type {@code Sort} if its return type indicates that it may return
- * multiple entities. Parameters of type {@code Sort} must occur after
- * the method parameters representing regular parameters of the query
- * itself.</p>
+ * of type {@code Sort} if its return type indicates that it may return multiple
+ * entities. Parameters of type {@code Sort} must occur after the method
+ * parameters representing regular parameters of the query itself.</p>
  *
  * <p>The parameter type {@code Sort<?>...} allows a variable number
  * of generic {@code Sort} criteria. For example,</p>
@@ -49,8 +48,8 @@ import java.util.Objects;
  * </pre>
  *
  * <p>Alternatively, {@link Order} may be used in combination with
- * the {@linkplain StaticMetamodel static metamodel} to allow a
- * variable number of typed {@code Sort} criteria. For example,</p>
+ * the {@linkplain StaticMetamodel static metamodel} to allow a variable number
+ * of typed {@code Sort} criteria. For example,</p>
  *
  * <pre>
  * Employee[] findByYearHired(int yearHired, Limit maxResults, Order&lt;Employee&gt; sortBy);
@@ -63,20 +62,19 @@ import java.util.Objects;
  * </pre>
  *
  * <p>When multiple sorting criteria are provided, sorting is
- * lexicographic, with the precedence of a criterion depending
- * on its position with the list of criteria.</p>
+ * lexicographic, with the precedence of a criterion depending on its position
+ * with the list of criteria.</p>
  *
  * <p>A repository method may declare static sorting criteria using
- * the {@code OrderBy} keyword or {@link OrderBy @OrderBy} annotation,
- * and also accept dynamic sorting criteria via its parameters. In this
- * situation, the static sorting criteria are applied first, followed
- * by any dynamic sorting criteria specified by instances of
- * {@code Sort}.</p>
+ * the {@code OrderBy} keyword or {@link OrderBy @OrderBy} annotation, and also
+ * accept dynamic sorting criteria via its parameters. In this situation, the
+ * static sorting criteria are applied first, followed by any dynamic sorting
+ * criteria specified by instances of {@code Sort}.</p>
  *
  * <p>In the example above, the matching employees are sorted first by
- * salary from highest to lowest. Employees with the same salary are
- * then sorted alphabetically by last name. Employees with the same
- * salary and last name are then sorted alphabetically by first name.</p>
+ * salary from highest to lowest. Employees with the same salary are then sorted
+ * alphabetically by last name. Employees with the same salary and last name are
+ * then sorted alphabetically by first name.</p>
  *
  * <p>A repository method throws {@link jakarta.data.exceptions.DataException}
  * if the database is incapable of ordering the query results using the given
@@ -84,15 +82,17 @@ import java.util.Objects;
  *
  * @param <T>         entity class of the entity attribute upon which to sort.
  * @param property    name of the entity attribute to order by.
- * @param isAscending whether ordering for this attribute is ascending (true) or descending (false).
- * @param ignoreCase  whether or not to request case insensitive ordering
- *                    from a database with case sensitive collation.
+ * @param isAscending whether ordering for this attribute is ascending (true) or
+ *                    descending (false).
+ * @param ignoreCase  whether or not to request case insensitive ordering from a
+ *                    database with case sensitive collation.
  */
 public record Sort<T>(String property, boolean isAscending,
                       boolean ignoreCase) {
 
     /**
-     * <p>Defines sort criteria for an entity attribute. For more descriptive code, use:</p>
+     * <p>Defines sort criteria for an entity attribute. For more descriptive
+     * code, use:</p>
      * <ul>
      * <li>{@link #asc(String) Sort.asc(attributeName)}
      *     for ascending sort on an entity attribute.</li>
@@ -105,8 +105,10 @@ public record Sort<T>(String property, boolean isAscending,
      * </ul>
      *
      * @param property    name of the entity attribute to order by.
-     * @param isAscending whether ordering for this attribute is ascending (true) or descending (false).
-     * @param ignoreCase  whether or not to request case insensitive ordering from a database with case sensitive collation.
+     * @param isAscending whether ordering for this attribute is ascending
+     *                    (true) or descending (false).
+     * @param ignoreCase  whether or not to request case insensitive ordering
+     *                    from a database with case sensitive collation.
      */
     public Sort {
         Objects.requireNonNull(property, "The property is required");
@@ -127,11 +129,12 @@ public record Sort<T>(String property, boolean isAscending,
 
     /**
      * <p>Indicates whether or not to request case insensitive ordering
-     * from a database with case sensitive collation.
-     * A database with case insensitive collation performs case insensitive
-     * ordering regardless of the requested {@code ignoreCase} value.</p>
+     * from a database with case sensitive collation. A database with case
+     * insensitive collation performs case insensitive ordering regardless of
+     * the requested {@code ignoreCase} value.</p>
      *
-     * @return Returns whether or not to request case insensitive sorting for the entity attribute.
+     * @return Returns whether or not to request case insensitive sorting for
+     * the entity attribute.
      */
     public boolean ignoreCase() {
         return ignoreCase;
@@ -175,8 +178,9 @@ public record Sort<T>(String property, boolean isAscending,
     }
 
     /**
-     * Create a {@link Sort} instance with {@link Direction#ASC ascending direction}
-     * that does not request case insensitive ordering.
+     * Create a {@link Sort} instance with
+     * {@link Direction#ASC ascending direction} that does not request case
+     * insensitive ordering.
      *
      * @param <T>       entity class of the sortable entity attribute.
      * @param attribute name of the entity attribute to order by
@@ -188,8 +192,8 @@ public record Sort<T>(String property, boolean isAscending,
     }
 
     /**
-     * Create a {@link Sort} instance with {@link Direction#ASC ascending direction}
-     * and case insensitive ordering.
+     * Create a {@link Sort} instance with
+     * {@link Direction#ASC ascending direction} and case insensitive ordering.
      *
      * @param <T>       entity class of the sortable entity attribute.
      * @param attribute name of the entity attribute to order by.
@@ -201,8 +205,9 @@ public record Sort<T>(String property, boolean isAscending,
     }
 
     /**
-     * Create a {@link Sort} instance with {@link Direction#DESC descending direction}
-     * that does not request case insensitive ordering.
+     * Create a {@link Sort} instance with
+     * {@link Direction#DESC descending direction} that does not request case
+     * insensitive ordering.
      *
      * @param <T>       entity class of the sortable entity attribute.
      * @param attribute name of the entity attribute to order by
@@ -214,8 +219,9 @@ public record Sort<T>(String property, boolean isAscending,
     }
 
     /**
-     * Create a {@link Sort} instance with {@link Direction#DESC descending direction}
-     * and case insensitive ordering.
+     * Create a {@link Sort} instance with
+     * {@link Direction#DESC descending direction} and case insensitive
+     * ordering.
      *
      * @param <T>       entity class of the sortable entity attribute.
      * @param attribute name of the entity attribute to order by.

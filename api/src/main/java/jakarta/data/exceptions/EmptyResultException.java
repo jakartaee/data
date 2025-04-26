@@ -18,14 +18,15 @@
 package jakarta.data.exceptions;
 
 /**
- * Data access exception thrown when a result was expected to have at least one row (or element)
- * but zero rows (or elements) were actually returned.
+ * Data access exception thrown when a result was expected to have at least one
+ * row (or element) but zero rows (or elements) were actually returned.
  */
 public class EmptyResultException extends DataException {
     private static final long serialVersionUID = -4477636987874974491L;
 
     /**
-     * Constructs a new EmptyResultException exception with the specified detail message.
+     * Constructs a new EmptyResultException exception with the specified detail
+     * message.
      *
      * @param message the detail message.
      */
@@ -34,7 +35,8 @@ public class EmptyResultException extends DataException {
     }
 
     /**
-     * Constructs a new EmptyResultException exception with the specified detail message.
+     * Constructs a new EmptyResultException exception with the specified detail
+     * message.
      *
      * @param message the detail message.
      * @param cause   another exception or error that caused this exception.
@@ -45,7 +47,8 @@ public class EmptyResultException extends DataException {
     }
 
     /**
-     * Constructs a new EmptyResultException exception with the specified cause.
+     * Constructs a new EmptyResultException exception with the specified
+     * cause.
      *
      * @param cause the cause.
      */

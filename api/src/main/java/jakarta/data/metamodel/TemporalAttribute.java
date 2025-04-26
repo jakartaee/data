@@ -22,8 +22,8 @@ import java.util.Objects;
 
 /**
  * <p>Represents a {@linkplain Temporal temporal} entity attribute in the
- * {@link StaticMetamodel}. Temporal entity attributes can be sorted on in
- * query results and can be compared against values in query restrictions.
+ * {@link StaticMetamodel}. Temporal entity attributes can be sorted on in query
+ * results and can be compared against values in query restrictions.
  * </p>
  *
  * <p>Jakarta Data supports the following entity attribute types for temporal

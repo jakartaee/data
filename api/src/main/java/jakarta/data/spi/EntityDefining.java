@@ -24,17 +24,21 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Designates an annotation as an entity-defining annotation type within the Jakarta Data framework.
+ * Designates an annotation as an entity-defining annotation type within the
+ * Jakarta Data framework.
  * <p>
- * Annotations marked with {@code EntityDefining} are recognized by annotation processors,
- * CDI extensions, and other components of the Jakarta Data framework as declaring entity types.
- * Jakarta Data providers and persistence models that provide custom entity-defining annotations
- * (entity annotations other than {@code jakarta.persistence.Entity} and {@code jakarta.nosql.Entity})
- * must annotate each custom entity-defining annotation with this annotation. Applications must
- * not use this annotation directly.
+ * Annotations marked with {@code EntityDefining} are recognized by annotation
+ * processors, CDI extensions, and other components of the Jakarta Data
+ * framework as declaring entity types. Jakarta Data providers and persistence
+ * models that provide custom entity-defining annotations (entity annotations
+ * other than {@code jakarta.persistence.Entity} and
+ * {@code jakarta.nosql.Entity}) must annotate each custom entity-defining
+ * annotation with this annotation. Applications must not use this annotation
+ * directly.
  * </p>
  * <p>
- * This allows other Jakarta Data providers and tools to recognize and process entities declared with custom entity-defining annotations.
+ * This allows other Jakarta Data providers and tools to recognize and process
+ * entities declared with custom entity-defining annotations.
  * </p>
  * <p>
  * Example of defining a custom entity annotation by a provider:

@@ -24,7 +24,8 @@ import java.lang.annotation.Target;
 
 
 /**
- * <p>Annotates a parameter of a repository method to bind it to a named parameter of a {@link Query}.</p>
+ * <p>Annotates a parameter of a repository method to bind it to a named
+ * parameter of a {@link Query}.</p>
  *
  * <p>For example,</p>
  *
@@ -40,9 +41,11 @@ import java.lang.annotation.Target;
  * }
  * </pre>
  *
- * <p>The {@code Param} annotation is unnecessary when the method parameter name matches the query language
- * named parameter name and the application is compiled with the {@code -parameters} compiler option making
- * parameter names available at runtime.</p>
+ * <p>The {@code Param} annotation is unnecessary when the method parameter name
+ * matches the query language
+ * named parameter name and the application is compiled with the
+ * {@code -parameters} compiler option making parameter names available at
+ * runtime.</p>
  *
  * @see Query
  */

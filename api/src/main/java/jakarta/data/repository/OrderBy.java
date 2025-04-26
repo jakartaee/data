@@ -30,16 +30,15 @@ import java.lang.annotation.Target;
  * <p>Annotates a repository method to request sorting of results.</p>
  *
  * <p>When multiple {@code OrderBy} annotations are specified on a
- * repository method, the precedence for sorting follows the order
- * in which the {@code OrderBy} annotations are specified,
- * and after that follows any sort criteria that are supplied
- * dynamically by {@link Sort} parameters or by any {@link Order} parameter.</p>
+ * repository method, the precedence for sorting follows the order in which the
+ * {@code OrderBy} annotations are specified, and after that follows any sort
+ * criteria that are supplied dynamically by {@link Sort} parameters or by any
+ * {@link Order} parameter.</p>
  *
  * <p>For example, the following sorts first by the
- * {@code lastName} attribute in ascending order,
- * and secondly, for entities with the same {@code lastName},
- * it then sorts by the {@code firstName} attribute,
- * also in ascending order. For entities with the same
+ * {@code lastName} attribute in ascending order, and secondly, for entities
+ * with the same {@code lastName}, it then sorts by the {@code firstName}
+ * attribute, also in ascending order. For entities with the same
  * {@code lastName} and {@code firstName}.</p>
  *
  * <pre>
@@ -100,13 +99,14 @@ public @interface OrderBy {
 
     /**
      * <p>Indicates whether or not to request case insensitive ordering
-     * from a database with case sensitive collation.
-     * A database with case insensitive collation performs case insensitive
-     * ordering regardless of the requested {@code ignoreCase} value.</p>
+     * from a database with case sensitive collation. A database with case
+     * insensitive collation performs case insensitive ordering regardless of
+     * the requested {@code ignoreCase} value.</p>
      *
      * <p>The default value is {@code false}.</p>
      *
-     * @return whether or not to request case insensitive sorting for the attribute.
+     * @return whether or not to request case insensitive sorting for the
+     * attribute.
      */
     boolean ignoreCase() default false;
 

@@ -42,8 +42,7 @@ record BasicRestrictionRecord<T, V>(Expression<T, V> expression,
     }
 
     /**
-     * Textual representation of a basic restriction.
-     * For example,
+     * Textual representation of a basic restriction. For example,
      * <pre>price < 50.0</pre>
      *
      * @return textual representation of a basic restriction.

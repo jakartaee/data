@@ -25,16 +25,17 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
- * Record type implementing {@link CursoredPage}.
- * This may be used to simplify implementation of a repository interface.
+ * Record type implementing {@link CursoredPage}. This may be used to simplify
+ * implementation of a repository interface.
  *
- * @param content             The page content, that is, the query results, in order
- * @param cursors             A list of {@link PageRequest.Cursor} instances for result,
- *                            in order
+ * @param content             The page content, that is, the query results, in
+ *                            order
+ * @param cursors             A list of {@link PageRequest.Cursor} instances for
+ *                            result, in order
  * @param totalElements       The total number of elements across all pages that
  *                            can be requested for the query
- * @param pageRequest         The {@link PageRequest page request} for which this
- *                            page was obtained
+ * @param pageRequest         The {@link PageRequest page request} for which
+ *                            this page was obtained
  * @param nextPageRequest     A {@link PageRequest page request} for the next
  *                            page of results
  * @param previousPageRequest A {@link PageRequest page request} for the
@@ -48,9 +49,10 @@ public record CursoredPageRecord<T>
         implements CursoredPage<T> {
 
     /**
-     * @param content       The page content, that is, the query results, in order
-     * @param cursors       A list of {@link PageRequest.Cursor} instances for result,
-     *                      in order
+     * @param content       The page content, that is, the query results, in
+     *                      order
+     * @param cursors       A list of {@link PageRequest.Cursor} instances for
+     *                      result, in order
      * @param totalElements The total number of elements across all pages that
      *                      can be requested for the query
      * @param pageRequest   The {@link PageRequest page request} for which this

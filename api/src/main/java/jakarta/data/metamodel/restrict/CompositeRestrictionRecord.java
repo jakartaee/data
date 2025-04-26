@@ -53,8 +53,7 @@ record CompositeRestrictionRecord<T>(
     }
 
     /**
-     * Textual representation of a composite restriction.
-     * For example,
+     * Textual representation of a composite restriction. For example,
      * <pre>(price < 50.0) AND (name LIKE "%Jakarta EE%")</pre>
      *
      * @return textual representation of a composite restriction.

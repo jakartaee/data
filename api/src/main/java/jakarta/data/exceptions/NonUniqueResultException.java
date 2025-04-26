@@ -22,21 +22,23 @@ import jakarta.data.repository.First;
 import jakarta.data.repository.Query;
 
 /**
- * <p>This exception is raised when execution of a repository method with a singular
+ * <p>This exception is raised when execution of a repository method with a
+ * singular
  * return type finds multiple results.</p>
  *
- * <p>This error can be circumvented by applying the {@link First @First} annotation
- * to a repository {@link Find} or {@link Query} method to explicitly request that
- * at most one result be returned.
- * Alternatively, if using the Query by Method Name pattern, the
- * {@code findFirst...} method name pattern can be used to explicitly request that
- * at most one result be returned.</p>
+ * <p>This error can be circumvented by applying the {@link First @First}
+ * annotation
+ * to a repository {@link Find} or {@link Query} method to explicitly request
+ * that at most one result be returned. Alternatively, if using the Query by
+ * Method Name pattern, the {@code findFirst...} method name pattern can be used
+ * to explicitly request that at most one result be returned.</p>
  */
 public class NonUniqueResultException extends DataException {
     private static final long serialVersionUID = 7742411163016495764L;
 
     /**
-     * Constructs a new NonUniqueResultException exception with the specified detail message.
+     * Constructs a new NonUniqueResultException exception with the specified
+     * detail message.
      *
      * @param message the detail message.
      */
@@ -45,7 +47,8 @@ public class NonUniqueResultException extends DataException {
     }
 
     /**
-     * Constructs a new NonUniqueResultException exception with the specified detail message.
+     * Constructs a new NonUniqueResultException exception with the specified
+     * detail message.
      *
      * @param message the detail message.
      * @param cause   another exception or error that caused this exception.
@@ -56,7 +59,8 @@ public class NonUniqueResultException extends DataException {
     }
 
     /**
-     * Constructs a new NonUniqueResultException exception with the specified cause.
+     * Constructs a new NonUniqueResultException exception with the specified
+     * cause.
      *
      * @param cause the cause.
      */

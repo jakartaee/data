@@ -22,8 +22,8 @@ import jakarta.data.metamodel.TextAttribute;
 /**
  * @param name the name of the attribute
  * @deprecated For more complete access to the static metamodel, use the
- * {@link jakarta.data.metamodel.TextAttribute#of(Class, String)} method
- * to obtain instances of {@link TextAttribute}.
+ * {@link jakarta.data.metamodel.TextAttribute#of(Class, String)} method to
+ * obtain instances of {@link TextAttribute}.
  */
 @Deprecated(since = "1.1")
 public record TextAttributeRecord<T>(String name)

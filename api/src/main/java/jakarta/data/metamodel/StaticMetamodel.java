@@ -26,14 +26,17 @@ import java.lang.annotation.Target;
 import jakarta.data.Sort;
 
 /**
- * <p>Annotates a class which serves as a static metamodel for an entity, enabling
- * type-safe access to entity attribute names and related objects such as instances
- * of {@link Sort}s for an attribute. A metamodel class contains one or more
- * {@code public static} fields corresponding to attributes of the entity class.
- * The type of each of these fields must be either {@link String}, {@link Attribute},
- * or a subinterface of {@code Attribute} defined in this package.</p>
+ * <p>Annotates a class which serves as a static metamodel for an entity,
+ * enabling
+ * type-safe access to entity attribute names and related objects such as
+ * instances of {@link Sort}s for an attribute. A metamodel class contains one
+ * or more {@code public static} fields corresponding to attributes of the
+ * entity class. The type of each of these fields must be either {@link String},
+ * {@link Attribute}, or a subinterface of {@code Attribute} defined in this
+ * package.</p>
  *
- * <p>The following subinterfaces of {@code Attribute} are recommended to obtain
+ * <p>The following subinterfaces of {@code Attribute} are recommended to
+ * obtain
  * the full benefit of the static metamodel:</p>
  * <ul>
  * <li>{@link TextAttribute} for entity attributes that represent text,

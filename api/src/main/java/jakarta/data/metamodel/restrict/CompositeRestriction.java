@@ -35,8 +35,8 @@ public interface CompositeRestriction<T> extends Restriction<T> {
 
         /**
          * Representation of the composite restriction type as a query language
-         * logical operator.
-         * For example, {@link #ALL} is represented as {@code AND} in query language.
+         * logical operator. For example, {@link #ALL} is represented as
+         * {@code AND} in query language.
          *
          * @return the representation as a logical operator in query language.
          */

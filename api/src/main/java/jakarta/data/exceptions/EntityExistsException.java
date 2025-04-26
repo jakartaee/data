@@ -18,14 +18,15 @@
 package jakarta.data.exceptions;
 
 /**
- * Indicates that an entity cannot be inserted into the database
- * because an entity with same unique identifier already exists in the database.
+ * Indicates that an entity cannot be inserted into the database because an
+ * entity with same unique identifier already exists in the database.
  */
 public class EntityExistsException extends DataException {
     private static final long serialVersionUID = -7275063477464065015L;
 
     /**
-     * Constructs a new {@code EntityExistsException} with the specified detail message.
+     * Constructs a new {@code EntityExistsException} with the specified detail
+     * message.
      *
      * @param message the detail message.
      */
@@ -34,7 +35,8 @@ public class EntityExistsException extends DataException {
     }
 
     /**
-     * Constructs a new {@code EntityExistsException} with the specified detail message and cause.
+     * Constructs a new {@code EntityExistsException} with the specified detail
+     * message and cause.
      *
      * @param message the detail message.
      * @param cause   another exception or error that caused this exception.

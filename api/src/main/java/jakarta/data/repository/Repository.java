@@ -24,7 +24,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * <p>Annotates a repository interface to be implemented by the container/runtime.</p>
+ * <p>Annotates a repository interface to be implemented by the
+ * container/runtime.</p>
  *
  * <p>This class is a CDI bean-defining annotation when CDI is available.
  * Regardless of whether CDI or custom dependency injection is used, the
@@ -56,27 +57,30 @@ import java.lang.annotation.Target;
  * numUpdated = products.putOnSale(0.15f, 20.0f);
  * </pre>
  *
- * <p>The module Javadoc provides an {@link jakarta.data/ overview} of Jakarta Data.</p>
+ * <p>The module Javadoc provides an {@link jakarta.data/ overview} of Jakarta
+ * Data.</p>
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface Repository {
     /**
-     * Value for the {@link Repository#provider()} attribute that allows the use of any
-     * available Jakarta Data provider that supports the type of entity
+     * Value for the {@link Repository#provider()} attribute that allows the use
+     * of any available Jakarta Data provider that supports the type of entity
      * annotation that is present on the repository's entity class.
      */
     String ANY_PROVIDER = "";
 
     /**
-     * <p>Value for the {@link Repository#dataStore()} attribute that indicates to use
+     * <p>Value for the {@link Repository#dataStore()} attribute that indicates
+     * to use
      * a default data store.</p>
      *
-     * <p>When running in a Jakarta EE profile or platform and the entity annotations
-     * indicate a relational database, the default data store is the
-     * Jakarta EE default data source, {@code java:comp/DefaultDataSource}.
-     * Otherwise, the default data store is determined by the Jakarta Data provider.</p>
+     * <p>When running in a Jakarta EE profile or platform and the entity
+     * annotations
+     * indicate a relational database, the default data store is the Jakarta EE
+     * default data source, {@code java:comp/DefaultDataSource}. Otherwise, the
+     * default data store is determined by the Jakarta Data provider.</p>
      *
      * <p>The default data store might require additional vendor-specific
      * configuration, depending on the vendor.</p>
@@ -86,7 +90,8 @@ public @interface Repository {
     /**
      * <p>Optionally indicates the data store to use for the repository.</p>
      *
-     * <p>Precedence for interpreting the {@code dataStore} value is as follows,
+     * <p>Precedence for interpreting the {@code dataStore} value is as
+     * follows,
      * from highest precedence to lowest precedence.</p>
      *
      * <ul>
@@ -122,14 +127,14 @@ public @interface Repository {
      *
      * <p>This is useful when multiple Jakarta Data providers support the
      * same type of entity annotation, in which case the provider attribute
-     * clarifies which Jakarta Data provider must be used.
-     * Jakarta Data providers must ignore {@link Repository} annotations
-     * that indicate a different provider's name as the provider.</p>
+     * clarifies which Jakarta Data provider must be used. Jakarta Data
+     * providers must ignore {@link Repository} annotations that indicate a
+     * different provider's name as the provider.</p>
      *
      * <p>The default value of this attribute is {@link #ANY_PROVIDER},
-     * allowing the use of any available Jakarta Data provider that
-     * supports the type of entity annotation that is present on the
-     * repository's entity class.</p>
+     * allowing the use of any available Jakarta Data provider that supports the
+     * type of entity annotation that is present on the repository's entity
+     * class.</p>
      *
      * @return the name of a Jakarta Data provider or {@link #ANY_PROVIDER}.
      */

@@ -26,8 +26,8 @@ import java.lang.annotation.Target;
 
 /**
  * <p>Determines the attribute or attributes of an entity which are returned
- * by a {@linkplain Find parameter-based} or {@linkplain Query annotated}
- * query method.</p>
+ * by a {@linkplain Find parameter-based} or {@linkplain Query annotated} query
+ * method.</p>
  *
  * <p>This annotation may be applied to a repository method annotated
  * {@code @Find} or to a component of a record type.</p>
@@ -71,11 +71,12 @@ public @interface Select {
      *
      * <p>Place the {@code Select} annotation on a repository find method and
      * assign the annotation value to be the name of a single entity attribute.
-     * The result type that is used in the method return type must be the
-     * type of the entity attribute.</p>
+     * The result type that is used in the method return type must be the type
+     * of the entity attribute.</p>
      *
      * <p>For example, to return only the {@code price} attribute of the
-     * {@code Car} entity that has the supplied {@code vin} attribute value,</p>
+     * {@code Car} entity that has the supplied {@code vin} attribute
+     * value,</p>
      *
      * <pre>
      * &#64;Repository
@@ -88,13 +89,15 @@ public @interface Select {
      *
      * <h2>Method that returns Java Records</h2>
      *
-     * <p>A repository method can return a subset of entity attributes per result
+     * <p>A repository method can return a subset of entity attributes per
+     * result
      * by having the result type be a Java record. The {@code Select} annotation
      * can be used in the following ways to accommodate this.</p>
      *
      * <h3>Annotating a Repository Method</h3>
      *
-     * <p>Place one or more {@code Select} annotations on a repository find method
+     * <p>Place one or more {@code Select} annotations on a repository find
+     * method
      * and assign the annotation values to be the names of entity attributes,
      * corresponding to the order and types of the components of the Java record
      * that is used for the result type.</p>
@@ -137,28 +140,30 @@ public @interface Select {
      * }
      * </pre>
      *
-     * <p>For more concise code, the {@code Select} annotation can be omitted from
+     * <p>For more concise code, the {@code Select} annotation can be omitted
+     * from
      * record components that have the same name as the entity attribute name,
      * such as {@code model} in the above example.</p>
      *
      * <p>The examples above use the
-     * {@linkplain jakarta.data/jakarta.data.metamodel static metamodel},
-     * to avoid hard coding String values for the entity attribute names.</p>
+     * {@linkplain jakarta.data/jakarta.data.metamodel static metamodel}, to
+     * avoid hard coding String values for the entity attribute names.</p>
      */
     String value();
 
     /**
      * Enables multiple {@link Select} annotations on a repository {@link Find}
-     * method that returns a Java record type. Multiple {@code Select} annotations
-     * must not be used on any other types of method.
+     * method that returns a Java record type. Multiple {@code Select}
+     * annotations must not be used on any other types of method.
      */
     @Documented
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.METHOD) // RECORD_COMPONENT is intentionally omitted
     @interface List {
         /**
-         * Returns a list of annotations with the first corresponding to the first
-         * record component, the second to the second record component, and so forth.
+         * Returns a list of annotations with the first corresponding to the
+         * first record component, the second to the second record component,
+         * and so forth.
          *
          * @return list of annotations.
          */
