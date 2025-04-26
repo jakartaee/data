@@ -19,6 +19,7 @@ package jakarta.data.repository;
 
 import jakarta.data.Order;
 import jakarta.data.Sort;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;
@@ -58,7 +59,7 @@ import java.lang.annotation.Target;
  * <li>ascending order for boolean values places {@code false} before
  *     {@code true}.</li>
  * </ul>
- * 
+ *
  * <p>The default sort order is ascending. The {@code descending} member can be
  * used to specify the sort direction.</p>
  * <pre>

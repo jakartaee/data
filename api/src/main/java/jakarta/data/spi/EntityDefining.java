@@ -36,7 +36,7 @@ import java.lang.annotation.Target;
  * <p>
  * This allows other Jakarta Data providers and tools to recognize and process entities declared with custom entity-defining annotations.
  * </p>
- *
+ * <p>
  * Example of defining a custom entity annotation by a provider:
  * <pre>{@code
  * @EntityDefining
@@ -52,7 +52,6 @@ import java.lang.annotation.Target;
  *     // Implementation details here
  * }
  * }</pre>
- *
  */
 @Target(ElementType.ANNOTATION_TYPE)
 @Retention(RetentionPolicy.RUNTIME)

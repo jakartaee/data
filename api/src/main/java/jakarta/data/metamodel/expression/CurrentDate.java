@@ -21,9 +21,10 @@ import jakarta.data.metamodel.TemporalExpression;
 
 import java.time.LocalDate;
 
-public interface CurrentDate<T> extends TemporalExpression<T,LocalDate> {
+public interface CurrentDate<T> extends TemporalExpression<T, LocalDate> {
 
     static <T> CurrentDate<T> now() {
-        return new CurrentDate<>() {};
+        return new CurrentDate<>() {
+        };
     }
 }

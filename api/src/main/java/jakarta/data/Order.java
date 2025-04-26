@@ -93,7 +93,7 @@ public class Order<T> implements Iterable<Sort<? super T>> {
      * @param <T>   entity class of the attributes that are used as sort criteria.
      * @param sorts sort criteria to use, ordered from highest precedence to lowest precedence.
      * @return a new instance indicating the order of precedence for sort criteria.
-     *         This method never returns {@code null}.
+     * This method never returns {@code null}.
      */
     @SafeVarargs
     public static <T> Order<T> by(Sort<? super T>... sorts) {
@@ -107,7 +107,7 @@ public class Order<T> implements Iterable<Sort<? super T>> {
      * @param <T>   entity class of the attributes that are used as sort criteria.
      * @param sorts sort criteria to use, ordered from highest precedence to lowest precedence.
      * @return a new instance indicating the order of precedence for sort criteria.
-     *         This method never returns {@code null}.
+     * This method never returns {@code null}.
      */
     public static <T> Order<T> by(List<Sort<? super T>> sorts) {
         return new Order<T>(List.copyOf(sorts));
@@ -127,12 +127,12 @@ public class Order<T> implements Iterable<Sort<? super T>> {
      * in the same order of precedence as another instance.
      *
      * @return true if the other instance is an {@code Order} that specifies
-     *         the same ordering of sort criteria as this instance.
+     * the same ordering of sort criteria as this instance.
      */
     @Override
     public boolean equals(Object other) {
         return this == other
-            || other instanceof Order s && sorts.equals(s.sorts);
+                || other instanceof Order s && sorts.equals(s.sorts);
     }
 
     /**
@@ -155,7 +155,6 @@ public class Order<T> implements Iterable<Sort<? super T>> {
     public Iterator<Sort<? super T>> iterator() {
         return sorts.iterator();
     }
-
 
 
     /**

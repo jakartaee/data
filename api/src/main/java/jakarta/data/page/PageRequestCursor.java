@@ -38,7 +38,7 @@ class PageRequestCursor implements PageRequest.Cursor {
     @SuppressWarnings("PMD.ArrayIsStoredDirectly")
     PageRequestCursor(Object... key) {
         this.key = key;
-        if (key == null || key.length == 0){
+        if (key == null || key.length == 0) {
             throw new IllegalArgumentException("No values were provided");
         }
     }

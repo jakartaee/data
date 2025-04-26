@@ -22,13 +22,12 @@ import jakarta.data.metamodel.NumericAttribute;
 import jakarta.data.metamodel.TextAttribute;
 
 /**
+ * @param name the name of the attribute
  * @deprecated For more complete access to the static metamodel, use the
  * most specific subtype of {@link Attribute} that describes the entity
  * attribute, such as
  * {@link TextAttribute#of(Class, String) TextAttribute} or
  * {@link NumericAttribute#of(Class, String, Class) NumericAttribute}.
- *
- * @param name the name of the attribute
  */
 @Deprecated(since = "1.1")
 public record AttributeRecord<T>(String name)

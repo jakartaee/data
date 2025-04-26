@@ -29,13 +29,13 @@ import jakarta.data.metamodel.restrict.Restriction;
 
 import java.util.Collection;
 
-public interface Expression<T,V> {
+public interface Expression<T, V> {
 
     default Restriction<T> equalTo(V value) {
         return BasicRestriction.of(this, EqualTo.value(value));
     }
 
-    default Restriction<T> equalTo(Expression<? super T,V> expression) {
+    default Restriction<T> equalTo(Expression<? super T, V> expression) {
         return BasicRestriction.of(this, EqualTo.expression(expression));
     }
 
@@ -52,7 +52,7 @@ public interface Expression<T,V> {
     }
 
     @SuppressWarnings("unchecked")
-    default Restriction<T> in(Expression<? super T,V>... expressions) {
+    default Restriction<T> in(Expression<? super T, V>... expressions) {
         return BasicRestriction.of(this, In.expressions(expressions));
     }
 
@@ -64,7 +64,7 @@ public interface Expression<T,V> {
         return BasicRestriction.of(this, NotEqualTo.value(value));
     }
 
-    default Restriction<T> notEqualTo(Expression<? super T,V> expression) {
+    default Restriction<T> notEqualTo(Expression<? super T, V> expression) {
         return BasicRestriction.of(this, NotEqualTo.expression(expression));
     }
 
@@ -81,7 +81,7 @@ public interface Expression<T,V> {
     }
 
     @SuppressWarnings("unchecked")
-    default Restriction<T> notIn(Expression<? super T,V>... expressions) {
+    default Restriction<T> notIn(Expression<? super T, V>... expressions) {
         return BasicRestriction.of(this, NotIn.expressions(expressions));
     }
 

@@ -32,13 +32,13 @@ public class Restrict {
     @SafeVarargs
     public static <T> Restriction<T> all(Restriction<T>... restrictions) {
         return new CompositeRestrictionRecord<>(CompositeRestriction.Type.ALL,
-                                                List.of(restrictions));
+                List.of(restrictions));
     }
 
     @SafeVarargs
     public static <T> Restriction<T> any(Restriction<T>... restrictions) {
         return new CompositeRestrictionRecord<>(CompositeRestriction.Type.ANY,
-                                                List.of(restrictions));
+                List.of(restrictions));
     }
 
     // convenience method for those who would prefer to avoid .negate()

@@ -24,8 +24,8 @@ import java.util.Objects;
 
 record NumericFunctionExpressionRecord<T, N extends Number & Comparable<N>>(
         String name,
-        List<ComparableExpression<? super T,?>> arguments)
-        implements NumericFunctionExpression<T,N> {
+        List<ComparableExpression<? super T, ?>> arguments)
+        implements NumericFunctionExpression<T, N> {
 
     NumericFunctionExpressionRecord {
         Objects.requireNonNull(name, "The name is required");

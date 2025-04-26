@@ -24,28 +24,28 @@ public interface NotBetween<V extends Comparable<?>> extends Constraint<V> {
 
     static <V extends Comparable<?>> NotBetween<V> bounds(V lower, V upper) {
         return new NotBetweenRecord<>(ComparableLiteral.of(lower),
-                                      ComparableLiteral.of(upper));
+                ComparableLiteral.of(upper));
     }
 
     static <V extends Comparable<?>> NotBetween<V> bounds(
             V lower,
             ComparableExpression<?, V> upper) {
         return new NotBetweenRecord<>(ComparableLiteral.of(lower),
-                                      upper);
+                upper);
     }
 
     static <V extends Comparable<?>> NotBetween<V> bounds(
             ComparableExpression<?, V> lower,
             V upper) {
         return new NotBetweenRecord<>(lower,
-                                      ComparableLiteral.of(upper));
+                ComparableLiteral.of(upper));
     }
 
     static <V extends Comparable<?>> NotBetween<V> bounds(
             ComparableExpression<?, V> lower,
             ComparableExpression<?, V> upper) {
         return new NotBetweenRecord<>(lower,
-                                      upper);
+                upper);
     }
 
     ComparableExpression<?, V> lowerBound();

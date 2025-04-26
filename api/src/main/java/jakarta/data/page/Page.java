@@ -87,6 +87,7 @@ public interface Page<T> extends Iterable<T> {
      * Returns {@code true} if it is known that there are more results or that it is
      * necessary to request a next page to determine whether there are more results,
      * so that {@link #nextPageRequest()} will definitely not return {@code null}.
+     *
      * @return {@code false} if this is the last page of results.
      */
     boolean hasNext();
@@ -95,6 +96,7 @@ public interface Page<T> extends Iterable<T> {
      * Returns {@code true} if it is known that there are previous results or that it
      * is necessary to request the previous page to determine whether there are previous
      * results, so that {@link #previousPageRequest()} will not return {@code null}.
+     *
      * @return {@code false} if this is the first page of results.
      */
     boolean hasPrevious();
@@ -114,11 +116,10 @@ public interface Page<T> extends Iterable<T> {
      *
      * @return a request for the next page.
      * @throws NoSuchElementException if it is known that there is no next page.
-     *         To avoid this exception, check for a {@code true} result of
-     *         {@link #hasNext()} before invoking this method.
+     *                                To avoid this exception, check for a {@code true} result of
+     *                                {@link #hasNext()} before invoking this method.
      */
     PageRequest nextPageRequest();
-
 
 
     /**
@@ -127,8 +128,8 @@ public interface Page<T> extends Iterable<T> {
      *
      * @return a request for the previous page.
      * @throws NoSuchElementException if it is known that there is no previous page.
-     *         To avoid this exception, check for a {@code true} result of
-     *         {@link #hasPrevious()} before invoking this method.
+     *                                To avoid this exception, check for a {@code true} result of
+     *                                {@link #hasPrevious()} before invoking this method.
      */
     PageRequest previousPageRequest();
 
@@ -138,6 +139,7 @@ public interface Page<T> extends Iterable<T> {
      * {@linkplain PageRequest#requestTotal total number of elements should
      * be retrieved from the database}, and that it is therefore safe to call
      * {@link #totalElements()} or {@link #totalPages()}.
+     *
      * @return {@code true} if totals are available.
      */
     boolean hasTotals();
@@ -146,19 +148,20 @@ public interface Page<T> extends Iterable<T> {
      * Returns the total number of elements across all pages of query results, if the
      * {@link #pageRequest()} specified that {@linkplain PageRequest#requestTotal the
      * total should be retrieved from the database}.
-     * @apiNote Not all NoSQL databases support counting the total number of
-     *          elements. This operation is not supported for Key-Value and
-     *          Wide-Column databases. For Graph and Document databases,
-     *          support for this operation may vary depending on the provider.
-     *          If the database does not support retrieving the total number
-     *          of elements, calling this method will result in an
-     *          {@link UnsupportedOperationException}.
+     *
      * @return the total number of elements across all pages.
-     * @throws IllegalStateException if the total was not retrieved from the
-     *                               database because the page was requested
-     *                               {@linkplain PageRequest#withoutTotal() without totals}.
+     * @throws IllegalStateException         if the total was not retrieved from the
+     *                                       database because the page was requested
+     *                                       {@linkplain PageRequest#withoutTotal() without totals}.
      * @throws UnsupportedOperationException if the database is not capable of
-     *                               retrieving a total number of elements.
+     *                                       retrieving a total number of elements.
+     * @apiNote Not all NoSQL databases support counting the total number of
+     * elements. This operation is not supported for Key-Value and
+     * Wide-Column databases. For Graph and Document databases,
+     * support for this operation may vary depending on the provider.
+     * If the database does not support retrieving the total number
+     * of elements, calling this method will result in an
+     * {@link UnsupportedOperationException}.
      */
     long totalElements();
 
@@ -166,12 +169,13 @@ public interface Page<T> extends Iterable<T> {
      * Returns the total number of pages of query results, if the {@link #pageRequest()}
      * specified that {@linkplain PageRequest#requestTotal the total should be retrieved
      * from the database}.
+     *
      * @return the total number of pages.
-     * @throws IllegalStateException if the total was not retrieved from the
-     *                               database because the page was requested
-     *                               {@linkplain PageRequest#withoutTotal() without totals}.
+     * @throws IllegalStateException         if the total was not retrieved from the
+     *                                       database because the page was requested
+     *                                       {@linkplain PageRequest#withoutTotal() without totals}.
      * @throws UnsupportedOperationException if the database is not capable of
-     *                               retrieving a total number of elements or pages.
+     *                                       retrieving a total number of elements or pages.
      */
     long totalPages();
 }

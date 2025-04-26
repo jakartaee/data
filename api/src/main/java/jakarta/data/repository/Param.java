@@ -52,6 +52,7 @@ public @interface Param {
 
     /**
      * Defines the name of the query language named parameter to bind to.
+     *
      * @return the name of the query language named parameter.
      */
     String value();

@@ -27,23 +27,23 @@ import java.util.Objects;
  * @param <T> entity class of the static metamodel.
  * @param <U> type of entity attribute.
  */
-public interface NavigableAttribute<T,U>
-        extends Attribute<T>, NavigableExpression<T,U> {
+public interface NavigableAttribute<T, U>
+        extends Attribute<T>, NavigableExpression<T, U> {
 
     /**
      * <p>Creates a static metamodel {@code NavigableAttribute} representing the
      * entity attribute with the specified name.</p>
      *
-     * @param <T> entity class of the static metamodel.
-     * @param <U> type of entity attribute.
+     * @param <T>           entity class of the static metamodel.
+     * @param <U>           type of entity attribute.
      * @param entityClass   the entity class.
      * @param name          the name of the entity attribute.
      * @param attributeType type of the entity attribute.
      * @return instance of {@code NavigableAttribute}.
      */
-    static <T,U> NavigableAttribute<T,U> of(Class<T> entityClass,
-                                            String name,
-                                            Class<U> attributeType) {
+    static <T, U> NavigableAttribute<T, U> of(Class<T> entityClass,
+                                              String name,
+                                              Class<U> attributeType) {
         Objects.requireNonNull(entityClass, "The entityClass is required");
         Objects.requireNonNull(name, "The name is required");
         Objects.requireNonNull(attributeType, "The attributeType is required");

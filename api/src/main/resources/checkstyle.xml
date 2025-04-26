@@ -29,7 +29,7 @@
     </module>
 
     <module name="LineLength">
-        <property name="max" value="100"/>
+        <property name="max" value="80"/>
         <property name="ignorePattern" value="@version|@see"/>
     </module>
 

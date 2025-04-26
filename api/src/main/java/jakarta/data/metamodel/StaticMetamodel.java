@@ -129,7 +129,6 @@ import jakarta.data.Sort;
  * <p>In cases where multiple Jakarta Data providers provide repositories for the same
  * entity type, no guarantees are made of the order in which the Jakarta Data providers
  * attempt to initialize the fields of the static metamodel class for that entity.</p>
- *
  */
 // TODO potentially replace  _Person.name_first and _Person.name_last in the above
 //      with usage of NavigableAttribute after the design of it is further along

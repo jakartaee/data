@@ -103,7 +103,7 @@ public interface PageRequest {
      * @throws IllegalArgumentException when maximum page size is negative or zero.
      */
     static PageRequest ofSize(int maxPageSize) {
-        return new Pagination(1, maxPageSize,  Mode.OFFSET, null, true);
+        return new Pagination(1, maxPageSize, Mode.OFFSET, null, true);
     }
 
     /**
@@ -121,7 +121,7 @@ public interface PageRequest {
      *                     {@linkplain Page#totalElements() total}
      *                     number of elements available across all pages.
      * @return a new instance of {@code PageRequest} with forward cursor-based pagination.
-     *         This method never returns {@code null}.
+     * This method never returns {@code null}.
      * @throws IllegalArgumentException if the cursor is null or has no values.
      */
     static PageRequest afterCursor(Cursor cursor, long pageNumber, int maxPageSize, boolean requestTotal) {
@@ -143,8 +143,8 @@ public interface PageRequest {
      *                     {@linkplain Page#totalElements() total}
      *                     number of elements available across all pages.
      * @return a new instance of {@code PageRequest} with cursor-based pagination
-     *         in the previous page direction.
-     *         This method never returns {@code null}.
+     * in the previous page direction.
+     * This method never returns {@code null}.
      * @throws IllegalArgumentException if the cursor is null or has no values.
      */
     static PageRequest beforeCursor(Cursor cursor, long pageNumber, int maxPageSize, boolean requestTotal) {
@@ -156,11 +156,11 @@ public interface PageRequest {
      * starting after the specified key.</p>
      *
      * @param cursor cursor with key values, the order and number of which must match the
-     *        {@link OrderBy} annotations, {@link jakarta.data.Sort} parameters, or
-     *        {@code OrderBy} name pattern of the repository method to which
-     *        this pagination will be supplied.
+     *               {@link OrderBy} annotations, {@link jakarta.data.Sort} parameters, or
+     *               {@code OrderBy} name pattern of the repository method to which
+     *               this pagination will be supplied.
      * @return a new instance of {@code PageRequest} with forward cursor-based pagination.
-     *         This method never returns {@code null}.
+     * This method never returns {@code null}.
      * @throws IllegalArgumentException if no key values are provided.
      */
     PageRequest afterCursor(Cursor cursor);
@@ -170,11 +170,11 @@ public interface PageRequest {
      * direction relative to the specified key values.</p>
      *
      * @param cursor cursor with key values, the order and number of which must match the
-     *        {@link OrderBy} annotations, {@link jakarta.data.Sort} parameters, or
-     *        {@code OrderBy} name pattern of the repository method to which
-     *        this pagination will be supplied.
+     *               {@link OrderBy} annotations, {@link jakarta.data.Sort} parameters, or
+     *               {@code OrderBy} name pattern of the repository method to which
+     *               this pagination will be supplied.
      * @return a new instance of {@code PageRequest} with cursor-based pagination
-     *         in the previous page direction. This method never returns {@code null}.
+     * in the previous page direction. This method never returns {@code null}.
      * @throws IllegalArgumentException if no key values are provided.
      */
     PageRequest beforeCursor(Cursor cursor);
@@ -184,7 +184,7 @@ public interface PageRequest {
      * pagination information.
      *
      * @return true if both instances are of the same class and
-     *         represent the same pagination information. Otherwise false.
+     * represent the same pagination information. Otherwise false.
      */
     @Override
     boolean equals(Object o);
@@ -225,9 +225,9 @@ public interface PageRequest {
      * is enabled by default. To obtain a page request with total
      * retrieval disabled, call {@link #withoutTotal()}.</p>
      *
-     * <p>A repository implementation might obtain a total from the 
-     * database before returning the page of results, or might defer 
-     * fetching the total until {@link Page#totalElements()} or 
+     * <p>A repository implementation might obtain a total from the
+     * database before returning the page of results, or might defer
+     * fetching the total until {@link Page#totalElements()} or
      * {@link Page#totalPages()} method is invoked. In the case of
      * deferred fetching, the call to {@code totalElements()} or
      * {@code totalPages()} raises an exception if the database
@@ -235,7 +235,7 @@ public interface PageRequest {
      * totals.</p>
      *
      * @return {@code true} if the total number of elements should
-     *         be retrieved from the database.
+     * be retrieved from the database.
      */
     boolean requestTotal();
 
@@ -245,7 +245,7 @@ public interface PageRequest {
      *
      * @param pageNumber the page number.
      * @return a new instance of {@code PageRequest}.
-     *         This method never returns {@code null}.
+     * This method never returns {@code null}.
      * @since 1.1
      */
     PageRequest page(long pageNumber);
@@ -259,7 +259,7 @@ public interface PageRequest {
      *
      * @param maxPageSize the number of query results in a full page.
      * @return a new instance of {@code PageRequest}.
-     *         This method never returns {@code null}.
+     * This method never returns {@code null}.
      */
     PageRequest size(int maxPageSize);
 
@@ -271,8 +271,9 @@ public interface PageRequest {
      * method with return type {@link Page}, the operations
      * {@link Page#totalElements()} and {@link Page#totalPages()}
      * throw an {@link IllegalStateException} when called.
+     *
      * @return a page request with {@link #requestTotal()}
-     *         set to {@code false}.
+     * set to {@code false}.
      */
     PageRequest withoutTotal();
 
@@ -280,8 +281,9 @@ public interface PageRequest {
      * Returns an otherwise-equivalent page request with
      * {@link #requestTotal()} set to {@code true}, so that
      * totals will be retrieved from the database.
+     *
      * @return a page request with {@link #requestTotal()}
-     *         set to {@code true}.
+     * set to {@code true}.
      */
     PageRequest withTotal();
 
@@ -335,10 +337,10 @@ public interface PageRequest {
         /**
          * Returns the key value at the specified position.
          *
-         * @param  index position (0 is first) of the key value to obtain.
+         * @param index position (0 is first) of the key value to obtain.
          * @return the key value at the specified position.
          * @throws IndexOutOfBoundsException if the index is negative
-         *         or greater than or equal to the {@link #size}.
+         *                                   or greater than or equal to the {@link #size}.
          */
         Object get(int index);
 
@@ -361,7 +363,7 @@ public interface PageRequest {
          * An unmodifiable list of values in the key.
          *
          * @return an unmodifiable list containing the
-         *         ordered values
+         * ordered values
          */
         List<?> elements();
 
@@ -376,6 +378,7 @@ public interface PageRequest {
 
         /**
          * Obtain an instance of {@code Cursor} for the given key.
+         *
          * @param key the key
          * @return a new instance of {@code Cursor}
          */

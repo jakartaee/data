@@ -25,14 +25,14 @@ import jakarta.data.Sort;
  * <p>Represents a entity attribute in the {@link StaticMetamodel}
  * that is sortable, but not comparable.</p>
  *
- *<p>A {@code SortableAttribute} may be used to sort query results.
+ * <p>A {@code SortableAttribute} may be used to sort query results.
  * When an attribute type is a numeric type, {@link NumericAttribute}
  * is preferred. When an attribute type is {@link String},
  * {@link TextAttribute} is preferred. When an attribute type (or, if primitive,
  * its wrapper class) is a subtype of {@link java.lang.Comparable},
  * use of {@link ComparableAttribute} is usually preferred, since a
  * {@code SortableAttribute} cannot be used in order-based query
- * restrictions. Direct use of {@code SortableAttribute} is appropriate 
+ * restrictions. Direct use of {@code SortableAttribute} is appropriate
  * for attributes of type {@code byte[]}.</p>
  *
  * @param <T> entity class of the static metamodel.
@@ -61,8 +61,8 @@ public interface SortableAttribute<T> extends Attribute<T> {
      * <p>Creates a static metamodel {@code SortableAttribute} representing the
      * entity attribute with the specified name.</p>
      *
-     * @param <T> entity class of the static metamodel.
-     * @param <V> type of entity attribute (or wrapper type if primitive).
+     * @param <T>           entity class of the static metamodel.
+     * @param <V>           type of entity attribute (or wrapper type if primitive).
      * @param entityClass   the entity class.
      * @param name          the name of the entity attribute.
      * @param attributeType type of the entity attribute.

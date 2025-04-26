@@ -89,7 +89,7 @@ public @interface By {
      * of the entity.
      *
      * @return the entity attribute name, or {@value #ID} to indicate the
-     *         unique identifier attribute.
+     * unique identifier attribute.
      */
     String value();
 

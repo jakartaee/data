@@ -36,7 +36,7 @@ record TemporalLiteralRecord<T, V extends Temporal & Comparable<? extends Tempor
     public String toString() {
         // TODO can use a switch statement after updating to Java 21
         if (value instanceof Instant ||
-            value instanceof LocalDateTime) {
+                value instanceof LocalDateTime) {
             return "TIMESTAMP('" + value + "')";
         } else if (value instanceof LocalDate) {
             return "DATE('" + value + "')";

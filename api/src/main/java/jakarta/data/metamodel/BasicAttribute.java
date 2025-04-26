@@ -26,22 +26,22 @@ import java.util.Objects;
  * @param <T> entity class of the static metamodel.
  * @param <V> type of entity attribute (or wrapper type if primitive).
  */
-public interface BasicAttribute<T,V> extends Attribute<T>, Expression<T,V> {
+public interface BasicAttribute<T, V> extends Attribute<T>, Expression<T, V> {
 
     /**
      * <p>Creates a static metamodel {@code BasicAttribute} representing the
      * entity attribute with the specified name.</p>
      *
-     * @param <T> entity class of the static metamodel.
-     * @param <V> type of entity attribute (or wrapper type if primitive).
+     * @param <T>           entity class of the static metamodel.
+     * @param <V>           type of entity attribute (or wrapper type if primitive).
      * @param entityClass   the entity class.
      * @param name          the name of the entity attribute.
      * @param attributeType type of the entity attribute.
      * @return instance of {@code BasicAttribute}.
      */
-    static <T,V> BasicAttribute<T,V> of(Class<T> entityClass,
-                                        String name,
-                                        Class<V> attributeType) {
+    static <T, V> BasicAttribute<T, V> of(Class<T> entityClass,
+                                          String name,
+                                          Class<V> attributeType) {
         Objects.requireNonNull(entityClass, "The entityClass is required");
         Objects.requireNonNull(name, "The name is required");
         Objects.requireNonNull(attributeType, "The attributeType is required");

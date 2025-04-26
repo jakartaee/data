@@ -48,8 +48,8 @@ public class NonUniqueResultException extends DataException {
      * Constructs a new NonUniqueResultException exception with the specified detail message.
      *
      * @param message the detail message.
-     * @param cause another exception or error that caused this exception.
-     *        Null indicates that no other cause is specified.
+     * @param cause   another exception or error that caused this exception.
+     *                Null indicates that no other cause is specified.
      */
     public NonUniqueResultException(String message, Throwable cause) {
         super(message, cause);

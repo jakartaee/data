@@ -22,9 +22,9 @@ import jakarta.data.metamodel.NumericAttribute;
 import jakarta.data.metamodel.NumericExpression;
 import jakarta.data.metamodel.Path;
 
-public interface NumericPath<T,U,N extends Number & Comparable<N>>
-        extends Path<T,U>, NumericExpression<T,N> {
-    static <T,U, N extends Number & Comparable<N>> NumericPath<T, U, N>
+public interface NumericPath<T, U, N extends Number & Comparable<N>>
+        extends Path<T, U>, NumericExpression<T, N> {
+    static <T, U, N extends Number & Comparable<N>> NumericPath<T, U, N>
     of(NavigableExpression<T, U> expression, NumericAttribute<U, N> attribute) {
         return new NumericPathRecord<>(expression, attribute);
     }

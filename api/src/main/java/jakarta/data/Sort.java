@@ -82,13 +82,14 @@ import java.util.Objects;
  * if the database is incapable of ordering the query results using the given
  * sort criteria.</p>
  *
- *
  * @param <T>         entity class of the entity attribute upon which to sort.
  * @param property    name of the entity attribute to order by.
  * @param isAscending whether ordering for this attribute is ascending (true) or descending (false).
- * @param ignoreCase  whether or not to request case insensitive ordering from a database with case sensitive collation.
+ * @param ignoreCase  whether or not to request case insensitive ordering
+ *                    from a database with case sensitive collation.
  */
-public record Sort<T>(String property, boolean isAscending, boolean ignoreCase) {
+public record Sort<T>(String property, boolean isAscending,
+                      boolean ignoreCase) {
 
     /**
      * <p>Defines sort criteria for an entity attribute. For more descriptive code, use:</p>
@@ -112,6 +113,7 @@ public record Sort<T>(String property, boolean isAscending, boolean ignoreCase) 
     }
 
     // Override to provide method documentation:
+
     /**
      * Name of the entity attribute to order by.
      *
@@ -122,6 +124,7 @@ public record Sort<T>(String property, boolean isAscending, boolean ignoreCase) 
     }
 
     // Override to provide method documentation:
+
     /**
      * <p>Indicates whether or not to request case insensitive ordering
      * from a database with case sensitive collation.
@@ -135,6 +138,7 @@ public record Sort<T>(String property, boolean isAscending, boolean ignoreCase) 
     }
 
     // Override to provide method documentation:
+
     /**
      * Indicates whether to sort the entity attribute in ascending order (true)
      * or descending order (false).

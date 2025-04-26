@@ -44,21 +44,21 @@ import java.util.Objects;
  * @param <N> type of entity attribute (or wrapper type if primitive).
  */
 
-public interface NumericAttribute<T,N extends Number & Comparable<N>>
-        extends ComparableAttribute<T,N>, NumericExpression<T, N> {
+public interface NumericAttribute<T, N extends Number & Comparable<N>>
+        extends ComparableAttribute<T, N>, NumericExpression<T, N> {
 
     /**
      * <p>Creates a static metamodel {@code NumericAttribute} representing the
      * entity attribute with the specified name.</p>
      *
-     * @param <T> entity class of the static metamodel.
-     * @param <N> type of entity attribute (or wrapper type if primitive).
+     * @param <T>           entity class of the static metamodel.
+     * @param <N>           type of entity attribute (or wrapper type if primitive).
      * @param entityClass   the entity class.
      * @param name          the name of the entity attribute.
      * @param attributeType type of the entity attribute.
      * @return instance of {@code NumericAttribute}.
      */
-    static <T,N extends Number & Comparable<N>> NumericAttribute<T,N> of(
+    static <T, N extends Number & Comparable<N>> NumericAttribute<T, N> of(
             Class<T> entityClass, String name, Class<N> attributeType) {
         Objects.requireNonNull(entityClass, "The entityClass is required");
         Objects.requireNonNull(name, "The name is required");

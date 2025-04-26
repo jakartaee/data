@@ -56,12 +56,12 @@ public interface Attribute<T> {
 
     /**
      * Obtain the Java class which declares this entity attribute.
-     * @apiNote This is only guaranteed to be known if a static <code>of</code> method,
-     *          such as {@link BasicAttribute#of(Class, String, Class)}, was used to obtain 
-     *          the instance.
      *
      * @return the declaring class
      * @throws UnsupportedOperationException if the declaring type is not known.
+     * @apiNote This is only guaranteed to be known if a static <code>of</code> method,
+     * such as {@link BasicAttribute#of(Class, String, Class)}, was used to obtain
+     * the instance.
      * @since 1.1
      */
     default Class<T> declaringType() {

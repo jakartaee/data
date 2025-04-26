@@ -24,7 +24,7 @@ import java.util.Objects;
 
 record TextFunctionExpressionRecord<T>(
         String name,
-        List<ComparableExpression<? super T,?>> arguments)
+        List<ComparableExpression<? super T, ?>> arguments)
         implements TextFunctionExpression<T> {
 
     TextFunctionExpressionRecord {

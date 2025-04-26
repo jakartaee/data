@@ -27,7 +27,7 @@ import java.time.LocalTime;
 import jakarta.data.metamodel.ComparableExpression;
 
 public interface ComparableLiteral<T, V extends Comparable<?>>
-        extends ComparableExpression<T,V>, Literal<T, V> {
+        extends ComparableExpression<T, V>, Literal<T, V> {
 
     @SuppressWarnings("unchecked")
     static <T, V extends Comparable<?>> ComparableLiteral<T, V> of(V value) {

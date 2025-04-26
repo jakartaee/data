@@ -64,7 +64,7 @@ record CompositeRestrictionRecord<T>(
         String logicalOperator = type.asQueryLanguage();
         StringBuilder builder = new StringBuilder(
                 restrictions.size() * SINGLE_RESTRICTION_LENGTH_ESTIMATE +
-                6); // number of additional characters that might be appended
+                        6); // number of additional characters that might be appended
         if (isNegated) {
             builder.append("NOT (");
         }

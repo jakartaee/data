@@ -52,13 +52,12 @@ import java.lang.annotation.Target;
  * <p>This annotation must not be used in other locations.</p>
  *
  * @see Find
- *
  * @since 1.1
  */
 @Documented
 @Repeatable(Select.List.class)
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ ElementType.METHOD, ElementType.RECORD_COMPONENT })
+@Target({ElementType.METHOD, ElementType.RECORD_COMPONENT})
 public @interface Select {
     /**
      * <p>Name of an entity attribute that has a single-valued

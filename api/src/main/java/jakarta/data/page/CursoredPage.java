@@ -20,6 +20,7 @@ package jakarta.data.page;
 import jakarta.data.repository.OrderBy;
 import jakarta.data.Order;
 import jakarta.data.Sort;
+
 import java.util.NoSuchElementException;
 
 /**
@@ -157,8 +158,9 @@ public interface CursoredPage<T> extends Page<T> {
      * Returns {@code true} when it is possible to navigate to a previous
      * page of results or if it is necessary to request a previous page in
      * order to determine whether there are more previous results.
+     *
      * @return {@code false} if the current page is empty or if it is known
-     *         that there is not a previous page.
+     * that there is not a previous page.
      */
     @Override
     boolean hasPrevious();
@@ -173,9 +175,9 @@ public interface CursoredPage<T> extends Page<T> {
      *
      * @return pagination information for requesting the next page.
      * @throws NoSuchElementException if the current page is empty or if
-     *         it is known that there is no next page.
-     *         To avoid this exception, check for a {@code true} result
-     *         of {@link #hasNext()} before invoking this method.
+     *                                it is known that there is no next page.
+     *                                To avoid this exception, check for a {@code true} result
+     *                                of {@link #hasNext()} before invoking this method.
      */
     @Override
     PageRequest nextPageRequest();
@@ -202,9 +204,9 @@ public interface CursoredPage<T> extends Page<T> {
      *
      * @return pagination information for requesting the previous page.
      * @throws NoSuchElementException if the current page is empty or if
-     *         it is known that there is no previous page.
-     *         To avoid this exception, check for a {@code true} result
-     *         of {@link #hasPrevious()} before invoking this method.
+     *                                it is known that there is no previous page.
+     *                                To avoid this exception, check for a {@code true} result
+     *                                of {@link #hasPrevious()} before invoking this method.
      */
     @Override
     PageRequest previousPageRequest();

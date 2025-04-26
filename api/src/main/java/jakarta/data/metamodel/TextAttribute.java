@@ -26,7 +26,7 @@ import java.util.Objects;
  *
  * @param <T> entity class of the static metamodel.
  */
-public interface TextAttribute<T> extends ComparableAttribute<T,String>, TextExpression<T> {
+public interface TextAttribute<T> extends ComparableAttribute<T, String>, TextExpression<T> {
 
     /**
      * Obtain a request for an ascending, case-insensitive {@link Sort} based on the entity attribute.
@@ -50,7 +50,7 @@ public interface TextAttribute<T> extends ComparableAttribute<T,String>, TextExp
      * <p>Creates a static metamodel {@code TextAttribute} representing the
      * entity attribute with the specified name.</p>
      *
-     * @param <T> entity class of the static metamodel.
+     * @param <T>         entity class of the static metamodel.
      * @param entityClass the entity class.
      * @param name        the name of the entity attribute.
      * @return instance of {@code TextAttribute}.

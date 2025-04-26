@@ -34,7 +34,7 @@ import jakarta.data.page.PageRequest;
  *
  * <pre>
  * Product[] findByNameLike(String namePattern, Limit limit, Sort&lt;?&gt;... sorts);
- * 
+ *
  * ...
  * mostExpensive50 = products.findByNameLike(pattern, Limit.of(50), Sort.desc("price"));
  * ...
@@ -79,6 +79,7 @@ public record Limit(int maxResults, long startAt) {
     }
 
     // Override to provide method documentation:
+
     /**
      * <p>Maximum number of results that can be returned for a
      * single invocation of the repository method.</p>
@@ -90,6 +91,7 @@ public record Limit(int maxResults, long startAt) {
     }
 
     // Override to provide method documentation:
+
     /**
      * <p>Offset at which to start when returning query results.
      * The first query result is position {@code 1}.</p>
@@ -106,7 +108,7 @@ public record Limit(int maxResults, long startAt) {
      *
      * @param maxResults maximum number of results.
      * @return limit that can be supplied to a find method
-     *         or {@code @Query} method that performs a find operation; will never be {@code null}.
+     * or {@code @Query} method that performs a find operation; will never be {@code null}.
      * @throws IllegalArgumentException if maxResults is less than 1.
      */
     public static Limit of(int maxResults) {
@@ -123,11 +125,11 @@ public record Limit(int maxResults, long startAt) {
      *                The first query result is position 1.
      * @param endAt   position after which to cease including results.
      * @return limit that can be supplied to a find method or
-     *         or a {@code @Query} method that performs a find operation; will never be {@code null}.
+     * or a {@code @Query} method that performs a find operation; will never be {@code null}.
      * @throws IllegalArgumentException if {@code startAt} is less than 1
-     *         or {@code endAt} is less than {@code startAt},
-     *         or the range from {@code startAt} to {@code endAt}
-     *         exceeds {@link Integer#MAX_VALUE}.
+     *                                  or {@code endAt} is less than {@code startAt},
+     *                                  or the range from {@code startAt} to {@code endAt}
+     *                                  exceeds {@link Integer#MAX_VALUE}.
      */
     public static Limit range(long startAt, long endAt) {
         if (endAt < startAt)

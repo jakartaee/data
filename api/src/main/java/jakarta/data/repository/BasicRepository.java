@@ -105,11 +105,11 @@ public interface BasicRepository<T, K> extends DataRepository<T, K> {
      * an {@link OptimisticLockingFailureException} will be thrown.</p>
      *
      * @param entity The entity to be saved. Must not be {@code null}.
-     * @param <S> Type of the entity to save.
+     * @param <S>    Type of the entity to save.
      * @return The saved entity; never {@code null}.
      * @throws OptimisticLockingFailureException If the entity uses optimistic locking and the version in the
-     *         database differs from the version in the entity.
-     * @throws NullPointerException If the provided entity is {@code null}.
+     *                                           database differs from the version in the entity.
+     * @throws NullPointerException              If the provided entity is {@code null}.
      */
     @Save
     <S extends T> S save(S entity);
@@ -129,11 +129,11 @@ public interface BasicRepository<T, K> extends DataRepository<T, K> {
      * about the state of the entity values that are supplied in the parameter.</p>
      *
      * @param entities An iterable of entities.
-     * @param <S> Type of entity to save.
+     * @param <S>      Type of entity to save.
      * @return The saved entities; will never be {@code null}.
      * @throws OptimisticLockingFailureException If an entity has a version for optimistic locking
-     *         that differs from the version in the database.
-     * @throws NullPointerException If either the iterable is null or any element is null.
+     *                                           that differs from the version in the database.
+     * @throws NullPointerException              If either the iterable is null or any element is null.
      */
     @Save
     <S extends T> List<S> saveAll(List<S> entities);
@@ -152,8 +152,8 @@ public interface BasicRepository<T, K> extends DataRepository<T, K> {
      * Retrieves all persistent entities of the specified type from the database.
      *
      * @return a stream of all entities; will never be {@code null}.
-     * @throws UnsupportedOperationException  for Key-Value and Wide-Column databases that are not capable
-     * of the {@code findAll} operation.
+     * @throws UnsupportedOperationException for Key-Value and Wide-Column databases that are not capable
+     *                                       of the {@code findAll} operation.
      */
     @Find
     Stream<T> findAll();
@@ -164,9 +164,9 @@ public interface BasicRepository<T, K> extends DataRepository<T, K> {
      * @param pageRequest the request for a paginated result; must not be {@code null}.
      * @param sortBy      sort criteria that must deterministically order the results; must not be {@code null}.
      * @return a page of entities; will never be {@code null}.
-     * @throws NullPointerException when {@code pageRequest} or {@code sortBy} is {@code null}.
+     * @throws NullPointerException          when {@code pageRequest} or {@code sortBy} is {@code null}.
      * @throws UnsupportedOperationException for Key-Value and Wide-Column databases when the {@link PageRequest.Mode#CURSOR_NEXT}
-     * or {@link PageRequest.Mode#CURSOR_PREVIOUS} pagination mode is selected.
+     *                                       or {@link PageRequest.Mode#CURSOR_PREVIOUS} pagination mode is selected.
      * @see PageRequest.Mode
      */
     @Find
@@ -190,8 +190,8 @@ public interface BasicRepository<T, K> extends DataRepository<T, K> {
      *
      * @param entity must not be {@code null}.
      * @throws OptimisticLockingFailureException if the entity is not found in the database for deletion
-     *         or has a version for optimistic locking that is inconsistent with the version in the database.
-     * @throws NullPointerException when the entity is null
+     *                                           or has a version for optimistic locking that is inconsistent with the version in the database.
+     * @throws NullPointerException              when the entity is null
      */
     @Delete
     void delete(T entity);
@@ -203,8 +203,8 @@ public interface BasicRepository<T, K> extends DataRepository<T, K> {
      *
      * @param entities Must not be {@code null}. Must not contain {@code null} elements.
      * @throws OptimisticLockingFailureException If an entity is not found in the database for deletion
-     *         or has a version for optimistic locking that is inconsistent with the version in the database.
-     * @throws NullPointerException If the iterable is {@code null} or contains {@code null} elements.
+     *                                           or has a version for optimistic locking that is inconsistent with the version in the database.
+     * @throws NullPointerException              If the iterable is {@code null} or contains {@code null} elements.
      */
     @Delete
     void deleteAll(List<? extends T> entities);

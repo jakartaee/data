@@ -101,12 +101,12 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
      * instance that is supplied as a parameter.</p>
      *
      * @param entity the entity to insert. Must not be {@code null}.
-     * @param <S> Type of the entity to insert.
+     * @param <S>    Type of the entity to insert.
      * @return the inserted entity, which may or may not be a different instance depending on whether the insert caused values to be generated or automatically incremented.
      * @throws EntityExistsException if the entity is already present in the database (in ACID-supported databases).
-     * @throws NullPointerException if the entity is null.
+     * @throws NullPointerException  if the entity is null.
      */
-    @Insert 
+    @Insert
     <S extends T> S insert(S entity);
 
     /**
@@ -125,11 +125,11 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
      * position of entities in the parameter based on the unique identifier of the entity.</p>
      *
      * @param entities entities to insert.
-     * @param <S> Type of the entities to insert.
+     * @param <S>      Type of the entities to insert.
      * @return an iterable containing the inserted entities, which may or may not be different instances depending
      * on whether the insert caused values to be generated or automatically incremented.
      * @throws EntityExistsException if any of the entities are already present in the database (in ACID-supported databases).
-     * @throws NullPointerException if the iterable is null or any element is null.
+     * @throws NullPointerException  if the iterable is null or any element is null.
      */
     @Insert
     <S extends T> List<S> insertAll(List<S> entities);
@@ -147,12 +147,12 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
      * the update.</p>
      *
      * @param entity the entity to update. Must not be {@code null}.
-     * @param <S> Type of the entity to update.
+     * @param <S>    Type of the entity to update.
      * @return an updated entity instance including all automatically generated values,
-     *         updated versions, and incremented values which changed as a result of the update.
+     * updated versions, and incremented values which changed as a result of the update.
      * @throws OptimisticLockingFailureException the entity is not found in the database
-     *         or has a version that differs from the version in the database.
-     * @throws NullPointerException if the entity is null.
+     *                                           or has a version that differs from the version in the database.
+     * @throws NullPointerException              if the entity is null.
      */
     @Update
     <S extends T> S update(S entity);
@@ -170,13 +170,13 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
      * the update.</p>
      *
      * @param entities entities to update.
-     * @param <S> Type of the entities to update.
+     * @param <S>      Type of the entities to update.
      * @return updated entity instances, in the same order as the supplied entities,
-     *         and including all automatically generated values, updated versions, and
-     *         incremented values which changed as a result of the update.
+     * and including all automatically generated values, updated versions, and
+     * incremented values which changed as a result of the update.
      * @throws OptimisticLockingFailureException If any of the supplied entities is not found in the database
-     *         or has a version that differs from the version in the database.
-     * @throws NullPointerException if either the supplied {@code Iterable} is null or any element is null.
+     *                                           or has a version that differs from the version in the database.
+     * @throws NullPointerException              if either the supplied {@code Iterable} is null or any element is null.
      */
     @Update
     <S extends T> List<S> updateAll(List<S> entities);

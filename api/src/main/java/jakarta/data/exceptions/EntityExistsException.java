@@ -37,8 +37,8 @@ public class EntityExistsException extends DataException {
      * Constructs a new {@code EntityExistsException} with the specified detail message and cause.
      *
      * @param message the detail message.
-     * @param cause another exception or error that caused this exception.
-     *        Null indicates that no other cause is specified.
+     * @param cause   another exception or error that caused this exception.
+     *                Null indicates that no other cause is specified.
      */
     public EntityExistsException(String message, Throwable cause) {
         super(message, cause);

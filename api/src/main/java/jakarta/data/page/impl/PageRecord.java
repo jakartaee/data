@@ -28,17 +28,18 @@ import java.util.NoSuchElementException;
  * Record type implementing {@link Page}.
  * This may be used to simplify implementation of a repository interface.
  *
- * @param pageRequest The {@link PageRequest page request} for which this
- *                    page was obtained
- * @param content The page content
+ * @param pageRequest   The {@link PageRequest page request} for which this
+ *                      page was obtained
+ * @param content       The page content
  * @param totalElements The total number of elements across all pages that
  *                      can be requested for the query. A negative value
  *                      indicates that a total count of elements and pages
  *                      is not available.
- * @param moreResults whether there is a (nonempty) next page of results
- * @param <T> The type of elements on the page
+ * @param moreResults   whether there is a (nonempty) next page of results
+ * @param <T>           The type of elements on the page
  */
-public record PageRecord<T>(PageRequest pageRequest, List<T> content, long totalElements, boolean moreResults)
+public record PageRecord<T>(PageRequest pageRequest, List<T> content,
+                            long totalElements, boolean moreResults)
         implements Page<T> {
 
     /**
@@ -58,10 +59,10 @@ public record PageRecord<T>(PageRequest pageRequest, List<T> content, long total
      *                      and pages is not available.
      */
     public PageRecord(PageRequest pageRequest, List<T> content, long totalElements) {
-        this( pageRequest, content, totalElements,
+        this(pageRequest, content, totalElements,
                 content.size() == pageRequest.size()
                         && (totalElements < 0
-                                || totalElements > pageRequest.size() * pageRequest.page() ));
+                        || totalElements > pageRequest.size() * pageRequest.page()));
     }
 
     @Override
@@ -86,8 +87,8 @@ public record PageRecord<T>(PageRequest pageRequest, List<T> content, long total
         }
 
         return PageRequest.ofPage(pageRequest.page() + 1,
-                                  pageRequest.size(),
-                                  pageRequest.requestTotal());
+                pageRequest.size(),
+                pageRequest.requestTotal());
     }
 
     @Override
@@ -118,7 +119,7 @@ public record PageRecord<T>(PageRequest pageRequest, List<T> content, long total
 
     @Override
     public long totalElements() {
-        if (totalElements<0) {
+        if (totalElements < 0) {
             throw new IllegalStateException("total elements are not available");
         }
         return totalElements;
@@ -126,7 +127,7 @@ public record PageRecord<T>(PageRequest pageRequest, List<T> content, long total
 
     @Override
     public long totalPages() {
-        if (totalElements<0) {
+        if (totalElements < 0) {
             throw new IllegalStateException("total elements are not available");
         }
         int size = pageRequest.size();

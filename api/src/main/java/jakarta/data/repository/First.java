@@ -51,7 +51,6 @@ import java.lang.annotation.Target;
  *
  * @see Find
  * @see Query
- *
  * @since 1.1
  */
 @Retention(RetentionPolicy.RUNTIME)

@@ -22,9 +22,9 @@ import java.util.Objects;
 import jakarta.data.metamodel.ComparableExpression;
 
 record NotBetweenRecord<V extends Comparable<?>>(
-        ComparableExpression<?, V> lowerBound, 
+        ComparableExpression<?, V> lowerBound,
         ComparableExpression<?, V> upperBound)
-    implements NotBetween<V> {
+        implements NotBetween<V> {
 
     NotBetweenRecord {
         Objects.requireNonNull(lowerBound,

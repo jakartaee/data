@@ -28,38 +28,39 @@ import java.util.NoSuchElementException;
  * Record type implementing {@link CursoredPage}.
  * This may be used to simplify implementation of a repository interface.
  *
- * @param content The page content, that is, the query results, in order
- * @param cursors A list of {@link PageRequest.Cursor} instances for result,
- *                in order
- * @param totalElements The total number of elements across all pages that
- *                      can be requested for the query
- * @param pageRequest The {@link PageRequest page request} for which this
- *                    page was obtained
- * @param nextPageRequest A {@link PageRequest page request} for the next
- *                        page of results
+ * @param content             The page content, that is, the query results, in order
+ * @param cursors             A list of {@link PageRequest.Cursor} instances for result,
+ *                            in order
+ * @param totalElements       The total number of elements across all pages that
+ *                            can be requested for the query
+ * @param pageRequest         The {@link PageRequest page request} for which this
+ *                            page was obtained
+ * @param nextPageRequest     A {@link PageRequest page request} for the next
+ *                            page of results
  * @param previousPageRequest A {@link PageRequest page request} for the
  *                            previous page of results
- * @param <T> The type of elements on the page
+ * @param <T>                 The type of elements on the page
  */
 public record CursoredPageRecord<T>
-        (List<T> content, List<PageRequest.Cursor> cursors, long totalElements, PageRequest pageRequest,
+        (List<T> content, List<PageRequest.Cursor> cursors, long totalElements,
+         PageRequest pageRequest,
          PageRequest nextPageRequest, PageRequest previousPageRequest)
         implements CursoredPage<T> {
 
     /**
-     * @param content The page content, that is, the query results, in order
-     * @param cursors A list of {@link PageRequest.Cursor} instances for result,
-     *                in order
+     * @param content       The page content, that is, the query results, in order
+     * @param cursors       A list of {@link PageRequest.Cursor} instances for result,
+     *                      in order
      * @param totalElements The total number of elements across all pages that
      *                      can be requested for the query
-     * @param pageRequest The {@link PageRequest page request} for which this
-     *                    page was obtained
-     * @param firstPage True, if this is the first page of results
-     * @param lastPage True, if this is the last page of results
+     * @param pageRequest   The {@link PageRequest page request} for which this
+     *                      page was obtained
+     * @param firstPage     True, if this is the first page of results
+     * @param lastPage      True, if this is the last page of results
      */
     public CursoredPageRecord
-            (List<T> content, List<PageRequest.Cursor> cursors, long totalElements, PageRequest pageRequest,
-            boolean firstPage, boolean lastPage) {
+    (List<T> content, List<PageRequest.Cursor> cursors, long totalElements, PageRequest pageRequest,
+     boolean firstPage, boolean lastPage) {
         this(content, cursors, totalElements, pageRequest,
                 lastPage ? null : PageRequest.afterCursor(
                         cursors.get(cursors.size() - 1),
@@ -125,7 +126,7 @@ public record CursoredPageRecord<T>
 
     @Override
     public long totalElements() {
-        if (totalElements<0) {
+        if (totalElements < 0) {
             throw new IllegalStateException("total elements are not available");
         }
         return totalElements;
@@ -133,7 +134,7 @@ public record CursoredPageRecord<T>
 
     @Override
     public long totalPages() {
-        if (totalElements<0) {
+        if (totalElements < 0) {
             throw new IllegalStateException("total elements are not available");
         }
         int size = pageRequest.size();

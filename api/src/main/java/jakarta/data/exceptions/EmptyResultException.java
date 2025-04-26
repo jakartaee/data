@@ -37,8 +37,8 @@ public class EmptyResultException extends DataException {
      * Constructs a new EmptyResultException exception with the specified detail message.
      *
      * @param message the detail message.
-     * @param cause another exception or error that caused this exception.
-     *        Null indicates that no other cause is specified.
+     * @param cause   another exception or error that caused this exception.
+     *                Null indicates that no other cause is specified.
      */
     public EmptyResultException(String message, Throwable cause) {
         super(message, cause);

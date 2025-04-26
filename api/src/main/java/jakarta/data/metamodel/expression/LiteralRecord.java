@@ -19,7 +19,7 @@ package jakarta.data.metamodel.expression;
 
 import java.util.Objects;
 
-record LiteralRecord<T, V>(V value) implements Literal<T,V> {
+record LiteralRecord<T, V>(V value) implements Literal<T, V> {
 
     LiteralRecord {
         Objects.requireNonNull(value, "The value is required");

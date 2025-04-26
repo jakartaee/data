@@ -19,8 +19,8 @@ package jakarta.data.metamodel;
 
 import java.time.temporal.Temporal;
 
-record TemporalAttributeRecord<T,V extends Temporal & Comparable<? extends Temporal>>(
+record TemporalAttributeRecord<T, V extends Temporal & Comparable<? extends Temporal>>(
         Class<T> declaringType,
         String name)
-        implements TemporalAttribute<T,V> {
+        implements TemporalAttribute<T, V> {
 }

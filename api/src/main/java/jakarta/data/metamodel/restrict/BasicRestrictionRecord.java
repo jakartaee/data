@@ -27,7 +27,8 @@ import jakarta.data.metamodel.constraint.Constraint;
 
 import java.util.Objects;
 
-record BasicRestrictionRecord<T, V>(Expression<T,V> expression, Constraint<V> constraint)
+record BasicRestrictionRecord<T, V>(Expression<T, V> expression,
+                                    Constraint<V> constraint)
         implements BasicRestriction<T, V> {
 
     BasicRestrictionRecord {

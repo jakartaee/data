@@ -22,8 +22,9 @@ import java.util.Objects;
 import jakarta.data.metamodel.NumericExpression;
 
 record NumericOperatorExpressionRecord<T, N extends Number & Comparable<N>>
-        (Operator operator, NumericExpression<T,N> left, NumericExpression<T,N> right)
-        implements NumericOperatorExpression<T,N> {
+        (Operator operator, NumericExpression<T, N> left,
+         NumericExpression<T, N> right)
+        implements NumericOperatorExpression<T, N> {
 
     NumericOperatorExpressionRecord {
         Objects.requireNonNull(operator, "The operator is required");

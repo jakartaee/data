@@ -45,7 +45,6 @@ package jakarta.data.event;
  * accessed from an asynchronous observer method for a lifecycle
  * event, the resulting behavior is undefined and unportable.</p>
  *
- *
  * @param <E> the entity type
  */
 public abstract class LifecycleEvent<E> {

@@ -55,15 +55,15 @@ import java.util.Objects;
  * @param <T> entity class of the static metamodel.
  * @param <V> type of entity attribute (or wrapper type if primitive).
  */
-public interface ComparableAttribute<T,V extends Comparable<?>>
-        extends BasicAttribute<T,V>, SortableAttribute<T>, ComparableExpression<T,V> {
+public interface ComparableAttribute<T, V extends Comparable<?>>
+        extends BasicAttribute<T, V>, SortableAttribute<T>, ComparableExpression<T, V> {
 
     /**
      * <p>Creates a static metamodel {@code ComparableAttribute} representing the
      * entity attribute with the specified name.</p>
      *
-     * @param <T> entity class of the static metamodel.
-     * @param <V> type of entity attribute (or wrapper type if primitive).
+     * @param <T>           entity class of the static metamodel.
+     * @param <V>           type of entity attribute (or wrapper type if primitive).
      * @param entityClass   the entity class.
      * @param name          the name of the entity attribute.
      * @param attributeType type of the entity attribute.

@@ -22,13 +22,12 @@ import jakarta.data.metamodel.SortableAttribute;
 import jakarta.data.metamodel.TextAttribute;
 
 /**
+ * @param name the name of the attribute
  * @deprecated For more complete access to the static metamodel, use the
  * most specific subtype of {@link SortableAttribute} that applies to the
  * entity attribute, such as
  * {@link TextAttribute#of(Class, String) TextAttribute} or
  * {@link NumericAttribute#of(Class, String, Class) NumericAttribute}.
- *
- * @param name the name of the attribute
  */
 @Deprecated(since = "1.1")
 public record SortableAttributeRecord<T>(String name)
