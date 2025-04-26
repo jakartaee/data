@@ -49,7 +49,8 @@ public interface TextFunctionExpression<T>
         return new TextFunctionExpressionRecord<>(name, List.of(StringLiteral.of(left), right));
     }
 
-    static <T> TextFunctionExpression<T> of(String name, TextExpression<? super T> left, TextExpression<? super T> right) {
+    static <T> TextFunctionExpression<T> of(String name, TextExpression<? super T> left,
+                                            TextExpression<? super T> right) {
         Objects.requireNonNull(left, "The left expression is required");
         Objects.requireNonNull(left, "The right expression is required");
         return new TextFunctionExpressionRecord<>(name, List.of(left, right));

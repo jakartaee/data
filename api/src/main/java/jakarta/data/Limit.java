@@ -140,7 +140,8 @@ public record Limit(int maxResults, long startAt) {
             throw new IllegalArgumentException("startAt: " + startAt + ", endAt: " + endAt);
 
         if (endAt - startAt >= Integer.MAX_VALUE)
-            throw new IllegalArgumentException("startAt: " + startAt + ", endAt: " + endAt + ", maxResults > " + Integer.MAX_VALUE);
+            throw new IllegalArgumentException("startAt: " + startAt + ", endAt: "
+                    + endAt + ", maxResults > " + Integer.MAX_VALUE);
 
         return new Limit((int) (endAt - startAt + 1), startAt);
     }
