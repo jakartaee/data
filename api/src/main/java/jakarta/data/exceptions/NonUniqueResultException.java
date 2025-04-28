@@ -23,8 +23,7 @@ import jakarta.data.repository.Query;
 
 /**
  * <p>This exception is raised when execution of a repository method with a
- * singular
- * return type finds multiple results.</p>
+ * singular return type finds multiple results.</p>
  *
  * <p>This error can be circumvented by applying the {@link First @First}
  * annotation
