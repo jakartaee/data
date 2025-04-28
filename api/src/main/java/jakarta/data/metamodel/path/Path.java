@@ -15,7 +15,10 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.metamodel;
+package jakarta.data.metamodel.path;
+
+import jakarta.data.metamodel.Attribute;
+import jakarta.data.metamodel.NavigableExpression;
 
 public interface Path<T, U> {
     NavigableExpression<T, U> expression();

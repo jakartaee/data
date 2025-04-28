@@ -18,7 +18,6 @@
 package jakarta.data.metamodel.path;
 
 import jakarta.data.metamodel.NavigableExpression;
-import jakarta.data.metamodel.Path;
 import jakarta.data.metamodel.TextAttribute;
 import jakarta.data.metamodel.TextExpression;
 
