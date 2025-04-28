@@ -27,13 +27,13 @@ import org.junit.jupiter.api.extension.TestWatcher;
 import ee.jakarta.tck.data.framework.junit.anno.Assertion;
 
 /**
- * If a test fails or is disabled we can warn the vendor of the assertion
- * ID As well as provide test strategy information to aid in resolving the
- * issue. This data is obtained by the {@code @Assertion} annotation.
- * 
+ * If a test fails or is disabled we can warn the vendor of the assertion ID As
+ * well as provide test strategy information to aid in resolving the issue. This
+ * data is obtained by the {@code @Assertion} annotation.
+ *
  * @see ee.jakarta.tck.data.framework.junit.anno.Assertion
  */
-public class AssertionExtension implements TestWatcher, BeforeTestExecutionCallback,  AfterTestExecutionCallback{
+public class AssertionExtension implements TestWatcher, BeforeTestExecutionCallback, AfterTestExecutionCallback {
     private static final Logger log = Logger.getLogger(AssertionExtension.class.getCanonicalName());
     private static final String nl = System.lineSeparator();
 
@@ -72,7 +72,7 @@ public class AssertionExtension implements TestWatcher, BeforeTestExecutionCallb
                     + " @Disabled.reason:" + reason.get());
         }
     }
-    
+
     @Override
     public void beforeTestExecution(ExtensionContext context) throws Exception {
         log.info(">>> Begin test: " + context.getDisplayName());

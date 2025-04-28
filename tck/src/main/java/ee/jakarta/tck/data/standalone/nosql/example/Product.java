@@ -24,15 +24,15 @@ public class Product {
 
     @Id
     private Long id;
-    
+
     @Column
     private String name;
-    
+
     @Column
     private Double price;
-    
+
     private Double surgePrice;
-    
+
     public static Product of(Long id, String name, Double price, Double surgePrice) {
         return new Product(id, name, price, surgePrice);
     }
@@ -79,5 +79,5 @@ public class Product {
     public void setSurgePrice(Double surgePrice) {
         this.surgePrice = surgePrice;
     }
-    
+
 }

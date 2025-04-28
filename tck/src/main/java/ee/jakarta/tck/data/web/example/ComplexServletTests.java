@@ -32,60 +32,61 @@ import ee.jakarta.tck.data.framework.servlet.TestClient;
 import ee.jakarta.tck.data.framework.servlet.URLBuilder;
 
 /**
- * Example test case where we want to run a test on the client side,
- * and make assertions in the container.
+ * Example test case where we want to run a test on the client side, and make
+ * assertions in the container.
  * FIXME - This is an example test, remove before the 1.0 release.
  */
 @Web
 @AnyEntity
-@RunAsClient //These tests will run on the client JVM and make calls to a servlet running on a web container.
+@RunAsClient
+//These tests will run on the client JVM and make calls to a servlet running on a web container.
 public class ComplexServletTests extends TestClient {
-    
+
     @Deployment
     public static WebArchive createDeployment() {
         return ShrinkWrap.create(WebArchive.class)
                 .addClass(ComplexServlet.class);
-    } 
-    
+    }
+
     @ArquillianResource
     URL baseURL;
-    
+
     @Assertion(id = "26", strategy = "Run server side tests that will succeed and fail and assert the results.")
     public void testSuccessAndFailure(TestInfo testInfo) {
         URL requestURL = URLBuilder.fromURL(baseURL)
                 .withPath(ComplexServlet.URL_PATTERN)
                 .withQuery(ComplexServlet.TEST_METHOD_PARAM, "testServletSideSuccess")
                 .build();
-        
+
         super.runTest(requestURL);
-        
+
         Assertions.assertThrows(AssertionError.class, () -> {
             URL requestURL2 = URLBuilder.fromURL(baseURL)
                     .withPath(ComplexServlet.URL_PATTERN)
                     .withQuery(ComplexServlet.TEST_METHOD_PARAM, "testServletSideFailure")
                     .build();
-            
+
             super.runTest(requestURL2);
         });
     }
-    
+
     @Assertion(id = "26", strategy = "Run server side test with a method name that matches the client side test.")
     public void testMatchServletSideMethodName(TestInfo testInfo) {
         URL requestURL = URLBuilder.fromURL(baseURL)
                 .withPath(ComplexServlet.URL_PATTERN)
                 .withQuery(ComplexServlet.TEST_METHOD_PARAM, testInfo.getTestMethod().get().getName())
                 .build();
-        
+
         super.runTest(requestURL);
     }
-    
+
     @Assertion(id = "26", strategy = "Run server side test that append a unique string to the response body and make sure it is returned.")
     public void testServletSideCustomResponse(TestInfo testInfo) {
         URL requestURL = URLBuilder.fromURL(baseURL)
                 .withPath(ComplexServlet.URL_PATTERN)
                 .withQuery(ComplexServlet.TEST_METHOD_PARAM, testInfo.getTestMethod().get().getName())
                 .build();
-        
+
         super.runTest(requestURL, ComplexServlet.EXPECTED_RESPONSE);
     }
 }

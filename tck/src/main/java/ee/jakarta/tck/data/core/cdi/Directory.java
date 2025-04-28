@@ -26,20 +26,20 @@ import jakarta.data.repository.Repository;
 
 /**
  * A Directory repository for testing.
- * 
- * Uses the 'provider' attribute to ensure that no Jakarta Data provider 
+ * <p>
+ * Uses the 'provider' attribute to ensure that no Jakarta Data provider
  * implements this repository interface.
  */
 @Repository(provider = Directory.PERSON_PROVIDER)
 public interface Directory extends DataRepository<Person, Long> {
-    
+
     // A string that is unique enough not to be used by any 
     // Jakarta Data provider attempting to run this TCK.
     public static final String PERSON_PROVIDER = "cb4d43ac-477a-4634-b3ee-a9ce81ea1801";
-    
+
     List<Person> findByIdInOrderByAgeDesc(List<Long> ids);
-    
+
     @Delete
     void deleteById(@By(ID) Long id);
-    
+
 }

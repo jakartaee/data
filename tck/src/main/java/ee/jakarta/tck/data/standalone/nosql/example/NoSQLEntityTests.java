@@ -31,21 +31,21 @@ import ee.jakarta.tck.data.framework.utilities.TestPropertyUtility;
 import jakarta.inject.Inject;
 
 /**
- * Example test class:
- * Execute a test with an NoSQL specific entity with a repository that requires read and writes (AKA not read-only)
+ * Example test class: Execute a test with an NoSQL specific entity with a
+ * repository that requires read and writes (AKA not read-only)
  */
 @Standalone
 @NoSQL
 public class NoSQLEntityTests {
-    
+
     @Deployment
     public static WebArchive createDeployment() {
         return ShrinkWrap.create(WebArchive.class).addClasses(Product.class, Catalog.class);
     }
-    
+
     @Inject
     Catalog catalog;
-    
+
     @Assertion(id = "119", strategy = "Ensure that this test is only run when provider supports nosql entities")
     public void testNotRunOnPersistence() {
         List<Product> products = new ArrayList<>();
@@ -54,16 +54,16 @@ public class NoSQLEntityTests {
         products.add(Product.of(03L, "marker", 3.00, 4.00));
         products.add(Product.of(04L, "calculator", 15.00, 20.00));
         products.add(Product.of(05L, "ruler", 2.00, 2.15));
-        
+
         products.stream().forEach(product -> catalog.save(product));
-        
+
         //IMPORTANT - all NoSQL tests need to wait for eventual consistency after a write action
         //because in a test environment we must be pessimistic and assume some wait is necessary for 
         //all nodes to get the latest update.
-        TestPropertyUtility.waitForEventualConsistency(); 
-        
+        TestPropertyUtility.waitForEventualConsistency();
+
         long countExpensive = catalog.countByPriceGreaterThanEqual(2.99);
         assertEquals(2L, countExpensive, "Expected two products to be more than 3.00");
-        
+
     }
 }

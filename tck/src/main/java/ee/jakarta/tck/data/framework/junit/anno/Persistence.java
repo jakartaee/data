@@ -23,7 +23,8 @@ import java.lang.annotation.Target;
 import org.junit.jupiter.api.Tag;
 
 /**
- * <p>These are test classes that REQUIRE Persistence entity support to be executed.</p>
+ * <p>These are test classes that REQUIRE Persistence entity support to be
+ * executed.</p>
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

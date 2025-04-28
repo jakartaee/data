@@ -24,8 +24,8 @@ import jakarta.data.metamodel.impl.SortableAttributeRecord;
 import jakarta.data.metamodel.impl.TextAttributeRecord;
 
 /**
- * This static metamodel class tests what a user might explicitly provide,
- * in which case the Jakarta Data provider will need to initialize the attributes.
+ * This static metamodel class tests what a user might explicitly provide, in
+ * which case the Jakarta Data provider will need to initialize the attributes.
  */
 @StaticMetamodel(AsciiCharacter.class)
 public class _AsciiChar {

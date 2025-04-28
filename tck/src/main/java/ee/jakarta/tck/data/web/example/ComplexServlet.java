@@ -28,7 +28,7 @@ import jakarta.servlet.http.HttpServletResponse;
 public class ComplexServlet extends TestServlet {
 
     public static final String URL_PATTERN = "/ComplexServlet";
-    
+
     public static final String EXPECTED_RESPONSE = "asdf123";
 
     public void testServletSideSuccess() {
@@ -42,7 +42,7 @@ public class ComplexServlet extends TestServlet {
     public void testMatchServletSideMethodName() {
         //Do nothing -- should be able to find this method
     }
-    
+
     public void testServletSideCustomResponse(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //Append a custom response
         response.getWriter().append(EXPECTED_RESPONSE);

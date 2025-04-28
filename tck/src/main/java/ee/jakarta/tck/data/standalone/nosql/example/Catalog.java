@@ -26,10 +26,12 @@ public interface Catalog extends DataRepository<Product, Long> {
 
     @Save
     void save(Product product);
+
     void deleteById(Long id);
-    
+
     long countByPriceGreaterThanEqual(Double price);
+
     long countBySurgePriceGreaterThanEqual(Double price);
-    
+
     List<Product> findByName(String name);
 }

@@ -29,7 +29,7 @@ import java.util.logging.Logger;
  * </p>
  */
 public class SigTestDriver extends SignatureTestDriver {
-    
+
     private static final Logger log = Logger.getLogger(SigTestDriver.class.getCanonicalName());
 
     private static final String CLASSPATH_FLAG = "-Classpath";
@@ -47,12 +47,12 @@ public class SigTestDriver extends SignatureTestDriver {
     private static final String STATIC_FLAG = "-Static";
 
     private static final String CHECKVALUE_FLAG = "-CheckValue"; // only valid w/
-                                                                 // -static
+    // -static
 
 //    private static final String NO_CHECKVALUE_FLAG = "-NoCheckValue";
 
     private static final String SMODE_FLAG = "-mode"; // requires arg of bin or
-                                                      // src
+    // src
 
 //    private static final String DEBUG_FLAG = "-Debug";
 
@@ -75,7 +75,7 @@ public class SigTestDriver extends SignatureTestDriver {
 
     @Override
     protected String[] createTestArguments(String packageListFile, String mapFile, String signatureRepositoryDir,
-            String packageOrClassUnderTest, String classpath, boolean bStaticMode) throws Exception {
+                                           String packageOrClassUnderTest, String classpath, boolean bStaticMode) throws Exception {
 
         SignatureFileInfo info = getSigFileInfo(packageOrClassUnderTest, mapFile, signatureRepositoryDir);
 
@@ -117,7 +117,7 @@ public class SigTestDriver extends SignatureTestDriver {
             command.add(EXCLUDE_FLAG);
             command.add(subPackages[i]);
         }
-        
+
         command.add(EXCLUDE_JDK_CLASS_FLAG);
 
         command.add(API_VERSION_FLAG);
@@ -142,8 +142,8 @@ public class SigTestDriver extends SignatureTestDriver {
         }
 
         Method runMethod = sigTestClass.getDeclaredMethod("run",
-                new Class[] { String[].class, PrintWriter.class, PrintWriter.class });
-        runMethod.invoke(sigTestInstance, new Object[] { testArguments, new PrintWriter(output, true), null });
+                new Class[]{String[].class, PrintWriter.class, PrintWriter.class});
+        runMethod.invoke(sigTestInstance, new Object[]{testArguments, new PrintWriter(output, true), null});
 
         String rawMessages = output.toString();
 
@@ -156,7 +156,7 @@ public class SigTestDriver extends SignatureTestDriver {
     } // END runSignatureTest
 
     /*
-     * 
+     *
      * @return This returns true if the packageOrClassName is found in the impl.
      */
     @Override
@@ -181,8 +181,8 @@ public class SigTestDriver extends SignatureTestDriver {
         }
 
         Method runMethod = sigTestClass.getDeclaredMethod("run",
-                new Class[] { String[].class, PrintWriter.class, PrintWriter.class });
-        runMethod.invoke(sigTestInstance, new Object[] { testArguments, new PrintWriter(output, true), null });
+                new Class[]{String[].class, PrintWriter.class, PrintWriter.class});
+        runMethod.invoke(sigTestInstance, new Object[]{testArguments, new PrintWriter(output, true), null});
 
         String rawMessages = output.toString();
 

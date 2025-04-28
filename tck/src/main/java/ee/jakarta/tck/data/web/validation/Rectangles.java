@@ -30,19 +30,19 @@ import jakarta.validation.constraints.Size;
 
 @Repository
 public interface Rectangles extends DataRepository<Rectangle, String> {
-    
+
     @Save
     Rectangle save(@Valid Rectangle entity);
 
     @Save
     List<Rectangle> saveAll(@Valid List<Rectangle> entities);
-    
+
     @PositiveOrZero
     long countAll();
 
     @Find
     Stream<Rectangle> findAll();
-    
+
     @Delete
     void deleteEverything();
 

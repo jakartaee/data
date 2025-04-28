@@ -19,9 +19,9 @@ import ee.jakarta.tck.data.framework.read.only.NaturalNumber.NumberType;
 import jakarta.data.repository.Select;
 
 /**
- * A record that contains a subset of the attributes of the NaturalNumber entity.
- * where the Select annotation is used to identify entity attribute names that do
- * not match the record component names.
+ * A record that contains a subset of the attributes of the NaturalNumber
+ * entity. where the Select annotation is used to identify entity attribute
+ * names that do not match the record component names.
  */
 public record CardinalNumber(
         // Select annotation is not needed when the name matches

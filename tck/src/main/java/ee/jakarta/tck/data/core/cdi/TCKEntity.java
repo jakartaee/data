@@ -24,9 +24,9 @@ import jakarta.data.spi.EntityDefining;
 
 /**
  * A custom entity annotation for testing.
- *
- * This EntityDefining annotation is uniquely named to prevent any
- * Jakarta Provider from mistaking it as one they support.
+ * <p>
+ * This EntityDefining annotation is uniquely named to prevent any Jakarta
+ * Provider from mistaking it as one they support.
  */
 @EntityDefining
 @Target(ElementType.TYPE)

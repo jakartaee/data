@@ -25,76 +25,76 @@ import org.jboss.shrinkwrap.api.asset.StringAsset;
 import org.jboss.shrinkwrap.api.container.ResourceContainer;
 
 /**
- * This uitlity class handles the caching and loading of test properties between the 
- * client and container when tests are run inside an Arquillian container.
+ * This uitlity class handles the caching and loading of test properties between
+ * the client and container when tests are run inside an Arquillian container.
  */
 public class TestPropertyHandler {
-    
+
     private static final Logger log = Logger.getLogger(TestPropertyHandler.class.getCanonicalName());
-    
+
     private static final String PROP_FILE = "tck.properties";
     private static Properties foundProperties;
-    
+
     private TestPropertyHandler() {
         //UTILITY CLASS
     }
 
     /**
-     * Container: Load properties from the TestProperty cache file, and return a properties object.
-     * If any error occurs in finding the cache file, or loading the properties, 
-     * then an empty properties object is returned. 
-     * 
+     * Container: Load properties from the TestProperty cache file, and return a
+     * properties object. If any error occurs in finding the cache file, or
+     * loading the properties, then an empty properties object is returned.
+     *
      * @return - the cached properties, or an empty properties object.
      */
-    static Properties loadProperties() {   
-        if(foundProperties != null) {
+    static Properties loadProperties() {
+        if (foundProperties != null) {
             return foundProperties;
         }
-        
+
         //Try to load property file
         foundProperties = new Properties();
         InputStream propsStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(PROP_FILE);
-        if(propsStream != null) {
+        if (propsStream != null) {
             try {
                 foundProperties.load(propsStream);
             } catch (Exception e) {
                 log.info("Attempted to load properties from resource " + PROP_FILE + " but failed. Because: " + e.getLocalizedMessage());
             }
         }
-        
+
         return foundProperties;
     }
-    
+
     /**
-     * Client: Store system properties from the client to a properties file 
-     * as a resource on the archive sent to the container. 
-     * 
+     * Client: Store system properties from the client to a properties file as a
+     * resource on the archive sent to the container.
+     *
      * @param archive - The archive going to the container
      * @return the archive with a resource file attached
      */
     public static Archive<?> storeProperties(Archive<?> archive) {
-        if(! (archive instanceof ResourceContainer) ) {
+        if (!(archive instanceof ResourceContainer)) {
             throw new RuntimeException("Could not store properties to archive, because it was not a ResourceConatiner. "
                     + "Please raise an issue with the maintainers of the Jakarta Data TCK.");
         }
-        
+
         Properties filteredProps = new Properties();
-        for(TestProperty prop : TestProperty.values()) {
-            if(prop.getKey().startsWith("java.")) {
+        for (TestProperty prop : TestProperty.values()) {
+            if (prop.getKey().startsWith("java.")) {
                 continue;
             }
-            if(prop.isSet())
+            if (prop.isSet())
                 filteredProps.put(prop.getKey(), prop.getValue());
         }
-        
+
         try {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             filteredProps.store(out, "System properties shared with Arquillian container");
-            ((ResourceContainer<?>)archive).addAsResource(new StringAsset(out.toString()), PROP_FILE);
+            ((ResourceContainer<?>) archive).addAsResource(new StringAsset(out.toString()), PROP_FILE);
         } catch (Exception e) {
             throw new RuntimeException("Could not store properties file to archive", e);
         }
-        
+
         return archive;
     }
 }

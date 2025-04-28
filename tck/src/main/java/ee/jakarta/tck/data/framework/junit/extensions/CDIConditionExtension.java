@@ -25,8 +25,9 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 import jakarta.enterprise.inject.spi.CDI;
 
 /**
- * Evaluates the availability of CDI to determine if a test class/method is enabled/disabled.
- * 
+ * Evaluates the availability of CDI to determine if a test class/method is
+ * enabled/disabled.
+ *
  * @see ee.jakarta.tck.data.framework.junit.anno.CDIRequired
  */
 public class CDIConditionExtension implements ExecutionCondition {
@@ -37,7 +38,7 @@ public class CDIConditionExtension implements ExecutionCondition {
     public ConditionEvaluationResult evaluateExecutionCondition(ExtensionContext context) {
 
         //We are only verifying CDI when running on a platform so first verify that this condition is running on a platform
-        if(Boolean.parseBoolean(context.getConfigurationParameter(ArquillianExtension.RUNNING_INSIDE_ARQUILLIAN).orElse("false"))) {
+        if (Boolean.parseBoolean(context.getConfigurationParameter(ArquillianExtension.RUNNING_INSIDE_ARQUILLIAN).orElse("false"))) {
             log.info("Inside Jakarta EE Platform, testing CDI provider.");
         } else {
             log.info("Outside Jakarta EE Platform, waiting to test CDI provider until inside.");

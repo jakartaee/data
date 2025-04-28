@@ -51,7 +51,7 @@ public class DataSignatureTestRunner extends SigTestEE {
     public static final String SIG_FILE_NAME = "jakarta.data.sig";
     public static final String SIG_MAP_NAME = "sig-test.map";
     public static final String SIG_PKG_NAME = "sig-test-pkg-list.txt";
-    
+
     public static final String[] SIG_RESOURCES = {SIG_FILE_NAME, SIG_MAP_NAME, SIG_PKG_NAME};
 
     public DataSignatureTestRunner() {
@@ -59,32 +59,34 @@ public class DataSignatureTestRunner extends SigTestEE {
     }
 
     /**
-     * Returns a list of strings where each string represents a package name. Each
-     * package name will have it's signature tested by the signature test framework.
-     * 
+     * Returns a list of strings where each string represents a package name.
+     * Each package name will have it's signature tested by the signature test
+     * framework.
+     * <p>
      * TODO is there a way to construct this list at runtime?
-     * Unlikely due to lazy classloading Package.getPackages() will not contain anything 
+     * Unlikely due to lazy classloading Package.getPackages() will not contain anything
      * that hasn't been loaded.
-     * 
+     *
      * @return String[] The names of the packages whose signatures should be
-     *         verified.
+     * verified.
      */
     @Override
     protected String[] getPackages() {
-        return new String[] {
-                  "jakarta.data",
-                  "jakarta.data.exceptions",
-                  "jakarta.data.metamodel",
-                  "jakarta.data.metamodel.impl",
-                  "jakarta.data.page",
-                  "jakarta.data.page.impl",
-                  "jakarta.data.repository",
-                  "jakarta.data.spi"
-                };
+        return new String[]{
+                "jakarta.data",
+                "jakarta.data.exceptions",
+                "jakarta.data.metamodel",
+                "jakarta.data.metamodel.impl",
+                "jakarta.data.page",
+                "jakarta.data.page.impl",
+                "jakarta.data.repository",
+                "jakarta.data.spi"
+        };
     }
 
     /**
      * Returns the classpath for the packages we are interested in.
+     *
      * @return the classpath as a colon (:) delimited string
      */
     protected String getClasspath() {
@@ -94,11 +96,11 @@ public class DataSignatureTestRunner extends SigTestEE {
         }
 
         // The Jakarta artifacts we want added to our classpath
-        String[] classes = new String[] { "jakarta.data.repository.Repository", // For jakarta-data-api.jar
+        String[] classes = new String[]{"jakarta.data.repository.Repository", // For jakarta-data-api.jar
         };
 
         // The JDK modules we want added to our classpath
-        String[] jdkModules = new String[] { "java.base", "java.rmi", "java.sql", "java.naming" };
+        String[] jdkModules = new String[]{"java.base", "java.rmi", "java.sql", "java.naming"};
 
         // Get Jakarta artifacts from application server
         Set<String> classPaths = new HashSet<String>();
@@ -192,7 +194,7 @@ public class DataSignatureTestRunner extends SigTestEE {
 
     /*****
      * Boilerplate Code
-     * 
+     *
      * /* The following comments are specified in the base class that defines the
      * signature tests. This is done so the test finders will find the right class
      * to run. The implementation of these methods is inherited from the super class
@@ -206,7 +208,6 @@ public class DataSignatureTestRunner extends SigTestEE {
     // of the VM running the signature tests. Use either the first
     // comment or the one below it depending on which properties your
     // signature tests need. Please do not use both comments.
-
     public void signatureTest() throws Fault {
         log.info("DataSignatureTestRunner.signatureTest() called");
         SigTestResult results = null;
@@ -317,9 +318,9 @@ public class DataSignatureTestRunner extends SigTestEE {
     /**
      * Ensures the test project to configured correctly to run signature tests
      * before attempting to run signature tests.
-     * 
-     * @param standalone - True if running on a standalone JVM, False if running on
-     *                   a Jakarta EE server.
+     *
+     * @param standalone - True if running on a standalone JVM, False if running
+     *                   on a Jakarta EE server.
      */
     public static void assertProjectSetup(boolean standalone) {
         // Ensure that jimage directory is set.

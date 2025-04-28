@@ -29,16 +29,19 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 /**
- * <p>Standard superclass for test servlets that accepts a `testMethod` parameter
+ * <p>Standard superclass for test servlets that accepts a `testMethod`
+ * parameter
  * to the doGet / doPost methods that will attempt to run that method on the</p>
  * subclass.
- * 
- * <p>The doGet / doPost methods will append `SUCCESS` to the response if the test
- * is successfully. Otherwise, SUCCESS will not be appended to the response.</p>
+ *
+ * <p>The doGet / doPost methods will append `SUCCESS` to the response if the
+ * test
+ * is successfully. Otherwise, SUCCESS will not be appended to the
+ * response.</p>
  */
 public class TestServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    
+
     private static final Logger log = Logger.getLogger(TestServlet.class.getCanonicalName());
 
     private boolean runBeforeClass = true;
@@ -57,11 +60,11 @@ public class TestServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String method = request.getParameter(TEST_METHOD_PARAM);
-        
+
         String requestParams = request.getParameterMap().keySet().stream()
                 .map(key -> key + "=" + Arrays.asList(request.getParameterMap().get(key)))
                 .collect(Collectors.joining(", ", "{", "}"));
-        
+
         log.info("Received request to run test " + method + " with parameters " + requestParams);
 
         if (runBeforeClass) {
@@ -117,6 +120,7 @@ public class TestServlet extends HttpServlet {
 
     /**
      * Override to mimic JUnit's {@code @BeforeClass} annotation.
+     *
      * @throws Exception - unable to setup
      */
     protected void beforeClass() throws Exception {
@@ -124,6 +128,7 @@ public class TestServlet extends HttpServlet {
 
     /**
      * Override to mimic JUnit's {@code @Before} annotation.
+     *
      * @throws Exception - unable to setup
      */
     protected void before() throws Exception {
@@ -131,6 +136,7 @@ public class TestServlet extends HttpServlet {
 
     /**
      * Override to mimic JUnit's {@code @After} annotation.
+     *
      * @throws Exception - Unable to cleanup
      */
     protected void after() throws Exception {
@@ -140,8 +146,9 @@ public class TestServlet extends HttpServlet {
     /**
      * Implement this method for custom test invocation, such as specific test
      * method signatures
-     * @param method - The method name
-     * @param request - HTTPServlet Request
+     *
+     * @param method   - The method name
+     * @param request  - HTTPServlet Request
      * @param response - HTTPServlet Response
      * @throws Exception - Unable to invoke test
      */

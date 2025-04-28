@@ -36,7 +36,8 @@ public @interface Assertion {
     String id();
 
     /**
-     * A longer description of the assertion being made to keep method names concise
+     * A longer description of the assertion being made to keep method names
+     * concise
      */
     String strategy() default "";
 }

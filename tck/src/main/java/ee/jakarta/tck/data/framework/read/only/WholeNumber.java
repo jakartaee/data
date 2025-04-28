@@ -18,13 +18,13 @@ package ee.jakarta.tck.data.framework.read.only;
 import ee.jakarta.tck.data.framework.read.only.NaturalNumber.NumberType;
 
 /**
- * A record that contains a subset of the attributes of the NaturalNumber entity.
- * where the record component names do not match the corresponding entity attribute
- * names.
+ * A record that contains a subset of the attributes of the NaturalNumber
+ * entity. where the record component names do not match the corresponding
+ * entity attribute names.
  */
 public record WholeNumber(
         int numType,
-        long sqrtFloor,        
+        long sqrtFloor,
         long value) implements Comparable<WholeNumber> {
 
     @Override

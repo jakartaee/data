@@ -26,17 +26,17 @@ import ee.jakarta.tck.data.framework.utilities.TestProperty;
 import ee.jakarta.tck.data.framework.utilities.TestPropertyHandler;
 
 /**
- * This extension will intercept all archives before they are deployed to the container and append 
- * a library with the following:
- * 
+ * This extension will intercept all archives before they are deployed to the
+ * container and append a library with the following:
+ *
  * <p>ee.jakarta.tck.data.framework.junit.anno package</p>
  * <p>ee.jakarta.tck.data.framework.junit.extensions package</p>
  * <p>ee.jakarta.tck.data.framework.utilities package</p>
- * <p>A resource file with system properties from the client, that are needed on the container.</p>
- *
+ * <p>A resource file with system properties from the client, that are needed on
+ * the container.</p>
  */
 public class TCKFrameworkAppender extends CachedAuxilliaryArchiveAppender {
-    
+
     private static final Package annoPackage = Assertion.class.getPackage();
     private static final Package extensionPackage = AssertionExtension.class.getPackage();
     private static final Package utilPackage = TestProperty.class.getPackage();

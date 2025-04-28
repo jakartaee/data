@@ -34,55 +34,59 @@ import java.util.logging.Logger;
 /**
  * <p>This is a superclass that test classes can extend to act as a test client
  * to execute tests that are deployed on a Web Profile Server.</p>
- * 
- * <p>This is used for complex test situations where a custom servlet is required.</p>
+ *
+ * <p>This is used for complex test situations where a custom servlet is
+ * required.</p>
  */
 public class TestClient {
-    
+
     private static final String nl = System.lineSeparator();
-    
+
     private static final Logger log = Logger.getLogger(TestClient.class.getCanonicalName());
-    
+
     /**
-     * Runs test against servlet at requestURL, and asserts a successful response.
-     * 
+     * Runs test against servlet at requestURL, and asserts a successful
+     * response.
+     *
      * @param requestURL - URL to request a connection to the test servlet
      */
     public void runTest(URL requestURL) {
         assertSuccessfulURLResponse(requestURL, null);
     }
-    
+
     /**
-     * Runs test against servlet at requestURL, and asserts a successful response.
-     * Additionally, asserts that a certain string appears in response.
-     * 
+     * Runs test against servlet at requestURL, and asserts a successful
+     * response. Additionally, asserts that a certain string appears in
+     * response.
+     *
      * @param requestURL - URL to request a connection to the test servlet
-     * @param expected - Assert that the expected string is in the response body
+     * @param expected   - Assert that the expected string is in the response
+     *                   body
      */
     public void runTest(URL requestURL, String expected) {
         String response = assertSuccessfulURLResponse(requestURL, null);
         assertTrue(response.contains(expected), "The expected string [" + expected + "] was not found in the response: " + response);
     }
-    
+
     /**
-     * Runs test against servlet at requestURL.
-     * Provide properties if you want them included in a POST request, otherwise pass in null.
-     * Returns the response body for custom assertions.
-     * 
+     * Runs test against servlet at requestURL. Provide properties if you want
+     * them included in a POST request, otherwise pass in null. Returns the
+     * response body for custom assertions.
+     *
      * @param requestURL - URL to request a connection to the test servlet
-     * @param props - properties to accompany a POST request to servlet
+     * @param props      - properties to accompany a POST request to servlet
      * @return - response body as a string
      */
     public String runTestWithResponse(URL requestURL, Properties props) {
         return assertSuccessfulURLResponse(requestURL, props);
     }
-    
+
 
     //##### test runner ######
-    private String assertSuccessfulURLResponse(URL url, Properties props) {        
+    private String assertSuccessfulURLResponse(URL url, Properties props) {
         boolean withProps = props != null;
         boolean pass = false;
-        
+
         log.info("Running test on servlet via URL: " + url.toString());
 
         HttpURLConnection con = null;
@@ -92,13 +96,13 @@ public class TestClient {
             con.setDoOutput(true);
             con.setUseCaches(false);
             con.setConnectTimeout((int) Duration.ofMinutes(1).toMillis());
-            
-            if(withProps) {
+
+            if (withProps) {
                 con.setRequestMethod("POST");
-                try( DataOutputStream wr = new DataOutputStream( con.getOutputStream())){
-                    wr.writeBytes( toEncodedString(props) );
+                try (DataOutputStream wr = new DataOutputStream(con.getOutputStream())) {
+                    wr.writeBytes(toEncodedString(props));
                 }
-                       
+
             } else {
                 con.setRequestMethod("GET");
             }
@@ -117,7 +121,7 @@ public class TestClient {
 
             assertTrue(con.getResponseCode() < 400, "Connection returned a response code that was greater than 400");
             assertTrue(pass, "Output did not contain successful message: " + TestServlet.SUCCESS);
-        
+
             return outputBuilder.toString();
         } catch (IOException e) {
             throw new RuntimeException("Exception: " + e.getClass().getName() + " requesting URL=" + url.toString(), e);
@@ -127,18 +131,18 @@ public class TestClient {
             }
         }
     }
-    
+
     protected static String toEncodedString(Properties args) throws UnsupportedEncodingException {
         StringBuffer buf = new StringBuffer();
         Enumeration<?> names = args.propertyNames();
         while (names.hasMoreElements()) {
             String name = (String) names.nextElement();
             String value = args.getProperty(name);
-            
+
             buf.append(URLEncoder.encode(name, StandardCharsets.UTF_8.name()))
-                .append("=")
-                .append(URLEncoder.encode(value, StandardCharsets.UTF_8.name()));
-            
+                    .append("=")
+                    .append(URLEncoder.encode(value, StandardCharsets.UTF_8.name()));
+
             if (names.hasMoreElements())
                 buf.append("&");
         }

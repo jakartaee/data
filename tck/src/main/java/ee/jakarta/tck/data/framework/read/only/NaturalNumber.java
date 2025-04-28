@@ -21,7 +21,7 @@ import java.io.Serializable;
 @jakarta.persistence.Entity
 public class NaturalNumber implements Serializable {
     private static final long serialVersionUID = 1L;
-    
+
     public enum NumberType {
         ONE, PRIME, COMPOSITE
     }

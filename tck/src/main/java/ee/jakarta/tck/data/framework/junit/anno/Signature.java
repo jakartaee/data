@@ -23,10 +23,10 @@ import java.lang.annotation.Target;
 import org.junit.jupiter.api.Tag;
 
 /**
- * <p>This annotation will allow vendors to run signature tests 
+ * <p>This annotation will allow vendors to run signature tests
  * separately from all other tests, if desired.</p>
  */
-@Target({ ElementType.TYPE })
+@Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Tag("signature")
 public @interface Signature {
