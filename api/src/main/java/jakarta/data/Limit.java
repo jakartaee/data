@@ -126,7 +126,7 @@ public record Limit(int maxResults, long startAt) {
      * @param startAt position at which to start including results. The first
      *                query result is position 1.
      * @param endAt   position after which to cease including results.
-     * @return limit that can be supplied to a find method or or a
+     * @return limit that can be supplied to a find method or a
      * {@code @Query} method that performs a find operation; will never be
      * {@code null}.
      * @throws IllegalArgumentException if {@code startAt} is less than 1 or
