@@ -88,8 +88,7 @@ public class Order<T> implements Iterable<Sort<? super T>> {
 
     /**
      * <p>Defines a list of {@link Sort} criteria, ordered from highest
-     * precedence
-     * to lowest precedence.</p>
+     * precedence to lowest precedence.</p>
      *
      * @param <T>   entity class of the attributes that are used as sort
      *              criteria.
