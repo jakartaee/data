@@ -114,8 +114,7 @@ public interface PageRequest {
 
     /**
      * <p>Requests {@linkplain CursoredPage cursor-based pagination} in the
-     * forward direction,
-     * starting after the specified key.</p>
+     * forward direction, starting after the specified key.</p>
      *
      * @param cursor       cursor with key values, the order and number of which
      *                     must match the {@link OrderBy} annotations or
