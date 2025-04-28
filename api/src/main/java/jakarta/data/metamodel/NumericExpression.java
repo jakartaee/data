@@ -34,49 +34,59 @@ import static jakarta.data.metamodel.expression.NumericOperatorExpression.Operat
 public interface NumericExpression<T, N extends Number & Comparable<N>>
         extends ComparableExpression<T, N> {
 
-    default NumericExpression<T,N> abs() {
+    default NumericExpression<T, N> abs() {
         return NumericFunctionExpression.of(ABS, this);
     }
-    default NumericExpression<T,N> negated() {
+
+    default NumericExpression<T, N> negated() {
         return NumericFunctionExpression.of(NEG, this);
     }
 
-    default NumericExpression<T,N> plus(N other) {
+    default NumericExpression<T, N> plus(N other) {
         return NumericOperatorExpression.of(PLUS, this, other);
     }
-    default NumericExpression<T,N> minus(N other) {
+
+    default NumericExpression<T, N> minus(N other) {
         return NumericOperatorExpression.of(MINUS, this, other);
     }
-    default NumericExpression<T,N> times(N other) {
+
+    default NumericExpression<T, N> times(N other) {
         return NumericOperatorExpression.of(TIMES, this, other);
     }
-    default NumericExpression<T,N> divide(N other) {
+
+    default NumericExpression<T, N> divide(N other) {
         return NumericOperatorExpression.of(DIVIDE, this, other);
     }
 
-    default NumericExpression<T,N> plus(NumericExpression<T,N> other) {
+    default NumericExpression<T, N> plus(NumericExpression<T, N> other) {
         return NumericOperatorExpression.of(PLUS, this, other);
     }
-    default NumericExpression<T,N> minus(NumericExpression<T,N> other) {
+
+    default NumericExpression<T, N> minus(NumericExpression<T, N> other) {
         return NumericOperatorExpression.of(MINUS, this, other);
     }
-    default NumericExpression<T,N> times(NumericExpression<T,N> other) {
+
+    default NumericExpression<T, N> times(NumericExpression<T, N> other) {
         return NumericOperatorExpression.of(TIMES, this, other);
     }
-    default NumericExpression<T,N> divide(NumericExpression<T,N> other) {
+
+    default NumericExpression<T, N> divide(NumericExpression<T, N> other) {
         return NumericOperatorExpression.of(DIVIDE, this, other);
     }
 
-    default NumericExpression<T,Long> asLong() {
+    default NumericExpression<T, Long> asLong() {
         return NumericCast.of(this, Long.class);
     }
-    default NumericExpression<T,Double> asDouble() {
+
+    default NumericExpression<T, Double> asDouble() {
         return NumericCast.of(this, Double.class);
     }
-    default NumericExpression<T,BigInteger> asBigInteger() {
+
+    default NumericExpression<T, BigInteger> asBigInteger() {
         return NumericCast.of(this, BigInteger.class);
     }
-    default NumericExpression<T,BigDecimal> asBigDecimal() {
+
+    default NumericExpression<T, BigDecimal> asBigDecimal() {
         return NumericCast.of(this, BigDecimal.class);
     }
 }

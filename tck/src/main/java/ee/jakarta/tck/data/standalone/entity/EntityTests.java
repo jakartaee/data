@@ -91,7 +91,7 @@ public class EntityTests {
     @Deployment
     public static WebArchive createDeployment() {
         return ShrinkWrap.create(WebArchive.class)
-            .addClasses(EntityTests.class, Box.class, Boxes.class);
+                .addClasses(EntityTests.class, Box.class, Boxes.class);
     }
 
     @Inject
@@ -112,15 +112,16 @@ public class EntityTests {
     @Inject
     MultipleEntityRepo shared;
 
-    @BeforeEach //Inject doesn't happen until after BeforeClass so this is necessary before each test
+    @BeforeEach
+    //Inject doesn't happen until after BeforeClass so this is necessary before each test
     public void setup() {
         assertNotNull(numbers);
         NaturalNumbersPopulator.get().populate(numbers);
-        
+
         assertNotNull(characters);
         AsciiCharactersPopulator.get().populate(characters);
     }
-    
+
     private DatabaseType type = TestProperty.databaseType.getDatabaseType();
 
     @Assertion(id = "136", strategy = "Ensures that the prepopulation step for readonly entities was successful")
@@ -148,7 +149,7 @@ public class EntityTests {
 
     @Assertion(id = "133",
             strategy = "Use a repository that inherits from BasicRepository and adds some methods of its own. " +
-                       "Use both built-in methods and the additional methods.")
+                    "Use both built-in methods and the additional methods.")
     public void testBasicRepository() {
 
         // custom method from NaturalNumbers:
@@ -160,7 +161,7 @@ public class EntityTests {
                     .map(NaturalNumber::getId)
                     .collect(Collectors.toList());
             assertEquals(List.of(53L, 59L, // first 2 must be primes
-                    50L, 51L, 52L, 54L, 55L, 56L, 57L, 58L), // the remaining 8 are composite numbers
+                            50L, 51L, 52L, 54L, 55L, 56L, 57L, 58L), // the remaining 8 are composite numbers
                     list);
         } catch (UnsupportedOperationException x) {
             if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
@@ -177,14 +178,14 @@ public class EntityTests {
 
     @Assertion(id = "133",
             strategy = "Use a repository that inherits from BasicRepository and defines no additional methods of its own. " +
-                       "Use all of the built-in methods.")
+                    "Use all of the built-in methods.")
     public void testBasicRepositoryBuiltInMethods() {
 
         // BasicRepository.saveAll
         Iterable<Box> saved = boxes.saveAll(List.of(Box.of("TestBasicRepositoryMethods-01", 119, 120, 169),
-                                                    Box.of("TestBasicRepositoryMethods-02", 20, 21, 29),
-                                                    Box.of("TestBasicRepositoryMethods-03", 33, 56, 65),
-                                                    Box.of("TestBasicRepositoryMethods-04", 45, 28, 53)));
+                Box.of("TestBasicRepositoryMethods-02", 20, 21, 29),
+                Box.of("TestBasicRepositoryMethods-03", 33, 56, 65),
+                Box.of("TestBasicRepositoryMethods-04", 45, 28, 53)));
         Iterator<Box> savedIt = saved.iterator();
         assertEquals(true, savedIt.hasNext());
         Box box1 = savedIt.next();
@@ -285,9 +286,9 @@ public class EntityTests {
 
         // BasicRepository.saveAll
         Iterable<Box> saved = boxes.saveAll(List.of(Box.of("TestBasicRepositoryMethods-01", 119, 120, 169),
-                                                    Box.of("TestBasicRepositoryMethods-02", 20, 21, 29),
-                                                    Box.of("TestBasicRepositoryMethods-03", 33, 56, 65),
-                                                    Box.of("TestBasicRepositoryMethods-04", 45, 28, 53)));
+                Box.of("TestBasicRepositoryMethods-02", 20, 21, 29),
+                Box.of("TestBasicRepositoryMethods-03", 33, 56, 65),
+                Box.of("TestBasicRepositoryMethods-04", 45, 28, 53)));
         Iterator<Box> savedIt = saved.iterator();
         assertEquals(true, savedIt.hasNext());
         Box box1 = savedIt.next();
@@ -486,14 +487,14 @@ public class EntityTests {
         }
 
         assertEquals(List.of(71L, 72L, 73L, 74L, 75L),
-                     numbers.withIdEqualOrAbove(71L, Limit.of(5)));
+                numbers.withIdEqualOrAbove(71L, Limit.of(5)));
     }
 
     @Assertion(id = "133", strategy = "Use a repository method with Contains to query for a substring of a String attribute.")
     public void testContainsInString() {
         Collection<AsciiCharacter> found;
         try {
-            found = characters.findByHexadecimalContainsAndIsControlNot("4", true);    
+            found = characters.findByHexadecimalContainsAndIsControlNot("4", true);
         } catch (UnsupportedOperationException e) {
             if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
                 // NoSQL databases might not be capable of Contains.
@@ -505,12 +506,12 @@ public class EntityTests {
         }
 
         assertEquals(List.of("24", "34",
-                             "40", "41", "42", "43",
-                             "44", "45", "46", "47",
-                             "48", "49", "4a", "4b",
-                             "4c", "4d", "4e", "4f",
-                             "54", "64", "74"),
-                     found.stream().map(AsciiCharacter::getHexadecimal).sorted().toList());
+                        "40", "41", "42", "43",
+                        "44", "45", "46", "47",
+                        "48", "49", "4a", "4b",
+                        "4c", "4d", "4e", "4f",
+                        "54", "64", "74"),
+                found.stream().map(AsciiCharacter::getHexadecimal).sorted().toList());
     }
 
     @Assertion(id = "133", strategy = "Use a repository that inherits from DataRepository and defines all of its own methods.")
@@ -557,9 +558,9 @@ public class EntityTests {
     public void testDefaultMethod() {
         try {
             assertEquals(List.of('W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd'),
-                         characters.retrieveAlphaNumericIn(87L, 100L)
-                                         .map(AsciiCharacter::getThisCharacter)
-                                         .collect(Collectors.toList()));
+                    characters.retrieveAlphaNumericIn(87L, 100L)
+                            .map(AsciiCharacter::getThisCharacter)
+                            .collect(Collectors.toList()));
         } catch (UnsupportedOperationException x) {
             if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
                 return; // Key-Value databases might not be capable of Between
@@ -570,12 +571,12 @@ public class EntityTests {
     }
 
     @Assertion(id = "133",
-               strategy = "Use a repository method with one Sort parameter specifying descending order, " +
-                          "and verify all results are returned and are in descending order according to the sort criteria.")
+            strategy = "Use a repository method with one Sort parameter specifying descending order, " +
+                    "and verify all results are returned and are in descending order according to the sort criteria.")
     public void testDescendingSort() {
-         Stream<AsciiCharacter> stream;
-         try {
-             stream = characters.findByIdBetween(
+        Stream<AsciiCharacter> stream;
+        try {
+            stream = characters.findByIdBetween(
                     52L, 57L,
                     Sort.desc("id"));
         } catch (UnsupportedOperationException x) {
@@ -588,8 +589,8 @@ public class EntityTests {
             }
         }
 
-        assertEquals(Arrays.toString(new Character[] { '9', '8', '7', '6', '5', '4' }),
-                     Arrays.toString(stream.map(AsciiCharacter::getThisCharacter).toArray()));
+        assertEquals(Arrays.toString(new Character[]{'9', '8', '7', '6', '5', '4'}),
+                Arrays.toString(stream.map(AsciiCharacter::getThisCharacter).toArray()));
     }
 
     @Assertion(id = "458", strategy = "Use a repository method with a JDQL query that has no clauses.")
@@ -597,9 +598,9 @@ public class EntityTests {
 
         try {
             assertEquals(List.of('a', 'b', 'c', 'd', 'e', 'f'),
-                         characters.all(Limit.range(97, 102), Sort.asc("id"))
-                                         .map(AsciiCharacter::getThisCharacter)
-                                         .collect(Collectors.toList()));
+                    characters.all(Limit.range(97, 102), Sort.asc("id"))
+                            .map(AsciiCharacter::getThisCharacter)
+                            .collect(Collectors.toList()));
         } catch (UnsupportedOperationException x) {
             if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
                 // Column and Key-Value databases might not be capable of sorting.
@@ -647,7 +648,7 @@ public class EntityTests {
         assertEquals(6L, even.stream().count());
 
         assertEquals(List.of(50L, 52L, 54L, 56L, 58L, 60L),
-                     even.stream().map(NaturalNumber::getId).sorted().collect(Collectors.toList()));
+                even.stream().map(NaturalNumber::getId).sorted().collect(Collectors.toList()));
     }
 
     @Assertion(id = "133", strategy = "Request the last Page of up to 10 results, expecting to find the final 3.")
@@ -656,7 +657,7 @@ public class EntityTests {
         Page<AsciiCharacter> page;
         try {
             page = characters.findByNumericValueBetween(48, 90, fifthPageRequest,
-                                                        Order.by(_AsciiCharacter.numericValue.asc())); // 'X' to 'Z'
+                    Order.by(_AsciiCharacter.numericValue.asc())); // 'X' to 'Z'
         } catch (UnsupportedOperationException x) {
             // Some NoSQL databases lack the ability to count the total results
             // and therefore cannot support a return type of Page.
@@ -757,10 +758,10 @@ public class EntityTests {
     }
 
     @Assertion(id = "133",
-               strategy = "Use the findAll method of a repository that inherits from BasicRepository " +
-                          "to request a Page 2 of size 12, specifying a PageRequest that requires a mixture of " +
-                          "ascending and descending sort. Verify the page contains all 12 expected entities, " +
-                          "sorted according to the mixture of ascending and descending sort orders specified.")
+            strategy = "Use the findAll method of a repository that inherits from BasicRepository " +
+                    "to request a Page 2 of size 12, specifying a PageRequest that requires a mixture of " +
+                    "ascending and descending sort. Verify the page contains all 12 expected entities, " +
+                    "sorted according to the mixture of ascending and descending sort orders specified.")
     public void testFindAllWithPagination() {
         PageRequest page2request = PageRequest.ofPage(2).size(12);
         Page<NaturalNumber> page2;
@@ -782,8 +783,8 @@ public class EntityTests {
         assertEquals(2, page2.pageRequest().page());
 
         assertEquals(List.of(11L, 10L, 9L, // square root rounds down to 3
-                             24L, 23L, 22L, 21L, 20L, 19L, 18L, 17L, 16L), // square root rounds down to 4
-                     page2.stream().map(n -> n.getId()).collect(Collectors.toList()));
+                        24L, 23L, 22L, 21L, 20L, 19L, 18L, 17L, 16L), // square root rounds down to 4
+                page2.stream().map(n -> n.getId()).collect(Collectors.toList()));
     }
 
     @Assertion(id = "539", strategy = """
@@ -797,15 +798,15 @@ public class EntityTests {
         Arrays.sort(array);
 
         assertEquals(List.of("1(1)", "2(2)", "3(3)", "4(4)", "5(5)",
-                             "6(6)", "7(7)", "8(8)", "9(9)", "a(10)",
-                             "b(11)", "c(12)", "d(13)", "e(14)", "f(15)",
-                             "10(16)", "11(17)", "12(18)", "13(19)", "14(20)",
-                             "15(21)", "16(22)", "17(23)", "18(24)", "19(25)",
-                             "1a(26)", "1b(27)", "1c(28)", "1d(29)", "1e(30)",
-                             "1f(31)", "7f(127)"),
-                     Arrays.stream(array)
-                                 .map(HexInfo::toString)
-                                 .collect(Collectors.toList()));
+                        "6(6)", "7(7)", "8(8)", "9(9)", "a(10)",
+                        "b(11)", "c(12)", "d(13)", "e(14)", "f(15)",
+                        "10(16)", "11(17)", "12(18)", "13(19)", "14(20)",
+                        "15(21)", "16(22)", "17(23)", "18(24)", "19(25)",
+                        "1a(26)", "1b(27)", "1c(28)", "1d(29)", "1e(30)",
+                        "1f(31)", "7f(127)"),
+                Arrays.stream(array)
+                        .map(HexInfo::toString)
+                        .collect(Collectors.toList()));
     }
 
     @Assertion(id = "539", strategy = """
@@ -836,7 +837,7 @@ public class EntityTests {
 
         @SuppressWarnings("unchecked")
         Sort<AsciiCharacter>[] numAscending =
-                new Sort[] { Sort.asc(_AsciiCharacter.NUMERICVALUE) };
+                new Sort[]{Sort.asc(_AsciiCharacter.NUMERICVALUE)};
 
         Page<HexInfo> page8;
         try {
@@ -851,28 +852,28 @@ public class EntityTests {
         }
 
         assertEquals(List.of("47(71)", "48(72)", "49(73)", "4a(74)", "4b(75)",
-                             "4c(76)", "4d(77)", "4e(78)", "4f(79)", "50(80)"),
-                     page8.stream()
-                                 .map(HexInfo::toString)
-                                 .collect(Collectors.toList()));
+                        "4c(76)", "4d(77)", "4e(78)", "4f(79)", "50(80)"),
+                page8.stream()
+                        .map(HexInfo::toString)
+                        .collect(Collectors.toList()));
 
         Page<HexInfo> page7 = numbers.hexadecimalPage(page8.previousPageRequest(),
-                                                      numAscending);
+                numAscending);
 
         assertEquals(List.of("3d(61)", "3e(62)", "3f(63)", "40(64)", "41(65)",
-                             "42(66)", "43(67)", "44(68)", "45(69)", "46(70)"),
-        page7.stream()
-                    .map(HexInfo::toString)
-                    .collect(Collectors.toList()));
+                        "42(66)", "43(67)", "44(68)", "45(69)", "46(70)"),
+                page7.stream()
+                        .map(HexInfo::toString)
+                        .collect(Collectors.toList()));
 
         Page<HexInfo> page9 = numbers.hexadecimalPage(page8.nextPageRequest(),
-                                                      numAscending);
+                numAscending);
 
         assertEquals(List.of("51(81)", "52(82)", "53(83)", "54(84)", "55(85)",
-                             "56(86)", "57(87)", "58(88)", "59(89)", "5a(90)"),
-        page9.stream()
-                    .map(HexInfo::toString)
-                    .collect(Collectors.toList()));
+                        "56(86)", "57(87)", "58(88)", "59(89)", "5a(90)"),
+                page9.stream()
+                        .map(HexInfo::toString)
+                        .collect(Collectors.toList()));
     }
 
     @Assertion(id = "539", strategy = """
@@ -885,22 +886,22 @@ public class EntityTests {
         List<WholeNumber> found = characters.wholeNumbers(Short.valueOf((short) 4));
 
         assertEquals(List.of("8 COMPOSITE √8 >= 2",
-                             "9 COMPOSITE √9 >= 3",
-                             "10 COMPOSITE √10 >= 3",
-                             "11 PRIME √11 >= 3",
-                             "12 COMPOSITE √12 >= 3",
-                             "13 PRIME √13 >= 3",
-                             "14 COMPOSITE √14 >= 3",
-                             "15 COMPOSITE √15 >= 3"),
-                     found.stream()
-                                 .sorted()
-                                 .map(WholeNumber::toString)
-                                 .collect(Collectors.toList()));
+                        "9 COMPOSITE √9 >= 3",
+                        "10 COMPOSITE √10 >= 3",
+                        "11 PRIME √11 >= 3",
+                        "12 COMPOSITE √12 >= 3",
+                        "13 PRIME √13 >= 3",
+                        "14 COMPOSITE √14 >= 3",
+                        "15 COMPOSITE √15 >= 3"),
+                found.stream()
+                        .sorted()
+                        .map(WholeNumber::toString)
+                        .collect(Collectors.toList()));
     }
 
     @Assertion(id = "133",
-               strategy = "Use a repository method with findFirstBy that returns the first entity value " +
-                          "where multiple results would otherwise be found.")
+            strategy = "Use a repository method with findFirstBy that returns the first entity value " +
+                    "where multiple results would otherwise be found.")
     public void testFindFirst() {
         Optional<AsciiCharacter> none;
         try {
@@ -911,7 +912,7 @@ public class EntityTests {
                 // NoSQL databases might not be capable of StartsWith.
                 // Column and Key-Value databases might not be capable of sorting.
                 // Column and Key-Value databases might not be capable of And.
-               return;
+                return;
             } else {
                 throw e;
             }
@@ -919,17 +920,17 @@ public class EntityTests {
         assertEquals(true, none.isEmpty());
 
         AsciiCharacter ch = characters.findFirstByHexadecimalStartsWithAndIsControlOrderByIdAsc("4", false)
-                        .orElseThrow();
+                .orElseThrow();
         assertEquals('@', ch.getThisCharacter());
         assertEquals("40", ch.getHexadecimal());
         assertEquals(64, ch.getNumericValue());
     }
 
     @Assertion(id = "133",
-               strategy = "Use a repository method with findFirst3By that returns the first 3 results.")
+            strategy = "Use a repository method with findFirst3By that returns the first 3 results.")
     public void testFindFirst3() {
         AsciiCharacter[] found;
-        
+
         try {
             found = characters.findFirst3ByNumericValueGreaterThanEqualAndHexadecimalEndsWith(
                     40, "4", Sort.asc("numericValue"));
@@ -943,7 +944,7 @@ public class EntityTests {
                 throw e;
             }
         }
-        
+
         assertEquals(3, found.length);
         assertEquals('4', found[0].getThisCharacter());
         assertEquals('D', found[1].getThisCharacter());
@@ -951,8 +952,8 @@ public class EntityTests {
     }
 
     @Assertion(id = "133",
-               strategy = "Find a list of entities, querying by entity attributes with names that match the method parameter names," +
-                          " with results capped by a Limit parameter and sorted according to a variable arguments Sort parameter.")
+            strategy = "Find a list of entities, querying by entity attributes with names that match the method parameter names," +
+                    " with results capped by a Limit parameter and sorted according to a variable arguments Sort parameter.")
     public void testFindList() {
         List<NaturalNumber> oddCompositeNumbers;
         try {
@@ -967,15 +968,15 @@ public class EntityTests {
 
 
             assertEquals(List.of(9L, 15L,  // 3 <= sqrt < 4, 4 bits
-                                 21L,      // 4 <= sqrt < 5, 5 bits
-                                 33L, 35L, // 5 <= sqrt < 6, 6 bits
-                                 25L, 27L, // 5 <= sqrt < 6, 5 bits
-                                 39L, 45L, // 6 <= sqrt < 7, 6 bits
-                                 49L),     // 7 <= sqrt < 8, 6 bits
-                         oddCompositeNumbers
-                                         .stream()
-                                         .map(NaturalNumber::getId)
-                                         .collect(Collectors.toList()));
+                            21L,      // 4 <= sqrt < 5, 5 bits
+                            33L, 35L, // 5 <= sqrt < 6, 6 bits
+                            25L, 27L, // 5 <= sqrt < 6, 5 bits
+                            39L, 45L, // 6 <= sqrt < 7, 6 bits
+                            49L),     // 7 <= sqrt < 8, 6 bits
+                    oddCompositeNumbers
+                            .stream()
+                            .map(NaturalNumber::getId)
+                            .collect(Collectors.toList()));
         } catch (UnsupportedOperationException x) {
             if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
                 // Column and Key-Value databases might not be capable of sorting.
@@ -996,7 +997,7 @@ public class EntityTests {
     }
 
     @Assertion(id = "133",
-               strategy = "Find a single entity, querying by entity attributes with names that match the method parameter names.")
+            strategy = "Find a single entity, querying by entity attributes with names that match the method parameter names.")
     public void testFindOne() {
         AsciiCharacter j = characters.find('j');
 
@@ -1007,8 +1008,8 @@ public class EntityTests {
     }
 
     @Assertion(id = "133",
-               strategy = "Find a single entity that might or might not exist, querying by entity attributes" +
-                          " with names that match the method parameter names.")
+            strategy = "Find a single entity that might or might not exist, querying by entity attributes" +
+                    " with names that match the method parameter names.")
     public void testFindOptional() {
         NaturalNumber num = positives.findNumber(67L).orElseThrow();
 
@@ -1024,7 +1025,7 @@ public class EntityTests {
     }
 
     @Assertion(id = "133",
-               strategy = "Find a page of entities, with entity attributes identified by the parameter names and matching the parameter values.")
+            strategy = "Find a page of entities, with entity attributes identified by the parameter names and matching the parameter values.")
     public void testFindPage() {
         PageRequest page1Request = PageRequest.ofSize(7);
 
@@ -1046,31 +1047,31 @@ public class EntityTests {
         }
 
         assertEquals(List.of(99L, 98L, 96L, 95L, 94L, 93L, 92L),
-                     page1.stream().map(NaturalNumber::getId).collect(Collectors.toList()));
+                page1.stream().map(NaturalNumber::getId).collect(Collectors.toList()));
 
         assertEquals(true, page1.hasNext());
 
         Page<NaturalNumber> page2 = positives.findMatching(9L, Short.valueOf((short) 7), NumberType.COMPOSITE,
-                                                           page1.nextPageRequest(), Sort.desc("id"));
+                page1.nextPageRequest(), Sort.desc("id"));
 
         assertEquals(List.of(91L, 90L, 88L, 87L, 86L, 85L, 84L),
-                     page2.stream().map(NaturalNumber::getId).collect(Collectors.toList()));
+                page2.stream().map(NaturalNumber::getId).collect(Collectors.toList()));
 
         assertEquals(true, page2.hasNext());
 
         Page<NaturalNumber> page3 = positives.findMatching(9L, Short.valueOf((short) 7), NumberType.COMPOSITE,
-                                                           page2.nextPageRequest(), Sort.desc("id"));
+                page2.nextPageRequest(), Sort.desc("id"));
 
         assertEquals(List.of(82L, 81L),
-                     page3.stream().map(NaturalNumber::getId).collect(Collectors.toList()));
+                page3.stream().map(NaturalNumber::getId).collect(Collectors.toList()));
 
         assertEquals(false, page3.hasNext());
     }
 
     @Assertion(id = "133",
-               strategy = "Request the first CursoredPage of 8 results, expecting to find all 8, " +
-                          "then request the next CursoredPage and the CursoredPage after that, " +
-                          "expecting to find all results.")
+            strategy = "Request the first CursoredPage of 8 results, expecting to find all 8, " +
+                    "then request the next CursoredPage and the CursoredPage after that, " +
+                    "expecting to find all results.")
     public void testFirstCursoredPageOf8AndNextPages() {
         // The query for this test returns 1-15,25-32 in the following order:
 
@@ -1097,8 +1098,8 @@ public class EntityTests {
 
         assertEquals(8, page.numberOfElements());
 
-        assertEquals(Arrays.toString(new Long[] { 32L, 25L, 26L, 27L, 28L, 29L, 30L, 31L }),
-                     Arrays.toString(page.stream().map(number -> number.getId()).toArray()));
+        assertEquals(Arrays.toString(new Long[]{32L, 25L, 26L, 27L, 28L, 29L, 30L, 31L}),
+                Arrays.toString(page.stream().map(number -> number.getId()).toArray()));
 
         try {
             page = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByNumBitsRequiredDesc(4L, 33L, page.nextPageRequest(), order);
@@ -1108,8 +1109,8 @@ public class EntityTests {
             return;
         }
 
-        assertEquals(Arrays.toString(new Long[] { 8L, 9L, 10L, 11L, 12L, 13L, 14L, 15L }),
-                     Arrays.toString(page.stream().map(number -> number.getId()).toArray()));
+        assertEquals(Arrays.toString(new Long[]{8L, 9L, 10L, 11L, 12L, 13L, 14L, 15L}),
+                Arrays.toString(page.stream().map(number -> number.getId()).toArray()));
 
         assertEquals(8, page.numberOfElements());
 
@@ -1123,14 +1124,14 @@ public class EntityTests {
 
         assertEquals(7, page.numberOfElements());
 
-        assertEquals(Arrays.toString(new Long[] { 4L, 5L, 6L, 7L, 2L, 3L, 1L }),
-                     Arrays.toString(page.stream().map(number -> number.getId()).toArray()));
+        assertEquals(Arrays.toString(new Long[]{4L, 5L, 6L, 7L, 2L, 3L, 1L}),
+                Arrays.toString(page.stream().map(number -> number.getId()).toArray()));
     }
 
     @Assertion(id = "133",
-               strategy = "Request the first CursoredPage of 6 results, expecting to find all 6, " +
-                          "then request the next CursoredPage and the CursoredPage after that, " +
-                          "expecting to find all results.")
+            strategy = "Request the first CursoredPage of 6 results, expecting to find all 6, " +
+                    "then request the next CursoredPage and the CursoredPage after that, " +
+                    "expecting to find all results.")
     public void testFirstCursoredPageWithoutTotalOf6AndNextPages() {
         PageRequest first6 = PageRequest.ofSize(6).withoutTotal();
         CursoredPage<NaturalNumber> slice;
@@ -1144,8 +1145,8 @@ public class EntityTests {
             return;
         }
 
-        assertEquals(Arrays.toString(new Long[] { 49L, 50L, 51L, 52L, 53L, 54L }),
-                     Arrays.toString(slice.stream().map(number -> number.getId()).toArray()));
+        assertEquals(Arrays.toString(new Long[]{49L, 50L, 51L, 52L, 53L, 54L}),
+                Arrays.toString(slice.stream().map(number -> number.getId()).toArray()));
 
         assertEquals(6, slice.numberOfElements());
 
@@ -1159,8 +1160,8 @@ public class EntityTests {
 
         assertEquals(6, slice.numberOfElements());
 
-        assertEquals(Arrays.toString(new Long[] { 55L, 56L, 57L, 58L, 59L, 60L }),
-                     Arrays.toString(slice.stream().map(number -> number.getId()).toArray()));
+        assertEquals(Arrays.toString(new Long[]{55L, 56L, 57L, 58L, 59L, 60L}),
+                Arrays.toString(slice.stream().map(number -> number.getId()).toArray()));
 
         try {
             slice = numbers.findByFloorOfSquareRootOrderByIdAsc(7L, slice.nextPageRequest());
@@ -1170,21 +1171,21 @@ public class EntityTests {
             return;
         }
 
-        assertEquals(Arrays.toString(new Long[] { 61L, 62L, 63L }),
-                     Arrays.toString(slice.stream().map(number -> number.getId()).toArray()));
+        assertEquals(Arrays.toString(new Long[]{61L, 62L, 63L}),
+                Arrays.toString(slice.stream().map(number -> number.getId()).toArray()));
 
         assertEquals(3, slice.numberOfElements());
     }
 
     @Assertion(id = "133",
-               strategy = "Request the first Page of 10 results, expecting to find all 10. " +
-                          "From the Page, verify the totalElements and totalPages expected.")
+            strategy = "Request the first Page of 10 results, expecting to find all 10. " +
+                    "From the Page, verify the totalElements and totalPages expected.")
     public void testFirstPageOf10() {
         PageRequest first10 = PageRequest.ofSize(10);
         Page<AsciiCharacter> page;
         try {
             page = characters.findByNumericValueBetween(48, 90, first10,
-                                                        Order.by(_AsciiCharacter.numericValue.asc())); // '0' to 'Z'
+                    Order.by(_AsciiCharacter.numericValue.asc())); // '0' to 'Z'
         } catch (UnsupportedOperationException x) {
             // Some NoSQL databases lack the ability to count the total results
             // and therefore cannot support a return type of Page.
@@ -1208,9 +1209,9 @@ public class EntityTests {
         }
 
         assertEquals("30:0;31:1;32:2;33:3;34:4;35:5;36:6;37:7;38:8;39:9;", // '0' to '9'
-        page.stream()
-                   .map(c -> c.getHexadecimal() + ':' + c.getThisCharacter() + ';')
-                   .reduce("", String::concat));
+                page.stream()
+                        .map(c -> c.getHexadecimal() + ':' + c.getThisCharacter() + ';')
+                        .reduce("", String::concat));
     }
 
     @Assertion(id = "133", strategy = "Request the first Slice of 5 results, expecting to find all 5.")
@@ -1303,12 +1304,12 @@ public class EntityTests {
         }
 
         assertEquals(List.of(1L, 4L, 6L, 8L, 9L, 10L, 12L, 14L, 15L),
-                     nonPrimes.map(NaturalNumber::getId).collect(Collectors.toList()));
+                nonPrimes.map(NaturalNumber::getId).collect(Collectors.toList()));
 
         Stream<NaturalNumber> primes = positives.findByNumTypeInOrderByIdAsc(Collections.singleton(NumberType.PRIME),
-                                                                             Limit.of(6));
+                Limit.of(6));
         assertEquals(List.of(2L, 3L, 5L, 7L, 11L, 13L),
-                     primes.map(NaturalNumber::getId).collect(Collectors.toList()));
+                primes.map(NaturalNumber::getId).collect(Collectors.toList()));
     }
 
     @Assertion(id = "133", strategy = "Use a repository method with the IgnoreCase keyword.")
@@ -1333,27 +1334,27 @@ public class EntityTests {
         }
 
         assertEquals(List.of(Character.valueOf('L'), // 4c
-                             Character.valueOf('M'), // 4d
-                             Character.valueOf('N'), // 4e
-                             Character.valueOf('O'), // 4f
-                             Character.valueOf('P'), // 50
-                             Character.valueOf('Q'), // 51
-                             Character.valueOf('R'), // 52
-                             Character.valueOf('S'), // 53
-                             Character.valueOf('T'), // 54
-                             Character.valueOf('U'), // 55
-                             Character.valueOf('V'), // 56
-                             Character.valueOf('W'), // 57
-                             Character.valueOf('X'), // 58
-                             Character.valueOf('Y'), // 59
-                             Character.valueOf('Z')), // 5a
-                     found.map(AsciiCharacter::getThisCharacter).collect(Collectors.toList()));
+                        Character.valueOf('M'), // 4d
+                        Character.valueOf('N'), // 4e
+                        Character.valueOf('O'), // 4f
+                        Character.valueOf('P'), // 50
+                        Character.valueOf('Q'), // 51
+                        Character.valueOf('R'), // 52
+                        Character.valueOf('S'), // 53
+                        Character.valueOf('T'), // 54
+                        Character.valueOf('U'), // 55
+                        Character.valueOf('V'), // 56
+                        Character.valueOf('W'), // 57
+                        Character.valueOf('X'), // 58
+                        Character.valueOf('Y'), // 59
+                        Character.valueOf('Z')), // 5a
+                found.map(AsciiCharacter::getThisCharacter).collect(Collectors.toList()));
     }
 
     @Assertion(id = "133",
-               strategy = "Request a CursoredPage of 7 results after the cursor of the 20th result, expecting to find the next 7 results. " +
-                          "Then request the CursoredPage before the cursor of the first entry of the page, expecting to find the previous 7 results. " +
-                          "Then request the CursoredPage after the last entry of the original slice, expecting to find the next 7.")
+            strategy = "Request a CursoredPage of 7 results after the cursor of the 20th result, expecting to find the next 7 results. " +
+                    "Then request the CursoredPage before the cursor of the first entry of the page, expecting to find the previous 7 results. " +
+                    "Then request the CursoredPage after the last entry of the original slice, expecting to find the next 7.")
     public void testCursoredPageOf7FromCursor() {
         // The query for this test returns 1-35 and 49 in the following order:
         //
@@ -1378,11 +1379,11 @@ public class EntityTests {
             return;
         }
 
-        assertEquals(Arrays.toString(new Long[] { 25L, // 5 bits required, square root rounds down to 5
-                                                  8L, // 4 bits required, square root rounds down to 2
-                                                  15L, 14L, 13L, 12L, 11L // 4 bits required, square root rounds down to 3
-        }),
-                     Arrays.toString(page.stream().map(number -> number.getId()).toArray()));
+        assertEquals(Arrays.toString(new Long[]{25L, // 5 bits required, square root rounds down to 5
+                        8L, // 4 bits required, square root rounds down to 2
+                        15L, 14L, 13L, 12L, 11L // 4 bits required, square root rounds down to 3
+                }),
+                Arrays.toString(page.stream().map(number -> number.getId()).toArray()));
 
         assertEquals(7, page.numberOfElements());
 
@@ -1391,37 +1392,37 @@ public class EntityTests {
         CursoredPage<NaturalNumber> previousPage;
         try {
             previousPage = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByNumBitsRequiredDesc(6L, 50L,
-                                                                                                    page.previousPageRequest(),
-                                                                                                    order);
+                    page.previousPageRequest(),
+                    order);
         } catch (UnsupportedOperationException x) {
             // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
             // is not capable of cursor-based pagination.
             return;
         }
 
-        assertEquals(Arrays.toString(new Long[] { 16L, // 4 bits required, square root rounds down to 4
-                                                  31L, 30L, 29L, 28L, 27L, 26L // 5 bits required, square root rounds down to 5
-        }),
-                     Arrays.toString(previousPage.stream().map(number -> number.getId()).toArray()));
+        assertEquals(Arrays.toString(new Long[]{16L, // 4 bits required, square root rounds down to 4
+                        31L, 30L, 29L, 28L, 27L, 26L // 5 bits required, square root rounds down to 5
+                }),
+                Arrays.toString(previousPage.stream().map(number -> number.getId()).toArray()));
 
         assertEquals(7, previousPage.numberOfElements());
 
         CursoredPage<NaturalNumber> nextPage;
         try {
             nextPage = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByNumBitsRequiredDesc(6L, 50L,
-                                                                                                page.nextPageRequest(),
-                                                                                                order);
+                    page.nextPageRequest(),
+                    order);
         } catch (UnsupportedOperationException x) {
             // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
             // is not capable of cursor-based pagination.
             return;
         }
 
-        assertEquals(Arrays.toString(new Long[] { 10L, 9L, // 4 bits required, square root rounds down to 3
-                                                  7L, 6L, 5L, 4L, // 3 bits required, square root rounds down to 2
-                                                  3L // 2 bits required, square root rounds down to 1
-        }),
-                     Arrays.toString(nextPage.stream().map(number -> number.getId()).toArray()));
+        assertEquals(Arrays.toString(new Long[]{10L, 9L, // 4 bits required, square root rounds down to 3
+                        7L, 6L, 5L, 4L, // 3 bits required, square root rounds down to 2
+                        3L // 2 bits required, square root rounds down to 1
+                }),
+                Arrays.toString(nextPage.stream().map(number -> number.getId()).toArray()));
 
         assertEquals(7, nextPage.numberOfElements());
     }
@@ -1464,8 +1465,8 @@ public class EntityTests {
 
     @Assertion(id = "133",
             strategy = "Request a CursoredPage of 9 results after the cursor of the 20th result, expecting to find the next 9 results. " +
-                       "Then request the CursoredPage before the cursor of the first entry of the slice, expecting to find the previous 9 results. " +
-                       "Then request the CursoredPage after the last entry of the original slice, expecting to find the next 9.")
+                    "Then request the CursoredPage before the cursor of the first entry of the slice, expecting to find the previous 9 results. " +
+                    "Then request the CursoredPage after the last entry of the original slice, expecting to find the next 9.")
     public void testCursoredPageWithoutTotalOf9FromCursor() {
         // The query for this test returns composite natural numbers under 64 in the following order:
         //
@@ -1490,8 +1491,8 @@ public class EntityTests {
             return;
         }
 
-        assertEquals(Arrays.toString(new Long[] { 48L, 25L, 26L, 27L, 28L, 30L, 32L, 33L, 34L }),
-                     Arrays.toString(slice.stream().map(number -> number.getId()).toArray()));
+        assertEquals(Arrays.toString(new Long[]{48L, 25L, 26L, 27L, 28L, 30L, 32L, 33L, 34L}),
+                Arrays.toString(slice.stream().map(number -> number.getId()).toArray()));
 
         assertEquals(9, slice.numberOfElements());
 
@@ -1499,36 +1500,36 @@ public class EntityTests {
         CursoredPage<NaturalNumber> previousSlice;
         try {
             previousSlice = numbers.findByNumTypeAndNumBitsRequiredLessThan(NumberType.COMPOSITE,
-                                                                            (short) 7,
-                                                                            order,
-                                                                            slice.previousPageRequest());
+                    (short) 7,
+                    order,
+                    slice.previousPageRequest());
         } catch (UnsupportedOperationException x) {
             // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
             // is not capable of cursor-based pagination.
             return;
         }
 
-         assertEquals(Arrays.toString(new Long[] { 63L, 36L, 38L, 39L, 40L, 42L, 44L, 45L, 46L }),
-                      Arrays.toString(previousSlice.stream().map(number -> number.getId()).toArray()));
+        assertEquals(Arrays.toString(new Long[]{63L, 36L, 38L, 39L, 40L, 42L, 44L, 45L, 46L}),
+                Arrays.toString(previousSlice.stream().map(number -> number.getId()).toArray()));
 
-         assertEquals(9, previousSlice.numberOfElements());
+        assertEquals(9, previousSlice.numberOfElements());
 
-         CursoredPage<NaturalNumber> nextSlice;
-         try {
-             nextSlice = numbers.findByNumTypeAndNumBitsRequiredLessThan(NumberType.COMPOSITE,
-                                                                         (short) 7,
-                                                                         order,
-                                                                         slice.nextPageRequest());
-         } catch (UnsupportedOperationException x) {
-             // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
-             // is not capable of cursor-based pagination.
-             return;
-         }
+        CursoredPage<NaturalNumber> nextSlice;
+        try {
+            nextSlice = numbers.findByNumTypeAndNumBitsRequiredLessThan(NumberType.COMPOSITE,
+                    (short) 7,
+                    order,
+                    slice.nextPageRequest());
+        } catch (UnsupportedOperationException x) {
+            // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
+            // is not capable of cursor-based pagination.
+            return;
+        }
 
-         assertEquals(Arrays.toString(new Long[] { 35L, 16L, 18L, 20L, 21L, 22L, 24L, 9L, 10L }),
-                      Arrays.toString(nextSlice.stream().map(number -> number.getId()).toArray()));
+        assertEquals(Arrays.toString(new Long[]{35L, 16L, 18L, 20L, 21L, 22L, 24L, 9L, 10L}),
+                Arrays.toString(nextSlice.stream().map(number -> number.getId()).toArray()));
 
-         assertEquals(9, nextSlice.numberOfElements());
+        assertEquals(9, nextSlice.numberOfElements());
     }
 
     @Assertion(id = "133", strategy = "Request a CursoredPage of results where none match the query, expecting an empty CursoredPage with 0 results.")
@@ -1567,7 +1568,7 @@ public class EntityTests {
     }
 
     @Assertion(id = "133", strategy = "Use a repository method with both Sort and Limit, and verify that the Limit caps " +
-                                      "the number of results and that results are ordered according to the sort criteria.")
+            "the number of results and that results are ordered according to the sort criteria.")
     public void testLimit() {
         Collection<NaturalNumber> nums;
         try {
@@ -1587,14 +1588,14 @@ public class EntityTests {
             }
         }
 
-        assertEquals(Arrays.toString(new Long[] { 63L, 62L, 61L, 60L, // square root rounds down to 7
-                                80L, 79L, 78L, 77L, 76L, 75L }), // square root rounds down to 8
-        Arrays.toString(nums.stream().map(number -> number.getId()).toArray()));
+        assertEquals(Arrays.toString(new Long[]{63L, 62L, 61L, 60L, // square root rounds down to 7
+                        80L, 79L, 78L, 77L, 76L, 75L}), // square root rounds down to 8
+                Arrays.toString(nums.stream().map(number -> number.getId()).toArray()));
     }
 
     @Assertion(id = "133", strategy = "Use a repository method with both Sort and Limit, where the Limit is a range, " +
-                                      " and verify that the Limit range starts in the correct place, caps the number of results, " +
-                                      " and that results are ordered according to the sort criteria.")
+            " and verify that the Limit range starts in the correct place, caps the number of results, " +
+            " and that results are ordered according to the sort criteria.")
     public void testLimitedRange() {
         // Primes above 40 are:
         // 41, 43, 47, 53, 59,
@@ -1619,12 +1620,12 @@ public class EntityTests {
             }
         }
 
-        assertEquals(Arrays.toString(new Long[] { 61L, 67L, 71L, 73L, 79L }),
-        Arrays.toString(nums.stream().map(number -> number.getId()).toArray()));
+        assertEquals(Arrays.toString(new Long[]{61L, 67L, 71L, 73L, 79L}),
+                Arrays.toString(nums.stream().map(number -> number.getId()).toArray()));
     }
 
     @Assertion(id = "133", strategy = "Use a repository method with Limit and verify that the Limit caps " +
-                                      "the number of results to the amount that is specified.")
+            "the number of results to the amount that is specified.")
     public void testLimitToOneResult() {
         Collection<NaturalNumber> nums;
         try {
@@ -1688,10 +1689,10 @@ public class EntityTests {
 
         try {
             assertEquals(List.of('J', 'K', 'L', 'M'),
-                         characters.jklOr("4d")
-                                         .map(AsciiCharacter::getThisCharacter)
-                                         .sorted()
-                                         .collect(Collectors.toList()));
+                    characters.jklOr("4d")
+                            .map(AsciiCharacter::getThisCharacter)
+                            .sorted()
+                            .collect(Collectors.toList()));
         } catch (UnsupportedOperationException x) {
             if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
                 // Column and Key-Value databases might not be capable of JDQL AND.
@@ -1747,8 +1748,8 @@ public class EntityTests {
     }
 
     @Assertion(id = "133",
-               strategy = "Use a repository method with two Sort parameters specifying a mixture of ascending and descending order, " +
-                          "and verify all results are returned and are ordered according to the sort criteria.")
+            strategy = "Use a repository method with two Sort parameters specifying a mixture of ascending and descending order, " +
+                    "and verify all results are returned and are ordered according to the sort criteria.")
     public void testMixedSort() {
         NaturalNumber[] nums;
         try {
@@ -1766,16 +1767,16 @@ public class EntityTests {
             }
         }
 
-        assertEquals(Arrays.toString(new Long[] { 1L, // 1 bit
-                                                  3L, 2L, // 2 bits
-                                                  7L, 6L, 5L, 4L, // 3 bits
-                                                  14L, 13L, 12L, 11L, 10L, 9L, 8L }), // 4 bits
-                     Arrays.toString(Stream.of(nums).map(number -> number.getId()).toArray()));
+        assertEquals(Arrays.toString(new Long[]{1L, // 1 bit
+                        3L, 2L, // 2 bits
+                        7L, 6L, 5L, 4L, // 3 bits
+                        14L, 13L, 12L, 11L, 10L, 9L, 8L}), // 4 bits
+                Arrays.toString(Stream.of(nums).map(number -> number.getId()).toArray()));
     }
 
     @Assertion(id = "133",
-               strategy = "Use a repository method that ought to return a single entity value but where multiple results are found." +
-                          "Expect NonUniqueResultException.")
+            strategy = "Use a repository method that ought to return a single entity value but where multiple results are found." +
+                    "Expect NonUniqueResultException.")
     public void testNonUniqueResultException() {
         try {
             AsciiCharacter ch = characters.findByIsControlTrueAndNumericValueBetween(10, 15);
@@ -1838,13 +1839,13 @@ public class EntityTests {
         }
 
         assertEquals(List.of(1L, 4L, 5L, 6L, 7L, 8L),
-                     found.map(NaturalNumber::getId).sorted().collect(Collectors.toList()));
+                found.map(NaturalNumber::getId).sorted().collect(Collectors.toList()));
     }
 
     @Assertion(id = "133",
-               strategy = "Use a repository method with OrderBy (static) and a Sort parameter (dynamic), " +
-                          "verfying that all results are returned and are ordered first by the static sort criteria, " +
-                          "followed by the dynamic sort criteria when the value(s) being compared by the static criteria match.")
+            strategy = "Use a repository method with OrderBy (static) and a Sort parameter (dynamic), " +
+                    "verfying that all results are returned and are ordered first by the static sort criteria, " +
+                    "followed by the dynamic sort criteria when the value(s) being compared by the static criteria match.")
     public void testOrderByHasPrecedenceOverPageRequestSorts() {
         PageRequest pagination = PageRequest.ofSize(8);
         Order<NaturalNumber> order = Order.by(Sort.asc("numTypeOrdinal"), Sort.desc("id"));
@@ -1863,28 +1864,28 @@ public class EntityTests {
             }
         }
 
-        assertEquals(Arrays.toString(new Long[] { 23L, 19L, 17L, // square root rounds down to 4; prime
-                                                  24L, 22L, 21L, 20L, 18L }), // square root rounds down to 4; composite
-                     Arrays.toString(page.stream().map(number -> number.getId()).toArray()));
+        assertEquals(Arrays.toString(new Long[]{23L, 19L, 17L, // square root rounds down to 4; prime
+                        24L, 22L, 21L, 20L, 18L}), // square root rounds down to 4; composite
+                Arrays.toString(page.stream().map(number -> number.getId()).toArray()));
 
         assertEquals(true, page.hasNext());
         pagination = page.nextPageRequest();
         page = numbers.findByIdLessThanOrderByFloorOfSquareRootDesc(25L, pagination, order);
 
-        assertEquals(Arrays.toString(new Long[] { 16L, // square root rounds down to 4; composite
-                                                  13L, 11L, // square root rounds down to 3; prime
-                                                  15L, 14L, 12L, 10L, 9L }), // square root rounds down to 3; composite
-                     Arrays.toString(page.stream().map(number -> number.getId()).toArray()));
+        assertEquals(Arrays.toString(new Long[]{16L, // square root rounds down to 4; composite
+                        13L, 11L, // square root rounds down to 3; prime
+                        15L, 14L, 12L, 10L, 9L}), // square root rounds down to 3; composite
+                Arrays.toString(page.stream().map(number -> number.getId()).toArray()));
 
         assertEquals(true, page.hasNext());
         pagination = page.nextPageRequest();
         page = numbers.findByIdLessThanOrderByFloorOfSquareRootDesc(25L, pagination, order);
 
-        assertEquals(Arrays.toString(new Long[] { 7L, 5L, // square root rounds down to 2; prime
-                                                  8L, 6L, 4L, // square root rounds down to 2; composite
-                                                  1L, // square root rounds down to 1; one
-                                                  3L, 2L }), // square root rounds down to 1; prime
-                     Arrays.toString(page.stream().map(number -> number.getId()).toArray()));
+        assertEquals(Arrays.toString(new Long[]{7L, 5L, // square root rounds down to 2; prime
+                        8L, 6L, 4L, // square root rounds down to 2; composite
+                        1L, // square root rounds down to 1; one
+                        3L, 2L}), // square root rounds down to 1; prime
+                Arrays.toString(page.stream().map(number -> number.getId()).toArray()));
 
         if (page.hasNext()) {
             pagination = page.nextPageRequest();
@@ -1894,9 +1895,9 @@ public class EntityTests {
     }
 
     @Assertion(id = "133",
-               strategy = "Use a repository method with OrderBy (static) and a PageRequest with a Sort parameter (dynamic), " +
-                          "verfying that all results are returned and are ordered first by the static sort criteria, " +
-                          "followed by the dynamic sort criteria when the value(s) being compared by the static criteria match.")
+            strategy = "Use a repository method with OrderBy (static) and a PageRequest with a Sort parameter (dynamic), " +
+                    "verfying that all results are returned and are ordered first by the static sort criteria, " +
+                    "followed by the dynamic sort criteria when the value(s) being compared by the static criteria match.")
     public void testOrderByHasPrecedenceOverSorts() {
         Stream<NaturalNumber> nums;
         try {
@@ -1913,13 +1914,13 @@ public class EntityTests {
             }
         }
 
-        assertEquals(Arrays.toString(new Long[] { 17L, 19L, 23L, // prime; square root rounds down to 4
-                                                  11L, 13L, // prime; square root rounds down to 3
-                                                  5L, 7L, // prime; square root rounds down to 2
-                                                  16L, 18L, 20L, 21L, 22L, 24L, // composite; square root rounds down to 4
-                                                  9L, 10L, 12L, 14L, 15L, // composite; square root rounds down to 3
-                                                  6L, 8L }), // composite; square root rounds down to 2
-                     Arrays.toString(nums.map(number -> number.getId()).toArray()));
+        assertEquals(Arrays.toString(new Long[]{17L, 19L, 23L, // prime; square root rounds down to 4
+                        11L, 13L, // prime; square root rounds down to 3
+                        5L, 7L, // prime; square root rounds down to 2
+                        16L, 18L, 20L, 21L, 22L, 24L, // composite; square root rounds down to 4
+                        9L, 10L, 12L, 14L, 15L, // composite; square root rounds down to 3
+                        6L, 8L}), // composite; square root rounds down to 2
+                Arrays.toString(nums.map(number -> number.getId()).toArray()));
     }
 
     @Assertion(id = "133", strategy = "Request a Page of results where none match the query, expecting an empty Page with 0 results.")
@@ -1928,7 +1929,7 @@ public class EntityTests {
         Page<AsciiCharacter> page;
         try {
             page = characters.findByNumericValueBetween(150, 160, pagination,
-                                                        Order.by(_AsciiCharacter.id.asc()));
+                    Order.by(_AsciiCharacter.id.asc()));
         } catch (UnsupportedOperationException x) {
             // Some NoSQL databases lack the ability to count the total results
             // and therefore cannot support a return type of Page.
@@ -1958,16 +1959,16 @@ public class EntityTests {
     public void testPartialQueryOrderBy() {
 
         assertEquals(List.of('A', 'B', 'C', 'D', 'E', 'F'),
-                     characters.alphabetic(Limit.range(65, 70))
-                                     .map(AsciiCharacter::getThisCharacter)
-                                     .collect(Collectors.toList()));
+                characters.alphabetic(Limit.range(65, 70))
+                        .map(AsciiCharacter::getThisCharacter)
+                        .collect(Collectors.toList()));
     }
 
     @Assertion(id = "458", strategy = "Use a repository method with a JDQL query that consists of only the SELECT and ORDER BY clauses.")
     public void testPartialQuerySelectAndOrderBy() {
 
         Character[] chars = characters.reverseAlphabetic(Limit.range(6, 13));
-        for (int i=0; i<chars.length; i++) {
+        for (int i = 0; i < chars.length; i++) {
             assertEquals("zyxwvuts".charAt(i), chars[i]);
         }
     }
@@ -2002,7 +2003,7 @@ public class EntityTests {
         }
 
         assertEquals(6, abcdfo.length);
-        for (int i = 0; i<abcdfo.length; i++) {
+        for (int i = 0; i < abcdfo.length; i++) {
             assertEquals("ABCDFO".charAt(i), abcdfo[i]);
         }
     }
@@ -2030,10 +2031,10 @@ public class EntityTests {
 
         try {
             page1 = positives.withBitCountOrOfTypeAndBelow((short) 4,
-                                                           NumberType.COMPOSITE, 20L,
-                                                           Sort.desc("numBitsRequired"),
-                                                           Sort.asc("id"),
-                                                           page1Request);
+                    NumberType.COMPOSITE, 20L,
+                    Sort.desc("numBitsRequired"),
+                    Sort.asc("id"),
+                    page1Request);
         } catch (UnsupportedOperationException x) {
             // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
             // is not capable of cursor-based pagination.
@@ -2043,9 +2044,9 @@ public class EntityTests {
         }
 
         assertEquals(List.of(16L, 18L, 8L, 9L),
-                     page1.stream()
-                                     .map(NaturalNumber::getId)
-                                     .collect(Collectors.toList()));
+                page1.stream()
+                        .map(NaturalNumber::getId)
+                        .collect(Collectors.toList()));
 
         assertEquals(true, page1.hasTotals());
         assertEquals(true, page1.hasNext());
@@ -2064,10 +2065,10 @@ public class EntityTests {
 
         try {
             page2 = positives.withBitCountOrOfTypeAndBelow((short) 4,
-                                                           NumberType.COMPOSITE, 20L,
-                                                           Sort.desc("numBitsRequired"),
-                                                           Sort.asc("id"),
-                                                           page1.nextPageRequest());
+                    NumberType.COMPOSITE, 20L,
+                    Sort.desc("numBitsRequired"),
+                    Sort.asc("id"),
+                    page1.nextPageRequest());
         } catch (UnsupportedOperationException x) {
             // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
             // is not capable of cursor-based pagination.
@@ -2075,29 +2076,29 @@ public class EntityTests {
         }
 
         assertEquals(List.of(10L, 11L, 12L, 13L),
-                     page2.stream()
-                                     .map(NaturalNumber::getId)
-                                     .collect(Collectors.toList()));
+                page2.stream()
+                        .map(NaturalNumber::getId)
+                        .collect(Collectors.toList()));
 
         assertEquals(true, page2.hasNext());
 
         CursoredPage<NaturalNumber> page3 = positives.withBitCountOrOfTypeAndBelow((short) 4,
-                                                                                   NumberType.COMPOSITE, 20L,
-                                                                                   Sort.desc("numBitsRequired"),
-                                                                                   Sort.asc("id"),
-                                                                                   page2.nextPageRequest());
+                NumberType.COMPOSITE, 20L,
+                Sort.desc("numBitsRequired"),
+                Sort.asc("id"),
+                page2.nextPageRequest());
 
         assertEquals(List.of(14L, 15L, 4L, 6L),
-                     page3.stream()
-                                     .map(NaturalNumber::getId)
-                                     .collect(Collectors.toList()));
+                page3.stream()
+                        .map(NaturalNumber::getId)
+                        .collect(Collectors.toList()));
 
         if (page3.hasNext()) {
             CursoredPage<NaturalNumber> page4 = positives.withBitCountOrOfTypeAndBelow((short) 4,
-                                                                                       NumberType.COMPOSITE, 20L,
-                                                                                       Sort.desc("numBitsRequired"),
-                                                                                       Sort.asc("id"),
-                                                                                       page3.nextPageRequest());
+                    NumberType.COMPOSITE, 20L,
+                    Sort.desc("numBitsRequired"),
+                    Sort.asc("id"),
+                    page3.nextPageRequest());
             assertEquals(false, page4.hasContent());
         }
     }
@@ -2111,19 +2112,19 @@ public class EntityTests {
     public void testQueryWithoutSelectReturnsArrayOfRecord() {
 
         assertEquals(List.of("9 is ODD COMPOSITE and requires 4 bits",
-                             "10 is EVEN COMPOSITE and requires 4 bits",
-                             "11 is ODD PRIME and requires 4 bits",
-                             "12 is EVEN COMPOSITE and requires 4 bits",
-                             "13 is ODD PRIME and requires 4 bits",
-                             "14 is EVEN COMPOSITE and requires 4 bits",
-                             "15 is ODD COMPOSITE and requires 4 bits"),
-                     Arrays.stream(numbers.numberArray(3L))
-                             .sorted(Comparator.comparing(n -> n.id()))
-                             .map(n -> n.id() +
-                                     " is " + (n.isOdd() ? "ODD" : "EVEN") +
-                                     " " + n.numType() +
-                                     " and requires " + n.numBitsRequired() + " bits")
-                             .collect(Collectors.toList()));
+                        "10 is EVEN COMPOSITE and requires 4 bits",
+                        "11 is ODD PRIME and requires 4 bits",
+                        "12 is EVEN COMPOSITE and requires 4 bits",
+                        "13 is ODD PRIME and requires 4 bits",
+                        "14 is EVEN COMPOSITE and requires 4 bits",
+                        "15 is ODD COMPOSITE and requires 4 bits"),
+                Arrays.stream(numbers.numberArray(3L))
+                        .sorted(Comparator.comparing(n -> n.id()))
+                        .map(n -> n.id() +
+                                " is " + (n.isOdd() ? "ODD" : "EVEN") +
+                                " " + n.numType() +
+                                " and requires " + n.numBitsRequired() + " bits")
+                        .collect(Collectors.toList()));
     }
 
     @Assertion(id = "539", strategy = """
@@ -2135,17 +2136,17 @@ public class EntityTests {
     public void testQueryWithoutSelectReturnsListOfRecord() {
 
         assertEquals(List.of("4 is EVEN COMPOSITE and requires 3 bits",
-                             "5 is ODD PRIME and requires 3 bits",
-                             "6 is EVEN COMPOSITE and requires 3 bits",
-                             "7 is ODD PRIME and requires 3 bits"),
-                     numbers.numberList(Short.valueOf((short) 3))
-                             .stream()
-                             .map(n -> n.id() +
-                                     " is " + (n.isOdd() ? "ODD" : "EVEN") +
-                                     " " + n.numType() +
-                                     " and requires " + n.numBitsRequired() + " bits")
-                             .sorted()
-                             .collect(Collectors.toList()));
+                        "5 is ODD PRIME and requires 3 bits",
+                        "6 is EVEN COMPOSITE and requires 3 bits",
+                        "7 is ODD PRIME and requires 3 bits"),
+                numbers.numberList(Short.valueOf((short) 3))
+                        .stream()
+                        .map(n -> n.id() +
+                                " is " + (n.isOdd() ? "ODD" : "EVEN") +
+                                " " + n.numType() +
+                                " and requires " + n.numBitsRequired() + " bits")
+                        .sorted()
+                        .collect(Collectors.toList()));
     }
 
     @Assertion(id = "539", strategy = """
@@ -2172,20 +2173,20 @@ public class EntityTests {
     public void testQueryWithoutSelectReturnsStreamOfRecordWithSelect() {
 
         assertEquals(List.of("25 COMPOSITE (5 bits)",
-                             "26 COMPOSITE (5 bits)",
-                             "27 COMPOSITE (5 bits)",
-                             "28 COMPOSITE (5 bits)",
-                             "29 PRIME (5 bits)",
-                             "30 COMPOSITE (5 bits)",
-                             "31 PRIME (5 bits)",
-                             "32 COMPOSITE (6 bits)",
-                             "33 COMPOSITE (6 bits)",
-                             "34 COMPOSITE (6 bits)",
-                             "35 COMPOSITE (6 bits)"),
-                     numbers.cardinalNumberStream(5L)
-                             .map(CardinalNumber::toString)
-                             .sorted()
-                             .collect(Collectors.toList()));
+                        "26 COMPOSITE (5 bits)",
+                        "27 COMPOSITE (5 bits)",
+                        "28 COMPOSITE (5 bits)",
+                        "29 PRIME (5 bits)",
+                        "30 COMPOSITE (5 bits)",
+                        "31 PRIME (5 bits)",
+                        "32 COMPOSITE (6 bits)",
+                        "33 COMPOSITE (6 bits)",
+                        "34 COMPOSITE (6 bits)",
+                        "35 COMPOSITE (6 bits)"),
+                numbers.cardinalNumberStream(5L)
+                        .map(CardinalNumber::toString)
+                        .sorted()
+                        .collect(Collectors.toList()));
     }
 
     @Assertion(id = "458", strategy = "Use a repository method with a JDQL query that uses parenthesis to make OR be evaluated before AND.")
@@ -2240,14 +2241,14 @@ public class EntityTests {
         }
 
         assertEquals(List.of("36 COMPOSITE √36 >= 6",
-                             "31 PRIME √31 >= 5",
-                             "30 COMPOSITE √30 >= 5",
-                             "29 PRIME √29 >= 5",
-                             "28 COMPOSITE √28 >= 5",
-                             "27 COMPOSITE √27 >= 5"),
-                     page3.stream()
-                             .map(WholeNumber::toString)
-                             .collect(Collectors.toList()));
+                        "31 PRIME √31 >= 5",
+                        "30 COMPOSITE √30 >= 5",
+                        "29 PRIME √29 >= 5",
+                        "28 COMPOSITE √28 >= 5",
+                        "27 COMPOSITE √27 >= 5"),
+                page3.stream()
+                        .map(WholeNumber::toString)
+                        .collect(Collectors.toList()));
 
         try {
             assertEquals(21L, page3.totalElements());
@@ -2263,23 +2264,23 @@ public class EntityTests {
         Page<WholeNumber> page4 = numbers.numberPage(page3.nextPageRequest());
 
         assertEquals(List.of("26 COMPOSITE √26 >= 5",
-                             "25 COMPOSITE √25 >= 5",
-                             "1 ONE √1 >= 1"),
-                     page4.stream()
-                             .map(WholeNumber::toString)
-                             .collect(Collectors.toList()));
+                        "25 COMPOSITE √25 >= 5",
+                        "1 ONE √1 >= 1"),
+                page4.stream()
+                        .map(WholeNumber::toString)
+                        .collect(Collectors.toList()));
 
         Page<WholeNumber> page2 = numbers.numberPage(page3.previousPageRequest());
 
         assertEquals(List.of("42 COMPOSITE √42 >= 6",
-                             "41 PRIME √41 >= 6",
-                             "40 COMPOSITE √40 >= 6",
-                             "39 COMPOSITE √39 >= 6",
-                             "38 COMPOSITE √38 >= 6",
-                             "37 PRIME √37 >= 6"),
-        page2.stream()
-                .map(WholeNumber::toString)
-                .collect(Collectors.toList()));
+                        "41 PRIME √41 >= 6",
+                        "40 COMPOSITE √40 >= 6",
+                        "39 COMPOSITE √39 >= 6",
+                        "38 COMPOSITE √38 >= 6",
+                        "37 PRIME √37 >= 6"),
+                page2.stream()
+                        .map(WholeNumber::toString)
+                        .collect(Collectors.toList()));
     }
 
     @Assertion(id = "539", strategy = """
@@ -2352,7 +2353,7 @@ public class EntityTests {
         try {
             NumberInfo negative2 = numbers.infoByIdentifier(-2L);
             fail("Must raise EmptyResultException when no result is found." +
-                 "Instead: " + negative2);
+                    "Instead: " + negative2);
         } catch (EmptyResultException x) {
             // expected
         }
@@ -2480,25 +2481,25 @@ public class EntityTests {
         found = numbers.cardinalNumbers(Short.valueOf((short) 5));
 
         assertEquals(List.of("16 COMPOSITE (5 bits)",
-                             "17 PRIME (5 bits)",
-                             "18 COMPOSITE (5 bits)",
-                             "19 PRIME (5 bits)",
-                             "20 COMPOSITE (5 bits)",
-                             "21 COMPOSITE (5 bits)",
-                             "22 COMPOSITE (5 bits)",
-                             "23 PRIME (5 bits)",
-                             "24 COMPOSITE (5 bits)",
-                             "25 COMPOSITE (5 bits)",
-                             "26 COMPOSITE (5 bits)",
-                             "27 COMPOSITE (5 bits)",
-                             "28 COMPOSITE (5 bits)",
-                             "29 PRIME (5 bits)",
-                             "30 COMPOSITE (5 bits)",
-                             "31 PRIME (5 bits)"),
-                     Arrays.stream(found)
-                             .map(CardinalNumber::toString)
-                             .sorted()
-                             .collect(Collectors.toList()));
+                        "17 PRIME (5 bits)",
+                        "18 COMPOSITE (5 bits)",
+                        "19 PRIME (5 bits)",
+                        "20 COMPOSITE (5 bits)",
+                        "21 COMPOSITE (5 bits)",
+                        "22 COMPOSITE (5 bits)",
+                        "23 PRIME (5 bits)",
+                        "24 COMPOSITE (5 bits)",
+                        "25 COMPOSITE (5 bits)",
+                        "26 COMPOSITE (5 bits)",
+                        "27 COMPOSITE (5 bits)",
+                        "28 COMPOSITE (5 bits)",
+                        "29 PRIME (5 bits)",
+                        "30 COMPOSITE (5 bits)",
+                        "31 PRIME (5 bits)"),
+                Arrays.stream(found)
+                        .map(CardinalNumber::toString)
+                        .sorted()
+                        .collect(Collectors.toList()));
 
         found = numbers.cardinalNumbers(Short.valueOf((short) 0));
 
@@ -2545,41 +2546,41 @@ public class EntityTests {
         }
 
         assertEquals(List.of("83 PRIME (7 bits)",
-                             "89 PRIME (7 bits)",
-                             "97 PRIME (7 bits)",
-                             "81 COMPOSITE (7 bits)",
-                             "82 COMPOSITE (7 bits)",
-                             "84 COMPOSITE (7 bits)",
-                             "85 COMPOSITE (7 bits)"),
-                     page1.stream()
-                             .map(CardinalNumber::toString)
-                             .collect(Collectors.toList()));
+                        "89 PRIME (7 bits)",
+                        "97 PRIME (7 bits)",
+                        "81 COMPOSITE (7 bits)",
+                        "82 COMPOSITE (7 bits)",
+                        "84 COMPOSITE (7 bits)",
+                        "85 COMPOSITE (7 bits)"),
+                page1.stream()
+                        .map(CardinalNumber::toString)
+                        .collect(Collectors.toList()));
 
         Page<CardinalNumber> page2 = numbers
                 .cardinalNumberPage(9L, page1.nextPageRequest());
 
         assertEquals(List.of("86 COMPOSITE (7 bits)",
-                             "87 COMPOSITE (7 bits)",
-                             "88 COMPOSITE (7 bits)",
-                             "90 COMPOSITE (7 bits)",
-                             "91 COMPOSITE (7 bits)",
-                             "92 COMPOSITE (7 bits)",
-                             "93 COMPOSITE (7 bits)"),
-                     page2.stream()
-                             .map(CardinalNumber::toString)
-                             .collect(Collectors.toList()));
+                        "87 COMPOSITE (7 bits)",
+                        "88 COMPOSITE (7 bits)",
+                        "90 COMPOSITE (7 bits)",
+                        "91 COMPOSITE (7 bits)",
+                        "92 COMPOSITE (7 bits)",
+                        "93 COMPOSITE (7 bits)"),
+                page2.stream()
+                        .map(CardinalNumber::toString)
+                        .collect(Collectors.toList()));
 
         Page<CardinalNumber> page3 = numbers
                 .cardinalNumberPage(9L, page2.nextPageRequest());
 
         assertEquals(List.of("94 COMPOSITE (7 bits)",
-                             "95 COMPOSITE (7 bits)",
-                             "96 COMPOSITE (7 bits)",
-                             "98 COMPOSITE (7 bits)",
-                             "99 COMPOSITE (7 bits)"),
-                     page3.stream()
-                             .map(CardinalNumber::toString)
-                             .collect(Collectors.toList()));
+                        "95 COMPOSITE (7 bits)",
+                        "96 COMPOSITE (7 bits)",
+                        "98 COMPOSITE (7 bits)",
+                        "99 COMPOSITE (7 bits)"),
+                page3.stream()
+                        .map(CardinalNumber::toString)
+                        .collect(Collectors.toList()));
     }
 
     @Assertion(id = "539", strategy = """
@@ -2612,14 +2613,14 @@ public class EntityTests {
         Stream<CardinalNumber> stream = characters.cardinalNumberStream(3L);
 
         assertEquals(List.of("4 COMPOSITE (3 bits)",
-                             "5 PRIME (3 bits)",
-                             "6 COMPOSITE (3 bits)",
-                             "7 PRIME (3 bits)",
-                             "8 COMPOSITE (4 bits)"),
-                     stream
-                         .map(CardinalNumber::toString)
-                         .sorted()
-                         .collect(Collectors.toList()));
+                        "5 PRIME (3 bits)",
+                        "6 COMPOSITE (3 bits)",
+                        "7 PRIME (3 bits)",
+                        "8 COMPOSITE (4 bits)"),
+                stream
+                        .map(CardinalNumber::toString)
+                        .sorted()
+                        .collect(Collectors.toList()));
     }
 
     @Assertion(id = "539", strategy = """
@@ -2631,10 +2632,10 @@ public class EntityTests {
         long[] found = positives.requiringBits(Short.valueOf((short) 4));
 
         assertEquals(List.of(8L, 9L, 10L, 11L, 12L, 13L, 14L, 15L),
-                     Arrays.stream(found)
-                                     .sorted()
-                                     .mapToObj(Long::valueOf)
-                                     .collect(Collectors.toList()));
+                Arrays.stream(found)
+                        .sorted()
+                        .mapToObj(Long::valueOf)
+                        .collect(Collectors.toList()));
 
         long[] notFound = positives.requiringBits(Short.valueOf((short) 0));
 
@@ -2650,10 +2651,10 @@ public class EntityTests {
         List<Long> found = shared.withTruncatedSqrt(7);
 
         assertEquals(List.of(49L, 50L, 51L, 52L, 53L, 54L, 55L, 56L,
-                             57L, 58L, 59L, 60L, 61L, 62L, 63L),
-                     found.stream()
-                                     .sorted()
-                                     .collect(Collectors.toList()));
+                        57L, 58L, 59L, 60L, 61L, 62L, 63L),
+                found.stream()
+                        .sorted()
+                        .collect(Collectors.toList()));
 
         assertEquals(List.of(), shared.withTruncatedSqrt(0));
     }
@@ -2671,7 +2672,7 @@ public class EntityTests {
         try {
             int value = shared.valueOf("-4c");
             fail("Should not be able to find a value that is not in the database: " +
-                 value);
+                    value);
         } catch (EmptyResultException x) {
             // expected
         }
@@ -2712,22 +2713,22 @@ public class EntityTests {
         }
 
         assertEquals(List.of(31L, 33L, 35L, 37L, 39L),
-                     page4.content());
+                page4.content());
 
         Page<Long> page3 = positives.withParity(odd, page4.previousPageRequest());
 
         assertEquals(List.of(21L, 23L, 25L, 27L, 29L),
-                     page3.content());
+                page3.content());
 
         Page<Long> page2 = positives.withParity(odd, page3.previousPageRequest());
 
         assertEquals(List.of(11L, 13L, 15L, 17L, 19L),
-                     page2.content());
+                page2.content());
 
         Page<Long> page5 = positives.withParity(odd, page4.nextPageRequest());
 
         assertEquals(List.of(41L, 43L, 45L, 47L, 49L),
-                     page5.content());
+                page5.content());
     }
 
     @Assertion(id = "539", strategy = """
@@ -2739,13 +2740,13 @@ public class EntityTests {
         Stream<Long> found = shared.withBitRequirementOf(Short.valueOf((short) 5));
 
         assertEquals(List.of(16L, 17L, 18L, 19L, 20L, 21L, 22L, 23L,
-                             24L, 25L, 26L, 27L, 28L, 29L, 30L, 31L),
-                     found
-                                     .sorted()
-                                     .collect(Collectors.toList()));
+                        24L, 25L, 26L, 27L, 28L, 29L, 30L, 31L),
+                found
+                        .sorted()
+                        .collect(Collectors.toList()));
 
         assertEquals(0L,
-                     shared.withBitRequirementOf(Short.valueOf((short) -1)).count());
+                shared.withBitRequirementOf(Short.valueOf((short) -1)).count());
     }
 
     @Assertion(id = "539", strategy = """
@@ -2769,7 +2770,7 @@ public class EntityTests {
         Map<Long, Integer> valueToArrayIndex = new HashMap<>();
         if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
             // Column and Key-Value databases might not be capable of sorting.
-            for (long expectedValue : new long[] { 4L, 5L, 6L, 7L, 8L }) {
+            for (long expectedValue : new long[]{4L, 5L, 6L, 7L, 8L}) {
                 int index = -1;
                 for (int i = 0; i < found.length; i++) {
                     if (found[i].value() == expectedValue) {
@@ -2830,11 +2831,11 @@ public class EntityTests {
             order = Order.by();
         } else {
             order = Order.by(_NaturalNumber.floorOfSquareRoot.asc(),
-                             _NaturalNumber.id.desc());
+                    _NaturalNumber.id.desc());
         }
 
         List<WholeNumber> found = numbers.wholeNumberList(NumberType.PRIME.ordinal(),
-                                                          order);
+                order);
 
         Map<Long, WholeNumber> primes = new HashMap<>();
         for (WholeNumber num : found) {
@@ -2856,26 +2857,26 @@ public class EntityTests {
         // primes with sqrtFloor 9: 97 89 83
 
         WholeNumber num3 = type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)
-                        ? primes.get(3L)
-                        : found.get(0);
+                ? primes.get(3L)
+                : found.get(0);
         assertNotNull(num3);
         assertEquals(1L, num3.sqrtFloor());
 
         WholeNumber num17 = type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)
-                        ? primes.get(17L)
-                        : found.get(8);
+                ? primes.get(17L)
+                : found.get(8);
         assertNotNull(num17);
         assertEquals(4L, num17.sqrtFloor());
 
         WholeNumber num59 = type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)
-                        ? primes.get(59L)
-                        : found.get(16);
+                ? primes.get(59L)
+                : found.get(16);
         assertNotNull(num59);
         assertEquals(7L, num59.sqrtFloor());
 
         WholeNumber num83 = type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)
-                        ? primes.get(83L)
-                        : found.get(24);
+                ? primes.get(83L)
+                : found.get(24);
         assertNotNull(num83);
         assertEquals(9L, num83.sqrtFloor());
     }
@@ -2908,8 +2909,8 @@ public class EntityTests {
         Page<WholeNumber> page3;
         try {
             page3 = numbers.wholeNumberPage(NumberType.PRIME.ordinal(),
-                                            page3Req,
-                                            Order.by(Sort.asc(_NaturalNumber.ID)));
+                    page3Req,
+                    Order.by(Sort.asc(_NaturalNumber.ID)));
         } catch (UnsupportedOperationException x) {
             if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
                 // Column and Key-Value databases might not be capable of sorting.
@@ -2945,8 +2946,8 @@ public class EntityTests {
 
         Page<WholeNumber> page4;
         page4 = numbers.wholeNumberPage(NumberType.PRIME.ordinal(),
-                                        page3.nextPageRequest(),
-                                        Order.by(Sort.asc(_NaturalNumber.ID)));
+                page3.nextPageRequest(),
+                Order.by(Sort.asc(_NaturalNumber.ID)));
         assertEquals(4, page4.numberOfElements());
         assertEquals(true, page4.hasPrevious());
         assertEquals(true, page4.hasNext());
@@ -2958,8 +2959,8 @@ public class EntityTests {
 
         Page<WholeNumber> page2;
         page2 = numbers.wholeNumberPage(NumberType.PRIME.ordinal(),
-                                        page3.previousPageRequest(),
-                                        Order.by(Sort.asc(_NaturalNumber.ID)));
+                page3.previousPageRequest(),
+                Order.by(Sort.asc(_NaturalNumber.ID)));
         assertEquals(4, page2.numberOfElements());
         assertEquals(true, page2.hasNext());
         assertEquals(true, page2.hasPrevious());
@@ -2991,7 +2992,7 @@ public class EntityTests {
 
     @Assertion(id = "133", strategy = "Request a Slice of results where none match the query, expecting an empty Slice with 0 results.")
     public void testSliceOfNothing() {
-        PageRequest pagination =  PageRequest.ofSize(5).withoutTotal();
+        PageRequest pagination = PageRequest.ofSize(5).withoutTotal();
         Page<NaturalNumber> page;
         try {
             page = numbers.findByNumTypeAndFloorOfSquareRootLessThanEqual(
@@ -3035,9 +3036,9 @@ public class EntityTests {
         }
 
         assertEquals(List.of('D', 'E', 'F', 'G', 'H', 'I'),
-                     page1.stream()
-                                     .map(AsciiCharacter::getThisCharacter)
-                                     .collect(Collectors.toList()));
+                page1.stream()
+                        .map(AsciiCharacter::getThisCharacter)
+                        .collect(Collectors.toList()));
     }
 
     @Assertion(id = "133", strategy = "Use a pre-generated StaticMetamodel to obtain ascending Sorts for an entity attribute in a type-safe manner.")
@@ -3064,9 +3065,9 @@ public class EntityTests {
         }
 
         assertEquals(List.of('d', 'e', 'f', 'g', 'h', 'i', 'j'),
-                     page1.stream()
-                                     .map(AsciiCharacter::getThisCharacter)
-                                     .collect(Collectors.toList()));
+                page1.stream()
+                        .map(AsciiCharacter::getThisCharacter)
+                        .collect(Collectors.toList()));
     }
 
     @Assertion(id = "133", strategy = "Use the StaticMetamodel to refer to entity attribute names in a type-safe manner.")
@@ -3160,24 +3161,24 @@ public class EntityTests {
             }
         }
 
-        assertEquals(Arrays.toString(new Character[] { Character.valueOf('e'),
-                                                       Character.valueOf('f'),
-                                                       Character.valueOf('g'),
-                                                       Character.valueOf('h'),
-                                                       Character.valueOf('i'),
-                                                       Character.valueOf('j'),
-                                                       Character.valueOf('k'),
-                                                       Character.valueOf('l'),
-                                                       Character.valueOf('m') }),
-                     Arrays.toString(chars.stream().map(ch -> ch.getThisCharacter()).sorted().toArray()));
+        assertEquals(Arrays.toString(new Character[]{Character.valueOf('e'),
+                        Character.valueOf('f'),
+                        Character.valueOf('g'),
+                        Character.valueOf('h'),
+                        Character.valueOf('i'),
+                        Character.valueOf('j'),
+                        Character.valueOf('k'),
+                        Character.valueOf('l'),
+                        Character.valueOf('m')}),
+                Arrays.toString(chars.stream().map(ch -> ch.getThisCharacter()).sorted().toArray()));
 
         assertEquals(101 + 102 + 103 + 104 + 105 + 106 + 107 + 108 + 109,
-                     chars.stream().mapToInt(AsciiCharacter::getNumericValue).sum());
+                chars.stream().mapToInt(AsciiCharacter::getNumericValue).sum());
 
         Set<String> sorted = new TreeSet<>();
         chars.forEach(ch -> sorted.add(ch.getHexadecimal()));
         assertEquals(new TreeSet<>(Set.of("65", "66", "67", "68", "69", "6a", "6b", "6c", "6d")),
-                     sorted);
+                sorted);
 
         List<AsciiCharacter> empty = characters.findByNumericValueLessThanEqualAndNumericValueGreaterThanEqual(115, 120);
         assertEquals(false, empty.iterator().hasNext());
@@ -3185,8 +3186,8 @@ public class EntityTests {
     }
 
     @Assertion(id = "133",
-               strategy = "Request the third Page of 10 results, expecting to find all 10. " +
-                          "Request the next Page via nextPageRequest, expecting page number 4 and another 10 results.")
+            strategy = "Request the third Page of 10 results, expecting to find all 10. " +
+                    "Request the next Page via nextPageRequest, expecting page number 4 and another 10 results.")
     public void testThirdAndFourthPagesOf10() {
         Order<AsciiCharacter> order = Order.by(_AsciiCharacter.numericValue.asc());
         PageRequest third10 = PageRequest.ofPage(3).size(10);
@@ -3216,9 +3217,9 @@ public class EntityTests {
         }
 
         assertEquals("44:D;45:E;46:F;47:G;48:H;49:I;4a:J;4b:K;4c:L;4d:M;",
-                     page.stream()
-                                     .map(c -> c.getHexadecimal() + ':' + c.getThisCharacter() + ';')
-                                     .reduce("", String::concat));
+                page.stream()
+                        .map(c -> c.getHexadecimal() + ':' + c.getThisCharacter() + ';')
+                        .reduce("", String::concat));
 
         assertEquals(true, page.hasNext());
         PageRequest fourth10 = page.nextPageRequest();
@@ -3239,14 +3240,14 @@ public class EntityTests {
         }
 
         assertEquals("4e:N;4f:O;50:P;51:Q;52:R;53:S;54:T;55:U;56:V;57:W;",
-                     page.stream()
-                                     .map(c -> c.getHexadecimal() + ':' + c.getThisCharacter() + ';')
-                                     .reduce("", String::concat));
+                page.stream()
+                        .map(c -> c.getHexadecimal() + ':' + c.getThisCharacter() + ';')
+                        .reduce("", String::concat));
     }
 
-    @Assertion(id = "133", 
-               strategy = "Request the third Slice of 5 results, expecting to find all 5. "
-                       +  "Request the next Slice via nextPageRequest, expecting page number 4 and another 5 results.")
+    @Assertion(id = "133",
+            strategy = "Request the third Slice of 5 results, expecting to find all 5. "
+                    + "Request the next Slice via nextPageRequest, expecting page number 4 and another 5 results.")
     public void testThirdAndFourthSlicesOf5() {
         PageRequest third5 = PageRequest.ofPage(3).size(5).withoutTotal();
         Sort<NaturalNumber> sort = Sort.desc("id");
@@ -3268,7 +3269,7 @@ public class EntityTests {
         assertEquals(3, page.pageRequest().page());
         assertEquals(5, page.numberOfElements());
 
-        assertEquals(Arrays.toString(new Long[] { 37L, 31L, 29L, 23L, 19L }),
+        assertEquals(Arrays.toString(new Long[]{37L, 31L, 29L, 23L, 19L}),
                 Arrays.toString(page.stream().map(number -> number.getId()).toArray()));
 
         assertEquals(true, page.hasNext());
@@ -3279,7 +3280,7 @@ public class EntityTests {
         assertEquals(4, page.pageRequest().page());
         assertEquals(5, page.numberOfElements());
 
-        assertEquals(Arrays.toString(new Long[] { 17L, 13L, 11L, 7L, 5L }),
+        assertEquals(Arrays.toString(new Long[]{17L, 13L, 11L, 7L, 5L}),
                 Arrays.toString(page.stream().map(number -> number.getId()).toArray()));
     }
 
@@ -3320,7 +3321,7 @@ public class EntityTests {
     }
 
     @Assertion(id = "458", strategy = "Use a repository method with a JDQL UPDATE query without a WHERE clause. " +
-                                      "This method also tests the addition, subtraction, and multiplication operators.")
+            "This method also tests the addition, subtraction, and multiplication operators.")
     public void testUpdateQueryWithoutWhereClause() {
         // Ensure there is no data left over from other tests:
 
@@ -3340,8 +3341,8 @@ public class EntityTests {
         TestPropertyUtility.waitForEventualConsistency();
 
         boxes.saveAll(List.of(Box.of("TestUpdateQueryWithoutWhereClause-01", 125, 117, 44),
-                              Box.of("TestUpdateQueryWithoutWhereClause-02", 173, 165, 52),
-                              Box.of("TestUpdateQueryWithoutWhereClause-03", 229, 221, 60)));
+                Box.of("TestUpdateQueryWithoutWhereClause-02", 173, 165, 52),
+                Box.of("TestUpdateQueryWithoutWhereClause-03", 229, 221, 60)));
 
         TestPropertyUtility.waitForEventualConsistency();
 
@@ -3406,7 +3407,7 @@ public class EntityTests {
     }
 
     @Assertion(id = "458", strategy = "Use a repository method with a JDQL UPDATE query with a WHERE clause. " +
-                                      "This method also tests the assignment and division operators.")
+            "This method also tests the assignment and division operators.")
     public void testUpdateQueryWithWhereClause() {
         try {
             // Ensure there is no data left over from other tests:
@@ -3457,7 +3458,7 @@ public class EntityTests {
         assertEquals(2.34f, c2.y, 0.001f);
 
         try {
-        assertEquals(2, shared.deleteIfPositive());
+            assertEquals(2, shared.deleteIfPositive());
         } catch (UnsupportedOperationException x) {
             if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
                 // Column and Key-Value databases might not be capable of And.
@@ -3478,8 +3479,8 @@ public class EntityTests {
     }
 
     @Assertion(id = "133",
-               strategy = "Use a repository method with varargs Sort... specifying a mixture of ascending and descending order, " +
-                          "and verify all results are returned and are ordered according to the sort criteria.")
+            strategy = "Use a repository method with varargs Sort... specifying a mixture of ascending and descending order, " +
+                    "and verify all results are returned and are ordered according to the sort criteria.")
     public void testVarargsSort() {
         List<NaturalNumber> list;
         try {
@@ -3498,11 +3499,11 @@ public class EntityTests {
             }
         }
 
-        assertEquals(Arrays.toString(new Long[] { 2L, 3L, // square root rounds down to 1; 2 bits
-                                                  1L, // square root rounds down to 1; 1 bit
-                                                  8L, // square root rounds down to 2; 4 bits
-                                                  4L, 5L, 6L, 7L, // square root rounds down to 2; 3 bits
-                                                  9L, 10L, 11L, 12L }), // square root rounds down to 3; 4 bits
-                     Arrays.toString(list.stream().map(number -> number.getId()).toArray()));
+        assertEquals(Arrays.toString(new Long[]{2L, 3L, // square root rounds down to 1; 2 bits
+                        1L, // square root rounds down to 1; 1 bit
+                        8L, // square root rounds down to 2; 4 bits
+                        4L, 5L, 6L, 7L, // square root rounds down to 2; 3 bits
+                        9L, 10L, 11L, 12L}), // square root rounds down to 3; 4 bits
+                Arrays.toString(list.stream().map(number -> number.getId()).toArray()));
     }
 }

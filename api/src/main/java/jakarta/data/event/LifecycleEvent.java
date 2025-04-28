@@ -27,10 +27,9 @@ package jakarta.data.event;
  * }
  * </pre>
  * <p>As usual for a CDI event, an observer of a {@code LifecycleEvent}
- * is notified synchronously and immediately by default. An observer may
- * elect to receive notifications during a phase of the transaction
- * completion cycle by explicitly specifying a {@code TransactionPhase},
- * for example:</p>
+ * is notified synchronously and immediately by default. An observer may elect
+ * to receive notifications during a phase of the transaction completion cycle
+ * by explicitly specifying a {@code TransactionPhase}, for example:</p>
  * <ul>
  * <li>{@code @Observes(during=BEFORE_COMPLETION)} to be notified just
  *     before transaction completion, or</li>
@@ -44,7 +43,6 @@ package jakarta.data.event;
  * to observe a {@code LifecycleEvent}. If the state of an entity is
  * accessed from an asynchronous observer method for a lifecycle
  * event, the resulting behavior is undefined and unportable.</p>
- *
  *
  * @param <E> the entity type
  */

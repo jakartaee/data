@@ -22,9 +22,9 @@ import jakarta.data.metamodel.Path;
 import jakarta.data.metamodel.TextAttribute;
 import jakarta.data.metamodel.TextExpression;
 
-public interface TextPath<T,U>
-        extends Path<T,U>, TextExpression<T> {
-    static <T,U> TextPath<T,U> of(NavigableExpression<T, U> expression, TextAttribute<U> attribute) {
+public interface TextPath<T, U>
+        extends Path<T, U>, TextExpression<T> {
+    static <T, U> TextPath<T, U> of(NavigableExpression<T, U> expression, TextAttribute<U> attribute) {
         return new TextPathRecord<>(expression, attribute);
     }
 }

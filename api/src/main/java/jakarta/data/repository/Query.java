@@ -25,21 +25,27 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * <p>Annotates a repository method as a query method, specifying a query written in Jakarta Data Query Language (JDQL)
- * or in Jakarta Persistence Query Language (JPQL). A Jakarta Data provider is not required to support the complete JPQL
- * language, which targets relational data stores. However, a given provider might offer features of JPQL which go
- * beyond the subset required by JDQL, or might even offer vendor-specific extensions to JDQL which target particular
- * capabilities of the target data store technology. Such extensions come with no guarantee of portability between
- * providers, nor between databases.</p>
+ * <p>Annotates a repository method as a query method, specifying a query
+ * written in Jakarta Data Query Language (JDQL)
+ * or in Jakarta Persistence Query Language (JPQL). A Jakarta Data provider is
+ * not required to support the complete JPQL language, which targets relational
+ * data stores. However, a given provider might offer features of JPQL which go
+ * beyond the subset required by JDQL, or might even offer vendor-specific
+ * extensions to JDQL which target particular capabilities of the target data
+ * store technology. Such extensions come with no guarantee of portability
+ * between providers, nor between databases.</p>
  *
- * <p>The required {@link #value} member specifies the JDQL or JPQL query as a string.</p>
+ * <p>The required {@link #value} member specifies the JDQL or JPQL query as a
+ * string.</p>
  *
- * <p>For {@code select} statements, the return type of the query method must be
- * consistent with the type returned by the query. An explicit {@code SELECT} clause
- * can be omitted when the query returns the entity or a Java record for which the
- * record component names all map to entity attribute names, either by having the
- * same name as the entity attribute or via the record component being annotated with
- * the {@link Select} annotation. For queries with an explicit {@code select} clause:</p>
+ * <p>For {@code select} statements, the return type of the query method must
+ * be
+ * consistent with the type returned by the query. An explicit {@code SELECT}
+ * clause can be omitted when the query returns the entity or a Java record for
+ * which the record component names all map to entity attribute names, either by
+ * having the same name as the entity attribute or via the record component
+ * being annotated with the {@link Select} annotation. For queries with an
+ * explicit {@code select} clause:</p>
  * <ul>
  * <li>if the {@code select} list contains more than one item, the query return type must be a Java record type, and the
  *     elements of the tuple are repackaged as an instance of the query return type by calling a constructor of the
@@ -156,8 +162,8 @@ public @interface Query {
      * in JDQL or JPQL.</p>
      *
      * <p>If the annotated repository method accepts other forms of sorting
-     * (such as a parameter of type {@link Sort}), it is the responsibility
-     * of the application programmer to compose the query so that an
+     * (such as a parameter of type {@link Sort}), it is the responsibility of
+     * the application programmer to compose the query so that an
      * {@code ORDER BY} clause can be validly appended to the text of the
      * query.</p>
      *

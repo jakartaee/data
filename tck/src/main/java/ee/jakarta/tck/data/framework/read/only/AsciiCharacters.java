@@ -34,14 +34,16 @@ import jakarta.data.repository.Save;
 import jakarta.data.repository.Select;
 
 /**
- * This is a read only repository that represents the set of AsciiCharacters from 0-256.
- * This repository will be pre-populated at test startup and verified prior to running tests.
- * This interface is required to inherit only from DataRepository in order to satisfy a TCK scenario.
+ * This is a read only repository that represents the set of AsciiCharacters
+ * from 0-256. This repository will be pre-populated at test startup and
+ * verified prior to running tests. This interface is required to inherit only
+ * from DataRepository in order to satisfy a TCK scenario.
  */
 @Repository
 public interface AsciiCharacters extends DataRepository<AsciiCharacter, Long>, IdOperations {
 
-    @Query(" ") // it is valid to have a query with no clauses
+    @Query(" ")
+        // it is valid to have a query with no clauses
     Stream<AsciiCharacter> all(Limit limit, Sort<?>... sort);
 
     @Query("ORDER BY id ASC")
@@ -88,10 +90,10 @@ public interface AsciiCharacters extends DataRepository<AsciiCharacter, Long>, I
     Optional<AsciiCharacter> findFirstByHexadecimalStartsWithAndIsControlOrderByIdAsc(String firstHexDigit, boolean isControlChar);
 
     @Query("select thisCharacter where hexadecimal like '4_'" +
-           " and hexadecimal not like '%0'" +
-           " and thisCharacter not in ('E', 'G')" +
-           " and id not between 72 and 78" +
-           " order by id asc")
+            " and hexadecimal not like '%0'" +
+            " and thisCharacter not in ('E', 'G')" +
+            " and id not between 72 and 78" +
+            " order by id asc")
     Character[] getABCDFO();
 
     @Query("SELECT hexadecimal WHERE hexadecimal IS NOT NULL AND thisCharacter = ?1")
@@ -102,7 +104,7 @@ public interface AsciiCharacters extends DataRepository<AsciiCharacter, Long>, I
 
     default Stream<AsciiCharacter> retrieveAlphaNumericIn(long minId, long maxId) {
         return findByIdBetween(minId, maxId, Sort.asc("id"))
-                        .filter(c -> Character.isLetterOrDigit(c.getThisCharacter()));
+                .filter(c -> Character.isLetterOrDigit(c.getThisCharacter()));
     }
 
     @Query("SELECT thisCharacter ORDER BY id DESC")

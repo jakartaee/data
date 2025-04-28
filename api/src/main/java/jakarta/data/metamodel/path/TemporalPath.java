@@ -24,12 +24,12 @@ import jakarta.data.metamodel.Path;
 import jakarta.data.metamodel.TemporalAttribute;
 import jakarta.data.metamodel.TemporalExpression;
 
-public interface TemporalPath<T,U,V extends Temporal & Comparable<? extends Temporal>>
-        extends Path<T,U>, TemporalExpression<T,V> {
+public interface TemporalPath<T, U, V extends Temporal & Comparable<? extends Temporal>>
+        extends Path<T, U>, TemporalExpression<T, V> {
 
-    static <T,U,V extends Temporal & Comparable<? extends Temporal>> TemporalPath<T, U, V> of(
-        NavigableExpression<T, U> expression,
-        TemporalAttribute<U, V> attribute) {
+    static <T, U, V extends Temporal & Comparable<? extends Temporal>> TemporalPath<T, U, V> of(
+            NavigableExpression<T, U> expression,
+            TemporalAttribute<U, V> attribute) {
 
         return new TemporalPathRecord<>(expression, attribute);
     }

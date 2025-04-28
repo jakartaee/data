@@ -32,17 +32,17 @@ import ee.jakarta.tck.data.framework.utilities.TestPropertyUtility;
 
 /**
  * <p>This is a Junit5 extension class that extends ArquillianExtension</p>
- * 
- * <p>This extension will passthrough to the ArquillianExtension class when running
+ *
+ * <p>This extension will passthrough to the ArquillianExtension class when
+ * running
  * against a Jakarta EE core/web/platform profiles, but will skip Arquillian
  * processing when running against a standalone implementation.</p>
- * 
- * @see org.jboss.arquillian.junit5.ArquillianExtension
  *
+ * @see org.jboss.arquillian.junit5.ArquillianExtension
  */
 public class StandaloneExtension extends ArquillianExtension implements BeforeAllCallback, AfterAllCallback,
         BeforeEachCallback, AfterEachCallback, InvocationInterceptor, TestExecutionExceptionHandler {
-    
+
     private static final Logger log = Logger.getLogger(StandaloneExtension.class.getCanonicalName());
 
     @Override
@@ -80,7 +80,7 @@ public class StandaloneExtension extends ArquillianExtension implements BeforeAl
 
     @Override
     public void interceptTestTemplateMethod(Invocation<Void> invocation,
-            ReflectiveInvocationContext<Method> invocationContext, ExtensionContext extensionContext) throws Throwable {
+                                            ReflectiveInvocationContext<Method> invocationContext, ExtensionContext extensionContext) throws Throwable {
         if (TestPropertyUtility.skipDeployment()) {
             invocation.proceed();
             return;
@@ -90,7 +90,7 @@ public class StandaloneExtension extends ArquillianExtension implements BeforeAl
 
     @Override
     public void interceptTestMethod(Invocation<Void> invocation, ReflectiveInvocationContext<Method> invocationContext,
-            ExtensionContext extensionContext) throws Throwable {
+                                    ExtensionContext extensionContext) throws Throwable {
         if (TestPropertyUtility.skipDeployment()) {
             invocation.proceed();
             return;
@@ -100,7 +100,7 @@ public class StandaloneExtension extends ArquillianExtension implements BeforeAl
 
     @Override
     public void interceptBeforeEachMethod(Invocation<Void> invocation,
-            ReflectiveInvocationContext<Method> invocationContext, ExtensionContext extensionContext) throws Throwable {
+                                          ReflectiveInvocationContext<Method> invocationContext, ExtensionContext extensionContext) throws Throwable {
         if (TestPropertyUtility.skipDeployment()) {
             invocation.proceed();
             return;
@@ -110,7 +110,7 @@ public class StandaloneExtension extends ArquillianExtension implements BeforeAl
 
     @Override
     public void interceptAfterEachMethod(Invocation<Void> invocation,
-            ReflectiveInvocationContext<Method> invocationContext, ExtensionContext extensionContext) throws Throwable {
+                                         ReflectiveInvocationContext<Method> invocationContext, ExtensionContext extensionContext) throws Throwable {
         if (TestPropertyUtility.skipDeployment()) {
             invocation.proceed();
             return;
@@ -120,7 +120,7 @@ public class StandaloneExtension extends ArquillianExtension implements BeforeAl
 
     @Override
     public void interceptBeforeAllMethod(Invocation<Void> invocation,
-            ReflectiveInvocationContext<Method> invocationContext, ExtensionContext extensionContext) throws Throwable {
+                                         ReflectiveInvocationContext<Method> invocationContext, ExtensionContext extensionContext) throws Throwable {
         if (TestPropertyUtility.skipDeployment()) {
             invocation.proceed();
             return;
@@ -130,7 +130,7 @@ public class StandaloneExtension extends ArquillianExtension implements BeforeAl
 
     @Override
     public void interceptAfterAllMethod(Invocation<Void> invocation,
-            ReflectiveInvocationContext<Method> invocationContext, ExtensionContext extensionContext) throws Throwable {
+                                        ReflectiveInvocationContext<Method> invocationContext, ExtensionContext extensionContext) throws Throwable {
         if (TestPropertyUtility.skipDeployment()) {
             invocation.proceed();
             return;

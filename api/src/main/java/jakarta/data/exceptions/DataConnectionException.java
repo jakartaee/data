@@ -19,15 +19,17 @@ package jakarta.data.exceptions;
 
 /**
  * Indicates a connection-related failure that might be intermittent in nature.
- * The operation might succeed if reattempted by the application.
- * If the data access resource is enlisted in a transaction,
- * the application must ensure that the transaction is rolled back before retrying the operation under a new transaction.
+ * The operation might succeed if reattempted by the application. If the data
+ * access resource is enlisted in a transaction, the application must ensure
+ * that the transaction is rolled back before retrying the operation under a new
+ * transaction.
  */
 public class DataConnectionException extends DataException {
     private static final long serialVersionUID = 4736774083679114892L;
 
     /**
-     * Constructs a new DataConnectionException exception with the specified detail message.
+     * Constructs a new DataConnectionException exception with the specified
+     * detail message.
      *
      * @param message the detail message.
      */
@@ -36,18 +38,20 @@ public class DataConnectionException extends DataException {
     }
 
     /**
-     * Constructs a new DataConnectionException exception with the specified detail message.
+     * Constructs a new DataConnectionException exception with the specified
+     * detail message.
      *
      * @param message the detail message.
-     * @param cause another exception or error that caused this exception.
-     *        Null indicates that no other cause is specified.
+     * @param cause   another exception or error that caused this exception.
+     *                Null indicates that no other cause is specified.
      */
     public DataConnectionException(String message, Throwable cause) {
         super(message, cause);
     }
 
     /**
-     * Constructs a new DataConnectionException exception with the specified cause.
+     * Constructs a new DataConnectionException exception with the specified
+     * cause.
      *
      * @param cause the cause.
      */

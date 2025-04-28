@@ -21,7 +21,8 @@ import jakarta.data.metamodel.Expression;
 
 import java.util.List;
 
-public interface FunctionExpression<T,V> extends Expression<T,V> {
+public interface FunctionExpression<T, V> extends Expression<T, V> {
     String name();
-    List<? extends Expression<? super T,?>> arguments();
+
+    List<? extends Expression<? super T, ?>> arguments();
 }

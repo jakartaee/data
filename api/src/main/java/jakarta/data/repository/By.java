@@ -84,24 +84,22 @@ import java.lang.annotation.Target;
 public @interface By {
 
     /**
-     * The name of the entity attribute mapped by the annotated parameter,
-     * or {@value #ID} to indicate the unique identifier attribute
-     * of the entity.
+     * The name of the entity attribute mapped by the annotated parameter, or
+     * {@value #ID} to indicate the unique identifier attribute of the entity.
      *
-     * @return the entity attribute name, or {@value #ID} to indicate the
-     *         unique identifier attribute.
+     * @return the entity attribute name, or {@value #ID} to indicate the unique
+     * identifier attribute.
      */
     String value();
 
     /**
      * <p>
-     * The special value which indicates the unique identifier attribute.
-     * The annotation {@code By(ID)} maps a parameter to the identifier.
+     * The special value which indicates the unique identifier attribute. The
+     * annotation {@code By(ID)} maps a parameter to the identifier.
      * </p>
      * <p>
-     * Note that {@code id(this)} is the expression in JPQL for the
-     * unique identifier of an entity with an implicit identification
-     * variable.
+     * Note that {@code id(this)} is the expression in JPQL for the unique
+     * identifier of an entity with an implicit identification variable.
      * </p>
      */
     String ID = "id(this)";

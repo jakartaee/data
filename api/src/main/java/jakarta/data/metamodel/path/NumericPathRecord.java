@@ -22,9 +22,9 @@ import java.util.Objects;
 import jakarta.data.metamodel.NavigableExpression;
 import jakarta.data.metamodel.NumericAttribute;
 
-record NumericPathRecord<T,U,N extends Number & Comparable<N>>
-        (NavigableExpression<T,U> expression, NumericAttribute<U,N> attribute)
-        implements NumericPath<T,U,N> {
+record NumericPathRecord<T, U, N extends Number & Comparable<N>>
+        (NavigableExpression<T, U> expression, NumericAttribute<U, N> attribute)
+        implements NumericPath<T, U, N> {
 
     NumericPathRecord {
         Objects.requireNonNull(expression, "The expression is required");

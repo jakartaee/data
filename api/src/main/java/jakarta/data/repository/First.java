@@ -24,9 +24,9 @@ import java.lang.annotation.Target;
 
 /**
  * <p>Specifies a static limit on the number of results retrieved by a
- * repository method. The results of a single invocation of a repository
- * method may be limited to a given {@linkplain #value maximum number of
- * results}. For example,</p>
+ * repository method. The results of a single invocation of a repository method
+ * may be limited to a given {@linkplain #value maximum number of results}. For
+ * example,</p>
  *
  * <pre>
  * &#64;Find &#64;First
@@ -51,15 +51,14 @@ import java.lang.annotation.Target;
  *
  * @see Find
  * @see Query
- *
  * @since 1.1
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface First {
     /**
-     * The limit on the number of results returned by the repository
-     * method. Must be strictly positive.
+     * The limit on the number of results returned by the repository method.
+     * Must be strictly positive.
      */
     int value() default 1;
 }

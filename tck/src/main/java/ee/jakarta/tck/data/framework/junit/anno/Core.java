@@ -27,11 +27,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import ee.jakarta.tck.data.framework.junit.extensions.AssertionExtension;
 
 /**
- * <p>These are test classes that REQUIRE core profile to be executed. For these
+ * <p>These are test classes that REQUIRE core profile to be executed. For
+ * these
  * tests to run they must deploy an application to a Jakarta EE server using the
  * Arquillian {@code @Deployment} annotation.</p>
- * 
- * <p>At runtime the Arquillian REST protocol must be used for communication with
+ *
+ * <p>At runtime the Arquillian REST protocol must be used for communication
+ * with
  * the Jakarta EE server.</p>
  */
 @Target(ElementType.TYPE)
@@ -39,6 +41,6 @@ import ee.jakarta.tck.data.framework.junit.extensions.AssertionExtension;
 @Tag("core")
 @Tag("web")
 @Tag("platform")
-@ExtendWith({ ArquillianExtension.class, AssertionExtension.class })
+@ExtendWith({ArquillianExtension.class, AssertionExtension.class})
 public @interface Core {
 }

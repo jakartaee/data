@@ -44,17 +44,18 @@ import jakarta.data.exceptions.OptimisticLockingFailureException;
 import jakarta.inject.Inject;
 
 /**
- * Execute tests with a Persistence specific entity with a repository that requires read and writes (AKA not read-only) 
+ * Execute tests with a Persistence specific entity with a repository that
+ * requires read and writes (AKA not read-only)
  */
 @Standalone
 @Persistence
 public class PersistenceEntityTests {
-    
+
     @Deployment
     public static WebArchive createDeployment() {
         return ShrinkWrap.create(WebArchive.class).addClasses(Product.class, Catalog.class);
     }
-    
+
     @Inject
     Catalog catalog;
 
@@ -128,7 +129,7 @@ public class PersistenceEntityTests {
 
         List<Product> found = catalog.findByNameLike("%r_o%");
         assertEquals(List.of("carrots", "mushrooms"),
-                     found.stream().map(Product::getName).sorted().collect(Collectors.toList()));
+                found.stream().map(Product::getName).sorted().collect(Collectors.toList()));
 
         assertEquals(3L, catalog.deleteByProductNumLike("TEST-PROD-%"));
     }
@@ -143,12 +144,12 @@ public class PersistenceEntityTests {
         products.add(Product.of("marker", 3.00, "TEST-PROD-03"));
         products.add(Product.of("calculator", 15.00, "TEST-PROD-04"));
         products.add(Product.of("ruler", 2.00, "TEST-PROD-05"));
-        
+
         products.stream().forEach(product -> catalog.save(product));
-        
+
         long countExpensive = catalog.countByPriceGreaterThanEqual(2.99);
         assertEquals(2L, countExpensive, "Expected two products to be more than 3.00");
-        
+
         assertEquals(5L, catalog.deleteByProductNumLike("TEST-PROD-%"));
     }
 
@@ -157,8 +158,8 @@ public class PersistenceEntityTests {
         catalog.deleteByProductNumLike("TEST-PROD-%");
 
         Product[] added = catalog.addMultiple(Product.of("blueberries", 2.49, "TEST-PROD-95", Department.GROCERY),
-                                              Product.of("strawberries", 2.29, "TEST-PROD-96", Department.GROCERY),
-                                              Product.of("raspberries", 2.39, "TEST-PROD-97", Department.GROCERY));
+                Product.of("strawberries", 2.29, "TEST-PROD-96", Department.GROCERY),
+                Product.of("raspberries", 2.39, "TEST-PROD-97", Department.GROCERY));
 
         assertEquals(3, added.length);
 
@@ -201,7 +202,7 @@ public class PersistenceEntityTests {
         // Attempt to remove entities that do not exist in the database
         try {
             catalog.removeMultiple(Product.of("blackberries", 2.59, "TEST-PROD-98", Department.GROCERY),
-                                   Product.of("gooseberries", 2.79, "TEST-PROD-99", Department.GROCERY));
+                    Product.of("gooseberries", 2.79, "TEST-PROD-99", Department.GROCERY));
             fail("OptimisticLockingFailureException must be raised because the entities are not found for deletion.");
         } catch (OptimisticLockingFailureException x) {
             // expected
@@ -229,9 +230,9 @@ public class PersistenceEntityTests {
         assertEquals("rhubarb", found.iterator().next().getName());
 
         assertEquals(List.of("spinach", "potato"),
-                     catalog.findByPriceNotNullAndPriceLessThanEqual(2.30)
-                                     .map(Product::getName)
-                                     .collect(Collectors.toList()));
+                catalog.findByPriceNotNullAndPriceLessThanEqual(2.30)
+                        .map(Product::getName)
+                        .collect(Collectors.toList()));
 
         assertEquals(4L, catalog.deleteByProductNumLike("TEST-PROD-%"));
     }
@@ -250,7 +251,7 @@ public class PersistenceEntityTests {
         Stream<Product> found = catalog.withTaxBetween(0.4, 0.6, 0.08125);
 
         assertEquals(List.of("adjustable wrench", "rasp", "tape measure"),
-                     found.map(Product::getName).collect(Collectors.toList()));
+                found.map(Product::getName).collect(Collectors.toList()));
 
         assertEquals(6L, catalog.deleteByProductNumLike("TEST-PROD-%"));
     }
@@ -270,12 +271,12 @@ public class PersistenceEntityTests {
         List<Product> found = catalog.findByNameLengthAndPriceBelow(10, 100.0);
 
         assertEquals(List.of("basketball", "toothpaste"),
-                     found.stream().map(Product::getName).collect(Collectors.toList()));
+                found.stream().map(Product::getName).collect(Collectors.toList()));
 
         found = catalog.findByNameLengthAndPriceBelow(8, 1000.0);
 
         assertEquals(List.of("sunblock"),
-                     found.stream().map(Product::getName).collect(Collectors.toList()));
+                found.stream().map(Product::getName).collect(Collectors.toList()));
 
         assertEquals(7L, catalog.deleteByProductNumLike("TEST-PROD-%"));
 

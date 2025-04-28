@@ -16,10 +16,11 @@
 package ee.jakarta.tck.data.framework.read.only;
 
 /**
- * A record that contains a subset of the attributes of the AsciiCharacter entity.
- * where the record component names are an exact match of the entity attribute names.
+ * A record that contains a subset of the attributes of the AsciiCharacter
+ * entity. where the record component names are an exact match of the entity
+ * attribute names.
  */
-public record HexInfo (
+public record HexInfo(
         String hexadecimal,
         int numericValue) implements Comparable<HexInfo> {
 

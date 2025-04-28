@@ -29,31 +29,31 @@ public class Rectangle {
     @jakarta.persistence.Id
     @NotBlank
     private String id;
-    
+
     @jakarta.nosql.Column
     @PositiveOrZero
-    @Max(1800) 
+    @Max(1800)
     private long x;
-    
+
     @jakarta.nosql.Column
     @NotNull
     @Min(0)
     @Max(1000)
     private Long y;
-    
+
     @jakarta.nosql.Column
     @Positive
     @Max(120)
     private int width;
-    
+
     @jakarta.nosql.Column
     @NotNull
     @Min(1)
     @Max(80)
     private Integer height;
-    
+
     public Rectangle() {
-      //do nothing
+        //do nothing
     }
 
     public Rectangle(String id, long x, Long y, int width, Integer height) {
@@ -108,5 +108,5 @@ public class Rectangle {
     public String toString() {
         return "Rectangle [id=" + id + ", x=" + x + ", y=" + y + ", width=" + width + ", height=" + height + "]";
     }
-    
+
 }

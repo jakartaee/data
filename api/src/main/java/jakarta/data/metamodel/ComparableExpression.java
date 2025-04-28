@@ -26,7 +26,7 @@ import jakarta.data.metamodel.constraint.NotBetween;
 import jakarta.data.metamodel.restrict.BasicRestriction;
 import jakarta.data.metamodel.restrict.Restriction;
 
-public interface ComparableExpression<T,V extends Comparable<?>>
+public interface ComparableExpression<T, V extends Comparable<?>>
         extends Expression<T, V> {
 
     default Restriction<T> between(V min, V max) {
@@ -34,8 +34,8 @@ public interface ComparableExpression<T,V extends Comparable<?>>
     }
 
     default <U extends ComparableExpression<? super T, V>> Restriction<T> between(
-        U minExpression,
-        U maxExpression) {
+            U minExpression,
+            U maxExpression) {
         return BasicRestriction.of(
                 this,
                 Between.bounds(minExpression, maxExpression));

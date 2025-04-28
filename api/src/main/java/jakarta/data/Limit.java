@@ -21,20 +21,20 @@ import jakarta.data.page.PageRequest;
 
 /**
  * <p>Specifies a limit on the number of results retrieved by a repository
- * method. The results of a single invocation of a repository method may
- * be limited to a given {@linkplain #of(int) maximum number of results}
- * or to a given {@linkplain #range(long, long) positioned range} defined
- * in terms of an offset and maximum number of results.</p>
+ * method. The results of a single invocation of a repository method may be
+ * limited to a given {@linkplain #of(int) maximum number of results} or to a
+ * given {@linkplain #range(long, long) positioned range} defined in terms of an
+ * offset and maximum number of results.</p>
  *
  * <p>A query method of a repository may have a parameter of type
  * {@code Limit} if its return type indicates that it may return multiple
- * entities. The parameter of type {@code Limit} must occur after the
- * method parameters representing regular parameters of the query itself.
- * For example,</p>
+ * entities. The parameter of type {@code Limit} must occur after the method
+ * parameters representing regular parameters of the query itself. For
+ * example,</p>
  *
  * <pre>
  * Product[] findByNameLike(String namePattern, Limit limit, Sort&lt;?&gt;... sorts);
- * 
+ *
  * ...
  * mostExpensive50 = products.findByNameLike(pattern, Limit.of(50), Sort.desc("price"));
  * ...
@@ -53,7 +53,8 @@ import jakarta.data.page.PageRequest;
  * </ul>
  *
  * @param maxResults maximum number of results for a query.
- * @param startAt    starting position for query results (1 is the first result).
+ * @param startAt    starting position for query results (1 is the first
+ *                   result).
  */
 public record Limit(int maxResults, long startAt) {
 
@@ -67,7 +68,8 @@ public record Limit(int maxResults, long startAt) {
      * </ul>
      *
      * @param maxResults maximum number of results for a query.
-     * @param startAt    starting position for query results (1 is the first result).
+     * @param startAt    starting position for query results (1 is the first
+     *                   result).
      */
     public Limit {
         if (startAt < 1) {
@@ -79,6 +81,7 @@ public record Limit(int maxResults, long startAt) {
     }
 
     // Override to provide method documentation:
+
     /**
      * <p>Maximum number of results that can be returned for a
      * single invocation of the repository method.</p>
@@ -90,6 +93,7 @@ public record Limit(int maxResults, long startAt) {
     }
 
     // Override to provide method documentation:
+
     /**
      * <p>Offset at which to start when returning query results.
      * The first query result is position {@code 1}.</p>
@@ -105,8 +109,8 @@ public record Limit(int maxResults, long startAt) {
      * specified maximum, starting from the first result.</p>
      *
      * @param maxResults maximum number of results.
-     * @return limit that can be supplied to a find method
-     *         or {@code @Query} method that performs a find operation; will never be {@code null}.
+     * @return limit that can be supplied to a find method or {@code @Query}
+     * method that performs a find operation; will never be {@code null}.
      * @throws IllegalArgumentException if maxResults is less than 1.
      */
     public static Limit of(int maxResults) {
@@ -115,26 +119,29 @@ public record Limit(int maxResults, long startAt) {
 
     /**
      * <p>Create a limit that restricts the results to a range,
-     * beginning with the {@code startAt} position and
-     * ending after the {@code endAt} position or the
-     * position of the final result, whichever comes first.</p>
+     * beginning with the {@code startAt} position and ending after the
+     * {@code endAt} position or the position of the final result, whichever
+     * comes first.</p>
      *
-     * @param startAt position at which to start including results.
-     *                The first query result is position 1.
+     * @param startAt position at which to start including results. The first
+     *                query result is position 1.
      * @param endAt   position after which to cease including results.
-     * @return limit that can be supplied to a find method or
-     *         or a {@code @Query} method that performs a find operation; will never be {@code null}.
-     * @throws IllegalArgumentException if {@code startAt} is less than 1
-     *         or {@code endAt} is less than {@code startAt},
-     *         or the range from {@code startAt} to {@code endAt}
-     *         exceeds {@link Integer#MAX_VALUE}.
+     * @return limit that can be supplied to a find method or a
+     * {@code @Query} method that performs a find operation; will never be
+     * {@code null}.
+     * @throws IllegalArgumentException if {@code startAt} is less than 1 or
+     *                                  {@code endAt} is less than
+     *                                  {@code startAt}, or the range from
+     *                                  {@code startAt} to {@code endAt} exceeds
+     *                                  {@link Integer#MAX_VALUE}.
      */
     public static Limit range(long startAt, long endAt) {
         if (endAt < startAt)
             throw new IllegalArgumentException("startAt: " + startAt + ", endAt: " + endAt);
 
         if (endAt - startAt >= Integer.MAX_VALUE)
-            throw new IllegalArgumentException("startAt: " + startAt + ", endAt: " + endAt + ", maxResults > " + Integer.MAX_VALUE);
+            throw new IllegalArgumentException("startAt: " + startAt + ", endAt: "
+                    + endAt + ", maxResults > " + Integer.MAX_VALUE);
 
         return new Limit((int) (endAt - startAt + 1), startAt);
     }

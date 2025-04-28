@@ -29,7 +29,7 @@ import java.util.logging.Logger;
  * implementations (e.g. ApiCheck, or SigTest)
  */
 public abstract class SignatureTestDriver {
-    
+
     private static final Logger log = Logger.getLogger(SignatureTestDriver.class.getCanonicalName());
 
     private static final String SIG_FILE_EXT = ".sig";
@@ -37,8 +37,8 @@ public abstract class SignatureTestDriver {
     // ---------------------------------------------------------- Public Methods
 
     /**
-     * Implementation of the getPackageFile method defined in both the SigTest and
-     * SigTestEE class.
+     * Implementation of the getPackageFile method defined in both the SigTest
+     * and SigTestEE class.
      *
      * @return - Return the signature package file location
      */
@@ -101,10 +101,11 @@ public abstract class SignatureTestDriver {
     } // END getMapFileImpl
 
     /**
-     * Check java SE version 
-     * 
+     * Check java SE version
+     *
      * @param ver - The Java SE version
-     * @return - true if the passed in version matches the current Java version being used, false otherwise.
+     * @return - true if the passed in version matches the current Java version
+     * being used, false otherwise.
      */
     public Boolean isJavaSEVersion(String ver) {
         String strOSVersion = System.getProperty("java.version");
@@ -112,8 +113,8 @@ public abstract class SignatureTestDriver {
     }
 
     /**
-     * Implementation of the getRepositoryDir method defined in both the SigTest and
-     * SigTestEE class.
+     * Implementation of the getRepositoryDir method defined in both the SigTest
+     * and SigTestEE class.
      *
      * @return - Return the signature repo location
      */
@@ -128,7 +129,7 @@ public abstract class SignatureTestDriver {
     /**
      * Implementation of the cleanup method defined in both the SigTest and
      * SigTestEE class.
-     * 
+     *
      * @throws Exception - If we are unable to cleanup
      */
     public void cleanupImpl() throws Exception {
@@ -145,38 +146,40 @@ public abstract class SignatureTestDriver {
     /**
      * <p>
      * Execute the signature test. By default, this method passes the result of
-     * {@link #createTestArguments(String, String, String, String, String, boolean)}
-     * and passes the result to {@link #runSignatureTest(String, String[])}.
+     * {@link #createTestArguments(String, String, String, String, String,
+     * boolean)} and passes the result to
+     * {@link #runSignatureTest(String, String[])}.
      *
-     * @param packageListFile        - file containing the packages/classes that are
-     *                               to be verified
+     * @param packageListFile        - file containing the packages/classes that
+     *                               are to be verified
      * @param mapFile                sig-test.map file
-     * @param signatureRepositoryDir directory containing the recorded signatures
+     * @param signatureRepositoryDir directory containing the recorded
+     *                               signatures
      * @param packagesUnderTest      packages, defined by the test client, that
      *                               should be tested
      * @param classesUnderTest       classes, defined by the test client, that
      *                               should be tested
      * @param classpath              The location of the API being verified.
-     *                               Normally the checked API will be available in
-     *                               the test environment and testClasspath will be
-     *                               null. In some rare cases the tested API may not
-     *                               be part of the test environment and will have
-     *                               to specified using this parameter.
+     *                               Normally the checked API will be available
+     *                               in the test environment and testClasspath
+     *                               will be null. In some rare cases the tested
+     *                               API may not be part of the test environment
+     *                               and will have to specified using this
+     *                               parameter.
      * @param unaccountedTechPkgs    packages that should not exist within the
-     *                               technology under test. These will be searched
-     *                               for and if found, will be flagged as error
-     *                               since they were not explicitly declared as
-     *                               being under test. Their existence requires
-     *                               explicit testing.
+     *                               technology under test. These will be
+     *                               searched for and if found, will be flagged
+     *                               as error since they were not explicitly
+     *                               declared as being under test. Their
+     *                               existence requires explicit testing.
      * @param optionalPkgToIgnore    Optional list of packages to ignore
-     *
-     * @return a {@link SigTestResult} containing the result of the test execution
+     * @return a {@link SigTestResult} containing the result of the test
+     * execution
      * @throws Exception if execution fails
-     * 
      */
     public SigTestResult executeSigTest(String packageListFile, String mapFile, String signatureRepositoryDir,
-            String[] packagesUnderTest, String[] classesUnderTest, String classpath,
-            ArrayList<String> unaccountedTechPkgs, String optionalPkgToIgnore) throws Exception {
+                                        String[] packagesUnderTest, String[] classesUnderTest, String classpath,
+                                        ArrayList<String> unaccountedTechPkgs, String optionalPkgToIgnore) throws Exception {
 
         SigTestResult result = new SigTestResult();
 
@@ -353,38 +356,39 @@ public abstract class SignatureTestDriver {
     // ------------------------------------------------------- Protected Methods
 
     /**
-     * Using a common set of information, create arguments that are appropriate to
-     * be used with the underlying signature test framework.
+     * Using a common set of information, create arguments that are appropriate
+     * to be used with the underlying signature test framework.
      *
-     * @param packageListFile         - file containing the packages/classes that
-     *                                are to be verified
+     * @param packageListFile         - file containing the packages/classes
+     *                                that are to be verified
      * @param mapFile                 sig-test.map file
-     * @param signatureRepositoryDir  directory containing the recorded signatures
+     * @param signatureRepositoryDir  directory containing the recorded
+     *                                signatures
      * @param packageOrClassUnderTest the class or package
      * @param classpath               The location of the API being verified.
-     *                                Normally the checked API will be available in
-     *                                the test environment and testClasspath will be
-     *                                null. In some rare cases the tested API may
-     *                                not be part of the test environment and will
-     *                                have to specified using this parameter.
-     * @param bStaticMode Boolean if we shold run in static mode or not
+     *                                Normally the checked API will be available
+     *                                in the test environment and testClasspath
+     *                                will be null. In some rare cases the
+     *                                tested API may not be part of the test
+     *                                environment and will have to specified
+     *                                using this parameter.
+     * @param bStaticMode             Boolean if we shold run in static mode or
+     *                                not
      * @return A string array of test arguments
      * @throws Exception if we are unable to create test arguments
      */
     protected abstract String[] createTestArguments(String packageListFile, String mapFile,
-            String signatureRepositoryDir, String packageOrClassUnderTest, String classpath, boolean bStaticMode)
+                                                    String signatureRepositoryDir, String packageOrClassUnderTest, String classpath, boolean bStaticMode)
             throws Exception;
 
     /**
-     * Invoke the underlying signature test framework for the specified package or
-     * class.
+     * Invoke the underlying signature test framework for the specified package
+     * or class.
      *
      * @param packageOrClassName the package or class to be validated
      * @param testArguments      the arguments necessary to invoke the signature
      *                           test framework
-     *
      * @return {@code true} if the test passed, otherwise {@code false}
-     * 
      * @throws Exception if we fail to run signature tests
      */
     protected abstract boolean runSignatureTest(String packageOrClassName, String[] testArguments) throws Exception;
@@ -393,28 +397,25 @@ public abstract class SignatureTestDriver {
      * This checks if a class exists or not within the impl.
      *
      * @param packageOrClassName the package or class to be validated
-     * @param testArguments array of test arguments
-     *
+     * @param testArguments      array of test arguments
      * @return {@code true} if the package was found to exist, otherwise
-     *         {@code false}
+     * {@code false}
      * @throws Exception - If we cannot find packages
      */
     protected abstract boolean runPackageSearch(String packageOrClassName, String[] testArguments) throws Exception;
 
     /**
-     * Loads the specified file into a Properties object provided the specified file
-     * exists and is a regular file. The call to new FileInputStream verifies that
-     * the specfied file is a regular file and exists.
+     * Loads the specified file into a Properties object provided the specified
+     * file exists and is a regular file. The call to new FileInputStream
+     * verifies that the specfied file is a regular file and exists.
      *
      * @param mapFile the path and name of the map file to be loaded
-     *
-     * @return Properties The Properties object initialized with the contents of the
-     *         specified file
-     *
-     * @throws java.io.IOException If the specified map file does not exist or is
-     *                             not a regular file, can also be thrown if there
-     *                             is an error creating an input stream from the
-     *                             specified file.
+     * @return Properties The Properties object initialized with the contents of
+     * the specified file
+     * @throws java.io.IOException   If the specified map file does not exist or
+     *                               is not a regular file, can also be thrown
+     *                               if there is an error creating an input
+     *                               stream from the specified file.
      * @throws FileNotFoundException If the specified map file does not exist.
      */
     public Properties loadMapFile(String mapFile) throws IOException, FileNotFoundException {
@@ -439,17 +440,17 @@ public abstract class SignatureTestDriver {
     } // END loadMapFile
 
     /**
-     * This method will attempt to build a fully-qualified filename in the format of
-     * {@code respositoryDir} + {@code baseName} + {@code .sig_} +
+     * This method will attempt to build a fully-qualified filename in the
+     * format of {@code respositoryDir} + {@code baseName} + {@code .sig_} +
      * {@code version}.
      *
      * @param baseName      the base portion of the signature filename
      * @param repositoryDir the directory in which the signatures are stored
      * @param version       the version of the signature file
-     * @throws FileNotFoundException if the file cannot be validated as existing and
-     *                               is in fact a file
      * @return a valid, fully qualified filename, appropriate for the system the
-     *         test is being run on
+     * test is being run on
+     * @throws FileNotFoundException if the file cannot be validated as existing
+     *                               and is in fact a file
      */
     protected String getSigFileName(String baseName, String repositoryDir, String version)
             throws FileNotFoundException {
@@ -483,18 +484,17 @@ public abstract class SignatureTestDriver {
     protected abstract String normalizeFileName(File f);
 
     /**
-     * Returns the name and path to the signature file that contains the specified
-     * package's signatures.
+     * Returns the name and path to the signature file that contains the
+     * specified package's signatures.
      *
      * @param packageName   The package under test
-     * @param mapFile       The name of the file that maps package names to versions
+     * @param mapFile       The name of the file that maps package names to
+     *                      versions
      * @param repositoryDir The directory that conatisn all signature files
-     *
      * @return String The path and name of the siganture file that contains the
-     *         specified package's signatures
-     *
-     * @throws Exception if the determined signature file is not a regular file or
-     *                   does not exist
+     * specified package's signatures
+     * @throws Exception if the determined signature file is not a regular file
+     *                   or does not exist
      */
     protected SignatureFileInfo getSigFileInfo(String packageName, String mapFile, String repositoryDir)
             throws Exception {
@@ -506,7 +506,7 @@ public abstract class SignatureTestDriver {
 
         while (true) {
             boolean packageFound = false;
-            for (Enumeration<?> e = props.propertyNames(); e.hasMoreElements();) {
+            for (Enumeration<?> e = props.propertyNames(); e.hasMoreElements(); ) {
                 name = (String) (e.nextElement());
                 if (name.equals(packageName)) {
                     version = props.getProperty(name);
@@ -588,8 +588,8 @@ public abstract class SignatureTestDriver {
     // ----------------------------------------------------------- Inner Classes
 
     /**
-     * A simple data structure containing the fully qualified path to the signature
-     * file as well as the version being tested.
+     * A simple data structure containing the fully qualified path to the
+     * signature file as well as the version being tested.
      */
     protected static class SignatureFileInfo {
 
@@ -600,8 +600,9 @@ public abstract class SignatureTestDriver {
         // -------------------------------------------------------- Constructors
 
         /**
-         * @param file - The signature test file
-         * @param version - The Java version used to generate the signature test file
+         * @param file    - The signature test file
+         * @param version - The Java version used to generate the signature test
+         *                file
          */
         public SignatureFileInfo(String file, String version) {
 

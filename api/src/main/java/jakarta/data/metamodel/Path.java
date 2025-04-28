@@ -17,7 +17,8 @@
  */
 package jakarta.data.metamodel;
 
-public interface Path<T,U> {
-    NavigableExpression<T,U> expression();
+public interface Path<T, U> {
+    NavigableExpression<T, U> expression();
+
     Attribute<U> attribute();
 }

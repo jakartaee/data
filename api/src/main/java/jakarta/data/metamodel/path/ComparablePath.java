@@ -22,10 +22,10 @@ import jakarta.data.metamodel.ComparableExpression;
 import jakarta.data.metamodel.NavigableExpression;
 import jakarta.data.metamodel.Path;
 
-public interface ComparablePath<T,U,C extends Comparable<?>>
-    extends Path<T,U>, ComparableExpression<T,C> {
-    static <T,U,C extends Comparable<C>> ComparablePath<T, U, C>
-    of(NavigableExpression<T, U> expression, ComparableAttribute<U,C> attribute) {
+public interface ComparablePath<T, U, C extends Comparable<?>>
+        extends Path<T, U>, ComparableExpression<T, C> {
+    static <T, U, C extends Comparable<C>> ComparablePath<T, U, C>
+    of(NavigableExpression<T, U> expression, ComparableAttribute<U, C> attribute) {
         return new ComparablePathRecord<>(expression, attribute);
     }
 }

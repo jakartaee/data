@@ -26,21 +26,25 @@ import java.util.Objects;
  *
  * @param <T> entity class of the static metamodel.
  */
-public interface TextAttribute<T> extends ComparableAttribute<T,String>, TextExpression<T> {
+public interface TextAttribute<T> extends ComparableAttribute<T, String>, TextExpression<T> {
 
     /**
-     * Obtain a request for an ascending, case-insensitive {@link Sort} based on the entity attribute.
+     * Obtain a request for an ascending, case-insensitive {@link Sort} based on
+     * the entity attribute.
      *
-     * @return a request for an ascending, case-insensitive sort on the entity attribute.
+     * @return a request for an ascending, case-insensitive sort on the entity
+     * attribute.
      */
     default Sort<T> ascIgnoreCase() {
         return Sort.ascIgnoreCase(name());
     }
 
     /**
-     * Obtain a request for a descending, case insensitive {@link Sort} based on the entity attribute.
+     * Obtain a request for a descending, case insensitive {@link Sort} based on
+     * the entity attribute.
      *
-     * @return a request for a descending, case insensitive sort on the entity attribute.
+     * @return a request for a descending, case insensitive sort on the entity
+     * attribute.
      */
     default Sort<T> descIgnoreCase() {
         return Sort.descIgnoreCase(name());
@@ -50,7 +54,7 @@ public interface TextAttribute<T> extends ComparableAttribute<T,String>, TextExp
      * <p>Creates a static metamodel {@code TextAttribute} representing the
      * entity attribute with the specified name.</p>
      *
-     * @param <T> entity class of the static metamodel.
+     * @param <T>         entity class of the static metamodel.
      * @param entityClass the entity class.
      * @param name        the name of the entity attribute.
      * @return instance of {@code TextAttribute}.

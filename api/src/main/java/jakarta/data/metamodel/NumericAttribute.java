@@ -20,10 +20,11 @@ package jakarta.data.metamodel;
 import java.util.Objects;
 
 /**
- * <p>Represents a {@linkplain Number numeric} entity attribute in the {@link StaticMetamodel}.
+ * <p>Represents a {@linkplain Number numeric} entity attribute in the
+ * {@link StaticMetamodel}.
  * Numeric entity attributes can be sorted on in query results and can be
- * compared against values in query restrictions. They can also be used as
- * and within numeric expressions involving various arithmetic operations.
+ * compared against values in query restrictions. They can also be used as and
+ * within numeric expressions involving various arithmetic operations.
  * </p>
  *
  * <p>Entity attribute types that are considered numeric include:</p>
@@ -44,21 +45,22 @@ import java.util.Objects;
  * @param <N> type of entity attribute (or wrapper type if primitive).
  */
 
-public interface NumericAttribute<T,N extends Number & Comparable<N>>
-        extends ComparableAttribute<T,N>, NumericExpression<T, N> {
+public interface NumericAttribute<T, N extends Number & Comparable<N>>
+        extends ComparableAttribute<T, N>, NumericExpression<T, N> {
 
     /**
      * <p>Creates a static metamodel {@code NumericAttribute} representing the
      * entity attribute with the specified name.</p>
      *
-     * @param <T> entity class of the static metamodel.
-     * @param <N> type of entity attribute (or wrapper type if primitive).
+     * @param <T>           entity class of the static metamodel.
+     * @param <N>           type of entity attribute (or wrapper type if
+     *                      primitive).
      * @param entityClass   the entity class.
      * @param name          the name of the entity attribute.
      * @param attributeType type of the entity attribute.
      * @return instance of {@code NumericAttribute}.
      */
-    static <T,N extends Number & Comparable<N>> NumericAttribute<T,N> of(
+    static <T, N extends Number & Comparable<N>> NumericAttribute<T, N> of(
             Class<T> entityClass, String name, Class<N> attributeType) {
         Objects.requireNonNull(entityClass, "The entityClass is required");
         Objects.requireNonNull(name, "The name is required");

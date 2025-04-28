@@ -18,7 +18,8 @@
 package jakarta.data.metamodel;
 
 /**
- * <p>Supertype for {@link StaticMetamodel} fields representing entity attributes.</p>
+ * <p>Supertype for {@link StaticMetamodel} fields representing entity
+ * attributes.</p>
  *
  * <p>The following subtypes are provided:</p>
  * <ul>
@@ -47,8 +48,9 @@ package jakarta.data.metamodel;
 public interface Attribute<T> {
 
     /**
-     * Obtain the entity attribute name, suitable for use wherever the specification requires
-     * an entity attribute name. For example, as the parameter to {@link jakarta.data.Sort#asc(String)}.
+     * Obtain the entity attribute name, suitable for use wherever the
+     * specification requires an entity attribute name. For example, as the
+     * parameter to {@link jakarta.data.Sort#asc(String)}.
      *
      * @return the entity attribute name.
      */
@@ -56,12 +58,13 @@ public interface Attribute<T> {
 
     /**
      * Obtain the Java class which declares this entity attribute.
-     * @apiNote This is only guaranteed to be known if a static <code>of</code> method,
-     *          such as {@link BasicAttribute#of(Class, String, Class)}, was used to obtain 
-     *          the instance.
      *
      * @return the declaring class
-     * @throws UnsupportedOperationException if the declaring type is not known.
+     * @throws UnsupportedOperationException if the declaring type is not
+     *                                       known.
+     * @apiNote This is only guaranteed to be known if a static <code>of</code>
+     * method, such as {@link BasicAttribute#of(Class, String, Class)}, was used
+     * to obtain the instance.
      * @since 1.1
      */
     default Class<T> declaringType() {

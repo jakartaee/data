@@ -22,9 +22,10 @@ import java.util.Objects;
 import jakarta.data.metamodel.ComparableAttribute;
 import jakarta.data.metamodel.NavigableExpression;
 
-record ComparablePathRecord<T,U,C extends Comparable<?>>
-        (NavigableExpression<T,U> expression, ComparableAttribute<U, C> attribute)
-        implements ComparablePath<T,U,C> {
+record ComparablePathRecord<T, U, C extends Comparable<?>>
+        (NavigableExpression<T, U> expression,
+         ComparableAttribute<U, C> attribute)
+        implements ComparablePath<T, U, C> {
 
     ComparablePathRecord {
         Objects.requireNonNull(expression, "The expression is required");

@@ -16,22 +16,27 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 /**
- * <p>A repository is an interface annotated with {@link jakarta.data.repository.Repository} that defines
- * operations on entities. Entities represent data in the persistent store.
- * In Domain-driven design, a repository participates in the domain but abstracts away storage
- * and infrastructure details.</p>
+ * <p>A repository is an interface annotated with
+ * {@link jakarta.data.repository.Repository} that defines
+ * operations on entities. Entities represent data in the persistent store. In
+ * Domain-driven design, a repository participates in the domain but abstracts
+ * away storage and infrastructure details.</p>
  *
- * <p>Repository interfaces can optionally inherit from built-in interfaces within this package,</p>
+ * <p>Repository interfaces can optionally inherit from built-in interfaces
+ * within this package,</p>
  *
  * <ul>
- * <li>{@link jakarta.data.repository.DataRepository} - root of the hierarchy, allows the entity type to be specified as a type parameter.</li>
+ * <li>{@link jakarta.data.repository.DataRepository} - root of the hierarchy,
+ *     allows the entity type to be specified as a type parameter.</li>
  * <li>{@link jakarta.data.repository.BasicRepository} - provides common find, delete, and save operations.</li>
- * <li>{@link jakarta.data.repository.CrudRepository} - extends the {@code BasicRepository} to add {@link jakarta.data.repository.CrudRepository#insert(java.lang.Object)}
+ * <li>{@link jakarta.data.repository.CrudRepository} - extends the {@code BasicRepository} to
+ * add {@link jakarta.data.repository.CrudRepository#insert(java.lang.Object)}
  *     and {@link jakarta.data.repository.CrudRepository#update(java.lang.Object)} operations.</li>
  * </ul>
  *
  * <p>Repository interfaces can also define their own lifecycle methods using the
- * {@link jakarta.data.repository.Insert}, {@link jakarta.data.repository.Update}, {@link jakarta.data.repository.Save}, and {@link jakarta.data.repository.Delete} annotations,
+ * {@link jakarta.data.repository.Insert}, {@link jakarta.data.repository.Update}, {@link jakarta.data.repository.Save},
+ * and {@link jakarta.data.repository.Delete} annotations,
  * as well as a variety of other methods following the Query by Method Name pattern,
  * the Parameter-based Conditions pattern, and the {@link jakarta.data.repository.Query} annotation.</p>
  *

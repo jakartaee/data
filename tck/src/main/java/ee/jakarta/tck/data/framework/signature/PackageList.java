@@ -59,7 +59,7 @@ import java.util.logging.Logger;
  * trailing period character.
  */
 class PackageList {
-    
+
     private static final Logger log = Logger.getLogger(PackageList.class.getCanonicalName());
 
     // Any line in the packageFile starting with this character is a comment
@@ -80,20 +80,21 @@ class PackageList {
     private Set<String> packageNames = new TreeSet<>();
 
     /**
-     * Creates an instance of the PackageList class. The PackageList instance reads
-     * the specified package file and populates it's internal state with the package
-     * names found in this file. Users should use this c'tor when playing back
-     * signature files. Users can init the PackageList instance then use the
-     * "String[] getSubPackages(String packageName)" method to get the list of valid
-     * sub-packages for every package who's signature is being verified.
+     * Creates an instance of the PackageList class. The PackageList instance
+     * reads the specified package file and populates it's internal state with
+     * the package names found in this file. Users should use this c'tor when
+     * playing back signature files. Users can init the PackageList instance
+     * then use the "String[] getSubPackages(String packageName)" method to get
+     * the list of valid sub-packages for every package who's signature is being
+     * verified.
      *
-     * @param packageFileName The name of the file that contains the package list.
-     *                        This file contains the names of all the packages that
-     *                        exist across all the signature files that makeup this
-     *                        deliverable. This file is used to generate a list of
-     *                        valid sub-packages that must be exclued when testing
-     *                        theor parent package's signature.
-     *
+     * @param packageFileName The name of the file that contains the package
+     *                        list. This file contains the names of all the
+     *                        packages that exist across all the signature files
+     *                        that makeup this deliverable. This file is used to
+     *                        generate a list of valid sub-packages that must be
+     *                        exclued when testing theor parent package's
+     *                        signature.
      * @throws Exception when the packageFileName does not exist.
      */
     public PackageList(String packageFileName) throws Exception {
@@ -106,26 +107,26 @@ class PackageList {
     }
 
     /**
-     * Creates an instance of the PackageList class. The PackageList instance reads
-     * the contents of the packageFileName and stores it in it's internal state.
-     * Next, any packages whos name starts with the specified packageName are
-     * removed from the internal package list. This is done because this is the
-     * package being recorded and we need to remove any previously recorded package
-     * names in case any sub-packages have been removed since the last time the
-     * signatures were recorded. Users should use this c'tor when they are recording
-     * signature files never during playback.
+     * Creates an instance of the PackageList class. The PackageList instance
+     * reads the contents of the packageFileName and stores it in it's internal
+     * state. Next, any packages whos name starts with the specified packageName
+     * are removed from the internal package list. This is done because this is
+     * the package being recorded and we need to remove any previously recorded
+     * package names in case any sub-packages have been removed since the last
+     * time the signatures were recorded. Users should use this c'tor when they
+     * are recording signature files never during playback.
      *
      * @param packageName     The name of the package whos signatures are being
      *                        recorded (along with sub-packages).
      * @param sigFileName     The name of the file that contains the recored
      *                        signatures.
-     * @param packageFileName The name of the file that contains the package list.
-     *                        This file contains the names of all the packages that
-     *                        exist across all the signature files that makeup this
-     *                        deliverable. This file is used to generate a list of
-     *                        valid sub-packages that must be exclued when testing
-     *                        their parent package's signature.
-     *
+     * @param packageFileName The name of the file that contains the package
+     *                        list. This file contains the names of all the
+     *                        packages that exist across all the signature files
+     *                        that makeup this deliverable. This file is used to
+     *                        generate a list of valid sub-packages that must be
+     *                        exclued when testing their parent package's
+     *                        signature.
      * @throws Exception when an error occurs reading the packageFileName or the
      *                   sigFileName does not exist.
      */
@@ -146,8 +147,8 @@ class PackageList {
      * Read the package names stored in the package list file. Each package name
      * found in the package list file is added to the internal tree set.
      *
-     * @throws Exception if there is an error opening or reading the package list
-     *                   file.
+     * @throws Exception if there is an error opening or reading the package
+     *                   list file.
      */
     private void extractExistingPackageNames() throws Exception {
         BufferedReader in = new BufferedReader(new FileReader(packageFile));
@@ -174,7 +175,6 @@ class PackageList {
      * denoted by the COMMENT_CHAR constant.
      *
      * @param line Determins of this line is a comment line
-     *
      * @return boolean True if the specified line is a comment line else false.
      */
     private boolean isComment(String line) {
@@ -191,18 +191,18 @@ class PackageList {
 
     /**
      * Removes package names from the package list file. The packages that are
-     * removed are the ones currently being recorded. The packages being recorded is
-     * denoted by this.additionalPackageName. This includes any sub-packages of the
-     * additionalPackageName. This step is necessary in the cases where a
-     * sub-package has been removed from a parent package in between signature
-     * recordings.
+     * removed are the ones currently being recorded. The packages being
+     * recorded is denoted by this.additionalPackageName. This includes any
+     * sub-packages of the additionalPackageName. This step is necessary in the
+     * cases where a sub-package has been removed from a parent package in
+     * between signature recordings.
      */
     private void removeExistingPackage() {
         String delPackage = this.additionalPackageName;
         String packageName;
         List<String> delPkgs = new ArrayList<>();
         // iterate over package set and find package names to remove
-        for (Iterator<String> i = packageNames.iterator(); i.hasNext();) {
+        for (Iterator<String> i = packageNames.iterator(); i.hasNext(); ) {
             packageName = (String) i.next();
             if (packageName.startsWith(delPackage)) {
                 delPkgs.add(packageName);
@@ -217,13 +217,13 @@ class PackageList {
     }
 
     /**
-     * Write the package list out to the package list file. This is done by reading
-     * all the package names in the specified signature file and adding them to the
-     * internal tree set. Then the old package list file is removed and the new
-     * package list file is written out.
+     * Write the package list out to the package list file. This is done by
+     * reading all the package names in the specified signature file and adding
+     * them to the internal tree set. Then the old package list file is removed
+     * and the new package list file is written out.
      *
-     * @throws Exception if there is a problem removing the existing package file or
-     *                   writting the new package list file.
+     * @throws Exception if there is a problem removing the existing package
+     *                   file or writting the new package list file.
      */
     public void writePkgListFile() throws Exception {
         readPkgsFromSigFile();
@@ -236,11 +236,9 @@ class PackageList {
      * should have the form: "package jakarta.ejb;"
      *
      * @param packageLine The string containing the package name.
-     *
      * @return String The extracted package name.
-     *
-     * @throws Exception if the specified string does not conform to the expected
-     *                   format.
+     * @throws Exception if the specified string does not conform to the
+     *                   expected format.
      */
     private String parsePackageName(String packageLine) throws Exception {
 
@@ -253,10 +251,11 @@ class PackageList {
     }
 
     /**
-     * Reads the package names from the signature file. Each package name that is
-     * read is added to this classes internal tree set.
+     * Reads the package names from the signature file. Each package name that
+     * is read is added to this classes internal tree set.
      *
-     * @throws Exception if there is an error opening or reading the signature file.
+     * @throws Exception if there is an error opening or reading the signature
+     *                   file.
      */
     private void readPkgsFromSigFile() throws Exception {
         BufferedReader in = new BufferedReader(new FileReader(sigFile));
@@ -281,8 +280,8 @@ class PackageList {
      * Removes the existing package list file. The package list file is actually
      * moved to a backup file if it exists. The old backup is lost.
      *
-     * @throws Exception if there is an error moving the current package list file
-     *                   to a backup file.
+     * @throws Exception if there is an error moving the current package list
+     *                   file to a backup file.
      */
     private void removePkgFile() throws Exception {
         File backupPkgFile = new File(packageFile.getPath() + BACKUP_EXT);
@@ -296,12 +295,12 @@ class PackageList {
     }
 
     /**
-     * Write a simple header to the package list file to explain what the file is.
+     * Write a simple header to the package list file to explain what the file
+     * is.
      *
      * @param out The BufferedWriter to dump the header to.
-     *
-     * @throws Exception if there is any errors writing the header to the specified
-     *                   BufferedWriter.
+     * @throws Exception if there is any errors writing the header to the
+     *                   specified BufferedWriter.
      */
     private void writeHeader(BufferedWriter out) throws Exception {
         out.write(COMMENT_CHAR);
@@ -326,15 +325,15 @@ class PackageList {
     /**
      * Write the list of package names out to a package list file.
      *
-     * @throws Exception if there is an error creating and writting the package list
-     *                   file.
+     * @throws Exception if there is an error creating and writting the package
+     *                   list file.
      */
     private void writePkgFile() throws Exception {
         BufferedWriter out = null;
         try {
             out = new BufferedWriter(new FileWriter(packageFile));
             writeHeader(out);
-            for (Iterator<String> i = packageNames.iterator(); i.hasNext();) {
+            for (Iterator<String> i = packageNames.iterator(); i.hasNext(); ) {
                 String packageName = (String) i.next();
                 out.write(packageName);
                 out.newLine();
@@ -348,17 +347,17 @@ class PackageList {
     }
 
     /**
-     * Returns the list of sub-packages that exist in the specified package name.
+     * Returns the list of sub-packages that exist in the specified package
+     * name.
      *
      * @param pkgName The name of the package we want the sub-package list for.
-     *
      * @return String[] The sub-packages that live under the specified parent
-     *         package.
+     * package.
      */
     public String[] getSubPackages(String pkgName) {
         List<String> result = new ArrayList<>();
         String subPackageName = pkgName + ".";
-        for (Iterator<String> i = packageNames.iterator(); i.hasNext();) {
+        for (Iterator<String> i = packageNames.iterator(); i.hasNext(); ) {
             String packageName = (String) i.next();
             if (packageName.startsWith(subPackageName)) {
                 result.add(packageName);
@@ -368,14 +367,14 @@ class PackageList {
     }
 
     /**
-     * Returns the list of sub-packages that exist in the specified package name.
-     * The returned string matches the API check format of specifying multiple
-     * packages with a single string. Each package name is separated with the "+"
-     * character.
+     * Returns the list of sub-packages that exist in the specified package
+     * name. The returned string matches the API check format of specifying
+     * multiple packages with a single string. Each package name is separated
+     * with the "+" character.
      *
      * @param pkgName The name of the package we want the sub-package list for.
-     *
-     * @return String The sub-packages that live under the specified parent package.
+     * @return String The sub-packages that live under the specified parent
+     * package.
      */
     public String getSubPackagesFormatted(String pkgName) {
         StringBuffer formattedResult = new StringBuffer();

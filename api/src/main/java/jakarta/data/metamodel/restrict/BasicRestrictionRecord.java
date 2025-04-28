@@ -27,7 +27,8 @@ import jakarta.data.metamodel.constraint.Constraint;
 
 import java.util.Objects;
 
-record BasicRestrictionRecord<T, V>(Expression<T,V> expression, Constraint<V> constraint)
+record BasicRestrictionRecord<T, V>(Expression<T, V> expression,
+                                    Constraint<V> constraint)
         implements BasicRestriction<T, V> {
 
     BasicRestrictionRecord {
@@ -41,8 +42,7 @@ record BasicRestrictionRecord<T, V>(Expression<T,V> expression, Constraint<V> co
     }
 
     /**
-     * Textual representation of a basic restriction.
-     * For example,
+     * Textual representation of a basic restriction. For example,
      * <pre>price < 50.0</pre>
      *
      * @return textual representation of a basic restriction.

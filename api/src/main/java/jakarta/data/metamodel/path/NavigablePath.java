@@ -21,9 +21,10 @@ import jakarta.data.metamodel.NavigableAttribute;
 import jakarta.data.metamodel.NavigableExpression;
 import jakarta.data.metamodel.Path;
 
-public interface NavigablePath<T,U,V>
-        extends Path<T,U>, NavigableExpression<T,V> {
-    static <T,U,V> NavigablePath<T,U,V> of(NavigableExpression<T, U> expression, NavigableAttribute<U,V> attribute) {
+public interface NavigablePath<T, U, V>
+        extends Path<T, U>, NavigableExpression<T, V> {
+    static <T, U, V> NavigablePath<T, U, V> of(NavigableExpression<T, U> expression,
+                                               NavigableAttribute<U, V> attribute) {
         return new NavigablePathRecord<>(expression, attribute);
     }
 }

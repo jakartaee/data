@@ -20,11 +20,12 @@ package jakarta.data.metamodel.expression;
 import jakarta.data.metamodel.NumericExpression;
 
 public interface NumericCast<T, N extends Number & Comparable<N>>
-        extends NumericExpression<T,N> {
+        extends NumericExpression<T, N> {
     NumericExpression<T, ?> expression();
+
     Class<N> type();
 
-    static <T, N extends Number & Comparable<N>> NumericCast<T,N>
+    static <T, N extends Number & Comparable<N>> NumericCast<T, N>
     of(NumericExpression<T, ?> expression, Class<N> type) {
         return new NumericCastRecord<>(expression, type);
     }

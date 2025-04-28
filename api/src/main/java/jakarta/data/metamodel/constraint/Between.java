@@ -26,28 +26,28 @@ public interface Between<V extends Comparable<?>> extends Constraint<V> {
             V lower,
             V upper) {
         return new BetweenRecord<>(ComparableLiteral.of(lower),
-                                   ComparableLiteral.of(upper));
+                ComparableLiteral.of(upper));
     }
 
     static <V extends Comparable<?>> Between<V> bounds(
             V lower,
             ComparableExpression<?, V> upper) {
         return new BetweenRecord<>(ComparableLiteral.of(lower),
-                                   upper);
+                upper);
     }
 
     static <V extends Comparable<?>> Between<V> bounds(
             ComparableExpression<?, V> lower,
             V upper) {
         return new BetweenRecord<>(lower,
-                                   ComparableLiteral.of(upper));
+                ComparableLiteral.of(upper));
     }
 
     static <V extends Comparable<?>> Between<V> bounds(
             ComparableExpression<?, V> lower,
             ComparableExpression<?, V> upper) {
         return new BetweenRecord<>(lower,
-                                   upper);
+                upper);
     }
 
     ComparableExpression<?, V> lowerBound();

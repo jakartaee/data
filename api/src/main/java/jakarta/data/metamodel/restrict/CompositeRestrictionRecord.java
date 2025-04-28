@@ -53,8 +53,7 @@ record CompositeRestrictionRecord<T>(
     }
 
     /**
-     * Textual representation of a composite restriction.
-     * For example,
+     * Textual representation of a composite restriction. For example,
      * <pre>(price < 50.0) AND (name LIKE "%Jakarta EE%")</pre>
      *
      * @return textual representation of a composite restriction.
@@ -64,7 +63,7 @@ record CompositeRestrictionRecord<T>(
         String logicalOperator = type.asQueryLanguage();
         StringBuilder builder = new StringBuilder(
                 restrictions.size() * SINGLE_RESTRICTION_LENGTH_ESTIMATE +
-                6); // number of additional characters that might be appended
+                        6); // number of additional characters that might be appended
         if (isNegated) {
             builder.append("NOT (");
         }

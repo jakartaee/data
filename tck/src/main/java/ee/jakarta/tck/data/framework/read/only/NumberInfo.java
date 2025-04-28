@@ -18,8 +18,9 @@ package ee.jakarta.tck.data.framework.read.only;
 import ee.jakarta.tck.data.framework.read.only.NaturalNumber.NumberType;
 
 /**
- * A record that contains a subset of the attributes of the NaturalNumber entity.
- * where the record component names are an exact match of the entity attribute names.
+ * A record that contains a subset of the attributes of the NaturalNumber
+ * entity. where the record component names are an exact match of the entity
+ * attribute names.
  */
 public record NumberInfo(
         long id,

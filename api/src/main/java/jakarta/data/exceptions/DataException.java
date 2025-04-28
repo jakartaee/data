@@ -25,7 +25,8 @@ public class DataException extends RuntimeException {
     private static final long serialVersionUID = 468278092602073093L;
 
     /**
-     * Constructs a new DataException exception with the specified detail message.
+     * Constructs a new DataException exception with the specified detail
+     * message.
      *
      * @param message the detail message.
      */
@@ -34,7 +35,8 @@ public class DataException extends RuntimeException {
     }
 
     /**
-     * Constructs a new DataException exception with the specified detail message and cause.
+     * Constructs a new DataException exception with the specified detail
+     * message and cause.
      *
      * @param message the detail message.
      * @param cause   the cause.

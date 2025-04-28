@@ -25,9 +25,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import ee.jakarta.tck.data.framework.junit.extensions.CDIConditionExtension;
 
 /**
- * These are tests that require CDI for testing. 
- * This annotation will verify that CDI is available.
- * If CDI is not available, tests are skipped, otherwise, tests are run.
+ * These are tests that require CDI for testing. This annotation will verify
+ * that CDI is available. If CDI is not available, tests are skipped, otherwise,
+ * tests are run.
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

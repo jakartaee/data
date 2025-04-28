@@ -23,21 +23,25 @@ import jakarta.data.metamodel.Expression;
 import jakarta.data.metamodel.NumericExpression;
 
 public interface NumericOperatorExpression<T, N extends Number & Comparable<N>>
-        extends NumericExpression<T,N> {
+        extends NumericExpression<T, N> {
     enum Operator {
         PLUS, MINUS, TIMES, DIVIDE
     }
+
     Operator operator();
-    Expression<T,N> left();
-    Expression<T,N> right();
+
+    Expression<T, N> left();
+
+    Expression<T, N> right();
 
     static <T, N extends Number & Comparable<N>>
-    NumericOperatorExpression<T,N> of(Operator operator, NumericExpression<T, N> left, N right) {
+    NumericOperatorExpression<T, N> of(Operator operator, NumericExpression<T, N> left, N right) {
         Objects.requireNonNull(left, "The right value is required");
         return new NumericOperatorExpressionRecord<>(operator, left, NumericLiteral.of(right));
     }
+
     static <T, N extends Number & Comparable<N>>
-    NumericOperatorExpression<T,N> of(Operator operator, NumericExpression<T, N> left, NumericExpression<T, N> right) {
+    NumericOperatorExpression<T, N> of(Operator operator, NumericExpression<T, N> left, NumericExpression<T, N> right) {
         return new NumericOperatorExpressionRecord<>(operator, left, right);
     }
 }

@@ -22,9 +22,9 @@ import java.util.Objects;
 import jakarta.data.metamodel.NavigableExpression;
 import jakarta.data.metamodel.TextAttribute;
 
-record TextPathRecord<T,U>
-        (NavigableExpression<T,U> expression, TextAttribute<U> attribute)
-        implements TextPath<T,U> {
+record TextPathRecord<T, U>
+        (NavigableExpression<T, U> expression, TextAttribute<U> attribute)
+        implements TextPath<T, U> {
 
     TextPathRecord {
         Objects.requireNonNull(expression, "The expression is required");

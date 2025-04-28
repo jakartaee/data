@@ -22,7 +22,8 @@ import java.util.Optional;
 /**
  * Built-in implementation of PageRequest.
  */
-record Pagination(long page, int size, Mode mode, Cursor type, boolean requestTotal) implements PageRequest {
+record Pagination(long page, int size, Mode mode, Cursor type,
+                  boolean requestTotal) implements PageRequest {
 
     Pagination {
         if (page < 1) {

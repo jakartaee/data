@@ -25,13 +25,16 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * <p>Lifecycle annotation for repository methods which conditionally perform insert or update operations.</p>
+ * <p>Lifecycle annotation for repository methods which conditionally perform
+ * insert or update operations.</p>
  *
- * <p>The {@code Save} annotation indicates that the annotated repository method accepts one or more entities and, for
- * each entity, either adds its state to the database, or updates state already held in the database.
+ * <p>The {@code Save} annotation indicates that the annotated repository method
+ * accepts one or more entities and, for
+ * each entity, either adds its state to the database, or updates state already
+ * held in the database.
  * </p>
- * <p>A {@code Save} method accepts an instance or instances of an entity class. The method must have exactly one
- * parameter whose type is either:
+ * <p>A {@code Save} method accepts an instance or instances of an entity class.
+ * The method must have exactly one parameter whose type is either:
  * </p>
  * <ul>
  *     <li>the class of the entity to be inserted or updated, or</li>

@@ -27,14 +27,13 @@ import jakarta.data.repository.OrderBy;
  * <p>Requests sorting on various entity attributes.</p>
  *
  * <p>A query method of a repository may have a parameter of type
- * {@code Order} if its return type indicates that it may return
- * multiple entities. The parameter of type {@code Order} must occur
- * after the method parameters representing regular parameters of
- * the query itself.</p>
+ * {@code Order} if its return type indicates that it may return multiple
+ * entities. The parameter of type {@code Order} must occur after the method
+ * parameters representing regular parameters of the query itself.</p>
  *
  * <p>The {@code Order} class is useful in combination with the
- * {@link StaticMetamodel} for helping to enforce type safety of
- * sort criteria during development. For example,</p>
+ * {@link StaticMetamodel} for helping to enforce type safety of sort criteria
+ * during development. For example,</p>
  *
  * <pre>
  * Page&lt;Employee>&gt; findByYearHired(int year, PageRequest pageRequest, Order&lt;Employee&gt;);
@@ -51,15 +50,15 @@ import jakarta.data.repository.OrderBy;
  * {@linkplain #sorts() list} of {@code Sort} instances.</p>
  *
  * <p>A repository method may declare static sorting criteria using
- * the {@code OrderBy} keyword or {@link OrderBy @OrderBy} annotation,
- * and also accept dynamic sorting criteria via its parameters. In this
- * situation, the static sorting criteria are applied first, followed by
- * any dynamic sorting criteria specified by instances of {@link Sort}.</p>
+ * the {@code OrderBy} keyword or {@link OrderBy @OrderBy} annotation, and also
+ * accept dynamic sorting criteria via its parameters. In this situation, the
+ * static sorting criteria are applied first, followed by any dynamic sorting
+ * criteria specified by instances of {@link Sort}.</p>
  *
  * <p>In the example above, the matching employees are sorted first by salary
  * from highest to lowest. Employees with the same salary are then sorted
- * alphabetically by last name. Employees with the same salary and last name
- * are then sorted alphabetically by first name.</p>
+ * alphabetically by last name. Employees with the same salary and last name are
+ * then sorted alphabetically by first name.</p>
  *
  * <p>A repository method may not be declared with more than one parameter
  * of type {@code Order}.</p>
@@ -80,20 +79,23 @@ public class Order<T> implements Iterable<Sort<? super T>> {
     /**
      * Creates a new instance.
      *
-     * @param sorts unmodifiable list of Sort instances, from highest precedence to lowest.
+     * @param sorts unmodifiable list of Sort instances, from highest precedence
+     *              to lowest.
      */
     private Order(List<Sort<? super T>> sorts) {
         this.sorts = sorts;
     }
 
     /**
-     * <p>Defines a list of {@link Sort} criteria, ordered from highest precedence
-     * to lowest precedence.</p>
+     * <p>Defines a list of {@link Sort} criteria, ordered from highest
+     * precedence to lowest precedence.</p>
      *
-     * @param <T>   entity class of the attributes that are used as sort criteria.
-     * @param sorts sort criteria to use, ordered from highest precedence to lowest precedence.
-     * @return a new instance indicating the order of precedence for sort criteria.
-     *         This method never returns {@code null}.
+     * @param <T>   entity class of the attributes that are used as sort
+     *              criteria.
+     * @param sorts sort criteria to use, ordered from highest precedence to
+     *              lowest precedence.
+     * @return a new instance indicating the order of precedence for sort
+     * criteria. This method never returns {@code null}.
      */
     @SafeVarargs
     public static <T> Order<T> by(Sort<? super T>... sorts) {
@@ -101,13 +103,15 @@ public class Order<T> implements Iterable<Sort<? super T>> {
     }
 
     /**
-     * <p>Defines a list of {@link Sort} criteria, ordered from highest precedence
-     * to lowest precedence.</p>
+     * <p>Defines a list of {@link Sort} criteria, ordered from highest
+     * precedence to lowest precedence.</p>
      *
-     * @param <T>   entity class of the attributes that are used as sort criteria.
-     * @param sorts sort criteria to use, ordered from highest precedence to lowest precedence.
-     * @return a new instance indicating the order of precedence for sort criteria.
-     *         This method never returns {@code null}.
+     * @param <T>   entity class of the attributes that are used as sort
+     *              criteria.
+     * @param sorts sort criteria to use, ordered from highest precedence to
+     *              lowest precedence.
+     * @return a new instance indicating the order of precedence for sort
+     * criteria. This method never returns {@code null}.
      */
     public static <T> Order<T> by(List<Sort<? super T>> sorts) {
         return new Order<T>(List.copyOf(sorts));
@@ -116,7 +120,8 @@ public class Order<T> implements Iterable<Sort<? super T>> {
     /**
      * The instances of {@link Sort} belonging to this {@code Order}.
      *
-     * @return the instances of {@link Sort}, from highest precedence to lowest precedence.
+     * @return the instances of {@link Sort}, from highest precedence to lowest
+     * precedence.
      */
     public List<Sort<? super T>> sorts() {
         return sorts;
@@ -126,13 +131,13 @@ public class Order<T> implements Iterable<Sort<? super T>> {
      * Determines whether this instance specifies matching {@link Sort} criteria
      * in the same order of precedence as another instance.
      *
-     * @return true if the other instance is an {@code Order} that specifies
-     *         the same ordering of sort criteria as this instance.
+     * @return true if the other instance is an {@code Order} that specifies the
+     * same ordering of sort criteria as this instance.
      */
     @Override
     public boolean equals(Object other) {
         return this == other
-            || other instanceof Order s && sorts.equals(s.sorts);
+                || other instanceof Order s && sorts.equals(s.sorts);
     }
 
     /**
@@ -155,7 +160,6 @@ public class Order<T> implements Iterable<Sort<? super T>> {
     public Iterator<Sort<? super T>> iterator() {
         return sorts.iterator();
     }
-
 
 
     /**

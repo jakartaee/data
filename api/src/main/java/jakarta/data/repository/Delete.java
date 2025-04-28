@@ -25,16 +25,21 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * <p>Lifecycle annotation for repository methods which perform delete operations; alternatively, annotates a repository
- * method as a parameter-based automatic query method which deletes entities.</p>
+ * <p>Lifecycle annotation for repository methods which perform delete
+ * operations; alternatively, annotates a repository
+ * method as a parameter-based automatic query method which deletes
+ * entities.</p>
  *
- * <p>The {@code Delete} annotation indicates that the annotated repository method deletes the state of one or more
- * entities from the database. It may be used in one of two ways: as a lifecycle annotation, to delete a given entity
- * instance or instances, or as an automatic query annotation, to delete all entities satisfying parameter-based
+ * <p>The {@code Delete} annotation indicates that the annotated repository
+ * method deletes the state of one or more
+ * entities from the database. It may be used in one of two ways: as a lifecycle
+ * annotation, to delete a given entity instance or instances, or as an
+ * automatic query annotation, to delete all entities satisfying parameter-based
  * conditions.
  * </p>
  *
- * <p>A {@code Delete} method might accept an instance or instances of an entity class. In this case, the method must
+ * <p>A {@code Delete} method might accept an instance or instances of an entity
+ * class. In this case, the method must
  * have exactly one parameter whose type is either:
  * </p>
  * <ul>

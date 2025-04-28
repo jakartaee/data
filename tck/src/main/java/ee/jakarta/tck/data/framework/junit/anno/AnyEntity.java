@@ -23,7 +23,8 @@ import java.lang.annotation.Target;
 import org.junit.jupiter.api.Tag;
 
 /**
- * <p>These are test classes that will work with either NoSQL or Persistence entity support.</p>
+ * <p>These are test classes that will work with either NoSQL or Persistence
+ * entity support.</p>
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

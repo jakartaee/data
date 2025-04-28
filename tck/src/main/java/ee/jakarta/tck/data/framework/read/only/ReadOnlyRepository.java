@@ -27,7 +27,7 @@ import jakarta.data.repository.Save;
 //   java.lang.IllegalArgumentException: @Repository ee.jakarta.tck.data.framework.readonly.NaturalNumbers does not specify an entity class. 
 //   To correct this, have the repository interface extend DataRepository or another built-in repository interface and supply the entity class as the first parameter. 
 @Deprecated //Not currently in use
-public interface ReadOnlyRepository<T, K> extends DataRepository<T, K>{
+public interface ReadOnlyRepository<T, K> extends DataRepository<T, K> {
 
     // WRITE - default method
     // Necessary for pre-population

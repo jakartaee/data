@@ -20,30 +20,32 @@ package jakarta.data.metamodel;
 import java.util.Objects;
 
 /**
- * <p>Represents an entity attribute that is an embeddable or association to another entity.
- * These types of entity attributes have attributes of their own that can
- * be navigated to.</p>
+ * <p>Represents an entity attribute that is an embeddable or association to
+ * another entity.
+ * These types of entity attributes have attributes of their own that can be
+ * navigated to.</p>
  *
  * @param <T> entity class of the static metamodel.
  * @param <U> type of entity attribute.
  */
-public interface NavigableAttribute<T,U>
-        extends Attribute<T>, NavigableExpression<T,U> {
+public interface NavigableAttribute<T, U>
+        extends Attribute<T>, NavigableExpression<T, U> {
 
     /**
-     * <p>Creates a static metamodel {@code NavigableAttribute} representing the
+     * <p>Creates a static metamodel {@code NavigableAttribute} representing
+     * the
      * entity attribute with the specified name.</p>
      *
-     * @param <T> entity class of the static metamodel.
-     * @param <U> type of entity attribute.
+     * @param <T>           entity class of the static metamodel.
+     * @param <U>           type of entity attribute.
      * @param entityClass   the entity class.
      * @param name          the name of the entity attribute.
      * @param attributeType type of the entity attribute.
      * @return instance of {@code NavigableAttribute}.
      */
-    static <T,U> NavigableAttribute<T,U> of(Class<T> entityClass,
-                                            String name,
-                                            Class<U> attributeType) {
+    static <T, U> NavigableAttribute<T, U> of(Class<T> entityClass,
+                                              String name,
+                                              Class<U> attributeType) {
         Objects.requireNonNull(entityClass, "The entityClass is required");
         Objects.requireNonNull(name, "The name is required");
         Objects.requireNonNull(attributeType, "The attributeType is required");

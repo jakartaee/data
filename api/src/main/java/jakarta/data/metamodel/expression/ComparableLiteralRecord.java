@@ -20,7 +20,7 @@ package jakarta.data.metamodel.expression;
 import java.util.Objects;
 
 record ComparableLiteralRecord<T, V extends Comparable<?>>(V value)
-        implements ComparableLiteral<T,V> {
+        implements ComparableLiteral<T, V> {
 
     ComparableLiteralRecord {
         Objects.requireNonNull(value, "The value is required");

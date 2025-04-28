@@ -25,10 +25,11 @@ public interface BasicRestriction<T, V> extends Restriction<T> {
     @Override
     BasicRestriction<T, V> negate();
 
-    Expression<T,V> expression();
+    Expression<T, V> expression();
+
     Constraint<V> constraint();
 
-    static <T,V> BasicRestriction<T, V> of(Expression<T,V> expression, Constraint<V> constraint) {
+    static <T, V> BasicRestriction<T, V> of(Expression<T, V> expression, Constraint<V> constraint) {
         return new BasicRestrictionRecord<>(expression, constraint);
     }
 }

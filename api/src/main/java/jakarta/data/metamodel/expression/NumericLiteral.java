@@ -20,7 +20,7 @@ package jakarta.data.metamodel.expression;
 import jakarta.data.metamodel.NumericExpression;
 
 public interface NumericLiteral<T, N extends Number & Comparable<N>>
-        extends ComparableLiteral<T, N>, NumericExpression<T,N> {
+        extends ComparableLiteral<T, N>, NumericExpression<T, N> {
 
     static <T, N extends Number & Comparable<N>> NumericLiteral<T, N> of(N value) {
         return new NumericLiteralRecord<>(value);

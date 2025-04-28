@@ -28,16 +28,17 @@ import jakarta.data.repository.Repository;
 
 /**
  * An AddressBook repository for testing.
- * 
- * Uses the AddressRecord with the {@code @EntityDefining} annotation {@code TCKEntity} 
- * to ensure no Jakarta Data provider implements this repository interface.
+ * <p>
+ * Uses the AddressRecord with the {@code @EntityDefining} annotation
+ * {@code TCKEntity} to ensure no Jakarta Data provider implements this
+ * repository interface.
  */
 @Repository
-public interface AddressBook extends DataRepository<AddressRecord, UUID>  {
+public interface AddressBook extends DataRepository<AddressRecord, UUID> {
 
     @Find
     List<AddressRecord> findById(List<UUID> ids);
-    
+
     @Delete
     void deleteById(@By(ID) UUID id);
 

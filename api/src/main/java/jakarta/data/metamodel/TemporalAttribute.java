@@ -22,8 +22,8 @@ import java.util.Objects;
 
 /**
  * <p>Represents a {@linkplain Temporal temporal} entity attribute in the
- * {@link StaticMetamodel}. Temporal entity attributes can be sorted on in
- * query results and can be compared against values in query restrictions.
+ * {@link StaticMetamodel}. Temporal entity attributes can be sorted on in query
+ * results and can be compared against values in query restrictions.
  * </p>
  *
  * <p>Jakarta Data supports the following entity attribute types for temporal
@@ -43,21 +43,21 @@ import java.util.Objects;
  * @param <V> type of entity attribute.
  */
 
-public interface TemporalAttribute<T,V extends Temporal & Comparable<? extends Temporal>>
-        extends ComparableAttribute<T,V>, TemporalExpression<T, V> {
+public interface TemporalAttribute<T, V extends Temporal & Comparable<? extends Temporal>>
+        extends ComparableAttribute<T, V>, TemporalExpression<T, V> {
 
     /**
      * <p>Creates a static metamodel {@code TemporalAttribute} representing the
      * entity attribute with the specified name.</p>
      *
-     * @param <T> entity class of the static metamodel.
-     * @param <V> type of entity attribute.
+     * @param <T>           entity class of the static metamodel.
+     * @param <V>           type of entity attribute.
      * @param entityClass   the entity class.
      * @param name          the name of the entity attribute.
      * @param attributeType type of the entity attribute.
      * @return instance of {@code TemporalAttribute}.
      */
-    static <T,V extends Temporal & Comparable<? extends Temporal>> TemporalAttribute<T,V> of(
+    static <T, V extends Temporal & Comparable<? extends Temporal>> TemporalAttribute<T, V> of(
             Class<T> entityClass, String name, Class<V> attributeType) {
         Objects.requireNonNull(entityClass, "The entityClass is required");
         Objects.requireNonNull(name, "The name is required");

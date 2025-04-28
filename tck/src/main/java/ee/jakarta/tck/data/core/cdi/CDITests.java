@@ -31,19 +31,19 @@ import jakarta.enterprise.inject.spi.CDI;
 @AnyEntity
 @CDIRequired
 public class CDITests {
-    
+
     @Deployment
     public static WebArchive createDeployment() {
         return ShrinkWrap.create(WebArchive.class)
                 .addPackage(CDITests.class.getPackage());
     }
-    
+
     @Assertion(id = "640", strategy = "Verifies that another Jakarta Data Provider does not attempt to "
             + "implement the Dictonary repository based on provider attribute.")
     public void testDataRepositoryHonorsProviderAttribute() {
         assertTrue(CDI.current().select(Directory.class).isUnsatisfied());
     }
-    
+
     @Assertion(id = "640", strategy = "Verifies that another Jakarta Data Provider does not attempt to "
             + "implement the Address repository based on the EntityDefining annotation.")
     public void testDataRepositoryHonorsEntityDefiningAnnotation() {

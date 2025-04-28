@@ -31,11 +31,12 @@ import static jakarta.data.metamodel.expression.TextFunctionExpression.LOWER;
 import static jakarta.data.metamodel.expression.TextFunctionExpression.RIGHT;
 import static jakarta.data.metamodel.expression.TextFunctionExpression.UPPER;
 
-public interface TextExpression<T> extends ComparableExpression<T,String> {
+public interface TextExpression<T> extends ComparableExpression<T, String> {
 
     default TextExpression<T> prepend(String string) {
         return TextFunctionExpression.of(CONCAT, string, this);
     }
+
     default TextExpression<T> append(String string) {
         return TextFunctionExpression.of(CONCAT, this, string);
     }
@@ -43,6 +44,7 @@ public interface TextExpression<T> extends ComparableExpression<T,String> {
     default TextExpression<T> prepend(TextExpression<? super T> string) {
         return TextFunctionExpression.of(CONCAT, string, this);
     }
+
     default TextExpression<T> append(TextExpression<? super T> string) {
         return TextFunctionExpression.of(CONCAT, string, this);
     }
@@ -50,6 +52,7 @@ public interface TextExpression<T> extends ComparableExpression<T,String> {
     default TextExpression<T> upper() {
         return TextFunctionExpression.of(UPPER, this);
     }
+
     default TextExpression<T> lower() {
         return TextFunctionExpression.of(LOWER, this);
     }
@@ -57,11 +60,12 @@ public interface TextExpression<T> extends ComparableExpression<T,String> {
     default TextExpression<T> left(int length) {
         return TextFunctionExpression.of(LEFT, this, length);
     }
+
     default TextExpression<T> right(int length) {
         return TextFunctionExpression.of(RIGHT, this, length);
     }
 
-    default NumericExpression<T,Integer> length() {
+    default NumericExpression<T, Integer> length() {
         return NumericFunctionExpression.of(LENGTH, this);
     }
 

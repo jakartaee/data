@@ -25,12 +25,15 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * <p>Lifecycle annotation for repository methods which perform insert operations.</p>
+ * <p>Lifecycle annotation for repository methods which perform insert
+ * operations.</p>
  *
- * <p>The {@code Insert} annotation indicates that the annotated repository method adds the state of one or more
+ * <p>The {@code Insert} annotation indicates that the annotated repository
+ * method adds the state of one or more
  * entities to the database.
  * </p>
- * <p>An {@code Insert} method accepts an instance or instances of an entity class. The method must have exactly one
+ * <p>An {@code Insert} method accepts an instance or instances of an entity
+ * class. The method must have exactly one
  * parameter whose type is either:
  * </p>
  * <ul>

@@ -39,7 +39,7 @@ record LikeRecord(TextExpression<?> pattern, Character escape)
 
     static String escape(String literal) {
         final var result = new StringBuilder();
-        for (int i = 0; i<literal.length(); i++) {
+        for (int i = 0; i < literal.length(); i++) {
             final char ch = literal.charAt(i);
             if (ch == STRING_WILDCARD || ch == CHAR_WILDCARD || ch == ESCAPE) {
                 result.append(ESCAPE);
@@ -50,18 +50,18 @@ record LikeRecord(TextExpression<?> pattern, Character escape)
     }
 
     static String translate(String pattern, char charWildcard, char stringWildcard, char escape) {
-        if ( charWildcard == stringWildcard ) {
+        if (charWildcard == stringWildcard) {
             throw new IllegalArgumentException(
                     "Cannot use the same character (" + charWildcard +
-                    ") for both wildcards");
+                            ") for both wildcards");
         }
         if (charWildcard == escape || stringWildcard == escape) {
             throw new IllegalArgumentException(
                     "Cannot use the same character (" + escape +
-                    ") for both a wildcard and escape character");
+                            ") for both a wildcard and escape character");
         }
         final var result = new StringBuilder();
-        for (int i = 0; i<pattern.length(); i++) {
+        for (int i = 0; i < pattern.length(); i++) {
             final char ch = pattern.charAt(i);
             if (ch == charWildcard) {
                 result.append(CHAR_WILDCARD);

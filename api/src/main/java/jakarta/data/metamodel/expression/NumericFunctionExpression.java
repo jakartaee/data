@@ -25,23 +25,24 @@ import java.util.List;
 import java.util.Objects;
 
 public interface NumericFunctionExpression<T, N extends Number & Comparable<N>>
-        extends FunctionExpression<T,N>, NumericExpression<T,N> {
+        extends FunctionExpression<T, N>, NumericExpression<T, N> {
 
     String ABS = "abs";
     String NEG = "neg";
     String LENGTH = "length";
 
-    static <T,N extends Number & Comparable<N>> NumericFunctionExpression<T, N>
+    static <T, N extends Number & Comparable<N>> NumericFunctionExpression<T, N>
     of(String name, TextExpression<? super T> argument) {
         Objects.requireNonNull(argument, "The argument is required");
         return new NumericFunctionExpressionRecord<>(name, List.of(argument));
     }
-    static <T,N extends Number & Comparable<N>> NumericFunctionExpression<T, N>
-    of(String name, NumericExpression<? super T,N> argument) {
+
+    static <T, N extends Number & Comparable<N>> NumericFunctionExpression<T, N>
+    of(String name, NumericExpression<? super T, N> argument) {
         Objects.requireNonNull(argument, "The argument is required");
         return new NumericFunctionExpressionRecord<>(name, List.of(argument));
     }
 
     @Override
-    List<? extends ComparableExpression<? super T,?>> arguments();
+    List<? extends ComparableExpression<? super T, ?>> arguments();
 }

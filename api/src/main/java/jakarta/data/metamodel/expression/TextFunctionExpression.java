@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Objects;
 
 public interface TextFunctionExpression<T>
-        extends FunctionExpression<T,String>, TextExpression<T> {
+        extends FunctionExpression<T, String>, TextExpression<T> {
 
     String CONCAT = "concat";
     String UPPER = "upper";
@@ -36,21 +36,26 @@ public interface TextFunctionExpression<T>
         Objects.requireNonNull(argument, "The argument is required");
         return new TextFunctionExpressionRecord<>(name, List.of(argument));
     }
+
     static <T> TextFunctionExpression<T> of(String name, TextExpression<? super T> left, String right) {
         Objects.requireNonNull(left, "The left expression is required");
         Objects.requireNonNull(right, "The right value is required");
         return new TextFunctionExpressionRecord<>(name, List.of(left, StringLiteral.of(right)));
     }
+
     static <T> TextFunctionExpression<T> of(String name, String left, TextExpression<? super T> right) {
         Objects.requireNonNull(right, "The left value is required");
         Objects.requireNonNull(left, "The right expression is required");
         return new TextFunctionExpressionRecord<>(name, List.of(StringLiteral.of(left), right));
     }
-    static <T> TextFunctionExpression<T> of(String name, TextExpression<? super T> left, TextExpression<? super T> right) {
+
+    static <T> TextFunctionExpression<T> of(String name, TextExpression<? super T> left,
+                                            TextExpression<? super T> right) {
         Objects.requireNonNull(left, "The left expression is required");
         Objects.requireNonNull(left, "The right expression is required");
         return new TextFunctionExpressionRecord<>(name, List.of(left, right));
     }
+
     static <T> TextFunctionExpression<T> of(String name, TextExpression<? super T> left, int literal) {
         Objects.requireNonNull(left, "The left expression is required");
         Objects.requireNonNull(literal, "The literal value is required");
@@ -58,5 +63,5 @@ public interface TextFunctionExpression<T>
     }
 
     @Override
-    List<? extends ComparableExpression<? super T,?>> arguments();
+    List<? extends ComparableExpression<? super T, ?>> arguments();
 }
