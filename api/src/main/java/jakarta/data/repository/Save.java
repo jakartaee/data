@@ -34,8 +34,7 @@ import java.lang.annotation.Target;
  * held in the database.
  * </p>
  * <p>A {@code Save} method accepts an instance or instances of an entity class.
- * The method must have exactly one
- * parameter whose type is either:
+ * The method must have exactly one parameter whose type is either:
  * </p>
  * <ul>
  *     <li>the class of the entity to be inserted or updated, or</li>
