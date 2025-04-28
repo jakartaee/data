@@ -26,8 +26,8 @@
  * within this package,</p>
  *
  * <ul>
- * <li>{@link jakarta.data.repository.DataRepository} - root of the hierarchy, allows the entity type to be specified
- * as a type parameter.</li>
+ * <li>{@link jakarta.data.repository.DataRepository} - root of the hierarchy,
+ *     allows the entity type to be specified as a type parameter.</li>
  * <li>{@link jakarta.data.repository.BasicRepository} - provides common find, delete, and save operations.</li>
  * <li>{@link jakarta.data.repository.CrudRepository} - extends the {@code BasicRepository} to
  * add {@link jakarta.data.repository.CrudRepository#insert(java.lang.Object)}
