@@ -60,8 +60,7 @@ public interface ComparableAttribute<T, V extends Comparable<?>>
 
     /**
      * <p>Creates a static metamodel {@code ComparableAttribute} representing
-     * the
-     * entity attribute with the specified name.</p>
+     * the entity attribute with the specified name.</p>
      *
      * @param <T>           entity class of the static metamodel.
      * @param <V>           type of entity attribute (or wrapper type if
