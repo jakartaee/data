@@ -33,8 +33,7 @@ import java.lang.annotation.Target;
  * entities already held in the database.
  * </p>
  * <p>An {@code Update} method accepts an instance or instances of an entity
- * class. The method must
- * have exactly one parameter whose type is either:
+ * class. The method must have exactly one parameter whose type is either:
  * </p>
  * <ul>
  *     <li>the class of the entity to be updated, or</li>
