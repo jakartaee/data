@@ -119,4 +119,15 @@ class TextFunctionExpressionTest {
             soft.assertThat(restriction).isNotNull();
         });
     }
+
+    @Test
+    @DisplayName("should create prepend function from TextExpression")
+    void shouldCreatePrependFunctionWithTextExpression() {
+        var expression = (TextFunctionExpression<?>) _Author.name.prepend("Prefix");
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(expression.name()).isEqualTo(TextFunctionExpression.CONCAT);
+            soft.assertThat(expression.arguments()).hasSize(2);
+        });
+    }
 }
