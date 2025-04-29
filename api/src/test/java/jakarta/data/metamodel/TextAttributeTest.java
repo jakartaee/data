@@ -46,7 +46,11 @@ class TextAttributeTest {
     void shouldCreateContainsRestriction() {
         var restriction = (BasicRestriction<?, ?>) _Author.testAttribute.contains("testValue");
 
+        Like like = (Like) restriction.constraint();
+        StringLiteral<?> literal = ((StringLiteral<?>) like.pattern());
         SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(restriction.expression()).isEqualTo(_Author.testAttribute);
+            soft.assertThat(literal.value()).isEqualTo("%testValue%");
             soft.assertThat(restriction.constraint()).isInstanceOf(Like.class);
             soft.assertThat(restriction.expression()).isEqualTo(_Author.testAttribute);
             soft.assertThat(restriction.constraint()).isEqualTo(Like.substring("testValue"));
@@ -57,8 +61,11 @@ class TextAttributeTest {
     @DisplayName("should create startsWith restriction")
     void shouldCreateStartsWithRestriction() {
         var restriction = (BasicRestriction<?, ?>) _Author.testAttribute.startsWith("testValue");
-
+        Like like = (Like) restriction.constraint();
+        StringLiteral<?> literal = ((StringLiteral<?>) like.pattern());
         SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(restriction.expression()).isEqualTo(_Author.testAttribute);
+            soft.assertThat(literal.value()).isEqualTo("testValue%");
             soft.assertThat(restriction.constraint()).isInstanceOf(Like.class);
             soft.assertThat(restriction.expression()).isEqualTo(_Author.testAttribute);
             soft.assertThat(restriction.constraint()).isEqualTo(Like.prefix("testValue"));
@@ -69,11 +76,14 @@ class TextAttributeTest {
     @DisplayName("should create endsWith restriction")
     void shouldCreateEndsWithRestriction() {
         var restriction = (BasicRestriction<?, ?>) _Author.testAttribute.endsWith("testValue");
-
+        Like like = (Like) restriction.constraint();
+        StringLiteral<?> literal = ((StringLiteral<?>) like.pattern());
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.constraint()).isInstanceOf(Like.class);
             soft.assertThat(restriction.expression()).isEqualTo(_Author.testAttribute);
             soft.assertThat(restriction.constraint()).isEqualTo(Like.suffix("testValue"));
+            soft.assertThat(restriction.expression()).isEqualTo(_Author.testAttribute);
+            soft.assertThat(literal.value()).isEqualTo("%testValue");
         });
     }
 
@@ -82,7 +92,11 @@ class TextAttributeTest {
     void shouldCreateLikeRestriction() {
         var restriction = (BasicRestriction<?, ?>) _Author.testAttribute.like("%test%");
 
+        Like like = (Like) restriction.constraint();
+        StringLiteral<?> literal = ((StringLiteral<?>) like.pattern());
         SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(restriction.expression()).isEqualTo(_Author.testAttribute);
+            soft.assertThat(literal.value()).isEqualTo("%test%");
             soft.assertThat(restriction.constraint()).isInstanceOf(Like.class);
             soft.assertThat(restriction.expression()).isEqualTo(_Author.testAttribute);
             soft.assertThat(restriction.constraint()).isEqualTo(Like.pattern("%test%"));
@@ -93,8 +107,11 @@ class TextAttributeTest {
     @DisplayName("should create notContains restriction")
     void shouldCreateNotContainsRestriction() {
         var restriction = (BasicRestriction<?, ?>) _Author.testAttribute.notContains("testValue");
-
+        NotLike notLike = (NotLike) restriction.constraint();
+        StringLiteral<?> literal = ((StringLiteral<?>) notLike.pattern());
         SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(restriction.expression()).isEqualTo(_Author.testAttribute);
+            soft.assertThat(literal.value()).isEqualTo("%testValue%");
             soft.assertThat(restriction.constraint()).isInstanceOf(NotLike.class);
             soft.assertThat(restriction.expression()).isEqualTo(_Author.testAttribute);
             soft.assertThat(restriction.constraint()).isEqualTo(NotLike.substring("testValue"));
@@ -106,7 +123,11 @@ class TextAttributeTest {
     void shouldCreateNotLikeRestriction() {
         var restriction = (BasicRestriction<?, ?>) _Author.testAttribute.notLike("%test%");
 
+        NotLike notLike = (NotLike) restriction.constraint();
+        StringLiteral<?> literal = ((StringLiteral<?>) notLike.pattern());
         SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(restriction.expression()).isEqualTo(_Author.testAttribute);
+            soft.assertThat(literal.value()).isEqualTo("%test%");
             soft.assertThat(restriction.constraint()).isInstanceOf(NotLike.class);
             soft.assertThat(restriction.expression()).isEqualTo(_Author.testAttribute);
             soft.assertThat(restriction.constraint()).isEqualTo(NotLike.pattern("%test%"));
@@ -117,8 +138,11 @@ class TextAttributeTest {
     @DisplayName("should create notStartsWith restriction")
     void shouldCreateNotStartsWithRestriction() {
         var restriction = (BasicRestriction<?, ?>) _Author.testAttribute.notStartsWith("testValue");
-
+        NotLike notLike = (NotLike) restriction.constraint();
+        StringLiteral<?> literal = ((StringLiteral<?>) notLike.pattern());
         SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(restriction.expression()).isEqualTo(_Author.testAttribute);
+            soft.assertThat(literal.value()).isEqualTo("testValue%");
             soft.assertThat(restriction.constraint()).isInstanceOf(NotLike.class);
             soft.assertThat(restriction.expression()).isEqualTo(_Author.testAttribute);
             soft.assertThat(restriction.constraint()).isEqualTo(NotLike.prefix("testValue"));
@@ -130,7 +154,11 @@ class TextAttributeTest {
     void shouldCreateNotEndsWithRestriction() {
         var restriction = (BasicRestriction<?, ?>) _Author.testAttribute.notEndsWith("testValue");
 
+        NotLike notLike = (NotLike) restriction.constraint();
+        StringLiteral<?> literal = ((StringLiteral<?>) notLike.pattern());
         SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(restriction.expression()).isEqualTo(_Author.testAttribute);
+            soft.assertThat(literal.value()).isEqualTo("%testValue");
             soft.assertThat(restriction.constraint()).isInstanceOf(NotLike.class);
             soft.assertThat(restriction.expression()).isEqualTo(_Author.testAttribute);
             soft.assertThat(restriction.constraint()).isEqualTo(NotLike.suffix("testValue"));
