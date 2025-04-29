@@ -15,7 +15,11 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.expression;
+package jakarta.data.expression.function;
+
+import jakarta.data.expression.ComparableExpression;
+import jakarta.data.expression.NumericExpression;
+import jakarta.data.expression.TextExpression;
 
 import java.util.List;
 import java.util.Objects;

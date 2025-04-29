@@ -17,15 +17,17 @@
  */
 package jakarta.data.expression;
 
-import static jakarta.data.expression.NumericFunctionExpression.LENGTH;
-import static jakarta.data.expression.TextFunctionExpression.CONCAT;
-import static jakarta.data.expression.TextFunctionExpression.LEFT;
-import static jakarta.data.expression.TextFunctionExpression.LOWER;
-import static jakarta.data.expression.TextFunctionExpression.RIGHT;
-import static jakarta.data.expression.TextFunctionExpression.UPPER;
+import static jakarta.data.expression.function.NumericFunctionExpression.LENGTH;
+import static jakarta.data.expression.function.TextFunctionExpression.CONCAT;
+import static jakarta.data.expression.function.TextFunctionExpression.LEFT;
+import static jakarta.data.expression.function.TextFunctionExpression.LOWER;
+import static jakarta.data.expression.function.TextFunctionExpression.RIGHT;
+import static jakarta.data.expression.function.TextFunctionExpression.UPPER;
 
 import jakarta.data.constraint.Like;
 import jakarta.data.constraint.NotLike;
+import jakarta.data.expression.function.NumericFunctionExpression;
+import jakarta.data.expression.function.TextFunctionExpression;
 import jakarta.data.restrict.BasicRestriction;
 import jakarta.data.restrict.Restriction;
 

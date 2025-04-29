@@ -17,17 +17,19 @@
  */
 package jakarta.data.expression;
 
-import static jakarta.data.expression.NumericFunctionExpression.ABS;
-import static jakarta.data.expression.NumericFunctionExpression.NEG;
-import static jakarta.data.expression.NumericOperatorExpression.Operator.DIVIDE;
-import static jakarta.data.expression.NumericOperatorExpression.Operator.MINUS;
-import static jakarta.data.expression.NumericOperatorExpression.Operator.PLUS;
-import static jakarta.data.expression.NumericOperatorExpression.Operator.TIMES;
+import static jakarta.data.expression.function.NumericFunctionExpression.ABS;
+import static jakarta.data.expression.function.NumericFunctionExpression.NEG;
+import static jakarta.data.expression.function.NumericOperatorExpression.Operator.DIVIDE;
+import static jakarta.data.expression.function.NumericOperatorExpression.Operator.MINUS;
+import static jakarta.data.expression.function.NumericOperatorExpression.Operator.PLUS;
+import static jakarta.data.expression.function.NumericOperatorExpression.Operator.TIMES;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
 import jakarta.data.expression.function.NumericCast;
+import jakarta.data.expression.function.NumericFunctionExpression;
+import jakarta.data.expression.function.NumericOperatorExpression;
 
 public interface NumericExpression<T, N extends Number & Comparable<N>>
         extends ComparableExpression<T, N> {

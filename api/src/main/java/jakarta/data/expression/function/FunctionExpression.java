@@ -15,9 +15,11 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.expression;
+package jakarta.data.expression.function;
 
 import java.util.List;
+
+import jakarta.data.expression.Expression;
 
 public interface FunctionExpression<T, V> extends Expression<T, V> {
     String name();

@@ -18,8 +18,8 @@
 package jakarta.data.expression;
 
 import jakarta.data.constraint.*;
-import jakarta.data.expression.NumericFunctionExpression;
-import jakarta.data.expression.NumericOperatorExpression;
+import jakarta.data.expression.function.NumericFunctionExpression;
+import jakarta.data.expression.function.NumericOperatorExpression;
 import jakarta.data.mock.entity.Book;
 import jakarta.data.mock.entity._Book;
 import jakarta.data.restrict.BasicRestriction;

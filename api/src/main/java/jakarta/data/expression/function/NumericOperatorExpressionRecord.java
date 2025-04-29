@@ -15,18 +15,21 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.expression;
+package jakarta.data.expression.function;
 
-import java.util.List;
+import jakarta.data.expression.NumericExpression;
+
 import java.util.Objects;
 
-record TextFunctionExpressionRecord<T>(
-        String name,
-        List<ComparableExpression<? super T, ?>> arguments)
-        implements TextFunctionExpression<T> {
+record NumericOperatorExpressionRecord<T, N extends Number & Comparable<N>>
+        (Operator operator, NumericExpression<T, N> left,
+         NumericExpression<T, N> right)
+        implements NumericOperatorExpression<T, N> {
 
-    TextFunctionExpressionRecord {
-        Objects.requireNonNull(name, "The name is required");
+    NumericOperatorExpressionRecord {
+        Objects.requireNonNull(operator, "The operator is required");
+        Objects.requireNonNull(left, "The left expression is required");
+        Objects.requireNonNull(left, "The right expression is required");
     }
 
 }
