@@ -19,6 +19,8 @@ package jakarta.data.metamodel;
 
 import java.util.Objects;
 
+import jakarta.data.expression.NumericExpression;
+
 /**
  * <p>Represents a {@linkplain Number numeric} entity attribute in the
  * {@link StaticMetamodel}.

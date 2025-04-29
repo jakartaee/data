@@ -18,6 +18,7 @@
 package jakarta.data.metamodel;
 
 import jakarta.data.Sort;
+import jakarta.data.expression.TextExpression;
 
 import java.util.Objects;
 

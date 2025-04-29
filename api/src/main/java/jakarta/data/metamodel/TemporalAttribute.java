@@ -20,6 +20,8 @@ package jakarta.data.metamodel;
 import java.time.temporal.Temporal;
 import java.util.Objects;
 
+import jakarta.data.expression.TemporalExpression;
+
 /**
  * <p>Represents a {@linkplain Temporal temporal} entity attribute in the
  * {@link StaticMetamodel}. Temporal entity attributes can be sorted on in query
