@@ -22,30 +22,32 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import jakarta.data.metamodel.constraint.Between;
-import jakarta.data.metamodel.constraint.Constraint;
-import jakarta.data.metamodel.constraint.EqualTo;
-import jakarta.data.metamodel.constraint.GreaterThan;
-import jakarta.data.metamodel.constraint.GreaterThanOrEqual;
-import jakarta.data.metamodel.constraint.LessThan;
-import jakarta.data.metamodel.constraint.LessThanOrEqual;
-import jakarta.data.metamodel.constraint.Like;
-import jakarta.data.metamodel.constraint.NotBetween;
-import jakarta.data.metamodel.constraint.NotEqualTo;
-import jakarta.data.metamodel.constraint.NotLike;
+import jakarta.data.constraint.Between;
+import jakarta.data.constraint.Constraint;
+import jakarta.data.constraint.EqualTo;
+import jakarta.data.constraint.GreaterThan;
+import jakarta.data.constraint.GreaterThanOrEqual;
+import jakarta.data.constraint.LessThan;
+import jakarta.data.constraint.LessThanOrEqual;
+import jakarta.data.constraint.Like;
+import jakarta.data.constraint.NotBetween;
+import jakarta.data.constraint.NotEqualTo;
+import jakarta.data.constraint.NotLike;
 
 /**
- * <p>Annotates a parameter of a repository {@link Find} or {@link Delete} method,
- * indicating that a persistent field should be compared ignoring case.
- * The {@link By} annotation can be used on the same parameter to identify the
- * persistent field. Otherwise, if the {@code -parameters} compile option is
- * enabled, the the persistent field is inferred by matching the name of the
- * method parameter.</p>
+ * <p>Annotates a parameter of a repository {@link Find} or {@link Delete}
+ * method, indicating that an entity attribute should be compared ignoring
+ * case.</p>
  *
- * <p>The {@code IgnoreCase} annotation can be used on repository method parameters
- * that are of type {@link String} - in which case the equality comparison is
- * assumed - and on parameters of the following types:
- * </p>
+ * <p>The {@link By} annotation can annotate the same repository method
+ * parameter to indicate the entity attribute. Otherwise, if the
+ * {@code -parameters} compile option is enabled, the entity attribute is
+ * inferred by matching the name of the method parameter.</p>
+ *
+ * <p>The {@code IgnoreCase} annotation can annotate repository method
+ * parameters that are of type {@link String} - in which case the equality
+ * comparison is assumed - and on repository method parameters of the
+ * following types:</p>
  * <ul>
  * <li>{@link Between Between&lt;String&gt;}</li>
  * <li>{@link EqualTo EqualTo&lt;String&gt;}</li>
@@ -57,7 +59,8 @@ import jakarta.data.metamodel.constraint.NotLike;
  * <li>{@link NotBetween NotBetween&lt;String&gt;}</li>
  * <li>{@link NotEqualTo NotEqualTo&lt;String&gt;}</li>
  * <li>{@link NotLike NotLike}</li>
- * <li>{@link Constraint Constraint<String>}, which must be one of the above.</li>
+ * <li>{@link Constraint Constraint<String>}, which must be one of the above.
+ * </li>
  * </ul>
  *
  * <p>For example,</p>
