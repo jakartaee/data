@@ -17,8 +17,9 @@
  */
 package jakarta.data.metamodel.expression;
 
+import jakarta.data.metamodel.constraint.Like;
+import jakarta.data.metamodel.constraint.NotLike;
 import jakarta.data.metamodel.restrict.BasicRestriction;
-import jakarta.data.metamodel.restrict.Restriction;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -34,7 +35,7 @@ class StringLiteralTest {
     }
 
     @Test
-    @DisplayName("should create StringLiteralRecord and validate its value")
+    @DisplayName("should create StringLiteralRecord and validate value")
     void shouldCreateStringLiteralRecord() {
         var literal = new StringLiteralRecord<SimpleEntity>("Jakarta EE");
 
@@ -77,57 +78,62 @@ class StringLiteralTest {
     }
 
     @Test
-    @DisplayName("should create startsWith restriction")
+    @DisplayName("should create startsWith restriction with correct pattern")
     void shouldCreateStartsWithRestriction() {
-        Restriction<SimpleEntity> restriction = _SimpleEntity.name.startsWith("Jakarta");
+        var restriction = (BasicRestriction<?, ?>) _SimpleEntity.name.startsWith("Jakarta");
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
-            soft.assertThat(restriction.toString()).contains("starts with");
+            soft.assertThat(restriction.constraint()).isInstanceOf(Like.class);
+            soft.assertThat(restriction.expression()).isNotNull();
+            soft.assertThat(restriction.constraint()).isEqualTo(Like.prefix("Jakarta"));
         });
     }
 
     @Test
-    @DisplayName("should create endsWith restriction")
+    @DisplayName("should create endsWith restriction with correct pattern")
     void shouldCreateEndsWithRestriction() {
-        Restriction<SimpleEntity> restriction = _SimpleEntity.name.endsWith("EE");
+        var restriction = (BasicRestriction<?, ?>) _SimpleEntity.name.endsWith("EE");
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
-            soft.assertThat(restriction.toString()).contains("ends with");
+            soft.assertThat(restriction.constraint()).isInstanceOf(Like.class);
+            soft.assertThat(restriction.expression()).isNotNull();
+            soft.assertThat(restriction.constraint()).isEqualTo(Like.suffix("EE"));
         });
     }
 
     @Test
-    @DisplayName("should create contains restriction")
+    @DisplayName("should create contains restriction with correct pattern")
     void shouldCreateContainsRestriction() {
-        Restriction<SimpleEntity> restriction = _SimpleEntity.name.contains("Data");
+        var restriction = (BasicRestriction<?, ?>) _SimpleEntity.name.contains("Data");
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
-            soft.assertThat(restriction.toString()).contains("contains");
+            soft.assertThat(restriction.constraint()).isInstanceOf(Like.class);
+            soft.assertThat(restriction.expression()).isNotNull();
+            soft.assertThat(restriction.constraint()).isEqualTo(Like.substring("Data"));
         });
     }
 
     @Test
-    @DisplayName("should create like restriction")
+    @DisplayName("should create like restriction with correct pattern")
     void shouldCreateLikeRestriction() {
-        Restriction<SimpleEntity> restriction = _SimpleEntity.name.like("%EE%");
+        var restriction = (BasicRestriction<?, ?>) _SimpleEntity.name.like("%EE%");
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
-            soft.assertThat(restriction.toString()).contains("like");
+            soft.assertThat(restriction.constraint()).isInstanceOf(Like.class);
+            soft.assertThat(restriction.expression()).isNotNull();
+            soft.assertThat(restriction.constraint()).isEqualTo(Like.pattern("%EE%"));
         });
     }
 
     @Test
-    @DisplayName("should create notLike restriction")
+    @DisplayName("should create notLike restriction with correct pattern")
     void shouldCreateNotLikeRestriction() {
-        Restriction<SimpleEntity> restriction = _SimpleEntity.name.notLike("%Legacy%");
+        var restriction = (BasicRestriction<?, ?>) _SimpleEntity.name.notLike("%Legacy%");
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
-            soft.assertThat(restriction.toString()).contains("not like");
+            soft.assertThat(restriction.constraint()).isInstanceOf(NotLike.class);
+            soft.assertThat(restriction.expression()).isNotNull();
+            soft.assertThat(restriction.constraint()).isEqualTo(NotLike.pattern("%Legacy%"));
         });
     }
 }
