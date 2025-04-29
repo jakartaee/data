@@ -19,6 +19,8 @@ package jakarta.data.metamodel;
 
 import java.util.Objects;
 
+import jakarta.data.expression.ComparableExpression;
+
 /**
  * <p>Represents a comparable entity attribute in the {@link StaticMetamodel}.
  * Comparable entity attributes can be sorted on in query results and can be
