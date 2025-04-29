@@ -17,8 +17,117 @@
  */
 package jakarta.data.metamodel.expression;
 
-import static org.junit.jupiter.api.Assertions.*;
+import jakarta.data.metamodel.restrict.BasicRestriction;
+import jakarta.data.metamodel.restrict.Restriction;
+import org.assertj.core.api.SoftAssertions;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 class StringLiteralTest {
 
+    interface _SimpleEntity {
+        StringLiteral<SimpleEntity> name = StringLiteral.of("name");
+    }
+
+    static class SimpleEntity {
+        String name;
+    }
+
+    @Test
+    @DisplayName("should create StringLiteralRecord and validate its value")
+    void shouldCreateStringLiteralRecord() {
+        var literal = new StringLiteralRecord<SimpleEntity>("Jakarta EE");
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(literal.value()).isEqualTo("Jakarta EE");
+            soft.assertThat(literal).isInstanceOf(StringLiteral.class);
+            soft.assertThat(literal.toString()).isEqualTo("'Jakarta EE'");
+        });
+    }
+
+    @Test
+    @DisplayName("should support equals and hashCode for identical values")
+    void shouldSupportEqualsAndHashCode() {
+        var first = new StringLiteralRecord<SimpleEntity>("DDD");
+        var second = new StringLiteralRecord<SimpleEntity>("DDD");
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(first).isEqualTo(second);
+            soft.assertThat(first.hashCode()).isEqualTo(second.hashCode());
+        });
+    }
+
+    @Test
+    @DisplayName("should not be equal for different values")
+    void shouldNotEqualDifferentValues() {
+        var one = new StringLiteralRecord<SimpleEntity>("one");
+        var two = new StringLiteralRecord<SimpleEntity>("two");
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(one).isNotEqualTo(two);
+        });
+    }
+
+    @Test
+    @DisplayName("should throw NullPointerException when value is null")
+    void shouldThrowWhenValueIsNull() {
+        org.junit.jupiter.api.Assertions.assertThrows(NullPointerException.class, () -> {
+            new StringLiteralRecord<SimpleEntity>(null);
+        });
+    }
+
+    @Test
+    @DisplayName("should create startsWith restriction")
+    void shouldCreateStartsWithRestriction() {
+        Restriction<SimpleEntity> restriction = _SimpleEntity.name.startsWith("Jakarta");
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
+            soft.assertThat(restriction.toString()).contains("starts with");
+        });
+    }
+
+    @Test
+    @DisplayName("should create endsWith restriction")
+    void shouldCreateEndsWithRestriction() {
+        Restriction<SimpleEntity> restriction = _SimpleEntity.name.endsWith("EE");
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
+            soft.assertThat(restriction.toString()).contains("ends with");
+        });
+    }
+
+    @Test
+    @DisplayName("should create contains restriction")
+    void shouldCreateContainsRestriction() {
+        Restriction<SimpleEntity> restriction = _SimpleEntity.name.contains("Data");
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
+            soft.assertThat(restriction.toString()).contains("contains");
+        });
+    }
+
+    @Test
+    @DisplayName("should create like restriction")
+    void shouldCreateLikeRestriction() {
+        Restriction<SimpleEntity> restriction = _SimpleEntity.name.like("%EE%");
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
+            soft.assertThat(restriction.toString()).contains("like");
+        });
+    }
+
+    @Test
+    @DisplayName("should create notLike restriction")
+    void shouldCreateNotLikeRestriction() {
+        Restriction<SimpleEntity> restriction = _SimpleEntity.name.notLike("%Legacy%");
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
+            soft.assertThat(restriction.toString()).contains("not like");
+        });
+    }
 }
