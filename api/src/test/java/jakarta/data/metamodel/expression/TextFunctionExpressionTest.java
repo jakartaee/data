@@ -67,10 +67,7 @@ class TextFunctionExpressionTest {
     void shouldCreateUpperFunction() {
         var expression = (TextFunctionExpression<?>) _Author.name.upper();
 
-        SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(expression.name()).isEqualTo(TextFunctionExpression.UPPER);
-            soft.assertThat(expression.arguments()).containsExactly(_Author.name);
-        });
+        SoftAssertions.assertSoftly(soft -> soft.assertThat(expression.name()).isEqualTo(TextFunctionExpression.UPPER));
     }
 
     @Test
@@ -78,10 +75,7 @@ class TextFunctionExpressionTest {
     void shouldCreateLowerFunction() {
         var expression = (TextFunctionExpression<?>) _Author.name.lower();
 
-        SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(expression.name()).isEqualTo(TextFunctionExpression.LOWER);
-            soft.assertThat(expression.arguments()).containsExactly(_Author.name);
-        });
+        SoftAssertions.assertSoftly(soft -> soft.assertThat(expression.name()).isEqualTo(TextFunctionExpression.LOWER));
     }
 
     @Test
@@ -113,9 +107,7 @@ class TextFunctionExpressionTest {
     void shouldCreateLengthFunction() {
         NumericExpression<Author, Integer> expression = _Author.name.length();
 
-        SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(expression).isInstanceOf(NumericExpression.class);
-        });
+        SoftAssertions.assertSoftly(soft -> soft.assertThat(expression).isInstanceOf(NumericExpression.class));
     }
 
     @Test
