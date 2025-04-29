@@ -17,8 +17,114 @@
  */
 package jakarta.data.metamodel.expression;
 
-import static org.junit.jupiter.api.Assertions.*;
+import jakarta.data.metamodel.NumericExpression;
+import jakarta.data.metamodel.TextAttribute;
+import jakarta.data.metamodel.restrict.Restriction;
+import org.assertj.core.api.SoftAssertions;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
 
 class TextFunctionExpressionTest {
 
+    static class Author {
+        String name;
+    }
+
+    // Mock metamodel
+    interface _Author {
+        String NAME = "name";
+
+        TextAttribute<Author> name = TextAttribute.of(Author.class, NAME);;
+    }
+
+    @Test
+    @DisplayName("should create append function from TextAttribute with string")
+    void shouldCreateAppendFunctionWithString() {
+        var expression = (TextFunctionExpression<?>) _Author.name.append("Suffix");
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(expression.name()).isEqualTo(TextFunctionExpression.CONCAT);
+            soft.assertThat(expression.arguments()).hasSize(2);
+            soft.assertThat(expression.arguments().get(0)).isEqualTo(_Author.name);
+        });
+    }
+
+    @Test
+    @DisplayName("should create prepend function from TextAttribute with string")
+    void shouldCreatePrependFunctionWithString() {
+        var expression = (TextFunctionExpression<?>) _Author.name.prepend("Prefix");
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(expression.name()).isEqualTo(TextFunctionExpression.CONCAT);
+            soft.assertThat(expression.arguments()).hasSize(2);
+            soft.assertThat(expression.arguments().get(1)).isEqualTo(_Author.name);
+        });
+    }
+
+    @Test
+    @DisplayName("should create upper function from TextAttribute")
+    void shouldCreateUpperFunction() {
+        var expression = (TextFunctionExpression<?>) _Author.name.upper();
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(expression.name()).isEqualTo(TextFunctionExpression.UPPER);
+            soft.assertThat(expression.arguments()).containsExactly(_Author.name);
+        });
+    }
+
+    @Test
+    @DisplayName("should create lower function from TextAttribute")
+    void shouldCreateLowerFunction() {
+        var expression = (TextFunctionExpression<?>) _Author.name.lower();
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(expression.name()).isEqualTo(TextFunctionExpression.LOWER);
+            soft.assertThat(expression.arguments()).containsExactly(_Author.name);
+        });
+    }
+
+    @Test
+    @DisplayName("should create left function from TextAttribute")
+    void shouldCreateLeftFunction() {
+        var expression = (TextFunctionExpression<?>) _Author.name.left(5);
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(expression.name()).isEqualTo(TextFunctionExpression.LEFT);
+            soft.assertThat(expression.arguments()).hasSize(2);
+            soft.assertThat(expression.arguments().get(0)).isEqualTo(_Author.name);
+        });
+    }
+
+    @Test
+    @DisplayName("should create right function from TextAttribute")
+    void shouldCreateRightFunction() {
+        var expression = (TextFunctionExpression<?>) _Author.name.right(3);
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(expression.name()).isEqualTo(TextFunctionExpression.RIGHT);
+            soft.assertThat(expression.arguments()).hasSize(2);
+            soft.assertThat(expression.arguments().get(0)).isEqualTo(_Author.name);
+        });
+    }
+
+    @Test
+    @DisplayName("should create length function from TextAttribute")
+    void shouldCreateLengthFunction() {
+        NumericExpression<Author, Integer> expression = _Author.name.length();
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(expression).isInstanceOf(NumericExpression.class);
+        });
+    }
+
+    @Test
+    @DisplayName("should chain left, right, upper and create a restriction")
+    void shouldChainFunctionsAndCreateRestriction() {
+        Restriction<Author> restriction = _Author.name.left(10).right(2).upper().equalTo("EE");
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(restriction).isNotNull();
+        });
+    }
 }
