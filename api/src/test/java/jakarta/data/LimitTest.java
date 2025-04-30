@@ -126,4 +126,15 @@ class LimitTest {
             soft.assertThat(limit.startAt()).isEqualTo(2L);
         });
     }
+
+    @Test
+    @DisplayName("should return correct maxResults and startAt values")
+    void shouldReturnMaxResultsAndStartAt() {
+        var limit = Limit.range(5, 15);
+
+        assertSoftly(softly -> {
+            softly.assertThat(limit.maxResults()).isEqualTo(11);
+            softly.assertThat(limit.startAt()).isEqualTo(5);
+        });
+    }
 }
