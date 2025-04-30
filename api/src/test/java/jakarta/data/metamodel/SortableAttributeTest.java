@@ -83,4 +83,28 @@ class SortableAttributeTest {
             TextAttribute.of(Document.class, null);
         });
     }
+
+    @Test
+    @DisplayName("should return ascending sort ignoring case from TextAttribute")
+    void shouldReturnAscendingIgnoreCaseSort() {
+        var sort = _Document.title.ascIgnoreCase();
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(sort.property()).isEqualTo("title");
+            soft.assertThat(sort.isAscending()).isTrue();
+            soft.assertThat(sort.ignoreCase()).isTrue();
+        });
+    }
+
+    @Test
+    @DisplayName("should return descending sort ignoring case from TextAttribute")
+    void shouldReturnDescendingIgnoreCaseSort() {
+        var sort = _Document.title.descIgnoreCase();
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(sort.property()).isEqualTo("title");
+            soft.assertThat(sort.isAscending()).isFalse();
+            soft.assertThat(sort.ignoreCase()).isTrue();
+        });
+    }
 }
