@@ -221,5 +221,19 @@ class PageRequestCursorTest {
             softly.assertThat(p2.size()).isEqualTo(30);
         });
     }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    @DisplayName("should return elements list with correct key order")
+    void shouldReturnElementsList() {
+        var cursor = new PageRequestCursor("one", 2, 'C');
+
+        assertSoftly(softly -> {
+            softly.assertThat((List<Object>) cursor.elements())
+                    .containsExactly("one", 2, 'C');
+            softly.assertThat(cursor.elements())
+                    .hasSize(cursor.size());
+        });
+    }
 }
 
