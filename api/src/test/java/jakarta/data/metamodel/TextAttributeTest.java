@@ -17,10 +17,11 @@
  */
 package jakarta.data.metamodel;
 
-import jakarta.data.metamodel.constraint.Like;
-import jakarta.data.metamodel.constraint.NotLike;
-import jakarta.data.metamodel.expression.StringLiteral;
-import jakarta.data.metamodel.restrict.BasicRestriction;
+import jakarta.data.constraint.Like;
+import jakarta.data.constraint.NotLike;
+import jakarta.data.expression.literal.StringLiteral;
+import jakarta.data.restrict.BasicRestriction;
+
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -19,6 +19,8 @@ package jakarta.data.metamodel;
 
 import java.util.Objects;
 
+import jakarta.data.expression.Expression;
+
 /**
  * <p>Represents an entity attribute in the {@link StaticMetamodel}
  * that is neither sortable nor comparable.</p>

@@ -17,18 +17,17 @@
  */
 package jakarta.data.metamodel;
 
-import jakarta.data.metamodel.constraint.Constraint;
-import jakarta.data.metamodel.constraint.EqualTo;
-import jakarta.data.metamodel.constraint.In;
-import jakarta.data.metamodel.constraint.NotEqualTo;
-import jakarta.data.metamodel.constraint.NotIn;
-import jakarta.data.metamodel.constraint.NotNull;
-import jakarta.data.metamodel.constraint.Null;
-
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
 
-import jakarta.data.metamodel.restrict.BasicRestriction;
+import jakarta.data.constraint.Constraint;
+import jakarta.data.constraint.EqualTo;
+import jakarta.data.constraint.In;
+import jakarta.data.constraint.NotEqualTo;
+import jakarta.data.constraint.NotIn;
+import jakarta.data.constraint.NotNull;
+import jakarta.data.constraint.Null;
+import jakarta.data.restrict.BasicRestriction;
 
 import java.util.Set;
 

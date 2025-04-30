@@ -1207,15 +1207,19 @@ import java.util.Set;
  */
 module jakarta.data {
     exports jakarta.data;
+    exports jakarta.data.constraint;
+    exports jakarta.data.event;
+    exports jakarta.data.exceptions;
+    exports jakarta.data.expression;
+    exports jakarta.data.expression.function;
+    exports jakarta.data.expression.literal;
+    exports jakarta.data.expression.path;
     exports jakarta.data.metamodel;
     exports jakarta.data.metamodel.impl;
-    exports jakarta.data.metamodel.restrict;
-    exports jakarta.data.metamodel.constraint;
-    exports jakarta.data.metamodel.expression;
     exports jakarta.data.page;
     exports jakarta.data.page.impl;
     exports jakarta.data.repository;
-    exports jakarta.data.exceptions;
+    exports jakarta.data.restrict;
     opens jakarta.data.repository;
     exports jakarta.data.spi;
 }

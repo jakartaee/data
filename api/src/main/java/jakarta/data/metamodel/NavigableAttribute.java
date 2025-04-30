@@ -19,6 +19,8 @@ package jakarta.data.metamodel;
 
 import java.util.Objects;
 
+import jakarta.data.expression.NavigableExpression;
+
 /**
  * <p>Represents an entity attribute that is an embeddable or association to
  * another entity.
