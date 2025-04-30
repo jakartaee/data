@@ -17,8 +17,75 @@
  */
 package jakarta.data.metamodel;
 
-import static org.junit.jupiter.api.Assertions.*;
+import jakarta.data.expression.TemporalExpression;
+import jakarta.data.metamodel.TemporalAttribute;
+import jakarta.data.restrict.BasicRestriction;
+import jakarta.data.restrict.Restriction;
+import org.assertj.core.api.SoftAssertions;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 class TemporalAttributeTest {
 
+    static class Audit {
+        LocalDateTime createdAt;
+        LocalTime updatedAt;
+    }
+
+    interface _Audit {
+        String CREATED_AT = "createdAt";
+        String UPDATED_AT = "updatedAt";
+
+        TemporalAttribute<Audit, LocalDateTime> createdAt = TemporalAttribute.of(Audit.class, CREATED_AT, LocalDateTime.class);
+        TemporalAttribute<Audit, LocalTime> updatedAt = TemporalAttribute.of(Audit.class, UPDATED_AT, LocalTime.class);
+    }
+    @Test
+    @DisplayName("should create restriction for createdAt equal to localDateTime()")
+    void shouldCreateEqualToCurrentDateTimeRestriction() {
+        Restriction<Audit> restriction = _Audit.createdAt.equalTo(TemporalExpression.localDateTime());
+        var basic = (BasicRestriction<?, ?>) restriction;
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(basic).isInstanceOf(BasicRestriction.class);
+            soft.assertThat(basic.expression()).isEqualTo(_Audit.createdAt);
+        });
+    }
+
+    @Test
+    @DisplayName("should create restriction for updatedAt not equal to localTime()")
+    void shouldCreateNotEqualToCurrentTimeRestriction() {
+        Restriction<Audit> restriction = _Audit.updatedAt.notEqualTo(TemporalExpression.localTime());
+        var basic = (BasicRestriction<?, ?>) restriction;
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(basic).isInstanceOf(BasicRestriction.class);
+            soft.assertThat(basic.expression()).isEqualTo(_Audit.updatedAt);
+        });
+    }
+
+    @Test
+    @DisplayName("should create greaterThan restriction for createdAt using localDateTime()")
+    void shouldCreateGreaterThanCurrentDateTimeRestriction() {
+        Restriction<Audit> restriction = _Audit.createdAt.greaterThan(TemporalExpression.localDateTime());
+        var basic = (BasicRestriction<?, ?>) restriction;
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(basic).isInstanceOf(BasicRestriction.class);
+            soft.assertThat(basic.expression()).isEqualTo(_Audit.createdAt);
+        });
+    }
+
+    @Test
+    @DisplayName("should create lessThan restriction for updatedAt using localTime()")
+    void shouldCreateLessThanCurrentTimeRestriction() {
+        Restriction<Audit> restriction = _Audit.updatedAt.lessThan(TemporalExpression.localTime());
+        var basic = (BasicRestriction<?, ?>) restriction;
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(basic).isInstanceOf(BasicRestriction.class);
+            soft.assertThat(basic.expression()).isEqualTo(_Audit.updatedAt);
+        });
+    }
 }
