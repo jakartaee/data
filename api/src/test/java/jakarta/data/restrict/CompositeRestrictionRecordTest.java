@@ -19,10 +19,6 @@ package jakarta.data.restrict;
 
 import jakarta.data.metamodel.ComparableAttribute;
 import jakarta.data.metamodel.TextAttribute;
-import jakarta.data.restrict.CompositeRestriction;
-import jakarta.data.restrict.CompositeRestrictionRecord;
-import jakarta.data.restrict.Restrict;
-import jakarta.data.restrict.Restriction;
 
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
@@ -127,7 +123,7 @@ class CompositeRestrictionRecordTest {
         var nameStartsWithDuke = _Author.name.startsWith("Duke ");
 
         var all = (CompositeRestriction<Author>) Restrict.all(ageLessThan50, nameStartsWithDuke);
-        var negated = all.negate();
+        var negated = (CompositeRestriction<Author>) all.negate();
         var fromNot = (CompositeRestriction<Author>) Restrict.not(all);
 
         SoftAssertions.assertSoftly(soft -> {
@@ -146,7 +142,7 @@ class CompositeRestrictionRecordTest {
         var nameContainsDuke = _Author.name.contains("Duke");
 
         var any = (CompositeRestriction<Author>) Restrict.any(ageBetween20and30, nameContainsDuke);
-        var negated = any.negate();
+        var negated = (CompositeRestriction<Author>) any.negate();
         var unNegated = (CompositeRestriction<Author>) Restrict.not(negated);
 
         SoftAssertions.assertSoftly(soft -> {

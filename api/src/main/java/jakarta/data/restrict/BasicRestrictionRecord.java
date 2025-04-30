@@ -38,7 +38,7 @@ record BasicRestrictionRecord<T, V>(Expression<T, V> expression,
     }
 
     @Override
-    public BasicRestriction<T, V> negate() {
+    public Restriction<T> negate() {
         return BasicRestriction.of(expression, constraint.negate());
     }
 

@@ -24,7 +24,6 @@ import jakarta.data.expression.literal.StringLiteral;
 import jakarta.data.metamodel.TextAttribute;
 import jakarta.data.mock.entity.Book;
 import jakarta.data.mock.entity._Book;
-import jakarta.data.restrict.BasicRestriction;
 
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
@@ -130,7 +129,9 @@ class TextRestrictionRecordTest {
         @SuppressWarnings("unchecked")
         BasicRestriction<Book,String> likeJakartaEE =
                 (BasicRestriction<Book, String>) _Book.title.endsWith("Jakarta EE");
-        BasicRestriction<Book,String> notLikeJakartaEE = likeJakartaEE.negate();
+        @SuppressWarnings("unchecked")
+        BasicRestriction<Book,String> notLikeJakartaEE =
+                (BasicRestriction<Book, String>)likeJakartaEE.negate();
         // TODO TextRestriction.ignoreCase vs TextAttribute.upper/lowercased
         //BasicRestriction<Book,String> anyCaseNotLikeJakartaEE = likeJakartaEE.ignoreCase().negate();
         //BasicRestriction<Book,String> notLikeJakartaEEAnyCase = likeJakartaEE.negate().ignoreCase();
@@ -148,8 +149,12 @@ class TextRestrictionRecordTest {
         @SuppressWarnings("unchecked")
         BasicRestriction<Book,String> endsWithJakartaEE =
                 (BasicRestriction<Book, String>) _Book.title.endsWith("Jakarta EE");
-        BasicRestriction<Book,String> notEndsWithJakartaEE = endsWithJakartaEE.negate();
-        BasicRestriction<Book,String> notNotEndsWithJakartaEE = notEndsWithJakartaEE.negate();
+        @SuppressWarnings("unchecked")
+        BasicRestriction<Book,String> notEndsWithJakartaEE =
+                (BasicRestriction<Book, String>) endsWithJakartaEE.negate();
+        @SuppressWarnings("unchecked")
+        BasicRestriction<Book,String> notNotEndsWithJakartaEE =
+                (BasicRestriction<Book, String>) notEndsWithJakartaEE.negate();
 
         Like endsWithJakartaEEConstraint =
                 (Like) endsWithJakartaEE.constraint();

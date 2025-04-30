@@ -21,13 +21,11 @@ import jakarta.data.constraint.*;
 import jakarta.data.metamodel.BasicAttribute;
 import jakarta.data.mock.entity.Book;
 import jakarta.data.mock.entity._Book;
-import jakarta.data.restrict.BasicRestriction;
 
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
@@ -65,7 +63,7 @@ class BasicRestrictionRecordTest {
     @DisplayName("should negate LessThanOrEqual into GreaterThan")
     void shouldNegateLTERestriction() {
         var lessThanEqual = (BasicRestriction<Book, Integer>) _Book.numChapters.lessThanEqual(10);
-        var negated = lessThanEqual.negate();
+        var negated = (BasicRestriction<Book, Integer>) lessThanEqual.negate();
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(lessThanEqual.expression()).isEqualTo(_Book.numChapters);
@@ -81,8 +79,10 @@ class BasicRestrictionRecordTest {
     @Test
     @DisplayName("should return to the original constraint after double negation")
     void shouldNegateNegatedRestriction() {
-        var original = (BasicRestriction<Book, String>) _Book.title.equalTo("A Developer's Guide to Jakarta Data");
-        var doubleNegated = original.negate().negate();
+        var original = (BasicRestriction<Book, String>)
+                _Book.title.equalTo("A Developer's Guide to Jakarta Data");
+        var doubleNegated = (BasicRestriction<Book, Integer>)
+                original.negate().negate();
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(original.expression()).isEqualTo(_Book.title);
