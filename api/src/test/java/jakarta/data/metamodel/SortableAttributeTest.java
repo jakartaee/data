@@ -17,8 +17,70 @@
  */
 package jakarta.data.metamodel;
 
-import static org.junit.jupiter.api.Assertions.*;
+import jakarta.data.Sort;
+import org.assertj.core.api.SoftAssertions;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
+/**
+ * Unit tests for {@link SortableAttribute}, using {@link TextAttribute}
+ */
 class SortableAttributeTest {
 
+    static class Document {
+        String title;
+    }
+
+    // Static metamodel
+    interface _Document {
+        String TITLE = "title";
+
+        TextAttribute<Document> title = TextAttribute.of(Document.class, TITLE);
+    }
+
+    @Test
+    @DisplayName("should create TextAttribute as a SortableAttribute via static factory")
+    void shouldCreateTextAttributeAsSortable() {
+        var attribute = TextAttribute.of(Document.class, "title");
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(attribute.name()).isEqualTo("title");
+            soft.assertThat(attribute.declaringType()).isEqualTo(Document.class);
+            soft.assertThat(attribute).isInstanceOf(SortableAttribute.class);
+        });
+    }
+
+    @Test
+    @DisplayName("should return ascending sort from TextAttribute")
+    void shouldReturnAscendingSort() {
+        var sort = _Document.title.asc();
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(sort.property()).isEqualTo("title");
+            soft.assertThat(sort.isAscending()).isTrue();
+        });
+    }
+
+    @Test
+    @DisplayName("should return descending sort from TextAttribute")
+    void shouldReturnDescendingSort() {
+        var sort = _Document.title.desc();
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(sort.property()).isEqualTo("title");
+            soft.assertThat(sort.isAscending()).isFalse();
+        });
+    }
+
+    @Test
+    @DisplayName("should throw NullPointerException when factory method receives nulls")
+    void shouldThrowWhenNullArgumentsPassedToFactory() {
+        org.junit.jupiter.api.Assertions.assertThrows(NullPointerException.class, () -> {
+            TextAttribute.of(null, "title");
+        });
+
+        org.junit.jupiter.api.Assertions.assertThrows(NullPointerException.class, () -> {
+            TextAttribute.of(Document.class, null);
+        });
+    }
 }
