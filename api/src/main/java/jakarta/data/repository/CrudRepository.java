@@ -46,7 +46,7 @@ import java.util.List;
  *
  * <pre>
  * &#64;Entity
- * public class Cars {
+ * public class Car {
  *     &#64;Id
  *     public long vin;
  *     public String make;
