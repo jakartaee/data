@@ -19,6 +19,7 @@ package jakarta.data.metamodel.expression;
 
 
 import jakarta.data.metamodel.ComparableExpression;
+import jakarta.data.metamodel.TextAttribute;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -36,8 +37,8 @@ class ComparableLiteralRecordTest {
         String TITLE = "title";
         String PAGES = "pages";
 
-        ComparableExpression<Book, String> title = new ComparableLiteralRecord<>(TITLE);
-        ComparableExpression<Book, Integer> pages = new ComparableLiteralRecord<>(100);
+        TextAttribute<Book> title = TextAttribute.of(Book.class, TITLE);
+        TextAttribute<Book> pages = TextAttribute.of(Book.class, PAGES);
     }
 
     @Test

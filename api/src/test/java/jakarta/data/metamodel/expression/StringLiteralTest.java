@@ -17,6 +17,7 @@
  */
 package jakarta.data.metamodel.expression;
 
+import jakarta.data.metamodel.TextAttribute;
 import jakarta.data.metamodel.constraint.Like;
 import jakarta.data.metamodel.constraint.NotLike;
 import jakarta.data.metamodel.restrict.BasicRestriction;
@@ -27,7 +28,7 @@ import org.junit.jupiter.api.Test;
 class StringLiteralTest {
 
     interface _SimpleEntity {
-        StringLiteral<SimpleEntity> name = StringLiteral.of("name");
+        TextAttribute<SimpleEntity> name = TextAttribute.of(SimpleEntity.class, "name");
     }
 
     static class SimpleEntity {
