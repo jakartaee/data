@@ -17,8 +17,82 @@
  */
 package jakarta.data.metamodel;
 
-import static org.junit.jupiter.api.Assertions.*;
+import jakarta.data.expression.*;
+import org.assertj.core.api.SoftAssertions;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
+
+
+
+/**
+ * Tests for {@link NavigableAttribute} and {@link NavigableExpression}
+ */
 class NavigableAttributeTest {
 
+    static class Publisher {
+        String name;
+        int score;
+        LocalDate founded;
+    }
+
+    static class Author {
+        Publisher publisher;
+    }
+
+    interface _Publisher {
+        TextAttribute<Publisher> name = TextAttribute.of(Publisher.class, "name");
+        NumericAttribute<Publisher, Integer> score = NumericAttribute.of(Publisher.class,
+                "score", Integer.class);
+        TemporalAttribute<Publisher, LocalDate> founded = TemporalAttribute.of(Publisher.class,
+                "founded", LocalDate.class);
+    }
+
+    interface _Author {
+        NavigableAttribute<Author, Publisher> publisher =
+                NavigableAttribute.of(Author.class, "publisher", Publisher.class);
+    }
+
+    @Test
+    @DisplayName("should navigate to text attribute from navigable")
+    void shouldNavigateToTextAttribute() {
+        var path = _Author.publisher.navigate(_Publisher.name);
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(path).isInstanceOf(TextExpression.class);
+        });
+    }
+
+    @Test
+    @DisplayName("should navigate to numeric attribute from navigable")
+    void shouldNavigateToNumericAttribute() {
+        var path = _Author.publisher.navigate(_Publisher.score);
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(path).isInstanceOf(NumericExpression.class);
+        });
+    }
+
+    @Test
+    @DisplayName("should navigate to temporal attribute from navigable")
+    void shouldNavigateToTemporalAttribute() {
+        var path = _Author.publisher.navigate(_Publisher.founded);
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(path).isInstanceOf(TemporalExpression.class);
+        });
+    }
+
+    @Test
+    @DisplayName("should navigate to nested navigable attribute")
+    void shouldNavigateToNestedNavigableAttribute() {
+        var nested = _Author.publisher.navigate(_Publisher.name);
+        var path = _Author.publisher.navigate(_Publisher.name);
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(nested).isInstanceOf(TextExpression.class);
+            soft.assertThat(path).isInstanceOf(TextExpression.class);
+        });
+    }
 }
