@@ -38,7 +38,7 @@ public class _AsciiCharacter {
     public static final SortableAttribute<AsciiCharacter> numericValue = new NumericAttr("numericValue");
     public static final TextAttribute<AsciiCharacter> thisCharacter = new TextAttr("thisCharacter");
 
-    private static record BooleanAttr(String name, Sort<AsciiCharacter> asc,
+    private record BooleanAttr(String name, Sort<AsciiCharacter> asc,
                                       Sort<AsciiCharacter> desc)
             implements SortableAttribute<AsciiCharacter> {
         private BooleanAttr(String name) {
@@ -46,9 +46,9 @@ public class _AsciiCharacter {
         }
     }
 
-    ;
 
-    private static record NumericAttr(String name, Sort<AsciiCharacter> asc,
+
+    private record NumericAttr(String name, Sort<AsciiCharacter> asc,
                                       Sort<AsciiCharacter> desc)
             implements SortableAttribute<AsciiCharacter> {
         private NumericAttr(String name) {
@@ -56,9 +56,9 @@ public class _AsciiCharacter {
         }
     }
 
-    ;
 
-    private static record TextAttr(String name, Sort<AsciiCharacter> asc,
+
+    private record TextAttr(String name, Sort<AsciiCharacter> asc,
                                    Sort<AsciiCharacter> ascIgnoreCase,
                                    Sort<AsciiCharacter> desc,
                                    Sort<AsciiCharacter> descIgnoreCase) implements TextAttribute<AsciiCharacter> {
@@ -67,7 +67,7 @@ public class _AsciiCharacter {
         }
     }
 
-    ;
+
 
     // Avoids the checkstyle error,
     // HideUtilityClassConstructor: Utility classes should not have a public or default constructor

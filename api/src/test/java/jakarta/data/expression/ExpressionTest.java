@@ -17,8 +17,11 @@
  */
 package jakarta.data.expression;
 
-import jakarta.data.constraint.*;
-import jakarta.data.expression.Expression;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+
+import jakarta.data.constraint.EqualTo;
+import jakarta.data.constraint.LessThanOrEqual;
 import jakarta.data.expression.function.NumericFunctionExpression;
 import jakarta.data.expression.function.TextFunctionExpression;
 import jakarta.data.expression.literal.NumericLiteral;
@@ -27,8 +30,6 @@ import jakarta.data.mock.entity.Book;
 import jakarta.data.mock.entity._Book;
 import jakarta.data.restrict.BasicRestriction;
 import jakarta.data.restrict.Restriction;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.List;
 
@@ -84,7 +85,7 @@ class ExpressionTest {
         List<? extends Expression<? super Book, ?>> rightArgs = rightExpression.arguments();
         assertEquals(2, rightArgs.size());
 
-        assertEquals(true, rightArgs.get(1) instanceof NumericLiteral);
+        assertInstanceOf(NumericLiteral.class, rightArgs.get(1));
 
         @SuppressWarnings("unchecked")
         NumericLiteral<Book, Integer> rightArg1 =
@@ -97,7 +98,7 @@ class ExpressionTest {
         List<? extends Expression<? super Book, ?>> leftArgs = leftExpression.arguments();
         assertEquals(2, leftArgs.size());
 
-        assertEquals(true, leftArgs.get(1) instanceof NumericLiteral);
+        assertInstanceOf(NumericLiteral.class, leftArgs.get(1));
 
         @SuppressWarnings("unchecked")
         NumericLiteral<Book, Integer> leftArg1 =

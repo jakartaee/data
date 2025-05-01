@@ -28,13 +28,6 @@ import jakarta.data.constraint.NotLike;
 import jakarta.data.expression.literal.StringLiteral;
 import jakarta.data.metamodel.ComparableAttribute;
 import jakarta.data.metamodel.TextAttribute;
-import jakarta.data.restrict.BasicRestriction;
-import jakarta.data.restrict.CompositeRestriction;
-import jakarta.data.restrict.CompositeRestrictionRecord;
-import jakarta.data.restrict.Restrict;
-import jakarta.data.restrict.Restriction;
-import jakarta.data.restrict.Unmatchable;
-import jakarta.data.restrict.Unrestricted;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
