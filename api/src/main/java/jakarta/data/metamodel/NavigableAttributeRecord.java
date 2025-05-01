@@ -17,6 +17,7 @@
  */
 package jakarta.data.metamodel;
 
-record NavigableAttributeRecord<T, U>(Class<T> declaringType, String name)
+record NavigableAttributeRecord<T, U>
+        (Class<T> declaringType, String name, Class<U> attributeType)
         implements NavigableAttribute<T, U> {
 }

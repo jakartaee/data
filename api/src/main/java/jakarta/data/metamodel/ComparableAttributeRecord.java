@@ -18,6 +18,6 @@
 package jakarta.data.metamodel;
 
 record ComparableAttributeRecord<T, V extends Comparable<?>>
-        (Class<T> declaringType, String name)
+        (Class<T> declaringType, String name, Class<V> attributeType)
         implements ComparableAttribute<T, V> {
 }

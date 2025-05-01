@@ -17,7 +17,8 @@
  */
 package jakarta.data.metamodel;
 
-record SortableAttributeRecord<T>(Class<T> declaringType, String name)
+record SortableAttributeRecord<T>
+        (Class<T> declaringType, String name, Class<?> attributeType)
         implements SortableAttribute<T> {
 }
 

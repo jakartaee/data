@@ -123,4 +123,24 @@ public interface Attribute<T> {
                  to provide the entity class.\
                 """);
     }
+
+    /**
+     * Obtain the Java class which declares this entity attribute.
+     *
+     * @return the declaring class
+     * @throws UnsupportedOperationException if the declaring type is not
+     *                                       known.
+     * @apiNote This is only guaranteed to be known if a static <code>of</code>
+     * method, such as {@link BasicAttribute#of(Class, String, Class)}, was used
+     * to obtain the instance.
+     * @since 1.1
+     */
+    default Class<?> attributeType() {
+        throw new UnsupportedOperationException(getClass().getName() + """
+                 was obtained in a way that does not identify the type\
+                 of the attribute. Static metamodel classes should\
+                 use the .of method that is defined on the Attribute subtype\
+                 to provide the entity class.\
+                """);
+    }
 }

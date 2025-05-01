@@ -17,6 +17,7 @@
  */
 package jakarta.data.metamodel;
 
-record BasicAttributeRecord<T, V>(Class<T> declaringType, String name)
+record BasicAttributeRecord<T, V>
+        (Class<T> declaringType, String name, Class<V> attributeType)
         implements BasicAttribute<T, V> {
 }

@@ -68,7 +68,7 @@ public interface NumericAttribute<T, N extends Number & Comparable<N>>
         Objects.requireNonNull(name, "The name is required");
         Objects.requireNonNull(attributeType, "The attributeType is required");
 
-        return new NumericAttributeRecord<>(entityClass, name);
+        return new NumericAttributeRecord<>(entityClass, name, attributeType);
     }
 }
 
