@@ -122,8 +122,8 @@ public interface Restriction<T> {
     /**
      * <p>Returns the negation of this restriction.</p>
      *
-     * <p>For example, a basic restriction that represents {@link GreaterThan}
-     * a value is negated as {@link LessThanOrEqual} the value.</p>
+     * <p>For example, a basic restriction that represents an {@linkplain GreaterThan exclusive upper bound}
+     * on a value is negated as an {@linkplain LessThanOrEqual inclusive lower bound} on the value.</p>
      *
      * <p>A basic restriction that represents {@link Like} a pattern is negated
      * as {@link NotLike} the pattern.</p>
