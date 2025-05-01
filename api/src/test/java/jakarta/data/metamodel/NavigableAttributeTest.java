@@ -31,7 +31,12 @@ import java.time.LocalDate;
  */
 class NavigableAttributeTest {
 
+    static class Address {
+        String city;
+    }
+
     static class Publisher {
+        Address address;
         String name;
         int score;
         LocalDate founded;
@@ -41,17 +46,19 @@ class NavigableAttributeTest {
         Publisher publisher;
     }
 
+    interface _Address {
+        TextAttribute<Address> city = TextAttribute.of(Address.class, "city");
+    }
+
     interface _Publisher {
+        NavigableAttribute<Publisher, Address> address = NavigableAttribute.of(Publisher.class, "address", Address.class);
         TextAttribute<Publisher> name = TextAttribute.of(Publisher.class, "name");
-        NumericAttribute<Publisher, Integer> score = NumericAttribute.of(Publisher.class,
-                "score", Integer.class);
-        TemporalAttribute<Publisher, LocalDate> founded = TemporalAttribute.of(Publisher.class,
-                "founded", LocalDate.class);
+        NumericAttribute<Publisher, Integer> score = NumericAttribute.of(Publisher.class, "score", Integer.class);
+        TemporalAttribute<Publisher, LocalDate> founded = TemporalAttribute.of(Publisher.class, "founded", LocalDate.class);
     }
 
     interface _Author {
-        NavigableAttribute<Author, Publisher> publisher =
-                NavigableAttribute.of(Author.class, "publisher", Publisher.class);
+        NavigableAttribute<Author, Publisher> publisher = NavigableAttribute.of(Author.class, "publisher", Publisher.class);
     }
 
     @Test
@@ -87,11 +94,11 @@ class NavigableAttributeTest {
     @Test
     @DisplayName("should navigate to nested navigable attribute")
     void shouldNavigateToNestedNavigableAttribute() {
-        var nested = _Author.publisher.navigate(_Publisher.name);
-        var path = _Author.publisher.navigate(_Publisher.name);
+        var path = _Author.publisher
+                .navigate(_Publisher.address)
+                .navigate(_Address.city);
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(nested).isInstanceOf(TextExpression.class);
             soft.assertThat(path).isInstanceOf(TextExpression.class);
         });
     }
