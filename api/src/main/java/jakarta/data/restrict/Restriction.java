@@ -77,41 +77,8 @@ import jakarta.data.repository.Find;
  *                     Order.by(_Car.price.desc()));
  * </pre>
  *
- * <p>Entity class for the above example:</p>
- * <pre>
- * &#64;Entity
- * public class Car {
- *     &#64;Id
- *     public String vin;
- *     public String make;
- *     public String model;
- *     public int price;
- *     public int year;
- * }
- * </pre>
- *
- * <p>Static metamodel (typically generated from the entity class) for the above entity:</p>
- * <pre>
- * &#64;StaticMetamodel
- * public interface _Car {
- *     String MAKE = "make";
- *     String MODEL = "model";
- *     String PRICE = "price";
- *     String VIN = "vin";
- *     String YEAR = "year";
- *
- *     TextAttribute&lt;Car&gt; make = TextAttribute.of(
- *             Car.class, MAKE);
- *     TextAttribute&lt;Car&gt; model = TextAttribute.of(
- *             Car.class, MODEL);
- *     NumericAttribute&lt;Car,Integer&gt; price = NumericAttribute.of(
- *             Car.class, PRICE. int.class);
- *     NumericAttribute&lt;Car,Integer&gt; year = NumericAttribute.of(
- *             Car.class, YEAR. int.class);
- *     TextAttribute&lt;Car&gt; vin = TextAttribute.of(
- *             Car.class, VIN);
- * }
- * </pre>
+ * <p>The {@linkplain Attribute example entity and static metamodel} for the
+ * above are provided in the {@link Attribute} Javadoc.</p>
  *
  * <p>Restrictions are immutable and do not change after they are created.</p>
  *
