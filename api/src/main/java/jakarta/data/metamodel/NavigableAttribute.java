@@ -33,6 +33,9 @@ import jakarta.data.expression.NavigableExpression;
 public interface NavigableAttribute<T, U>
         extends Attribute<T>, NavigableExpression<T, U> {
 
+    @Override
+    Class<U> attributeType();
+
     /**
      * <p>Creates a static metamodel {@code NavigableAttribute} representing
      * the
@@ -52,7 +55,7 @@ public interface NavigableAttribute<T, U>
         Objects.requireNonNull(name, "The name is required");
         Objects.requireNonNull(attributeType, "The attributeType is required");
 
-        return new NavigableAttributeRecord<>(entityClass, name);
+        return new NavigableAttributeRecord<>(entityClass, name, attributeType);
     }
 }
 

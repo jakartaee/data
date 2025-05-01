@@ -40,7 +40,7 @@ class ComparableExpressionTest {
     interface _Person {
         String AGE = "age";
         ComparableExpression<Person, Integer> age =
-                new ComparableAttributeRecord<>(Person.class, AGE);
+                ComparableAttribute.of(Person.class, AGE, Integer.class);
     }
 
     @Test

@@ -65,7 +65,7 @@ public interface TemporalAttribute<T, V extends Temporal & Comparable<? extends 
         Objects.requireNonNull(name, "The name is required");
         Objects.requireNonNull(attributeType, "The attributeType is required");
 
-        return new TemporalAttributeRecord<T, V>(entityClass, name);
+        return new TemporalAttributeRecord<>(entityClass, name, attributeType);
     }
 }
 
