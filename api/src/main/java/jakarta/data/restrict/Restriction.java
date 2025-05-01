@@ -83,6 +83,7 @@ import jakarta.data.repository.Find;
  * <p>Restrictions are immutable and do not change after they are created.</p>
  *
  * @param <T> entity type.
+ * @since 1.1
  */
 public interface Restriction<T> {
 

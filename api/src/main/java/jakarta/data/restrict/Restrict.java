@@ -44,6 +44,8 @@ import java.util.Objects;
  *                     Order.by(_Car.year.desc(),
  *                              _Car.price.desc()));
  * </pre>
+ *
+ * @since 1.1
  */
 public class Restrict {
 

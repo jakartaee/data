@@ -34,6 +34,7 @@ import jakarta.data.metamodel.StaticMetamodel;
  *
  * @param <T> entity type.
  * @param <V> entity attribute type.
+ * @since 1.1
  */
 public interface BasicRestriction<T, V> extends Restriction<T> {
 

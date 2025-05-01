@@ -30,6 +30,7 @@ import java.util.List;
  * restrictions.</p>
  *
  * @param <T> entity type.
+ * @since 1.1
  */
 public interface CompositeRestriction<T> extends Restriction<T> {
     /**
