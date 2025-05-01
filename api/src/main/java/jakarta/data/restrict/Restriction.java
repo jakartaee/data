@@ -89,11 +89,14 @@ public interface Restriction<T> {
     /**
      * <p>Returns the negation of this restriction.</p>
      *
-     * <p>For example, a basic restriction that represents an {@linkplain GreaterThan exclusive upper bound}
-     * on a value is negated as an {@linkplain LessThanOrEqual inclusive lower bound} on the value.</p>
+     * <p>For example, a basic restriction that represents an
+     * {@linkplain GreaterThan exclusive upper bound} on a value is negated
+     * as an {@linkplain LessThanOrEqual inclusive lower bound} on the value.
+     * </p>
      *
-     * <p>A basic restriction that represents {@linkplain Like matching}  a pattern is negated
-     * as a restriction to {@link NotLike not match} the pattern.</p>
+     * <p>A basic restriction that represents {@linkplain Like matching} a
+     * pattern is negated as a restriction to {@linkplain NotLike not match}
+     * the pattern.</p>
      *
      * <p>A composite restriction that requires satisfying
      * {@linkplain CompositeRestriction.Type#ANY at least one} restriction
