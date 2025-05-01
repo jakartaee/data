@@ -43,6 +43,54 @@ package jakarta.data.metamodel;
  *     collections, embeddables, and other relation attributes.</li>
  * </ul>
  *
+ * <p>To represent an entity, a static metamodel class defines a field
+ * corresponding to each entity attribute. The type of the field should be the
+ * most precise subtype of {@code Attribute} that describes the entity
+ * attribute type.</p>
+ *
+ * <p>For example, given the following entity class,</p>
+ *
+ * <pre>
+ * &#64;Entity
+ * public class Car {
+ *     &#64;Id
+ *     public String vin;
+ *     public LocalDate listed;
+ *     public String make;
+ *     public String model;
+ *     public int price;
+ *     public int year;
+ * }
+ * </pre>
+ *
+ * <p>The static metamodel class (typically generated from the entity class)
+ * would be,</p>
+ *
+ * <pre>
+ * &#64;StaticMetamodel
+ * public interface _Car {
+ *     String LISTED = "listed";
+ *     String MAKE = "make";
+ *     String MODEL = "model";
+ *     String PRICE = "price";
+ *     String VIN = "vin";
+ *     String YEAR = "year";
+ *
+ *     TemporalAttribute&lt;Car,LocalDate&gt; price = TemporalAttribute.of(
+ *             Car.class, LISTED, LocalDate.class);
+ *     TextAttribute&lt;Car&gt; make = TextAttribute.of(
+ *             Car.class, MAKE);
+ *     TextAttribute&lt;Car&gt; model = TextAttribute.of(
+ *             Car.class, MODEL);
+ *     NumericAttribute&lt;Car,Integer&gt; price = NumericAttribute.of(
+ *             Car.class, PRICE, int.class);
+ *     NumericAttribute&lt;Car,Integer&gt; year = NumericAttribute.of(
+ *             Car.class, YEAR, int.class);
+ *     TextAttribute&lt;Car&gt; vin = TextAttribute.of(
+ *             Car.class, VIN);
+ * }
+ * </pre>
+ *
  * @param <T> entity class of the static metamodel.
  */
 public interface Attribute<T> {
