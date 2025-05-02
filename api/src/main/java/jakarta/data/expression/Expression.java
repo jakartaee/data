@@ -37,7 +37,7 @@ import java.util.Collection;
  * {@linkplain jakarta.data.expression.function function}.</p>
  *
  * <p>Expressions are used to compose {@linkplain Restriction restrictions}
- * that allow applications to supply query criteria at run time. For example,
+ * that allow applications to supply query criteria at runtime. For example,
  * </p>
  * <pre>
  * List&lt;Car&gt; affordableVehicles =
