@@ -16,7 +16,9 @@
 package ee.jakarta.tck.data.standalone.persistence;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.ArrayList;
@@ -85,13 +87,13 @@ public class PersistenceEntityTests {
 
         Iterable<Product> found = catalog.findByProductNumBetween("TEST-PROD-13", "TEST-PROD-17", Order.by(Sort.asc("name")));
         Iterator<Product> it = found.iterator();
-        assertEquals(true, it.hasNext());
+        assertTrue(it.hasNext());
         assertEquals("banana", it.next().getName());
-        assertEquals(true, it.hasNext());
+        assertTrue(it.hasNext());
         assertEquals("orange", it.next().getName());
-        assertEquals(true, it.hasNext());
+        assertTrue(it.hasNext());
         assertEquals("pear", it.next().getName());
-        assertEquals(false, it.hasNext());
+        assertFalse(it.hasNext());
 
         assertEquals(5L, catalog.deleteByProductNumLike("TEST-PROD-%"));
     }
@@ -111,12 +113,12 @@ public class PersistenceEntityTests {
 
         Optional<Product> result;
         result = catalog.get("TEST-PROD-94");
-        assertEquals(true, result.isPresent());
+        assertTrue(result.isPresent());
 
         catalog.remove(prod1);
 
         result = catalog.get("TEST-PROD-94");
-        assertEquals(false, result.isPresent());
+        assertFalse(result.isPresent());
     }
 
     @Assertion(id = "133", strategy = "Use a repository method with the Like keyword.")
@@ -212,7 +214,7 @@ public class PersistenceEntityTests {
         catalog.removeMultiple(strawberries, blueberries, raspberries);
 
         Iterable<Product> remaining = catalog.findByProductNumBetween("TEST-PROD-95", "TEST-PROD-99", Order.by());
-        assertEquals(false, remaining.iterator().hasNext());
+        assertFalse(remaining.iterator().hasNext());
     }
 
     @Assertion(id = "133", strategy = "Use a repository method with the Null keyword.")
@@ -323,7 +325,7 @@ public class PersistenceEntityTests {
         catalog.remove(prod1);
 
         Optional<Product> found = catalog.get("TEST-PROD-91");
-        assertEquals(false, found.isPresent());
+        assertFalse(found.isPresent());
 
         try {
             catalog.remove(prod1); // already removed

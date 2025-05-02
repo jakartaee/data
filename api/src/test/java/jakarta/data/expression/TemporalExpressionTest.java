@@ -17,8 +17,8 @@
  */
 package jakarta.data.expression;
 
-import jakarta.data.constraint.*;
-import jakarta.data.expression.TemporalExpression;
+import jakarta.data.constraint.Between;
+import jakarta.data.constraint.LessThan;
 import jakarta.data.expression.function.CurrentDate;
 import jakarta.data.expression.literal.TemporalLiteral;
 import jakarta.data.mock.entity.Book;
