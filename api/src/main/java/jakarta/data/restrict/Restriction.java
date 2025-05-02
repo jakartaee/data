@@ -31,7 +31,7 @@ import jakarta.data.repository.Find;
  * expressions.</p>
  *
  * <p>Basic restrictions that impose a single
- * {@linkplain Constraint constraint} are obtained from {@linkplain Attribute}
+ * {@linkplain Constraint constraint} are obtained from {@link Attribute}
  * subtypes of the {@linkplain StaticMetamodel static metamodel}.</p>
  *
  * <p>Composite restrictions that impose multiple
