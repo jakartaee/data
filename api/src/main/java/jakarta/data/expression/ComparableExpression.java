@@ -82,10 +82,10 @@ public interface ComparableExpression<T, V extends Comparable<?>>
      *                           NumericLiteral.of(Year.now().getValue() - 1)));
      * </pre>
      *
-     * @param minExpression expression that evaluates to the minimum value
-     *                      against which to compare. Must not be {@code null}.
-     * @param maxExpression expression that evaluates to the maximum value
-     *                      against which to compare. Must not be {@code null}.
+     * @param minExpression expression that evaluates to the lower bound
+     *                      on the range. Must not be {@code null}.
+     * @param maxExpression expression that evaluates to the upper bound
+     *                      on the range. Must not be {@code null}.
      * @return the restriction.
      * @throws NullPointerException if the expression is {@code null}.
      */
