@@ -57,10 +57,8 @@ public interface ComparableExpression<T, V extends Comparable<?>>
      * found = cars.search(make, model, _Car.year.between(2022, 2025));
      * </pre>
      *
-     * @param min minimum value against which to compare. Must not be
-     *            {@code null}.
-     * @param max maximum value against which to compare. Must not be
-     *            {@code null}.
+     * @param min the lower bound on the range. Must not be {@code null}.
+     * @param max the lower bound on the range. Must not be {@code null}.
      * @return the restriction.
      * @throws NullPointerException if the value is {@code null}.
      */
