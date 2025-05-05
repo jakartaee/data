@@ -70,8 +70,8 @@ public interface ComparableExpression<T, V extends Comparable<?>>
 
     /**
      * <p>Obtains a {@link Restriction} that requires that this expression
-     * evaluate to a value that is within (inclusive of) the values to which
-     * the specified expressions evaluate.</p>
+     * evaluate to a value falling within the range between (and inclusive of) 
+     * the values to which the given expressions evaluate.</p>
      *
      * <p>Example:</p>
      * <pre>
