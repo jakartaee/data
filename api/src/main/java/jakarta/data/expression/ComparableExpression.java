@@ -99,7 +99,7 @@ public interface ComparableExpression<T, V extends Comparable<?>>
 
     /**
      * <p>Obtains a {@link Restriction} that requires that this expression
-     * evaluate to a value that is greater than the specified value.</p>
+     * evaluate to a value greater than the given value.</p>
      *
      * <p>Example:</p>
      * <pre>
@@ -116,8 +116,8 @@ public interface ComparableExpression<T, V extends Comparable<?>>
 
     /**
      * <p>Obtains a {@link Restriction} that requires that this expression
-     * evaluate to a value that is greater than the value to which the
-     * specified expression evaluates.</p>
+     * evaluate to a value greater than the value to which the given
+     * expression evaluates.</p>
      *
      * <p>Example:</p>
      * <pre>
@@ -137,7 +137,7 @@ public interface ComparableExpression<T, V extends Comparable<?>>
 
     /**
      * <p>Obtains a {@link Restriction} that requires that this expression
-     * evaluate to a value that is greater than or equal to the specified
+     * evaluate to a value greater than or equal to the given
      * value.</p>
      *
      * <p>Example:</p>
@@ -155,8 +155,8 @@ public interface ComparableExpression<T, V extends Comparable<?>>
 
     /**
      * <p>Obtains a {@link Restriction} that requires that this expression
-     * evaluate to a value that is greater than or equal to the value to which
-     * the specified expression evaluates.</p>
+     * evaluate to a value greater than or equal to the value to which the
+     * given expression evaluates.</p>
      *
      * <p>Example:</p>
      * <pre>
@@ -176,7 +176,7 @@ public interface ComparableExpression<T, V extends Comparable<?>>
 
     /**
      * <p>Obtains a {@link Restriction} that requires that this expression
-     * evaluate to a value that is less than the specified value.</p>
+     * evaluate to a value smaller than the given value.</p>
      *
      * <p>Example:</p>
      * <pre>
@@ -193,7 +193,7 @@ public interface ComparableExpression<T, V extends Comparable<?>>
 
     /**
      * <p>Obtains a {@link Restriction} that requires that this expression
-     * evaluate to a value that is less than the value to which the specified
+     * evaluate to a value smaller than the value to which the given
      * expression evaluates.</p>
      *
      * <p>Example:</p>
@@ -214,7 +214,7 @@ public interface ComparableExpression<T, V extends Comparable<?>>
 
     /**
      * <p>Obtains a {@link Restriction} that requires that this expression
-     * evaluate to a value that is less than or equal to the specified value.
+     * evaluate to a value less than or equal to the given value.
      * </p>
      *
      * <p>Example:</p>
@@ -232,8 +232,8 @@ public interface ComparableExpression<T, V extends Comparable<?>>
 
     /**
      * <p>Obtains a {@link Restriction} that requires that this expression
-     * evaluate to a value that is less than or equal to the value to which
-     * the specified expression evaluates.</p>
+     * evaluate to a value less than or equal to the value to which the
+     * given expression evaluates.</p>
      *
      * <p>Example:</p>
      * <pre>
@@ -253,17 +253,15 @@ public interface ComparableExpression<T, V extends Comparable<?>>
 
     /**
      * <p>Obtains a {@link Restriction} that requires that this expression
-     * evaluate to a value that is not within the specified values.</p>
+     * evaluate to a value falling outside the range between given values.</p>
      *
      * <p>Example:</p>
      * <pre>
      * found = cars.search(make, model, _Car.year.notBetween(2021, 2023));
      * </pre>
      *
-     * @param min minimum value against which to compare. Must not be
-     *            {@code null}.
-     * @param max maximum value against which to compare. Must not be
-     *            {@code null}.
+     * @param min the lower bound on the range. Must not be {@code null}.
+     * @param max the upper bound on the range. Must not be {@code null}.
      * @return the restriction.
      * @throws NullPointerException if the value is {@code null}.
      */
@@ -273,8 +271,8 @@ public interface ComparableExpression<T, V extends Comparable<?>>
 
     /**
      * <p>Obtains a {@link Restriction} that requires that this expression
-     * evaluate to a value that is not within the values to which the
-     * specified expressions evaluate.</p>
+     * evaluate to a value falling outside the range between the values to 
+     * which the given expressions evaluate.</p>
      *
      * <p>Example:</p>
      * <pre>
@@ -284,10 +282,10 @@ public interface ComparableExpression<T, V extends Comparable<?>>
      *                                          _Car.firstModelYear.plus(2)));
      * </pre>
      *
-     * @param minExpression expression that evaluates to the minimum value
-     *                      against which to compare. Must not be {@code null}.
-     * @param maxExpression expression that evaluates to the maximum value
-     *                      against which to compare. Must not be {@code null}.
+     * @param minExpression expression that evaluates to the lower bound
+     *                      on the range. Must not be {@code null}.
+     * @param maxExpression expression that evaluates to the lower bound
+     *                      on the range. Must not be {@code null}.
      * @return the restriction.
      * @throws NullPointerException if the expression is {@code null}.
      */
