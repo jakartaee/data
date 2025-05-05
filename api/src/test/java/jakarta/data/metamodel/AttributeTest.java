@@ -90,7 +90,7 @@ class AttributeTest {
     void shouldThrowExceptionForEmptyInRestriction() {
         assertThatThrownBy(() -> testAttribute.in(Set.of()))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("The values are required");
+                .hasMessage("The values must not be empty");
     }
 
     @Test

@@ -55,12 +55,15 @@ package jakarta.data.metamodel;
  * public class Car {
  *     &#64;Id
  *     public String vin;
+ *     public Color color;
  *     public LocalDate listed;
  *     public String make;
  *     public String model;
  *     public int price;
  *     public int year;
  * }
+ *
+ * public enum Color { BLACK, BLUE, GRAY, RED, WHITE }
  * </pre>
  *
  * <p>The static metamodel class (typically generated from the entity class)
@@ -69,6 +72,7 @@ package jakarta.data.metamodel;
  * <pre>
  * &#64;StaticMetamodel
  * public interface _Car {
+ *     String COLOR = "color";
  *     String LISTED = "listed";
  *     String MAKE = "make";
  *     String MODEL = "model";
@@ -76,6 +80,8 @@ package jakarta.data.metamodel;
  *     String VIN = "vin";
  *     String YEAR = "year";
  *
+ *     ComparableAttribute&lt;Car,Color&gt; price = ComparableAttribute.of(
+ *             Car.class, COLOR, Color.class);
  *     TemporalAttribute&lt;Car,LocalDate&gt; price = TemporalAttribute.of(
  *             Car.class, LISTED, LocalDate.class);
  *     TextAttribute&lt;Car&gt; make = TextAttribute.of(
