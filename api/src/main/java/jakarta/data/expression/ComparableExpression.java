@@ -58,7 +58,7 @@ public interface ComparableExpression<T, V extends Comparable<?>>
      * </pre>
      *
      * @param min the lower bound on the range. Must not be {@code null}.
-     * @param max the lower bound on the range. Must not be {@code null}.
+     * @param max the upper bound on the range. Must not be {@code null}.
      * @return the restriction.
      * @throws NullPointerException if the value is {@code null}.
      */
