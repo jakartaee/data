@@ -30,14 +30,13 @@ record NumericLiteralRecord<T, N extends Number & Comparable<N>>
 
     @Override
     public String toString() {
-        String suffix = switch (value) {
-            case Long l       -> "L";
-            case Float f      -> "F";
-            case Double d     -> "D";
+        return value + switch (value) {
+            case Long l -> "L";
+            case Float v -> "F";
+            case Double v -> "D";
             case BigInteger i -> "BI";
             case BigDecimal d -> "BD";
-            default           -> "";
+            default -> "";
         };
-        return value.toString() + suffix;
     }
 }
