@@ -25,18 +25,57 @@ import java.time.temporal.Temporal;
 import jakarta.data.expression.function.CurrentDate;
 import jakarta.data.expression.function.CurrentDateTime;
 import jakarta.data.expression.function.CurrentTime;
+import jakarta.data.metamodel.Attribute;
+import jakarta.data.metamodel.TemporalAttribute;
 
+/**
+ * <p>An {@linkplain Expression expression} that evaluates to a
+ * {@linkplain TemporalAttribute temporal} typed value.</p>
+ *
+ * <p>The {@linkplain Attribute entity and static metamodel} for the code
+ * examples within this class are shown in the {@link Attribute} Javadoc.
+ * </p>
+ *
+ * @param <T> entity type.
+ * @param <V> entity attribute type.
+ * @since 1.1
+ */
 public interface TemporalExpression<T, V extends Temporal & Comparable<? extends Temporal>>
         extends ComparableExpression<T, V> {
 
+    /**
+     * <p>Represents the function to obtain the current date.</p>
+     *
+     * <p>Example:</p>
+     * <pre>
+     * listedToday = cars.search(make,
+     *                           model,
+     *                           _Car.listed.equalTo(TemporalExpression.localDate()));
+     * </pre>
+     *
+     * @return a {@code TemporalExpression} representing the function to obtain
+     *         the current date as known to the data store.
+     */
     static TemporalExpression<Object, LocalDate> localDate() {
         return CurrentDate.now();
     }
 
+    /**
+     * <p>Represents the function to obtain the current date and time.</p>
+     *
+     * @return a {@code TemporalExpression} representing the function to obtain
+     *         the current date and time as known to the data store.
+     */
     static TemporalExpression<Object, LocalDateTime> localDateTime() {
         return CurrentDateTime.now();
     }
 
+    /**
+     * <p>Represents the function to obtain the current time.</p>
+     *
+     * @return a {@code TemporalExpression} representing the function to obtain
+     *         the current time as known to the data store.
+     */
     static TemporalExpression<Object, LocalTime> localTime() {
         return CurrentTime.now();
     }

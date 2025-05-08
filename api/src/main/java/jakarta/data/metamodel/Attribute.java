@@ -73,6 +73,7 @@ package jakarta.data.metamodel;
  * &#64;StaticMetamodel
  * public interface _Car {
  *     String COLOR = "color";
+ *     String FIRSTMODELYEAR = "firstModelYear";
  *     String LISTED = "listed";
  *     String MAKE = "make";
  *     String MODEL = "model";
@@ -80,9 +81,11 @@ package jakarta.data.metamodel;
  *     String VIN = "vin";
  *     String YEAR = "year";
  *
- *     ComparableAttribute&lt;Car,Color&gt; price = ComparableAttribute.of(
+ *     ComparableAttribute&lt;Car,Color&gt; color = ComparableAttribute.of(
  *             Car.class, COLOR, Color.class);
- *     TemporalAttribute&lt;Car,LocalDate&gt; price = TemporalAttribute.of(
+ *     NumericAttribute&lt;Car,Integer&gt; firstModelYear = NumericAttribute.of(
+ *             Car.class, FIRSTMODELYEAR, int.class);
+ *     TemporalAttribute&lt;Car,LocalDate&gt; listed = TemporalAttribute.of(
  *             Car.class, LISTED, LocalDate.class);
  *     TextAttribute&lt;Car&gt; make = TextAttribute.of(
  *             Car.class, MAKE);
