@@ -17,8 +17,8 @@
 :SigPluginVersion: 2.3
 :SigPluginGAV: jakarta.tck:sigtest-maven-plugin:{SigPluginVersion}
 
-:JavaVersion1: 17
-:JavaVersion2: 21
+:JavaVersion1: 21
+:JavaVersion2: 25
 
 :license: Eclipse Foundation Technology Compatibility Kit License
 :licenseURL: https://www.eclipse.org/legal/tck.php

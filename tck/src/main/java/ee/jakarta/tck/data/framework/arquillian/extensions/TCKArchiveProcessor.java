@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022, 2024 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022, 2025 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -85,7 +85,7 @@ public class TCKArchiveProcessor implements ApplicationArchiveProcessor {
             return; //Nothing to append
         }
 
-        final boolean isJava21orAbove = Integer.parseInt(System.getProperty("java.specification.version")) >= 21;
+        final boolean isJava25orAbove = Integer.parseInt(System.getProperty("java.specification.version")) >= 25;
         final Package signaturePackage = DataSignatureTestRunner.class.getPackage();
 
         if (applicationArchive instanceof ClassContainer) {
@@ -106,8 +106,8 @@ public class TCKArchiveProcessor implements ApplicationArchiveProcessor {
                     DataSignatureTestRunner.SIG_MAP_NAME, DataSignatureTestRunner.SIG_PKG_NAME);
             ((ResourceContainer<?>) applicationArchive).addAsResource(signaturePackage,
                     // Get local resource based on JDK level
-                    isJava21orAbove ? DataSignatureTestRunner.SIG_FILE_NAME + "_21"
-                            : DataSignatureTestRunner.SIG_FILE_NAME + "_17",
+                    isJava25orAbove ? DataSignatureTestRunner.SIG_FILE_NAME + "_25"
+                            : DataSignatureTestRunner.SIG_FILE_NAME + "_21",
                     // Target same package as test
                     signaturePackage.getName().replace(".", "/") + "/" + DataSignatureTestRunner.SIG_FILE_NAME);
         }

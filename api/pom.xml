@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ Copyright (c) 2022 Contributors to the Eclipse Foundation
+  ~ Copyright (c) 2022, 2025 Contributors to the Eclipse Foundation
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -91,7 +91,7 @@
                             <goal>jar</goal>
                         </goals>
                         <configuration>
-                            <source>17</source>
+                            <source>21</source>
                             <quiet>true</quiet>
                             <additionalJOption>-Xdoclint:none</additionalJOption>
                             <description>Jakarta Data API documentation</description>
