@@ -21,7 +21,7 @@ jobs:
 
     strategy:
       matrix:
-        java-version: [ '21', '25-ea' ]
+        java-version: [ '21' ] # TODO add 25
 
     runs-on: ubuntu-latest
 

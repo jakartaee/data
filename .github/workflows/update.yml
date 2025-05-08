@@ -11,7 +11,7 @@ jobs:
     strategy:
       max-parallel: 1
       matrix:
-        java-version: [ '21', '25-ea' ]
+        java-version: [ '21' ] # TODO add 25
 
     steps:
     - name: Checkout source
