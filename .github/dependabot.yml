@@ -9,6 +9,10 @@ updates:
     directory: /
     schedule:
       interval: daily
+    ignore:
+      #TODO wait until we are building with Java 21 and Asciidoctor is updated to support jruby 10
+      - dependency-name: "org.jruby:jruby"
+        versions: [ "[10,)" ]
 
   - package-ecosystem: maven
     directory: /tck-dist/src/main/
