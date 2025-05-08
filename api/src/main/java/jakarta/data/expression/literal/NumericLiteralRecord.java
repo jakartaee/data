@@ -30,21 +30,14 @@ record NumericLiteralRecord<T, N extends Number & Comparable<N>>
 
     @Override
     public String toString() {
-        // TODO can use switch after compilation is switched to Java 21
-        String suffix;
-        if (value instanceof Long) {
-            suffix = "L";
-        } else if (value instanceof Float) {
-            suffix = "F";
-        } else if (value instanceof Double) {
-            suffix = "D";
-        } else if (value instanceof BigInteger) {
-            suffix = "BI";
-        } else if (value instanceof BigDecimal) {
-            suffix = "BD";
-        } else {
-            suffix = "";
-        }
+        String suffix = switch (value) {
+            case Long l       -> "L";
+            case Float f      -> "F";
+            case Double d     -> "D";
+            case BigInteger i -> "BI";
+            case BigDecimal d -> "BD";
+            default           -> "";
+        };
         return value.toString() + suffix;
     }
 }
