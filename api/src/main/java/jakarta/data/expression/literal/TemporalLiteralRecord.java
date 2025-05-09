@@ -34,17 +34,13 @@ record TemporalLiteralRecord<T, V extends Temporal & Comparable<? extends Tempor
 
     @Override
     public String toString() {
-        // TODO can use a switch statement after updating to Java 21
-        if (value instanceof Instant ||
-                value instanceof LocalDateTime) {
-            return "TIMESTAMP('" + value + "')";
-        } else if (value instanceof LocalDate) {
-            return "DATE('" + value + "')";
-        } else if (value instanceof LocalTime) {
-            return "TIME('" + value + "')";
-        } else {
-            return value.toString();
-        }
+        return switch (value) {
+            case Instant i       -> "TIMESTAMP('" + i + "')";
+            case LocalDateTime d -> "TIMESTAMP('" + d + "')";
+            case LocalDate d     -> "DATE('" + d + "')";
+            case LocalTime t     -> "TIME('" + t + "')";
+            default              -> value.toString();
+        };
     }
 
 }
