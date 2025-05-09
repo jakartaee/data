@@ -30,13 +30,16 @@ record NumericLiteralRecord<T, N extends Number & Comparable<N>>
 
     @Override
     public String toString() {
-        return value + switch (value) {
-            case Long l -> "L";
-            case Float v -> "F";
-            case Double v -> "D";
-            case BigInteger i -> "BI";
-            case BigDecimal d -> "BD";
-            default -> "";
+        return switch (value) {
+            case Integer i -> i.toString();
+            case Long l -> l + "L";
+            case Float f -> f + "F";
+            case Double d -> d + "D";
+            case BigInteger i -> i + "BI";
+            case BigDecimal d -> d + "BD";
+            default -> "{NumericLiteral "
+                          + value.getClass().getName()
+                          + " '" + value + "'}";
         };
     }
 }

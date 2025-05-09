@@ -45,10 +45,12 @@ import jakarta.data.expression.ComparableExpression;
  *
  * <ul>
  * <li>boolean attributes: {@code boolean} and {@link Boolean}</li>
+ * <li>character attributes: {@code char} and {@link Character}</li>
  * <li>enum attributes - Note that it is provider-specific whether order is
  *     based on {@link Enum#ordinal()} or {@link Enum#name()}.
  *     The Jakarta Persistence default of {@code ordinal} can be overridden
  *     with the {@code jakarta.persistence.Enumerated} annotation.</li>
+ * <li>{@link java.util.UUID} attributes</li>
  * </ul>
  *
  * <p>In the above cases, {@code ComparableAttribute}, which provides more
