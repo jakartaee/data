@@ -23,12 +23,40 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.UUID;
 
 import jakarta.data.expression.ComparableExpression;
 
+/**
+ * <p>A {@linkplain Literal literal} for a sortable value, such as
+ * {@link Boolean}, {@link Character}, enumeration, and {@link UUID} values.
+ * </p>
+ *
+ * @param <T> entity type.
+ * @param <V> entity attribute type.
+ * @since 1.1
+ */
 public interface ComparableLiteral<T, V extends Comparable<?>>
         extends ComparableExpression<T, V>, Literal<T, V> {
 
+    /**
+     * <p>Creates a {@code ComparableLiteral} or subtype of
+     * {@code ComparableLiteral} that represents the given value.</p>
+     *
+     * <p>The most specific subtype of {@code ComparableLiteral}, such as
+     * {@link NumericLiteral#of(Number) NumericLiteral},
+     * {@link StringLiteral#of(String) StringLiteral}, or
+     * {@link TemporalLiteral#of(java.time.temporal.Temporal) TemporalLiteral},
+     * should be used instead wherever possible.</p>
+     *
+     * @param <T>   entity type.
+     * @param <V>   entity attribute type.
+     * @param value an immutable value or a mutable value that must never be
+     *              modified after it is supplied to this method. Must never be
+     *              {@code null}.
+     * @return a {@code ComparableLiteral} representing the value.
+     * @throws NullPointerException if the value is {@code null}.
+     */
     @SuppressWarnings("unchecked")
     static <T, V extends Comparable<?>> ComparableLiteral<T, V> of(V value) {
         // Subtypes of Number and Temporal are needed here because
@@ -65,4 +93,55 @@ public interface ComparableLiteral<T, V extends Comparable<?>>
             return new ComparableLiteralRecord<>(value);
         }
     }
+
+    /**
+     * <p>Returns a {@code String} representing the literal value.</p>
+     *
+     * <p>Subtypes of {@code ComparableLiteral} override this method to define
+     * more specific formats that more closely align with query language.</p>
+     *
+     * <p>If the value is of type {@link Boolean}, this method outputs
+     * {@code TRUE} for {@code Boolean.TRUE} and {@code FALSE} for
+     * {@code Boolean.FALSE}.</p>
+     *
+     * <p>If the value is of type {@link Character}, this method outputs a
+     * {@code String} that consists of the character enclosed in single quotes.
+     * If the character is the single quote character, an additional single
+     * quote character is included to escape it.</p>
+     *
+     * <p>If the value is an enumeration type, this method outputs the fully
+     * qualified class name of the type, followed by the {@code .} character,
+     * followed by the {@linkplain Enum#name() name} of the enumeration element
+     * to which the value is assigned.</p>
+     *
+     * <p>For all other types, this method outputs a {@code String} that begins
+     * with an opening curly brace and ends with a closing curly brace. Between
+     * the braces are 3 terms delimited by a space character. The first term is
+     * {@code ComparableLiteral}. The second term is the fully qualified class
+     * name of the value's type. The third term is the {@code toString()}
+     * output of the value, enclosed in single quotes.</p>
+     *
+     * <p>For example, the output of
+     * {@code ComparableLiteral.of(Month.MAY).toString()} is</p>
+     * <pre>
+     * java.time.Month.MAY
+     * </pre>
+     *
+     * <p>For example, the output of
+     * {@code ComparableLiteral.of('D').toString()} is</p>
+     * <pre>
+     * 'D'
+     * </pre>
+     *
+     * <p>The output of
+     * {@code ComparableLiteral.of(UUID.fromString("73d518c4-b7f6-4c3b-9f63-60a045a43bb8")).toString()}
+     * is</p>
+     * <pre>
+     * {ComparableLiteral java.util.UUID '73d518c4-b7f6-4c3b-9f63-60a045a43bb8'}
+     * </pre>
+     *
+     * @return a {@code String} representing the literal value.
+     */
+    @Override
+    public String toString();
 }
