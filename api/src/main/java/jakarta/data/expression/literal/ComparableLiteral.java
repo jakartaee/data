@@ -28,8 +28,8 @@ import java.util.UUID;
 import jakarta.data.expression.ComparableExpression;
 
 /**
- * <p>A {@linkplain Literal literal} for a sortable value, such as
- * {@link Boolean}, {@link Character}, enumeration, and {@link UUID} values.
+ * <p>A {@linkplain Literal literal} expression for a sortable value, such as a
+ * {@link Boolean}, {@link Character}, enumerated, or {@link UUID} value.
  * </p>
  *
  * @param <T> entity type.
