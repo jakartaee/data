@@ -18,6 +18,7 @@
 package jakarta.data.expression.function;
 
 import jakarta.data.expression.ComparableExpression;
+import jakarta.data.expression.literal.NumericLiteral;
 
 import java.util.List;
 import java.util.Objects;
@@ -29,6 +30,16 @@ record TextFunctionExpressionRecord<T>(
 
     TextFunctionExpressionRecord {
         Objects.requireNonNull(name, "The name is required");
-    }
 
+        if (TextFunctionExpression.LEFT == name ||
+            TextFunctionExpression.RIGHT == name) {
+            ComparableExpression<? super T, ?> sizeExp = arguments.get(1);
+            if (sizeExp instanceof NumericLiteral sizeLiteral &&
+                sizeLiteral.value() instanceof Integer size &&
+                size < 0) {
+                throw new IllegalArgumentException(
+                        "The size value must not be negative.");
+            }
+        }
+    }
 }

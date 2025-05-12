@@ -18,7 +18,11 @@
 package jakarta.data.expression.function;
 
 import jakarta.data.expression.NumericExpression;
+import jakarta.data.expression.function.NumericOperatorExpression.Operator;
+import jakarta.data.expression.literal.NumericLiteral;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Objects;
 
 record NumericOperatorExpressionRecord<T, N extends Number & Comparable<N>>
@@ -30,6 +34,32 @@ record NumericOperatorExpressionRecord<T, N extends Number & Comparable<N>>
         Objects.requireNonNull(operator, "The operator is required");
         Objects.requireNonNull(left, "The left expression is required");
         Objects.requireNonNull(left, "The right expression is required");
+
+        if (operator == Operator.DIVIDE &&
+            right instanceof NumericLiteral l &&
+            isZero((Number) l.value())) {
+            throw new IllegalArgumentException("The divisor value must not be 0.");
+        }
     }
 
+    /**
+     * Internal method that determines if a number is equal to 0.
+     *
+     * @param number a Number that is also Comparable.
+     * @return true if the number is equal to 0. Otherwise false.
+     */
+    private static boolean isZero(Number number) {
+        return switch (number) {
+            case Integer i    -> i.intValue() == 0;
+            case Long l       -> l.longValue() == 0L;
+            case Float f      -> Float.compare(f.floatValue(), 0.0f) == 0;
+            case Double d     -> Double.compare(d.doubleValue(), 0.0d) == 0;
+            case BigInteger i -> i.compareTo(BigInteger.ZERO) == 0;
+            case BigDecimal d -> d.compareTo(BigDecimal.ZERO) == 0;
+            case Byte b       -> b.byteValue() == (byte) 0;
+            case Short s      -> s.shortValue() == (short) 0;
+            default -> throw new IllegalArgumentException(
+                    "Unexpected number type: " + number.getClass().getName());
+        };
+    }
 }
