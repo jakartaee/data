@@ -19,10 +19,41 @@ package jakarta.data.expression.literal;
 
 import jakarta.data.expression.TextExpression;
 
+/**
+ * <p>A {@linkplain Literal literal} for a {@link String} value.</p>
+ *
+ * @param <T> entity type.
+ * @since 1.1
+ */
 public interface StringLiteral<T>
         extends ComparableLiteral<T, String>, TextExpression<T> {
 
+    /**
+     * <p>Creates a {@code StringLiteral} that represents the given value.</p>
+     *
+     * @param <T>   entity type.
+     * @param value a {@code String} value. Must never be {@code null}.
+     * @return a {@code StringLiteral} representing the value.
+     * @throws NullPointerException if the value is {@code null}.
+     */
     static <T> StringLiteral<T> of(String value) {
         return new StringLiteralRecord<T>(value);
     }
+
+    /**
+     * <p>Returns a {@code String} representing the value. The {@code String}
+     * is the value enclosed in single quotes and with each single quote
+     * character in the value escaped with a single quote.</p>
+     *
+     * <p>For example, the output of
+     * {@code StringLiteral.of("Jakarta Data's second release").toString()} is
+     * </p>
+     * <pre>
+     * 'Jakarta Data''s second release'
+     * </pre>
+     *
+     * @return the {@code String} value escaped and enclosed in single quotes.
+     */
+    @Override
+    public String toString();
 }

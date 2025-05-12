@@ -28,7 +28,14 @@ record ComparableLiteralRecord<T, V extends Comparable<?>>(V value)
 
     @Override
     public String toString() {
-        return value.toString();
+        return switch (value) {
+            case Boolean b -> b == Boolean.TRUE ? "TRUE" : "FALSE";
+            case Character c -> c == '\'' ? "''''" : "'" + c + "'";
+            case Enum e -> e.getClass().getName() + '.' + e.name();
+            default -> "{ComparableLiteral "
+                        + value.getClass().getName()
+                        + " '" + value.toString() + "'}";
+        };
     }
 
 }

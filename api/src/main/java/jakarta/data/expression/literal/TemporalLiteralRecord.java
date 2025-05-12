@@ -21,6 +21,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneOffset;
 import java.time.temporal.Temporal;
 import java.util.Objects;
 
@@ -34,12 +35,21 @@ record TemporalLiteralRecord<T, V extends Temporal & Comparable<? extends Tempor
 
     @Override
     public String toString() {
-        return switch (value) {
-            case Instant i       -> "TIMESTAMP('" + i + "')";
-            case LocalDateTime d -> "TIMESTAMP('" + d + "')";
-            case LocalDate d     -> "DATE('" + d + "')";
-            case LocalTime t     -> "TIME('" + t + "')";
-            default              -> value.toString();
+        Temporal temporal = value instanceof Instant i
+                ? i.atOffset(ZoneOffset.UTC).toLocalDateTime()
+                : value;
+
+        return switch (temporal) {
+            case LocalDateTime d ->
+                "{ts '" + d.toLocalDate() + ' ' + d.toLocalTime() + "'}";
+            case LocalDate d ->
+                "{d '" + value + "'}";
+            case LocalTime t ->
+                "{t '" + value + "'}";
+            default ->
+                "{TemporalLiteral '"
+                        + value.getClass().getName() + " '"
+                        + value + "'}";
         };
     }
 

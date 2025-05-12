@@ -30,7 +30,6 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.time.Instant;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.stream.Stream;
 
@@ -50,9 +49,11 @@ class ComparableLiteralTest {
                 new BigDecimal("123.45"),
                 new BigInteger("987654321"),
                 LocalDate.of(2024, 4, 23),
-                LocalTime.of(14, 30),
-                LocalDateTime.of(2024, 4, 23, 14, 30),
-                Instant.now()
+                LocalTime.of(14, 30)
+                // LocalDateTime and Instant are excluded because their
+                // literals match the query language syntax rather than
+                // following the LocalDateTime.toString and Instant.toString
+                // output exactly.
         );
     }
 
