@@ -98,7 +98,6 @@ import java.util.Collection;
  * supplied to methods that create other expressions and
  * {@linkplain Restriction restrictions}.</p>
  *
-
  *
  * @param <T> entity type.
  * @param <V> entity attribute type.
