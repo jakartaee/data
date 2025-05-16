@@ -16,14 +16,16 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import java.util.Set;
 // Although these appear to be unused, these imports are needed by Javadoc.
 import jakarta.data.Limit;
 import jakarta.data.Order;
 import jakarta.data.Sort;
 import jakarta.data.exceptions.NonUniqueResultException;
+import jakarta.data.expression.Expression;
+import jakarta.data.metamodel.Attribute;
 import jakarta.data.metamodel.StaticMetamodel;
 import jakarta.data.page.PageRequest;
+import jakarta.data.constraint.Constraint;
 import jakarta.data.repository.BasicRepository;
 import jakarta.data.repository.By;
 import jakarta.data.repository.CrudRepository;
@@ -39,6 +41,8 @@ import jakarta.data.repository.Repository;
 import jakarta.data.repository.Save;
 import jakarta.data.repository.Select;
 import jakarta.data.repository.Update;
+import jakarta.data.restrict.Restrict;
+import jakarta.data.restrict.Restriction;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
@@ -60,7 +64,7 @@ import java.util.Set;
  *     public long id;
  *     public String name;
  *     public float price;
- *     public int yearProduced;
+ *     public LocalDate producedOn;
  *     ...
  * }
  * </pre>
@@ -79,8 +83,11 @@ import java.util.Set;
  *     &#64;OrderBy("price")
  *     List&lt;Product&gt; findByNameIgnoreCaseLikeAndPriceLessThan(String namePattern, float max);
  *
- *     &#64;Query("UPDATE Product SET price = price * (1.0 - ?1) WHERE yearProduced &lt;= ?2")
- *     int discountOldInventory(float rateOfDiscount, int maxYear);
+ *     &#64;Query("""
+ *             UPDATE Product SET price = price * (1.0 - ?1)
+ *              WHERE producedOn &lt;= ?2
+ *             """)
+ *     int discountOldInventory(float rateOfDiscount, LocalDate untilDate);
  *
  *     ...
  * }
@@ -99,7 +106,8 @@ import java.util.Set;
  *
  * found = products.findByNameIgnoreCaseLikeAndPriceLessThan("%cell%phone%", 900.0f);
  *
- * numDiscounted = products.discountOldInventory(0.15f, Year.now().getValue() - 1);
+ * numDiscounted = products.discountOldInventory(0.15f,
+ *                                               LocalDate.now().minusYears(1));
  * </pre>
  *
  * <p>Jakarta Persistence and Jakarta NoSQL define programming models for entity
@@ -326,6 +334,98 @@ import java.util.Set;
  *
  * <p>Refer to the API documentation for {@link Insert}, {@link Update}, {@link Delete},
  * and {@link Save} for further information about these annotations.</p>
+ *
+ * <h2>Parameter-based {@code Find} and {@code Delete} methods</h2>
+ *
+ * <p>The {@link Find} annotation always indicates a parameter-based automatic
+ * query method. The {@link Delete} annotation indicates a parameter-based
+ * automatic query method when the method has no entity type parameters.
+ * The method parameters determine the query conditions. The method name does
+ * not determine the semantics of the method.</p>
+ *
+ * <h3>Method parameters</h3>
+ *
+ * <p>Each parameter of the annotated method must fit into one of the following
+ * categories:</p>
+ * <ol>
+ * <li>The parameter has exactly the same type and name as an attribute of the
+ *     entity class. The name is assigned by the {@link By @By} annotation.
+ *     If the {@code By} annotation is missing, the method parameter name must
+ *     match the name of an entity attribute and the repository must be compiled
+ *     with the {@code -parameters} compiler option so that parameter names are
+ *     available at runtime. For example,
+ *     <pre>
+ *     &#64;Find
+ *     Optional&lt;Product&gt; get(&#64;By("id") long productId);
+ *
+ *     &#64;Find
+ *     &#64;OrderBy("price")
+ *     Product[] named(String name);
+ *     </pre>
+ * </li>
+ * <li>The parameter is a {@link Constraint} or a
+ *     {@linkplain jakarta.data.constraint subtype} of {@code Constraint} and
+ *     has exactly the same name (per the rule from category 1) as an attribute
+ *     of the entity class. The constraint must be parameterized with the same
+ *     type (or if primitive, the corresponding wrapper type) as the attribute.
+ *     For example,
+ *     <pre>
+ *     &#64;Delete
+ *     int discontinue(&#64;By("id") In&lt;Long&gt; productIds);
+ *
+ *     &#64;Find
+ *     &#64;OrderBy("price")
+ *     &#64;OrderBy("name")
+ *     Stream&lt;Product&gt; pricedUnder(LessThan&lt;Float&gt; price);
+ *     </pre>
+ * </li>
+ * </li>
+ * <li>The parameter is a {@link Restriction} and its type parameter is the
+ *     entity class. For example,
+ *     <pre>
+ *     &#64;Find
+ *     List&lt;Product&gt; search(Restriction&lt;Product&gt; restrict);
+ *     </pre>
+ * </li>
+ * <li>The parameter is a {@link Limit}, {@link Sort}, {@link Order}, or
+ *     {@link PageRequest} (discussed under the section titled
+ *     <em>Special parameters</em>) and the repository method is annotated with
+ *     {@link Find}. For example,
+ *     <pre>
+ *     &#64;Find
+ *     Page&lt;Product&gt; getPage(PageRequest pageRequest, Order&lt;Product&gt; sortBy);
+ *     </pre>
+ * </li>
+ * </ol>
+ *
+ * <h3>Comparisons</h3>
+ *
+ * <p>Categories 1 and 2 above identify the name of an entity attribute against
+ * which a supplied value is compared. Subtypes of {@code Constraint} indicate
+ * the type of comparison. The equality comparison is used in the absence of a
+ * {@code Constraint} subtype when no comparison is indicated.</p>
+ *
+ * <p>For a repository method, all entity attribute constraints (defined by
+ * categories 1 and 2) and restrictions (category 3) must be satisfied for a
+ * record to satisfy the query.</p>
+ *
+ * <h3>Method parameters for embedded attributes</h3>
+ *
+ * <p>The {@code .} character may be used in the {@link By} annotation value
+ * to reference an embedded attribute.</p>
+ *
+ * <pre>
+ * &#64;Find
+ * Stream&lt;Person&gt; livingInZipCode(&#64;("address.zipCode") int zip);
+ * </pre>
+ *
+ * <p>The {@code _} character may be used in a method parameter name to
+ * reference an embedded attribute.</p>
+ *
+ * <pre>
+ * &#64;Find
+ * Stream&lt;Person&gt; livingInCity(String address_city);
+ * </pre>
  *
  * <h2>JDQL query methods</h2>
  *
@@ -690,57 +790,6 @@ import java.util.Set;
  *
  * </table>
  *
- * <h2>Parameter-based automatic query methods</h2>
- *
- * <p>The {@link Find} annotation indicates that the repository method is
- * a parameter-based automatic query method. The {@link Delete} annotation
- * also indicates a parameter-based automatic query method when the
- * method has no entity type parameters. In these cases, the method name
- * does not determine the semantics of the method, and the query conditions
- * are determined by the method parameters.</p>
- *
- * <p>Each parameter of the annotated method must either:</p>
- * <ul>
- * <li>have exactly the same type and name (the parameter name in the Java
- *     source, or a name assigned by {@link By @By}) as an attribute
- *     of the entity class, or</li>
- * <li>be of type {@link jakarta.data.Limit}, {@link jakarta.data.Sort},
- *     {@link jakarta.data.Order}, or {@link jakarta.data.page.PageRequest}
- *     - if the repository method is annotated with {@link Find}.</li>
- * </ul>
- *
- * <p>A parameter may be annotated with the {@link By} annotation to specify
- * the name of the entity attribute that the argument is to be compared with.
- * If the {@link By} annotation is missing, the method parameter name must
- * match the name of an entity attribute and the repository must be compiled
- * with the {@code -parameters} compiler option so that parameter names are
- * available at runtime.</p>
- *
- * <p>Each parameter determines a query condition, and each such condition
- * is an equality condition. All conditions must match for a record to
- * satisfy the query.</p>
- *
- * <pre>
- * &#64;Find
- * &#64;OrderBy("lastName")
- * &#64;OrderBy("firstName")
- * List&lt;Person&gt; peopleByAgeAndNationality(int age, Country nationality);
- * </pre>
- *
- * <pre>
- * &#64;Find
- * Optional&lt;Person&gt; person(String ssn);
- * </pre>
- *
- * <p>The {@code _} character may be used in a method parameter name to
- * reference an embedded attribute.</p>
- *
- * <pre>
- * &#64;Find
- * &#64;OrderBy("address.zip")
- * Stream&lt;Person&gt; peopleInCity(String address_city);
- * </pre>
- *
  * <p>The following examples illustrate the difference between Query By Method
  * Name and parameter-based automatic query methods. Both methods accept the
  * same parameters and have the same behavior.</p>
@@ -755,8 +804,88 @@ import java.util.Set;
  * Vehicle[] searchFor(String make, String model, int year, Sort&lt;?&gt;... sorts);
  * </pre>
  *
- * <p>For further information, refer to the {@linkplain Find API documentation}
- * for {@code @Find}.</p>
+ * <h2>Restrictions</h2>
+ *
+ * <p>Restrictions can be supplied at runtime to {@link Find @Find} and
+ * {@link Delete @Delete} methods that include a parameter of type
+ * {@link Restriction} in their method signature. The type parameter of the
+ * method parameter must be the entity class. For example,</p>
+ *
+ * <pre>
+ *     &#64;Find
+ *     List&lt;Product&gt; namedLike(&#64;By("name") Like pattern,
+ *                             Restriction&lt;Product&gt; restrict,
+ *                             Order&lt;Product&gt; sorts);
+ * </pre>
+ *
+ * <h3>Static metamodel</h3>
+ *
+ * <p>The starting point for obtaining restrictions is a
+ * {@link StaticMetamodel} class, which is typically generated by tooling to
+ * have the same name as the entity class, except prefixed with {@code _}.</p>
+ *
+ * <p>A static metamodel class, {@code _Product}, for the example
+ * {@code Product} entity is shown in the {@link jakarta.data.metamodel}
+ * package documentation.</p>
+ *
+ * <h3>Singular restrictions</h3>
+ *
+ * <p>Singular restrictions are obtained from a static metamdel class field
+ * that has the same name as the entity attribute and whose type is an
+ * {@link Attribute} subtype. The subtype, which is also a type of
+ * {@link Expression}, exposes a method for each available restriction.
+ * Some examples of singular restrictions are:</p>
+ *
+ * <pre>
+ *     _Product.name.startsWith(prefix)
+ *     _Product.price.lessThanEqual(maxPrice)
+ *     _Product.producedOn.notNull()
+ * </pre>
+ *
+ * <p>The static metamodel expression/attribute also exposes methods that
+ * obtain other {@code Expression}s, from which additional restrictions can
+ * be formed. An example is following casse insensitive comparison that
+ * utilizes the {@code lower} expression,</p>
+ *
+ * <pre>
+ *     _Product.name.lower().startsWith(prefix.toLowerCase());
+ * </pre>
+ *
+ * <p>The following example obtains a singular restriction on the price of a
+ * product being less than an amount and supplies this restriction to the
+ * {@code namedLike} repository method from the beginning of this section on
+ * <em>Restrictions</em>.</p>
+ *
+ * <pre>
+ *     found = products.namedLike(
+ *                 Like.pattern("%keyboard%"),
+ *                 _Product.price.lessThan(100.0f),
+ *                 Order.by(_Product.price.desc(),
+ *                          _Product.name.asc()));
+ * </pre>
+ *
+ * <h3>Composite restrictions</h3>
+ *
+ * <p>Composite restrictions combine multiple singular restrictions. They are
+ * obtained from the {@link Restrict} API, which has methods to require that
+ * {@linkplain Restrict#all(Restriction...) all} listed restrictions be met
+ * or that at least {@linkplain Restrict#any(Restriction...) any} one of the
+ * listed restrictions be met.</p>
+ *
+ * <p>The following example obtains a composite restriction on the price of
+ * a product (between $700 and $1500) and its production date (within the past
+ * 2 years). It supplies the composite restriction to the {@code namedLike}
+ * repository method from the beginning of this section on
+ * <em>Restrictions</em>.</p>
+ *
+ * <pre>
+ *     found = products.namedLike(
+ *                 Like.pattern("%computer%"),
+ *                 Restrict.all(_Product.price.between(700.0f, 1500.0f),
+ *                              _Product.producedOn.greaterThan(LocalDate.now().minusYears(2))),
+ *                 Order.by(_Product.price.desc(),
+ *                          _Product.id.asc()));
+ * </pre>
  *
  * <h2>Special parameters</h2>
  *

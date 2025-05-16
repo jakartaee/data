@@ -33,6 +33,8 @@
  *     public String name;
  *
  *     public float price;
+ *
+ *     public LocalDate producedOn;
  * }
  *
  * &#64;StaticMetamodel(Product.class)
@@ -40,6 +42,7 @@
  *     String ID = "id";
  *     String NAME = "name";
  *     String PRICE = "price";
+ *     String PRODUCEDON = "producedOn";
  *
  *     NumericAttribute&lt;Product,Long&gt; id = NumericAttribute.of(
  *             Product.class, ID, long.class);
@@ -47,6 +50,8 @@
  *             Product.class, NAME);
  *     NumericAttribute&lt;Product,Float&gt; price = NumericAttribute.of(
  *             Product.class, PRICE, float.class);
+ *     TemporalAttribute&lt;Product,LocalDate&gt; producedOn = TemporalAttribute.of(
+ *             Product.class, PRODUCEDON, LocalDate.class);
  * }
  *
  * ...
