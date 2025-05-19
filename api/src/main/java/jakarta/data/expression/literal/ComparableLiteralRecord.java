@@ -17,13 +17,16 @@
  */
 package jakarta.data.expression.literal;
 
-import java.util.Objects;
+import jakarta.data.messages.Messages;
 
 record ComparableLiteralRecord<T, V extends Comparable<?>>(V value)
         implements ComparableLiteral<T, V> {
 
     ComparableLiteralRecord {
-        Objects.requireNonNull(value, "The value is required");
+        if (value == null) {
+            throw new NullPointerException(
+                    Messages.get("001.arg.required", "value"));
+        }
     }
 
     @Override
@@ -31,7 +34,7 @@ record ComparableLiteralRecord<T, V extends Comparable<?>>(V value)
         return switch (value) {
             case Boolean b -> b == Boolean.TRUE ? "TRUE" : "FALSE";
             case Character c -> c == '\'' ? "''''" : "'" + c + "'";
-            case Enum e -> e.getClass().getName() + '.' + e.name();
+            case Enum<?> e -> e.getClass().getName() + '.' + e.name();
             default -> "{ComparableLiteral "
                         + value.getClass().getName()
                         + " '" + value.toString() + "'}";

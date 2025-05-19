@@ -21,9 +21,9 @@ import jakarta.data.expression.ComparableExpression;
 import jakarta.data.expression.TextExpression;
 import jakarta.data.expression.literal.NumericLiteral;
 import jakarta.data.expression.literal.StringLiteral;
+import jakarta.data.messages.Messages;
 
 import java.util.List;
-import java.util.Objects;
 
 public interface TextFunctionExpression<T>
         extends FunctionExpression<T, String>, TextExpression<T> {
@@ -34,34 +34,84 @@ public interface TextFunctionExpression<T>
     String LEFT = "left";
     String RIGHT = "right";
 
-    static <T> TextFunctionExpression<T> of(String name, TextExpression<? super T> argument) {
-        Objects.requireNonNull(argument, "The argument is required");
-        return new TextFunctionExpressionRecord<>(name, List.of(argument));
+    static <T> TextFunctionExpression<T> of(
+            String name,
+            TextExpression<? super T> expression) {
+        if (expression == null) {
+            throw new NullPointerException(
+                    Messages.get("001.arg.required", expression));
+        }
+
+        return new TextFunctionExpressionRecord<>(name, List.of(expression));
     }
 
-    static <T> TextFunctionExpression<T> of(String name, TextExpression<? super T> left, String right) {
-        Objects.requireNonNull(left, "The left expression is required");
-        Objects.requireNonNull(right, "The right value is required");
-        return new TextFunctionExpressionRecord<>(name, List.of(left, StringLiteral.of(right)));
+    static <T> TextFunctionExpression<T> of(
+            String name,
+            TextExpression<? super T> left,
+            String right) {
+        if (left == null) {
+            throw new NullPointerException(
+                    Messages.get("001.arg.required", "left"));
+        }
+
+        if (right == null) {
+            throw new NullPointerException(
+                    Messages.get("001.arg.required", "right"));
+        }
+
+        return new TextFunctionExpressionRecord<>(
+                name,
+                List.of(left, StringLiteral.of(right)));
     }
 
-    static <T> TextFunctionExpression<T> of(String name, String left, TextExpression<? super T> right) {
-        Objects.requireNonNull(right, "The left value is required");
-        Objects.requireNonNull(left, "The right expression is required");
-        return new TextFunctionExpressionRecord<>(name, List.of(StringLiteral.of(left), right));
+    static <T> TextFunctionExpression<T> of(
+            String name,
+            String left,
+            TextExpression<? super T> right) {
+        if (left == null) {
+            throw new NullPointerException(
+                    Messages.get("001.arg.required", "left"));
+        }
+
+        if (right == null) {
+            throw new NullPointerException(
+                    Messages.get("001.arg.required", "right"));
+        }
+
+        return new TextFunctionExpressionRecord<>(
+                name,
+                List.of(StringLiteral.of(left), right));
     }
 
-    static <T> TextFunctionExpression<T> of(String name, TextExpression<? super T> left,
-                                            TextExpression<? super T> right) {
-        Objects.requireNonNull(left, "The left expression is required");
-        Objects.requireNonNull(left, "The right expression is required");
+    static <T> TextFunctionExpression<T> of(
+            String name,
+            TextExpression<? super T> left,
+            TextExpression<? super T> right) {
+        if (left == null) {
+            throw new NullPointerException(
+                    Messages.get("001.arg.required", "left"));
+        }
+
+        if (right == null) {
+            throw new NullPointerException(
+                    Messages.get("001.arg.required", "right"));
+        }
+
         return new TextFunctionExpressionRecord<>(name, List.of(left, right));
     }
 
-    static <T> TextFunctionExpression<T> of(String name, TextExpression<? super T> left, int literal) {
-        Objects.requireNonNull(left, "The left expression is required");
-        Objects.requireNonNull(literal, "The literal value is required");
-        return new TextFunctionExpressionRecord<>(name, List.of(left, NumericLiteral.of(literal)));
+    static <T> TextFunctionExpression<T> of(
+            String name,
+            TextExpression<? super T> left,
+            int literal) {
+        if (left == null) {
+            throw new NullPointerException(
+                    Messages.get("001.arg.required", "left"));
+        }
+
+        return new TextFunctionExpressionRecord<>(
+                name,
+                List.of(left, NumericLiteral.of(literal)));
     }
 
     @Override

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022,2024 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2025 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,8 @@ package jakarta.data.page;
 
 import java.util.Optional;
 
+import jakarta.data.messages.Messages;
+
 /**
  * Built-in implementation of PageRequest.
  */
@@ -33,7 +35,8 @@ record Pagination(long page, int size, Mode mode, Cursor type,
         }
 
         if (mode != Mode.OFFSET && (type == null || type.size() == 0)) {
-            throw new IllegalArgumentException("No key values were provided");
+            throw new IllegalArgumentException(
+                    Messages.get("006.zero.size.key"));
         }
     }
 

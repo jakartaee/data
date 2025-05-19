@@ -17,13 +17,16 @@
  */
 package jakarta.data.expression.literal;
 
-import java.util.Objects;
+import jakarta.data.messages.Messages;
 
 record StringLiteralRecord<T>(String value)
         implements StringLiteral<T> {
 
     StringLiteralRecord {
-        Objects.requireNonNull(value, "The value is required");
+        if (value == null) {
+            throw new NullPointerException(
+                    Messages.get("001.arg.required", "value"));
+        }
     }
 
     @Override

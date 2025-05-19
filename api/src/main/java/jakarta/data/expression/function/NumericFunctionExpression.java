@@ -20,9 +20,9 @@ package jakarta.data.expression.function;
 import jakarta.data.expression.ComparableExpression;
 import jakarta.data.expression.NumericExpression;
 import jakarta.data.expression.TextExpression;
+import jakarta.data.messages.Messages;
 
 import java.util.List;
-import java.util.Objects;
 
 public interface NumericFunctionExpression<T, N extends Number & Comparable<N>>
         extends FunctionExpression<T, N>, NumericExpression<T, N> {
@@ -32,15 +32,23 @@ public interface NumericFunctionExpression<T, N extends Number & Comparable<N>>
     String LENGTH = "length";
 
     static <T, N extends Number & Comparable<N>> NumericFunctionExpression<T, N>
-    of(String name, TextExpression<? super T> argument) {
-        Objects.requireNonNull(argument, "The argument is required");
-        return new NumericFunctionExpressionRecord<>(name, List.of(argument));
+    of(String name, TextExpression<? super T> expression) {
+        if (expression == null) {
+            throw new NullPointerException(
+                    Messages.get("001.arg.required", "expression"));
+        }
+
+        return new NumericFunctionExpressionRecord<>(name, List.of(expression));
     }
 
     static <T, N extends Number & Comparable<N>> NumericFunctionExpression<T, N>
-    of(String name, NumericExpression<? super T, N> argument) {
-        Objects.requireNonNull(argument, "The argument is required");
-        return new NumericFunctionExpressionRecord<>(name, List.of(argument));
+    of(String name, NumericExpression<? super T, N> expression) {
+        if (expression == null) {
+            throw new NullPointerException(
+                    Messages.get("001.arg.required", "expression"));
+        }
+
+        return new NumericFunctionExpressionRecord<>(name, List.of(expression));
     }
 
     @Override

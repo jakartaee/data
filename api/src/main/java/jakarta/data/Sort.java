@@ -17,10 +17,9 @@
  */
 package jakarta.data;
 
+import jakarta.data.messages.Messages;
 import jakarta.data.metamodel.StaticMetamodel;
 import jakarta.data.repository.OrderBy;
-
-import java.util.Objects;
 
 /**
  * <p>Requests sorting on a given entity attribute.</p>
@@ -89,7 +88,6 @@ import java.util.Objects;
  */
 public record Sort<T>(String property, boolean isAscending,
                       boolean ignoreCase) {
-
     /**
      * <p>Defines sort criteria for an entity attribute. For more descriptive
      * code, use:</p>
@@ -111,7 +109,10 @@ public record Sort<T>(String property, boolean isAscending,
      *                    from a database with case sensitive collation.
      */
     public Sort {
-        Objects.requireNonNull(property, "The property is required");
+        if (property == null) {
+            throw new NullPointerException(
+                Messages.get("001.arg.required", "attribute"));
+        }
     }
 
     // Override to provide method documentation:
@@ -173,7 +174,11 @@ public record Sort<T>(String property, boolean isAscending,
      * @throws NullPointerException when there is a null parameter
      */
     public static <T> Sort<T> of(String attribute, Direction direction, boolean ignoreCase) {
-        Objects.requireNonNull(direction, "The direction is required");
+        if (direction == null) {
+            throw new NullPointerException(
+                    Messages.get("001.arg.required", "direction"));
+        }
+
         return new Sort<>(attribute, Direction.ASC.equals(direction), ignoreCase);
     }
 

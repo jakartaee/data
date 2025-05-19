@@ -21,15 +21,18 @@ import static jakarta.data.constraint.LikeRecord.ESCAPE;
 import static jakarta.data.constraint.LikeRecord.STRING_WILDCARD;
 import static jakarta.data.constraint.LikeRecord.translate;
 
-import java.util.Objects;
-
 import jakarta.data.expression.TextExpression;
 import jakarta.data.expression.literal.StringLiteral;
+import jakarta.data.messages.Messages;
 
 public interface NotLike extends Constraint<String> {
 
     static NotLike pattern(String pattern) {
-        Objects.requireNonNull(pattern, "The pattern is required");
+        if (pattern == null) {
+            throw new NullPointerException(
+                    Messages.get("001.arg.required", "pattern"));
+        }
+
         StringLiteral<Object> expression = StringLiteral.of(pattern);
         return new NotLikeRecord(expression, null);
     }
@@ -39,40 +42,64 @@ public interface NotLike extends Constraint<String> {
     }
 
     static NotLike pattern(String pattern, char charWildcard, char stringWildcard, char escape) {
-        Objects.requireNonNull(pattern, "The pattern is required");
+        if (pattern == null) {
+            throw new NullPointerException(
+                    Messages.get("001.arg.required", "pattern"));
+        }
+
         StringLiteral<Object> expression = StringLiteral.of(
                 translate(pattern, charWildcard, stringWildcard, escape));
         return new NotLikeRecord(expression, escape);
     }
 
     static NotLike pattern(TextExpression<?> pattern, char escape) {
-        Objects.requireNonNull(pattern, "The pattern is required");
+        if (pattern == null) {
+            throw new NullPointerException(
+                    Messages.get("001.arg.required", "pattern"));
+        }
+
         return new NotLikeRecord(pattern, escape);
     }
 
     static NotLike prefix(String prefix) {
-        Objects.requireNonNull(prefix, "The prefix is required");
+        if (prefix == null) {
+            throw new NullPointerException(
+                    Messages.get("001.arg.required", "prefix"));
+        }
+
         StringLiteral<Object> expression = StringLiteral.of(
                 LikeRecord.escape(prefix) + STRING_WILDCARD);
         return new NotLikeRecord(expression, ESCAPE);
     }
 
     static NotLike substring(String substring) {
-        Objects.requireNonNull(substring, "The substring is required");
+        if (substring == null) {
+            throw new NullPointerException(
+                    Messages.get("001.arg.required", "substring"));
+        }
+
         StringLiteral<Object> expression = StringLiteral.of(
                 STRING_WILDCARD + LikeRecord.escape(substring) + STRING_WILDCARD);
         return new NotLikeRecord(expression, ESCAPE);
     }
 
     static NotLike suffix(String suffix) {
-        Objects.requireNonNull(suffix, "The suffix is required");
+        if (suffix == null) {
+            throw new NullPointerException(
+                    Messages.get("001.arg.required", "suffix"));
+        }
+
         StringLiteral<Object> expression = StringLiteral.of(
                 STRING_WILDCARD + LikeRecord.escape(suffix));
         return new NotLikeRecord(expression, ESCAPE);
     }
 
     static NotLike literal(String value) {
-        Objects.requireNonNull(value, "The value is required");
+        if (value == null) {
+            throw new NullPointerException(
+                    Messages.get("001.arg.required", "value"));
+        }
+
         StringLiteral<Object> expression = StringLiteral.of(
                 LikeRecord.escape(value));
         return new NotLikeRecord(expression, ESCAPE);

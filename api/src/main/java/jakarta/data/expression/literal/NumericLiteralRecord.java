@@ -19,13 +19,16 @@ package jakarta.data.expression.literal;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Objects;
 
+import jakarta.data.messages.Messages;
 record NumericLiteralRecord<T, N extends Number & Comparable<N>>
         (N value) implements NumericLiteral<T, N> {
 
     NumericLiteralRecord {
-        Objects.requireNonNull(value, "The value is required");
+        if (value == null) {
+            throw new NullPointerException(
+                    Messages.get("001.arg.required", "value"));
+        }
     }
 
     @Override

@@ -18,16 +18,22 @@
 package jakarta.data.expression.function;
 
 import jakarta.data.expression.NumericExpression;
-
-import java.util.Objects;
+import jakarta.data.messages.Messages;
 
 record NumericCastRecord<T, N extends Number & Comparable<N>>
         (NumericExpression<T, ?> expression, Class<N> type)
         implements NumericCast<T, N> {
 
     NumericCastRecord {
-        Objects.requireNonNull(expression, "The expression is required");
-        Objects.requireNonNull(type, "The type is required");
+        if (expression == null) {
+            throw new NullPointerException(
+                    Messages.get("001.arg.required", "expression"));
+        }
+
+        if (type == null) {
+            throw new NullPointerException(
+                    Messages.get("001.arg.required", "type"));
+        }
     }
 
 }

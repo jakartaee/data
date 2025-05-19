@@ -18,6 +18,7 @@
 package jakarta.data.constraint;
 
 import jakarta.data.expression.TextExpression;
+import jakarta.data.messages.Messages;
 
 record LikeRecord(TextExpression<?> pattern, Character escape)
         implements Like {
@@ -52,13 +53,11 @@ record LikeRecord(TextExpression<?> pattern, Character escape)
     static String translate(String pattern, char charWildcard, char stringWildcard, char escape) {
         if (charWildcard == stringWildcard) {
             throw new IllegalArgumentException(
-                    "Cannot use the same character (" + charWildcard +
-                            ") for both wildcards");
+                    Messages.get("007.wildcard.conflict", charWildcard));
         }
         if (charWildcard == escape || stringWildcard == escape) {
             throw new IllegalArgumentException(
-                    "Cannot use the same character (" + escape +
-                            ") for both a wildcard and escape character");
+                    Messages.get("008.escape.conflict", escape));
         }
         final var result = new StringBuilder();
         for (int i = 0; i < pattern.length(); i++) {

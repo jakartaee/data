@@ -23,14 +23,18 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneOffset;
 import java.time.temporal.Temporal;
-import java.util.Objects;
+
+import jakarta.data.messages.Messages;
 
 record TemporalLiteralRecord<T, V extends Temporal & Comparable<? extends Temporal>>(
         V value)
         implements TemporalLiteral<T, V> {
 
     TemporalLiteralRecord {
-        Objects.requireNonNull(value, "The value is required");
+        if (value == null) {
+            throw new NullPointerException(
+                    Messages.get("001.arg.required", "value"));
+        }
     }
 
     @Override

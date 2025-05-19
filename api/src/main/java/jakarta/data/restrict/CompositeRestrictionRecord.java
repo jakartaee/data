@@ -18,7 +18,8 @@
 package jakarta.data.restrict;
 
 import java.util.List;
-import java.util.Objects;
+
+import jakarta.data.messages.Messages;
 
 // Internal implementation class.
 // The proper way for users to obtain instances is via
@@ -35,12 +36,20 @@ record CompositeRestrictionRecord<T>(
     private static final int SINGLE_RESTRICTION_LENGTH_ESTIMATE = 100;
 
     CompositeRestrictionRecord {
-        if (restrictions == null || restrictions.isEmpty()) {
+        if (restrictions == null) {
             throw new IllegalArgumentException(
-                    "Cannot create a composite restriction without any restrictions to combine");
+                    Messages.get("001.arg.required", "restrictions"));
         }
-        restrictions.forEach(
-                r -> Objects.requireNonNull(r, "Restriction must not be null"));
+        if (restrictions.isEmpty()) {
+            throw new IllegalArgumentException(
+                    Messages.get("002.no.elements", "restrictions"));
+        }
+        restrictions.forEach(r -> {
+            if (r == null) {
+                throw new NullPointerException(
+                        Messages.get("003.null.element", "restrictions"));
+            }
+        });
     }
 
     CompositeRestrictionRecord(Type type, List<Restriction<T>> restrictions) {

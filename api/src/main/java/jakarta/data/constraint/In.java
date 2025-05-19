@@ -19,11 +19,11 @@ package jakarta.data.constraint;
 
 import jakarta.data.expression.Expression;
 import jakarta.data.expression.literal.Literal;
+import jakarta.data.messages.Messages;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 
 import static java.util.Collections.unmodifiableList;
 
@@ -31,15 +31,23 @@ public interface In<V> extends Constraint<V> {
 
     @SafeVarargs
     static <V> In<V> values(V... values) {
-        Objects.requireNonNull(values, "The values are required");
+        if (values == null) {
+            throw new NullPointerException(
+                    Messages.get("001.arg.required", "values"));
+        }
 
         if (values.length == 0) {
-            throw new IllegalArgumentException("The values must not be empty");
+            throw new IllegalArgumentException(
+                    Messages.get("002.no.elements", "values"));
         }
 
         List<Expression<?, V>> expressions = new ArrayList<>(values.length);
         for (V value : values) {
-            Objects.requireNonNull(value, "The value must not be null");
+            if (value == null) {
+                throw new NullPointerException(
+                        Messages.get("003.null.element", "values"));
+            }
+
             expressions.add(Literal.of(value));
         }
 
@@ -47,15 +55,23 @@ public interface In<V> extends Constraint<V> {
     }
 
     static <V> In<V> values(Collection<V> values) {
-        Objects.requireNonNull(values, "The values are required");
+        if (values == null) {
+            throw new NullPointerException(
+                    Messages.get("001.arg.required", "values"));
+        }
 
         if (values.isEmpty()) {
-            throw new IllegalArgumentException("The values must not be empty");
+            throw new IllegalArgumentException(
+                    Messages.get("002.no.elements", "values"));
         }
 
         List<Expression<?, V>> expressions = new ArrayList<>(values.size());
         for (V value : values) {
-            Objects.requireNonNull(value, "The value must not be null");
+            if (value == null) {
+                throw new NullPointerException(
+                        Messages.get("003.null.element", "values"));
+            }
+
             expressions.add(Literal.of(value));
         }
 
@@ -63,15 +79,21 @@ public interface In<V> extends Constraint<V> {
     }
 
     static <V> In<V> expressions(List<Expression<?, V>> expressions) {
-        Objects.requireNonNull(expressions, "The expressions are required");
+        if (expressions == null) {
+            throw new NullPointerException(
+                    Messages.get("001.arg.required", "expressions"));
+        }
 
         if (expressions.isEmpty()) {
             throw new IllegalArgumentException(
-                    "The expressions must not be empty");
+                    Messages.get("002.no.elements", "expressions"));
         }
 
         for (Expression<?, V> expression : expressions) {
-            Objects.requireNonNull(expression, "The expression must not be null");
+            if (expression == null) {
+                throw new NullPointerException(
+                        Messages.get("003.null.element", "expressions"));
+            }
         }
 
         return new InRecord<>(List.copyOf(expressions));
@@ -79,15 +101,21 @@ public interface In<V> extends Constraint<V> {
 
     @SafeVarargs
     static <V> In<V> expressions(Expression<?, V>... expressions) {
-        Objects.requireNonNull(expressions, "The expressions are required");
+        if (expressions == null) {
+            throw new NullPointerException(
+                    Messages.get("001.arg.required", "expressions"));
+        }
 
         if (expressions.length == 0) {
             throw new IllegalArgumentException(
-                    "The expressions must not be empty");
+                    Messages.get("002.no.elements", "expressions"));
         }
 
         for (Expression<?, V> expression : expressions) {
-            Objects.requireNonNull(expression, "The expression must not be null");
+            if (expression == null) {
+                throw new NullPointerException(
+                        Messages.get("003.null.element", "expressions"));
+            }
         }
 
         return new InRecord<>(List.of(expressions));

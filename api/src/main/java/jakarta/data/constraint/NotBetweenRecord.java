@@ -17,20 +17,23 @@
  */
 package jakarta.data.constraint;
 
-import java.util.Objects;
 
 import jakarta.data.expression.ComparableExpression;
-
+import jakarta.data.messages.Messages;
 record NotBetweenRecord<V extends Comparable<?>>(
         ComparableExpression<?, V> lowerBound,
         ComparableExpression<?, V> upperBound)
         implements NotBetween<V> {
 
     NotBetweenRecord {
-        Objects.requireNonNull(lowerBound,
-                "The lower value or expression is required");
-        Objects.requireNonNull(upperBound,
-                "The upper value or expression is required");
+        if (lowerBound == null) {
+            throw new NullPointerException(
+                    Messages.get("001.arg.required", "lower"));
+        }
+        if (upperBound == null) {
+            throw new NullPointerException(
+                    Messages.get("001.arg.required", "upper"));
+        }
     }
 
     @Override

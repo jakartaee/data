@@ -17,20 +17,27 @@
  */
 package jakarta.data.constraint;
 
-import java.util.Objects;
 
 import jakarta.data.expression.Expression;
 import jakarta.data.expression.literal.Literal;
-
+import jakarta.data.messages.Messages;
 public interface NotEqualTo<V> extends Constraint<V> {
 
     static <V> NotEqualTo<V> expression(Expression<?, V> expression) {
-        Objects.requireNonNull(expression, "The expression is required");
+        if (expression == null) {
+            throw new NullPointerException(
+                    Messages.get("001.arg.required", "expression"));
+        }
+
         return new NotEqualToRecord<>(expression);
     }
 
     static <V> NotEqualTo<V> value(V value) {
-        Objects.requireNonNull(value, "The value is required");
+        if (value == null) {
+            throw new NullPointerException(
+                    Messages.get("001.arg.required", "value"));
+        }
+
         return new NotEqualToRecord<>(Literal.of(value));
     }
 

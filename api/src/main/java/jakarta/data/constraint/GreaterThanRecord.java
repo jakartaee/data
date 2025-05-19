@@ -17,15 +17,17 @@
  */
 package jakarta.data.constraint;
 
-import java.util.Objects;
-
 import jakarta.data.expression.ComparableExpression;
+import jakarta.data.messages.Messages;
 
 record GreaterThanRecord<V extends Comparable<?>>(
         ComparableExpression<?, V> bound)
         implements GreaterThan<V> {
     public GreaterThanRecord {
-        Objects.requireNonNull(bound, "The lowerBound is required");
+        if (bound == null) {
+            throw new NullPointerException(
+                    Messages.get("001.arg.required", "lowerBound"));
+        }
     }
 
     @Override

@@ -17,10 +17,10 @@
  */
 package jakarta.data.restrict;
 
+import jakarta.data.messages.Messages;
 import jakarta.data.metamodel.Attribute;
 
 import java.util.List;
-import java.util.Objects;
 
 /**
  * <p>Creates composite restrictions.</p>
@@ -122,7 +122,11 @@ public class Restrict {
      *                              {@code null}.
      */
     public static <T> Restriction<T> not(Restriction<T> restriction) {
-        Objects.requireNonNull(restriction, "The restriction is required");
+        if (restriction == null) {
+            throw new NullPointerException(Messages.get("001.arg.required",
+                                           "restriction"));
+        }
+
         return restriction.negate();
     }
 

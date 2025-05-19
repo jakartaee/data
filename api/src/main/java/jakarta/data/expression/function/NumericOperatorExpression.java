@@ -21,8 +21,7 @@ import jakarta.data.expression.Expression;
 import jakarta.data.expression.NumericExpression;
 
 import jakarta.data.expression.literal.NumericLiteral;
-
-import java.util.Objects;
+import jakarta.data.messages.Messages;
 
 public interface NumericOperatorExpression<T, N extends Number & Comparable<N>>
         extends NumericExpression<T, N> {
@@ -36,14 +35,22 @@ public interface NumericOperatorExpression<T, N extends Number & Comparable<N>>
 
     Expression<T, N> right();
 
-    static <T, N extends Number & Comparable<N>>
-    NumericOperatorExpression<T, N> of(Operator operator, NumericExpression<T, N> left, N right) {
-        Objects.requireNonNull(right, "The right value is required");
+    static <T, N extends Number & Comparable<N>> NumericOperatorExpression<T, N> of(
+            Operator operator,
+            NumericExpression<T, N> left,
+            N right) {
+        if (right == null) {
+            throw new NullPointerException(
+                    Messages.get("001.arg.required", "right"));
+        }
+
         return new NumericOperatorExpressionRecord<>(operator, left, NumericLiteral.of(right));
     }
 
-    static <T, N extends Number & Comparable<N>>
-    NumericOperatorExpression<T, N> of(Operator operator, NumericExpression<T, N> left, NumericExpression<T, N> right) {
+    static <T, N extends Number & Comparable<N>> NumericOperatorExpression<T, N> of(
+            Operator operator,
+            NumericExpression<T, N> left,
+            NumericExpression<T, N> right) {
         return new NumericOperatorExpressionRecord<>(operator, left, right);
     }
 }

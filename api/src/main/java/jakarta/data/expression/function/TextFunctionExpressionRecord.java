@@ -19,9 +19,9 @@ package jakarta.data.expression.function;
 
 import jakarta.data.expression.ComparableExpression;
 import jakarta.data.expression.literal.NumericLiteral;
+import jakarta.data.messages.Messages;
 
 import java.util.List;
-import java.util.Objects;
 
 record TextFunctionExpressionRecord<T>(
         String name,
@@ -29,7 +29,10 @@ record TextFunctionExpressionRecord<T>(
         implements TextFunctionExpression<T> {
 
     TextFunctionExpressionRecord {
-        Objects.requireNonNull(name, "The name is required");
+        if (name == null) {
+            throw new NullPointerException(
+                Messages.get("001.arg.required", "name"));
+        }
 
         if (TextFunctionExpression.LEFT == name ||
             TextFunctionExpression.RIGHT == name) {
@@ -38,7 +41,7 @@ record TextFunctionExpressionRecord<T>(
                 sizeLiteral.value() instanceof Integer size &&
                 size < 0) {
                 throw new IllegalArgumentException(
-                        "The size value must not be negative.");
+                        Messages.get("004.arg.negative"));
             }
         }
     }

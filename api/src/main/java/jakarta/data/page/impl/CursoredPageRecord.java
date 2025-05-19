@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 Contributors to the Eclipse Foundation
+ * Copyright (c) 2024,2025 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
  */
 package jakarta.data.page.impl;
 
+import jakarta.data.messages.Messages;
 import jakarta.data.page.CursoredPage;
 import jakarta.data.page.PageRequest;
 
@@ -129,7 +130,7 @@ public record CursoredPageRecord<T>
     @Override
     public long totalElements() {
         if (totalElements < 0) {
-            throw new IllegalStateException("total elements are not available");
+            throw new IllegalStateException(Messages.get("010.unknown.total"));
         }
         return totalElements;
     }
@@ -137,7 +138,7 @@ public record CursoredPageRecord<T>
     @Override
     public long totalPages() {
         if (totalElements < 0) {
-            throw new IllegalStateException("total elements are not available");
+            throw new IllegalStateException(Messages.get("010.unknown.total"));
         }
         int size = pageRequest.size();
         return (totalElements + size - 1) / size;
