@@ -112,7 +112,7 @@ class CompositeRestrictionRecordTest {
     void shouldFailIfEmptyRestrictions() {
         assertThatThrownBy(() -> new CompositeRestrictionRecord<>(CompositeRestriction.Type.ALL, List.of()))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("The restrictions list cannot be empty.");
+                .hasMessage("The restrictions list cannot be empty");
     }
 
     @Test
