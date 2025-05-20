@@ -146,7 +146,7 @@ class BasicRestrictionRecordTest {
     void shouldThrowExceptionWhenValueIsNull() {
         assertThatThrownBy(() -> _Book.title.equalTo((String) null))
                 .isInstanceOf(NullPointerException.class)
-                .hasMessage("The value is required");
+                .hasMessage("The value argument is required");
     }
 
     @Test

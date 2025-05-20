@@ -73,6 +73,6 @@ class LiteralRecordTest {
     void shouldThrowWhenValueIsNull() {
         org.junit.jupiter.api.Assertions.assertThrows(NullPointerException.class, () -> {
             new LiteralRecord<SimpleEntity, Object>(null);
-        });
+        }, "The value argument is required");
     }
 }

@@ -18,9 +18,9 @@
 package jakarta.data.expression.function;
 
 import jakarta.data.expression.ComparableExpression;
+import jakarta.data.messages.Messages;
 
 import java.util.List;
-import java.util.Objects;
 
 record NumericFunctionExpressionRecord<T, N extends Number & Comparable<N>>(
         String name,
@@ -28,7 +28,10 @@ record NumericFunctionExpressionRecord<T, N extends Number & Comparable<N>>(
         implements NumericFunctionExpression<T, N> {
 
     NumericFunctionExpressionRecord {
-        Objects.requireNonNull(name, "The name is required");
+        if (name == null) {
+            throw new NullPointerException(
+                    Messages.get("001.arg.required", "name"));
+        }
     }
 
 }

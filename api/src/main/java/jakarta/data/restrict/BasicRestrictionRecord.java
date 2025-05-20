@@ -19,6 +19,7 @@ package jakarta.data.restrict;
 
 import jakarta.data.constraint.Constraint;
 import jakarta.data.expression.Expression;
+import jakarta.data.messages.Messages;
 
 // Internal implementation class.
 // The proper way for users to obtain instances is via
@@ -26,15 +27,20 @@ import jakarta.data.expression.Expression;
 
 import jakarta.data.metamodel.Attribute;
 
-import java.util.Objects;
-
 record BasicRestrictionRecord<T, V>(Expression<T, V> expression,
                                     Constraint<V> constraint)
         implements BasicRestriction<T, V> {
 
     BasicRestrictionRecord {
-        Objects.requireNonNull(expression, "The expression is required");
-        Objects.requireNonNull(constraint, "The constraint is required");
+        if (expression == null) {
+            throw new NullPointerException(Messages.get("001.arg.required",
+                                           "expression"));
+        }
+        if (constraint == null) {
+            throw new NullPointerException(Messages.get("001.arg.required",
+                                           "constraint"));
+        }
+
     }
 
     @Override

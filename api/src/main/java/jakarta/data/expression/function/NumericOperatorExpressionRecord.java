@@ -18,12 +18,11 @@
 package jakarta.data.expression.function;
 
 import jakarta.data.expression.NumericExpression;
-import jakarta.data.expression.function.NumericOperatorExpression.Operator;
 import jakarta.data.expression.literal.NumericLiteral;
+import jakarta.data.messages.Messages;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Objects;
 
 record NumericOperatorExpressionRecord<T, N extends Number & Comparable<N>>
         (Operator operator, NumericExpression<T, N> left,
@@ -31,14 +30,26 @@ record NumericOperatorExpressionRecord<T, N extends Number & Comparable<N>>
         implements NumericOperatorExpression<T, N> {
 
     NumericOperatorExpressionRecord {
-        Objects.requireNonNull(operator, "The operator is required");
-        Objects.requireNonNull(left, "The left expression is required");
-        Objects.requireNonNull(left, "The right expression is required");
+        if (operator == null) {
+            throw new NullPointerException(
+                    Messages.get("001.arg.required", "operator"));
+        }
+
+        if (left == null) {
+            throw new NullPointerException(
+                    Messages.get("001.arg.required", "left"));
+        }
+
+        if (right == null) {
+            throw new NullPointerException(
+                    Messages.get("001.arg.required", "right"));
+        }
 
         if (operator == Operator.DIVIDE &&
             right instanceof NumericLiteral l &&
             isZero((Number) l.value())) {
-            throw new IllegalArgumentException("The divisor value must not be 0.");
+            throw new IllegalArgumentException(
+                    Messages.get("005.zero.not.allowed"));
         }
     }
 
@@ -59,7 +70,8 @@ record NumericOperatorExpressionRecord<T, N extends Number & Comparable<N>>
             case Byte b       -> b.byteValue() == (byte) 0;
             case Short s      -> s.shortValue() == (short) 0;
             default -> throw new IllegalArgumentException(
-                    "Unexpected number type: " + number.getClass().getName());
+                    Messages.get("009.unknown.number.type",
+                                 number.getClass().getName()));
         };
     }
 }

@@ -17,12 +17,15 @@
  */
 package jakarta.data.expression.literal;
 
-import java.util.Objects;
+import jakarta.data.messages.Messages;
 
 record LiteralRecord<T, V>(V value) implements Literal<T, V> {
 
     LiteralRecord {
-        Objects.requireNonNull(value, "The value is required");
+        if (value == null) {
+            throw new NullPointerException(
+                Messages.get("001.arg.required", "value"));
+        }
     }
 
     @Override

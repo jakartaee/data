@@ -291,6 +291,14 @@ class RestrictTest {
     }
 
     @Test
+    void shouldThrowExceptionForInvalidEscape() {
+        assertThatThrownBy(() -> _Employee.name.like("Ja* Karta", '_', '*', '*'))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Cannot use the same character (*) for both a" +
+                            " wildcard and escape character");
+    }
+
+    @Test
     void shouldThrowExceptionForInvalidWildcard() {
         assertThatThrownBy(() -> _Employee.name.like("pattern_value", '_', '_'))
                 .isInstanceOf(IllegalArgumentException.class)

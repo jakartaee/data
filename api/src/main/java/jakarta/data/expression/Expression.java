@@ -287,9 +287,6 @@ public interface Expression<T, V> {
      *                                  element.
      */
     default Restriction<T> notIn(Collection<V> values) {
-        if (values == null || values.isEmpty())
-            throw new IllegalArgumentException("The values are required");
-
         return BasicRestriction.of(this, NotIn.values(values));
     }
 
