@@ -91,8 +91,7 @@ public @interface Repository {
      * <p>Optionally indicates the data store to use for the repository.</p>
      *
      * <p>Precedence for interpreting the {@code dataStore} value is as
-     * follows,
-     * from highest precedence to lowest precedence.</p>
+     * follows, from higher precedence to lower precedence.</p>
      *
      * <ul>
      * <li>If running in an environment where Jakarta Config is available
@@ -101,17 +100,17 @@ public @interface Repository {
      * of Jakarta Data.
      * </li>
      * <li>If running in a Jakarta EE profile or platform and the entity annotations
-     * indicate a relational database and the value begins with {@code java:}
-     * and matches the name of a {@code jakarta.annotation.sql.DataSourceDefinition},
+     * indicate a relational database and the value begins with {@code java:} and
+     * matches the name of a {@code jakarta.annotation.sql.DataSourceDefinition},
      * the JNDI name of a data source, or a resource reference to a data source,
      * then the corresponding {@code javax.sql.DataSource} is used as the data store.
-     * If the same conditions are met but the value matches a persistence unit reference,
-     * then the corresponding {@code jakarta.persistence.PersistenceUnit} is used as the
-     * data store.
+     * If the same conditions are met but the value matches a persistence unit
+     * reference, then the corresponding {@code jakarta.persistence.PersistenceUnit}
+     * is used as the data store.
      * </li>
-     * <li>Otherwise, the value serves as an identifier linking to vendor-specific configuration
-     * for the Jakarta Data provider to interpret in a vendor-specific way.
-     * Refer to the documentation of the Jakarta Data provider.
+     * <li>Otherwise, the value serves as an identifier linking to vendor-specific
+     * configuration for the Jakarta Data provider to interpret in a vendor-specific
+     * way. Refer to the documentation of the Jakarta Data provider.
      * </li>
      * </ul>
      *
@@ -132,8 +131,8 @@ public @interface Repository {
      * different provider's name as the provider.</p>
      *
      * <p>The default value of this attribute is {@link #ANY_PROVIDER},
-     * allowing the use of any available Jakarta Data provider that supports the
-     * type of entity annotation that is present on the repository's entity
+     * allowing the use of any available Jakarta Data provider that supports
+     * the type of entity annotation that is present on the repository's entity
      * class.</p>
      *
      * @return the name of a Jakarta Data provider or {@link #ANY_PROVIDER}.

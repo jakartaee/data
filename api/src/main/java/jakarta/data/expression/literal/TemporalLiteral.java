@@ -48,8 +48,8 @@ public interface TemporalLiteral<T, V extends Temporal & Comparable<? extends Te
      * @return a {@code TemporalLiteral} representing the value.
      * @throws NullPointerException if the value is {@code null}.
      */
-    static <T, V extends Temporal & Comparable<? extends Temporal>> TemporalLiteral<T, V> of(
-            V value) {
+    static <T, V extends Temporal & Comparable<? extends Temporal>> TemporalLiteral<T, V>
+    of(V value) {
         return new TemporalLiteralRecord<>(value);
     }
 
@@ -102,5 +102,5 @@ public interface TemporalLiteral<T, V extends Temporal & Comparable<? extends Te
      * @return a {@code String} representing the literal temporal value.
      */
     @Override
-    public String toString();
+    String toString();
 }

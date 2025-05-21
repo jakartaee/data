@@ -26,76 +26,88 @@ import java.lang.annotation.Target;
 
 /**
  * <p>Annotates a repository method as a query method, specifying a query
- * written in Jakarta Data Query Language (JDQL)
- * or in Jakarta Persistence Query Language (JPQL). A Jakarta Data provider is
- * not required to support the complete JPQL language, which targets relational
- * data stores. However, a given provider might offer features of JPQL which go
- * beyond the subset required by JDQL, or might even offer vendor-specific
- * extensions to JDQL which target particular capabilities of the target data
- * store technology. Such extensions come with no guarantee of portability
- * between providers, nor between databases.</p>
+ * written in Jakarta Data Query Language (JDQL) or in Jakarta Persistence
+ * Query Language (JPQL). A Jakarta Data provider is not required to support
+ * the complete JPQL language, which targets relational data stores. However,
+ * a given provider might offer features of JPQL which go beyond the subset
+ * required by JDQL, or might even offer vendor-specific extensions to JDQL
+ * which target particular capabilities of the target data store technology.
+ * Such extensions come with no guarantee of portability between providers,
+ * nor between databases.</p>
  *
- * <p>The required {@link #value} member specifies the JDQL or JPQL query as a
- * string.</p>
+ * <p>The required {@link #value} member specifies the JDQL or JPQL query as
+ * a string.</p>
  *
  * <p>For {@code select} statements, the return type of the query method must
  * be
  * consistent with the type returned by the query. An explicit {@code SELECT}
- * clause can be omitted when the query returns the entity or a Java record for
- * which the record component names all map to entity attribute names, either by
- * having the same name as the entity attribute or via the record component
- * being annotated with the {@link Select} annotation. For queries with an
- * explicit {@code select} clause:</p>
+ * clause can be omitted when the query returns the entity or a Java record
+ * for which the record component names all map to entity attribute names,
+ * either by having the same name as the entity attribute or via the record
+ * component being annotated with the {@link Select} annotation. For queries
+ * with an explicit {@code select} clause:</p>
  * <ul>
- * <li>if the {@code select} list contains more than one item, the query return type must be a Java record type, and the
- *     elements of the tuple are repackaged as an instance of the query return type by calling a constructor of the
- *     record, passing the elements in the same order they occur in the {@code select} list, or,
- * <li>otherwise, when the {@code select} list contains only one path expression, the query directly returns the values
- *     of the path expression.
+ * <li>if the {@code select} list contains more than one item, the query
+ *     return type must be a Java record type, and the elements of the tuple
+ *     are repackaged as an instance of the query return type by calling a
+ *     constructor of the record, passing the elements in the same order they
+ *     occur in the {@code select} list, or,
+ * <li>otherwise, when the {@code select} list contains only one path expression,
+ *     the query directly returns the values of the path expression.
  * </ul>
  *
- * <p>For {@code update} or {@code delete} statements, the return value must be one of:</p>
+ * <p>For {@code update} or {@code delete} statements, the return value must
+ * be one of:</p>
  * <ul>
  * <li>{@code void}</li>
- * <li>{@code int} or {@code long}, where the value is the number of matching entities.
- *     The value might not be precise on databases that provide eventual consistency,
- *     in which case some Jakarta Data providers might choose to raise
- *     {@link UnsupportedOperationException} instead of returning an imprecise value.
+ * <li>{@code int} or {@code long}, where the value is the number of matching
+ *     entities. The value might not be precise on databases that provide
+ *     eventual consistency, in which case some Jakarta Data providers might
+ *     choose to raise {@link UnsupportedOperationException} instead of
+ *     returning an imprecise value.
  *     </li>
  * </ul>
  *
- * <p>Compared to SQL, JDQL allows an abbreviated syntax for {@code select} statements:</p>
+ * <p>Compared to SQL, JDQL allows an abbreviated syntax for {@code select}
+ * statements:</p>
  * <ul>
- * <li>The {@code from} clause is optional in JDQL. When it is missing, the queried entity is determined by the return
- *     type of the repository method, or, if the return type is not an entity type, by the primary entity type of the
- *     repository.</li>
- * <li>The {@code select} clause is optional in both JDQL and JPQL. When it is missing, the query returns the queried
- *     entity.</li>
+ * <li>The {@code from} clause is optional in JDQL. When it is missing, the
+ *     queried entity is determined by the return type of the repository
+ *     method, or, if the return type is not an entity type, by the primary
+ *     entity type of the repository.</li>
+ * <li>The {@code select} clause is optional in both JDQL and JPQL. When it
+ *     is missing, the query returns the queried entity.</li>
  * </ul>
  *
  * <p>A query might involve:</p>
  * <ul>
- * <li>named parameters of form {@code :name} where the labels {@code name} are legal Java identifiers, or </li>
- * <li>ordinal parameters of form {@code ?n} where the labels {@code n} are sequential positive integers starting
- *     from {@code 1}.</li>
+ * <li>named parameters of form {@code :name} where the labels {@code name}
+ *     are legal Java identifiers, or </li>
+ * <li>ordinal parameters of form {@code ?n} where the labels {@code n} are
+ *     sequential positive integers starting from {@code 1}.</li>
  * </ul>
  * <p>A given query must not mix named and ordinal parameters.</p>
  *
  * <p>Each parameter of an annotated query method must either:</p>
  * <ul>
- * <li>have exactly the same name (the parameter name in the Java source, or a name assigned by {@link Param @Param})
- *     and type as a named parameter of the query,</li>
- * <li>have exactly the same type and position within the parameter list of the method as a positional parameter of the
- *     query, or</li>
- * <li>be of type {@code Limit}, {@code Order}, {@code PageRequest}, or {@code Sort}.</li>
+ * <li>have exactly the same name (the parameter name in the Java source, or
+ *     a name assigned by {@link Param @Param}) and type as a named parameter
+ *     of the query,</li>
+ * <li>have exactly the same type and position within the parameter list of
+ *     the method as a positional parameter of the query, or</li>
+ * <li>be of type {@code Limit}, {@code Order}, {@code PageRequest},
+ *     or {@code Sort}.</li>
  * </ul>
  *
- * <p>The {@link Param} annotation associates a method parameter with a named parameter. The {@code Param} annotation is
- * unnecessary when the method parameter name matches the name of a named parameter and the application is compiled with
- * the {@code -parameters} compiler option making parameter names available at runtime.</p>
+ * <p>The {@link Param} annotation associates a method parameter with a named
+ * parameter. The {@code Param} annotation is unnecessary when the method
+ * parameter name matches the name of a named parameter and the application is
+ * compiled with the {@code -parameters} compiler option making parameter names
+ * available at runtime.</p>
  *
- * <p>A method parameter is associated with an ordinal parameter by its position in the method parameter list. The first
- * parameter of the method is associated with the ordinal parameter {@code ?1}.</p>
+ * <p>A method parameter is associated with an ordinal parameter by its position
+ * in the method parameter list. The first parameter of the method is associated
+ * with the ordinal parameter {@code ?1}.</p>
  *
  * <p>For example,</p>
  *
@@ -139,10 +151,12 @@ import java.lang.annotation.Target;
  * <p>The method returns an object for every query result.</p>
  * <p>The number of query results may be limited using the {@link First} annotation.</p>
  * <ul>
- * <li>If the return type of the annotated method is {@code R} or {@code Optional<R>} and more than one record satisfies
- *     the query restriction, the method must throw {@link jakarta.data.exceptions.NonUniqueResultException}.</li>
- * <li>If the return type of the annotated method is {@code R} and no record satisfies the query restriction, the method
- *     must throw {@link jakarta.data.exceptions.EmptyResultException}.</li>
+ * <li>If the return type of the annotated method is {@code R} or {@code Optional<R>}
+ *     and more than one record satisfies the query restriction, the method must throw
+ *     {@link jakarta.data.exceptions.NonUniqueResultException}.</li>
+ * <li>If the return type of the annotated method is {@code R} and no record satisfies
+ *     the query restriction, the method must throw
+ *     {@link jakarta.data.exceptions.EmptyResultException}.</li>
  * </ul>
  *
  * <p>Annotations such as {@code @Find}, {@code @Query}, {@code @Insert}, {@code @Update}, {@code @Delete}, and

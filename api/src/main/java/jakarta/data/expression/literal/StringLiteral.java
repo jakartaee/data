@@ -37,7 +37,7 @@ public interface StringLiteral<T>
      * @throws NullPointerException if the value is {@code null}.
      */
     static <T> StringLiteral<T> of(String value) {
-        return new StringLiteralRecord<T>(value);
+        return new StringLiteralRecord<>(value);
     }
 
     /**
@@ -55,5 +55,5 @@ public interface StringLiteral<T>
      * @return the {@code String} value escaped and enclosed in single quotes.
      */
     @Override
-    public String toString();
+    String toString();
 }
