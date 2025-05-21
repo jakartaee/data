@@ -60,7 +60,7 @@ public interface ComparableLiteral<T, V extends Comparable<?>>
     @SuppressWarnings("unchecked")
     static <T, V extends Comparable<?>> ComparableLiteral<T, V> of(V value) {
         // Subtypes of Number and Temporal are needed here because
-        // NumericExperssion has N extends Number & Comparable<N>
+        // NumericExpression has N extends Number & Comparable<N>
         // and
         // TemporalExpression has V extends Temporal & Comparable<? extends Temporal>
         if (value instanceof String s) {
