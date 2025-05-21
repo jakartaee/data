@@ -74,4 +74,37 @@ record NumericOperatorExpressionRecord<T, N extends Number & Comparable<N>>
                                  number.getClass().getName()));
         };
     }
+
+    @Override
+    public String toString() {
+        char symbol = switch (operator) {
+            case PLUS   -> '+';
+            case MINUS  -> '-';
+            case TIMES  -> '*';
+            case DIVIDE -> '/';
+            default     -> throw new IllegalStateException();
+        };
+
+        String leftString = left.toString();
+        String rightString = right.toString();
+
+        StringBuilder expression =
+                new StringBuilder(leftString.length() + rightString.length() + 7);
+
+        if (left instanceof NumericOperatorExpression) {
+            expression.append('(').append(leftString).append(')');
+        } else {
+            expression.append(leftString);
+        }
+
+        expression.append(' ').append(symbol).append(' ');
+
+        if (right instanceof NumericOperatorExpression) {
+            expression.append('(').append(rightString).append(')');
+        } else {
+            expression.append(rightString);
+        }
+
+        return expression.toString();
+    }
 }

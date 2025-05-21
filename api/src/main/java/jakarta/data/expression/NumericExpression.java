@@ -76,7 +76,7 @@ public interface NumericExpression<T, N extends Number & Comparable<N>>
      * atLeast2YearsBeyondOriginalModelYear = cars.search(
      *         make,
      *         model,
-     *         _Car.firstModelYear.minus(_Car.year).negate().greaterThanEqual(2));
+     *         _Car.firstModelYear.minus(_Car.year).negated().greaterThanEqual(2));
      * </pre>
      *
      * @return an expression for the function that computes negation of value.
