@@ -42,14 +42,13 @@ public interface TemporalLiteral<T, V extends Temporal & Comparable<? extends Te
      * <p>Creates a {@code TemporalLiteral} that represents the given value.
      * </p>
      *
-     * @param <T>   entity type.
      * @param <V>   entity attribute type.
      * @param value an immutable temporal value. Must never be {@code null}.
      * @return a {@code TemporalLiteral} representing the value.
      * @throws NullPointerException if the value is {@code null}.
      */
-    static <T, V extends Temporal & Comparable<? extends Temporal>> TemporalLiteral<T, V> of(
-            V value) {
+    static <V extends Temporal & Comparable<? extends Temporal>> TemporalLiteral<Object, V>
+    of(V value) {
         return new TemporalLiteralRecord<>(value);
     }
 

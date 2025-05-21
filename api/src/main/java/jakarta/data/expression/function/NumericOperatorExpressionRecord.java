@@ -25,8 +25,8 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 record NumericOperatorExpressionRecord<T, N extends Number & Comparable<N>>
-        (Operator operator, NumericExpression<T, N> left,
-         NumericExpression<T, N> right)
+        (Operator operator, NumericExpression<? super T, N> left,
+         NumericExpression<? super T, N> right)
         implements NumericOperatorExpression<T, N> {
 
     NumericOperatorExpressionRecord {

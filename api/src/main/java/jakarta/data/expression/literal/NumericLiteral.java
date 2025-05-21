@@ -37,13 +37,12 @@ public interface NumericLiteral<T, N extends Number & Comparable<N>>
     /**
      * <p>Creates a {@code NumericLiteral} that represents the given value.</p>
      *
-     * @param <T>   entity type.
      * @param <N>   entity attribute type.
      * @param value an immutable numeric value. Must never be {@code null}.
      * @return a {@code NumericLiteral} representing the value.
      * @throws NullPointerException if the value is {@code null}.
      */
-    static <T, N extends Number & Comparable<N>> NumericLiteral<T, N> of(N value) {
+    static <N extends Number & Comparable<N>> NumericLiteral<Object,N> of(N value) {
         return new NumericLiteralRecord<>(value);
     }
 
