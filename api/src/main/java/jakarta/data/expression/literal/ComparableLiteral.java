@@ -143,5 +143,5 @@ public interface ComparableLiteral<T, V extends Comparable<?>>
      * @return a {@code String} representing the literal value.
      */
     @Override
-    public String toString();
+    String toString();
 }

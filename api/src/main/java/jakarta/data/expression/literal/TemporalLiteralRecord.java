@@ -26,8 +26,8 @@ import java.time.temporal.Temporal;
 
 import jakarta.data.messages.Messages;
 
-record TemporalLiteralRecord<T, V extends Temporal & Comparable<? extends Temporal>>(
-        V value)
+record TemporalLiteralRecord<T, V extends Temporal & Comparable<? extends Temporal>>
+        (V value)
         implements TemporalLiteral<T, V> {
 
     TemporalLiteralRecord {
@@ -39,9 +39,10 @@ record TemporalLiteralRecord<T, V extends Temporal & Comparable<? extends Tempor
 
     @Override
     public String toString() {
-        Temporal temporal = value instanceof Instant i
-                ? i.atOffset(ZoneOffset.UTC).toLocalDateTime()
-                : value;
+        final Temporal temporal =
+                value instanceof Instant instant
+                        ? instant.atOffset(ZoneOffset.UTC).toLocalDateTime()
+                        : value;
 
         return switch (temporal) {
             case LocalDateTime d ->
