@@ -20,6 +20,7 @@ package jakarta.data.expression;
 import jakarta.data.constraint.*;
 import jakarta.data.expression.function.NumericFunctionExpression;
 import jakarta.data.expression.function.NumericOperatorExpression;
+import jakarta.data.expression.literal.NumericLiteral;
 import jakarta.data.mock.entity.Book;
 import jakarta.data.mock.entity._Book;
 import jakarta.data.restrict.BasicRestriction;
@@ -29,6 +30,22 @@ import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
 
 class NumericExpressionTest {
+
+    @Test
+    void shouldAddLiteral() {
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(_Book.numPages.plus(10).toString())
+                .isEqualTo("book.numPages + 10");
+
+            soft.assertThat(_Book.numPages.plus(NumericLiteral.of(1))
+                                          .toString())
+                .isEqualTo("book.numPages + 1");
+
+            soft.assertThat(NumericLiteral.of(1).plus(_Book.numPages)
+                                                .toString())
+                .isEqualTo("1 + book.numPages");
+        });
+    }
 
     @Test
     void shouldCompareWithNumericAttribute() {
@@ -88,6 +105,54 @@ class NumericExpressionTest {
 
             soft.assertThat(lengthExpression.arguments().get(0))
                 .isEqualTo(_Book.title);
+        });
+    }
+
+    @Test
+    void shouldDivideLiteral() {
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(_Book.numPages.divide(10).toString())
+                .isEqualTo("book.numPages / 10");
+
+            soft.assertThat(_Book.numPages.divide(NumericLiteral.of(5))
+                                          .toString())
+                .isEqualTo("book.numPages / 5");
+
+            soft.assertThat(NumericLiteral.of(100).divide(_Book.numChapters)
+                                          .toString())
+                .isEqualTo("100 / book.numChapters");
+        });
+    }
+
+    @Test
+    void shouldMultiplyLiteral() {
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(_Book.numChapters.times(10).toString())
+                .isEqualTo("book.numChapters * 10");
+
+            soft.assertThat(_Book.numChapters.times(NumericLiteral.of(5))
+                                             .toString())
+                .isEqualTo("book.numChapters * 5");
+
+            soft.assertThat(NumericLiteral.of(2).times(_Book.numChapters)
+                                                .toString())
+                .isEqualTo("2 * book.numChapters");
+        });
+    }
+
+    @Test
+    void shouldSubtractLiteral() {
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(_Book.numChapters.minus(2).toString())
+                .isEqualTo("book.numChapters - 2");
+
+            soft.assertThat(_Book.numChapters.minus(NumericLiteral.of(1))
+                                             .toString())
+                .isEqualTo("book.numChapters - 1");
+
+            soft.assertThat(NumericLiteral.of(100).minus(_Book.numChapters)
+                                                  .toString())
+                .isEqualTo("100 - book.numChapters");
         });
     }
 }
