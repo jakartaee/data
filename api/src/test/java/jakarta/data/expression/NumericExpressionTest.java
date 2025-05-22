@@ -37,10 +37,6 @@ class NumericExpressionTest {
             soft.assertThat(_Book.numPages.plus(10).toString())
                 .isEqualTo("book.numPages + 10");
 
-            soft.assertThat(_Book.numPages.plus(NumericLiteral.of(1))
-                                          .toString())
-                .isEqualTo("book.numPages + 1");
-
             soft.assertThat(NumericLiteral.of(1).plus(_Book.numPages)
                                                 .toString())
                 .isEqualTo("1 + book.numPages");
@@ -114,10 +110,6 @@ class NumericExpressionTest {
             soft.assertThat(_Book.numPages.divide(10).toString())
                 .isEqualTo("book.numPages / 10");
 
-            soft.assertThat(_Book.numPages.divide(NumericLiteral.of(5))
-                                          .toString())
-                .isEqualTo("book.numPages / 5");
-
             soft.assertThat(NumericLiteral.of(100).divide(_Book.numChapters)
                                           .toString())
                 .isEqualTo("100 / book.numChapters");
@@ -130,10 +122,6 @@ class NumericExpressionTest {
             soft.assertThat(_Book.numChapters.times(10).toString())
                 .isEqualTo("book.numChapters * 10");
 
-            soft.assertThat(_Book.numChapters.times(NumericLiteral.of(5))
-                                             .toString())
-                .isEqualTo("book.numChapters * 5");
-
             soft.assertThat(NumericLiteral.of(2).times(_Book.numChapters)
                                                 .toString())
                 .isEqualTo("2 * book.numChapters");
@@ -145,10 +133,6 @@ class NumericExpressionTest {
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(_Book.numChapters.minus(2).toString())
                 .isEqualTo("book.numChapters - 2");
-
-            soft.assertThat(_Book.numChapters.minus(NumericLiteral.of(1))
-                                             .toString())
-                .isEqualTo("book.numChapters - 1");
 
             soft.assertThat(NumericLiteral.of(100).minus(_Book.numChapters)
                                                   .toString())

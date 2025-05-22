@@ -30,7 +30,6 @@ import java.math.BigInteger;
 import jakarta.data.expression.function.NumericCast;
 import jakarta.data.expression.function.NumericFunctionExpression;
 import jakarta.data.expression.function.NumericOperatorExpression;
-import jakarta.data.expression.literal.NumericLiteral;
 import jakarta.data.metamodel.Attribute;
 import jakarta.data.metamodel.NumericAttribute;
 
@@ -256,46 +255,6 @@ public interface NumericExpression<T, N extends Number & Comparable<N>>
     default <U extends T> NumericExpression<U, N> divide(
             NumericExpression<U, N> divisorExpression) {
         return NumericOperatorExpression.of(DIVIDE, this, divisorExpression);
-    }
-
-    // TODO Javadoc
-    default NumericExpression<T, N> plus(
-            NumericLiteral<Object, N> addendLiteral) {
-        @SuppressWarnings("unchecked")
-        NumericExpression<T, N> literal =
-            (NumericExpression<T, N>) addendLiteral;
-
-        return NumericOperatorExpression.of(PLUS, this, literal);
-    }
-
-    // TODO Javadoc
-    default NumericExpression<T, N> minus(
-            NumericLiteral<Object, N> subtrahendLiteral) {
-        @SuppressWarnings("unchecked")
-        NumericExpression<T, N> literal =
-            (NumericExpression<T, N>) subtrahendLiteral;
-
-        return NumericOperatorExpression.of(MINUS, this, literal);
-    }
-
-    // TODO Javadoc
-    default NumericExpression<T, N> times(
-            NumericLiteral<Object, N> factorLiteral) {
-        @SuppressWarnings("unchecked")
-        NumericExpression<T, N> literal =
-            (NumericExpression<T, N>) factorLiteral;
-
-        return NumericOperatorExpression.of(TIMES, this, literal);
-    }
-
-    // TODO Javadoc
-    default NumericExpression<T, N> divide(
-            NumericLiteral<Object, N> divisorLiteral) {
-        @SuppressWarnings("unchecked")
-        NumericExpression<T, N> literal =
-            (NumericExpression<T, N>) divisorLiteral;
-
-        return NumericOperatorExpression.of(DIVIDE, this, literal);
     }
 
     /**
