@@ -24,6 +24,7 @@ import jakarta.data.expression.function.NumericFunctionExpression;
 import jakarta.data.expression.function.NumericOperatorExpression;
 import jakarta.data.expression.literal.Literal;
 import jakarta.data.expression.literal.NumericLiteral;
+
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -230,15 +231,8 @@ class NumericExpressionTest {
     @Test
     @DisplayName("toString output must include parentheses where needed")
     void shouldIncludeParenthesesInToString() {
-        @SuppressWarnings("unchecked")
-        NumericLiteral<Invoice, Integer> hundred =
-                (NumericLiteral<Invoice, Integer>)
-                (NumericLiteral<?, Integer>) NumericLiteral.of(100);
-
-        // TODO this does not compile when the above is included directly
-        // within the following without the cast.
         NumericExpression<Invoice, Integer> expression = _Invoice.amount.times(
-                hundred.minus(_Invoice.percentDiscount))
+                NumericLiteral.of(100).minus(_Invoice.percentDiscount))
                 .divide(100);
 
         SoftAssertions.assertSoftly(soft -> {

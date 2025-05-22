@@ -47,10 +47,11 @@ public interface NumericOperatorExpression<T, N extends Number & Comparable<N>>
         return new NumericOperatorExpressionRecord<>(operator, left, NumericLiteral.of(right));
     }
 
-    static <T, N extends Number & Comparable<N>> NumericOperatorExpression<T, N> of(
+    static <U extends T, T, N extends Number & Comparable<N>>
+            NumericOperatorExpression<U, N> of(
             Operator operator,
             NumericExpression<T, N> left,
-            NumericExpression<T, N> right) {
+            NumericExpression<U, N> right) {
         return new NumericOperatorExpressionRecord<>(operator, left, right);
     }
 }
