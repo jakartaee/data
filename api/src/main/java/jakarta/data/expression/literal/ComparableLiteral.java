@@ -49,7 +49,6 @@ public interface ComparableLiteral<T, V extends Comparable<?>>
      * {@link TemporalLiteral#of(java.time.temporal.Temporal) TemporalLiteral},
      * should be used instead wherever possible.</p>
      *
-     * @param <T>   entity type.
      * @param <V>   entity attribute type.
      * @param value an immutable value or a mutable value that must never be
      *              modified after it is supplied to this method. Must never be
@@ -58,37 +57,37 @@ public interface ComparableLiteral<T, V extends Comparable<?>>
      * @throws NullPointerException if the value is {@code null}.
      */
     @SuppressWarnings("unchecked")
-    static <T, V extends Comparable<?>> ComparableLiteral<T, V> of(V value) {
+    static <V extends Comparable<?>> ComparableLiteral<Object, V> of(V value) {
         // Subtypes of Number and Temporal are needed here because
         // NumericExperssion has N extends Number & Comparable<N>
         // and
         // TemporalExpression has V extends Temporal & Comparable<? extends Temporal>
         if (value instanceof String s) {
-            return (ComparableLiteral<T, V>) StringLiteral.of(s);
+            return (ComparableLiteral<Object, V>) StringLiteral.of(s);
         } else if (value instanceof Integer i) {
-            return (ComparableLiteral<T, V>) NumericLiteral.of(i);
+            return (ComparableLiteral<Object, V>) NumericLiteral.of(i);
         } else if (value instanceof Long l) {
-            return (ComparableLiteral<T, V>) NumericLiteral.of(l);
+            return (ComparableLiteral<Object, V>) NumericLiteral.of(l);
         } else if (value instanceof Float f) {
-            return (ComparableLiteral<T, V>) NumericLiteral.of(f);
+            return (ComparableLiteral<Object, V>) NumericLiteral.of(f);
         } else if (value instanceof Double d) {
-            return (ComparableLiteral<T, V>) NumericLiteral.of(d);
+            return (ComparableLiteral<Object, V>) NumericLiteral.of(d);
         } else if (value instanceof Byte b) {
-            return (ComparableLiteral<T, V>) NumericLiteral.of(b);
+            return (ComparableLiteral<Object, V>) NumericLiteral.of(b);
         } else if (value instanceof Short s) {
-            return (ComparableLiteral<T, V>) NumericLiteral.of(s);
+            return (ComparableLiteral<Object, V>) NumericLiteral.of(s);
         } else if (value instanceof BigInteger i) {
-            return (ComparableLiteral<T, V>) NumericLiteral.of(i);
+            return (ComparableLiteral<Object, V>) NumericLiteral.of(i);
         } else if (value instanceof BigDecimal d) {
-            return (ComparableLiteral<T, V>) NumericLiteral.of(d);
+            return (ComparableLiteral<Object, V>) NumericLiteral.of(d);
         } else if (value instanceof Instant i) {
-            return (ComparableLiteral<T, V>) TemporalLiteral.of(i);
+            return (ComparableLiteral<Object, V>) TemporalLiteral.of(i);
         } else if (value instanceof LocalDate d) {
-            return (ComparableLiteral<T, V>) TemporalLiteral.of(d);
+            return (ComparableLiteral<Object, V>) TemporalLiteral.of(d);
         } else if (value instanceof LocalDateTime d) {
-            return (ComparableLiteral<T, V>) TemporalLiteral.of(d);
+            return (ComparableLiteral<Object, V>) TemporalLiteral.of(d);
         } else if (value instanceof LocalTime t) {
-            return (ComparableLiteral<T, V>) TemporalLiteral.of(t);
+            return (ComparableLiteral<Object, V>) TemporalLiteral.of(t);
         } else {
             return new ComparableLiteralRecord<>(value);
         }
