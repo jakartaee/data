@@ -20,4 +20,9 @@ package jakarta.data.metamodel;
 record NumericAttributeRecord<T, V extends Number & Comparable<V>>
         (Class<T> declaringType, String name, Class<V> attributeType)
         implements NumericAttribute<T, V> {
+
+    @Override
+    public String toString() {
+        return declaringType.getSimpleName().toLowerCase() + '.' + name;
+    }
 }

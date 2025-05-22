@@ -20,5 +20,10 @@ package jakarta.data.metamodel;
 record SortableAttributeRecord<T>
         (Class<T> declaringType, String name, Class<?> attributeType)
         implements SortableAttribute<T> {
+
+    @Override
+    public String toString() {
+        return declaringType.getSimpleName().toLowerCase() + '.' + name;
+    }
 }
 

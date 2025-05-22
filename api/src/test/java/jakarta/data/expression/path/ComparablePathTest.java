@@ -59,6 +59,8 @@ class ComparablePathTest {
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(path).isNotNull();
             soft.assertThat(path).isInstanceOf(ComparableExpression.class);
+            soft.assertThat(path.toString())
+                .isEqualTo("author.publisher.rating");
         });
     }
 }

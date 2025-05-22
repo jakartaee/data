@@ -31,6 +31,19 @@ import org.junit.jupiter.api.Test;
 class NumericExpressionTest {
 
     @Test
+    void shouldAddLiteral() {
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(_Book.numPages.plus(10).toString())
+                .isEqualTo("book.numPages + 10");
+
+            // TODO after #1116 is implemented, add an equivalent test to:
+            //soft.assertThat(NumericLiteral.of(1).plus(_Book.numPages)
+            //                                    .toString())
+            //    .isEqualTo("1 + book.numPages");
+        });
+    }
+
+    @Test
     void shouldCompareWithNumericAttribute() {
         Restriction<Book> averageChapterAtLeastAsLongAsNumChapters =
                 _Book.numPages.divide(_Book.numChapters)
@@ -88,6 +101,45 @@ class NumericExpressionTest {
 
             soft.assertThat(lengthExpression.arguments().get(0))
                 .isEqualTo(_Book.title);
+        });
+    }
+
+    @Test
+    void shouldDivideLiteral() {
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(_Book.numPages.divide(10).toString())
+                .isEqualTo("book.numPages / 10");
+
+            // TODO after #1116 is implemented, add an equivalent test to:
+            //soft.assertThat(NumericLiteral.of(100).divide(_Book.numChapters)
+            //                              .toString())
+            //    .isEqualTo("100 / book.numChapters");
+        });
+    }
+
+    @Test
+    void shouldMultiplyLiteral() {
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(_Book.numChapters.times(10).toString())
+                .isEqualTo("book.numChapters * 10");
+
+            // TODO after #1116 is implemented, add an equivalent test to:
+            //soft.assertThat(NumericLiteral.of(2).times(_Book.numChapters)
+            //                                    .toString())
+            //    .isEqualTo("2 * book.numChapters");
+        });
+    }
+
+    @Test
+    void shouldSubtractLiteral() {
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(_Book.numChapters.minus(2).toString())
+                .isEqualTo("book.numChapters - 2");
+
+            // TODO after #1116 is implemented, add an equivalent test to:
+            //soft.assertThat(NumericLiteral.of(100).minus(_Book.numChapters)
+            //                                      .toString())
+            //    .isEqualTo("100 - book.numChapters");
         });
     }
 }

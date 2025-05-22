@@ -18,6 +18,8 @@
 package jakarta.data.metamodel.impl;
 
 import jakarta.data.metamodel.SortableAttribute;
+import jakarta.data.mock.entity.Book;
+
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -29,8 +31,10 @@ class SortableAttributeRecordTest {
         String ID = "id";
         String NAME = "name";
 
-        SortableAttribute<SimpleEntity> id = new SortableAttributeRecord<>(ID);
-        SortableAttribute<SimpleEntity> name = new SortableAttributeRecord<>(NAME);
+        SortableAttribute<SimpleEntity> id =
+                SortableAttribute.of(SimpleEntity.class, ID, Integer.class);
+        SortableAttribute<SimpleEntity> name =
+                SortableAttribute.of(SimpleEntity.class, NAME, String.class);
     }
 
     // A simple test entity
@@ -42,11 +46,25 @@ class SortableAttributeRecordTest {
     @Test
     @DisplayName("should create sortable attribute record and validate interface type")
     void shouldCreateSortableAttributeRecord() {
-        var attribute = new SortableAttributeRecord<SimpleEntity>("name");
+        var old = new SortableAttributeRecord<SimpleEntity>("name");
+        var numChapters = SortableAttribute.of(
+                Book.class, "numChapters", Integer.class);
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(attribute.name()).isEqualTo("name");
-            soft.assertThat(attribute).isInstanceOf(SortableAttribute.class);
+            // old implementation without types
+            soft.assertThat(old.name()).isEqualTo("name");
+            soft.assertThat(old).isInstanceOf(SortableAttribute.class);
+            soft.assertThat(old.toString()).isNotNull();
+
+            // new implementation including types
+            soft.assertThat(numChapters.name()).isEqualTo("numChapters");
+            soft.assertThat(numChapters).isInstanceOf(SortableAttribute.class);
+            soft.assertThat(numChapters.toString())
+                .isEqualTo("book.numChapters");
+            soft.assertThat(numChapters.declaringType())
+                .isEqualTo(Book.class);
+            soft.assertThat(numChapters.attributeType())
+                .isEqualTo(Integer.class);
         });
     }
 

@@ -31,4 +31,13 @@ record TextPathRecord<T, U>
         Objects.requireNonNull(attribute, "The attribute is required");
     }
 
+    @Override
+    public String toString() {
+        String expr = expression.toString();
+        String attrName = attribute.name();
+        StringBuilder path =
+                new StringBuilder(expr.length() + 1 + attrName.length());
+        path.append(expr).append('.').append(attrName);
+        return path.toString();
+    }
 }

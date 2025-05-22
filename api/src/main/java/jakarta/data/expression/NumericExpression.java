@@ -76,7 +76,7 @@ public interface NumericExpression<T, N extends Number & Comparable<N>>
      * atLeast2YearsBeyondOriginalModelYear = cars.search(
      *         make,
      *         model,
-     *         _Car.firstModelYear.minus(_Car.year).negate().greaterThanEqual(2));
+     *         _Car.firstModelYear.minus(_Car.year).negated().greaterThanEqual(2));
      * </pre>
      *
      * @return an expression for the function that computes negation of value.
@@ -184,7 +184,8 @@ public interface NumericExpression<T, N extends Number & Comparable<N>>
      * @return an expression for the function that computes the sum.
      * @throws NullPointerException if the supplied value is null.
      */
-    default NumericExpression<T, N> plus(NumericExpression<T, N> expression) {
+    default NumericExpression<T, N> plus(
+            NumericExpression<T, N> expression) {
         return NumericOperatorExpression.of(PLUS, this, expression);
     }
 
@@ -205,7 +206,8 @@ public interface NumericExpression<T, N extends Number & Comparable<N>>
      * @return an expression for the function that computes the difference.
      * @throws NullPointerException if the supplied expression is null.
      */
-    default NumericExpression<T, N> minus(NumericExpression<T, N> expression) {
+    default NumericExpression<T, N> minus(
+            NumericExpression<T, N> expression) {
         return NumericOperatorExpression.of(MINUS, this, expression);
     }
 

@@ -36,4 +36,17 @@ record NumericCastRecord<T, N extends Number & Comparable<N>>
         }
     }
 
+    @Override
+    public String toString() {
+        String expr = expression.toString();
+        String typeName = type.getSimpleName().toUpperCase();
+        StringBuilder cast =
+                new StringBuilder(10 + expr.length() + typeName.length());
+        cast.append("CAST(")
+            .append(expr)
+            .append(" AS ")
+            .append(typeName)
+            .append(')');
+        return cast.toString();
+    }
 }

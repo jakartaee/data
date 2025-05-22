@@ -23,4 +23,9 @@ record TextAttributeRecord<T>(Class<T> declaringType, String name)
     public Class<String> attributeType() {
         return String.class;
     }
+
+    @Override
+    public String toString() {
+        return declaringType.getSimpleName().toLowerCase() + '.' + name;
+    }
 }

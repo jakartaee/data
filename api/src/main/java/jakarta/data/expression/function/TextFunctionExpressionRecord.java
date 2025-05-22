@@ -45,4 +45,23 @@ record TextFunctionExpressionRecord<T>(
             }
         }
     }
+
+    @Override
+    public String toString() {
+        StringBuilder function =
+                new StringBuilder(name.length() + 2 + 50 * arguments.size());
+        function.append(name).append('(');
+        boolean first = true;
+        for (ComparableExpression<? super T, ?> arg : arguments) {
+            if (first) {
+                first = false;
+            } else {
+                function.append(", ");
+            }
+            function.append(arg);
+        }
+        function.append(')');
+
+        return function.toString();
+    }
 }
