@@ -18,6 +18,7 @@
 package jakarta.data.metamodel;
 
 
+import jakarta.data.expression.NumericExpression;
 import jakarta.data.expression.function.NumericCast;
 import jakarta.data.expression.function.NumericFunctionExpression;
 import jakarta.data.expression.function.NumericOperatorExpression;
@@ -229,13 +230,16 @@ class NumericExpressionTest {
     @Test
     @DisplayName("toString output must include parentheses where needed")
     void shouldIncludeParenthesesInToString() {
-        NumericLiteral<Invoice, Integer> hundred = NumericLiteral.of(100);
+        @SuppressWarnings("unchecked")
+        NumericLiteral<Invoice, Integer> hundred =
+                (NumericLiteral<Invoice, Integer>)
+                (NumericLiteral<?, Integer>) NumericLiteral.of(100);
+
         // TODO this does not compile when the above is included directly
-        // within the following without the cast. Do literals need an of method
-        // that explicitly includes the entity class?
-        var expression = _Invoice.amount.times(
+        // within the following without the cast.
+        NumericExpression<Invoice, Integer> expression = _Invoice.amount.times(
                 hundred.minus(_Invoice.percentDiscount))
-                .divide(hundred);
+                .divide(100);
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(expression.toString())
