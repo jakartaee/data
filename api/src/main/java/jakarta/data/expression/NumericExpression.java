@@ -184,8 +184,8 @@ public interface NumericExpression<T, N extends Number & Comparable<N>>
      * @return an expression for the function that computes the sum.
      * @throws NullPointerException if the supplied value is null.
      */
-    default <U extends T> NumericExpression<U, N> plus(
-            NumericExpression<U, N> expression) {
+    default NumericExpression<T, N> plus(
+            NumericExpression<T, N> expression) {
         return NumericOperatorExpression.of(PLUS, this, expression);
     }
 
@@ -206,8 +206,8 @@ public interface NumericExpression<T, N extends Number & Comparable<N>>
      * @return an expression for the function that computes the difference.
      * @throws NullPointerException if the supplied expression is null.
      */
-    default <U extends T> NumericExpression<U, N> minus(
-            NumericExpression<U, N> expression) {
+    default NumericExpression<T, N> minus(
+            NumericExpression<T, N> expression) {
         return NumericOperatorExpression.of(MINUS, this, expression);
     }
 
@@ -229,8 +229,8 @@ public interface NumericExpression<T, N extends Number & Comparable<N>>
      * @return an expression for the function that computes the product.
      * @throws NullPointerException if the supplied factor expression is null.
      */
-    default <U extends T> NumericExpression<U, N> times(
-            NumericExpression<U, N> factorExpression) {
+    default NumericExpression<T, N> times(
+            NumericExpression<T, N> factorExpression) {
         return NumericOperatorExpression.of(TIMES, this, factorExpression);
     }
 
@@ -252,8 +252,8 @@ public interface NumericExpression<T, N extends Number & Comparable<N>>
      * @return an expression for the function that computes the quotient.
      * @throws NullPointerException if the supplied divisor expression is null.
      */
-    default <U extends T> NumericExpression<U, N> divide(
-            NumericExpression<U, N> divisorExpression) {
+    default NumericExpression<T, N> divide(
+            NumericExpression<T, N> divisorExpression) {
         return NumericOperatorExpression.of(DIVIDE, this, divisorExpression);
     }
 

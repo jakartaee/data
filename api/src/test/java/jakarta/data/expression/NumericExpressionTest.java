@@ -20,7 +20,6 @@ package jakarta.data.expression;
 import jakarta.data.constraint.*;
 import jakarta.data.expression.function.NumericFunctionExpression;
 import jakarta.data.expression.function.NumericOperatorExpression;
-import jakarta.data.expression.literal.NumericLiteral;
 import jakarta.data.mock.entity.Book;
 import jakarta.data.mock.entity._Book;
 import jakarta.data.restrict.BasicRestriction;
@@ -37,9 +36,10 @@ class NumericExpressionTest {
             soft.assertThat(_Book.numPages.plus(10).toString())
                 .isEqualTo("book.numPages + 10");
 
-            soft.assertThat(NumericLiteral.of(1).plus(_Book.numPages)
-                                                .toString())
-                .isEqualTo("1 + book.numPages");
+            // TODO after #1116 is implemented, add an equivalent test to:
+            //soft.assertThat(NumericLiteral.of(1).plus(_Book.numPages)
+            //                                    .toString())
+            //    .isEqualTo("1 + book.numPages");
         });
     }
 
@@ -110,9 +110,10 @@ class NumericExpressionTest {
             soft.assertThat(_Book.numPages.divide(10).toString())
                 .isEqualTo("book.numPages / 10");
 
-            soft.assertThat(NumericLiteral.of(100).divide(_Book.numChapters)
-                                          .toString())
-                .isEqualTo("100 / book.numChapters");
+            // TODO after #1116 is implemented, add an equivalent test to:
+            //soft.assertThat(NumericLiteral.of(100).divide(_Book.numChapters)
+            //                              .toString())
+            //    .isEqualTo("100 / book.numChapters");
         });
     }
 
@@ -122,9 +123,10 @@ class NumericExpressionTest {
             soft.assertThat(_Book.numChapters.times(10).toString())
                 .isEqualTo("book.numChapters * 10");
 
-            soft.assertThat(NumericLiteral.of(2).times(_Book.numChapters)
-                                                .toString())
-                .isEqualTo("2 * book.numChapters");
+            // TODO after #1116 is implemented, add an equivalent test to:
+            //soft.assertThat(NumericLiteral.of(2).times(_Book.numChapters)
+            //                                    .toString())
+            //    .isEqualTo("2 * book.numChapters");
         });
     }
 
@@ -134,9 +136,10 @@ class NumericExpressionTest {
             soft.assertThat(_Book.numChapters.minus(2).toString())
                 .isEqualTo("book.numChapters - 2");
 
-            soft.assertThat(NumericLiteral.of(100).minus(_Book.numChapters)
-                                                  .toString())
-                .isEqualTo("100 - book.numChapters");
+            // TODO after #1116 is implemented, add an equivalent test to:
+            //soft.assertThat(NumericLiteral.of(100).minus(_Book.numChapters)
+            //                                      .toString())
+            //    .isEqualTo("100 - book.numChapters");
         });
     }
 }

@@ -231,8 +231,12 @@ class NumericExpressionTest {
     @Test
     @DisplayName("toString output must include parentheses where needed")
     void shouldIncludeParenthesesInToString() {
+        // TODO ignore the warning and awkward casting for now. It will be
+        // properly solved later by #1116
+        @SuppressWarnings("unchecked")
         NumericExpression<Invoice, Integer> expression = _Invoice.amount.times(
-                NumericLiteral.of(100).minus(_Invoice.percentDiscount))
+                ((NumericExpression<Invoice, Integer>) (NumericExpression<?, Integer>)
+                        NumericLiteral.of(100)).minus(_Invoice.percentDiscount))
                 .divide(100);
 
         SoftAssertions.assertSoftly(soft -> {
