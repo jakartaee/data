@@ -174,9 +174,10 @@ public interface NumericExpression<T, N extends Number & Comparable<N>>
      *
      * <p>Example:</p>
      * <pre>
-     * found = cars.search(make,
-     *                     model,
-     *                     NumericLiteral.of(fees).plus(_Car.price).lessThan(32000));
+     * found = cars.search(
+     *         make,
+     *         model,
+     *         _Car.price.plus(_Car.price.times(percentTax).divide(100)).lessThan(32000));
      * </pre>
      *
      * @param expression expression that evaluates to the value to add. Must
@@ -218,10 +219,10 @@ public interface NumericExpression<T, N extends Number & Comparable<N>>
      *
      * <p>Example:</p>
      * <pre>
-     * found = cars.search(
+     * discountedMoreThan2000 = cars.search(
      *         make,
      *         model,
-     *         NumericLiteral.of(1.0 + taxRate).times(_Car.price).lessThan(40000.0));
+     *         _Car.price.asDouble().times(_Car.discountRate).greaterThan(2000.0));
      * </pre>
      *
      * @param factorExpression expression that evaluates to the value by which
@@ -241,10 +242,10 @@ public interface NumericExpression<T, N extends Number & Comparable<N>>
      *
      * <p>Example:</p>
      * <pre>
-     * discountedByMoreThan10Percent = cars.search(
+     * pricedUnder95PercentWithRebate = cars.search(
      *         make,
      *         model,
-     *         NumericLiteral.of(discount).divide(_Car.price.asDouble()).greaterThan(0.1));
+     *         _Car.price.minus(rebate).times(100).divide(_Car.price).lessThan(95);
      * </pre>
      *
      * @param divisorExpression expression that evaluates to the value by which
