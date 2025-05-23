@@ -1341,7 +1341,6 @@ module jakarta.data {
     exports jakarta.data.exceptions;
     exports jakarta.data.expression;
     exports jakarta.data.expression.function;
-    exports jakarta.data.expression.literal;
     exports jakarta.data.expression.path;
     exports jakarta.data.metamodel;
     exports jakarta.data.metamodel.impl;

@@ -17,7 +17,7 @@
  */
 package jakarta.data.expression.literal;
 
-import jakarta.data.expression.Expression;
+import jakarta.data.expression.LiteralExpression;
 import jakarta.data.metamodel.Attribute;
 import jakarta.data.restrict.Restriction;
 
@@ -50,14 +50,7 @@ import jakarta.data.restrict.Restriction;
  * @param <V> entity attribute type.
  * @since 1.1
  */
-public interface Literal<V> extends Expression<Object, V> {
-    /**
-     * <p>Returns the value represented by this {@code Literal}.
-     * The value will never be {@code null}.</p>
-     *
-     * @return the value.
-     */
-    V value();
+public interface Literal<V> extends LiteralExpression<V> {
 
     /**
      * <p>Creates a {@code Literal} or subtype of {@code Literal} that

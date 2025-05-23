@@ -21,6 +21,8 @@ import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import jakarta.data.expression.LiteralExpression;
+
 class LiteralRecordTest {
     // Static metamodel using LiteralRecord
     interface _SimpleEntity {
@@ -37,11 +39,12 @@ class LiteralRecordTest {
     @Test
     @DisplayName("should create LiteralRecord and return its value")
     void shouldCreateLiteralRecord() {
-        var literal = new LiteralRecord<>("literal-value");
+        LiteralExpression<String> literal =
+                new LiteralRecord<>("literal-value");
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(literal.value()).isEqualTo("literal-value");
-            soft.assertThat(literal).isInstanceOf(Literal.class);
+            soft.assertThat(literal).isInstanceOf(LiteralExpression.class);
         });
     }
 

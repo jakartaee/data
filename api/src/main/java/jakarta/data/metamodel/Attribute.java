@@ -56,6 +56,8 @@ package jakarta.data.metamodel;
  *     &#64;Id
  *     public String vin;
  *     public Color color;
+ *     public double discountRate;
+ *     public int firstModelYear;
  *     public LocalDate listed;
  *     public String make;
  *     public String model;
@@ -73,6 +75,7 @@ package jakarta.data.metamodel;
  * &#64;StaticMetamodel
  * public interface _Car {
  *     String COLOR = "color";
+ *     String DISCOUNTRATE = "discountRate";
  *     String FIRSTMODELYEAR = "firstModelYear";
  *     String LISTED = "listed";
  *     String MAKE = "make";
@@ -83,6 +86,8 @@ package jakarta.data.metamodel;
  *
  *     ComparableAttribute&lt;Car,Color&gt; color = ComparableAttribute.of(
  *             Car.class, COLOR, Color.class);
+ *     NumericAttribute&lt;Car,Double&gt; discountRate = NumericAttribute.of(
+ *             Car.class, DISCOUNTRATE, double.class);
  *     NumericAttribute&lt;Car,Integer&gt; firstModelYear = NumericAttribute.of(
  *             Car.class, FIRSTMODELYEAR, int.class);
  *     TemporalAttribute&lt;Car,LocalDate&gt; listed = TemporalAttribute.of(
@@ -93,10 +98,10 @@ package jakarta.data.metamodel;
  *             Car.class, MODEL);
  *     NumericAttribute&lt;Car,Integer&gt; price = NumericAttribute.of(
  *             Car.class, PRICE, int.class);
- *     NumericAttribute&lt;Car,Integer&gt; year = NumericAttribute.of(
- *             Car.class, YEAR, int.class);
  *     TextAttribute&lt;Car&gt; vin = TextAttribute.of(
  *             Car.class, VIN);
+ *     NumericAttribute&lt;Car,Integer&gt; year = NumericAttribute.of(
+ *             Car.class, YEAR, int.class);
  * }
  * </pre>
  *

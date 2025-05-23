@@ -17,6 +17,7 @@
  */
 package jakarta.data.metamodel;
 
+<<<<<<< HEAD
 
 import jakarta.data.expression.NumericExpression;
 import jakarta.data.expression.function.NumericCast;
@@ -25,6 +26,12 @@ import jakarta.data.expression.function.NumericOperatorExpression;
 import jakarta.data.expression.literal.Literal;
 import jakarta.data.expression.literal.NumericLiteral;
 
+=======
+import jakarta.data.expression.LiteralExpression;
+import jakarta.data.expression.function.NumericCast;
+import jakarta.data.expression.function.NumericFunctionExpression;
+import jakarta.data.expression.function.NumericOperatorExpression;
+>>>>>>> 1fccdff2 (Remove literals from the API)
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -80,7 +87,9 @@ class NumericExpressionTest {
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(expression.operator()).isEqualTo(NumericOperatorExpression.Operator.PLUS);
             soft.assertThat(expression.left()).isEqualTo(_Invoice.amount);
-            soft.assertThat(expression.right()).isEqualTo(Literal.of(10));
+            soft.assertThat(expression.right()).isInstanceOf(LiteralExpression.class);
+            soft.assertThat(((LiteralExpression<?>) expression.right()).value())
+                .isEqualTo(10);
             soft.assertThat(expression.toString())
                 .isEqualTo("invoice.amount + 10");
         });
@@ -94,8 +103,10 @@ class NumericExpressionTest {
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(expression.operator()).isEqualTo(NumericOperatorExpression.Operator.MINUS);
             soft.assertThat(expression.left()).isEqualTo(_Invoice.amount);
-            soft.assertThat(expression.right()).isEqualTo(Literal.of(5));
-            soft.assertThat(expression.toString())
+            soft.assertThat(expression.right()).isInstanceOf(LiteralExpression.class);
+            soft.assertThat(((LiteralExpression<?>) expression.right()).value())
+                .isEqualTo(5);
+             soft.assertThat(expression.toString())
                 .isEqualTo("invoice.amount - 5");
         });
     }
@@ -108,7 +119,9 @@ class NumericExpressionTest {
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(expression.operator()).isEqualTo(NumericOperatorExpression.Operator.TIMES);
             soft.assertThat(expression.left()).isEqualTo(_Invoice.amount);
-            soft.assertThat(expression.right()).isEqualTo(Literal.of(2));
+            soft.assertThat(expression.right()).isInstanceOf(LiteralExpression.class);
+            soft.assertThat(((LiteralExpression<?>) expression.right()).value())
+                .isEqualTo(2);
             soft.assertThat(expression.toString())
                 .isEqualTo("invoice.amount * 2");
         });
@@ -122,7 +135,9 @@ class NumericExpressionTest {
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(expression.operator()).isEqualTo(NumericOperatorExpression.Operator.DIVIDE);
             soft.assertThat(expression.left()).isEqualTo(_Invoice.amount);
-            soft.assertThat(expression.right()).isEqualTo(Literal.of(4));
+            soft.assertThat(expression.right()).isInstanceOf(LiteralExpression.class);
+            soft.assertThat(((LiteralExpression<?>) expression.right()).value())
+                .isEqualTo(4);
             soft.assertThat(expression.toString())
                 .isEqualTo("invoice.amount / 4");
         });
