@@ -125,6 +125,28 @@ public interface NumericExpression<T, N extends Number & Comparable<N>>
     }
 
     /**
+     * <p>Represents the subtraction function that computes the difference of
+     * the given value minus the value to which the current expression
+     * evaluates.</p>
+     *
+     * <p>Example:</p>
+     * <pre>
+     * found = cars.search(
+     *         make,
+     *         model,
+     *         _Car.price.asDouble().times(_Car.discountRate.subtractedFrom(1.0))
+     *                 .lessThanEqual(33000.0));
+     * </pre>
+     *
+     * @param value the value to subtract. Must not be {@code null}.
+     * @return an expression for the function that computes the difference.
+     * @throws NullPointerException if the supplied value is null.
+     */
+    default NumericExpression<T, N> subtractedFrom(N value) {
+        return NumericOperatorExpression.of(MINUS, value, this);
+    }
+
+    /**
      * <p>Represents the multiplication function that computes the product of
      * the value to which the current expression evaluates times the given
      * factor.</p>

@@ -37,6 +37,18 @@ public interface NumericOperatorExpression<T, N extends Number & Comparable<N>>
 
     static <T, N extends Number & Comparable<N>> NumericOperatorExpression<T, N> of(
             Operator operator,
+            N left,
+            NumericExpression<T, N> right) {
+        if (left == null) {
+            throw new NullPointerException(
+                    Messages.get("001.arg.required", "left"));
+        }
+
+        return new NumericOperatorExpressionRecord<>(operator, NumericLiteral.of(left), right);
+    }
+
+    static <T, N extends Number & Comparable<N>> NumericOperatorExpression<T, N> of(
+            Operator operator,
             NumericExpression<T, N> left,
             N right) {
         if (right == null) {
