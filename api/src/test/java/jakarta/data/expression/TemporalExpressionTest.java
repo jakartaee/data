@@ -78,11 +78,11 @@ class TemporalExpressionTest {
         Between<LocalDate> constraint =
             (Between<LocalDate>) restriction.constraint();
 
-        TemporalLiteral<?, LocalDate> lowerLiteral =
-            (TemporalLiteral<?, LocalDate>) constraint.lowerBound();
+        TemporalLiteral<?> lowerLiteral =
+            (TemporalLiteral<?>) constraint.lowerBound();
 
-        TemporalLiteral<?, LocalDate> upperLiteral =
-            (TemporalLiteral<?, LocalDate>) constraint.upperBound();
+        TemporalLiteral<?> upperLiteral =
+            (TemporalLiteral<?>) constraint.upperBound();
 
         TemporalExpression<Book, LocalDate> betweenExpression =
             (TemporalExpression<Book, LocalDate>) restriction.expression();

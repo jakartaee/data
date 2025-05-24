@@ -19,8 +19,8 @@ package jakarta.data.expression.literal;
 
 import jakarta.data.messages.Messages;
 
-record StringLiteralRecord<T>(String value)
-        implements StringLiteral<T> {
+record StringLiteralRecord(String value)
+        implements StringLiteral {
 
     StringLiteralRecord {
         if (value == null) {

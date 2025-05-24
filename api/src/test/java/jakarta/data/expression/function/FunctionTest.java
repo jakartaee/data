@@ -69,7 +69,7 @@ class FunctionTest {
             soft.assertThat(expr.arguments().get(1))
                 .isInstanceOf(NumericLiteral.class);
 
-            soft.assertThat(((NumericLiteral<?, ?>) expr.arguments().get(1))
+            soft.assertThat(((NumericLiteral<?>) expr.arguments().get(1))
                     .value())
                 .isEqualTo(0);
         });
@@ -105,7 +105,7 @@ class FunctionTest {
             soft.assertThat(expr.arguments().get(1))
                 .isInstanceOf(NumericLiteral.class);
 
-            soft.assertThat(((NumericLiteral<?, ?>) expr.arguments().get(1))
+            soft.assertThat(((NumericLiteral<?>) expr.arguments().get(1))
                     .value())
                 .isEqualTo(0);
         });
