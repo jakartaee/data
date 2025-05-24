@@ -21,8 +21,10 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 import jakarta.data.messages.Messages;
-record NumericLiteralRecord<T, N extends Number & Comparable<N>>
-        (N value) implements NumericLiteral<T, N> {
+
+record NumericLiteralRecord<N extends Number & Comparable<N>>
+        (N value)
+        implements NumericLiteral<N> {
 
     NumericLiteralRecord {
         if (value == null) {

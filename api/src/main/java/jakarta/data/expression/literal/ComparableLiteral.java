@@ -32,12 +32,11 @@ import jakarta.data.expression.ComparableExpression;
  * {@link Boolean}, {@link Character}, enumerated, or {@link UUID} value.
  * </p>
  *
- * @param <T> entity type.
  * @param <V> entity attribute type.
  * @since 1.1
  */
-public interface ComparableLiteral<T, V extends Comparable<?>>
-        extends ComparableExpression<T, V>, Literal<T, V> {
+public interface ComparableLiteral<V extends Comparable<?>>
+        extends ComparableExpression<Object, V>, Literal<V> {
 
     /**
      * <p>Creates a {@code ComparableLiteral} or subtype of
@@ -57,37 +56,37 @@ public interface ComparableLiteral<T, V extends Comparable<?>>
      * @throws NullPointerException if the value is {@code null}.
      */
     @SuppressWarnings("unchecked")
-    static <V extends Comparable<?>> ComparableLiteral<Object, V> of(V value) {
+    static <V extends Comparable<?>> ComparableLiteral<V> of(V value) {
         // Subtypes of Number and Temporal are needed here because
         // NumericExperssion has N extends Number & Comparable<N>
         // and
         // TemporalExpression has V extends Temporal & Comparable<? extends Temporal>
         if (value instanceof String s) {
-            return (ComparableLiteral<Object, V>) StringLiteral.of(s);
+            return (ComparableLiteral<V>) StringLiteral.of(s);
         } else if (value instanceof Integer i) {
-            return (ComparableLiteral<Object, V>) NumericLiteral.of(i);
+            return (ComparableLiteral<V>) NumericLiteral.of(i);
         } else if (value instanceof Long l) {
-            return (ComparableLiteral<Object, V>) NumericLiteral.of(l);
+            return (ComparableLiteral<V>) NumericLiteral.of(l);
         } else if (value instanceof Float f) {
-            return (ComparableLiteral<Object, V>) NumericLiteral.of(f);
+            return (ComparableLiteral<V>) NumericLiteral.of(f);
         } else if (value instanceof Double d) {
-            return (ComparableLiteral<Object, V>) NumericLiteral.of(d);
+            return (ComparableLiteral<V>) NumericLiteral.of(d);
         } else if (value instanceof Byte b) {
-            return (ComparableLiteral<Object, V>) NumericLiteral.of(b);
+            return (ComparableLiteral<V>) NumericLiteral.of(b);
         } else if (value instanceof Short s) {
-            return (ComparableLiteral<Object, V>) NumericLiteral.of(s);
+            return (ComparableLiteral<V>) NumericLiteral.of(s);
         } else if (value instanceof BigInteger i) {
-            return (ComparableLiteral<Object, V>) NumericLiteral.of(i);
+            return (ComparableLiteral<V>) NumericLiteral.of(i);
         } else if (value instanceof BigDecimal d) {
-            return (ComparableLiteral<Object, V>) NumericLiteral.of(d);
+            return (ComparableLiteral<V>) NumericLiteral.of(d);
         } else if (value instanceof Instant i) {
-            return (ComparableLiteral<Object, V>) TemporalLiteral.of(i);
+            return (ComparableLiteral<V>) TemporalLiteral.of(i);
         } else if (value instanceof LocalDate d) {
-            return (ComparableLiteral<Object, V>) TemporalLiteral.of(d);
+            return (ComparableLiteral<V>) TemporalLiteral.of(d);
         } else if (value instanceof LocalDateTime d) {
-            return (ComparableLiteral<Object, V>) TemporalLiteral.of(d);
+            return (ComparableLiteral<V>) TemporalLiteral.of(d);
         } else if (value instanceof LocalTime t) {
-            return (ComparableLiteral<Object, V>) TemporalLiteral.of(t);
+            return (ComparableLiteral<V>) TemporalLiteral.of(t);
         } else {
             return new ComparableLiteralRecord<>(value);
         }

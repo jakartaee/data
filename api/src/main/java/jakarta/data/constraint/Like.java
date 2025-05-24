@@ -33,7 +33,7 @@ public interface Like extends Constraint<String> {
                     Messages.get("001.arg.required", "pattern"));
         }
 
-        StringLiteral<Object> expression = StringLiteral.of(pattern);
+        StringLiteral expression = StringLiteral.of(pattern);
         return new LikeRecord(expression, null);
     }
 
@@ -47,7 +47,7 @@ public interface Like extends Constraint<String> {
                     Messages.get("001.arg.required", "pattern"));
         }
 
-        StringLiteral<Object> expression = StringLiteral.of(
+        StringLiteral expression = StringLiteral.of(
                 translate(pattern, charWildcard, stringWildcard, escape));
         return new LikeRecord(expression, escape);
     }
@@ -67,7 +67,7 @@ public interface Like extends Constraint<String> {
                     Messages.get("001.arg.required", "prefix"));
         }
 
-        StringLiteral<Object> expression = StringLiteral.of(
+        StringLiteral expression = StringLiteral.of(
                 LikeRecord.escape(prefix) + STRING_WILDCARD);
         return new LikeRecord(expression, ESCAPE);
     }
@@ -78,7 +78,7 @@ public interface Like extends Constraint<String> {
                     Messages.get("001.arg.required", "substring"));
         }
 
-        StringLiteral<Object> expression = StringLiteral.of(
+        StringLiteral expression = StringLiteral.of(
                 STRING_WILDCARD + LikeRecord.escape(substring) + STRING_WILDCARD);
         return new LikeRecord(expression, ESCAPE);
     }
@@ -89,7 +89,7 @@ public interface Like extends Constraint<String> {
                     Messages.get("001.arg.required", "suffix"));
         }
 
-        StringLiteral<Object> expression = StringLiteral.of(
+        StringLiteral expression = StringLiteral.of(
                 STRING_WILDCARD + LikeRecord.escape(suffix));
         return new LikeRecord(expression, ESCAPE);
     }
@@ -100,7 +100,7 @@ public interface Like extends Constraint<String> {
                     Messages.get("001.arg.required", "value"));
         }
 
-        StringLiteral<Object> expression = StringLiteral.of(
+        StringLiteral expression = StringLiteral.of(
                 LikeRecord.escape(value));
         return new LikeRecord(expression, ESCAPE);
     }

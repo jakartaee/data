@@ -20,7 +20,7 @@ package jakarta.data.expression.literal;
 import jakarta.data.messages.Messages;
 
 record ComparableLiteralRecord<T, V extends Comparable<?>>(V value)
-        implements ComparableLiteral<T, V> {
+        implements ComparableLiteral<V> {
 
     ComparableLiteralRecord {
         if (value == null) {

@@ -19,7 +19,7 @@ package jakarta.data.expression.literal;
 
 import jakarta.data.messages.Messages;
 
-record LiteralRecord<T, V>(V value) implements Literal<T, V> {
+record LiteralRecord<V>(V value) implements Literal<V> {
 
     LiteralRecord {
         if (value == null) {

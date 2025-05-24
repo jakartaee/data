@@ -26,9 +26,9 @@ import java.time.temporal.Temporal;
 
 import jakarta.data.messages.Messages;
 
-record TemporalLiteralRecord<T, V extends Temporal & Comparable<? extends Temporal>>(
-        V value)
-        implements TemporalLiteral<T, V> {
+record TemporalLiteralRecord<V extends Temporal & Comparable<? extends Temporal>>
+        (V value)
+        implements TemporalLiteral<V> {
 
     TemporalLiteralRecord {
         if (value == null) {

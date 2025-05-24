@@ -50,7 +50,7 @@ public interface NumericOperatorExpression<T, N extends Number & Comparable<N>>
     static <T, N extends Number & Comparable<N>> NumericOperatorExpression<T, N> of(
             Operator operator,
             NumericExpression<T, N> left,
-            NumericExpression<T, N> right) {
+            NumericExpression<? super T, N> right) {
         return new NumericOperatorExpressionRecord<>(operator, left, right);
     }
 }

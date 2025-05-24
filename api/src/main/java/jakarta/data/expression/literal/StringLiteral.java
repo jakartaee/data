@@ -22,22 +22,20 @@ import jakarta.data.expression.TextExpression;
 /**
  * <p>A {@linkplain Literal literal} for a {@link String} value.</p>
  *
- * @param <T> entity type.
  * @since 1.1
  */
-public interface StringLiteral<T>
-        extends ComparableLiteral<T, String>, TextExpression<T> {
+public interface StringLiteral
+        extends ComparableLiteral<String>, TextExpression<Object> {
 
     /**
      * <p>Creates a {@code StringLiteral} that represents the given value.</p>
      *
-     * @param <T>   entity type.
      * @param value a {@code String} value. Must never be {@code null}.
      * @return a {@code StringLiteral} representing the value.
      * @throws NullPointerException if the value is {@code null}.
      */
-    static <T> StringLiteral<T> of(String value) {
-        return new StringLiteralRecord<T>(value);
+    static StringLiteral of(String value) {
+        return new StringLiteralRecord(value);
     }
 
     /**

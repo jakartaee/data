@@ -31,12 +31,11 @@ import jakarta.data.metamodel.TemporalAttribute;
  * <p>A {@linkplain Literal literal} for a
  * {@linkplain TemporalAttribute temporal} value.</p>
  *
- * @param <T> entity type.
  * @param <V> entity attribute type.
  * @since 1.1
  */
-public interface TemporalLiteral<T, V extends Temporal & Comparable<? extends Temporal>>
-        extends ComparableLiteral<T, V>, TemporalExpression<T, V> {
+public interface TemporalLiteral<V extends Temporal & Comparable<? extends Temporal>>
+        extends ComparableLiteral<V>, TemporalExpression<Object, V> {
 
     /**
      * <p>Creates a {@code TemporalLiteral} that represents the given value.
@@ -47,7 +46,7 @@ public interface TemporalLiteral<T, V extends Temporal & Comparable<? extends Te
      * @return a {@code TemporalLiteral} representing the value.
      * @throws NullPointerException if the value is {@code null}.
      */
-    static <V extends Temporal & Comparable<? extends Temporal>> TemporalLiteral<Object, V>
+    static <V extends Temporal & Comparable<? extends Temporal>> TemporalLiteral<V>
     of(V value) {
         return new TemporalLiteralRecord<>(value);
     }

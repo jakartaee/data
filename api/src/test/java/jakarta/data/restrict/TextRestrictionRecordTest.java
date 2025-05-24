@@ -40,7 +40,7 @@ class TextRestrictionRecordTest {
                 (BasicRestriction<Book, String>) _Book.title.like("%Java%");
 
         Like constraint = (Like) restriction.constraint();
-        StringLiteral<?> literal = (StringLiteral<?>) constraint.pattern();
+        StringLiteral literal = (StringLiteral) constraint.pattern();
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.expression()).isEqualTo(_Book.title);
@@ -58,7 +58,7 @@ class TextRestrictionRecordTest {
                 (BasicRestriction<Book, String>) _Book.title.like("%Java%").negate();
 
         NotLike constraint = (NotLike) restriction.constraint();
-        StringLiteral<?> literal = (StringLiteral<?>) constraint.pattern();
+        StringLiteral literal = (StringLiteral) constraint.pattern();
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.expression()).isEqualTo(_Book.title);
@@ -78,7 +78,7 @@ class TextRestrictionRecordTest {
         // TODO TextRestriction.ignoreCase vs TextAttribute.upper/lowercased
         //BasicRestriction<Book,String> caseInsensitiveRestriction = restriction.ignoreCase();
         Like constraint = (Like) restriction.constraint();
-        StringLiteral<?> literal = (StringLiteral<?>) constraint.pattern();
+        StringLiteral literal = (StringLiteral) constraint.pattern();
 
         SoftAssertions.assertSoftly(soft -> {
         //    soft.assertThat(caseInsensitiveRestriction.expression()).isEqualTo(_Book.title);
@@ -95,7 +95,7 @@ class TextRestrictionRecordTest {
                 (BasicRestriction<Book, String>) _Book.title.like("%Java%");
 
         Like constraint = (Like) restriction.constraint();
-        StringLiteral<?> literal = (StringLiteral<?>) constraint.pattern();
+        StringLiteral literal = (StringLiteral) constraint.pattern();
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.expression()).isEqualTo(_Book.title);
@@ -113,7 +113,7 @@ class TextRestrictionRecordTest {
                 (BasicRestriction<Book, String>) _Book.title.like("*Java??", '?', '*', '$');
 
         Like constraint = (Like) restriction.constraint();
-        StringLiteral<?> literal = (StringLiteral<?>) constraint.pattern();
+        StringLiteral literal = (StringLiteral) constraint.pattern();
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.expression()).isEqualTo(_Book.title);
@@ -165,14 +165,14 @@ class TextRestrictionRecordTest {
         Like notNotEndsWithJakartaEEConstraint =
                 (Like) notNotEndsWithJakartaEE.constraint();
 
-        StringLiteral<?> endsWithJakartaEELiteral =
-                (StringLiteral<?>) endsWithJakartaEEConstraint.pattern();
+        StringLiteral endsWithJakartaEELiteral =
+                (StringLiteral) endsWithJakartaEEConstraint.pattern();
 
-        StringLiteral<?> notEndsWithJakartaEELiteral =
-                (StringLiteral<?>) notEndsWithJakartaEEConstraint.pattern();
+        StringLiteral notEndsWithJakartaEELiteral =
+                (StringLiteral) notEndsWithJakartaEEConstraint.pattern();
 
-        StringLiteral<?> notNotEndsWithJakartaEELiteral =
-                (StringLiteral<?>) notNotEndsWithJakartaEEConstraint.pattern();
+        StringLiteral notNotEndsWithJakartaEELiteral =
+                (StringLiteral) notNotEndsWithJakartaEEConstraint.pattern();
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(endsWithJakartaEELiteral.value())
@@ -216,7 +216,7 @@ class TextRestrictionRecordTest {
 
         NotEqualTo<String> constraint =
                 (NotEqualTo<String>) restriction.constraint();
-        StringLiteral<?> literal = (StringLiteral<?>) constraint.expression();
+        StringLiteral literal = (StringLiteral) constraint.expression();
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.expression()).isEqualTo(_Book.author);
