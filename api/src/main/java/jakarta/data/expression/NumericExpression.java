@@ -138,7 +138,7 @@ public interface NumericExpression<T, N extends Number & Comparable<N>>
      *                 .lessThanEqual(33000.0));
      * </pre>
      *
-     * @param value the value to subtract. Must not be {@code null}.
+     * @param value the value to subtract from. Must not be {@code null}.
      * @return an expression for the function that computes the difference.
      * @throws NullPointerException if the supplied value is null.
      */
