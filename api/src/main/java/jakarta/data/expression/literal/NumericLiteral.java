@@ -27,23 +27,21 @@ import jakarta.data.metamodel.NumericAttribute;
  * <p>A {@linkplain Literal literal} for a
  * {@linkplain NumericAttribute numeric} value.</p>
  *
- * @param <T> entity type.
  * @param <N> entity attribute type.
  * @since 1.1
  */
-public interface NumericLiteral<T, N extends Number & Comparable<N>>
-        extends ComparableLiteral<T, N>, NumericExpression<T, N> {
+public interface NumericLiteral<N extends Number & Comparable<N>>
+        extends ComparableLiteral<N>, NumericExpression<Object, N> {
 
     /**
      * <p>Creates a {@code NumericLiteral} that represents the given value.</p>
      *
-     * @param <T>   entity type.
      * @param <N>   entity attribute type.
      * @param value an immutable numeric value. Must never be {@code null}.
      * @return a {@code NumericLiteral} representing the value.
      * @throws NullPointerException if the value is {@code null}.
      */
-    static <T, N extends Number & Comparable<N>> NumericLiteral<T, N> of(N value) {
+    static <N extends Number & Comparable<N>> NumericLiteral<N> of(N value) {
         return new NumericLiteralRecord<>(value);
     }
 

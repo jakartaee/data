@@ -76,7 +76,7 @@ public interface NumericExpression<T, N extends Number & Comparable<N>>
      * atLeast2YearsBeyondOriginalModelYear = cars.search(
      *         make,
      *         model,
-     *         _Car.firstModelYear.minus(_Car.year).negate().greaterThanEqual(2));
+     *         _Car.firstModelYear.minus(_Car.year).negated().greaterThanEqual(2));
      * </pre>
      *
      * @return an expression for the function that computes negation of value.
@@ -184,7 +184,8 @@ public interface NumericExpression<T, N extends Number & Comparable<N>>
      * @return an expression for the function that computes the sum.
      * @throws NullPointerException if the supplied value is null.
      */
-    default NumericExpression<T, N> plus(NumericExpression<T, N> expression) {
+    default NumericExpression<T, N> plus(
+            NumericExpression<? super T, N> expression) {
         return NumericOperatorExpression.of(PLUS, this, expression);
     }
 
@@ -205,7 +206,8 @@ public interface NumericExpression<T, N extends Number & Comparable<N>>
      * @return an expression for the function that computes the difference.
      * @throws NullPointerException if the supplied expression is null.
      */
-    default NumericExpression<T, N> minus(NumericExpression<T, N> expression) {
+    default NumericExpression<T, N> minus(
+            NumericExpression<? super T, N> expression) {
         return NumericOperatorExpression.of(MINUS, this, expression);
     }
 
@@ -228,7 +230,7 @@ public interface NumericExpression<T, N extends Number & Comparable<N>>
      * @throws NullPointerException if the supplied factor expression is null.
      */
     default NumericExpression<T, N> times(
-            NumericExpression<T, N> factorExpression) {
+            NumericExpression<? super T, N> factorExpression) {
         return NumericOperatorExpression.of(TIMES, this, factorExpression);
     }
 
@@ -251,7 +253,7 @@ public interface NumericExpression<T, N extends Number & Comparable<N>>
      * @throws NullPointerException if the supplied divisor expression is null.
      */
     default NumericExpression<T, N> divide(
-            NumericExpression<T, N> divisorExpression) {
+            NumericExpression<? super T, N> divisorExpression) {
         return NumericOperatorExpression.of(DIVIDE, this, divisorExpression);
     }
 

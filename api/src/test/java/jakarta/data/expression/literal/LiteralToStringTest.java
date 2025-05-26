@@ -37,19 +37,19 @@ class LiteralToStringTest {
     @DisplayName("ComparableLiteral.toString must output expected value")
     void testComparableLiteralToString() {
         final String TEST_UUID = "73d518c4-b7f6-4c3b-9f63-60a045a43bb8";
-        ComparableLiteral<?, Boolean> booleanLiteral =
+        ComparableLiteral<Boolean> booleanLiteral =
                 ComparableLiteral.of(true);
 
-        ComparableLiteral<?, Character> charLiteral =
+        ComparableLiteral<Character> charLiteral =
                 ComparableLiteral.of('D');
 
-        ComparableLiteral<?, Character> singleQuoteLiteral =
+        ComparableLiteral<Character> singleQuoteLiteral =
                 ComparableLiteral.of('\'');
 
-        ComparableLiteral<?, Month> monthLiteral =
+        ComparableLiteral<Month> monthLiteral =
                 ComparableLiteral.of(Month.MAY);
 
-        ComparableLiteral<?, UUID> uuidLiteral =
+        ComparableLiteral<UUID> uuidLiteral =
                 ComparableLiteral.of(UUID.fromString(TEST_UUID));
 
         SoftAssertions.assertSoftly(soft -> {
@@ -74,16 +74,16 @@ class LiteralToStringTest {
     @Test
     @DisplayName("NumericLiteral.toString must output expected value")
     void testNumericLiteralToString() {
-        NumericLiteral<?, Integer> intLiteral = NumericLiteral.of(12);
+        NumericLiteral<Integer> intLiteral = NumericLiteral.of(12);
 
-        NumericLiteral<?, Long> longLiteral = NumericLiteral.of(123456789L);
+        NumericLiteral<Long> longLiteral = NumericLiteral.of(123456789L);
 
-        NumericLiteral<?, Byte> byteLiteral = NumericLiteral.of((byte) 68);
+        NumericLiteral<Byte> byteLiteral = NumericLiteral.of((byte) 68);
 
-        NumericLiteral<?, BigInteger> bigIntegerLiteral =
+        NumericLiteral<BigInteger> bigIntegerLiteral =
                 NumericLiteral.of(BigInteger.valueOf(10203040506L));
 
-        NumericLiteral<?, BigDecimal> bigDecimalLiteral =
+        NumericLiteral<BigDecimal> bigDecimalLiteral =
                 NumericLiteral.of(BigDecimal.valueOf(123456789, 2));
 
         SoftAssertions.assertSoftly(soft -> {
@@ -107,7 +107,7 @@ class LiteralToStringTest {
     @Test
     @DisplayName("Literal.toString must output expected value")
     void testObjectLiteralToString() {
-        Literal<?, ZoneId> literal = Literal.of(ZoneId.of("America/Chicago"));
+        Literal<ZoneId> literal = Literal.of(ZoneId.of("America/Chicago"));
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(literal.toString())
@@ -120,8 +120,8 @@ class LiteralToStringTest {
     @Test
     @DisplayName("Stringiteral.toString must output expected value")
     void testStringLiteralToString() {
-        StringLiteral<?> literal = StringLiteral.of("Hello!");
-        StringLiteral<?> singleQuoteLiteral =
+        StringLiteral literal = StringLiteral.of("Hello!");
+        StringLiteral singleQuoteLiteral =
                 StringLiteral.of("Jakarta Data's second release");
 
         SoftAssertions.assertSoftly(soft -> {
@@ -136,16 +136,16 @@ class LiteralToStringTest {
     @Test
     @DisplayName("TemporalLiteral.toString must output expected value")
     void testTemporalLiteralToString() {
-        TemporalLiteral<?, Instant> instantLiteral =
+        TemporalLiteral<Instant> instantLiteral =
                 TemporalLiteral.of(Instant.ofEpochMilli(1746825482575L));
 
-        TemporalLiteral<?, LocalDate> dateLiteral =
+        TemporalLiteral<LocalDate> dateLiteral =
                 TemporalLiteral.of(LocalDate.of(2025, 5, 8));
 
-        TemporalLiteral<?, LocalDateTime> datetimeLiteral =
+        TemporalLiteral<LocalDateTime> datetimeLiteral =
                 TemporalLiteral.of(LocalDateTime.of(2025, 5, 9, 16, 15, 42));
 
-        TemporalLiteral<?, LocalTime> timeLiteral =
+        TemporalLiteral<LocalTime> timeLiteral =
                 TemporalLiteral.of(LocalTime.of(18, 8, 30));
 
         SoftAssertions.assertSoftly(soft -> {

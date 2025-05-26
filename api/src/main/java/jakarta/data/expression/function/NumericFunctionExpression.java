@@ -28,7 +28,7 @@ public interface NumericFunctionExpression<T, N extends Number & Comparable<N>>
         extends FunctionExpression<T, N>, NumericExpression<T, N> {
 
     String ABS = "abs";
-    String NEG = "neg";
+    String NEG = "-";
     String LENGTH = "length";
 
     static <T, N extends Number & Comparable<N>> NumericFunctionExpression<T, N>

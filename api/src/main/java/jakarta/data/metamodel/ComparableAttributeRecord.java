@@ -20,4 +20,9 @@ package jakarta.data.metamodel;
 record ComparableAttributeRecord<T, V extends Comparable<?>>
         (Class<T> declaringType, String name, Class<V> attributeType)
         implements ComparableAttribute<T, V> {
+
+    @Override
+    public String toString() {
+        return declaringType.getSimpleName().toLowerCase() + '.' + name;
+    }
 }

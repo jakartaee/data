@@ -61,7 +61,7 @@ class ComparableLiteralTest {
     @ParameterizedTest(name = "value = {0}")
     @ValueSource(ints = {1, 42, 999})
     void shouldReturnNumericLiteralFromInt(int value) {
-        var literal = ComparableLiteral.<Dummy, Integer>of(value);
+        var literal = ComparableLiteral.of(value);
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(literal).isInstanceOf(ComparableLiteral.class);
@@ -78,11 +78,11 @@ class ComparableLiteralTest {
         var bigDecimal = new BigDecimal("123.45");
         var bigInteger = new BigInteger("999999");
 
-        var inst = ComparableLiteral.<Dummy, Instant>of(now);
-        var localDate = ComparableLiteral.<Dummy, LocalDate>of(date);
-        var localTime = ComparableLiteral.<Dummy, LocalTime>of(time);
-        var dec = ComparableLiteral.<Dummy, BigDecimal>of(bigDecimal);
-        var bigint = ComparableLiteral.<Dummy, BigInteger>of(bigInteger);
+        var inst = ComparableLiteral.of(now);
+        var localDate = ComparableLiteral.of(date);
+        var localTime = ComparableLiteral.of(time);
+        var dec = ComparableLiteral.of(bigDecimal);
+        var bigint = ComparableLiteral.of(bigInteger);
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(inst.value()).isEqualTo(now);
@@ -96,7 +96,7 @@ class ComparableLiteralTest {
     @DisplayName("should support StringLiteral via of")
     @org.junit.jupiter.api.Test
     void shouldReturnStringLiteral() {
-        var literal = ComparableLiteral.<Dummy, String>of("Jakarta");
+        var literal = ComparableLiteral.of("Jakarta");
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(literal).isInstanceOf(ComparableLiteral.class);
@@ -108,7 +108,7 @@ class ComparableLiteralTest {
     @ParameterizedTest
     @ValueSource(longs = {42L, 99L})
     void shouldReturnNumericLiteralFromLong(long value) {
-        var literal = ComparableLiteral.<Dummy, Long>of(value);
+        var literal = ComparableLiteral.of(value);
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(literal).isInstanceOf(ComparableLiteral.class);
@@ -120,7 +120,7 @@ class ComparableLiteralTest {
     @ParameterizedTest
     @ValueSource(floats = {3.14f, 2.71f})
     void shouldReturnNumericLiteralFromFloat(float value) {
-        var literal = ComparableLiteral.<Dummy, Float>of(value);
+        var literal = ComparableLiteral.of(value);
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(literal).isInstanceOf(ComparableLiteral.class);
@@ -132,7 +132,7 @@ class ComparableLiteralTest {
     @ParameterizedTest
     @ValueSource(doubles = {1.618, 2.718})
     void shouldReturnNumericLiteralFromDouble(double value) {
-        var literal = ComparableLiteral.<Dummy, Double>of(value);
+        var literal = ComparableLiteral.of(value);
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(literal).isInstanceOf(ComparableLiteral.class);
@@ -145,7 +145,7 @@ class ComparableLiteralTest {
     @MethodSource("supportedLiterals")
     void shouldCreateLiteralsFromAllSupportedTypes(Object input) {
         @SuppressWarnings("unchecked")
-        var literal = ComparableLiteral.<Dummy, Comparable<Object>>of((Comparable<Object>) input);
+        var literal = ComparableLiteral.of((Comparable<Object>) input);
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(literal).isInstanceOf(ComparableLiteral.class);
@@ -157,7 +157,7 @@ class ComparableLiteralTest {
     @DisplayName("should support StringLiteral explicitly")
     @Test
     void shouldSupportStringLiteral() {
-        var literal = ComparableLiteral.<Dummy, String>of("Jakarta");
+        var literal = ComparableLiteral.of("Jakarta");
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(literal.value()).isEqualTo("Jakarta");

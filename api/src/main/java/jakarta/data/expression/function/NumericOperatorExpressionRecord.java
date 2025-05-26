@@ -25,8 +25,8 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 record NumericOperatorExpressionRecord<T, N extends Number & Comparable<N>>
-        (Operator operator, NumericExpression<T, N> left,
-         NumericExpression<T, N> right)
+        (Operator operator, NumericExpression<? super T, N> left,
+         NumericExpression<? super T, N> right)
         implements NumericOperatorExpression<T, N> {
 
     NumericOperatorExpressionRecord {
@@ -73,5 +73,38 @@ record NumericOperatorExpressionRecord<T, N extends Number & Comparable<N>>
                     Messages.get("009.unknown.number.type",
                                  number.getClass().getName()));
         };
+    }
+
+    @Override
+    public String toString() {
+        char symbol = switch (operator) {
+            case PLUS   -> '+';
+            case MINUS  -> '-';
+            case TIMES  -> '*';
+            case DIVIDE -> '/';
+            default     -> throw new IllegalStateException();
+        };
+
+        String leftString = left.toString();
+        String rightString = right.toString();
+
+        StringBuilder expression =
+                new StringBuilder(leftString.length() + rightString.length() + 7);
+
+        if (left instanceof NumericOperatorExpression) {
+            expression.append('(').append(leftString).append(')');
+        } else {
+            expression.append(leftString);
+        }
+
+        expression.append(' ').append(symbol).append(' ');
+
+        if (right instanceof NumericOperatorExpression) {
+            expression.append('(').append(rightString).append(')');
+        } else {
+            expression.append(rightString);
+        }
+
+        return expression.toString();
     }
 }

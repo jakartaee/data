@@ -31,9 +31,9 @@ public interface NumericOperatorExpression<T, N extends Number & Comparable<N>>
 
     Operator operator();
 
-    Expression<T, N> left();
+    Expression<? super T, N> left();
 
-    Expression<T, N> right();
+    Expression<? super T, N> right();
 
     static <T, N extends Number & Comparable<N>> NumericOperatorExpression<T, N> of(
             Operator operator,
@@ -50,7 +50,7 @@ public interface NumericOperatorExpression<T, N extends Number & Comparable<N>>
     static <T, N extends Number & Comparable<N>> NumericOperatorExpression<T, N> of(
             Operator operator,
             NumericExpression<T, N> left,
-            NumericExpression<T, N> right) {
+            NumericExpression<? super T, N> right) {
         return new NumericOperatorExpressionRecord<>(operator, left, right);
     }
 }

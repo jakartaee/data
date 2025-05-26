@@ -47,11 +47,10 @@ import jakarta.data.restrict.Restriction;
  * _Car.price.asDouble().times(0.1).lessThan(discount)
  * </pre>
  *
- * @param <T> entity type.
  * @param <V> entity attribute type.
  * @since 1.1
  */
-public interface Literal<T, V> extends Expression<T, V> {
+public interface Literal<V> extends Expression<Object, V> {
     /**
      * <p>Returns the value represented by this {@code Literal}.
      * The value will never be {@code null}.</p>
@@ -71,7 +70,6 @@ public interface Literal<T, V> extends Expression<T, V> {
      * or {@link ComparableLiteral#of(Comparable) ComparableLiteral},
      * should be used instead wherever possible.</p>
      *
-     * @param <T>   entity type.
      * @param <V>   entity attribute type.
      * @param value an immutable value or a mutable value that must never be
      *              modified after it is supplied to this method. Must never be
@@ -80,9 +78,9 @@ public interface Literal<T, V> extends Expression<T, V> {
      * @throws NullPointerException if the value is {@code null}.
      */
     @SuppressWarnings("unchecked")
-    static <T, V> Literal<T, V> of(V value) {
+    static <V> Literal<V> of(V value) {
         if (value instanceof Comparable<?> comparable) {
-            return (Literal<T, V>) ComparableLiteral.of(comparable);
+            return (Literal<V>) ComparableLiteral.of(comparable);
         } else {
             return new LiteralRecord<>(value);
         }
