@@ -147,6 +147,19 @@ public interface NumericExpression<T, N extends Number & Comparable<N>>
     }
 
     /**
+     * <p>Represents the division function that computes the quotient of
+     * the given value divided by the value to which the current expression
+     * evaluates.</p>
+     *
+     * @param value the value to divide into. Must not be {@code null}.
+     * @return an expression for the function that computes the quotient.
+     * @throws NullPointerException if the supplied value is null.
+     */
+    default NumericExpression<T, N> dividedInto(N value) {
+        return NumericOperatorExpression.of(DIVIDE, value, this);
+    }
+
+    /**
      * <p>Represents the multiplication function that computes the product of
      * the value to which the current expression evaluates times the given
      * factor.</p>
