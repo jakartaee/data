@@ -58,7 +58,7 @@ public interface ComparableLiteral<V extends Comparable<?>>
     @SuppressWarnings("unchecked")
     static <V extends Comparable<?>> ComparableLiteral<V> of(V value) {
         // Subtypes of Number and Temporal are needed here because
-        // NumericExperssion has N extends Number & Comparable<N>
+        // NumericExpression has N extends Number & Comparable<N>
         // and
         // TemporalExpression has V extends Temporal & Comparable<? extends Temporal>
         if (value instanceof String s) {
@@ -141,5 +141,5 @@ public interface ComparableLiteral<V extends Comparable<?>>
      * @return a {@code String} representing the literal value.
      */
     @Override
-    public String toString();
+    String toString();
 }

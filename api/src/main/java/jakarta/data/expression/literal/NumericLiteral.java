@@ -86,5 +86,5 @@ public interface NumericLiteral<N extends Number & Comparable<N>>
      * @return a {@code String} representing the literal numeric value.
      */
     @Override
-    public String toString();
+    String toString();
 }

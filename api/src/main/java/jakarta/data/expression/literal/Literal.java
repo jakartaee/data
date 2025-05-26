@@ -79,8 +79,8 @@ public interface Literal<V> extends Expression<Object, V> {
      */
     @SuppressWarnings("unchecked")
     static <V> Literal<V> of(V value) {
-        if (value instanceof Comparable<?> c) {
-            return (Literal<V>) ComparableLiteral.of(c);
+        if (value instanceof Comparable<?> comparable) {
+            return (Literal<V>) ComparableLiteral.of(comparable);
         } else {
             return new LiteralRecord<>(value);
         }
@@ -108,5 +108,5 @@ public interface Literal<V> extends Expression<Object, V> {
      * @return a {@code String} representing the literal value.
      */
     @Override
-    public String toString();
+    String toString();
 }

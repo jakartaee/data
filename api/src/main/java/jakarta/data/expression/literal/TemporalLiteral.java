@@ -100,5 +100,5 @@ public interface TemporalLiteral<V extends Temporal & Comparable<? extends Tempo
      * @return a {@code String} representing the literal temporal value.
      */
     @Override
-    public String toString();
+    String toString();
 }

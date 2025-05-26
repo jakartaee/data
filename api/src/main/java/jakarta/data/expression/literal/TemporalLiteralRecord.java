@@ -39,9 +39,10 @@ record TemporalLiteralRecord<V extends Temporal & Comparable<? extends Temporal>
 
     @Override
     public String toString() {
-        Temporal temporal = value instanceof Instant i
-                ? i.atOffset(ZoneOffset.UTC).toLocalDateTime()
-                : value;
+        final Temporal temporal =
+                value instanceof Instant instant
+                        ? instant.atOffset(ZoneOffset.UTC).toLocalDateTime()
+                        : value;
 
         return switch (temporal) {
             case LocalDateTime d ->

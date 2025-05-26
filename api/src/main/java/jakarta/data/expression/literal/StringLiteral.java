@@ -53,5 +53,5 @@ public interface StringLiteral
      * @return the {@code String} value escaped and enclosed in single quotes.
      */
     @Override
-    public String toString();
+    String toString();
 }
