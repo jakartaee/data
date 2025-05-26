@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022,2024 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2025 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ package jakarta.data.page;
 import jakarta.data.Limit;
 import jakarta.data.Order;
 import jakarta.data.Sort;
+import jakarta.data.repository.First;
 import jakarta.data.repository.OrderBy;
 
 import java.util.List;
@@ -62,7 +63,7 @@ import java.util.Optional;
  * <li>a parameter of type {@code PageRequest} and a parameter of type
  *     {@link Limit}, or</li>
  * <li>a parameter of type {@code PageRequest} in combination with the
- *     keyword {@code First}.</li>
+ *     {@link First} annotation or the keyword {@code First}.</li>
  * </ul>
  */
 public interface PageRequest {

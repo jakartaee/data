@@ -31,4 +31,14 @@ record TemporalPathRecord<T, U, V extends Temporal & Comparable<? extends Tempor
         Objects.requireNonNull(expression, "The expression is required");
         Objects.requireNonNull(attribute, "The attribute is required");
     }
+
+    @Override
+    public String toString() {
+        String expr = expression.toString();
+        String attrName = attribute.name();
+        StringBuilder path =
+                new StringBuilder(expr.length() + 1 + attrName.length());
+        path.append(expr).append('.').append(attrName);
+        return path.toString();
+    }
 }

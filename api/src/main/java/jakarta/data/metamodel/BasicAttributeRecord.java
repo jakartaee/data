@@ -20,4 +20,9 @@ package jakarta.data.metamodel;
 record BasicAttributeRecord<T, V>
         (Class<T> declaringType, String name, Class<V> attributeType)
         implements BasicAttribute<T, V> {
+
+    @Override
+    public String toString() {
+        return declaringType.getSimpleName().toLowerCase() + '.' + name;
+    }
 }
