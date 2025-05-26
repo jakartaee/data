@@ -22,4 +22,9 @@ import java.time.temporal.Temporal;
 record TemporalAttributeRecord<T, V extends Temporal & Comparable<? extends Temporal>>
         (Class<T> declaringType, String name, Class<V> attributeType)
         implements TemporalAttribute<T, V> {
+
+    @Override
+    public String toString() {
+        return declaringType.getSimpleName().toLowerCase() + '.' + name;
+    }
 }

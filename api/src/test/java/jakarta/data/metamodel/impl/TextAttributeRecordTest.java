@@ -17,7 +17,11 @@
  */
 package jakarta.data.metamodel.impl;
 
+import jakarta.data.metamodel.SortableAttribute;
 import jakarta.data.metamodel.TextAttribute;
+import jakarta.data.metamodel.impl.SortableAttributeRecordTest.SimpleEntity;
+import jakarta.data.mock.entity.Book;
+
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,8 +34,10 @@ class TextAttributeRecordTest {
         String ID = "id";
         String NAME = "name";
 
-        TextAttribute<SimpleEntity> id = new TextAttributeRecord<>(ID);
-        TextAttribute<SimpleEntity> name = new TextAttributeRecord<>(NAME);
+        TextAttribute<SimpleEntity> id =
+                TextAttribute.of(SimpleEntity.class, ID);
+        TextAttribute<SimpleEntity> name =
+                TextAttribute.of(SimpleEntity.class, NAME);
     }
 
     // A simple test entity
@@ -43,11 +49,24 @@ class TextAttributeRecordTest {
     @Test
     @DisplayName("should create text attribute record and validate interface type")
     void shouldCreateTextAttributeRecord() {
-        var attribute = new TextAttributeRecord<SimpleEntity>("name");
+        var old = new TextAttributeRecord<SimpleEntity>("name");
+        var title = TextAttribute.of(Book.class, "title");
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(attribute.name()).isEqualTo("name");
-            soft.assertThat(attribute).isInstanceOf(TextAttribute.class);
+            // old implementation without types
+            soft.assertThat(old.name()).isEqualTo("name");
+            soft.assertThat(old).isInstanceOf(TextAttribute.class);
+            soft.assertThat(old.toString()).isNotNull();
+
+            // new implementation including types
+            soft.assertThat(title.name()).isEqualTo("title");
+            soft.assertThat(title).isInstanceOf(TextAttribute.class);
+            soft.assertThat(title.toString())
+                .isEqualTo("book.title");
+            soft.assertThat(title.declaringType())
+                .isEqualTo(Book.class);
+            soft.assertThat(title.attributeType())
+                .isEqualTo(String.class);
         });
     }
 

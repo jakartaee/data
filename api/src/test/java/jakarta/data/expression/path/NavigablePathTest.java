@@ -57,6 +57,8 @@ class NavigablePathTest {
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(path).isNotNull();
             soft.assertThat(path).isInstanceOf(NavigableExpression.class);
+            soft.assertThat(path.toString())
+                .isEqualTo("book.publisher.name");
         });
     }
 }

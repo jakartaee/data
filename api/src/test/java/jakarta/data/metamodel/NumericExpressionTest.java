@@ -18,11 +18,13 @@
 package jakarta.data.metamodel;
 
 
+import jakarta.data.expression.NumericExpression;
 import jakarta.data.expression.function.NumericCast;
 import jakarta.data.expression.function.NumericFunctionExpression;
 import jakarta.data.expression.function.NumericOperatorExpression;
 import jakarta.data.expression.literal.Literal;
-import jakarta.data.metamodel.NumericAttribute;
+import jakarta.data.expression.literal.NumericLiteral;
+
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -38,8 +40,12 @@ class NumericExpressionTest {
     // Static metamodel
     interface _Invoice {
         String AMOUNT = "amount";
+        String PERCENTDISCOUNT = "percentDiscount";
 
-        NumericAttribute<Invoice, Integer> amount = NumericAttribute.of(Invoice.class, AMOUNT, Integer.class);
+        NumericAttribute<Invoice, Integer> amount =
+                NumericAttribute.of(Invoice.class, AMOUNT, Integer.class);
+        NumericAttribute<Invoice, Integer> percentDiscount =
+                NumericAttribute.of(Invoice.class, PERCENTDISCOUNT, Integer.class);
     }
 
     @Test
@@ -48,7 +54,8 @@ class NumericExpressionTest {
         var expression = (NumericFunctionExpression<?, ?>) _Invoice.amount.abs();
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(expression.name()).isEqualTo("abs");
+            soft.assertThat(expression.name())
+                .isEqualTo(NumericFunctionExpression.ABS);
             soft.assertThat(expression.arguments().get(0)).isEqualTo(_Invoice.amount);
         });
     }
@@ -59,7 +66,8 @@ class NumericExpressionTest {
         var expression = (NumericFunctionExpression<?, ?>) _Invoice.amount.negated();
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(expression.name()).isEqualTo("neg");
+            soft.assertThat(expression.name())
+                .isEqualTo(NumericFunctionExpression.NEG);
             soft.assertThat(expression.arguments().get(0)).isEqualTo(_Invoice.amount);
         });
     }
@@ -73,6 +81,8 @@ class NumericExpressionTest {
             soft.assertThat(expression.operator()).isEqualTo(NumericOperatorExpression.Operator.PLUS);
             soft.assertThat(expression.left()).isEqualTo(_Invoice.amount);
             soft.assertThat(expression.right()).isEqualTo(Literal.of(10));
+            soft.assertThat(expression.toString())
+                .isEqualTo("invoice.amount + 10");
         });
     }
 
@@ -85,6 +95,8 @@ class NumericExpressionTest {
             soft.assertThat(expression.operator()).isEqualTo(NumericOperatorExpression.Operator.MINUS);
             soft.assertThat(expression.left()).isEqualTo(_Invoice.amount);
             soft.assertThat(expression.right()).isEqualTo(Literal.of(5));
+            soft.assertThat(expression.toString())
+                .isEqualTo("invoice.amount - 5");
         });
     }
 
@@ -97,6 +109,8 @@ class NumericExpressionTest {
             soft.assertThat(expression.operator()).isEqualTo(NumericOperatorExpression.Operator.TIMES);
             soft.assertThat(expression.left()).isEqualTo(_Invoice.amount);
             soft.assertThat(expression.right()).isEqualTo(Literal.of(2));
+            soft.assertThat(expression.toString())
+                .isEqualTo("invoice.amount * 2");
         });
     }
 
@@ -109,6 +123,8 @@ class NumericExpressionTest {
             soft.assertThat(expression.operator()).isEqualTo(NumericOperatorExpression.Operator.DIVIDE);
             soft.assertThat(expression.left()).isEqualTo(_Invoice.amount);
             soft.assertThat(expression.right()).isEqualTo(Literal.of(4));
+            soft.assertThat(expression.toString())
+                .isEqualTo("invoice.amount / 4");
         });
     }
 
@@ -121,6 +137,8 @@ class NumericExpressionTest {
             soft.assertThat(expression.operator()).isEqualTo(NumericOperatorExpression.Operator.PLUS);
             soft.assertThat(expression.left()).isEqualTo(_Invoice.amount);
             soft.assertThat(expression.right()).isEqualTo(_Invoice.amount);
+            soft.assertThat(expression.toString())
+                .isEqualTo("invoice.amount + invoice.amount");
         });
     }
 
@@ -133,6 +151,8 @@ class NumericExpressionTest {
             soft.assertThat(expression.operator()).isEqualTo(NumericOperatorExpression.Operator.MINUS);
             soft.assertThat(expression.left()).isEqualTo(_Invoice.amount);
             soft.assertThat(expression.right()).isEqualTo(_Invoice.amount);
+            soft.assertThat(expression.toString())
+                .isEqualTo("invoice.amount - invoice.amount");
         });
     }
 
@@ -145,6 +165,8 @@ class NumericExpressionTest {
             soft.assertThat(expression.operator()).isEqualTo(NumericOperatorExpression.Operator.TIMES);
             soft.assertThat(expression.left()).isEqualTo(_Invoice.amount);
             soft.assertThat(expression.right()).isEqualTo(_Invoice.amount);
+            soft.assertThat(expression.toString())
+                .isEqualTo("invoice.amount * invoice.amount");
         });
     }
 
@@ -157,6 +179,8 @@ class NumericExpressionTest {
             soft.assertThat(expression.operator()).isEqualTo(NumericOperatorExpression.Operator.DIVIDE);
             soft.assertThat(expression.left()).isEqualTo(_Invoice.amount);
             soft.assertThat(expression.right()).isEqualTo(_Invoice.amount);
+            soft.assertThat(expression.toString())
+                .isEqualTo("invoice.amount / invoice.amount");
         });
     }
 
@@ -167,6 +191,8 @@ class NumericExpressionTest {
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(cast.type()).isEqualTo(Long.class);
+            soft.assertThat(cast.toString())
+                .isEqualTo("CAST(invoice.amount AS LONG)");
         });
     }
 
@@ -177,6 +203,8 @@ class NumericExpressionTest {
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(cast.type()).isEqualTo(Double.class);
+            soft.assertThat(cast.toString())
+                .isEqualTo("CAST(invoice.amount AS DOUBLE)");
         });
     }
 
@@ -197,6 +225,23 @@ class NumericExpressionTest {
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(cast.type()).isEqualTo(BigDecimal.class);
+        });
+    }
+
+    @Test
+    @DisplayName("toString output must include parentheses where needed")
+    void shouldIncludeParenthesesInToString() {
+        // TODO ignore the warning and awkward casting for now. It will be
+        // properly solved later by #1116
+        @SuppressWarnings("unchecked")
+        NumericExpression<Invoice, Integer> expression = _Invoice.amount.times(
+                ((NumericExpression<Invoice, Integer>) (NumericExpression<?, Integer>)
+                        NumericLiteral.of(100)).minus(_Invoice.percentDiscount))
+                .divide(100);
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(expression.toString())
+                .isEqualTo("(invoice.amount * (100 - invoice.percentDiscount)) / 100");
         });
     }
 }

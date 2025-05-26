@@ -25,6 +25,10 @@ public interface CurrentTime<T> extends TemporalExpression<T, LocalTime> {
 
     static <T> CurrentTime<T> now() {
         return new CurrentTime<>() {
+            @Override
+            public String toString() {
+                return "LOCAL TIME";
+            }
         };
     }
 }
