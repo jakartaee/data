@@ -24,8 +24,8 @@ import org.junit.jupiter.api.Test;
 class LiteralRecordTest {
     // Static metamodel using LiteralRecord
     interface _SimpleEntity {
-        Literal<SimpleEntity, String> name = new LiteralRecord<>("name");
-        Literal<SimpleEntity, Integer> age = new LiteralRecord<>(42);
+        Literal<String> name = new LiteralRecord<>("name");
+        Literal<Integer> age = new LiteralRecord<>(42);
     }
 
     // Simple mock entity
@@ -37,7 +37,7 @@ class LiteralRecordTest {
     @Test
     @DisplayName("should create LiteralRecord and return its value")
     void shouldCreateLiteralRecord() {
-        var literal = new LiteralRecord<SimpleEntity, String>("literal-value");
+        var literal = new LiteralRecord<>("literal-value");
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(literal.value()).isEqualTo("literal-value");
@@ -48,8 +48,8 @@ class LiteralRecordTest {
     @Test
     @DisplayName("should support equals and hashCode for identical values")
     void shouldSupportEqualsAndHashCode() {
-        var first = new LiteralRecord<SimpleEntity, Integer>(10);
-        var second = new LiteralRecord<SimpleEntity, Integer>(10);
+        var first = new LiteralRecord<>(10);
+        var second = new LiteralRecord<>(10);
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(first).isEqualTo(second);
@@ -60,8 +60,8 @@ class LiteralRecordTest {
     @Test
     @DisplayName("should not be equal for different values")
     void shouldNotEqualDifferentValues() {
-        var one = new LiteralRecord<SimpleEntity, String>("one");
-        var two = new LiteralRecord<SimpleEntity, String>("two");
+        var one = new LiteralRecord<>("one");
+        var two = new LiteralRecord<>("two");
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(one).isNotEqualTo(two);
@@ -72,7 +72,7 @@ class LiteralRecordTest {
     @DisplayName("should throw NullPointerException when value is null")
     void shouldThrowWhenValueIsNull() {
         org.junit.jupiter.api.Assertions.assertThrows(NullPointerException.class, () -> {
-            new LiteralRecord<SimpleEntity, Object>(null);
+            new LiteralRecord<>(null);
         }, "The value argument is required");
     }
 }

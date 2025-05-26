@@ -70,7 +70,7 @@ class ExpressionTest {
             (BasicRestriction<Book, String>) titleWithEE;
 
         EqualTo<String> constraint = (EqualTo<String>) restriction.constraint();
-        StringLiteral<?> literal = (StringLiteral<?>) constraint.expression();
+        StringLiteral literal = (StringLiteral) constraint.expression();
 
         TextFunctionExpression<Book> upperExpression =
             (TextFunctionExpression<Book>) restriction.expression();
@@ -88,8 +88,8 @@ class ExpressionTest {
         assertInstanceOf(NumericLiteral.class, rightArgs.get(1));
 
         @SuppressWarnings("unchecked")
-        NumericLiteral<Book, Integer> rightArg1 =
-            (NumericLiteral<Book, Integer>) rightArgs.get(1);
+        NumericLiteral<Integer> rightArg1 =
+            (NumericLiteral<Integer>) rightArgs.get(1);
 
         @SuppressWarnings("unchecked")
         TextFunctionExpression<Book> leftExpression =
@@ -101,8 +101,8 @@ class ExpressionTest {
         assertInstanceOf(NumericLiteral.class, leftArgs.get(1));
 
         @SuppressWarnings("unchecked")
-        NumericLiteral<Book, Integer> leftArg1 =
-            (NumericLiteral<Book, Integer>) leftArgs.get(1);
+        NumericLiteral<Integer> leftArg1 =
+            (NumericLiteral<Integer>) leftArgs.get(1);
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(leftExpression.name())
@@ -140,8 +140,8 @@ class ExpressionTest {
         LessThanOrEqual<Integer> constraint =
             (LessThanOrEqual<Integer>) restriction.constraint();
 
-        NumericLiteral<?, Integer> literal =
-            (NumericLiteral<?, Integer>) constraint.bound();
+        NumericLiteral<?> literal =
+            (NumericLiteral<?>) constraint.bound();
 
         NumericFunctionExpression<Book, Integer> lengthExpression =
             (NumericFunctionExpression<Book, Integer>) restriction.expression();

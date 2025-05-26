@@ -120,7 +120,8 @@ public interface TextExpression<T> extends ComparableExpression<T, String> {
      *         value.
      * @throws NullPointerException if the suffix expression is {@code null}.
      */
-    default TextExpression<T> append(TextExpression<? super T> suffixExpression) {
+    default TextExpression<T> append(
+            TextExpression<? super T> suffixExpression) {
         return TextFunctionExpression.of(CONCAT, suffixExpression, this);
     }
 
