@@ -30,7 +30,7 @@ package jakarta.data.expression;
  * @param <V> entity attribute type.
  * @since 1.1
  */
-public interface LiteralExpression<T, V> extends Expression<T, V> {
+public interface LiteralExpression<V> extends Expression<Object, V> {
 
     /**
      * <p>Returns a {@code String} representing the literal value. In some
