@@ -17,21 +17,12 @@
  */
 package jakarta.data.metamodel;
 
-<<<<<<< HEAD
-
+import jakarta.data.expression.LiteralExpression;
 import jakarta.data.expression.NumericExpression;
 import jakarta.data.expression.function.NumericCast;
 import jakarta.data.expression.function.NumericFunctionExpression;
 import jakarta.data.expression.function.NumericOperatorExpression;
-import jakarta.data.expression.literal.Literal;
-import jakarta.data.expression.literal.NumericLiteral;
 
-=======
-import jakarta.data.expression.LiteralExpression;
-import jakarta.data.expression.function.NumericCast;
-import jakarta.data.expression.function.NumericFunctionExpression;
-import jakarta.data.expression.function.NumericOperatorExpression;
->>>>>>> 1fccdff2 (Remove literals from the API)
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -246,12 +237,9 @@ class NumericExpressionTest {
     @Test
     @DisplayName("toString output must include parentheses where needed")
     void shouldIncludeParenthesesInToString() {
-        // TODO ignore the warning and awkward casting for now. It will be
-        // properly solved later by #1116
-        @SuppressWarnings("unchecked")
-        NumericExpression<Invoice, Integer> expression = _Invoice.amount.times(
-                ((NumericExpression<Invoice, Integer>) (NumericExpression<?, Integer>)
-                        NumericLiteral.of(100)).minus(_Invoice.percentDiscount))
+        NumericExpression<Invoice, Integer> expression =
+                _Invoice.amount.times(
+                        _Invoice.percentDiscount.subtractedFrom(100))
                 .divide(100);
 
         SoftAssertions.assertSoftly(soft -> {

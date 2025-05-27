@@ -26,7 +26,6 @@ package jakarta.data.expression;
  * _Car.year.greaterThanEqual(_Car.firstModelYear.plus(2))
  * </pre>
  *
- * @param <T> entity type.
  * @param <V> entity attribute type.
  * @since 1.1
  */
