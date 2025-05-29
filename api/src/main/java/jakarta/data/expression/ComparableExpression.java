@@ -73,11 +73,11 @@ public interface ComparableExpression<T, V extends Comparable<?>>
      *
      * <p>Example:</p>
      * <pre>
-     * preOwnedButNotFirstOrSecondModelYear = cars.search(
+     * preOwnedInRangeOfModelYears = cars.search(
      *         make,
      *         model,
      *         _Car.year.between(_Car.firstModelYear.plus(2),
-     *                           NumericLiteral.of(Year.now().getValue() - 1)));
+     *                           _Car.firstModelYear.plus(5)));
      * </pre>
      *
      * @param minExpression expression that evaluates to the lower bound
