@@ -19,12 +19,12 @@ package jakarta.data.expression;
 
 import jakarta.data.constraint.Between;
 import jakarta.data.constraint.LessThan;
-import jakarta.data.expression.function.CurrentDate;
-import jakarta.data.expression.literal.TemporalLiteral;
 import jakarta.data.mock.entity.Book;
 import jakarta.data.mock.entity._Book;
 import jakarta.data.restrict.BasicRestriction;
 import jakarta.data.restrict.Restriction;
+import jakarta.data.spi.expression.function.CurrentDate;
+import jakarta.data.spi.expression.literal.TemporalLiteral;
 
 import java.time.LocalDate;
 import java.time.Month;

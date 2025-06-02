@@ -33,8 +33,8 @@ import java.util.Collection;
 
 /**
  * <p>An expression represents an {@linkplain Attribute entity attribute},
- * {@linkplain LiteralExpression literal value}, or
- * {@linkplain jakarta.data.expression.function function}.</p>
+ * {@linkplain jakarta.data.spi.expression.function function}, or literal
+ * value.</p>
  *
  * <p>Expressions are used to compose {@linkplain Restriction restrictions}
  * that allow applications to supply query criteria at runtime. For example,

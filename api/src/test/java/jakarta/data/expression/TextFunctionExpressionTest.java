@@ -17,9 +17,10 @@
  */
 package jakarta.data.expression;
 
-import jakarta.data.expression.function.TextFunctionExpression;
 import jakarta.data.metamodel.TextAttribute;
 import jakarta.data.restrict.Restriction;
+import jakarta.data.spi.expression.function.TextFunctionExpression;
+
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

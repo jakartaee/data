@@ -17,21 +17,21 @@
  */
 package jakarta.data.expression;
 
-import static jakarta.data.expression.function.NumericFunctionExpression.ABS;
-import static jakarta.data.expression.function.NumericFunctionExpression.NEG;
-import static jakarta.data.expression.function.NumericOperatorExpression.Operator.DIVIDE;
-import static jakarta.data.expression.function.NumericOperatorExpression.Operator.MINUS;
-import static jakarta.data.expression.function.NumericOperatorExpression.Operator.PLUS;
-import static jakarta.data.expression.function.NumericOperatorExpression.Operator.TIMES;
+import static jakarta.data.spi.expression.function.NumericFunctionExpression.ABS;
+import static jakarta.data.spi.expression.function.NumericFunctionExpression.NEG;
+import static jakarta.data.spi.expression.function.NumericOperatorExpression.Operator.DIVIDE;
+import static jakarta.data.spi.expression.function.NumericOperatorExpression.Operator.MINUS;
+import static jakarta.data.spi.expression.function.NumericOperatorExpression.Operator.PLUS;
+import static jakarta.data.spi.expression.function.NumericOperatorExpression.Operator.TIMES;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-import jakarta.data.expression.function.NumericCast;
-import jakarta.data.expression.function.NumericFunctionExpression;
-import jakarta.data.expression.function.NumericOperatorExpression;
 import jakarta.data.metamodel.Attribute;
 import jakarta.data.metamodel.NumericAttribute;
+import jakarta.data.spi.expression.function.NumericCast;
+import jakarta.data.spi.expression.function.NumericFunctionExpression;
+import jakarta.data.spi.expression.function.NumericOperatorExpression;
 
 /**
  * <p>An {@linkplain Expression expression} that evaluates to a

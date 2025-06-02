@@ -18,8 +18,8 @@
 package jakarta.data.constraint;
 
 import jakarta.data.expression.Expression;
-import jakarta.data.expression.literal.Literal;
 import jakarta.data.messages.Messages;
+import jakarta.data.spi.expression.literal.Literal;
 
 import java.util.ArrayList;
 import java.util.Collection;

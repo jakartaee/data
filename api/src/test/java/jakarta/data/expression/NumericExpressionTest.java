@@ -18,12 +18,12 @@
 package jakarta.data.expression;
 
 import jakarta.data.constraint.*;
-import jakarta.data.expression.function.NumericFunctionExpression;
-import jakarta.data.expression.function.NumericOperatorExpression;
 import jakarta.data.mock.entity.Book;
 import jakarta.data.mock.entity._Book;
 import jakarta.data.restrict.BasicRestriction;
 import jakarta.data.restrict.Restriction;
+import jakarta.data.spi.expression.function.NumericFunctionExpression;
+import jakarta.data.spi.expression.function.NumericOperatorExpression;
 
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;

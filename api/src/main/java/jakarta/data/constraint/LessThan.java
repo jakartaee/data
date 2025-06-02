@@ -18,7 +18,7 @@
 package jakarta.data.constraint;
 
 import jakarta.data.expression.ComparableExpression;
-import jakarta.data.expression.literal.ComparableLiteral;
+import jakarta.data.spi.expression.literal.ComparableLiteral;
 
 public interface LessThan<V extends Comparable<?>> extends Constraint<V> {
 

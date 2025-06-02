@@ -20,10 +20,10 @@ package jakarta.data.restrict;
 import jakarta.data.constraint.Like;
 import jakarta.data.constraint.NotEqualTo;
 import jakarta.data.constraint.NotLike;
-import jakarta.data.expression.literal.StringLiteral;
 import jakarta.data.metamodel.TextAttribute;
 import jakarta.data.mock.entity.Book;
 import jakarta.data.mock.entity._Book;
+import jakarta.data.spi.expression.literal.StringLiteral;
 
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
