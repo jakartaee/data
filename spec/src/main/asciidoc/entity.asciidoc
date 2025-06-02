@@ -439,15 +439,37 @@ The following subinterfaces of `Attribute` are recommended to obtain the full be
 - `NavigableAttribute` for entity attributes that are embeddables or associations.
 - `BasicAttribute` for other types of entity attributes, such as collections.
 
+To assist developers in selecting the appropriate subinterface of `Attribute` when declaring static metamodel fields, the following table maps common Java types to the corresponding attribute interface. While multiple Java types may be compatible with the same subinterface, this guidance ensures consistent and type-safe usage across different entity models.
 
-| Java Type(s)                                      | Recommended Attribute Interface     | Notes                                                                 |
-|---------------------------------------------------|-------------------------------------|-----------------------------------------------------------------------|
-| `String`, any `CharSequence`                     | `TextAttribute`                     | For text-based fields                                                 |
-| Primitive numbers (`byte`, `int`, `double`, etc.)<br>Any subclass of `java.lang.Number` (`BigDecimal`, `BigInteger`, etc.) | `NumericAttribute`                | For numeric comparisons and aggregations                              |
-| `LocalDate`, `LocalDateTime`, `Instant`, `Date`, `OffsetDateTime`, `ZonedDateTime` | `TemporalAttribute`                | For filtering or ordering by date/time                                |
-| Any `enum`, `boolean`, custom `Comparable`       | `ComparableAttribute`               | For fields that implement `Comparable` but are not numeric or temporal |
-| Embedded objects, associated entities            | `NavigableAttribute`                | For relationships or nested structures                                |
-| `Collection<?>`, `Set<T>`, `List<T>`, etc.       | `BasicAttribute`                    | For collections or unsupported types                                  |
+[cols="2,1,3", options="header"]
+|===
+| Java Type(s) | Attribute Interface | Notes
+
+| `String`, any `CharSequence`
+| `TextAttribute`
+| For text-based fields
+
+| Primitive numbers (`byte`, `int`, `double`, etc.) +
+Any subclass of `java.lang.Number` (e.g., `BigDecimal`, `BigInteger`)
+| `NumericAttribute`
+| For numeric comparisons and aggregations
+
+| `LocalDate`, `LocalDateTime`, `Instant`, `Date`, `OffsetDateTime`, `ZonedDateTime`
+| `TemporalAttribute`
+| For filtering or ordering by date/time
+
+| Any `enum`, `boolean`, custom `Comparable`
+| `ComparableAttribute`
+| For fields that implement `Comparable` but are not numeric or temporal
+
+| Embedded objects, associated entities
+| `NavigableAttribute`
+| For relationships or nested structures
+
+| `Collection<?>`, `Set<T>`, `List<T>`, etc.
+| `BasicAttribute`
+| For collections or unsupported types
+|===
 
 
 ==== Example metamodel class and usage
