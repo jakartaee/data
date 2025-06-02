@@ -525,8 +525,12 @@ Example usage:
 
 [source,java]
 ----
-List<Product> found = products.findByNameLike(searchPattern,
-                                              _Product.price.desc(),
-                                              _Product.name.asc(),
-                                              _Product.id.asc());
+List<Product> found = products.findAll(
+    Restrict.all(
+        _Product.name.contains(searchPattern),
+        _Product.price.greaterThan(minPrice),
+        _Product.price.lessThanOrEqualTo(maxPrice)
+    ),
+    Sort.of(_Product.price.desc(), _Product.name.asc(), _Product.id.asc())
+);
 ----
