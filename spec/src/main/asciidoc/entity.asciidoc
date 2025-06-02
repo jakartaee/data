@@ -454,7 +454,7 @@ Any subclass of `java.lang.Number` (e.g., `BigDecimal`, `BigInteger`)
 | `NumericAttribute`
 | For numeric comparisons and aggregations
 
-| `LocalDate`, `LocalDateTime`, `Instant`, `Date`, `OffsetDateTime`, `ZonedDateTime`
+| `LocalDate`, `LocalDateTime`, `Instant`, `OffsetDateTime`, `ZonedDateTime`, `Temporal`, `Year`, `YearMonth`, `ZonedDateTime`
 | `TemporalAttribute`
 | For filtering or ordering by date/time
 
