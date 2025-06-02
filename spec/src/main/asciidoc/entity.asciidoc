@@ -443,45 +443,47 @@ To assist developers in selecting the appropriate subinterface of `Attribute` wh
 
 [cols="2,1,3", options="header"]
 |===
-| Java Type(s) | Attribute Interface | Notes
+| Java Type(s) | Attribute Interface
 
 | `String`, any `CharSequence`
 | `TextAttribute`
-| For text-based fields
 
 | Primitive numbers (`byte`, `int`, `double`, etc.) +
 Any subclass of `java.lang.Number` (e.g., `BigDecimal`, `BigInteger`)
 | `NumericAttribute`
-| For numeric comparisons and aggregations
 
 | `LocalDate`, `LocalDateTime`, `Instant`, `OffsetDateTime`, `ZonedDateTime`, `Temporal`, `Year`, `YearMonth`, `ZonedDateTime`
 | `TemporalAttribute`
-| For filtering or ordering by date/time
 
 | Any `enum`, `boolean`, custom `Comparable`
 | `ComparableAttribute`
-| For fields that implement `Comparable` but are not numeric or temporal
 
 | Embedded objects, associated entities
 | `NavigableAttribute`
-| For relationships or nested structures
 
 | `Collection<?>`, `Set<T>`, `List<T>`, etc.
 | `BasicAttribute`
-| For collections or unsupported types
 
 | `byte[]`
 | `SortableAttribute`
-| For binary data, such as images or files
 
 | `List<T>`, `Set<T>`, or any `Collection<T>` where `T` is an entity or embeddable type
 | `BasicAttribute`
-| For multi-valued attributes representing associations or embedded types. These must be modeled using `BasicAttribute`, as `NavigableAttribute` applies only to singular references.
 
 | `T[]` where `T` is an entity or embeddable type (excluding `byte[]`)
 | `BasicAttribute`
-| For array-valued attributes of complex types. These must also be modeled using `BasicAttribute`, since sorting and navigation are not defined for arrays other than `byte[]`.
 
+| `UUID`
+| `ComparableAttribute`
+
+| `Map<K,V>`
+| `BasicAttribute`
+
+| `Optional<T>`
+| *(not supported)*
+
+| Other types not explicitly listed above
+| `BasicAttribute`
 
 |===
 
