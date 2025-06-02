@@ -469,6 +469,11 @@ Any subclass of `java.lang.Number` (e.g., `BigDecimal`, `BigInteger`)
 | `Collection<?>`, `Set<T>`, `List<T>`, etc.
 | `BasicAttribute`
 | For collections or unsupported types
+
+| `byte[]`
+| `SortableAttribute`
+| For binary data, such as images or files
+
 |===
 
 
