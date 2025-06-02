@@ -88,8 +88,13 @@ public interface CarRepository extends BasicRepository<Car, Long> {
 
 == Type-safe Access to Entity Attributes
 
-Jakarta Data provides a static metamodel for type-safe access to entity attributes by applications.
-Given this entity class:
+Writing queries using plain strings — like `"price"` or `"name"` — is fragile. These strings can't be validated by the compiler, so even small typos or refactorings can break your application silently. This is especially risky in dynamic query generation or across large codebases.
+
+Jakarta Data solves this with a **static metamodel**, offering **type-safe**, **fluent**, and **IDE-friendly** access to entity attributes. Unlike Hibernate Criteria APIs that often rely on string-based paths or verbose builders, Jakarta Data metamodels let you write both static and programmatically composed queries that are validated at compile time.
+
+You can build expressive and dynamic queries without losing type safety — enabling robust refactoring, smarter code completion, and easier testing.
+
+Consider the following entity:
 
 [source,java]
 ----
