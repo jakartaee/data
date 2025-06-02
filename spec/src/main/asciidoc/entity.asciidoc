@@ -387,9 +387,14 @@ For each entity class, the application developer or a compile-time annotation pr
 - The metamodel class can be an interface or concrete class.
 - The metamodel class must be annotated with `@StaticMetamodel`, specifying the entity class as its `value`.
 - The metamodel class contains one or more `public static` fields corresponding to persistent attributes of the entity class.
-- The type of each of these attributes must be either `java.lang.String`, `jakarta.data.metamodel.Attribute`, or a subinterface of `Attribute` from the package `jakarta.data.metamodel`.
-- Each field must be of type `jakarta.data.metamodel.BasicAttribute` or one of its specialized subinterfaces (e.g., `TextAttribute`, `NumericAttribute`, `TemporalAttribute`, or `NavigableAttribute`), depending on the nature of the corresponding entity property.
-
+- Each field must be either of type `java.lang.String` (used primarily for annotation-based configurations) or `jakarta.data.metamodel.Attribute`, including any of its subinterfaces.
+- The recommended field types are `jakarta.data.metamodel.BasicAttribute` and its specialized subinterfaces, which enable fluent and type-safe query construction:
+* `TextAttribute`: Used for text-based attributes, typically of type `String`.
+* `NumericAttribute`: Used for numeric types such as `int`, `Long`, and `BigDecimal`.
+* `TemporalAttribute`: Used for temporal types such as `LocalDate`, `LocalDateTime`, and `Instant`.
+* `ComparableAttribute`: Used for `Comparable` values like enums and `boolean`.
+* `NavigableAttribute`: Used for attributes representing embeddables or associations.
+* `BasicAttribute`: Used as a general-purpose fallback for unsupported types, including collections.
 
 The application can use the field values of the metamodel class to obtain artifacts relating to the entity attribute in a type-safe manner, for example, `_Book.title.asc()` or `Sort.asc(_Book.title.name())` or `Sort.asc(_Book.TITLE)` rather than `Sort.asc("title")`.
 
