@@ -474,6 +474,15 @@ Any subclass of `java.lang.Number` (e.g., `BigDecimal`, `BigInteger`)
 | `SortableAttribute`
 | For binary data, such as images or files
 
+| `List<T>`, `Set<T>`, or any `Collection<T>` where `T` is an entity or embeddable type
+| `BasicAttribute`
+| For multi-valued attributes representing associations or embedded types. These must be modeled using `BasicAttribute`, as `NavigableAttribute` applies only to singular references.
+
+| `T[]` where `T` is an entity or embeddable type (excluding `byte[]`)
+| `BasicAttribute`
+| For array-valued attributes of complex types. These must also be modeled using `BasicAttribute`, since sorting and navigation are not defined for arrays other than `byte[]`.
+
+
 |===
 
 
