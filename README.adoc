@@ -119,10 +119,17 @@ By embracing type-safe access to entity attributes with Jakarta Data's static me
 
 [source,java]
 ----
-List<Product> found = products.findByNameLike(searchPattern, Order.by(
-                                              _Product.price.desc(),
-                                              _Product.name.asc(),
-                                              _Product.id.asc()));
+List<Product> found = products.findAll(
+    Restrict.all(
+        _Product.type.equalTo(ProductType.PHYSICAL),
+        _Product.price.greaterThan(10.00f),
+        _Product.name.contains("Jakarta")
+    ),
+    Order.of(
+        _Product.price.desc(),
+        _Product.name.asc()
+    )
+);
 ----
 
 == Jakarta Data Query Language (JDQL)
