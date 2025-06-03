@@ -448,8 +448,8 @@ To assist developers in selecting the appropriate subinterface of `Attribute` wh
 | `String`, any `CharSequence`
 | `TextAttribute`
 
-| Primitive numbers (`byte`, `int`, `double`, etc.) +
-Any subclass of `java.lang.Number` (e.g., `BigDecimal`, `BigInteger`)
+| Primitive numbers (`byte`, `int`, `double`, etc.)  and
+any subclass of `java.lang.Number` (e.g., `BigDecimal`, `BigInteger`)
 | `NumericAttribute`
 
 | `LocalDate`, `LocalDateTime`, `LocalTime`, `Instant`, `Year`, `YearMonth`
