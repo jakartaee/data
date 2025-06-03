@@ -452,7 +452,7 @@ To assist developers in selecting the appropriate subinterface of `Attribute` wh
 Any subclass of `java.lang.Number` (e.g., `BigDecimal`, `BigInteger`)
 | `NumericAttribute`
 
-| `LocalDate`, `LocalDateTime`, `Instant`, `OffsetDateTime`, `ZonedDateTime`, `Temporal`, `Year`, `YearMonth`, `ZonedDateTime`
+| `LocalDate`, `LocalDateTime`, `LocalTime`, `Instant`, `Year`, `YearMonth`
 | `TemporalAttribute`
 
 | Any `enum`, `boolean`, custom `Comparable`
