@@ -125,7 +125,7 @@ List<Product> found = products.findAll(
         _Product.price.greaterThan(10.00f),
         _Product.name.contains("Jakarta")
     ),
-    Order.of(
+    Order.by(
         _Product.price.desc(),
         _Product.name.asc()
     )
