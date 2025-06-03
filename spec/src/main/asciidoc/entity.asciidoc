@@ -467,12 +467,6 @@ Any subclass of `java.lang.Number` (e.g., `BigDecimal`, `BigInteger`)
 | `byte[]`
 | `SortableAttribute`
 
-| `List<T>`, `Set<T>`, or any `Collection<T>` where `T` is an entity or embeddable type
-| `BasicAttribute`
-
-| `T[]` where `T` is an entity or embeddable type (excluding `byte[]`)
-| `BasicAttribute`
-
 | `UUID`
 | `ComparableAttribute`
 
