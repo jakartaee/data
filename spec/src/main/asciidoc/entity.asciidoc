@@ -454,7 +454,7 @@ To assist developers in selecting the appropriate subinterface of `Attribute` wh
 | Embedded objects, associated entities
 | `NavigableAttribute`
 
-| `Collection<?>`, `Set<T>`, `List<T>`, etc.
+| `Collection`, `Set`, `List`, etc.
 | `BasicAttribute`
 
 | `byte[]`
