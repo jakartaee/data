@@ -466,9 +466,6 @@ To assist developers in selecting the appropriate subinterface of `Attribute` wh
 | `Optional<T>`
 | *(not supported)*
 
-| Enum types
-| `BasicAttribute`
-
 | Other types not explicitly listed above
 | `BasicAttribute`
 
