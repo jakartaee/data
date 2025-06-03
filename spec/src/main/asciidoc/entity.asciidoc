@@ -529,7 +529,7 @@ List<Product> found = products.findAll(
     Restrict.all(
         _Product.name.contains(searchPattern),
         _Product.price.greaterThan(minPrice),
-        _Product.price.lessThanOrEqualTo(maxPrice)
+        _Product.price.lessThanEqual(maxPrice)
     ),
     Order.by(_Product.price.desc(), _Product.name.asc(), _Product.id.asc())
 );
