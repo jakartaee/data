@@ -527,6 +527,8 @@ List<Product> found = products.findAll(
         _Product.price.greaterThan(minPrice),
         _Product.price.lessThanEqual(maxPrice)
     ),
-    Order.by(_Product.price.desc(), _Product.name.asc(), _Product.id.asc())
+    Order.by(_Product.price.desc(),
+             _Product.name.asc(),
+             _Product.id.asc())
 );
 ----
