@@ -455,7 +455,7 @@ any subclass of `java.lang.Number` (e.g., `BigDecimal`, `BigInteger`)
 | `LocalDate`, `LocalDateTime`, `LocalTime`, `Instant`, `Year`, `YearMonth`
 | `TemporalAttribute`
 
-| Any `enum`, `boolean`, custom `Comparable`
+| Any `enum`, `boolean`, `UUID`, custom `Comparable`
 | `ComparableAttribute`
 
 | Embedded objects, associated entities
@@ -466,9 +466,6 @@ any subclass of `java.lang.Number` (e.g., `BigDecimal`, `BigInteger`)
 
 | `byte[]`
 | `SortableAttribute`
-
-| `UUID`
-| `ComparableAttribute`
 
 | `Map<K,V>`
 | `BasicAttribute`
