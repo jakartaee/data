@@ -478,6 +478,20 @@ any subclass of `java.lang.Number` (e.g., `BigDecimal`, `BigInteger`)
 
 |===
 
+[NOTE]
+====
+When modeling attributes backed by Java primitive types (e.g., `int`, `long`), the type parameter `V` in `BasicAttribute<T, V>` must always be the boxed type (`Integer`, `Long`, etc.) due to Java's generic type constraints.
+
+However, the third parameter passed to `BasicAttribute.of(...)` — the attribute's `Class` — should still reference the primitive type. For example:
+
+[source,java]
+----
+BasicAttribute<Book, Integer> pages = BasicAttribute.of(Book.class, "pages", int.class);
+----
+This pattern ensures both compile-time correctness and alignment with Jakarta Data's internal type handling. While slightly asymmetrical, this approach is consistent with Java's type system and allows Jakarta Data providers to correctly infer and handle attribute types.
+====
+
+
 
 ==== Example metamodel class and usage
 
