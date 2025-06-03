@@ -483,9 +483,7 @@ To assist developers in selecting the appropriate subinterface of `Attribute` wh
 
 [NOTE]
 ====
-When modeling attributes backed by Java primitive types (e.g., `int`, `long`), the type parameter `V` in `BasicAttribute<T, V>` must always be the boxed type (`Integer`, `Long`, etc.) due to Java's generic type constraints.
-
-However, the third parameter passed to `BasicAttribute.of(...)` — the attribute's `Class` — should still reference the primitive type. For example:
+When modeling attributes backed by Java primitive types (e.g., `int`, `long`), the type parameter `V` in `BasicAttribute<T, V>` must always be the boxed type (`Integer`, `Long`, etc.) due to Java's generic type constraints. However, the third parameter passed to `BasicAttribute.of(...)` — the attribute's `Class` — must reference the primitive type. For example:
 
 [source,java]
 ----
