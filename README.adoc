@@ -92,7 +92,7 @@ Writing queries using plain strings — like `"price"` or `"name"` — is fragil
 
 Jakarta Data solves this with a static metamodel, offering type-safe, fluent, and IDE-friendly access to entity attributes. The static metamodel enables you to write both static and programmatically composed queries that are validated at compile time.
 
-You can build expressive and dynamic queries without losing type safety — enabling robust refactoring, smarter code completion, and easier testing.
+Dynamic queries may be expressed without loss of type safety — enabling robust refactoring, smarter code completion, and easier testing.
 
 Consider the following entity:
 
