@@ -441,7 +441,7 @@ To assist developers in selecting the appropriate subinterface of `Attribute` wh
 | `String`
 | `TextAttribute`
 
-| Primitive numbers (`byte`, `int`, `double`, etc.)  and their corresponding wrapper types from `java.lang`, and `BigInteger` and `BigDecimal` from `java.math`
+| Primitive numeric types (`byte`, `int`, `double`, etc.), their corresponding wrapper classes from `java.lang` (e.g., `Byte`, `Integer`, `Double`), and arbitrary-precision types like `BigInteger` and `BigDecimal` from `java.math`
 | `NumericAttribute`
 
 | `LocalDate`, `LocalDateTime`, `LocalTime`, `Instant`, `Year`
