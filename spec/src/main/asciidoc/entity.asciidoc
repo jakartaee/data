@@ -124,7 +124,7 @@ Every Jakarta Data provider must support the following basic types within its pr
 | `java.lang.String`
 | Represents text data.
 
-| `LocalDate`, `LocalDateTime`, `LocalTime`, `Instant` from `java.time`
+| `LocalDate`, `LocalDateTime`, `LocalTime`, `Year`, `Instant` from `java.time`
 | Represent date and time-related data.
 
 | `java.util.UUID`
@@ -387,7 +387,7 @@ For each entity class, the application developer or a compile-time annotation pr
 - The metamodel class can be an interface or concrete class.
 - The metamodel class must be annotated with `@StaticMetamodel`, specifying the entity class as its `value`.
 - The metamodel class contains one or more `public static` fields corresponding to persistent attributes of the entity class.
-- The type of each of these attributes must be either `java.lang.String`, `jakarta.data.metamodel.Attribute`, or a subinterface of `Attribute` from the package `jakarta.data.metamodel`.
+- Each field must be either of type `java.lang.String` (used primarily for annotation-based configurations) or `jakarta.data.metamodel.Attribute`, including any of its subinterfaces.
 
 The application can use the field values of the metamodel class to obtain artifacts relating to the entity attribute in a type-safe manner, for example, `_Book.title.asc()` or `Sort.asc(_Book.title.name())` or `Sort.asc(_Book.TITLE)` rather than `Sort.asc("title")`.
 
@@ -432,6 +432,51 @@ The following subinterfaces of `Attribute` are recommended to obtain the full be
 - `NavigableAttribute` for entity attributes that are embeddables or associations.
 - `BasicAttribute` for other types of entity attributes, such as collections.
 
+To assist developers in selecting the appropriate subinterface of `Attribute` when declaring static metamodel fields, the following table maps common Java types to the corresponding attribute interface. While multiple Java types may be compatible with the same subinterface, this guidance ensures consistent and type-safe usage across different entity models.
+
+[cols="2,4", options="header"]
+|===
+| Java Type(s) | Attribute Interface
+
+| `String`
+| `TextAttribute`
+
+| Primitive numeric types (`byte`, `int`, `double`, etc.), their corresponding wrapper classes from `java.lang` (e.g., `Byte`, `Integer`, `Double`), and arbitrary-precision types like `BigInteger` and `BigDecimal` from `java.math`
+| `NumericAttribute`
+
+| `LocalDate`, `LocalDateTime`, `LocalTime`, `Instant`, `Year`
+| `TemporalAttribute`
+
+| Any `enum`, `boolean`, `UUID`, custom `Comparable`
+| `ComparableAttribute`
+
+| Embedded objects, associated entities
+| `NavigableAttribute`
+
+| `byte[]`
+| `SortableAttribute` for databases that support sorting `byte[]` values, otherwise `BasicAttribute`
+
+| `Optional<T>`
+| *(not supported)*
+
+| Other types not explicitly listed above
+| `BasicAttribute`
+
+|===
+
+[NOTE]
+====
+When modeling attributes backed by Java primitive types (e.g., `int`, `long`), the type parameter `V` in `BasicAttribute<T, V>` must always be the boxed type (`Integer`, `Long`, etc.) due to Java's generic type constraints. However, the third parameter passed to `BasicAttribute.of(...)` — the attribute's `Class` — must reference the primitive type. For example:
+
+[source,java]
+----
+BasicAttribute<Book, Integer> pages = BasicAttribute.of(Book.class, "pages", int.class);
+----
+This pattern ensures both compile-time correctness and alignment with Jakarta Data's internal type handling. While slightly asymmetrical, this approach is consistent with Java's type system and allows Jakarta Data providers to correctly infer and handle attribute types.
+====
+
+
+
 ==== Example metamodel class and usage
 
 Example entity class:
@@ -469,8 +514,14 @@ Example usage:
 
 [source,java]
 ----
-List<Product> found = products.findByNameLike(searchPattern,
-                                              _Product.price.desc(),
-                                              _Product.name.asc(),
-                                              _Product.id.asc());
+List<Product> found = products.findAll(
+    Restrict.all(
+        _Product.name.contains(searchPattern),
+        _Product.price.greaterThan(minPrice),
+        _Product.price.lessThanEqual(maxPrice)
+    ),
+    Order.by(_Product.price.desc(),
+             _Product.name.asc(),
+             _Product.id.asc())
+);
 ----
