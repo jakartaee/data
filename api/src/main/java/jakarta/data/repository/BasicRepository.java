@@ -190,15 +190,8 @@ public interface BasicRepository<T, K> extends DataRepository<T, K> {
      * @param sortBy      sort criteria that must deterministically order the
      *                    results; must not be {@code null}.
      * @return a page of entities; will never be {@code null}.
-     * @throws NullPointerException          when {@code pageRequest} or
-     *                                       {@code sortBy} is {@code null}.
-     * @throws UnsupportedOperationException for Key-Value and Wide-Column
-     *                                       databases when the
-     *                                       {@link
-     *                                       PageRequest.Mode#CURSOR_NEXT} or
-     *                                       {@link
-     *                                       PageRequest.Mode#CURSOR_PREVIOUS}
-     *                                       pagination mode is selected.
+     * @throws NullPointerException when {@code pageRequest} or {@code sortBy}
+     *                              is {@code null}.
      * @see PageRequest.Mode
      */
     @Find
