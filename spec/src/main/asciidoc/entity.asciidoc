@@ -124,7 +124,7 @@ Every Jakarta Data provider must support the following basic types within its pr
 | `java.lang.String`
 | Represents text data.
 
-| `LocalDate`, `LocalDateTime`, `LocalTime`, `Instant` from `java.time`
+| `LocalDate`, `LocalDateTime`, `LocalTime`, `Year`, `Instant` from `java.time`
 | Represent date and time-related data.
 
 | `java.util.UUID`
