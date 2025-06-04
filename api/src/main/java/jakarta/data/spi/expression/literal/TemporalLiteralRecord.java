@@ -21,6 +21,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.Year;
 import java.time.ZoneOffset;
 import java.time.temporal.Temporal;
 
@@ -51,6 +52,8 @@ record TemporalLiteralRecord<V extends Temporal & Comparable<? extends Temporal>
                 "{d '" + value + "'}";
             case LocalTime t ->
                 "{t '" + value + "'}";
+            case Year y ->
+                "{d '" + y.getValue() + "'}";
             default ->
                 "{TemporalLiteral '"
                         + value.getClass().getName() + " '"

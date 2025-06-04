@@ -21,6 +21,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.Year;
 import java.time.ZoneOffset;
 import java.time.temporal.Temporal;
 
@@ -63,7 +64,7 @@ public interface TemporalLiteral<V extends Temporal & Comparable<? extends Tempo
      * space character. The first term is</p>
      * <ul>
      * <li>{@code ts} for {@link Instant} and {@link LocalDateTime},</li>
-     * <li>{@code d} for {@link LocalDate},</li>
+     * <li>{@code d} for {@link LocalDate} and {@link Year},</li>
      * <li>{@code t} for {@link LocalTime}, or</li>
      * <li>{@code TemporalLiteral} for all other types, in which case a middle
      * term is included. The middle term is the fully qualified class name of

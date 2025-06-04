@@ -278,7 +278,8 @@ import java.util.Set;
  * <td>{@link java.time.Instant}
  * <br>{@link java.time.LocalDate}
  * <br>{@link java.time.LocalDateTime}
- * <br>{@link java.time.LocalTime}</td>
+ * <br>{@link java.time.LocalTime}
+ * <br>{@link java.time.Year}</td>
  * <td></td></tr>
  *
  * <tr style="vertical-align: top; background-color:#eee"><td>Universally unique identifier</td>
