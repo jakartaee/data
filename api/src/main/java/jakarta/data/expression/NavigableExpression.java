@@ -19,16 +19,16 @@ package jakarta.data.expression;
 
 import java.time.temporal.Temporal;
 
-import jakarta.data.expression.path.ComparablePath;
-import jakarta.data.expression.path.NavigablePath;
-import jakarta.data.expression.path.NumericPath;
-import jakarta.data.expression.path.TemporalPath;
-import jakarta.data.expression.path.TextPath;
 import jakarta.data.metamodel.ComparableAttribute;
 import jakarta.data.metamodel.NavigableAttribute;
 import jakarta.data.metamodel.NumericAttribute;
 import jakarta.data.metamodel.TemporalAttribute;
 import jakarta.data.metamodel.TextAttribute;
+import jakarta.data.spi.expression.path.ComparablePath;
+import jakarta.data.spi.expression.path.NavigablePath;
+import jakarta.data.spi.expression.path.NumericPath;
+import jakarta.data.spi.expression.path.TemporalPath;
+import jakarta.data.spi.expression.path.TextPath;
 
 public interface NavigableExpression<T, U> {
 

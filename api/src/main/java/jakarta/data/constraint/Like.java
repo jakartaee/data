@@ -22,8 +22,8 @@ import static jakarta.data.constraint.LikeRecord.STRING_WILDCARD;
 import static jakarta.data.constraint.LikeRecord.translate;
 
 import jakarta.data.expression.TextExpression;
-import jakarta.data.expression.literal.StringLiteral;
 import jakarta.data.messages.Messages;
+import jakarta.data.spi.expression.literal.StringLiteral;
 
 public interface Like extends Constraint<String> {
 

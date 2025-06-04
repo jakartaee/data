@@ -17,21 +17,21 @@
  */
 package jakarta.data.expression;
 
-import static jakarta.data.expression.function.NumericFunctionExpression.ABS;
-import static jakarta.data.expression.function.NumericFunctionExpression.NEG;
-import static jakarta.data.expression.function.NumericOperatorExpression.Operator.DIVIDE;
-import static jakarta.data.expression.function.NumericOperatorExpression.Operator.MINUS;
-import static jakarta.data.expression.function.NumericOperatorExpression.Operator.PLUS;
-import static jakarta.data.expression.function.NumericOperatorExpression.Operator.TIMES;
+import static jakarta.data.spi.expression.function.NumericFunctionExpression.ABS;
+import static jakarta.data.spi.expression.function.NumericFunctionExpression.NEG;
+import static jakarta.data.spi.expression.function.NumericOperatorExpression.Operator.DIVIDE;
+import static jakarta.data.spi.expression.function.NumericOperatorExpression.Operator.MINUS;
+import static jakarta.data.spi.expression.function.NumericOperatorExpression.Operator.PLUS;
+import static jakarta.data.spi.expression.function.NumericOperatorExpression.Operator.TIMES;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-import jakarta.data.expression.function.NumericCast;
-import jakarta.data.expression.function.NumericFunctionExpression;
-import jakarta.data.expression.function.NumericOperatorExpression;
 import jakarta.data.metamodel.Attribute;
 import jakarta.data.metamodel.NumericAttribute;
+import jakarta.data.spi.expression.function.NumericCast;
+import jakarta.data.spi.expression.function.NumericFunctionExpression;
+import jakarta.data.spi.expression.function.NumericOperatorExpression;
 
 /**
  * <p>An {@linkplain Expression expression} that evaluates to a
@@ -125,6 +125,41 @@ public interface NumericExpression<T, N extends Number & Comparable<N>>
     }
 
     /**
+     * <p>Represents the subtraction function that computes the difference of
+     * the given value minus the value to which the current expression
+     * evaluates.</p>
+     *
+     * <p>Example:</p>
+     * <pre>
+     * found = cars.search(
+     *         make,
+     *         model,
+     *         _Car.price.asDouble().times(_Car.discountRate.subtractedFrom(1.0))
+     *                 .lessThanEqual(33000.0));
+     * </pre>
+     *
+     * @param value the value to subtract from. Must not be {@code null}.
+     * @return an expression for the function that computes the difference.
+     * @throws NullPointerException if the supplied value is null.
+     */
+    default NumericExpression<T, N> subtractedFrom(N value) {
+        return NumericOperatorExpression.of(MINUS, value, this);
+    }
+
+    /**
+     * <p>Represents the division function that computes the quotient of
+     * the given value divided by the value to which the current expression
+     * evaluates.</p>
+     *
+     * @param value the value to divide into. Must not be {@code null}.
+     * @return an expression for the function that computes the quotient.
+     * @throws NullPointerException if the supplied value is null.
+     */
+    default NumericExpression<T, N> dividedInto(N value) {
+        return NumericOperatorExpression.of(DIVIDE, value, this);
+    }
+
+    /**
      * <p>Represents the multiplication function that computes the product of
      * the value to which the current expression evaluates times the given
      * factor.</p>
@@ -174,9 +209,10 @@ public interface NumericExpression<T, N extends Number & Comparable<N>>
      *
      * <p>Example:</p>
      * <pre>
-     * found = cars.search(make,
-     *                     model,
-     *                     NumericLiteral.of(fees).plus(_Car.price).lessThan(32000));
+     * found = cars.search(
+     *         make,
+     *         model,
+     *         _Car.price.plus(_Car.price.times(percentTax).divide(100)).lessThan(32000));
      * </pre>
      *
      * @param expression expression that evaluates to the value to add. Must
@@ -218,10 +254,10 @@ public interface NumericExpression<T, N extends Number & Comparable<N>>
      *
      * <p>Example:</p>
      * <pre>
-     * found = cars.search(
+     * discountedMoreThan2000 = cars.search(
      *         make,
      *         model,
-     *         NumericLiteral.of(1.0 + taxRate).times(_Car.price).lessThan(40000.0));
+     *         _Car.price.asDouble().times(_Car.discountRate).greaterThan(2000.0));
      * </pre>
      *
      * @param factorExpression expression that evaluates to the value by which
@@ -241,10 +277,10 @@ public interface NumericExpression<T, N extends Number & Comparable<N>>
      *
      * <p>Example:</p>
      * <pre>
-     * discountedByMoreThan10Percent = cars.search(
+     * pricedUnder95PercentWithRebate = cars.search(
      *         make,
      *         model,
-     *         NumericLiteral.of(discount).divide(_Car.price.asDouble()).greaterThan(0.1));
+     *         _Car.price.minus(rebate).times(100).divide(_Car.price).lessThan(95);
      * </pre>
      *
      * @param divisorExpression expression that evaluates to the value by which

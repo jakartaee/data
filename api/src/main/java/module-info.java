@@ -1340,9 +1340,6 @@ module jakarta.data {
     exports jakarta.data.event;
     exports jakarta.data.exceptions;
     exports jakarta.data.expression;
-    exports jakarta.data.expression.function;
-    exports jakarta.data.expression.literal;
-    exports jakarta.data.expression.path;
     exports jakarta.data.metamodel;
     exports jakarta.data.metamodel.impl;
     exports jakarta.data.page;
@@ -1351,4 +1348,7 @@ module jakarta.data {
     exports jakarta.data.restrict;
     opens jakarta.data.repository;
     exports jakarta.data.spi;
+    exports jakarta.data.spi.expression.function;
+    exports jakarta.data.spi.expression.literal;
+    exports jakarta.data.spi.expression.path;
 }

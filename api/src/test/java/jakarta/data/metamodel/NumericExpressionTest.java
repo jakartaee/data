@@ -17,13 +17,11 @@
  */
 package jakarta.data.metamodel;
 
-
 import jakarta.data.expression.NumericExpression;
-import jakarta.data.expression.function.NumericCast;
-import jakarta.data.expression.function.NumericFunctionExpression;
-import jakarta.data.expression.function.NumericOperatorExpression;
-import jakarta.data.expression.literal.Literal;
-import jakarta.data.expression.literal.NumericLiteral;
+import jakarta.data.spi.expression.function.NumericCast;
+import jakarta.data.spi.expression.function.NumericFunctionExpression;
+import jakarta.data.spi.expression.function.NumericOperatorExpression;
+import jakarta.data.spi.expression.literal.NumericLiteral;
 
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
@@ -80,7 +78,9 @@ class NumericExpressionTest {
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(expression.operator()).isEqualTo(NumericOperatorExpression.Operator.PLUS);
             soft.assertThat(expression.left()).isEqualTo(_Invoice.amount);
-            soft.assertThat(expression.right()).isEqualTo(Literal.of(10));
+            soft.assertThat(expression.right()).isInstanceOf(NumericLiteral.class);
+            soft.assertThat(((NumericLiteral<?>) expression.right()).value())
+                .isEqualTo(10);
             soft.assertThat(expression.toString())
                 .isEqualTo("invoice.amount + 10");
         });
@@ -94,8 +94,10 @@ class NumericExpressionTest {
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(expression.operator()).isEqualTo(NumericOperatorExpression.Operator.MINUS);
             soft.assertThat(expression.left()).isEqualTo(_Invoice.amount);
-            soft.assertThat(expression.right()).isEqualTo(Literal.of(5));
-            soft.assertThat(expression.toString())
+            soft.assertThat(expression.right()).isInstanceOf(NumericLiteral.class);
+            soft.assertThat(((NumericLiteral<?>) expression.right()).value())
+                .isEqualTo(5);
+             soft.assertThat(expression.toString())
                 .isEqualTo("invoice.amount - 5");
         });
     }
@@ -108,7 +110,9 @@ class NumericExpressionTest {
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(expression.operator()).isEqualTo(NumericOperatorExpression.Operator.TIMES);
             soft.assertThat(expression.left()).isEqualTo(_Invoice.amount);
-            soft.assertThat(expression.right()).isEqualTo(Literal.of(2));
+            soft.assertThat(expression.right()).isInstanceOf(NumericLiteral.class);
+            soft.assertThat(((NumericLiteral<?>) expression.right()).value())
+                .isEqualTo(2);
             soft.assertThat(expression.toString())
                 .isEqualTo("invoice.amount * 2");
         });
@@ -122,7 +126,9 @@ class NumericExpressionTest {
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(expression.operator()).isEqualTo(NumericOperatorExpression.Operator.DIVIDE);
             soft.assertThat(expression.left()).isEqualTo(_Invoice.amount);
-            soft.assertThat(expression.right()).isEqualTo(Literal.of(4));
+            soft.assertThat(expression.right()).isInstanceOf(NumericLiteral.class);
+            soft.assertThat(((NumericLiteral<?>) expression.right()).value())
+                .isEqualTo(4);
             soft.assertThat(expression.toString())
                 .isEqualTo("invoice.amount / 4");
         });
@@ -231,12 +237,9 @@ class NumericExpressionTest {
     @Test
     @DisplayName("toString output must include parentheses where needed")
     void shouldIncludeParenthesesInToString() {
-        // TODO ignore the warning and awkward casting for now. It will be
-        // properly solved later by #1116
-        @SuppressWarnings("unchecked")
-        NumericExpression<Invoice, Integer> expression = _Invoice.amount.times(
-                ((NumericExpression<Invoice, Integer>) (NumericExpression<?, Integer>)
-                        NumericLiteral.of(100)).minus(_Invoice.percentDiscount))
+        NumericExpression<Invoice, Integer> expression =
+                _Invoice.amount.times(
+                        _Invoice.percentDiscount.subtractedFrom(100))
                 .divide(100);
 
         SoftAssertions.assertSoftly(soft -> {

@@ -22,11 +22,11 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.Temporal;
 
-import jakarta.data.expression.function.CurrentDate;
-import jakarta.data.expression.function.CurrentDateTime;
-import jakarta.data.expression.function.CurrentTime;
 import jakarta.data.metamodel.Attribute;
 import jakarta.data.metamodel.TemporalAttribute;
+import jakarta.data.spi.expression.function.CurrentDate;
+import jakarta.data.spi.expression.function.CurrentDateTime;
+import jakarta.data.spi.expression.function.CurrentTime;
 
 /**
  * <p>An {@linkplain Expression expression} that evaluates to a

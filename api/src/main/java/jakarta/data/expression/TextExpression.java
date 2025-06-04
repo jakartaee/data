@@ -17,20 +17,20 @@
  */
 package jakarta.data.expression;
 
-import static jakarta.data.expression.function.NumericFunctionExpression.LENGTH;
-import static jakarta.data.expression.function.TextFunctionExpression.CONCAT;
-import static jakarta.data.expression.function.TextFunctionExpression.LEFT;
-import static jakarta.data.expression.function.TextFunctionExpression.LOWER;
-import static jakarta.data.expression.function.TextFunctionExpression.RIGHT;
-import static jakarta.data.expression.function.TextFunctionExpression.UPPER;
+import static jakarta.data.spi.expression.function.NumericFunctionExpression.LENGTH;
+import static jakarta.data.spi.expression.function.TextFunctionExpression.CONCAT;
+import static jakarta.data.spi.expression.function.TextFunctionExpression.LEFT;
+import static jakarta.data.spi.expression.function.TextFunctionExpression.LOWER;
+import static jakarta.data.spi.expression.function.TextFunctionExpression.RIGHT;
+import static jakarta.data.spi.expression.function.TextFunctionExpression.UPPER;
 
 import jakarta.data.constraint.Like;
 import jakarta.data.constraint.NotLike;
-import jakarta.data.expression.function.NumericFunctionExpression;
-import jakarta.data.expression.function.TextFunctionExpression;
 import jakarta.data.metamodel.Attribute;
 import jakarta.data.restrict.BasicRestriction;
 import jakarta.data.restrict.Restriction;
+import jakarta.data.spi.expression.function.NumericFunctionExpression;
+import jakarta.data.spi.expression.function.TextFunctionExpression;
 
 /**
  * <p>An {@linkplain Expression expression} that evaluates to a {@link String}

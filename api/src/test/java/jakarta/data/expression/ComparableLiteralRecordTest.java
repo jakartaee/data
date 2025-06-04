@@ -18,8 +18,9 @@
 package jakarta.data.expression;
 
 
-import jakarta.data.expression.literal.ComparableLiteral;
 import jakarta.data.metamodel.TextAttribute;
+import jakarta.data.spi.expression.literal.ComparableLiteral;
+
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

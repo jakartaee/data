@@ -19,8 +19,8 @@ package jakarta.data.constraint;
 
 
 import jakarta.data.expression.Expression;
-import jakarta.data.expression.literal.Literal;
 import jakarta.data.messages.Messages;
+import jakarta.data.spi.expression.literal.Literal;
 public interface EqualTo<V> extends Constraint<V> {
 
     static <V> EqualTo<V> expression(Expression<?, V> expression) {

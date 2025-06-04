@@ -33,8 +33,7 @@ import java.util.Collection;
 
 /**
  * <p>An expression represents an {@linkplain Attribute entity attribute},
- * {@linkplain jakarta.data.expression.literal literal value}, or
- * {@linkplain jakarta.data.expression.function function}.</p>
+ * function, or literal value.</p>
  *
  * <p>Expressions are used to compose {@linkplain Restriction restrictions}
  * that allow applications to supply query criteria at runtime. For example,
@@ -87,17 +86,14 @@ import java.util.Collection;
  *
  * <h2>Literal expressions</h2>
  *
- * <p>Literal expressions are available via static methods. For example,
- * </p>
+ * <p>Literal expressions are used indirectly when literal values are supplied
+ * to methods that create other expressions and
+ * {@linkplain Restriction restrictions}. For example, the value {@code 1000}
+ * in</p>
+ *
  * <pre>
- * StringLiteral.of("Jakarta EE")
- * NumericLiteral.of(12);
+ * _Car.price.minus(1000)
  * </pre>
- *
- * <p>Literal expressions are also used indirectly when literal values are
- * supplied to methods that create other expressions and
- * {@linkplain Restriction restrictions}.</p>
- *
  *
  * @param <T> entity type.
  * @param <V> entity attribute type.

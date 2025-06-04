@@ -25,9 +25,9 @@ import jakarta.data.constraint.EqualTo;
 import jakarta.data.constraint.Like;
 import jakarta.data.constraint.NotEqualTo;
 import jakarta.data.constraint.NotLike;
-import jakarta.data.expression.literal.StringLiteral;
 import jakarta.data.metamodel.ComparableAttribute;
 import jakarta.data.metamodel.TextAttribute;
+import jakarta.data.spi.expression.literal.StringLiteral;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;

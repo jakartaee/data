@@ -22,14 +22,14 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 import jakarta.data.constraint.EqualTo;
 import jakarta.data.constraint.LessThanOrEqual;
-import jakarta.data.expression.function.NumericFunctionExpression;
-import jakarta.data.expression.function.TextFunctionExpression;
-import jakarta.data.expression.literal.NumericLiteral;
-import jakarta.data.expression.literal.StringLiteral;
 import jakarta.data.mock.entity.Book;
 import jakarta.data.mock.entity._Book;
 import jakarta.data.restrict.BasicRestriction;
 import jakarta.data.restrict.Restriction;
+import jakarta.data.spi.expression.function.NumericFunctionExpression;
+import jakarta.data.spi.expression.function.TextFunctionExpression;
+import jakarta.data.spi.expression.literal.NumericLiteral;
+import jakarta.data.spi.expression.literal.StringLiteral;
 
 import java.util.List;
 
