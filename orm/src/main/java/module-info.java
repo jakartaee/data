@@ -16,6 +16,11 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-// Although these appear to be unused, these imports are needed by Javadoc.
+/**
+ * Provides Jakarta Data ORM annotations
+ */
 module jakarta.data.core {
+
+    exports jakarta.data.orm;
+    requires jakarta.data;
 }

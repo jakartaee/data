@@ -113,7 +113,7 @@ Use is subject to <a href="{@docRoot}/doc-files/speclicense.html" target="_top">
                                 <group>
                                     <title>Jakarta Data API Documentation</title>
                                     <packages>
-                                        jakarta.data
+                                        jakarta.data.orm
                                     </packages>
                                 </group>
                             </groups>
