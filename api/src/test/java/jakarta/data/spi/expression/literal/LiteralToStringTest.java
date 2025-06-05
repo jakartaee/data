@@ -24,6 +24,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
+import java.time.Year;
 import java.time.ZoneId;
 import java.util.UUID;
 
@@ -154,6 +155,9 @@ class LiteralToStringTest {
         TemporalLiteral<LocalTime> timeLiteral =
                 TemporalLiteral.of(LocalTime.of(18, 8, 30));
 
+        TemporalLiteral<Year> yearLiteral =
+                TemporalLiteral.of(Year.of(2025));
+
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(instantLiteral.toString())
                     .isEqualTo("{ts '2025-05-09 21:18:02.575'}");
@@ -166,6 +170,9 @@ class LiteralToStringTest {
 
             soft.assertThat(timeLiteral.toString())
                     .isEqualTo("{t '18:08:30'}");
+
+            soft.assertThat(yearLiteral.toString())
+                    .isEqualTo("{d '2025'}");
         });
     }
 }

@@ -36,6 +36,7 @@ import jakarta.data.expression.TemporalExpression;
  * <li>{@link java.time.LocalDate}</li>
  * <li>{@link java.time.LocalDateTime}</li>
  * <li>{@link java.time.LocalTime}</li>
+ * <li>{@link java.time.Year}</li>
  * </ul>
  *
  * <p>Where possible, {@code TemporalAttribute} is preferred over

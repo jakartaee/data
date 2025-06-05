@@ -23,6 +23,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.Year;
 import java.util.UUID;
 
 import jakarta.data.expression.ComparableExpression;
@@ -87,6 +88,8 @@ public interface ComparableLiteral<V extends Comparable<?>>
             return (ComparableLiteral<V>) TemporalLiteral.of(d);
         } else if (value instanceof LocalTime t) {
             return (ComparableLiteral<V>) TemporalLiteral.of(t);
+        } else if (value instanceof Year y) {
+            return (ComparableLiteral<V>) TemporalLiteral.of(y);
         } else {
             return new ComparableLiteralRecord<>(value);
         }
