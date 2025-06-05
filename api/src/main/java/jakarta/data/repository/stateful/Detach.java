@@ -36,9 +36,9 @@ import java.lang.annotation.Target;
  * class. The method must have exactly one parameter whose type is either:
  * </p>
  * <ul>
- *     <li>the class of the entity to be inserted, or</li>
+ *     <li>the class of the entity to be detached, or</li>
  *     <li>{@code List<E>} or {@code E[]} where {@code E} is the class of the
- *     entities to be inserted.</li>
+ *     entities to be detached.</li>
  * </ul>
  * <p>The annotated method must be declared {@code void}.
  * </p>
