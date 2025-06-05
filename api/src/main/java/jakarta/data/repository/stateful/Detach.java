@@ -32,7 +32,7 @@ import java.lang.annotation.Target;
  * method immediately makes one or more entities unmanaged, removing them
  * from the current persistence context associated with the repository.
  * </p>
- * <p>An {@code Detach} method accepts an instance or instances of an entity
+ * <p>A {@code Detach} method accepts an instance or instances of an entity
  * class. The method must have exactly one parameter whose type is either:
  * </p>
  * <ul>

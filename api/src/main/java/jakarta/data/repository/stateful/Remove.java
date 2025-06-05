@@ -33,7 +33,7 @@ import java.lang.annotation.Target;
  * Deletion might occur immediately, when the annotated repository method is
  * invoked, or it might occur later, when the persistence context is flushed.
  * </p>
- * <p>An {@code Remove} method accepts a managed instance or instances of an
+ * <p>A {@code Remove} method accepts a managed instance or instances of an
  * entity class. The method must have exactly one parameter whose type is
  * either:
  * </p>
@@ -58,9 +58,9 @@ import java.lang.annotation.Target;
  * is not required to support stateful repositories.
  * </p>
  * <p>An event of type {@link jakarta.data.event.PreDeleteEvent} must be
- * raised before each record is inserted in the database. An event of type
+ * raised before each record is deleted from the database. An event of type
  * {@link jakarta.data.event.PreDeleteEvent} must be raised after each record
- * is successfully inserted.
+ * is successfully deleted.
  * </p>
  * <p>Annotations such as {@code @Find}, {@code @Query}, {@code @Persist},
  * {@code @Merge}, {@code @Remove}, and {@code @Refresh} are mutually-exclusive.

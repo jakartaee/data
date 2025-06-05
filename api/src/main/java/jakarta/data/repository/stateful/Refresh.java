@@ -32,7 +32,7 @@ import java.lang.annotation.Target;
  * method immediately reloads the state of the given entity from the database,
  * overwriting the persistent state previously held by the entity.
  * </p>
- * <p>An {@code Refresh} method accepts a managed instance or instances of an
+ * <p>A {@code Refresh} method accepts a managed instance or instances of an
  * entity class. The method must have exactly one parameter whose type is
  * either:
  * </p>
