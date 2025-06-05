@@ -17,7 +17,6 @@
  */
 package jakarta.data.orm;
 
-
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -26,37 +25,47 @@ import java.lang.annotation.Target;
 
 /**
  * <p>Lifecycle annotation for repository methods of stateful repositories
- * which perform detach operations. The {@code Detach} annotation must
+ * which perform remove operations. The {@code Remove} annotation must
  * not be applied to a method of a stateless repository.
  * </p>
- * <p>The {@code Detach} annotation indicates that the annotated repository
- * method immediately makes one or more entities unmanaged, removing them
- * from the current persistence context associated with the repository.
+ * <p>The {@code Remove} annotation indicates that the annotated repository
+ * method schedules one or more managed entities for deletion in the database.
+ * Deletion might occur immediately, when the annotated repository method is
+ * invoked, or it might occur later, when the persistence context is flushed.
  * </p>
- * <p>A {@code Detach} method accepts an instance or instances of an entity
- * class. The method must have exactly one parameter whose type is either:
+ * <p>A {@code Remove} method accepts a managed instance or instances of an
+ * entity class. The method must have exactly one parameter whose type is
+ * either:
  * </p>
  * <ul>
- *     <li>the class of the entity to be detached, or</li>
+ *     <li>the class of the entity to be removed, or</li>
  *     <li>{@code List<E>} or {@code E[]} where {@code E} is the class of the
- *     entities to be detached.</li>
+ *     entities to be removed.</li>
  * </ul>
  * <p>The annotated method must be declared {@code void}.
  * </p>
- * <p>If an unmanaged entity is passed to a {@code Detach} method, the call
- * has no effect.
+ * <p>If an unmanaged entity is passed to a {@code Refresh} method, the method
+ * must throw {@link IllegalArgumentException}. If the entity was scheduled for
+ * insertion in the database via a call to a {@link Persist} method, but was
+ * not yet inserted in the database, then the {@code Refresh} method undoes the
+ * effect of the {@code Persist} method.
  * </p>
  * <p>Every Jakarta Data provider which supports stateful repositories is
- * required to accept a {@code Detach} method which conforms to this signature.
- * Application of the {@code Detach} annotation to a method with any other
+ * required to accept a {@code Remove} method which conforms to this signature.
+ * Application of the {@code Remove} annotation to a method with any other
  * signature is not portable between Jakarta Data providers. Furthermore,
  * support for stateful repositories is optional. A Jakarta Data provider
  * is not required to support stateful repositories.
  * </p>
+ * <p>An event of type {@link jakarta.data.event.PreDeleteEvent} must be
+ * raised before each record is deleted from the database. An event of type
+ * {@link jakarta.data.event.PreDeleteEvent} must be raised after each record
+ * is successfully deleted.
+ * </p>
  * <p>Annotations such as {@code @Find}, {@code @Query}, {@code @Persist},
- * {@code @Merge}, {@code @Remove}, {@code @Refresh}, and {@code Detach} are
- * mutually-exclusive. A given method of a repository interface may have at
- * most one {@code @Find} annotation, lifecycle annotation, or query annotation.
+ * {@code @Merge}, {@code @Remove}, and {@code @Refresh} are mutually-exclusive.
+ * A given method of a repository interface may have at most one {@code @Find}
+ * annotation, lifecycle annotation, or query annotation.
  * </p>
  *
  * @since 1.1
@@ -64,5 +73,5 @@ import java.lang.annotation.Target;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-@interface Detach {
+@interface Remove {
 }
