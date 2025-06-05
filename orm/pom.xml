@@ -27,9 +27,9 @@
         <version>1.1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>jakarta.data-api</artifactId>
-    <name>Jakarta Data Core API</name>
-    <description>Jakarta Data :: Core API</description>
+    <artifactId>jakarta.data-orm</artifactId>
+    <name>Jakarta Data ORM API</name>
+    <description>Jakarta Data :: ORM API</description>
 
     <properties>
         <assertj.version>3.27.3</assertj.version>
@@ -142,9 +142,9 @@ Use is subject to <a href="{@docRoot}/doc-files/speclicense.html" target="_top">
                 <configuration>
                     <niceManifest>true</niceManifest>
                     <instructions>
-                        <Bundle-Description>Jakarta Data ${spec.version} API jar</Bundle-Description>
-                        <Bundle-Name>Jakarta Data API jar</Bundle-Name>
-                        <Bundle-SymbolicName>jakarta.data-api</Bundle-SymbolicName>
+                        <Bundle-Description>Jakarta Data ${spec.version} ORM API jar</Bundle-Description>
+                        <Bundle-Name>Jakarta Data ORM API jar</Bundle-Name>
+                        <Bundle-SymbolicName>jakarta.data-orm</Bundle-SymbolicName>
                         <Bundle-Version>${spec.version}</Bundle-Version>
                         <Extension-Name>jakarta.data</Extension-Name>
                         <Implementation-Version>${project.version}</Implementation-Version>
