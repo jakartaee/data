@@ -105,7 +105,7 @@
                             <header><![CDATA[<br>Jakarta Data API v${spec.version}]]></header>
                             <bottom><![CDATA[
 Comments to: <a href="mailto:data-dev@eclipse.org">data-dev@eclipse.org</a>.<br>
-Copyright &#169; 2024 Eclipse Foundation. All rights reserved.<br>
+Copyright &#169; 2025 Eclipse Foundation. All rights reserved.<br>
 Use is subject to <a href="{@docRoot}/doc-files/speclicense.html" target="_top">license terms</a>.]]>
                             </bottom>
                             <docfilessubdirs>true</docfilessubdirs>
