@@ -17,7 +17,7 @@
  */
 
 /**
- * Provides Jakarta Data ORM annotations
+ * API for Stateful Repositories in Jakarta Data
  */
 module jakarta.data.core {
 
