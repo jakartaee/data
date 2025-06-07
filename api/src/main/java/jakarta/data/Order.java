@@ -99,7 +99,7 @@ public class Order<T> implements Iterable<Sort<? super T>> {
      */
     @SafeVarargs
     public static <T> Order<T> by(Sort<? super T>... sorts) {
-        return new Order<T>(List.of(sorts));
+        return new Order<>(List.of(sorts));
     }
 
     /**
@@ -114,7 +114,7 @@ public class Order<T> implements Iterable<Sort<? super T>> {
      * criteria. This method never returns {@code null}.
      */
     public static <T> Order<T> by(List<Sort<? super T>> sorts) {
-        return new Order<T>(List.copyOf(sorts));
+        return new Order<>(List.copyOf(sorts));
     }
 
     /**
