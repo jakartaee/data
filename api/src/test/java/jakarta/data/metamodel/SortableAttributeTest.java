@@ -17,7 +17,6 @@
  */
 package jakarta.data.metamodel;
 
-import jakarta.data.Sort;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
