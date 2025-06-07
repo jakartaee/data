@@ -72,16 +72,12 @@ class ComparableLiteralRecordTest {
         var first = ComparableLiteral.of(42);
         var second = ComparableLiteral.of(99);
 
-        SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(first).isNotEqualTo(second);
-        });
+        SoftAssertions.assertSoftly(soft -> soft.assertThat(first).isNotEqualTo(second));
     }
 
     @Test
     @DisplayName("should throw NullPointerException when value is null")
     void shouldThrowWhenValueIsNull() {
-        org.junit.jupiter.api.Assertions.assertThrows(NullPointerException.class, () -> {
-            ComparableLiteral.of(null);
-        });
+        org.junit.jupiter.api.Assertions.assertThrows(NullPointerException.class, () -> ComparableLiteral.of(null));
     }
 }

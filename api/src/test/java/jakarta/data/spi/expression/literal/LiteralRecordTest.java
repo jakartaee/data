@@ -40,9 +40,7 @@ class LiteralRecordTest {
         Literal<String> literal =
                 new LiteralRecord<>("literal-value");
 
-        SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(literal.value()).isEqualTo("literal-value");
-        });
+        SoftAssertions.assertSoftly(soft -> soft.assertThat(literal.value()).isEqualTo("literal-value"));
     }
 
     @Test
@@ -63,16 +61,12 @@ class LiteralRecordTest {
         var one = new LiteralRecord<>("one");
         var two = new LiteralRecord<>("two");
 
-        SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(one).isNotEqualTo(two);
-        });
+        SoftAssertions.assertSoftly(soft -> soft.assertThat(one).isNotEqualTo(two));
     }
 
     @Test
     @DisplayName("should throw NullPointerException when value is null")
     void shouldThrowWhenValueIsNull() {
-        org.junit.jupiter.api.Assertions.assertThrows(NullPointerException.class, () -> {
-            new LiteralRecord<>(null);
-        }, "The value argument is required");
+        org.junit.jupiter.api.Assertions.assertThrows(NullPointerException.class, () -> new LiteralRecord<>(null), "The value argument is required");
     }
 }

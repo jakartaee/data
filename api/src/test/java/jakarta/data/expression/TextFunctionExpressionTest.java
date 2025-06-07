@@ -116,9 +116,7 @@ class TextFunctionExpressionTest {
     void shouldChainFunctionsAndCreateRestriction() {
         Restriction<Author> restriction = _Author.name.left(10).right(2).upper().equalTo("EE");
 
-        SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(restriction).isNotNull();
-        });
+        SoftAssertions.assertSoftly(soft -> soft.assertThat(restriction).isNotNull());
     }
 
     @Test

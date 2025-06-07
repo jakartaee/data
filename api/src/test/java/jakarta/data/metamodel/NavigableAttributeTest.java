@@ -66,9 +66,7 @@ class NavigableAttributeTest {
     void shouldNavigateToTextAttribute() {
         var path = _Author.publisher.navigate(_Publisher.name);
 
-        SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(path).isInstanceOf(TextExpression.class);
-        });
+        SoftAssertions.assertSoftly(soft -> soft.assertThat(path).isInstanceOf(TextExpression.class));
     }
 
     @Test
@@ -76,9 +74,7 @@ class NavigableAttributeTest {
     void shouldNavigateToNumericAttribute() {
         var path = _Author.publisher.navigate(_Publisher.score);
 
-        SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(path).isInstanceOf(NumericExpression.class);
-        });
+        SoftAssertions.assertSoftly(soft -> soft.assertThat(path).isInstanceOf(NumericExpression.class));
     }
 
     @Test
@@ -86,9 +82,7 @@ class NavigableAttributeTest {
     void shouldNavigateToTemporalAttribute() {
         var path = _Author.publisher.navigate(_Publisher.founded);
 
-        SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(path).isInstanceOf(TemporalExpression.class);
-        });
+        SoftAssertions.assertSoftly(soft -> soft.assertThat(path).isInstanceOf(TemporalExpression.class));
     }
 
     @Test
@@ -98,8 +92,6 @@ class NavigableAttributeTest {
                 .navigate(_Publisher.address)
                 .navigate(_Address.city);
 
-        SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(path).isInstanceOf(TextExpression.class);
-        });
+        SoftAssertions.assertSoftly(soft -> soft.assertThat(path).isInstanceOf(TextExpression.class));
     }
 }

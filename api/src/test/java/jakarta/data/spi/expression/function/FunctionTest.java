@@ -35,9 +35,7 @@ class FunctionTest {
             must case IllegalArgumentException to be raised.
             """)
     void testDivisionByZero() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            _Book.numPages.divide(0);
-        });
+        Assertions.assertThrows(IllegalArgumentException.class, () -> _Book.numPages.divide(0));
     }
 
     @Test
@@ -46,9 +44,7 @@ class FunctionTest {
             must case IllegalArgumentException to be raised.
             """)
     void testLeftNegative() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            _Book.title.left(-2);
-        });
+        Assertions.assertThrows(IllegalArgumentException.class, () -> _Book.title.left(-2));
     }
 
     @Test
@@ -82,9 +78,7 @@ class FunctionTest {
             must case IllegalArgumentException to be raised.
             """)
     void testRightNegative() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            _Book.title.right(-10);
-        });
+        Assertions.assertThrows(IllegalArgumentException.class, () -> _Book.title.right(-10));
     }
 
     @Test

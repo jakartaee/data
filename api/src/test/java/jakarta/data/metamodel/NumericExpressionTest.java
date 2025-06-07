@@ -219,9 +219,7 @@ class NumericExpressionTest {
     void shouldCastToBigInteger() {
         var cast = (NumericCast<?, ?>) _Invoice.amount.asBigInteger();
 
-        SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(cast.type()).isEqualTo(BigInteger.class);
-        });
+        SoftAssertions.assertSoftly(soft -> soft.assertThat(cast.type()).isEqualTo(BigInteger.class));
     }
 
     @Test
@@ -229,9 +227,7 @@ class NumericExpressionTest {
     void shouldCastToBigDecimal() {
         var cast = (NumericCast<?, ?>) _Invoice.amount.asBigDecimal();
 
-        SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(cast.type()).isEqualTo(BigDecimal.class);
-        });
+        SoftAssertions.assertSoftly(soft -> soft.assertThat(cast.type()).isEqualTo(BigDecimal.class));
     }
 
     @Test
@@ -242,9 +238,7 @@ class NumericExpressionTest {
                         _Invoice.percentDiscount.subtractedFrom(100))
                 .divide(100);
 
-        SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(expression.toString())
-                .isEqualTo("(invoice.amount * (100 - invoice.percentDiscount)) / 100");
-        });
+        SoftAssertions.assertSoftly(soft -> soft.assertThat(expression.toString())
+            .isEqualTo("(invoice.amount * (100 - invoice.percentDiscount)) / 100"));
     }
 }
