@@ -54,7 +54,7 @@ class NumericExpressionTest {
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(expression.name())
                 .isEqualTo(NumericFunctionExpression.ABS);
-            soft.assertThat(expression.arguments().get(0)).isEqualTo(_Invoice.amount);
+            soft.assertThat(expression.arguments().getFirst()).isEqualTo(_Invoice.amount);
         });
     }
 
@@ -66,7 +66,7 @@ class NumericExpressionTest {
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(expression.name())
                 .isEqualTo(NumericFunctionExpression.NEG);
-            soft.assertThat(expression.arguments().get(0)).isEqualTo(_Invoice.amount);
+            soft.assertThat(expression.arguments().getFirst()).isEqualTo(_Invoice.amount);
         });
     }
 

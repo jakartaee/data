@@ -92,7 +92,7 @@ class NumericExpressionTest {
             soft.assertThat(lengthExpression.name())
                 .isEqualTo(NumericFunctionExpression.LENGTH);
 
-            soft.assertThat(lengthExpression.arguments().get(0))
+            soft.assertThat(lengthExpression.arguments().getFirst())
                 .isEqualTo(_Book.title);
         });
     }

@@ -66,12 +66,12 @@ public record CursoredPageRecord<T>
      boolean firstPage, boolean lastPage) {
         this(content, cursors, totalElements, pageRequest,
                 lastPage ? null : PageRequest.afterCursor(
-                        cursors.get(cursors.size() - 1),
+                        cursors.getLast(),
                         pageRequest.page() + 1,
                         pageRequest.size(),
                         pageRequest.requestTotal()),
                 firstPage ? null : PageRequest.beforeCursor(
-                        cursors.get(0),
+                        cursors.getFirst(),
                         pageRequest.page() == 1 ? 1 : pageRequest.page() - 1,
                         pageRequest.size(),
                         pageRequest.requestTotal()));

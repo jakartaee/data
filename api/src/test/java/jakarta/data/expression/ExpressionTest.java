@@ -80,7 +80,7 @@ class ExpressionTest {
 
         @SuppressWarnings("unchecked")
         TextFunctionExpression<Book> rightExpression =
-            (TextFunctionExpression<Book>) upperArgs.get(0);
+            (TextFunctionExpression<Book>) upperArgs.getFirst();
 
         List<? extends Expression<? super Book, ?>> rightArgs = rightExpression.arguments();
         assertEquals(2, rightArgs.size());
@@ -108,7 +108,7 @@ class ExpressionTest {
             soft.assertThat(leftExpression.name())
                 .isEqualTo(TextFunctionExpression.LEFT);
 
-            soft.assertThat(leftArgs.get(0))
+            soft.assertThat(leftArgs.getFirst())
                 .isEqualTo(_Book.title);
 
             soft.assertThat(leftArg1.value())
@@ -153,7 +153,7 @@ class ExpressionTest {
             soft.assertThat(lengthExpression.arguments().size())
                 .isEqualTo(1);
 
-            soft.assertThat(lengthExpression.arguments().get(0))
+            soft.assertThat(lengthExpression.arguments().getFirst())
                 .isEqualTo(_Book.title);
 
             soft.assertThat(literal.value())
