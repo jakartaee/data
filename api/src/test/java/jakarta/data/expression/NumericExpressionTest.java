@@ -32,10 +32,8 @@ class NumericExpressionTest {
 
     @Test
     void shouldAddLiteral() {
-        SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(_Book.numPages.plus(10).toString())
-                .isEqualTo("book.numPages + 10");
-        });
+        SoftAssertions.assertSoftly(soft -> soft.assertThat(_Book.numPages.plus(10).toString())
+            .isEqualTo("book.numPages + 10"));
     }
 
     @Test
@@ -94,7 +92,7 @@ class NumericExpressionTest {
             soft.assertThat(lengthExpression.name())
                 .isEqualTo(NumericFunctionExpression.LENGTH);
 
-            soft.assertThat(lengthExpression.arguments().get(0))
+            soft.assertThat(lengthExpression.arguments().getFirst())
                 .isEqualTo(_Book.title);
         });
     }
@@ -112,10 +110,8 @@ class NumericExpressionTest {
 
     @Test
     void shouldMultiplyLiteral() {
-        SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(_Book.numChapters.times(10).toString())
-                .isEqualTo("book.numChapters * 10");
-        });
+        SoftAssertions.assertSoftly(soft -> soft.assertThat(_Book.numChapters.times(10).toString())
+            .isEqualTo("book.numChapters * 10"));
     }
 
     @Test

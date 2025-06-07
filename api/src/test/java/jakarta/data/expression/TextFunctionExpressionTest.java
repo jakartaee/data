@@ -47,7 +47,7 @@ class TextFunctionExpressionTest {
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(expression.name()).isEqualTo(TextFunctionExpression.CONCAT);
             soft.assertThat(expression.arguments()).hasSize(2);
-            soft.assertThat(expression.arguments().get(0)).isEqualTo(_Author.name);
+            soft.assertThat(expression.arguments().getFirst()).isEqualTo(_Author.name);
         });
     }
 
@@ -87,7 +87,7 @@ class TextFunctionExpressionTest {
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(expression.name()).isEqualTo(TextFunctionExpression.LEFT);
             soft.assertThat(expression.arguments()).hasSize(2);
-            soft.assertThat(expression.arguments().get(0)).isEqualTo(_Author.name);
+            soft.assertThat(expression.arguments().getFirst()).isEqualTo(_Author.name);
         });
     }
 
@@ -99,7 +99,7 @@ class TextFunctionExpressionTest {
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(expression.name()).isEqualTo(TextFunctionExpression.RIGHT);
             soft.assertThat(expression.arguments()).hasSize(2);
-            soft.assertThat(expression.arguments().get(0)).isEqualTo(_Author.name);
+            soft.assertThat(expression.arguments().getFirst()).isEqualTo(_Author.name);
         });
     }
 
@@ -116,9 +116,7 @@ class TextFunctionExpressionTest {
     void shouldChainFunctionsAndCreateRestriction() {
         Restriction<Author> restriction = _Author.name.left(10).right(2).upper().equalTo("EE");
 
-        SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(restriction).isNotNull();
-        });
+        SoftAssertions.assertSoftly(soft -> soft.assertThat(restriction).isNotNull());
     }
 
     @Test
