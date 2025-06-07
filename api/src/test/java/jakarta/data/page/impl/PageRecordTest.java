@@ -49,8 +49,8 @@ class PageRecordTest {
             softly.assertThat(page2.numberOfElements()).isEqualTo(4);
             softly.assertThat(page2.previousPageRequest()).isEqualTo(PageRequest.ofPage(1).size(4));
         });
-        assertThatThrownBy(() -> page2.totalElements()).isInstanceOf(IllegalStateException.class);
-        assertThatThrownBy(() -> page2.totalPages()).isInstanceOf(IllegalStateException.class);
+        assertThatThrownBy(page2::totalElements).isInstanceOf(IllegalStateException.class);
+        assertThatThrownBy(page2::totalPages).isInstanceOf(IllegalStateException.class);
 
         PageRequest page5Request = PageRequest.ofPage(5).size(4);
         List<String> page5Content = List.of("Q", "R");
@@ -66,9 +66,9 @@ class PageRecordTest {
             softly.assertThat(page5.numberOfElements()).isEqualTo(2);
             softly.assertThat(page5.previousPageRequest()).isEqualTo(PageRequest.ofPage(4).size(4));
         });
-        assertThatThrownBy(() -> page5.nextPageRequest()).isInstanceOf(NoSuchElementException.class);
-        assertThatThrownBy(() -> page5.totalElements()).isInstanceOf(IllegalStateException.class);
-        assertThatThrownBy(() -> page5.totalPages()).isInstanceOf(IllegalStateException.class);
+        assertThatThrownBy(page5::nextPageRequest).isInstanceOf(NoSuchElementException.class);
+        assertThatThrownBy(page5::totalElements).isInstanceOf(IllegalStateException.class);
+        assertThatThrownBy(page5::totalPages).isInstanceOf(IllegalStateException.class);
     }
 
     @Test
@@ -91,7 +91,7 @@ class PageRecordTest {
             softly.assertThat(page1.totalElements()).isEqualTo(18L);
             softly.assertThat(page1.totalPages()).isEqualTo(4);
         });
-        assertThatThrownBy(() -> page1.previousPageRequest()).isInstanceOf(NoSuchElementException.class);
+        assertThatThrownBy(page1::previousPageRequest).isInstanceOf(NoSuchElementException.class);
 
         PageRequest page3Request = PageRequest.ofPage(3).size(5);
         List<String> page3Content = List.of("K", "L", "M", "N", "O");
