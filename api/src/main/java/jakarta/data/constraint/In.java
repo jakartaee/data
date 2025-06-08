@@ -27,6 +27,18 @@ import java.util.List;
 
 import static java.util.Collections.unmodifiableList;
 
+/**
+ * A constraint that tests whether an attribute's value is one of a specified set of values.
+ *
+ * <p><strong>Example usage:</strong></p>
+ * <pre>{@code
+ * List<User> users = userRepository.findAll(
+ *     _User.role.in("ADMIN", "USER")
+ * );
+ * }</pre>
+ *
+ * @param <V> the type of the attribute being tested
+ */
 public interface In<V> extends Constraint<V> {
 
     @SafeVarargs
