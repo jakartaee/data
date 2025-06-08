@@ -19,6 +19,22 @@ package jakarta.data.constraint;
 
 import java.util.Set;
 
+
+/**
+ * A constraint that can be evaluated in a query to filter results based on attribute values.
+ * <p>
+ * Constraints are typically created from entity attributes using the static metamodel.
+ * </p>
+ *
+ * <p><strong>Example usage:</strong></p>
+ * <pre>{@code
+ * List<Product> results = products.findAll(
+ *     _Product.price.greaterThan(50.0)
+ * );
+ * }</pre>
+ *
+ * @param <V> the type of the attribute this constraint applies to
+ */
 public interface Constraint<V> {
 
     Constraint<V> negate();
