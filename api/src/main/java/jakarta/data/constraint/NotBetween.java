@@ -20,6 +20,18 @@ package jakarta.data.constraint;
 import jakarta.data.expression.ComparableExpression;
 import jakarta.data.spi.expression.literal.ComparableLiteral;
 
+/**
+ * A constraint that checks if an attribute's value is outside the inclusive range
+ * between a minimum and maximum.
+ *
+ * <pre>{@code
+ * List<Product> products = repository.findAll(
+ *     Restrict.notBetween(_Product.price, new BigDecimal("10.00"), new BigDecimal("50.00"))
+ * );
+ * }</pre>
+ *
+ * @param <V> the type of the attribute
+ */
 public interface NotBetween<V extends Comparable<?>> extends Constraint<V> {
 
     static <V extends Comparable<?>> NotBetween<V> bounds(V lower, V upper) {
