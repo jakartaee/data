@@ -21,6 +21,19 @@ package jakarta.data.constraint;
 import jakarta.data.expression.Expression;
 import jakarta.data.messages.Messages;
 import jakarta.data.spi.expression.literal.Literal;
+
+/**
+ * A constraint that tests whether an attribute is equal to a given value.
+ *
+ * <p><strong>Example usage:</strong></p>
+ * <pre>{@code
+ * List<Product> results = products.findAll(
+ *     _Product.name.equalTo("Coffee")
+ * );
+ * }</pre>
+ *
+ * @param <V> the type of the attribute being compared
+ */
 public interface EqualTo<V> extends Constraint<V> {
 
     static <V> EqualTo<V> expression(Expression<?, V> expression) {
