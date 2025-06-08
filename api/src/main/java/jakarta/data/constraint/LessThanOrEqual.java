@@ -20,6 +20,18 @@ package jakarta.data.constraint;
 import jakarta.data.expression.ComparableExpression;
 import jakarta.data.spi.expression.literal.ComparableLiteral;
 
+/**
+ * A constraint that tests whether an attribute's value is less than or equal to a specified value.
+ *
+ * <p><strong>Example usage:</strong></p>
+ * <pre>{@code
+ * List<Product> affordableProducts = productRepository.findAll(
+ *     _Product.price.lessThanOrEqual(50.0)
+ * );
+ * }</pre>
+ *
+ * @param <V> the type of the attribute being tested
+ */
 public interface LessThanOrEqual<V extends Comparable<?>> extends Constraint<V> {
 
     static <V extends Comparable<?>> LessThanOrEqual<V> max(
