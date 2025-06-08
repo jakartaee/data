@@ -17,6 +17,19 @@
  */
 package jakarta.data.constraint;
 
+/**
+ * A constraint that checks if the attribute's value is {@code null}.
+ *
+ * <p>Useful for querying entities where the attribute is not assigned or explicitly set to {@code null}.</p>
+ *
+ * <pre>{@code
+ * List<Customer> customers = repository.findAll(
+ *     Restrict.isNull(_Customer.middleName)
+ * );
+ * }</pre>
+ *
+ * @param <V> the type of the attribute
+ */
 public interface Null<V> extends Constraint<V> {
 
     @SuppressWarnings("unchecked")
