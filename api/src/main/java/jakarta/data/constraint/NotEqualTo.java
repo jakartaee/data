@@ -21,6 +21,20 @@ package jakarta.data.constraint;
 import jakarta.data.expression.Expression;
 import jakarta.data.messages.Messages;
 import jakarta.data.spi.expression.literal.Literal;
+
+/**
+ * A constraint that checks if an attribute's value is not equal to a given value.
+ *
+ * <p>Useful for filtering out a specific value from the results.</p>
+ *
+ * <pre>{@code
+ * List<Product> products = repository.findAll(
+ *     Restrict.notEqualTo(_Product.status, Status.INACTIVE)
+ * );
+ * }</pre>
+ *
+ * @param <V> the type of the attribute
+ */
 public interface NotEqualTo<V> extends Constraint<V> {
 
     static <V> NotEqualTo<V> expression(Expression<?, V> expression) {
