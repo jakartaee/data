@@ -27,6 +27,19 @@ import jakarta.data.spi.expression.literal.Literal;
 
 import static java.util.Collections.unmodifiableList;
 
+/**
+ * A constraint that checks if an attribute's value is not in a given set of values.
+ *
+ * <p>Useful when filtering out a group of unwanted values.</p>
+ *
+ * <pre>{@code
+ * List<Order> orders = repository.findAll(
+ *     Restrict.notIn(_Order.status, Status.CANCELLED, Status.FAILED)
+ * );
+ * }</pre>
+ *
+ * @param <V> the type of the attribute
+ */
 public interface NotIn<V> extends Constraint<V> {
 
     @SafeVarargs
