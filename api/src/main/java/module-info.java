@@ -45,6 +45,7 @@ import jakarta.data.restrict.Restrict;
 import jakarta.data.restrict.Restriction;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionStage;
 import java.util.Set;
 
 /**
