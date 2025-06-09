@@ -45,7 +45,8 @@ class OrderTest {
         var list = List.of(Sort.desc("priority"));
         var order = Order.by(list);
 
-        SoftAssertions.assertSoftly(soft -> soft.assertThat(order.sorts()).containsExactlyElementsOf(list));
+        SoftAssertions.assertSoftly(soft ->
+            soft.assertThat(order.sorts()).containsExactlyElementsOf(list));
     }
 
     @Test
