@@ -46,13 +46,6 @@ import java.lang.annotation.Target;
  * <p>If an unmanaged entity is passed to a {@code Detach} method, the call
  * has no effect.
  * </p>
- * <p>Every Jakarta Data provider which supports stateful repositories is
- * required to accept a {@code Detach} method which conforms to this signature.
- * Application of the {@code Detach} annotation to a method with any other
- * signature is not portable between Jakarta Data providers. Furthermore,
- * support for stateful repositories is optional. A Jakarta Data provider
- * is not required to support stateful repositories.
- * </p>
  * <p>Annotations such as {@code @Find}, {@code @Query}, {@code @Persist},
  * {@code @Merge}, {@code @Remove}, {@code @Refresh}, and {@code Detach} are
  * mutually-exclusive. A given method of a repository interface may have at
