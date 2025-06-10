@@ -340,7 +340,7 @@
 
     <modules>
         <module>api</module>
-        <module>orm</module>
+        <module>stateful</module>
         <module>spec</module>
         <module>tck</module>
         <module>tck-dist</module>
