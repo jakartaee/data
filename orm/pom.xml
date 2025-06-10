@@ -27,9 +27,9 @@
         <version>1.1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>jakarta.data-orm</artifactId>
-    <name>Jakarta Data ORM API</name>
-    <description>Jakarta Data :: ORM API</description>
+    <artifactId>jakarta.data-stateful</artifactId>
+    <name>Jakarta Data Stateful Repository API</name>
+    <description>Jakarta Data :: Stateful Repository API</description>
 
     <properties>
         <assertj.version>3.27.3</assertj.version>
