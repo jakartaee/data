@@ -67,6 +67,9 @@ class LiteralRecordTest {
     @Test
     @DisplayName("should throw NullPointerException when value is null")
     void shouldThrowWhenValueIsNull() {
-        org.junit.jupiter.api.Assertions.assertThrows(NullPointerException.class, () -> new LiteralRecord<>(null), "The value argument is required");
+        org.junit.jupiter.api.Assertions.assertThrows(
+                NullPointerException.class,
+                () -> new LiteralRecord<>(null),
+                "The value argument is required");
     }
 }
