@@ -15,7 +15,7 @@
  *
  *  SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.orm;
+package jakarta.data.stateful;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -25,42 +25,33 @@ import java.lang.annotation.Target;
 
 /**
  * <p>Lifecycle annotation for repository methods of stateful repositories
- * which perform remove operations. The {@code Remove} annotation must
+ * which perform refresh operations. The {@code Refresh} annotation must
  * not be applied to a method of a stateless repository.
  * </p>
- * <p>The {@code Remove} annotation indicates that the annotated repository
- * method schedules one or more managed entities for deletion in the database.
- * Deletion might occur immediately, when the annotated repository method is
- * invoked, or it might occur later, when the persistence context is flushed.
+ * <p>The {@code Refresh} annotation indicates that the annotated repository
+ * method immediately reloads the state of the given entity from the database,
+ * overwriting the persistent state previously held by the entity.
  * </p>
- * <p>A {@code Remove} method accepts a managed instance or instances of an
+ * <p>A {@code Refresh} method accepts a managed instance or instances of an
  * entity class. The method must have exactly one parameter whose type is
  * either:
  * </p>
  * <ul>
- *     <li>the class of the entity to be removed, or</li>
+ *     <li>the class of the entity to be refreshed, or</li>
  *     <li>{@code List<E>} or {@code E[]} where {@code E} is the class of the
- *     entities to be removed.</li>
+ *     entities to be refreshed.</li>
  * </ul>
  * <p>The annotated method must be declared {@code void}.
  * </p>
  * <p>If an unmanaged entity is passed to a {@code Refresh} method, the method
- * must throw {@link IllegalArgumentException}. If the entity was scheduled for
- * insertion in the database via a call to a {@link Persist} method, but was
- * not yet inserted in the database, then the {@code Refresh} method undoes the
- * effect of the {@code Persist} method.
+ * must throw {@link IllegalArgumentException}.
  * </p>
  * <p>Every Jakarta Data provider which supports stateful repositories is
- * required to accept a {@code Remove} method which conforms to this signature.
- * Application of the {@code Remove} annotation to a method with any other
+ * required to accept a {@code Refresh} method which conforms to this signature.
+ * Application of the {@code Refresh} annotation to a method with any other
  * signature is not portable between Jakarta Data providers. Furthermore,
  * support for stateful repositories is optional. A Jakarta Data provider
  * is not required to support stateful repositories.
- * </p>
- * <p>An event of type {@link jakarta.data.event.PreDeleteEvent} must be
- * raised before each record is deleted from the database. An event of type
- * {@link jakarta.data.event.PreDeleteEvent} must be raised after each record
- * is successfully deleted.
  * </p>
  * <p>Annotations such as {@code @Find}, {@code @Query}, {@code @Persist},
  * {@code @Merge}, {@code @Remove}, and {@code @Refresh} are mutually-exclusive.
@@ -73,5 +64,5 @@ import java.lang.annotation.Target;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface Remove {
+public @interface Refresh {
 }

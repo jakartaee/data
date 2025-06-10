@@ -19,8 +19,8 @@
 /**
  * API for Stateful Repositories in Jakarta Data
  */
-module jakarta.data.core {
+module jakarta.data.stateful {
 
-    exports jakarta.data.orm;
+    exports jakarta.data.stateful;
     requires jakarta.data;
 }

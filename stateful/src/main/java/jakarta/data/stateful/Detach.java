@@ -15,7 +15,7 @@
  *
  *  SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.orm;
+package jakarta.data.stateful;
 
 
 import java.lang.annotation.Documented;

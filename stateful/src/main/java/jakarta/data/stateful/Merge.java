@@ -15,7 +15,7 @@
  *
  *  SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.orm;
+package jakarta.data.stateful;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -25,43 +25,48 @@ import java.lang.annotation.Target;
 
 /**
  * <p>Lifecycle annotation for repository methods of stateful repositories
- * which perform persist operations. The {@code Persist} annotation must
+ * which perform merge operations. The {@code Merge} annotation must
  * not be applied to a method of a stateless repository.
  * </p>
- * <p>The {@code Persist} annotation indicates that the annotated repository
- * method makes one or more entities managed, adding them to the current
- * persistence context associated with the repository, and schedules the
- * entities for insertion in the database. Insertion might occur immediately,
- * when the annotated repository method is invoked, or it might occur later,
- * when the persistence context is flushed.
+ * <p>The {@code Merge} annotation indicates that the annotated repository
+ * method copies the state of one of more unmanaged entities to managed
+ * entities belonging to the current persistence context associated with the
+ * repository. The merge might change the persistent state of the managed
+ * entities, and might cause that state to be inserted or updated in the
+ * database. This typically occurs later, when the persistence context is
+ * flushed.
  * </p>
- * <p>An {@code Persist} method accepts an instance or instances of an entity
+ * <p>A {@code Merge} method accepts an instance or instances of an entity
  * class. The method must have exactly one parameter whose type is either:
  * </p>
  * <ul>
- *     <li>the class of the entity to be persisted, or</li>
+ *     <li>the class of the entity to be merged, or</li>
  *     <li>{@code List<E>} or {@code E[]} where {@code E} is the class of the
- *     entities to be persisted.</li>
+ *     entities to be merged.</li>
  * </ul>
- * <p>The annotated method must be declared {@code void}.
+ * <p>The annotated method must have a return type that is the same as the
+ * type of its parameter.
  * </p>
- * <p>If an instance passed to the {@code Persist} method is already managed,
- * the call has no effect unless the instance was previously scheduled for
- * deletion via a call to a {@link Remove} method. If the instance was
- * scheduled for deletion, then the {@code Persist} method undoes the effect
- * of the {@code Remove} method.
+ * <p>If an instance passed to the method is already managed, the call has no
+ * effect, and the method just returns the argument entity. Otherwise, if the
+ * instance is unmanaged, the method returns a managed entity instance which
+ * must be distinct from the argument entity, but which holds the same
+ * persistent state.
  * </p>
  * <p>Every Jakarta Data provider which supports stateful repositories is
- * required to accept a {@code Persist} method which conforms to this signature.
- * Application of the {@code Persist} annotation to a method with any other
+ * required to accept a {@code Merge} method which conforms to this signature.
+ * Application of the {@code Merge} annotation to a method with any other
  * signature is not portable between Jakarta Data providers. Furthermore,
- * support for stateful repositories is optional. A Jakarta Data provider
- * is not required to support stateful repositories.
+ * support for stateful repositories is optional. A Jakarta Data provider is
+ * not required to support stateful repositories.
  * </p>
  * <p>An event of type {@link jakarta.data.event.PreInsertEvent} must be
  * raised before each record is inserted in the database. An event of type
  * {@link jakarta.data.event.PostInsertEvent} must be raised after each record
- * is successfully inserted.
+ * is successfully inserted. Similarly, an event of type
+ * {@link jakarta.data.event.PreUpdateEvent} must be raised before each record
+ * is updated. An event of type {@link jakarta.data.event.PostUpdateEvent}
+ * must be raised after each record is successfully updated.
  * </p>
  * <p>Annotations such as {@code @Find}, {@code @Query}, {@code @Persist},
  * {@code @Merge}, {@code @Remove}, and {@code @Refresh} are mutually-exclusive.
@@ -74,5 +79,5 @@ import java.lang.annotation.Target;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface Persist {
+public @interface Merge {
 }
