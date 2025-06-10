@@ -61,14 +61,14 @@ record NumericOperatorExpressionRecord<T, N extends Number & Comparable<N>>
      */
     private static boolean isZero(Number number) {
         return switch (number) {
-            case Integer i    -> i.intValue() == 0;
-            case Long l       -> l.longValue() == 0L;
-            case Float f      -> Float.compare(f.floatValue(), 0.0f) == 0;
-            case Double d     -> Double.compare(d.doubleValue(), 0.0d) == 0;
+            case Integer i    -> i == 0;
+            case Long l       -> l == 0L;
+            case Float f      -> Float.compare(f, 0.0f) == 0;
+            case Double d     -> Double.compare(d, 0.0d) == 0;
             case BigInteger i -> i.compareTo(BigInteger.ZERO) == 0;
             case BigDecimal d -> d.compareTo(BigDecimal.ZERO) == 0;
-            case Byte b       -> b.byteValue() == (byte) 0;
-            case Short s      -> s.shortValue() == (short) 0;
+            case Byte b       -> b == (byte) 0;
+            case Short s      -> s == (short) 0;
             default -> throw new IllegalArgumentException(
                     Messages.get("009.unknown.number.type",
                                  number.getClass().getName()));

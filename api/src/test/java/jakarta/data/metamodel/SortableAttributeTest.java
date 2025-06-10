@@ -17,7 +17,6 @@
  */
 package jakarta.data.metamodel;
 
-import jakarta.data.Sort;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -75,13 +74,9 @@ class SortableAttributeTest {
     @Test
     @DisplayName("should throw NullPointerException when factory method receives nulls")
     void shouldThrowWhenNullArgumentsPassedToFactory() {
-        org.junit.jupiter.api.Assertions.assertThrows(NullPointerException.class, () -> {
-            TextAttribute.of(null, "title");
-        });
+        org.junit.jupiter.api.Assertions.assertThrows(NullPointerException.class, () -> TextAttribute.of(null, "title"));
 
-        org.junit.jupiter.api.Assertions.assertThrows(NullPointerException.class, () -> {
-            TextAttribute.of(Document.class, null);
-        });
+        org.junit.jupiter.api.Assertions.assertThrows(NullPointerException.class, () -> TextAttribute.of(Document.class, null));
     }
 
     @Test

@@ -62,37 +62,23 @@ public interface ComparableLiteral<V extends Comparable<?>>
         // NumericExpression has N extends Number & Comparable<N>
         // and
         // TemporalExpression has V extends Temporal & Comparable<? extends Temporal>
-        if (value instanceof String s) {
-            return (ComparableLiteral<V>) StringLiteral.of(s);
-        } else if (value instanceof Integer i) {
-            return (ComparableLiteral<V>) NumericLiteral.of(i);
-        } else if (value instanceof Long l) {
-            return (ComparableLiteral<V>) NumericLiteral.of(l);
-        } else if (value instanceof Float f) {
-            return (ComparableLiteral<V>) NumericLiteral.of(f);
-        } else if (value instanceof Double d) {
-            return (ComparableLiteral<V>) NumericLiteral.of(d);
-        } else if (value instanceof Byte b) {
-            return (ComparableLiteral<V>) NumericLiteral.of(b);
-        } else if (value instanceof Short s) {
-            return (ComparableLiteral<V>) NumericLiteral.of(s);
-        } else if (value instanceof BigInteger i) {
-            return (ComparableLiteral<V>) NumericLiteral.of(i);
-        } else if (value instanceof BigDecimal d) {
-            return (ComparableLiteral<V>) NumericLiteral.of(d);
-        } else if (value instanceof Instant i) {
-            return (ComparableLiteral<V>) TemporalLiteral.of(i);
-        } else if (value instanceof LocalDate d) {
-            return (ComparableLiteral<V>) TemporalLiteral.of(d);
-        } else if (value instanceof LocalDateTime d) {
-            return (ComparableLiteral<V>) TemporalLiteral.of(d);
-        } else if (value instanceof LocalTime t) {
-            return (ComparableLiteral<V>) TemporalLiteral.of(t);
-        } else if (value instanceof Year y) {
-            return (ComparableLiteral<V>) TemporalLiteral.of(y);
-        } else {
-            return new ComparableLiteralRecord<>(value);
-        }
+        return switch (value) {
+            case String s -> (ComparableLiteral<V>) StringLiteral.of(s);
+            case Integer i -> (ComparableLiteral<V>) NumericLiteral.of(i);
+            case Long l -> (ComparableLiteral<V>) NumericLiteral.of(l);
+            case Float f -> (ComparableLiteral<V>) NumericLiteral.of(f);
+            case Double d -> (ComparableLiteral<V>) NumericLiteral.of(d);
+            case Byte b -> (ComparableLiteral<V>) NumericLiteral.of(b);
+            case Short s -> (ComparableLiteral<V>) NumericLiteral.of(s);
+            case BigInteger i -> (ComparableLiteral<V>) NumericLiteral.of(i);
+            case BigDecimal d -> (ComparableLiteral<V>) NumericLiteral.of(d);
+            case Instant i -> (ComparableLiteral<V>) TemporalLiteral.of(i);
+            case LocalDate d -> (ComparableLiteral<V>) TemporalLiteral.of(d);
+            case LocalDateTime d -> (ComparableLiteral<V>) TemporalLiteral.of(d);
+            case LocalTime t -> (ComparableLiteral<V>) TemporalLiteral.of(t);
+            case Year y -> (ComparableLiteral<V>) TemporalLiteral.of(y);
+            case null, default -> new ComparableLiteralRecord<>(value);
+        };
     }
 
     /**

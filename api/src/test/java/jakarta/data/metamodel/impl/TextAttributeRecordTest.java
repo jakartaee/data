@@ -17,9 +17,7 @@
  */
 package jakarta.data.metamodel.impl;
 
-import jakarta.data.metamodel.SortableAttribute;
 import jakarta.data.metamodel.TextAttribute;
-import jakarta.data.metamodel.impl.SortableAttributeRecordTest.SimpleEntity;
 import jakarta.data.mock.entity.Book;
 
 import org.assertj.core.api.SoftAssertions;

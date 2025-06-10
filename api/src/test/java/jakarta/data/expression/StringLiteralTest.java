@@ -67,17 +67,13 @@ class StringLiteralTest {
         var one = StringLiteral.of("one");
         var two = StringLiteral.of("two");
 
-        SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(one).isNotEqualTo(two);
-        });
+        SoftAssertions.assertSoftly(soft -> soft.assertThat(one).isNotEqualTo(two));
     }
 
     @Test
     @DisplayName("should throw NullPointerException when value is null")
     void shouldThrowWhenValueIsNull() {
-        org.junit.jupiter.api.Assertions.assertThrows(NullPointerException.class, () -> {
-            StringLiteral.of(null);
-        });
+        org.junit.jupiter.api.Assertions.assertThrows(NullPointerException.class, () -> StringLiteral.of(null));
     }
 
     @Test
