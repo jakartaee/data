@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ Copyright (c) 2022, 2025 Contributors to the Eclipse Foundation
+  ~ Copyright (c) 2025 Contributors to the Eclipse Foundation
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -27,9 +27,9 @@
         <version>1.1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>jakarta.data-api</artifactId>
-    <name>Jakarta Data Core API</name>
-    <description>Jakarta Data :: Core API</description>
+    <artifactId>jakarta.data-stateful</artifactId>
+    <name>Jakarta Data Stateful Repository API</name>
+    <description>Jakarta Data :: Stateful Repository API</description>
 
     <properties>
         <assertj.version>3.27.3</assertj.version>
@@ -39,6 +39,11 @@
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>jakarta.data-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
@@ -100,7 +105,7 @@
                             <header><![CDATA[<br>Jakarta Data API v${spec.version}]]></header>
                             <bottom><![CDATA[
 Comments to: <a href="mailto:data-dev@eclipse.org">data-dev@eclipse.org</a>.<br>
-Copyright &#169; 2024 Eclipse Foundation. All rights reserved.<br>
+Copyright &#169; 2025 Eclipse Foundation. All rights reserved.<br>
 Use is subject to <a href="{@docRoot}/doc-files/speclicense.html" target="_top">license terms</a>.]]>
                             </bottom>
                             <docfilessubdirs>true</docfilessubdirs>
@@ -108,7 +113,7 @@ Use is subject to <a href="{@docRoot}/doc-files/speclicense.html" target="_top">
                                 <group>
                                     <title>Jakarta Data API Documentation</title>
                                     <packages>
-                                        jakarta.data
+                                        jakarta.data.stateful
                                     </packages>
                                 </group>
                             </groups>
@@ -142,9 +147,9 @@ Use is subject to <a href="{@docRoot}/doc-files/speclicense.html" target="_top">
                 <configuration>
                     <niceManifest>true</niceManifest>
                     <instructions>
-                        <Bundle-Description>Jakarta Data ${spec.version} API jar</Bundle-Description>
-                        <Bundle-Name>Jakarta Data API jar</Bundle-Name>
-                        <Bundle-SymbolicName>jakarta.data-api</Bundle-SymbolicName>
+                        <Bundle-Description>Jakarta Data ${spec.version} ORM API jar</Bundle-Description>
+                        <Bundle-Name>Jakarta Data ORM API jar</Bundle-Name>
+                        <Bundle-SymbolicName>jakarta.data-orm</Bundle-SymbolicName>
                         <Bundle-Version>${spec.version}</Bundle-Version>
                         <Extension-Name>jakarta.data</Extension-Name>
                         <Implementation-Version>${project.version}</Implementation-Version>
