@@ -15,7 +15,7 @@
  *
  *  SPDX-License-Identifier: Apache-2.0
  */
-package jakarta.data.stateful;
+package jakarta.data.repository.stateful;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -25,37 +25,44 @@ import java.lang.annotation.Target;
 
 /**
  * <p>Lifecycle annotation for repository methods of stateful repositories
- * which perform refresh operations. The {@code Refresh} annotation must
+ * which perform merge operations. The {@code Merge} annotation must
  * not be applied to a method of a stateless repository.
  * </p>
- * <p>The {@code Refresh} annotation indicates that the annotated repository
- * method immediately reloads the state of the given entity from the database,
- * overwriting the persistent state previously held by the entity.
+ * <p>The {@code Merge} annotation indicates that the annotated repository
+ * method copies the state of one of more unmanaged entities to managed
+ * entities belonging to the current persistence context associated with the
+ * repository. The merge might change the persistent state of the managed
+ * entities, and might cause that state to be inserted or updated in the
+ * database. This typically occurs later, when the persistence context is
+ * flushed.
  * </p>
- * <p>A {@code Refresh} method accepts a managed instance or instances of an
- * entity class. The method must have exactly one parameter whose type is
- * either:
+ * <p>A {@code Merge} method accepts an instance or instances of an entity
+ * class. The method must have exactly one parameter whose type is either:
  * </p>
  * <ul>
- *     <li>the class of the entity to be refreshed, or</li>
+ *     <li>the class of the entity to be merged, or</li>
  *     <li>{@code List<E>} or {@code E[]} where {@code E} is the class of the
- *     entities to be refreshed.</li>
+ *     entities to be merged.</li>
  * </ul>
- * <p>The annotated method must be declared {@code void}.
+ * <p>The annotated method must have a return type that is the same as the
+ * type of its parameter.
  * </p>
- * <p>If an unmanaged entity is passed to a {@code Refresh} method, the method
- * must throw {@link IllegalArgumentException}.
+ * <p>If an instance passed to the method is already managed, the call has no
+ * effect, and the method just returns the argument entity. Otherwise, if the
+ * instance is unmanaged, the method returns a managed entity instance which
+ * must be distinct from the argument entity, but which holds the same
+ * persistent state.
  * </p>
  * <p>A Jakarta Data provider that is capable of returning
  * {@code jakarta.persistence.EntityManager} from a resource accessor method is
- * required to accept a {@code Refresh} method which conforms to this signature.
- * A {@code Refresh} method that is not accepted must raise
+ * required to accept a {@code Merge} method which conforms to this signature.
+ * A {@code Merge} method that is not accepted must raise
  * {@link UnsupportedOperationException} or be rejected at compile time.
- * Application of the {@code Refresh} annotation to a method with any other
+ * Application of the {@code Merge} annotation to a method with any other
  * signature is not portable between Jakarta Data providers.
  * </p>
  * <p>A given method of a repository interface may have at most one
- * {@code @Find} annotation, {@code @Query} annotation, {@code @Refresh}
+ * {@code @Find} annotation, {@code @Query} annotation, {@code @Merge}
  * annotation, or other lifecycle annotation.</p>
  *
  * @since 1.1
@@ -63,5 +70,5 @@ import java.lang.annotation.Target;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface Refresh {
+public @interface Merge {
 }

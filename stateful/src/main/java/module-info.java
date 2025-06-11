@@ -21,6 +21,6 @@
  */
 module jakarta.data.stateful {
 
-    exports jakarta.data.stateful;
+    exports jakarta.data.repository.stateful;
     requires jakarta.data;
 }
