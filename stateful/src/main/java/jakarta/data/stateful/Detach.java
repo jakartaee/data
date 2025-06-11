@@ -46,11 +46,9 @@ import java.lang.annotation.Target;
  * <p>If an unmanaged entity is passed to a {@code Detach} method, the call
  * has no effect.
  * </p>
- * <p>Annotations such as {@code @Find}, {@code @Query}, {@code @Persist},
- * {@code @Merge}, {@code @Remove}, {@code @Refresh}, and {@code Detach} are
- * mutually-exclusive. A given method of a repository interface may have at
- * most one {@code @Find} annotation, lifecycle annotation, or query annotation.
- * </p>
+ * <p>A given method of a repository interface may have at most one
+ * {@code @Find} annotation, {@code @Query} annotation, {@code @Detach}
+ * annotation, or other lifecycle annotation.</p>
  *
  * @since 1.1
  */
