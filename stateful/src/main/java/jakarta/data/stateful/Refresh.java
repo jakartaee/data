@@ -46,12 +46,13 @@ import java.lang.annotation.Target;
  * <p>If an unmanaged entity is passed to a {@code Refresh} method, the method
  * must throw {@link IllegalArgumentException}.
  * </p>
- * <p>Every Jakarta Data provider which supports stateful repositories is
+ * <p>A Jakarta Data provider that is capable of returning
+ * {@code jakarta.persistence.EntityManager} from a resource accessor method is
  * required to accept a {@code Refresh} method which conforms to this signature.
+ * A {@code Refresh} method that is not accepted must raise
+ * {@link UnsupportedOperationException} or be rejected at compile time.
  * Application of the {@code Refresh} annotation to a method with any other
- * signature is not portable between Jakarta Data providers. Furthermore,
- * support for stateful repositories is optional. A Jakarta Data provider
- * is not required to support stateful repositories.
+ * signature is not portable between Jakarta Data providers.
  * </p>
  * <p>A given method of a repository interface may have at most one
  * {@code @Find} annotation, {@code @Query} annotation, {@code @Refresh}
