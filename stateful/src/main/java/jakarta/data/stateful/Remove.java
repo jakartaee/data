@@ -57,11 +57,6 @@ import java.lang.annotation.Target;
  * support for stateful repositories is optional. A Jakarta Data provider
  * is not required to support stateful repositories.
  * </p>
- * <p>An event of type {@link jakarta.data.event.PreDeleteEvent} must be
- * raised before each record is deleted from the database. An event of type
- * {@link jakarta.data.event.PreDeleteEvent} must be raised after each record
- * is successfully deleted.
- * </p>
  * <p>Annotations such as {@code @Find}, {@code @Query}, {@code @Persist},
  * {@code @Merge}, {@code @Remove}, and {@code @Refresh} are mutually-exclusive.
  * A given method of a repository interface may have at most one {@code @Find}
