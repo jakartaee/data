@@ -58,11 +58,6 @@ import java.lang.annotation.Target;
  * support for stateful repositories is optional. A Jakarta Data provider
  * is not required to support stateful repositories.
  * </p>
- * <p>An event of type {@link jakarta.data.event.PreInsertEvent} must be
- * raised before each record is inserted in the database. An event of type
- * {@link jakarta.data.event.PostInsertEvent} must be raised after each record
- * is successfully inserted.
- * </p>
  * <p>A given method of a repository interface may have at most one
  * {@code @Find} annotation, {@code @Query} annotation, {@code @Persist}
  * annotation, or other lifecycle annotation.</p>
