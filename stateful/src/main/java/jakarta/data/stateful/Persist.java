@@ -63,11 +63,9 @@ import java.lang.annotation.Target;
  * {@link jakarta.data.event.PostInsertEvent} must be raised after each record
  * is successfully inserted.
  * </p>
- * <p>Annotations such as {@code @Find}, {@code @Query}, {@code @Persist},
- * {@code @Merge}, {@code @Remove}, and {@code @Refresh} are mutually-exclusive.
- * A given method of a repository interface may have at most one {@code @Find}
- * annotation, lifecycle annotation, or query annotation.
- * </p>
+ * <p>A given method of a repository interface may have at most one
+ * {@code @Find} annotation, {@code @Query} annotation, {@code @Persist}
+ * annotation, or other lifecycle annotation.</p>
  *
  * @since 1.1
  */
