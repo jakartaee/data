@@ -892,6 +892,9 @@ public interface ProductRepository {
 
     @OrderBy(_Product.PRICE)
     CursoredPage<Product> cursor(Restriction<Product> restriction, PageRequest pageRequest);
+
+    @OrderBy(_Product.PRICE)
+    Page<Product> page(Restriction<Product> restriction, PageRequest pageRequest);
 }
 ----
 
