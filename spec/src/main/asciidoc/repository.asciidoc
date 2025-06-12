@@ -855,9 +855,10 @@ To combine multiple conditions, use the static methods `Restrict.all(...)` or `R
 
 [source,java]
 ----
-var expensivePencils = repository.restriction(
+List<String> expensiveRedPencils = products.search(
+    "pencil",
     Restrict.all(
-        _Product.name.equalTo("Pencil"),
+        _Product.color.equalTo(Color.RED),
         _Product.price.greaterThan(BigDecimal.TEN)
     )
 );
