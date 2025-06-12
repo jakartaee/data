@@ -843,11 +843,12 @@ The example below shows a repository method that accepts a restriction to filter
 ----
 @Repository
 public interface ProductRepository {
-   List<Product> restriction(Restriction<Product> restriction);
+   @Find
+   List<Product> search(@By(_Product.NAME) name, Restriction<Product> restriction);
 }
 ...
-var pencils = repository.restriction(_Product.name.equalTo("Pencil"));
-var expensive = repository.restriction(_Product.price.greaterThan(BigDecimal.TEN));
+List<Product> redPencils = products.search("pencil", _Product.color.equalTo(Color.RED));
+List<Product> expensivePencils = products.search("pencil", _Product.price.greaterThan(BigDecimal.TEN));
 ----
 
 To combine multiple conditions, use the static methods `Restrict.all(...)` or `Restrict.any(...)`. These allow you to express conjunctions (AND) or disjunctions (OR) in a fluent way:
