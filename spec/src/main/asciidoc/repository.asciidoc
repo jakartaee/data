@@ -835,7 +835,7 @@ NOTE: The behavior of a query method when the method is called with a null argum
 
 The `Restriction<T>` type is a special parameter used to dynamically construct queries in a fluent and type-safe manner. Valid as parameters to methods that perform queries, such as methods annotated `@Find` or `@Delete`, restrictions allow the application to define additional conditions programmatically, often using a generated metamodel class (see <<metamodel-java-processor>>).
 
-To use `Restriction<T>`, it must appear as the first parameter in a repository method and must not be combined with any of the following annotations: `@Query`, `@Save`, `@Insert`, `@Find`, `@Update`, or `@Delete`.
+To use `Restriction<T>`, it must appear after any parameters for query conditions that are defined upfront and must not be used on a lifecycle method.
 
 The example below shows a repository method that accepts a restriction to filter `Product` entities:
 
