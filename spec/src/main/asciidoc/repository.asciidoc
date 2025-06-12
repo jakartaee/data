@@ -893,8 +893,10 @@ public interface ProductRepository {
     @OrderBy(_Product.PRICE)
     List<Product> byPriceAsc(Restriction<Product> restriction);
 
+    @Find
     @OrderBy(_Product.PRICE)
-    CursoredPage<Product> cursor(Restriction<Product> restriction, PageRequest pageRequest);
+    @OrderBy(_Product.ID)
+    CursoredPage<Product> cursoredPage(Restriction<Product> restriction, PageRequest pageRequest);
 
     @OrderBy(_Product.PRICE)
     Page<Product> page(Restriction<Product> restriction, PageRequest pageRequest);
