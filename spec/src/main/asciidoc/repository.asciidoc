@@ -287,6 +287,8 @@ A repository method must throw `UnsupportedOperationException` if it has:
 - a parameter of type `PageRequest` or `Limit`, in combination with the keyword `First`,
 - a `@First` annotation, in combination with the keyword `First`, or
 - more than one parameter of type `Order`.
+- more than one parameter of type `Restriction`.
+- a `Restriction` is not at the first position in the parameter.
 
 Alternatively, a Jakarta Data provider is permitted to reject such a repository method declaration at compile time.
 
