@@ -864,14 +864,6 @@ List<String> expensiveRedPencils = products.search(
 );
 ----
 
-Repository methods using `Restriction<T>` support the following:
-
-* `OrderBy` annotation to define static sorting.
-* `Sort<T>` or `Order<T>` parameters to define dynamic sorting.
-* `PageRequest` for pagination and sorting.
-* `Limit` for limiting the number of results.
-* Return types such as `Page<T>`, `CursoredPage<T>`, `List<T>`, `Set<T>`, `Stream<T>`, or arrays `T[]`.
-* Single-result queries may return `T` or `Optional<T>`.
 
 Valid method signatures include:
 
