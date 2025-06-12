@@ -889,8 +889,9 @@ public interface ProductRepository {
     @Query("WHERE (product.numAvailable > 0)")
     List<Product> search(Restriction<Product> restriction, Order<Product> order);
 
+    @Find
     @OrderBy(_Product.PRICE)
-    List<Product> restrictionOrderByPriceAsc(Restriction<Product> restriction);
+    List<Product> byPriceAsc(Restriction<Product> restriction);
 
     @OrderBy(_Product.PRICE)
     CursoredPage<Product> cursor(Restriction<Product> restriction, PageRequest pageRequest);
