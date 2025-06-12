@@ -833,6 +833,44 @@ When a repository method is called with a null value as an argument to one of it
 
 NOTE: The behavior of a query method when the method is called with a null argument is not defined by this specification, and is not portable between Jakarta Data providers.
 
+==== Restriction parameters
+
+The `Restriction<T>` type is a special parameter type that can be used to find records and entities from the repositories. A repository method may declare a parameter of this type, which allows the application to specify additional restrictions on the query results.
+Different from the other queries, such as, `Find` annotation, the `Restriction<T>` can generate dynamic queries, furthermore, it includes the capability of doing a safe and fluent query combined with <<metamodel-java-processor>>
+
+To use the `Restriction<T>` it should be declared as the first parameter of the repository method, and it must not be used in combination with any of the following annotations: `@Query`, `@Save`, `@Insert`, `@Find`, `@Update`, or `@Delete`.
+
+The code below shows an example of a repository method that uses a `Restriction<T>` where two different restrictions are applied to the `Product` entity. The first restriction filters products by name, and the second restriction filters products by price.
+
+[source,java]
+----
+@Repository
+public interface ProductRepository {
+   List<Product> restriction(Restriction<Product> restriction);
+}
+...
+
+var pencils = repository.restriction(_Product.name.equalTo("Pencil"));
+var expensive = repository.restriction(_Product.price.greaterThan(BigDecimal.TEN));
+----
+
+You can combine multiple restrictions using the `any` and `all` methods of the `jakarta.data.restrict.Restrict` type. The following example shows how to combine two restrictions to find products that are expensive pencils:
+
+[source,java]
+----
+var expensivePencils = repository.restriction(Restrict.all(_Product.name.equalTo("Pencil"), _Product.price.greaterThan(BigDecimal.TEN)));
+----
+
+The Restriction queries can be used with:
+
+* `OrderBy` annotations to specify the order of the results.
+* `Sort` and `Order` parameters to specify the order of the results.
+* `PageRequest` parameters to specify pagination and sorting of the results.
+* `Limit` parameters to limit the number of results returned.
+* Return types that are for pagination, such as `Page`, `CursoredPage`.
+* Return types that are for collections, such as `List`, `Set`, `Stream`, or and `T[]`.
+- Return types for a query which returns a single result of type `T`, the type `T` itself, or `Optional<T>`,
+
 === Asynchronous repositories
 
 An _asynchronous repository method_ is a repository method which returns an object representing a value which will eventually be obtained from the database, but which might not yet be available.
