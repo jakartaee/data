@@ -877,13 +877,17 @@ Valid method signatures include:
 ----
 public interface ProductRepository {
 
-    List<Product> restriction(Restriction<Product> restriction);
+    @Find
+    List<Product> search(Restriction<Product> restriction);
 
-    Page<Product> restriction(Restriction<Product> restriction, PageRequest pageRequest);
+    @Find
+    Page<Product> search(Restriction<Product> restriction, PageRequest pageRequest, Order<Product> order);
 
-    List<Product> restriction(Restriction<Product> restriction, Sort<Product> order);
+    @Find
+    List<Product> search(Restriction<Product> restriction, Sort<Product> order);
 
-    List<Product> restriction(Restriction<Product> restriction, Order<Product> order);
+    @Query("WHERE (product.numAvailable > 0)")
+    List<Product> search(Restriction<Product> restriction, Order<Product> order);
 
     @OrderBy(_Product.PRICE)
     List<Product> restrictionOrderByPriceAsc(Restriction<Product> restriction);
