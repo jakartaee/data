@@ -898,6 +898,15 @@ public interface ProductRepository {
 }
 ----
 
+[NOTE]
+====
+- `Restriction<T>` instances are immutable and can be reused across multiple repository calls without side effects.
+
+- Passing `null` as the `Restriction<T>` argument results in a `NullPointerException`.
+
+- Repository methods returning `void` are not valid when using `Restriction<T>`. This constraint type is intended for querying only and must return a value.
+====
+
 
 === Asynchronous repositories
 
