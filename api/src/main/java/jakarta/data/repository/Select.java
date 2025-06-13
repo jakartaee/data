@@ -109,6 +109,7 @@ public @interface Select {
      * <pre>
      * &#64;Repository
      * public interface Cars extends BasicRepository&lt;Car, String&gt; {
+     *      &#64;Projection
      *     record ModelInfo(String model,
      *                      String manufacturer,
      *                      int designYear) {}
