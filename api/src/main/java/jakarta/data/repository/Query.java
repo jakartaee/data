@@ -17,7 +17,11 @@
  */
 package jakarta.data.repository;
 
+import jakarta.data.Limit;
+import jakarta.data.Order;
 import jakarta.data.Sort;
+import jakarta.data.page.PageRequest;
+import jakarta.data.restrict.Restriction;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -95,8 +99,8 @@ import java.lang.annotation.Target;
  *     of the query,</li>
  * <li>have exactly the same type and position within the parameter list of
  *     the method as a positional parameter of the query, or</li>
- * <li>be of type {@code Limit}, {@code Order}, {@code PageRequest},
- *     or {@code Sort}.</li>
+ * <li>be of type {@link Limit}, {@link Order}, {@link PageRequest},
+ *     {@link Restriction}, or {@link Sort}.</li>
  * </ul>
  *
  * <p>The {@link Param} annotation associates a method parameter with a named
