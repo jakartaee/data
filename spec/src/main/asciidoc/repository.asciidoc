@@ -835,10 +835,28 @@ NOTE: The behavior of a query method when the method is called with a null argum
 
 The `Restriction<T>` type is a special parameter used to dynamically construct queries in a fluent and type-safe manner. Valid as parameters to methods that perform queries, such as methods annotated `@Find` or `@Delete`, restrictions allow the application to define additional conditions programmatically, often using a generated metamodel class (see <<metamodel-java-processor>>).
 
-Repository methods can accept a Restriction<T> parameter to define dynamic, type-safe query conditions. Its usage rules depend on the presence of query-defining annotations:
+When using `Restriction<T>` in repository methods:
 
-- When no @Find or @Query annotation is present, the Restriction<T> must be the first parameter in the method signature. In this case, it fully defines the query dynamically.
-- When a method uses @Find or @Query, the Restriction<T> can appear in any position. It is treated as an additional constraint combined with the static query defined by the annotation.
+- The method *must* be annotated with either `@Find` or `@Query`. Without one of these annotations, the use of `Restriction<T>` is *not valid* and results in a `MappingException`.
+- When `@Find` or `@Query` is present, `Restriction<T>` can appear in *any position* in the parameter list. In these cases, the `Restriction<T>` provides the full query logic programmatically, and any query derivation from the method name is ignored.
+
+For example:
+
+[source,java]
+----
+@Query("WHERE (product.numAvailable > 0)")
+List<Product> search(Restriction<Product> restriction, Order<Product> order);
+
+@Find
+Page<Product> findAvailable(Restriction<Product> restriction, PageRequest pageRequest);
+----
+
+The following is *invalid* and will throw a `MappingException`:
+
+[source,java]
+----
+List<Product> findByName(Restriction<Product> restriction);
+----
 
 In both cases, Restriction<T> must not be used with lifecycle annotations such as @Save, @Insert, @Update, or @Delete.
 
