@@ -24,6 +24,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import jakarta.data.Limit;
+import jakarta.data.Order;
+import jakarta.data.Sort;
+import jakarta.data.page.PageRequest;
+import jakarta.data.restrict.Restriction;
+
 /**
  * <p>Lifecycle annotation for repository methods which perform delete
  * operations; alternatively, annotates a repository
@@ -74,8 +80,10 @@ import java.lang.annotation.Target;
  * entity type. Then the repository method is interpreted as a parameter-based automatic query method. The entity type
  * to be deleted is the primary entity type of the repository. The method return type must be {@code void}, {@code int},
  * or {@code long}. Every parameter of the annotated method must have exactly the same type and name (the parameter name
- * in the Java source, or a name assigned by {@link By @By}) as an attribute of the entity class.
- * Parameters of type {@code Sort}, {@code Order}, {@code Limit}, and {@code PageRequest} are prohibited.
+ * in the Java source, or a name assigned by {@link By @By}) as an attribute of
+ * the entity class. A single parameter of type {@link Restriction} is allowed
+ * after the other parameters. Parameters of type {@link Limit}, {@link Order},
+ * {@link PageRequest}, and {@link Sort} are prohibited.
  * </p>
  * <p>For example, consider an interface representing a garage:</p>
  * <pre>
