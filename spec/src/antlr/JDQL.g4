@@ -20,7 +20,7 @@ select_item
     | aggregate_expression
     ;
 select_items
-    : state_field_path_expression {, state_field_path_expression}+
+    : state_field_path_expression (',' state_field_path_expression)+
     ;
 
 orderby_clause : 'ORDER' 'BY' orderby_item (',' orderby_item)*;
