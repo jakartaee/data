@@ -29,7 +29,7 @@ import java.lang.annotation.Target;
  * not be applied to a method of a stateless repository.
  * </p>
  * <p>The {@code Remove} annotation indicates that the annotated repository
- * method schedules one or more managed entities for deletion in the database.
+ * method schedules one or more managed entities for deletion from the database.
  * Deletion might occur immediately, when the annotated repository method is
  * invoked, or it might occur later, when the persistence context is flushed.
  * </p>
