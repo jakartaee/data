@@ -252,6 +252,8 @@ default void cleanup() {
 
 A repository may have at most one resource accessor method.
 
+A repository which declares a resource accessor method with return type `jakarta.persistence.EntityManager` is always a <<Stateful repositories,stateful repository>>.
+
 === Conflicting repository method annotations
 
 Annotations like `@Find`, `@Query`, `@Insert`, `@Update`, `@Delete`, and `@Save` are mutually-exclusive. A given method of a repository interface may have at most one:
@@ -983,4 +985,37 @@ The `@Asynchronous` annotation must not be used on repositories implemented usin
 
 NOTE: An asynchronous repository might be backed by a thread pool, or it might be implemented using reactive streams.
 Such implementation details are concerns of the Jakarta Data provider, and are beyond the scope of this specification.
+
+=== Stateful repositories
+
+Repositories in Jakarta Data are usually stateless.
+That is, the repository does not maintain any relationship with any entity instance across invocations of repository methods.
+Any instance of an entity class may be passed to a method of a stateless repository which accepts the entity type.
+
+A _stateful repository_ is a repository which maintains an association with a set of _managed_ entity instances.
+
+- A stateful repository is backed by a _persistence context_, a set of managed entity instances in which at most one instance represents a given record in the database.
+ An entity instance never belongs to multiple persistence contexts.
+ The Jakarta Data implementation must ensure that a given persistence context never contains more than one entity instance representing the same record.
+ Multiple repositories might share a persistence context.
+ A persistence context is never shared across transactions.
+
+- A query method of a stateful repository which returns an entity type always returns managed instances belonging to the persistence context associated with the repository.
+
+- A <<Lifecycle methods, lifecycle method>> of a stateful repository must be annotated with a lifecycle annotation specific to the stateful model.
+  The annotations `@Save`, `@Insert`, `@Update`, `@Delete` may not be used to declare lifecycle methods of a stateful repository.
+  Instead, this specification defines the special lifecycle annotations `@Persist`, `@Merge`, `@Refresh`, `@Remove`, and `@Detach` for declaring lifecycle methods of stateful repositories.
+  Some lifecycle methods only accept managed entities associated with the persistence context underlying the repository.
+
+- Any modification to the persistent state of a managed entity must be automatically detected by the Jakarta Data implementation and the corresponding database record must be automatically updated.
+ The application program is not required to explicitly call a repository method after modifying a managed entity.
+
+- Invocation of a lifecycle method or modification of the state of a managed entity might result in one or more records being inserted, updated, or deleted in the database.
+ Such changes to the database do not typically happen synchronously with invocation of the lifecycle method, or immediately after modification of the managed entity.
+ Instead, such changes are made when the persistence context is periodically _flushed_.
+
+NOTE: This specification does not prescribe the timing of flush operations, but a flush typically happens before execution of a query or during the before completion phase of transaction commit.
+An implementation of Jakarta Data should flush as needed to ensure that query results are consistent with the current state of the persistence context.
+
+TODO: specify the semantics of `@Persist`, `@Merge`, `@Refresh`, `@Remove`, and `@Detach`.
 
