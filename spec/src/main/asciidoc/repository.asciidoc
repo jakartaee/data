@@ -286,7 +286,7 @@ A repository method must throw `UnsupportedOperationException` if it has:
 - a `@First` annotation and a parameter of type `PageRequest` or `Limit`,
 - a parameter of type `PageRequest` or `Limit`, in combination with the keyword `First`,
 - a `@First` annotation, in combination with the keyword `First`,
-- more than one parameter of type `Order`.
+- more than one parameter of type `Order`,
 - more than one parameter of type `Restriction`, or
 - a `Restriction` parameter and is a lifecycle method.
 
