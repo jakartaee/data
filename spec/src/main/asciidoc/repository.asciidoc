@@ -898,6 +898,7 @@ Valid method signatures include:
 ----
 public interface ProductRepository {
 
+    @Find
     List<Product> search(Restriction<Product> restriction);
 
     @Find
