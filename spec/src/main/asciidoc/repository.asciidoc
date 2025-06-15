@@ -851,7 +851,7 @@ List<Product> search(Restriction<Product> restriction);
 Page<Product> findAvailable(Restriction<Product> restriction, PageRequest pageRequest, Order<Product> order);
 ----
 
-The following is *invalid* and will throw a `MappingException`:
+The following is *invalid* because the method does not follow the Query by Method Name pattern of supplying a parameter per condition defined by the method name, nor does the method have an annotation that allows a `Restriction` parameter to be used.
 
 [source,java]
 ----
