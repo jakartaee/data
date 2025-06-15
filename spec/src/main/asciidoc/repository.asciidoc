@@ -858,7 +858,7 @@ The following is *invalid* because the method does not follow the Query by Metho
 List<Product> findByName(Restriction<Product> restriction);
 ----
 
-In both cases, Restriction<T> must not be used with lifecycle annotations such as @Save, @Insert, @Update, or @Delete.
+In both cases, Restriction<T> must not be used with lifecycle methods.
 
 The example below shows a repository method that accepts a restriction to filter `Product` entities:
 
