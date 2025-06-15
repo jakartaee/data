@@ -875,7 +875,7 @@ public interface ProductRepository {
 ...
 List<Product> redPencils = products.search("pencil", _Product.color.equalTo(Color.RED));
 List<Product> expensivePencils = products.search("pencil", _Product.price.greaterThan(BigDecimal.TEN));
-List<Product> expensivePencils = products.search(_Product.price.greaterThan(BigDecimal.TEN));
+List<Product> expensiveItems = products.search(_Product.price.greaterThan(BigDecimal.TEN));
 ----
 
 To combine multiple conditions, use the static methods `Restrict.all(...)` or `Restrict.any(...)`. These allow you to express conjunctions (AND) or disjunctions (OR) in a fluent way:
