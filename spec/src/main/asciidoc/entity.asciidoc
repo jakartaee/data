@@ -402,7 +402,7 @@ The static metamodel class is not required to include a field for every persiste
 
 A convenience implementation of each subinterface of `Attribute` is provided by the `.of` method of each subinterface.
 
-==== Compile-time annotation processor requirements for a metamodel class
+==== Compile-time annotation processor requirements for a metamodel class [[metamodel-java-processor]]
 
 When an annotation processor generates a static metamodel class for an entity:
 
