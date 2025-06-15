@@ -837,7 +837,7 @@ The `Restriction<T>` type is a special parameter used to dynamically construct q
 
 When using `Restriction<T>` in repository methods:
 
-- The method *must* be annotated with either `@Find` or `@Query`. Without one of these annotations, the use of `Restriction<T>` is *not valid* and results in a `MappingException`.
+- The method *must* be annotated with either `@Find`, '@Delete', or `@Query`. Without one of these annotations, the use of `Restriction<T>` is *not valid* and results in an `UnsupportedException`.
 - When `@Find` or `@Query` is present, `Restriction<T>` can appear in *any position* in the parameter list. In these cases, the `Restriction<T>` provides the full query logic programmatically, and any query derivation from the method name is ignored.
 
 For example:
