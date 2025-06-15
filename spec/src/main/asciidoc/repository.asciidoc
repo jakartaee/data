@@ -844,11 +844,11 @@ For example:
 
 [source,java]
 ----
-@Query("WHERE (product.numAvailable > 0)")
-List<Product> search(Restriction<Product> restriction, Order<Product> order);
-
 @Find
-Page<Product> findAvailable(Restriction<Product> restriction, PageRequest pageRequest);
+List<Product> search(Restriction<Product> restriction);
+
+@Query("WHERE (product.numAvailable > 0)")
+Page<Product> findAvailable(Restriction<Product> restriction, PageRequest pageRequest, Order<Product> order);
 ----
 
 The following is *invalid* and will throw a `MappingException`:
