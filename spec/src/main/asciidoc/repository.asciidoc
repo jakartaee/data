@@ -288,7 +288,6 @@ A repository method must throw `UnsupportedOperationException` if it has:
 - a `@First` annotation, in combination with the keyword `First`,
 - more than one parameter of type `Order`,
 - more than one parameter of type `Restriction`, or
-- a `Restriction` parameter and is a lifecycle method.
 
 Alternatively, a Jakarta Data provider is permitted to reject such a repository method declaration at compile time.
 
@@ -857,8 +856,6 @@ The following is *invalid* because the method does not follow the Query by Metho
 ----
 List<Product> findByName(Restriction<Product> restriction);
 ----
-
-In both cases, Restriction<T> must not be used with lifecycle methods.
 
 The example below shows a repository method that accepts a restriction to filter `Product` entities:
 
