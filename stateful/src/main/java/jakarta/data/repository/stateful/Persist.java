@@ -35,11 +35,11 @@ import java.lang.annotation.Target;
  * when the annotated repository method is invoked, or it might occur later,
  * when the persistence context is flushed.
  * </p>
- * <p>An {@code Persist} method accepts an instance or instances of an entity
+ * <p>A {@code Persist} method accepts an instance or instances of an entity
  * class. The method must have exactly one parameter whose type is either:
  * </p>
  * <ul>
- *     <li>the class of the entity to be persisted, or</li>
+ *     <li>the class of the entity to be made persistent, or</li>
  *     <li>{@code List<E>} or {@code E[]} where {@code E} is the class of the
  *     entities to be persisted.</li>
  * </ul>
