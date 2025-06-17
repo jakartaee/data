@@ -63,7 +63,8 @@ public class Restrict {
      * List&lt;Book&gt; jakartaEEBooksByAuthor =
      *         books.writtenBy(author,
      *                         Restrict.all(_Book.title.notNull(),
-     *                                      _Book.title.upper().contains("JAKARTA EE")));
+     *                                      _Book.title.upper().contains("JAKARTA EE")),
+     *                         Order.by(_Book.title.asc()));
      * </pre>
      *
      * @param <T>          entity type.
@@ -80,6 +81,43 @@ public class Restrict {
     public static <T> Restriction<T> all(Restriction<T>... restrictions) {
         return new CompositeRestrictionRecord<>(CompositeRestriction.Type.ALL,
                 List.of(restrictions));
+    }
+
+    /**
+     * <p>Returns a composite restriction that is satisfied when all of the
+     * supplied restrictions are satisfied. The order of the restrictions is
+     * preserved in the composite restriction, which keeps a
+     * {@link List#copyOf(java.util.Collection) copy} of the supplied
+     * {@code List} rather than the original if the list is modifiable.</p>
+     *
+     * <p>For example,</p>
+     * <pre>
+     * List&lt;Restriction&lt;Book&gt;&gt; restrictions = new ArrayList&lt;&gt;();
+     * restrictions.add(_Book.price.lessThanEqual(10.0f));
+     * restrictions.add(_Book.numPages.greaterThanEqual(200));
+     *
+     * List&lt;Sort&lt;Book&gt;&gt; sorts = new ArrayList&lt;&gt;();
+     * sorts.add(_Book.price.desc());
+     * sorts.add(_Book.title.asc());
+     *
+     * List&lt;Book&gt; inexpensiveLongBooks =
+     *         books.search(Restrict.all(restrictions),
+     *                      Order.by(sorts));
+     * </pre>
+     *
+     * @param <T>          entity type.
+     * @param restrictions one or more restrictions obtained from a method of
+     *                     {@code Restrict} or from a static metamodel
+     *                     {@link Attribute} subtype.
+     * @return
+     * @throws IllegalArgumentException if the supplied restrictions list is
+     *                                  empty or {@code null}.
+     * @throws NullPointerException     if the supplied restrictions list
+     *                                  includes a {@code null} value.
+     */
+    public static <T> Restriction<T> all(List<Restriction<T>> restrictions) {
+        return new CompositeRestrictionRecord<>(CompositeRestriction.Type.ALL,
+                List.copyOf(restrictions));
     }
 
     /**
@@ -109,6 +147,48 @@ public class Restrict {
     public static <T> Restriction<T> any(Restriction<T>... restrictions) {
         return new CompositeRestrictionRecord<>(CompositeRestriction.Type.ANY,
                 List.of(restrictions));
+    }
+
+    /**
+     * <p>Returns a composite restriction that is satisfied when at least one
+     * of the supplied restrictions is satisfied. The order of the restrictions
+     * is preserved in the composite restriction The order of the restrictions is
+     * preserved in the composite restriction, which keeps a
+     * {@link List#copyOf(java.util.Collection) copy} of the supplied
+     * {@code List} rather than the original if the list is modifiable.</p>
+     *
+     * <p>For example,</p>
+     * <pre>
+     * List&lt;Restriction&lt;Book&gt;&gt; restrictions = new ArrayList&lt;&gt;();
+     * restrictions.add(_Book.price.lessThan(15.0f));
+     * restrictions.add(_Book.hardcovered.isEqualTo(true));
+     *
+     * List&lt;Sort&lt;Book&gt;&gt; sorts = new ArrayList&lt;&gt;();
+     * sorts.add(_Book.price.desc());
+     * sorts.add(_Book.isbn.asc());
+     *
+     * List&lt;Book&gt; found =
+     *         books.titled(title,
+     *                      Restrict.any(restrictions),
+     *                      Order.by(sorts));
+     * </pre>
+     *
+     * <p>The example method above requires the book's title to always match
+     * and the book to either be priced under $15 or have a hard cover.</p>
+     *
+     * @param <T>          entity type.
+     * @param restrictions one or more restrictions obtained from a method of
+     *                     {@code Restrict} or from a static metamodel
+     *                     {@link Attribute} subtype.
+     * @return
+     * @throws IllegalArgumentException if the supplied restrictions array is
+     *                                  empty or {@code null}.
+     * @throws NullPointerException     if the supplied restrictions array
+     *                                  includes a {@code null} value.
+     */
+    public static <T> Restriction<T> any(List<Restriction<T>> restrictions) {
+        return new CompositeRestrictionRecord<>(CompositeRestriction.Type.ANY,
+                List.copyOf(restrictions));
     }
 
     /**
