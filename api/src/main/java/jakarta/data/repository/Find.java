@@ -17,13 +17,17 @@
  */
 package jakarta.data.repository;
 
+import jakarta.data.Limit;
+import jakarta.data.Order;
+import jakarta.data.Sort;
+import jakarta.data.page.PageRequest;
+import jakarta.data.restrict.Restriction;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-
 
 /**
  * <p>Annotates a repository method as a parameter-based automatic query method
@@ -60,8 +64,8 @@ import java.lang.annotation.Target;
  * <li>have exactly the same type and name (the parameter name in the Java source,
  *     or a name assigned by {@link By @By}) as an attribute of the entity class,
  *     or</li>
- * <li>be of type {@link jakarta.data.Limit}, {@link jakarta.data.Sort},
- *     {@link jakarta.data.Order}, or {@link jakarta.data.page.PageRequest}.</li>
+ * <li>be of type {@link Limit}, {@link Order}, {@link PageRequest},
+ *     {@link Restriction}, or {@link Sort}.</li>
  * </ul>
  * <p>The query is inferred from the method parameters which match attributes of
  * the entity.</p>
