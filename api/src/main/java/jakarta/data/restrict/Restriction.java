@@ -19,7 +19,7 @@ package jakarta.data.restrict;
 
 import jakarta.data.constraint.Constraint;
 import jakarta.data.constraint.GreaterThan;
-import jakarta.data.constraint.LessThanOrEqual;
+import jakarta.data.constraint.LessThanEqual;
 import jakarta.data.constraint.Like;
 import jakarta.data.constraint.NotLike;
 import jakarta.data.metamodel.Attribute;
@@ -92,7 +92,7 @@ public interface Restriction<T> {
      *
      * <p>For example, a basic restriction that represents an
      * {@linkplain GreaterThan exclusive upper bound} on a value is negated
-     * as an {@linkplain LessThanOrEqual inclusive lower bound} on the value.
+     * as an {@linkplain LessThanEqual inclusive lower bound} on the value.
      * </p>
      *
      * <p>A basic restriction that represents {@linkplain Like matching} a

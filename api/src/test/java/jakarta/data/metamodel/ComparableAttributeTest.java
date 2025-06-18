@@ -20,9 +20,9 @@ package jakarta.data.metamodel;
 import jakarta.data.constraint.Between;
 import jakarta.data.constraint.Constraint;
 import jakarta.data.constraint.GreaterThan;
-import jakarta.data.constraint.GreaterThanOrEqual;
+import jakarta.data.constraint.GreaterThanEqual;
 import jakarta.data.constraint.LessThan;
-import jakarta.data.constraint.LessThanOrEqual;
+import jakarta.data.constraint.LessThanEqual;
 import jakarta.data.restrict.BasicRestriction;
 
 import org.assertj.core.api.SoftAssertions;
@@ -64,8 +64,8 @@ class ComparableAttributeTest {
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
             soft.assertThat(restriction.expression()).isEqualTo(testAttribute);
-            soft.assertThat(restriction.constraint()).isInstanceOf(GreaterThanOrEqual.class);
-            soft.assertThat(restriction.constraint()).isEqualTo(Constraint.greaterThanOrEqual(10));
+            soft.assertThat(restriction.constraint()).isInstanceOf(GreaterThanEqual.class);
+            soft.assertThat(restriction.constraint()).isEqualTo(Constraint.greaterThanEqual(10));
         });
     }
 
@@ -84,7 +84,7 @@ class ComparableAttributeTest {
     }
 
     @Test
-    void shouldCreateLessThanOrEqualRestriction() {
+    void shouldCreateLessThanEqualRestriction() {
         @SuppressWarnings("unchecked")
         BasicRestriction<Person, Integer> restriction =
                 (BasicRestriction<Person, Integer>) testAttribute.lessThanEqual(10);
@@ -92,8 +92,8 @@ class ComparableAttributeTest {
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
             soft.assertThat(restriction.expression()).isEqualTo(testAttribute);
-            soft.assertThat(restriction.constraint()).isInstanceOf(LessThanOrEqual.class);
-            soft.assertThat(restriction.constraint()).isEqualTo(Constraint.lessThanOrEqual(10));
+            soft.assertThat(restriction.constraint()).isInstanceOf(LessThanEqual.class);
+            soft.assertThat(restriction.constraint()).isEqualTo(Constraint.lessThanEqual(10));
         });
     }
 
