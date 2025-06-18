@@ -78,8 +78,10 @@ public class Restrict {
      *                                  includes a {@code null} value.
      */
     @SafeVarargs
-    public static <T> Restriction<T> all(Restriction<T>... restrictions) {
-        return new CompositeRestrictionRecord<>(CompositeRestriction.Type.ALL,
+    public static <T> Restriction<T> all(
+            Restriction<? super T>... restrictions) {
+        return new CompositeRestrictionRecord<T>(
+                CompositeRestriction.Type.ALL,
                 List.of(restrictions));
     }
 
@@ -115,8 +117,10 @@ public class Restrict {
      * @throws NullPointerException     if the supplied restrictions list
      *                                  includes a {@code null} value.
      */
-    public static <T> Restriction<T> all(List<Restriction<T>> restrictions) {
-        return new CompositeRestrictionRecord<>(CompositeRestriction.Type.ALL,
+    public static <T> Restriction<T> all(
+            List<? extends Restriction<? super T>> restrictions) {
+        return new CompositeRestrictionRecord<T>(
+                CompositeRestriction.Type.ALL,
                 List.copyOf(restrictions));
     }
 
@@ -144,8 +148,10 @@ public class Restrict {
      *                                  includes a {@code null} value.
      */
     @SafeVarargs
-    public static <T> Restriction<T> any(Restriction<T>... restrictions) {
-        return new CompositeRestrictionRecord<>(CompositeRestriction.Type.ANY,
+    public static <T> Restriction<T> any(
+            Restriction<? super T>... restrictions) {
+        return new CompositeRestrictionRecord<T>(
+                CompositeRestriction.Type.ANY,
                 List.of(restrictions));
     }
 
@@ -186,8 +192,10 @@ public class Restrict {
      * @throws NullPointerException     if the supplied restrictions array
      *                                  includes a {@code null} value.
      */
-    public static <T> Restriction<T> any(List<Restriction<T>> restrictions) {
-        return new CompositeRestrictionRecord<>(CompositeRestriction.Type.ANY,
+    public static <T> Restriction<T>any(
+            List<? extends Restriction<? super T>> restrictions) {
+        return new CompositeRestrictionRecord<T>(
+                CompositeRestriction.Type.ANY,
                 List.copyOf(restrictions));
     }
 

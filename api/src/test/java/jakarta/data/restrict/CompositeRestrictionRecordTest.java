@@ -26,6 +26,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -56,6 +57,30 @@ class CompositeRestrictionRecordTest {
         String firstName;
         String lastName;
         String name;
+    }
+
+    @Test
+    @DisplayName("Create a composite restriction from a list of restrictions")
+    void shouldCreateCompositeRestrictionFromList() {
+
+        List<Restriction<Author>> restrictionList = new ArrayList<>();
+        restrictionList.add(_Author.age.lessThan(30));
+        restrictionList.add(_Author.titleOfFirstBook.contains("Jakarta EE"));
+
+        Restriction<Author> restriction = Restrict.all(restrictionList);
+        CompositeRestriction<Author> composite =
+                (CompositeRestriction<Author>) restriction;
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(composite.type())
+                .isEqualTo(CompositeRestriction.Type.ALL);
+
+            soft.assertThat(composite.isNegated())
+                .isFalse();
+
+            soft.assertThat(composite.restrictions())
+                .containsExactlyElementsOf(restrictionList);
+        });
     }
 
     @Test
@@ -235,8 +260,7 @@ class CompositeRestrictionRecordTest {
         restrictionsWithNull.add(_Author.name.equalTo("Jane Doe"));
         restrictionsWithNull.add(null);
 
-        assertThatThrownBy(() -> new CompositeRestrictionRecord<>(
-                CompositeRestriction.Type.ANY, restrictionsWithNull))
+        assertThatThrownBy(() -> Restrict.any(restrictionsWithNull))
                 .isInstanceOf(NullPointerException.class);
     }
 
