@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ Copyright (c) 2022 Contributors to the Eclipse Foundation
+  ~ Copyright (c) 2022, 2025 Contributors to the Eclipse Foundation
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -115,6 +115,52 @@ Use is subject to <a href="{@docRoot}/doc-files/speclicense.html" target="_top">
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <version>6.0.0</version>
+                <configuration>
+                    <niceManifest>true</niceManifest>
+                    <supportedProjectTypes>
+                        <supportedProjectType>jar</supportedProjectType>
+                    </supportedProjectTypes>
+                    <instructions>
+                        <Bundle-Description>
+                            Jakarta Data ${spec.version} API jar
+                        </Bundle-Description>
+                        <Bundle-Name>Jakarta Data API jar</Bundle-Name>
+                        <Bundle-SymbolicName>jakarta.data-api</Bundle-SymbolicName>
+                        <Bundle-Version>${project.version}</Bundle-Version>
+                        <Extension-Name>jakarta.data</Extension-Name>
+                        <Implementation-Version>${project.version}</Implementation-Version>
+                        <Specification-Vendor>Eclipse Foundation</Specification-Vendor>
+                        <Specification-Version>${spec.version}</Specification-Version>
+                        <Export-Package>jakarta.data.*; version=${project.version}</Export-Package>
+                    </instructions>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>osgi-manifest</id>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>manifest</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.4.2</version>
+                <configuration>
+                    <archive>
+                        <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+                    </archive>
+                    <excludes>
+                        <exclude>**/*.java</exclude>
+                    </excludes>
+                </configuration>
             </plugin>
         </plugins>
     </build>
