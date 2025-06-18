@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 import jakarta.data.constraint.EqualTo;
-import jakarta.data.constraint.LessThanOrEqual;
+import jakarta.data.constraint.LessThanEqual;
 import jakarta.data.mock.entity.Book;
 import jakarta.data.mock.entity._Book;
 import jakarta.data.restrict.BasicRestriction;
@@ -137,8 +137,8 @@ class ExpressionTest {
         BasicRestriction<Book, Integer> restriction =
             (BasicRestriction<Book, Integer>) titleUpTo50Chars;
 
-        LessThanOrEqual<Integer> constraint =
-            (LessThanOrEqual<Integer>) restriction.constraint();
+        LessThanEqual<Integer> constraint =
+            (LessThanEqual<Integer>) restriction.constraint();
 
         NumericLiteral<?> literal =
             (NumericLiteral<?>) constraint.bound();
