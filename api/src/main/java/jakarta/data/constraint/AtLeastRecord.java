@@ -20,10 +20,10 @@ package jakarta.data.constraint;
 import jakarta.data.expression.ComparableExpression;
 import jakarta.data.messages.Messages;
 
-record GreaterThanEqualRecord<V extends Comparable<?>>(
+record AtLeastRecord<V extends Comparable<?>>(
         ComparableExpression<?, V> bound)
-        implements GreaterThanEqual<V> {
-    public GreaterThanEqualRecord {
+        implements AtLeast<V> {
+    public AtLeastRecord {
         if (bound == null) {
             throw new NullPointerException(
                     Messages.get("001.arg.required", "minimum"));

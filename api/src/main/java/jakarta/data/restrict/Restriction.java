@@ -19,7 +19,7 @@ package jakarta.data.restrict;
 
 import jakarta.data.constraint.Constraint;
 import jakarta.data.constraint.GreaterThan;
-import jakarta.data.constraint.LessThanEqual;
+import jakarta.data.constraint.AtMost;
 import jakarta.data.constraint.Like;
 import jakarta.data.constraint.NotLike;
 import jakarta.data.metamodel.Attribute;
@@ -72,7 +72,7 @@ import jakarta.data.repository.Find;
  * List&lt;Car&gt; atLeast2020AndPricedBelow30k =
  *         cars.search(make,
  *                     model,
- *                     Restrict.all(_Car.year.greaterThanEqual(2020),
+ *                     Restrict.all(_Car.year.atLeast(2020),
  *                                  _Car.price.lessThan(30000)),
  *                     Order.by(_Car.price.desc()));
  * </pre>
@@ -92,7 +92,7 @@ public interface Restriction<T> {
      *
      * <p>For example, a basic restriction that represents an
      * {@linkplain GreaterThan exclusive upper bound} on a value is negated
-     * as an {@linkplain LessThanEqual inclusive lower bound} on the value.
+     * as an {@linkplain AtMost inclusive lower bound} on the value.
      * </p>
      *
      * <p>A basic restriction that represents {@linkplain Like matching} a

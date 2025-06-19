@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 import jakarta.data.constraint.EqualTo;
-import jakarta.data.constraint.LessThanEqual;
+import jakarta.data.constraint.AtMost;
 import jakarta.data.mock.entity.Book;
 import jakarta.data.mock.entity._Book;
 import jakarta.data.restrict.BasicRestriction;
@@ -131,14 +131,14 @@ class ExpressionTest {
     @Test
     void shouldRestrictLengthOfText() {
 
-        Restriction<Book> titleUpTo50Chars = _Book.title.length().lessThanEqual(50);
+        Restriction<Book> titleUpTo50Chars = _Book.title.length().atMost(50);
 
         @SuppressWarnings("unchecked")
         BasicRestriction<Book, Integer> restriction =
             (BasicRestriction<Book, Integer>) titleUpTo50Chars;
 
-        LessThanEqual<Integer> constraint =
-            (LessThanEqual<Integer>) restriction.constraint();
+        AtMost<Integer> constraint =
+            (AtMost<Integer>) restriction.constraint();
 
         NumericLiteral<?> literal =
             (NumericLiteral<?>) constraint.bound();

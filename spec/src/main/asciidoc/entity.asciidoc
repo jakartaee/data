@@ -517,8 +517,8 @@ Example usage:
 List<Product> found = products.findAll(
     Restrict.all(
         _Product.name.contains(searchPattern),
-        _Product.price.greaterThan(minPrice),
-        _Product.price.lessThanEqual(maxPrice)
+        _Product.price.atLeast(minPrice),
+        _Product.price.atMost(maxPrice)
     ),
     Order.by(_Product.price.desc(),
              _Product.name.asc(),

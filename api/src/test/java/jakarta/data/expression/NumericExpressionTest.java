@@ -40,15 +40,15 @@ class NumericExpressionTest {
     void shouldCompareWithNumericAttribute() {
         Restriction<Book> averageChapterAtLeastAsLongAsNumChapters =
                 _Book.numPages.divide(_Book.numChapters)
-                        .greaterThanEqual(_Book.numChapters);
+                        .atLeast(_Book.numChapters);
 
         @SuppressWarnings("unchecked")
         BasicRestriction<Book, Integer> restriction =
                 (BasicRestriction<Book, Integer>)
                         averageChapterAtLeastAsLongAsNumChapters;
 
-        GreaterThanEqual<Integer> gteNumChapters =
-                (GreaterThanEqual<Integer>) restriction.constraint();
+        AtLeast<Integer> gteNumChapters =
+                (AtLeast<Integer>) restriction.constraint();
 
         NumericOperatorExpression<Book, Integer> divide =
                 (NumericOperatorExpression<Book, Integer>) restriction.expression();

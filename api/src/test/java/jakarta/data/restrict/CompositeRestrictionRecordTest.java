@@ -267,7 +267,7 @@ class CompositeRestrictionRecordTest {
     @DisplayName("should support composite restriction with a single restriction")
     @Test
     void shouldSupportSingleItemComposite() {
-        var onlyRestriction = _Author.age.greaterThanEqual(30);
+        var onlyRestriction = _Author.age.atLeast(30);
 
         var composite = new CompositeRestrictionRecord<>(
                 CompositeRestriction.Type.ALL, List.of(onlyRestriction));
