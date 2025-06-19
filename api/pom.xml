@@ -155,7 +155,10 @@ Use is subject to <a href="{@docRoot}/doc-files/speclicense.html" target="_top">
                         <Implementation-Version>${project.version}</Implementation-Version>
                         <Specification-Vendor>Eclipse Foundation</Specification-Vendor>
                         <Specification-Version>${spec.version}</Specification-Version>
-                        <Export-Package>jakarta.data.*; version=${project.version}</Export-Package>
+                        <Export-Package>
+                            !jakarta.data.messages,
+                            jakarta.data.*;version=${project.version}
+                        </Export-Package>
                     </instructions>
                 </configuration>
                 <executions>
