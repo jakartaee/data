@@ -35,7 +35,7 @@
         <assertj.version>3.27.3</assertj.version>
         <!-- default is the same for backward compatibility reason
         Easy to override when building with a system property -->
-        <spec.version>1.0</spec.version>
+        <spec.version>1.1</spec.version>
     </properties>
 
     <dependencies>
@@ -141,15 +141,24 @@ Use is subject to <a href="{@docRoot}/doc-files/speclicense.html" target="_top">
                 <version>6.0.0</version>
                 <configuration>
                     <niceManifest>true</niceManifest>
+                    <supportedProjectTypes>
+                        <supportedProjectType>jar</supportedProjectType>
+                    </supportedProjectTypes>
                     <instructions>
-                        <Bundle-Description>Jakarta Data ${spec.version} API jar</Bundle-Description>
+                        <Bundle-Description>
+                            Jakarta Data ${spec.version} API jar
+                        </Bundle-Description>
                         <Bundle-Name>Jakarta Data API jar</Bundle-Name>
                         <Bundle-SymbolicName>jakarta.data-api</Bundle-SymbolicName>
-                        <Bundle-Version>${spec.version}</Bundle-Version>
+                        <Bundle-Version>${project.version}</Bundle-Version>
                         <Extension-Name>jakarta.data</Extension-Name>
                         <Implementation-Version>${project.version}</Implementation-Version>
                         <Specification-Vendor>Eclipse Foundation</Specification-Vendor>
                         <Specification-Version>${spec.version}</Specification-Version>
+                        <Export-Package>
+                            !jakarta.data.messages,
+                            jakarta.data.*;version=${project.version}
+                        </Export-Package>
                     </instructions>
                 </configuration>
                 <executions>
@@ -161,6 +170,19 @@ Use is subject to <a href="{@docRoot}/doc-files/speclicense.html" target="_top">
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.4.2</version>
+                <configuration>
+                    <archive>
+                        <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+                    </archive>
+                    <excludes>
+                        <exclude>**/*.java</exclude>
+                    </excludes>
+                </configuration>
             </plugin>
         </plugins>
     </build>
