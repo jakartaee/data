@@ -836,7 +836,7 @@ The `Restriction<T>` type is a special parameter used to dynamically construct q
 
 When using `Restriction<T>` in repository methods:
 
-- The use of `Restriction<T>` is only considered valid in portable applications when used as a parameter to methods annotated with `@Find`, `@Delete`, or `@Query`. Methods using `Restriction<T>` without one of these annotations are not covered by the specification. Jakarta Data providers may reject such methods by throwing an `UnsupportedOperationException`, or they may choose to support them as vendor-specific extensions.
+- The use of `Restriction<T>` is only considered valid in portable applications when used as a parameter to methods annotated with `@Find`, `@Delete`, or `@Query`. Methods using `Restriction<T>` without one of these annotations are not covered by the specification. Jakarta Data providers may reject such methods by throwing an `UnsupportedOperationException`.
 - The filtering defined by the `@Query` annotation or the parameters of methods annotated with `@Find` or `@Delete` is combined with any additional filtering specified by a `Restriction<T>` parameter.
 
 This specification defines support for the `Restriction<T>` parameter only on methods annotated with `@Find`, `@Delete`, or `@Query`.
