@@ -30,8 +30,8 @@ record LessThanRecord<V extends Comparable<?>>(ComparableExpression<?, V> bound)
     }
 
     @Override
-    public GreaterThanEqual<V> negate() {
-        return GreaterThanEqual.min(bound);
+    public AtLeast<V> negate() {
+        return AtLeast.min(bound);
     }
 
     @Override

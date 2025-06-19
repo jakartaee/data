@@ -81,20 +81,20 @@ public interface Constraint<V> {
         return NotNull.instance();
     }
 
+    static <V extends Comparable<?>> AtLeast<V> atLeast(V minimum) {
+        return AtLeast.min(minimum);
+    }
+
+    static <V extends Comparable<?>> AtMost<V> atMost(V maximum) {
+        return AtMost.max(maximum);
+    }
+
     static <V extends Comparable<?>> GreaterThan<V> greaterThan(V bound) {
         return GreaterThan.bound(bound);
     }
 
     static <V extends Comparable<?>> LessThan<V> lessThan(V bound) {
         return LessThan.bound(bound);
-    }
-
-    static <V extends Comparable<?>> GreaterThanEqual<V> greaterThanEqual(V bound) {
-        return GreaterThanEqual.min(bound);
-    }
-
-    static <V extends Comparable<?>> LessThanEqual<V> lessThanEqual(V bound) {
-        return LessThanEqual.max(bound);
     }
 
     static <V extends Comparable<?>> Between<V> between(V lowerBound, V upperBound) {

@@ -201,7 +201,7 @@ public interface TextExpression<T> extends ComparableExpression<T, String> {
      * <p>Example:</p>
      * <pre>
      * withModelNamesUpTo10Chars = cars.search(make,
-     *                                         _Car.model.length().lessThanEqual(10));
+     *                                         _Car.model.length().atMost(10));
      * </pre>
      *
      * @return an expression for the function that obtains the length of the

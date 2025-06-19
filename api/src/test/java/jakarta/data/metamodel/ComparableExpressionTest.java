@@ -19,9 +19,9 @@ package jakarta.data.metamodel;
 
 import jakarta.data.constraint.Between;
 import jakarta.data.constraint.GreaterThan;
-import jakarta.data.constraint.GreaterThanEqual;
+import jakarta.data.constraint.AtLeast;
 import jakarta.data.constraint.LessThan;
-import jakarta.data.constraint.LessThanEqual;
+import jakarta.data.constraint.AtMost;
 import jakarta.data.constraint.NotBetween;
 import jakarta.data.expression.ComparableExpression;
 import jakarta.data.restrict.BasicRestriction;
@@ -66,13 +66,13 @@ class ComparableExpressionTest {
     }
 
     @Test
-    @DisplayName("should create Restriction with greaterThanEqual value")
-    void shouldCreateGreaterThanEqualRestriction() {
-        var restriction = _Person.age.greaterThanEqual(65);
+    @DisplayName("should create Restriction with atLeast value")
+    void shouldCreateAtLeastRestriction() {
+        var restriction = _Person.age.atLeast(65);
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
-            soft.assertThat(((BasicRestriction<?, ?>) restriction).constraint()).isEqualTo(GreaterThanEqual.min(65));
+            soft.assertThat(((BasicRestriction<?, ?>) restriction).constraint()).isEqualTo(AtLeast.min(65));
         });
     }
 
@@ -103,15 +103,15 @@ class ComparableExpressionTest {
         });
     }
 
-    @DisplayName("should create Restriction with lessThanEqual value")
+    @DisplayName("should create Restriction with atMost value")
     @Test
-    void shouldCreateLessThanEqualRestriction() {
-        var restriction = _Person.age.lessThanEqual(60);
+    void shouldCreateAtMostRestriction() {
+        var restriction = _Person.age.atMost(60);
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
             soft.assertThat(((BasicRestriction<?, ?>) restriction).constraint())
-                    .isEqualTo(LessThanEqual.max(60));
+                    .isEqualTo(AtMost.max(60));
         });
     }
 
@@ -152,15 +152,15 @@ class ComparableExpressionTest {
         });
     }
 
-    @DisplayName("should create Restriction with greaterThanEqual expression")
+    @DisplayName("should create Restriction with atLeast expression")
     @Test
-    void shouldCreateGreaterThanEqualExpressionRestriction() {
-        var restriction = _Person.age.greaterThanEqual(_Person.age);
+    void shouldCreateAtLeastExpressionRestriction() {
+        var restriction = _Person.age.atLeast(_Person.age);
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
             soft.assertThat(((BasicRestriction<?, ?>) restriction).constraint())
-                    .isEqualTo(GreaterThanEqual.min(_Person.age));
+                    .isEqualTo(AtLeast.min(_Person.age));
         });
     }
 
@@ -176,15 +176,15 @@ class ComparableExpressionTest {
         });
     }
 
-    @DisplayName("should create Restriction with lessThanEqual expression")
+    @DisplayName("should create Restriction with atMost expression")
     @Test
-    void shouldCreateLessThanEqualExpressionRestriction() {
-        var restriction = _Person.age.lessThanEqual(_Person.age);
+    void shouldCreateAtMostExpressionRestriction() {
+        var restriction = _Person.age.atMost(_Person.age);
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
             soft.assertThat(((BasicRestriction<?, ?>) restriction).constraint())
-                    .isEqualTo(LessThanEqual.max(_Person.age));
+                    .isEqualTo(AtMost.max(_Person.age));
         });
     }
 
