@@ -97,7 +97,7 @@ public interface ComparableExpression<T, V extends Comparable<?>>
 
     /**
      * <p>Obtains a {@link Restriction} that requires that this expression
-     * evaluate to a value greater than or equal to the given value.</p>
+     * evaluate to a value that is at least as much as the given value.</p>
      *
      * <p>Example:</p>
      * <pre>
@@ -114,7 +114,7 @@ public interface ComparableExpression<T, V extends Comparable<?>>
 
     /**
      * <p>Obtains a {@link Restriction} that requires that this expression
-     * evaluate to a value greater than or equal to the value to which the
+     * evaluate to a value that is at least as much as the value to which the
      * given expression evaluates.</p>
      *
      * <p>Example:</p>
@@ -135,7 +135,7 @@ public interface ComparableExpression<T, V extends Comparable<?>>
 
     /**
      * <p>Obtains a {@link Restriction} that requires that this expression
-     * evaluate to a value less than or equal to the given value.
+     * evaluate to a value that is at most as much as the given value.
      * </p>
      *
      * <p>Example:</p>
@@ -153,7 +153,7 @@ public interface ComparableExpression<T, V extends Comparable<?>>
 
     /**
      * <p>Obtains a {@link Restriction} that requires that this expression
-     * evaluate to a value less than or equal to the value to which the
+     * evaluate to a value that is at most as much as the value to which the
      * given expression evaluates.</p>
      *
      * <p>Example:</p>
