@@ -20,9 +20,9 @@ package jakarta.data.metamodel;
 import jakarta.data.constraint.Between;
 import jakarta.data.constraint.Constraint;
 import jakarta.data.constraint.GreaterThan;
-import jakarta.data.constraint.GreaterThanOrEqual;
+import jakarta.data.constraint.AtLeast;
 import jakarta.data.constraint.LessThan;
-import jakarta.data.constraint.LessThanOrEqual;
+import jakarta.data.constraint.AtMost;
 import jakarta.data.restrict.BasicRestriction;
 
 import org.assertj.core.api.SoftAssertions;
@@ -56,16 +56,16 @@ class ComparableAttributeTest {
     }
 
     @Test
-    void shouldCreateGreaterThanEqualRestriction() {
+    void shouldCreateAtLeastRestriction() {
         @SuppressWarnings("unchecked")
         BasicRestriction<Person, Integer> restriction =
-                (BasicRestriction<Person, Integer>) testAttribute.greaterThanEqual(10);
+                (BasicRestriction<Person, Integer>) testAttribute.atLeast(10);
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
             soft.assertThat(restriction.expression()).isEqualTo(testAttribute);
-            soft.assertThat(restriction.constraint()).isInstanceOf(GreaterThanOrEqual.class);
-            soft.assertThat(restriction.constraint()).isEqualTo(Constraint.greaterThanOrEqual(10));
+            soft.assertThat(restriction.constraint()).isInstanceOf(AtLeast.class);
+            soft.assertThat(restriction.constraint()).isEqualTo(Constraint.atLeast(10));
         });
     }
 
@@ -84,16 +84,16 @@ class ComparableAttributeTest {
     }
 
     @Test
-    void shouldCreateLessThanOrEqualRestriction() {
+    void shouldCreateAtMostRestriction() {
         @SuppressWarnings("unchecked")
         BasicRestriction<Person, Integer> restriction =
-                (BasicRestriction<Person, Integer>) testAttribute.lessThanEqual(10);
+                (BasicRestriction<Person, Integer>) testAttribute.atMost(10);
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
             soft.assertThat(restriction.expression()).isEqualTo(testAttribute);
-            soft.assertThat(restriction.constraint()).isInstanceOf(LessThanOrEqual.class);
-            soft.assertThat(restriction.constraint()).isEqualTo(Constraint.lessThanOrEqual(10));
+            soft.assertThat(restriction.constraint()).isInstanceOf(AtMost.class);
+            soft.assertThat(restriction.constraint()).isEqualTo(Constraint.atMost(10));
         });
     }
 

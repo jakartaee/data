@@ -20,16 +20,16 @@ package jakarta.data.constraint;
 import jakarta.data.expression.ComparableExpression;
 import jakarta.data.spi.expression.literal.ComparableLiteral;
 
-public interface GreaterThanOrEqual<V extends Comparable<?>> extends Constraint<V> {
+public interface AtLeast<V extends Comparable<?>> extends Constraint<V> {
 
-    static <V extends Comparable<?>> GreaterThanOrEqual<V> min(
+    static <V extends Comparable<?>> AtLeast<V> min(
             V minimum) {
-        return new GreaterThanOrEqualRecord<>(ComparableLiteral.of(minimum));
+        return new AtLeastRecord<>(ComparableLiteral.of(minimum));
     }
 
-    static <V extends Comparable<?>> GreaterThanOrEqual<V> min(
+    static <V extends Comparable<?>> AtLeast<V> min(
             ComparableExpression<?, V> minimum) {
-        return new GreaterThanOrEqualRecord<>(minimum);
+        return new AtLeastRecord<>(minimum);
     }
 
     ComparableExpression<?, V> bound();

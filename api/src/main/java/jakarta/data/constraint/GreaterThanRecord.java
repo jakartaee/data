@@ -31,8 +31,8 @@ record GreaterThanRecord<V extends Comparable<?>>(
     }
 
     @Override
-    public LessThanOrEqual<V> negate() {
-        return LessThanOrEqual.max(bound);
+    public AtMost<V> negate() {
+        return AtMost.max(bound);
     }
 
     @Override
