@@ -38,7 +38,7 @@ class Unrestricted<T> implements CompositeRestriction<T> {
     }
 
     @Override
-    public List<Restriction<T>> restrictions() {
+    public List<Restriction<? super T>> restrictions() {
         return List.of();
     }
 

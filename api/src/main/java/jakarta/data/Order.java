@@ -104,7 +104,9 @@ public class Order<T> implements Iterable<Sort<? super T>> {
 
     /**
      * <p>Defines a list of {@link Sort} criteria, ordered from highest
-     * precedence to lowest precedence.</p>
+     * precedence to lowest precedence. The instance returned by this method
+     * keeps a {@link List#copyOf(java.util.Collection) copy} of the supplied
+     * {@code List} rather than the original if the list is modifiable.</p>
      *
      * @param <T>   entity class of the attributes that are used as sort
      *              criteria.
@@ -113,7 +115,7 @@ public class Order<T> implements Iterable<Sort<? super T>> {
      * @return a new instance indicating the order of precedence for sort
      * criteria. This method never returns {@code null}.
      */
-    public static <T> Order<T> by(List<Sort<? super T>> sorts) {
+    public static <T> Order<T> by(List<? extends Sort<? super T>> sorts) {
         return new Order<T>(List.copyOf(sorts));
     }
 

@@ -21,6 +21,10 @@ import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import jakarta.data.mock.entity.Book;
+import jakarta.data.mock.entity._Book;
+
+import java.util.ArrayList;
 import java.util.List;
 
 class OrderTest {
@@ -42,11 +46,21 @@ class OrderTest {
     @Test
     @DisplayName("should create Order via list")
     void shouldCreateOrderFromList() {
-        var list = List.of(Sort.desc("priority"));
-        var order = Order.by(list);
 
-        SoftAssertions.assertSoftly(soft ->
-            soft.assertThat(order.sorts()).containsExactlyElementsOf(list));
+        // Do not use var. It was hiding a bug where Order.by(List<Sort<Book>>)
+        // was not being allowed.
+
+        List<Sort<Book>> list = new ArrayList<>();
+        list.add(_Book.title.asc());
+        list.add(_Book.publicationDate.desc());
+        list.add(_Book.id.asc());
+
+        Order<Book> order = Order.by(list);
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(order.sorts())
+                .containsExactlyElementsOf(list);
+        });
     }
 
     @Test
