@@ -56,7 +56,7 @@ public interface CompositeRestriction<T> extends Restriction<T> {
      *
      * @return the ordered list of restriction.
      */
-    List<Restriction<T>> restrictions();
+    List<Restriction<? super T>> restrictions();
 
     /**
      * <p>Indicates how to combine the list of {@link #restrictions()}.</p>

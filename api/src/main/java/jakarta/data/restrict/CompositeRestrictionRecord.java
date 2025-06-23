@@ -27,7 +27,7 @@ import jakarta.data.messages.Messages;
 
 record CompositeRestrictionRecord<T>(
         Type type,
-        List<Restriction<T>> restrictions,
+        List<Restriction<? super T>> restrictions,
         boolean isNegated) implements CompositeRestriction<T> {
 
     /**
@@ -52,7 +52,7 @@ record CompositeRestrictionRecord<T>(
         });
     }
 
-    CompositeRestrictionRecord(Type type, List<Restriction<T>> restrictions) {
+    CompositeRestrictionRecord(Type type, List<Restriction<? super T>> restrictions) {
         this(type, restrictions, false);
     }
 
@@ -78,7 +78,7 @@ record CompositeRestrictionRecord<T>(
         }
 
         boolean first = true;
-        for (Restriction<T> restriction : restrictions) {
+        for (Restriction<? super T> restriction : restrictions) {
             if (first) {
                 first = false;
             } else {
