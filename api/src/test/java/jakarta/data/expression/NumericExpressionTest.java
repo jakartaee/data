@@ -40,7 +40,7 @@ class NumericExpressionTest {
     void shouldCompareWithNumericAttribute() {
         Restriction<Book> averageChapterAtLeastAsLongAsNumChapters =
                 _Book.numPages.divide(_Book.numChapters)
-                        .atLeast(_Book.numChapters);
+                        .greaterThanEqual(_Book.numChapters);
 
         @SuppressWarnings("unchecked")
         BasicRestriction<Book, Integer> restriction =

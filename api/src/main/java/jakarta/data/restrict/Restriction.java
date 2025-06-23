@@ -72,7 +72,7 @@ import jakarta.data.repository.Find;
  * List&lt;Car&gt; atLeast2020AndPricedBelow30k =
  *         cars.search(make,
  *                     model,
- *                     Restrict.all(_Car.year.atLeast(2020),
+ *                     Restrict.all(_Car.year.greaterThanEqual(2020),
  *                                  _Car.price.lessThan(30000)),
  *                     Order.by(_Car.price.desc()));
  * </pre>

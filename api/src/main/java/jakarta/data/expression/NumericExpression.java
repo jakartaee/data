@@ -56,7 +56,7 @@ public interface NumericExpression<T, N extends Number & Comparable<N>>
      * <pre>
      * within2YearsOf2024 = cars.search(make,
      *                                  model,
-     *                                  _Car.year.minus(2024).abs().atMost(2));
+     *                                  _Car.year.minus(2024).abs().lessThanEqual(2));
      * </pre>
      *
      * @return an expression for the function that computes the absolute value.
@@ -76,7 +76,7 @@ public interface NumericExpression<T, N extends Number & Comparable<N>>
      * atLeast2YearsBeyondOriginalModelYear = cars.search(
      *         make,
      *         model,
-     *         _Car.firstModelYear.minus(_Car.year).negated().atLeast(2));
+     *         _Car.firstModelYear.minus(_Car.year).negated().greaterThanEqual(2));
      * </pre>
      *
      * @return an expression for the function that computes negation of value.
@@ -113,7 +113,7 @@ public interface NumericExpression<T, N extends Number & Comparable<N>>
      * <pre>
      * found = cars.search(make,
      *                     model,
-     *                     _Car.price.minus(discount).atMost(25000));
+     *                     _Car.price.minus(discount).lessThanEqual(25000));
      * </pre>
      *
      * @param value the value to subtract. Must not be {@code null}.
@@ -135,7 +135,7 @@ public interface NumericExpression<T, N extends Number & Comparable<N>>
      *         make,
      *         model,
      *         _Car.price.asDouble().times(_Car.discountRate.subtractedFrom(1.0))
-     *                 .atMost(33000.0));
+     *                 .lessThanEqual(33000.0));
      * </pre>
      *
      * @param value the value to subtract from. Must not be {@code null}.

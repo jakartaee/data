@@ -131,7 +131,7 @@ class ExpressionTest {
     @Test
     void shouldRestrictLengthOfText() {
 
-        Restriction<Book> titleUpTo50Chars = _Book.title.length().atMost(50);
+        Restriction<Book> titleUpTo50Chars = _Book.title.length().lessThanEqual(50);
 
         @SuppressWarnings("unchecked")
         BasicRestriction<Book, Integer> restriction =

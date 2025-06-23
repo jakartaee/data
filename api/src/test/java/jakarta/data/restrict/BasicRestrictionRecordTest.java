@@ -73,15 +73,15 @@ class BasicRestrictionRecordTest {
     }
 
     @Test
-    @DisplayName("should negate AtMost into GreaterThan")
-    void shouldNegateAtMostRestriction() {
-        var atMost = (BasicRestriction<Book, Integer>) _Book.numChapters.atMost(10);
-        var negated = (BasicRestriction<Book, Integer>) atMost.negate();
+    @DisplayName("should negate lessThanEqual into GreaterThan")
+    void shouldNegateLTERestriction() {
+        var lessThanEqual = (BasicRestriction<Book, Integer>) _Book.numChapters.lessThanEqual(10);
+        var negated = (BasicRestriction<Book, Integer>) lessThanEqual.negate();
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(atMost.expression()).isEqualTo(_Book.numChapters);
-            soft.assertThat(atMost.constraint()).isEqualTo(AtMost.max(10));
-            soft.assertThat(atMost.constraint()).isInstanceOf(AtMost.class);
+            soft.assertThat(lessThanEqual.expression()).isEqualTo(_Book.numChapters);
+            soft.assertThat(lessThanEqual.constraint()).isEqualTo(AtMost.max(10));
+            soft.assertThat(lessThanEqual.constraint()).isInstanceOf(AtMost.class);
 
             soft.assertThat(negated.expression()).isEqualTo(_Book.numChapters);
             soft.assertThat(negated.constraint()).isEqualTo(GreaterThan.bound(10));
@@ -150,9 +150,9 @@ class BasicRestrictionRecordTest {
     }
 
     @Test
-    @DisplayName("should create AtLeast restriction correctly")
-    void shouldCreateAtLeastRestriction() {
-        var restriction = (BasicRestriction<Book, Integer>) _Book.numPages.atLeast(200);
+    @DisplayName("should create greaterThanEqual restriction correctly")
+    void shouldCreateGreaterThanEqualRestriction() {
+        var restriction = (BasicRestriction<Book, Integer>) _Book.numPages.greaterThanEqual(200);
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.expression()).isEqualTo(_Book.numPages);

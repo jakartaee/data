@@ -97,83 +97,6 @@ public interface ComparableExpression<T, V extends Comparable<?>>
 
     /**
      * <p>Obtains a {@link Restriction} that requires that this expression
-     * evaluate to a value that is at least as much as the given value.</p>
-     *
-     * <p>Example:</p>
-     * <pre>
-     * atLeast2024 = cars.search(make, model, _Car.year.atLeast(2024));
-     * </pre>
-     *
-     * @param value value against which to compare. Must not be {@code null}.
-     * @return the restriction.
-     * @throws NullPointerException if the value is {@code null}.
-     */
-    default Restriction<T> atLeast(V value) {
-        return BasicRestriction.of(this, AtLeast.min(value));
-    }
-
-    /**
-     * <p>Obtains a {@link Restriction} that requires that this expression
-     * evaluate to a value that is at least as much as the value to which the
-     * given expression evaluates.</p>
-     *
-     * <p>Example:</p>
-     * <pre>
-     * found = cars.search(make,
-     *                     model,
-     *                     _Car.year.asLeast(_Car.firstModelYear.plus(2)));
-     * </pre>
-     *
-     * @param expression expression against which to compare. Must not be
-     *                   {@code null}.
-     * @return the restriction.
-     * @throws NullPointerException if the expression is {@code null}.
-     */
-    default Restriction<T> atLeast(ComparableExpression<? super T, V> expression) {
-        return BasicRestriction.of(this, AtLeast.min(expression));
-    }
-
-    /**
-     * <p>Obtains a {@link Restriction} that requires that this expression
-     * evaluate to a value that is at most as much as the given value.
-     * </p>
-     *
-     * <p>Example:</p>
-     * <pre>
-     * found = cars.search(make, model, _Car.price.atMost(25000));
-     * </pre>
-     *
-     * @param value value against which to compare. Must not be {@code null}.
-     * @return the restriction.
-     * @throws NullPointerException if the value is {@code null}.
-     */
-    default Restriction<T> atMost(V value) {
-        return BasicRestriction.of(this, AtMost.max(value));
-    }
-
-    /**
-     * <p>Obtains a {@link Restriction} that requires that this expression
-     * evaluate to a value that is at most as much as the value to which the
-     * given expression evaluates.</p>
-     *
-     * <p>Example:</p>
-     * <pre>
-     * found = cars.search(make,
-     *                     model,
-     *                     _Car.firstModelYear.atMost(_Car.year.minus(2)));
-     * </pre>
-     *
-     * @param expression expression against which to compare. Must not be
-     *                   {@code null}.
-     * @return the restriction.
-     * @throws NullPointerException if the expression is {@code null}.
-     */
-    default Restriction<T> atMost(ComparableExpression<? super T, V> expression) {
-        return BasicRestriction.of(this, AtMost.max(expression));
-    }
-
-    /**
-     * <p>Obtains a {@link Restriction} that requires that this expression
      * evaluate to a value greater than the given value.</p>
      *
      * <p>Example:</p>
@@ -212,6 +135,45 @@ public interface ComparableExpression<T, V extends Comparable<?>>
 
     /**
      * <p>Obtains a {@link Restriction} that requires that this expression
+     * evaluate to a value greater than or equal to the given
+     * value.</p>
+     *
+     * <p>Example:</p>
+     * <pre>
+     * atLeast2024 = cars.search(make, model, _Car.year.greaterThanEqual(2024));
+     * </pre>
+     *
+     * @param value value against which to compare. Must not be {@code null}.
+     * @return the restriction.
+     * @throws NullPointerException if the value is {@code null}.
+     */
+    default Restriction<T> greaterThanEqual(V value) {
+        return BasicRestriction.of(this, AtLeast.min(value));
+    }
+
+    /**
+     * <p>Obtains a {@link Restriction} that requires that this expression
+     * evaluate to a value greater than or equal to the value to which the
+     * given expression evaluates.</p>
+     *
+     * <p>Example:</p>
+     * <pre>
+     * found = cars.search(make,
+     *                     model,
+     *                     _Car.year.greaterThanEqual(_Car.firstModelYear.plus(2)));
+     * </pre>
+     *
+     * @param expression expression against which to compare. Must not be
+     *                   {@code null}.
+     * @return the restriction.
+     * @throws NullPointerException if the expression is {@code null}.
+     */
+    default Restriction<T> greaterThanEqual(ComparableExpression<? super T, V> expression) {
+        return BasicRestriction.of(this, AtLeast.min(expression));
+    }
+
+    /**
+     * <p>Obtains a {@link Restriction} that requires that this expression
      * evaluate to a value smaller than the given value.</p>
      *
      * <p>Example:</p>
@@ -246,6 +208,45 @@ public interface ComparableExpression<T, V extends Comparable<?>>
      */
     default Restriction<T> lessThan(ComparableExpression<? super T, V> expression) {
         return BasicRestriction.of(this, LessThan.bound(expression));
+    }
+
+    /**
+     * <p>Obtains a {@link Restriction} that requires that this expression
+     * evaluate to a value less than or equal to the given value.
+     * </p>
+     *
+     * <p>Example:</p>
+     * <pre>
+     * found = cars.search(make, model, _Car.price.lessThanEqual(25000));
+     * </pre>
+     *
+     * @param value value against which to compare. Must not be {@code null}.
+     * @return the restriction.
+     * @throws NullPointerException if the value is {@code null}.
+     */
+    default Restriction<T> lessThanEqual(V value) {
+        return BasicRestriction.of(this, AtMost.max(value));
+    }
+
+    /**
+     * <p>Obtains a {@link Restriction} that requires that this expression
+     * evaluate to a value less than or equal to the value to which the
+     * given expression evaluates.</p>
+     *
+     * <p>Example:</p>
+     * <pre>
+     * found = cars.search(make,
+     *                     model,
+     *                     _Car.firstModelYear.lessThanEqual(_Car.year.minus(2)));
+     * </pre>
+     *
+     * @param expression expression against which to compare. Must not be
+     *                   {@code null}.
+     * @return the restriction.
+     * @throws NullPointerException if the expression is {@code null}.
+     */
+    default Restriction<T> lessThanEqual(ComparableExpression<? super T, V> expression) {
+        return BasicRestriction.of(this, AtMost.max(expression));
     }
 
     /**

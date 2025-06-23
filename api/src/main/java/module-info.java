@@ -938,7 +938,7 @@ import java.util.Set;
  *
  * <pre>
  *     _Product.name.startsWith(prefix)
- *     _Product.price.atMost(maxPrice)
+ *     _Product.price.lessThanEqual(maxPrice)
  *     _Product.producedOn.notNull()
  * </pre>
  *

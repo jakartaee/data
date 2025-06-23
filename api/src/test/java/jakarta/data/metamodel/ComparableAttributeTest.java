@@ -56,16 +56,16 @@ class ComparableAttributeTest {
     }
 
     @Test
-    void shouldCreateAtLeastRestriction() {
+    void shouldCreateGreaterThanEqualRestriction() {
         @SuppressWarnings("unchecked")
         BasicRestriction<Person, Integer> restriction =
-                (BasicRestriction<Person, Integer>) testAttribute.atLeast(10);
+                (BasicRestriction<Person, Integer>) testAttribute.greaterThanEqual(10);
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
             soft.assertThat(restriction.expression()).isEqualTo(testAttribute);
             soft.assertThat(restriction.constraint()).isInstanceOf(AtLeast.class);
-            soft.assertThat(restriction.constraint()).isEqualTo(Constraint.atLeast(10));
+            soft.assertThat(restriction.constraint()).isEqualTo(Constraint.greaterThanEqual(10));
         });
     }
 
@@ -84,16 +84,16 @@ class ComparableAttributeTest {
     }
 
     @Test
-    void shouldCreateAtMostRestriction() {
+    void shouldCreateLessThanOrEqualRestriction() {
         @SuppressWarnings("unchecked")
         BasicRestriction<Person, Integer> restriction =
-                (BasicRestriction<Person, Integer>) testAttribute.atMost(10);
+                (BasicRestriction<Person, Integer>) testAttribute.lessThanEqual(10);
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
             soft.assertThat(restriction.expression()).isEqualTo(testAttribute);
             soft.assertThat(restriction.constraint()).isInstanceOf(AtMost.class);
-            soft.assertThat(restriction.constraint()).isEqualTo(Constraint.atMost(10));
+            soft.assertThat(restriction.constraint()).isEqualTo(Constraint.lessThanEqual(10));
         });
     }
 
