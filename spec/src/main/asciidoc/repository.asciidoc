@@ -1003,9 +1003,11 @@ A _stateful repository_ is a repository which maintains an association with a se
 - A query method of a stateful repository which returns an entity type always returns managed instances belonging to the persistence context associated with the repository.
 
 - A <<Lifecycle methods, lifecycle method>> of a stateful repository must be annotated with a lifecycle annotation specific to the stateful model.
-  The annotations `@Save`, `@Insert`, `@Update`, `@Delete` may not be used to declare lifecycle methods of a stateful repository.
+  The annotations `@Save`, `@Insert`, `@Update`, `@Delete` are used to define stateless repositories and must not be used to declare lifecycle methods of a stateful repository.
   Instead, this specification defines the special lifecycle annotations `@Persist`, `@Merge`, `@Refresh`, `@Remove`, and `@Detach` for declaring lifecycle methods of stateful repositories.
-  Some lifecycle methods only accept managed entities associated with the persistence context underlying the repository.
+
+- A lifecycle method annotated `@Remove` or `@Refresh` only accepts managed entities associated with the persistence context underlying the repository.
+ On the other hand, a method annotated `@Persist`, `@Merge`, or `@Detach` also accepts unmanaged entities.
 
 - Any modification to the persistent state of a managed entity must be automatically detected by the Jakarta Data implementation and the corresponding database record must be automatically updated.
  The application program is not required to explicitly call a repository method after modifying a managed entity.
