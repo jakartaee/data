@@ -81,7 +81,12 @@ Entity lifecycle(Entity e);
 where `Lifecycle` is a lifecycle annotation, `lifecycle` is the arbitrary name of the method, and `Entity` is either `E`, `List<E>`, or `E[]`, where `E` is a concrete entity class.
 In this context, any variadic parameter declared `E...` is treated as if it were declared with type ``E[]``.
 
-This specification defines four built-in lifecycle annotations: `@Insert`, `@Update`, `@Delete`, and `@Save`. The semantics of these annotations is defined in their Javadoc.
+This specification defines two sets of built-in lifecycle annotations:
+
+- `@Insert`, `@Update`, `@Delete`, and `@Save` are provided for use with regular stateless repositories, and
+- as an extension, `@Persist`, `@Merge`, `@Refresh`, `@Remove`, and `@Detach` are provided for use with <<Stateful repositories,stateful repositories>>.
+
+The semantics of a lifecycle method annotated with one of these annotations are defined by the Javadoc of the annotation.
 
 For example:
 
@@ -1019,5 +1024,5 @@ A _stateful repository_ is a repository which maintains an association with a se
 NOTE: This specification does not prescribe the timing of flush operations, but a flush typically happens before execution of a query or during the before completion phase of transaction commit.
 An implementation of Jakarta Data should flush as needed to ensure that query results are consistent with the current state of the persistence context.
 
-TODO: specify the semantics of `@Persist`, `@Merge`, `@Refresh`, `@Remove`, and `@Detach`.
+Support for stateful repositories is defined in the separate module `jakarta.data.stateful`.
 
