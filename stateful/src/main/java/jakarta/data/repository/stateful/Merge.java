@@ -32,7 +32,7 @@ import java.lang.annotation.Target;
  * method copies the state of one of more unmanaged entities to managed
  * entities belonging to the current persistence context associated with the
  * repository. The merge might change the persistent state of the managed
- * entities, and might cause that state to be inserted or updated in the
+ * entities and might cause that state to be inserted or updated in the
  * database. This typically occurs later, when the persistence context is
  * flushed.
  * </p>
@@ -52,6 +52,25 @@ import java.lang.annotation.Target;
  * instance is unmanaged, the method returns a managed entity instance which
  * must be distinct from the argument entity, but which holds the same
  * persistent state.
+ * </p>
+ * <p>If a managed entity which was already scheduled for deletion from the
+ * database via a {@code @Remove} method is subsequently passed to a method
+ * annotated {@code Merge}, the second method is permitted to throw
+ * {@link IllegalArgumentException}.
+ * </p>
+ * <p>The effect of merging an unmanaged entity depends on whether the database
+ * already holds a corresponding record with the same persistent identity as
+ * the merged entity.
+ * <ul>
+ *     <li>If such a record exists, the merge operation schedules an update
+ *     of the existing record. The record is eventually updated to reflect the
+ *     merged changes.</li>
+ *     <li>Otherwise, if no such record exists, the merge operation schedules
+ *     the insertion of a new record with the state held by the merged entity.
+ * </ul>
+ * In either case, the method annotated {@code @Merge} returns a managed entity
+ * representing the inserted or updated record, and reflecting the merged changes,
+ * even if the scheduled insertion or update has not yet occurred.
  * </p>
  * <p>A Jakarta Data provider that is capable of returning
  * {@code jakarta.persistence.EntityManager} from a resource accessor method is
