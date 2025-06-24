@@ -77,13 +77,13 @@ public @interface Is {
      * <p>A subtype of {@link jakarta.data.constraint Constraint} that
      * indicates how the entity attribute is compared with a value.</p>
      *
-     * <p>The constraint subtype must have a static builder method that accepts
+     * <p>The constraint subtype must have a static method that accepts
      * as its only parameter a value compatible with the type (or if primitive,
      * a wrapper for the type) of the repository method parameter to which the
      * {@code @Is} annotation is applied. The repository method parameter type
      * must also be consistent with the respective entity attribute type. This
      * list indicates the constraint subtypes that can be used and links to the
-     * applicable builder method for each:</p>
+     * applicable static method for each:</p>
      *
      * <ul>
      * <li>{@link AtLeast#min(Comparable) AtLeast}</li>
