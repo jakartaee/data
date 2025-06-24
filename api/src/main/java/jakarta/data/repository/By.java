@@ -22,6 +22,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import jakarta.data.constraint.EqualTo;
 
 /**
  * <p>Annotates a parameter of a repository method, specifying a mapping to
@@ -33,7 +34,11 @@ import java.lang.annotation.Target;
  *     to the unique identifier attribute.
  * </ul>
  * <p>Arguments to the annotated parameter are compared to values of the
- * mapped attribute.</p>
+ * mapped attribute. The {@link EqualTo#value(Object) equality} comparison is
+ * default. Use the {@link Is#value() @Is} annotation to choose a different
+ * subtype of {@link jakarta.data.constraint Constraint} to be the comparison.
+ * </p>
+ *
  * <p>The attribute name may be a compound name like {@code address.city}.</p>
  *
  * <p>For example, for a {@code Person} entity with attributes {@code ssn},

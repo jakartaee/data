@@ -34,6 +34,7 @@ import jakarta.data.repository.Delete;
 import jakarta.data.repository.Find;
 import jakarta.data.repository.First;
 import jakarta.data.repository.Insert;
+import jakarta.data.repository.Is;
 import jakarta.data.repository.OrderBy;
 import jakarta.data.repository.Param;
 import jakarta.data.repository.Query;
@@ -83,6 +84,12 @@ import java.util.Set;
  *     &#64;OrderBy("price")
  *     List&lt;Product&gt; findByNameIgnoreCaseLikeAndPriceLessThan(String namePattern, float max);
  *
+ *     &#64;Find
+ *     List&lt;Product&gt; search(
+ *             &#64;By(_Product.NAME) &#64;Is(Like.class) String namePattern,
+ *             Restriction&lt;Product&gt; restriction,
+ *             Order&lt;Product&gt; sortBy);
+ *
  *     &#64;Query("""
  *             UPDATE Product SET price = price * (1.0 - ?1)
  *              WHERE producedOn &lt;= ?2
@@ -104,7 +111,13 @@ import java.util.Set;
  * ...
  * products.create(newProduct);
  *
- * found = products.findByNameIgnoreCaseLikeAndPriceLessThan("%cell%phone%", 900.0f);
+ * phones = products.findByNameIgnoreCaseLikeAndPriceLessThan("%cell%phone%", 900.0f);
+ *
+ * chargers = products.search("%charger%",
+ *                            Restrict.all(_Product.description.contains("USB-C"),
+ *                                         _Product.price.lessThan(30.0f)),
+ *                            Order.by(_Product.price.desc(),
+ *                                     _Product.id.asc()));
  *
  * numDiscounted = products.discountOldInventory(0.15f,
  *                                               LocalDate.now().minusYears(1));
@@ -164,8 +177,10 @@ import java.util.Set;
  *
  * &#64;Repository
  * public interface Purchases {
+ *     &#64;Find
  *     &#64;OrderBy("address.zipCode")
- *     List&lt;Purchase&gt; findByAddressZipCodeIn(List&lt;Integer&gt; zipCodes);
+ *     List&lt;Purchase&gt; forZipCodes(
+ *             &#64;By("address.zipCode") &#64;Is(In.class) List&lt;Integer&gt; zipCodes);
  *
  *     &#64;Query("WHERE address.zipCode = ?1")
  *     List&lt;Purchase&gt; forZipCode(int zipCode);
@@ -350,7 +365,9 @@ import java.util.Set;
  * categories:</p>
  * <ol>
  * <li>The parameter has exactly the same type and name as an attribute of the
- *     entity class. The name is assigned by the {@link By @By} annotation.
+ *     entity class. The {@link By @By} annotation assigns the name.
+ *     The {@link Is @Is} annotation, which is optional, supplies a subtype of
+ *     {@link jakarta.data.constraint Constraint} that indicates the comparison.
  *     If the {@code By} annotation is missing, the method parameter name must
  *     match the name of an entity attribute and the repository must be compiled
  *     with the {@code -parameters} compiler option so that parameter names are
@@ -358,6 +375,11 @@ import java.util.Set;
  *     <pre>
  *     &#64;Find
  *     Optional&lt;Product&gt; get(&#64;By("id") long productId);
+ *
+ *     &#64;Find
+ *     &#64;OrderBy("price")
+ *     List&lt;Product&gt; discounted(
+ *             &#64;By("discount") &#64;Is(AtLeast.class) float minAmount);
  *
  *     &#64;Find
  *     &#64;OrderBy("price")
@@ -402,7 +424,8 @@ import java.util.Set;
  * <h3>Comparisons</h3>
  *
  * <p>Categories 1 and 2 above identify the name of an entity attribute against
- * which a supplied value is compared. Subtypes of {@code Constraint} indicate
+ * which a supplied value is compared. A subtype of {@code Constraint} is used
+ * as the parameter type or supplied by the {@link Is} annotation to indicate
  * the type of comparison. The equality comparison is used in the absence of a
  * {@code Constraint} subtype when no comparison is indicated.</p>
  *
@@ -417,7 +440,7 @@ import java.util.Set;
  *
  * <pre>
  * &#64;Find
- * Stream&lt;Person&gt; livingInZipCode(&#64;("address.zipCode") int zip);
+ * Stream&lt;Person&gt; livingInZipCode(&#64;By("address.zipCode") int zip);
  * </pre>
  *
  * <p>The {@code _} character may be used in a method parameter name to
@@ -797,12 +820,20 @@ import java.util.Set;
  *
  * <pre>
  * // Query by Method Name
- * Vehicle[] findFirst50ByMakeAndModelAndYear(String makerName, String model, int year, Sort&lt;?&gt;... sorts);
+ * Vehicle[] findFirst50ByMakeAndModelAndYearBetween(String makerName,
+ *                                                   String model,
+ *                                                   int minYear,
+ *                                                   int maxYear,
+ *                                                   Order&lt;Vehicle&gt; sorts);
  *
  * // parameter-based conditions
  * &#64;Find
  * &#64;First(50)
- * Vehicle[] searchFor(String make, String model, int year, Sort&lt;?&gt;... sorts);
+ * Vehicle[] search(String make,
+ *                  String model,
+ *                  &#64;By(_Vehicle.YEAR) &#64;Is(AtLeast.class) int minYear,
+ *                  &#64;By(_Vehicle.YEAR) &#64;Is(AtMost.class) int maxYear,
+ *                  Order&lt;Vehicle&gt; sorts);
  * </pre>
  *
  * <h2>Special parameters</h2>
@@ -861,18 +892,23 @@ import java.util.Set;
  * For example,</p>
  *
  * <pre>
- * Page&lt;Product&gt; findByNameLikeAndPriceBetween(String pattern,
- *                                             float minPrice,
- *                                             float maxPrice,
- *                                             PageRequest pageRequest,
- *                                             Order&lt;Product&gt; order);
+ * &#64;Find
+ * Page&lt;Product&gt; pricedWithin(&#64;By("name") &#64;Is(Like.class) String pattern,
+ *                            &#64;By("price") &#64;Is(AtLeast.class) float minPrice,
+ *                            &#64;By("price") &#64;Is(AtMost.class) float maxPrice,
+ *                            PageRequest pageRequest,
+ *                            Order&lt;Product&gt; order);
  *
  * ...
  * PageRequest page1Request = PageRequest.ofSize(25);
  *
- * page1 = products.findByNameLikeAndPriceBetween(
- *                 namePattern, minPrice, maxPrice, page1Request,
- *                 Order.by(Sort.desc("price"), Sort.asc("id"));
+ * page1 = products.pricedWithin(
+ *                 namePattern,
+ *                 minPrice,
+ *                 maxPrice,
+ *                 page1Request,
+ *                 Order.by(Sort.desc("price"),
+ *                          Sort.asc("id")));
  * </pre>
  *
  * <p>To supply sort criteria dynamically without using pagination, an
@@ -880,13 +916,17 @@ import java.util.Set;
  * of {@link Sort} and passed to the repository find method. For example,</p>
  *
  * <pre>
- * Product[] findByNameLike(String pattern, Limit max, Order&lt;Product&gt; sortBy);
+ * &#64;Find
+ * Product[] named(&#64;By("name") &#64;Is(Like.class) String pattern,
+ *                 Limit max,
+ *                 Order&lt;Product&gt; sortBy);
  *
  * ...
- * found = products.findByNameLike(namePattern, Limit.of(25),
- *                                 Order.by(Sort.desc("price"),
- *                                          Sort.desc("amountSold"),
- *                                          Sort.asc("id")));
+ * found = products.nameLiked(namePattern,
+ *                            Limit.of(25),
+ *                            Order.by(Sort.desc("price"),
+ *                                     Sort.desc("amountSold"),
+ *                                     Sort.asc("id")));
  * </pre>
  *
  * <p>Generic, untyped {@link Sort} criteria can be supplied directly to a
@@ -894,13 +934,17 @@ import java.util.Set;
  * For example,</p>
  *
  * <pre>
- * Product[] findByNameLike(String pattern, Limit max, {@code Sort<?>...} sortBy);
+ * &#64;Find
+ * Product[] namedLike(&#64;By("name") &#64;Is(Like.class) String pattern,
+ *                     Limit max,
+ *                     {@code Sort<?>...} sortBy);
  *
  * ...
- * found = products.findByNameLike(namePattern, Limit.of(25),
- *                                 Sort.desc("price"),
- *                                 Sort.desc("amountSold"),
- *                                 Sort.asc("name"));
+ * found = products.namedLike(namePattern,
+ *                            Limit.of(25),
+ *                            Sort.desc("price"),
+ *                            Sort.desc("amountSold"),
+ *                            Sort.asc("name"));
  * </pre>
  *
  * <h3>Restrictions</h3>
