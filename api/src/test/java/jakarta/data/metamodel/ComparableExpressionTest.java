@@ -19,9 +19,9 @@ package jakarta.data.metamodel;
 
 import jakarta.data.constraint.Between;
 import jakarta.data.constraint.GreaterThan;
-import jakarta.data.constraint.GreaterThanOrEqual;
+import jakarta.data.constraint.AtLeast;
 import jakarta.data.constraint.LessThan;
-import jakarta.data.constraint.LessThanOrEqual;
+import jakarta.data.constraint.AtMost;
 import jakarta.data.constraint.NotBetween;
 import jakarta.data.expression.ComparableExpression;
 import jakarta.data.restrict.BasicRestriction;
@@ -72,7 +72,7 @@ class ComparableExpressionTest {
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
-            soft.assertThat(((BasicRestriction<?, ?>) restriction).constraint()).isEqualTo(GreaterThanOrEqual.min(65));
+            soft.assertThat(((BasicRestriction<?, ?>) restriction).constraint()).isEqualTo(AtLeast.min(65));
         });
     }
 
@@ -111,7 +111,7 @@ class ComparableExpressionTest {
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
             soft.assertThat(((BasicRestriction<?, ?>) restriction).constraint())
-                    .isEqualTo(LessThanOrEqual.max(60));
+                    .isEqualTo(AtMost.max(60));
         });
     }
 
@@ -160,7 +160,7 @@ class ComparableExpressionTest {
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
             soft.assertThat(((BasicRestriction<?, ?>) restriction).constraint())
-                    .isEqualTo(GreaterThanOrEqual.min(_Person.age));
+                    .isEqualTo(AtLeast.min(_Person.age));
         });
     }
 
@@ -184,7 +184,7 @@ class ComparableExpressionTest {
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction).isInstanceOf(BasicRestriction.class);
             soft.assertThat(((BasicRestriction<?, ?>) restriction).constraint())
-                    .isEqualTo(LessThanOrEqual.max(_Person.age));
+                    .isEqualTo(AtMost.max(_Person.age));
         });
     }
 

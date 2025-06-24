@@ -19,9 +19,9 @@ package jakarta.data.expression;
 
 import jakarta.data.constraint.Between;
 import jakarta.data.constraint.GreaterThan;
-import jakarta.data.constraint.GreaterThanOrEqual;
+import jakarta.data.constraint.AtLeast;
 import jakarta.data.constraint.LessThan;
-import jakarta.data.constraint.LessThanOrEqual;
+import jakarta.data.constraint.AtMost;
 import jakarta.data.constraint.NotBetween;
 import jakarta.data.metamodel.Attribute;
 import jakarta.data.restrict.BasicRestriction;
@@ -148,7 +148,7 @@ public interface ComparableExpression<T, V extends Comparable<?>>
      * @throws NullPointerException if the value is {@code null}.
      */
     default Restriction<T> greaterThanEqual(V value) {
-        return BasicRestriction.of(this, GreaterThanOrEqual.min(value));
+        return BasicRestriction.of(this, AtLeast.min(value));
     }
 
     /**
@@ -169,7 +169,7 @@ public interface ComparableExpression<T, V extends Comparable<?>>
      * @throws NullPointerException if the expression is {@code null}.
      */
     default Restriction<T> greaterThanEqual(ComparableExpression<? super T, V> expression) {
-        return BasicRestriction.of(this, GreaterThanOrEqual.min(expression));
+        return BasicRestriction.of(this, AtLeast.min(expression));
     }
 
     /**
@@ -225,7 +225,7 @@ public interface ComparableExpression<T, V extends Comparable<?>>
      * @throws NullPointerException if the value is {@code null}.
      */
     default Restriction<T> lessThanEqual(V value) {
-        return BasicRestriction.of(this, LessThanOrEqual.max(value));
+        return BasicRestriction.of(this, AtMost.max(value));
     }
 
     /**
@@ -246,7 +246,7 @@ public interface ComparableExpression<T, V extends Comparable<?>>
      * @throws NullPointerException if the expression is {@code null}.
      */
     default Restriction<T> lessThanEqual(ComparableExpression<? super T, V> expression) {
-        return BasicRestriction.of(this, LessThanOrEqual.max(expression));
+        return BasicRestriction.of(this, AtMost.max(expression));
     }
 
     /**

@@ -20,10 +20,10 @@ package jakarta.data.restrict;
 import jakarta.data.constraint.Between;
 import jakarta.data.constraint.EqualTo;
 import jakarta.data.constraint.GreaterThan;
-import jakarta.data.constraint.GreaterThanOrEqual;
+import jakarta.data.constraint.AtLeast;
 import jakarta.data.constraint.In;
 import jakarta.data.constraint.LessThan;
-import jakarta.data.constraint.LessThanOrEqual;
+import jakarta.data.constraint.AtMost;
 import jakarta.data.constraint.Like;
 import jakarta.data.constraint.NotBetween;
 import jakarta.data.constraint.NotEqualTo;
@@ -73,15 +73,15 @@ class BasicRestrictionRecordTest {
     }
 
     @Test
-    @DisplayName("should negate LessThanOrEqual into GreaterThan")
+    @DisplayName("should negate lessThanEqual into GreaterThan")
     void shouldNegateLTERestriction() {
         var lessThanEqual = (BasicRestriction<Book, Integer>) _Book.numChapters.lessThanEqual(10);
         var negated = (BasicRestriction<Book, Integer>) lessThanEqual.negate();
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(lessThanEqual.expression()).isEqualTo(_Book.numChapters);
-            soft.assertThat(lessThanEqual.constraint()).isEqualTo(LessThanOrEqual.max(10));
-            soft.assertThat(lessThanEqual.constraint()).isInstanceOf(LessThanOrEqual.class);
+            soft.assertThat(lessThanEqual.constraint()).isEqualTo(AtMost.max(10));
+            soft.assertThat(lessThanEqual.constraint()).isInstanceOf(AtMost.class);
 
             soft.assertThat(negated.expression()).isEqualTo(_Book.numChapters);
             soft.assertThat(negated.constraint()).isEqualTo(GreaterThan.bound(10));
@@ -150,14 +150,14 @@ class BasicRestrictionRecordTest {
     }
 
     @Test
-    @DisplayName("should create GreaterThanOrEqual restriction correctly")
-    void shouldCreateGreaterThanOrEqualRestriction() {
+    @DisplayName("should create greaterThanEqual restriction correctly")
+    void shouldCreateGreaterThanEqualRestriction() {
         var restriction = (BasicRestriction<Book, Integer>) _Book.numPages.greaterThanEqual(200);
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(restriction.expression()).isEqualTo(_Book.numPages);
-            soft.assertThat(restriction.constraint()).isEqualTo(GreaterThanOrEqual.min(200));
-            soft.assertThat(restriction.constraint()).isInstanceOf(GreaterThanOrEqual.class);
+            soft.assertThat(restriction.constraint()).isEqualTo(AtLeast.min(200));
+            soft.assertThat(restriction.constraint()).isInstanceOf(AtLeast.class);
         });
     }
 

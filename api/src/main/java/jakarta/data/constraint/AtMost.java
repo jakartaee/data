@@ -18,25 +18,19 @@
 package jakarta.data.constraint;
 
 import jakarta.data.expression.ComparableExpression;
-import jakarta.data.messages.Messages;
+import jakarta.data.spi.expression.literal.ComparableLiteral;
 
-record GreaterThanOrEqualRecord<V extends Comparable<?>>(
-        ComparableExpression<?, V> bound)
-        implements GreaterThanOrEqual<V> {
-    public GreaterThanOrEqualRecord {
-        if (bound == null) {
-            throw new NullPointerException(
-                    Messages.get("001.arg.required", "minimum"));
-        }
+public interface AtMost<V extends Comparable<?>> extends Constraint<V> {
+
+    static <V extends Comparable<?>> AtMost<V> max(
+            V maximum) {
+        return new AtMostRecord<>(ComparableLiteral.of(maximum));
     }
 
-    @Override
-    public LessThan<V> negate() {
-        return LessThan.bound(bound);
+    static <V extends Comparable<?>> AtMost<V> max(
+            ComparableExpression<?, V> maximum) {
+        return new AtMostRecord<>(maximum);
     }
 
-    @Override
-    public String toString() {
-        return ">= " + bound.toString();
-    }
+    ComparableExpression<?, V> bound();
 }

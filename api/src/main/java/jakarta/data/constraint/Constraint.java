@@ -89,12 +89,12 @@ public interface Constraint<V> {
         return LessThan.bound(bound);
     }
 
-    static <V extends Comparable<?>> GreaterThanOrEqual<V> greaterThanOrEqual(V bound) {
-        return GreaterThanOrEqual.min(bound);
+    static <V extends Comparable<?>> AtLeast<V> greaterThanEqual(V minimum) {
+        return AtLeast.min(minimum);
     }
 
-    static <V extends Comparable<?>> LessThanOrEqual<V> lessThanOrEqual(V bound) {
-        return LessThanOrEqual.max(bound);
+    static <V extends Comparable<?>> AtMost<V> lessThanEqual(V maximum) {
+        return AtMost.max(maximum);
     }
 
     static <V extends Comparable<?>> Between<V> between(V lowerBound, V upperBound) {

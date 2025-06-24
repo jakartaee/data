@@ -47,8 +47,8 @@ class NumericExpressionTest {
                 (BasicRestriction<Book, Integer>)
                         averageChapterAtLeastAsLongAsNumChapters;
 
-        GreaterThanOrEqual<Integer> gteNumChapters =
-                (GreaterThanOrEqual<Integer>) restriction.constraint();
+        AtLeast<Integer> gteNumChapters =
+                (AtLeast<Integer>) restriction.constraint();
 
         NumericOperatorExpression<Book, Integer> divide =
                 (NumericOperatorExpression<Book, Integer>) restriction.expression();
