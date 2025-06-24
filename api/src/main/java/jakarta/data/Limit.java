@@ -33,12 +33,15 @@ import jakarta.data.page.PageRequest;
  * example,</p>
  *
  * <pre>
- * Product[] findByNameLike(String namePattern, Limit limit, Sort&lt;?&gt;... sorts);
+ * &#64;Find
+ * Product[] namedLike(&#64;By(_Product.NAME) &#64;Is(Like.class) String namePattern,
+ *                     Limit limit,
+ *                     Sort&lt;?&gt;... sorts);
  *
  * ...
- * mostExpensive50 = products.findByNameLike(pattern, Limit.of(50), Sort.desc("price"));
+ * mostExpensive50 = products.namedLike(pattern, Limit.of(50), Sort.desc("price"));
  * ...
- * secondMostExpensive50 = products.findByNameLike(pattern, Limit.range(51, 100), Sort.desc("price"));
+ * secondMostExpensive50 = products.namedLike(pattern, Limit.range(51, 100), Sort.desc("price"));
  * </pre>
  *
  * <p>A repository method may not be declared with:

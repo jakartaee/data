@@ -38,8 +38,9 @@ import java.lang.annotation.Target;
  * &#64;Repository
  * public interface Products extends DataRepository&lt;Product, Long&gt; {
  *
+ *     &#64;Find
  *     &#64;OrderBy("price")
- *     List&lt;Product&gt; findByNameLike(String namePattern);
+ *     List&lt;Product&gt; namedLike(&#64;By("name") &#64;Is(Like.class) String namePattern);
  *
  *     &#64;Query("UPDATE Product SET price = price - (price * ?1) WHERE price * ?1 &lt;= ?2")
  *     int putOnSale(float rateOfDiscount, float maxDiscount);
@@ -53,7 +54,7 @@ import java.lang.annotation.Target;
  * Products products;
  *
  * ...
- * found = products.findByNameLike("%Printer%");
+ * found = products.namedLike("%Printer%");
  * numUpdated = products.putOnSale(0.15f, 20.0f);
  * </pre>
  *
