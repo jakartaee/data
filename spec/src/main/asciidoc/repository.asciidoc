@@ -120,7 +120,7 @@ Each parameter of an annotated query method must either:
 
 - have exactly the same name and type as a named parameter of the query,
 - have exactly the same type and position within the parameter list of the method as a positional parameter of the query, or
-- be of type `Limit`, `Order`, `PageRequest`, or `Sort`.
+- be of type `Limit`, `Order`, `PageRequest`, `Restriction`, or `Sort`.
 
 A repository with annotated query methods with named parameters must be compiled so that parameter names are preserved in the class file (for example, using `javac -parameters`), or the parameter names must be specified explicitly using the `@Param` annotation.
 
@@ -186,8 +186,10 @@ Each automatic query method must be assigned an entity type. The rules for infer
 
 Jakarta Data infers a query based on the parameters of the method. Each parameter must either:
 
-- have exactly the same type and name as a persistent attribute of the entity class, or
-- be of type `Limit`, `Order`, `PageRequest`, or `Sort`.
+- have exactly the same type and name as a persistent attribute of the entity class,
+- have exactly the same name as a persistent attribute of the entity class and be of type `C<T>`, where `C` is `Constraint` or any interface which extends `Constraint` and `T` is the type of the persistent attribute,
+- have exactly the same name as a persistent attribute of the entity class, be annotated `@Is(C.class)`, where `C` is `Constraint` or any interface which extends `Constraint`, and be of the same type as the parameter of a unary static method of `C` returning `C<T>` where `T` is the type of the persistent attribute, or
+- be of type `Limit`, `Order`, `PageRequest`, `Restriction`, or `Sort`.
 
 Parameter names map parameters to persistent attributes. A repository with parameter-based automatic query methods must either:
 
@@ -267,7 +269,7 @@ reject such a method declaration at compile time.
 [[special-parameters]]
 === Special parameters for limits, sorting, and pagination
 
-An <<Annotated query methods,annotated>>, <<Parameter-based automatic query methods,parameter-based>>, or Query by Method Name query method may have _special parameters_ of type `Limit`, `Order`, `Sort`, or `PageRequest` if the method return type indicates that the method may return multiple entities, that is, if the return type is:
+An <<Annotated query methods,annotated>>, <<Parameter-based automatic query methods,parameter-based>>, or Query by Method Name query method may have _special parameters_ of type `Limit`, `Restriction`, `Sort`, `Order`, or `PageRequest` if the method return type indicates that the method may return multiple entities, that is, if the return type is:
 
 - an array type,
 - `List` or `Stream`, or
@@ -276,8 +278,20 @@ An <<Annotated query methods,annotated>>, <<Parameter-based automatic query meth
 A special parameter controls which query results are returned to the caller of a repository method, or in what order the results are returned:
 
 - a `Limit` allows the query results to be limited to a given range defined in terms of an offset and maximum number of results,
+- a `Restriction` allows the query results to be restricted by applying constraints to entity attributes,
 - a `Sort` or `Order` allows the query results to be sorted by a given entity attribute or list of attributes, respectively, and
 - a `PageRequest` splits results into pages. A parameter of this type must be declared when the repository method returns a `Page` of results, as specified below in <<Offset-based pagination>>, or a `CursoredPage`, as specified in <<Cursor-based pagination>>.
+
+The types `Restriction`, `Sort`, and `Order` are parameterized by an entity type.
+Any special parameter declared with one of these types must be declared with type argument `E` or `? super E` where `E` is the queried entity type.
+
+For example, this repository method allows a list of cars to be filtered and sorted by attributes of `Car` or of its supertype `Vehicle`:
+
+[source,java]
+----
+List<Car> cars(Restriction<? super Car> restriction,
+               Order<? super Car> order);
+----
 
 A repository method throws `NullPointerException` if an argument to a special parameter of the method is null.
 

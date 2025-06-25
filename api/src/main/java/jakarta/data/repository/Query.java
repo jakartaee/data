@@ -99,8 +99,8 @@ import java.lang.annotation.Target;
  *     of the query,</li>
  * <li>have exactly the same type and position within the parameter list of
  *     the method as a positional parameter of the query, or</li>
- * <li>be of type {@link Limit}, {@link Order}, {@link PageRequest},
- *     {@link Restriction}, or {@link Sort}.</li>
+ * <li>be of type {@link Limit}, {@link Restriction}, {@link Sort}, {@link Order},
+ *     or {@link PageRequest}.</li>
  * </ul>
  *
  * <p>The {@link Param} annotation associates a method parameter with a named
