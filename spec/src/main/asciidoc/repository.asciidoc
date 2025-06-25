@@ -390,7 +390,7 @@ public interface ProductRepository {
 ----
 [source,java]
 ----
-List<Product> pencils = products.search(_Product.description.like("%pencil%");
+List<Product> pencils = products.search(_Product.description.like("%pencil%"));
 ----
 
 Programmatic restrictions passed to a parameter of type `Restriction` combine conjunctively with static restrictions:
