@@ -71,10 +71,10 @@ import java.lang.annotation.Target;
  *     the persistent attribute,
  * <li>have exactly the same name as a persistent attribute of the entity class,
  *     be annotated {@link Is @Is(C.class)}, where {@code C} is an interface
- *     which extends {@link Constraint}, and be of the same type
- *     as the parameter of a unary static method of {@code C} returning
- *     {@code C<T>} where {@code T} is the type of the persistent attribute, or
- * <li>be of type {@link Limit}, {@link Restriction}, {@link Sort}, {@link Order},
+ *     which extends {@link Constraint}, and be of the same type as the parameter
+ *     of a unary static method of {@code C} returning {@code C<T>} where {@code T}
+ *     is the type of the persistent attribute, or
+ * <li>be of type {@link Restriction}, {@link Sort}, {@link Order}, {@link Limit},
  *     or {@link PageRequest}.</li>
  * </ul>
  * <p>The query is inferred from the method parameters which match attributes of
