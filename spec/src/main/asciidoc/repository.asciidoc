@@ -375,7 +375,7 @@ List<User> findByNamePrefix(String namePrefix, Sort<?>... sorts);
 
 === Restrictions
 
-A method annotated `@Find` or `@Delete` may have a <<special-parameters,special parameter>> of type `Restriction<T>`.
+A method annotated `@Find`, `@Delete`, or `@Query` may have a <<special-parameters,special parameter>> of type `Restriction<T>`.
 This parameter allows the caller of a repository method to programmatically express additional restrictions on the results returned by the repository method, often using a <<metamodel-java-processor,generated metamodel class>> for type safety.
 
 For example:
