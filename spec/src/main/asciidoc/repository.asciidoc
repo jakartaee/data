@@ -188,7 +188,7 @@ Jakarta Data infers a query based on the parameters of the method. Each paramete
 
 - have exactly the same type and name as a persistent attribute of the entity class,
 - have exactly the same name as a persistent attribute of the entity class and be of type `C<T>`, where `C` is `Constraint` or any interface which extends `Constraint` and `T` is the type of the persistent attribute,
-- have exactly the same name as a persistent attribute of the entity class, be annotated `@Is(C.class)`, where `C` is `Constraint` or any interface which extends `Constraint`, and be of the same type as the parameter of a unary static method of `C` returning `C<T>` where `T` is the type of the persistent attribute, or
+- have exactly the same name as a persistent attribute of the entity class, be annotated `@Is(C.class)`, where `C` is an interface which extends `Constraint`, and be of the same type as the parameter of a unary static method of `C` returning `C<T>` where `T` is the type of the persistent attribute, or
 - be of type `Limit`, `Order`, `PageRequest`, `Restriction`, or `Sort`.
 
 Parameter names map parameters to persistent attributes. A repository with parameter-based automatic query methods must either:
@@ -267,7 +267,7 @@ If a method of a repository interface has more than one such annotation, the ann
 reject such a method declaration at compile time.
 
 
-=== Special parameters for limits, sorting, and pagination
+=== Special parameters for additional filtering, limits, sorting, and pagination
 
 An <<Annotated query methods,annotated>>, <<Parameter-based automatic query methods,parameter-based>>, or Query by Method Name query method may have _special parameters_ of type `Limit`, `Restriction`, `Sort`, `Order`, or `PageRequest` if the method return type indicates that the method may return multiple entities, that is, if the return type is:
 
