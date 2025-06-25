@@ -382,16 +382,21 @@ For example:
 
 [source,java]
 ----
-@Find
-List<Product> search(Restriction<Product> restriction);
-
-@Query("WHERE (product.numAvailable > 0)")
-Page<Product> findAvailable(Restriction<Product> restriction,
-                            PageRequest pageRequest,
-                            Order<Product> order);
+@Repository
+public interface ProductRepository {
+    @Find
+    List<Product> search(Restriction<Product> restriction);
+}
+----
+[source,java]
+----
+List<Product> pencils = products.search(_Product.description.like("%pencil%");
 ----
 
-Programmatic restrictions passed to a parameter of type `Restriction` combine conjunctively with restrictions expressed via the query specified by a `@Query` annotation or via parameters of a method annotated `@Find`.
+Programmatic restrictions passed to a parameter of type `Restriction` combine conjunctively with static restrictions:
+
+- expressed via <<Parameter-based automatic query methods,parameters>> of a method annotated `@Find`, or
+- given in the <<Where clause,where clause>> of a query specified by a `@Query` annotation.
 
 For example:
 
@@ -400,22 +405,20 @@ For example:
 @Repository
 public interface ProductRepository {
    @Find
-   List<Product> search(@By(_Product.NAME) name,
+   List<Product> search(@By(_Product.DESCRIPTION) @Is(Like.class) description,
                         Restriction<Product> restriction);
-
-   @Find
-   List<Product> search(Restriction<Product> restriction);
 }
 ----
 [source,java]
 ----
 
 List<Product> redPencils =
-        products.search("pencil", _Product.color.equalTo(Color.RED));
+        products.search("%pencil%",
+                        _Product.color.equalTo(Color.RED));
+
 List<Product> expensivePencils =
-        products.search("pencil", _Product.price.greaterThan(BigDecimal.TEN));
-List<Product> expensiveItems =
-        products.search(_Product.price.greaterThan(BigDecimal.TEN));
+        products.search("%pencil%",
+                        _Product.price.greaterThan(BigDecimal.TEN));
 ----
 
 The static methods `Restrict.all(...)` or `Restrict.any(...)` allow restrictions to be combined:
@@ -423,7 +426,7 @@ The static methods `Restrict.all(...)` or `Restrict.any(...)` allow restrictions
 [source,java]
 ----
 List<String> expensiveRedPencils = products.search(
-    "pencil",
+    "%pencil%",
     Restrict.all(
         _Product.color.equalTo(Color.RED),
         _Product.price.greaterThan(BigDecimal.TEN)
