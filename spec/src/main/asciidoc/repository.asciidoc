@@ -257,7 +257,7 @@ default void cleanup() {
 
 A repository may have at most one resource accessor method.
 
-A repository which declares a resource accessor method with return type `jakarta.persistence.EntityManager` is always a <<Stateful repositories,stateful repository>>.
+A resource accessor method with return type `jakarta.persistence.EntityManager` should only be declared by a <<Stateful repositories,stateful repository>>.
 
 === Conflicting repository method annotations
 
@@ -1035,7 +1035,7 @@ The annotations `@Save`, `@Insert`, `@Update`, `@Delete` are used to define stat
 Instead, this specification defines the special lifecycle annotations `@Persist`, `@Merge`, `@Refresh`, `@Remove`, and `@Detach` for declaring lifecycle methods of stateful repositories.
 
 A lifecycle method annotated `@Remove` or `@Refresh` only accepts managed entities associated with the persistence context underlying the repository.
- On the other hand, a method annotated `@Persist`, `@Merge`, or `@Detach` also accepts unmanaged entities.
+On the other hand, a method annotated `@Persist`, `@Merge`, or `@Detach` also accepts unmanaged entities.
 
 ==== Automatic change detection
 

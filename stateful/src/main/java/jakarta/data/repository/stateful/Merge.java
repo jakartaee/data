@@ -69,7 +69,7 @@ import java.lang.annotation.Target;
  *     the insertion of a new record with the state held by the merged entity.
  * </ul>
  * In either case, the method annotated {@code @Merge} returns a managed entity
- * representing the inserted or updated record, and reflecting the merged changes,
+ * representing the inserted or updated record and reflecting the merged changes,
  * even if the scheduled insertion or update has not yet occurred.
  * </p>
  * <p>A Jakarta Data provider that is capable of returning
