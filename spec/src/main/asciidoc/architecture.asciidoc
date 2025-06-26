@@ -51,7 +51,7 @@ Subset of data:: Repositories may expose only a subset of the full data set avai
 
 Entity associations:: Entities within a repository may have associations between them, especially in the case of relational data access. However, this specification does not define the semantics of associations between entities belonging to different repositories.
 
-Stateless repositories:: Repositories are stateless. This specification does not address the definition of repositories that externalize Jakarta Persistence-style stateful persistence contexts.
+Stateless and stateful repositories:: Repositories are usually stateless. As an extension, the module `jakarta.data.stateful` defines support for stateful repositories backed by Jakarta Persistence-style persistence contexts.
 
 Repositories in Jakarta Data serve as efficient gateways for managing and interacting with persistent data, offering a simplified and consistent approach to data access and modification within Java applications.
 
