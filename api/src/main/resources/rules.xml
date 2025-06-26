@@ -25,6 +25,13 @@
 
     <rule ref="category/java/bestpractices.xml">
         <exclude name="AbstractClassWithoutAbstractMethod"/>
+        <!-- The PMD checker doesn't believe we omitted @FunctionalInterface
+             from interfaces on purpose unless we explicitly tell it so with
+             @SuppressWarnings("PMD.ImplicitFunctionalInterface"), which gives
+             the impression the interface is implicitly a FunctionalInterface.
+             It is not, so I'm excluding the checking.
+         -->
+        <exclude name="ImplicitFunctionalInterface"/>
     </rule>
     <rule ref="category/java/security.xml"/>
     <rule ref="category/java/performance.xml">
