@@ -151,10 +151,10 @@ Use is subject to <a href="{@docRoot}/doc-files/speclicense.html" target="_top">
                     </supportedProjectTypes>
                     <instructions>
                         <Bundle-Description>
-                            Jakarta Data ${spec.version} ORM API jar
+                            Jakarta Data ${spec.version} Stateless API jar
                         </Bundle-Description>
-                        <Bundle-Name>Jakarta Data ORM API jar</Bundle-Name>
-                        <Bundle-SymbolicName>jakarta.data-orm</Bundle-SymbolicName>
+                        <Bundle-Name>Jakarta Data Stateless API jar</Bundle-Name>
+                        <Bundle-SymbolicName>jakarta.data-stateless</Bundle-SymbolicName>
                         <Bundle-Version>${project.version}</Bundle-Version>
                         <Extension-Name>jakarta.data</Extension-Name>
                         <Implementation-Version>${project.version}</Implementation-Version>
