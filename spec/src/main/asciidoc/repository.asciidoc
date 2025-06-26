@@ -264,7 +264,7 @@ If a method of a repository interface has more than one such annotation, the ann
 `UnsupportedOperationException` every time it is called. Alternatively, a Jakarta Data provider is permitted to
 reject such a method declaration at compile time.
 
-
+[[special-parameters]]
 === Special parameters for limits, sorting, and pagination
 
 An <<Annotated query methods,annotated>>, <<Parameter-based automatic query methods,parameter-based>>, or Query by Method Name query method may have _special parameters_ of type `Limit`, `Order`, `Sort`, or `PageRequest` if the method return type indicates that the method may return multiple entities, that is, if the return type is:
@@ -278,6 +278,8 @@ A special parameter controls which query results are returned to the caller of a
 - a `Limit` allows the query results to be limited to a given range defined in terms of an offset and maximum number of results,
 - a `Sort` or `Order` allows the query results to be sorted by a given entity attribute or list of attributes, respectively, and
 - a `PageRequest` splits results into pages. A parameter of this type must be declared when the repository method returns a `Page` of results, as specified below in <<Offset-based pagination>>, or a `CursoredPage`, as specified in <<Cursor-based pagination>>.
+
+A repository method throws `NullPointerException` if an argument to a special parameter of the method is null.
 
 A repository method must throw `UnsupportedOperationException` if it has:
 
@@ -370,6 +372,70 @@ Page<User> findByNamePrefix(String namePrefix,
 @OrderBy(_User.AGE)
 List<User> findByNamePrefix(String namePrefix, Sort<?>... sorts);
 ----
+
+=== Restrictions
+
+A method annotated `@Find`, `@Delete`, or `@Query` may have a <<special-parameters,special parameter>> of type `Restriction<T>`.
+This parameter allows the caller of a repository method to programmatically express additional restrictions on the results returned by the repository method, often using a <<metamodel-java-processor,generated metamodel class>> for type safety.
+
+For example:
+
+[source,java]
+----
+@Repository
+public interface ProductRepository {
+    @Find
+    List<Product> search(Restriction<Product> restriction);
+}
+----
+[source,java]
+----
+List<Product> pencils = products.search(_Product.description.like("%pencil%"));
+----
+
+Programmatic restrictions passed to a parameter of type `Restriction` combine conjunctively with static restrictions:
+
+- expressed via <<Parameter-based automatic query methods,parameters>> of a method annotated `@Find`, or
+- given in the <<Where clause,where clause>> of a query specified by a `@Query` annotation.
+
+For example:
+
+[source,java]
+----
+@Repository
+public interface ProductRepository {
+   @Find
+   List<Product> search(@By(_Product.DESCRIPTION) @Is(Like.class) description,
+                        Restriction<Product> restriction);
+}
+----
+[source,java]
+----
+
+List<Product> redPencils =
+        products.search("%pencil%",
+                        _Product.color.equalTo(Color.RED));
+
+List<Product> expensivePencils =
+        products.search("%pencil%",
+                        _Product.price.greaterThan(BigDecimal.TEN));
+----
+
+The static methods `Restrict.all(...)` or `Restrict.any(...)` allow restrictions to be combined:
+
+[source,java]
+----
+List<String> expensiveRedPencils = products.search(
+    "%pencil%",
+    Restrict.all(
+        _Product.color.equalTo(Color.RED),
+        _Product.price.greaterThan(BigDecimal.TEN)
+    )
+);
+----
+
+Instances of `Restriction<T>` are immutable and may be reused across multiple repository calls.
+
 
 === Pagination in Jakarta Data
 
@@ -826,116 +892,9 @@ A repository method that does not fit any of the above patterns and is not handl
 When a repository method is called with a null value as an argument to one of its parameters, the repository implementation might throw an exception:
 
 - when a <<_lifecycle_methods,lifecycle method>> is called with a null entity instance, the repository implementation must throw `NullPointerException`, or
-- when an <<_annotated_query_methods,annotated>> or <<_parameter_based_automatic_query_methods,parameter-based>> query method is called with a null argument, the repository implementation is permitted, but not required, to throw an appropriate exception type.
+- when an <<_annotated_query_methods,annotated>> or <<_parameter_based_automatic_query_methods,parameter-based>> query method is called with a null argument, the repository implementation is permitted, but not required, to throw an appropriate exception type, unless the null argument occurs as an argument to a <<special-parameters,special parameter>>, in which case the repository implementation is required to throw `NullPointerException`.
 
 NOTE: The behavior of a query method when the method is called with a null argument is not defined by this specification, and is not portable between Jakarta Data providers.
-
-==== Restriction parameters
-
-The `Restriction<T>` type is a special parameter used to dynamically construct queries in a fluent and type-safe manner. Valid as parameters to methods that perform queries, such as methods annotated `@Find` or `@Delete`, restrictions allow the application to define additional conditions programmatically, often using a generated metamodel class (see <<metamodel-java-processor>>).
-
-When using `Restriction<T>` in repository methods:
-
-- The use of `Restriction<T>` is only considered valid in portable applications when used as a parameter to methods annotated with `@Find`, `@Delete`, or `@Query`. Methods using `Restriction<T>` without one of these annotations are not covered by the specification. Jakarta Data providers may reject such methods by throwing an `UnsupportedOperationException`.
-- The filtering defined by the `@Query` annotation or the parameters of methods annotated with `@Find` or `@Delete` is combined with any additional filtering specified by a `Restriction<T>` parameter.
-
-This specification defines support for the `Restriction<T>` parameter only on methods annotated with `@Find`, `@Delete`, or `@Query`.
-
-[NOTE]
-====
-Using `Restriction<T>` on other method types is outside the scope of this specification and may result in undefined behavior.
-====
-
-For example:
-
-[source,java]
-----
-@Find
-List<Product> search(Restriction<Product> restriction);
-
-@Query("WHERE (product.numAvailable > 0)")
-Page<Product> findAvailable(Restriction<Product> restriction, PageRequest pageRequest, Order<Product> order);
-----
-
-The following is *invalid* because the method does not follow the Query by Method Name pattern of supplying a parameter per condition defined by the method name, nor does the method have an annotation that allows a `Restriction` parameter to be used.
-
-[source,java]
-----
-List<Product> findByName(Restriction<Product> restriction);
-----
-
-The example below shows a repository method that accepts a restriction to filter `Product` entities:
-
-[source,java]
-----
-@Repository
-public interface ProductRepository {
-   @Find
-   List<Product> search(@By(_Product.NAME) name, Restriction<Product> restriction);
-
-   @Find
-   List<Product> search(Restriction<Product> restriction);
-}
-...
-List<Product> redPencils = products.search("pencil", _Product.color.equalTo(Color.RED));
-List<Product> expensivePencils = products.search("pencil", _Product.price.greaterThan(BigDecimal.TEN));
-List<Product> expensiveItems = products.search(_Product.price.greaterThan(BigDecimal.TEN));
-----
-
-To combine multiple conditions, use the static methods `Restrict.all(...)` or `Restrict.any(...)`. These allow you to express conjunctions (AND) or disjunctions (OR) in a fluent way:
-
-[source,java]
-----
-List<String> expensiveRedPencils = products.search(
-    "pencil",
-    Restrict.all(
-        _Product.color.equalTo(Color.RED),
-        _Product.price.greaterThan(BigDecimal.TEN)
-    )
-);
-----
-
-
-Valid method signatures include:
-
-[source,java]
-----
-public interface ProductRepository {
-
-    @Find
-    List<Product> search(Restriction<Product> restriction);
-
-    @Find
-    Page<Product> search(Restriction<Product> restriction, PageRequest pageRequest, Order<Product> order);
-
-    @Find
-    List<Product> search(Restriction<Product> restriction, Sort<Product> order);
-
-    @Query("WHERE (product.numAvailable > 0)")
-    List<Product> search(Restriction<Product> restriction, Order<Product> order);
-
-    @Find
-    @OrderBy(_Product.PRICE)
-    List<Product> byPriceAsc(Restriction<Product> restriction);
-
-    @Find
-    @OrderBy(_Product.PRICE)
-    @OrderBy(_Product.ID)
-    CursoredPage<Product> cursoredPage(Restriction<Product> restriction, PageRequest pageRequest);
-
-    @Find
-    @OrderBy(_Product.PRICE)
-    @OrderBy(_Product.ID)
-    Page<Product> page(Restriction<Product> restriction, PageRequest pageRequest);
-}
-----
-
-[NOTE]
-====
-- `Restriction<T>` instances are immutable and can be reused across multiple repository calls without side effects.
-
-- Passing `null` as the `Restriction<T>` argument results in a `NullPointerException`.
-====
 
 
 === Asynchronous repositories
