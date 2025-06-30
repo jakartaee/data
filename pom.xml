@@ -95,7 +95,7 @@
         <junit.version>5.12.0</junit.version>
         <pi-test.version>1.20.0</pi-test.version>
         <pitest-junit5-plugin.version>1.2.3</pitest-junit5-plugin.version>
-        <checkstyle.version>10.26.0</checkstyle.version>
+        <checkstyle.version>10.26.1</checkstyle.version>
         <checkstyle.excludes></checkstyle.excludes>
         <jacoco.maven.version>0.8.13</jacoco.maven.version>
         <shrinkwrap.version>1.2.6</shrinkwrap.version>
