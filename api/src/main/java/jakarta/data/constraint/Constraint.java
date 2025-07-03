@@ -104,6 +104,7 @@ public interface Constraint<V> {
      * <p>Requires that the constraint target evaluates to a value that is
      * equal to the given {@code value}.</p>
      *
+     * @param <V>   type of the entity attribute.
      * @param value a value.
      * @return an {@link EqualTo} constraint.
      * @throws NullPointerException if the value is {@code null}.
@@ -117,6 +118,7 @@ public interface Constraint<V> {
      * <p>Requires that the constraint target evaluates to a value that is
      * not equal to the given {@code value}.</p>
      *
+     * @param <V>   type of the entity attribute.
      * @param value a value.
      * @return a {@link NotEqualTo} constraint.
      * @throws NullPointerException if the value is {@code null}.
@@ -130,6 +132,7 @@ public interface Constraint<V> {
      * <p>Requires that the constraint target evaluates to a value that is
      * equal to one of the given {@code values}.</p>
      *
+     * @param <V>    type of the entity attribute.
      * @param values one or more values.
      * @return an {@link In} constraint.
      * @throws IllegalArgumentException if the array of values is empty.
@@ -146,6 +149,7 @@ public interface Constraint<V> {
      * <p>Requires that the constraint target evaluates to a value that is
      * equal to one of the given {@code values}.</p>
      *
+     * @param <V>    type of the entity attribute.
      * @param values one or more values.
      * @return an {@link In} constraint.
      * @throws IllegalArgumentException if the collection of values is empty.
@@ -161,6 +165,7 @@ public interface Constraint<V> {
      * <p>Requires that the constraint target evaluates to a value that is
      * not equal to any of the given {@code values}.</p>
      *
+     * @param <V>    type of the entity attribute.
      * @param values one or more values.
      * @return a {@link NotIn} constraint.
      * @throws IllegalArgumentException if the array of values is empty.
@@ -177,6 +182,7 @@ public interface Constraint<V> {
      * <p>Requires that the constraint target evaluates to a value that is
      * not equal to any of the given {@code values}.</p>
      *
+     * @param <V>    type of the entity attribute.
      * @param values one or more values.
      * @return a {@link NotIn} constraint.
      * @throws IllegalArgumentException if the collection of values is empty.
@@ -290,6 +296,7 @@ public interface Constraint<V> {
     /**
      * <p>Requires that the constraint target evaluates to {@code null}.</p>
      *
+     * @param <V> type of the entity attribute.
      * @return a {@link Null} constraint.
      * @see Null#instance()
      */
@@ -301,6 +308,7 @@ public interface Constraint<V> {
      * <p>Requires that the constraint target does not evaluate to
      * {@code null}.</p>
      *
+     * @param <V> type of the entity attribute.
      * @return a {@link NotNull} constraint.
      * @see NotNull#instance()
      */
@@ -312,6 +320,7 @@ public interface Constraint<V> {
      * <p>Requires that the constraint target evaluates to a value that is
      * greater than the given {@code bound}.</p>
      *
+     * @param <V>   type of the entity attribute.
      * @param bound an exclusive minimum value.
      * @return a {@link GreaterThan} constraint.
      * @throws NullPointerException if the bound is {@code null}.
@@ -325,6 +334,7 @@ public interface Constraint<V> {
      * <p>Requires that the constraint target evaluates to a value that is
      * less than the given {@code bound}.</p>
      *
+     * @param <V>   type of the entity attribute.
      * @param bound an exclusive maximum value.
      * @return a {@link LessThan} constraint.
      * @throws NullPointerException if the bound is {@code null}.
@@ -338,8 +348,9 @@ public interface Constraint<V> {
      * <p>Requires that the constraint target evaluates to a value that is
      * greater than or equal to the given {@code minimum}.</p>
      *
+     * @param <V>     type of the entity attribute.
      * @param minimum the minimum value.
-     * @return a {@link AtLeast} constraint.
+     * @return an {@link AtLeast} constraint.
      * @throws NullPointerException if the minimum is {@code null}.
      * @see AtLeast#min(Comparable)
      */
@@ -351,8 +362,9 @@ public interface Constraint<V> {
      * <p>Requires that the constraint target evaluates to a value that is
      * less than or equal to the given {@code maximum}.</p>
      *
+     * @param <V>     type of the entity attribute.
      * @param maximum the maximum value.
-     * @return a {@link AtMost} constraint.
+     * @return an {@link AtMost} constraint.
      * @throws NullPointerException if the maximum is {@code null}.
      * @see AtMost#max(Comparable)
      */
@@ -365,6 +377,7 @@ public interface Constraint<V> {
      * greater than or equal to the given {@code minimum} and less than or
      * equal to the given {@code maximum}.</p>
      *
+     * @param <V>     type of the entity attribute.
      * @param minimum the minimum value.
      * @param maximum the maximum value.
      * @return a {@link Between} constraint.
@@ -380,6 +393,7 @@ public interface Constraint<V> {
      * less than the given {@code lowerBound} or greater than the given
      * {@code upperBound}.</p>
      *
+     * @param <V>        type of the entity attribute.
      * @param lowerBound a lower bound.
      * @param upperBound an upper bound.
      * @return a {@link NotBetween} constraint.
