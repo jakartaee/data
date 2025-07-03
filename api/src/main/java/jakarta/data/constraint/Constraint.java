@@ -91,9 +91,10 @@ import jakarta.data.restrict.Restriction;
 public interface Constraint<V> {
 
     /**
-     * <p>Obtains the opposite {@code Constraint}. For example, the opposite of
-     * {@link Like} is {@link NotLike}, the opposite of {@link Null} is
-     * {@link NotNull}, and the opposite of {@link AtLeast} is {@link LessThan}.
+     * <p>Obtains the negation of the {@code Constraint}. For example, the negation 
+     * of {@link Like} is {@link NotLike}, the negation of {@link Null} is {@link NotNull}, 
+     * and the negation of {@link AtLeast} is {@link LessThan}. A value satisfies the
+     * negation of a constraint if and only if it does not satisfy the constraint.
      * </p>
      *
      * @return the opposite {@code Constraint} subtype.
