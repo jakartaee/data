@@ -36,10 +36,10 @@ import jakarta.data.restrict.Restriction;
  *
  * <h2>Method parameter</h2>
  *
- * <p>A constraint parameters must be of type {@code C<T>} or {@code C<? super T>} 
- * where {@code C} is {@code Constraint} or any subtype of {@code Constraint}, such 
- * as {@link Like} or {@link LessThan}, and {@code T} is the entity attribute type.
- * For example,</p>
+ * <p>Constraint parameters can be of type {@code C<T>} or {@code C<? super T>}
+ * where {@code C} is {@code Constraint} or any subtype of {@code Constraint},
+ * such as {@link Like} or {@link LessThan}, and {@code T} is the entity
+ * attribute type. For example,</p>
  *
  * <pre>
  * &#64;Find
