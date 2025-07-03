@@ -63,7 +63,7 @@ import jakarta.data.restrict.Restriction;
  * <h2>Annotation value</h2>
  *
  * <p>Constraint parameters of repository methods can be annotated with the
- * {@link Is} annotation to indicate the subtype of {@code Constraint}.
+ * {@link Is @Is} annotation to indicate the subtype of {@code Constraint}.
  * The type of the method parameter must be the entity attribute type.
  * For example,</p>
  *
