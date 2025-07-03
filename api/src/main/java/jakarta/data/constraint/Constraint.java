@@ -364,7 +364,7 @@ public interface Constraint<V> {
      *
      * @param <V>     type of the entity attribute.
      * @param maximum the maximum value.
-     * @return a {@link AtMost} constraint.
+     * @return an {@link AtMost} constraint.
      * @throws NullPointerException if the maximum is {@code null}.
      * @see AtMost#max(Comparable)
      */
