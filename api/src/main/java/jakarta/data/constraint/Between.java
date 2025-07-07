@@ -27,8 +27,8 @@ import jakarta.data.spi.expression.literal.ComparableLiteral;
  *
  * <p>A parameter-based repository method can impose a constraint on an
  * entity attribute by defining a method parameter that is of type
- * {@code Between} and is of the same type as the entity attribute or
- * is a subtype or a primitive wrapper type for it. For example,</p>
+ * {@code Between} and is of the same type or a subtype of the entity
+ * attribute. For example,</p>
  *
  * <pre>
  * &#64;Find
@@ -59,7 +59,8 @@ import jakarta.data.spi.expression.literal.ComparableLiteral;
  * examples within this class are shown in the {@link Attribute} Javadoc.
  * </p>
  *
- * @param <V> type of the entity attribute.
+ * @param <V> type of the entity attribute or a subtype or primitive wrapper
+ *            type for the entity attribute.
  * @since 1.1
  */
 public interface Between<V extends Comparable<?>> extends Constraint<V> {
@@ -74,7 +75,8 @@ public interface Between<V extends Comparable<?>> extends Constraint<V> {
      *                      Order.by(_Car.price.desc()));
      * </pre>
      *
-     * @param <V>     type of the entity attribute.
+     * @param <V>     type of the entity attribute or a subtype or primitive
+     *                wrapper type for the entity attribute.
      * @param minimum the minimum value.
      * @param maximum the maximum value.
      * @return a {@code Between} constraint.
@@ -98,7 +100,8 @@ public interface Between<V extends Comparable<?>> extends Constraint<V> {
      *                          Order.by(_Car.price.desc()));
      * </pre>
      *
-     * @param <V>     type of the entity attribute.
+     * @param <V>     type of the entity attribute or a subtype or primitive
+     *                wrapper type for the entity attribute.
      * @param minimum a minimum value.
      * @param maximum an expression that evaluates to a maximum value.
      * @return a {@code Between} constraint.
@@ -122,7 +125,8 @@ public interface Between<V extends Comparable<?>> extends Constraint<V> {
      *                          Order.by(_Car.year.desc()));
      * </pre>
      *
-     * @param <V>     type of the entity attribute.
+     * @param <V>     type of the entity attribute or a subtype or primitive
+     *                wrapper type for the entity attribute.
      * @param minimum an expression that evaluates to a minimum value.
      * @param maximum a maximum value.
      * @return a {@code Between} constraint.
@@ -149,7 +153,8 @@ public interface Between<V extends Comparable<?>> extends Constraint<V> {
      *                                   _Car.vin.asc()));
      * </pre>
      *
-     * @param <V>     type of the entity attribute.
+     * @param <V>     type of the entity attribute or a subtype or primitive
+     *                wrapper type for the entity attribute.
      * @param minimum an expression that evaluates to a minimum value.
      * @param maximum an expression that evaluates to a maximum value.
      * @return a {@code Between} constraint.

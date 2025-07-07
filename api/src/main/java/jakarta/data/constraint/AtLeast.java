@@ -29,8 +29,7 @@ import jakarta.data.spi.expression.literal.ComparableLiteral;
  * <p>A parameter-based repository method can impose a constraint on an
  * entity attribute by defining a method parameter that is of type
  * {@code AtLeast} or is annotated {@link Is @Is(AtLeast.class)} and is
- * of the same type as the entity attribute or is a subtype or primitive
- * wrapper type for it. For example,</p>
+ * of the same type or a subtype of the entity attribute. For example,</p>
  *
  * <pre>
  * &#64;Find
@@ -67,7 +66,8 @@ import jakarta.data.spi.expression.literal.ComparableLiteral;
  * examples within this class are shown in the {@link Attribute} Javadoc.
  * </p>
  *
- * @param <V> type of the entity attribute.
+ * @param <V> type of the entity attribute or a subtype or primitive wrapper
+ *            type for the entity attribute.
  * @since 1.1
  */
 public interface AtLeast<V extends Comparable<?>> extends Constraint<V> {
@@ -80,7 +80,8 @@ public interface AtLeast<V extends Comparable<?>> extends Constraint<V> {
      * found = cars.ofYearOrHigher(AtLeast.min(2021));
      * </pre>
      *
-     * @param <V>     type of the entity attribute.
+     * @param <V>     type of the entity attribute or a subtype or primitive
+     *                wrapper type for the entity attribute.
      * @param minimum the minimum value.
      * @return an {@code AtLeast} constraint.
      * @throws NullPointerException if the minimum is {@code null}.
@@ -99,7 +100,8 @@ public interface AtLeast<V extends Comparable<?>> extends Constraint<V> {
      * found = cars.ofYearOrHigher(AtLeast.min(_Car.firstModelYear.plus(2)));
      * </pre>
      *
-     * @param <V>     type of the entity attribute.
+     * @param <V>     type of the entity attribute or a subtype or primitive
+     *                wrapper type for the entity attribute.
      * @param minimum an expression that evaluates to the minimum value.
      * @return an {@code AtLeast} constraint.
      * @throws NullPointerException if the minimum is {@code null}.

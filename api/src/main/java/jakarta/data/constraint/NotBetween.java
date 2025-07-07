@@ -27,8 +27,8 @@ import jakarta.data.spi.expression.literal.ComparableLiteral;
  *
  * <p>A parameter-based repository method can impose a constraint on an
  * entity attribute by defining a method parameter that is of type
- * {@code NotBetween} and is of the same type as the entity attribute or
- * is a subtype or a primitive wrapper type for it. For example,</p>
+ * {@code NotBetween} and is of the same type or a subtype of the entity
+ * attribute. For example,</p>
  *
  * <pre>
  * &#64;Find
@@ -59,7 +59,8 @@ import jakarta.data.spi.expression.literal.ComparableLiteral;
  * examples within this class are shown in the {@link Attribute} Javadoc.
  * </p>
  *
- * @param <V> type of the entity attribute.
+ * @param <V> type of the entity attribute or a subtype or primitive wrapper
+ *            type for the entity attribute.
  * @since 1.1
  */
 public interface NotBetween<V extends Comparable<?>> extends Constraint<V> {
@@ -73,7 +74,8 @@ public interface NotBetween<V extends Comparable<?>> extends Constraint<V> {
      * found = cars.byModelYear(NotBetween.bounds(2022, 2024));
      * </pre>
      *
-     * @param <V>   type of the entity attribute.
+     * @param <V>   type of the entity attribute or a subtype or primitive
+     *              wrapper type for the entity attribute.
      * @param lower the lower bound of the range to exclude.
      * @param upper the upper bound of the range to exclude.
      * @return a {@code NotBetween} constraint.
@@ -94,7 +96,8 @@ public interface NotBetween<V extends Comparable<?>> extends Constraint<V> {
      *                                            _Car.firstModelYear.plus(5)));
      * </pre>
      *
-     * @param <V>   type of the entity attribute.
+     * @param <V>   type of the entity attribute or a subtype or primitive
+     *              wrapper type for the entity attribute.
      * @param lower the lower bound of the range to exclude.
      * @param upper an expression that evaluates to the upper bound of the
      *              range to exclude.
@@ -118,7 +121,8 @@ public interface NotBetween<V extends Comparable<?>> extends Constraint<V> {
      * found = cars.byModelYear(NotBetween.bounds(_Car.firstModelYear, 2022));
      * </pre>
      *
-     * @param <V>   type of the entity attribute.
+     * @param <V>   type of the entity attribute or a subtype or primitive
+     *              wrapper type for the entity attribute.
      * @param lower an expression that evaluates to the lower bound of the
      *              range to exclude.
      * @param upper the upper bound of the range to exclude.
@@ -143,7 +147,8 @@ public interface NotBetween<V extends Comparable<?>> extends Constraint<V> {
      *                                            _Car.firstModelYear.plus(2)));
      * </pre>
      *
-     * @param <V>   type of the entity attribute.
+     * @param <V>   type of the entity attribute or a subtype or primitive
+     *              wrapper type for the entity attribute.
      * @param lower an expression that evaluates to the lower bound of the
      *              range to exclude.
      * @param upper an expression that evaluates to the upper bound of the
@@ -158,7 +163,19 @@ public interface NotBetween<V extends Comparable<?>> extends Constraint<V> {
                 upper);
     }
 
+    /**
+     * <p>An expression that evaluates to the minimum value excluded for the
+     * constraint target.</p>
+     *
+     * @return an expression representing the minimum value excluded.
+     */
     ComparableExpression<?, V> lowerBound();
 
+    /**
+     * <p>An expression that evaluates to the maximum value excluded for the
+     * constraint target.</p>
+     *
+     * @return an expression representing the maximum value excluded.
+     */
     ComparableExpression<?, V> upperBound();
 }

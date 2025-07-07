@@ -29,8 +29,7 @@ import jakarta.data.spi.expression.literal.ComparableLiteral;
  * <p>A parameter-based repository method can impose a constraint on an
  * entity attribute by defining a method parameter that is of type
  * {@code AtMost} or is annotated {@link Is @Is(AtMost.class)} and is
- * of the same type as the entity attribute or is a subtype or primitive
- * wrapper type for it. For example,</p>
+ * of the same type or a subtype of the entity attribute. For example,</p>
  *
  * <pre>
  * &#64;Find
@@ -68,7 +67,8 @@ import jakarta.data.spi.expression.literal.ComparableLiteral;
  * examples within this class are shown in the {@link Attribute} Javadoc.
  * </p>
  *
- * @param <V> type of the entity attribute.
+ * @param <V> type of the entity attribute or a subtype or primitive wrapper
+ *            type for the entity attribute.
  * @since 1.1
  */
 public interface AtMost<V extends Comparable<?>> extends Constraint<V> {
@@ -81,7 +81,8 @@ public interface AtMost<V extends Comparable<?>> extends Constraint<V> {
      * found = cars.withMaximumPrice(AtMost.max(33000));
      * </pre>
      *
-     * @param <V>     type of the entity attribute.
+     * @param <V>     type of the entity attribute or a subtype or primitive
+     *                wrapper type for the entity attribute.
      * @param maximum the maximum value.
      * @return an {@code AtMost} constraint.
      * @throws NullPointerException if the maximum is {@code null}.
@@ -100,7 +101,8 @@ public interface AtMost<V extends Comparable<?>> extends Constraint<V> {
      * found = cars.withMaxFirstYear(AtMost.max(_Car.year.minus(2)));
      * </pre>
      *
-     * @param <V>     type of the entity attribute.
+     * @param <V>     type of the entity attribute or a subtype or primitive
+     *                wrapper type for the entity attribute.
      * @param maximum an expression that evaluates to the maximum value.
      * @return an {@code AtMost} constraint.
      * @throws NullPointerException if the maximum is {@code null}.
