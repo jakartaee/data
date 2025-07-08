@@ -30,7 +30,7 @@ import jakarta.data.spi.expression.literal.Literal;
 import static java.util.Collections.unmodifiableList;
 
 /**
- * <p>A constraint that requires inequality with every member of a set.</p>
+ * <p>A constraint that requires inequality with every member of a collection.</p>
  *
  * <p>A parameter-based repository method can impose a constraint on an
  * entity attribute by defining a method parameter that is of type
@@ -126,9 +126,9 @@ public interface NotIn<V> extends Constraint<V> {
      *               wrapper type for the entity attribute.
      * @param values values against which the constraint target is compared.
      * @return a {@code NotIn} constraint.
-     * @throws IllegalArgumentException if the set of values is empty.
-     * @throws NullPointerException     if the set of values or any value
-     *                                  within it is {@code null}.
+     * @throws IllegalArgumentException if the collection of values is empty.
+     * @throws NullPointerException     if the collection of values or any
+     *                                  value within it is {@code null}.
      */
     static <V> NotIn<V> values(Collection<V> values) {
         if (values == null) {
