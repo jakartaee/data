@@ -17,8 +17,66 @@
  */
 package jakarta.data.constraint;
 
+import jakarta.data.expression.Expression;
+import jakarta.data.metamodel.Attribute;
+import jakarta.data.restrict.Restriction;
+
+/**
+ * <p>A constraint that requires a {@code null} value.</p>
+ *
+ * <p>A parameter-based repository method can impose a constraint on an
+ * entity attribute by defining a method parameter that is of type
+ * {@code Null}. For example,</p>
+ *
+ * <pre>
+ * &#64;Find
+ * List&lt;Car&gt; ofUnknownModel(&#64;By(_Car.MAKE) String make,
+ *                          &#64;By(_Car.MODEL) Null&lt;String&gt; nullModel);
+ * ...
+ *
+ * found = cars.ofUnknownModel("Jakarta Motors",
+ *                             Null.instance());
+ * </pre>
+ *
+ * <p>Repository methods can also accept {@code Null} constraints at run time
+ * in the form of a {@link Restriction} on an {@link Expression}. For example,
+ * </p>
+ *
+ * <pre>
+ * &#64;Find
+ * List&lt;Car&gt; searchAll(Restriction&lt;Car&gt; restrict, Order&lt;Car&gt; sorts);
+ *
+ * ...
+ *
+ * found = cars.searchAll(Restrict.all(_Car.make.equalTo("Jakarta Motors"),
+ *                                     _Car.model.isNull()),
+ *                        Order.by(_Car.year.desc(),
+ *                                 _Car.price.asc()));
+ * </pre>
+ *
+ * <p>The {@linkplain Attribute entity and static metamodel} for the code
+ * examples within this class are shown in the {@link Attribute} Javadoc.
+ * </p>
+ *
+ * @param <V> type of the entity attribute or a subtype or primitive wrapper
+ *            type for the entity attribute.
+ * @since 1.1
+ */
 public interface Null<V> extends Constraint<V> {
 
+    /**
+     * <p>Requires that the constraint target has a {@code null} value. For
+     * example,</p>
+     *
+     * <pre>
+     * found = cars.ofMakeAndModel("Jakarta Motors",
+     *                             Null.instance());
+     * </pre>
+     *
+     * @param <V> type of the entity attribute or a subtype or primitive
+     *            wrapper type for the entity attribute.
+     * @return a {@code Null} constraint.
+     */
     @SuppressWarnings("unchecked")
     static <V> Null<V> instance() {
         return (Null<V>) NullRecord.INSTANCE;
