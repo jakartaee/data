@@ -169,7 +169,7 @@ public interface Like extends Constraint<String> {
     }
 
     /**
-     * <p>Requires that the constraint target match the given {@code pattern},
+     * <p>Requires that the constraint target match the given {@code pattern}
      * expression, in which {@code _} and {@code %} represent wildcards and the
      * given character represents escape.</p>
      *

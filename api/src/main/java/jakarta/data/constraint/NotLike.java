@@ -23,10 +23,81 @@ import static jakarta.data.constraint.LikeRecord.translate;
 
 import jakarta.data.expression.TextExpression;
 import jakarta.data.messages.Messages;
+import jakarta.data.metamodel.Attribute;
+import jakarta.data.repository.Is;
+import jakarta.data.restrict.Restriction;
 import jakarta.data.spi.expression.literal.StringLiteral;
 
+/**
+ * <p>A constraint that requires not matching a pattern.</p>
+ *
+ * <p>A parameter-based repository method can impose a constraint on an
+ * entity attribute by defining a method parameter that is of type
+ * {@code NotLike} or is annotated {@link Is @Is(NotLike.class)} and is of
+ * type {@link String}. For example,</p>
+ *
+ * <pre>
+ * &#64;Find
+ * List&lt;Car&gt; matchVIN(&#64;By(_Car.VIN) NotLike pattern);
+ *
+ * &#64;Find
+ * List&lt;Car&gt; ofMakeNotModel(&#64;By(_Car.MAKE) String manufacturer,
+ *                          &#64;By(_Car.MODEL) &#64;Is(NotLike.class) String excludePattern,
+ *                          Order&lt;Car&gt; sorts);
+ *
+ * ...
+ *
+ * found = cars.matchVIN(NotLike.prefix("1GM"));
+ *
+ * found = cars.ofMakeNotModel("Jakarta Motors",
+ *                             "%Hybrid%",
+ *                             Order.by(_Car.price.desc()));
+ * </pre>
+ *
+ * <p>Repository methods can also accept {@code NotLike} constraints at
+ * run time in the form of a {@link Restriction} on a {@link TextExpression}.
+ * For example,</p>
+ *
+ * <pre>
+ * &#64;Find
+ * List&lt;Car&gt; searchAll(Restriction&lt;Car&gt; restrict, Order&lt;Car&gt; sorts);
+ *
+ * ...
+ *
+ * found = cars.searchAll(Restrict.all(_Car.make.equalTo("Jakarta Motors"),
+ *                                     _Car.model.notContains("Electric"),
+ *                                     _Car.model.notEndsWith("EV")),
+ *                        Order.by(_Car.model.asc(),
+ *                                 _Car.year.desc(),
+ *                                 _Car.price.asc());
+ * </pre>
+ *
+ * <p>The {@linkplain Attribute entity and static metamodel} for the code
+ * examples within this class are shown in the {@link Attribute} Javadoc.
+ * </p>
+ *
+ * @since 1.1
+ */
 public interface NotLike extends Constraint<String> {
 
+    /**
+     * <p>Requires that the constraint target not match the given
+     * {@code pattern}, in which {@code _} and {@code %} represent wildcards.
+     * </p>
+     *
+     * <p>For example, the following requires that the VIN number not have
+     * {@code JHM} as its first 3 character positions and {@code E} in
+     * character position 7.</p>
+     *
+     * <pre>
+     * found = cars.matchVIN(NotLike.pattern("JHM___E%"));
+     * </pre>
+     *
+     * @param pattern a pattern in which {@code _} matches a single character
+     *                and {@code %} matches 0 or more characters.
+     * @return a {@code NotLike} constraint.
+     * @throws NullPointerException if the pattern is {@code null}.
+     */
     static NotLike pattern(String pattern) {
         if (pattern == null) {
             throw new NullPointerException(
@@ -37,10 +108,50 @@ public interface NotLike extends Constraint<String> {
         return new NotLikeRecord(expression, null);
     }
 
+    /**
+     * <p>Requires that the constraint target not match the given
+     * {@code pattern}, in which the given characters represent wildcards.</p>
+     *
+     * <p>For example, the following requires that the VIN number not have
+     * {@code JHM} as its first 3 character positions and {@code F} in
+     * character position 7.</p>
+     *
+     * <pre>
+     * found = cars.matchVIN(NotLike.pattern("JHM???F*"), '?', '*');
+     * </pre>
+     *
+     * @param pattern        a pattern that can include the given wildcard
+     *                       characters.
+     * @param charWildcard   wildcard that represents any single character.
+     * @param stringWildcard wildcard that represents 0 or more characters.
+     * @return a {@code NotLike} constraint.
+     * @throws NullPointerException if the pattern is {@code null}.
+     */
     static NotLike pattern(String pattern, char charWildcard, char stringWildcard) {
         return NotLike.pattern(pattern, charWildcard, stringWildcard, ESCAPE);
     }
 
+    /**
+     * <p>Requires that the constraint target not match the given
+     * {@code pattern}, in which the given characters represent wildcards and
+     * escape.</p>
+     *
+     * <p>For example, the following requires that the VIN number not have
+     * {@code JHM} as its first 3 character positions and {@code C} in
+     * character position 7.</p>
+     *
+     * <pre>
+     * found = cars.matchVIN(Like.pattern("JHM---^CC"), '-', 'C', '^');
+     * </pre>
+     *
+     * @param pattern        a pattern that can include the given wildcard
+     *                       characters and escape character.
+     * @param charWildcard   wildcard that represents any single character.
+     * @param stringWildcard wildcard that represents 0 or more characters.
+     * @param escape         escape character.
+     * @return a {@code NotLike} constraint.
+     * @throws NullPointerException if the pattern is {@code null}.
+     */
     static NotLike pattern(String pattern, char charWildcard, char stringWildcard, char escape) {
         if (pattern == null) {
             throw new NullPointerException(
@@ -52,6 +163,17 @@ public interface NotLike extends Constraint<String> {
         return new NotLikeRecord(expression, escape);
     }
 
+    /**
+     * <p>Requires that the constraint target not match the given
+     * {@code pattern} expression, in which {@code _} and {@code %} represent
+     * wildcards and the given character represents escape.</p>
+     *
+     * @param pattern an expression representing a pattern that can include the
+     *                given escape character.
+     * @param escape  escape character.
+     * @return a {@code NotLike} constraint.
+     * @throws NullPointerException if the pattern expression is {@code null}.
+     */
     static NotLike pattern(TextExpression<?> pattern, char escape) {
         if (pattern == null) {
             throw new NullPointerException(
@@ -61,6 +183,22 @@ public interface NotLike extends Constraint<String> {
         return new NotLikeRecord(pattern, escape);
     }
 
+    /**
+     * <p>Requires that the constraint target not begin with the given
+     * {@code prefix}.</p>
+     *
+     * <p>For example, the following requires that the first 3 positions of a
+     * VIN number are not the characters {@code JTP}.</p>
+     *
+     * <pre>
+     * found = cars.matchVIN(NotLike.prefix("JTP"));
+     * </pre>
+     *
+     * @param prefix text that the beginning characters of the constraint
+     *               target must not match.
+     * @return a {@code NotLike} constraint.
+     * @throws NullPointerException if the prefix is {@code null}.
+     */
     static NotLike prefix(String prefix) {
         if (prefix == null) {
             throw new NullPointerException(
@@ -72,6 +210,22 @@ public interface NotLike extends Constraint<String> {
         return new NotLikeRecord(expression, ESCAPE);
     }
 
+    /**
+     * <p>Requires that the constraint target not contain the given
+     * {@code substring}.</p>
+     *
+     * <p>For example, the following requires that the entity attribute value
+     * not contain the character string {@code Hybrid},</p>
+     *
+     * <pre>
+     * found = cars.ofModel(NotLike.substring("Hybrid"));
+     * </pre>
+     *
+     * @param substring text that must not be contained in the constraint
+     *                  target.
+     * @return a {@code NotLike} constraint.
+     * @throws NullPointerException if the substring is {@code null}.
+     */
     static NotLike substring(String substring) {
         if (substring == null) {
             throw new NullPointerException(
@@ -83,6 +237,22 @@ public interface NotLike extends Constraint<String> {
         return new NotLikeRecord(expression, ESCAPE);
     }
 
+    /**
+     * <p>Requires that the constraint target not end with the given
+     * {@code suffix}.</p>
+     *
+     * <p>For example, the following requires that the entity attribute value
+     * not end with the characters {@code EV},</p>
+     *
+     * <pre>
+     * found = cars.ofModel(NotLike.suffix("EV"));
+     * </pre>
+     *
+     * @param suffix text that the ending characters of the constraint
+     *               target must not match.
+     * @return a {@code NotLike} constraint.
+     * @throws NullPointerException if the suffix is {@code null}.
+     */
     static NotLike suffix(String suffix) {
         if (suffix == null) {
             throw new NullPointerException(
@@ -94,6 +264,23 @@ public interface NotLike extends Constraint<String> {
         return new NotLikeRecord(expression, ESCAPE);
     }
 
+    /**
+     * <p>Requires that the constraint target not consist of the same
+     * characters as the given {@code value}. A repository method that does not
+     * require the flexibility of allowing different types of {@code NotLike}
+     * constraints should use the {@link NotEqualTo} constraint instead.</p>
+     *
+     * <p>For example, the following requires a VIN number to exactly match,
+     * </p>
+     *
+     * <pre>
+     * found = cars.ofModel(NotLike.literal("J-150"));
+     * </pre>
+     *
+     * @param value a value that must not match the constraint target.
+     * @return a {@code NotLike} constraint.
+     * @throws NullPointerException if the literal value is {@code null}.
+     */
     static NotLike literal(String value) {
         if (value == null) {
             throw new NullPointerException(
@@ -105,7 +292,28 @@ public interface NotLike extends Constraint<String> {
         return new NotLikeRecord(expression, ESCAPE);
     }
 
+    /**
+     * The escape character if one is defined for the pattern.
+     *
+     * @return the escape character if defined, otherwise {@code null}.
+     */
     Character escape();
 
+    /**
+     * <p>An expression that evaluates to a pattern against which the
+     * constraint target must not match.</p>
+     *
+     * <p>Any {@linkplain #pattern(String, char, char) custom wildcards} that
+     * were supplied appear as {@code _} and {@code %} within the pattern,
+     * with the {@link #escape() escape} character used to indicate where
+     * characters are interpreted literally rather than as wildcards or
+     * escape.</p>
+     *
+     * <p>For example, {@code NotLike.pattern("is --.-*% of", '-', '*', '^')"}
+     * is represented as {@code is __._%^% of} where {@code ^} is the escape
+     * character.</p>
+     *
+     * @return an expression representing the pattern.
+     */
     TextExpression<?> pattern();
 }
