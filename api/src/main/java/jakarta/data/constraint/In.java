@@ -45,7 +45,7 @@ import static java.util.Collections.unmodifiableList;
  *                                            "JEE Motors"));
  * </pre>
  *
- * <p>Repository methods can also accept {@code In} constraints at run time
+ * <p>Repository methods can also accept {@code In} constraints at runtime
  * in the form of a {@link Restriction} on an {@link Expression}. For example,
  * </p>
  *
