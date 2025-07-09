@@ -63,7 +63,7 @@ import jakarta.data.spi.expression.literal.Literal;
  * </pre>
  *
  * <p>Repository methods can also accept {@code EqualTo} constraints at
- * run time in the form of a {@link Restriction} on an {@link Expression}.
+ * runtime in the form of a {@link Restriction} on an {@link Expression}.
  * For example,</p>
  *
  * <pre>
