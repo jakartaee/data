@@ -250,5 +250,5 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
      * @see PageRequest.Mode
      */
     @Find
-    Page<T> find(Restriction<T> restriction, PageRequest pageRequest, Order<T> orderBy);
+    Page<T> findAll(Restriction<T> restriction, PageRequest pageRequest, Order<T> orderBy);
 }
