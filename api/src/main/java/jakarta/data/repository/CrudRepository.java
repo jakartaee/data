@@ -17,9 +17,13 @@
  */
 package jakarta.data.repository;
 
+import jakarta.data.Order;
 import jakarta.data.exceptions.EntityExistsException;
 import jakarta.data.exceptions.OptimisticLockingFailureException;
 
+import jakarta.data.page.Page;
+import jakarta.data.page.PageRequest;
+import jakarta.data.restrict.Restriction;
 import java.util.List;
 
 /**
@@ -219,4 +223,32 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
     @Update
     <S extends T> List<S> updateAll(List<S> entities);
 
+    /**
+     * <p>Retrieves a {@link Page} of entities that match the specified
+     * {@link Restriction} criteria, with pagination and ordering applied.</p>
+     *
+     * <p>This method provides a flexible way to query entities using
+     * restriction criteria to filter results, pagination to control the
+     * number of results returned, and ordering to determine the sequence
+     * of results.</p>
+     *
+     * <p>The restriction parameter allows for complex query conditions to be
+     * applied to filter the entities. The pageRequest parameter controls
+     * pagination behavior, including the page size and navigation mode.
+     * The orderBy parameter specifies how the results should be sorted.</p>
+     *
+     * @param restriction the criteria to filter entities; must not be
+     *                    {@code null}.
+     * @param pageRequest the request for a paginated result; must not be
+     *                    {@code null}.
+     * @param orderBy     sort criteria that must deterministically order the
+     *                    results; must not be {@code null}.
+     * @return a page of entities matching the restriction criteria; will
+     *         never be {@code null}.
+     * @throws NullPointerException when {@code restriction}, {@code pageRequest},
+     *                              or {@code orderBy} is {@code null}.
+     * @see PageRequest.Mode
+     */
+    @Find
+    Page<T> find(Restriction<T> restriction, PageRequest pageRequest, Order<T> orderBy);
 }
