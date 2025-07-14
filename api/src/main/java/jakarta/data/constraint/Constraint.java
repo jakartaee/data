@@ -43,8 +43,7 @@ import jakarta.data.restrict.Restriction;
  *
  * <pre>
  * &#64;Find
- * List&lt;Car&gt; withinYears(
- * List<Car> withinYears(&#64;By(_Car.YEAR) Between&lt;Integer&gt; year,
+ * List&lt;Car&gt; withinYears(&#64;By(_Car.YEAR) Between&lt;Integer&gt; year,
  *                       &#64;By(_Car.MAKE) Like makePattern,
  *                       &#64;By(_Car.MODEL) Like modelPattern,
  *                       Order&lt;Car&gt; sorts);
