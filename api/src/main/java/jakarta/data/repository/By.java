@@ -52,11 +52,11 @@ import jakarta.data.constraint.EqualTo;
  *     Person findById(&#64;By(ID) String id); // maps to Person.ssn
  *
  *     &#64;Find
- *     List&lt;Person&gt; findNamed(&#64;By("firstName") String first,
- *                            &#64;By("lastName") String last);
+ *     List&lt;Person&gt; findNamed(&#64;By("firstName") &#64;IgnoreCase String first,
+ *                            &#64;By("lastName") &#64;IgnoreCase String last);
  *
  *     &#64;Find
- *     List&lt;Person&gt; findByCity(&#64;By("address.city") String city);
+ *     List&lt;Person&gt; findByCity(&#64;By("address.city") &#64;IgnoreCase String city);
  * }
  * </pre>
  *
@@ -76,11 +76,11 @@ import jakarta.data.constraint.EqualTo;
  *     Person findById(String ssn);
  *
  *     &#64;Find
- *     List&lt;Person&gt; findNamed(String firstName,
- *                            String lastname);
+ *     List&lt;Person&gt; findNamed(&#64;IgnoreCase String firstName,
+ *                            &#64;IgnoreCase String lastname);
  *
  *     &#64;Find
- *     List&lt;Person&gt; findByCity(String address_city);
+ *     List&lt;Person&gt; findByCity(&#64;IgnoreCase String address_city);
  * }
  * </pre>
  */

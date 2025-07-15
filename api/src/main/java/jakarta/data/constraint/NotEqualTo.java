@@ -37,8 +37,8 @@ import jakarta.data.spi.expression.literal.Literal;
  * List&lt;Car&gt; excludingManufacturer(&#64;By(_Car.MAKE) NotEqualTo&lt;String&gt; excludedManufacturer);
  *
  * &#64;Find
- * List&lt;Car&gt; ofMakeNotModel(&#64;By(_Car.MAKE) &#64;Is(EqualTo.class) String manufacturer,
- *                          &#64;By(_Car.MODEL) &#64;Is(NotEqualTo.class) String excludedModel,
+ * List&lt;Car&gt; ofMakeNotModel(&#64;By(_Car.MAKE) &#64;IgnoreCase &#64;Is(EqualTo.class) String manufacturer,
+ *                          &#64;By(_Car.MODEL) &#64;IgnoreCase &#64;Is(NotEqualTo.class) String excludedModel,
  *                          Order&lt;Car&gt; sorts);
  * ...
  *

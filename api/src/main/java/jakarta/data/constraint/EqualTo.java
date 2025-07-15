@@ -36,16 +36,16 @@ import jakarta.data.spi.expression.literal.Literal;
  *
  * <pre>
  * &#64;Find
- * List&lt;Car&gt; fromManufacturer(&#64;By(_Car.MAKE) EqualTo&lt;String&gt; manufacturer);
+ * List&lt;Car&gt; fromManufacturer(&#64;By(_Car.MAKE) &#64;IgnoreCase EqualTo&lt;String&gt; manufacturer);
  *
  * &#64;Find
- * List&lt;Car&gt; ofMakeAndModel(&#64;By(_Car.MAKE) &#64;Is(EqualTo.class) String manufacturer,
- *                          &#64;By(_Car.MODEL) &#64;Is(EqualTo.class) String model,
+ * List&lt;Car&gt; ofMakeAndModel(&#64;By(_Car.MAKE) &#64;IgnoreCase &#64;Is(EqualTo.class) String manufacturer,
+ *                          &#64;By(_Car.MODEL) &#64;IgnoreCase &#64;Is(EqualTo.class) String model,
  *                          Order&lt;Car&gt; sorts);
  *
  * &#64;Find
- * List&lt;Car&gt; ofMakeAndModelAndYear(&#64;By(_Car.MAKE) String manufacturer,
- *                                 &#64;By(_Car.MODEL) String model,
+ * List&lt;Car&gt; ofMakeAndModelAndYear(&#64;By(_Car.MAKE) &#64;IgnoreCase String manufacturer,
+ *                                 &#64;By(_Car.MODEL) &#64;IgnoreCase String model,
  *                                 &#64;By(_Car.YEAR) int modelYear,
  *                                 Order&lt;Car&gt; sorts);
  * ...
