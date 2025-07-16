@@ -41,6 +41,18 @@ public interface TextAttribute<T> extends ComparableAttribute<T, String>, TextEx
     }
 
     /**
+     * Returns {@code String.class} as the entity attribute type for text
+     * attributes.
+     *
+     * @return {@code String.class}.
+     * @since 1.1
+     */
+    @Override
+    default Class<String> attributeType() {
+        return String.class;
+    }
+
+    /**
      * Obtain a request for a descending, case insensitive {@link Sort} based on
      * the entity attribute.
      *

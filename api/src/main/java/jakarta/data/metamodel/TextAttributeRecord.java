@@ -19,10 +19,6 @@ package jakarta.data.metamodel;
 
 record TextAttributeRecord<T>(Class<T> declaringType, String name)
         implements TextAttribute<T> {
-    @Override
-    public Class<String> attributeType() {
-        return String.class;
-    }
 
     @Override
     public String toString() {
