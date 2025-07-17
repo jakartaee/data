@@ -19,8 +19,7 @@ package jakarta.data.metamodel;
 
 import jakarta.data.Sort;
 import jakarta.data.expression.TextExpression;
-
-import java.util.Objects;
+import jakarta.data.messages.Messages;
 
 /**
  * Represents an textual entity attribute in the {@link StaticMetamodel}.
@@ -74,8 +73,8 @@ public interface TextAttribute<T> extends ComparableAttribute<T, String>, TextEx
      * @since 1.1
      */
     static <T> TextAttribute<T> of(Class<T> entityClass, String name) {
-        Objects.requireNonNull(entityClass, "The entityClass is required");
-        Objects.requireNonNull(name, "The name is required");
+        Messages.requireNonNull(entityClass, "entityClass");
+        Messages.requireNonNull(name, "name");
 
         return new TextAttributeRecord<>(entityClass, name);
     }

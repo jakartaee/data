@@ -230,6 +230,6 @@ class TextRestrictionRecordTest {
     void shouldThrowExceptionWhenAttributeIsNullInTextRestriction() {
         assertThatThrownBy(() -> TextAttribute.of(_Book.class, null).equalTo("testValue"))
                 .isInstanceOf(NullPointerException.class)
-                .hasMessage("The name is required");
+                .hasMessage("The name argument is required");
     }
 }

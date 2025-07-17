@@ -17,9 +17,8 @@
  */
 package jakarta.data.metamodel;
 
-import java.util.Objects;
-
 import jakarta.data.Sort;
+import jakarta.data.messages.Messages;
 
 /**
  * <p>Represents a entity attribute in the {@link StaticMetamodel}
@@ -74,9 +73,9 @@ public interface SortableAttribute<T> extends Attribute<T> {
     static <T, V> SortableAttribute<T> of(Class<T> entityClass,
                                           String name,
                                           Class<V> attributeType) {
-        Objects.requireNonNull(entityClass, "The entityClass is required");
-        Objects.requireNonNull(name, "The name is required");
-        Objects.requireNonNull(attributeType, "The attributeType is required");
+        Messages.requireNonNull(entityClass, "entityClass");
+        Messages.requireNonNull(name, "name");
+        Messages.requireNonNull(attributeType, "attributeType");
 
         return new SortableAttributeRecord<>(entityClass, name, attributeType);
     }

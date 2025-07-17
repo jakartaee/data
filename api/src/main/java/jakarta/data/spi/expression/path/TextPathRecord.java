@@ -17,9 +17,8 @@
  */
 package jakarta.data.spi.expression.path;
 
-import java.util.Objects;
-
 import jakarta.data.expression.NavigableExpression;
+import jakarta.data.messages.Messages;
 import jakarta.data.metamodel.TextAttribute;
 
 record TextPathRecord<T, U>
@@ -27,8 +26,8 @@ record TextPathRecord<T, U>
         implements TextPath<T, U> {
 
     TextPathRecord {
-        Objects.requireNonNull(expression, "The expression is required");
-        Objects.requireNonNull(attribute, "The attribute is required");
+        Messages.requireNonNull(expression, "expression");
+        Messages.requireNonNull(attribute, "attribute");
     }
 
     @Override

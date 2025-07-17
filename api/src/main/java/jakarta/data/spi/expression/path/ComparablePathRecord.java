@@ -17,9 +17,8 @@
  */
 package jakarta.data.spi.expression.path;
 
-import java.util.Objects;
-
 import jakarta.data.expression.NavigableExpression;
+import jakarta.data.messages.Messages;
 import jakarta.data.metamodel.ComparableAttribute;
 
 record ComparablePathRecord<T, U, C extends Comparable<?>>
@@ -28,8 +27,8 @@ record ComparablePathRecord<T, U, C extends Comparable<?>>
         implements ComparablePath<T, U, C> {
 
     ComparablePathRecord {
-        Objects.requireNonNull(expression, "The expression is required");
-        Objects.requireNonNull(attribute, "The attribute is required");
+        Messages.requireNonNull(expression, "expression");
+        Messages.requireNonNull(attribute, "attribute");
     }
 
     @Override
