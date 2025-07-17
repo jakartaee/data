@@ -69,6 +69,7 @@ public interface SortableAttribute<T> extends Attribute<T> {
      * @param name          the name of the entity attribute.
      * @param attributeType type of the entity attribute.
      * @return instance of {@code SortableAttribute}.
+     * @since 1.1
      */
     static <T, V> SortableAttribute<T> of(Class<T> entityClass,
                                           String name,

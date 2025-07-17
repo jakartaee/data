@@ -58,6 +58,7 @@ import jakarta.data.expression.ComparableExpression;
  *
  * @param <T> entity class of the static metamodel.
  * @param <V> type of entity attribute (or wrapper type if primitive).
+ * @since 1.1
  */
 public interface ComparableAttribute<T, V extends Comparable<?>>
         extends BasicAttribute<T, V>, SortableAttribute<T>, ComparableExpression<T, V> {

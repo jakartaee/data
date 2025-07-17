@@ -27,6 +27,7 @@ import jakarta.data.expression.Expression;
  *
  * @param <T> entity class of the static metamodel.
  * @param <V> type of entity attribute (or wrapper type if primitive).
+ * @since 1.1
  */
 public interface BasicAttribute<T, V> extends Attribute<T>, Expression<T, V> {
 

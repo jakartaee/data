@@ -44,8 +44,8 @@ import jakarta.data.expression.TemporalExpression;
  *
  * @param <T> entity class of the static metamodel.
  * @param <V> type of entity attribute.
+ * @since 1.1
  */
-
 public interface TemporalAttribute<T, V extends Temporal & Comparable<? extends Temporal>>
         extends ComparableAttribute<T, V>, TemporalExpression<T, V> {
 

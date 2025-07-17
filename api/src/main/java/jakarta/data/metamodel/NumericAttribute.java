@@ -45,8 +45,8 @@ import jakarta.data.expression.NumericExpression;
  *
  * @param <T> entity class of the static metamodel.
  * @param <N> type of entity attribute (or wrapper type if primitive).
+ * @since 1.1
  */
-
 public interface NumericAttribute<T, N extends Number & Comparable<N>>
         extends ComparableAttribute<T, N>, NumericExpression<T, N> {
 

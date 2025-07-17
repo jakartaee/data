@@ -29,6 +29,7 @@ import jakarta.data.expression.NavigableExpression;
  *
  * @param <T> entity class of the static metamodel.
  * @param <U> type of entity attribute.
+ * @since 1.1
  */
 public interface NavigableAttribute<T, U>
         extends Attribute<T>, NavigableExpression<T, U> {
