@@ -119,7 +119,7 @@ public @interface OrderBy {
      * <pre>
      * &#64;Find
      * &#64;OrderBy("age")
-     * Stream&lt;Person&gt; withLastName(&#64;By("lastName") String surname);
+     * Stream&lt;Person&gt; withLastName(&#64;By("lastName") &#64;IgnoreCase String surname);
      * </pre>
      *
      * @return entity attribute name.
