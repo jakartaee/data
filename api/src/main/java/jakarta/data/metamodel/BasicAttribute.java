@@ -30,16 +30,6 @@ import jakarta.data.expression.Expression;
  */
 public interface BasicAttribute<T, V> extends Attribute<T>, Expression<T, V> {
 
-    @Override
-    default Class<V> attributeType() {
-        throw new UnsupportedOperationException(getClass().getName() + """
-                 was obtained in a way that does not identify the type\
-                 of the attribute. Static metamodel classes should\
-                 use the .of method that is defined on the Attribute subtype\
-                 to provide the entity class.\
-                """);
-    }
-
     /**
      * <p>Creates a static metamodel {@code BasicAttribute} representing the
      * entity attribute with the specified name.</p>

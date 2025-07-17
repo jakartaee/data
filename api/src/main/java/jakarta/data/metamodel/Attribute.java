@@ -17,6 +17,8 @@
  */
 package jakarta.data.metamodel;
 
+import jakarta.data.messages.Messages;
+
 /**
  * <p>Supertype for {@link StaticMetamodel} fields representing entity
  * attributes.</p>
@@ -125,36 +127,28 @@ public interface Attribute<T> {
      * @throws UnsupportedOperationException if the declaring type is not
      *                                       known.
      * @apiNote This is only guaranteed to be known if a static <code>of</code>
-     * method, such as {@link BasicAttribute#of(Class, String, Class)}, was used
-     * to obtain the instance.
+     *          method, such as {@link BasicAttribute#of(Class, String, Class)},
+     *          was used to obtain the instance.
      * @since 1.1
      */
     default Class<T> declaringType() {
-        throw new UnsupportedOperationException(getClass().getName() + """
-                 was obtained in a way that does not identify the entity class\
-                 that declares the attribute. Static metamodel classes should\
-                 use the .of method that is defined on the Attribute subtype\
-                 to provide the entity class.\
-                """);
+        throw new UnsupportedOperationException(
+                Messages.get("012.unknown.decl.type", getClass().getName()));
     }
 
     /**
-     * Obtain the Java class which declares this entity attribute.
+     * Obtain the Java class of the entity attribute.
      *
-     * @return the declaring class
-     * @throws UnsupportedOperationException if the declaring type is not
-     *                                       known.
+     * @return the type of the entity attribute.
+     * @throws UnsupportedOperationException if the entity attribute type is
+     *                                       not known.
      * @apiNote This is only guaranteed to be known if a static <code>of</code>
-     * method, such as {@link BasicAttribute#of(Class, String, Class)}, was used
-     * to obtain the instance.
+     *          method, such as {@link BasicAttribute#of(Class, String, Class)},
+     *          was used to obtain the instance.
      * @since 1.1
      */
     default Class<?> attributeType() {
-        throw new UnsupportedOperationException(getClass().getName() + """
-                 was obtained in a way that does not identify the type\
-                 of the attribute. Static metamodel classes should\
-                 use the .of method that is defined on the Attribute subtype\
-                 to provide the entity class.\
-                """);
+        throw new UnsupportedOperationException(
+                Messages.get("011.unknown.attr.type", getClass().getName()));
     }
 }
