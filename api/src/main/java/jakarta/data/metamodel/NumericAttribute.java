@@ -17,9 +17,8 @@
  */
 package jakarta.data.metamodel;
 
-import java.util.Objects;
-
 import jakarta.data.expression.NumericExpression;
+import jakarta.data.messages.Messages;
 
 /**
  * <p>Represents a {@linkplain Number numeric} entity attribute in the
@@ -45,8 +44,8 @@ import jakarta.data.expression.NumericExpression;
  *
  * @param <T> entity class of the static metamodel.
  * @param <N> type of entity attribute (or wrapper type if primitive).
+ * @since 1.1
  */
-
 public interface NumericAttribute<T, N extends Number & Comparable<N>>
         extends ComparableAttribute<T, N>, NumericExpression<T, N> {
 
@@ -64,9 +63,9 @@ public interface NumericAttribute<T, N extends Number & Comparable<N>>
      */
     static <T, N extends Number & Comparable<N>> NumericAttribute<T, N> of(
             Class<T> entityClass, String name, Class<N> attributeType) {
-        Objects.requireNonNull(entityClass, "The entityClass is required");
-        Objects.requireNonNull(name, "The name is required");
-        Objects.requireNonNull(attributeType, "The attributeType is required");
+        Messages.requireNonNull(entityClass, "entityClass");
+        Messages.requireNonNull(name, "name");
+        Messages.requireNonNull(attributeType, "attributeType");
 
         return new NumericAttributeRecord<>(entityClass, name, attributeType);
     }

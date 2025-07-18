@@ -18,9 +18,9 @@
 package jakarta.data.spi.expression.path;
 
 import java.time.temporal.Temporal;
-import java.util.Objects;
 
 import jakarta.data.expression.NavigableExpression;
+import jakarta.data.messages.Messages;
 import jakarta.data.metamodel.TemporalAttribute;
 
 record TemporalPathRecord<T, U, V extends Temporal & Comparable<? extends Temporal>>(
@@ -28,8 +28,8 @@ record TemporalPathRecord<T, U, V extends Temporal & Comparable<? extends Tempor
         TemporalAttribute<U, V> attribute) implements TemporalPath<T, U, V> {
 
     TemporalPathRecord {
-        Objects.requireNonNull(expression, "The expression is required");
-        Objects.requireNonNull(attribute, "The attribute is required");
+        Messages.requireNonNull(expression, "expression");
+        Messages.requireNonNull(attribute, "attribute");
     }
 
     @Override

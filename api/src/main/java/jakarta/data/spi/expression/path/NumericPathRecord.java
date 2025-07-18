@@ -17,9 +17,8 @@
  */
 package jakarta.data.spi.expression.path;
 
-import java.util.Objects;
-
 import jakarta.data.expression.NavigableExpression;
+import jakarta.data.messages.Messages;
 import jakarta.data.metamodel.NumericAttribute;
 
 record NumericPathRecord<T, U, N extends Number & Comparable<N>>
@@ -27,8 +26,8 @@ record NumericPathRecord<T, U, N extends Number & Comparable<N>>
         implements NumericPath<T, U, N> {
 
     NumericPathRecord {
-        Objects.requireNonNull(expression, "The expression is required");
-        Objects.requireNonNull(attribute, "The attribute is required");
+        Messages.requireNonNull(expression, "expression");
+        Messages.requireNonNull(attribute, "attribute");
     }
 
     @Override

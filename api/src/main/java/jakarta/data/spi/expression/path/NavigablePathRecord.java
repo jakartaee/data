@@ -17,9 +17,8 @@
  */
 package jakarta.data.spi.expression.path;
 
-import java.util.Objects;
-
 import jakarta.data.expression.NavigableExpression;
+import jakarta.data.messages.Messages;
 import jakarta.data.metamodel.NavigableAttribute;
 
 record NavigablePathRecord<T, U, V>
@@ -28,8 +27,8 @@ record NavigablePathRecord<T, U, V>
         implements NavigablePath<T, U, V> {
 
     NavigablePathRecord {
-        Objects.requireNonNull(expression, "The expression is required");
-        Objects.requireNonNull(attribute, "The attribute is required");
+        Messages.requireNonNull(expression, "expression");
+        Messages.requireNonNull(attribute, "attribute");
     }
 
     @Override

@@ -17,9 +17,8 @@
  */
 package jakarta.data.metamodel;
 
-import java.util.Objects;
-
 import jakarta.data.expression.NavigableExpression;
+import jakarta.data.messages.Messages;
 
 /**
  * <p>Represents an entity attribute that is an embeddable or association to
@@ -29,6 +28,7 @@ import jakarta.data.expression.NavigableExpression;
  *
  * @param <T> entity class of the static metamodel.
  * @param <U> type of entity attribute.
+ * @since 1.1
  */
 public interface NavigableAttribute<T, U>
         extends Attribute<T>, NavigableExpression<T, U> {
@@ -38,8 +38,7 @@ public interface NavigableAttribute<T, U>
 
     /**
      * <p>Creates a static metamodel {@code NavigableAttribute} representing
-     * the
-     * entity attribute with the specified name.</p>
+     * the entity attribute with the specified name.</p>
      *
      * @param <T>           entity class of the static metamodel.
      * @param <U>           type of entity attribute.
@@ -51,9 +50,9 @@ public interface NavigableAttribute<T, U>
     static <T, U> NavigableAttribute<T, U> of(Class<T> entityClass,
                                               String name,
                                               Class<U> attributeType) {
-        Objects.requireNonNull(entityClass, "The entityClass is required");
-        Objects.requireNonNull(name, "The name is required");
-        Objects.requireNonNull(attributeType, "The attributeType is required");
+        Messages.requireNonNull(entityClass, "entityClass");
+        Messages.requireNonNull(name, "name");
+        Messages.requireNonNull(attributeType, "attributeType");
 
         return new NavigableAttributeRecord<>(entityClass, name, attributeType);
     }

@@ -41,4 +41,18 @@ public class Messages {
         return MessageFormat.format(MESSAGES.getString(key),
                                     args);
     }
+
+    /**
+     * Raises NullPointerException if the value is null.
+     *
+     * @param value   value of a method argument.
+     * @param argName name of the argument.
+     * @throws NullPointerException if the value is null.
+     */
+    public static void requireNonNull(Object value, String argName) {
+        if (value == null) {
+            throw new NullPointerException(
+                    Messages.get("001.arg.required", argName));
+        }
+    }
 }

@@ -18,9 +18,9 @@
 package jakarta.data.metamodel;
 
 import java.time.temporal.Temporal;
-import java.util.Objects;
 
 import jakarta.data.expression.TemporalExpression;
+import jakarta.data.messages.Messages;
 
 /**
  * <p>Represents a {@linkplain Temporal temporal} entity attribute in the
@@ -44,8 +44,8 @@ import jakarta.data.expression.TemporalExpression;
  *
  * @param <T> entity class of the static metamodel.
  * @param <V> type of entity attribute.
+ * @since 1.1
  */
-
 public interface TemporalAttribute<T, V extends Temporal & Comparable<? extends Temporal>>
         extends ComparableAttribute<T, V>, TemporalExpression<T, V> {
 
@@ -62,9 +62,9 @@ public interface TemporalAttribute<T, V extends Temporal & Comparable<? extends 
      */
     static <T, V extends Temporal & Comparable<? extends Temporal>> TemporalAttribute<T, V> of(
             Class<T> entityClass, String name, Class<V> attributeType) {
-        Objects.requireNonNull(entityClass, "The entityClass is required");
-        Objects.requireNonNull(name, "The name is required");
-        Objects.requireNonNull(attributeType, "The attributeType is required");
+        Messages.requireNonNull(entityClass, "entityClass");
+        Messages.requireNonNull(name, "name");
+        Messages.requireNonNull(attributeType, "attributeType");
 
         return new TemporalAttributeRecord<>(entityClass, name, attributeType);
     }
