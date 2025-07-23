@@ -26,7 +26,6 @@ import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.InvocationInterceptor;
 import org.junit.jupiter.api.extension.ReflectiveInvocationContext;
-import org.junit.jupiter.api.extension.TestExecutionExceptionHandler;
 
 import ee.jakarta.tck.data.framework.utilities.TestPropertyUtility;
 
@@ -41,7 +40,7 @@ import ee.jakarta.tck.data.framework.utilities.TestPropertyUtility;
  * @see org.jboss.arquillian.junit5.ArquillianExtension
  */
 public class StandaloneExtension extends ArquillianExtension implements BeforeAllCallback, AfterAllCallback,
-        BeforeEachCallback, AfterEachCallback, InvocationInterceptor, TestExecutionExceptionHandler {
+        BeforeEachCallback, AfterEachCallback, InvocationInterceptor {
 
     private static final Logger log = Logger.getLogger(StandaloneExtension.class.getCanonicalName());
 
@@ -136,14 +135,6 @@ public class StandaloneExtension extends ArquillianExtension implements BeforeAl
             return;
         }
         super.interceptAfterAllMethod(invocation, invocationContext, extensionContext);
-    }
-
-    @Override
-    public void handleTestExecutionException(ExtensionContext context, Throwable throwable) throws Throwable {
-        if (TestPropertyUtility.skipDeployment()) {
-            throw throwable;
-        }
-        super.handleTestExecutionException(context, throwable);
     }
 
 }
