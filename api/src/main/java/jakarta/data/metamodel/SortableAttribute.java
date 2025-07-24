@@ -22,7 +22,7 @@ import jakarta.data.messages.Messages;
 
 /**
  * <p>Represents a entity attribute in the {@link StaticMetamodel}
- * that is sortable, but not comparable.</p>
+ * that is sortable, but incapable of order-based comparison.</p>
  *
  * <p>A {@code SortableAttribute} may be used to sort query results.
  * When an attribute type is a numeric type, {@link NumericAttribute} is

@@ -21,8 +21,9 @@ import jakarta.data.expression.Expression;
 import jakarta.data.messages.Messages;
 
 /**
- * <p>Represents an entity attribute in the {@link StaticMetamodel}
- * that is neither sortable nor comparable.</p>
+ * <p>Represents an entity attribute in the {@link StaticMetamodel} that is
+ * neither sortable nor capable of order-based comparison. Subclasses of
+ * {@code BasicAttribute} allow for entity attributes with those abilities.</p>
  *
  * @param <T> entity class of the static metamodel.
  * @param <V> type of entity attribute (or wrapper type if primitive).
