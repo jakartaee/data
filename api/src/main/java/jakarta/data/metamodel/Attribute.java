@@ -35,9 +35,10 @@ import jakarta.data.messages.Messages;
  *     {@link java.time.Instant}.</li>
  * <li>{@link ComparableAttribute} for entity attributes that represent other
  *     sortable and comparable values, such as {@code boolean} and enumerations.</li>
- * <li>{@link SortableAttribute} for entity types that are sortable, but not
- *     comparable. Generally this subtype is unused but is applicable for
- *     databases that allow sorting on attributes of type {@code byte[]}.</li>
+ * <li>{@link SortableAttribute} for entity types that are sortable, but
+ *     incapable of order-based comparison. Generally this subtype is unused
+ *     but is applicable for databases that allow sorting on attributes of type
+ *     {@code byte[]}.</li>
  * <li>{@link NavigableAttribute} for entity attributes that have attributes
  *     of their own. This is used for embeddables and associations to other
  *     entities.</li>
