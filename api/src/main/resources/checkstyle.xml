@@ -63,8 +63,7 @@
         <module name="UnusedImports"/>
 
         <module name="MethodLength">
-            <!-- TCK prepopulator method -->
-            <property name="max" value="1500"/>
+            <property name="max" value="250"/>
         </module>
         <module name="ParameterNumber">
             <property name="max" value="15"/>

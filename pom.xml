@@ -96,7 +96,8 @@
         <pi-test.version>1.20.1</pi-test.version>
         <pitest-junit5-plugin.version>1.2.3</pitest-junit5-plugin.version>
         <checkstyle.version>10.26.1</checkstyle.version>
-        <checkstyle.excludes></checkstyle.excludes>
+        <!-- Allow TCK populator classes to exceed max MethodLength -->
+        <checkstyle.excludes>**/*Populator.java</checkstyle.excludes>
         <jacoco.maven.version>0.8.13</jacoco.maven.version>
         <shrinkwrap.version>1.2.6</shrinkwrap.version>
         <shrinkwrap.resolver.version>3.3.4</shrinkwrap.resolver.version>
