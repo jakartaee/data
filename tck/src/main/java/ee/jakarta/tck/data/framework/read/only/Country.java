@@ -21,20 +21,7 @@ import java.time.LocalDate;
 @jakarta.persistence.Entity
 public class Country {
 
-    public enum Region {
-        // Keep these in alphabetical order so that tests can reliably sort on
-        // them regardless of whether the Jakarta Data provider uses ordinal or
-        // alphabetical order.
-        AFRICA,
-        ANTARCTICA,
-        ASIA,
-        CARIBBEAN,
-        EUROPE,
-        NORTH_AMERICA,
-        OCEANIA,
-        SOUTH_AMERICA
-    }
-
+    @jakarta.nosql.Column
     @jakarta.persistence.Column(nullable = false)
     private long area; // square kilometers
 
@@ -47,22 +34,29 @@ public class Country {
     @jakarta.persistence.Id
     private String code; // ISO 3166-1 alpha-2 code
 
+    @jakarta.nosql.Column
     private LocalDate daylightTimeBegins;
 
+    @jakarta.nosql.Column
     private LocalDate daylightTimeEnds;
 
+    @jakarta.nosql.Column
     @jakarta.persistence.Column(nullable = false)
     private long debt;
 
+    @jakarta.nosql.Column
     @jakarta.persistence.Column(nullable = false)
     private long gdp;
 
+    @jakarta.nosql.Column
     @jakarta.persistence.Column(nullable = false)
     private String name;
 
+    @jakarta.nosql.Column
     @jakarta.persistence.Column(nullable = false)
     private long population;
 
+    @jakarta.nosql.Column
     @jakarta.persistence.Column(nullable = false)
     @jakarta.persistence.Enumerated(jakarta.persistence.EnumType.STRING)
     private Region region;

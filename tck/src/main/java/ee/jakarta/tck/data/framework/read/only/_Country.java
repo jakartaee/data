@@ -24,8 +24,6 @@ import jakarta.data.metamodel.StaticMetamodel;
 import jakarta.data.metamodel.TemporalAttribute;
 import jakarta.data.metamodel.TextAttribute;
 
-import ee.jakarta.tck.data.framework.read.only.Country.Region;
-
 /**
  * Static metamodel class for the Country entity.
  */

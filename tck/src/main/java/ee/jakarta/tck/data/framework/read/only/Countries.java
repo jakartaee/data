@@ -40,8 +40,6 @@ import jakarta.data.repository.Is;
 import jakarta.data.repository.OrderBy;
 import jakarta.data.repository.Repository;
 
-import ee.jakarta.tck.data.framework.read.only.Country.Region;
-
 /**
  * This is a read only repository with statistics about countries.
  * This repository is pre-populated at test startup and verified prior

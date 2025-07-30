@@ -15,13 +15,13 @@
  */
 package ee.jakarta.tck.data.framework.read.only;
 
-import static ee.jakarta.tck.data.framework.read.only.Country.Region.AFRICA;
-import static ee.jakarta.tck.data.framework.read.only.Country.Region.ASIA;
-import static ee.jakarta.tck.data.framework.read.only.Country.Region.CARIBBEAN;
-import static ee.jakarta.tck.data.framework.read.only.Country.Region.EUROPE;
-import static ee.jakarta.tck.data.framework.read.only.Country.Region.NORTH_AMERICA;
-import static ee.jakarta.tck.data.framework.read.only.Country.Region.OCEANIA;
-import static ee.jakarta.tck.data.framework.read.only.Country.Region.SOUTH_AMERICA;
+import static ee.jakarta.tck.data.framework.read.only.Region.AFRICA;
+import static ee.jakarta.tck.data.framework.read.only.Region.ASIA;
+import static ee.jakarta.tck.data.framework.read.only.Region.CARIBBEAN;
+import static ee.jakarta.tck.data.framework.read.only.Region.EUROPE;
+import static ee.jakarta.tck.data.framework.read.only.Region.NORTH_AMERICA;
+import static ee.jakarta.tck.data.framework.read.only.Region.OCEANIA;
+import static ee.jakarta.tck.data.framework.read.only.Region.SOUTH_AMERICA;
 
 import java.time.LocalDate;
 import java.time.Month;
