@@ -35,7 +35,7 @@ class FunctionTest {
             must case IllegalArgumentException to be raised.
             """)
     void testDivisionByZero() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> _Book.numPages.divide(0));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> _Book.numPages.divideBy(0));
     }
 
     @Test
