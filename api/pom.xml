@@ -32,7 +32,7 @@
     <description>Jakarta Data :: Core API</description>
 
     <properties>
-        <assertj.version>3.27.3</assertj.version>
+        <assertj.version>3.27.4</assertj.version>
         <!-- default is the same for backward compatibility reason
         Easy to override when building with a system property -->
         <spec.version>1.1</spec.version>
