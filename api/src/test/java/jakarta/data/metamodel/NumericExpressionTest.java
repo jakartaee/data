@@ -119,9 +119,9 @@ class NumericExpressionTest {
     }
 
     @Test
-    @DisplayName("should create divide expression with literal")
-    void shouldCreateDivideWithLiteral() {
-        var expression = (NumericOperatorExpression<?, ?>) _Invoice.amount.divide(4);
+    @DisplayName("should create divideBy expression with literal")
+    void shouldCreateDivideByWithLiteral() {
+        var expression = (NumericOperatorExpression<?, ?>) _Invoice.amount.divideBy(4);
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(expression.operator()).isEqualTo(NumericOperatorExpression.Operator.DIVIDE);
@@ -177,9 +177,9 @@ class NumericExpressionTest {
     }
 
     @Test
-    @DisplayName("should create divide expression with another expression")
-    void shouldCreateDivideWithExpression() {
-        var expression = (NumericOperatorExpression<?, ?>) _Invoice.amount.divide(_Invoice.amount);
+    @DisplayName("should create divideBy expression with another expression")
+    void shouldCreateDivideByWithExpression() {
+        var expression = (NumericOperatorExpression<?, ?>) _Invoice.amount.divideBy(_Invoice.amount);
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(expression.operator()).isEqualTo(NumericOperatorExpression.Operator.DIVIDE);
@@ -235,8 +235,8 @@ class NumericExpressionTest {
     void shouldIncludeParenthesesInToString() {
         NumericExpression<Invoice, Integer> expression =
                 _Invoice.amount.times(
-                        _Invoice.percentDiscount.subtractedFrom(100))
-                .divide(100);
+                        _Invoice.percentDiscount.subtractFrom(100))
+                .divideBy(100);
 
         SoftAssertions.assertSoftly(soft -> soft.assertThat(expression.toString())
             .isEqualTo("(invoice.amount * (100 - invoice.percentDiscount)) / 100"));
