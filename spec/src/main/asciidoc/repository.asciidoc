@@ -412,7 +412,7 @@ For example:
 @Repository
 public interface ProductRepository {
    @Find
-   List<Product> search(@By(_Product.DESCRIPTION) @Is(Like.class) description,
+   List<Product> search(@By(_Product.DESCRIPTION) @IgnoreCase @Is(Like.class) description,
                         Restriction<Product> restriction);
 }
 ----
@@ -760,8 +760,8 @@ In this example, the application uses `OrderBy` to define a subset of the sort c
 public interface Products extends CrudRepository<Product, Long> {
     @Find
     @OrderBy(_Car.VEHICLE_CONDITION)
-    CursoredPage<Car> find(@By(_Car.MAKE) String manufacturer,
-                           @By(_Car.MODEL) String model,
+    CursoredPage<Car> find(@By(_Car.MAKE) @IgnoreCase String manufacturer,
+                           @By(_Car.MODEL) @IgnoreCase String model,
                            PageRequest pageRequest,
                            Order<Car> sorts);
 }

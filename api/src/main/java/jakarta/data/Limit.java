@@ -34,7 +34,7 @@ import jakarta.data.page.PageRequest;
  *
  * <pre>
  * &#64;Find
- * Product[] namedLike(&#64;By(_Product.NAME) &#64;Is(Like.class) String namePattern,
+ * Product[] namedLike(&#64;By(_Product.NAME) &#64;IgnoreCase &#64;Is(Like.class) String namePattern,
  *                     Limit limit,
  *                     Sort&lt;?&gt;... sorts);
  *
