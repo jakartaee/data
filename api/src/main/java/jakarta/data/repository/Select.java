@@ -51,6 +51,10 @@ import java.lang.annotation.Target;
  *
  * <p>This annotation must not be used in other locations.</p>
  *
+ * <p>Sort criteria for a repository method that returns a subset of entity
+ * attributes can include any of the returned attributes that are sortable.
+ * </p>
+ *
  * @see Find
  * @since 1.1
  */
