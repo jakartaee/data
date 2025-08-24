@@ -44,8 +44,8 @@ import jakarta.data.restrict.Restriction;
  * <pre>
  * &#64;Find
  * List&lt;Car&gt; withinYears(&#64;By(_Car.YEAR) Between&lt;Integer&gt; year,
- *                       &#64;By(_Car.MAKE) Like makePattern,
- *                       &#64;By(_Car.MODEL) Like modelPattern,
+ *                       &#64;By(_Car.MAKE) &#64;IgnoreCase Like makePattern,
+ *                       &#64;By(_Car.MODEL) &#64;IgnoreCase Like modelPattern,
  *                       Order&lt;Car&gt; sorts);
  *
  * ...
@@ -68,8 +68,8 @@ import jakarta.data.restrict.Restriction;
  * <pre>
  * &#64;Find
  * List&lt;Car&gt; pricedAtMost(&#64;By(_Car.PRICE) &#64;Is(AtMost.class) int maxPrice,
- *                        &#64;By(_Car.MAKE) &#64;Is(Like.class) String makePattern,
- *                        &#64;By(_Car.MODEL) &#64;Is(Like.class) Sting modelPattern,
+ *                        &#64;By(_Car.MAKE) &#64;IgnoreCase &#64;Is(Like.class) String makePattern,
+ *                        &#64;By(_Car.MODEL) &#64;IgnoreCase &#64;Is(Like.class) Sting modelPattern,
  *                        Order&lt;Car&gt; sorts);
  *
  * ...
