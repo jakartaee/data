@@ -27,7 +27,7 @@ import java.lang.annotation.Target;
 /**
  * <p>Determines the attribute or attributes of an entity which are returned
  * by a {@linkplain Find parameter-based} or {@linkplain Query annotated} query
- * method.</p>
+ * method. The subset of entity attributes is referred to as a projection.</p>
  *
  * <p>This annotation may be applied to a repository method annotated
  * {@code @Find} or to a component of a record type.</p>
@@ -51,8 +51,8 @@ import java.lang.annotation.Target;
  *
  * <p>This annotation must not be used in other locations.</p>
  *
- * <p>Sort criteria for a repository method that returns a subset of entity
- * attributes can include any of the returned attributes that are sortable.
+ * <p>Sort criteria for a repository method that returns a projection
+ * can include any of the returned entity attributes that are sortable.
  * </p>
  *
  * @see Find
@@ -93,18 +93,16 @@ public @interface Select {
      *
      * <h2>Method that returns Java Records</h2>
      *
-     * <p>A repository method can return a subset of entity attributes per
-     * result
-     * by having the result type be a Java record. The {@code Select} annotation
-     * can be used in the following ways to accommodate this.</p>
+     * <p>A repository method can return a projection by having the result type
+     * be a Java record. The {@code Select} annotation can be used in the
+     * following ways to accommodate this.</p>
      *
      * <h3>Annotating a Repository Method</h3>
      *
      * <p>Place one or more {@code Select} annotations on a repository find
-     * method
-     * and assign the annotation values to be the names of entity attributes,
-     * corresponding to the order and types of the components of the Java record
-     * that is used for the result type.</p>
+     * method and assign the annotation values to be the names of entity
+     * attributes, corresponding to the order and types of the components
+     * of the Java record that is used for the result type.</p>
      *
      * <p>For example, to return only the {@code model}, {@code make}, and
      * {@code year} attributes of a {@code Car} entity that has the supplied
@@ -145,9 +143,8 @@ public @interface Select {
      * </pre>
      *
      * <p>For more concise code, the {@code Select} annotation can be omitted
-     * from
-     * record components that have the same name as the entity attribute name,
-     * such as {@code model} in the above example.</p>
+     * from record components that have the same name as the entity attribute
+     * name, such as {@code model} in the above example.</p>
      *
      * <p>The examples above use the
      * {@linkplain jakarta.data/jakarta.data.metamodel static metamodel}, to
