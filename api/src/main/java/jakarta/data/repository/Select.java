@@ -143,8 +143,8 @@ public @interface Select {
      * </pre>
      *
      * <p>For more concise code, the {@code Select} annotation can be omitted
-     * from record components that have the same name as the entity attribute
-     * name, such as {@code model} in the above example.</p>
+     * from a record component that has the same name as the entity attribute,
+     * such as {@code model} in the above example.</p>
      *
      * <p>The examples above use the
      * {@linkplain jakarta.data/jakarta.data.metamodel static metamodel}, to
