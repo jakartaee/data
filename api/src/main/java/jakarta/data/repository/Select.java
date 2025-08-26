@@ -52,7 +52,7 @@ import java.lang.annotation.Target;
  * <p>This annotation must not be used in other locations.</p>
  *
  * <p>Sort criteria for a repository method that returns a projection
- * can include any of the returned entity attributes that are sortable.
+ * can include any of the returned entity attributes that are of sortable type.
  * </p>
  *
  * @see Find
