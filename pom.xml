@@ -103,7 +103,7 @@
         <shrinkwrap.resolver.version>3.3.4</shrinkwrap.resolver.version>
         <sigtest.version>2.6</sigtest.version>
         <sonar.jacoco.reportPath>../target/jacoco.exec</sonar.jacoco.reportPath>
-        <sonar.maven.version>5.1.0.4751</sonar.maven.version>
+        <sonar.maven.version>5.2.0.4988</sonar.maven.version>
     </properties>
 
     <dependencyManagement>
