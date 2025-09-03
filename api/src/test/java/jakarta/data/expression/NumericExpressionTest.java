@@ -39,7 +39,7 @@ class NumericExpressionTest {
     @Test
     void shouldCompareWithNumericAttribute() {
         Restriction<Book> averageChapterAtLeastAsLongAsNumChapters =
-                _Book.numPages.divide(_Book.numChapters)
+                _Book.numPages.dividedBy(_Book.numChapters)
                         .greaterThanEqual(_Book.numChapters);
 
         @SuppressWarnings("unchecked")
@@ -100,7 +100,7 @@ class NumericExpressionTest {
     @Test
     void shouldDivideLiteral() {
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(_Book.numPages.divide(10).toString())
+            soft.assertThat(_Book.numPages.dividedBy(10).toString())
                 .isEqualTo("book.numPages / 10");
 
             soft.assertThat(_Book.numChapters.dividedInto(100).toString())

@@ -191,7 +191,7 @@ public interface NumericExpression<T, N extends Number & Comparable<N>>
      * found = cars.search(
      *         make,
      *         model,
-     *         _Car.price.asDouble().divide(1.0 + discountRate).lessThan(27000.0));
+     *         _Car.price.asDouble().dividedBy(1.0 + discountRate).lessThan(27000.0));
      * </pre>
      *
      * @param divisor the value by which to divide. Must not be {@code 0} or
@@ -199,7 +199,7 @@ public interface NumericExpression<T, N extends Number & Comparable<N>>
      * @return an expression for the function that computes the quotient.
      * @throws NullPointerException if the supplied divisor value is null.
      */
-    default NumericExpression<T, N> divide(N divisor) {
+    default NumericExpression<T, N> dividedBy(N divisor) {
         return NumericOperatorExpression.of(DIVIDE, this, divisor);
     }
 
@@ -212,7 +212,8 @@ public interface NumericExpression<T, N extends Number & Comparable<N>>
      * found = cars.search(
      *         make,
      *         model,
-     *         _Car.price.plus(_Car.price.times(percentTax).divide(100)).lessThan(32000));
+     *         _Car.price.plus(_Car.price.times(percentTax).dividedBy(100))
+     *                   .lessThan(32000));
      * </pre>
      *
      * @param expression expression that evaluates to the value to add. Must
@@ -280,7 +281,7 @@ public interface NumericExpression<T, N extends Number & Comparable<N>>
      * pricedUnder95PercentWithRebate = cars.search(
      *         make,
      *         model,
-     *         _Car.price.minus(rebate).times(100).divide(_Car.price).lessThan(95);
+     *         _Car.price.minus(rebate).times(100).dividedBy(_Car.price).lessThan(95);
      * </pre>
      *
      * @param divisorExpression expression that evaluates to the value by which
@@ -288,7 +289,7 @@ public interface NumericExpression<T, N extends Number & Comparable<N>>
      * @return an expression for the function that computes the quotient.
      * @throws NullPointerException if the supplied divisor expression is null.
      */
-    default NumericExpression<T, N> divide(
+    default NumericExpression<T, N> dividedBy(
             NumericExpression<? super T, N> divisorExpression) {
         return NumericOperatorExpression.of(DIVIDE, this, divisorExpression);
     }
