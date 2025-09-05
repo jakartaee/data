@@ -63,4 +63,5 @@ jobs:
           distribution: 'temurin'
           cache: maven
       - name: Generate Javadoc
-        run: mvn javadoc:javadoc --file pom.xml
+        # FIXME '-P release' is necessary to handle the un-supported javadoc tag @apiNote
+        run: mvn -P release javadoc:javadoc --file pom.xml
