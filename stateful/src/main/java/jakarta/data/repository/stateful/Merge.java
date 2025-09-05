@@ -68,6 +68,7 @@ import java.lang.annotation.Target;
  *     <li>Otherwise, if no such record exists, the merge operation schedules
  *     the insertion of a new record with the state held by the merged entity.
  * </ul>
+ * <p>
  * In either case, the method annotated {@code @Merge} returns a managed entity
  * representing the inserted or updated record and reflecting the merged changes,
  * even if the scheduled insertion or update has not yet occurred.

@@ -71,7 +71,7 @@ public @interface Select {
      * <p>The {@code Select} annotation can be used with repository methods
      * that return a single entity attribute or multiple entity attributes.</p>
      *
-     * <h2>Method that returns Single Entity Attributes</h2>
+     * <h4>Method that returns Single Entity Attributes</h4>
      *
      * <p>Place the {@code Select} annotation on a repository find method and
      * assign the annotation value to be the name of a single entity attribute.
@@ -91,13 +91,13 @@ public @interface Select {
      * }
      * </pre>
      *
-     * <h2>Method that returns Java Records</h2>
+     * <h4>Method that returns Java Records</h4>
      *
      * <p>A repository method can return a projection by having the result type
      * be a Java record. The {@code Select} annotation can be used in the
      * following ways to accommodate this.</p>
      *
-     * <h3>Annotating a Repository Method</h3>
+     * <h5>Annotating a Repository Method</h5>
      *
      * <p>Place one or more {@code Select} annotations on a repository find
      * method and assign the annotation values to be the names of entity
@@ -123,7 +123,7 @@ public @interface Select {
      * }
      * </pre>
      *
-     * <h3>Annotating a Record Component</h3>
+     * <h5>Annotating a Record Component</h5>
      *
      * <p>Place the {@code Select} annotation on each record component of the
      * Java record that is used as the result type of the repository method.
