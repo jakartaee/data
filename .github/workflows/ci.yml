@@ -64,4 +64,4 @@ jobs:
           cache: maven
       - name: Generate Javadoc
         # FIXME '-P release' is necessary to handle the un-supported javadoc tag @apiNote
-        run: mvn -P release javadoc:javadoc --file pom.xml
+        run: mvn -P release javadoc:aggregate-jar --file pom.xml
