@@ -322,13 +322,13 @@
                              to add support for this tag in all Jakarta APIs 
                         -->
                         <configuration>
-                        	<tags>
-                        		<tag>
-                        			<name>apiNote</name>
-                        			<placement>a</placement>
-                        			<head>API Note:</head>
-                        		</tag>
-                        	</tags>
+                            <tags>
+                                <tag>
+                                    <name>apiNote</name>
+                                    <placement>a</placement>
+                                    <head>API Note:</head>
+                                </tag>
+                            </tags>
                         </configuration>
                         <executions>
                             <execution>
