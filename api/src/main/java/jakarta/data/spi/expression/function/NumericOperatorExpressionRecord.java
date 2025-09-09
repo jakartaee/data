@@ -49,7 +49,7 @@ record NumericOperatorExpressionRecord<T, N extends Number & Comparable<N>>
             right instanceof NumericLiteral l &&
             isZero((Number) l.value())) {
             throw new IllegalArgumentException(
-                    Messages.get("005.zero.not.allowed"));
+                    Messages.get("005.zero.not.allowed", "divisor"));
         }
     }
 
