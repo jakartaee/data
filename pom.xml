@@ -276,6 +276,10 @@
         <!-- TODO remove once parent is updated https://github.com/eclipse-ee4j/ee4j/issues/98 -->
         <profile>
             <id>release</id>
+            <distributionManagement>
+                <!-- Overwrite distribution management from parent pom -->
+                <!-- Keep blank, the central-publishing-maven-plugin knows where to publish snapshots and releases -->
+            </distributionManagement>
             <build>
                 <plugins>
                     <plugin>
