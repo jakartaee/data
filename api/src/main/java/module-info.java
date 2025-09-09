@@ -402,7 +402,6 @@ import java.util.Set;
  *     Stream&lt;Product&gt; pricedUnder(LessThan&lt;Float&gt; price);
  *     </pre>
  * </li>
- * </li>
  * <li>The parameter is a {@link Restriction} and its type parameter is the
  *     entity class. For example,
  *     <pre>

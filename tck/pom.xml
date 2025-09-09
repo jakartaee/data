@@ -351,5 +351,24 @@
         </plugins>
       </build>
     </profile>
+    
+    <!-- TODO switch to oss-release once parent pom is updated -->
+    <!-- Skip javadoc for TCK -->
+    <profile>
+      <id>release</id>
+      <build>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <version>3.11.3</version>
+          <configuration>
+            <skip>true</skip>
+          </configuration>
+        </plugin>
+      </plugins>
+      </build>
+    </profile>
+
   </profiles>
 </project>

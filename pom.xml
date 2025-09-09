@@ -314,11 +314,27 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>3.11.3</version>
+                        <!-- TODO javadoc tag @apiNote is not offically supported outside
+                             JDK classes, when we switch over to using the parent profile
+                             oss-release we will either need to remove these tags from 
+                             our API javadoc, or make a pull request to the parent project
+                             to add support for this tag in all Jakarta APIs 
+                        -->
+                        <configuration>
+                            <tags>
+                                <tag>
+                                    <name>apiNote</name>
+                                    <placement>a</placement>
+                                    <head>API Note:</head>
+                                </tag>
+                            </tags>
+                        </configuration>
                         <executions>
                             <execution>
                                 <id>attach-javadocs</id>
                                 <goals>
-                                    <goal>jar</goal>
+                                    <goal>aggregate-jar</goal>
                                 </goals>
                             </execution>
                         </executions>
