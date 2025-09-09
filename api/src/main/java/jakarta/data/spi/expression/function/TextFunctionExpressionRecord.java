@@ -41,7 +41,7 @@ record TextFunctionExpressionRecord<T>(
                 sizeLiteral.value() instanceof Integer size &&
                 size < 0) {
                 throw new IllegalArgumentException(
-                        Messages.get("004.arg.negative"));
+                        Messages.get("004.arg.negative", "length"));
             }
         }
     }
