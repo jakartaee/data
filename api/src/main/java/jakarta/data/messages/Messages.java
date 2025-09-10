@@ -24,7 +24,7 @@ import java.util.ResourceBundle;
 // and its package is not exported by the module.
 public class Messages {
     private static final ResourceBundle MESSAGES =
-            ResourceBundle.getBundle("jakarta.data.messages.Messages");
+            ResourceBundle.getBundle("jakarta.data.messages.DataMessages");
 
     // Prevent instantiation
     private Messages() {
