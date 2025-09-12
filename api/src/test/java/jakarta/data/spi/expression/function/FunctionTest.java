@@ -19,7 +19,6 @@ package jakarta.data.spi.expression.function;
 
 import jakarta.data.mock.entity.Book;
 import jakarta.data.mock.entity._Book;
-import jakarta.data.spi.expression.function.TextFunctionExpression;
 import jakarta.data.spi.expression.literal.NumericLiteral;
 
 import org.assertj.core.api.SoftAssertions;
@@ -35,7 +34,8 @@ class FunctionTest {
             must case IllegalArgumentException to be raised.
             """)
     void testDivisionByZero() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> _Book.numPages.divide(0));
+        Assertions.assertThrows(IllegalArgumentException.class,
+                                () -> _Book.numPages.dividedBy(0));
     }
 
     @Test
