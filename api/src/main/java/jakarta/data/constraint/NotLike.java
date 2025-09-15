@@ -117,7 +117,7 @@ public interface NotLike extends Constraint<String> {
      * character position 7.</p>
      *
      * <pre>
-     * found = cars.matchVIN(NotLike.pattern("JHM???F*"), '?', '*');
+     * found = cars.matchVIN(NotLike.pattern("JHM???F*", '?', '*'));
      * </pre>
      *
      * @param pattern        a pattern that can include the given wildcard
@@ -128,7 +128,15 @@ public interface NotLike extends Constraint<String> {
      * @throws NullPointerException if the pattern is {@code null}.
      */
     static NotLike pattern(String pattern, char charWildcard, char stringWildcard) {
-        return NotLike.pattern(pattern, charWildcard, stringWildcard, ESCAPE);
+        if (pattern == null) {
+            throw new NullPointerException(
+                    Messages.get("001.arg.required", "pattern"));
+        }
+
+        StringLiteral expression = StringLiteral.of(
+                translate(pattern, charWildcard, stringWildcard, ESCAPE, false));
+
+        return new NotLikeRecord(expression, ESCAPE);
     }
 
     /**
@@ -141,7 +149,7 @@ public interface NotLike extends Constraint<String> {
      * character position 7.</p>
      *
      * <pre>
-     * found = cars.matchVIN(Like.pattern("JHM---^CC"), '-', 'C', '^');
+     * found = cars.matchVIN(Like.pattern("JHM---^CC", '-', 'C', '^'));
      * </pre>
      *
      * @param pattern        a pattern that can include the given wildcard
@@ -159,7 +167,7 @@ public interface NotLike extends Constraint<String> {
         }
 
         StringLiteral expression = StringLiteral.of(
-                translate(pattern, charWildcard, stringWildcard, escape));
+                translate(pattern, charWildcard, stringWildcard, escape, true));
         return new NotLikeRecord(expression, escape);
     }
 

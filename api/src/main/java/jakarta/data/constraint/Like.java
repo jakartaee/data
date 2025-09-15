@@ -122,7 +122,7 @@ public interface Like extends Constraint<String> {
      * </p>
      *
      * <pre>
-     * found = cars.matchVIN(Like.pattern("JHM???F*"), '?', '*');
+     * found = cars.matchVIN(Like.pattern("JHM???F*", '?', '*'));
      * </pre>
      *
      * @param pattern        a pattern that can include the given wildcard
@@ -133,7 +133,12 @@ public interface Like extends Constraint<String> {
      * @throws NullPointerException if the pattern is {@code null}.
      */
     static Like pattern(String pattern, char charWildcard, char stringWildcard) {
-        return Like.pattern(pattern, charWildcard, stringWildcard, ESCAPE);
+        Messages.requireNonNull(pattern, "pattern");
+
+        StringLiteral expression = StringLiteral.of(
+                translate(pattern, charWildcard, stringWildcard, ESCAPE, false));
+
+        return new LikeRecord(expression, ESCAPE);
     }
 
     /**
@@ -146,7 +151,7 @@ public interface Like extends Constraint<String> {
      * </p>
      *
      * <pre>
-     * found = cars.matchVIN(Like.pattern("JHM---^CC"), '-', 'C', '^');
+     * found = cars.matchVIN(Like.pattern("JHM---^CC", '-', 'C', '^'));
      * </pre>
      *
      * @param pattern        a pattern that can include the given wildcard
@@ -164,7 +169,7 @@ public interface Like extends Constraint<String> {
         }
 
         StringLiteral expression = StringLiteral.of(
-                translate(pattern, charWildcard, stringWildcard, escape));
+                translate(pattern, charWildcard, stringWildcard, escape, true));
         return new LikeRecord(expression, escape);
     }
 
@@ -315,7 +320,7 @@ public interface Like extends Constraint<String> {
      * characters are interpreted literally rather than as wildcards or
      * escape.</p>
      *
-     * <p>For example, {@code Like.pattern("is --.-*% of", '-', '*', '^')"}
+     * <p>For example, {@code Like.pattern("is --.-*% of", '-', '*', '^')}
      * is represented as {@code is __._%^% of} where {@code ^} is the escape
      * character.</p>
      *

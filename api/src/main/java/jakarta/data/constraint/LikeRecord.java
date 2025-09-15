@@ -50,7 +50,11 @@ record LikeRecord(TextExpression<?> pattern, Character escape)
         return result.toString();
     }
 
-    static String translate(String pattern, char charWildcard, char stringWildcard, char escape) {
+    static String translate(String pattern,
+                            char charWildcard,
+                            char stringWildcard,
+                            char escape,
+                            boolean isPatternAlreadyEscaped) {
         if (charWildcard == stringWildcard) {
             throw new IllegalArgumentException(
                     Messages.get("007.wildcard.conflict", charWildcard));
@@ -60,18 +64,35 @@ record LikeRecord(TextExpression<?> pattern, Character escape)
                     Messages.get("008.escape.conflict", escape));
         }
         final var result = new StringBuilder();
+        boolean isPreviousCharEscape = false;
         for (int i = 0; i < pattern.length(); i++) {
             final char ch = pattern.charAt(i);
-            if (ch == charWildcard) {
+            if (isPreviousCharEscape) {
+                if (ch == CHAR_WILDCARD ||
+                    ch == STRING_WILDCARD ||
+                    ch == escape) {
+                    result.append(escape);
+                }
+                result.append(ch);
+                isPreviousCharEscape = false;
+            } else if (ch == charWildcard) {
                 result.append(CHAR_WILDCARD);
             } else if (ch == stringWildcard) {
                 result.append(STRING_WILDCARD);
+            } else if (ch == escape && isPatternAlreadyEscaped) {
+                isPreviousCharEscape = true;
             } else {
-                if (ch == STRING_WILDCARD || ch == CHAR_WILDCARD || ch == escape) {
+                if (ch == STRING_WILDCARD ||
+                    ch == CHAR_WILDCARD ||
+                    ch == escape) {
                     result.append(escape);
                 }
                 result.append(ch);
             }
+        }
+        if (isPreviousCharEscape) {
+            // Pattern cannot end with the escape character
+            throw new IllegalArgumentException("pattern: " + pattern);
         }
         return result.toString();
     }
