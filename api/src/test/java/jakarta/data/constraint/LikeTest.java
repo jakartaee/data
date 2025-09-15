@@ -49,7 +49,7 @@ class LikeTest {
         Like like = Like.pattern("JHM___E%");
 
         SoftAssertions.assertSoftly(soft -> soft.assertThat(like.escape())
-                .isNull());
+                .isEqualTo('\\'));
 
         SoftAssertions.assertSoftly(soft -> soft.assertThat(like.pattern())
                 .isInstanceOf(StringLiteral.class));

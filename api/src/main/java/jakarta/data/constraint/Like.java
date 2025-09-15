@@ -17,6 +17,7 @@
  */
 package jakarta.data.constraint;
 
+import static jakarta.data.constraint.LikeRecord.CHAR_WILDCARD;
 import static jakarta.data.constraint.LikeRecord.ESCAPE;
 import static jakarta.data.constraint.LikeRecord.STRING_WILDCARD;
 import static jakarta.data.constraint.LikeRecord.translate;
@@ -86,7 +87,8 @@ public interface Like extends Constraint<String> {
 
     /**
      * <p>Requires that the constraint target match the given {@code pattern},
-     * in which {@code _} and {@code %} represent wildcards.</p>
+     * in which {@code _} and {@code %} represent wildcards, and no escape
+     * character is included.</p>
      *
      * <p>For example, the following requires that the first 3 positions of a
      * VIN number are {@code JHM}, positions 4 through 6 are any character,
@@ -103,18 +105,13 @@ public interface Like extends Constraint<String> {
      * @throws NullPointerException if the pattern is {@code null}.
      */
     static Like pattern(String pattern) {
-        if (pattern == null) {
-            throw new NullPointerException(
-                    Messages.get("001.arg.required", "pattern"));
-        }
-
-        StringLiteral expression = StringLiteral.of(pattern);
-        return new LikeRecord(expression, null);
+        return pattern(pattern, CHAR_WILDCARD, STRING_WILDCARD);
     }
 
     /**
      * <p>Requires that the constraint target match the given {@code pattern},
-     * in which the given characters represent wildcards.</p>
+     * in which the given characters represent wildcards, and no escape
+     * character is included.</p>
      *
      * <p>For example, the following requires that the first 3 positions of a
      * VIN number are {@code JHM}, positions 4 through 6 are any character,
@@ -304,11 +301,13 @@ public interface Like extends Constraint<String> {
     }
 
     /**
-     * The escape character if one is defined for the pattern.
+     * <p>The escape character to use for the {@link #pattern()}. The pattern
+     * is assigned an escape character even if the application did not supply
+     * one when requesting the {@code Like} constraint.</p>
      *
      * @return the escape character if defined, otherwise {@code null}.
      */
-    Character escape();
+    char escape();
 
     /**
      * <p>An expression that evaluates to a pattern against which the
