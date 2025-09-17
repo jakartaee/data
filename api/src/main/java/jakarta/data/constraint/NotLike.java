@@ -17,6 +17,7 @@
  */
 package jakarta.data.constraint;
 
+import static jakarta.data.constraint.LikeRecord.CHAR_WILDCARD;
 import static jakarta.data.constraint.LikeRecord.ESCAPE;
 import static jakarta.data.constraint.LikeRecord.STRING_WILDCARD;
 import static jakarta.data.constraint.LikeRecord.translate;
@@ -82,8 +83,8 @@ public interface NotLike extends Constraint<String> {
 
     /**
      * <p>Requires that the constraint target not match the given
-     * {@code pattern}, in which {@code _} and {@code %} represent wildcards.
-     * </p>
+     * {@code pattern}, in which {@code _} and {@code %} represent wildcards,
+     * and no escape character is included.</p>
      *
      * <p>For example, the following requires that the VIN number not have
      * {@code JHM} as its first 3 character positions and {@code E} in
@@ -99,25 +100,20 @@ public interface NotLike extends Constraint<String> {
      * @throws NullPointerException if the pattern is {@code null}.
      */
     static NotLike pattern(String pattern) {
-        if (pattern == null) {
-            throw new NullPointerException(
-                    Messages.get("001.arg.required", "pattern"));
-        }
-
-        StringLiteral expression = StringLiteral.of(pattern);
-        return new NotLikeRecord(expression, null);
+        return pattern(pattern, CHAR_WILDCARD, STRING_WILDCARD);
     }
 
     /**
      * <p>Requires that the constraint target not match the given
-     * {@code pattern}, in which the given characters represent wildcards.</p>
+     * {@code pattern}, in which the given characters represent wildcards,
+     * and no escape character is included.</p>
      *
      * <p>For example, the following requires that the VIN number not have
      * {@code JHM} as its first 3 character positions and {@code F} in
      * character position 7.</p>
      *
      * <pre>
-     * found = cars.matchVIN(NotLike.pattern("JHM???F*"), '?', '*');
+     * found = cars.matchVIN(NotLike.pattern("JHM???F*", '?', '*'));
      * </pre>
      *
      * @param pattern        a pattern that can include the given wildcard
@@ -128,7 +124,15 @@ public interface NotLike extends Constraint<String> {
      * @throws NullPointerException if the pattern is {@code null}.
      */
     static NotLike pattern(String pattern, char charWildcard, char stringWildcard) {
-        return NotLike.pattern(pattern, charWildcard, stringWildcard, ESCAPE);
+        if (pattern == null) {
+            throw new NullPointerException(
+                    Messages.get("001.arg.required", "pattern"));
+        }
+
+        StringLiteral expression = StringLiteral.of(
+                translate(pattern, charWildcard, stringWildcard, ESCAPE, false));
+
+        return new NotLikeRecord(expression, ESCAPE);
     }
 
     /**
@@ -141,7 +145,7 @@ public interface NotLike extends Constraint<String> {
      * character position 7.</p>
      *
      * <pre>
-     * found = cars.matchVIN(Like.pattern("JHM---^CC"), '-', 'C', '^');
+     * found = cars.matchVIN(Like.pattern("JHM---^CC", '-', 'C', '^'));
      * </pre>
      *
      * @param pattern        a pattern that can include the given wildcard
@@ -159,7 +163,7 @@ public interface NotLike extends Constraint<String> {
         }
 
         StringLiteral expression = StringLiteral.of(
-                translate(pattern, charWildcard, stringWildcard, escape));
+                translate(pattern, charWildcard, stringWildcard, escape, true));
         return new NotLikeRecord(expression, escape);
     }
 
@@ -293,11 +297,13 @@ public interface NotLike extends Constraint<String> {
     }
 
     /**
-     * The escape character if one is defined for the pattern.
+     * <p>The escape character to use for the {@link #pattern()}. The pattern
+     * is assigned an escape character even if the application did not supply
+     * one when requesting the {@code NotLike} constraint.</p>
      *
      * @return the escape character if defined, otherwise {@code null}.
      */
-    Character escape();
+    char escape();
 
     /**
      * <p>An expression that evaluates to a pattern against which the

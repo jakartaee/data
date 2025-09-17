@@ -47,7 +47,7 @@ class TextRestrictionRecordTest {
             // TODO TextRestriction.ignoreCase vs TextAttribute.upper/lowercased
             //soft.assertThat(restriction.isCaseSensitive()).isTrue();
             soft.assertThat(literal.value()).isEqualTo("%Java%");
-            soft.assertThat(constraint.escape()).isNull();
+            soft.assertThat(constraint.escape()).isEqualTo('\\');
         });
     }
 
@@ -65,7 +65,7 @@ class TextRestrictionRecordTest {
             // TODO TextRestriction.ignoreCase vs TextAttribute.upper/lowercased
             //soft.assertThat(restriction.isCaseSensitive()).isTrue();
             soft.assertThat(literal.value()).isEqualTo("%Java%");
-            soft.assertThat(constraint.escape()).isNull();
+            soft.assertThat(constraint.escape()).isEqualTo('\\');
         });
     }
 
@@ -84,7 +84,7 @@ class TextRestrictionRecordTest {
         //    soft.assertThat(caseInsensitiveRestriction.expression()).isEqualTo(_Book.title);
         //    soft.assertThat(caseInsensitiveRestriction.isCaseSensitive()).isFalse();
             soft.assertThat(literal.value()).isEqualTo("%Java%");
-            soft.assertThat(constraint.escape()).isNull();
+            soft.assertThat(constraint.escape()).isEqualTo('\\');
         });
     }
 
@@ -102,7 +102,7 @@ class TextRestrictionRecordTest {
             // TODO TextRestriction.ignoreCase vs TextAttribute.upper/lowercased
             //soft.assertThat(restriction.isCaseSensitive()).isTrue();
             soft.assertThat(literal.value()).isEqualTo("%Java%");
-            soft.assertThat(constraint.escape()).isNull();
+            soft.assertThat(constraint.escape()).isEqualTo('\\');
         });
     }
 
