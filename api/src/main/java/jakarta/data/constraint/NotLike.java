@@ -83,8 +83,8 @@ public interface NotLike extends Constraint<String> {
 
     /**
      * <p>Requires that the constraint target not match the given
-     * {@code pattern}, in which {@code _} and {@code %} represent wildcards,
-     * and no escape character is included.</p>
+     * {@code pattern}, in which {@code _} and {@code %} represent wildcards.
+     * The supplied pattern has no escape character.</p>
      *
      * <p>For example, the following requires that the VIN number not have
      * {@code JHM} as its first 3 character positions and {@code E} in
@@ -105,8 +105,8 @@ public interface NotLike extends Constraint<String> {
 
     /**
      * <p>Requires that the constraint target not match the given
-     * {@code pattern}, in which the given characters represent wildcards,
-     * and no escape character is included.</p>
+     * {@code pattern}, in which the given characters represent wildcards.
+     * The supplied pattern has no escape character.</p>
      *
      * <p>For example, the following requires that the VIN number not have
      * {@code JHM} as its first 3 character positions and {@code F} in

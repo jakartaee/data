@@ -195,8 +195,8 @@ public interface Constraint<V> {
 
     /**
      * <p>Requires that the constraint target match the given {@code pattern},
-     * in which {@code _} and {@code %} represent wildcards, and no escape
-     * character is included.</p>
+     * in which {@code _} and {@code %} represent wildcards. The supplied
+     * pattern has no escape character.</p>
      *
      * @param pattern a pattern in which {@code _} matches a single character
      *                and {@code %} matches 0 or more characters.
@@ -210,8 +210,8 @@ public interface Constraint<V> {
 
     /**
      * <p>Requires that the constraint target match the given {@code pattern},
-     * in which the given characters represent wildcards, and no escape
-     * character is included.</p>
+     * in which the given characters represent wildcards. The supplied
+     * pattern has no escape character.</p>
      *
      * @param pattern        a pattern that can include the given wildcard
      *                       characters.
@@ -244,8 +244,8 @@ public interface Constraint<V> {
 
     /**
      * <p>Requires that the constraint target does not match the given
-     * {@code pattern}, in which {@code _} and {@code %} represent wildcards,
-     * and no escape character is included.</p>
+     * {@code pattern}, in which {@code _} and {@code %} represent wildcards.
+     * The supplied pattern has no escape character.</p>
      *
      * @param pattern a pattern in which {@code _} matches a single character
      *                and {@code %} matches 0 or more characters.
@@ -259,8 +259,8 @@ public interface Constraint<V> {
 
     /**
      * <p>Requires that the constraint target does not match the given
-     * {@code pattern}, in which the given characters represent wildcards,
-     * and no escape character is included.</p>
+     * {@code pattern}, in which the given characters represent wildcards.
+     * The supplied pattern has no escape character.</p>
      *
      * @param pattern        a pattern that can include the given wildcard
      *                       characters.
