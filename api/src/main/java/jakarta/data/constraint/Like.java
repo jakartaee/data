@@ -87,8 +87,8 @@ public interface Like extends Constraint<String> {
 
     /**
      * <p>Requires that the constraint target match the given {@code pattern},
-     * in which {@code _} and {@code %} represent wildcards, and no escape
-     * character is included.</p>
+     * in which {@code _} and {@code %} represent wildcards. The supplied
+     * pattern has no escape character.</p>
      *
      * <p>For example, the following requires that the first 3 positions of a
      * VIN number are {@code JHM}, positions 4 through 6 are any character,
@@ -110,8 +110,8 @@ public interface Like extends Constraint<String> {
 
     /**
      * <p>Requires that the constraint target match the given {@code pattern},
-     * in which the given characters represent wildcards, and no escape
-     * character is included.</p>
+     * in which the given characters represent wildcards. The supplied
+     * pattern has no escape character.</p>
      *
      * <p>For example, the following requires that the first 3 positions of a
      * VIN number are {@code JHM}, positions 4 through 6 are any character,
