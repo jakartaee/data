@@ -79,7 +79,7 @@ import java.lang.annotation.Target;
  * &#64;Repository
  * interface Garage {
  *     &#64;Find
- *     List&lt;Car&gt; getCarsWithModel(@By("model") String model);
+ *     List&lt;Car&gt; getCarsWithModel(@By("model") &#64;IgnoreCase String model);
  * }
  * </pre>
  * <p>The {@code @Find} annotation indicates that the {@code getCarsWithModel(model)}

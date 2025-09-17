@@ -59,7 +59,7 @@ import jakarta.data.constraint.NotLike;
  *
  *     // Find a page of Product entities where the name field matches a pattern.
  *     &#64;Find
- *     Page&lt;Product&gt; search(&#64;By(_Product.NAME) &#64;Is(Like.class) String pattern,
+ *     Page&lt;Product&gt; search(&#64;By(_Product.NAME) &#64;IgnoreCase &#64;Is(Like.class) String pattern,
  *                          PageRequest pagination,
  *                          Order&lt;Product&gt; order);
  *

@@ -30,8 +30,8 @@ import java.util.stream.StreamSupport;
  *
  * <pre>
  * &#64;Find
- * Page&lt;Vehicle&gt; search(&#64;By("make") String make,
- *                      &#64;By("model") String model,
+ * Page&lt;Vehicle&gt; search(&#64;By("make") &#64;IgnoreCase String make,
+ *                      &#64;By("model") &#64;IgnoreCase String model,
  *                      &#64;By("year") int designYear,
  *                      PageRequest pageRequest,
  *                      Order&lt;Vehicle&gt; order);
