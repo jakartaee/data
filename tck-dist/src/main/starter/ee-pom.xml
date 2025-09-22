@@ -45,7 +45,7 @@
   <shrinkwrap.resolver.version>3.3.4</shrinkwrap.resolver.version>
 
   <maven.dep.plugin.version>3.3.0</maven.dep.plugin.version>
-  <maven.comp.plugin.version>3.14.0</maven.comp.plugin.version>
+  <maven.comp.plugin.version>3.14.1</maven.comp.plugin.version>
   <maven.surefire.plugin.version>3.5.4</maven.surefire.plugin.version>
 
   <!-- Location to copy runtime dependencies to application server -->
