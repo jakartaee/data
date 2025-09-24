@@ -20,6 +20,7 @@ package jakarta.data.repository;
 import jakarta.data.Limit;
 import jakarta.data.Order;
 import jakarta.data.Sort;
+import jakarta.data.page.CursoredPage;
 import jakarta.data.page.PageRequest;
 import jakarta.data.restrict.Restriction;
 
@@ -29,9 +30,11 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * <p>Annotates a repository method as a query method, specifying a query
- * written in Jakarta Data Query Language (JDQL) or in Jakarta Persistence
- * Query Language (JPQL). A Jakarta Data provider is not required to support
+ * <p>Annotates a repository method which performs a
+ * {@linkplain #value() query} that is written in a
+ * {@linkplain #language() query language}.</p>
+ *
+ * <p>A Jakarta Data provider is not required to support
  * the complete JPQL language, which targets relational data stores. However,
  * a given provider might offer features of JPQL which go beyond the subset
  * required by JDQL, or might even offer vendor-specific extensions to JDQL
@@ -45,7 +48,7 @@ import java.lang.annotation.Target;
  * <p>For {@code select} statements, the return type of the query method must
  * be
  * consistent with the type returned by the query. An explicit {@code SELECT}
- * clause can be omitted when the query returns the entity or a Java record
+ * clause can be omitted from a JQL query that returns the entity or a Java record
  * for which the record component names all map to entity attribute names,
  * either by having the same name as the entity attribute or via the record
  * component being annotated with the {@link Select} annotation. For queries
@@ -167,6 +170,10 @@ import java.lang.annotation.Target;
  * {@code @Save} are mutually-exclusive. A given method of a repository interface may have at most one {@code @Find}
  * annotation, lifecycle annotation, or query annotation.
  *
+ * <p>Usage of query languages other than JQL imposes additional limitations
+ * on repository methods annotated with the {@code Query} annotation, as
+ * outlined under {@link #language()}.</p>
+ *
  * @see Param
  * @see First
  * @see Select
@@ -176,14 +183,69 @@ import java.lang.annotation.Target;
 public @interface Query {
 
     /**
-     * <p>Specifies the query executed by the annotated repository method,
-     * in JDQL or JPQL.</p>
+     * <p>Constant for {@link #language()} indicating Jakarta Query Language
+     * (JQL).</p>
+     */
+    String JQL = "JQL";
+
+    /**
+     * <p>Constant for {@link #language()} indicating Structured Query Language
+     * (SQL). Stateless repositories that connect to relational databases offer
+     * the ability to run queries written in SQL. Other repositories that are
+     * not capable of running SQL queries must raise an error when {@code SQL}
+     * is specified for a repository method.</p>
+     */
+    String SQL = "SQL";
+
+    /**
+     * <p>Indicates the query language that is used for the
+     * {@linkplain #value() query value}. The query language is indicated by a
+     * constant on this class, such as {@link #JQL} or {@link #SQL}, or a
+     * query language constant that is defined by a Jakarta Data provider to
+     * represent a different query language.</p>
+     *
+     * <p>The default value is {@link #JQL}, indicating Jakarta Query Language.
+     * </p>
+     *
+     * <p>When a language other than Jakarta Query Language is specified, the
+     * application must supply the full {@linkplain #value() query value} in
+     * the chosen language, such that the query can be supplied by the Jakarta
+     * Data provider directly to the database without modification. In addition
+     * to the usual limitations on use of the {@code Query} annotation,
+     * query methods that use a language other than Jakarta Query Language
+     * must not:</p>
+     *
+     * <ul>
+     * <li>accept {@link Restriction}, {@link Order}, or {@link Sort}
+     * parameters,</li>
+     * <li>be annotated with the {@link OrderBy} or {@link Select} annotations,
+     * </li>
+     * <li>return {@link CursoredPage}, or</li>
+     * <li>offer any other capability that requires modification of the query.
+     * </li>
+     * </ul>
+     *
+     * <p>Repositories that are not capable of a given query language must
+     * raise an error at runtime or build time.</p>
+     *
+     * @return the query language in which the
+     *         {@linkplain #value() query value} is written.
+     */
+    String language() default JQL;
+
+    /**
+     * <p>Specifies the query executed by the annotated repository method.</p>
+     *
+     * <p>The query must be written in the given
+     * {@linkplain #language() query language}, which defaults to Jakarta Query
+     * Language ({@link #JQL}).
      *
      * <p>If the annotated repository method accepts other forms of sorting
      * (such as a parameter of type {@link Sort}), it is the responsibility of
-     * the application programmer to compose the query so that an
+     * the application programmer to compose the JQL query so that an
      * {@code ORDER BY} clause can be validly appended to the text of the
-     * query.</p>
+     * query. Sorting cannot be added on to queries written in other query
+     * languages.</p>
      *
      * @return the query to be executed when the annotated method is called.
      */
