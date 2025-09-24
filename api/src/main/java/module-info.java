@@ -86,7 +86,7 @@ import java.util.Set;
  *
  *     &#64;Find
  *     List&lt;Product&gt; search(
- *             &#64;By(_Product.NAME) &#64;Is(Like.class) String namePattern,
+ *             &#64;By(_Product.NAME) &#64;IgnoreCase &#64;Is(Like.class) String namePattern,
  *             Restriction&lt;Product&gt; restriction,
  *             Order&lt;Product&gt; sortBy);
  *
@@ -383,7 +383,7 @@ import java.util.Set;
  *
  *     &#64;Find
  *     &#64;OrderBy("price")
- *     Product[] named(String name);
+ *     Product[] named(&#64;IgnoreCase String name);
  *     </pre>
  * </li>
  * <li>The parameter is a {@link Constraint} or a
@@ -447,7 +447,7 @@ import java.util.Set;
  *
  * <pre>
  * &#64;Find
- * Stream&lt;Person&gt; livingInCity(String address_city);
+ * Stream&lt;Person&gt; livingInCity(&#64;IgnoreCase String address_city);
  * </pre>
  *
  * <h2>JDQL query methods</h2>
@@ -892,7 +892,7 @@ import java.util.Set;
  *
  * <pre>
  * &#64;Find
- * Page&lt;Product&gt; pricedWithin(&#64;By("name") &#64;Is(Like.class) String pattern,
+ * Page&lt;Product&gt; pricedWithin(&#64;By("name") &#64;IgnoreCase &#64;Is(Like.class) String pattern,
  *                            &#64;By("price") &#64;Is(AtLeast.class) float minPrice,
  *                            &#64;By("price") &#64;Is(AtMost.class) float maxPrice,
  *                            PageRequest pageRequest,
@@ -916,7 +916,7 @@ import java.util.Set;
  *
  * <pre>
  * &#64;Find
- * Product[] named(&#64;By("name") &#64;Is(Like.class) String pattern,
+ * Product[] named(&#64;By("name") &#64;IgnoreCase &#64;Is(Like.class) String pattern,
  *                 Limit max,
  *                 Order&lt;Product&gt; sortBy);
  *
@@ -934,7 +934,7 @@ import java.util.Set;
  *
  * <pre>
  * &#64;Find
- * Product[] namedLike(&#64;By("name") &#64;Is(Like.class) String pattern,
+ * Product[] namedLike(&#64;By("name") &#64;IgnoreCase &#64;Is(Like.class) String pattern,
  *                     Limit max,
  *                     {@code Sort<?>...} sortBy);
  *
@@ -956,7 +956,7 @@ import java.util.Set;
  *
  * <pre>
  *     &#64;Find
- *     List&lt;Product&gt; namedLike(&#64;By(_Product.NAME) Like pattern,
+ *     List&lt;Product&gt; namedLike(&#64;By(_Product.NAME) &#64;IgnoreCase Like pattern,
  *                             Restriction&lt;Product&gt; restrict,
  *                             Order&lt;Product&gt; sorts);
  * </pre>
