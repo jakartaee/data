@@ -91,7 +91,6 @@
 
         <arquillian.version>1.10.0.Final</arquillian.version>
         <arquillian.jakarta.version>10.0.0.Final</arquillian.jakarta.version>
-        <junit.version>5.12.0</junit.version>
         <pi-test.version>1.20.3</pi-test.version>
         <pitest-junit5-plugin.version>1.2.3</pitest-junit5-plugin.version>
         <checkstyle.version>11.1.0</checkstyle.version>
@@ -107,13 +106,6 @@
 
     <dependencyManagement>
         <dependencies>
-            <dependency>
-                <groupId>org.junit</groupId>
-                <artifactId>junit-bom</artifactId>
-                <version>${junit.version}</version>
-                <type>bom</type>
-                <scope>import</scope>
-            </dependency>
             <dependency>
                 <groupId>org.jboss.arquillian</groupId>
                 <artifactId>arquillian-bom</artifactId>
