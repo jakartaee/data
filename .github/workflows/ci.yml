@@ -35,7 +35,11 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Build project
-      run: mvn -B package --file pom.xml
+      run: |
+        mvn -B \
+        -P oss-release \
+        --file pom.xml \
+        clean package
   
   # Catch dependency issues in the tck-dist starters
   analyze:
@@ -50,18 +54,4 @@ jobs:
           cache: maven
       - name: Analyze starters
         run: mvn dependency:analyze --file tck-dist/src/main/pom.xml
-  
-  # Catch javadoc errors
-  javadoc:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
-      - name: Set up JDK 21
-        uses: actions/setup-java@dded0888837ed1f317902acf8a20df0ad188d165 # v5.0.0
-        with:
-          java-version: 21
-          distribution: 'temurin'
-          cache: maven
-      - name: Generate Javadoc
-        # FIXME '-P release' is necessary to handle the un-supported javadoc tag @apiNote
-        run: mvn -P release javadoc:aggregate-jar --file pom.xml
+
