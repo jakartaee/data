@@ -17,8 +17,10 @@
   ~ SPDX-License-Identifier: Apache-2.0
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -76,7 +78,6 @@
                 </configuration>
             </plugin>
 
-
             <!-- 
             Create Javadoc for API jar
             -->
@@ -112,6 +113,13 @@ Use is subject to <a href="{@docRoot}/doc-files/speclicense.html" target="_top">
                                     </packages>
                                 </group>
                             </groups>
+                            <tags>
+                                <tag>
+                                    <name>apiNote</name>
+                                    <placement>a</placement>
+                                    <head>API Note:</head>
+                                </tag>
+                            </tags>
                         </configuration>
                     </execution>
                 </executions>
@@ -177,7 +185,9 @@ Use is subject to <a href="{@docRoot}/doc-files/speclicense.html" target="_top">
                 <version>${maven.jar.plugin.version}</version>
                 <configuration>
                     <archive>
-                        <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+                        <manifestFile>
+                            ${project.build.outputDirectory}/META-INF/MANIFEST.MF
+                        </manifestFile>
                     </archive>
                     <excludes>
                         <exclude>**/*.java</exclude>
@@ -186,5 +196,38 @@ Use is subject to <a href="{@docRoot}/doc-files/speclicense.html" target="_top">
             </plugin>
         </plugins>
     </build>
+
+    <!-- Add additional configuration for javadoc to allow unsupported useage of apiNote -->
+    <profiles>
+        <profile>
+            <id>oss-release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>${maven.javadoc.plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                                <configuration>
+                                    <tags>
+                                        <tag>
+                                            <name>apiNote</name>
+                                            <placement>a</placement>
+                                            <head>API Note:</head>
+                                        </tag>
+                                    </tags>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>
