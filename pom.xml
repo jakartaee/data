@@ -124,7 +124,7 @@
         
         <junit.version>6.0.0</junit.version>
         
-        <pi.test.version>1.20.3</pi.test.version>
+        <pi.test.version>1.20.4</pi.test.version>
         <pitest.junit5.plugin.version>1.2.3</pitest.junit5.plugin.version>
         
         <sigtest.version>2.6</sigtest.version>
