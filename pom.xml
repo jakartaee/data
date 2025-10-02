@@ -24,7 +24,7 @@
     <parent>
         <groupId>org.eclipse.ee4j</groupId>
         <artifactId>project</artifactId>
-        <version>1.0.9</version>
+        <version>2.0.0-SNAPSHOT</version>
     </parent>
 
     <groupId>jakarta.data</groupId>
@@ -66,16 +66,38 @@
             <organizationUrl>https://accounts.eclipse.org/mailing-list/data-dev</organizationUrl>
         </developer>
     </developers>
+    
+    <repositories>
+        <repository>
+            <name>Central Portal Snapshots</name>
+            <id>central-portal-snapshots</id>
+            <url>https://central.sonatype.com/repository/maven-snapshots/</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
 
     <properties>
         <maven.compiler.release>21</maven.compiler.release>
         <maven.compiler.source>21</maven.compiler.source>
-        <maven.compile.version>3.14.1</maven.compile.version>
-        <maven.surefire.plugin.version>3.5.4</maven.surefire.plugin.version>
-        <maven-javadoc-plugin.vesion>3.4.1</maven-javadoc-plugin.vesion>
-        <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
-        <maven.checkstyle.plugin.version>3.6.0</maven.checkstyle.plugin.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <maven.antrun.plugin.version>3.1.0</maven.antrun.plugin.version>
+        <maven.compile.version>3.14.1</maven.compile.version>
+        <maven.dependency.plugin.version>3.8.1</maven.dependency.plugin.version>
+        <maven.surefire.plugin.version>3.5.4</maven.surefire.plugin.version>
+        <maven.javadoc.plugin.version>3.12.0</maven.javadoc.plugin.version>
+        <maven.source.plugin.version>3.2.1</maven.source.plugin.version>
+        <maven.checkstyle.plugin.version>3.6.0</maven.checkstyle.plugin.version>
+        <maven.pmd.plugin.version>3.27.0</maven.pmd.plugin.version>
+        <maven.bundle.plugin.version>6.0.0</maven.bundle.plugin.version>
+        <maven.jar.plugin.version>3.4.2</maven.jar.plugin.version>
+        
+        <lifecycle.mapping.version>1.0.0</lifecycle.mapping.version>
 
         <jakarta.annotation.version>3.0.0</jakarta.annotation.version>
         <jakarta.enterprise.cdi.version>4.1.0</jakarta.enterprise.cdi.version>   
@@ -83,6 +105,8 @@
         <jakarta.json.bind.version>3.0.0</jakarta.json.bind.version>
         <jakarta.json.version>2.1.3</jakarta.json.version>
         <jakarta.data.version>${project.version}</jakarta.data.version>
+        <jakarta.persistence.version>3.2.0</jakarta.persistence.version>
+        <jakarta.nosql.version>1.0.1</jakarta.nosql.version>
         <jakarta.servlet.version>6.1.0</jakarta.servlet.version> 
         <jakarta.transaction.version>2.0.1</jakarta.transaction.version>
         <jakarta.validation.version>3.1.1</jakarta.validation.version>
@@ -91,18 +115,25 @@
 
         <arquillian.version>1.10.0.Final</arquillian.version>
         <arquillian.jakarta.version>10.0.0.Final</arquillian.jakarta.version>
-        <junit.version>5.12.0</junit.version>
-        <pi-test.version>1.20.3</pi-test.version>
-        <pitest-junit5-plugin.version>1.2.3</pitest-junit5-plugin.version>
-        <checkstyle.version>11.1.0</checkstyle.version>
-        <!-- Allow TCK populator classes to exceed max MethodLength -->
-        <checkstyle.excludes>**/*Populator.java</checkstyle.excludes>
-        <jacoco.maven.version>0.8.13</jacoco.maven.version>
         <shrinkwrap.version>1.2.6</shrinkwrap.version>
         <shrinkwrap.resolver.version>3.3.4</shrinkwrap.resolver.version>
+        
+        <exec.maven.plugin.version>3.6.0</exec.maven.plugin.version>
+        <checkstyle.version>11.1.0</checkstyle.version>
+        <jacoco.maven.version>0.8.13</jacoco.maven.version>
+        
+        <junit.version>5.12.0</junit.version>
+        
+        <pi.test.version>1.20.3</pi.test.version>
+        <pitest.junit5.plugin.version>1.2.3</pitest.junit5.plugin.version>
+        
         <sigtest.version>2.6</sigtest.version>
+        
         <sonar.jacoco.reportPath>../target/jacoco.exec</sonar.jacoco.reportPath>
         <sonar.maven.version>5.2.0.4988</sonar.maven.version>
+        
+        <!-- Allow TCK populator classes to exceed max MethodLength -->
+        <checkstyle.excludes>**/*Populator.java</checkstyle.excludes>
     </properties>
 
     <dependencyManagement>
@@ -148,12 +179,6 @@
     <build>
         <pluginManagement>
             <plugins>
-                <!-- TODO remove once parent is updated https://github.com/eclipse-ee4j/ee4j/issues/98 -->
-                <plugin>
-                    <groupId>org.sonatype.central</groupId>
-                    <artifactId>central-publishing-maven-plugin</artifactId>
-                    <version>0.9.0</version>
-                </plugin>
                 <plugin>
                     <groupId>org.sonarsource.scanner.maven</groupId>
                     <artifactId>sonar-maven-plugin</artifactId>
@@ -170,6 +195,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
+                <version>${maven.source.plugin.version}</version>
                 <executions>
                     <execution>
                         <id>attach-sources</id>
@@ -253,12 +279,12 @@
             <plugin>
                 <groupId>org.pitest</groupId>
                 <artifactId>pitest-maven</artifactId>
-                <version>${pi-test.version}</version>
+                <version>${pi.test.version}</version>
                 <dependencies>
                     <dependency>
                         <groupId>org.pitest</groupId>
                         <artifactId>pitest-junit5-plugin</artifactId>
-                        <version>${pitest-junit5-plugin.version}</version>
+                        <version>${pitest.junit5.plugin.version}</version>
                     </dependency>
                 </dependencies>
                 <configuration>
@@ -273,113 +299,6 @@
     </build>
 
     <profiles>
-        <!-- TODO remove once parent is updated https://github.com/eclipse-ee4j/ee4j/issues/98 -->
-        <profile>
-            <id>release</id>
-            <distributionManagement>
-                <!-- Overwrite distribution management from parent pom -->
-                <repository>
-                    <id>central</id>
-                    <url>https://central.sonatype.com</url>
-                </repository>
-                <snapshotRepository>
-                    <id>central</id>
-                    <url>https://central.sonatype.com/repository/maven-snapshots/</url>
-                </snapshotRepository>
-            </distributionManagement>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-enforcer-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>enforce-maven</id>
-                                <goals>
-                                    <goal>enforce</goal>
-                                </goals>
-                                <configuration>
-                                    <rules>
-                                        <requireMavenVersion>
-                                            <version>[3.2.5,)</version>
-                                            <message>Maven 3.0 through 3.0.3 inclusive does not pass
-                                                correct settings.xml to Maven Release Plugin.</message>
-                                        </requireMavenVersion>
-                                    </rules>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-source-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>attach-sources</id>
-                                <goals>
-                                    <goal>jar-no-fork</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-javadoc-plugin</artifactId>
-                        <version>3.12.0</version>
-                        <!-- TODO javadoc tag @apiNote is not offically supported outside
-                             JDK classes, when we switch over to using the parent profile
-                             oss-release we will either need to remove these tags from 
-                             our API javadoc, or make a pull request to the parent project
-                             to add support for this tag in all Jakarta APIs 
-                        -->
-                        <configuration>
-                            <tags>
-                                <tag>
-                                    <name>apiNote</name>
-                                    <placement>a</placement>
-                                    <head>API Note:</head>
-                                </tag>
-                            </tags>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <id>attach-javadocs</id>
-                                <goals>
-                                    <goal>aggregate-jar</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-gpg-plugin</artifactId>
-                        <configuration>
-                            <gpgArguments>
-                                <arg>--pinentry-mode</arg>
-                                <arg>loopback</arg>
-                            </gpgArguments>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <id>sign-artifacts</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>sign</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.sonatype.central</groupId>
-                        <artifactId>central-publishing-maven-plugin</artifactId>
-                        <extensions>true</extensions>
-                        <configuration>
-                            <autoPublish>true</autoPublish>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
         <profile>
             <id>pitest</id>
             <build>

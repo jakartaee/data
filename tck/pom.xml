@@ -120,13 +120,13 @@
     <dependency>
       <groupId>jakarta.nosql</groupId>
       <artifactId>jakarta.nosql-api</artifactId>
-      <version>1.0.1</version>
+      <version>${jakarta.nosql.version}</version>
     </dependency>
 
     <dependency>
       <groupId>jakarta.persistence</groupId>
       <artifactId>jakarta.persistence-api</artifactId>
-      <version>3.2.0</version>
+      <version>${jakarta.persistence.version}</version>
       <scope>provided</scope>
     </dependency>
     
@@ -188,6 +188,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
+        <version>${maven.source.plugin.version}</version>
         <executions>
           <execution>
             <id>attach-sources</id>
@@ -201,7 +202,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.12.0</version>
+        <version>${maven.javadoc.plugin.version}</version>
         <executions>
           <execution>
             <id>attach-tck-javadocs</id>
@@ -272,7 +273,7 @@
           <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>exec-maven-plugin</artifactId>
-            <version>3.6.0</version>
+            <version>${exec.maven.plugin.version}</version>
             <executions>
                 <execution>
                     <id>extractModules</id>
@@ -328,7 +329,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-antrun-plugin</artifactId>
-            <version>3.1.0</version>
+            <version>${maven.antrun.plugin.version}</version>
             <executions>
               <execution>
                 <id>copySigFile</id>
@@ -351,24 +352,5 @@
         </plugins>
       </build>
     </profile>
-    
-    <!-- TODO switch to oss-release once parent pom is updated -->
-    <!-- Skip javadoc for TCK -->
-    <profile>
-      <id>release</id>
-      <build>
-      <plugins>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-javadoc-plugin</artifactId>
-          <version>3.12.0</version>
-          <configuration>
-            <skip>true</skip>
-          </configuration>
-        </plugin>
-      </plugins>
-      </build>
-    </profile>
-
   </profiles>
 </project>
