@@ -166,7 +166,7 @@ public interface Page<T> extends Iterable<T> {
      * @throws UnsupportedOperationException if the database is not capable of
      *                                       retrieving a total number of
      *                                       elements.
-     * apiNote Not all NoSQL databases support counting the total number of
+     * @apiNote Not all NoSQL databases support counting the total number of
      * elements. This operation is not supported for Key-Value and Wide-Column
      * databases. For Graph and Document databases, support for this operation
      * may vary depending on the provider. If the database does not support
