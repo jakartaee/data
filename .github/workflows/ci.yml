@@ -22,7 +22,7 @@ jobs:
 
     strategy:
       matrix:
-        java-version: [ '21' ] # TODO add 25
+        java-version: [ '21', '25' ]
 
     runs-on: ubuntu-latest
 
@@ -40,7 +40,7 @@ jobs:
         -P oss-release \
         --file pom.xml \
         clean package
-  
+
   # Catch dependency issues in the tck-dist starters
   analyze:
     runs-on: ubuntu-latest
