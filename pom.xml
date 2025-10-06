@@ -118,7 +118,7 @@
         <shrinkwrap.version>1.2.6</shrinkwrap.version>
         <shrinkwrap.resolver.version>3.3.4</shrinkwrap.resolver.version>
         
-        <exec.maven.plugin.version>3.6.0</exec.maven.plugin.version>
+        <exec.maven.plugin.version>3.6.1</exec.maven.plugin.version>
         <checkstyle.version>11.1.0</checkstyle.version>
         <jacoco.maven.version>0.8.13</jacoco.maven.version>
         
