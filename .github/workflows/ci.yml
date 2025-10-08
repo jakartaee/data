@@ -37,7 +37,6 @@ jobs:
     - name: Build project
       run: |
         mvn -B \
-        -P oss-release \
         --file pom.xml \
         clean package
 
