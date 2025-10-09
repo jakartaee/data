@@ -161,6 +161,9 @@ public interface BookRepository extends BasicRepository<Book, UUID> {
 
 This streamlined query language empowers developers to efficiently perform data access operations with minimal complexity, aligning with Jakarta Data's objective of simplifying data access across various storage technologies.
 
+==  Stateful Repository Operations
+
+
 === Maven
 
 To start to use Jakarta Data, add the API as a Maven dependency:
