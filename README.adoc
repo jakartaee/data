@@ -163,6 +163,29 @@ This streamlined query language empowers developers to efficiently perform data 
 
 ==  Stateful Repository Operations
 
+It introduces annotations to explicitly control entity lifecycle operations in repositories. These annotations provide fine-grained control over entity state transitions such as persisting, merging, refreshing, detaching, and removing entities.
+
+[source,java]
+----
+@Repository
+public interface Products extends BasicRepository<Product, String> {
+
+    @Persist
+    void add(Product product);
+
+    @Merge
+    Product update(Product product);
+
+    @Remove
+    void delete(Product product);
+
+    @Refresh
+    void reload(Product product);
+
+    @Detach
+    void detach(Product product);
+}
+----
 
 === Maven
 
