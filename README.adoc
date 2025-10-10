@@ -192,17 +192,20 @@ public interface Products extends DataRepository<Product, String> {
 |===
 | Annotation | Description
 | `@Persist`
-| Indicates that the repository method should *persist* a new entity instance.
-Equivalent to inserting a new record in the underlying datastore.
+| Specifies that the repository method should insert a new instance into the data store.
+If an entity with the same identifier already exists, the operation must fail.
 | `@Merge`
-| Merges the state of a detached entity into the current persistence context, updating the existing record if necessary.
+| Specifies that the repository method should merge the state of the given entity into the data store.
+If the entity does not exist, it may be inserted depending on implementation support.
 | `@Remove`
-| Removes the specified entity from the datastore.
-Equivalent to a delete operation.
+| Specifies that the repository method should delete the corresponding entity instance from the data store.
+If the entity does not exist, the method has no effect.
 | `@Refresh`
-| Reloads the entity's state from the datastore, overwriting any local changes that have not been persisted.
+| Specifies that the repository method should reload the state of the given entity from the data store,
+overwriting any local changes that have not been saved.
 | `@Detach`
-| Detaches the given entity from the current persistence context, stopping it from being tracked for further updates.
+| Specifies that the repository method should detach the given entity from the current persistence context.
+After detachment, changes to the entity are no longer tracked.
 |===
 
 === Maven
