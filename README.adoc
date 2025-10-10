@@ -198,7 +198,6 @@ public interface Products extends DataRepository<Product, String> {
 If the entity does not exist in the data store, it is inserted.
 | `@Remove`
 | Specifies that the repository method should delete the corresponding entity instance from the data store.
-If the entity does not exist, the method has no effect.
 | `@Refresh`
 | Specifies that the repository method should reload the state of the given entity from the data store,
 overwriting any local changes that have not been saved.
