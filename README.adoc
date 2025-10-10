@@ -168,7 +168,7 @@ It introduces annotations to explicitly control entity lifecycle operations in r
 [source,java]
 ----
 @Repository
-public interface Products extends BasicRepository<Product, String> {
+public interface Products extends DataRepository<Product, String> {
 
     @Persist
     void add(Product product);
