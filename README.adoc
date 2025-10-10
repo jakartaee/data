@@ -192,7 +192,8 @@ public interface Products extends DataRepository<Product, String> {
 |===
 | Annotation | Description
 | `@Persist`
-| Specifies that the repository method should insert a new instance into the data store.
+| Specifies that the repository method should insert a new instance into the data store,
+which might happen immediately or when the persistence context is flushed.
 | `@Merge`
 | Specifies that the repository method should merge the state of the given entity into the data store.
 If the entity does not exist in the data store, it is inserted.
