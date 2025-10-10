@@ -188,6 +188,23 @@ public interface Products extends DataRepository<Product, String> {
 }
 ----
 
+[cols="2,8"]
+|===
+| Annotation | Description
+| `@Persist`
+| Indicates that the repository method should *persist* a new entity instance.
+Equivalent to inserting a new record in the underlying datastore.
+| `@Merge`
+| Merges the state of a detached entity into the current persistence context, updating the existing record if necessary.
+| `@Remove`
+| Removes the specified entity from the datastore.
+Equivalent to a delete operation.
+| `@Refresh`
+| Reloads the entity's state from the datastore, overwriting any local changes that have not been persisted.
+| `@Detach`
+| Detaches the given entity from the current persistence context, stopping it from being tracked for further updates.
+|===
+
 === Maven
 
 To start to use Jakarta Data, add the API as a Maven dependency:
