@@ -163,7 +163,7 @@ This streamlined query language empowers developers to efficiently perform data 
 
 ==  Stateful Repository Operations
 
-It introduces annotations to explicitly control entity lifecycle operations in repositories. These annotations provide fine-grained control over entity state transitions such as persisting, merging, refreshing, detaching, and removing entities.
+Jakarta Data includes the concept of stateful repositories that manage entities according to a persistence context. A complete definition of a persistence context can be found in the Jakarta Persistence specification. Stateful repositories have their own lifecycle annotations that provide fine-grained control over entity state transitions such as persisting, merging, refreshing, detaching, and removing entities. Lifecycle annotations for stateful operations must not be intermixed with lifecycle annotations for stateless operations. Consequently, each repository is either stateful or or stateless.
 
 [source,java]
 ----
