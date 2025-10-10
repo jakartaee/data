@@ -175,10 +175,10 @@ public interface Products extends DataRepository<Product, String> {
     void add(Product product);
 
     @Merge
-    Product update(Product product);
+    Product merge(Product product);
 
     @Remove
-    void delete(Product product);
+    void remove(Product product);
 
     @Refresh
     void reload(Product product);
