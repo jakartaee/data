@@ -44,10 +44,10 @@ import java.lang.annotation.Target;
  * </ul>
  * <p>The annotated method must be declared {@code void}.
  * </p>
- * <p>If an unmanaged entity is passed to a {@code Refresh} method, the method
+ * <p>If an unmanaged entity is passed to a {@code Remove} method, the method
  * must throw {@link IllegalArgumentException}. If the entity was scheduled for
  * insertion in the database via a call to a {@link Persist} method, but was
- * not yet inserted in the database, then the {@code Refresh} method undoes the
+ * not yet inserted in the database, then the {@code Remove} method undoes the
  * effect of the {@code Persist} method.
  * </p>
  * <p>A Jakarta Data provider that is capable of returning
