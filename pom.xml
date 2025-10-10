@@ -79,7 +79,7 @@
         <maven.javadoc.plugin.version>3.12.0</maven.javadoc.plugin.version>
         <maven.source.plugin.version>3.3.1</maven.source.plugin.version>
         <maven.checkstyle.plugin.version>3.6.0</maven.checkstyle.plugin.version>
-        <maven.pmd.plugin.version>3.27.0</maven.pmd.plugin.version>
+        <maven.pmd.plugin.version>3.28.0</maven.pmd.plugin.version>
         <maven.bundle.plugin.version>6.0.0</maven.bundle.plugin.version>
         <maven.jar.plugin.version>3.4.2</maven.jar.plugin.version>
         
