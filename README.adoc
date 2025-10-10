@@ -195,7 +195,8 @@ public interface Products extends DataRepository<Product, String> {
 | Specifies that the repository method should insert a new instance into the data store,
 which might happen immediately or when the persistence context is flushed.
 | `@Merge`
-| Specifies that the repository method should merge the state of the given entity into the data store.
+| Specifies that the repository method should merge the state of the given entity into the data store,
+which can happen later when the persistence context is flushed.
 If the entity does not exist in the data store, it is inserted.
 | `@Remove`
 | Specifies that the repository method should delete the corresponding entity instance from the data store.
