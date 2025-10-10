@@ -196,7 +196,7 @@ public interface Products extends DataRepository<Product, String> {
 If an entity with the same identifier already exists, the operation must fail.
 | `@Merge`
 | Specifies that the repository method should merge the state of the given entity into the data store.
-If the entity does not exist, it may be inserted depending on implementation support.
+If the entity does not exist in the data store, it is inserted.
 | `@Remove`
 | Specifies that the repository method should delete the corresponding entity instance from the data store.
 If the entity does not exist, the method has no effect.
