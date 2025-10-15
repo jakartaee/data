@@ -15,6 +15,7 @@
  */
 package ee.jakarta.tck.data.standalone.entity;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -34,6 +35,7 @@ import ee.jakarta.tck.data.framework.junit.anno.AnyEntity;
 import ee.jakarta.tck.data.framework.junit.anno.Assertion;
 import ee.jakarta.tck.data.framework.junit.anno.ReadOnlyTest;
 import ee.jakarta.tck.data.framework.junit.anno.Standalone;
+import ee.jakarta.tck.data.framework.read.only.City;
 import ee.jakarta.tck.data.framework.read.only.Countries;
 import ee.jakarta.tck.data.framework.read.only.Country;
 import ee.jakarta.tck.data.framework.read.only.CountryPopulator;
@@ -44,7 +46,11 @@ import ee.jakarta.tck.data.framework.utilities.TestProperty;
 import jakarta.data.Limit;
 import jakarta.data.Order;
 import jakarta.data.Sort;
+import jakarta.data.constraint.AtLeast;
+import jakarta.data.constraint.AtMost;
 import jakarta.data.constraint.Between;
+import jakarta.data.constraint.GreaterThan;
+import jakarta.data.constraint.LessThan;
 import jakarta.inject.Inject;
 
 /**
@@ -84,6 +90,58 @@ public class ConstraintTests {
 
     @Assertion(id = "965", strategy = """
                     Use a repository find method that has a constraint
+                    parameter of type AtLeast.
+                    """)
+    public void testAtLeastConstraint() {
+        try {
+            List<String> found = countries.whereDaylightTimeStartsOnOrAfter(
+                    AtLeast.min(LocalDate.of(2025, Month.APRIL, 25)))
+                            .stream()
+                            .map(c -> c.getName() +
+                                      " @" + c.getDaylightTimeBegins())
+                            .collect(Collectors.toList());
+            assertEquals(List.of("Australia @2025-10-05",
+                                 "Chile @2025-09-06",
+                                 "Egypt @2025-04-25",
+                                 "New Zealand @2025-09-28"),
+                         found);
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
+                // Key-Value databases might not be capable of >=
+            } else {
+                throw x;
+            }
+        }
+    }
+
+    @Assertion(id = "965", strategy = """
+            Use a repository find method that has a constraint
+            parameter of type AtMost.
+            """)
+    public void testAtMostConstraint() {
+        try {
+            List<String> found = countries.countryCodesUpTo(AtMost.max("AM"))
+                            .stream()
+                            .sorted()
+                            .collect(Collectors.toList());
+            assertEquals(List.of("AD",
+                                 "AE",
+                                 "AF",
+                                 "AG",
+                                 "AL",
+                                 "AM"),
+                         found);
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
+                // Key-Value databases might not be capable of <=
+            } else {
+                throw x;
+            }
+        }
+    }
+
+    @Assertion(id = "965", strategy = """
+                    Use a repository find method that has a constraint
                     parameter of type Between.
                     """)
     public void testBetweenConstraint() {
@@ -101,6 +159,51 @@ public class ConstraintTests {
         } catch (UnsupportedOperationException x) {
             if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
                 // Key-Value databases might not be capable of Between.
+            } else {
+                throw x;
+            }
+        }
+    }
+
+    @Assertion(id = "965", strategy = """
+                    Use a repository find method that has a constraint
+                    parameter of type GreaterThan.
+               """)
+    public void testGreaterThanConstraint() {
+
+        try {
+            List<String> found = countries
+                    .withCapitalBiggerThan(GreaterThan.bound(1000000))
+                            .stream()
+                            .map(Country::getCapital)
+                            .map(capital -> capital.getName() +
+                                            " population " +
+                                            capital.getPopulation())
+                            .collect(Collectors.toList());
+            assertEquals(List.of("Ankara population 5747325",
+                                 "Singapore population 5917600",
+                                 "Santiago population 6310000",
+                                 "Bogota population 7181469",
+                                 "Hong Kong population 7534200",
+                                 "Riyadh population 7676654",
+                                 "Baghdad population 7682136",
+                                 "Hanoi population 8053663",
+                                 "Bangkok population 8305218",
+                                 "Tehran population 8693706",
+                                 "Dhaka population 8906039",
+                                 "London population 9002488",
+                                 "Mexico City population 9209944",
+                                 "Seoul population 9508451",
+                                 "Cairo population 10107125",
+                                 "Lima population 10151000",
+                                 "Jakarta population 10562088",
+                                 "Moscow population 13104177",
+                                 "Tokyo population 14094034",
+                                 "Beijing population 21858000"),
+                         found);
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
+                // Key-Value databases might not be capable of >
             } else {
                 throw x;
             }
@@ -428,6 +531,32 @@ public class ConstraintTests {
                 // NoSQL databases might not be capable of Like.
                 // Column and Key-Value databases might not be capable of And.
                 // Column and Key-Value databases might not be capable of sorting.
+            } else {
+                throw x;
+            }
+        }
+    }
+
+    @Assertion(id = "965", strategy = """
+            Use a repository find method that has a constraint
+            parameter of type LessThan.
+            """)
+    public void testLessThanConstraint() {
+        try {
+            List<String> found = countries.lessPopulousThan(
+                    LessThan.bound(10000L))
+                            .stream()
+                            .map(c -> c.getName() +
+                                      " population " + c.getPopulation())
+                            .sorted()
+                            .collect(Collectors.toList());
+            assertEquals(List.of("Nauru population 9930",
+                                 "Saint Pierre and Miquelon population 5070",
+                                 "Vatican City State population 764"),
+                         found);
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
+                // Key-Value databases might not be capable of <
             } else {
                 throw x;
             }

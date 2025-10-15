@@ -39,6 +39,7 @@ import jakarta.data.repository.Find;
 import jakarta.data.repository.Is;
 import jakarta.data.repository.OrderBy;
 import jakarta.data.repository.Repository;
+import jakarta.data.repository.Select;
 
 /**
  * This is a read only repository with statistics about countries.
@@ -59,8 +60,17 @@ public interface Countries extends CrudRepository<Country, String> {
             @By(_Country.CODE) @Is(In.class) Collection<String> codes);
 
     @Find
+    @Select(_Country.CODE)
+    List<String> countryCodesUpTo(
+            @By(_Country.CODE) AtMost<String> maxCode);
+
+    @Find
     Stream<Country> inRegion(
             @By(_Country.REGION) @Is Region regionOfWorld);
+
+    @Find
+    List<Country> lessPopulousThan(
+            @By(_Country.POPULATION) LessThan<Long> threshold);
 
     @Find
     @OrderBy(_Country.CODE)
@@ -100,6 +110,16 @@ public interface Countries extends CrudRepository<Country, String> {
     @OrderBy(_Country.NAME)
     List<Country> whereDaylightTimeEndsOn(
             @Is(EqualTo.class) LocalDate daylightTimeEnds);
+
+    @Find
+    @OrderBy(_Country.NAME)
+    List<Country> whereDaylightTimeStartsOnOrAfter(
+            @By(_Country.DAYLIGHTTIMEBEGINS) AtLeast<LocalDate> minStartDate);
+
+    @Find
+    @OrderBy(_Country.CAPITAL_POPULATION)
+    List<Country> withCapitalBiggerThan(
+            GreaterThan<Integer> capitalPopulation);
 
     @Find
     List<Country> withNameAfter(
