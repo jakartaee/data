@@ -31,6 +31,7 @@ import jakarta.data.constraint.GreaterThan;
 import jakarta.data.constraint.In;
 import jakarta.data.constraint.LessThan;
 import jakarta.data.constraint.Like;
+import jakarta.data.constraint.NotBetween;
 import jakarta.data.constraint.NotEqualTo;
 import jakarta.data.constraint.NotIn;
 import jakarta.data.constraint.NotLike;
@@ -64,6 +65,14 @@ public interface Countries extends CrudRepository<Country, String> {
     @Select(_Country.CODE)
     List<String> countryCodesUpTo(
             @By(_Country.CODE) AtMost<String> maxCode);
+
+    @Find
+    List<Country> excludingCountryCodeRange(
+            @By(_Country.CODE) NotBetween<String> excluded);
+
+    @Find
+    List<Country> excludingNames(
+            @By(_Country.NAME) NotLike excludePattern);
 
     @Find
     Stream<Country> inRegion(
@@ -138,6 +147,10 @@ public interface Countries extends CrudRepository<Country, String> {
     @OrderBy(_Country.CAPITAL_POPULATION)
     List<Country> withCapitalBiggerThan(
             GreaterThan<Integer> capitalPopulation);
+
+    @Find
+    List<Country> withCapitalNamed(
+            @By(_Country.CAPITAL_NAME) Like pattern);
 
     @Find
     Optional<Country> withCountryCode(

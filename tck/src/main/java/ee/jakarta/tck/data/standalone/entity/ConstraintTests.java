@@ -34,6 +34,7 @@ import ee.jakarta.tck.data.framework.junit.anno.AnyEntity;
 import ee.jakarta.tck.data.framework.junit.anno.Assertion;
 import ee.jakarta.tck.data.framework.junit.anno.ReadOnlyTest;
 import ee.jakarta.tck.data.framework.junit.anno.Standalone;
+import ee.jakarta.tck.data.framework.read.only.City;
 import ee.jakarta.tck.data.framework.read.only.Countries;
 import ee.jakarta.tck.data.framework.read.only.Country;
 import ee.jakarta.tck.data.framework.read.only.CountryPopulator;
@@ -51,8 +52,11 @@ import jakarta.data.constraint.EqualTo;
 import jakarta.data.constraint.GreaterThan;
 import jakarta.data.constraint.In;
 import jakarta.data.constraint.LessThan;
+import jakarta.data.constraint.Like;
+import jakarta.data.constraint.NotBetween;
 import jakarta.data.constraint.NotEqualTo;
 import jakarta.data.constraint.NotIn;
+import jakarta.data.constraint.NotLike;
 import jakarta.inject.Inject;
 
 /**
@@ -634,6 +638,232 @@ public class ConstraintTests {
     }
 
     @Assertion(id = "965", strategy = """
+            Use a repository find method that has a constraint
+            parameter of type Like. Supply a pattern that has
+            custom wildcard characters.
+            """)
+    public void testLikeConstraintCustomWildcards() {
+
+        try {
+            List<String> found = countries.withCapitalNamed(
+                    Like.pattern("1akar#", '1', '#'))
+                            .stream()
+                            .map(Country::getCapital)
+                            .map(City::getName)
+                            .sorted()
+                            .collect(Collectors.toList());
+            assertEquals(List.of("Dakar",
+                                 "Jakarta"),
+                         found);
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                // NoSQL databases might not be capable of Like.
+            } else {
+                throw x;
+            }
+        }
+    }
+
+    @Assertion(id = "965", strategy = """
+            Use a repository find method that has a constraint
+            parameter of type Like. Supply a pattern that has
+            custom wildcard characters and an escape character.
+            """)
+    public void testLikeConstraintCustomWildcardsAndEscape() {
+
+        try {
+            List<String> found = countries.withCapitalNamed(
+                    Like.pattern("Port$--!$", '!', '$', '-'))
+                            .stream()
+                            .map(Country::getCapital)
+                            .map(City::getName)
+                            .sorted()
+                            .collect(Collectors.toList());
+            assertEquals(List.of("Port-au-Prince",
+                                 "Porto-Novo"),
+                         found);
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                // NoSQL databases might not be capable of Like.
+            } else {
+                throw x;
+            }
+        }
+    }
+
+    @Assertion(id = "965", strategy = """
+            Use a repository find method that has a constraint
+            parameter of type Like. Supply a literal.
+            """)
+    public void testLikeConstraintLiteral() {
+
+        try {
+            List<String> found = countries.withCapitalNamed(
+                    Like.literal("Warsaw"))
+                            .stream()
+                            .map(Country::getName)
+                            .sorted()
+                            .collect(Collectors.toList());
+            assertEquals(List.of("Poland"),
+                         found);
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                // NoSQL databases might not be capable of Like.
+            } else {
+                throw x;
+            }
+        }
+    }
+
+    @Assertion(id = "965", strategy = """
+            Use a repository find method that has a constraint
+            parameter of type Like. Supply a pattern that uses
+            the standard _ and % wildcard characters.
+            """)
+    public void testLikeConstraintPattern() {
+
+        try {
+            List<String> found = countries.withCapitalNamed(
+                    Like.pattern("_all%"))
+                            .stream()
+                            .map(Country::getCapital)
+                            .map(City::getName)
+                            .sorted()
+                            .collect(Collectors.toList());
+            assertEquals(List.of("Tallinn",
+                                 "Valletta"),
+                         found);
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                // NoSQL databases might not be capable of Like.
+            } else {
+                throw x;
+            }
+        }
+    }
+
+    @Assertion(id = "965", strategy = """
+            Use a repository find method that has a constraint
+            parameter of type Like. Supply a prefix.
+            """)
+    public void testLikeConstraintPrefix() {
+
+        try {
+            List<String> found = countries.withCapitalNamed(
+                    Like.prefix("San"))
+                            .stream()
+                            .map(Country::getCapital)
+                            .map(City::getName)
+                            .sorted()
+                            .collect(Collectors.toList());
+            assertEquals(List.of("San Jose",
+                                 "San Juan",
+                                 "San Salvador",
+                                 "Sanaa",
+                                 "Santiago",
+                                 "Santo Domingo"),
+                         found);
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                // NoSQL databases might not be capable of Like.
+            } else {
+                throw x;
+            }
+        }
+    }
+
+    @Assertion(id = "965", strategy = """
+            Use a repository find method that has a constraint
+            parameter of type Like. Supply a substring.
+            """)
+    public void testLikeConstraintSubstring() {
+
+        try {
+            List<String> found = countries.withCapitalNamed(
+                    Like.substring("ey"))
+                            .stream()
+                            .map(Country::getCapital)
+                            .map(City::getName)
+                            .sorted()
+                            .collect(Collectors.toList());
+            assertEquals(List.of("Niamey",
+                                 "Reykjavík"),
+                         found);
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                // NoSQL databases might not be capable of Like.
+            } else {
+                throw x;
+            }
+        }
+    }
+
+    @Assertion(id = "965", strategy = """
+            Use a repository find method that has a constraint
+            parameter of type Like. Supply a suffix.
+            """)
+    public void testLikeConstraintSuffix() {
+
+        try {
+            List<String> found = countries.withCapitalNamed(
+                    Like.suffix("ila"))
+                            .stream()
+                            .map(Country::getCapital)
+                            .map(City::getName)
+                            .sorted()
+                            .collect(Collectors.toList());
+            assertEquals(List.of("Manila",
+                                 "Port Vila"),
+                         found);
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                // NoSQL databases might not be capable of Like.
+            } else {
+                throw x;
+            }
+        }
+    }
+
+    @Assertion(id = "965", strategy = """
+            Use a repository find method that has a constraint
+            parameter of type NotBetween.
+            """)
+    public void testNotBetweenConstraint() {
+
+        try {
+            List<String> found = countries.excludingCountryCodeRange(
+                    NotBetween.bounds("AG", "UY"))
+                            .stream()
+                            .map(Country::getCode)
+                            .sorted()
+                            .collect(Collectors.toList());
+            assertEquals(List.of("AD",
+                                 "AE",
+                                 "AF",
+                                 "UZ",
+                                 "VA",
+                                 "VC",
+                                 "VE",
+                                 "VN",
+                                 "VU",
+                                 "WS",
+                                 "XK",
+                                 "XW",
+                                 "YE",
+                                 "ZA",
+                                 "ZM",
+                                 "ZW"),
+                         found);
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
+                // Key-Value databases might not be capable of NotBetween.
+            } else {
+                throw x;
+            }
+        }
+    }
+
+    @Assertion(id = "965", strategy = """
             Use a repository find method that has constraint
             parameters of type NotEqualTo.
             """)
@@ -775,6 +1005,42 @@ public class ConstraintTests {
                              "Zambia",
                              "Zimbabwe"),
                      found);
+    }
+
+    @Assertion(id = "965", strategy = """
+            Use a repository find method that has constraint
+            parameters of type NotLike. Supply a pattern that has
+            custom wildcard characters.
+            """)
+    public void testNotLikeConstraintCustomWildcards() {
+
+        try {
+            List<String> found = countries.excludingNames(
+                    // exclude names with 5 or more characters
+                    NotLike.pattern("*-----*", '-', '*'))
+                            .stream()
+                            .map(Country::getName)
+                            .sorted()
+                            .collect(Collectors.toList());
+            assertEquals(List.of("Chad",
+                                 "Cuba",
+                                 "Fiji",
+                                 "Guam",
+                                 "Iran",
+                                 "Iraq",
+                                 "Laos",
+                                 "Mali",
+                                 "Oman",
+                                 "Peru",
+                                 "Togo"),
+                         found);
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                // NoSQL databases might not be capable of NotLike.
+            } else {
+                throw x;
+            }
+        }
     }
 
 }
