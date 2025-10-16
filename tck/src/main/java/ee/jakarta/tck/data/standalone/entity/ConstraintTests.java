@@ -15,7 +15,6 @@
  */
 package ee.jakarta.tck.data.standalone.entity;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -35,7 +34,6 @@ import ee.jakarta.tck.data.framework.junit.anno.AnyEntity;
 import ee.jakarta.tck.data.framework.junit.anno.Assertion;
 import ee.jakarta.tck.data.framework.junit.anno.ReadOnlyTest;
 import ee.jakarta.tck.data.framework.junit.anno.Standalone;
-import ee.jakarta.tck.data.framework.read.only.City;
 import ee.jakarta.tck.data.framework.read.only.Countries;
 import ee.jakarta.tck.data.framework.read.only.Country;
 import ee.jakarta.tck.data.framework.read.only.CountryPopulator;
@@ -49,8 +47,12 @@ import jakarta.data.Sort;
 import jakarta.data.constraint.AtLeast;
 import jakarta.data.constraint.AtMost;
 import jakarta.data.constraint.Between;
+import jakarta.data.constraint.EqualTo;
 import jakarta.data.constraint.GreaterThan;
+import jakarta.data.constraint.In;
 import jakarta.data.constraint.LessThan;
+import jakarta.data.constraint.NotEqualTo;
+import jakarta.data.constraint.NotIn;
 import jakarta.inject.Inject;
 
 /**
@@ -166,6 +168,40 @@ public class ConstraintTests {
     }
 
     @Assertion(id = "965", strategy = """
+            Use a repository find method that has constraint
+            parameters of type EqualTo.
+            """)
+    public void testEqualToConstraint() {
+
+        Country canada = countries.withCountryCode(
+                EqualTo.value("CA"))
+                .orElseThrow();
+
+        assertEquals("CA",
+                     canada.getCode());
+        assertEquals("Canada",
+                     canada.getName());
+        assertEquals(Region.NORTH_AMERICA,
+                     canada.getRegion());
+        assertEquals(9093507L,
+                     canada.getArea());
+        assertEquals(39187155L,
+                     canada.getPopulation());
+        assertEquals(2242000000000L,
+                     canada.getGdp());
+        assertEquals(1394524000000L,
+                     canada.getDebt());
+        assertEquals(LocalDate.of(2025, Month.MARCH, 9),
+                     canada.getDaylightTimeBegins());
+        assertEquals(LocalDate.of(2025, Month.NOVEMBER, 2),
+                     canada.getDaylightTimeEnds());
+        assertEquals("Ottawa",
+                     canada.getCapital().getName());
+        assertEquals(1017449,
+                     canada.getCapital().getPopulation());
+    }
+
+    @Assertion(id = "965", strategy = """
                     Use a repository find method that has a constraint
                     parameter of type GreaterThan.
                """)
@@ -208,6 +244,40 @@ public class ConstraintTests {
                 throw x;
             }
         }
+    }
+
+    @Assertion(id = "965", strategy = """
+            Use a repository find method that has a constraint
+            parameter of type In.
+            """)
+    public void testInConstraint() {
+
+        List<String> found;
+        found = countries.namedAnyOf(
+                In.values(Set.of("Chile",
+                                 "Cyprus",
+                                 "Croatia")))
+                        .stream()
+                        .map(Country::getCode)
+                        .sorted()
+                        .collect(Collectors.toList());
+        assertEquals(List.of("CL",
+                             "CY",
+                             "HR"),
+                     found);
+
+        found = countries.namedAnyOf(
+                In.values("Sierra Leone",
+                          "Senegal",
+                          "San Marino"))
+                        .stream()
+                        .map(Country::getCode)
+                        .sorted()
+                        .collect(Collectors.toList());
+        assertEquals(List.of("SL",
+                             "SM",
+                             "SN"),
+                     found);
     }
 
     @Assertion(id = "965", strategy = """
@@ -561,6 +631,150 @@ public class ConstraintTests {
                 throw x;
             }
         }
+    }
+
+    @Assertion(id = "965", strategy = """
+            Use a repository find method that has constraint
+            parameters of type NotEqualTo.
+            """)
+    public void testNotEqualToConstraint() {
+
+        try {
+            List<String> found = countries.outsideOfTheseRegions(
+                    NotEqualTo.value(Region.AFRICA),
+                    NotEqualTo.value(Region.ASIA),
+                    NotEqualTo.value(Region.EUROPE),
+                    NotEqualTo.value(Region.NORTH_AMERICA),
+                    NotEqualTo.value(Region.OCEANIA),
+                    NotEqualTo.value(Region.SOUTH_AMERICA))
+                            .stream()
+                            .map(Country::getName)
+                            .sorted()
+                            .collect(Collectors.toList());
+            assertEquals(List.of("Antigua and Barbuda",
+                                 "Aruba",
+                                 "Bahamas",
+                                 "Barbados",
+                                 "Cuba",
+                                 "Dominica",
+                                 "Dominican Republic",
+                                 "Grenada",
+                                 "Haiti",
+                                 "Jamaica",
+                                 "Puerto Rico",
+                                 "Saint Kitts and Nevis",
+                                 "Saint Lucia",
+                                 "Saint Vincent and the Grenadines",
+                                 "Trinidad and Tobago",
+                                 "Turks and Caicos Islands"),
+                         found);
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                // Column and Key-Value databases might not be capable of And.
+            } else {
+                throw x;
+            }
+        }
+    }
+
+    @Assertion(id = "965", strategy = """
+            Use a repository find method that has constraint
+            parameters of type NotIn.
+            """)
+    public void testNotInConstraint() {
+
+        List<String> found;
+        found = countries.notInRegions(
+                NotIn.values(Set.of(Region.AFRICA,
+                                    Region.ASIA,
+                                    Region.CARIBBEAN,
+                                    Region.EUROPE,
+                                    Region.OCEANIA,
+                                    Region.SOUTH_AMERICA)))
+                        .stream()
+                        .map(Country::getName)
+                        .sorted()
+                        .collect(Collectors.toList());
+        assertEquals(List.of("Belize",
+                             "Bermuda",
+                             "Canada",
+                             "Costa Rica",
+                             "El Salvador",
+                             "Greenland",
+                             "Guatemala",
+                             "Honduras",
+                             "Mexico",
+                             "Nicaragua",
+                             "Panama",
+                             "Saint Pierre and Miquelon",
+                             "United States of America"),
+                     found);
+
+        found = countries.notInRegions(
+                NotIn.values(Region.ASIA,
+                             Region.CARIBBEAN,
+                             Region.EUROPE,
+                             Region.NORTH_AMERICA,
+                             Region.OCEANIA,
+                             Region.SOUTH_AMERICA))
+                        .stream()
+                        .map(Country::getName)
+                        .sorted()
+                        .collect(Collectors.toList());
+        assertEquals(List.of("Algeria",
+                             "Angola",
+                             "Benin",
+                             "Botswana",
+                             "Burkina Faso",
+                             "Burundi",
+                             "Cameroon",
+                             "Cape Verde",
+                             "Central African Republic",
+                             "Chad",
+                             "Comoros",
+                             "Congo",
+                             "Djibouti",
+                             "Egypt",
+                             "Equatorial Guinea",
+                             "Eritrea",
+                             "Eswatini",
+                             "Ethiopia",
+                             "Gabon",
+                             "Gambia",
+                             "Ghana",
+                             "Guinea",
+                             "Guinea-Bissau",
+                             "Ivory Coast",
+                             "Kenya",
+                             "Lesotho",
+                             "Liberia",
+                             "Libya",
+                             "Madagascar",
+                             "Malawi",
+                             "Mali",
+                             "Mauritania",
+                             "Mauritius",
+                             "Morocco",
+                             "Mozambique",
+                             "Namibia",
+                             "Niger",
+                             "Nigeria",
+                             "Rwanda",
+                             "Sao Tome and Principe",
+                             "Senegal",
+                             "Seychelles",
+                             "Sierra Leone",
+                             "Somalia",
+                             "South Africa",
+                             "South Sudan",
+                             "Sudan",
+                             "Tanzania",
+                             "Togo",
+                             "Tunisia",
+                             "Uganda",
+                             "Zambia",
+                             "Zimbabwe"),
+                     found);
     }
 
 }

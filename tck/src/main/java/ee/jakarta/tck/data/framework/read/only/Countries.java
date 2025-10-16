@@ -18,6 +18,7 @@ package ee.jakarta.tck.data.framework.read.only;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import jakarta.data.Limit;
@@ -73,6 +74,10 @@ public interface Countries extends CrudRepository<Country, String> {
             @By(_Country.POPULATION) LessThan<Long> threshold);
 
     @Find
+    List<Country> namedAnyOf(
+            @By(_Country.NAME) In<String> names);
+
+    @Find
     @OrderBy(_Country.CODE)
     List<Country> namedLike(
             @By(_Country.NAME) @Is(Like.class) String pattern);
@@ -89,6 +94,10 @@ public interface Countries extends CrudRepository<Country, String> {
             @Is(AtMost.class) String name);
 
     @Find
+    List<Country> notInRegions(
+            @By(_Country.REGION) NotIn<Region> excluded);
+
+    @Find
     List<Country> outsideOfRegion(
             @Is(NotEqualTo.class) Region region,
             Order<Country> order,
@@ -97,6 +106,15 @@ public interface Countries extends CrudRepository<Country, String> {
     @Find
     List<Country> outsideOfRegions(
             @By(_Country.REGION) @Is(NotIn.class) Collection<Region> excluded);
+
+    @Find
+    List<Country> outsideOfTheseRegions(
+            @By(_Country.REGION) NotEqualTo<Region> exclude1,
+            @By(_Country.REGION) NotEqualTo<Region> exclude2,
+            @By(_Country.REGION) NotEqualTo<Region> exclude3,
+            @By(_Country.REGION) NotEqualTo<Region> exclude4,
+            @By(_Country.REGION) NotEqualTo<Region> exclude5,
+            @By(_Country.REGION) NotEqualTo<Region> exclude6);
 
     @Find
     Stream<Country> populated(
@@ -120,6 +138,10 @@ public interface Countries extends CrudRepository<Country, String> {
     @OrderBy(_Country.CAPITAL_POPULATION)
     List<Country> withCapitalBiggerThan(
             GreaterThan<Integer> capitalPopulation);
+
+    @Find
+    Optional<Country> withCountryCode(
+            @By(_Country.CODE) EqualTo<String> code);
 
     @Find
     List<Country> withNameAfter(
