@@ -15,6 +15,10 @@
  */
 package ee.jakarta.tck.data.standalone.entity;
 
+import static ee.jakarta.tck.data.framework.read.only.Region.AFRICA;
+import static ee.jakarta.tck.data.framework.read.only.Region.ASIA;
+import static ee.jakarta.tck.data.framework.read.only.Region.EUROPE;
+import static ee.jakarta.tck.data.framework.read.only.Region.OCEANIA;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -1034,6 +1038,211 @@ public class ConstraintTests {
                                  "Peru",
                                  "Togo"),
                          found);
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                // NoSQL databases might not be capable of NotLike.
+            } else {
+                throw x;
+            }
+        }
+    }
+
+    @Assertion(id = "965", strategy = """
+            Use a repository find method that has constraint
+            parameters of type NotLike. Supply a pattern that has
+            custom wildcard characters and an escape character.
+            """)
+    public void testNotLikeConstraintCustomWildcardsAndEscape() {
+
+        try {
+            List<String> found = countries.excludingNames(
+                    // intentionally reversed so that % is the single character
+                    // wildcard and _ is the multiple character wildcard.
+                    NotLike.pattern("_%aa_\"", '%', '_', 'a'))
+                            .stream()
+                            .map(Country::getName)
+                            .sorted()
+                            .collect(Collectors.toList());
+            assertEquals(List.of("Belgium",
+                                 "Belize",
+                                 "Benin",
+                                 "Brunei",
+                                 "Burundi",
+                                 "Chile",
+                                 "Comoros",
+                                 "Congo",
+                                 "Cyprus",
+                                 "Czech Republic",
+                                 "Djibouti",
+                                 "Egypt",
+                                 "Fiji",
+                                 "Greece",
+                                 "Guernsey",
+                                 "Hong Kong",
+                                 "Jersey",
+                                 "Kosovo",
+                                 "Lesotho",
+                                 "Liechtenstein",
+                                 "Luxembourg",
+                                 "Mexico",
+                                 "Montenegro",
+                                 "Morocco",
+                                 "Niger",
+                                 "Peru",
+                                 "Philippines",
+                                 "Puerto Rico",
+                                 "Seychelles",
+                                 "Sweden",
+                                 "Togo",
+                                 "Turkey",
+                                 "United Kingdom",
+                                 "Yemen"),
+                         found);
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                // NoSQL databases might not be capable of NotLike.
+            } else {
+                throw x;
+            }
+        }
+    }
+
+    @Assertion(id = "965", strategy = """
+            Use a repository find method that has constraint
+            parameters of type NotLike. Supply a literal.
+            """)
+    public void testNotLikeConstraintLiteral() {
+
+        try {
+            List<String> found = countries.excludingNames(
+                    NotLike.literal("Luxembourg"))
+                    .stream()
+                    .map(Country::getName)
+                    .collect(Collectors.toList());
+
+            assertEquals(CountryPopulator.EXPECTED_TOTAL - 1,
+                         found.size());
+            assertEquals(false, found.contains("Luxembourg"));
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                // NoSQL databases might not be capable of NotLike.
+            } else {
+                throw x;
+            }
+        }
+    }
+
+    @Assertion(id = "965", strategy = """
+            Use a repository find method that has constraint
+            parameters of type NotLike. Supply a pattern that uses
+            the standard _ and % wildcard characters.
+            """)
+    public void testNotLikeConstraintPattern() {
+
+        try {
+            List<String> found = countries.excludingNames(
+                    // exclude names with 4 or more characters
+                    NotLike.pattern("%____%"))
+                            .stream()
+                            .map(Country::getName)
+                            .sorted()
+                            .collect(Collectors.toList());
+            assertEquals(List.of(),
+                         found);
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                // NoSQL databases might not be capable of NotLike.
+            } else {
+                throw x;
+            }
+        }
+    }
+
+    @Assertion(id = "965", strategy = """
+            Use a repository find method that has constraint
+            parameters of type NotLike. Supply a prefix.
+            """)
+    public void testNotLikeConstraintPrefix() {
+
+        try {
+            List<String> found = countries.excludingNames(
+                    NotLike.prefix("Ma"))
+                            .stream()
+                            .map(Country::getName)
+                            .collect(Collectors.toList());
+            assertEquals(CountryPopulator.EXPECTED_TOTAL - 10,
+                         found.size());
+            assertEquals(false, found.contains("Macau"));
+            assertEquals(false, found.contains("Madagascar"));
+            assertEquals(false, found.contains("Malawi"));
+            assertEquals(false, found.contains("Malaysia"));
+            assertEquals(false, found.contains("Maldives"));
+            assertEquals(false, found.contains("Mali"));
+            assertEquals(false, found.contains("Malta"));
+            assertEquals(false, found.contains("Marshall Islands"));
+            assertEquals(false, found.contains("Mauritania"));
+            assertEquals(false, found.contains("Mauritius"));
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                // NoSQL databases might not be capable of NotLike.
+            } else {
+                throw x;
+            }
+        }
+    }
+
+    @Assertion(id = "965", strategy = """
+            Use a repository find method that has constraint
+            parameters of type NotLike. Supply a substring.
+            """)
+    public void testNotLikeConstraintSubstring() {
+
+        try {
+            List<String> found = countries.excludingNames(
+                    NotLike.substring("an"))
+                    .stream()
+                    .map(Country::getName)
+                    .collect(Collectors.toList());
+
+            assertEquals(CountryPopulator.EXPECTED_TOTAL - 60,
+                         found.size());
+            assertEquals(false, found.contains("Rwanda"));
+            assertEquals(false, found.contains("South Sudan"));
+            assertEquals(false, found.contains("Tanzania"));
+            assertEquals(false, found.contains("Uganda"));
+            assertEquals(false, found.contains("Vanuatu"));
+            // ... 55 more
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                // NoSQL databases might not be capable of NotLike.
+            } else {
+                throw x;
+            }
+        }
+    }
+
+    @Assertion(id = "965", strategy = """
+            Use a repository find method that has constraint
+            parameters of type NotLike. Supply a suffix.
+            """)
+    public void testNotLikeConstraintSuffix() {
+
+        try {
+            List<String> found = countries.excludingNames(
+                    NotLike.suffix("land"))
+                            .stream()
+                            .map(Country::getName)
+                            .collect(Collectors.toList());
+            assertEquals(CountryPopulator.EXPECTED_TOTAL - 8,
+                         found.size());
+            assertEquals(false, found.contains("Finland"));
+            assertEquals(false, found.contains("Greenland"));
+            assertEquals(false, found.contains("Icland"));
+            assertEquals(false, found.contains("Ireland"));
+            assertEquals(false, found.contains("New Zealand"));
+            assertEquals(false, found.contains("Poland"));
+            assertEquals(false, found.contains("Switzerland"));
+            assertEquals(false, found.contains("Thailand"));
         } catch (UnsupportedOperationException x) {
             if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
                 // NoSQL databases might not be capable of NotLike.
