@@ -15,10 +15,6 @@
  */
 package ee.jakarta.tck.data.standalone.entity;
 
-import static ee.jakarta.tck.data.framework.read.only.Region.AFRICA;
-import static ee.jakarta.tck.data.framework.read.only.Region.ASIA;
-import static ee.jakarta.tck.data.framework.read.only.Region.EUROPE;
-import static ee.jakarta.tck.data.framework.read.only.Region.OCEANIA;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
