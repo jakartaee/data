@@ -61,6 +61,8 @@ import jakarta.data.constraint.NotBetween;
 import jakarta.data.constraint.NotEqualTo;
 import jakarta.data.constraint.NotIn;
 import jakarta.data.constraint.NotLike;
+import jakarta.data.constraint.NotNull;
+import jakarta.data.constraint.Null;
 import jakarta.inject.Inject;
 
 /**
@@ -1246,6 +1248,56 @@ public class ConstraintTests {
         } catch (UnsupportedOperationException x) {
             if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
                 // NoSQL databases might not be capable of NotLike.
+            } else {
+                throw x;
+            }
+        }
+    }
+
+    @Assertion(id = "965", strategy = """
+            Use a repository find method that has constraint
+            parameters of type NotNull.
+            """)
+    public void testNotNullConstraint() {
+
+        try {
+            List<Country> found = countries.withDaylightTime(
+                    NotNull.instance());
+
+            assertEquals(60,
+                         found.size());
+
+            for (Country country : found) {
+                assertEquals(false, country.getDaylightTimeBegins() == null);
+            }
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                // NoSQL databases might not be capable of the Null comparison
+            } else {
+                throw x;
+            }
+        }
+    }
+
+    @Assertion(id = "965", strategy = """
+            Use a repository find method that has constraint
+            parameters of type Null.
+            """)
+    public void testNullConstraint() {
+
+        try {
+            List<Country> found = countries.withoutDaylightTime(
+                    Null.instance());
+
+            assertEquals(150,
+                         found.size());
+
+            for (Country country : found) {
+                assertEquals(null, country.getDaylightTimeBegins());
+            }
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                // NoSQL databases might not be capable of the Null comparison
             } else {
                 throw x;
             }

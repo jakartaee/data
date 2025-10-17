@@ -35,6 +35,8 @@ import jakarta.data.constraint.NotBetween;
 import jakarta.data.constraint.NotEqualTo;
 import jakarta.data.constraint.NotIn;
 import jakarta.data.constraint.NotLike;
+import jakarta.data.constraint.NotNull;
+import jakarta.data.constraint.Null;
 import jakarta.data.repository.By;
 import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.Find;
@@ -157,7 +159,15 @@ public interface Countries extends CrudRepository<Country, String> {
             @By(_Country.CODE) EqualTo<String> code);
 
     @Find
+    List<Country> withDaylightTime(
+            @By(_Country.DAYLIGHTTIMEBEGINS) NotNull<LocalDate> requireNonNull);
+
+    @Find
     List<Country> withNameAfter(
             @Is(GreaterThan.class) String name);
+
+    @Find
+    List<Country> withoutDaylightTime(
+            @By(_Country.DAYLIGHTTIMEBEGINS) Null<LocalDate> requireNull);
 
 }
