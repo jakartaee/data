@@ -827,6 +827,37 @@ public class ConstraintTests {
     }
 
     @Assertion(id = "965", strategy = """
+            Use a repository find method that has multiple
+            constraint subtype parameters.
+            """)
+    public void testMultipleConstraintParameters() {
+
+        try {
+            List<String> found = countries.highlyPopulousInRegion(
+                    EqualTo.value(Region.AFRICA),
+                    AtLeast.min(100000000L),
+                    Order.by(_Country.population.desc(),
+                             _Country.name.asc()))
+                            .stream()
+                            .map(c -> c.getName() + ':' + c.getPopulation())
+                            .collect(Collectors.toList());
+            assertEquals(List.of("Nigeria:242794751",
+                                 "Ethiopia:121372632",
+                                 "Congo:119038825",
+                                 "Egypt:112870457"),
+                         found);
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable of And.
+                // Column and Key-Value databases might not be capable of sorting.
+                // Key-Value databases might not be capable of <
+            } else {
+                throw x;
+            }
+        }
+    }
+
+    @Assertion(id = "965", strategy = """
             Use a repository find method that has a constraint
             parameter of type NotBetween.
             """)
@@ -871,42 +902,22 @@ public class ConstraintTests {
             """)
     public void testNotEqualToConstraint() {
 
-        try {
-            List<String> found = countries.outsideOfTheseRegions(
-                    NotEqualTo.value(Region.AFRICA),
-                    NotEqualTo.value(Region.ASIA),
-                    NotEqualTo.value(Region.EUROPE),
-                    NotEqualTo.value(Region.NORTH_AMERICA),
-                    NotEqualTo.value(Region.OCEANIA),
-                    NotEqualTo.value(Region.SOUTH_AMERICA))
-                            .stream()
-                            .map(Country::getName)
-                            .sorted()
-                            .collect(Collectors.toList());
-            assertEquals(List.of("Antigua and Barbuda",
-                                 "Aruba",
-                                 "Bahamas",
-                                 "Barbados",
-                                 "Cuba",
-                                 "Dominica",
-                                 "Dominican Republic",
-                                 "Grenada",
-                                 "Haiti",
-                                 "Jamaica",
-                                 "Puerto Rico",
-                                 "Saint Kitts and Nevis",
-                                 "Saint Lucia",
-                                 "Saint Vincent and the Grenadines",
-                                 "Trinidad and Tobago",
-                                 "Turks and Caicos Islands"),
-                         found);
-        } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
-                // Column and Key-Value databases might not be capable of And.
-            } else {
-                throw x;
-            }
-        }
+        List<String> found = countries.inSomeOtherRegionThan(
+                NotEqualTo.value(Region.ASIA))
+                        .stream()
+                        .map(Country::getName)
+                        .collect(Collectors.toList());
+
+        assertEquals(158, found.size());
+        assertEquals(false, found.contains("China"));
+        assertEquals(false, found.contains("Thailand"));
+        assertEquals(false, found.contains("Pakistan"));
+        assertEquals(true, found.contains("Mexico"));
+        assertEquals(true, found.contains("Romania"));
+        assertEquals(true, found.contains("Mozambique"));
+        assertEquals(true, found.contains("Australia"));
+        assertEquals(true, found.contains("Ecuador"));
+        assertEquals(true, found.contains("Cuba"));
     }
 
     @Assertion(id = "965", strategy = """

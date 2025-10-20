@@ -77,8 +77,18 @@ public interface Countries extends CrudRepository<Country, String> {
             @By(_Country.NAME) NotLike excludePattern);
 
     @Find
+    List<Country> highlyPopulousInRegion(
+            @By(_Country.REGION) EqualTo<Region> region,
+            @By(_Country.POPULATION) AtLeast<Long> minPopulation,
+            Order<Country> order);
+
+    @Find
     Stream<Country> inRegion(
             @By(_Country.REGION) @Is Region regionOfWorld);
+
+    @Find
+    List<Country> inSomeOtherRegionThan(
+            @By(_Country.REGION) NotEqualTo<Region> exclude);
 
     @Find
     List<Country> lessPopulousThan(
@@ -117,15 +127,6 @@ public interface Countries extends CrudRepository<Country, String> {
     @Find
     List<Country> outsideOfRegions(
             @By(_Country.REGION) @Is(NotIn.class) Collection<Region> excluded);
-
-    @Find
-    List<Country> outsideOfTheseRegions(
-            @By(_Country.REGION) NotEqualTo<Region> exclude1,
-            @By(_Country.REGION) NotEqualTo<Region> exclude2,
-            @By(_Country.REGION) NotEqualTo<Region> exclude3,
-            @By(_Country.REGION) NotEqualTo<Region> exclude4,
-            @By(_Country.REGION) NotEqualTo<Region> exclude5,
-            @By(_Country.REGION) NotEqualTo<Region> exclude6);
 
     @Find
     Stream<Country> populated(
