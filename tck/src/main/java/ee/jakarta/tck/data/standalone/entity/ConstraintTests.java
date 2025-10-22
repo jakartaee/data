@@ -34,6 +34,7 @@ import ee.jakarta.tck.data.framework.junit.anno.AnyEntity;
 import ee.jakarta.tck.data.framework.junit.anno.Assertion;
 import ee.jakarta.tck.data.framework.junit.anno.ReadOnlyTest;
 import ee.jakarta.tck.data.framework.junit.anno.Standalone;
+import ee.jakarta.tck.data.framework.read.only.City;
 import ee.jakarta.tck.data.framework.read.only.Countries;
 import ee.jakarta.tck.data.framework.read.only.Country;
 import ee.jakarta.tck.data.framework.read.only.CountryPopulator;
@@ -44,7 +45,20 @@ import ee.jakarta.tck.data.framework.utilities.TestProperty;
 import jakarta.data.Limit;
 import jakarta.data.Order;
 import jakarta.data.Sort;
+import jakarta.data.constraint.AtLeast;
+import jakarta.data.constraint.AtMost;
 import jakarta.data.constraint.Between;
+import jakarta.data.constraint.EqualTo;
+import jakarta.data.constraint.GreaterThan;
+import jakarta.data.constraint.In;
+import jakarta.data.constraint.LessThan;
+import jakarta.data.constraint.Like;
+import jakarta.data.constraint.NotBetween;
+import jakarta.data.constraint.NotEqualTo;
+import jakarta.data.constraint.NotIn;
+import jakarta.data.constraint.NotLike;
+import jakarta.data.constraint.NotNull;
+import jakarta.data.constraint.Null;
 import jakarta.inject.Inject;
 
 /**
@@ -84,6 +98,58 @@ public class ConstraintTests {
 
     @Assertion(id = "965", strategy = """
                     Use a repository find method that has a constraint
+                    parameter of type AtLeast.
+                    """)
+    public void testAtLeastConstraint() {
+        try {
+            List<String> found = countries.whereDaylightTimeStartsOnOrAfter(
+                    AtLeast.min(LocalDate.of(2025, Month.APRIL, 25)))
+                            .stream()
+                            .map(c -> c.getName() +
+                                      " @" + c.getDaylightTimeBegins())
+                            .collect(Collectors.toList());
+            assertEquals(List.of("Australia @2025-10-05",
+                                 "Chile @2025-09-06",
+                                 "Egypt @2025-04-25",
+                                 "New Zealand @2025-09-28"),
+                         found);
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
+                // Key-Value databases might not be capable of >=
+            } else {
+                throw x;
+            }
+        }
+    }
+
+    @Assertion(id = "965", strategy = """
+            Use a repository find method that has a constraint
+            parameter of type AtMost.
+            """)
+    public void testAtMostConstraint() {
+        try {
+            List<String> found = countries.countryCodesUpTo(AtMost.max("AM"))
+                            .stream()
+                            .sorted()
+                            .collect(Collectors.toList());
+            assertEquals(List.of("AD",
+                                 "AE",
+                                 "AF",
+                                 "AG",
+                                 "AL",
+                                 "AM"),
+                         found);
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
+                // Key-Value databases might not be capable of <=
+            } else {
+                throw x;
+            }
+        }
+    }
+
+    @Assertion(id = "965", strategy = """
+                    Use a repository find method that has a constraint
                     parameter of type Between.
                     """)
     public void testBetweenConstraint() {
@@ -105,6 +171,119 @@ public class ConstraintTests {
                 throw x;
             }
         }
+    }
+
+    @Assertion(id = "965", strategy = """
+            Use a repository find method that has constraint
+            parameters of type EqualTo.
+            """)
+    public void testEqualToConstraint() {
+
+        Country canada = countries.withCountryCode(
+                EqualTo.value("CA"))
+                .orElseThrow();
+
+        assertEquals("CA",
+                     canada.getCode());
+        assertEquals("Canada",
+                     canada.getName());
+        assertEquals(Region.NORTH_AMERICA,
+                     canada.getRegion());
+        assertEquals(9093507L,
+                     canada.getArea());
+        assertEquals(39187155L,
+                     canada.getPopulation());
+        assertEquals(2242000000000L,
+                     canada.getGdp());
+        assertEquals(1394524000000L,
+                     canada.getDebt());
+        assertEquals(LocalDate.of(2025, Month.MARCH, 9),
+                     canada.getDaylightTimeBegins());
+        assertEquals(LocalDate.of(2025, Month.NOVEMBER, 2),
+                     canada.getDaylightTimeEnds());
+        assertEquals("Ottawa",
+                     canada.getCapital().getName());
+        assertEquals(1017449,
+                     canada.getCapital().getPopulation());
+    }
+
+    @Assertion(id = "965", strategy = """
+                    Use a repository find method that has a constraint
+                    parameter of type GreaterThan.
+               """)
+    public void testGreaterThanConstraint() {
+
+        try {
+            List<String> found = countries
+                    .withCapitalBiggerThan(GreaterThan.bound(1000000))
+                            .stream()
+                            .map(Country::getCapital)
+                            .map(capital -> capital.getName() +
+                                            " population " +
+                                            capital.getPopulation())
+                            .collect(Collectors.toList());
+            assertEquals(List.of("Ankara population 5747325",
+                                 "Singapore population 5917600",
+                                 "Santiago population 6310000",
+                                 "Bogota population 7181469",
+                                 "Hong Kong population 7534200",
+                                 "Riyadh population 7676654",
+                                 "Baghdad population 7682136",
+                                 "Hanoi population 8053663",
+                                 "Bangkok population 8305218",
+                                 "Tehran population 8693706",
+                                 "Dhaka population 8906039",
+                                 "London population 9002488",
+                                 "Mexico City population 9209944",
+                                 "Seoul population 9508451",
+                                 "Cairo population 10107125",
+                                 "Lima population 10151000",
+                                 "Jakarta population 10562088",
+                                 "Moscow population 13104177",
+                                 "Tokyo population 14094034",
+                                 "Beijing population 21858000"),
+                         found);
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
+                // Key-Value databases might not be capable of >
+            } else {
+                throw x;
+            }
+        }
+    }
+
+    @Assertion(id = "965", strategy = """
+            Use a repository find method that has a constraint
+            parameter of type In.
+            """)
+    public void testInConstraint() {
+
+        List<String> found;
+        found = countries.namedAnyOf(
+                In.values(Set.of("Chile",
+                                 "Cyprus",
+                                 "Croatia")))
+                        .stream()
+                        .map(Country::getCode)
+                        .sorted()
+                        .collect(Collectors.toList());
+        assertEquals(List.of("CL",
+                             "CY",
+                             "HR"),
+                     found);
+
+        found = countries.namedAnyOf(
+                In.values("Sierra Leone",
+                          "Senegal",
+                          "San Marino"))
+                        .stream()
+                        .map(Country::getCode)
+                        .sorted()
+                        .collect(Collectors.toList());
+        assertEquals(List.of("SL",
+                             "SM",
+                             "SN"),
+                     found);
     }
 
     @Assertion(id = "965", strategy = """
@@ -428,6 +607,704 @@ public class ConstraintTests {
                 // NoSQL databases might not be capable of Like.
                 // Column and Key-Value databases might not be capable of And.
                 // Column and Key-Value databases might not be capable of sorting.
+            } else {
+                throw x;
+            }
+        }
+    }
+
+    @Assertion(id = "965", strategy = """
+            Use a repository find method that has a constraint
+            parameter of type LessThan.
+            """)
+    public void testLessThanConstraint() {
+        try {
+            List<String> found = countries.lessPopulousThan(
+                    LessThan.bound(10000L))
+                            .stream()
+                            .map(c -> c.getName() +
+                                      " population " + c.getPopulation())
+                            .sorted()
+                            .collect(Collectors.toList());
+            assertEquals(List.of("Nauru population 9930",
+                                 "Saint Pierre and Miquelon population 5070",
+                                 "Vatican City State population 764"),
+                         found);
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
+                // Key-Value databases might not be capable of <
+            } else {
+                throw x;
+            }
+        }
+    }
+
+    @Assertion(id = "965", strategy = """
+            Use a repository find method that has a constraint
+            parameter of type Like. Supply a pattern that has
+            custom wildcard characters.
+            """)
+    public void testLikeConstraintCustomWildcards() {
+
+        try {
+            List<String> found = countries.withCapitalNamed(
+                    Like.pattern("1akar#", '1', '#'))
+                            .stream()
+                            .map(Country::getCapital)
+                            .map(City::getName)
+                            .sorted()
+                            .collect(Collectors.toList());
+            assertEquals(List.of("Dakar",
+                                 "Jakarta"),
+                         found);
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                // NoSQL databases might not be capable of Like.
+            } else {
+                throw x;
+            }
+        }
+    }
+
+    @Assertion(id = "965", strategy = """
+            Use a repository find method that has a constraint
+            parameter of type Like. Supply a pattern that has
+            custom wildcard characters and an escape character.
+            """)
+    public void testLikeConstraintCustomWildcardsAndEscape() {
+
+        try {
+            List<String> found = countries.withCapitalNamed(
+                    Like.pattern("Port$--!$", '!', '$', '-'))
+                            .stream()
+                            .map(Country::getCapital)
+                            .map(City::getName)
+                            .sorted()
+                            .collect(Collectors.toList());
+            assertEquals(List.of("Port-au-Prince",
+                                 "Porto-Novo"),
+                         found);
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                // NoSQL databases might not be capable of Like.
+            } else {
+                throw x;
+            }
+        }
+    }
+
+    @Assertion(id = "965", strategy = """
+            Use a repository find method that has a constraint
+            parameter of type Like. Supply a literal.
+            """)
+    public void testLikeConstraintLiteral() {
+
+        try {
+            List<String> found = countries.withCapitalNamed(
+                    Like.literal("Warsaw"))
+                            .stream()
+                            .map(Country::getName)
+                            .sorted()
+                            .collect(Collectors.toList());
+            assertEquals(List.of("Poland"),
+                         found);
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                // NoSQL databases might not be capable of Like.
+            } else {
+                throw x;
+            }
+        }
+    }
+
+    @Assertion(id = "965", strategy = """
+            Use a repository find method that has a constraint
+            parameter of type Like. Supply a pattern that uses
+            the standard _ and % wildcard characters.
+            """)
+    public void testLikeConstraintPattern() {
+
+        try {
+            List<String> found = countries.withCapitalNamed(
+                    Like.pattern("_all%"))
+                            .stream()
+                            .map(Country::getCapital)
+                            .map(City::getName)
+                            .sorted()
+                            .collect(Collectors.toList());
+            assertEquals(List.of("Tallinn",
+                                 "Valletta"),
+                         found);
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                // NoSQL databases might not be capable of Like.
+            } else {
+                throw x;
+            }
+        }
+    }
+
+    @Assertion(id = "965", strategy = """
+            Use a repository find method that has a constraint
+            parameter of type Like. Supply a prefix.
+            """)
+    public void testLikeConstraintPrefix() {
+
+        try {
+            List<String> found = countries.withCapitalNamed(
+                    Like.prefix("San"))
+                            .stream()
+                            .map(Country::getCapital)
+                            .map(City::getName)
+                            .sorted()
+                            .collect(Collectors.toList());
+            assertEquals(List.of("San Jose",
+                                 "San Juan",
+                                 "San Salvador",
+                                 "Sanaa",
+                                 "Santiago",
+                                 "Santo Domingo"),
+                         found);
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                // NoSQL databases might not be capable of Like.
+            } else {
+                throw x;
+            }
+        }
+    }
+
+    @Assertion(id = "965", strategy = """
+            Use a repository find method that has a constraint
+            parameter of type Like. Supply a substring.
+            """)
+    public void testLikeConstraintSubstring() {
+
+        try {
+            List<String> found = countries.withCapitalNamed(
+                    Like.substring("ey"))
+                            .stream()
+                            .map(Country::getCapital)
+                            .map(City::getName)
+                            .sorted()
+                            .collect(Collectors.toList());
+            assertEquals(List.of("Niamey",
+                                 "Reykjavík"),
+                         found);
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                // NoSQL databases might not be capable of Like.
+            } else {
+                throw x;
+            }
+        }
+    }
+
+    @Assertion(id = "965", strategy = """
+            Use a repository find method that has a constraint
+            parameter of type Like. Supply a suffix.
+            """)
+    public void testLikeConstraintSuffix() {
+
+        try {
+            List<String> found = countries.withCapitalNamed(
+                    Like.suffix("ila"))
+                            .stream()
+                            .map(Country::getCapital)
+                            .map(City::getName)
+                            .sorted()
+                            .collect(Collectors.toList());
+            assertEquals(List.of("Manila",
+                                 "Port Vila"),
+                         found);
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                // NoSQL databases might not be capable of Like.
+            } else {
+                throw x;
+            }
+        }
+    }
+
+    @Assertion(id = "965", strategy = """
+            Use a repository find method that has multiple
+            constraint subtype parameters.
+            """)
+    public void testMultipleConstraintParameters() {
+
+        try {
+            List<String> found = countries.highlyPopulousInRegion(
+                    EqualTo.value(Region.AFRICA),
+                    AtLeast.min(100000000L),
+                    Order.by(_Country.population.desc(),
+                             _Country.name.asc()))
+                            .stream()
+                            .map(c -> c.getName() + ':' + c.getPopulation())
+                            .collect(Collectors.toList());
+            assertEquals(List.of("Nigeria:242794751",
+                                 "Ethiopia:121372632",
+                                 "Congo:119038825",
+                                 "Egypt:112870457"),
+                         found);
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable of And.
+                // Column and Key-Value databases might not be capable of sorting.
+                // Key-Value databases might not be capable of <
+            } else {
+                throw x;
+            }
+        }
+    }
+
+    @Assertion(id = "965", strategy = """
+            Use a repository find method that has a constraint
+            parameter of type NotBetween.
+            """)
+    public void testNotBetweenConstraint() {
+
+        try {
+            List<String> found = countries.excludingCountryCodeRange(
+                    NotBetween.bounds("AG", "UY"))
+                            .stream()
+                            .map(Country::getCode)
+                            .sorted()
+                            .collect(Collectors.toList());
+            assertEquals(List.of("AD",
+                                 "AE",
+                                 "AF",
+                                 "UZ",
+                                 "VA",
+                                 "VC",
+                                 "VE",
+                                 "VN",
+                                 "VU",
+                                 "WS",
+                                 "XK",
+                                 "XW",
+                                 "YE",
+                                 "ZA",
+                                 "ZM",
+                                 "ZW"),
+                         found);
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
+                // Key-Value databases might not be capable of NotBetween.
+            } else {
+                throw x;
+            }
+        }
+    }
+
+    @Assertion(id = "965", strategy = """
+            Use a repository find method that has constraint
+            parameters of type NotEqualTo.
+            """)
+    public void testNotEqualToConstraint() {
+
+        List<String> found = countries.inSomeOtherRegionThan(
+                NotEqualTo.value(Region.ASIA))
+                        .stream()
+                        .map(Country::getName)
+                        .collect(Collectors.toList());
+
+        assertEquals(158, found.size());
+        assertEquals(false, found.contains("China"));
+        assertEquals(false, found.contains("Thailand"));
+        assertEquals(false, found.contains("Pakistan"));
+        assertEquals(true, found.contains("Mexico"));
+        assertEquals(true, found.contains("Romania"));
+        assertEquals(true, found.contains("Mozambique"));
+        assertEquals(true, found.contains("Australia"));
+        assertEquals(true, found.contains("Ecuador"));
+        assertEquals(true, found.contains("Cuba"));
+    }
+
+    @Assertion(id = "965", strategy = """
+            Use a repository find method that has constraint
+            parameters of type NotIn.
+            """)
+    public void testNotInConstraint() {
+
+        List<String> found;
+        found = countries.notInRegions(
+                NotIn.values(Set.of(Region.AFRICA,
+                                    Region.ASIA,
+                                    Region.CARIBBEAN,
+                                    Region.EUROPE,
+                                    Region.OCEANIA,
+                                    Region.SOUTH_AMERICA)))
+                        .stream()
+                        .map(Country::getName)
+                        .sorted()
+                        .collect(Collectors.toList());
+        assertEquals(List.of("Belize",
+                             "Bermuda",
+                             "Canada",
+                             "Costa Rica",
+                             "El Salvador",
+                             "Greenland",
+                             "Guatemala",
+                             "Honduras",
+                             "Mexico",
+                             "Nicaragua",
+                             "Panama",
+                             "Saint Pierre and Miquelon",
+                             "United States of America"),
+                     found);
+
+        found = countries.notInRegions(
+                NotIn.values(Region.ASIA,
+                             Region.CARIBBEAN,
+                             Region.EUROPE,
+                             Region.NORTH_AMERICA,
+                             Region.OCEANIA,
+                             Region.SOUTH_AMERICA))
+                        .stream()
+                        .map(Country::getName)
+                        .sorted()
+                        .collect(Collectors.toList());
+        assertEquals(List.of("Algeria",
+                             "Angola",
+                             "Benin",
+                             "Botswana",
+                             "Burkina Faso",
+                             "Burundi",
+                             "Cameroon",
+                             "Cape Verde",
+                             "Central African Republic",
+                             "Chad",
+                             "Comoros",
+                             "Congo",
+                             "Djibouti",
+                             "Egypt",
+                             "Equatorial Guinea",
+                             "Eritrea",
+                             "Eswatini",
+                             "Ethiopia",
+                             "Gabon",
+                             "Gambia",
+                             "Ghana",
+                             "Guinea",
+                             "Guinea-Bissau",
+                             "Ivory Coast",
+                             "Kenya",
+                             "Lesotho",
+                             "Liberia",
+                             "Libya",
+                             "Madagascar",
+                             "Malawi",
+                             "Mali",
+                             "Mauritania",
+                             "Mauritius",
+                             "Morocco",
+                             "Mozambique",
+                             "Namibia",
+                             "Niger",
+                             "Nigeria",
+                             "Rwanda",
+                             "Sao Tome and Principe",
+                             "Senegal",
+                             "Seychelles",
+                             "Sierra Leone",
+                             "Somalia",
+                             "South Africa",
+                             "South Sudan",
+                             "Sudan",
+                             "Tanzania",
+                             "Togo",
+                             "Tunisia",
+                             "Uganda",
+                             "Zambia",
+                             "Zimbabwe"),
+                     found);
+    }
+
+    @Assertion(id = "965", strategy = """
+            Use a repository find method that has constraint
+            parameters of type NotLike. Supply a pattern that has
+            custom wildcard characters.
+            """)
+    public void testNotLikeConstraintCustomWildcards() {
+
+        try {
+            List<String> found = countries.excludingNames(
+                    // exclude names with 5 or more characters
+                    NotLike.pattern("*-----*", '-', '*'))
+                            .stream()
+                            .map(Country::getName)
+                            .sorted()
+                            .collect(Collectors.toList());
+            assertEquals(List.of("Chad",
+                                 "Cuba",
+                                 "Fiji",
+                                 "Guam",
+                                 "Iran",
+                                 "Iraq",
+                                 "Laos",
+                                 "Mali",
+                                 "Oman",
+                                 "Peru",
+                                 "Togo"),
+                         found);
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                // NoSQL databases might not be capable of NotLike.
+            } else {
+                throw x;
+            }
+        }
+    }
+
+    @Assertion(id = "965", strategy = """
+            Use a repository find method that has constraint
+            parameters of type NotLike. Supply a pattern that has
+            custom wildcard characters and an escape character.
+            """)
+    public void testNotLikeConstraintCustomWildcardsAndEscape() {
+
+        try {
+            List<String> found = countries.excludingNames(
+                    // intentionally reversed so that % is the single character
+                    // wildcard and _ is the multiple character wildcard.
+                    NotLike.pattern("_%aa_\"", '%', '_', 'a'))
+                            .stream()
+                            .map(Country::getName)
+                            .sorted()
+                            .collect(Collectors.toList());
+            assertEquals(List.of("Belgium",
+                                 "Belize",
+                                 "Benin",
+                                 "Brunei",
+                                 "Burundi",
+                                 "Chile",
+                                 "Comoros",
+                                 "Congo",
+                                 "Cyprus",
+                                 "Czech Republic",
+                                 "Djibouti",
+                                 "Egypt",
+                                 "Fiji",
+                                 "Greece",
+                                 "Guernsey",
+                                 "Hong Kong",
+                                 "Jersey",
+                                 "Kosovo",
+                                 "Lesotho",
+                                 "Liechtenstein",
+                                 "Luxembourg",
+                                 "Mexico",
+                                 "Montenegro",
+                                 "Morocco",
+                                 "Niger",
+                                 "Peru",
+                                 "Philippines",
+                                 "Puerto Rico",
+                                 "Seychelles",
+                                 "Sweden",
+                                 "Togo",
+                                 "Turkey",
+                                 "United Kingdom",
+                                 "Yemen"),
+                         found);
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                // NoSQL databases might not be capable of NotLike.
+            } else {
+                throw x;
+            }
+        }
+    }
+
+    @Assertion(id = "965", strategy = """
+            Use a repository find method that has constraint
+            parameters of type NotLike. Supply a literal.
+            """)
+    public void testNotLikeConstraintLiteral() {
+
+        try {
+            List<String> found = countries.excludingNames(
+                    NotLike.literal("Luxembourg"))
+                    .stream()
+                    .map(Country::getName)
+                    .collect(Collectors.toList());
+
+            assertEquals(CountryPopulator.EXPECTED_TOTAL - 1,
+                         found.size());
+            assertEquals(false, found.contains("Luxembourg"));
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                // NoSQL databases might not be capable of NotLike.
+            } else {
+                throw x;
+            }
+        }
+    }
+
+    @Assertion(id = "965", strategy = """
+            Use a repository find method that has constraint
+            parameters of type NotLike. Supply a pattern that uses
+            the standard _ and % wildcard characters.
+            """)
+    public void testNotLikeConstraintPattern() {
+
+        try {
+            List<String> found = countries.excludingNames(
+                    // exclude names with 4 or more characters
+                    NotLike.pattern("%____%"))
+                            .stream()
+                            .map(Country::getName)
+                            .sorted()
+                            .collect(Collectors.toList());
+            assertEquals(List.of(),
+                         found);
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                // NoSQL databases might not be capable of NotLike.
+            } else {
+                throw x;
+            }
+        }
+    }
+
+    @Assertion(id = "965", strategy = """
+            Use a repository find method that has constraint
+            parameters of type NotLike. Supply a prefix.
+            """)
+    public void testNotLikeConstraintPrefix() {
+
+        try {
+            List<String> found = countries.excludingNames(
+                    NotLike.prefix("Ma"))
+                            .stream()
+                            .map(Country::getName)
+                            .collect(Collectors.toList());
+            assertEquals(CountryPopulator.EXPECTED_TOTAL - 10,
+                         found.size());
+            assertEquals(false, found.contains("Macau"));
+            assertEquals(false, found.contains("Madagascar"));
+            assertEquals(false, found.contains("Malawi"));
+            assertEquals(false, found.contains("Malaysia"));
+            assertEquals(false, found.contains("Maldives"));
+            assertEquals(false, found.contains("Mali"));
+            assertEquals(false, found.contains("Malta"));
+            assertEquals(false, found.contains("Marshall Islands"));
+            assertEquals(false, found.contains("Mauritania"));
+            assertEquals(false, found.contains("Mauritius"));
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                // NoSQL databases might not be capable of NotLike.
+            } else {
+                throw x;
+            }
+        }
+    }
+
+    @Assertion(id = "965", strategy = """
+            Use a repository find method that has constraint
+            parameters of type NotLike. Supply a substring.
+            """)
+    public void testNotLikeConstraintSubstring() {
+
+        try {
+            List<String> found = countries.excludingNames(
+                    NotLike.substring("an"))
+                    .stream()
+                    .map(Country::getName)
+                    .collect(Collectors.toList());
+
+            assertEquals(CountryPopulator.EXPECTED_TOTAL - 60,
+                         found.size());
+            assertEquals(false, found.contains("Rwanda"));
+            assertEquals(false, found.contains("South Sudan"));
+            assertEquals(false, found.contains("Tanzania"));
+            assertEquals(false, found.contains("Uganda"));
+            assertEquals(false, found.contains("Vanuatu"));
+            // ... 55 more
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                // NoSQL databases might not be capable of NotLike.
+            } else {
+                throw x;
+            }
+        }
+    }
+
+    @Assertion(id = "965", strategy = """
+            Use a repository find method that has constraint
+            parameters of type NotLike. Supply a suffix.
+            """)
+    public void testNotLikeConstraintSuffix() {
+
+        try {
+            List<String> found = countries.excludingNames(
+                    NotLike.suffix("land"))
+                            .stream()
+                            .map(Country::getName)
+                            .collect(Collectors.toList());
+            assertEquals(CountryPopulator.EXPECTED_TOTAL - 8,
+                         found.size());
+            assertEquals(false, found.contains("Finland"));
+            assertEquals(false, found.contains("Greenland"));
+            assertEquals(false, found.contains("Icland"));
+            assertEquals(false, found.contains("Ireland"));
+            assertEquals(false, found.contains("New Zealand"));
+            assertEquals(false, found.contains("Poland"));
+            assertEquals(false, found.contains("Switzerland"));
+            assertEquals(false, found.contains("Thailand"));
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                // NoSQL databases might not be capable of NotLike.
+            } else {
+                throw x;
+            }
+        }
+    }
+
+    @Assertion(id = "965", strategy = """
+            Use a repository find method that has constraint
+            parameters of type NotNull.
+            """)
+    public void testNotNullConstraint() {
+
+        try {
+            List<Country> found = countries.withDaylightTime(
+                    NotNull.instance());
+
+            assertEquals(60,
+                         found.size());
+
+            for (Country country : found) {
+                assertEquals(false, country.getDaylightTimeBegins() == null);
+            }
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                // NoSQL databases might not be capable of the Null comparison
+            } else {
+                throw x;
+            }
+        }
+    }
+
+    @Assertion(id = "965", strategy = """
+            Use a repository find method that has constraint
+            parameters of type Null.
+            """)
+    public void testNullConstraint() {
+
+        try {
+            List<Country> found = countries.withoutDaylightTime(
+                    Null.instance());
+
+            assertEquals(150,
+                         found.size());
+
+            for (Country country : found) {
+                assertEquals(null, country.getDaylightTimeBegins());
+            }
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                // NoSQL databases might not be capable of the Null comparison
             } else {
                 throw x;
             }

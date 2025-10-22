@@ -31,6 +31,7 @@ import java.util.List;
  * Populator for the Country entity.
  */
 public class CountryPopulator implements Populator<Countries> {
+    public static final int EXPECTED_TOTAL = 210;
 
     public static CountryPopulator get() {
         return new CountryPopulator();
@@ -38,7 +39,7 @@ public class CountryPopulator implements Populator<Countries> {
 
     @Override
     public boolean isPopulated(Countries countries) {
-        return countries.count() == 210;
+        return countries.count() == EXPECTED_TOTAL;
     }
 
     @Override
