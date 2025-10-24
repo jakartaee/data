@@ -56,13 +56,17 @@ import java.lang.annotation.Target;
  * }
  * </pre>
  * <p>The operation performed by the annotated method depends on whether the database already holds an entity with the
- * unique identifier of an entity passed as an argument:
+ * unique identifier of an entity passed as an argument. From the point of view of the caller:
  * </p>
  * <ul>
  * <li>If there is such an entity already held in the database, the annotated method must behave as if it were annotated
- *     {@link Update @Update}.
+ *     {@link Update @Update}, with the exception that it is permitted to raise {@link jakarta.data.event.PreUpsertEvent}
+ *     and {@link jakarta.data.event.PostUpsertEvent} instead of {@link jakarta.data.event.PreUpdateEvent} and
+ *     {@link jakarta.data.event.PostUpdateEvent} respectively.
  * <li>Otherwise, if there is no such entity in the database, the annotated method must behave as if it were annotated
- *     {@link Insert @Insert}.
+ *     {@link Insert @Insert}, with the exception that it is permitted to raise {@link jakarta.data.event.PreUpsertEvent}
+ *     and {@link jakarta.data.event.PostUpsertEvent} instead of {@link jakarta.data.event.PreInsertEvent} and
+ *     {@link jakarta.data.event.PostInsertEvent} respectively.
  * </ul>
  * <p>Annotations such as {@code @Find}, {@code @Query}, {@code @Insert}, {@code @Update}, {@code @Delete}, and
  * {@code @Save} are mutually-exclusive. A given method of a repository interface may have at most one {@code @Find}
