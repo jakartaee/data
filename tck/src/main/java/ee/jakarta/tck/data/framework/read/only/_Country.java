@@ -67,7 +67,7 @@ public interface _Country {
     TextAttribute<Country> name = //
                     TextAttribute.of(Country.class, NAME);
 
-    NumericAttribute<Country, Long> poulation = //
+    NumericAttribute<Country, Long> population = //
                     NumericAttribute.of(Country.class, POPULATION, long.class);
 
     ComparableAttribute<Country, Region> region = //
