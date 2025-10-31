@@ -161,6 +161,53 @@ public interface BookRepository extends BasicRepository<Book, UUID> {
 
 This streamlined query language empowers developers to efficiently perform data access operations with minimal complexity, aligning with Jakarta Data's objective of simplifying data access across various storage technologies.
 
+==  Stateful Repository Operations
+
+Jakarta Data includes the concept of stateful repositories that manage entities according to a persistence context. A complete definition of a persistence context can be found in the Jakarta Persistence specification. Stateful repositories have their own lifecycle annotations that provide fine-grained control over entity state transitions such as persisting, merging, refreshing, detaching, and removing entities. Lifecycle annotations for stateful operations must not be intermixed with lifecycle annotations for stateless operations. Consequently, each repository is either stateful or or stateless.
+An example of a stateless repository follows:
+
+[source,java]
+----
+@Repository
+public interface Products extends DataRepository<Product, String> {
+
+    @Persist
+    void add(Product product);
+
+    @Merge
+    Product merge(Product product);
+
+    @Remove
+    void remove(Product product);
+
+    @Refresh
+    void reload(Product product);
+
+    @Detach
+    void detach(Product product);
+}
+----
+
+[cols="2,8"]
+|===
+| Annotation | Description
+| `@Persist`
+| Specifies that the repository method should insert a new instance into the data store,
+which might happen immediately or when the persistence context is flushed.
+| `@Merge`
+| Specifies that the repository method should merge the state of the given entity into the data store,
+which can happen later when the persistence context is flushed.
+If the entity does not exist in the data store, it is inserted.
+| `@Remove`
+| Specifies that the repository method should delete the corresponding entity instance from the data store.
+| `@Refresh`
+| Specifies that the repository method should reload the state of the given entity from the data store,
+overwriting any local changes that have not been saved.
+| `@Detach`
+| Specifies that the repository method should detach the given entity from the current persistence context.
+After detachment, changes to the entity are no longer tracked.
+|===
+
 === Maven
 
 To start to use Jakarta Data, add the API as a Maven dependency:
