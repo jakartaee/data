@@ -74,38 +74,38 @@ import java.util.Set;
  * A repository declares methods which perform queries and other operations on entities.
  * For example,</p>
  *
- * <pre>
- * &#64;Repository
- * public interface Products extends BasicRepository&lt;Product, Long&gt; {
+ * <pre>{@code
+ * @Repository
+ * public interface Products extends BasicRepository<Product, Long> {
  *
- *     &#64;Insert
+ *     @Insert
  *     void create(Product prod);
  *
- *     &#64;OrderBy("price")
- *     List&lt;Product&gt; findByNameIgnoreCaseLikeAndPriceLessThan(String namePattern, float max);
+ *     @OrderBy("price")
+ *     List<Product> findByNameIgnoreCaseLikeAndPriceLessThan(String namePattern, float max);
  *
- *     &#64;Find
- *     List&lt;Product&gt; search(
- *             &#64;By(_Product.NAME) &#64;Is(Like.class) String namePattern,
- *             Restriction&lt;Product&gt; restriction,
- *             Order&lt;Product&gt; sortBy);
+ *     @Find
+ *     List<Product> search(
+ *             @By(_Product.NAME) @Is(Like.class) String namePattern,
+ *             Restriction<Product> restriction,
+ *             Order<Product> sortBy);
  *
- *     &#64;Query("""
+ *     @Query("""
  *             UPDATE Product SET price = price * (1.0 - ?1)
- *              WHERE producedOn &lt;= ?2
+ *              WHERE producedOn <= ?2
  *             """)
  *     int discountOldInventory(float rateOfDiscount, LocalDate untilDate);
  *
  *     ...
  * }
- * </pre>
+ * }</pre>
  *
  * <p>Repository interfaces are implemented by the container/runtime and are made
  * available to applications via the {@code jakarta.inject.Inject} annotation. For
  * example,</p>
  *
- * <pre>
- * &#64;Inject
+ * <pre>{@code
+ * @Inject
  * Products products;
  *
  * ...
@@ -121,7 +121,7 @@ import java.util.Set;
  *
  * numDiscounted = products.discountOldInventory(0.15f,
  *                                               LocalDate.now().minusYears(1));
- * </pre>
+ * }</pre>
  *
  * <p>Jakarta Persistence and Jakarta NoSQL define programming models for entity
  * classes that may be used with Jakarta Data:</p>
@@ -159,36 +159,36 @@ import java.util.Set;
  *
 * <p>The following example shows an entity class, an embeddable class, and
  * a repository interface:</p>
- * <pre>
- * &#64;Entity
+ * <pre>{@code
+ * @Entity
  * public class Purchase {
- *     &#64;Id
+ *     @Id
  *     public String purchaseId;
- *     &#64;Embedded
+ *     @Embedded
  *     public Address address;
  *     ...
  * }
  *
- * &#64;Embeddable
+ * @Embeddable
  * public class Address {
  *     public int zipCode;
  *     ...
  * }
  *
- * &#64;Repository
+ * @Repository
  * public interface Purchases {
- *     &#64;Find
- *     &#64;OrderBy("address.zipCode")
- *     List&lt;Purchase&gt; forZipCodes(
- *             &#64;By("address.zipCode") &#64;Is(In.class) List&lt;Integer&gt; zipCodes);
+ *     @Find
+ *     @OrderBy("address.zipCode")
+ *     List<Purchase> forZipCodes(
+ *             @By("address.zipCode") @Is(In.class) List<Integer> zipCodes);
  *
- *     &#64;Query("WHERE address.zipCode = ?1")
- *     List&lt;Purchase&gt; forZipCode(int zipCode);
+ *     @Query("WHERE address.zipCode = ?1")
+ *     List<Purchase> forZipCode(int zipCode);
  *
- *     &#64;Save
+ *     @Save
  *     Purchase checkout(Purchase purchase);
  * }
- * </pre>
+ * }</pre>
  *
  * <h2>Entities</h2>
  *
@@ -372,51 +372,51 @@ import java.util.Set;
  *     match the name of an entity attribute and the repository must be compiled
  *     with the {@code -parameters} compiler option so that parameter names are
  *     available at runtime. For example,
- *     <pre>
- *     &#64;Find
- *     Optional&lt;Product&gt; get(&#64;By("id") long productId);
+ *      <pre>{@code
+ *       @Find
+ *       Optional<Product> get(@By("id") long productId);
  *
- *     &#64;Find
- *     &#64;OrderBy("price")
- *     List&lt;Product&gt; discounted(
- *             &#64;By("discount") &#64;Is(AtLeast.class) float minAmount);
+ *       @Find
+ *      @OrderBy("price")
+ *      List<Product> discounted(
+ *               @By("discount") @Is(AtLeast.class) float minAmount);
  *
- *     &#64;Find
- *     &#64;OrderBy("price")
- *     Product[] named(String name);
- *     </pre>
- * </li>
+ *      @Find
+ *      @OrderBy("price")
+ *      Product[] named(String name);
+ *      }</pre>
+ *  </li>
  * <li>The parameter is a {@link Constraint} or a
  *     {@linkplain jakarta.data.constraint subtype} of {@code Constraint} and
  *     has exactly the same name (per the rule from category 1) as an attribute
  *     of the entity class. The constraint must be parameterized with the same
  *     type (or if primitive, the corresponding wrapper type) as the attribute.
  *     For example,
- *     <pre>
- *     &#64;Delete
- *     int discontinue(&#64;By("id") In&lt;Long&gt; productIds);
+ * <pre>{@code
+ *      @Delete
+ *      int discontinue(@By("id") In<Long> productIds);
  *
- *     &#64;Find
- *     &#64;OrderBy("price")
- *     &#64;OrderBy("name")
- *     Stream&lt;Product&gt; pricedUnder(LessThan&lt;Float&gt; price);
- *     </pre>
+ *      @Find
+ *      @OrderBy("price")
+ *      @OrderBy("name")
+ *      Stream<Product> pricedUnder(LessThan<Float> price);
+ *   }</pre>
  * </li>
  * <li>The parameter is a {@link Restriction} and its type parameter is the
  *     entity class. For example,
- *     <pre>
- *     &#64;Find
- *     List&lt;Product&gt; search(Restriction&lt;Product&gt; restrict);
- *     </pre>
+ *       <pre>{@code
+ *       @Find
+ *      List<Product> search(Restriction<Product> restrict);
+ *      }</pre>
  * </li>
  * <li>The parameter is a {@link Limit}, {@link Sort}, {@link Order}, or
  *     {@link PageRequest} (discussed under the section titled
  *     <em>Special parameters</em>) and the repository method is annotated with
  *     {@link Find}. For example,
- *     <pre>
- *     &#64;Find
- *     Page&lt;Product&gt; getPage(PageRequest pageRequest, Order&lt;Product&gt; sortBy);
- *     </pre>
+ *       <pre>{@code
+ *      @Find
+ *       Page<Product> getPage(PageRequest pageRequest, Order<Product> sortBy);
+ *      }</pre>
  * </li>
  * </ol>
  *
@@ -437,18 +437,18 @@ import java.util.Set;
  * <p>The {@code .} character may be used in the {@link By} annotation value
  * to reference an embedded attribute.</p>
  *
- * <pre>
- * &#64;Find
- * Stream&lt;Person&gt; livingInZipCode(&#64;By("address.zipCode") int zip);
- * </pre>
+ * <pre>{@code
+ * @Find
+ * Stream<Person> livingInZipCode(@By("address.zipCode") int zip);
+ * }</pre>
  *
  * <p>The {@code _} character may be used in a method parameter name to
  * reference an embedded attribute.</p>
  *
- * <pre>
- * &#64;Find
- * Stream&lt;Person&gt; livingInCity(String address_city);
- * </pre>
+ * <pre>{@code
+ * @Find
+ * Stream<Person> livingInCity(String address_city);
+ * }</pre>
  *
  * <h2>JDQL query methods</h2>
  *
