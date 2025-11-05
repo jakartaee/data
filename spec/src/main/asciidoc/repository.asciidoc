@@ -313,7 +313,7 @@ public interface ProductRepository extends BasicRepository<Product, Long> {
     Page<Product> findByName(String name, PageRequest pageRequest, Order<Product> order);
 
     @Query("where name like :pattern")
-    List<Product> findByNameLike(String pattern, Limit max, Sort<?>... sorts);
+    List<Product> findByNameLike(String pattern, Limit max, Sort<Product> sort);
 
 }
 ----
@@ -377,7 +377,7 @@ Page<User> findByNamePrefix(String namePrefix,
 ----
 @Query("WHERE u.age > ?1")
 @OrderBy(_User.AGE)
-List<User> findByNamePrefix(String namePrefix, Sort<?>... sorts);
+List<User> findByNamePrefix(String namePrefix, Sort<User> sort);
 ----
 
 === Restrictions

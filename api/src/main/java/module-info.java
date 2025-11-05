@@ -873,22 +873,24 @@ import java.util.Set;
  * allows its results to be split and retrieved in pages. For example,</p>
  *
  * <pre>
- * Page&lt;Product&gt; findByNameLikeOrderByAmountSoldDescIdAsc(
- *                 String pattern, PageRequest pageRequest);
+ * &#64;OrderBy("amountSold")
+ * &#64;OrderBy("id")
+ * Page&lt;Product&gt; findByNameLike(String pattern,
+ *                              PageRequest pageRequest);
  * ...
- * page1 = products.findByNameLikeOrderByAmountSoldDescIdAsc(
- *                 "%phone%", PageRequest.ofSize(20));
+ * page1 = products.findByNameLike("%phone%",
+ *                                 PageRequest.ofSize(20));
  * </pre>
  *
  * <p>When using pagination, always ensure that the ordering is consistent
  * across invocations. One way to achieve this is to include the unique
  * identifier in the sort criteria.</p>
  *
- * <h3>Sorting</h3>
+ * <h3>Sorting at runtime</h3>
  *
  * <p>When a page is requested with a {@code PageRequest}, dynamic sorting
- * criteria may be supplied by passing instances of {@link Sort} or {@link Order}.
- * For example,</p>
+ * criteria may be supplied by passing instances of {@link Sort} to an
+ * {@link Order}. parameter. For example,</p>
  *
  * <pre>
  * &#64;Find
@@ -910,9 +912,9 @@ import java.util.Set;
  *                          Sort.asc("id")));
  * </pre>
  *
- * <p>To supply sort criteria dynamically without using pagination, an
- * instance of {@link Order} may be populated with one or more instances
- * of {@link Sort} and passed to the repository find method. For example,</p>
+ * <p>The same pattern of supplying instances of {@link Sort} to an
+ * {@link Order} parameter can be applied without using pagination.
+ * For example,</p>
  *
  * <pre>
  * &#64;Find
@@ -926,24 +928,6 @@ import java.util.Set;
  *                            Order.by(Sort.desc("price"),
  *                                     Sort.desc("amountSold"),
  *                                     Sort.asc("id")));
- * </pre>
- *
- * <p>Generic, untyped {@link Sort} criteria can be supplied directly to a
- * repository method with a variable arguments {@code Sort<?>...} parameter.
- * For example,</p>
- *
- * <pre>
- * &#64;Find
- * Product[] namedLike(&#64;By("name") &#64;Is(Like.class) String pattern,
- *                     Limit max,
- *                     {@code Sort<?>...} sortBy);
- *
- * ...
- * found = products.namedLike(namePattern,
- *                            Limit.of(25),
- *                            Sort.desc("price"),
- *                            Sort.desc("amountSold"),
- *                            Sort.asc("name"));
  * </pre>
  *
  * <h3>Restrictions</h3>
