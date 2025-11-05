@@ -886,7 +886,7 @@ import java.util.Set;
  * across invocations. One way to achieve this is to include the unique
  * identifier in the sort criteria.</p>
  *
- * <h3>Sorting at runtime</h3>
+ * <h3>Programmatic sorting</h3>
  *
  * <p>When a page is requested with a {@code PageRequest}, dynamic sorting
  * criteria may be supplied by passing instances of {@link Sort} to an
