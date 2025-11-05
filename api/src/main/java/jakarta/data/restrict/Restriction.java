@@ -46,8 +46,8 @@ import jakarta.data.repository.Find;
  * public interface Cars extends CrudRepository&lt;Car, String&gt; {
  *
  *     &#64;Find
- *     List&lt;Car&gt; search(&#64;By(_Car.MAKE) String manufacturer,
- *                      &#64;By(_Car.MODEL) String model,
+ *     List&lt;Car&gt; search(&#64;By(_Car.MAKE) &#64;IgnoreCase String manufacturer,
+ *                      &#64;By(_Car.MODEL) &#64;IgnoreCase String model,
  *                      Restriction&lt;Car&gt; restriction,
  *                      Order&lt;Car&gt;... sort);
  * }

@@ -39,11 +39,11 @@ import jakarta.data.spi.expression.literal.StringLiteral;
  *
  * <pre>
  * &#64;Find
- * List&lt;Car&gt; matchVIN(&#64;By(_Car.VIN) NotLike pattern);
+ * List&lt;Car&gt; matchVIN(&#64;By(_Car.VIN) &#64;IgnoreCase NotLike pattern);
  *
  * &#64;Find
- * List&lt;Car&gt; ofMakeNotModel(&#64;By(_Car.MAKE) String manufacturer,
- *                          &#64;By(_Car.MODEL) &#64;Is(NotLike.class) String excludePattern,
+ * List&lt;Car&gt; ofMakeNotModel(&#64;By(_Car.MAKE) &#64;IgnoreCase String manufacturer,
+ *                          &#64;By(_Car.MODEL) &#64;IgnoreCase &#64;Is(NotLike.class) String excludePattern,
  *                          Order&lt;Car&gt; sorts);
  *
  * ...

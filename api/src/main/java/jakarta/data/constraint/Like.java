@@ -42,11 +42,12 @@ import jakarta.data.spi.expression.literal.StringLiteral;
  * List&lt;Car&gt; matchVIN(&#64;By(_Car.VIN) Like vinPattern);
  *
  * &#64;Find // requires the -parameters compiler option to preserve parameter names
- * List&lt;Car&gt; makeAndModel(Like make, Like model);
+ * List&lt;Car&gt; makeAndModel(&#64;IgnoreCase Like make,
+ *                        &#64;IgnoreCase Like model);
  *
  * &#64;Find
- * List&lt;Car&gt; search(&#64;By(_Car.MAKE) &#64;Is(Like.class) String makePattern,
- *                  &#64;By(_Car.MODEL) &#64;Is(Like.class) String modelPattern,
+ * List&lt;Car&gt; search(&#64;By(_Car.MAKE) &#64;IgnoreCase &#64;Is(Like.class) String makePattern,
+ *                  &#64;By(_Car.MODEL) &#64;IgnoreCase &#64;Is(Like.class) String modelPattern,
  *                  Order&lt;Car&gt; sorts);
  *
  * ...
