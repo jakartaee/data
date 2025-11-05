@@ -57,16 +57,16 @@ import java.util.Set;
  * <p>The application defines simple Java objects called entities to represent
  * data in the database. Fields or accessor methods designate each entity attribute.
  * For example,</p>
- *
- * <pre>
- * &#64;Entity
+ *<pre>
+ * {@code
+ * @Entity
  * public class Product {
- *     &#64;Id
+ *     @Id
  *     public long id;
  *     public String name;
  *     public float price;
  *     public LocalDate producedOn;
- *     ...
+ * }
  * }
  * </pre>
  *
