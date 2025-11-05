@@ -18,6 +18,7 @@ package ee.jakarta.tck.data.framework.read.only;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import jakarta.data.Limit;
@@ -30,15 +31,19 @@ import jakarta.data.constraint.GreaterThan;
 import jakarta.data.constraint.In;
 import jakarta.data.constraint.LessThan;
 import jakarta.data.constraint.Like;
+import jakarta.data.constraint.NotBetween;
 import jakarta.data.constraint.NotEqualTo;
 import jakarta.data.constraint.NotIn;
 import jakarta.data.constraint.NotLike;
+import jakarta.data.constraint.NotNull;
+import jakarta.data.constraint.Null;
 import jakarta.data.repository.By;
 import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.Find;
 import jakarta.data.repository.Is;
 import jakarta.data.repository.OrderBy;
 import jakarta.data.repository.Repository;
+import jakarta.data.repository.Select;
 
 /**
  * This is a read only repository with statistics about countries.
@@ -59,8 +64,39 @@ public interface Countries extends CrudRepository<Country, String> {
             @By(_Country.CODE) @Is(In.class) Collection<String> codes);
 
     @Find
+    @Select(_Country.CODE)
+    List<String> countryCodesUpTo(
+            @By(_Country.CODE) AtMost<String> maxCode);
+
+    @Find
+    List<Country> excludingCountryCodeRange(
+            @By(_Country.CODE) NotBetween<String> excluded);
+
+    @Find
+    List<Country> excludingNames(
+            @By(_Country.NAME) NotLike excludePattern);
+
+    @Find
+    List<Country> highlyPopulousInRegion(
+            @By(_Country.REGION) EqualTo<Region> region,
+            @By(_Country.POPULATION) AtLeast<Long> minPopulation,
+            Order<Country> order);
+
+    @Find
     Stream<Country> inRegion(
             @By(_Country.REGION) @Is Region regionOfWorld);
+
+    @Find
+    List<Country> inSomeOtherRegionThan(
+            @By(_Country.REGION) NotEqualTo<Region> exclude);
+
+    @Find
+    List<Country> lessPopulousThan(
+            @By(_Country.POPULATION) LessThan<Long> threshold);
+
+    @Find
+    List<Country> namedAnyOf(
+            @By(_Country.NAME) In<String> names);
 
     @Find
     @OrderBy(_Country.CODE)
@@ -77,6 +113,10 @@ public interface Countries extends CrudRepository<Country, String> {
     @Find
     List<Country> namedUpTo(
             @Is(AtMost.class) String name);
+
+    @Find
+    List<Country> notInRegions(
+            @By(_Country.REGION) NotIn<Region> excluded);
 
     @Find
     List<Country> outsideOfRegion(
@@ -102,7 +142,33 @@ public interface Countries extends CrudRepository<Country, String> {
             @Is(EqualTo.class) LocalDate daylightTimeEnds);
 
     @Find
+    @OrderBy(_Country.NAME)
+    List<Country> whereDaylightTimeStartsOnOrAfter(
+            @By(_Country.DAYLIGHTTIMEBEGINS) AtLeast<LocalDate> minStartDate);
+
+    @Find
+    @OrderBy(_Country.CAPITAL_POPULATION)
+    List<Country> withCapitalBiggerThan(
+            GreaterThan<Integer> capitalPopulation);
+
+    @Find
+    List<Country> withCapitalNamed(
+            @By(_Country.CAPITAL_NAME) Like pattern);
+
+    @Find
+    Optional<Country> withCountryCode(
+            @By(_Country.CODE) EqualTo<String> code);
+
+    @Find
+    List<Country> withDaylightTime(
+            @By(_Country.DAYLIGHTTIMEBEGINS) NotNull<LocalDate> requireNonNull);
+
+    @Find
     List<Country> withNameAfter(
             @Is(GreaterThan.class) String name);
+
+    @Find
+    List<Country> withoutDaylightTime(
+            @By(_Country.DAYLIGHTTIMEBEGINS) Null<LocalDate> requireNull);
 
 }
