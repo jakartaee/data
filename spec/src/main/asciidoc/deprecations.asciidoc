@@ -1,0 +1,43 @@
+
+== Deprecations
+
+The following capability is deprecated and might be removed in future releases of Jakarta Data.
+
+=== Generic, untyped Sort criteria
+
+The ability to supply generic, untyped `Sort` criteria to a repository method by means of a variable arguments `Sort<?>...` parameter is deprecated. Use an `Order` parameter instead.
+
+For example,
+
+[source,java]
+----
+@Find
+Product[] namedLike(@By("name") @Is(Like.class) String pattern,
+                    Limit max,
+                    Sort<?>... sortBy);
+...
+
+found = products.namedLike(namePattern,
+                           Limit.of(25),
+                           Sort.desc("price"),
+                           Sort.desc("amountSold"),
+                           Sort.asc("name"));
+----
+
+is replaced by,
+
+[source,java]
+----
+@Find
+Product[] namedLike(@By("name") @Is(Like.class) String pattern,
+                    Limit max,
+                    Order<Product> sortBy);
+...
+
+found = products.namedLike(namePattern,
+                           Limit.of(25),
+                           Order.by(Sort.desc("price"),
+                                    Sort.desc("amountSold"),
+                                    Sort.asc("name")));
+----
+
