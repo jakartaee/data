@@ -36,27 +36,28 @@ import jakarta.data.repository.OrderBy;
  * <p>A repository method parameter of type {@link Order} allows a variable
  * number of {@code Sort} criteria. For example,</p>
  *
- * <pre>
- * Employee[] findByYearHired(int yearHired, Limit maxResults, Order&lt;Employee&gt; sortBy);
+ * <pre>{@code
+ * Employee[] findByYearHired(int yearHired, Limit maxResults, Order<Employee> sortBy);
+ *
  * ...
  * highestPaidNewHires = employees.findByYearHired(Year.now().getValue(),
  *                                                 Limit.of(10),
  *                                                 Order.by(Sort.desc("salary"),
  *                                                          Sort.asc("lastName"),
  *                                                          Sort.asc("firstName")));
- * </pre>
+ * }</pre>
  *
  * <p>Alternatively, {@link Order} may be used in combination with
  * the {@linkplain StaticMetamodel static metamodel} to allow a variable number
  * of typed {@code Sort} criteria. For example,</p>
  *
- * <pre>
+ * <pre>{@code
  * highestPaidNewHires = employees.findByYearHired(Year.now().getValue(),
  *                                                 Limit.of(10),
  *                                                 Order.by(_Employee.salary.desc(),
  *                                                          _Employee.lastName.asc(),
  *                                                          _Employee.firstName.asc()));
- * </pre>
+ * }</pre>
  *
  * <p>When multiple sorting criteria are provided, sorting is
  * lexicographic, with the precedence of a criterion depending on its position
