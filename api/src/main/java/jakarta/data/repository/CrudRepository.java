@@ -62,7 +62,7 @@ import java.util.List;
  * &#64;Repository
  * public interface Cars extends CrudRepository&lt;Car, Long&gt; {
  *
- *     List&lt;Car&gt; findByMakeAndModel(String make, String model, Sort&lt;?&gt;... sorts);
+ *     List&lt;Car&gt; findByMakeAndModel(String make, String model, Order&lt;Car&gt; sorts);
  *
  *     ...
  * }
@@ -81,8 +81,8 @@ import java.util.List;
  *
  * List&lt;Car&gt; found = findByMakeAndModel(car1.make,
  *                                      car1.model,
- *                                      Sort.desc("year"),
- *                                      Sort.asc("vin"));
+ *                                      Order.by(Sort.desc("year"),
+ *                                               Sort.asc("vin")));
  * </pre>
  *
  * <p>The module Javadoc provides an {@link jakarta.data/ overview} of Jakarta

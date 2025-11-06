@@ -33,34 +33,30 @@ import jakarta.data.repository.OrderBy;
  * entities. Parameters of type {@code Sort} must occur after the method
  * parameters representing regular parameters of the query itself.</p>
  *
- * <p>The parameter type {@code Sort<?>...} allows a variable number
- * of generic {@code Sort} criteria. For example,</p>
+ * <p>A repository method parameter of type {@link Order} allows a variable
+ * number of {@code Sort} criteria. For example,</p>
  *
- * <pre>{@code
- * Employee[] findByYearHired(int yearHired, Limit maxResults, Sort<?>... sortBy);
- *
+ * <pre>
+ * Employee[] findByYearHired(int yearHired, Limit maxResults, Order&lt;Employee&gt; sortBy);
  * ...
  * highestPaidNewHires = employees.findByYearHired(Year.now().getValue(),
  *                                                 Limit.of(10),
- *                                                 Sort.desc("salary"),
- *                                                 Sort.asc("lastName"),
- *                                                 Sort.asc("firstName"));
- * }</pre>
+ *                                                 Order.by(Sort.desc("salary"),
+ *                                                          Sort.asc("lastName"),
+ *                                                          Sort.asc("firstName")));
+ * </pre>
  *
  * <p>Alternatively, {@link Order} may be used in combination with
  * the {@linkplain StaticMetamodel static metamodel} to allow a variable number
  * of typed {@code Sort} criteria. For example,</p>
  *
- * <pre>{@code
- * Employee[] findByYearHired(int yearHired, Limit maxResults, Order<Employee> sortBy);
- *
- * ...
+ * <pre>
  * highestPaidNewHires = employees.findByYearHired(Year.now().getValue(),
  *                                                 Limit.of(10),
  *                                                 Order.by(_Employee.salary.desc(),
  *                                                          _Employee.lastName.asc(),
  *                                                          _Employee.firstName.asc()));
- * }</pre>
+ * </pre>
  *
  * <p>When multiple sorting criteria are provided, sorting is
  * lexicographic, with the precedence of a criterion depending on its position
