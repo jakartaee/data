@@ -416,7 +416,7 @@ import java.util.Set;
  *     <pre>{@code
  *     @Find
  *     Page<Product> getPage(PageRequest pageRequest, Order<Product> sortBy);
- *    }</pre>
+ *     }</pre>
  * </li>
  * </ol>
  *
