@@ -75,7 +75,7 @@ import jakarta.data.messages.Messages;
  * would be,</p>
  *
  * <pre>{@code
- * @StaticMetamodel
+ * @StaticMetamodel(Car.class)
  * public interface _Car {
  *     String COLOR = "color";
  *     String DISCOUNTRATE = "discountRate";
