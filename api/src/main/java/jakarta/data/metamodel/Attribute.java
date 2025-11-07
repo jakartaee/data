@@ -53,10 +53,10 @@ import jakarta.data.messages.Messages;
  *
  * <p>For example, given the following entity class,</p>
  *
- * <pre>
- * &#64;Entity
+ * <pre>{@code
+ * @Entity
  * public class Car {
- *     &#64;Id
+ *     @Id
  *     public String vin;
  *     public Color color;
  *     public double discountRate;
@@ -69,13 +69,13 @@ import jakarta.data.messages.Messages;
  * }
  *
  * public enum Color { BLACK, BLUE, GRAY, RED, WHITE }
- * </pre>
+ * }</pre>
  *
  * <p>The static metamodel class (typically generated from the entity class)
  * would be,</p>
  *
- * <pre>
- * &#64;StaticMetamodel
+ * <pre>{@code
+ * @StaticMetamodel(Car.class)
  * public interface _Car {
  *     String COLOR = "color";
  *     String DISCOUNTRATE = "discountRate";
@@ -87,26 +87,26 @@ import jakarta.data.messages.Messages;
  *     String VIN = "vin";
  *     String YEAR = "year";
  *
- *     ComparableAttribute&lt;Car,Color&gt; color = ComparableAttribute.of(
+ *     ComparableAttribute<Car, Color> color = ComparableAttribute.of(
  *             Car.class, COLOR, Color.class);
- *     NumericAttribute&lt;Car,Double&gt; discountRate = NumericAttribute.of(
+ *     NumericAttribute<Car, Double> discountRate = NumericAttribute.of(
  *             Car.class, DISCOUNTRATE, double.class);
- *     NumericAttribute&lt;Car,Integer&gt; firstModelYear = NumericAttribute.of(
+ *     NumericAttribute<Car, Integer> firstModelYear = NumericAttribute.of(
  *             Car.class, FIRSTMODELYEAR, int.class);
- *     TemporalAttribute&lt;Car,LocalDate&gt; listed = TemporalAttribute.of(
+ *     TemporalAttribute<Car, LocalDate> listed = TemporalAttribute.of(
  *             Car.class, LISTED, LocalDate.class);
- *     TextAttribute&lt;Car&gt; make = TextAttribute.of(
+ *     TextAttribute<Car> make = TextAttribute.of(
  *             Car.class, MAKE);
- *     TextAttribute&lt;Car&gt; model = TextAttribute.of(
+ *     TextAttribute<Car> model = TextAttribute.of(
  *             Car.class, MODEL);
- *     NumericAttribute&lt;Car,Integer&gt; price = NumericAttribute.of(
+ *     NumericAttribute<Car, Integer> price = NumericAttribute.of(
  *             Car.class, PRICE, int.class);
- *     TextAttribute&lt;Car&gt; vin = TextAttribute.of(
+ *     TextAttribute<Car> vin = TextAttribute.of(
  *             Car.class, VIN);
- *     NumericAttribute&lt;Car,Integer&gt; year = NumericAttribute.of(
+ *     NumericAttribute<Car, Integer> year = NumericAttribute.of(
  *             Car.class, YEAR, int.class);
  * }
- * </pre>
+ * }</pre>
  *
  * @param <T> entity class of the static metamodel.
  */

@@ -28,14 +28,14 @@ import java.util.stream.StreamSupport;
  * An instance of {@code Page} is obtained by supplying a {@link PageRequest} as
  * an argument of a repository method. For example,</p>
  *
- * <pre>
- * &#64;Find
- * Page&lt;Vehicle&gt; search(&#64;By("make") String make,
- *                      &#64;By("model") String model,
- *                      &#64;By("year") int designYear,
+ * <pre>{@code
+ * @Find
+ * Page<Vehicle> search(@By("make") String make,
+ *                      @By("model") String model,
+ *                      @By("year") int designYear,
  *                      PageRequest pageRequest,
- *                      Order&lt;Vehicle&gt; order);
- * </pre>
+ *                      Order<Vehicle> order);
+ * }</pre>
  *
  * <p>If {@link PageRequest#requestTotal()} is enabled, the {@link Page} also
  * contains information about the {@linkplain #totalPages total number of pages}

@@ -67,29 +67,29 @@ import jakarta.data.Sort;
  *
  * <p>For example, for the following entity,</p>
  *
- * <pre>
- * &#64;Entity
+ * <pre>{@code
+ * @Entity
  * public class Person {
  *     public LocalDate dateOfBirth;
  *
- *     &#64;Embedded
+ *     @Embedded
  *     public Name name;
  *
- *     &#64;Id
+ *     @Id
  *     public long ssn;
  * }
  *
- * &#64;Embeddable
+ * @Embeddable
  * public class Name {
  *     public String first;
  *     public String last;
  * }
- * </pre>
+ * }</pre>
  *
  * <p>An application programmer may define a static metamodel as follows,</p>
  *
- * <pre>
- * &#64;StaticMetamodel(Person.class)
+ * <pre>{@code
+ * @StaticMetamodel(Person.class)
  * public interface _Person {
  *     String DATEOFBIRTH = "dateOfBirth";
  *     String NAME = "name";
@@ -97,28 +97,28 @@ import jakarta.data.Sort;
  *     String NAME_LAST = "name.last";
  *     String SSN = "ssn";
  *
- *     TemporalAttribute&lt;Person,LocalDate&gt; dateOfBirth = TemporalAttribute.of(
+ *     TemporalAttribute<Person, LocalDate> dateOfBirth = TemporalAttribute.of(
  *             Person.class, DATEOFBIRTH, LocalDate.class);
- *     NavigableAttribute&lt;Person,Name&gt; name = NavigableAttribute.of(
+ *     NavigableAttribute<Person, Name> name = NavigableAttribute.of(
  *             Person.class, NAME, Name.class);
- *     TextAttribute&lt;Person&gt; name_first = TextAttribute.of(
+ *     TextAttribute<Person> name_first = TextAttribute.of(
  *             Person.class, NAME_FIRST);
- *     TextAttribute&lt;Person&gt; name_last = TextAttribute.of(
+ *     TextAttribute<Person> name_last = TextAttribute.of(
  *             Person.class, NAME_LAST);
- *     NumericAttribute&lt;Person,Long&gt; ssn = NumericAttribute.of(
+ *     NumericAttribute<Person, Long> ssn = NumericAttribute.of(
  *             Person.class, SSN, long.class);
  * }
- * </pre>
+ * }</pre>
  *
  * <p>And use it to refer to entity attributes in a type-safe manner,</p>
  *
- * <pre>
- * Order&lt;Person&gt; order =
+ * <pre>{@code
+ * Order<Person> order =
  *         Order.by(_Person.dateOfBirth.desc(),
  *                  _Person.name_last.asc(),
  *                  _Person.name_first.asc(),
  *                  _Person.ssn.asc());
- * </pre>
+ * }</pre>
  *
  * <p>Alternatively, an annotation processor might generate static metamodel classes
  * for entities at compile time. The generated classes must be annotated with the
