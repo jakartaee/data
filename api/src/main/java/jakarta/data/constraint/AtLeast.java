@@ -31,13 +31,13 @@ import jakarta.data.spi.expression.literal.ComparableLiteral;
  * {@code AtLeast} or is annotated {@link Is @Is(AtLeast.class)} and is
  * of the same type or a subtype of the entity attribute. For example,</p>
  *
- * <pre>
- * &#64;Find
- * List&lt;Car&gt; ofYearOrHigher(&#64;By(_Car.YEAR) AtLeast&lt;Integer&gt; minYear);
+ * <pre>{@code
+ * @Find
+ * List<Car> ofYearOrHigher(@By(_Car.YEAR) AtLeast<Integer> minYear);
  *
- * &#64;Find
- * List&lt;Car&gt; yearAtLeast(&#64;By(_Car.YEAR) &#64;Is(AtLeast.class) int minimum,
- *                       Order&lt;Car&gt; sorts);
+ * @Find
+ * List<Car> yearAtLeast(@By(_Car.YEAR) @Is(AtLeast.class) int minimum,
+ *                       Order<Car> sorts);
  *
  * ...
  *
@@ -45,22 +45,22 @@ import jakarta.data.spi.expression.literal.ComparableLiteral;
  *
  * found = cars.yearAtLeast(2023,
  *                          Order.by(_Car.price.desc()));
- * </pre>
+ * }</pre>
  *
  * <p>Repository methods can also accept {@code AtLeast} constraints at
  * run time in the form of a {@link Restriction} on a
  * {@link ComparableExpression}. For example,</p>
  *
- * <pre>
- * &#64;Find
- * List&lt;Car&gt; searchAll(Restriction&lt;Car&gt; restrict, Order&lt;Car&gt; sorts);
+ * <pre>{@code
+ * @Find
+ * List<Car> searchAll(Restriction<Car> restrict, Order<Car> sorts);
  *
  * ...
  *
  * found = cars.searchAll(_Car.year.greaterThanEqual(2024),
  *                        Order.by(_Car.year.desc(),
- *                                 _Car.price.asc());
- * </pre>
+ *                                 _Car.price.asc()));
+ * }</pre>
  *
  * <p>The {@linkplain Attribute entity and static metamodel} for the code
  * examples within this class are shown in the {@link Attribute} Javadoc.
