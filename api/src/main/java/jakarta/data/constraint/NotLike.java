@@ -37,14 +37,14 @@ import jakarta.data.spi.expression.literal.StringLiteral;
  * {@code NotLike} or is annotated {@link Is @Is(NotLike.class)} and is of
  * type {@link String}. For example,</p>
  *
- * <pre>
- * &#64;Find
- * List&lt;Car&gt; matchVIN(&#64;By(_Car.VIN) NotLike pattern);
+ * <pre>{@code
+ * @Find
+ * List<Car> matchVIN(@By(_Car.VIN) NotLike pattern);
  *
- * &#64;Find
- * List&lt;Car&gt; ofMakeNotModel(&#64;By(_Car.MAKE) String manufacturer,
- *                          &#64;By(_Car.MODEL) &#64;Is(NotLike.class) String excludePattern,
- *                          Order&lt;Car&gt; sorts);
+ * @Find
+ * List<Car> ofMakeNotModel(@By(_Car.MAKE) String manufacturer,
+ *                          @By(_Car.MODEL) @Is(NotLike.class) String excludePattern,
+ *                          Order<Car> sorts);
  *
  * ...
  *
@@ -53,15 +53,15 @@ import jakarta.data.spi.expression.literal.StringLiteral;
  * found = cars.ofMakeNotModel("Jakarta Motors",
  *                             "%Hybrid%",
  *                             Order.by(_Car.price.desc()));
- * </pre>
+ * }</pre>
  *
  * <p>Repository methods can also accept {@code NotLike} constraints at
  * run time in the form of a {@link Restriction} on a {@link TextExpression}.
  * For example,</p>
  *
- * <pre>
- * &#64;Find
- * List&lt;Car&gt; searchAll(Restriction&lt;Car&gt; restrict, Order&lt;Car&gt; sorts);
+ * <pre>{@code
+ * @Find
+ * List<Car> searchAll(Restriction<Car> restrict, Order<Car> sorts);
  *
  * ...
  *
@@ -70,8 +70,8 @@ import jakarta.data.spi.expression.literal.StringLiteral;
  *                                     _Car.model.notEndsWith("EV")),
  *                        Order.by(_Car.model.asc(),
  *                                 _Car.year.desc(),
- *                                 _Car.price.asc());
- * </pre>
+ *                                 _Car.price.asc()));
+ * }</pre>
  *
  * <p>The {@linkplain Attribute entity and static metamodel} for the code
  * examples within this class are shown in the {@link Attribute} Javadoc.
@@ -90,9 +90,9 @@ public interface NotLike extends Constraint<String> {
      * {@code JHM} as its first 3 character positions and {@code E} in
      * character position 7.</p>
      *
-     * <pre>
-     * found = cars.matchVIN(NotLike.pattern("JHM___E%"));
-     * </pre>
+     * <pre>{@code
+     *     found = cars.matchVIN(NotLike.pattern("JHM___E%"));
+     * }</pre>
      *
      * @param pattern a pattern in which {@code _} matches a single character
      *                and {@code %} matches 0 or more characters.
@@ -112,9 +112,9 @@ public interface NotLike extends Constraint<String> {
      * {@code JHM} as its first 3 character positions and {@code F} in
      * character position 7.</p>
      *
-     * <pre>
-     * found = cars.matchVIN(NotLike.pattern("JHM???F*", '?', '*'));
-     * </pre>
+     * <pre>{@code
+     *     found = cars.matchVIN(NotLike.pattern("JHM???F*", '?', '*'));
+     * }</pre>
      *
      * @param pattern        a pattern that can include the given wildcard
      *                       characters.
@@ -144,9 +144,9 @@ public interface NotLike extends Constraint<String> {
      * {@code JHM} as its first 3 character positions and {@code C} in
      * character position 7.</p>
      *
-     * <pre>
-     * found = cars.matchVIN(Like.pattern("JHM---^CC", '-', 'C', '^'));
-     * </pre>
+     * <pre>{@code
+     *     found = cars.matchVIN(Like.pattern("JHM---^CC", '-', 'C', '^'));
+     * }</pre>
      *
      * @param pattern        a pattern that can include the given wildcard
      *                       characters and escape character.
@@ -194,9 +194,9 @@ public interface NotLike extends Constraint<String> {
      * <p>For example, the following requires that the first 3 positions of a
      * VIN number are not the characters {@code JTP}.</p>
      *
-     * <pre>
-     * found = cars.matchVIN(NotLike.prefix("JTP"));
-     * </pre>
+     * <pre>{@code
+     *     found = cars.matchVIN(NotLike.prefix("JTP"));
+     * }</pre>
      *
      * @param prefix text that the beginning characters of the constraint
      *               target must not match.
@@ -221,9 +221,9 @@ public interface NotLike extends Constraint<String> {
      * <p>For example, the following requires that the entity attribute value
      * not contain the character string {@code Hybrid},</p>
      *
-     * <pre>
-     * found = cars.ofModel(NotLike.substring("Hybrid"));
-     * </pre>
+     * <pre>{@code
+     *     found = cars.ofModel(NotLike.substring("Hybrid"));
+     * }</pre>
      *
      * @param substring text that must not be contained in the constraint
      *                  target.
@@ -248,9 +248,9 @@ public interface NotLike extends Constraint<String> {
      * <p>For example, the following requires that the entity attribute value
      * not end with the characters {@code EV},</p>
      *
-     * <pre>
-     * found = cars.ofModel(NotLike.suffix("EV"));
-     * </pre>
+     * <pre>{@code
+     *     found = cars.ofModel(NotLike.suffix("EV"));
+     * }</pre>
      *
      * @param suffix text that the ending characters of the constraint
      *               target must not match.
@@ -277,9 +277,9 @@ public interface NotLike extends Constraint<String> {
      * <p>For example, the following requires a VIN number to exactly match,
      * </p>
      *
-     * <pre>
-     * found = cars.ofModel(NotLike.literal("J-150"));
-     * </pre>
+     * <pre>{@code
+     *     found = cars.ofModel(NotLike.literal("J-150"));
+     * }</pre>
      *
      * @param value a value that must not match the constraint target.
      * @return a {@code NotLike} constraint.
