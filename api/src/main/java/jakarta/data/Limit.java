@@ -32,11 +32,11 @@ import jakarta.data.page.PageRequest;
  * parameters representing regular parameters of the query itself. For
  * example,</p>
  *
- * <pre>
- * &#64;Find
- * Product[] namedLike(&#64;By(_Product.NAME) &#64;Is(Like.class) String namePattern,
+ * <pre>{@code
+ * @Find
+ * Product[] namedLike(@By(_Product.NAME) @Is(Like.class) String namePattern,
  *                     Limit limit,
- *                     Order&lt;Product&gt; sorts);
+ *                     Order<Product> sorts);
  *
  * ...
  * mostExpensive50 = products.namedLike(pattern,
@@ -48,7 +48,7 @@ import jakarta.data.page.PageRequest;
  *                                            Limit.range(51, 100),
  *                                            Order.by(Sort.desc(_Product.PRICE),
  *                                                     Sort.asc(_Product.NAME)));
- * </pre>
+ * }</pre>
  *
  * <p>A repository method may not be declared with:
  * <ul>

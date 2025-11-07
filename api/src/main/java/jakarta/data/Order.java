@@ -35,15 +35,16 @@ import jakarta.data.repository.OrderBy;
  * {@link StaticMetamodel} for helping to enforce type safety of sort criteria
  * during development. For example,</p>
  *
- * <pre>
- * Page&lt;Employee>&gt; findByYearHired(int year, PageRequest pageRequest, Order&lt;Employee&gt;);
+ * <pre>{@code
+ * Page<Employee> findByYearHired(int year, PageRequest pageRequest, Order<Employee>);
+ *
  * ...
  * page1 = employees.findByYearHired(Year.now(),
  *                                   PageRequest.ofSize(10),
  *                                   Order.by(_Employee.salary.desc(),
  *                                            _Employee.lastName.asc(),
  *                                            _Employee.firstName.asc()));
- * </pre>
+ * }</pre>
  *
  * <p>The relative precedence of an instance of {@link Sort} belonging
  * to an {@code Order} is determined by its position within the
