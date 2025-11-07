@@ -36,22 +36,22 @@ import static java.util.Collections.unmodifiableList;
  * entity attribute by defining a method parameter that is of type
  * {@code NotIn}. For example,</p>
  *
- * <pre>
- * &#64;Find
- * List&lt;Car&gt; excludingManufacturers(&#64;By(_Car.MAKE) NotIn&lt;String&gt; excluded);
+ * <pre>{@code
+ * @Find
+ * List<Car> excludingManufacturers(@By(_Car.MAKE) NotIn<String> excluded);
  * ...
  *
  * found = cars.excludingManufacturers(NotIn.values("Leakoil Motors",
  *                                                  "Stallmore Motors"));
- * </pre>
+ * }</pre>
  *
  * <p>Repository methods can also accept {@code NotIn} constraints at run time
  * in the form of a {@link Restriction} on an {@link Expression}. For example,
  * </p>
  *
- * <pre>
- * &#64;Find
- * List&lt;Car&gt; searchAll(Restriction&lt;Car&gt; restrict, Order&lt;Car&gt; sorts);
+ * <pre>{@code
+ * @Find
+ * List<Car> searchAll(Restriction<Car> restrict, Order<Car> sorts);
  *
  * ...
  *
@@ -59,7 +59,7 @@ import static java.util.Collections.unmodifiableList;
  *                                        "Stallmore Motors"),
  *                        Order.by(_Car.make.asc(),
  *                                 _Car.model.asc()));
- * </pre>
+ * }</pre>
  *
  * <p>The {@linkplain Attribute entity and static metamodel} for the code
  * examples within this class are shown in the {@link Attribute} Javadoc.
@@ -75,10 +75,10 @@ public interface NotIn<V> extends Constraint<V> {
      * <p>Requires that the constraint target not equal any of the given
      * {@code values}. For example,</p>
      *
-     * <pre>
-     * found = cars.excludingManufacturers(NotIn.values("Stallmore Motors",
-     *                                                  "Knockhard Motors"));
-     * </pre>
+     * <pre>{@code
+     *     found = cars.excludingManufacturers(NotIn.values("Stallmore Motors",
+     *                                                      "Knockhard Motors"));
+     * }</pre>
      *
      * @param <V>    type of the entity attribute or a subtype or primitive
      *               wrapper type for the entity attribute.
@@ -117,10 +117,10 @@ public interface NotIn<V> extends Constraint<V> {
      * <p>Requires that the constraint target not equal any of the given
      * {@code values}. For example,</p>
      *
-     * <pre>
-     * found = cars.excludingManufacturers(NotIn.values(Set.of("Leakoil Motors",
-     *                                                         "Knockhard Motors")));
-     * </pre>
+     * <pre>{@code
+     *     found = cars.excludingManufacturers(NotIn.values(Set.of("Leakoil Motors",
+     *                                                             "Knockhard Motors")));
+     * }</pre>
      *
      * @param <V>    type of the entity attribute or a subtype or primitive
      *               wrapper type for the entity attribute.
@@ -158,11 +158,11 @@ public interface NotIn<V> extends Constraint<V> {
      * <p>Requires that the constraint target not equal any of the values to
      * which the given {@code expressions} evaluate. For example,</p>
      *
-     * <pre>
-     * found = cars.excludingManufacturers(
+     * <pre>{@code
+     *     found = cars.excludingManufacturers(
      *                 NotIn.expressions(List.of(_Car.model.left(_Car.make.length()),
      *                                           _Car.model.right(_Car.make.length()))));
-     * </pre>
+     * }</pre>
      *
      * @param <V>         type of the entity attribute or a subtype or
      *                    primitive wrapper type for the entity attribute.
@@ -198,11 +198,11 @@ public interface NotIn<V> extends Constraint<V> {
      * <p>Requires that the constraint target not equal any of the values to
      * which the given {@code expressions} evaluate. For example,</p>
      *
-     * <pre>
-     * found = cars.excludingManufacturers(
+     * <pre>{@code
+     *     found = cars.excludingManufacturers(
      *                 NotIn.expressions(_Car.model.left(_Car.make.length()),
      *                                   _Car.model.right(_Car.make.length())));
-     * </pre>
+     * }</pre>
      *
      * @param <V>         type of the entity attribute or a subtype or
      *                    primitive wrapper type for the entity attribute.

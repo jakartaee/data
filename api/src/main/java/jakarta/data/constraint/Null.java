@@ -28,23 +28,23 @@ import jakarta.data.restrict.Restriction;
  * entity attribute by defining a method parameter that is of type
  * {@code Null}. For example,</p>
  *
- * <pre>
- * &#64;Find
- * List&lt;Car&gt; ofUnknownModel(&#64;By(_Car.MAKE) String make,
- *                          &#64;By(_Car.MODEL) Null&lt;String&gt; nullModel);
+ * <pre>{@code
+ * @Find
+ * List<Car> ofUnknownModel(@By(_Car.MAKE) String make,
+ *                          @By(_Car.MODEL) Null<String> nullModel);
  * ...
  *
  * found = cars.ofUnknownModel("Jakarta Motors",
  *                             Null.instance());
- * </pre>
+ * }</pre>
  *
  * <p>Repository methods can also accept {@code Null} constraints at run time
  * in the form of a {@link Restriction} on an {@link Expression}. For example,
  * </p>
  *
- * <pre>
- * &#64;Find
- * List&lt;Car&gt; searchAll(Restriction&lt;Car&gt; restrict, Order&lt;Car&gt; sorts);
+ * <pre>{@code
+ * @Find
+ * List<Car> searchAll(Restriction<Car> restrict, Order<Car> sorts);
  *
  * ...
  *
@@ -52,7 +52,7 @@ import jakarta.data.restrict.Restriction;
  *                                     _Car.model.isNull()),
  *                        Order.by(_Car.year.desc(),
  *                                 _Car.price.asc()));
- * </pre>
+ * }</pre>
  *
  * <p>The {@linkplain Attribute entity and static metamodel} for the code
  * examples within this class are shown in the {@link Attribute} Javadoc.
@@ -68,10 +68,10 @@ public interface Null<V> extends Constraint<V> {
      * <p>Requires that the constraint target has a {@code null} value. For
      * example,</p>
      *
-     * <pre>
-     * found = cars.ofMakeAndModel("Jakarta Motors",
-     *                             Null.instance());
-     * </pre>
+     * <pre>{@code
+     *     found = cars.ofMakeAndModel("Jakarta Motors",
+     *                                 Null.instance());
+     * }</pre>
      *
      * @param <V> type of the entity attribute or a subtype or primitive
      *            wrapper type for the entity attribute.

@@ -32,14 +32,14 @@ import jakarta.data.spi.expression.literal.Literal;
  * {@code NotEqualTo} or is annotated {@link Is @Is(NotEqualTo.class)} and is
  * of the same type or a subtype of the entity attribute. For example,</p>
  *
- * <pre>
- * &#64;Find
- * List&lt;Car&gt; excludingManufacturer(&#64;By(_Car.MAKE) NotEqualTo&lt;String&gt; excludedManufacturer);
+ * <pre>{@code
+ * @Find
+ * List<Car> excludingManufacturer(@By(_Car.MAKE) NotEqualTo<String> excludedManufacturer);
  *
- * &#64;Find
- * List&lt;Car&gt; ofMakeNotModel(&#64;By(_Car.MAKE) &#64;Is(EqualTo.class) String manufacturer,
- *                          &#64;By(_Car.MODEL) &#64;Is(NotEqualTo.class) String excludedModel,
- *                          Order&lt;Car&gt; sorts);
+ * @Find
+ * List<Car> ofMakeNotModel(@By(_Car.MAKE) @Is(EqualTo.class) String manufacturer,
+ *                          @By(_Car.MODEL) @Is(NotEqualTo.class) String excludedModel,
+ *                          Order<Car> sorts);
  * ...
  *
  * found = cars.excludingManufacturer(NotEqualTo.value("Stallmore Motors"));
@@ -47,22 +47,22 @@ import jakarta.data.spi.expression.literal.Literal;
  * found = cars.ofMakeNotModel("Jakarta Motors",
  *                             "J-150",
  *                             Order.by(_Car.price.desc()));
- * </pre>
+ * }</pre>
  *
  * <p>Repository methods can also accept {@code NotEqualTo} constraints at
  * run time in the form of a {@link Restriction} on an {@link Expression}.
  * For example,</p>
  *
- * <pre>
- * &#64;Find
- * List&lt;Car&gt; searchAll(Restriction&lt;Car&gt; restrict, Order&lt;Car&gt; sorts);
+ * <pre>{@code
+ * @Find
+ * List<Car> searchAll(Restriction<Car> restrict, Order<Car> sorts);
  *
  * ...
  *
  * found = cars.searchAll(_Car.make.notEqualTo("Coalback Motors"),
  *                        Order.by(_Car.year.desc(),
- *                                 _Car.price.asc());
- * </pre>
+ *                                 _Car.price.asc()));
+ * }</pre>
  *
  * <p>The {@linkplain Attribute entity and static metamodel} for the code
  * examples within this class are shown in the {@link Attribute} Javadoc.
@@ -78,10 +78,10 @@ public interface NotEqualTo<V> extends Constraint<V> {
      * <p>Requires that the constraint target not equal the value to which the
      * given {@code expression} evaluates. For example,</p>
      *
-     * <pre>
-     * found = cars.excludingManufacturer(
+     * <pre>{@code
+     *     found = cars.excludingManufacturer(
      *                 NotEqualTo.expression(_Car.model.left(_Car.make.length())));
-     * </pre>
+     * }</pre>
      *
      * @param <V>        type of the entity attribute or a subtype or primitive
      *                   wrapper type for the entity attribute.
@@ -103,9 +103,9 @@ public interface NotEqualTo<V> extends Constraint<V> {
      * <p>Requires that the constraint target not equal the given value.
      * For example,</p>
      *
-     * <pre>
-     * found = cars.excludingManufacturer(NotEqualTo.value("Leakoil Motors"));
-     * </pre>
+     * <pre>{@code
+     *     found = cars.excludingManufacturer(NotEqualTo.value("Leakoil Motors"));
+     * }</pre>
      *
      * @param <V>   type of the entity attribute or a subtype or primitive
      *              wrapper type for the entity attribute.

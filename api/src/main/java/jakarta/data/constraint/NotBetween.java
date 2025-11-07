@@ -30,22 +30,22 @@ import jakarta.data.spi.expression.literal.ComparableLiteral;
  * {@code NotBetween} and is of the same type or a subtype of the entity
  * attribute. For example,</p>
  *
- * <pre>
- * &#64;Find
- * List&lt;Car&gt; byModelYear(&#64;By(_Car.YEAR) NotBetween&lt;Integer&gt; yearsToExclude);
+ * <pre>{@code
+ * @Find
+ * List<Car> byModelYear(@By(_Car.YEAR) NotBetween<Integer> yearsToExclude);
  *
  * ...
  *
  * found = cars.byModelYear(NotBetween.bounds(2020, 2022));
- * </pre>
+ * }</pre>
  *
  * <p>Repository methods can also accept {@code NotBetween} constraints at
  * run time in the form of a {@link Restriction} on a
  * {@link ComparableExpression}. For example,</p>
  *
- * <pre>
- * &#64;Find
- * List&lt;Car&gt; searchAll(Restriction&lt;Car&gt; restrict, Order&lt;Car&gt; sorts);
+ * <pre>{@code
+ * @Find
+ * List<Car> searchAll(Restriction<Car> restrict, Order<Car> sorts);
  *
  * ...
  *
@@ -53,7 +53,7 @@ import jakarta.data.spi.expression.literal.ComparableLiteral;
  *                        Order.by(_Car.year.desc(),
  *                                 _Car.price.desc(),
  *                                 _Car.vin.asc()));
- * </pre>
+ * }</pre>
  *
  * <p>The {@linkplain Attribute entity and static metamodel} for the code
  * examples within this class are shown in the {@link Attribute} Javadoc.
@@ -70,9 +70,9 @@ public interface NotBetween<V extends Comparable<?>> extends Constraint<V> {
      * less than the given {@code lower} bound or greater than the given
      * {@code upper} bound. For example,</p>
      *
-     * <pre>
-     * found = cars.byModelYear(NotBetween.bounds(2022, 2024));
-     * </pre>
+     * <pre>{@code
+     *     found = cars.byModelYear(NotBetween.bounds(2022, 2024));
+     * }</pre>
      *
      * @param <V>   type of the entity attribute or a subtype or primitive
      *              wrapper type for the entity attribute.
@@ -91,10 +91,10 @@ public interface NotBetween<V extends Comparable<?>> extends Constraint<V> {
      * less than the given {@code lower} bound or greater than the value to
      * which the given {@code upper} expression evaluates. For example,</p>
      *
-     * <pre>
-     * found = cars.byModelYear(NotBetween.bounds(2015,
-     *                                            _Car.firstModelYear.plus(5)));
-     * </pre>
+     * <pre>{@code
+     *     found = cars.byModelYear(NotBetween.bounds(2015,
+     *                                                _Car.firstModelYear.plus(5)));
+     * }</pre>
      *
      * @param <V>   type of the entity attribute or a subtype or primitive
      *              wrapper type for the entity attribute.
@@ -117,9 +117,9 @@ public interface NotBetween<V extends Comparable<?>> extends Constraint<V> {
      * evaluates or greater than the given {@code upper} bound. For example,
      * </p>
      *
-     * <pre>
-     * found = cars.byModelYear(NotBetween.bounds(_Car.firstModelYear, 2022));
-     * </pre>
+     * <pre>{@code
+     *     found = cars.byModelYear(NotBetween.bounds(_Car.firstModelYear, 2022));
+     * }</pre>
      *
      * @param <V>   type of the entity attribute or a subtype or primitive
      *              wrapper type for the entity attribute.
@@ -142,10 +142,10 @@ public interface NotBetween<V extends Comparable<?>> extends Constraint<V> {
      * evaluates or greater than the value to which the given {@code upper}
      * expression evaluates. For example,</p>
      *
-     * <pre>
-     * found = cars.byModelYear(NotBetween.bounds(_Car.firstModelYear,
-     *                                            _Car.firstModelYear.plus(2)));
-     * </pre>
+     * <pre>{@code
+     *     found = cars.byModelYear(NotBetween.bounds(_Car.firstModelYear,
+     *                                                _Car.firstModelYear.plus(2)));
+     * }</pre>
      *
      * @param <V>   type of the entity attribute or a subtype or primitive
      *              wrapper type for the entity attribute.
