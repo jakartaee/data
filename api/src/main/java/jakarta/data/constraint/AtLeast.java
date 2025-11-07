@@ -76,9 +76,9 @@ public interface AtLeast<V extends Comparable<?>> extends Constraint<V> {
      * <p>Requires that the constraint target evaluates to a value that is
      * greater than or equal to the given {@code minimum}. For example,</p>
      *
-     * <pre>
-     * found = cars.ofYearOrHigher(AtLeast.min(2021));
-     * </pre>
+     * <pre>{@code
+     *     found = cars.ofYearOrHigher(AtLeast.min(2021));
+     * }</pre>
      *
      * @param <V>     type of the entity attribute or a subtype or primitive
      *                wrapper type for the entity attribute.
@@ -96,9 +96,9 @@ public interface AtLeast<V extends Comparable<?>> extends Constraint<V> {
      * greater than or equal the value to which the the given {@code minimum}
      * expression evaluates. For example,</p>
      *
-     * <pre>
-     * found = cars.ofYearOrHigher(AtLeast.min(_Car.firstModelYear.plus(2)));
-     * </pre>
+     * <pre>{@code
+     *     found = cars.ofYearOrHigher(AtLeast.min(_Car.firstModelYear.plus(2)));
+     * }</pre>
      *
      * @param <V>     type of the entity attribute or a subtype or primitive
      *                wrapper type for the entity attribute.
