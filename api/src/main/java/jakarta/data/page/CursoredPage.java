@@ -54,28 +54,28 @@ import java.util.NoSuchElementException;
  * type {@code CursoredPage} and with a special parameter (after the normal
  * query parameters) of type {@link PageRequest}, for example:</p>
  *
- * <pre>
- * &#64;Find
- * &#64;OrderBy(_Employee.LASTNAME)
- * &#64;OrderBy(_Employee.FIRSTNAME)
- * &#64;OrderBy(_Employee.ID)
- * CursoredPage&lt;Employee&gt; withHoursOver(
- *         &#64;By(_Employee.HOURSWORKED) &#64;Is(GreaterThan.class) int fullTimeHours,
+ * <pre>{@code
+ * @Find
+ * @OrderBy(_Employee.LASTNAME)
+ * @OrderBy(_Employee.FIRSTNAME)
+ * @OrderBy(_Employee.ID)
+ * CursoredPage<Employee> withHoursOver(
+ *         @By(_Employee.HOURSWORKED) @Is(GreaterThan.class) int fullTimeHours,
  *         PageRequest pageRequest);
- * </pre>
+ * }</pre>
  *
  * <p>In initial page may be requested using an offset-based page request:</p>
  *
- * <pre>
+ * <pre>{@code
  * page = employees.withHoursOver(40, PageRequest.ofSize(50));
- * </pre>
+ * }</pre>
  *
  * <p>The next page may be requested relative to the end of the current page,
  * as follows:</p>
  *
- * <pre>
+ * <pre>{@code
  * page = employees.withHoursOver(40, page.nextPageRequest());
- * </pre>
+ * }</pre>
  *
  * <p>Here, the instance of {@link PageRequest} returned by
  * {@link CursoredPage#nextPageRequest()} is based on a key value encapsulated
@@ -89,14 +89,14 @@ import java.util.NoSuchElementException;
  * name pattern of the repository method and the {@link Sort} and {@link Order}
  * parameters of the repository method. For example:</p>
  *
- * <pre>
+ * <pre>{@code
  * Employee emp = ...
  * PageRequest pageRequest =
  *         PageRequest.ofPage(5)
  *                    .size(50)
  *                    .afterCursor(Cursor.forKey(emp.lastName, emp.firstName, emp.id));
  * page = employees.withHoursOver(40, pageRequest);
- * </pre>
+ * }</pre>
  *
  * <p>By making the query for the next page relative to observed values,
  * instead of to a numerical position, cursor-based pagination is less
@@ -119,14 +119,14 @@ import java.util.NoSuchElementException;
  * query, either via the {@link OrderBy} annotation or, or by passing
  * {@link Sort} or {@link jakarta.data.Order}. For example:</p>
  *
- * <pre>
- * &#64;Query("WHERE ordersPlaced &gt;= ?1 OR totalSpent &gt;= ?2")
- * &#64;OrderBy("zipcode")
- * &#64;OrderBy("birthYear")
- * &#64;OrderBy("id")
- * CursoredPage&lt;Customer&gt; getTopBuyers(int minOrders, float minSpent,
+ * <pre>{@code
+ * @Query("WHERE ordersPlaced >= ?1 OR totalSpent >= ?2")
+ * @OrderBy("zipcode")
+ * @OrderBy("birthYear")
+ * @OrderBy("id")
+ * CursoredPage<Customer> getTopBuyers(int minOrders, float minSpent,
  *                                     PageRequest pageRequest);
- * </pre>
+ * }</pre>
  *
  * <p>Only queries which return entities may be used with cursor-based
  * pagination
