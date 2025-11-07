@@ -36,22 +36,22 @@ import java.util.Optional;
  * {@code PageRequest} must occur after the method parameters representing
  * regular parameters of the query itself. For example:</p>
  *
- * <pre>
- * &#64;Find
- * &#64;OrderBy("age")
- * &#64;OrderBy("ssn")
- * Page&lt;Person&gt; agedBetween(&#64;By("age") &#64;Is(AtLeast.class) int minAge,
- *                          &#64;By("age") &#64;Is(AtMost.class) int maxAge,
+ * <pre>{@code
+ * @Find
+ * @OrderBy("age")
+ * @OrderBy("ssn")
+ * Page<Person> agedBetween(@By("age") @Is(AtLeast.class) int minAge,
+ *                          @By("age") @Is(AtMost.class) int maxAge,
  *                          PageRequest pageRequest);
- * </pre>
+ * }</pre>
  *
  * <p>This method might be called as follows:</p>
  *
- * <pre>
- * Page&lt;Person&gt; page = people.agedBetween(
+ * <pre>{@code
+ * Page<Person> page = people.agedBetween(
  *                35, 59,
  *                PageRequest.ofSize(100));
- * List&lt;Person&gt; results = page.content();
+ * List<Person> results = page.content();
  * ...
  * while (page.hasNext()) {
  *     page = people.agedBetween(
@@ -60,7 +60,7 @@ import java.util.Optional;
  *     results = page.content();
  *     ...
  * }
- * </pre>
+ * }</pre>
  *
  * <p>A repository method may not be declared with:</p>
  * <ul>
