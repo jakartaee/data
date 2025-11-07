@@ -30,30 +30,30 @@ import jakarta.data.spi.expression.literal.ComparableLiteral;
  * {@code Between} and is of the same type or a subtype of the entity
  * attribute. For example,</p>
  *
- * <pre>
- * &#64;Find
- * List&lt;Car&gt; byModelYear(&#64;By(_Car.YEAR) Between&lt;Integer&gt; yearRange,
- *                       Order&lt;Car&gt; sorts);
+ * <pre>{@code
+ * @Find
+ * List<Car> byModelYear(@By(_Car.YEAR) Between<Integer> yearRange,
+ *                       Order<Car> sorts);
  *
  * ...
  *
  * found = cars.byModelYear(Between.bounds(2021, 2024));
- * </pre>
+ * }</pre>
  *
  * <p>Repository methods can also accept {@code Between} constraints at
  * run time in the form of a {@link Restriction} on a
  * {@link ComparableExpression}. For example,</p>
  *
- * <pre>
- * &#64;Find
- * List&lt;Car&gt; searchAll(Restriction&lt;Car&gt; restrict, Order&lt;Car&gt; sorts);
+ * <pre>{@code
+ * @Find
+ * List<Car> searchAll(Restriction<Car> restrict, Order<Car> sorts);
  *
  * ...
  *
  * found = cars.searchAll(_Car.price.between(25000, 35000),
  *                        Order.by(_Car.price.desc(),
- *                                 _Car.year.desc());
- * </pre>
+ *                                 _Car.year.desc()));
+ * }</pre>
  *
  * <p>The {@linkplain Attribute entity and static metamodel} for the code
  * examples within this class are shown in the {@link Attribute} Javadoc.
@@ -70,10 +70,10 @@ public interface Between<V extends Comparable<?>> extends Constraint<V> {
      * greater than or equal to the given {@code minimum} and less than or
      * equals to the given {@code maximum}. For example,</p>
      *
-     * <pre>
-     * found = cars.byPrice(Between.bounds(27000, 37000),
-     *                      Order.by(_Car.price.desc()));
-     * </pre>
+     * <pre>{@code
+     *     found = cars.byPrice(Between.bounds(27000, 37000),
+     *                          Order.by(_Car.price.desc()));
+     * }</pre>
      *
      * @param <V>     type of the entity attribute or a subtype or primitive
      *                wrapper type for the entity attribute.
@@ -95,10 +95,10 @@ public interface Between<V extends Comparable<?>> extends Constraint<V> {
      * equal to the value to which the given {@code maximum} expression
      * evaluates. For example,</p>
      *
-     * <pre>
-     * found = cars.byModelYear(Between.bounds(2020, _Car.firstModelYear.plus(5)),
-     *                          Order.by(_Car.price.desc()));
-     * </pre>
+     * <pre>{@code
+     *     found = cars.byModelYear(Between.bounds(2020, _Car.firstModelYear.plus(5)),
+     *                              Order.by(_Car.price.desc()));
+     * }</pre>
      *
      * @param <V>     type of the entity attribute or a subtype or primitive
      *                wrapper type for the entity attribute.
@@ -120,10 +120,10 @@ public interface Between<V extends Comparable<?>> extends Constraint<V> {
      * expression evaluates and less than or equal to the given
      * {@code maximum}. For example,</p>
      *
-     * <pre>
-     * found = cars.byModelYear(Between.bounds(_Car.firstModelYear.plus(2), 2024),
-     *                          Order.by(_Car.year.desc()));
-     * </pre>
+     * <pre>{@code
+     *     found = cars.byModelYear(Between.bounds(_Car.firstModelYear.plus(2), 2024),
+     *                              Order.by(_Car.year.desc()));
+     * }</pre>
      *
      * @param <V>     type of the entity attribute or a subtype or primitive
      *                wrapper type for the entity attribute.
@@ -145,13 +145,13 @@ public interface Between<V extends Comparable<?>> extends Constraint<V> {
      * expression evaluates and less than or equal to the value to which the
      * given {@code maximum} expression evaluates. For example,</p>
      *
-     * <pre>
-     * found = cars.byModelYear(Between.bounds(_Car.firstModelYear.plus(1),
-     *                                         _Car.firstModelYear.plus(4)),
-     *                          Order.by(_Car.price.desc(),
-     *                                   _Car.year.desc(),
-     *                                   _Car.vin.asc()));
-     * </pre>
+     * <pre>{@code
+     *     found = cars.byModelYear(Between.bounds(_Car.firstModelYear.plus(1),
+     *                                             _Car.firstModelYear.plus(4)),
+     *                              Order.by(_Car.price.desc(),
+     *                                       _Car.year.desc(),
+     *                                       _Car.vin.asc()));
+     * }</pre>
      *
      * @param <V>     type of the entity attribute or a subtype or primitive
      *                wrapper type for the entity attribute.
