@@ -53,11 +53,11 @@ public interface NumericExpression<T, N extends Number & Comparable<N>>
      * the current expression evaluates.</p>
      *
      * <p>Example:</p>
-     * <pre>
-     * within2YearsOf2024 = cars.search(make,
-     *                                  model,
-     *                                  _Car.year.minus(2024).abs().lessThanEqual(2));
-     * </pre>
+     * <pre>{@code
+     *     within2YearsOf2024 = cars.search(make,
+     *                                      model,
+     *                                      _Car.year.minus(2024).abs().lessThanEqual(2));
+     * }</pre>
      *
      * @return an expression for the function that computes the absolute value.
      */
@@ -72,12 +72,12 @@ public interface NumericExpression<T, N extends Number & Comparable<N>>
      * no effect on the value {@code 0}.</p>
      *
      * <p>Example:</p>
-     * <pre>
-     * atLeast2YearsBeyondOriginalModelYear = cars.search(
-     *         make,
-     *         model,
-     *         _Car.firstModelYear.minus(_Car.year).negated().greaterThanEqual(2));
-     * </pre>
+     * <pre>{@code
+     *     atLeast2YearsBeyondOriginalModelYear = cars.search(
+     *             make,
+     *             model,
+     *             _Car.firstModelYear.minus(_Car.year).negated().greaterThanEqual(2));
+     * }</pre>
      *
      * @return an expression for the function that computes negation of value.
      */
@@ -90,11 +90,11 @@ public interface NumericExpression<T, N extends Number & Comparable<N>>
      * to which the current expression evaluates plus the given value.</p>
      *
      * <p>Example:</p>
-     * <pre>
-     * found = cars.search(make,
-     *                     model,
-     *                     _Car.price.plus(fees).lessThan(30000));
-     * </pre>
+     * <pre>{@code
+     *     found = cars.search(make,
+     *                         model,
+     *                         _Car.price.plus(fees).lessThan(30000));
+     * }</pre>
      *
      * @param value the value to add. Must not be {@code null}.
      * @return an expression for the function that computes the sum.
@@ -110,11 +110,11 @@ public interface NumericExpression<T, N extends Number & Comparable<N>>
      * value.</p>
      *
      * <p>Example:</p>
-     * <pre>
-     * found = cars.search(make,
-     *                     model,
-     *                     _Car.price.minus(discount).lessThanEqual(25000));
-     * </pre>
+     * <pre>{@code
+     *     found = cars.search(make,
+     *                         model,
+     *                         _Car.price.minus(discount).lessThanEqual(25000));
+     * }</pre>
      *
      * @param value the value to subtract. Must not be {@code null}.
      * @return an expression for the function that computes the difference.
@@ -130,13 +130,13 @@ public interface NumericExpression<T, N extends Number & Comparable<N>>
      * evaluates.</p>
      *
      * <p>Example:</p>
-     * <pre>
-     * found = cars.search(
-     *         make,
-     *         model,
-     *         _Car.price.asDouble().times(_Car.discountRate.subtractedFrom(1.0))
-     *                 .lessThanEqual(33000.0));
-     * </pre>
+     * <pre>{@code
+     *     found = cars.search(
+     *             make,
+     *             model,
+     *             _Car.price.asDouble().times(_Car.discountRate.subtractedFrom(1.0))
+     *                     .lessThanEqual(33000.0));
+     * }</pre>
      *
      * @param value the value to subtract from. Must not be {@code null}.
      * @return an expression for the function that computes the difference.
@@ -165,12 +165,12 @@ public interface NumericExpression<T, N extends Number & Comparable<N>>
      * factor.</p>
      *
      * <p>Example:</p>
-     * <pre>
-     * found = cars.search(
-     *         make,
-     *         model,
-     *         _Car.price.asDouble().times(1.0 + taxRate).lessThan(35000.0));
-     * </pre>
+     * <pre>{@code
+     *     found = cars.search(
+     *             make,
+     *             model,
+     *             _Car.price.asDouble().times(1.0 + taxRate).lessThan(35000.0));
+     * }</pre>
      *
      * @param factor the value times which to multiply. Must not be
      *               {@code null}.
@@ -187,12 +187,12 @@ public interface NumericExpression<T, N extends Number & Comparable<N>>
      * divisor value.</p>
      *
      * <p>Example:</p>
-     * <pre>
-     * found = cars.search(
-     *         make,
-     *         model,
-     *         _Car.price.asDouble().dividedBy(1.0 + discountRate).lessThan(27000.0));
-     * </pre>
+     * <pre>{@code
+     *     found = cars.search(
+     *             make,
+     *             model,
+     *             _Car.price.asDouble().dividedBy(1.0 + discountRate).lessThan(27000.0));
+     * }</pre>
      *
      * @param divisor the value by which to divide. Must not be {@code 0} or
      *                {@code null}.
@@ -208,13 +208,13 @@ public interface NumericExpression<T, N extends Number & Comparable<N>>
      * to which the current expression and the given expression evaluate.</p>
      *
      * <p>Example:</p>
-     * <pre>
-     * found = cars.search(
-     *         make,
-     *         model,
-     *         _Car.price.plus(_Car.price.times(percentTax).dividedBy(100))
-     *                   .lessThan(32000));
-     * </pre>
+     * <pre>{@code
+     *     found = cars.search(
+     *             make,
+     *             model,
+     *             _Car.price.plus(_Car.price.times(percentTax).dividedBy(100))
+     *                       .lessThan(32000));
+     * }</pre>
      *
      * @param expression expression that evaluates to the value to add. Must
      *                   not be {@code null}.
@@ -232,11 +232,11 @@ public interface NumericExpression<T, N extends Number & Comparable<N>>
      * which the given expression evaluates.</p>
      *
      * <p>Example:</p>
-     * <pre>
-     * found = cars.search(make,
-     *                     model,
-     *                     _Car.year.minus(_Car.firstModelYear).greaterThan(1));
-     * </pre>
+     * <pre>{@code
+     *     found = cars.search(make,
+     *                         model,
+     *                         _Car.year.minus(_Car.firstModelYear).greaterThan(1));
+     * }</pre>
      *
      * @param expression expression that evaluates to the value to subtract.
      *                   Must not be {@code null}.
@@ -254,12 +254,12 @@ public interface NumericExpression<T, N extends Number & Comparable<N>>
      * expression evaluate.</p>
      *
      * <p>Example:</p>
-     * <pre>
-     * discountedMoreThan2000 = cars.search(
-     *         make,
-     *         model,
-     *         _Car.price.asDouble().times(_Car.discountRate).greaterThan(2000.0));
-     * </pre>
+     * <pre>{@code
+     *     discountedMoreThan2000 = cars.search(
+     *             make,
+     *             model,
+     *             _Car.price.asDouble().times(_Car.discountRate).greaterThan(2000.0));
+     * }</pre>
      *
      * @param factorExpression expression that evaluates to the value by which
      *                         to multiply. Must not be {@code null}.
@@ -277,12 +277,12 @@ public interface NumericExpression<T, N extends Number & Comparable<N>>
      * which the divisor expression evaluates.</p>
      *
      * <p>Example:</p>
-     * <pre>
-     * pricedUnder95PercentWithRebate = cars.search(
-     *         make,
-     *         model,
-     *         _Car.price.minus(rebate).times(100).dividedBy(_Car.price).lessThan(95);
-     * </pre>
+     * <pre>{@code
+     *     pricedUnder95PercentWithRebate = cars.search(
+     *             make,
+     *             model,
+     *             _Car.price.minus(rebate).times(100).dividedBy(_Car.price).lessThan(95));
+     * }</pre>
      *
      * @param divisorExpression expression that evaluates to the value by which
      *                          to divide. Must not be {@code null}.
@@ -299,11 +299,11 @@ public interface NumericExpression<T, N extends Number & Comparable<N>>
      * current expression evaluates to {@link Long}.</p>
      *
      * <p>Example:</p>
-     * <pre>
-     * found = cars.search(make,
-     *                     model,
-     *                     _Car.price.asLong().lessThan(36000L));
-     * </pre>
+     * <pre>{@code
+     *     found = cars.search(make,
+     *                         model,
+     *                         _Car.price.asLong().lessThan(36000L));
+     * }</pre>
      *
      * @return an expression for the function that casts to {@code Long}.
      */
@@ -316,11 +316,11 @@ public interface NumericExpression<T, N extends Number & Comparable<N>>
      * current expression evaluates to {@link Double}.</p>
      *
      * <p>Example:</p>
-     * <pre>
-     * found = cars.search(make,
-     *                     model,
-     *                     _Car.price.asDouble().lessThan(34000.0));
-     * </pre>
+     * <pre>{@code
+     *     found = cars.search(make,
+     *                         model,
+     *                         _Car.price.asDouble().lessThan(34000.0));
+     * }</pre>
      *
      * @return an expression for the function that casts to {@code Double}.
      */
@@ -333,11 +333,11 @@ public interface NumericExpression<T, N extends Number & Comparable<N>>
      * current expression evaluates to {@link BigInteger}.</p>
      *
      * <p>Example:</p>
-     * <pre>
-     * found = cars.search(make,
-     *                     model,
-     *                     _Car.price.asBigInteger().lessThan(BigInteger.valueOf(50000L)));
-     * </pre>
+     * <pre>{@code
+     *     found = cars.search(make,
+     *                         model,
+     *                         _Car.price.asBigInteger().lessThan(BigInteger.valueOf(50000L)));
+     * }</pre>
      *
      * @return an expression for the function that casts to {@code BigInteger}.
      */
@@ -350,11 +350,11 @@ public interface NumericExpression<T, N extends Number & Comparable<N>>
      * current expression evaluates to {@link BigDecimal}.</p>
      *
      * <p>Example:</p>
-     * <pre>
-     * found = cars.search(make,
-     *                     model,
-     *                     _Car.price.asBigDecimal().lessThan(BigDecimal.valueOf(45000L)));
-     * </pre>
+     * <pre>{@code
+     *     found = cars.search(make,
+     *                         model,
+     *                         _Car.price.asBigDecimal().lessThan(BigDecimal.valueOf(45000L)));
+     * }</pre>
      *
      * @return an expression for the function that casts to {@code BigDecimal}.
      */
