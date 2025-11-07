@@ -20,12 +20,12 @@ package jakarta.data.event;
 /**
  * <p>Abstract supertype of events relating to lifecycle methods.</p>
  * <p>In Jakarta EE, a bean may observe such events via CDI:</p>
- * <pre>
- * void onInsertBook(&#64;Observes PostInsertEvent&lt;Book&gt; bookInsertion) {
+ * <pre>{@code
+ * void onInsertBook(@Observes PostInsertEvent<Book> bookInsertion) {
  *     Book book = bookInsertion.entity();
  *     ...
  * }
- * </pre>
+ * }</pre>
  * <p>As usual for a CDI event, an observer of a {@code LifecycleEvent}
  * is notified synchronously and immediately by default. An observer may elect
  * to receive notifications during a phase of the transaction completion cycle
