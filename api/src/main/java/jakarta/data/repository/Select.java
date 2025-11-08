@@ -82,14 +82,14 @@ public @interface Select {
      * {@code Car} entity that has the supplied {@code vin} attribute
      * value,</p>
      *
-     * <pre>
-     * &#64;Repository
-     * public interface Cars extends BasicRepository&lt;Car, String&gt; {
-     *     &#64;Find
-     *     &#64;Select(_Car.PRICE)
-     *     Optional&lt;Float&gt; getPrice(@By(_Car.VIN) String vehicleIdNum);
+     * <pre>{@code
+     * @Repository
+     * public interface Cars extends BasicRepository<Car, String> {
+     *     @Find
+     *     @Select(_Car.PRICE)
+     *     Optional<Float> getPrice(@By(_Car.VIN) String vehicleIdNum);
      * }
-     * </pre>
+     * }</pre>
      *
      * <h4>Method that returns Java Records</h4>
      *
@@ -108,20 +108,20 @@ public @interface Select {
      * {@code year} attributes of a {@code Car} entity that has the supplied
      * {@code vin} attribute value,</p>
      *
-     * <pre>
-     * &#64;Repository
-     * public interface Cars extends BasicRepository&lt;Car, String&gt; {
+     * <pre>{@code
+     * @Repository
+     * public interface Cars extends BasicRepository<Car, String> {
      *     record ModelInfo(String model,
      *                      String manufacturer,
      *                      int designYear) {}
      *
-     *     &#64;Find
-     *     &#64;Select(_Car.MODEL)
-     *     &#64;Select(_Car.MAKE)
-     *     &#64;Select(_Car.YEAR)
-     *     Optional&lt;ModelInfo&gt; getModelInfo(@By(_Car.VIN) String vehicleIdNum);
+     *     @Find
+     *     @Select(_Car.MODEL)
+     *     @Select(_Car.MAKE)
+     *     @Select(_Car.YEAR)
+     *     Optional<ModelInfo> getModelInfo(@By(_Car.VIN) String vehicleIdNum);
      * }
-     * </pre>
+     * }</pre>
      *
      * <h5>Annotating a Record Component</h5>
      *
@@ -130,17 +130,17 @@ public @interface Select {
      * Assign the annotation value to be the name of an entity attribute that
      * has the same type as the record component.</p>
      *
-     * <pre>
-     * &#64;Repository
-     * public interface Cars extends BasicRepository&lt;Car, String&gt; {
-     *     record ModelInfo(&#64;Select(_Car.MODEL) String model,
-     *                      &#64;Select(_Car.MAKE) String manufacturer,
-     *                      &#64;Select(_Car.YEAR) int designYear) {}
+     * <pre>{@code
+     * @Repository
+     * public interface Cars extends BasicRepository<Car, String> {
+     *     record ModelInfo(@Select(_Car.MODEL) String model,
+     *                      @Select(_Car.MAKE) String manufacturer,
+     *                      @Select(_Car.YEAR) int designYear) {}
      *
-     *     &#64;Find
-     *     Optional&lt;ModelInfo&gt; getModelInfo(@By(_Car.VIN) String vehicleIdNum);
+     *     @Find
+     *     Optional<ModelInfo> getModelInfo(@By(_Car.VIN) String vehicleIdNum);
      * }
-     * </pre>
+     * }</pre>
      *
      * <p>For more concise code, the {@code Select} annotation can be omitted
      * from a record component that has the same name as the entity attribute,
