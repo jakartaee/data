@@ -44,34 +44,34 @@ import java.util.List;
  *
  * <p>Example entity:</p>
  *
- * <pre>
- * &#64;Entity
+ * <pre>{@code
+ * @Entity
  * public class Car {
- *     &#64;Id
+ *     @Id
  *     public long vin;
  *     public String make;
  *     public String model;
  *     public int year;
  *     ...
  * }
- * </pre>
+ * }</pre>
  *
  * <p>Example repository:</p>
  *
- * <pre>
- * &#64;Repository
- * public interface Cars extends CrudRepository&lt;Car, Long&gt; {
+ * <pre>{@code
+ * @Repository
+ * public interface Cars extends CrudRepository<Car, Long> {
  *
- *     List&lt;Car&gt; findByMakeAndModel(String make, String model, Order&lt;Car&gt; sorts);
+ *     List<Car> findByMakeAndModel(String make, String model, Order<Car> sorts);
  *
  *     ...
  * }
- * </pre>
+ * }</pre>
  *
  * <p>Example usage:</p>
  *
- * <pre>
- * &#64;Inject
+ * <pre>{@code
+ * @Inject
  * Cars cars;
  *
  * ...
@@ -79,11 +79,11 @@ import java.util.List;
  * Car car1 = ...
  * car1 = cars.insert(car1);
  *
- * List&lt;Car&gt; found = findByMakeAndModel(car1.make,
+ * List<Car> found = findByMakeAndModel(car1.make,
  *                                      car1.model,
  *                                      Order.by(Sort.desc("year"),
  *                                               Sort.asc("vin")));
- * </pre>
+ * }</pre>
  *
  * <p>The module Javadoc provides an {@link jakarta.data/ overview} of Jakarta
  * Data.</p>
