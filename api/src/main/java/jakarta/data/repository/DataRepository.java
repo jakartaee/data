@@ -32,38 +32,38 @@ package jakarta.data.repository;
  *
  * <p>Example entity:</p>
  *
- * <pre>
- * &#64;Entity
+ * <pre>{@code
+ * @Entity
  * public class DriverLicense {
- *     &#64;Id
+ *     @Id
  *     public String licenseNum;
  *     public LocalDate expiry;
  *     ...
  * }
- * </pre>
+ * }</pre>
  *
  * <p>Example repository:</p>
  *
- * <pre>
- * &#64;Repository
- * public interface DriverLicenses extends DataRepository&lt;DriverLicense, String&gt; {
+ * <pre>{@code
+ * @Repository
+ * public interface DriverLicenses extends DataRepository<DriverLicense, String> {
  *
  *     boolean existsByLicenseNumAndExpiryGreaterThan(String num, LocalDate minExpiry);
  *
- *     &#64;Insert
+ *     @Insert
  *     DriverLicense register(DriverLicense l);
  *
- *     &#64;Update
+ *     @Update
  *     boolean renew(DriverLicense l);
  *
  *     ...
  * }
- * </pre>
+ * }</pre>
  *
  * <p>Example usage:</p>
  *
- * <pre>
- * &#64;Inject
+ * <pre>{@code
+ * @Inject
  * DriverLicenses licenses;
  *
  * ...
@@ -73,7 +73,7 @@ package jakarta.data.repository;
  *
  * boolean isValid = licenses.existsByLicenseNumAndExpiryGreaterThan(license.licenseNum,
  *                                                                   LocalDate.now());
- * </pre>
+ * }</pre>
  *
  * <p>The module Javadoc provides an {@link jakarta.data/ overview} of Jakarta
  * Data.</p>
