@@ -57,13 +57,13 @@ import jakarta.data.restrict.Restriction;
  * <p>All Jakarta Data providers are required to accept a {@code Delete} method which conforms to this signature.
  * </p>
  * <p>For example, consider an interface representing a garage:</p>
- * <pre>
- * &#64;Repository
+ * <pre>{@code
+ * @Repository
  * interface Garage {
- *     &#64;Delete
+ *     @Delete
  *     void unpark(Car car);
  * }
- * </pre>
+ * }</pre>
  * <p>Deletes are performed by matching the unique identifier of the entity. If the entity is versioned, for example,
  * with {@code jakarta.persistence.Version}, the version is also checked for consistency. Attributes other than the
  * identifier and version do not need to match. If no entity with a matching identifier is found in the database, or
@@ -86,17 +86,17 @@ import jakarta.data.restrict.Restriction;
  * {@link PageRequest}, and {@link Sort} are prohibited.
  * </p>
  * <p>For example, consider an interface representing a garage:</p>
- * <pre>
- * &#64;Repository
+ * <pre>{@code
+ * @Repository
  * interface Garage
- *         extends DataRepository&lt;Car,String&gt; {
- *     &#64;Delete
+ *         extends DataRepository<Car, String> {
+ *     @Delete
  *     void unparkAll();
  *
- *     &#64;Delete
+ *     @Delete
  *     void unpark(String registration);
  * }
- * </pre>
+ * }</pre>
  * <p>Here,{@code unparkAll()} deletes every {@code Car}, while {@code unpark(String)} deletes any {@code Car} with a
  * matching value of its {@code registration} attribute.
  * </p>
