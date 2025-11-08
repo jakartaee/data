@@ -50,13 +50,13 @@ import java.lang.annotation.Target;
  * <p>For example, if the method is annotated with {@code @Insert} and takes a parameter of type {@code Car car}, the
  * return type can be {@code Car}. Similarly, if the parameter is of type {@code Iterable<Car>}, the return type can be
  * {@code Iterable<Car>}. Consider an interface representing a garage:</p>
- * <pre>
- * &#64;Repository
+ * <pre>{@code
+ * @Repository
  * interface Garage {
- *     &#64;Insert
+ *     @Insert
  *     Car park(Car car);
  * }
- * </pre>
+ * }</pre>
  * <p>When the annotated method is non-{@code void}, it must return an inserted entity instance for each entity instance
  * passed as an argument. Instances returned by the annotated method must include all values that were written to the
  * database, including all automatically generated identifiers, initial versions, and other values which changed as a
