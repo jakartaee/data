@@ -49,25 +49,25 @@ import jakarta.data.constraint.NotLike;
  *
  * <p>For example,</p>
  *
- * <pre>
- * &#64;Repository
- * public interface Products extends CrudRepository&lt;Product, Long&gt; {
+ * <pre>{@code
+ * @Repository
+ * public interface Products extends CrudRepository<Product, Long> {
  *
  *     // Find Product entities where the price attribute is less than a maximum value.
- *     &#64;Find
- *     List&lt;Product&gt; pricedBelow(&#64;By(_Product.PRICE) &#64;Is(LessThan.class) float max);
+ *     @Find
+ *     List<Product> pricedBelow(@By(_Product.PRICE) @Is(LessThan.class) float max);
  *
  *     // Find a page of Product entities where the name field matches a pattern.
- *     &#64;Find
- *     Page&lt;Product&gt; search(&#64;By(_Product.NAME) &#64;Is(Like.class) String pattern,
+ *     @Find
+ *     Page<Product> search(@By(_Product.NAME) @Is(Like.class) String pattern,
  *                          PageRequest pagination,
- *                          Order&lt;Product&gt; order);
+ *                          Order<Product> order);
  *
  *     // Remove Product entities with any of the unique identifiers listed.
- *     &#64;Delete
- *     void remove(&#64;By(ID) &#64;Is(In.class) List&lt;Long&gt; productIds);
+ *     @Delete
+ *     void remove(@By(ID) @Is(In.class) List<Long> productIds);
  * }
- * </pre>
+ * }</pre>
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.PARAMETER)
