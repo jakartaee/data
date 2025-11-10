@@ -29,17 +29,17 @@ import java.lang.annotation.Target;
  *
  * <p>For example,</p>
  *
- * <pre>
- * &#64;Repository
- * public interface Products extends BasicRepository&lt;Product, String&gt; {
+ * <pre>{@code
+ * @Repository
+ * public interface Products extends BasicRepository<Product, String> {
  *
- *     &#64;Query("WHERE length * width * height &lt;= :maxVolume ORDER BY price ASC, id ASC")
- *     Page&lt;Product&gt; freeShippingEligible(&#64;Param("maxVolume") float volumeLimit,
+ *     @Query("WHERE length * width * height <= :maxVolume ORDER BY price ASC, id ASC")
+ *     Page<Product> freeShippingEligible(@Param("maxVolume") float volumeLimit,
  *                                        PageRequest pageRequest);
  *
  *     ...
  * }
- * </pre>
+ * }</pre>
  *
  * <p>The {@code Param} annotation is unnecessary when the method parameter name
  * matches the query language

@@ -115,33 +115,33 @@ import java.lang.annotation.Target;
  *
  * <p>For example,</p>
  *
- * <pre>
- * &#64;Repository
- * public interface People extends CrudRepository&lt;Person, Long&gt; {
+ * <pre>{@code
+ * @Repository
+ * public interface People extends CrudRepository<Person, Long> {
  *
  *     // JDQL with positional parameters
- *     &#64;Query("where firstName = ?1 and lastName = ?2")
- *     List&lt;Person&gt; byName(String first, String last);
+ *     @Query("where firstName = ?1 and lastName = ?2")
+ *     List<Person> byName(String first, String last);
  *
  *     // JDQL with a named parameter
- *     &#64;Query("where firstName || ' ' || lastName like :pattern")
- *     List&lt;Person&gt; byName(String pattern);
+ *     @Query("where firstName || ' ' || lastName like :pattern")
+ *     List<Person> byName(String pattern);
  *
  *     // JPQL using a positional parameter
- *     &#64;Query("from Person where extract(year from birthdate) = ?1")
- *     List&lt;Person&gt; bornIn(int year);
+ *     @Query("from Person where extract(year from birthdate) = ?1")
+ *     List<Person> bornIn(int year);
  *
  *     // JPQL using named parameters
- *     &#64;Query("select distinct name from Person " +
- *            "where length(name) &gt;= :min and length(name) &lt;= :max")
- *     Page&lt;String&gt; namesOfLength(&#64;Param("min") int minLength,
- *                                &#64;Param("max") int maxLength,
+ *     @Query("select distinct name from Person " +
+ *            "where length(name) >= :min and length(name) <= :max")
+ *     Page<String> namesOfLength(@Param("min") int minLength,
+ *                                @Param("max") int maxLength,
  *                                PageRequest pageRequest,
- *                                Order&lt;Person&gt; order);
+ *                                Order<Person> order);
  *
  *     ...
  * }
- * </pre>
+ * }</pre>
  *
  * <p>A method annotated with {@code @Query} must return one of the following types:</p>
  * <ul>

@@ -48,13 +48,13 @@ import java.lang.annotation.Target;
  * providers.
  * </p>
  * <p>For example, consider an interface representing a garage:</p>
- * <pre>
- * &#64;Repository
+ * <pre>{@code
+ * @Repository
  * interface Garage {
- *     &#64;Save
+ *     @Save
  *     Car park(Car car);
  * }
- * </pre>
+ * }</pre>
  * <p>The operation performed by the annotated method depends on whether the database already holds an entity with the
  * unique identifier of an entity passed as an argument. From the point of view of the caller:
  * </p>

@@ -44,21 +44,21 @@ import jakarta.data.constraint.EqualTo;
  * <p>For example, for a {@code Person} entity with attributes {@code ssn},
  * {@code firstName}, {@code lastName}, and {@code address} we might have:</p>
  *
- * <pre>
- * &#64;Repository
+ * <pre>{@code
+ * @Repository
  * public interface People {
  *
- *     &#64;Find
- *     Person findById(&#64;By(ID) String id); // maps to Person.ssn
+ *     @Find
+ *     Person findById(@By(ID) String id); // maps to Person.ssn
  *
- *     &#64;Find
- *     List&lt;Person&gt; findNamed(&#64;By("firstName") String first,
- *                            &#64;By("lastName") String last);
+ *     @Find
+ *     List<Person> findNamed(@By("firstName") String first,
+ *                            @By("lastName") String last);
  *
- *     &#64;Find
- *     List&lt;Person&gt; findByCity(&#64;By("address.city") String city);
+ *     @Find
+ *     List<Person> findByCity(@By("address.city") String city);
  * }
- * </pre>
+ * }</pre>
  *
  * <p>The {@code By} annotation is unnecessary when the method parameter name
  * matches the entity attribute name and the application is compiled with the
@@ -68,21 +68,21 @@ import jakarta.data.constraint.EqualTo;
  * <p>Thus, when this compiler option is enabled, the previous example may be
  * written without the use of {@code By}:</p>
  *
- * <pre>
- * &#64;Repository
+ * <pre>{@code
+ * @Repository
  * public interface People {
  *
- *     &#64;Find
+ *     @Find
  *     Person findById(String ssn);
  *
- *     &#64;Find
- *     List&lt;Person&gt; findNamed(String firstName,
+ *     @Find
+ *     List<Person> findNamed(String firstName,
  *                            String lastname);
  *
- *     &#64;Find
- *     List&lt;Person&gt; findByCity(String address_city);
+ *     @Find
+ *     List<Person> findByCity(String address_city);
  * }
- * </pre>
+ * }</pre>
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.PARAMETER)

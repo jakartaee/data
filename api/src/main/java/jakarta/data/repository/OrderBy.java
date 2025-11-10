@@ -41,12 +41,12 @@ import java.lang.annotation.Target;
  * attribute, also in ascending order. For entities with the same
  * {@code lastName} and {@code firstName}.</p>
  *
- * <pre>
- * &#64;OrderBy("lastName")
- * &#64;OrderBy("firstName")
- * &#64;OrderBy("id")
+ * <pre>{@code
+ * @OrderBy("lastName")
+ * @OrderBy("firstName")
+ * @OrderBy("id")
  * Person[] findByZipCode(int zipCode, PageRequest pageRequest);
- * </pre>
+ * }</pre>
  *
  * <p>The interpretation of ascending and descending order is determined
  * by the database, but, in general:</p>

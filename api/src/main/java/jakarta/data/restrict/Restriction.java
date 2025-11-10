@@ -41,41 +41,41 @@ import jakarta.data.repository.Find;
  *
  * <p>A repository {@link Find} method can optionally accept a parameter of
  * type {@code Restriction}. For example,</p>
- * <pre>
- * &#64;Repository
- * public interface Cars extends CrudRepository&lt;Car, String&gt; {
+ * <pre>{@code
+ * @Repository
+ * public interface Cars extends CrudRepository<Car, String> {
  *
- *     &#64;Find
- *     List&lt;Car&gt; search(&#64;By(_Car.MAKE) String manufacturer,
- *                      &#64;By(_Car.MODEL) String model,
- *                      Restriction&lt;Car&gt; restriction,
- *                      Order&lt;Car&gt;... sort);
+ *     @Find
+ *     List<Car> search(@By(_Car.MAKE) String manufacturer,
+ *                      @By(_Car.MODEL) String model,
+ *                      Restriction<Car> restriction,
+ *                      Order<Car>... sort);
  * }
- * </pre>
+ * }</pre>
  *
  * <p>Instances of restriction obtained from the static metamodel or the
  * {@link Restrict} class can be supplied as the parameter when invoking the
  * respository method. For example,</p>
- * <pre>
- * List&lt;Car&gt; withinPriceRange =
+ * <pre>{@code
+ * List<Car> withinPriceRange =
  *         cars.search(make,
  *                     model,
  *                     _Car.price.between(20000, 30000),
  *                     Order.by(_Car.price.desc()));
  *
- * List&lt;Car&gt; pricedUnder30kWhenDiscounted =
+ * List<Car> pricedUnder30kWhenDiscounted =
  *         cars.search(make,
  *                     model,
  *                     _Car.price.minus(discount).lessThan(30000),
  *                     Order.by(_Car.price.desc()));
  *
- * List&lt;Car&gt; atLeast2020AndPricedBelow30k =
+ * List<Car> atLeast2020AndPricedBelow30k =
  *         cars.search(make,
  *                     model,
  *                     Restrict.all(_Car.year.greaterThanEqual(2020),
  *                                  _Car.price.lessThan(30000)),
  *                     Order.by(_Car.price.desc()));
- * </pre>
+ * }</pre>
  *
  * <p>The {@linkplain Attribute example entity and static metamodel} for the
  * above are provided in the {@link Attribute} Javadoc.</p>

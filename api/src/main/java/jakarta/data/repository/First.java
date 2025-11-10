@@ -28,17 +28,17 @@ import java.lang.annotation.Target;
  * may be limited to a given {@linkplain #value maximum number of results}. For
  * example,</p>
  *
- * <pre>
- * &#64;Find &#64;First
- * &#64;OrderBy(value = _Employee.SALARY, descending = true)
+ * <pre>{@code
+ * @Find @First
+ * @OrderBy(value = _Employee.SALARY, descending = true)
  * Employee highestPaid(String jobTitle);
- * </pre>
+ * }</pre>
  *
- * <pre>
- * &#64;First(10)
- * &#64;Query("order by playCount desc")
- * List&lt;Song&gt; topTen();
- * </pre>
+ * <pre>{@code
+ * @First(10)
+ * @Query("order by playCount desc")
+ * List<Song> topTen();
+ * }</pre>
  *
  * <p>A repository method may not be declared with:
  * <ul>

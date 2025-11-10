@@ -45,13 +45,13 @@ import java.lang.annotation.Target;
  * All Jakarta Data providers are required to accept an {@code Update} method which conforms to this signature.
  * </p>
  * <p>For example, consider an interface representing a garage:</p>
- * <pre>
- * &#64;Repository
+ * <pre>{@code
+ * @Repository
  * interface Garage {
- *     &#64;Update
+ *     @Update
  *     Car update(Car car);
  * }
- * </pre>
+ * }</pre>
  * <p>When the annotated method is non-{@code void}, it must return an updated entity instance for each entity instance
  * passed as an argument. Instances returned by the annotated method must include all values that were written to the
  * database, including all automatically generated values, updated versions, and incremented values which changed as a

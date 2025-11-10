@@ -34,29 +34,29 @@ import java.lang.annotation.Target;
  *
  * <p>For example,</p>
  *
- * <pre>
- * &#64;Repository
- * public interface Products extends DataRepository&lt;Product, Long&gt; {
+ * <pre>{@code
+ * @Repository
+ * public interface Products extends DataRepository<Product, Long> {
  *
- *     &#64;Find
- *     &#64;OrderBy("price")
- *     List&lt;Product&gt; namedLike(&#64;By("name") &#64;Is(Like.class) String namePattern);
+ *     @Find
+ *     @OrderBy("price")
+ *     List<Product> namedLike(@By("name") @Is(Like.class) String namePattern);
  *
- *     &#64;Query("UPDATE Product SET price = price - (price * ?1) WHERE price * ?1 &lt;= ?2")
+ *     @Query("UPDATE Product SET price = price - (price * ?1) WHERE price * ?1 <= ?2")
  *     int putOnSale(float rateOfDiscount, float maxDiscount);
  *
  *     ...
  * }
- * </pre>
+ * }</pre>
  *
- * <pre>
- * &#64;Inject
+ * <pre>{@code
+ * @Inject
  * Products products;
  *
  * ...
  * found = products.namedLike("%Printer%");
  * numUpdated = products.putOnSale(0.15f, 20.0f);
- * </pre>
+ * }</pre>
  *
  * <p>The module Javadoc provides an {@link jakarta.data/ overview} of Jakarta
  * Data.</p>
