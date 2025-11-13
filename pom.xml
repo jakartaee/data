@@ -119,7 +119,8 @@
         <sonar.maven.version>5.3.0.6276</sonar.maven.version>
         
         <!-- Allow TCK populator classes to exceed max MethodLength -->
-        <checkstyle.excludes>**/*Populator.java</checkstyle.excludes>
+        <!-- Allow static metamodel constants -->
+        <checkstyle.excludes>**/*Populator.java,**/_*.java</checkstyle.excludes>
     </properties>
 
     <dependencyManagement>
