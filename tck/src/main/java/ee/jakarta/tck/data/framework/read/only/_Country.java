@@ -49,6 +49,12 @@ public interface _Country {
     NavigableAttribute<Country, City> capital = //
                     NavigableAttribute.of(Country.class, CAPITAL, City.class);
 
+    TextAttribute<Country> capital_name = //
+                    TextAttribute.of(Country.class, CAPITAL_NAME);
+
+    NumericAttribute<Country, Integer> capital_population = //
+                    NumericAttribute.of(Country.class, CAPITAL_POPULATION, int.class);
+
     TextAttribute<Country> code = //
                     TextAttribute.of(Country.class, CODE);
 
