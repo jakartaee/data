@@ -68,6 +68,8 @@ import jakarta.data.constraint.NotLike;
  *     void remove(@By(ID) @Is(In.class) List<Long> productIds);
  * }
  * }</pre>
+ *
+ * @since 1.1
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.PARAMETER)
