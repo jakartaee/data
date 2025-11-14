@@ -1311,4 +1311,44 @@ public class ConstraintTests {
         }
     }
 
+    @Assertion(id = "965", strategy = """
+            Use the static metamodel to request sorting based on an
+            embeddable attribute.
+            """)
+    public void testSortByEmbeddableAttribute() {
+
+        Order<Country> descCapitalPopulation =
+                Order.by(_Country.capital_population.desc());
+
+        List<String> found;
+        try {
+            found = countries.outsideOfRegion(Region.ANTARCTICA,
+                                              descCapitalPopulation,
+                                              Limit.of(12))
+                    .stream()
+                    .map(Country::getCapital)
+                    .map(c -> c.getPopulation() + ":" + c.getName())
+                    .collect(Collectors.toList());
+            assertEquals(List.of("21858000:Beijing",
+                                 "14094034:Tokyo",
+                                 "13104177:Moscow",
+                                 "10562088:Jakarta",
+                                 "10151000:Lima",
+                                 "10107125:Cairo",
+                                 "9508451:Seoul",
+                                 "9209944:Mexico City",
+                                 "9002488:London",
+                                 "8906039:Dhaka",
+                                 "8693706:Tehran",
+                                 "8305218:Bangkok"),
+                    found);
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable of sorting.
+            } else {
+                throw x;
+            }
+        }
+    }
+
 }
