@@ -2608,14 +2608,14 @@ public class EntityTests {
             """)
     public void testReturnStreamOfRecordThatSelectsAttributesFindEntity() {
 
-        Stream<CardinalNumber> stream = characters.cardinalNumberStream(3L);
+        Stream<CardinalNumber> stream = characters.cardinalNumberStream(2L);
 
         assertEquals(List.of("4 COMPOSITE (3 bits)",
-                        "5 PRIME (3 bits)",
-                        "6 COMPOSITE (3 bits)",
-                        "7 PRIME (3 bits)",
-                        "8 COMPOSITE (4 bits)"),
-                stream
+                             "5 PRIME (3 bits)",
+                             "6 COMPOSITE (3 bits)",
+                             "7 PRIME (3 bits)",
+                             "8 COMPOSITE (4 bits)"),
+                     stream
                         .map(CardinalNumber::toString)
                         .sorted()
                         .collect(Collectors.toList()));
