@@ -19,7 +19,7 @@ jobs:
       id: checkout
       run: .github/scripts/checkout.sh update-templates-${{ github.sha }}
     - name: Insert release - ${{ github.event.release.tag_name }}
-      uses: mikefarah/yq@796317b885ae219215caa36e9bdacc87c9962c15 #v4.48.2
+      uses: mikefarah/yq@45be35c06387d692bb6bf689919919e0e32e796f #v4.49.1
       with:
         cmd: |
             yq -i '( .body.[] | select(.id == "version") ) ref $x | $x .attributes.options = ["${{ github.event.release.tag_name }}"] + $x .attributes.options' .github/ISSUE_TEMPLATE/bug-report.yml &&
