@@ -116,7 +116,7 @@
         <sigtest.version>2.6</sigtest.version>
         
         <sonar.jacoco.reportPath>../target/jacoco.exec</sonar.jacoco.reportPath>
-        <sonar.maven.version>5.4.0.6343</sonar.maven.version>
+        <sonar.maven.version>5.5.0.6356</sonar.maven.version>
         
         <!-- Allow TCK populator classes to exceed max MethodLength -->
         <!-- Allow static metamodel constants -->
