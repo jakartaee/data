@@ -66,22 +66,21 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface Repository {
     /**
-     * Value for the {@link Repository#provider()} attribute that allows the use
-     * of any available Jakarta Data provider that supports the type of entity
-     * annotation that is present on the repository's entity class.
+     * Value for the {@link #provider()} attribute that allows the use of
+     * any available Jakarta Data provider that supports the type of entity
+     * annotation that is present on the repository's entity classes.
      */
     String ANY_PROVIDER = "";
 
     /**
-     * <p>Value for the {@link Repository#dataStore()} attribute that indicates
-     * to use
+     * <p>Value for the {@link #dataStore()} attribute that indicates use of
      * a default data store.</p>
      *
-     * <p>When running in a Jakarta EE profile or platform and the entity
-     * annotations
-     * indicate a relational database, the default data store is the Jakarta EE
-     * default data source, {@code java:comp/DefaultDataSource}. Otherwise, the
-     * default data store is determined by the Jakarta Data provider.</p>
+     * <p>In a Jakarta EE profile or platform environment, if the repository
+     * implementation requires direct access to a {@code javax.sql.DataSource},
+     * the default data store is the Jakarta EE default data source with name
+     * {@code java:comp/DefaultDataSource}. Otherwise, the default data store
+     * is determined by the Jakarta Data provider.</p>
      *
      * <p>The default data store might require additional vendor-specific
      * configuration, depending on the vendor.</p>
@@ -100,14 +99,23 @@ public @interface Repository {
      * Interoperability with Jakarta Config is reserved for future versions
      * of Jakarta Data.
      * </li>
-     * <li>If running in a Jakarta EE profile or platform and the entity annotations
-     * indicate a relational database and the value begins with {@code java:} and
-     * matches the name of a {@code jakarta.annotation.sql.DataSourceDefinition},
-     * the JNDI name of a data source, or a resource reference to a data source,
-     * then the corresponding {@code javax.sql.DataSource} is used as the data store.
-     * If the same conditions are met but the value matches a persistence unit
-     * reference, then the corresponding {@code jakarta.persistence.PersistenceUnit}
-     * is used as the data store.
+     * <li>In a Jakarta EE profile or platform environment, if the repository
+     * implementation requires direct access to a {@code javax.sql.DataSource}
+     * and if the value begins with {@code java:} and matches the name of a
+     * {@code jakarta.annotation.sql.DataSourceDefinition}, the JNDI name of
+     * a {@code DataSource}, or a resource reference to a {@code DataSource},
+     * then the corresponding {@code DataSource} obtained from JNDI is used.
+     * </li>
+     * <li>In a Jakarta EE profile or platform environment, if the repository
+     * implementation requires direct access to a Jakarta Persistence
+     * {@code jakarta.persistence.EntityManagerFactory} and if the value does
+     * not begin with {@code java:} and matches the name of a persistence unit,
+     * then the container-managed {@code EntityManagerFactory} for that
+     * persistence unit is used, obtained as if it had been injected using the
+     * {@code PersistenceUnit} annotation. Or, if the value does begin with
+     * {@code java:} and matches the name of a persistence unit reference,
+     * then the corresponding {@code EntityManagerFactory} obtained from JNDI
+     * is used.
      * </li>
      * <li>Otherwise, the value serves as an identifier linking to vendor-specific
      * configuration for the Jakarta Data provider to interpret in a vendor-specific
