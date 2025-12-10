@@ -77,7 +77,7 @@ public @interface Repository {
      * a default data store.</p>
      *
      * <p>In a Jakarta EE profile or platform environment, if the repository
-     * implementation requires direct access to a {@code javax.sql.DataSource},
+     * requires a {@code javax.sql.DataSource},
      * the default data store is the Jakarta EE default data source with name
      * {@code java:comp/DefaultDataSource}. Otherwise, the default data store
      * is determined by the Jakarta Data provider.</p>
