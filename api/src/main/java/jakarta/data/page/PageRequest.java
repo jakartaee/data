@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022,2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -239,8 +239,10 @@ public interface PageRequest {
      * <p>Indicates that a query method which returns a {@link Page}
      * should retrieve the
      * {@linkplain Page#totalElements() total number of elements} available
-     * across all pages. This behavior is enabled by default. To obtain a page
-     * request with total retrieval disabled, call {@link #withoutTotal()}.</p>
+     * across all pages. The ability to retrieve totals is enabled by default
+     * for JCQL queries but is not available for native SQL queries and some
+     * JPQL queries. To obtain a page request with total retrieval disabled,
+     * call {@link #withoutTotal()}.</p>
      *
      * <p>A repository implementation might obtain a total from the
      * database before returning the page of results, or might defer fetching

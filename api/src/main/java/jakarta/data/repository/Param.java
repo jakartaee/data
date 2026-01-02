@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022,2024 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,6 +46,9 @@ import java.lang.annotation.Target;
  * named parameter name and the application is compiled with the
  * {@code -parameters} compiler option making parameter names available at
  * runtime.</p>
+ *
+ * <p>Named parameters are not supported on repository methods annotated
+ * {@code jakarta.persistence.query.StaticNativeQuery}.</p>
  *
  * @see Query
  */
