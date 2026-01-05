@@ -1,20 +1,24 @@
-== Jakarta Data Query Language
+== Jakarta Common Query Language
 
-The Jakarta Data Query Language (JDQL) is a simple language designed to be used inside the `@Query` annotation to specify the semantics of query methods of Jakarta Data repositories. The language is in essence a subset of the widely-used Jakarta Persistence Query Language (JPQL), and thus a dialect of SQL. But, consistent with the goals of Jakarta Data, it is sufficiently limited in functionality that it is easily implementable across a wide variety of data storage technologies. Thus, the language defined in this chapter excludes features of JPQL which, while useful when the target datasource is a relational database, cannot be easily implemented on all non-relational datastores. In particular, the `from` clause of a Jakarta Data query may contain only a single entity.
+The Jakarta Common Query Language (JCQL) is defined by the Jakarta Query specification. JCQL is designed to be used inside the `@Query` annotation to specify the semantics of query methods of Jakarta Data repositories. The language is in essence a subset of the widely-used Jakarta Persistence Query Language (JPQL), and thus a dialect of SQL. But, consistent with the goals of Jakarta Data, it is sufficiently limited in functionality that it is easily implementable across a wide variety of data storage technologies. Thus, the language defined in this chapter excludes features of JPQL which, while useful when the target datasource is a relational database, cannot be easily implemented on all non-relational datastores. In particular, the `from` clause of a Jakarta Data query may contain only a single entity.
 
 NOTE: A Jakarta Data provider backed by access to a relational database might choose to allow the use of a much larger subset of JPQL--or even the whole language--via the `@Query` annotation. Such extensions are not required by this specification.
 
+NOTE: The initial release of Jakarta Data defined Jakarta Data Query Language (JDQL), which served the same purpose as JCQL. Upon creation of the Jakarta Query specification for Jakarta EE 12, JDQL was donated to the Jakarta Query specification to become JCQL, which remains fully backward compatible with JDQL.
+
+TODO: in a subsequent PR, determine if any parts of the following need to remain in Jakarta Data. Otherwise, content that is duplicated by Jakarta Query can be removed.
+
 === Type system
 
-Every expression in a JDQL query is assigned a Java type. An implementation of JDQL is required to support the Java types listed in <<Basic types>>, that is: primitive types, `String`, `LocalDate`, `LocalDateTime`, `LocalTime`, `Year`, and `Instant`, `java.util.UUID`, `java.math.BigInteger` and `java.math.BigDecimal`, `byte[]`, and  `enum` types.
+Every expression in a JCQL query is assigned a Java type. An implementation of JCQL is required to support the Java types listed in <<Basic types>>, that is: primitive types, `String`, `LocalDate`, `LocalDateTime`, `LocalTime`, `Year`, and `Instant`, `java.util.UUID`, `java.math.BigInteger` and `java.math.BigDecimal`, `byte[]`, and  `enum` types.
 
-NOTE: An implementation of JDQL is permitted and encouraged to support additional types. Use of such types is not guaranteed to be portable between implementations.
+NOTE: An implementation of JCQL is permitted and encouraged to support additional types. Use of such types is not guaranteed to be portable between implementations.
 
 The interpretation of an operator expression or literal expression of a given type is given by the interpretation of the equivalent expression in Java. However, the precise behavior of some queries might vary depending on the native semantics of queries on the underlying datastore. For example, numeric precision and overflow, string collation, and integer division are permitted to depart from the semantics of the Java language.
 
 NOTE: This specification should not be interpreted to mandate an inefficient implementation of query language constructs in cases where the native behavior of the database varies from Java in such minor ways. That said, portability between Jakarta Data providers is maximized when their behavior is closest to the Java language.
 
-Since an attribute of an entity may be null, a JDQL expression may evaluate to a null value.
+Since an attribute of an entity may be null, a JCQL expression may evaluate to a null value.
 
 === Lexical structure
 
@@ -31,11 +35,11 @@ Lexical analysis requires recognition of the following token types:
 
 An _identifier_ is any legal Java identifier which is not a keyword. Identifiers are case-sensitive: `hello`, `Hello`, and `HELLO` are distinct identifiers.
 
-In the JDQL grammar, identifiers are labelled with the `IDENTIFIER` token type.
+In the JCQL grammar, identifiers are labelled with the `IDENTIFIER` token type.
 
 The following identifiers are _keywords_: `select`, `update`, `set`, `delete`, `from`, `where`, `order`, `by`, `asc`, `desc`, `not`, `and`, `or`, `between`, `like`, `in`, `null`, `local`, `true`, `false`. In addition, every reserved identifier listed in section 4.4.1 of the Jakarta Persistence specification version 3.2 is also considered a reserved identifier. Keywords and other reserved identifiers are case-insensitive: `null`, `Null`, and `NULL` are three ways to write the same keyword.
 
-NOTE: Use of a reserved identifier as a regular identifier in JDQL might be accepted by a given Jakarta Data provider, but such usage is not guaranteed to be portable between providers.
+NOTE: Use of a reserved identifier as a regular identifier in JCQL might be accepted by a given Jakarta Data provider, but such usage is not guaranteed to be portable between providers.
 
 ==== Parameters
 
@@ -84,7 +88,7 @@ Numeric literals come in two flavors:
 
 In the grammar, integer and decimal literals are labelled with the `INTEGER` and `DOUBLE` token types respectively.
 
-NOTE: JDQL does not require support for literals written in octal or hexadecimal.
+NOTE: JCQL does not require support for literals written in octal or hexadecimal.
 
 ==== Whitespace
 
@@ -98,7 +102,7 @@ As usual, token recognition is "greedy". Therefore, whitespace must be placed be
 
 === Expressions
 
-An expression is a sequence of tokens to which a Java type can be assigned, and which evaluates to a well-defined value when the query is executed. In JDQL, expressions may be categorized as:
+An expression is a sequence of tokens to which a Java type can be assigned, and which evaluates to a well-defined value when the query is executed. In JCQL, expressions may be categorized as:
 
 - literals,
 - special values,
@@ -153,7 +157,7 @@ A _path expression_ is a period-separated list of Java identifiers, with syntax 
 
 The type of the whole path expression is the type of the last element of the list. For example, `pages` is assigned the type `int`, `address` is assigned the type `org.example.Address`, and `address.street` is assigned the type `java.lang.String`.
 
-NOTE: Typically, the last element of a path expression is assigned a <<Basic types,basic type>>. Non-terminal path elements are usually assigned an embeddable type, if the element references an <<Embedded attributes and embeddable classes,embedded attribute>>, or an entity type, if the element references an <<Entity associations,association attribute>>. However, since a Jakarta Data provider is not required to support embedded attributes or associations, a JDQL implementation is not required to support compound path expressions.
+NOTE: Typically, the last element of a path expression is assigned a <<Basic types,basic type>>. Non-terminal path elements are usually assigned an embeddable type, if the element references an <<Embedded attributes and embeddable classes,embedded attribute>>, or an entity type, if the element references an <<Entity associations,association attribute>>. However, since a Jakarta Data provider is not required to support embedded attributes or associations, a JCQL implementation is not required to support compound path expressions.
 
 When a path expression is executed, each element of the path is evaluated in turn:
 
@@ -168,7 +172,7 @@ An _identifier expression_, with syntax given by `id_expression`, is assigned th
 
 ==== Function calls
 
-A _function call_ is the name of a JDQL function, followed by a parenthesized list of argument expressions, with syntax given by `function_expression`.
+A _function call_ is the name of a JCQL function, followed by a parenthesized list of argument expressions, with syntax given by `function_expression`.
 
 - The `abs()` function is assigned the type of its numeric argument, and evaluates to the absolute value of the numeric value to which its argument evaluates. Its argument must be of numeric type.
 
@@ -184,11 +188,11 @@ A _function call_ is the name of a JDQL function, followed by a parenthesized li
 
 When any argument expression of any function call evaluates to a null value, the whole function call evaluates to null.
 
-NOTE: These functions cannot be emulated on every datastore. When a function cannot be reasonably emulated via the native query capabilities of the database, a JDQL implementation is not required to provide the function.
+NOTE: These functions cannot be emulated on every datastore. When a function cannot be reasonably emulated via the native query capabilities of the database, a JCQL implementation is not required to provide the function.
 
-If the JDQL implementation does not support a standard function explicitly listed above, it must throw `UnsupportedOperationException` when the function name occurs in a query. Alternatively, the Jakarta Data provider is permitted to reject a repository method declaration at compilation time if its `@Query` annotation uses an unsupported function.
+If the JCQL implementation does not support a standard function explicitly listed above, it must throw `UnsupportedOperationException` when the function name occurs in a query. Alternatively, the Jakarta Data provider is permitted to reject a repository method declaration at compilation time if its `@Query` annotation uses an unsupported function.
 
-NOTE: On the other hand, an implementation of JDQL might provide additional built-in functions, and might even allow invocation of user-defined functions. Section 4.7 of the Jakarta Persistence specification defines a set of functions that all JPQL implementations are required to provide, including `concat`, `substring`, `trim`, `locate`, `ceiling`, `floor`, `exp`, `ln`, `mod`, `power`, `round`, `sign`, `sqrt`, `cast`, `extract`, `coalesce`, and `nullif`. JDQL implementations are encouraged to support any of these functions which are reasonably implementable.
+NOTE: On the other hand, an implementation of JCQL might provide additional built-in functions, and might even allow invocation of user-defined functions. Section 4.7 of the Jakarta Persistence specification defines a set of functions that all JPQL implementations are required to provide, including `concat`, `substring`, `trim`, `locate`, `ceiling`, `floor`, `exp`, `ln`, `mod`, `power`, `round`, `sign`, `sqrt`, `cast`, `extract`, `coalesce`, and `nullif`. JCQL implementations are encouraged to support any of these functions which are reasonably implementable.
 
 ==== Operator expressions
 
@@ -206,7 +210,7 @@ The concatenation operator `||` is assigned the type `java.lang.String`. Its ope
 
 The numeric operators `+`, `-`, `*`, and `/` have the same meaning for primitive numeric types they have in Java, and operator expression involving these operators are assigned the types they would be assigned in Java.
 
-NOTE: As an exception, when the operands of `/` are both integers, a JDQL implementation is not required to interpret the operator expression as integer division if that is not the native semantics of the database. However, portability is maximized when Jakarta Data providers _do_ interpret such an expression as integer division.
+NOTE: As an exception, when the operands of `/` are both integers, a JCQL implementation is not required to interpret the operator expression as integer division if that is not the native semantics of the database. However, portability is maximized when Jakarta Data providers _do_ interpret such an expression as integer division.
 
 The four numeric operators may also be applied to an operand of wrapper type, for example, to `java.lang.Integer` or `java.lang.Double`. In this case, the operator expression is assigned a wrapper type, and evaluates to a null value when either of its operands evaluates to a null value. When both operands are non-null, the semantics are identical to the semantics of an operator expression involving the corresponding primitive types.
 
@@ -229,7 +233,7 @@ The type assigned to an operator expression depends on the types of its operand 
 
 A _conditional expression_ is a sequence of tokens which specifies a condition which, for a given record, might be _satisfied_ or _unsatisfied_. Unlike the scalar <<Expressions>> defined in the previous section, a conditional expression is not considered to have a well-defined type.
 
-NOTE: JPQL defines the result of a conditional expression in terms of ternary logic. JDQL does not specify that a conditional expression evaluates to well-defined value, only the effect of the conditional expression when it is used as a restriction. The "value" of a conditional expression is not considered observable by the application program.
+NOTE: JPQL defines the result of a conditional expression in terms of ternary logic. JCQL does not specify that a conditional expression evaluates to well-defined value, only the effect of the conditional expression when it is used as a restriction. The "value" of a conditional expression is not considered observable by the application program.
 
 Conditional expressions may be categorized as:
 
@@ -310,15 +314,15 @@ When using NoSQL databases, there are limitations to the support of equality and
 
 Every <<Basic types,basic type>> can, in principle, be equipped with a total order. An order for a type determines the result of inequality comparisons, and the effect of the <<Order clause>>.
 
-For numeric types, and for date, time, and datetime types, the total order is unique and completely determined by the semantics of the type. JDQL implementations must sort these types according to their natural order, that is, the order in JDQL must agree with the order defined by Java.
+For numeric types, and for date, time, and datetime types, the total order is unique and completely determined by the semantics of the type. JCQL implementations must sort these types according to their natural order, that is, the order in JCQL must agree with the order defined by Java.
 
 Boolean values must be ordered so that `false < true` is satisfied.
 
 For other types, there is at least some freedom in the choice of order. Usually, the order is determined by the native semantics of the database. Note that:
 
-- Textual data is represented in JDQL as the type `java.lang.String`. Strings are in general ordered lexicographically, but the ordering also depends on the character set and collation used by the database server. Applications must not assume that the order agrees with the `compareTo()` method of `java.lang.String`. In evaluating an inequality involving string operands, an implementation of JDQL is not required to emulate Java collation.
+- Textual data is represented in JCQL as the type `java.lang.String`. Strings are in general ordered lexicographically, but the ordering also depends on the character set and collation used by the database server. Applications must not assume that the order agrees with the `compareTo()` method of `java.lang.String`. In evaluating an inequality involving string operands, an implementation of JCQL is not required to emulate Java collation.
 
-- Binary data is represented in JDQL as the type `byte[]`. Binary data is in general ordered lexicographically with respect to the constituent bytes. However, since this ordering is rarely meaningful, this specification does not require implementations of JDQL to respect it.
+- Binary data is represented in JCQL as the type `byte[]`. Binary data is in general ordered lexicographically with respect to the constituent bytes. However, since this ordering is rarely meaningful, this specification does not require implementations of JCQL to respect it.
 
 - This specification does not define an order for the sorting of Java `enum` values, which is provider-dependent. A programming model for entity classes might allow control over the order of `enum` values. For example, Jakarta Persistence allows this via the `@Enumerated` annotation.
 
@@ -353,7 +357,7 @@ The logical operators are `and`, `or`, and `not`.
 
 This specification leaves undefined the interpretation of the `not` operator when its operand _is not_ satisfied.
 
-CAUTION: A compliant implementation of JDQL might feature SQL/JPQL-style ternary logic, where `not n > 0` is an unsatisfied logical expression when `n` evaluates to null, or it might feature binary logic where the same expression is considered satisfied. Application programmers should take great care when using the `not` operator with scalar expressions involving `null` values.
+CAUTION: A compliant implementation of JCQL might feature SQL/JPQL-style ternary logic, where `not n > 0` is an unsatisfied logical expression when `n` evaluates to null, or it might feature binary logic where the same expression is considered satisfied. Application programmers should take great care when using the `not` operator with scalar expressions involving `null` values.
 
 Syntactically, logical operators are parsed with lower precedence than <<Equality and inequality operators,equality and inequality operators>> and other <<Conditional expressions,conditional expressions listed above>>. The `not` operator has higher precedence than `and` and `or`. The `and` operator has higher precedence than `or`.
 
@@ -370,7 +374,7 @@ Graph and document databases:: The `AND` and `OR` operators and all of the restr
 
 === Clauses
 
-Each JDQL statement is built from a sequence of _clauses_. The beginning of a clause is identified by a keyword: `from`, `where`, `select`, `set`, or `order`.
+Each JCQL statement is built from a sequence of _clauses_. The beginning of a clause is identified by a keyword: `from`, `where`, `select`, `set`, or `order`.
 
 There is a logical ordering of clauses, reflecting the order in which their effect must be computed by the datastore:
 
@@ -427,7 +431,7 @@ Alternatively, the `select` clause may contain either:
 
 NOTE: If a datastore does not natively provide the ability to count query results, the Jakarta Data provider is strongly encouraged, but not required, to implement this operation by counting the query results in Java.
 
-If the JDQL implementation does not support `count(this)`, it must throw `UnsupportedOperationException` when this aggregate expression occurs in a query.  Alternatively, the Jakarta Data provider is permitted to reject a repository method declaration at compilation time if its `@Query` annotation uses the unsupported aggregate expression.
+If the JCQL implementation does not support `count(this)`, it must throw `UnsupportedOperationException` when this aggregate expression occurs in a query.  Alternatively, the Jakarta Data provider is permitted to reject a repository method declaration at compilation time if its `@Query` annotation uses the unsupported aggregate expression.
 
 The `select` clause is optional in `select` statements. When it is missing, the query returns the queried entity.
 
@@ -455,7 +459,7 @@ The `set` clause, with syntax given by `set_clause`, specifies a list of updates
 
 The `order` clause (or `order by` clause), with syntax given by `orderby_clause`, specifies a lexicographic order for the query results, that is, a list of entity attributes used to sort the records which satisfy the restriction imposed by the `where` clause. The keywords `asc` and `desc` specify that a given attribute should be sorted in ascending or descending order respectively; when neither is specified, ascending order is the default.
 
-NOTE: An implementation of JDQL is not required to support sorting by entity attributes which are not returned by the query. If a query returns the queried entity, then any sortable attribute of the queried entity may occur in the `order` clause. Otherwise, if the query has an explicit `select` clause, a provider might require that an attribute which occurs in the `order` also occurs in the `select`.
+NOTE: An implementation of JCQL is not required to support sorting by entity attributes which are not returned by the query. If a query returns the queried entity, then any sortable attribute of the queried entity may occur in the `order` clause. Otherwise, if the query has an explicit `select` clause, a provider might require that an attribute which occurs in the `order` also occurs in the `select`.
 
 Entity attributes occurring earlier in the `order by` clause take precedence. That is, an attribute occurring later in the `order by` clause is only used to resolve "ties" between records which cannot be unambiguously ordered using only earlier attributes.
 
