@@ -507,9 +507,4 @@ If a NoSQL database is not capable of the execution of conditional deletes or ca
 
 === Syntax
 
-The following grammar defines the syntax of JDQL, via ANTLR4-style BNF.
-
-[source, antlrv4]
-----
-include::../../antlr/JDQL.g4[]
-----
+The Jakarta Query specification defines the syntax of JCQL.
