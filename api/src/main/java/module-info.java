@@ -501,15 +501,13 @@ import java.util.Set;
  * supplied.</li>
  * </ul>
  *
- * <p>When JPQL or native SQL is supplied to a Jakarta Data provider backed by
- * a Jakarta Persistence provider, the Jakarta Data provider is not required to
- * support repository methods that involve generating or modifying queries,
+ * <p>A Jakarta Data provider is not required to support JPQL or native SQL
+ * for repository query methods that require generating or modifying the query,
  * including repository methods with any of the following:
  * </p>
  *
  * <ul>
  * <li>{@linkplain Select Projections}</li>
- * <li>Queries that omit the {@code FROM} clause</li>
  * <li>{@linkplain Restriction Restrictions} and
  *     {@linkplain Constraint constraints}</li>
  * <li>{@linkplain Sort Sort criteria} other than that which is part of the

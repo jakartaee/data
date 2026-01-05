@@ -183,28 +183,19 @@ The Jakarta Data implementation automatically recognizes the query annotations i
 
 The Jakarta Persistence specification defines several annotations in the `jakarta.persistence.query` package that can be used on Jakarta Data repositories.
 
-===== StaticNativeQuery
+- `@StaticNativeQuery`, which can annotate a Jakarta Data repository method in place of Jakarta Data's `@Query` to supply a native SQL query.
 
-`@StaticNativeQuery` can annotate a Jakarta Data repository method in place of Jakarta Data's `@Query` to supply a native SQL query.
+- `@StaticQuery`, which can annotate a Jakarta Data repository method in place of Jakarta Data's `@Query` to supply a JPQL query.
 
-===== StaticQuery
+- `@ReadQueryOptions`, which can annotate a Jakarta Data repository method annotated `@Query`, `@StaticQuery`, or `@StaticNativeQuery` that performs a `SELECT` operation. Alternatively, it can annotate a Jakarta Data repository method annotated `@Find`. The `ReadQueryOptions` annotation allows the application to supply additional options defined by Jakarta Persistence for queries that perform read operations.
 
-`@StaticQuery` can annotate a Jakarta Data repository method in place of Jakarta Data's `@Query` to supply a JPQL query.
-
-===== ReadQueryOptions
-
-`@ReadQueryOptions` can annotate a Jakarta Data repository method annotated `@Query`, `@StaticQuery`, or `@StaticNativeQuery` that performs a `SELECT` operation. Alternatively, it can annotate a Jakarta Data repository method annotated `@Find`. The `ReadQueryOptions` annotation allows the application to supply additional options defined by Jakarta Persistence for queries that perform read operations.
-
-===== WriteQueryOptions
-
-`@WriteQueryOptions` can annotate a Jakarta Data repository method annotated `@Query`, `@StaticQuery`, or `@StaticNativeQuery` that performs a `DELETE` or `UPDATE` operation. Alternatively, it can annotate a Jakarta Data repository method annotated `@Delete` when the latter is not used as a lifecycle annotation.  The `WriteQueryOptions` annotation allows the application to supply additional options defined by Jakarta Persistence for queries that perform write operations.
+- `@WriteQueryOptions`, which can annotate a Jakarta Data repository method annotated `@Query`, `@StaticQuery`, or `@StaticNativeQuery` that performs a `DELETE` or `UPDATE` operation. Alternatively, it can annotate a Jakarta Data repository method annotated `@Delete` when the latter is not used as a lifecycle annotation.  The `WriteQueryOptions` annotation allows the application to supply additional options defined by Jakarta Persistence for queries that perform write operations.
 
 ==== Limitations of JPQL and native SQL queries
 
-When a JPQL or native SQL is supplied to a Jakarta Data provider backed by a Jakarta Persistence provider, the Jakarta Data provider is not required to support repository methods that involve generating or modifying queries, including repository methods with any of the following:
+The Jakarta Data provider is not required to support JPQL or native SQL for repository query methods that require generating or modifying the query, including repository methods with any of the following:
 
 - Projections
-- Queries that omit the `FROM` clause
 - `Restriction` and `Constraint`-typed parameters
 - Sort criteria other than that which is part of the `ORDER BY` clause of the given query value
 - Cursor-based pagination
