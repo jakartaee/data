@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2025,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,7 +53,7 @@ public interface NumericLiteral<N extends Number & Comparable<N>>
     // Integer value, but there was no indication of this given that both
     // convert to the same String. We could switch the output to include a
     // suffix, such as 'I' at the end, but the downside of that would be not
-    // matching JDQL.
+    // matching JCQL.
     /**
      * <p>Returns a {@code String} representing the literal numeric value.</p>
      *
