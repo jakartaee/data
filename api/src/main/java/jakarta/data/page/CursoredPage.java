@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022,2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -113,7 +113,8 @@ import java.util.NoSuchElementException;
  * restrictions involving the key elements to the {@code WHERE} clause of the
  * query. For this to be possible, a user-provided JDQL or JPQL query must end
  * with a {@code WHERE} clause to which additional conditions may be
- * appended.</p>
+ * appended. Cursor-pagination is not available for native SQL queries and
+ * some JPQL queries.</p>
  *
  * <p>Sorting criteria must be specified independently of the user-provided
  * query, either via the {@link OrderBy} annotation or, or by passing

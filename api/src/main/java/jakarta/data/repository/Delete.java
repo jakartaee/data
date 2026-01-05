@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023,2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2023,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -105,6 +105,11 @@ import jakarta.data.restrict.Restriction;
  * number of deleted records.
  * </p>
  *
+ * <p>If the Jakarta Data provider is backed by a Jakarta Persistence provider,
+ * an automatic query method annotated {@code Find} can also be annotated
+ * {@code jakarta.persistence.query.WriteQueryOptions} to supply additional
+ * query options that are specific to Jakarta Persistence.</p>
+ *
  * <p>Annotations such as {@code @Find}, {@code @Query}, {@code @Insert}, {@code @Update}, {@code @Delete}, and
  * {@code @Save} are mutually-exclusive. A given method of a repository interface may have at most one {@code @Find}
  * annotation, lifecycle annotation, or query annotation.
@@ -112,6 +117,7 @@ import jakarta.data.restrict.Restriction;
  *
  * @see By
  */
+// TODO switch @code to @link for jakarta.persistence.query.* once Persistence 4.0 M1 is available
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)

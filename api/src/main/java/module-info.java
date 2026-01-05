@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022,2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@ import jakarta.data.exceptions.NonUniqueResultException;
 import jakarta.data.expression.Expression;
 import jakarta.data.metamodel.Attribute;
 import jakarta.data.metamodel.StaticMetamodel;
+import jakarta.data.page.CursoredPage;
 import jakarta.data.page.PageRequest;
 import jakarta.data.constraint.Constraint;
 import jakarta.data.repository.BasicRepository;
@@ -485,6 +486,48 @@ import java.util.Set;
  *
  * <p>Refer to the {@linkplain Query API documentation} for {@code @Query} for further
  * information.</p>
+ *
+ * <h2>Jakarta Persistence query methods</h2>
+ *
+ * <p>The Jakarta Persistence specification offers two additional query
+ * annotations that can annotate repository methods in place of {@link Query}:
+ *
+ * <ul>
+ * <li>{@code jakarta.persistence.query.StaticNativeQuery} - supplies a native
+ * SQL query instead of a query that is written in Jakarta Persistence Query
+ * Language (JPQL) or the Jakarta Common Query Language (JCQL).</li>
+ * <li>{@code jakarta.persistence.query.StaticQuery} - behaves identically to
+ * Jakarta Data's {@code Query} annotation in allowing JPQL and JCQL to be
+ * supplied.</li>
+ * </ul>
+ *
+ * <p>A Jakarta Data provider is not required to support JPQL or native SQL
+ * for repository query methods that require generating or modifying the query,
+ * including repository methods with any of the following:
+ * </p>
+ *
+ * <ul>
+ * <li>{@linkplain Select Projections}</li>
+ * <li>{@linkplain Restriction Restrictions} and
+ *     {@linkplain Constraint constraints}</li>
+ * <li>{@linkplain Sort Sort criteria} other than that which is part of the
+ *     {@code ORDER BY} clause of the given query value</li>
+ * <li>{@linkplain CursoredPage Cursor-based pagination}</li>
+ * <li>{@linkplain PageRequest#requestTotal() Total pages or results}</li>
+ * </ul>
+ *
+ * <p>{@linkplain Param Named parameters} can be used for JPQL queries, but not
+ * for native SQL queries. Use positional parameters instead. For example,</p>
+
+ * <pre>{@code
+ * @StaticNativeQuery("SELECT * FROM Person WHERE ssn = ? AND alive = ?")
+ * @ReadQueryOptions(lockMode = LockModeType.PESSIMISTIC_WRITE)
+ * Optional<Person> findIfLiving(String ssn, boolean isAlive);
+ * }</pre>
+ *
+ * <p>Refer to the Jakarta Persistence query annotations in the
+ * {@code jakarta.persistence.query} package and the API documentation for
+ * {@link Query} for further information.</p>
  *
  * <h2>Query by Method Name</h2>
  *
@@ -1372,6 +1415,7 @@ import java.util.Set;
  * }
  * }</pre>
  */
+//TODO switch @code to @link for jakarta.persistence.query.* once Persistence 4.0 M1 is available
 module jakarta.data {
     exports jakarta.data;
     exports jakarta.data.constraint;
