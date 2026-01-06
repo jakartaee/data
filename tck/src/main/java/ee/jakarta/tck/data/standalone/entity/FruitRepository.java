@@ -17,7 +17,34 @@ package ee.jakarta.tck.data.standalone.entity;
 
 import jakarta.data.repository.BasicRepository;
 import jakarta.data.repository.Repository;
+import jakarta.data.repository.Param;
+import jakarta.data.repository.Query;
+import jakarta.data.repository.Repository;
+
+import java.util.List;
 
 @Repository
 public interface FruitRepository extends BasicRepository<Fruit, String> {
+
+    @Query("FROM Fruit WHERE name = :name")
+    List<Fruit> findNameEquals(@Param("name") String name);
+
+    @Query("FROM Fruit WHERE name <> :name")
+    List<Fruit> findNameNotEquals(@Param("name") String name);
+
+    @Query("FROM Fruit WHERE quantity > :quantity")
+    List<Fruit> findQuantityGt(@Param("quantity") Long quantity);
+
+    @Query("FROM Fruit WHERE quantity >= :quantity")
+    List<Fruit> findQuantityGte(@Param("quantity") Long quantity);
+
+    @Query("FROM Fruit WHERE quantity < :quantity")
+    List<Fruit> findQuantityLt(@Param("quantity") Long quantity);
+
+    @Query("FROM Fruit WHERE quantity <= :quantity")
+    List<Fruit> findQuantityLte(@Param("quantity") Long quantity);
+
+
+    @Query("FROM Fruit WHERE name IN (:name1, :name2)")
+    List<Fruit> findNameIn(@Param("quantity") String name1, String name2);
 }

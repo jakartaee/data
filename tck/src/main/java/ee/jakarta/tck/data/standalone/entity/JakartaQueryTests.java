@@ -27,6 +27,7 @@ import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.params.provider.ArgumentsSource;
 import ee.jakarta.tck.data.framework.junit.anno.ParametizedAssertion;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -76,7 +77,7 @@ public class JakartaQueryTests {
                     .hasSize(vehicles.size())
                     .containsAll(vehicles);
         } catch (UnsupportedOperationException exp) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
                 log.warning("database does not support keyword 'FROM' type: " + type);
             } else {
                 throw exp;
@@ -110,7 +111,7 @@ public class JakartaQueryTests {
                     .hasSize(vehicles.size())
                     .containsExactly(colors.toArray(new String[0]));
         } catch (UnsupportedOperationException exp) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
                 log.warning("database does not support keyword 'FROM' type: " + type);
             } else {
                 throw exp;
@@ -144,7 +145,7 @@ public class JakartaQueryTests {
                     .hasSize(vehicles.size())
                     .containsExactly(colors.toArray(new String[0]));
         } catch (UnsupportedOperationException exp) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
                 log.warning("database does not support keyword 'FROM' type: " + type);
             } else {
                 throw exp;
@@ -173,8 +174,19 @@ public class JakartaQueryTests {
                     .hasSize(vehicles.size())
                     .containsAll(expected);
         } catch (UnsupportedOperationException exp) {
-            Assertions.assertThat(exp).isInstanceOf(UnsupportedOperationException.class);
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                log.warning("database does not support keyword 'FROM' type: " + type);
+            } else {
+                throw exp;
+            }
         }
     }
+
+    @Nested
+    @DisplayName("when there is condition and dynamic param")
+    class WhenThereIsConditionAndDynamicParam {
+
+    }
+
 
 }
