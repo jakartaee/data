@@ -356,4 +356,60 @@ public class JakartaQueryTests {
     }
 
 
+    @ParameterizedTest
+    @DisplayName("should test AND")
+    @ArgumentsSource(FruitListSupplier.class)
+    @ParametizedAssertion(id = "411",
+            strategy = "Persist Fruit entities and execute a query combining two predicates with AND (name equals and quantity equals), " +
+                    "asserting every returned entity satisfies both predicates or accepting UnsupportedOperationException if unsupported.")
+    void shouldAnd(List<Fruit> fruits) {
+
+        try {
+            fruitRepository.saveAll(fruits);
+            Fruit sample = fruits.getFirst();
+
+            List<Fruit> result = fruitRepository.findNameEqualsAndQuantitEquals(sample.getName(), sample.getQuantity());
+
+            Assertions.assertThat(result)
+                    .isNotEmpty()
+                    .allMatch(fruit -> fruit.getName().equals(sample.getName())
+                            && fruit.getQuantity().equals(sample.getQuantity()));
+        } catch (UnsupportedOperationException exp) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                log.warning("database does not support keyword 'FROM' type: " + type);
+            } else {
+                throw exp;
+            }
+        }
+    }
+
+    @ParameterizedTest
+    @DisplayName("should test OR")
+    @ArgumentsSource(FruitListSupplier.class)
+    @ParametizedAssertion(id = "412",
+            strategy = "Persist Fruit entities and execute a query combining predicates with OR (name equals either value), " +
+                    "asserting every returned entity matches at least one predicate or accepting UnsupportedOperationException.")
+    void shouldOr(List<Fruit> fruits) {
+
+        try {
+            fruitRepository.saveAll(fruits);
+            Fruit sample1 = fruits.get(0);
+            Fruit sample2 = fruits.get(1);
+            List<Fruit> result = fruitRepository.findNameEqualsORNameEquals(sample1.getName(), sample2.getName());
+
+            Assertions.assertThat(result)
+                    .isNotEmpty()
+                    .allMatch(fruit -> fruit.getName().equals(sample1.getName())
+                            || fruit.getName().equals(sample2.getName()));
+
+        } catch (UnsupportedOperationException exp) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                log.warning("database does not support keyword 'FROM' type: " + type);
+            } else {
+                throw exp;
+            }
+        }
+    }
+
+
 }
