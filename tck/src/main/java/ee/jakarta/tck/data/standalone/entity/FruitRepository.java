@@ -48,4 +48,10 @@ public interface FruitRepository extends BasicRepository<Fruit, String> {
 
     @Query("FROM Fruit WHERE name IN (:name1, :name2)")
     List<Fruit> findNameIn(@Param("name1") String name1, @Param("name2")  String name2);
+
+    @Query("FROM Fruit WHERE name = :name AND quantity = :quantity")
+    List<Fruit> findNameEqualsAndQuantityGte(String name, Long quantity);
+
+    @Query("FROM Fruit WHERE name = :name OR quantity = :quantity")
+    List<Fruit> findNameEqualsORQuantityGte(String name, Long quantity);
 }
