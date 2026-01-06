@@ -27,7 +27,6 @@ import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.params.provider.ArgumentsSource;
 import ee.jakarta.tck.data.framework.junit.anno.ParametizedAssertion;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -177,6 +176,176 @@ public class JakartaQueryTests {
                     .isNotEmpty()
                     .hasSize(vehicles.size())
                     .containsAll(expected);
+        } catch (UnsupportedOperationException exp) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                log.warning("database does not support keyword 'FROM' type: " + type);
+            } else {
+                throw exp;
+            }
+        }
+    }
+
+    @ParameterizedTest
+    @DisplayName("should test eq")
+    @ParametizedAssertion(id = "404",
+            strategy = "Persist Fruit entities and execute an equality comparison on the name attribute, asserting that all " +
+                    "returned entities have a name equal to the provided value, or accept UnsupportedOperationException if unsupported.")
+    @ArgumentsSource(FruitListSupplier.class)
+    void shouldEq(List<Fruit> fruits) {
+        try {
+            fruitRepository.saveAll(fruits);
+            Fruit sample = fruits.getFirst();
+            List<Fruit> result = fruitRepository.findNameEquals(sample.getName());
+
+            AssertionsForInterfaceTypes.assertThat(result)
+                    .isNotEmpty()
+                    .allMatch(fruit -> fruit.getName().equals(sample.getName()));
+        } catch (UnsupportedOperationException exp) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                log.warning("database does not support keyword 'FROM' type: " + type);
+            } else {
+                throw exp;
+            }
+        }
+    }
+
+    @ParameterizedTest
+    @DisplayName("should test neq")
+    @ArgumentsSource(FruitListSupplier.class)
+    @ParametizedAssertion(id = "405",
+            strategy = "Persist Fruit entities and execute a not-equal comparison on the name attribute, asserting that all " +
+                    "returned entities have a different name, or accept UnsupportedOperationException if unsupported.")
+    void shouldNEq(List<Fruit> fruits) {
+        try {
+            fruitRepository.saveAll(fruits);
+            Fruit sample = fruits.getFirst();
+            List<Fruit> result = fruitRepository.findNameNotEquals(sample.getName());
+
+            AssertionsForInterfaceTypes.assertThat(result)
+                    .isNotEmpty()
+                    .allMatch(fruit -> !fruit.getName().equals(sample.getName()));
+        } catch (UnsupportedOperationException exp) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                log.warning("database does not support keyword 'FROM' type: " + type);
+            } else {
+                throw exp;
+            }
+        }
+    }
+
+    @ParameterizedTest
+    @DisplayName("should test gt")
+    @ParametizedAssertion(id = "406",
+            strategy = "Persist Fruit entities and execute a greater-than comparison on the quantity attribute, asserting that " +
+                    "all returned entities have a quantity greater than the provided value, or accept UnsupportedOperationException.")
+    @ArgumentsSource(FruitListSupplier.class)
+    void shouldGt(List<Fruit> fruits) {
+        try {
+            fruitRepository.saveAll(fruits);
+            Fruit sample = fruits.getFirst();
+            List<Fruit> result = fruitRepository.findQuantityGt(sample.getQuantity());
+
+            AssertionsForInterfaceTypes.assertThat(result)
+                    .isNotEmpty()
+                    .allMatch(fruit -> fruit.getQuantity() > sample.getQuantity());
+        } catch (UnsupportedOperationException exp) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                log.warning("database does not support keyword 'FROM' type: " + type);
+            } else {
+                throw exp;
+            }
+        }
+    }
+
+    @ParameterizedTest
+    @DisplayName("should test gte")
+    @ParametizedAssertion(id = "407",
+            strategy = "Persist Fruit entities and execute a greater-than-or-equal comparison on the quantity attribute, " +
+                    "asserting compliant results or accepting UnsupportedOperationException if unsupported.")
+    @ArgumentsSource(FruitListSupplier.class)
+    void shouldGte(List<Fruit> fruits) {
+        try {
+            fruitRepository.saveAll(fruits);
+            Fruit sample = fruits.getFirst();
+            List<Fruit> result = fruitRepository.findQuantityGte(sample.getQuantity());
+
+            AssertionsForInterfaceTypes.assertThat(result)
+                    .isNotEmpty()
+                    .allMatch(fruit -> fruit.getQuantity() >= sample.getQuantity());
+        } catch (UnsupportedOperationException exp) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                log.warning("database does not support keyword 'FROM' type: " + type);
+            } else {
+                throw exp;
+            }
+        }
+    }
+
+    @ParameterizedTest
+    @DisplayName("should test lt")
+    @ParametizedAssertion(id = "408",
+            strategy = "Persist Fruit entities and execute a less-than comparison on the quantity attribute, asserting that " +
+                    "all returned entities have a smaller quantity, or accept UnsupportedOperationException.")
+    @ArgumentsSource(FruitListSupplier.class)
+    void shouldLt(List<Fruit> fruits) {
+        try {
+            fruitRepository.saveAll(fruits);
+            Fruit sample = fruits.getFirst();
+            List<Fruit> result = fruitRepository.findQuantityLt(sample.getQuantity());
+
+            AssertionsForInterfaceTypes.assertThat(result)
+                    .isNotEmpty()
+                    .allMatch(fruit -> fruit.getQuantity() < sample.getQuantity());
+        } catch (UnsupportedOperationException exp) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                log.warning("database does not support keyword 'FROM' type: " + type);
+            } else {
+                throw exp;
+            }
+        }
+    }
+
+    @ParameterizedTest
+    @DisplayName("should test lte")
+    @ArgumentsSource(FruitListSupplier.class)
+    @ParametizedAssertion(id = "409",
+            strategy = "Persist Fruit entities and execute a less-than-or-equal comparison on the quantity attribute, " +
+                    "asserting compliant results or accepting UnsupportedOperationException if unsupported.")
+    void shouldLte(List<Fruit> fruits) {
+        try {
+            fruitRepository.saveAll(fruits);
+            Fruit sample = fruits.getFirst();
+            List<Fruit> result = fruitRepository.findQuantityLte(sample.getQuantity());
+            AssertionsForInterfaceTypes.assertThat(result)
+                    .isNotEmpty()
+                    .allMatch(fruit -> fruit.getQuantity() <= sample.getQuantity());
+        } catch (UnsupportedOperationException exp) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                log.warning("database does not support keyword 'FROM' type: " + type);
+            } else {
+                throw exp;
+            }
+        }
+    }
+
+    @ParameterizedTest
+    @DisplayName("should test in")
+    @ParametizedAssertion(id = "410",
+            strategy = "Persist Fruit entities and execute an IN comparison on the name attribute with multiple values, " +
+                    "asserting membership in the provided set or accepting UnsupportedOperationException.")
+    @ArgumentsSource(FruitListSupplier.class)
+    void shouldIn(List<Fruit> fruits) {
+        try {
+            fruitRepository.saveAll(fruits);
+            var sample1 = fruits.getFirst();
+            var sample2 = fruits.get(1);
+            List<Fruit> result = fruitRepository.findNameIn(sample1.getName(), sample2.getName());
+
+            AssertionsForInterfaceTypes.assertThat(result)
+                    .isNotEmpty()
+                    .allMatch(fruit -> fruit.getName().equals(sample1.getName())
+                            || fruit.getName().equals(sample2.getName()));
+
         } catch (UnsupportedOperationException exp) {
             if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
                 log.warning("database does not support keyword 'FROM' type: " + type);
