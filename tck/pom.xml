@@ -42,6 +42,7 @@
 
   <properties>
     <datafaker.version>2.4.4</datafaker.version>
+    <assertj.version>3.27.6</assertj.version>
   </properties>
 
   <dependencies>
@@ -53,6 +54,11 @@
     <dependency>
       <groupId>org.junit.platform</groupId>
       <artifactId>junit-platform-launcher</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+      <version>${assertj.version}</version>
     </dependency>
     
     <!-- Data API -->
