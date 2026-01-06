@@ -2609,19 +2609,19 @@ public class EntityTests {
     public void testReturnStreamOfRecordThatSelectsAttributesFindEntity() {
 
         Stream<CardinalNumber> stream = characters.cardinalNumberStream(3L);
+        var result = stream.map(CardinalNumber::toString)
+                .sorted()
+                .toList();
 
-        assertEquals(List.of("10 COMPOSITE (4 bits",
-                        "11 PRIME (4 bits)",
-                        "12 COMPOSITE (4 bits)",
-                        "13 PRIME (4 bits)",
-                        "14 COMPOSITE (4 bits)",
-                        "15 COMPOSITE (4 bits)",
-                        "9 COMPOSITE (4 bits)"
-                ),
-                stream
-                        .map(CardinalNumber::toString)
-                        .sorted()
-                        .collect(Collectors.toList()));
+        var expected = List.of("10 COMPOSITE (4 bits)",
+                "11 PRIME (4 bits)",
+                "12 COMPOSITE (4 bits)",
+                "13 PRIME (4 bits)",
+                "14 COMPOSITE (4 bits)",
+                "15 COMPOSITE (4 bits)",
+                "9 COMPOSITE (4 bits)"
+        );
+        assertEquals(expected, result);
     }
 
     @Assertion(id = "539", strategy = """
