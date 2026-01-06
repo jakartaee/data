@@ -54,4 +54,10 @@ public interface FruitRepository extends BasicRepository<Fruit, String> {
 
     @Query("FROM Fruit WHERE name = :name OR quantity = :quantity")
     List<Fruit> findNameEqualsORQuantityGte(String name, Long quantity);
+
+    @Query("FROM Fruit WHERE name = :name AND quantity = :quantity")
+    List<Fruit> findNameEqualsAndQuantityGte(String name, Long quantity);
+
+    @Query("FROM Fruit WHERE name = :name OR quantity = :quantity")
+    List<Fruit> findNameEqualsORQuantityGte(String name, Long quantity);
 }

@@ -197,7 +197,7 @@ public class JakartaQueryTests {
             Fruit sample = fruits.getFirst();
             List<Fruit> result = fruitRepository.findNameEquals(sample.getName());
 
-            AssertionsForInterfaceTypes.assertThat(result)
+            Assertions.assertThat(result)
                     .isNotEmpty()
                     .allMatch(fruit -> fruit.getName().equals(sample.getName()));
         } catch (UnsupportedOperationException exp) {
@@ -221,7 +221,7 @@ public class JakartaQueryTests {
             Fruit sample = fruits.getFirst();
             List<Fruit> result = fruitRepository.findNameNotEquals(sample.getName());
 
-            AssertionsForInterfaceTypes.assertThat(result)
+            Assertions.assertThat(result)
                     .isNotEmpty()
                     .allMatch(fruit -> !fruit.getName().equals(sample.getName()));
         } catch (UnsupportedOperationException exp) {
@@ -245,7 +245,7 @@ public class JakartaQueryTests {
             Fruit sample = fruits.getFirst();
             List<Fruit> result = fruitRepository.findQuantityGt(sample.getQuantity());
 
-            AssertionsForInterfaceTypes.assertThat(result)
+            Assertions.assertThat(result)
                     .isNotEmpty()
                     .allMatch(fruit -> fruit.getQuantity() > sample.getQuantity());
         } catch (UnsupportedOperationException exp) {
@@ -269,7 +269,7 @@ public class JakartaQueryTests {
             Fruit sample = fruits.getFirst();
             List<Fruit> result = fruitRepository.findQuantityGte(sample.getQuantity());
 
-            AssertionsForInterfaceTypes.assertThat(result)
+            Assertions.assertThat(result)
                     .isNotEmpty()
                     .allMatch(fruit -> fruit.getQuantity() >= sample.getQuantity());
         } catch (UnsupportedOperationException exp) {
@@ -293,7 +293,7 @@ public class JakartaQueryTests {
             Fruit sample = fruits.getFirst();
             List<Fruit> result = fruitRepository.findQuantityLt(sample.getQuantity());
 
-            AssertionsForInterfaceTypes.assertThat(result)
+            Assertions.assertThat(result)
                     .isNotEmpty()
                     .allMatch(fruit -> fruit.getQuantity() < sample.getQuantity());
         } catch (UnsupportedOperationException exp) {
@@ -316,7 +316,7 @@ public class JakartaQueryTests {
             fruitRepository.saveAll(fruits);
             Fruit sample = fruits.getFirst();
             List<Fruit> result = fruitRepository.findQuantityLte(sample.getQuantity());
-            AssertionsForInterfaceTypes.assertThat(result)
+            Assertions.assertThat(result)
                     .isNotEmpty()
                     .allMatch(fruit -> fruit.getQuantity() <= sample.getQuantity());
         } catch (UnsupportedOperationException exp) {
@@ -341,7 +341,7 @@ public class JakartaQueryTests {
             var sample2 = fruits.get(1);
             List<Fruit> result = fruitRepository.findNameIn(sample1.getName(), sample2.getName());
 
-            AssertionsForInterfaceTypes.assertThat(result)
+            Assertions.assertThat(result)
                     .isNotEmpty()
                     .allMatch(fruit -> fruit.getName().equals(sample1.getName())
                             || fruit.getName().equals(sample2.getName()));
