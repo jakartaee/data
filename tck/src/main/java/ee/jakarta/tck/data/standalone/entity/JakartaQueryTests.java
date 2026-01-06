@@ -110,7 +110,11 @@ public class JakartaQueryTests {
                     .hasSize(vehicles.size())
                     .containsExactly(colors.toArray(new String[0]));
         } catch (UnsupportedOperationException exp) {
-            Assertions.assertThat(exp).isInstanceOf(UnsupportedOperationException.class);
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
+                log.warning("database does not support keyword 'FROM' type: " + type);
+            } else {
+                throw exp;
+            }
         }
     }
 
@@ -139,6 +143,35 @@ public class JakartaQueryTests {
                     .isNotEmpty()
                     .hasSize(vehicles.size())
                     .containsExactly(colors.toArray(new String[0]));
+        } catch (UnsupportedOperationException exp) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
+                log.warning("database does not support keyword 'FROM' type: " + type);
+            } else {
+                throw exp;
+            }
+        }
+    }
+
+    @ParameterizedTest
+    @DisplayName("should find all by projection")
+    @ArgumentsSource(VehicleListSupplier.class)
+    @ParametizedAssertion(id = "403",
+            strategy = "Persist a known collection of Vehicle entities and execute a repository query that returns " +
+                    "a projection type, asserting that each result corresponds to a projection derived from the " +
+                    "persisted Vehicle entities.")
+    void shouldFindAllByProjection(List<Vehicle> vehicles) {
+        try {
+            vehicleRepository.saveAll(vehicles);
+            var result = vehicleRepository.findAllWithProjection();
+
+            var expected = vehicles.stream()
+                    .map(VehicleSummary::of)
+                    .toList();
+
+            Assertions.assertThat(result)
+                    .isNotEmpty()
+                    .hasSize(vehicles.size())
+                    .containsAll(expected);
         } catch (UnsupportedOperationException exp) {
             Assertions.assertThat(exp).isInstanceOf(UnsupportedOperationException.class);
         }

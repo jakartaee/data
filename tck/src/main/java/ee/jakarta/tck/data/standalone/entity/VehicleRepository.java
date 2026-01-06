@@ -36,4 +36,7 @@ public interface VehicleRepository extends BasicRepository<Vehicle, String> {
 
     @Query("FROM Vehicle ORDER BY color DESC")
     List<Vehicle> findAllDesc();
+
+    @Query("FROM Vehicle")
+    List<VehicleSummary> findAllWithProjection();
 }
