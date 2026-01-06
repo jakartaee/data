@@ -19,12 +19,14 @@ import jakarta.data.repository.BasicRepository;
 import jakarta.data.repository.Repository;
 import jakarta.data.repository.Param;
 import jakarta.data.repository.Query;
-import jakarta.data.repository.Repository;
 
 import java.util.List;
 
 @Repository
 public interface FruitRepository extends BasicRepository<Fruit, String> {
+
+    @Query("DELETE FROM Fruit")
+    void deleteAll();
 
     @Query("FROM Fruit WHERE name = :name")
     List<Fruit> findNameEquals(@Param("name") String name);

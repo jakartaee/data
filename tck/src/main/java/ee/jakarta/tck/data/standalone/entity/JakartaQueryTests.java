@@ -54,10 +54,14 @@ public class JakartaQueryTests {
     @Inject
     protected VehicleRepository vehicleRepository;
 
+    @Inject
+    protected FruitRepository fruitRepository;
+
 
     @BeforeEach
     public void setup() {
         vehicleRepository.deleteAll();
+        fruitRepository.deleteAll();
     }
 
     @DisplayName("should find all entities as stream")
@@ -180,12 +184,6 @@ public class JakartaQueryTests {
                 throw exp;
             }
         }
-    }
-
-    @Nested
-    @DisplayName("when there is condition and dynamic param")
-    class WhenThereIsConditionAndDynamicParam {
-
     }
 
 
