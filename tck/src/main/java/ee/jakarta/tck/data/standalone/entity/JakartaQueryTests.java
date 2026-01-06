@@ -27,8 +27,9 @@ import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ArgumentsSource;
+import ee.jakarta.tck.data.framework.junit.anno.ParametizedAssertion;
+import org.junit.jupiter.params.ParameterizedTest;
 
 import java.util.List;
 import java.util.logging.Logger;
@@ -49,7 +50,7 @@ public class JakartaQueryTests {
     }
 
     @Inject
-    VehicleRepository vehicleRepository;
+    protected VehicleRepository vehicleRepository;
 
 
     @BeforeEach
@@ -57,9 +58,13 @@ public class JakartaQueryTests {
         vehicleRepository.deleteAll();
     }
 
-    @ParameterizedTest
     @DisplayName("should find all entities as stream")
+    @ParameterizedTest
     @ArgumentsSource(VehicleListSupplier.class)
+    @ParametizedAssertion(id = "400",
+            strategy = "Persist a known collection of Vehicle entities and execute a repository query using the " +
+                    "'FROM Vehicle' clause that returns Stream<Vehicle>, asserting that the stream yields all " +
+                    "persisted Vehicle instances.")
     void shouldFindAllEntities(List<Vehicle> vehicles) {
         try {
             vehicleRepository.saveAll(vehicles);
