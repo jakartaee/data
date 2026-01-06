@@ -20,6 +20,7 @@ import jakarta.data.repository.Query;
 import jakarta.data.repository.Repository;
 
 import java.util.stream.Stream;
+import java.util.List;
 
 @Repository
 public interface VehicleRepository extends BasicRepository<Vehicle, String> {
@@ -29,4 +30,10 @@ public interface VehicleRepository extends BasicRepository<Vehicle, String> {
 
     @Query("DELETE FROM Vehicle")
     void deleteAll();
+
+    @Query("FROM Vehicle ORDER BY color ASC")
+    List<Vehicle> findAllAsc();
+
+    @Query("FROM Vehicle ORDER BY color DESC")
+    List<Vehicle> findAllDesc();
 }

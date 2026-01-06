@@ -83,4 +83,64 @@ public class JakartaQueryTests {
         }
     }
 
+    @DisplayName("should find all entities as stream")
+    @ParameterizedTest
+    @ArgumentsSource(VehicleListSupplier.class)
+    @ParametizedAssertion(id = "401",
+            strategy = "Persist a known collection of Vehicle entities and execute a repository query that orders " +
+                    "results by the Vehicle color attribute in ascending order, asserting that the returned list " +
+                    "matches the natural ascending order of the persisted values.")
+    void shouldOrderByAsc(List<Vehicle> vehicles) {
+        try {
+            vehicleRepository.saveAll(vehicles);
+            List<Vehicle> result = vehicleRepository.findAllAsc();
+
+            var expectedColor = vehicles.stream()
+                    .map(Vehicle::getColor)
+                    .sorted()
+                    .toList();
+
+            var colors = result.stream()
+                    .map(Vehicle::getColor)
+                    .toList();
+
+            Assertions.assertThat(expectedColor)
+                    .isNotEmpty()
+                    .hasSize(vehicles.size())
+                    .containsExactly(colors.toArray(new String[0]));
+        } catch (UnsupportedOperationException exp) {
+            Assertions.assertThat(exp).isInstanceOf(UnsupportedOperationException.class);
+        }
+    }
+
+    @ParameterizedTest
+    @DisplayName("should order by descending")
+    @ArgumentsSource(VehicleListSupplier.class)
+    @ArgumentsSource(VehicleListSupplier.class)
+    @ParametizedAssertion(id = "402",
+            strategy = "Persist a known collection of Vehicle entities and execute a repository query that orders " +
+                    "results by the Vehicle color attribute in descending order, asserting that the returned list " +
+                    "matches the reverse natural order of the persisted values.")
+    void shouldOrderByDesc(List<Vehicle> vehicles) {
+        try {
+            vehicleRepository.saveAll(vehicles);
+            List<Vehicle> result = vehicleRepository.findAllDesc();
+            var colors = result.stream()
+                    .map(Vehicle::getColor)
+                    .toList();
+
+            var expectedColor = vehicles.stream()
+                    .map(Vehicle::getColor)
+                    .sorted(Comparator.reverseOrder())
+                    .toList();
+
+            Assertions.assertThat(expectedColor)
+                    .isNotEmpty()
+                    .hasSize(vehicles.size())
+                    .containsExactly(colors.toArray(new String[0]));
+        } catch (UnsupportedOperationException exp) {
+            Assertions.assertThat(exp).isInstanceOf(UnsupportedOperationException.class);
+        }
+    }
+
 }
