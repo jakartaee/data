@@ -60,6 +60,7 @@
   
   <!-- Default execution groups - user should override -->
   <includedTests>core</includedTests>
+  <datafaker.version>2.4.4</datafaker.version>
  </properties>
 
  <repositories>
@@ -155,6 +156,11 @@
    <groupId>jakarta.enterprise</groupId>
    <artifactId>jakarta.enterprise.cdi-api</artifactId>
    <version>${jakarta.enterprise.cdi.version}</version>
+  </dependency>
+  <dependency>
+   <groupId>net.datafaker</groupId>
+   <artifactId>datafaker</artifactId>
+   <version>${datafaker.version}</version>
   </dependency>
  </dependencies>
  <!-- end::testClientDep[] -->

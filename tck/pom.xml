@@ -40,7 +40,9 @@
     </license>
   </licenses>
 
-  <properties></properties>
+  <properties>
+    <datafaker.version>2.4.4</datafaker.version>
+  </properties>
 
   <dependencies>
     <!-- Test framework -->
@@ -140,6 +142,11 @@
      <dependency>
         <groupId>org.jboss.shrinkwrap.resolver</groupId>
         <artifactId>shrinkwrap-resolver-impl-maven</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>net.datafaker</groupId>
+      <artifactId>datafaker</artifactId>
+      <version>${datafaker.version}</version>
     </dependency>
   </dependencies>
 
