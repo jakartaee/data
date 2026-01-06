@@ -31,6 +31,7 @@ import org.junit.jupiter.params.provider.ArgumentsSource;
 import ee.jakarta.tck.data.framework.junit.anno.ParametizedAssertion;
 import org.junit.jupiter.params.ParameterizedTest;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Logger;
 
