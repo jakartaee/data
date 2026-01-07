@@ -30,6 +30,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.provider.ArgumentsSource;
 import ee.jakarta.tck.data.framework.junit.anno.ParametizedAssertion;
 import org.junit.jupiter.params.ParameterizedTest;
+import ee.jakarta.tck.data.framework.junit.anno.Assertion;
 
 import java.util.Comparator;
 import java.util.List;
@@ -58,11 +59,11 @@ public class JakartaQueryTests {
     @Inject
     protected FruitRepository fruitRepository;
 
-
     @BeforeEach
     public void setup() {
-        vehicleRepository.deleteAll();
-        fruitRepository.deleteAll();
+        assertNotNull(fruitRepository);
+        var populator = new FruitPopulator();
+        fruitRepository.populate(numbers);
     }
 
     @DisplayName("should find all entities as stream")
@@ -186,15 +187,12 @@ public class JakartaQueryTests {
         }
     }
 
-    @ParameterizedTest
     @DisplayName("should test eq")
-    @ParametizedAssertion(id = "404",
+    @Assertion(id = "404",
             strategy = "Persist Fruit entities and execute an equality comparison on the name attribute, asserting that all " +
                     "returned entities have a name equal to the provided value, or accept UnsupportedOperationException if unsupported.")
-    @ArgumentsSource(FruitSupplier.class)
-    void shouldEq(List<Fruit> fruits) {
+    void shouldEq() {
         try {
-            fruitRepository.saveAll(fruits);
             Fruit sample = fruits.getFirst();
             List<Fruit> result = fruitRepository.findNameEquals(sample.getName());
 
@@ -210,15 +208,12 @@ public class JakartaQueryTests {
         }
     }
 
-    @ParameterizedTest
     @DisplayName("should test neq")
-    @ArgumentsSource(FruitSupplier.class)
-    @ParametizedAssertion(id = "405",
+    @Assertion(id = "405",
             strategy = "Persist Fruit entities and execute a not-equal comparison on the name attribute, asserting that all " +
                     "returned entities have a different name, or accept UnsupportedOperationException if unsupported.")
-    void shouldNEq(List<Fruit> fruits) {
+    void shouldNEq() {
         try {
-            fruitRepository.saveAll(fruits);
             Fruit sample = fruits.getFirst();
             List<Fruit> result = fruitRepository.findNameNotEquals(sample.getName());
 
@@ -234,15 +229,12 @@ public class JakartaQueryTests {
         }
     }
 
-    @ParameterizedTest
     @DisplayName("should test gt")
-    @ParametizedAssertion(id = "406",
+    @Assertion(id = "406",
             strategy = "Persist Fruit entities and execute a greater-than comparison on the quantity attribute, asserting that " +
                     "all returned entities have a quantity greater than the provided value, or accept UnsupportedOperationException.")
-    @ArgumentsSource(FruitSupplier.class)
-    void shouldGt(List<Fruit> fruits) {
+    void shouldGt() {
         try {
-            fruitRepository.saveAll(fruits);
             Fruit sample = fruits.getFirst();
             List<Fruit> result = fruitRepository.findQuantityGt(sample.getQuantity());
 
@@ -258,15 +250,12 @@ public class JakartaQueryTests {
         }
     }
 
-    @ParameterizedTest
     @DisplayName("should test gte")
-    @ParametizedAssertion(id = "407",
+    @Assertion(id = "407",
             strategy = "Persist Fruit entities and execute a greater-than-or-equal comparison on the quantity attribute, " +
                     "asserting compliant results or accepting UnsupportedOperationException if unsupported.")
-    @ArgumentsSource(FruitSupplier.class)
-    void shouldGte(List<Fruit> fruits) {
+    void shouldGte() {
         try {
-            fruitRepository.saveAll(fruits);
             Fruit sample = fruits.getFirst();
             List<Fruit> result = fruitRepository.findQuantityGte(sample.getQuantity());
 
@@ -282,15 +271,12 @@ public class JakartaQueryTests {
         }
     }
 
-    @ParameterizedTest
     @DisplayName("should test lt")
-    @ParametizedAssertion(id = "408",
+    @Assertion(id = "408",
             strategy = "Persist Fruit entities and execute a less-than comparison on the quantity attribute, asserting that " +
                     "all returned entities have a smaller quantity, or accept UnsupportedOperationException.")
-    @ArgumentsSource(FruitSupplier.class)
-    void shouldLt(List<Fruit> fruits) {
+    void shouldLt() {
         try {
-            fruitRepository.saveAll(fruits);
             Fruit sample = fruits.getFirst();
             List<Fruit> result = fruitRepository.findQuantityLt(sample.getQuantity());
 
@@ -306,15 +292,12 @@ public class JakartaQueryTests {
         }
     }
 
-    @ParameterizedTest
     @DisplayName("should test lte")
-    @ArgumentsSource(FruitSupplier.class)
-    @ParametizedAssertion(id = "409",
+    @Assertion(id = "409",
             strategy = "Persist Fruit entities and execute a less-than-or-equal comparison on the quantity attribute, " +
                     "asserting compliant results or accepting UnsupportedOperationException if unsupported.")
-    void shouldLte(List<Fruit> fruits) {
+    void shouldLte() {
         try {
-            fruitRepository.saveAll(fruits);
             Fruit sample = fruits.getFirst();
             List<Fruit> result = fruitRepository.findQuantityLte(sample.getQuantity());
             Assertions.assertThat(result)
@@ -329,15 +312,12 @@ public class JakartaQueryTests {
         }
     }
 
-    @ParameterizedTest
     @DisplayName("should test in")
-    @ParametizedAssertion(id = "410",
+    @Assertion(id = "410",
             strategy = "Persist Fruit entities and execute an IN comparison on the name attribute with multiple values, " +
                     "asserting membership in the provided set or accepting UnsupportedOperationException.")
-    @ArgumentsSource(FruitSupplier.class)
     void shouldIn(List<Fruit> fruits) {
         try {
-            fruitRepository.saveAll(fruits);
             var sample1 = fruits.getFirst();
             var sample2 = fruits.get(1);
             List<Fruit> result = fruitRepository.findNameIn(sample1.getName(), sample2.getName());
@@ -357,13 +337,11 @@ public class JakartaQueryTests {
     }
 
 
-    @ParameterizedTest
     @DisplayName("should test AND")
-    @ArgumentsSource(FruitSupplier.class)
-    @ParametizedAssertion(id = "411",
+    @Assertion(id = "411",
             strategy = "Persist Fruit entities and execute a query combining two predicates with AND (name equals and quantity equals), " +
                     "asserting every returned entity satisfies both predicates or accepting UnsupportedOperationException if unsupported.")
-    void shouldAnd(List<Fruit> fruits) {
+    void shouldAnd() {
 
         try {
             fruitRepository.saveAll(fruits);
@@ -384,16 +362,13 @@ public class JakartaQueryTests {
         }
     }
 
-    @ParameterizedTest
     @DisplayName("should test OR")
-    @ArgumentsSource(FruitSupplier.class)
-    @ParametizedAssertion(id = "412",
+    @Assertion(id = "412",
             strategy = "Persist Fruit entities and execute a query combining predicates with OR (name equals either value), " +
                     "asserting every returned entity matches at least one predicate or accepting UnsupportedOperationException.")
-    void shouldOr(List<Fruit> fruits) {
+    void shouldOr() {
 
         try {
-            fruitRepository.saveAll(fruits);
             Fruit sample1 = fruits.get(0);
             Fruit sample2 = fruits.get(1);
             List<Fruit> result = fruitRepository.findNameEqualsORNameEquals(sample1.getName(), sample2.getName());

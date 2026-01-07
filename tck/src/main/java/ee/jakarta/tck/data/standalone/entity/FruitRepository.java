@@ -54,4 +54,6 @@ public interface FruitRepository extends BasicRepository<Fruit, String> {
 
     @Query("FROM Fruit WHERE name = :name1 OR name = :name2")
     List<Fruit> findNameEqualsORNameEquals(@Param("name1") String name1, @Param("name2")  String name2);
+
+    long countAll();
 }
