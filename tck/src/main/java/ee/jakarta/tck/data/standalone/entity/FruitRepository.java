@@ -26,7 +26,10 @@ import java.util.stream.Stream;
 @Repository
 public interface FruitRepository extends BasicRepository<Fruit, String> {
 
-    @Query("FROM Vehicle")
+    @Query("FROM Fruit")
+    List<FruitSummary> findAllWithProjection();
+
+    @Query("FROM Fruit")
     Stream<Fruit> findAllQuery();
 
     @Query("FROM Fruit ORDER BY name ASC")
