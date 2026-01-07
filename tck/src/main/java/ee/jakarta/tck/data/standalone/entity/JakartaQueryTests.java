@@ -329,7 +329,7 @@ public class JakartaQueryTests {
             fruitRepository.saveAll(fruits);
             Fruit sample = fruits.getFirst();
 
-            List<Fruit> result = fruitRepository.findNameEqualsAndQuantitEquals(sample.getName(), sample.getQuantity());
+            List<Fruit> result = fruitRepository.findNameEqualsAndQuantityEquals(sample.getName(), sample.getQuantity());
 
             Assertions.assertThat(result)
                     .isNotEmpty()
