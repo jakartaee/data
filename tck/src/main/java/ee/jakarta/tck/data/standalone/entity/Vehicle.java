@@ -104,22 +104,21 @@ public class Vehicle {
                 '}';
     }
 
-    @Override
     public boolean equals(Object object) {
-        if (!(object instanceof Vehicle vehicle)) {
+        if (!(object instanceof Vehicle)) {
             return false;
         }
-        return Objects.equals(id, vehicle.id) &&
-               Objects.equals(make, vehicle.make) &&
-               Objects.equals(model, vehicle.model) &&
-               Objects.equals(manufacturer, vehicle.manufacturur) &&
-               Objects.equals(color, vehicle.color) &&
-               Objects.equals(transmission, vehicle.transmission);
+        if (object instanceof Vehicle vehicle) {
+            return java.util.Objects.equals(id, vehicle.id) && java.util.Objects.equals(model, vehicle.model)
+                    && java.util.Objects.equals(make, vehicle.make)
+                    && java.util.Objects.equals(manufacturer, vehicle.manufacturer)
+                    && java.util.Objects.equals(color, vehicle.color)
+                    && java.util.Objects.equals(transmission, vehicle.transmission);
+        }
+        return false;
     }
 
-    @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hash(id, model, make, manufacturer, color, transmission);
     }
-
 }
