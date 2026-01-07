@@ -25,6 +25,15 @@ import java.util.List;
 @Repository
 public interface FruitRepository extends BasicRepository<Fruit, String> {
 
+    @Query("FROM Vehicle")
+    Stream<Fruit> findAllQuery();
+
+    @Query("FROM Fruit ORDER BY name ASC")
+    List<Fruit> findAllAsc();
+
+    @Query("FROM Fruit ORDER BY name DESC")
+    List<Fruit> findAllDesc();
+
     @Query("DELETE FROM Fruit")
     void deleteAll();
 
