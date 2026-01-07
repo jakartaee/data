@@ -48,12 +48,8 @@ public class JakartaQueryTests {
     public static WebArchive createDeployment() {
         return ShrinkWrap.create(WebArchive.class)
                 .addClasses(JakartaQueryTests.class,
-                            Vehicle.class, VehicleRepository.class,
                             Fruit.class, FruitRepository.class);
     }
-
-    @Inject
-    protected VehicleRepository vehicleRepository;
 
     @Inject
     protected FruitRepository fruitRepository;
