@@ -29,4 +29,5 @@ abstract class AbstractSupplier<T> implements Supplier<List<T>>, ArgumentsProvid
     public Stream<? extends Arguments> provideArguments(ExtensionContext extensionContext) throws Exception {
         return Stream.of(Arguments.of(get()));
     }
+
 }
