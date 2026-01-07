@@ -65,7 +65,7 @@ public class JakartaQueryTests {
 
     @DisplayName("should find all entities as stream")
     @ParameterizedTest
-    @ArgumentsSource(VehicleListSupplier.class)
+    @ArgumentsSource(VehicleSupplier.class)
     @ParametizedAssertion(id = "400",
             strategy = "Persist a known collection of Vehicle entities and execute a repository query using the " +
                     "'FROM Vehicle' clause that returns Stream<Vehicle>, asserting that the stream yields all " +
@@ -90,7 +90,7 @@ public class JakartaQueryTests {
 
     @DisplayName("should find all entities as stream")
     @ParameterizedTest
-    @ArgumentsSource(VehicleListSupplier.class)
+    @ArgumentsSource(VehicleSupplier.class)
     @ParametizedAssertion(id = "401",
             strategy = "Persist a known collection of Vehicle entities and execute a repository query that orders " +
                     "results by the Vehicle color attribute in ascending order, asserting that the returned list " +
@@ -124,8 +124,7 @@ public class JakartaQueryTests {
 
     @ParameterizedTest
     @DisplayName("should order by descending")
-    @ArgumentsSource(VehicleListSupplier.class)
-    @ArgumentsSource(VehicleListSupplier.class)
+    @ArgumentsSource(VehicleSupplier.class)
     @ParametizedAssertion(id = "402",
             strategy = "Persist a known collection of Vehicle entities and execute a repository query that orders " +
                     "results by the Vehicle color attribute in descending order, asserting that the returned list " +
@@ -158,7 +157,7 @@ public class JakartaQueryTests {
 
     @ParameterizedTest
     @DisplayName("should find all by projection")
-    @ArgumentsSource(VehicleListSupplier.class)
+    @ArgumentsSource(VehicleSupplier.class)
     @ParametizedAssertion(id = "403",
             strategy = "Persist a known collection of Vehicle entities and execute a repository query that returns " +
                     "a projection type, asserting that each result corresponds to a projection derived from the " +
@@ -190,7 +189,7 @@ public class JakartaQueryTests {
     @ParametizedAssertion(id = "404",
             strategy = "Persist Fruit entities and execute an equality comparison on the name attribute, asserting that all " +
                     "returned entities have a name equal to the provided value, or accept UnsupportedOperationException if unsupported.")
-    @ArgumentsSource(FruitListSupplier.class)
+    @ArgumentsSource(FruitSupplier.class)
     void shouldEq(List<Fruit> fruits) {
         try {
             fruitRepository.saveAll(fruits);
@@ -211,7 +210,7 @@ public class JakartaQueryTests {
 
     @ParameterizedTest
     @DisplayName("should test neq")
-    @ArgumentsSource(FruitListSupplier.class)
+    @ArgumentsSource(FruitSupplier.class)
     @ParametizedAssertion(id = "405",
             strategy = "Persist Fruit entities and execute a not-equal comparison on the name attribute, asserting that all " +
                     "returned entities have a different name, or accept UnsupportedOperationException if unsupported.")
@@ -238,7 +237,7 @@ public class JakartaQueryTests {
     @ParametizedAssertion(id = "406",
             strategy = "Persist Fruit entities and execute a greater-than comparison on the quantity attribute, asserting that " +
                     "all returned entities have a quantity greater than the provided value, or accept UnsupportedOperationException.")
-    @ArgumentsSource(FruitListSupplier.class)
+    @ArgumentsSource(FruitSupplier.class)
     void shouldGt(List<Fruit> fruits) {
         try {
             fruitRepository.saveAll(fruits);
@@ -262,7 +261,7 @@ public class JakartaQueryTests {
     @ParametizedAssertion(id = "407",
             strategy = "Persist Fruit entities and execute a greater-than-or-equal comparison on the quantity attribute, " +
                     "asserting compliant results or accepting UnsupportedOperationException if unsupported.")
-    @ArgumentsSource(FruitListSupplier.class)
+    @ArgumentsSource(FruitSupplier.class)
     void shouldGte(List<Fruit> fruits) {
         try {
             fruitRepository.saveAll(fruits);
@@ -286,7 +285,7 @@ public class JakartaQueryTests {
     @ParametizedAssertion(id = "408",
             strategy = "Persist Fruit entities and execute a less-than comparison on the quantity attribute, asserting that " +
                     "all returned entities have a smaller quantity, or accept UnsupportedOperationException.")
-    @ArgumentsSource(FruitListSupplier.class)
+    @ArgumentsSource(FruitSupplier.class)
     void shouldLt(List<Fruit> fruits) {
         try {
             fruitRepository.saveAll(fruits);
@@ -307,7 +306,7 @@ public class JakartaQueryTests {
 
     @ParameterizedTest
     @DisplayName("should test lte")
-    @ArgumentsSource(FruitListSupplier.class)
+    @ArgumentsSource(FruitSupplier.class)
     @ParametizedAssertion(id = "409",
             strategy = "Persist Fruit entities and execute a less-than-or-equal comparison on the quantity attribute, " +
                     "asserting compliant results or accepting UnsupportedOperationException if unsupported.")
@@ -333,7 +332,7 @@ public class JakartaQueryTests {
     @ParametizedAssertion(id = "410",
             strategy = "Persist Fruit entities and execute an IN comparison on the name attribute with multiple values, " +
                     "asserting membership in the provided set or accepting UnsupportedOperationException.")
-    @ArgumentsSource(FruitListSupplier.class)
+    @ArgumentsSource(FruitSupplier.class)
     void shouldIn(List<Fruit> fruits) {
         try {
             fruitRepository.saveAll(fruits);
@@ -358,7 +357,7 @@ public class JakartaQueryTests {
 
     @ParameterizedTest
     @DisplayName("should test AND")
-    @ArgumentsSource(FruitListSupplier.class)
+    @ArgumentsSource(FruitSupplier.class)
     @ParametizedAssertion(id = "411",
             strategy = "Persist Fruit entities and execute a query combining two predicates with AND (name equals and quantity equals), " +
                     "asserting every returned entity satisfies both predicates or accepting UnsupportedOperationException if unsupported.")
@@ -385,7 +384,7 @@ public class JakartaQueryTests {
 
     @ParameterizedTest
     @DisplayName("should test OR")
-    @ArgumentsSource(FruitListSupplier.class)
+    @ArgumentsSource(FruitSupplier.class)
     @ParametizedAssertion(id = "412",
             strategy = "Persist Fruit entities and execute a query combining predicates with OR (name equals either value), " +
                     "asserting every returned entity matches at least one predicate or accepting UnsupportedOperationException.")

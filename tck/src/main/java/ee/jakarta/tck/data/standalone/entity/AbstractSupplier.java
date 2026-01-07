@@ -21,6 +21,7 @@ import org.junit.jupiter.params.provider.ArgumentsProvider;
 
 import java.util.function.Supplier;
 import java.util.stream.Stream;
+import java.util.List;
 
 abstract class AbstractSupplier<T> implements Supplier<List<T>>, ArgumentsProvider {
 

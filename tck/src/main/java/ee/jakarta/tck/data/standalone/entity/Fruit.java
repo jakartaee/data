@@ -20,8 +20,6 @@ import jakarta.nosql.Entity;
 import jakarta.nosql.Id;
 
 import java.util.Objects;
-import java.util.UUID;
-import java.util.concurrent.ThreadLocalRandom;
 
 @Entity
 @jakarta.persistence.Entity

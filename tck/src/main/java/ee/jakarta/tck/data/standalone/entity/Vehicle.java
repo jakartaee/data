@@ -18,10 +18,8 @@ package ee.jakarta.tck.data.standalone.entity;
 import jakarta.nosql.Column;
 import jakarta.nosql.Entity;
 import jakarta.nosql.Id;
-import net.datafaker.Faker;
 
 import java.util.Objects;
-import java.util.UUID;
 
 @jakarta.persistence.Entity
 @Entity
@@ -119,15 +117,4 @@ public class Vehicle {
         return Objects.hashCode(id);
     }
 
-    public static Vehicle of(Faker faker) {
-        var fakeVehicle = faker.vehicle();
-        Vehicle vehicle = new Vehicle();
-        vehicle.id = UUID.randomUUID().toString();
-        vehicle.model = fakeVehicle.model();
-        vehicle.make = fakeVehicle.make();
-        vehicle.manufacturer = fakeVehicle.manufacturer();
-        vehicle.color = fakeVehicle.color();
-        vehicle.transmission = faker.number().positive() % 2 == 0 ? Transmission.MANUAL : Transmission.AUTOMATIC;
-        return vehicle;
-    }
 }

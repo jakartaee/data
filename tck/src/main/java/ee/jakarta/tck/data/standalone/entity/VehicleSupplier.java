@@ -33,7 +33,7 @@ public class VehicleSupplier extends AbstractSupplier<Vehicle> {
     );
 
     @Override
-    public List<Fruit> get() {
+    public List<Vehicle> get() {
         return VEHICLES;
     }
 
