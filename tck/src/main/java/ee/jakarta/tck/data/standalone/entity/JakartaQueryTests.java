@@ -47,7 +47,9 @@ public class JakartaQueryTests {
     @Deployment
     public static WebArchive createDeployment() {
         return ShrinkWrap.create(WebArchive.class)
-                .addClasses(JakartaQueryTests.class, Vehicle.class, VehicleRepository.class);
+                .addClasses(JakartaQueryTests.class,
+                            Vehicle.class, VehicleRepository.class,
+                            Fruit.class, FruitRepository.class);
     }
 
     @Inject
