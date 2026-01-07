@@ -37,7 +37,6 @@ public class FruitPopulator implements Populator<FruitRepository> {
     @Override
     public void populationLogic(FruitRepository repo) {
         repo.saveAll(FRUITS);
-
     }
 
     @Override

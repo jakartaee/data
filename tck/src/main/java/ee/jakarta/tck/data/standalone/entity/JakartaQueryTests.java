@@ -59,11 +59,12 @@ public class JakartaQueryTests {
     @Inject
     protected FruitRepository fruitRepository;
 
+    protected List<Fruit> fruits = FruitPopulator.FRUITS;
+
     @BeforeEach
     public void setup() {
-        assertNotNull(fruitRepository);
         var populator = new FruitPopulator();
-        fruitRepository.populate(numbers);
+        populator.populate(fruitRepository);
     }
 
     @DisplayName("should find all entities as stream")
@@ -316,7 +317,7 @@ public class JakartaQueryTests {
     @Assertion(id = "410",
             strategy = "Persist Fruit entities and execute an IN comparison on the name attribute with multiple values, " +
                     "asserting membership in the provided set or accepting UnsupportedOperationException.")
-    void shouldIn(List<Fruit> fruits) {
+    void shouldIn() {
         try {
             var sample1 = fruits.getFirst();
             var sample2 = fruits.get(1);
