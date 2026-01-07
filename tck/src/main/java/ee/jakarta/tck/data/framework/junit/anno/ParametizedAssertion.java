@@ -29,7 +29,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ParametizedAssertion {
     /**
-     * The GitHub issue/PR number that lead to the test being created
+     * The GitHub issue/PR number that led to the test being created
      */
     String id();
 
