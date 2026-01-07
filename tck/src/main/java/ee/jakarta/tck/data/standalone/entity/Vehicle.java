@@ -109,7 +109,12 @@ public class Vehicle {
         if (!(object instanceof Vehicle vehicle)) {
             return false;
         }
-        return Objects.equals(id, vehicle.id);
+        return Objects.equals(id, vehicle.id) &&
+               Objects.equals(make, vehicle.make) &&
+               Objects.equals(model, vehicle.model) &&
+               Objects.equals(manufacturer, vehicle.manufacturur) &&
+               Objects.equals(color, vehicle.color) &&
+               Objects.equals(transmission, vehicle.transmission);
     }
 
     @Override
