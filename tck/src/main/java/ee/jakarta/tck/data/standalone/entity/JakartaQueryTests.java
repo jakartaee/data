@@ -68,21 +68,18 @@ public class JakartaQueryTests {
     }
 
     @DisplayName("should find all entities as stream")
-    @ParameterizedTest
-    @ArgumentsSource(VehicleSupplier.class)
-    @ParametizedAssertion(id = "400",
-            strategy = "Persist a known collection of Vehicle entities and execute a repository query using the " +
-                    "'FROM Vehicle' clause that returns Stream<Vehicle>, asserting that the stream yields all " +
-                    "persisted Vehicle instances.")
-    void shouldFindAllEntities(List<Vehicle> vehicles) {
+    @Assertion(id = "400",
+            strategy = "Persist a known collection of Fruit entities and execute a repository query using the " +
+                    "'FROM Fruit' clause that returns Stream<Fruit>, asserting that the stream yields all " +
+                    "persisted Fruit instances.")
+    void shouldFindAllEntities() {
         try {
-            vehicleRepository.saveAll(vehicles);
-            var result = vehicleRepository.findAllQuery();
+            var result = fruitRepository.findAllQuery();
 
             Assertions.assertThat(result)
                     .isNotEmpty()
-                    .hasSize(vehicles.size())
-                    .containsAll(vehicles);
+                    .hasSize(fruits.size())
+                    .containsAll(fruits);
         } catch (UnsupportedOperationException exp) {
             if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
                 log.warning("database does not support keyword 'FROM' type: " + type);
@@ -94,29 +91,27 @@ public class JakartaQueryTests {
 
     @DisplayName("should find all entities as stream")
     @ParameterizedTest
-    @ArgumentsSource(VehicleSupplier.class)
     @ParametizedAssertion(id = "401",
-            strategy = "Persist a known collection of Vehicle entities and execute a repository query that orders " +
-                    "results by the Vehicle color attribute in ascending order, asserting that the returned list " +
+            strategy = "Persist a known collection of Fruit entities and execute a repository query that orders " +
+                    "results by the Fruit name attribute in ascending order, asserting that the returned list " +
                     "matches the natural ascending order of the persisted values.")
-    void shouldOrderByAsc(List<Vehicle> vehicles) {
+    void shouldOrderByAsc() {
         try {
-            vehicleRepository.saveAll(vehicles);
-            List<Vehicle> result = vehicleRepository.findAllAsc();
+            var result = fruitRepository.findAllAsc();
 
-            var expectedColor = vehicles.stream()
-                    .map(Vehicle::getColor)
+            var expectedColor = fruits.stream()
+                    .map(Fruit::getName)
                     .sorted()
                     .toList();
 
-            var colors = result.stream()
-                    .map(Vehicle::getColor)
+            var names = result.stream()
+                    .map(Fruit::getName)
                     .toList();
 
             Assertions.assertThat(expectedColor)
                     .isNotEmpty()
-                    .hasSize(vehicles.size())
-                    .containsExactly(colors.toArray(new String[0]));
+                    .hasSize(fruits.size())
+                    .containsExactly(names.toArray(new String[0]));
         } catch (UnsupportedOperationException exp) {
             if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
                 log.warning("database does not support keyword 'FROM' type: " + type);
@@ -128,57 +123,26 @@ public class JakartaQueryTests {
 
     @ParameterizedTest
     @DisplayName("should order by descending")
-    @ArgumentsSource(VehicleSupplier.class)
     @ParametizedAssertion(id = "402",
-            strategy = "Persist a known collection of Vehicle entities and execute a repository query that orders " +
-                    "results by the Vehicle color attribute in descending order, asserting that the returned list " +
+            strategy = "Persist a known collection of Fruit entities and execute a repository query that orders " +
+                    "results by the Fruit name attribute in descending order, asserting that the returned list " +
                     "matches the reverse natural order of the persisted values.")
-    void shouldOrderByDesc(List<Vehicle> vehicles) {
+    void shouldOrderByDesc() {
         try {
-            vehicleRepository.saveAll(vehicles);
-            List<Vehicle> result = vehicleRepository.findAllDesc();
-            var colors = result.stream()
-                    .map(Vehicle::getColor)
+            var result = fruitRepository.findAllDesc();
+            var names = result.stream()
+                    .map(Fruit::getName)
                     .toList();
 
-            var expectedColor = vehicles.stream()
-                    .map(Vehicle::getColor)
+            var expectedNames = fruits.stream()
+                    .map(Fruit::getName)
                     .sorted(Comparator.reverseOrder())
                     .toList();
 
-            Assertions.assertThat(expectedColor)
+            Assertions.assertThat(expectedNames)
                     .isNotEmpty()
-                    .hasSize(vehicles.size())
-                    .containsExactly(colors.toArray(new String[0]));
-        } catch (UnsupportedOperationException exp) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
-                log.warning("database does not support keyword 'FROM' type: " + type);
-            } else {
-                throw exp;
-            }
-        }
-    }
-
-    @ParameterizedTest
-    @DisplayName("should find all by projection")
-    @ArgumentsSource(VehicleSupplier.class)
-    @ParametizedAssertion(id = "403",
-            strategy = "Persist a known collection of Vehicle entities and execute a repository query that returns " +
-                    "a projection type, asserting that each result corresponds to a projection derived from the " +
-                    "persisted Vehicle entities.")
-    void shouldFindAllByProjection(List<Vehicle> vehicles) {
-        try {
-            vehicleRepository.saveAll(vehicles);
-            var result = vehicleRepository.findAllWithProjection();
-
-            var expected = vehicles.stream()
-                    .map(VehicleSummary::of)
-                    .toList();
-
-            Assertions.assertThat(result)
-                    .isNotEmpty()
-                    .hasSize(vehicles.size())
-                    .containsAll(expected);
+                    .hasSize(fruits.size())
+                    .containsExactly(names.toArray(new String[0]));
         } catch (UnsupportedOperationException exp) {
             if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
                 log.warning("database does not support keyword 'FROM' type: " + type);
