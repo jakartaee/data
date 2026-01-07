@@ -21,6 +21,7 @@ import jakarta.data.repository.Param;
 import jakarta.data.repository.Query;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 @Repository
 public interface FruitRepository extends BasicRepository<Fruit, String> {

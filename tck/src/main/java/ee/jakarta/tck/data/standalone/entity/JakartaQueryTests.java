@@ -41,9 +41,9 @@ import java.util.logging.Logger;
 @ReadOnlyTest
 public class JakartaQueryTests {
 
-    public static final Logger log = Logger.getLogger(EntityTests.class.getCanonicalName());
+    public static final Logger log = Logger.getLogger(JakartaQueryTests.class.getCanonicalName());
 
-    private final DatabaseType type = TestProperty.databaseType.getDatabaseType();
+    protected final DatabaseType type = TestProperty.databaseType.getDatabaseType();
 
     @Deployment
     public static WebArchive createDeployment() {
