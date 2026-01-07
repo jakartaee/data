@@ -65,7 +65,9 @@ public class Fruit {
             return false;
         }
         Fruit fruit = (Fruit) o;
-        return Objects.equals(id, fruit.id);
+        return Objects.equals(id, fruit.id) &&
+               Objects.equals(name, fruit.name) &&
+               Objects.equals(quantity, fruit.quantity);
     }
 
     @Override
