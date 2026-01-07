@@ -2238,12 +2238,12 @@ public class EntityTests {
             }
         }
 
-        assertEquals(List.of("88 COMPOSITE √88 >= 9",
-                        "87 COMPOSITE √87 >= 9",
-                        "86 COMPOSITE √86 >= 9",
-                        "85 COMPOSITE √85 >= 9",
-                        "84 COMPOSITE √84 >= 9",
-                        "83 PRIME √83 >= 9"),
+        assertEquals(List.of("36 COMPOSITE √36 >= 6",
+                        "31 PRIME √31 >= 5",
+                        "30 COMPOSITE √30 >= 5",
+                        "29 PRIME √29 >= 5",
+                        "28 COMPOSITE √28 >= 5",
+                        "27 COMPOSITE √27 >= 5"),
                 page3.stream()
                         .map(WholeNumber::toString)
                         .collect(Collectors.toList()));
@@ -2261,24 +2261,21 @@ public class EntityTests {
 
         Page<WholeNumber> page4 = numbers.numberPage(page3.nextPageRequest());
 
-        assertEquals(List.of("82 COMPOSITE √82 >= 9",
-                        "81 COMPOSITE √81 >= 9",
-                        "80 COMPOSITE √80 >= 8",
-                        "79 PRIME √79 >= 8",
-                        "78 COMPOSITE √78 >= 8",
-                        "77 COMPOSITE √77 >= 8"),
+        assertEquals(List.of("26 COMPOSITE √26 >= 5",
+                        "25 COMPOSITE √25 >= 5",
+                        "1 ONE √1 >= 1"),
                 page4.stream()
                         .map(WholeNumber::toString)
                         .collect(Collectors.toList()));
 
         Page<WholeNumber> page2 = numbers.numberPage(page3.previousPageRequest());
 
-        assertEquals(List.of("94 COMPOSITE √94 >= 9",
-                        "93 COMPOSITE √93 >= 9",
-                        "92 COMPOSITE √92 >= 9",
-                        "91 COMPOSITE √91 >= 9",
-                        "90 COMPOSITE √90 >= 9",
-                        "89 PRIME √89 >= 9"),
+        assertEquals(List.of("42 COMPOSITE √42 >= 6",
+                        "41 PRIME √41 >= 6",
+                        "40 COMPOSITE √40 >= 6",
+                        "39 COMPOSITE √39 >= 6",
+                        "38 COMPOSITE √38 >= 6",
+                        "37 PRIME √37 >= 6"),
                 page2.stream()
                         .map(WholeNumber::toString)
                         .collect(Collectors.toList()));
@@ -2612,19 +2609,19 @@ public class EntityTests {
     public void testReturnStreamOfRecordThatSelectsAttributesFindEntity() {
 
         Stream<CardinalNumber> stream = characters.cardinalNumberStream(3L);
-        var result = stream.map(CardinalNumber::toString)
-                .sorted()
-                .toList();
 
-        var expected = List.of("10 COMPOSITE (4 bits)",
-                "11 PRIME (4 bits)",
-                "12 COMPOSITE (4 bits)",
-                "13 PRIME (4 bits)",
-                "14 COMPOSITE (4 bits)",
-                "15 COMPOSITE (4 bits)",
-                "9 COMPOSITE (4 bits)"
-        );
-        assertEquals(expected, result);
+        assertEquals(List.of("10 COMPOSITE (4 bits",
+                        "11 PRIME (4 bits)",
+                        "12 COMPOSITE (4 bits)",
+                        "13 PRIME (4 bits)",
+                        "14 COMPOSITE (4 bits)",
+                        "15 COMPOSITE (4 bits)",
+                        "9 COMPOSITE (4 bits)"
+                ),
+                stream
+                        .map(CardinalNumber::toString)
+                        .sorted()
+                        .collect(Collectors.toList()));
     }
 
     @Assertion(id = "539", strategy = """
