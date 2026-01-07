@@ -27,8 +27,6 @@ import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import ee.jakarta.tck.data.framework.junit.anno.ParametizedAssertion;
-import org.junit.jupiter.params.ParameterizedTest;
 import ee.jakarta.tck.data.framework.junit.anno.Assertion;
 
 import java.util.Comparator;
@@ -85,8 +83,7 @@ public class JakartaQueryTests {
     }
 
     @DisplayName("should find all entities as stream")
-    @ParameterizedTest
-    @ParametizedAssertion(id = "401",
+    @Assertion(id = "401",
             strategy = "Execute a repository query that orders " +
                     "results by the Fruit name attribute in ascending order, asserting that the returned list " +
                     "matches the natural ascending order of the persisted values.")
@@ -116,10 +113,9 @@ public class JakartaQueryTests {
         }
     }
 
-    @ParameterizedTest
     @DisplayName("should order by descending")
-    @ParametizedAssertion(id = "402",
-            strategy = "Entities and execute a repository query that orders " +
+    @Assertion(id = "402",
+            strategy = "Execute a repository query that orders " +
                     "results by the Fruit name attribute in descending order, asserting that the returned list " +
                     "matches the reverse natural order of the persisted values.")
     void shouldOrderByDesc() {
