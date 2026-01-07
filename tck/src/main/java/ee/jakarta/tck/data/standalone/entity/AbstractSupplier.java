@@ -15,7 +15,6 @@
  */
 package ee.jakarta.tck.data.standalone.entity;
 
-import net.datafaker.Faker;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.ArgumentsProvider;
@@ -23,21 +22,10 @@ import org.junit.jupiter.params.provider.ArgumentsProvider;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-abstract class AbstractSupplier<T> implements Supplier<T>, ArgumentsProvider {
-
-    private static final Faker FAKER = new Faker();
-
-    /**
-     * Provides access to the shared {@link Faker} instance for generating fake data.
-     *
-     * @return the shared {@link Faker} instance
-     */
-    protected Faker faker() {
-        return FAKER;
-    }
+abstract class AbstractSupplier<T> implements Supplier<List<T>>, ArgumentsProvider {
 
     @Override
-    public Stream<? extends Arguments> provideArguments(ExtensionContext context) {
+    public Stream<? extends Arguments> provideArguments(ExtensionContext extensionContext) throws Exception {
         return Stream.of(Arguments.of(get()));
     }
 }
