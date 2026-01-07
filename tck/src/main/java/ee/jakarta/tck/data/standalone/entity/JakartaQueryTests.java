@@ -27,7 +27,6 @@ import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.params.provider.ArgumentsSource;
 import ee.jakarta.tck.data.framework.junit.anno.ParametizedAssertion;
 import org.junit.jupiter.params.ParameterizedTest;
 import ee.jakarta.tck.data.framework.junit.anno.Assertion;
@@ -69,7 +68,7 @@ public class JakartaQueryTests {
 
     @DisplayName("should find all entities as stream")
     @Assertion(id = "400",
-            strategy = "Persist a known collection of Fruit entities and execute a repository query using the " +
+            strategy = "Execute a repository query using the " +
                     "'FROM Fruit' clause that returns Stream<Fruit>, asserting that the stream yields all " +
                     "persisted Fruit instances.")
     void shouldFindAllEntities() {
@@ -92,7 +91,7 @@ public class JakartaQueryTests {
     @DisplayName("should find all entities as stream")
     @ParameterizedTest
     @ParametizedAssertion(id = "401",
-            strategy = "Persist a known collection of Fruit entities and execute a repository query that orders " +
+            strategy = "Execute a repository query that orders " +
                     "results by the Fruit name attribute in ascending order, asserting that the returned list " +
                     "matches the natural ascending order of the persisted values.")
     void shouldOrderByAsc() {
@@ -124,7 +123,7 @@ public class JakartaQueryTests {
     @ParameterizedTest
     @DisplayName("should order by descending")
     @ParametizedAssertion(id = "402",
-            strategy = "Persist a known collection of Fruit entities and execute a repository query that orders " +
+            strategy = "Entities and execute a repository query that orders " +
                     "results by the Fruit name attribute in descending order, asserting that the returned list " +
                     "matches the reverse natural order of the persisted values.")
     void shouldOrderByDesc() {
@@ -152,9 +151,35 @@ public class JakartaQueryTests {
         }
     }
 
+    @DisplayName("should find all by projection")
+    @Assertion(id = "403",
+            strategy = "Execute a repository query that returns " +
+                    "a projection type, asserting that each result corresponds to a projection derived from the " +
+                    "persisted Vehicle entities.")
+    void shouldFindAllByProjection() {
+        try {
+            var result = fruitRepository.findAllWithProjection();
+
+            var expected = fruits.stream()
+                    .map(FruitSummary::of)
+                    .toList();
+
+            Assertions.assertThat(result)
+                    .isNotEmpty()
+                    .hasSize(fruits.size())
+                    .containsAll(expected);
+        } catch (UnsupportedOperationException exp) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                log.warning("database does not support keyword 'FROM' type: " + type);
+            } else {
+                throw exp;
+            }
+        }
+    }
+
     @DisplayName("should test eq")
     @Assertion(id = "404",
-            strategy = "Persist Fruit entities and execute an equality comparison on the name attribute, asserting that all " +
+            strategy = "Execute an equality comparison on the name attribute, asserting that all " +
                     "returned entities have a name equal to the provided value, or accept UnsupportedOperationException if unsupported.")
     void shouldEq() {
         try {
@@ -175,7 +200,7 @@ public class JakartaQueryTests {
 
     @DisplayName("should test neq")
     @Assertion(id = "405",
-            strategy = "Persist Fruit entities and execute a not-equal comparison on the name attribute, asserting that all " +
+            strategy = "Execute a not-equal comparison on the name attribute, asserting that all " +
                     "returned entities have a different name, or accept UnsupportedOperationException if unsupported.")
     void shouldNEq() {
         try {
@@ -196,7 +221,7 @@ public class JakartaQueryTests {
 
     @DisplayName("should test gt")
     @Assertion(id = "406",
-            strategy = "Persist Fruit entities and execute a greater-than comparison on the quantity attribute, asserting that " +
+            strategy = "Execute a greater-than comparison on the quantity attribute, asserting that " +
                     "all returned entities have a quantity greater than the provided value, or accept UnsupportedOperationException.")
     void shouldGt() {
         try {
@@ -217,7 +242,7 @@ public class JakartaQueryTests {
 
     @DisplayName("should test gte")
     @Assertion(id = "407",
-            strategy = "Persist Fruit entities and execute a greater-than-or-equal comparison on the quantity attribute, " +
+            strategy = "Execute a greater-than-or-equal comparison on the quantity attribute, " +
                     "asserting compliant results or accepting UnsupportedOperationException if unsupported.")
     void shouldGte() {
         try {
@@ -238,7 +263,7 @@ public class JakartaQueryTests {
 
     @DisplayName("should test lt")
     @Assertion(id = "408",
-            strategy = "Persist Fruit entities and execute a less-than comparison on the quantity attribute, asserting that " +
+            strategy = "Execute a less-than comparison on the quantity attribute, asserting that " +
                     "all returned entities have a smaller quantity, or accept UnsupportedOperationException.")
     void shouldLt() {
         try {
@@ -259,7 +284,7 @@ public class JakartaQueryTests {
 
     @DisplayName("should test lte")
     @Assertion(id = "409",
-            strategy = "Persist Fruit entities and execute a less-than-or-equal comparison on the quantity attribute, " +
+            strategy = "Execute a less-than-or-equal comparison on the quantity attribute, " +
                     "asserting compliant results or accepting UnsupportedOperationException if unsupported.")
     void shouldLte() {
         try {
@@ -279,7 +304,7 @@ public class JakartaQueryTests {
 
     @DisplayName("should test in")
     @Assertion(id = "410",
-            strategy = "Persist Fruit entities and execute an IN comparison on the name attribute with multiple values, " +
+            strategy = "Execute an IN comparison on the name attribute with multiple values, " +
                     "asserting membership in the provided set or accepting UnsupportedOperationException.")
     void shouldIn() {
         try {
@@ -304,7 +329,7 @@ public class JakartaQueryTests {
 
     @DisplayName("should test AND")
     @Assertion(id = "411",
-            strategy = "Persist Fruit entities and execute a query combining two predicates with AND (name equals and quantity equals), " +
+            strategy = "Execute a query combining two predicates with AND (name equals and quantity equals), " +
                     "asserting every returned entity satisfies both predicates or accepting UnsupportedOperationException if unsupported.")
     void shouldAnd() {
 
@@ -329,7 +354,7 @@ public class JakartaQueryTests {
 
     @DisplayName("should test OR")
     @Assertion(id = "412",
-            strategy = "Persist Fruit entities and execute a query combining predicates with OR (name equals either value), " +
+            strategy = "Execute a query combining predicates with OR (name equals either value), " +
                     "asserting every returned entity matches at least one predicate or accepting UnsupportedOperationException.")
     void shouldOr() {
 
