@@ -19,24 +19,25 @@ import java.util.List;
 
 public class FruitSupplier extends AbstractSupplier<Fruit> {
 
+    private static final List<Fruit> FRUITS = List.of(
+            fruit("00000000-0000-0000-0000-000000000001", "Apple", 10L),
+            fruit("00000000-0000-0000-0000-000000000002", "Banana", 5L),
+            fruit("00000000-0000-0000-0000-000000000003", "Orange", 10L),
+            fruit("00000000-0000-0000-0000-000000000004", "Pear", 7L),
+            fruit("00000000-0000-0000-0000-000000000005", "Grape", 3L),
+            fruit("00000000-0000-0000-0000-000000000006", "Mango", 12L),
+            fruit("00000000-0000-0000-0000-000000000007", "Apple", 5L),
+            fruit("00000000-0000-0000-0000-000000000008", "Banana", 10L),
+            fruit("00000000-0000-0000-0000-000000000009", "Orange", 7L),
+            fruit("00000000-0000-0000-0000-000000000010", "Pear", 10L)
+    );
+
     @Override
     public List<Fruit> get() {
-
-        Fruit f1 = fruit("00000000-0000-0000-0000-000000000001", "Apple", 10L);
-        Fruit f2 = fruit("00000000-0000-0000-0000-000000000002", "Banana", 5L);
-        Fruit f3 = fruit("00000000-0000-0000-0000-000000000003", "Orange", 10L);
-        Fruit f4 = fruit("00000000-0000-0000-0000-000000000004", "Pear", 7L);
-        Fruit f5 = fruit("00000000-0000-0000-0000-000000000005", "Grape", 3L);
-        Fruit f6 = fruit("00000000-0000-0000-0000-000000000006", "Mango", 12L);
-        Fruit f7 = fruit("00000000-0000-0000-0000-000000000007", "Apple", 5L);
-        Fruit f8 = fruit("00000000-0000-0000-0000-000000000008", "Banana", 10L);
-        Fruit f9 = fruit("00000000-0000-0000-0000-000000000009", "Orange", 7L);
-        Fruit f10 = fruit("00000000-0000-0000-0000-000000000010", "Pear", 10L);
-
-        return List.of(f1, f2, f3, f4, f5, f6, f7, f8, f9, f10);
+        return FRUITS;
     }
 
-    private Fruit fruit(String id, String name, Long quantity) {
+    private static Fruit fruit(String id, String name, Long quantity) {
         Fruit fruit = new Fruit();
         fruit.setId(id);
         fruit.setName(name);

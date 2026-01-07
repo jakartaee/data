@@ -78,6 +78,22 @@ public class Vehicle {
         this.model = model;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setMake(String make) {
+        this.make = make;
+    }
+
+    public void setManufacturer(String manufacturer) {
+        this.manufacturer = manufacturer;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
     @Override
     public String toString() {
         return "Vehicle{" +
