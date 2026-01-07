@@ -72,7 +72,7 @@ public class Fruit {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id, name, quantity);
+        return Objects.hash(id, name, quantity);
     }
 
     @Override
