@@ -104,7 +104,7 @@ public class JakartaQueryTests {
                     .hasSize(fruits.size())
                     .containsExactly(names.toArray(new String[0]));
         } catch (UnsupportedOperationException exp) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
                 // Column and Key-Value databases might not be capable of sorting.
             } else {
                 throw exp;
