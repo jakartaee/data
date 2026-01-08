@@ -61,7 +61,7 @@ public class JakartaQueryTests {
     }
 
     @DisplayName("should find all entities as stream")
-    @Assertion(id = "400",
+    @Assertion(id = "1318",
             strategy = "Execute a repository query using the " +
                     "'FROM Fruit' clause that returns Stream<Fruit>, asserting that the stream yields all " +
                     "persisted Fruit instances.")
@@ -83,7 +83,7 @@ public class JakartaQueryTests {
     }
 
     @DisplayName("should find all entities as stream")
-    @Assertion(id = "401",
+    @Assertion(id = "1318",
             strategy = "Execute a repository query that orders " +
                     "results by the Fruit name attribute in ascending order, asserting that the returned list " +
                     "matches the natural ascending order of the persisted values.")
@@ -114,7 +114,7 @@ public class JakartaQueryTests {
     }
 
     @DisplayName("should order by descending")
-    @Assertion(id = "402",
+    @Assertion(id = "1318",
             strategy = "Execute a repository query that orders " +
                     "results by the Fruit name attribute in descending order, asserting that the returned list " +
                     "matches the reverse natural order of the persisted values.")
@@ -144,7 +144,7 @@ public class JakartaQueryTests {
     }
 
     @DisplayName("should find all by projection")
-    @Assertion(id = "403",
+    @Assertion(id = "1318",
             strategy = "Execute a repository query that returns " +
                     "a projection type, asserting that each result corresponds to a projection derived from the " +
                     "persisted Vehicle entities.")
@@ -170,7 +170,7 @@ public class JakartaQueryTests {
     }
 
     @DisplayName("should test eq")
-    @Assertion(id = "404",
+    @Assertion(id = "1318",
             strategy = "Execute an equality comparison on the name attribute, asserting that all " +
                     "returned entities have a name equal to the provided value, or accept UnsupportedOperationException if unsupported.")
     void shouldEq() {
@@ -191,7 +191,7 @@ public class JakartaQueryTests {
     }
 
     @DisplayName("should test neq")
-    @Assertion(id = "405",
+    @Assertion(id = "1318",
             strategy = "Execute a not-equal comparison on the name attribute, asserting that all " +
                     "returned entities have a different name, or accept UnsupportedOperationException if unsupported.")
     void shouldNEq() {
@@ -212,7 +212,7 @@ public class JakartaQueryTests {
     }
 
     @DisplayName("should test gt")
-    @Assertion(id = "406",
+    @Assertion(id = "1318",
             strategy = "Execute a greater-than comparison on the quantity attribute, asserting that " +
                     "all returned entities have a quantity greater than the provided value, or accept UnsupportedOperationException.")
     void shouldGt() {
@@ -233,7 +233,7 @@ public class JakartaQueryTests {
     }
 
     @DisplayName("should test gte")
-    @Assertion(id = "407",
+    @Assertion(id = "1318",
             strategy = "Execute a greater-than-or-equal comparison on the quantity attribute, " +
                     "asserting compliant results or accepting UnsupportedOperationException if unsupported.")
     void shouldGte() {
@@ -254,7 +254,7 @@ public class JakartaQueryTests {
     }
 
     @DisplayName("should test lt")
-    @Assertion(id = "408",
+    @Assertion(id = "1318",
             strategy = "Execute a less-than comparison on the quantity attribute, asserting that " +
                     "all returned entities have a smaller quantity, or accept UnsupportedOperationException.")
     void shouldLt() {
@@ -275,7 +275,7 @@ public class JakartaQueryTests {
     }
 
     @DisplayName("should test lte")
-    @Assertion(id = "409",
+    @Assertion(id = "1318",
             strategy = "Execute a less-than-or-equal comparison on the quantity attribute, " +
                     "asserting compliant results or accepting UnsupportedOperationException if unsupported.")
     void shouldLte() {
@@ -295,7 +295,7 @@ public class JakartaQueryTests {
     }
 
     @DisplayName("should test in")
-    @Assertion(id = "410",
+    @Assertion(id = "1318",
             strategy = "Execute an IN comparison on the name attribute with multiple values, " +
                     "asserting membership in the provided set or accepting UnsupportedOperationException.")
     void shouldIn() {
@@ -320,7 +320,7 @@ public class JakartaQueryTests {
 
 
     @DisplayName("should test AND")
-    @Assertion(id = "411",
+    @Assertion(id = "1318",
             strategy = "Execute a query combining two predicates with AND (name equals and quantity equals), " +
                     "asserting every returned entity satisfies both predicates or accepting UnsupportedOperationException if unsupported.")
     void shouldAnd() {
@@ -345,7 +345,7 @@ public class JakartaQueryTests {
     }
 
     @DisplayName("should test OR")
-    @Assertion(id = "412",
+    @Assertion(id = "1318",
             strategy = "Execute a query combining predicates with OR (name equals either value), " +
                     "asserting every returned entity matches at least one predicate or accepting UnsupportedOperationException.")
     void shouldOr() {
