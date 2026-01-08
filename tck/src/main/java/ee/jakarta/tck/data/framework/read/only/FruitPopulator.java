@@ -16,6 +16,7 @@
 package ee.jakarta.tck.data.framework.read.only;
 
 import ee.jakarta.tck.data.standalone.entity.Fruit;
+import ee.jakarta.tck.data.standalone.entity.FruitRepository;
 
 import java.util.List;
 
