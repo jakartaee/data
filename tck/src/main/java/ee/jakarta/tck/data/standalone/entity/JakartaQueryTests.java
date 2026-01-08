@@ -319,7 +319,6 @@ public class JakartaQueryTests {
         }
     }
 
-
     @DisplayName("should test AND")
     @Assertion(id = "1318",
             strategy = "Execute a query combining two predicates with AND (name equals and quantity equals), " +
@@ -369,6 +368,4 @@ public class JakartaQueryTests {
             }
         }
     }
-
-
 }
