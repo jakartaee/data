@@ -18,6 +18,7 @@
 package jakarta.data.page;
 
 import jakarta.data.repository.OrderBy;
+import jakarta.data.repository.Query;
 import jakarta.data.Order;
 import jakarta.data.Sort;
 
@@ -109,9 +110,15 @@ import java.util.NoSuchElementException;
  *
  * <h2>Cursor-based Pagination with {@code @Query}</h2>
  *
+ * <p>The {@link Query} annotation from Jakarta Data and the similar
+ * {@code jakarta.persistence.StaticQuery} annotation from Jakarta Persistence
+ * allow the application to supply a Jakarta Common Query Language (JCQL) or
+ * Jakarta Persistence Query Language (JPQL) query for the repository method
+ * to perform.</p>
+ *
  * <p>Cursor-based pagination involves generating and appending additional
  * restrictions involving the key elements to the {@code WHERE} clause of the
- * query. For this to be possible, a user-provided JDQL or JPQL query must end
+ * query. For this to be possible, a user-provided JCQL or JPQL query must end
  * with a {@code WHERE} clause to which additional conditions may be
  * appended. Cursor-pagination is not available for native SQL queries and
  * some JPQL queries.</p>

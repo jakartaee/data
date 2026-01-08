@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022,2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,16 +30,17 @@ import java.lang.annotation.Target;
 
 /**
  * <p>Annotates a repository method as a query method, specifying a query
- * written in Jakarta Data Query Language (JDQL) or in Jakarta Persistence
- * Query Language (JPQL). A Jakarta Data provider is not required to support
+ * written in Jakarta Common Query Language (JCQL) or in Jakarta Persistence
+ * Query Language (JPQL). JCQL and JPQL are defined by the Jakarta Query
+ * specification. A Jakarta Data provider is not required to support
  * the complete JPQL language, which targets relational data stores. However,
  * a given provider might offer features of JPQL which go beyond the subset
- * required by JDQL, or might even offer vendor-specific extensions to JDQL
+ * required by JCQL, or might even offer vendor-specific extensions to JCQL
  * which target particular capabilities of the target data store technology.
  * Such extensions come with no guarantee of portability between providers,
  * nor between databases.</p>
  *
- * <p>The required {@link #value} member specifies the JDQL or JPQL query as
+ * <p>The required {@link #value} member specifies the JCQL or JPQL query as
  * a string.</p>
  *
  * <p>For {@code select} statements, the return type of the query method must
@@ -72,14 +73,14 @@ import java.lang.annotation.Target;
  *     </li>
  * </ul>
  *
- * <p>Compared to SQL, JDQL allows an abbreviated syntax for {@code select}
+ * <p>Compared to SQL, JCQL allows an abbreviated syntax for {@code select}
  * statements:</p>
  * <ul>
- * <li>The {@code from} clause is optional in JDQL. When it is missing, the
+ * <li>The {@code from} clause is optional in JCQL. When it is missing, the
  *     queried entity is determined by the return type of the repository
  *     method, or, if the return type is not an entity type, by the primary
  *     entity type of the repository.</li>
- * <li>The {@code select} clause is optional in both JDQL and JPQL. When it
+ * <li>The {@code select} clause is optional in both JCQL and JPQL. When it
  *     is missing, the query returns the queried entity.</li>
  * </ul>
  *
@@ -119,11 +120,11 @@ import java.lang.annotation.Target;
  * @Repository
  * public interface People extends CrudRepository<Person, Long> {
  *
- *     // JDQL with positional parameters
+ *     // JCQL with positional parameters
  *     @Query("where firstName = ?1 and lastName = ?2")
  *     List<Person> byName(String first, String last);
  *
- *     // JDQL with a named parameter
+ *     // JCQL with a named parameter
  *     @Query("where firstName || ' ' || lastName like :pattern")
  *     List<Person> byName(String pattern);
  *
@@ -177,7 +178,7 @@ public @interface Query {
 
     /**
      * <p>Specifies the query executed by the annotated repository method,
-     * in JDQL or JPQL.</p>
+     * in JCQL or JPQL.</p>
      *
      * <p>If the annotated repository method accepts other forms of sorting
      * (such as a parameter of type {@link Sort}), it is the responsibility of

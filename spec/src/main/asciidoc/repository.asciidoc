@@ -169,7 +169,7 @@ void deleteBook(String isbn);
 ----
 
 Programs which make use of annotated query methods are not in general portable between providers.
-However, when the `@Query` annotation specifies a query written in JDQL, the annotated query method is portable between providers to the extent to which its semantics can be implemented on the underlying data store.
+However, when the `@Query` annotation specifies a query written in JCQL, the annotated query method is portable between providers to the extent to which its semantics can be implemented on the underlying data store.
 
 [NOTE]
 ====

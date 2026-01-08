@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023,2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2023,2026 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -481,7 +481,7 @@ public class EntityTests {
                     characters.withIdEqualOrAbove(68L, Limit.of(5)));
         } catch (UnsupportedOperationException x) {
             if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
-                return; // Key-Value databases are not capable of >= in JDQL
+                return; // Key-Value databases are not capable of >= in JCQL
             } else {
                 throw x;
             }
@@ -595,7 +595,9 @@ public class EntityTests {
                 Arrays.toString(stream.map(AsciiCharacter::getThisCharacter).toArray()));
     }
 
-    @Assertion(id = "458", strategy = "Use a repository method with a JDQL query that has no clauses.")
+    @Assertion(id = "458", strategy = """
+            Use a repository method with a JCQL query that has no clauses.
+            """)
     public void testEmptyQuery() {
 
         try {
@@ -1650,7 +1652,10 @@ public class EntityTests {
         assertFalse(it.hasNext());
     }
 
-    @Assertion(id = "458", strategy = "Use a repository method with a JDQL Query that specifies an enum literal and a boolean false literal.")
+    @Assertion(id = "458", strategy = """
+            Use a repository method with a JCQL Query that specifies an
+            enum literal and a boolean false literal.
+            """)
     public void testLiteralEnumAndLiteralFalse() {
 
         NaturalNumber two;
@@ -1658,8 +1663,8 @@ public class EntityTests {
             two = numbers.two().orElseThrow();
         } catch (UnsupportedOperationException x) {
             if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
-                // Column and Key-Value databases might not be capable of JDQL AND
-                // Key-Value databases might not be capable of JDQL TRUE/FALSE
+                // Column and Key-Value databases might not be capable of JCQL AND
+                // Key-Value databases might not be capable of JCQL TRUE/FALSE
                 return;
             } else {
                 throw x;
@@ -1671,22 +1676,28 @@ public class EntityTests {
         assertEquals(Short.valueOf((short) 2), two.getNumBitsRequired());
     }
 
-    @Assertion(id = "458", strategy = "Use a repository method with a JDQL Query that specifies literal Integer values.")
+    @Assertion(id = "458", strategy = """
+            Use a repository method with a JCQL Query that specifies
+            literal Integer values.
+            """)
     public void testLiteralInteger() {
 
         try {
             assertEquals(24, characters.twentyFour());
         } catch (UnsupportedOperationException x) {
             if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
-                // Key-Value databases might not be capable of <= in JDQL.
-                // Column and Key-Value databases might not be capable of JDQL AND.
+                // Key-Value databases might not be capable of <= in JCQL.
+                // Column and Key-Value databases might not be capable of JCQL AND.
             } else {
                 throw x;
             }
         }
     }
 
-    @Assertion(id = "458", strategy = "Use a repository method with a JDQL Query that specifies literal String values.")
+    @Assertion(id = "458", strategy = """
+            Use a repository method with a JCQL Query that specifies
+            literal String values.
+            """)
     public void testLiteralString() {
 
         try {
@@ -1697,8 +1708,8 @@ public class EntityTests {
                             .collect(Collectors.toList()));
         } catch (UnsupportedOperationException x) {
             if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
-                // Column and Key-Value databases might not be capable of JDQL AND.
-                // Column and Key-Value databases might not be capable of JDQL IN
+                // Column and Key-Value databases might not be capable of JCQL AND.
+                // Column and Key-Value databases might not be capable of JCQL IN
                 // when used with entity attributes other than the Id.
             } else {
                 throw x;
@@ -1706,16 +1717,19 @@ public class EntityTests {
         }
     }
 
-    @Assertion(id = "458", strategy = "Use a repository method with a JDQL Query that specifies a boolean true literal.")
+    @Assertion(id = "458", strategy = """
+            Use a repository method with a JDQL Query that specifies a
+            boolean true literal.
+            """)
     public void testLiteralTrue() {
         Page<Long> page1;
         try {
             page1 = numbers.oddsFrom21To(40L, PageRequest.ofSize(5));
         } catch (UnsupportedOperationException x) {
             if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
-                // Column and Key-Value databases might not be capable of JDQL AND
-                // Key-Value databases might not be capable of JDQL BETWEEN
-                // Key-Value databases might not be capable of JDQL TRUE/FALSE
+                // Column and Key-Value databases might not be capable of JCQL AND
+                // Key-Value databases might not be capable of JCQL BETWEEN
+                // Key-Value databases might not be capable of JCQL TRUE/FALSE
                 return;
             } else {
                 throw x;
@@ -1955,7 +1969,10 @@ public class EntityTests {
         }
     }
 
-    @Assertion(id = "458", strategy = "Use a repository method with a JDQL query that consists of only an ORDER BY clause.")
+    @Assertion(id = "458", strategy = """
+            Use a repository method with a JCQL query that consists of only an
+            ORDER BY clause.
+            """)
     public void testPartialQueryOrderBy() {
 
         assertEquals(List.of('A', 'B', 'C', 'D', 'E', 'F'),
@@ -1964,7 +1981,10 @@ public class EntityTests {
                         .collect(Collectors.toList()));
     }
 
-    @Assertion(id = "458", strategy = "Use a repository method with a JDQL query that consists of only the SELECT and ORDER BY clauses.")
+    @Assertion(id = "458", strategy = """
+            Use a repository method with a JCQL query that consists of only the
+            SELECT and ORDER BY clauses.
+            """)
     public void testPartialQuerySelectAndOrderBy() {
 
         Character[] chars = characters.reverseAlphabetic(Limit.range(6, 13));
@@ -1982,7 +2002,10 @@ public class EntityTests {
         assertFalse(customRepo.existsByIdIn(Set.of(-10L, -12L, -14L)));
     }
 
-    @Assertion(id = "458", strategy = "Use a repository method with a JDQL query that uses the NOT operator with LIKE, IN, and BETWEEN.")
+    @Assertion(id = "458", strategy = """
+            Use a repository method with a JCQL query that uses the
+            NOT operator with LIKE, IN, and BETWEEN.
+            """)
     public void testQueryWithNot() {
 
         // 'NOT LIKE' excludes '@'
@@ -2008,7 +2031,10 @@ public class EntityTests {
         }
     }
 
-    @Assertion(id = "458", strategy = "Use a repository method with a JDQL query that uses the NULL keyword.")
+    @Assertion(id = "458", strategy = """
+            Use a repository method with a JCQL query that uses the
+            NULL keyword.
+            """)
     public void testQueryWithNull() {
         try {
             assertEquals("4a", characters.hex('J').orElseThrow());
@@ -2023,7 +2049,10 @@ public class EntityTests {
         }
     }
 
-    @Assertion(id = "458", strategy = "Use a repository method with a JDQL query that relies on the OR operator.")
+    @Assertion(id = "458", strategy = """
+            Use a repository method with a JCQL query that relies on the
+            OR operator.
+            """)
     public void testQueryWithOr() {
         PageRequest page1Request = PageRequest.ofSize(4);
         CursoredPage<NaturalNumber> page1;
@@ -2037,7 +2066,7 @@ public class EntityTests {
         } catch (UnsupportedOperationException x) {
             // Test passes: Jakarta Data providers must raise UnsupportedOperationException when the database
             // is not capable of cursor-based pagination.
-            // Column and Key-Value databases might not be capable of JPQL OR.
+            // Column and Key-Value databases might not be capable of JCQL OR.
             // Column and Key-Value databases might not be capable of sorting.
             return;
         }
@@ -2188,7 +2217,10 @@ public class EntityTests {
                         .collect(Collectors.toList()));
     }
 
-    @Assertion(id = "458", strategy = "Use a repository method with a JDQL query that uses parenthesis to make OR be evaluated before AND.")
+    @Assertion(id = "458", strategy = """
+            Use a repository method with a JCQL query that uses parenthesis
+            to make OR be evaluated before AND.
+            """)
     public void testQueryWithParenthesis() {
 
         try {
@@ -2198,9 +2230,9 @@ public class EntityTests {
         } catch (UnsupportedOperationException x) {
             if (type.isKeywordSupportAtOrBelow(DatabaseType.DOCUMENT)) {
                 // Document, Column, and Key-Value databases might not be capable of parentheses.
-                // Column and Key-Value databases might not be capable of JDQL OR.
-                // Key-Value databases might not be capable of < in JDQL.
-                // Column and Key-Value databases might not be capable of JDQL AND.
+                // Column and Key-Value databases might not be capable of JCQL OR.
+                // Key-Value databases might not be capable of < in JCQL.
+                // Column and Key-Value databases might not be capable of JCQL AND.
             } else {
                 throw x;
             }
@@ -3313,8 +3345,10 @@ public class EntityTests {
         assertFalse(it.hasNext());
     }
 
-    @Assertion(id = "458", strategy = "Use a repository method with a JDQL UPDATE query without a WHERE clause. " +
-            "This method also tests the addition, subtraction, and multiplication operators.")
+    @Assertion(id = "458", strategy = """
+            Use a repository method with a JCQL UPDATE query without a WHERE clause.
+            This method also tests the addition, subtraction, and multiplication operators.
+            """)
     public void testUpdateQueryWithoutWhereClause() {
         // Ensure there is no data left over from other tests:
 
@@ -3399,8 +3433,10 @@ public class EntityTests {
         }
     }
 
-    @Assertion(id = "458", strategy = "Use a repository method with a JDQL UPDATE query with a WHERE clause. " +
-            "This method also tests the assignment and division operators.")
+    @Assertion(id = "458", strategy ="""
+            Use a repository method with a JCQL UPDATE query with a WHERE clause.
+            This method also tests the assignment and division operators.
+            """)
     public void testUpdateQueryWithWhereClause() {
         try {
             // Ensure there is no data left over from other tests:

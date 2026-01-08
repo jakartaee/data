@@ -451,10 +451,11 @@ import java.util.Set;
  * Stream&lt;Person&gt; livingInCity(String address_city);
  * </pre>
  *
- * <h2>JDQL query methods</h2>
+ * <h2>Methods annotated {@code @Query}</h2>
  *
- * <p>The {@link Query} annotation specifies that a method executes a query written
- * in Jakarta Data Query Language (JDQL) or Jakarta Persistence Query Language (JPQL).
+ * <p>The {@link Query} annotation specifies that a method executes a query
+ * written in Jakarta Common Query Language (JCQL) or Jakarta Persistence
+ * Query Language (JPQL), which are defined by the Jakarta Query specification.
  * A Jakarta Data provider is not required to support the complete JPQL language,
  * which targets relational data stores.</p>
  *
@@ -892,7 +893,7 @@ import java.util.Set;
  * a <em>special parameter</em> of type {@link Restriction}.</p>
  *
  * <p>Special parameters occur after parameters related to query conditions
- * and JDQL query parameters. Special parameters enable limits, pagination,
+ * and JCQL query parameters. Special parameters enable limits, pagination,
  * sorting, and restrictions to be determined at runtime.</p>
  *
  * <h3>Limits</h3>
