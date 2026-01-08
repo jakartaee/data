@@ -451,7 +451,7 @@ import java.util.Set;
  * Stream&lt;Person&gt; livingInCity(String address_city);
  * </pre>
  *
- * <h2>Query methods</h2>
+ * <h2>Methods annotated {@code @Query}</h2>
  *
  * <p>The {@link Query} annotation specifies that a method executes a query
  * written in Jakarta Common Query Language (JCQL) or Jakarta Persistence
