@@ -96,6 +96,14 @@ It is advisable to review your NoSQL provider's documentation to confirm the sup
 
 If the Jakarta Data provider does not support `count(this)`, it must throw `UnsupportedOperationException` when this aggregate expression occurs in a query.  Alternatively, the Jakarta Data provider is permitted to reject a repository method declaration at compilation time if its `@Query` annotation uses the unsupported aggregate expression.
 
+==== WHERE clause
+
+When working with NoSQL databases, the `WHERE` clause behavior may vary depending on the database structure and capabilities:
+
+Key-Value Databases:: Support for a `WHERE` clause that performs an equality restriction on the key attribute is required. Key-value databases might not be capable of queries without a `WHERE` clause or with a `WHERE` clause that does not include an equality restriction on the key attribute.
+
+Wide-Column Databases:: Support for a `WHERE` clause that performs an equality restriction on the key attribute is required. Wide-column databases might not be capable of queries without a `WHERE` clause or with a `WHERE` clause that does not include an equality restriction on the key attribute.
+
 ==== Update statements
 
 If a NoSQL database is not capable of conditional updates or cannot determine the number of matching records reliably for an `update` operation that returns an `int` or `long`, the `update` operation must throw an `UnsupportedOperationException`.
