@@ -100,7 +100,7 @@ If the Jakarta Data provider does not support `count(this)`, it must throw `Unsu
 
 When working with NoSQL databases, the `WHERE` clause behavior may vary depending on the database structure and capabilities:
 
-Key-Value Databases:: Support for a `WHERE` clause that performs an equality restriction on the key attribute is required. Key-value databases might not be capable of queries without a `WHERE` clause or with a `WHERE` clause that does not include an equality restriction on the key attribute.
+Key-Value Databases:: Support for a `WHERE` clause with an equality restriction on the key attribute is required. A key-value database might not be capable of processing  a query without a `WHERE` clause or with a `WHERE` clause that does not include an equality restriction on the key attribute.
 
 Wide-Column Databases:: Support for a `WHERE` clause that performs an equality restriction on the key attribute is required. Wide-column databases might not be capable of queries without a `WHERE` clause or with a `WHERE` clause that does not include an equality restriction on the key attribute.
 
