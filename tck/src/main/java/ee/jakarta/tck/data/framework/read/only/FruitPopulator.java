@@ -13,15 +13,15 @@
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
-package ee.jakarta.tck.data.standalone.entity;
+package ee.jakarta.tck.data.framework.read.only;
 
-import ee.jakarta.tck.data.framework.read.only.Populator;
+import ee.jakarta.tck.data.standalone.entity.Fruit;
 
 import java.util.List;
 
 public class FruitPopulator implements Populator<FruitRepository> {
 
-    static final List<Fruit> FRUITS = List.of(
+    public static final List<Fruit> FRUITS = List.of(
             fruit("00000000-0000-0000-0000-000000000001", "Apple", 10L),
             fruit("00000000-0000-0000-0000-000000000002", "Banana", 5L),
             fruit("00000000-0000-0000-0000-000000000003", "Orange", 10L),
