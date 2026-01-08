@@ -16,7 +16,6 @@
 package ee.jakarta.tck.data.standalone.entity;
 
 import ee.jakarta.tck.data.framework.junit.anno.AnyEntity;
-import ee.jakarta.tck.data.framework.junit.anno.ReadOnlyTest;
 import ee.jakarta.tck.data.framework.junit.anno.Standalone;
 import ee.jakarta.tck.data.framework.utilities.DatabaseType;
 import ee.jakarta.tck.data.framework.utilities.TestProperty;
@@ -36,7 +35,6 @@ import java.util.logging.Logger;
 
 @Standalone
 @AnyEntity
-@ReadOnlyTest
 public class JakartaQueryTests {
 
     public static final Logger log = Logger.getLogger(JakartaQueryTests.class.getCanonicalName());
