@@ -46,7 +46,7 @@ Due to the diversity of NoSQL database types and their querying capabilities, th
 
 When using NoSQL databases, there are limitations to the support of equality and inequality operators:
 
-Key-Value Databases:: Support for the equality restriction on the key attribute is required. The key attribute is defined by the annotation `jakarta.nosql.Id`. Key-value databases are not required to support any other restrictions.
+Key-Value Databases:: Support for the equality restriction on the unique identifier attribute is required. The unique identifier attribute is defined by the annotation `jakarta.nosql.Id`. Key-value databases are not required to support any other restrictions.
 
 Wide-Column Databases:: Support for equality restriction and the inequality restriction on the `Id` attribute is required. Support for restrictions on other entity attributes is not required. These operations typically work only with the `Id` by default but might be compatible for other entity attributes if secondary indexes are configured in the database schema.
 
@@ -59,7 +59,7 @@ When using NoSQL databases, sorting support varies by database type:
 Key-value databases:: Sorting of results is not supported.
 
 Wide-column databases:: Support for sorting of results is not required. In general, sorting is not natively supported. When sorting is available, it is typically limited to:
-  * The key attribute, defined by an annotation such as `jakarta.nosql.Id`.
+  * The unique identifier attribute, defined by an annotation such as `jakarta.nosql.Id`.
   * Fields that are indexed as secondary indexes.
 
 Graph and document databases:: Support for sorting by a single entity attribute is required. Support for compound sorting (sorting by multiple entity attributes) is not required and may vary due to:
@@ -76,7 +76,7 @@ When using NoSQL databases, support varies depending on the database type:
 
 Key-value databases:: Support for the equality restriction is required for the `Id` attribute. There is no requirement to support other types of restrictions or restrictions on other entity attributes.
 
-Wide-column databases:: Wide-column databases are not required to support the `AND` operator or the `OR` operator. Restrictions must be supported for the key attribute that is annotated with `jakarta.nosql.Id`. Support for restrictions on other attributes is not required. Typically they can be used if they are indexed as secondary indexes, although support varies by database provider.
+Wide-column databases:: Wide-column databases are not required to support the `AND` operator or the `OR` operator. Restrictions must be supported for the unique identifier attribute that is annotated with `jakarta.nosql.Id`. Support for restrictions on other attributes is not required. Typically they can be used if they are indexed as secondary indexes, although support varies by database provider.
 
 Graph and document databases:: The `AND` and `OR` operators and all of the restrictions described in this section must be supported. Precedence between `AND` and `OR` operators is not guaranteed and may vary significantly based on the NoSQL provider.
 
@@ -95,6 +95,14 @@ For `count(this)` in particular, if the NoSQL datastore does not natively suppor
 It is advisable to review your NoSQL provider's documentation to confirm the support and performance implications of `select` clauses and aggregate functions in your queries.
 
 If the Jakarta Data provider does not support `count(this)`, it must throw `UnsupportedOperationException` when this aggregate expression occurs in a query.  Alternatively, the Jakarta Data provider is permitted to reject a repository method declaration at compilation time if its `@Query` annotation uses the unsupported aggregate expression.
+
+==== WHERE clause
+
+When working with NoSQL databases, the `WHERE` clause behavior may vary depending on the database structure and capabilities:
+
+Key-Value Databases:: Support for a `WHERE` clause with an equality restriction on the unique identifier attribute is required. A key-value database might not be capable of processing a query without a `WHERE` clause or with a `WHERE` clause that does not include an equality restriction on the unique identifier attribute.
+
+Wide-Column Databases:: Support for a `WHERE` clause with an equality restriction on the unique identifier attribute is required. A wide-column database might not be capable of processing a query without a `WHERE` clause or with a `WHERE` clause that does not include an equality restriction on the unique identifier attribute.
 
 ==== Update statements
 
