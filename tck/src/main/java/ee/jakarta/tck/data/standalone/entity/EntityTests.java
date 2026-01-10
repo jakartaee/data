@@ -2642,7 +2642,7 @@ public class EntityTests {
 
         Stream<CardinalNumber> stream = characters.cardinalNumberStream(3L);
 
-        assertEquals(List.of("10 COMPOSITE (4 bits",
+        assertEquals(List.of("10 COMPOSITE (4 bits)",
                         "11 PRIME (4 bits)",
                         "12 COMPOSITE (4 bits)",
                         "13 PRIME (4 bits)",
