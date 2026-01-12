@@ -419,4 +419,15 @@ public class JakartaQueryTests {
             }
         }
     }
+
+    @DisplayName("should count all Fruits using id function")
+    @Assertion(id = "1318",
+            strategy = "Execute a query by the id attribute using the id function, once it is an id attribute all " +
+                    "databases should support it")
+    void shouldFindByIdUsingIdFunction() {
+        var fruit = fruits.getFirst();
+        var result = fruitRepository.findByIdUsingIdFunction(fruit.getId());
+
+        Assertions.assertThat(result).isNotEmpty().get().isEqualTo(fruit);
+    }
 }
