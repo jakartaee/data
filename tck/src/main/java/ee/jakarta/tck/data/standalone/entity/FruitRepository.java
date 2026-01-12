@@ -74,4 +74,7 @@ public interface FruitRepository extends BasicRepository<Fruit, String> {
 
     @Query("SELECT count(this) FROM Fruit")
     long countAll();
+
+    @Query("SELECT name FROM Fruit ORDER BY quantity ASC")
+    List<String> findAllOnlyNameOrderByQuantity();
 }
