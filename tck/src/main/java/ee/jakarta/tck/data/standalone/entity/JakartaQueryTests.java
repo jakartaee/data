@@ -398,4 +398,25 @@ public class JakartaQueryTests {
             }
         }
     }
+
+    @DisplayName("should test count")
+    @Assertion(id = "1318",
+            strategy = "Execute a count all Fruits" +
+                    "asserting every returned entity matches at least one predicate or accepting UnsupportedOperationException.")
+    void shouldCount() {
+
+        try {
+
+            long result = fruitRepository.countAll();
+
+            Assertions.assertThat(result).isEqualTo(fruits.size());
+
+        } catch (UnsupportedOperationException exp) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable of count.
+            } else {
+                throw exp;
+            }
+        }
+    }
 }
