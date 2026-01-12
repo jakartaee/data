@@ -452,4 +452,34 @@ public class JakartaQueryTests {
             }
         }
     }
+
+    @DisplayName("should return only name and quantity attributes order by quantity")
+    @Assertion(id = "1318",
+            strategy = "Execute the query returning only the name and quantity attributes order by quantity")
+    void shouldReturnNameAndQuantity() {
+
+        try {
+            var tuples = fruits.stream()
+                    .sorted(Comparator.comparing(Fruit::getName))
+                    .map(f -> new FruitTuple(f.getName(), f.getQuantity()))
+                    .toArray(FruitTuple[]::new);
+            var result = fruitRepository.findAllNameAndQuantityOrderByQuantity();
+
+            Assertions.assertThat(result.stream().map(FruitTuple::of))
+                    .isNotEmpty().containsExactly(tuples);
+        } catch (UnsupportedOperationException exp) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable of sorting.
+            } else {
+                throw exp;
+            }
+        }
+    }
+
+    private record FruitTuple(String name, Object quantity) {
+        static FruitTuple of(Object[] values) {
+            return new FruitTuple((String) values[0], values[1]);
+        }
+    }
+
 }
