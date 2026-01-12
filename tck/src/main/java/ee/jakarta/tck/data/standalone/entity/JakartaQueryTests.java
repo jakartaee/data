@@ -31,6 +31,7 @@ import ee.jakarta.tck.data.framework.read.only.FruitPopulator;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
 
 @Standalone
@@ -306,6 +307,32 @@ public class JakartaQueryTests {
             var sample1 = fruits.getFirst();
             var sample2 = fruits.get(1);
             List<Fruit> result = fruitRepository.findNameIn(sample1.getName(), sample2.getName());
+
+            Assertions.assertThat(result)
+                    .isNotEmpty()
+                    .allMatch(fruit -> fruit.getName().equals(sample1.getName())
+                            || fruit.getName().equals(sample2.getName()));
+
+        } catch (UnsupportedOperationException exp) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Key-Value databases might not be capable of in and
+                // Column databases might not be capable querying by attribute that is not a key.
+            } else {
+                throw exp;
+            }
+        }
+    }
+
+    @DisplayName("should test in")
+    @Assertion(id = "1318",
+            strategy = "Execute an IN comparison on the name attribute with multiple values, this time using Set to " +
+                    "multiple parameters, " +
+                    "asserting membership in the provided set or accepting UnsupportedOperationException.")
+    void shouldInUsingParameterCollection() {
+        try {
+            var sample1 = fruits.getFirst();
+            var sample2 = fruits.get(1);
+            List<Fruit> result = fruitRepository.findNameIn(Set.of(sample1.getName(), sample2.getName()));
 
             Assertions.assertThat(result)
                     .isNotEmpty()
