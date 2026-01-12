@@ -91,15 +91,14 @@ public class RestrictionTests {
                     .map(c -> c.getCode() + ": " + c.getName())
                     .sorted()
                     .collect(Collectors.toList());
-            assertEquals(List.of(
-                    "LB: Lebanon",
-                    "LC: Saint Lucia",
-                    "LI: Liechtenstein",
-                    "LK: Sri Lanka",
-                    "LR: Liberia",
-                    "LS: Lesotho",
-                    "LT: Lithuania"),
-                    found);
+            assertEquals(List.of("LB: Lebanon",
+                                 "LC: Saint Lucia",
+                                 "LI: Liechtenstein",
+                                 "LK: Sri Lanka",
+                                 "LR: Liberia",
+                                 "LS: Lesotho",
+                                 "LT: Lithuania"),
+                         found);
             } catch (UnsupportedOperationException x) {
                 if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
                     // Key-Value databases might not be capable of NOT BETWEEN
@@ -107,6 +106,57 @@ public class RestrictionTests {
                     throw x;
                 }
             }
+    }
+
+    @Assertion(id = "829", strategy = """
+            Supply a contains Restriction to a repository
+            find method.
+            """)
+    public void testContainsRestriction() {
+        try {
+            List<String> found = countries
+                    .filter(_Country.code.contains("Q"))
+                    .stream()
+                    .map(c -> c.getCode() + ": " + c.getName())
+                    .sorted()
+                    .collect(Collectors.toList());
+            assertEquals(List.of("GQ: Equatorial Guinea",
+                                 "IQ: Iraq",
+                                 "QA: Qatar"),
+                         found);
+            } catch (UnsupportedOperationException x) {
+                if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                    // NoSQL databases might not be capable of LIKE.
+                } else {
+                    throw x;
+                }
+            }
+    }
+
+    @Assertion(id = "829", strategy = """
+            Supply an endsWith Restriction to a repository
+            find method.
+            """)
+    public void testEndsWithRestriction() {
+        try {
+            List<String> found = countries
+                    .filter(_Country.code.endsWith("J"))
+                    .stream()
+                    .map(c -> c.getCode() + ": " + c.getName())
+                    .sorted()
+                    .collect(Collectors.toList());
+            assertEquals(List.of("BJ: Benin",
+                                 "DJ: Djibouti",
+                                 "FJ: Fiji",
+                                 "TJ: Tajikistan"),
+                         found);
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                // NoSQL databases might not be capable of LIKE.
+            } else {
+                throw x;
+            }
+        }
     }
 
     @Assertion(id = "829", strategy = """
@@ -344,13 +394,12 @@ public class RestrictionTests {
                     .map(c -> c.getCode() + ": " + c.getName())
                     .sorted()
                     .collect(Collectors.toList());
-            assertEquals(List.of(
-                    "AD: Andorra",
-                    "AE: United Arab Emirates",
-                    "AF: Afghanistan",
-                    "AG: Antigua and Barbuda",
-                    "AL: Albania"),
-                    found);
+            assertEquals(List.of("AD: Andorra",
+                                 "AE: United Arab Emirates",
+                                 "AF: Afghanistan",
+                                 "AG: Antigua and Barbuda",
+                                 "AL: Albania"),
+                         found);
             } catch (UnsupportedOperationException x) {
                 if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
                     // Key-Value databases might not be capable of <=
@@ -372,13 +421,12 @@ public class RestrictionTests {
                     .map(c -> c.getCode() + ": " + c.getName())
                     .sorted()
                     .collect(Collectors.toList());
-            assertEquals(List.of(
-                    "AD: Andorra",
-                    "AE: United Arab Emirates",
-                    "AF: Afghanistan",
-                    "AG: Antigua and Barbuda",
-                    "AL: Albania",
-                    "AM: Armenia"),
+            assertEquals(List.of("AD: Andorra",
+                                 "AE: United Arab Emirates",
+                                 "AF: Afghanistan",
+                                 "AG: Antigua and Barbuda",
+                                 "AL: Albania",
+                                 "AM: Armenia"),
                     found);
             } catch (UnsupportedOperationException x) {
                 if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
@@ -401,11 +449,10 @@ public class RestrictionTests {
                     .map(c -> c.getCode() + ": " + c.getName())
                     .sorted()
                     .collect(Collectors.toList());
-            assertEquals(List.of(
-                    "AD: Andorra",
-                    "AE: United Arab Emirates",
-                    "ZM: Zambia",
-                    "ZW: Zimbabwe"),
+            assertEquals(List.of("AD: Andorra",
+                                 "AE: United Arab Emirates",
+                                 "ZM: Zambia",
+                                 "ZW: Zimbabwe"),
                     found);
             } catch (UnsupportedOperationException x) {
                 if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
@@ -414,6 +461,69 @@ public class RestrictionTests {
                     throw x;
                 }
             }
+    }
+
+    @Assertion(id = "829", strategy = """
+            Supply a notContains Restriction to a repository
+            find method.
+            """)
+    public void testNotContainsRestriction() {
+        try {
+            List<String> found = countries
+                    .filter(_Country.code.notContains("L"))
+                    .stream()
+                    .map(c -> c.getCode() + ": " + c.getName())
+                    .sorted()
+                    .collect(Collectors.toList());
+
+            assertEquals(CountryPopulator.EXPECTED_TOTAL - 20,
+                         found.size());
+
+            assertEquals(false,
+                         found.contains("LV: Latvia"));
+
+            assertEquals(false,
+                         found.contains("LS: Sierra Leone"));
+
+            assertEquals(true,
+                         found.contains("SK: Slovakia"));
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                // NoSQL databases might not be capable of NOT LIKE.
+            } else {
+                throw x;
+            }
+        }
+    }
+
+    @Assertion(id = "829", strategy = """
+            Supply a notEndsWith Restriction to a repository
+            find method.
+            """)
+    public void testNotEndsWithRestriction() {
+        try {
+            List<String> found = countries
+                    .filter(_Country.code.notEndsWith("N"))
+                    .stream()
+                    .map(c -> c.getCode() + ": " + c.getName())
+                    .sorted()
+                    .collect(Collectors.toList());
+
+            assertEquals(CountryPopulator.EXPECTED_TOTAL - 10,
+                         found.size());
+
+            assertEquals(false,
+                         found.contains("CN: China"));
+
+            assertEquals(true,
+                         found.contains("NA: Namibia"));
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                // NoSQL databases might not be capable of NOT LIKE.
+            } else {
+                throw x;
+            }
+        }
     }
 
     @Assertion(id = "829", strategy = """
@@ -526,4 +636,61 @@ public class RestrictionTests {
         }
     }
 
+    @Assertion(id = "829", strategy = """
+            Supply a notStartsWith Restriction to a repository
+            find method.
+            """)
+    public void testNotStartsWithRestriction() {
+        try {
+            List<String> found = countries
+                    .filter(_Country.code.notStartsWith("B"))
+                    .stream()
+                    .map(c -> c.getCode() + ": " + c.getName())
+                    .sorted()
+                    .collect(Collectors.toList());
+
+            assertEquals(CountryPopulator.EXPECTED_TOTAL - 18,
+                         found.size());
+
+            assertEquals(false,
+                         found.contains("BS: Bahamas"));
+
+            assertEquals(true,
+                         found.contains("GB: United Kingdom"));
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                // NoSQL databases might not be capable of NOT LIKE.
+            } else {
+                throw x;
+            }
+        }
+    }
+
+    @Assertion(id = "829", strategy = """
+            Supply a startsWith Restriction to a repository
+            find method.
+            """)
+    public void testStartsWithRestriction() {
+        try {
+            List<String> found = countries
+                    .filter(_Country.code.startsWith("E"))
+                    .stream()
+                    .map(c -> c.getCode() + ": " + c.getName())
+                    .sorted()
+                    .collect(Collectors.toList());
+            assertEquals(List.of("EC: Ecuador",
+                                 "EE: Estonia",
+                                 "EG: Egypt",
+                                 "ER: Eritrea",
+                                 "ES: Spain",
+                                 "ET: Ethiopia"),
+                         found);
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                // NoSQL databases might not be capable of LIKE.
+            } else {
+                throw x;
+            }
+        }
+    }
 }
