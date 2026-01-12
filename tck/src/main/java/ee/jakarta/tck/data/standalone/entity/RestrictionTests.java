@@ -80,6 +80,36 @@ public class RestrictionTests {
     private final DatabaseType type = TestProperty.databaseType.getDatabaseType();
 
     @Assertion(id = "829", strategy = """
+            Supply a between Restriction to a repository
+            find method.
+            """)
+    public void testBetweenRestriction() {
+        try {
+            List<String> found = countries
+                    .filter(_Country.code.between("LB", "LT"))
+                    .stream()
+                    .map(c -> c.getCode() + ": " + c.getName())
+                    .sorted()
+                    .collect(Collectors.toList());
+            assertEquals(List.of(
+                    "LB: Lebanon",
+                    "LC: Saint Lucia",
+                    "LI: Liechtenstein",
+                    "LK: Sri Lanka",
+                    "LR: Liberia",
+                    "LS: Lesotho",
+                    "LT: Lithuania"),
+                    found);
+            } catch (UnsupportedOperationException x) {
+                if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
+                    // Key-Value databases might not be capable of NOT BETWEEN
+                } else {
+                    throw x;
+                }
+            }
+    }
+
+    @Assertion(id = "829", strategy = """
             Supply an equalTo Restriction to a repository find method.
             """)
     public void testEqualToRestriction() {
@@ -116,9 +146,9 @@ public class RestrictionTests {
     }
 
     @Assertion(id = "829", strategy = """
-                    Supply a greaterThanEqual Restriction to a repository
-                    find method.
-                    """)
+            Supply a greaterThanEqual Restriction to a repository
+            find method.
+            """)
     public void testGreaterThanEqualRestriction() {
         try {
             List<String> found = countries
@@ -141,6 +171,30 @@ public class RestrictionTests {
     }
 
     @Assertion(id = "829", strategy = """
+                    Supply a greaterThan Restriction to a repository
+                    find method.
+                    """)
+    public void testGreaterThanRestriction() {
+        try {
+            List<String> found = countries
+                    .filter(_Country.code.greaterThan("ZL"))
+                            .stream()
+                            .map(c -> c.getCode() + ": " + c.getName())
+                            .sorted()
+                            .collect(Collectors.toList());
+            assertEquals(List.of("ZM: Zambia",
+                                 "ZW: Zimbabwe"),
+                         found);
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
+                // Key-Value databases might not be capable of >
+            } else {
+                throw x;
+            }
+        }
+    }
+
+    @Assertion(id = "829", strategy = """
             Supply an in Restriction to a repository find method.
             """)
     public void testInRestriction() {
@@ -149,8 +203,9 @@ public class RestrictionTests {
                 .filter(_Country.code.in("UG", "SG", "PE"));
 
         Map<String, Country> map = new TreeMap<>();
-        for (Country country : found)
+        for (Country country : found) {
             map.put(country.getCode(), country);
+        }
 
         assertEquals(List.of("PE", "SG", "UG"),
                      map.keySet()
@@ -234,6 +289,78 @@ public class RestrictionTests {
     }
 
     @Assertion(id = "829", strategy = """
+            Supply an isNull Restriction to a repository
+            find method.
+            """)
+    public void testIsNullRestriction() {
+        try {
+            List<Country> found = countries
+                    .filter(_Country.code.isNull());
+
+            assertEquals(0,
+                         found.size());
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
+                // Key-Value databases might not be capable of IS NULL
+            } else {
+                throw x;
+            }
+        }
+
+        try {
+            List<String> found = countries
+                    .filter(_Country.daylightTimeEnds.isNull())
+                    .stream()
+                    .map(Country::getName)
+                    .collect(Collectors.toList());
+
+            assertEquals(150,
+                         found.size());
+
+            assertEquals(true,
+                         found.contains("Burundi"));
+            assertEquals(false,
+                         found.contains("Bulgaria"));
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Key-Value databases might not be capable of IS NULL.
+                // Column and Key-Value databases might not be capable of
+                // restrictions on attributes that are not the Id.
+            } else {
+                throw x;
+            }
+        }
+    }
+
+    @Assertion(id = "829", strategy = """
+            Supply a lessThanEqual Restriction to a repository
+            find method.
+            """)
+    public void testLessThanEqualRestriction() {
+        try {
+            List<String> found = countries
+                    .filter(_Country.code.lessThanEqual("AL"))
+                    .stream()
+                    .map(c -> c.getCode() + ": " + c.getName())
+                    .sorted()
+                    .collect(Collectors.toList());
+            assertEquals(List.of(
+                    "AD: Andorra",
+                    "AE: United Arab Emirates",
+                    "AF: Afghanistan",
+                    "AG: Antigua and Barbuda",
+                    "AL: Albania"),
+                    found);
+            } catch (UnsupportedOperationException x) {
+                if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
+                    // Key-Value databases might not be capable of <=
+                } else {
+                    throw x;
+                }
+            }
+    }
+
+    @Assertion(id = "829", strategy = """
             Supply a lessThan Restriction to a repository
             find method.
             """)
@@ -256,6 +383,33 @@ public class RestrictionTests {
             } catch (UnsupportedOperationException x) {
                 if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
                     // Key-Value databases might not be capable of <
+                } else {
+                    throw x;
+                }
+            }
+    }
+
+    @Assertion(id = "829", strategy = """
+            Supply a notBetween Restriction to a repository
+            find method.
+            """)
+    public void testNotBetweenRestriction() {
+        try {
+            List<String> found = countries
+                    .filter(_Country.code.notBetween("AF", "ZA"))
+                    .stream()
+                    .map(c -> c.getCode() + ": " + c.getName())
+                    .sorted()
+                    .collect(Collectors.toList());
+            assertEquals(List.of(
+                    "AD: Andorra",
+                    "AE: United Arab Emirates",
+                    "ZM: Zambia",
+                    "ZW: Zimbabwe"),
+                    found);
+            } catch (UnsupportedOperationException x) {
+                if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
+                    // Key-Value databases might not be capable of NOT BETWEEN
                 } else {
                     throw x;
                 }
@@ -316,6 +470,56 @@ public class RestrictionTests {
         } catch (UnsupportedOperationException x) {
             if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
                 // Key-Value databases might not be capable of NOT IN
+            } else {
+                throw x;
+            }
+        }
+    }
+
+    @Assertion(id = "829", strategy = """
+            Supply a notNull Restriction to a repository
+            find method.
+            """)
+    public void testNotNullRestriction() {
+        try {
+            List<String> found = countries
+                    .filter(_Country.code.notNull())
+                    .stream()
+                    .map(Country::getName)
+                    .collect(Collectors.toList());
+
+            assertEquals(CountryPopulator.EXPECTED_TOTAL,
+                         found.size());
+
+            assertEquals(true,
+                         found.contains("France"));
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
+                // Key-Value databases might not be capable of NOT NULL
+            } else {
+                throw x;
+            }
+        }
+
+        try {
+            List<String> found = countries
+                    .filter(_Country.daylightTimeEnds.notNull())
+                    .stream()
+                    .map(Country::getName)
+                    .collect(Collectors.toList());
+
+            assertEquals(60,
+                         found.size());
+
+            assertEquals(true,
+                         found.contains("Chile"));
+            assertEquals(false,
+                         found.contains("Bangladesh"));
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Key-Value databases might not be capable of NOT NULL.
+                // Column and Key-Value databases might not be capable of
+                // restrictions on attributes that are not the Id.
             } else {
                 throw x;
             }
