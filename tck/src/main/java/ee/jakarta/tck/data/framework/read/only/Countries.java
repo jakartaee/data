@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2025,2026 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -44,6 +44,7 @@ import jakarta.data.repository.Is;
 import jakarta.data.repository.OrderBy;
 import jakarta.data.repository.Repository;
 import jakarta.data.repository.Select;
+import jakarta.data.restrict.Restriction;
 
 /**
  * This is a read only repository with statistics about countries.
@@ -75,6 +76,9 @@ public interface Countries extends CrudRepository<Country, String> {
     @Find
     List<Country> excludingNames(
             @By(_Country.NAME) NotLike excludePattern);
+
+    @Find
+    List<Country> filter(Restriction<Country> filter);
 
     @Find
     List<Country> highlyPopulousInRegion(
