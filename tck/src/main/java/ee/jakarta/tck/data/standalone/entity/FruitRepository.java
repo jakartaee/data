@@ -21,6 +21,7 @@ import jakarta.data.repository.Param;
 import jakarta.data.repository.Query;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Stream;
 
 @Repository
@@ -61,6 +62,9 @@ public interface FruitRepository extends BasicRepository<Fruit, String> {
 
     @Query("FROM Fruit WHERE name IN (:name1, :name2)")
     List<Fruit> findNameIn(@Param("name1") String name1, @Param("name2")  String name2);
+
+    @Query("FROM Fruit WHERE name IN (:names)")
+    List<Fruit> findNameIn(@Param("names") Set<String> names);
 
     @Query("FROM Fruit WHERE name = :name AND quantity = :quantity")
     List<Fruit> findNameEqualsAndQuantityEquals(@Param("name") String name, @Param("quantity") Long quantity);
