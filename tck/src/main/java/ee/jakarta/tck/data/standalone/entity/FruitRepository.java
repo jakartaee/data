@@ -20,6 +20,7 @@ import jakarta.data.repository.Repository;
 import jakarta.data.repository.Param;
 import jakarta.data.repository.Query;
 
+import java.util.Optional;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
