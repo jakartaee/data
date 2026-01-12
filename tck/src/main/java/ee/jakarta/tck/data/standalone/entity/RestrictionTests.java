@@ -141,6 +141,99 @@ public class RestrictionTests {
     }
 
     @Assertion(id = "829", strategy = """
+            Supply an in Restriction to a repository find method.
+            """)
+    public void testInRestriction() {
+
+        List<Country> found = countries
+                .filter(_Country.code.in("UG", "SG", "PE"));
+
+        Map<String, Country> map = new TreeMap<>();
+        for (Country country : found)
+            map.put(country.getCode(), country);
+
+        assertEquals(List.of("PE", "SG", "UG"),
+                     map.keySet()
+                        .stream()
+                        .collect(Collectors.toList()));
+
+        Country country = map.get("PE");
+
+        assertEquals("PE",
+                     country.getCode());
+        assertEquals("Peru",
+                     country.getName());
+        assertEquals(Region.SOUTH_AMERICA,
+                     country.getRegion());
+        assertEquals(1279996L,
+                     country.getArea());
+        assertEquals(32768614L,
+                     country.getPopulation());
+        assertEquals(517644000000L,
+                     country.getGdp());
+        assertEquals(182210688000L,
+                     country.getDebt());
+        assertEquals(null,
+                     country.getDaylightTimeBegins());
+        assertEquals(null,
+                     country.getDaylightTimeEnds());
+        assertEquals("Lima",
+                     country.getCapital().getName());
+        assertEquals(10151000,
+                     country.getCapital().getPopulation());
+
+        country = map.get("SG");
+
+        assertEquals("SG",
+                     country.getCode());
+        assertEquals("Singapore",
+                     country.getName());
+        assertEquals(Region.ASIA,
+                     country.getRegion());
+        assertEquals(709L,
+                     country.getArea());
+        assertEquals(6080545L,
+                     country.getPopulation());
+        assertEquals(754758000000L,
+                     country.getGdp());
+        assertEquals(1335921660000L,
+                     country.getDebt());
+        assertEquals(null,
+                     country.getDaylightTimeBegins());
+        assertEquals(null,
+                     country.getDaylightTimeEnds());
+        assertEquals("Singapore",
+                     country.getCapital().getName());
+        assertEquals(5917600,
+                     country.getCapital().getPopulation());
+
+        country = map.get("UG");
+
+        assertEquals("UG",
+                     country.getCode());
+        assertEquals("Uganda",
+                     country.getName());
+        assertEquals(Region.AFRICA,
+                     country.getRegion());
+        assertEquals(197100L,
+                     country.getArea());
+        assertEquals(50863850L,
+                     country.getPopulation());
+        assertEquals(135803000000L,
+                     country.getGdp());
+        assertEquals(72111393000L,
+                     country.getDebt());
+        assertEquals(null,
+                     country.getDaylightTimeBegins());
+        assertEquals(null,
+                     country.getDaylightTimeEnds());
+        assertEquals("Kampala",
+                     country.getCapital().getName());
+        assertEquals(1680600,
+                     country.getCapital().getPopulation());
+    }
+
+    @Assertion(id = "829", strategy = """
             Supply a lessThan Restriction to a repository
             find method.
             """)
@@ -189,6 +282,40 @@ public class RestrictionTests {
         } catch (UnsupportedOperationException x) {
             if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
                 // Key-Value databases might not be capable of <>
+            } else {
+                throw x;
+            }
+        }
+    }
+
+    @Assertion(id = "829", strategy = """
+            Supply a notIn Restriction to a repository
+            find method.
+            """)
+    public void testNotInRestriction() {
+        try {
+            List<String> found = countries
+                    .filter(_Country.code.notIn("MG", "IS", "ID", "LK", "CU"))
+                    .stream()
+                    .map(Country::getName)
+                    .collect(Collectors.toList());
+
+            assertEquals(CountryPopulator.EXPECTED_TOTAL - 5,
+                         found.size());
+
+            assertEquals(false,
+                         found.contains("Cuba"));
+            assertEquals(false,
+                         found.contains("Iceland"));
+            assertEquals(false,
+                         found.contains("Indonesia"));
+            assertEquals(false,
+                         found.contains("Madagascar"));
+            assertEquals(false,
+                         found.contains("Sri Lanka"));
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
+                // Key-Value databases might not be capable of NOT IN
             } else {
                 throw x;
             }
