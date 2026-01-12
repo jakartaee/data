@@ -430,4 +430,27 @@ public class JakartaQueryTests {
 
         Assertions.assertThat(result).isNotEmpty().get().isEqualTo(fruit);
     }
+
+    @DisplayName("should return only name attribute order by quantity")
+    @Assertion(id = "1318",
+            strategy = "Execute the query returning only the name attribute order by quantity" +
+                    "databases should support it")
+    void shouldReturnName() {
+
+        try {
+            var names = fruits.stream()
+                    .sorted(Comparator.comparingLong(Fruit::getQuantity))
+                    .map(Fruit::getName)
+                    .toArray(String[]::new);
+            var result = fruitRepository.findAllOnlyNameOrderByQuantity();
+
+            Assertions.assertThat(result).isNotEmpty().containsExactly(names);
+        } catch (UnsupportedOperationException exp) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable of sorting.
+            } else {
+                throw exp;
+            }
+        }
+    }
 }
