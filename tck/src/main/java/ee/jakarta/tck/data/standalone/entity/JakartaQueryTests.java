@@ -476,6 +476,26 @@ public class JakartaQueryTests {
         }
     }
 
+    @DisplayName("should return id using id function order by id")
+    @Assertion(id = "1318",
+            strategy = "Execute the query returning only the id attribute order by id")
+    void shouldReturnIdUsingIdFunctionOrderById() {
+
+        try {
+            
+            var fruit = fruits.getFirst();
+            var result = fruitRepository.findByIdUsingIdFunctionOrderById(fruit.getId());
+
+            Assertions.assertThat(result).get().isEqualTo(fruit.getId());
+        } catch (UnsupportedOperationException exp) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable of sorting.
+            } else {
+                throw exp;
+            }
+        }
+    }
+
     private record FruitTuple(String name, Object quantity) {
         static FruitTuple of(Object[] values) {
             return new FruitTuple((String) values[0], values[1]);
