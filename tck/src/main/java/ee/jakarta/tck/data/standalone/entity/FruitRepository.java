@@ -90,4 +90,7 @@ public interface FruitRepository extends BasicRepository<Fruit, String> {
 
     @Query("FROM Fruit WHERE name = :name")
     List<Fruit> findByName(String name);
+
+    @Query("FROM Fruit WHERE quantity > :quantity ORDER BY name ASC")
+    List<Fruit> findByQuantityGreaterThanOrderByNameAsc(@Param("quantity") Long quantity);
 }
