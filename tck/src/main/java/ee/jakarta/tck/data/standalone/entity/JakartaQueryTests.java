@@ -482,7 +482,7 @@ public class JakartaQueryTests {
     void shouldReturnIdUsingIdFunctionOrderById() {
 
         try {
-            
+
             var fruit = fruits.getFirst();
             var result = fruitRepository.findByIdUsingIdFunctionOrderById(fruit.getId());
 
