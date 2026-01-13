@@ -496,6 +496,28 @@ public class JakartaQueryTests {
         }
     }
 
+    @DisplayName("should return empty result when condition does not match any entity")
+    @Assertion(id = "1318",
+            strategy = "Execute a SELECT query with a valid predicate that does not match any persisted entity, " +
+                    "asserting that the query executes successfully and returns an empty result.")
+    void shouldReturnEmptyWhenConditionDoesNotMatch() {
+
+        try {
+            var result = fruitRepository.findByName("non-existing-fruit");
+
+            Assertions.assertThat(result)
+                    .isNotNull()
+                    .isEmpty();
+
+        } catch (UnsupportedOperationException exp) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable querying by non-key attributes.
+            } else {
+                throw exp;
+            }
+        }
+    }
+
     private record FruitTuple(String name, Object quantity) {
         static FruitTuple of(Object[] values) {
             return new FruitTuple((String) values[0], values[1]);
