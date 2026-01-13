@@ -518,6 +518,41 @@ public class JakartaQueryTests {
         }
     }
 
+    @DisplayName("should apply where condition and order by together")
+    @Assertion(id = "1318",
+            strategy = "Execute a SELECT query combining a WHERE predicate and ORDER BY clause, " +
+                    "asserting that the result is filtered by the predicate and ordered correctly.")
+    void shouldFilterAndOrder() {
+
+        try {
+            var threshold = fruits.getFirst().getQuantity();
+
+            var expected = fruits.stream()
+                    .filter(f -> f.getQuantity() > threshold)
+                    .map(Fruit::getName)
+                    .sorted()
+                    .toList();
+
+            var result = fruitRepository
+                    .findByQuantityGreaterThanOrderByNameAsc(threshold);
+
+            var names = result.stream()
+                    .map(Fruit::getName)
+                    .toList();
+
+            Assertions.assertThat(names)
+                    .isNotNull()
+                    .containsExactlyElementsOf(expected);
+
+        } catch (UnsupportedOperationException exp) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable of filtering + sorting on non-key attributes.
+            } else {
+                throw exp;
+            }
+        }
+    }
+
     private record FruitTuple(String name, Object quantity) {
         static FruitTuple of(Object[] values) {
             return new FruitTuple((String) values[0], values[1]);
