@@ -340,12 +340,13 @@ public class RestrictionTests {
 
     @Assertion(id = "829", strategy = """
             Supply an isNull Restriction to a repository
-            find method.
+            find method, where no entities in the database
+            match and are returned.
             """)
-    public void testIsNullRestriction() {
+    public void testIsNullRestrictionNoneFound() {
         try {
             List<Country> found = countries
-                    .filter(_Country.code.isNull());
+                            .filter(_Country.code.isNull());
 
             assertEquals(0,
                          found.size());
@@ -356,17 +357,24 @@ public class RestrictionTests {
                 throw x;
             }
         }
+    }
 
+    @Assertion(id = "829", strategy = """
+            Supply an isNull Restriction to a repository
+            find method, where some entities in the database
+            match and are returned.
+            """)
+    public void testIsNullRestrictionSomeFound() {
         try {
             List<String> found = countries
-                    .filter(_Country.daylightTimeEnds.isNull())
-                    .stream()
-                    .map(Country::getName)
-                    .collect(Collectors.toList());
-
+                            .filter(_Country.daylightTimeEnds.isNull())
+                            .stream()
+                            .map(Country::getName)
+                            .collect(Collectors.toList());
+        
             assertEquals(150,
                          found.size());
-
+        
             assertEquals(true,
                          found.contains("Burundi"));
             assertEquals(false,
@@ -588,9 +596,10 @@ public class RestrictionTests {
 
     @Assertion(id = "829", strategy = """
             Supply a notNull Restriction to a repository
-            find method.
+            find method, where all entities in the database
+            match and are returned.
             """)
-    public void testNotNullRestriction() {
+    public void testNotNullRestrictionAllFound() {
         try {
             List<String> found = countries
                     .filter(_Country.code.notNull())
@@ -610,6 +619,14 @@ public class RestrictionTests {
                 throw x;
             }
         }
+    }
+
+    @Assertion(id = "829", strategy = """
+            Supply a notNull Restriction to a repository
+            find method, where some entities in the database
+            match and are returned.
+            """)
+    public void testNotNullRestrictionSomeFound() {
 
         try {
             List<String> found = countries
