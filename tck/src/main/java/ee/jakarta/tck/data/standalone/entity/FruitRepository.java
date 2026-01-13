@@ -88,4 +88,6 @@ public interface FruitRepository extends BasicRepository<Fruit, String> {
     @Query("SELECT id(this) FROM Fruit WHERE id(this) = :id ORDER BY id(this)")
     Optional<String> findByIdUsingIdFunctionOrderById(@Param("id")  String id);
 
+    @Query("FROM Fruit WHERE name = :name")
+    List<Fruit> findByName(String name);
 }
