@@ -102,7 +102,7 @@ When working with NoSQL databases, the `WHERE` clause behavior may vary dependin
 
 Key-Value Databases:: Support for a `WHERE` clause with an equality restriction on the unique identifier attribute is required. A key-value database might not be capable of processing a query without a `WHERE` clause or with a `WHERE` clause that does not include an equality restriction on the unique identifier attribute.
 
-Wide-Column Databases:: Support for a `WHERE` clause with an equality restriction on the unique identifier attribute is required. A wide-column database might not be capable of processing a query without a `WHERE` clause or with a `WHERE` clause that does not include an equality restriction on the unique identifier attribute.
+Wide-Column Databases:: Support for a `WHERE` clause with an equality restriction on the unique identifier attribute is required. A wide-column database might not be capable of processing a query without a `WHERE` clause or with a `WHERE` clause that restricts an attribute other than the unique identifier.
 
 ==== Update statements
 
