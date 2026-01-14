@@ -499,7 +499,7 @@ public class JakartaQueryTests {
     }
 
     @DisplayName("should return empty result when condition does not match any entity")
-    @Assertion(id = "1318",
+    @Assertion(id = "458",
             strategy = "Execute a SELECT query with a valid predicate that does not match any persisted entity, " +
                     "asserting that the query executes successfully and returns an empty result.")
     void shouldReturnEmptyWhenConditionDoesNotMatch() {
