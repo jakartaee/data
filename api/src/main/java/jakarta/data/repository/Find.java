@@ -20,6 +20,7 @@ package jakarta.data.repository;
 import jakarta.data.Limit;
 import jakarta.data.Order;
 import jakarta.data.Sort;
+import jakarta.data.constraint.Constraint;
 import jakarta.data.page.PageRequest;
 import jakarta.data.restrict.Restriction;
 
@@ -64,8 +65,17 @@ import java.lang.annotation.Target;
  * <li>have exactly the same type and name (the parameter name in the Java source,
  *     or a name assigned by {@link By @By}) as an attribute of the entity class,
  *     or</li>
- * <li>be of type {@link Limit}, {@link Order}, {@link PageRequest},
- *     {@link Restriction}, or {@link Sort}.</li>
+ * <li>have exactly the same name as a persistent attribute of the entity class
+ *     and be of type {@code C<T>}, where {@code C} is {@link Constraint} or any
+ *     interface which extends {@link Constraint} and {@code T} is the type of
+ *     the persistent attribute,
+ * <li>have exactly the same name as a persistent attribute of the entity class,
+ *     be annotated {@link Is @Is(C.class)}, where {@code C} is an interface
+ *     which extends {@link Constraint}, and be of the same type as the parameter
+ *     of a unary static method of {@code C} returning {@code C<T>} where {@code T}
+ *     is the type of the persistent attribute, or
+ * <li>be of type {@link Restriction}, {@link Sort}, {@link Order}, {@link Limit},
+ *     or {@link PageRequest}.</li>
  * </ul>
  * <p>The query is inferred from the method parameters which match attributes of
  * the entity.</p>
