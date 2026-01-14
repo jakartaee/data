@@ -31,6 +31,7 @@ import ee.jakarta.tck.data.framework.read.only.FruitPopulator;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
 
 @Standalone
@@ -322,6 +323,32 @@ public class JakartaQueryTests {
         }
     }
 
+    @DisplayName("should test in")
+    @Assertion(id = "458",
+            strategy = "Execute a query that performs an IN comparison of the name " +
+                    "attribute against a Set of multiple values, asserting membership " +
+                    "in the provided set or accepting UnsupportedOperationException.")
+    void shouldInUsingParameterCollection() {
+        try {
+            var sample1 = fruits.getFirst();
+            var sample2 = fruits.get(1);
+            List<Fruit> result = fruitRepository.findNameIn(Set.of(sample1.getName(), sample2.getName()));
+
+            Assertions.assertThat(result)
+                    .isNotEmpty()
+                    .allMatch(fruit -> fruit.getName().equals(sample1.getName())
+                            || fruit.getName().equals(sample2.getName()));
+
+        } catch (UnsupportedOperationException exp) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Key-Value databases might not be capable of in and
+                // Column databases might not be capable querying by attribute that is not a key.
+            } else {
+                throw exp;
+            }
+        }
+    }
+
     @DisplayName("should test AND")
     @Assertion(id = "1318",
             strategy = "Execute a query combining two predicates with AND (name equals and quantity equals), " +
@@ -371,4 +398,167 @@ public class JakartaQueryTests {
             }
         }
     }
+
+    @DisplayName("should test count")
+    @Assertion(id = "458",
+            strategy = "Execute a query that counts all entities in the database, " +
+                    "asserting the count matches the total number of entities " +
+                    "inserted or accepting UnsupportedOperationException.")
+    void shouldCount() {
+
+        try {
+
+            long result = fruitRepository.countAll();
+
+            Assertions.assertThat(result).isEqualTo(fruits.size());
+
+        } catch (UnsupportedOperationException exp) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable of count.
+            } else {
+                throw exp;
+            }
+        }
+    }
+
+    @DisplayName("should count all Fruits using id function")
+    @Assertion(id = "1318",
+            strategy = "Execute a query that performs an equality comparison on the " +
+                    "id attribute using the id function. Because it is an id attribute, all " +
+                    "databases should support it")
+    void shouldFindByIdUsingIdFunction() {
+        var fruit = fruits.getFirst();
+        var result = fruitRepository.findByIdUsingIdFunction(fruit.getId());
+
+        Assertions.assertThat(result).isNotEmpty().get().isEqualTo(fruit);
+    }
+
+    @DisplayName("should return only name attribute order by quantity")
+    @Assertion(id = "458",
+            strategy = "Execute the query returning only the name attribute order by quantity")
+    void shouldReturnName() {
+
+        try {
+            var names = fruits.stream()
+                    .sorted(Comparator.comparingLong(Fruit::getQuantity))
+                    .map(Fruit::getName)
+                    .toArray(String[]::new);
+            var result = fruitRepository.findAllOnlyNameOrderByQuantity();
+
+            Assertions.assertThat(result).isNotEmpty().containsExactly(names);
+        } catch (UnsupportedOperationException exp) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable of sorting.
+            } else {
+                throw exp;
+            }
+        }
+    }
+
+    @DisplayName("should return only name and quantity attributes order by quantity")
+    @Assertion(id = "458",
+            strategy = "Execute the query returning only the name and quantity attributes order by quantity")
+    void shouldReturnNameAndQuantity() {
+
+        try {
+            var tuples = fruits.stream()
+                    .sorted(Comparator.comparing(Fruit::getName))
+                    .map(f -> new FruitTuple(f.getName(), f.getQuantity()))
+                    .toArray(FruitTuple[]::new);
+            var result = fruitRepository.findAllNameAndQuantityOrderByQuantity();
+
+            Assertions.assertThat(result.stream().map(FruitTuple::of))
+                    .isNotEmpty().containsExactly(tuples);
+        } catch (UnsupportedOperationException exp) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable of sorting.
+            } else {
+                throw exp;
+            }
+        }
+    }
+
+    @DisplayName("should return id using id function order by id")
+    @Assertion(id = "458",
+            strategy = "Execute the query returning only the id attribute order by id")
+    void shouldReturnIdUsingIdFunctionOrderById() {
+
+        try {
+
+            var fruit = fruits.getFirst();
+            var result = fruitRepository.findByIdUsingIdFunctionOrderById(fruit.getId());
+
+            Assertions.assertThat(result).get().isEqualTo(fruit.getId());
+        } catch (UnsupportedOperationException exp) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable of sorting.
+            } else {
+                throw exp;
+            }
+        }
+    }
+
+    @DisplayName("should return empty result when condition does not match any entity")
+    @Assertion(id = "458",
+            strategy = "Execute a SELECT query with a valid predicate that does not match any persisted entity, " +
+                    "asserting that the query executes successfully and returns an empty result.")
+    void shouldReturnEmptyWhenConditionDoesNotMatch() {
+
+        try {
+            var result = fruitRepository.findByName("non-existing-fruit");
+
+            Assertions.assertThat(result)
+                    .isNotNull()
+                    .isEmpty();
+
+        } catch (UnsupportedOperationException exp) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable querying by non-key attributes.
+            } else {
+                throw exp;
+            }
+        }
+    }
+
+    @DisplayName("should apply where condition and order by together")
+    @Assertion(id = "458",
+            strategy = "Execute a SELECT query combining a WHERE predicate and ORDER BY clause, " +
+                    "asserting that the result is filtered by the predicate and ordered correctly.")
+    void shouldFilterAndOrder() {
+
+        try {
+            var threshold = fruits.getFirst().getQuantity();
+
+            var expected = fruits.stream()
+                    .filter(f -> f.getQuantity() > threshold)
+                    .map(Fruit::getName)
+                    .sorted()
+                    .toList();
+
+            var result = fruitRepository
+                    .findByQuantityGreaterThanOrderByNameAsc(threshold);
+
+            var names = result.stream()
+                    .map(Fruit::getName)
+                    .toList();
+
+            Assertions.assertThat(names)
+                    .isNotNull()
+                    .containsExactlyElementsOf(expected);
+
+        } catch (UnsupportedOperationException exp) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable of filtering + sorting on non-key attributes.
+            } else {
+                throw exp;
+            }
+        }
+    }
+
+    private record FruitTuple(String name, Object quantity) {
+        static FruitTuple of(Object[] values) {
+            return new FruitTuple((String) values[0], values[1]);
+        }
+    }
+
 }

@@ -20,7 +20,9 @@ import jakarta.data.repository.Repository;
 import jakarta.data.repository.Param;
 import jakarta.data.repository.Query;
 
+import java.util.Optional;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Stream;
 
 @Repository
@@ -62,11 +64,33 @@ public interface FruitRepository extends BasicRepository<Fruit, String> {
     @Query("FROM Fruit WHERE name IN (:name1, :name2)")
     List<Fruit> findNameIn(@Param("name1") String name1, @Param("name2")  String name2);
 
+    @Query("FROM Fruit WHERE name IN (:names)")
+    List<Fruit> findNameIn(@Param("names") Set<String> names);
+
     @Query("FROM Fruit WHERE name = :name AND quantity = :quantity")
     List<Fruit> findNameEqualsAndQuantityEquals(@Param("name") String name, @Param("quantity") Long quantity);
 
     @Query("FROM Fruit WHERE name = :name1 OR name = :name2")
     List<Fruit> findNameEqualsORNameEquals(@Param("name1") String name1, @Param("name2")  String name2);
 
+    @Query("SELECT count(this) FROM Fruit")
     long countAll();
+
+    @Query("SELECT name FROM Fruit ORDER BY quantity ASC")
+    List<String> findAllOnlyNameOrderByQuantity();
+
+    @Query("SELECT name, quantity FROM Fruit ORDER BY name ASC")
+    List<Object[]> findAllNameAndQuantityOrderByQuantity();
+
+    @Query("WHERE id(this) = :id")
+    Optional<Fruit> findByIdUsingIdFunction(@Param("id") String id);
+
+    @Query("SELECT id(this) FROM Fruit WHERE id(this) = :id ORDER BY id(this)")
+    Optional<String> findByIdUsingIdFunctionOrderById(@Param("id")  String id);
+
+    @Query("FROM Fruit WHERE name = :name")
+    List<Fruit> findByName(String name);
+
+    @Query("FROM Fruit WHERE quantity > :quantity ORDER BY name ASC")
+    List<Fruit> findByQuantityGreaterThanOrderByNameAsc(@Param("quantity") Long quantity);
 }
