@@ -434,7 +434,7 @@ public class JakartaQueryTests {
     }
 
     @DisplayName("should return only name attribute order by quantity")
-    @Assertion(id = "1318",
+    @Assertion(id = "458",
             strategy = "Execute the query returning only the name attribute order by quantity")
     void shouldReturnName() {
 
