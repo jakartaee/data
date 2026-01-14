@@ -479,7 +479,7 @@ public class JakartaQueryTests {
     }
 
     @DisplayName("should return id using id function order by id")
-    @Assertion(id = "1318",
+    @Assertion(id = "458",
             strategy = "Execute the query returning only the id attribute order by id")
     void shouldReturnIdUsingIdFunctionOrderById() {
 
