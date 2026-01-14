@@ -521,7 +521,7 @@ public class JakartaQueryTests {
     }
 
     @DisplayName("should apply where condition and order by together")
-    @Assertion(id = "1318",
+    @Assertion(id = "458",
             strategy = "Execute a SELECT query combining a WHERE predicate and ORDER BY clause, " +
                     "asserting that the result is filtered by the predicate and ordered correctly.")
     void shouldFilterAndOrder() {
