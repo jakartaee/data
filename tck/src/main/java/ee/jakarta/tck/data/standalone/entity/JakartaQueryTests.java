@@ -401,8 +401,9 @@ public class JakartaQueryTests {
 
     @DisplayName("should test count")
     @Assertion(id = "1318",
-            strategy = "Execute a count all Fruits" +
-                    "asserting every returned entity matches at least one predicate or accepting UnsupportedOperationException.")
+            strategy = "Execute a query that counts all entities in the database, " +
+                    "asserting the count matches the total number of entities " +
+                    "inserted or accepting UnsupportedOperationException.")
     void shouldCount() {
 
         try {
