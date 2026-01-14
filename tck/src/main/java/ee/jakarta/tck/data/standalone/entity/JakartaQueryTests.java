@@ -325,9 +325,9 @@ public class JakartaQueryTests {
 
     @DisplayName("should test in")
     @Assertion(id = "1318",
-            strategy = "Execute an IN comparison on the name attribute with multiple values, this time using Set to " +
-                    "multiple parameters, " +
-                    "asserting membership in the provided set or accepting UnsupportedOperationException.")
+            strategy = "Execute a query that performs an IN comparison of the name " +
+                    "attribute against a Set of multiple values, asserting membership " +
+                    "in the provided set or accepting UnsupportedOperationException.")
     void shouldInUsingParameterCollection() {
         try {
             var sample1 = fruits.getFirst();
