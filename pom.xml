@@ -168,6 +168,15 @@
     <build>
         <pluginManagement>
             <plugins>
+                <!-- 
+                TODO - remove once parent is updated 
+                        https://github.com/eclipse-ee4j/ee4j/pull/115/
+                -->
+                <plugin>
+                    <groupId>org.eclipse.cbi.central</groupId>
+                    <artifactId>central-staging-plugins</artifactId>
+                    <version>1.3.0</version>
+                </plugin>
                 <plugin>
                     <groupId>org.sonarsource.scanner.maven</groupId>
                     <artifactId>sonar-maven-plugin</artifactId>
@@ -472,6 +481,31 @@
                     </plugin>
                 </plugins>
             </build>
+        </profile>
+        
+        <!-- 
+          TODO - remove once parent is updated 
+                 https://github.com/eclipse-ee4j/ee4j/pull/115/
+        -->
+        <profile>
+            <id>staged</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <repositories>
+                <repository>
+                    <name>Nexus staging</name>
+                    <id>Nexus staging</id>
+                    <url>https://repo3.eclipse.org/repository/ee4j-staging/</url>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <!-- TODO - would projects want to stage snapshots as well? -->
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                </repository>
+            </repositories>
         </profile>
     </profiles>
 
