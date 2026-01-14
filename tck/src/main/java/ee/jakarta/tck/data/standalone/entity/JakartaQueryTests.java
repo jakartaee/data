@@ -324,7 +324,7 @@ public class JakartaQueryTests {
     }
 
     @DisplayName("should test in")
-    @Assertion(id = "1318",
+    @Assertion(id = "458",
             strategy = "Execute a query that performs an IN comparison of the name " +
                     "attribute against a Set of multiple values, asserting membership " +
                     "in the provided set or accepting UnsupportedOperationException.")
