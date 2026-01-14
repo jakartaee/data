@@ -400,7 +400,7 @@ public class JakartaQueryTests {
     }
 
     @DisplayName("should test count")
-    @Assertion(id = "1318",
+    @Assertion(id = "458",
             strategy = "Execute a query that counts all entities in the database, " +
                     "asserting the count matches the total number of entities " +
                     "inserted or accepting UnsupportedOperationException.")
