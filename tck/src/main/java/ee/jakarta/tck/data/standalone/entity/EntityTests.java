@@ -2305,12 +2305,12 @@ public class EntityTests {
 
         Page<WholeNumber> page2 = numbers.numberPage(page3.previousPageRequest());
 
-        assertEquals(List.of("42 COMPOSITE √42 >= 6",
-                        "41 PRIME √41 >= 6",
-                        "40 COMPOSITE √40 >= 6",
-                        "39 COMPOSITE √39 >= 6",
-                        "38 COMPOSITE √38 >= 6",
-                        "37 PRIME √37 >= 6"),
+        assertEquals(List.of("57 COMPOSITE √57 >= 7",
+                        "56 COMPOSITE √56 >= 7",
+                        "55 COMPOSITE √55 >= 7",
+                        "54 COMPOSITE √54 >= 7",
+                        "53 PRIME √53 >= 7",
+                        "52 COMPOSITE √52 >= 7"),
                 page2.stream()
                         .map(WholeNumber::toString)
                         .collect(Collectors.toList()));
