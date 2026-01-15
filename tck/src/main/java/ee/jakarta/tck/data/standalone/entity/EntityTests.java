@@ -2270,12 +2270,12 @@ public class EntityTests {
             }
         }
 
-        assertEquals(List.of("36 COMPOSITE √36 >= 6",
-                        "31 PRIME √31 >= 5",
-                        "30 COMPOSITE √30 >= 5",
-                        "29 PRIME √29 >= 5",
-                        "28 COMPOSITE √28 >= 5",
-                        "27 COMPOSITE √27 >= 5"),
+        assertEquals(List.of("51 COMPOSITE √51 >= 7",
+                        "50 COMPOSITE √50 >= 7",
+                        "49 COMPOSITE √49 >= 7",
+                        "48 COMPOSITE √48 >= 6",
+                        " 47 PRIME √47 >= 6",
+                        "46 COMPOSITE √46 >= 6"),
                 page3.stream()
                         .map(WholeNumber::toString)
                         .collect(Collectors.toList()));
