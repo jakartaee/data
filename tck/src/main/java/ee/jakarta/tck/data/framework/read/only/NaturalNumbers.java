@@ -143,7 +143,7 @@ public interface NaturalNumbers extends BasicRepository<NaturalNumber, Long>, Id
 
     @Query("SELECT numTypeOrdinal, floorOfSquareRoot, id" +
             " FROM  NaturalNumber" +
-            " WHERE numBitsRequired=floorOfSquareRoot" +
+            " WHERE numBitsRequired= 3" +
             " ORDER BY id DESC")
     Page<WholeNumber> numberPage(PageRequest pageReq);
 
