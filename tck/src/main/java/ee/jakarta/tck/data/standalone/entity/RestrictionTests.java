@@ -857,4 +857,37 @@ public class RestrictionTests {
             }
         }
     }
+
+    @Assertion(id = "829", strategy = """
+            Supply the negated unrestricted Restriction to a
+            repository find method to retrieve no entities.
+            """)
+    public void testUnmatchable() {
+        List<Country> found =
+                countries.filter(Restrict.not(Restrict.unrestricted()));
+
+        assertEquals(0,
+                     found.size());
+    }
+
+    @Assertion(id = "829", strategy = """
+            Supply the unrestricted Restriction to a repository
+            find method to retrieve all entities.
+            """)
+    public void testUnrestricted() {
+        try {
+            List<Country> found = countries.filter(Restrict.unrestricted());
+
+            assertEquals(CountryPopulator.EXPECTED_TOTAL,
+                         found.size());
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable of find
+                // without restrictions.
+            } else {
+                throw x;
+            }
+        }
+    }
+
 }
