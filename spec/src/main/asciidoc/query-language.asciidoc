@@ -50,7 +50,7 @@ Key-Value Databases:: Support for the equality restriction on the unique identif
 
 Wide-Column Databases:: Support for equality restriction and the inequality restriction on the `Id` attribute is required. Support for restrictions on other entity attributes is not required. These operations typically work only with the `Id` by default but might be compatible for other entity attributes if secondary indexes are configured in the database schema.
 
-Graph and Document Databases:: Support for all equality and inequality operators is required.
+Graph and Document Databases:: Support for all equality and inequality operators is required when one of the operands is a value. Some Graph and Document databases might not be capable of comparisons when both of the operands are entity attributes.
 
 ==== Sorting and ordering
 
