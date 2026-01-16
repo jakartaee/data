@@ -1,4 +1,4 @@
-// Copyright (c) 2022,2025 Contributors to the Eclipse Foundation
+// Copyright (c) 2022,2026 Contributors to the Eclipse Foundation
 //
 // This program and the accompanying materials are made available under the
 // terms of the Eclipse Public License v. 2.0 which is available at
@@ -323,7 +323,7 @@ NOTE: Support for entity associations is not required by this specification.
 
 === Entity names and persistent attribute names
 
-Entities and their persistent attributes may be referenced by name in the query language defined in <<Jakarta Data Query Language>>.
+Entities and their persistent attributes may be referenced by name in the query language defined in <<Jakarta Common Query Language>>.
 
 ==== Entity names
 
