@@ -81,6 +81,104 @@ public class RestrictionTests {
     private final DatabaseType type = TestProperty.databaseType.getDatabaseType();
 
     @Assertion(id = "829", strategy = """
+            Supply a composite ALL restriction to a repository
+            find method, where the ALL restriction includes only
+            a single restrictions that results must match.
+            """)
+    public void testAllOf1Restriction() {
+        List<Country> found =
+                countries.filter(Restrict.all(_Country.code.equalTo("MN")));
+
+        assertEquals(1, found.size());
+
+        Country country = found.get(0);
+
+        assertEquals("MN",
+                     country.getCode());
+        assertEquals("Mongolia",
+                     country.getName());
+        assertEquals(Region.ASIA,
+                     country.getRegion());
+        assertEquals(1553556L,
+                     country.getArea());
+        assertEquals(3543677L,
+                     country.getPopulation());
+        assertEquals(56474000000L,
+                     country.getGdp());
+        assertEquals(38176424000L,
+                     country.getDebt());
+        assertEquals(null,
+                     country.getDaylightTimeBegins());
+        assertEquals(null,
+                     country.getDaylightTimeEnds());
+        assertEquals("Ulaanbaatar",
+                     country.getCapital().getName());
+        assertEquals(1466125,
+                     country.getCapital().getPopulation());
+    }
+
+    @Assertion(id = "829", strategy = """
+            Supply a composite ALL restriction to a repository
+            find method, where the ALL restriction combines two
+            equality restrictions such that results must match
+            both of the restrictions.
+            """)
+    public void testAllOf2Restrictions() {
+        List<Country> found;
+        try {
+            found = countries.filter(Restrict.all(_Country.code.greaterThan("JM"),
+                                                  _Country.code.lessThan("JR")));
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable of AND.
+                // Key-Value databases might not be capable of >.
+                // Key-Value databases might not be capable of <.
+                return;
+            } else {
+                throw x;
+            }
+        }
+
+        assertEquals(List.of("JO: Jordan",
+                             "JP: Japan"),
+                     found.stream()
+                          .map(c -> c.getCode() + ": " + c.getName())
+                          .sorted()
+                          .toList());
+    }
+
+    @Assertion(id = "829", strategy = """
+            Supply a composite ALL restriction to a repository
+            find method, where the ALL restriction combines three
+            equality restrictions such that results must match
+            all three of the restrictions.
+            """)
+    public void testAllOf3Restrictions() {
+        List<Country> found;
+        try {
+            found = countries.filter(Restrict.all(_Country.code.notNull(),
+                                                  _Country.code.in("FI", "FR", "GR"),
+                                                  _Country.code.notEqualTo("FR")));
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable of AND.
+                // Key-Value databases might not be capable of NOT NULL.
+                // Key-Value databases might not be capable of <>.
+                return;
+            } else {
+                throw x;
+            }
+        }
+
+        assertEquals(List.of("FI: Finland",
+                             "GR: Greece"),
+                     found.stream()
+                          .map(c -> c.getCode() + ": " + c.getName())
+                          .sorted()
+                          .toList());
+    }
+
+    @Assertion(id = "829", strategy = """
             Supply a composite ANY restriction to a repository
             find method, where the ANY restriction includes only
             a single restrictions that results must match.
@@ -223,6 +321,7 @@ public class RestrictionTests {
                              "TL: East Timor"),
                      found.stream()
                           .map(c -> c.getCode() + ": " + c.getName())
+                          .sorted()
                           .toList());
     }
 
@@ -248,7 +347,7 @@ public class RestrictionTests {
                          found);
             } catch (UnsupportedOperationException x) {
                 if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
-                    // Key-Value databases might not be capable of NOT BETWEEN
+                    // Key-Value databases might not be capable of BETWEEN
                 } else {
                     throw x;
                 }
