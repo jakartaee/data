@@ -2262,8 +2262,9 @@ public class EntityTests {
         try {
             page3 = numbers.numberPage(page3Req);
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
                 // Column and Key-Value databases might not be capable of sorting.
+                // NoSQL databases might not be capable of comparing of two entity attributes.
                 return;
             } else {
                 throw x;
