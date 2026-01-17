@@ -741,6 +741,51 @@ public class JakartaQueryTests {
                 }
             }
         }
+
+        @DisplayName("should test AND")
+        @Assertion(id = "1318",
+                strategy = "delete using AND condition")
+        void shouldDeleteUsingAndCondition() {
+
+            try {
+                Fruit fruit = fruits.getFirst();
+                fruitRepository.deleteByNameAndQuantity(fruit.getName(), fruit.getQuantity());
+                TestPropertyUtility.waitForEventualConsistency();
+                List<Fruit> result = fruitRepository.findAll().toList();
+                Assertions.assertThat(result)
+                        .allMatch(f -> !(f.getName().equals(fruit.getName())
+                                && f.getQuantity().equals(fruit.getQuantity())));
+            } catch (UnsupportedOperationException exp) {
+                if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                    // Column and Key-Value databases might not be capable deleting by attribute that is not a key.
+                } else {
+                    throw exp;
+                }
+            }
+        }
+
+        @DisplayName("should test OR")
+        @Assertion(id = "1318",
+                strategy = "delete using OR condition")
+        void shouldDeleteUsingOrCondition() {
+
+            try {
+                Fruit fruit = fruits.getFirst();
+                fruitRepository.deleteByNameOrQuantity(fruit.getName(), fruit.getQuantity());
+                TestPropertyUtility.waitForEventualConsistency();
+                List<Fruit> result = fruitRepository.findAll().toList();
+
+                Assertions.assertThat(result)
+                        .allMatch(f -> !(f.getName().equals(fruit.getName())
+                                || f.getQuantity().equals(fruit.getQuantity())));
+            } catch (UnsupportedOperationException exp) {
+                if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                    // Column and Key-Value databases might not be capable deleting by attribute that is not a key.
+                } else {
+                    throw exp;
+                }
+            }
+        }
     }
 
     private record FruitTuple(String name, Object quantity) {
