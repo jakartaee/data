@@ -42,6 +42,7 @@ import ee.jakarta.tck.data.framework.read.only.Region;
 import ee.jakarta.tck.data.framework.read.only._Country;
 import ee.jakarta.tck.data.framework.utilities.DatabaseType;
 import ee.jakarta.tck.data.framework.utilities.TestProperty;
+import jakarta.data.restrict.Restrict;
 import jakarta.inject.Inject;
 
 /**
@@ -80,6 +81,251 @@ public class RestrictionTests {
     private final DatabaseType type = TestProperty.databaseType.getDatabaseType();
 
     @Assertion(id = "829", strategy = """
+            Supply a composite ALL restriction to a repository
+            find method, where the ALL restriction includes only
+            a single restrictions that results must match.
+            """)
+    public void testAllOf1Restriction() {
+        List<Country> found =
+                countries.filter(Restrict.all(_Country.code.equalTo("MN")));
+
+        assertEquals(1, found.size());
+
+        Country country = found.get(0);
+
+        assertEquals("MN",
+                     country.getCode());
+        assertEquals("Mongolia",
+                     country.getName());
+        assertEquals(Region.ASIA,
+                     country.getRegion());
+        assertEquals(1553556L,
+                     country.getArea());
+        assertEquals(3543677L,
+                     country.getPopulation());
+        assertEquals(56474000000L,
+                     country.getGdp());
+        assertEquals(38176424000L,
+                     country.getDebt());
+        assertEquals(null,
+                     country.getDaylightTimeBegins());
+        assertEquals(null,
+                     country.getDaylightTimeEnds());
+        assertEquals("Ulaanbaatar",
+                     country.getCapital().getName());
+        assertEquals(1466125,
+                     country.getCapital().getPopulation());
+    }
+
+    @Assertion(id = "829", strategy = """
+            Supply a composite ALL restriction to a repository
+            find method, where the ALL restriction combines two
+            equality restrictions such that results must match
+            both of the restrictions.
+            """)
+    public void testAllOf2Restrictions() {
+        List<Country> found;
+        try {
+            found = countries.filter(Restrict.all(_Country.code.greaterThan("JM"),
+                                                  _Country.code.lessThan("JR")));
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable of AND.
+                // Key-Value databases might not be capable of >.
+                // Key-Value databases might not be capable of <.
+                return;
+            } else {
+                throw x;
+            }
+        }
+
+        assertEquals(List.of("JO: Jordan",
+                             "JP: Japan"),
+                     found.stream()
+                          .map(c -> c.getCode() + ": " + c.getName())
+                          .sorted()
+                          .toList());
+    }
+
+    @Assertion(id = "829", strategy = """
+            Supply a composite ALL restriction to a repository
+            find method, where the ALL restriction combines three
+            equality restrictions such that results must match
+            all three of the restrictions.
+            """)
+    public void testAllOf3Restrictions() {
+        List<Country> found;
+        try {
+            found = countries.filter(Restrict.all(_Country.code.notNull(),
+                                                  _Country.code.in("FI", "FR", "GR"),
+                                                  _Country.code.notEqualTo("FR")));
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable of AND.
+                // Key-Value databases might not be capable of NOT NULL.
+                // Key-Value databases might not be capable of <>.
+                return;
+            } else {
+                throw x;
+            }
+        }
+
+        assertEquals(List.of("FI: Finland",
+                             "GR: Greece"),
+                     found.stream()
+                          .map(c -> c.getCode() + ": " + c.getName())
+                          .sorted()
+                          .toList());
+    }
+
+    @Assertion(id = "829", strategy = """
+            Supply a composite ANY restriction to a repository
+            find method, where the ANY restriction includes only
+            a single restrictions that results must match.
+            """)
+    public void testAnyOf1Restriction() {
+        List<Country> found =
+                countries.filter(Restrict.any(_Country.code.equalTo("KE")));
+
+        assertEquals(1, found.size());
+
+        Country country = found.get(0);
+
+        assertEquals("KE",
+                     country.getCode());
+        assertEquals("Kenya",
+                     country.getName());
+        assertEquals(Region.AFRICA,
+                     country.getRegion());
+        assertEquals(569140L,
+                     country.getArea());
+        assertEquals(55751717L,
+                     country.getPopulation());
+        assertEquals(314491000000L,
+                     country.getGdp());
+        assertEquals(170454122000L,
+                     country.getDebt());
+        assertEquals(null,
+                     country.getDaylightTimeBegins());
+        assertEquals(null,
+                     country.getDaylightTimeEnds());
+        assertEquals("Nairobi",
+                     country.getCapital().getName());
+        assertEquals(4397073,
+                     country.getCapital().getPopulation());
+    }
+
+    @Assertion(id = "829", strategy = """
+            Supply a composite ANY restriction to a repository
+            find method, where the ANY restriction combines two
+            equality restrictions such that results can match
+            either of the two restrictions.
+            """)
+    public void testAnyOf2Restrictions() {
+        List<Country> found;
+        try {
+            found = countries.filter(Restrict.any(_Country.code.equalTo("CO"),
+                                                  _Country.code.equalTo("MY")));
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable of Or.
+                return;
+            } else {
+                throw x;
+            }
+        }
+
+        assertEquals(2, found.size());
+
+        Country colombia;
+        Country malaysia;
+        if ("CO".equals(found.get(0).getCode())) {
+            colombia = found.get(0);
+            malaysia = found.get(1);
+        } else {
+            malaysia = found.get(0);
+            colombia = found.get(1);
+        }
+
+        assertEquals("CO",
+                     colombia.getCode());
+        assertEquals("Colombia",
+                     colombia.getName());
+        assertEquals(Region.SOUTH_AMERICA,
+                     colombia.getRegion());
+        assertEquals(1038700L,
+                     colombia.getArea());
+        assertEquals(49842298L,
+                     colombia.getPopulation());
+        assertEquals(978007000000L,
+                     colombia.getGdp());
+        assertEquals(703187033000L,
+                     colombia.getDebt());
+        assertEquals(null,
+                     colombia.getDaylightTimeBegins());
+        assertEquals(null,
+                     colombia.getDaylightTimeEnds());
+        assertEquals("Bogota",
+                     colombia.getCapital().getName());
+        assertEquals(7181469,
+                     colombia.getCapital().getPopulation());
+
+        assertEquals("MY",
+                     malaysia.getCode());
+        assertEquals("Malaysia",
+                     malaysia.getName());
+        assertEquals(Region.ASIA,
+                     malaysia.getRegion());
+        assertEquals(328657L,
+                     malaysia.getArea());
+        assertEquals(34905275L,
+                     malaysia.getPopulation());
+        assertEquals(1153000000000L,
+                     malaysia.getGdp());
+        assertEquals(741379000000L,
+                     malaysia.getDebt());
+        assertEquals(null,
+                     malaysia.getDaylightTimeBegins());
+        assertEquals(null,
+                     malaysia.getDaylightTimeEnds());
+        assertEquals("Kuala Lumpur",
+                     malaysia.getCapital().getName());
+        assertEquals(1782500,
+                     malaysia.getCapital().getPopulation());
+    }
+
+    @Assertion(id = "829", strategy = """
+            Supply a composite ANY restriction to a repository
+            find method, where the ANY restriction combines four
+            equality restrictions such that results can match
+            any of the four restrictions.
+            """)
+    public void testAnyOf4Restrictions() {
+        List<Country> found;
+        try {
+            found = countries.filter(Restrict.any(_Country.code.equalTo("EC"),
+                                                  _Country.code.equalTo("ET"),
+                                                  _Country.code.equalTo("EH"), // no match
+                                                  _Country.code.equalTo("TL")));
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable of Or.
+                return;
+            } else {
+                throw x;
+            }
+        }
+
+        assertEquals(List.of("EC: Ecuador",
+                             "ET: Ethiopia",
+                             "TL: East Timor"),
+                     found.stream()
+                          .map(c -> c.getCode() + ": " + c.getName())
+                          .sorted()
+                          .toList());
+    }
+
+    @Assertion(id = "829", strategy = """
             Supply a between Restriction to a repository
             find method.
             """)
@@ -101,7 +347,7 @@ public class RestrictionTests {
                          found);
             } catch (UnsupportedOperationException x) {
                 if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
-                    // Key-Value databases might not be capable of NOT BETWEEN
+                    // Key-Value databases might not be capable of BETWEEN
                 } else {
                     throw x;
                 }
@@ -710,4 +956,37 @@ public class RestrictionTests {
             }
         }
     }
+
+    @Assertion(id = "829", strategy = """
+            Supply the negated unrestricted Restriction to a
+            repository find method to retrieve no entities.
+            """)
+    public void testUnmatchable() {
+        List<Country> found =
+                countries.filter(Restrict.not(Restrict.unrestricted()));
+
+        assertEquals(0,
+                     found.size());
+    }
+
+    @Assertion(id = "829", strategy = """
+            Supply the unrestricted Restriction to a repository
+            find method to retrieve all entities.
+            """)
+    public void testUnrestricted() {
+        try {
+            List<Country> found = countries.filter(Restrict.unrestricted());
+
+            assertEquals(CountryPopulator.EXPECTED_TOTAL,
+                         found.size());
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable of find
+                // without restrictions.
+            } else {
+                throw x;
+            }
+        }
+    }
+
 }
