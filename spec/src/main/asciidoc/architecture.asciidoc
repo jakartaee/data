@@ -1,4 +1,4 @@
-// Copyright (c) 2022 Contributors to the Eclipse Foundation
+// Copyright (c) 2022,2026 Contributors to the Eclipse Foundation
 //
 // This program and the accompanying materials are made available under the
 // terms of the Eclipse Public License v. 2.0 which is available at
@@ -159,7 +159,7 @@ The previous example illustrates the design of a repository interface which capt
 Jakarta Data provides two core ways to express queries:
 
 - <<Parameter-based automatic query methods,parameter-based automatic query methods>>, that is, `@Find` and `@Delete`, and
-- <<Annotated query methods,annotated query methods>>, that is `@Query` and <<Jakarta Data Query Language>> or Jakarta Persistence Query Language.
+- <<Annotated query methods,annotated query methods>>, that is `@Query` and <<Jakarta Common Query Language>> or Jakarta Persistence Query Language.
 
 Newly written code should use these approaches.
 A typical application based on Jakarta Data uses a mix of both approaches, with the choice of approach depending on the complexity of the query.

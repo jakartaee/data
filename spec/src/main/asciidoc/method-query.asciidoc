@@ -1,4 +1,4 @@
-// Copyright (c) 2022, 2025 Contributors to the Eclipse Foundation
+// Copyright (c) 2022, 2026 Contributors to the Eclipse Foundation
 //
 // This program and the accompanying materials are made available under the
 // terms of the Eclipse Public License v. 2.0 which is available at
@@ -66,7 +66,7 @@ public interface ProductRepository extends BasicRepository<Product, Long> {
 The functionality described here overlaps significantly with both:
 
 - parameter-based automatic query methods, that is, `@Find` and `@Delete`, and
-- annotated query methods, that is `@Query` and Jakarta Data Query Language or Jakarta Persistence Query Language.
+- annotated query methods, that is `@Query` and Jakarta Common Query Language or Jakarta Persistence Query Language.
 
 Therefore, these alternative approaches are strongly preferred for newly-written code.
 
