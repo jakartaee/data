@@ -116,7 +116,12 @@ public interface FruitRepository extends BasicRepository<Fruit, String> {
     void deleteQuantityLesserThanEquals(@Param("quantity") Long quantity);
 
     @Query("DELETE FROM Fruit WHERE name = :names")
-    void deleteByNameIn(@Param("names") List<String> name);
+    void deleteByNameIn(@Param("names") List<String> names);
 
+    @Query("DELETE FROM Fruit WHERE name = :names AND quantity = :quantity")
+    void deleteByNameAndQuantity(@Param("name") String name, @Param("quantity") Long quantity);
 
+    @Query("DELETE FROM Fruit WHERE name = :names OR quantity = :quantity")
+    void deleteByNameOrQuantity(@Param("name") String name, @Param("quantity") Long quantity);
+    
 }
