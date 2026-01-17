@@ -655,6 +655,27 @@ public class JakartaQueryTests {
                 }
             }
         }
+
+        @DisplayName("should delete greater than equals condition")
+        @Assertion(id = "1318",
+                strategy = "delete by quantity greater than equals, verify if entity is deleted")
+        void shouldGte() {
+            try {
+                Fruit fruit = fruits.getFirst();
+                fruitRepository.deleteQuantityGreaterThanEquals(fruit.getQuantity());
+                TestPropertyUtility.waitForEventualConsistency();
+
+                List<Fruit> result = fruitRepository.findAll().toList();
+                Assertions.assertThat(result)
+                        .allMatch(f -> f.getQuantity() < fruit.getQuantity());
+            } catch (UnsupportedOperationException exp) {
+                if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                    // Column and Key-Value databases might not be capable deleting by attribute that is not a key.
+                } else {
+                    throw exp;
+                }
+            }
+        }
     }
 
     private record FruitTuple(String name, Object quantity) {
