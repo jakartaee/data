@@ -95,27 +95,28 @@ public interface FruitRepository extends BasicRepository<Fruit, String> {
     List<Fruit> findByQuantityGreaterThanOrderByNameAsc(@Param("quantity") Long quantity);
 
     @Query("FROM Fruit")
-    void shouldDeleteAll();
+    void deleteAll();
 
     @Query("DELETE FROM Fruit WHERE name = :name")
-    void shouldDeleteByName(@Param("name") String name);
+    void deleteByName(@Param("name") String name);
 
     @Query("DELETE FROM Fruit WHERE name <> :name")
-    void shouldDeleteByNotEqualsName(@Param("name") String name);
+    void deleteByNotEqualsName(@Param("name") String name);
 
     @Query("DELETE FROM Fruit WHERE quantity > :quantity")
-    void shouldDeleteEqualsGreaterThan(@Param("quantity") Long quantity);
+    void deleteEqualsGreaterThan(@Param("quantity") Long quantity);
 
     @Query("DELETE FROM Fruit WHERE quantity >= :quantity")
-    void shouldDeleteQuantityGreaterThanEquals(@Param("quantity") Long quantity);
+    void deleteQuantityGreaterThanEquals(@Param("quantity") Long quantity);
 
     @Query("DELETE FROM Fruit WHERE quantity < :quantity")
-    void shouldDeleteEqualsLesserThan(@Param("quantity") Long quantity);
+    void deleteEqualsLesserThan(@Param("quantity") Long quantity);
 
     @Query("DELETE FROM Fruit WHERE quantity <= :quantity")
-    void shouldDeleteQuantityLesserThanEquals(@Param("quantity") Long quantity);
+    void deleteQuantityLesserThanEquals(@Param("quantity") Long quantity);
 
     @Query("DELETE FROM Fruit WHERE name = :names")
-    void shouldDeleteByNameIn(@Param("names") List<String> name);
+    void deleteByNameIn(@Param("names") List<String> name);
+
 
 }
