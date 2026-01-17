@@ -676,6 +676,48 @@ public class JakartaQueryTests {
                 }
             }
         }
+
+        @DisplayName("should delete lesser condition")
+        @Assertion(id = "1318",
+                strategy = "delete by quantity lesser, verify if entity is deleted")
+        void shouldLt() {
+            try {
+                Fruit fruit = fruits.getFirst();
+                fruitRepository.deleteLesserThan(fruit.getQuantity());
+                TestPropertyUtility.waitForEventualConsistency();
+
+                List<Fruit> result = fruitRepository.findAll().toList();
+                Assertions.assertThat(result)
+                        .allMatch(f -> f.getQuantity() >= fruit.getQuantity());
+            } catch (UnsupportedOperationException exp) {
+                if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                    // Column and Key-Value databases might not be capable deleting by attribute that is not a key.
+                } else {
+                    throw exp;
+                }
+            }
+        }
+
+        @DisplayName("should delete lesser than equals condition")
+        @Assertion(id = "1318",
+                strategy = "delete by quantity lesser than equals, verify if entity is deleted")
+        void shouldLte() {
+            try {
+                Fruit fruit = fruits.getFirst();
+                fruitRepository.deleteQuantityLesserThanEquals(fruit.getQuantity());
+                TestPropertyUtility.waitForEventualConsistency();
+
+                List<Fruit> result = fruitRepository.findAll().toList();
+                Assertions.assertThat(result)
+                        .allMatch(f -> f.getQuantity() > fruit.getQuantity());
+            } catch (UnsupportedOperationException exp) {
+                if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                    // Column and Key-Value databases might not be capable deleting by attribute that is not a key.
+                } else {
+                    throw exp;
+                }
+            }
+        }
     }
 
     private record FruitTuple(String name, Object quantity) {
