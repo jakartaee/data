@@ -123,5 +123,5 @@ public interface FruitRepository extends BasicRepository<Fruit, String> {
 
     @Query("DELETE FROM Fruit WHERE name = :names OR quantity = :quantity")
     void deleteByNameOrQuantity(@Param("name") String name, @Param("quantity") Long quantity);
-    
+
 }
