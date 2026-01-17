@@ -560,6 +560,28 @@ public class JakartaQueryTests {
         }
     }
     }
+
+    @Nested
+    @DisplayName("When execute delete query")
+    class WhenDeleteQuery {
+
+        @AfterEach
+        public void cleanup() {
+            fruitRepository.deleteAll();
+            TestPropertyUtility.waitForEventualConsistency();
+        }
+
+        @DisplayName("should delete all entities")
+        @Assertion(id = "1318",
+                strategy = "Execute the delete all queries, wait for eventual consistency and verify if all entities are deleted")
+        void shouldDeleteAllEntities() {
+            fruitRepository.deleteAll();
+            TestPropertyUtility.waitForEventualConsistency();
+
+            Assertions.assertThat(fruitRepository.findAll().toList()).isEmpty();
+        }
+    }
+
     private record FruitTuple(String name, Object quantity) {
         static FruitTuple of(Object[] values) {
             return new FruitTuple((String) values[0], values[1]);
