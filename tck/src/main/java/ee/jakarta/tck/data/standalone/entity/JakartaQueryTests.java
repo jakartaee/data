@@ -582,6 +582,19 @@ public class JakartaQueryTests {
 
             Assertions.assertThat(fruitRepository.findAll().toList()).isEmpty();
         }
+
+        @DisplayName("should delete by name")
+        @Assertion(id = "1318",
+                strategy = "delete entity by name and wait for eventual consistency, verify if entity is deleted")
+        void shouldDeleteByName() {
+            Fruit fruit = fruits.getFirst();
+            fruitRepository.deleteByName(fruit.getName());
+            TestPropertyUtility.waitForEventualConsistency();
+
+            List<Fruit> result = fruitRepository.findAll().toList();
+            Assertions.assertThat(result)
+                    .allMatch(f -> !fruit.getName().equals(f.getName()));
+        }
     }
 
     private record FruitTuple(String name, Object quantity) {
