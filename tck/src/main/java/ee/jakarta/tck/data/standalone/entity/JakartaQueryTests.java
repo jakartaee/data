@@ -36,6 +36,7 @@ import java.util.logging.Logger;
 
 @Standalone
 @AnyEntity
+@DisplayName("the Jakarta Query Tests integration")
 public class JakartaQueryTests {
 
     public static final Logger log = Logger.getLogger(JakartaQueryTests.class.getCanonicalName());
@@ -60,6 +61,9 @@ public class JakartaQueryTests {
         populator.populate(fruitRepository);
     }
 
+    @Nested
+    @DisplayName("When execute the select statement")
+    class WhendSelectQuery {
     @DisplayName("should find all entities as stream")
     @Assertion(id = "1318",
             strategy = "Execute a repository query using the " +
@@ -554,7 +558,7 @@ public class JakartaQueryTests {
             }
         }
     }
-
+    }
     private record FruitTuple(String name, Object quantity) {
         static FruitTuple of(Object[] values) {
             return new FruitTuple((String) values[0], values[1]);
