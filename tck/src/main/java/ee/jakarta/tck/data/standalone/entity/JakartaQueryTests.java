@@ -718,6 +718,29 @@ public class JakartaQueryTests {
                 }
             }
         }
+
+        @DisplayName("should delete using IN condition")
+        @Assertion(id = "1318",
+                strategy = "delete by name in, verify if entity is deleted")
+        void shouldIn() {
+            try {
+                Fruit fruit = fruits.getFirst();
+                fruitRepository.deleteByNameIn(List.of(fruit.getName(), fruits.get(1).getName()));
+                TestPropertyUtility.waitForEventualConsistency();
+
+                List<Fruit> result = fruitRepository.findAll().toList();
+                Assertions.assertThat(result)
+                        .allMatch(f -> !f.getName().equals(fruit.getName())
+                                ||
+                                !f.getName().equals(fruits.get(1).getName()));
+            } catch (UnsupportedOperationException exp) {
+                if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                    // Column and Key-Value databases might not be capable deleting by attribute that is not a key.
+                } else {
+                    throw exp;
+                }
+            }
+        }
     }
 
     private record FruitTuple(String name, Object quantity) {
