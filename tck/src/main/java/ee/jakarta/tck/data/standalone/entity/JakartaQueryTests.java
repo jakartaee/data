@@ -614,7 +614,7 @@ public class JakartaQueryTests {
             }
         }
 
-        @DisplayName("should delete by name")
+        @DisplayName("should delete not equals condition")
         @Assertion(id = "1318",
                 strategy = "delete entity by name and wait for eventual consistency, verify if entity is deleted")
         void shouldDeleteNeq() {
@@ -626,6 +626,27 @@ public class JakartaQueryTests {
                 List<Fruit> result = fruitRepository.findAll().toList();
                 Assertions.assertThat(result)
                         .allMatch(f -> fruit.getName().equals(f.getName()));
+            } catch (UnsupportedOperationException exp) {
+                if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                    // Column and Key-Value databases might not be capable deleting by attribute that is not a key.
+                } else {
+                    throw exp;
+                }
+            }
+        }
+
+        @DisplayName("should delete greater than condition")
+        @Assertion(id = "1318",
+                strategy = "delete entity by name and wait for eventual consistency, verify if entity is deleted")
+        void shouldGt() {
+            try {
+                Fruit fruit = fruits.getFirst();
+                fruitRepository.deleteQuantityGreaterThan(fruit.getQuantity());
+                TestPropertyUtility.waitForEventualConsistency();
+
+                List<Fruit> result = fruitRepository.findAll().toList();
+                Assertions.assertThat(result)
+                        .allMatch(f -> f.getQuantity() <= fruit.getQuantity());
             } catch (UnsupportedOperationException exp) {
                 if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
                     // Column and Key-Value databases might not be capable deleting by attribute that is not a key.
