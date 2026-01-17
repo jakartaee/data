@@ -586,7 +586,7 @@ public class JakartaQueryTests {
                 Assertions.assertThat(fruitRepository.findAll().toList()).isEmpty();
             } catch (UnsupportedOperationException exp) {
                 if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
-                    // Column and Key-Value databases might not be capable of sorting.
+                    // Column and Key-Value databases might not be capable of delete all the entities
                 } else {
                     throw exp;
                 }
@@ -607,7 +607,7 @@ public class JakartaQueryTests {
                         .allMatch(f -> !fruit.getName().equals(f.getName()));
             } catch (UnsupportedOperationException exp) {
                 if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
-                    // Column and Key-Value databases might not be capable of sorting.
+                    // Column and Key-Value databases might not be capable deleting by attribute that is not a key.
                 } else {
                     throw exp;
                 }
@@ -628,7 +628,7 @@ public class JakartaQueryTests {
                         .allMatch(f -> fruit.getName().equals(f.getName()));
             } catch (UnsupportedOperationException exp) {
                 if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
-                    // Column and Key-Value databases might not be capable of sorting.
+                    // Column and Key-Value databases might not be capable deleting by attribute that is not a key.
                 } else {
                     throw exp;
                 }
