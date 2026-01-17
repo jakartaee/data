@@ -593,10 +593,10 @@ public class JakartaQueryTests {
             }
         }
 
-        @DisplayName("should delete by name")
+        @DisplayName("should delete entities using equals condition")
         @Assertion(id = "1318",
                 strategy = "delete entity by name and wait for eventual consistency, verify if entity is deleted")
-        void shouldDeleteByName() {
+        void shouldDeleteEq() {
             try {
                 Fruit fruit = fruits.getFirst();
                 fruitRepository.deleteByName(fruit.getName());
@@ -617,7 +617,7 @@ public class JakartaQueryTests {
         @DisplayName("should delete by name")
         @Assertion(id = "1318",
                 strategy = "delete entity by name and wait for eventual consistency, verify if entity is deleted")
-        void shouldDeleteByNotEqualsName() {
+        void shouldDeleteNeq() {
             try {
                 Fruit fruit = fruits.getFirst();
                 fruitRepository.deleteByNotEqualsName(fruit.getName());
