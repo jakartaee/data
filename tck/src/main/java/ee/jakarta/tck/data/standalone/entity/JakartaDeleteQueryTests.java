@@ -192,7 +192,7 @@ public class JakartaDeleteQueryTests {
     }
 
     @DisplayName("should delete lesser than equals condition")
-    @Assertion(id = "1318",
+    @Assertion(id = "458",
             strategy = "delete by quantity lesser than equals, verify if entity is deleted")
     void shouldLte() {
         try {
