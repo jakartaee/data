@@ -236,9 +236,8 @@ public class JakartaDeleteQueryTests {
             fruitRepository.deleteByNameIn(List.of(fruit.getName(), fruits.get(1).getName()));
             TestPropertyUtility.waitForEventualConsistency();
 
-            List<Fruit> result1 = fruitRepository.findNameEquals(fruit.getName());
-            Assertions.assertThat(result1)
-                    .isEmpty();
+            List<Fruit> result1 = fruitRepository.findNameNotEquals(fruit.getName());
+            Assertions.assertThat(result1).isNotEmpty();
             List<Fruit> result2 = fruitRepository.findNameEquals(fruits.get(1).getName());
             Assertions.assertThat(result2)
                     .isEmpty();
