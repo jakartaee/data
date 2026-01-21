@@ -63,222 +63,223 @@ public class JakartaDeleteQueryTests {
         var populator = new FruitPopulator();
         populator.populate(fruitRepository);
     }
-       @AfterEach
-        public void cleanup() {
+
+    @AfterEach
+    public void cleanup() {
+        fruitRepository.deleteAll();
+        TestPropertyUtility.waitForEventualConsistency();
+    }
+
+    @DisplayName("should delete all entities")
+    @Assertion(id = "1318",
+            strategy = "Execute the delete all queries, wait for eventual consistency and verify if all entities are deleted")
+    void shouldDeleteAllEntities() {
+
+        try {
             fruitRepository.deleteAll();
             TestPropertyUtility.waitForEventualConsistency();
-        }
 
-        @DisplayName("should delete all entities")
-        @Assertion(id = "1318",
-                strategy = "Execute the delete all queries, wait for eventual consistency and verify if all entities are deleted")
-        void shouldDeleteAllEntities() {
-
-            try {
-                fruitRepository.deleteAll();
-                TestPropertyUtility.waitForEventualConsistency();
-
-                Assertions.assertThat(fruitRepository.findAll().toList()).isEmpty();
-            } catch (UnsupportedOperationException exp) {
-                if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
-                    // Column and Key-Value databases might not be capable of delete all the entities
-                } else {
-                    throw exp;
-                }
+            Assertions.assertThat(fruitRepository.findAll().toList()).isEmpty();
+        } catch (UnsupportedOperationException exp) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable of delete all the entities
+            } else {
+                throw exp;
             }
         }
+    }
 
-        @DisplayName("should delete entities using equals condition")
-        @Assertion(id = "1318",
-                strategy = "delete by name equals, verify if entity is deleted")
-        void shouldDeleteEq() {
-            try {
-                Fruit fruit = fruits.getFirst();
-                fruitRepository.deleteByName(fruit.getName());
-                TestPropertyUtility.waitForEventualConsistency();
+    @DisplayName("should delete entities using equals condition")
+    @Assertion(id = "1318",
+            strategy = "delete by name equals, verify if entity is deleted")
+    void shouldDeleteEq() {
+        try {
+            Fruit fruit = fruits.getFirst();
+            fruitRepository.deleteByName(fruit.getName());
+            TestPropertyUtility.waitForEventualConsistency();
 
-                List<Fruit> result = fruitRepository.findAll().toList();
-                Assertions.assertThat(result)
-                        .allMatch(f -> !fruit.getName().equals(f.getName()));
-            } catch (UnsupportedOperationException exp) {
-                if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
-                    // Column and Key-Value databases might not be capable deleting by attribute that is not a key.
-                } else {
-                    throw exp;
-                }
+            List<Fruit> result = fruitRepository.findAll().toList();
+            Assertions.assertThat(result)
+                    .allMatch(f -> !fruit.getName().equals(f.getName()));
+        } catch (UnsupportedOperationException exp) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable deleting by attribute that is not a key.
+            } else {
+                throw exp;
             }
         }
+    }
 
-        @DisplayName("should delete not equals condition")
-        @Assertion(id = "1318",
-                strategy = "delete by name not equals, verify if entity is deleted")
-        void shouldDeleteNeq() {
-            try {
-                Fruit fruit = fruits.getFirst();
-                fruitRepository.deleteByNotEqualsName(fruit.getName());
-                TestPropertyUtility.waitForEventualConsistency();
+    @DisplayName("should delete not equals condition")
+    @Assertion(id = "1318",
+            strategy = "delete by name not equals, verify if entity is deleted")
+    void shouldDeleteNeq() {
+        try {
+            Fruit fruit = fruits.getFirst();
+            fruitRepository.deleteByNotEqualsName(fruit.getName());
+            TestPropertyUtility.waitForEventualConsistency();
 
-                List<Fruit> result = fruitRepository.findAll().toList();
-                Assertions.assertThat(result)
-                        .allMatch(f -> fruit.getName().equals(f.getName()));
-            } catch (UnsupportedOperationException exp) {
-                if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
-                    // Column and Key-Value databases might not be capable deleting by attribute that is not a key.
-                } else {
-                    throw exp;
-                }
+            List<Fruit> result = fruitRepository.findAll().toList();
+            Assertions.assertThat(result)
+                    .allMatch(f -> fruit.getName().equals(f.getName()));
+        } catch (UnsupportedOperationException exp) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable deleting by attribute that is not a key.
+            } else {
+                throw exp;
             }
         }
+    }
 
-        @DisplayName("should delete greater than condition")
-        @Assertion(id = "1318",
-                strategy = "delete by quantity greater than, verify if entity is deleted")
-        void shouldGt() {
-            try {
-                Fruit fruit = fruits.getFirst();
-                fruitRepository.deleteQuantityGreaterThan(fruit.getQuantity());
-                TestPropertyUtility.waitForEventualConsistency();
+    @DisplayName("should delete greater than condition")
+    @Assertion(id = "1318",
+            strategy = "delete by quantity greater than, verify if entity is deleted")
+    void shouldGt() {
+        try {
+            Fruit fruit = fruits.getFirst();
+            fruitRepository.deleteQuantityGreaterThan(fruit.getQuantity());
+            TestPropertyUtility.waitForEventualConsistency();
 
-                List<Fruit> result = fruitRepository.findAll().toList();
-                Assertions.assertThat(result)
-                        .allMatch(f -> f.getQuantity() <= fruit.getQuantity());
-            } catch (UnsupportedOperationException exp) {
-                if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
-                    // Column and Key-Value databases might not be capable deleting by attribute that is not a key.
-                } else {
-                    throw exp;
-                }
+            List<Fruit> result = fruitRepository.findAll().toList();
+            Assertions.assertThat(result)
+                    .allMatch(f -> f.getQuantity() <= fruit.getQuantity());
+        } catch (UnsupportedOperationException exp) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable deleting by attribute that is not a key.
+            } else {
+                throw exp;
             }
         }
+    }
 
-        @DisplayName("should delete greater than equals condition")
-        @Assertion(id = "1318",
-                strategy = "delete by quantity greater than equals, verify if entity is deleted")
-        void shouldGte() {
-            try {
-                Fruit fruit = fruits.getFirst();
-                fruitRepository.deleteQuantityGreaterThanEquals(fruit.getQuantity());
-                TestPropertyUtility.waitForEventualConsistency();
+    @DisplayName("should delete greater than equals condition")
+    @Assertion(id = "1318",
+            strategy = "delete by quantity greater than equals, verify if entity is deleted")
+    void shouldGte() {
+        try {
+            Fruit fruit = fruits.getFirst();
+            fruitRepository.deleteQuantityGreaterThanEquals(fruit.getQuantity());
+            TestPropertyUtility.waitForEventualConsistency();
 
-                List<Fruit> result = fruitRepository.findAll().toList();
-                Assertions.assertThat(result)
-                        .allMatch(f -> f.getQuantity() < fruit.getQuantity());
-            } catch (UnsupportedOperationException exp) {
-                if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
-                    // Column and Key-Value databases might not be capable deleting by attribute that is not a key.
-                } else {
-                    throw exp;
-                }
+            List<Fruit> result = fruitRepository.findAll().toList();
+            Assertions.assertThat(result)
+                    .allMatch(f -> f.getQuantity() < fruit.getQuantity());
+        } catch (UnsupportedOperationException exp) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable deleting by attribute that is not a key.
+            } else {
+                throw exp;
             }
         }
+    }
 
-        @DisplayName("should delete lesser condition")
-        @Assertion(id = "1318",
-                strategy = "delete by quantity lesser, verify if entity is deleted")
-        void shouldLt() {
-            try {
-                Fruit fruit = fruits.getFirst();
-                fruitRepository.deleteLesserThan(fruit.getQuantity());
-                TestPropertyUtility.waitForEventualConsistency();
+    @DisplayName("should delete lesser condition")
+    @Assertion(id = "1318",
+            strategy = "delete by quantity lesser, verify if entity is deleted")
+    void shouldLt() {
+        try {
+            Fruit fruit = fruits.getFirst();
+            fruitRepository.deleteLesserThan(fruit.getQuantity());
+            TestPropertyUtility.waitForEventualConsistency();
 
-                List<Fruit> result = fruitRepository.findAll().toList();
-                Assertions.assertThat(result)
-                        .allMatch(f -> f.getQuantity() >= fruit.getQuantity());
-            } catch (UnsupportedOperationException exp) {
-                if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
-                    // Column and Key-Value databases might not be capable deleting by attribute that is not a key.
-                } else {
-                    throw exp;
-                }
+            List<Fruit> result = fruitRepository.findAll().toList();
+            Assertions.assertThat(result)
+                    .allMatch(f -> f.getQuantity() >= fruit.getQuantity());
+        } catch (UnsupportedOperationException exp) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable deleting by attribute that is not a key.
+            } else {
+                throw exp;
             }
         }
+    }
 
-        @DisplayName("should delete lesser than equals condition")
-        @Assertion(id = "1318",
-                strategy = "delete by quantity lesser than equals, verify if entity is deleted")
-        void shouldLte() {
-            try {
-                Fruit fruit = fruits.getFirst();
-                fruitRepository.deleteQuantityLesserThanEquals(fruit.getQuantity());
-                TestPropertyUtility.waitForEventualConsistency();
+    @DisplayName("should delete lesser than equals condition")
+    @Assertion(id = "1318",
+            strategy = "delete by quantity lesser than equals, verify if entity is deleted")
+    void shouldLte() {
+        try {
+            Fruit fruit = fruits.getFirst();
+            fruitRepository.deleteQuantityLesserThanEquals(fruit.getQuantity());
+            TestPropertyUtility.waitForEventualConsistency();
 
-                List<Fruit> result = fruitRepository.findAll().toList();
-                Assertions.assertThat(result)
-                        .allMatch(f -> f.getQuantity() > fruit.getQuantity());
-            } catch (UnsupportedOperationException exp) {
-                if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
-                    // Column and Key-Value databases might not be capable deleting by attribute that is not a key.
-                } else {
-                    throw exp;
-                }
+            List<Fruit> result = fruitRepository.findAll().toList();
+            Assertions.assertThat(result)
+                    .allMatch(f -> f.getQuantity() > fruit.getQuantity());
+        } catch (UnsupportedOperationException exp) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable deleting by attribute that is not a key.
+            } else {
+                throw exp;
             }
         }
+    }
 
-        @DisplayName("should delete using IN condition")
-        @Assertion(id = "1318",
-                strategy = "delete by name in, verify if entity is deleted")
-        void shouldIn() {
-            try {
-                Fruit fruit = fruits.getFirst();
-                fruitRepository.deleteByNameIn(List.of(fruit.getName(), fruits.get(1).getName()));
-                TestPropertyUtility.waitForEventualConsistency();
+    @DisplayName("should delete using IN condition")
+    @Assertion(id = "1318",
+            strategy = "delete by name in, verify if entity is deleted")
+    void shouldIn() {
+        try {
+            Fruit fruit = fruits.getFirst();
+            fruitRepository.deleteByNameIn(List.of(fruit.getName(), fruits.get(1).getName()));
+            TestPropertyUtility.waitForEventualConsistency();
 
-                List<Fruit> result = fruitRepository.findAll().toList();
-                Assertions.assertThat(result)
-                        .allMatch(f -> !f.getName().equals(fruit.getName())
-                                ||
-                                !f.getName().equals(fruits.get(1).getName()));
-            } catch (UnsupportedOperationException exp) {
-                if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
-                    // Column and Key-Value databases might not be capable deleting by attribute that is not a key.
-                } else {
-                    throw exp;
-                }
+            List<Fruit> result = fruitRepository.findAll().toList();
+            Assertions.assertThat(result)
+                    .allMatch(f -> !f.getName().equals(fruit.getName())
+                            ||
+                            !f.getName().equals(fruits.get(1).getName()));
+        } catch (UnsupportedOperationException exp) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable deleting by attribute that is not a key.
+            } else {
+                throw exp;
             }
         }
+    }
 
-        @DisplayName("should test AND")
-        @Assertion(id = "1318",
-                strategy = "delete using AND condition")
-        void shouldDeleteUsingAndCondition() {
+    @DisplayName("should test AND")
+    @Assertion(id = "1318",
+            strategy = "delete using AND condition")
+    void shouldDeleteUsingAndCondition() {
 
-            try {
-                Fruit fruit = fruits.getFirst();
-                fruitRepository.deleteByNameAndQuantity(fruit.getName(), fruit.getQuantity());
-                TestPropertyUtility.waitForEventualConsistency();
-                List<Fruit> result = fruitRepository.findAll().toList();
-                Assertions.assertThat(result)
-                        .allMatch(f -> !(f.getName().equals(fruit.getName())
-                                && f.getQuantity().equals(fruit.getQuantity())));
-            } catch (UnsupportedOperationException exp) {
-                if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
-                    // Column and Key-Value databases might not be capable deleting by attribute that is not a key.
-                } else {
-                    throw exp;
-                }
+        try {
+            Fruit fruit = fruits.getFirst();
+            fruitRepository.deleteByNameAndQuantity(fruit.getName(), fruit.getQuantity());
+            TestPropertyUtility.waitForEventualConsistency();
+            List<Fruit> result = fruitRepository.findAll().toList();
+            Assertions.assertThat(result)
+                    .allMatch(f -> !(f.getName().equals(fruit.getName())
+                            && f.getQuantity().equals(fruit.getQuantity())));
+        } catch (UnsupportedOperationException exp) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable deleting by attribute that is not a key.
+            } else {
+                throw exp;
             }
         }
+    }
 
-        @DisplayName("should test OR")
-        @Assertion(id = "1318",
-                strategy = "delete using OR condition")
-        void shouldDeleteUsingOrCondition() {
+    @DisplayName("should test OR")
+    @Assertion(id = "1318",
+            strategy = "delete using OR condition")
+    void shouldDeleteUsingOrCondition() {
 
-            try {
-                Fruit fruit = fruits.getFirst();
-                fruitRepository.deleteByNameOrQuantity(fruit.getName(), fruit.getQuantity());
-                TestPropertyUtility.waitForEventualConsistency();
-                List<Fruit> result = fruitRepository.findAll().toList();
+        try {
+            Fruit fruit = fruits.getFirst();
+            fruitRepository.deleteByNameOrQuantity(fruit.getName(), fruit.getQuantity());
+            TestPropertyUtility.waitForEventualConsistency();
+            List<Fruit> result = fruitRepository.findAll().toList();
 
-                Assertions.assertThat(result)
-                        .allMatch(f -> !(f.getName().equals(fruit.getName())
-                                || f.getQuantity().equals(fruit.getQuantity())));
-            } catch (UnsupportedOperationException exp) {
-                if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
-                    // Column and Key-Value databases might not be capable deleting by attribute that is not a key.
-                } else {
-                    throw exp;
-                }
+            Assertions.assertThat(result)
+                    .allMatch(f -> !(f.getName().equals(fruit.getName())
+                            || f.getQuantity().equals(fruit.getQuantity())));
+        } catch (UnsupportedOperationException exp) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable deleting by attribute that is not a key.
+            } else {
+                throw exp;
             }
         }
+    }
 }
