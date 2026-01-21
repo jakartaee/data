@@ -236,7 +236,7 @@ public class JakartaDeleteQueryTests {
     }
 
     @DisplayName("should test AND")
-    @Assertion(id = "1318",
+    @Assertion(id = "458",
             strategy = "delete using AND condition")
     void shouldDeleteUsingAndCondition() {
 
