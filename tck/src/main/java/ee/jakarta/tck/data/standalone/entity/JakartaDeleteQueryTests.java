@@ -129,7 +129,7 @@ public class JakartaDeleteQueryTests {
     }
 
     @DisplayName("should delete greater than condition")
-    @Assertion(id = "1318",
+    @Assertion(id = "458",
             strategy = "delete by quantity greater than, verify if entity is deleted")
     void shouldGt() {
         try {
