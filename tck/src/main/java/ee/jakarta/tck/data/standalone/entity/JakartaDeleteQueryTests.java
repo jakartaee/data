@@ -31,7 +31,6 @@ import org.junit.jupiter.api.DisplayName;
 import ee.jakarta.tck.data.framework.junit.anno.Assertion;
 import ee.jakarta.tck.data.framework.read.only.FruitPopulator;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
