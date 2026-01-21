@@ -286,7 +286,7 @@ A special parameter controls which query results are returned to the caller of a
 - a `PageRequest` splits results into pages. A parameter of this type must be declared when the repository method returns a `Page` of results, as specified below in <<Offset-based pagination>>, or a `CursoredPage`, as specified in <<Cursor-based pagination>>.
 
 The types `Restriction`, `Sort`, and `Order` are parameterized by an entity type.
-Any special parameter declared with one of these types must be declared with type argument `E` or `? super E` where `E` is the queried entity type.
+Any special parameter declared with one of these types must be declared with type argument `E` or `? super E` where `E` is the queried entity type. Usage of the generic type argument `?` in a special parameter of type `Sort<?>...` is deprecated.
 
 For example, this repository method allows a list of cars to be filtered and sorted by attributes of `Car` or of its supertype `Vehicle`:
 
