@@ -108,7 +108,7 @@ public class JakartaDeleteQueryTests {
     }
 
     @DisplayName("should delete not equals condition")
-    @Assertion(id = "1318",
+    @Assertion(id = "458",
             strategy = "delete by name not equals, verify if entity is deleted")
     void shouldDeleteNeq() {
         try {
