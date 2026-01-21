@@ -250,7 +250,8 @@ public class JakartaDeleteQueryTests {
                             && f.getQuantity().equals(fruit.getQuantity())));
         } catch (UnsupportedOperationException exp) {
             if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
-                // Column and Key-Value databases might not be capable deleting by attribute that is not a key.
+                // Column and Key-Value databases might not be capable of AND.
+                // Column and Key-Value databases might not be capable of querying by an attribute that is not the Id.
             } else {
                 throw exp;
             }
