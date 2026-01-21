@@ -284,11 +284,13 @@ public class JakartaDeleteQueryTests {
             Fruit fruit = fruits.getFirst();
             fruitRepository.deleteByNameOrQuantity(fruit.getName(), fruit.getQuantity());
             TestPropertyUtility.waitForEventualConsistency();
-            List<Fruit> result = fruitRepository.findAll().toList();
 
-            Assertions.assertThat(result)
-                    .allMatch(f -> !(f.getName().equals(fruit.getName())
-                            || f.getQuantity().equals(fruit.getQuantity())));
+            List<Fruit> result1 = fruitRepository.findNameEquals(fruit.getName());
+            Assertions.assertThat(result1)
+                    .isEmpty();
+            List<Fruit> result2 = fruitRepository.findQuantityEquals(fruit.getQuantity());
+            Assertions.assertThat(result2)
+                    .isEmpty();
         } catch (UnsupportedOperationException exp) {
             if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
                 // Column and Key-Value databases might not be capable of OR.
