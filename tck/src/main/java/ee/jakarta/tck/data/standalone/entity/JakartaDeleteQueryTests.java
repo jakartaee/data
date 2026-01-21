@@ -116,9 +116,12 @@ public class JakartaDeleteQueryTests {
             fruitRepository.deleteByNotEqualsName(fruit.getName());
             TestPropertyUtility.waitForEventualConsistency();
 
-            List<Fruit> result = fruitRepository.findAll().toList();
-            Assertions.assertThat(result)
-                    .allMatch(f -> fruit.getName().equals(f.getName()));
+            List<Fruit> result1 = fruitRepository.findNameNotEquals(fruit.getName());
+            Assertions.assertThat(result1)
+                    .isEmpty();
+            List<Fruit> result2 = fruitRepository.findNameEquals(fruit.getName());
+            Assertions.assertThat(result2)
+                    .isNotEmpty();
         } catch (UnsupportedOperationException exp) {
             if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
                 // Column and Key-Value databases might not be capable deleting by attribute that is not a key.
