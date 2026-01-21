@@ -797,6 +797,99 @@ public class RestrictionTests {
     }
 
     @Assertion(id = "829", strategy = """
+            Supply a negated composite ALL restriction to a repository
+            find method, where the negated ALL restriction combines two
+            restrictions such that results must not satisfy both of the
+            two restrictions.
+            """)
+    public void testNotAllRestrictions() {
+        Restriction<Country> restriction =
+                Restrict.all(_Country.code.greaterThanEqual("B"),
+                             _Country.name.greaterThanEqual("B"))
+                        .negate();
+
+        List<Country> found;
+        try {
+            found = countries.filter(restriction);
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Key-Value databases might not be capable of >=.
+                // Column and Key-Value databases might not be capable of AND.
+                // Column and Key-Value databases might not be capable of
+                //   restrictions on attributes that are not the Id.
+                return;
+            } else {
+                throw x;
+            }
+        }
+
+        assertEquals(List.of("AD: Andorra",
+                             "AE: United Arab Emirates",
+                             "AF: Afghanistan",
+                             "AG: Antigua and Barbuda",
+                             "AL: Albania",
+                             "AM: Armenia",
+                             "AO: Angola",
+                             "AR: Argentina",
+                             "AS: American Samoa",
+                             "AT: Austria",
+                             "AU: Australia",
+                             "AW: Aruba",
+                             "AZ: Azerbaijan",
+                             "DZ: Algeria"),
+                     found.stream()
+                          .map(c -> c.getCode() + ": " + c.getName())
+                          .sorted()
+                          .toList());
+    }
+
+    @Assertion(id = "829", strategy = """
+            Supply a negated composite ANY restriction to a repository
+            find method, where the negated ANY restriction combines two
+            restrictions such that results must not match either of the
+            two restrictions.
+            """)
+    public void testNotAnyRestriction() {
+        Restriction<Country> restriction =
+                Restrict.any(_Country.code.lessThan("CA"),
+                             _Country.code.greaterThan("CZ"))
+                        .negate();
+
+        List<Country> found;
+        try {
+            found = countries.filter(restriction);
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Key-Value databases might not be capable of <.
+                // Key-Value databases might not be capable of >.
+                // Column and Key-Value databases might not be capable of OR.
+                return;
+            } else {
+                throw x;
+            }
+        }
+
+        assertEquals(List.of("CA: Canada",
+                             "CD: Congo",
+                             "CF: Central African Republic",
+                             "CH: Switzerland",
+                             "CI: Ivory Coast",
+                             "CL: Chile",
+                             "CM: Cameroon",
+                             "CN: China",
+                             "CO: Colombia",
+                             "CR: Costa Rica",
+                             "CU: Cuba",
+                             "CV: Cape Verde",
+                             "CY: Cyprus",
+                             "CZ: Czech Republic"),
+                     found.stream()
+                          .map(c -> c.getCode() + ": " + c.getName())
+                          .sorted()
+                          .toList());
+    }
+
+    @Assertion(id = "829", strategy = """
             Supply a notBetween Restriction to a repository
             find method.
             """)
