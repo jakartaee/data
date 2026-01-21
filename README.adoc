@@ -132,11 +132,11 @@ List<Product> found = products.findAll(
 );
 ----
 
-== Jakarta Data Query Language (JDQL)
+== Jakarta Common Query Language (JCQL)
 
-Jakarta Data introduces the Jakarta Data Query Language (JDQL), a streamlined query language designed to specify the semantics of query methods within Jakarta Data repositories. Utilizing the `@Query` annotation, JDQL allows developers to define queries straightforwardly and robustly.
+A query language for relational and non-relational data, Jakarta Common Query Language (JCQL), is defined by the Jakarta Query specification. Jakarta Data repository methods can be annotated `@Query` to indicate that the method runs a given JCQL query upon invocation of the method.
 
-JDQL is conceptualized as a subset of the Jakarta Persistence Query Language (JPQL). It inherits its syntax and functionality while being specifically tailored to accommodate the broad spectrum of data storage technologies supported by Jakarta Data. This design approach ensures that JDQL remains compatible with JPQL yet simplifies its implementation across diverse data stores.
+JCQL is conceptualized as a subset of the Jakarta Persistence Query Language (JPQL). It inherits its syntax and functionality while being specifically tailored to accommodate the broad spectrum of data storage technologies supported by Jakarta Data. This design approach ensures that JCQL remains compatible with JPQL yet simplifies its implementation across diverse data stores.
 
 [source,java]
 ----
@@ -153,7 +153,7 @@ public interface BookRepository extends BasicRepository<Book, UUID> {
 }
 ----
 
-*JDQL* supports three primary types of statements, reflecting the core operations typically required for data manipulation and retrieval in applications:
+*JCQL* supports three primary types of statements, reflecting the core operations typically required for data manipulation and retrieval in applications:
 
 * *Select Statements*: Facilitate data retrieval from a data store, allowing for the specification of criteria to filter results.
 * *Update Statements*: This option enables the modification of existing records in the data store based on specified criteria.

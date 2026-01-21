@@ -27,6 +27,7 @@ public class Country {
 
     @jakarta.persistence.Column(nullable = false)
     @jakarta.persistence.Embedded
+    @jakarta.nosql.Column
     private City capital;
 
     @jakarta.nosql.Id

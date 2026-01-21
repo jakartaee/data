@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024,2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2024,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ package jakarta.data.repository;
 import jakarta.data.Limit;
 import jakarta.data.Order;
 import jakarta.data.Sort;
+import jakarta.data.constraint.Constraint;
 import jakarta.data.page.PageRequest;
 import jakarta.data.restrict.Restriction;
 
@@ -64,8 +65,17 @@ import java.lang.annotation.Target;
  * <li>have exactly the same type and name (the parameter name in the Java source,
  *     or a name assigned by {@link By @By}) as an attribute of the entity class,
  *     or</li>
- * <li>be of type {@link Limit}, {@link Order}, {@link PageRequest},
- *     {@link Restriction}, or {@link Sort}.</li>
+ * <li>have exactly the same name as a persistent attribute of the entity class
+ *     and be of type {@code C<T>}, where {@code C} is {@link Constraint} or any
+ *     interface which extends {@link Constraint} and {@code T} is the type of
+ *     the persistent attribute,
+ * <li>have exactly the same name as a persistent attribute of the entity class,
+ *     be annotated {@link Is @Is(C.class)}, where {@code C} is an interface
+ *     which extends {@link Constraint}, and be of the same type as the parameter
+ *     of a unary static method of {@code C} returning {@code C<T>} where {@code T}
+ *     is the type of the persistent attribute, or
+ * <li>be of type {@link Restriction}, {@link Sort}, {@link Order}, {@link Limit},
+ *     or {@link PageRequest}.</li>
  * </ul>
  * <p>The query is inferred from the method parameters which match attributes of
  * the entity.</p>
@@ -130,6 +140,11 @@ import java.lang.annotation.Target;
  *     {@link jakarta.data.exceptions.EmptyResultException}.</li>
  * </ul>
  *
+ * <p>If the Jakarta Data provider is backed by a Jakarta Persistence provider,
+ * an automatic query method annotated {@code Find} can also be annotated
+ * {@code jakarta.persistence.query.ReadQueryOptions} to supply additional
+ * query options that are specific to Jakarta Persistence.</p>
+ *
  * <p>Annotations such as {@code @Find}, {@code @Query}, {@code @Insert}, {@code @Update}, {@code @Delete}, and
  * {@code @Save} are mutually-exclusive. A given method of a repository interface may have at most one {@code @Find}
  * annotation, lifecycle annotation, or query annotation.
@@ -139,6 +154,7 @@ import java.lang.annotation.Target;
  * @see First
  * @see Select
  */
+//TODO switch @code to @link for jakarta.persistence.query.* once Persistence 4.0 M1 is available
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
