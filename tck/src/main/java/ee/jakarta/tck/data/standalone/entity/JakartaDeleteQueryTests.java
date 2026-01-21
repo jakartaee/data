@@ -212,9 +212,12 @@ public class JakartaDeleteQueryTests {
             fruitRepository.deleteQuantityLesserThanEquals(fruit.getQuantity());
             TestPropertyUtility.waitForEventualConsistency();
 
-            List<Fruit> result = fruitRepository.findAll().toList();
-            Assertions.assertThat(result)
-                    .allMatch(f -> f.getQuantity() > fruit.getQuantity());
+            List<Fruit> result1 = fruitRepository.findQuantityLte(fruit.getQuantity());
+            Assertions.assertThat(result1)
+                    .isEmpty();
+            List<Fruit> result2 = fruitRepository.findQuantityGt(fruit.getQuantity());
+            Assertions.assertThat(result2)
+                    .isNotEmpty();
         } catch (UnsupportedOperationException exp) {
             if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
                 // Column and Key-Value databases might not be capable deleting by attribute that is not a key.
