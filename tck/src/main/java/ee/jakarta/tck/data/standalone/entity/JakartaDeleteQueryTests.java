@@ -79,7 +79,7 @@ public class JakartaDeleteQueryTests {
             Assertions.assertThat(fruitRepository.findAll().toList()).isEmpty();
         } catch (UnsupportedOperationException exp) {
             if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
-                // Column and Key-Value databases might not be capable of delete all the entities
+                // Column and Key-Value databases might not be capable of querying without a WHERE clause
             } else {
                 throw exp;
             }
