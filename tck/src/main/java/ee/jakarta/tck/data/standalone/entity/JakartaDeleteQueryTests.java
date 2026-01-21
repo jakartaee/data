@@ -68,8 +68,8 @@ public class JakartaDeleteQueryTests {
     }
 
     @DisplayName("should delete all entities")
-    @Assertion(id = "1318",
-            strategy = "Execute the delete all queries, wait for eventual consistency and verify if all entities are deleted")
+    @Assertion(id = "458",
+            strategy = "Execute a deleteAll query, wait for eventual consistency and verify if all entities are deleted")
     void shouldDeleteAllEntities() {
 
         try {
