@@ -36,6 +36,7 @@ import java.util.logging.Logger;
 
 @Standalone
 @AnyEntity
+@DisplayName("Jakarta Data integration with Jakarta Common Query Language for select operations")
 public class JakartaQueryTests {
 
     public static final Logger log = Logger.getLogger(JakartaQueryTests.class.getCanonicalName());

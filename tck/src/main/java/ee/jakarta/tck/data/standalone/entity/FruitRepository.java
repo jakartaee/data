@@ -93,4 +93,32 @@ public interface FruitRepository extends BasicRepository<Fruit, String> {
 
     @Query("FROM Fruit WHERE quantity > :quantity ORDER BY name ASC")
     List<Fruit> findByQuantityGreaterThanOrderByNameAsc(@Param("quantity") Long quantity);
+
+    @Query("DELETE FROM Fruit WHERE name = :name")
+    void deleteByName(@Param("name") String name);
+
+    @Query("DELETE FROM Fruit WHERE name <> :name")
+    void deleteByNotEqualsName(@Param("name") String name);
+
+    @Query("DELETE FROM Fruit WHERE quantity > :quantity")
+    void deleteQuantityGreaterThan(@Param("quantity") Long quantity);
+
+    @Query("DELETE FROM Fruit WHERE quantity >= :quantity")
+    void deleteQuantityGreaterThanEquals(@Param("quantity") Long quantity);
+
+    @Query("DELETE FROM Fruit WHERE quantity < :quantity")
+    void deleteLesserThan(@Param("quantity") Long quantity);
+
+    @Query("DELETE FROM Fruit WHERE quantity <= :quantity")
+    void deleteQuantityLesserThanEquals(@Param("quantity") Long quantity);
+
+    @Query("DELETE FROM Fruit WHERE name IN (:names)")
+    void deleteByNameIn(@Param("names") List<String> names);
+
+    @Query("DELETE FROM Fruit WHERE name = :name AND quantity = :quantity")
+    void deleteByNameAndQuantity(@Param("name") String name, @Param("quantity") Long quantity);
+
+    @Query("DELETE FROM Fruit WHERE name = :name OR quantity = :quantity")
+    void deleteByNameOrQuantity(@Param("name") String name, @Param("quantity") Long quantity);
+
 }
