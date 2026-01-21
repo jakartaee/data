@@ -213,7 +213,7 @@ public class JakartaDeleteQueryTests {
     }
 
     @DisplayName("should delete using IN condition")
-    @Assertion(id = "1318",
+    @Assertion(id = "458",
             strategy = "delete by name in, verify if entity is deleted")
     void shouldIn() {
         try {
