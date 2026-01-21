@@ -288,9 +288,9 @@ public class JakartaDeleteQueryTests {
             List<Fruit> result1 = fruitRepository.findNameEquals(fruit.getName());
             Assertions.assertThat(result1)
                     .isEmpty();
-            List<Fruit> result2 = fruitRepository.findQuantityEquals(fruit.getQuantity());
+            List<Fruit> result2 = fruitRepository.findQuantityGt(fruit.getQuantity());
             Assertions.assertThat(result2)
-                    .isEmpty();
+                    .isNotEmpty();
         } catch (UnsupportedOperationException exp) {
             if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
                 // Column and Key-Value databases might not be capable of OR.
