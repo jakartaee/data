@@ -47,7 +47,7 @@ public class JakartaUpdateQueryTests {
     public static WebArchive createDeployment() {
         return ShrinkWrap.create(WebArchive.class)
                 .addClasses(JakartaQueryTests.class,
-                        Fruit.class, FruitRepository.class);
+                        Fruit.class, FruitfruitRepositoryclass);
     }
 
     @Inject
@@ -66,110 +66,110 @@ public class JakartaUpdateQueryTests {
 
     @AfterEach
     public void cleanup() {
-        fruitRepository.deleteAll();
+        fruitfruitRepositorydeleteAll();
         TestPropertyUtility.waitForEventualConsistency();
     }
 
     @DisplayName("should update entities using equals condition")
     @Assertion(id = "459", strategy = "update using equals condition")
     void shouldUpdateEq() {
-        repository.updateByNameEquals(UPDATED, "Apple");
+        fruitRepositoryupdateByNameEquals(UPDATED, "Apple");
         TestPropertyUtility.waitForEventualConsistency();
 
-        Assertions.assertThat(repository.findByName(UPDATED)).hasSize(2);
-        Assertions.assertThat(repository.findByName("Apple")).isEmpty();
+        Assertions.assertThat(fruitRepositoryfindByName(UPDATED)).hasSize(2);
+        Assertions.assertThat(fruitRepositoryfindByName("Apple")).isEmpty();
     }
 
     @DisplayName("should update entities using not equals condition")
     @Assertion(id = "459", strategy = "update using not equals condition")
     void shouldUpdateNeq() {
-        repository.updateByNameNotEquals(UPDATED, "Apple");
+        fruitRepositoryupdateByNameNotEquals(UPDATED, "Apple");
         TestPropertyUtility.waitForEventualConsistency();
 
-        Assertions.assertThat(repository.findByName(UPDATED)).hasSize(8);
-        Assertions.assertThat(repository.findByName("Apple")).hasSize(2);
+        Assertions.assertThat(fruitRepositoryfindByName(UPDATED)).hasSize(8);
+        Assertions.assertThat(fruitRepositoryfindByName("Apple")).hasSize(2);
     }
 
     @DisplayName("should update entities using greater than condition")
     @Assertion(id = "459", strategy = "update using greater than condition")
     void shouldUpdateGt() {
-        repository.updateByQuantityGreaterThan(UPDATED, 10L);
+        fruitRepositoryupdateByQuantityGreaterThan(UPDATED, 10L);
         TestPropertyUtility.waitForEventualConsistency();
 
-        Assertions.assertThat(repository.findByName(UPDATED)).hasSize(1);
+        Assertions.assertThat(fruitRepositoryfindByName(UPDATED)).hasSize(1);
     }
 
     @DisplayName("should update entities using less than condition")
     @Assertion(id = "459", strategy = "update using less than condition")
     void shouldUpdateLt() {
-        repository.updateByQuantityLessThan(UPDATED, 5L);
+        fruitRepositoryupdateByQuantityLessThan(UPDATED, 5L);
         TestPropertyUtility.waitForEventualConsistency();
 
-        Assertions.assertThat(repository.findByName(UPDATED)).hasSize(1);
+        Assertions.assertThat(fruitRepositoryfindByName(UPDATED)).hasSize(1);
     }
 
     @DisplayName("should update entities using greater than or equals condition")
     @Assertion(id = "459", strategy = "update using greater than or equals condition")
     void shouldUpdateGte() {
-        repository.updateByQuantityGreaterThanEqual(UPDATED, 10L);
+        fruitRepositoryupdateByQuantityGreaterThanEqual(UPDATED, 10L);
         TestPropertyUtility.waitForEventualConsistency();
 
-        Assertions.assertThat(repository.findByName(UPDATED)).hasSize(5);
+        Assertions.assertThat(fruitRepositoryfindByName(UPDATED)).hasSize(5);
     }
 
     @DisplayName("should update entities using less than or equals condition")
     @Assertion(id = "459", strategy = "update using less than or equals condition")
     void shouldUpdateLte() {
-        repository.updateByQuantityLessThanEqual(UPDATED, 5L);
+        fruitRepositoryupdateByQuantityLessThanEqual(UPDATED, 5L);
         TestPropertyUtility.waitForEventualConsistency();
 
-        Assertions.assertThat(repository.findByName(UPDATED)).hasSize(3);
+        Assertions.assertThat(fruitRepositoryfindByName(UPDATED)).hasSize(3);
     }
 
     @DisplayName("should update entities using between condition")
     @Assertion(id = "459", strategy = "update using between condition")
     void shouldUpdateBetween() {
-        repository.updateByQuantityBetween(UPDATED, 7L, 10L);
+        fruitRepositoryupdateByQuantityBetween(UPDATED, 7L, 10L);
         TestPropertyUtility.waitForEventualConsistency();
 
-        Assertions.assertThat(repository.findByName(UPDATED)).hasSize(6);
+        Assertions.assertThat(fruitRepositoryfindByName(UPDATED)).hasSize(6);
     }
 
     @DisplayName("should update entities using IN condition")
     @Assertion(id = "459", strategy = "update using IN condition")
     void shouldUpdateIn() {
-        repository.updateByNameIn(UPDATED, List.of("Apple", "Banana"));
+        fruitRepositoryupdateByNameIn(UPDATED, List.of("Apple", "Banana"));
         TestPropertyUtility.waitForEventualConsistency();
 
-        Assertions.assertThat(repository.findByName(UPDATED)).hasSize(4);
+        Assertions.assertThat(fruitRepositoryfindByName(UPDATED)).hasSize(4);
     }
 
     @DisplayName("should update entities using NOT IN condition")
     @Assertion(id = "459", strategy = "update using NOT IN condition")
     void shouldUpdateNotIn() {
-        repository.updateByNameNotIn(UPDATED, List.of("Apple"));
+        fruitRepositoryupdateByNameNotIn(UPDATED, List.of("Apple"));
         TestPropertyUtility.waitForEventualConsistency();
 
-        Assertions.assertThat(repository.findByName(UPDATED)).hasSize(8);
-        Assertions.assertThat(repository.findByName("Apple")).hasSize(2);
+        Assertions.assertThat(fruitRepositoryfindByName(UPDATED)).hasSize(8);
+        Assertions.assertThat(fruitRepositoryfindByName("Apple")).hasSize(2);
     }
 
     @DisplayName("should update entities using AND condition")
     @Assertion(id = "459", strategy = "update using AND condition")
     void shouldUpdateAnd() {
-        repository.updateByNameAndQuantity(UPDATED, "Apple", 10L);
+        fruitRepositoryupdateByNameAndQuantity(UPDATED, "Apple", 10L);
         TestPropertyUtility.waitForEventualConsistency();
 
-        Assertions.assertThat(repository.findByName(UPDATED)).hasSize(1);
+        Assertions.assertThat(fruitRepositoryfindByName(UPDATED)).hasSize(1);
     }
 
     @DisplayName("should update entities using OR condition")
     @Assertion(id = "459", strategy = "update using OR condition")
     void shouldUpdateOr() {
-        repository.updateByNameOrQuantity(UPDATED, "Apple", 3L);
+        fruitRepositoryupdateByNameOrQuantity(UPDATED, "Apple", 3L);
         TestPropertyUtility.waitForEventualConsistency();
 
-        Assertions.assertThat(repository.findByName(UPDATED)).hasSize(3);
+        Assertions.assertThat(fruitRepositoryfindByName(UPDATED)).hasSize(3);
     }
 
 }
