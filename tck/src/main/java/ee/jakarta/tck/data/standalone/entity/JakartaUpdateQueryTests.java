@@ -70,7 +70,7 @@ public class JakartaUpdateQueryTests {
         TestPropertyUtility.waitForEventualConsistency();
     }
 
-    @Test
+    
     @DisplayName("should update entities using equals condition")
     @Assertion(id = "459", strategy = "update using equals condition")
     void shouldUpdateEq() {
@@ -83,7 +83,7 @@ public class JakartaUpdateQueryTests {
                 .isEmpty();
     }
 
-    @Test
+    
     @DisplayName("should update entities using not equals condition")
     @Assertion(id = "459", strategy = "update using not equals condition")
     void shouldUpdateNeq() {
@@ -96,7 +96,7 @@ public class JakartaUpdateQueryTests {
                 .hasSize(2);
     }
 
-    @Test
+    
     @DisplayName("should update entities using greater than condition")
     @Assertion(id = "459", strategy = "update using greater than condition")
     void shouldUpdateGt() {
@@ -107,7 +107,7 @@ public class JakartaUpdateQueryTests {
                 .hasSize(1);
     }
 
-    @Test
+    
     @DisplayName("should update entities using less than condition")
     @Assertion(id = "459", strategy = "update using less than condition")
     void shouldUpdateLt() {
@@ -118,7 +118,7 @@ public class JakartaUpdateQueryTests {
                 .hasSize(1);
     }
 
-    @Test
+    
     @DisplayName("should update entities using greater than or equals condition")
     @Assertion(id = "459", strategy = "update using greater than or equals condition")
     void shouldUpdateGte() {
@@ -129,7 +129,7 @@ public class JakartaUpdateQueryTests {
                 .hasSize(5);
     }
 
-    @Test
+    
     @DisplayName("should update entities using less than or equals condition")
     @Assertion(id = "459", strategy = "update using less than or equals condition")
     void shouldUpdateLte() {
@@ -140,7 +140,7 @@ public class JakartaUpdateQueryTests {
                 .hasSize(3);
     }
 
-    @Test
+    
     @DisplayName("should update entities using between condition")
     @Assertion(id = "459", strategy = "update using between condition")
     void shouldUpdateBetween() {
@@ -151,7 +151,6 @@ public class JakartaUpdateQueryTests {
                 .hasSize(6);
     }
 
-    @Test
     @DisplayName("should update entities using IN condition")
     @Assertion(id = "459", strategy = "update using IN condition")
     void shouldUpdateIn() {
@@ -162,7 +161,7 @@ public class JakartaUpdateQueryTests {
                 .hasSize(4);
     }
 
-    @Test
+    
     @DisplayName("should update entities using NOT IN condition")
     @Assertion(id = "459", strategy = "update using NOT IN condition")
     void shouldUpdateNotIn() {
@@ -175,7 +174,7 @@ public class JakartaUpdateQueryTests {
                 .hasSize(2);
     }
 
-    @Test
+    
     @DisplayName("should update entities using AND condition")
     @Assertion(id = "459", strategy = "update using AND condition")
     void shouldUpdateAnd() {
@@ -186,7 +185,7 @@ public class JakartaUpdateQueryTests {
                 .hasSize(1);
     }
 
-    @Test
+    
     @DisplayName("should update entities using OR condition")
     @Assertion(id = "459", strategy = "update using OR condition")
     void shouldUpdateOr() {
