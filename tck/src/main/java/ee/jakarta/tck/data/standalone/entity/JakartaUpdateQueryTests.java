@@ -76,10 +76,8 @@ public class JakartaUpdateQueryTests {
         repository.updateByNameEquals(UPDATED, "Apple");
         TestPropertyUtility.waitForEventualConsistency();
 
-        Assertions.assertThat(repository.findByName(UPDATED))
-                .hasSize(2);
-        Assertions.assertThat(repository.findByName("Apple"))
-                .isEmpty();
+        Assertions.assertThat(repository.findByName(UPDATED)).hasSize(2);
+        Assertions.assertThat(repository.findByName("Apple")).isEmpty();
     }
 
     @DisplayName("should update entities using not equals condition")
@@ -88,10 +86,8 @@ public class JakartaUpdateQueryTests {
         repository.updateByNameNotEquals(UPDATED, "Apple");
         TestPropertyUtility.waitForEventualConsistency();
 
-        Assertions.assertThat(repository.findByName(UPDATED))
-                .hasSize(8);
-        Assertions.assertThat(repository.findByName("Apple"))
-                .hasSize(2);
+        Assertions.assertThat(repository.findByName(UPDATED)).hasSize(8);
+        Assertions.assertThat(repository.findByName("Apple")).hasSize(2);
     }
 
     @DisplayName("should update entities using greater than condition")
@@ -100,8 +96,7 @@ public class JakartaUpdateQueryTests {
         repository.updateByQuantityGreaterThan(UPDATED, 10L);
         TestPropertyUtility.waitForEventualConsistency();
 
-        Assertions.assertThat(repository.findByName(UPDATED))
-                .hasSize(1);
+        Assertions.assertThat(repository.findByName(UPDATED)).hasSize(1);
     }
 
     @DisplayName("should update entities using less than condition")
@@ -110,30 +105,25 @@ public class JakartaUpdateQueryTests {
         repository.updateByQuantityLessThan(UPDATED, 5L);
         TestPropertyUtility.waitForEventualConsistency();
 
-        Assertions.assertThat(repository.findByName(UPDATED))
-                .hasSize(1);
+        Assertions.assertThat(repository.findByName(UPDATED)).hasSize(1);
     }
 
-    
     @DisplayName("should update entities using greater than or equals condition")
     @Assertion(id = "459", strategy = "update using greater than or equals condition")
     void shouldUpdateGte() {
         repository.updateByQuantityGreaterThanEqual(UPDATED, 10L);
         TestPropertyUtility.waitForEventualConsistency();
 
-        Assertions.assertThat(repository.findByName(UPDATED))
-                .hasSize(5);
+        Assertions.assertThat(repository.findByName(UPDATED)).hasSize(5);
     }
 
-    
     @DisplayName("should update entities using less than or equals condition")
     @Assertion(id = "459", strategy = "update using less than or equals condition")
     void shouldUpdateLte() {
         repository.updateByQuantityLessThanEqual(UPDATED, 5L);
         TestPropertyUtility.waitForEventualConsistency();
 
-        Assertions.assertThat(repository.findByName(UPDATED))
-                .hasSize(3);
+        Assertions.assertThat(repository.findByName(UPDATED)).hasSize(3);
     }
 
     @DisplayName("should update entities using between condition")
@@ -142,8 +132,7 @@ public class JakartaUpdateQueryTests {
         repository.updateByQuantityBetween(UPDATED, 7L, 10L);
         TestPropertyUtility.waitForEventualConsistency();
 
-        Assertions.assertThat(repository.findByName(UPDATED))
-                .hasSize(6);
+        Assertions.assertThat(repository.findByName(UPDATED)).hasSize(6);
     }
 
     @DisplayName("should update entities using IN condition")
@@ -152,8 +141,7 @@ public class JakartaUpdateQueryTests {
         repository.updateByNameIn(UPDATED, List.of("Apple", "Banana"));
         TestPropertyUtility.waitForEventualConsistency();
 
-        Assertions.assertThat(repository.findByName(UPDATED))
-                .hasSize(4);
+        Assertions.assertThat(repository.findByName(UPDATED)).hasSize(4);
     }
 
     @DisplayName("should update entities using NOT IN condition")
@@ -162,21 +150,17 @@ public class JakartaUpdateQueryTests {
         repository.updateByNameNotIn(UPDATED, List.of("Apple"));
         TestPropertyUtility.waitForEventualConsistency();
 
-        Assertions.assertThat(repository.findByName(UPDATED))
-                .hasSize(8);
-        Assertions.assertThat(repository.findByName("Apple"))
-                .hasSize(2);
+        Assertions.assertThat(repository.findByName(UPDATED)).hasSize(8);
+        Assertions.assertThat(repository.findByName("Apple")).hasSize(2);
     }
 
-    
     @DisplayName("should update entities using AND condition")
     @Assertion(id = "459", strategy = "update using AND condition")
     void shouldUpdateAnd() {
         repository.updateByNameAndQuantity(UPDATED, "Apple", 10L);
         TestPropertyUtility.waitForEventualConsistency();
 
-        Assertions.assertThat(repository.findByName(UPDATED))
-                .hasSize(1);
+        Assertions.assertThat(repository.findByName(UPDATED)).hasSize(1);
     }
 
     @DisplayName("should update entities using OR condition")
@@ -185,8 +169,7 @@ public class JakartaUpdateQueryTests {
         repository.updateByNameOrQuantity(UPDATED, "Apple", 3L);
         TestPropertyUtility.waitForEventualConsistency();
 
-        Assertions.assertThat(repository.findByName(UPDATED))
-                .hasSize(3);
+        Assertions.assertThat(repository.findByName(UPDATED)).hasSize(3);
     }
 
 }
