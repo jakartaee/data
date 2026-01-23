@@ -17,9 +17,7 @@ package ee.jakarta.tck.data.standalone.entity;
 
 import ee.jakarta.tck.data.framework.junit.anno.AnyEntity;
 import ee.jakarta.tck.data.framework.junit.anno.Standalone;
-import ee.jakarta.tck.data.framework.utilities.DatabaseType;
 import ee.jakarta.tck.data.framework.utilities.TestProperty;
-import ee.jakarta.tck.data.framework.utilities.TestPropertyUtility;
 import jakarta.inject.Inject;
 import org.assertj.core.api.Assertions;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -40,7 +38,6 @@ import java.util.logging.Logger;
 public class JakartaUpdateQueryTests {
 
     public static final Logger log = Logger.getLogger(JakartaQueryTests.class.getCanonicalName());
-
 
     @Deployment
     public static WebArchive createDeployment() {
