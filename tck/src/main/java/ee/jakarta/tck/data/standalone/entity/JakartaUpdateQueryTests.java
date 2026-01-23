@@ -73,7 +73,7 @@ public class JakartaUpdateQueryTests {
     @DisplayName("should update entities using equals condition")
     @Assertion(id = "459", strategy = "update using equals condition")
     void shouldUpdateEq() {
-        fruitRepositoryupdateByNameEquals(UPDATED, "Apple");
+        fruitRepository.updateByNameEquals(UPDATED, "Apple");
         TestPropertyUtility.waitForEventualConsistency();
 
         Assertions.assertThat(fruitRepository.findByName(UPDATED)).hasSize(2);
@@ -129,10 +129,10 @@ public class JakartaUpdateQueryTests {
     @DisplayName("should update entities using between condition")
     @Assertion(id = "459", strategy = "update using between condition")
     void shouldUpdateBetween() {
-        repository.updateByQuantityBetween(UPDATED, 7L, 10L);
+        fruitRepository.updateByQuantityBetween(UPDATED, 7L, 10L);
         TestPropertyUtility.waitForEventualConsistency();
 
-        Assertions.assertThat(repository.findByName(UPDATED)).hasSize(6);
+        Assertions.assertThat(fruitRepository.findByName(UPDATED)).hasSize(6);
     }
 
     @DisplayName("should update entities using IN condition")
