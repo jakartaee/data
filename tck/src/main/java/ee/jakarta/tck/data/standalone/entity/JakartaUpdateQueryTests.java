@@ -41,7 +41,6 @@ public class JakartaUpdateQueryTests {
 
     public static final Logger log = Logger.getLogger(JakartaQueryTests.class.getCanonicalName());
 
-    protected final DatabaseType type = TestProperty.databaseType.getDatabaseType();
 
     @Deployment
     public static WebArchive createDeployment() {
