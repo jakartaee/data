@@ -121,4 +121,51 @@ public interface FruitRepository extends BasicRepository<Fruit, String> {
     @Query("DELETE FROM Fruit WHERE name = :name OR quantity = :quantity")
     void deleteByNameOrQuantity(@Param("name") String name, @Param("quantity") Long quantity);
 
+    @Query("UPDATE Fruit SET name = :updated WHERE name = :name")
+    void updateByNameEquals(@Param("updated") String updated,
+                            @Param("name") String name);
+
+    @Query("UPDATE Fruit SET name = :updated WHERE name <> :name")
+    void updateByNameNotEquals(@Param("updated") String updated,
+                               @Param("name") String name);
+
+    @Query("UPDATE Fruit SET name = :updated WHERE quantity > :quantity")
+    void updateByQuantityGreaterThan(@Param("updated") String updated,
+                                     @Param("quantity") Long quantity);
+
+    @Query("UPDATE Fruit SET name = :updated WHERE quantity < :quantity")
+    void updateByQuantityLessThan(@Param("updated") String updated,
+                                  @Param("quantity") Long quantity);
+
+    @Query("UPDATE Fruit SET name = :updated WHERE quantity >= :quantity")
+    void updateByQuantityGreaterThanEqual(@Param("updated") String updated,
+                                          @Param("quantity") Long quantity);
+
+    @Query("UPDATE Fruit SET name = :updated WHERE quantity <= :quantity")
+    void updateByQuantityLessThanEqual(@Param("updated") String updated,
+                                       @Param("quantity") Long quantity);
+
+    @Query("UPDATE Fruit SET name = :updated WHERE quantity BETWEEN :start AND :end")
+    void updateByQuantityBetween(@Param("updated") String updated,
+                                 @Param("start") Long start,
+                                 @Param("end") Long end);
+
+    @Query("UPDATE Fruit SET name = :updated WHERE name IN :names")
+    void updateByNameIn(@Param("updated") String updated,
+                        @Param("names") List<String> names);
+
+    @Query("UPDATE Fruit SET name = :updated WHERE name NOT IN :names")
+    void updateByNameNotIn(@Param("updated") String updated,
+                           @Param("names") List<String> names);
+
+    @Query("UPDATE Fruit SET name = :updated WHERE name = :name AND quantity = :quantity")
+    void updateByNameAndQuantity(@Param("updated") String updated,
+                                 @Param("name") String name,
+                                 @Param("quantity") Long quantity);
+
+    @Query("UPDATE Fruit SET name = :updated WHERE name = :name OR quantity = :quantity")
+    void updateByNameOrQuantity(@Param("updated") String updated,
+                                @Param("name") String name,
+                                @Param("quantity") Long quantity);
+
 }
