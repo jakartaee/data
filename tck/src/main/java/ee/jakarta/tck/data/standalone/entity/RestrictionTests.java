@@ -43,6 +43,7 @@ import ee.jakarta.tck.data.framework.read.only._Country;
 import ee.jakarta.tck.data.framework.utilities.DatabaseType;
 import ee.jakarta.tck.data.framework.utilities.TestProperty;
 import jakarta.data.restrict.Restrict;
+import jakarta.data.restrict.Restriction;
 import jakarta.inject.Inject;
 
 /**
@@ -172,6 +173,46 @@ public class RestrictionTests {
 
         assertEquals(List.of("FI: Finland",
                              "GR: Greece"),
+                     found.stream()
+                          .map(c -> c.getCode() + ": " + c.getName())
+                          .sorted()
+                          .toList());
+    }
+
+    @Assertion(id = "829", strategy = """
+            Supply a composite ALL restriction to a repository
+            find method, where the ALL restriction combines two
+            ANY restrictions that are nested under it, such that
+            results must satisfy both of the ANY restrictions by
+            satisfying at least one of their respective restrictions.
+            """)
+    public void testAllWithNestedAnyRestrictions() {
+        Restriction<Country> restriction =
+                Restrict.all(Restrict.any(_Country.code.equalTo("IS"),
+                                          _Country.code.in("DO", "GD", "JM", "HT")),
+                             Restrict.any(_Country.code.notEqualTo("JM"),
+                                          _Country.code.notIn("GD", "JM", "IS")));
+
+        List<Country> found;
+        try {
+            found = countries.filter(restriction);
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                // Key-Value databases might not be capable of <>.
+                // Key-Value databases might not be capable of NOT IN
+                // Column and Key-Value databases might not be capable of AND.
+                // Column and Key-Value databases might not be capable of OR.
+                // NoSQL databases might not be capable of ().
+                return;
+            } else {
+                throw x;
+            }
+        }
+
+        assertEquals(List.of("DO: Dominican Republic",
+                             "GD: Grenada",
+                             "HT: Haiti",
+                             "IS: Iceland"),
                      found.stream()
                           .map(c -> c.getCode() + ": " + c.getName())
                           .sorted()
@@ -321,6 +362,70 @@ public class RestrictionTests {
                              "TL: East Timor"),
                      found.stream()
                           .map(c -> c.getCode() + ": " + c.getName())
+                          .sorted()
+                          .toList());
+    }
+
+    @Assertion(id = "829", strategy = """
+            Supply a composite ANY restriction to a repository
+            find method, where the ANY restriction combines three
+            ALL restrictions that are nested under it, such that
+            results must satisy both of the restrictions under ALL
+            for at least one of the restrictions under ANY.
+            """)
+    public void testAnyWithNestedAllRestrictions() {
+        Restriction<Country> restriction =
+                Restrict.any(Restrict.all(_Country.name.notNull(),
+                                          _Country.name.between("Tunisia", "Turkmenistan")),
+                             Restrict.all(_Country.region.equalTo(Region.EUROPE),
+                                          _Country.population.greaterThanEqual(5000000L),
+                                          _Country.population.lessThan(10000000L)),
+                             Restrict.all(_Country.region.in(Region.AFRICA, Region.ASIA),
+                                          _Country.area.greaterThan(2000000L)));
+
+        List<Country> found;
+        try {
+            found = countries.filter(restriction);
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
+                // Key-Value databases might not be capable of NOT NULL.
+                // Key-Value databases might not be capable of >
+                // Key-Value databases might not be capable of >=
+                // Key-Value databases might not be capable of <
+                // Column and Key-Value databases might not be capable of AND.
+                // Column and Key-Value databases might not be capable of OR.
+                // Column and Key-Value databases might not be capable of
+                //   restrictions on attributes that are not the Id.
+                // NoSQL databases might not be capable of ().
+                return;
+            } else {
+                throw x;
+            }
+        }
+
+        assertEquals(List.of("Algeria",
+                             "Austria",
+                             "Belarus",
+                             "Bulgaria",
+                             "China",
+                             "Congo",
+                             "Denmark",
+                             "Finland",
+                             "Hungary",
+                             "India",
+                             "Ireland",
+                             "Kazakhstan",
+                             "Norway",
+                             "Russia",
+                             "Saudi Arabia",
+                             "Serbia",
+                             "Slovakia",
+                             "Switzerland",
+                             "Tunisia",
+                             "Turkey",
+                             "Turkmenistan"),
+                     found.stream()
+                          .map(Country::getName)
                           .sorted()
                           .toList());
     }
@@ -689,6 +794,99 @@ public class RestrictionTests {
                     throw x;
                 }
             }
+    }
+
+    @Assertion(id = "829", strategy = """
+            Supply a negated composite ALL restriction to a repository
+            find method, where the negated ALL restriction combines two
+            restrictions such that results must not satisfy both of the
+            two restrictions.
+            """)
+    public void testNotAllRestrictions() {
+        Restriction<Country> restriction =
+                Restrict.all(_Country.code.greaterThanEqual("B"),
+                             _Country.name.greaterThanEqual("B"))
+                        .negate();
+
+        List<Country> found;
+        try {
+            found = countries.filter(restriction);
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Key-Value databases might not be capable of >=.
+                // Column and Key-Value databases might not be capable of AND.
+                // Column and Key-Value databases might not be capable of
+                //   restrictions on attributes that are not the Id.
+                return;
+            } else {
+                throw x;
+            }
+        }
+
+        assertEquals(List.of("AD: Andorra",
+                             "AE: United Arab Emirates",
+                             "AF: Afghanistan",
+                             "AG: Antigua and Barbuda",
+                             "AL: Albania",
+                             "AM: Armenia",
+                             "AO: Angola",
+                             "AR: Argentina",
+                             "AS: American Samoa",
+                             "AT: Austria",
+                             "AU: Australia",
+                             "AW: Aruba",
+                             "AZ: Azerbaijan",
+                             "DZ: Algeria"),
+                     found.stream()
+                          .map(c -> c.getCode() + ": " + c.getName())
+                          .sorted()
+                          .toList());
+    }
+
+    @Assertion(id = "829", strategy = """
+            Supply a negated composite ANY restriction to a repository
+            find method, where the negated ANY restriction combines two
+            restrictions such that results must not match either of the
+            two restrictions.
+            """)
+    public void testNotAnyRestriction() {
+        Restriction<Country> restriction =
+                Restrict.any(_Country.code.lessThan("CA"),
+                             _Country.code.greaterThan("CZ"))
+                        .negate();
+
+        List<Country> found;
+        try {
+            found = countries.filter(restriction);
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Key-Value databases might not be capable of <.
+                // Key-Value databases might not be capable of >.
+                // Column and Key-Value databases might not be capable of OR.
+                return;
+            } else {
+                throw x;
+            }
+        }
+
+        assertEquals(List.of("CA: Canada",
+                             "CD: Congo",
+                             "CF: Central African Republic",
+                             "CH: Switzerland",
+                             "CI: Ivory Coast",
+                             "CL: Chile",
+                             "CM: Cameroon",
+                             "CN: China",
+                             "CO: Colombia",
+                             "CR: Costa Rica",
+                             "CU: Cuba",
+                             "CV: Cape Verde",
+                             "CY: Cyprus",
+                             "CZ: Czech Republic"),
+                     found.stream()
+                          .map(c -> c.getCode() + ": " + c.getName())
+                          .sorted()
+                          .toList());
     }
 
     @Assertion(id = "829", strategy = """
