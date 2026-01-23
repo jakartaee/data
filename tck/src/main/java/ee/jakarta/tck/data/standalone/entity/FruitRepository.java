@@ -150,11 +150,11 @@ public interface FruitRepository extends BasicRepository<Fruit, String> {
                                  @Param("start") Long start,
                                  @Param("end") Long end);
 
-    @Query("UPDATE Fruit SET name = :updated WHERE name IN :names")
+    @Query("UPDATE Fruit SET name = :updated WHERE name IN (:names)")
     void updateByNameIn(@Param("updated") String updated,
                         @Param("names") List<String> names);
 
-    @Query("UPDATE Fruit SET name = :updated WHERE name NOT IN :names")
+    @Query("UPDATE Fruit SET name = :updated WHERE name NOT IN (:names)")
     void updateByNameNotIn(@Param("updated") String updated,
                            @Param("names") List<String> names);
 
