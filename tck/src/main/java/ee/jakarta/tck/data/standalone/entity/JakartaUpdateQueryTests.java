@@ -143,6 +143,8 @@ public class JakartaUpdateQueryTests {
         TestPropertyUtility.waitForEventualConsistency();
 
         Assertions.assertThat(fruitRepository.findByName(UPDATED)).hasSize(4);
+        Assertions.assertThat(fruitRepository.findByName("Apple")).isEmpty();
+        Assertions.assertThat(fruitRepository.findByName("Banana")).isEmpty();
     }
 
     @DisplayName("should update entities using NOT IN condition")
