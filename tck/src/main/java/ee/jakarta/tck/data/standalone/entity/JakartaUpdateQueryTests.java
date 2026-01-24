@@ -39,7 +39,7 @@ import java.util.logging.Logger;
 @DisplayName("Jakarta Data integration with Jakarta Common Query Language for update operations")
 public class JakartaUpdateQueryTests {
 
-    public static final Logger log = Logger.getLogger(JakartaQueryTests.class.getCanonicalName());
+    public static final Logger log = Logger.getLogger(JakartaUpdateQueryTests.class.getCanonicalName());
 
 
     @Deployment
