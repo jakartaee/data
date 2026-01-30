@@ -1166,7 +1166,7 @@ import java.util.Set;
  *
  * <p>In advanced scenarios, the application program might make direct use of
  * some underlying resource acquired by the Jakarta Data provider, such as a
- * {@code javax.sql.DataSource}, {@code java.sql.Connection}, or even an
+ * {@link javax.sql.DataSource}, {@link java.sql.Connection}, or even an
  * {@code jakarta.persistence.EntityManager}.</p>
  *
  * <p>To expose access to an instance of such a resource, the repository
@@ -1416,8 +1416,15 @@ import java.util.Set;
  * }
  * }</pre>
  */
-//TODO switch @code to @link for jakarta.persistence.query.* once Persistence 4.0 M1 is available
+//TODO switch @code to @link for jakarta.persistence.query.* once it is determined
+// why Javadoc links to API from other Jakarta spec modules are not working
 module jakarta.data {
+    // requires static jakarta.inject;      // compile time dependency for Javadoc
+    // requires static jakarta.persistence; // compile time dependency for Javadoc
+    // requires static jakarta.transaction; // compile time dependency for Javadoc
+    // The above is not working for Javadoc links to Jakarta API, even though
+    // the following does work for Javadoc links to JDBC API,
+    requires static java.sql; // compile time dependency for Javadoc
     exports jakarta.data;
     exports jakarta.data.constraint;
     exports jakarta.data.event;
