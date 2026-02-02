@@ -1,0 +1,169 @@
+/*
+ * Copyright (c) 2026 Contributors to the Eclipse Foundation
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v. 2.0, which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
+ *
+ * This Source Code may also be made available under the following Secondary
+ * Licenses when the conditions for such availability set forth in the
+ * Eclipse Public License v. 2.0 are satisfied: GNU General Public License,
+ * version 2 with the GNU Classpath Exception, which is available at
+ * https://www.gnu.org/software/classpath/license.html.
+ *
+ * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
+ */
+package ee.jakarta.tck.data.standalone.entity;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import java.time.LocalDate;
+import java.time.Month;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
+
+import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.junit.jupiter.api.BeforeEach;
+
+import ee.jakarta.tck.data.framework.junit.anno.AnyEntity;
+import ee.jakarta.tck.data.framework.junit.anno.Assertion;
+import ee.jakarta.tck.data.framework.junit.anno.ReadOnlyTest;
+import ee.jakarta.tck.data.framework.junit.anno.Standalone;
+import ee.jakarta.tck.data.framework.read.only.Countries;
+import ee.jakarta.tck.data.framework.read.only.Country;
+import ee.jakarta.tck.data.framework.read.only.CountryPopulator;
+import ee.jakarta.tck.data.framework.read.only.Region;
+import ee.jakarta.tck.data.framework.read.only._Country;
+import ee.jakarta.tck.data.framework.utilities.DatabaseType;
+import ee.jakarta.tck.data.framework.utilities.TestProperty;
+import jakarta.data.restrict.Restrict;
+import jakarta.data.restrict.Restriction;
+import jakarta.inject.Inject;
+
+/**
+ * Tests for various Expressions used within Restrictions that are
+ * supplied to Repository methods.
+ */
+@AnyEntity
+@ReadOnlyTest
+@Standalone
+public class ExpressionTests {
+
+    public static final Logger log =
+            Logger.getLogger(ExpressionTests.class.getCanonicalName());
+
+    @Inject
+    Countries countries;
+
+    private boolean initialized = false;
+
+    // Inject doesn't happen until after BeforeClass, so this is necessary
+    // before each test
+    @BeforeEach
+    public void beforeEach() {
+        assertNotNull(countries);
+        if (!initialized) {
+            CountryPopulator.get().populate(countries);
+            initialized = true;
+        }
+    }
+
+    @Deployment
+    public static WebArchive createDeployment() {
+        return ShrinkWrap.create(WebArchive.class)
+                .addClasses(ExpressionTests.class);
+    }
+
+    private final DatabaseType type = TestProperty.databaseType.getDatabaseType();
+
+    @Assertion(id = "829", strategy = """
+            Use the append TextExpression to append characters to a
+            String attribute that is compared to a value by a
+            repository method restriction.
+            """)
+    public void testAppend() {
+        List<Country> found;
+        found = countries.filter(_Country.code.append("STRALIA")
+                                              .equalTo("AUSTRALIA"));
+
+        assertEquals(List.of("AU: Australia"),
+                     found.stream()
+                          .map(c -> c.getCode() + ": " + c.getName())
+                          .toList());
+    }
+
+    @Assertion(id = "829", strategy = """
+            Use the lower TextExpression to consider characters of a
+            String attribute as lower case when compared to a value.
+            """)
+    public void testLower() {
+        List<Country> found;
+        try {
+            found = countries.filter(_Country.code.lower()
+                                                  .equalTo("be"));
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
+                // TODO Otavio - which categories of NoSQL database must be excluded?
+                // ??? might not be capable of LOWER case comparison.
+                return;
+            } else {
+                throw x;
+            }
+        }
+
+        assertEquals(List.of("BE: Belgium"),
+                     found.stream()
+                          .map(c -> c.getCode() + ": " + c.getName())
+                          .toList());
+    }
+
+    @Assertion(id = "829", strategy = """
+            Use the prepend TextExpression to prepend characters to a
+            String attribute that is compared to a value by a
+            repository method restriction.
+            """)
+    public void testPrepend() {
+        List<Country> found;
+        found = countries.filter(_Country.code.prepend("Jakarta ")
+                                              .equalTo("Jakarta EE"));
+
+        assertEquals(List.of("EE: Estonia"),
+                     found.stream()
+                          .map(c -> c.getCode() + ": " + c.getName())
+                          .toList());
+    }
+
+    @Assertion(id = "829", strategy = """
+            Use the upper TextExpression to consider characters of a
+            String attribute as upper case when compared to a value.
+            """)
+    public void testUpper() {
+        List<Country> found;
+        try {
+            found = countries.filter(_Country.name.upper()
+                                                  .equalTo("UZBEKISTAN"));
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // TODO Otavio - which categories of NoSQL database must be excluded?
+                // ??? might not be capable of UPPER case comparison.
+                // Column and Key-Value databases might not be capable of
+                //  restrictions on attributes that are not the Id.
+                return;
+            } else {
+                throw x;
+            }
+        }
+
+        assertEquals(List.of("UZ: Uzbekistan"),
+                     found.stream()
+                          .map(c -> c.getCode() + ": " + c.getName())
+                          .toList());
+    }
+
+}
