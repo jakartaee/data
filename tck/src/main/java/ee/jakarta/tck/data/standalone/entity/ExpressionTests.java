@@ -18,13 +18,8 @@ package ee.jakarta.tck.data.standalone.entity;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import java.time.LocalDate;
-import java.time.Month;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -38,12 +33,9 @@ import ee.jakarta.tck.data.framework.junit.anno.Standalone;
 import ee.jakarta.tck.data.framework.read.only.Countries;
 import ee.jakarta.tck.data.framework.read.only.Country;
 import ee.jakarta.tck.data.framework.read.only.CountryPopulator;
-import ee.jakarta.tck.data.framework.read.only.Region;
 import ee.jakarta.tck.data.framework.read.only._Country;
 import ee.jakarta.tck.data.framework.utilities.DatabaseType;
 import ee.jakarta.tck.data.framework.utilities.TestProperty;
-import jakarta.data.restrict.Restrict;
-import jakarta.data.restrict.Restriction;
 import jakarta.inject.Inject;
 
 /**
@@ -99,6 +91,54 @@ public class ExpressionTests {
     }
 
     @Assertion(id = "829", strategy = """
+            Use the left TextExpression to compare only the character
+            at the beginning of a String attribute to a value.
+            """)
+    public void testLeft1() {
+        List<Country> found;
+        found = countries.filter(_Country.code.left(1)
+                                              .equalTo("R"));
+
+        assertEquals(List.of("RO: Romania",
+                             "RS: Serbia",
+                             "RU: Russia",
+                             "RW: Rwanda"),
+                     found.stream()
+                          .map(c -> c.getCode() + ": " + c.getName())
+                          .sorted()
+                          .toList());
+    }
+
+    @Assertion(id = "829", strategy = """
+            Use the left TextExpression to compare only the characters
+            at the beginning of a String attribute to a value.
+            """)
+    public void testLeft3() {
+        List<Country> found;
+
+        try {
+            found = countries.filter(_Country.name.left(3)
+                                                  .equalTo("Gre"));
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable of
+                //  restrictions on attributes that are not the Id.
+                return;
+            } else {
+                throw x;
+            }
+        }
+
+        assertEquals(List.of("GD: Grenada",
+                "GL: Greenland",
+                "GR: Greece"),
+        found.stream()
+             .map(c -> c.getCode() + ": " + c.getName())
+             .sorted()
+             .toList());
+    }
+
+    @Assertion(id = "829", strategy = """
             Use the lower TextExpression to consider characters of a
             String attribute as lower case when compared to a value.
             """)
@@ -137,6 +177,55 @@ public class ExpressionTests {
                      found.stream()
                           .map(c -> c.getCode() + ": " + c.getName())
                           .toList());
+    }
+
+    @Assertion(id = "829", strategy = """
+            Use the right TextExpression to compare only the character
+            at the end of a String attribute to a value.
+            """)
+    public void testRight1() {
+        List<Country> found;
+        found = countries.filter(_Country.code.right(1)
+                                              .equalTo("J"));
+
+        assertEquals(List.of("BJ: Benin",
+                             "DJ: Djibouti",
+                             "FJ: Fiji",
+                             "TJ: Tajikistan"),
+                     found.stream()
+                          .map(c -> c.getCode() + ": " + c.getName())
+                          .sorted()
+                          .toList());
+
+    }
+
+    @Assertion(id = "829", strategy = """
+            Use the right TextExpression to compare only the characters
+            at the end of a String attribute to a value.
+            """)
+    public void testRight3() {
+        List<Country> found;
+
+        try {
+            found = countries.filter(_Country.name.right(3)
+                                                  .equalTo("dan"));
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable of
+                //  restrictions on attributes that are not the Id.
+                return;
+            } else {
+                throw x;
+            }
+        }
+
+        assertEquals(List.of("JO: Jordan",
+                "SD: Sudan",
+                "SS: South Sudan"),
+        found.stream()
+             .map(c -> c.getCode() + ": " + c.getName())
+             .sorted()
+             .toList());
     }
 
     @Assertion(id = "829", strategy = """
