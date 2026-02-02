@@ -130,12 +130,68 @@ public class ExpressionTests {
         }
 
         assertEquals(List.of("GD: Grenada",
-                "GL: Greenland",
-                "GR: Greece"),
+                             "GL: Greenland",
+                             "GR: Greece"),
         found.stream()
              .map(c -> c.getCode() + ": " + c.getName())
              .sorted()
              .toList());
+    }
+
+    @Assertion(id = "829", strategy = """
+            Use the length TextExpression to compare the length
+            of a String attribute, which is also the unique identifier,
+            to a value.
+            """)
+    public void testLength2() {
+        List<Country> found;
+        found = countries.filter(_Country.code.length()
+                                              .equalTo(2));
+
+        assertEquals(CountryPopulator.EXPECTED_TOTAL,
+                     found.size());
+    }
+
+    @Assertion(id = "829", strategy = """
+            Use the length TextExpression to compare the length
+            of a String attribute to a value.
+            """)
+    public void testLength5() {
+        List<Country> found;
+        found = countries.filter(_Country.name.length()
+                                              .equalTo(5));
+
+        assertEquals(List.of("AW: Aruba",
+                             "BJ: Benin",
+                             "CD: Congo",
+                             "CL: Chile",
+                             "CN: China",
+                             "EG: Egypt",
+                             "ES: Spain",
+                             "GA: Gabon",
+                             "GH: Ghana",
+                             "HT: Haiti",
+                             "IN: India",
+                             "IT: Italy",
+                             "JP: Japan",
+                             "KE: Kenya",
+                             "LY: Libya",
+                             "MM: Burma",
+                             "MO: Macau",
+                             "MT: Malta",
+                             "NE: Niger",
+                             "NP: Nepal",
+                             "NR: Nauru",
+                             "QA: Qatar",
+                             "SD: Sudan",
+                             "SY: Syria",
+                             "TO: Tonga",
+                             "WS: Samoa",
+                             "YE: Yemen"),
+                     found.stream()
+                          .map(c -> c.getCode() + ": " + c.getName())
+                          .sorted()
+                          .toList());
     }
 
     @Assertion(id = "829", strategy = """
@@ -220,8 +276,8 @@ public class ExpressionTests {
         }
 
         assertEquals(List.of("JO: Jordan",
-                "SD: Sudan",
-                "SS: South Sudan"),
+                             "SD: Sudan",
+                             "SS: South Sudan"),
         found.stream()
              .map(c -> c.getCode() + ": " + c.getName())
              .sorted()
