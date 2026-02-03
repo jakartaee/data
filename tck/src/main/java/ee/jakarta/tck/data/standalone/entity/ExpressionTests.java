@@ -75,11 +75,34 @@ public class ExpressionTests {
     private final DatabaseType type = TestProperty.databaseType.getDatabaseType();
 
     @Assertion(id = "829", strategy = """
-            Use the append TextExpression to append characters to a
-            String attribute that is compared to a value by a
-            repository method restriction.
+            Use the append TextExpression to allow comparison against
+            a String attribute apppending additional characters,
+            supplied as another TextExpression.
             """)
-    public void testAppend() {
+    public void testAppendExpression() {
+        List<Country> found;
+        found = countries.filter(_Country.code.left(1)
+                                              .append(_Country.code.left(1))
+                                              .equalTo(_Country.code));
+
+        assertEquals(List.of("BB: Barbados",
+                             "EE: Estonia",
+                             "GG: Guernsey",
+                             "MM: Burma",
+                             "SS: South Sudan",
+                             "TT: Trinidad and Tobago"),
+                     found.stream()
+                          .map(c -> c.getCode() + ": " + c.getName())
+                          .sorted()
+                          .toList());
+    }
+
+    @Assertion(id = "829", strategy = """
+            Use the append TextExpression to allow comparison against
+            a String attribute appending additional characters,
+            supplied as a literal value.
+            """)
+    public void testAppendValue() {
         List<Country> found;
         found = countries.filter(_Country.code.append("STRALIA")
                                               .equalTo("AUSTRALIA"));
@@ -220,11 +243,47 @@ public class ExpressionTests {
     }
 
     @Assertion(id = "829", strategy = """
-            Use the prepend TextExpression to prepend characters to a
-            String attribute that is compared to a value by a
-            repository method restriction.
+            Use the prepend TextExpression to allow comparison against
+            a String attribute prepending additional characters,
+            supplied as another TextExpression.
             """)
-    public void testPrepend() {
+    public void testPrependExpression() {
+        List<Country> found;
+        try {
+            found = countries.filter(
+                    _Country.name.prepend(_Country.code.right(1))
+                                 .in("ACanada", // code CA ends in A
+                                      "BLebanon", // code LB ends in B
+                                      "CMonaco", // code MC ends in C
+                                      "DBangladesh", // code BD ends in D
+                                      "EEgypt", // code EG doesn't end in E
+                                      "FFiji")); // code FJ doesn't end in F
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable of
+                //  restrictions on attributes that are not the Id.
+                return;
+            } else {
+                throw x;
+            }
+        }
+
+        assertEquals(List.of("BD: Bangladesh",
+                             "CA: Canada",
+                             "LB: Lebanon",
+                             "MC: Monaco"),
+                     found.stream()
+                          .map(c -> c.getCode() + ": " + c.getName())
+                          .sorted()
+                          .toList());
+    }
+
+    @Assertion(id = "829", strategy = """
+            Use the prepend TextExpression to allow comparison against
+            a String attribute prepending additional characters,
+            supplied as a literal.
+            """)
+    public void testPrependValue() {
         List<Country> found;
         found = countries.filter(_Country.code.prepend("Jakarta ")
                                               .equalTo("Jakarta EE"));
