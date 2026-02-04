@@ -123,6 +123,8 @@
         <!-- Allow TCK populator classes to exceed max MethodLength -->
         <!-- Allow static metamodel constants -->
         <checkstyle.excludes>**/*Populator.java,**/_*.java</checkstyle.excludes>
+
+        <central.plugin.version>1.4.0</central.plugin.version>
     </properties>
 
     <dependencyManagement>
@@ -175,7 +177,7 @@
                 <plugin>
                     <groupId>org.eclipse.cbi.central</groupId>
                     <artifactId>central-staging-plugins</artifactId>
-                    <version>1.4.0</version>
+                    <version>${central.plugin.version}</version>
                 </plugin>
                 <!-- 
                 TODO - remove once parent is updated 
