@@ -60,10 +60,7 @@ public class ExpressionTests {
     @BeforeEach
     public void beforeEach() {
         assertNotNull(countries);
-        if (!initialized) {
-            CountryPopulator.get().populate(countries);
-            initialized = true;
-        }
+        CountryPopulator.get().populate(countries);
     }
 
     @Deployment
