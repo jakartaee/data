@@ -53,7 +53,6 @@ public class ExpressionTests {
     @Inject
     Countries countries;
 
-    private boolean initialized = false;
 
     // Inject doesn't happen until after BeforeClass, so this is necessary
     // before each test
