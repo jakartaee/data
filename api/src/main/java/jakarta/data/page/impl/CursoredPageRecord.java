@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024,2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2024,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,8 @@
  *  SPDX-License-Identifier: Apache-2.0
  */
 package jakarta.data.page.impl;
+
+import static jakarta.data.page.impl.PageRecord.copy;
 
 import jakarta.data.messages.Messages;
 import jakarta.data.page.CursoredPage;
@@ -49,6 +51,21 @@ public record CursoredPageRecord<T>
          PageRequest nextPageRequest, PageRequest previousPageRequest)
         implements CursoredPage<T> {
 
+    // Disallow mutation of PageRequest and List fields after creation
+    public CursoredPageRecord(List<T> content,
+                      List<PageRequest.Cursor> cursors,
+                      long totalElements,
+                      PageRequest pageRequest,
+                      PageRequest nextPageRequest,
+                      PageRequest previousPageRequest) {
+        this.content = List.copyOf(content);
+        this.cursors = List.copyOf(cursors);
+        this.totalElements = totalElements;
+        this.pageRequest = copy(pageRequest);
+        this.nextPageRequest = copy(nextPageRequest);
+        this.previousPageRequest = copy(previousPageRequest);
+    }
+
     /**
      * @param content       The page content, that is, the query results, in
      *                      order
@@ -77,6 +94,7 @@ public record CursoredPageRecord<T>
                         pageRequest.requestTotal()));
     }
 
+
     @Override
     public boolean hasContent() {
         return !content.isEmpty();
@@ -102,14 +120,14 @@ public record CursoredPageRecord<T>
     public PageRequest nextPageRequest() {
         if (nextPageRequest == null)
             throw new NoSuchElementException();
-        return nextPageRequest;
+        return copy(nextPageRequest);
     }
 
     @Override
     public PageRequest previousPageRequest() {
         if (previousPageRequest == null)
             throw new NoSuchElementException();
-        return previousPageRequest;
+        return copy(previousPageRequest);
     }
 
     @Override

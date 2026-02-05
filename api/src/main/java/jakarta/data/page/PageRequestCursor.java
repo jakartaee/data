@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022,2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,8 +17,8 @@
  */
 package jakarta.data.page;
 
-import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import jakarta.data.messages.Messages;
 
@@ -29,7 +29,7 @@ class PageRequestCursor implements PageRequest.Cursor {
     /**
      * Key values.
      */
-    private final Object[] key;
+    private final List<Object> key;
 
     /**
      * Constructs a cursor with the specified key values.
@@ -37,45 +37,44 @@ class PageRequestCursor implements PageRequest.Cursor {
      * @param key key values.
      * @throws IllegalArgumentException if no key values are provided.
      */
-    @SuppressWarnings("PMD.ArrayIsStoredDirectly")
     PageRequestCursor(Object... key) {
-        this.key = key;
         if (key == null || key.length == 0) {
             throw new IllegalArgumentException(
                     Messages.get("006.zero.size.key"));
         }
+        this.key = List.of(key);
     }
 
     @Override
     public boolean equals(Object o) {
         return this == o || o != null
                 && o.getClass() == getClass()
-                && Arrays.equals(key, ((PageRequestCursor) o).key);
+                && Objects.equals(key, ((PageRequestCursor) o).key);
     }
 
     @Override
     public Object get(int index) {
-        return key[index];
+        return key.get(index);
     }
 
     @Override
     public int hashCode() {
-        return Arrays.hashCode(key);
+        return key.hashCode();
     }
 
     @Override
     public int size() {
-        return key.length;
+        return key.size();
     }
 
     @Override
     public List<?> elements() {
-        return List.of(key);
+        return key;
     }
 
     @Override
     public String toString() {
         return "Cursor@" + Integer.toHexString(hashCode()) +
-                " with " + key.length + " values";
+                " with " + key.size() + " values";
     }
 }

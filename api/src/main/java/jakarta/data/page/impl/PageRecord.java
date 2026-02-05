@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024,2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2024,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,6 +43,17 @@ public record PageRecord<T>(PageRequest pageRequest, List<T> content,
                             long totalElements, boolean moreResults)
         implements Page<T> {
 
+    // Disallow mutation of PageRequest and List fields after creation
+    public PageRecord(PageRequest pageRequest,
+                      List<T> content,
+                      long totalElements,
+                      boolean moreResults) {
+        this.pageRequest = copy(pageRequest);
+        this.content = List.copyOf(content);
+        this.totalElements = totalElements;
+        this.moreResults = moreResults;
+    }
+
     /**
      * Constructs a new instance, computing the {@link #moreResults} component
      * as {@code true} if the page {@code content} is a full page of results and
@@ -64,6 +75,32 @@ public record PageRecord<T>(PageRequest pageRequest, List<T> content,
                 content.size() == pageRequest.size()
                         && (totalElements < 0
                         || totalElements > pageRequest.size() * pageRequest.page()));
+    }
+
+    /**
+     * Copies a PageRequest.
+     * This method is used by both PageRecord and CursoredPageRecord.
+     *
+     * @param request the PageRequest to copy.
+     * @return copy of a PageRequest.
+     */
+    static PageRequest copy(PageRequest request) {
+        if (request == null)
+            return null;
+
+        return switch (request.mode()) {
+            case CURSOR_NEXT -> PageRequest.afterCursor(request.cursor().get(),
+                                                        request.page(),
+                                                        request.size(),
+                                                        request.requestTotal());
+            case CURSOR_PREVIOUS -> PageRequest.beforeCursor(request.cursor().get(),
+                                                             request.page(),
+                                                             request.size(),
+                                                             request.requestTotal());
+            case OFFSET -> PageRequest.ofPage(request.page(),
+                                              request.size(),
+                                              request.requestTotal());
+        };
     }
 
     @Override
