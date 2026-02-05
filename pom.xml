@@ -124,7 +124,7 @@
         <!-- Allow static metamodel constants -->
         <checkstyle.excludes>**/*Populator.java,**/_*.java</checkstyle.excludes>
 
-        <central.plugin.version>1.4.0</central.plugin.version>
+        <central.plugin.version>1.4.1</central.plugin.version>
     </properties>
 
     <dependencyManagement>
