@@ -17,8 +17,8 @@
  */
 package jakarta.data.page;
 
+import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 import jakarta.data.messages.Messages;
 
@@ -27,54 +27,56 @@ import jakarta.data.messages.Messages;
  */
 class PageRequestCursor implements PageRequest.Cursor {
     /**
-     * Key values.
+     * Composite key that consists of one or more elements.
      */
-    private final List<Object> key;
+    private final Object[] key;
 
     /**
-     * Constructs a cursor with the specified key values.
+     * Constructs a cursor with a composite key that is made up of the
+     * given elements.
      *
-     * @param key key values.
-     * @throws IllegalArgumentException if no key values are provided.
+     * @param key elements that together form a composite key.
+     * @throws IllegalArgumentException if no elements are provided.
      */
+    @SuppressWarnings("PMD.ArrayIsStoredDirectly")
     PageRequestCursor(Object... key) {
+        this.key = key;
         if (key == null || key.length == 0) {
             throw new IllegalArgumentException(
                     Messages.get("006.zero.size.key"));
         }
-        this.key = List.of(key);
     }
 
     @Override
     public boolean equals(Object o) {
         return this == o || o != null
                 && o.getClass() == getClass()
-                && Objects.equals(key, ((PageRequestCursor) o).key);
+                && Arrays.equals(key, ((PageRequestCursor) o).key);
     }
 
     @Override
     public Object get(int index) {
-        return key.get(index);
+        return key[index];
     }
 
     @Override
     public int hashCode() {
-        return key.hashCode();
+        return Arrays.hashCode(key);
     }
 
     @Override
     public int size() {
-        return key.size();
+        return key.length;
     }
 
     @Override
     public List<?> elements() {
-        return key;
+        return List.of(key);
     }
 
     @Override
     public String toString() {
         return "Cursor@" + Integer.toHexString(hashCode()) +
-                " with " + key.size() + " values";
+                " with " + key.length + " values";
     }
 }
