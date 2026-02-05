@@ -48,7 +48,7 @@ public record PageRecord<T>(PageRequest pageRequest, List<T> content,
                       List<T> content,
                       long totalElements,
                       boolean moreResults) {
-        this.pageRequest = copy(pageRequest);
+        this.pageRequest = pageRequest;
         this.content = List.copyOf(content);
         this.totalElements = totalElements;
         this.moreResults = moreResults;
@@ -75,32 +75,6 @@ public record PageRecord<T>(PageRequest pageRequest, List<T> content,
                 content.size() == pageRequest.size()
                         && (totalElements < 0
                         || totalElements > pageRequest.size() * pageRequest.page()));
-    }
-
-    /**
-     * Copies a PageRequest.
-     * This method is used by both PageRecord and CursoredPageRecord.
-     *
-     * @param request the PageRequest to copy.
-     * @return copy of a PageRequest.
-     */
-    static PageRequest copy(PageRequest request) {
-        if (request == null)
-            return null;
-
-        return switch (request.mode()) {
-            case CURSOR_NEXT -> PageRequest.afterCursor(request.cursor().get(),
-                                                        request.page(),
-                                                        request.size(),
-                                                        request.requestTotal());
-            case CURSOR_PREVIOUS -> PageRequest.beforeCursor(request.cursor().get(),
-                                                             request.page(),
-                                                             request.size(),
-                                                             request.requestTotal());
-            case OFFSET -> PageRequest.ofPage(request.page(),
-                                              request.size(),
-                                              request.requestTotal());
-        };
     }
 
     @Override

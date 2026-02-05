@@ -70,6 +70,8 @@ import java.util.Optional;
  * <li>a parameter of type {@code PageRequest} in combination with the
  *     {@link First} annotation or the keyword {@code First}.</li>
  * </ul>
+ *
+ * <p>Instances of {@code PageRequest} are immutable.</p>
  */
 public interface PageRequest {
 

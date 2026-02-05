@@ -17,8 +17,6 @@
  */
 package jakarta.data.page.impl;
 
-import static jakarta.data.page.impl.PageRecord.copy;
-
 import jakarta.data.messages.Messages;
 import jakarta.data.page.CursoredPage;
 import jakarta.data.page.PageRequest;
@@ -61,9 +59,9 @@ public record CursoredPageRecord<T>
         this.content = List.copyOf(content);
         this.cursors = List.copyOf(cursors);
         this.totalElements = totalElements;
-        this.pageRequest = copy(pageRequest);
-        this.nextPageRequest = copy(nextPageRequest);
-        this.previousPageRequest = copy(previousPageRequest);
+        this.pageRequest = pageRequest;
+        this.nextPageRequest = nextPageRequest;
+        this.previousPageRequest = previousPageRequest;
     }
 
     /**
@@ -120,14 +118,14 @@ public record CursoredPageRecord<T>
     public PageRequest nextPageRequest() {
         if (nextPageRequest == null)
             throw new NoSuchElementException();
-        return copy(nextPageRequest);
+        return nextPageRequest;
     }
 
     @Override
     public PageRequest previousPageRequest() {
         if (previousPageRequest == null)
             throw new NoSuchElementException();
-        return copy(previousPageRequest);
+        return previousPageRequest;
     }
 
     @Override
