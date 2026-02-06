@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 Contributors to the Eclipse Foundation
+ * Copyright (c) 2024,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,11 @@ package jakarta.data.page.impl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import jakarta.data.mock.entity.Book;
+import jakarta.data.mock.entity.BookSimulator;
+import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
+import jakarta.data.page.PageRequest.Cursor;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -29,6 +33,64 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 class PageRecordTest {
+
+    @Test
+    @DisplayName("""
+            PageRecord must disallow mutation of its PageRequest and List
+            fields after creation.
+            """)
+    void shouldBeImmutable() {
+
+        PageRequest page4Request =
+                PageRequest.ofPage(4).size(5).withTotal();
+
+        PageRequest originalPage4Request =
+                PageRequest.ofPage(4).size(5).withTotal();
+
+        List<Book> page4Content = BookSimulator.mock(5);
+
+        List<Book> originalPage4Content = page4Content
+                .stream()
+                .map(Book::clone)
+                .toList();
+
+        Page<Book> page4 = new PageRecord<>(page4Request, page4Content, 44);
+
+        // Modify the values that were supplied to the PageRecord constructor
+        page4Request.page(5);
+        page4Request.size(6);
+        page4Request.withoutTotal();
+        page4Request.afterCursor(Cursor.forKey("104"));
+
+        page4Content.remove(3);
+
+        assertSoftly(softly -> {
+            softly.assertThat(page4.pageRequest())
+                .isEqualTo(originalPage4Request);
+
+            softly.assertThat(page4.content())
+                .containsSequence(originalPage4Content);
+        });
+
+        // Modify values returned by the PageRecord
+        page4.pageRequest().page(3);
+        page4.pageRequest().size(7);
+        page4.pageRequest().withoutTotal();
+        page4.pageRequest().beforeCursor(Cursor.forKey("100"));
+
+        List<Book> currrentPage4Content = page4.content();
+
+        assertSoftly(softly -> {
+            softly.assertThat(page4.pageRequest())
+                .isEqualTo(originalPage4Request);
+
+            softly.assertThatThrownBy(() -> currrentPage4Content.remove(4))
+                .isInstanceOf(UnsupportedOperationException.class);
+
+            softly.assertThat(currrentPage4Content)
+                .containsSequence(originalPage4Content);
+        });
+    }
 
     @Test
     @DisplayName("The custom constructor can create instances where moreResults is inferred from the other record components.")

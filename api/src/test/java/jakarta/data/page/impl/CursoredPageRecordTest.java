@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2025,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,15 +17,143 @@
  */
 package jakarta.data.page.impl;
 
+import jakarta.data.mock.entity.Book;
+import jakarta.data.mock.entity.BookSimulator;
+import jakarta.data.page.CursoredPage;
 import jakarta.data.page.PageRequest;
+import jakarta.data.page.PageRequest.Cursor;
+
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 import java.util.List;
 import java.util.NoSuchElementException;
 
 class CursoredPageRecordTest {
+
+    @Test
+    @DisplayName("""
+            CursoredPageRecord must disallow mutation of its PageRequest and
+            List fields after creation.
+            """)
+    void shouldBeImmutable() {
+
+        PageRequest page2Request =
+                PageRequest.ofPage(2).size(5).withoutTotal()
+                           .beforeCursor(Cursor.forKey("100"));
+
+        PageRequest page3Request =
+                PageRequest.ofPage(3).size(5).withoutTotal()
+                           .afterCursor(Cursor.forKey("99"));
+
+        PageRequest page4Request =
+                PageRequest.ofPage(4).size(5).withoutTotal()
+                           .afterCursor(Cursor.forKey("104"));
+
+        PageRequest originalPage2Request =
+                PageRequest.ofPage(2).size(5).withoutTotal()
+                           .beforeCursor(Cursor.forKey("100"));
+
+        PageRequest originalPage3Request =
+                PageRequest.ofPage(3).size(5).withoutTotal()
+                           .afterCursor(Cursor.forKey("99"));
+
+        PageRequest originalPage4Request =
+                PageRequest.ofPage(4).size(5).withoutTotal()
+                           .afterCursor(Cursor.forKey("104"));
+
+        List<Book> page3Content = BookSimulator.mock(5);
+
+        List<Book> originalPage3Content = page3Content
+                .stream()
+                .map(Book::clone)
+                .toList();
+
+        CursoredPage<Book> page3 = new CursoredPageRecord<>(
+                page3Content,
+                page3Content.stream()
+                    .map(Book::getId)
+                    .map(Cursor::forKey)
+                    .toList(),
+                33,
+                page3Request,
+                page4Request,
+                page2Request);
+
+        // Modify the values that were supplied to the CursoredPageRecord
+        // constructor
+        page2Request.page(5);
+        page3Request.page(6);
+        page4Request.page(7);
+
+        page2Request.size(9);
+        page3Request.size(6);
+        page4Request.size(3);
+
+        page2Request.withTotal();
+        page3Request.withTotal();
+        page4Request.withTotal();
+
+        page2Request.beforeCursor(Cursor.forKey("92"));
+        page3Request.afterCursor(Cursor.forKey("103"));
+        page4Request.afterCursor(Cursor.forKey("112"));
+
+        page3Content.remove(4);
+
+        assertSoftly(softly -> {
+            softly.assertThat(page3.previousPageRequest())
+                .isEqualTo(originalPage2Request);
+
+            softly.assertThat(page3.pageRequest())
+                .isEqualTo(originalPage3Request);
+
+            softly.assertThat(page3.nextPageRequest())
+                .isEqualTo(originalPage4Request);
+
+            softly.assertThat(page3.content())
+                .containsSequence(originalPage3Content);
+        });
+
+        // Modify (or attempt to modify) values returned by the
+        // CursoredPageRecord
+        page3.previousPageRequest().page(1);
+        page3.previousPageRequest().size(8);
+        page3.previousPageRequest().withTotal();
+        page3.previousPageRequest().beforeCursor(Cursor.forKey("50"));
+
+        page3.pageRequest().page(4);
+        page3.pageRequest().size(7);
+        page3.pageRequest().withTotal();
+        page3.pageRequest().afterCursor(Cursor.forKey("101"));
+
+        page3.nextPageRequest().page(5);
+        page3.nextPageRequest().size(3);
+        page3.nextPageRequest().withTotal();
+        page3.nextPageRequest().afterCursor(Cursor.forKey("115"));
+
+        List<Book> currentPage3Content = page3.content();
+
+        assertSoftly(softly -> {
+            softly.assertThat(page3.previousPageRequest())
+                .isEqualTo(originalPage2Request);
+
+            softly.assertThat(page3.pageRequest())
+                .isEqualTo(originalPage3Request);
+
+            softly.assertThat(page3.nextPageRequest())
+                .isEqualTo(originalPage4Request);
+
+            softly.assertThatThrownBy(() -> currentPage3Content.remove(1))
+                .isInstanceOf(UnsupportedOperationException.class);
+
+            softly.assertThat(currentPage3Content)
+                .containsSequence(originalPage3Content);
+        });
+    }
+
     @Test
     @DisplayName("should report content and number of elements correctly")
     void shouldReportContentAndSize() {
