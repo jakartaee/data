@@ -70,6 +70,8 @@ import java.util.Optional;
  * <li>a parameter of type {@code PageRequest} in combination with the
  *     {@link First} annotation or the keyword {@code First}.</li>
  * </ul>
+ *
+ * <p>Instances of {@code PageRequest} are immutable.</p>
  */
 public interface PageRequest {
 
@@ -390,9 +392,15 @@ public interface PageRequest {
         String toString();
 
         /**
-         * Obtain an instance of {@code Cursor} for the given key.
+         * <p>Create a {@code Cursor} that has the composite key formed
+         * by the given key elements. Each key element corresponds to the
+         * respective entity attribute at the same position within the
+         * repository method's sort criteria.</p>
          *
-         * @param key the key
+         * <p>The array of key elements as well as the elements within it
+         * must not be modified after supplying it to this method.</p>
+         *
+         * @param key the composite key to use for the {@code Cursor}.
          * @return a new instance of {@code Cursor}
          */
         static Cursor forKey(Object... key) {
