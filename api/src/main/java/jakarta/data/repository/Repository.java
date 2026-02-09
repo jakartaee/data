@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022,2024 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -100,14 +100,44 @@ public @interface Repository {
      * Interoperability with Jakarta Config is reserved for future versions
      * of Jakarta Data.
      * </li>
-     * <li>If running in a Jakarta EE profile or platform and the entity annotations
-     * indicate a relational database and the value begins with {@code java:} and
-     * matches the name of a {@code jakarta.annotation.sql.DataSourceDefinition},
-     * the JNDI name of a data source, or a resource reference to a data source,
-     * then the corresponding {@code javax.sql.DataSource} is used as the data store.
-     * If the same conditions are met but the value matches a persistence unit
-     * reference, then the corresponding {@code jakarta.persistence.PersistenceUnit}
-     * is used as the data store.
+     * <li>If running in an environment where JNDI is available and the
+     * {@code dataStore} value has the prefix {@code java:}, the Jakarta Data
+     * provider attempts to look up the value as a name in JNDI. If the
+     * resource found in JNDI is compatible with the Jakarta Data provider
+     * and the entities accessed by the {@code Repository}, then the resource
+     * becomes the data store for the {@code Repository}. For relational
+     * data access, the {@code dataStore} value can be:
+     *  <ul>
+     *   <li>the JNDI name of a {@link javax.sql.DataSource},
+     *   </li>
+     *   <li>the name of a {@code jakarta.annotation.sql.DataSourceDefinition},
+     *   </li>
+     *   <li>the JNDI name of a resource reference to a {@code DataSource},
+     *   </li>
+     *   <li>the JNDI name of a {@code jakarta.peristence.EntityManagerFactory}, or
+     *   </li>
+     *   <li>the JNDI name of a persistence unit reference.
+     *   </li>
+     *  </ul>
+     * </li>
+     * <li>Otherwise, if the entities used by the {@code Repository} indicate
+     * a relational database and the {@code dataStore} value matches the name
+     * of a persistence unit, then the corresponding
+     * {@code jakarta.peristence.EntityManagerFactory} becomes the data store
+     * for the {@code Repository}. Precedence for matching a persistence unit
+     * name is as follows, from higher precedence to lower precedence:
+     *  <ul>
+     *   <li><p>an identically named persistence unit defined in the same
+     *       module as the {@code Repository}. The persistence unit is
+     *       represented in JNDI as</p>
+     *       {@code java:module/persistence/{dataStore-value}/EntityManagerFactory}
+     *   </li>
+     *   <li><p>an identically named persistence unit defined in the same
+     *       application as the {@code Repository}. The persistence unit is
+     *       represented in JNDI as</p>
+     *       {@code java:app/persistence/{dataStore-value}/EntityManagerFactory}
+     *   </li>
+     *  </ul>
      * </li>
      * <li>Otherwise, the value serves as an identifier linking to vendor-specific
      * configuration for the Jakarta Data provider to interpret in a vendor-specific
