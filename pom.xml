@@ -128,7 +128,7 @@
             TODO - remove once parent is updated 
                    https://github.com/eclipse-ee4j/ee4j/pull/115/
         -->
-        <central.plugin.version>1.4.2</central.plugin.version>
+        <central.plugin.version>1.4.3</central.plugin.version>
     </properties>
 
     <dependencyManagement>
