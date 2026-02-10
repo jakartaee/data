@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2025,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,6 +34,9 @@ import jakarta.data.messages.Messages;
  * <li>{@link NumericAttribute} for entity attributes that represent numeric
  *     values, such as {@code long}, {@link Float}, and
  *     {@link java.math.BigInteger}.</li>
+ * <li>{@link BooleanAttribute} for entity attributes that represent
+ *     {@code true} or {@code false} values of type {@code boolean} or
+ *     {@link Boolean}.</li>
  * <li>{@link TemporalAttribute} for entity attributes that represent temporal
  *     values, such as {@link java.time.LocalDate} and {@link java.time.Instant}.
  *     </li>
@@ -43,7 +46,6 @@ import jakarta.data.messages.Messages;
  * include:</p>
  *
  * <ul>
- * <li>boolean attributes: {@code boolean} and {@link Boolean}</li>
  * <li>character attributes: {@code char} and {@link Character}</li>
  * <li>enum attributes - Note that it is provider-specific whether order is
  *     based on {@link Enum#ordinal()} or {@link Enum#name()}.
