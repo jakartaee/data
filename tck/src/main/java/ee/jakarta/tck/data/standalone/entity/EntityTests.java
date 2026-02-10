@@ -92,7 +92,11 @@ public class EntityTests {
     @Deployment
     public static WebArchive createDeployment() {
         return ShrinkWrap.create(WebArchive.class)
-                .addClasses(EntityTests.class, Box.class, Boxes.class);
+                .addClasses(EntityTests.class,
+                            Box.class,
+                            Boxes.class,
+                            Coordinate.class,
+                            MultipleEntityRepo.class);
     }
 
     @Inject
