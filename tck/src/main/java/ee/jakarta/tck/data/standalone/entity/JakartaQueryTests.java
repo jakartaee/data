@@ -437,17 +437,19 @@ public class JakartaQueryTests {
         Assertions.assertThat(result).isNotEmpty().get().isEqualTo(fruit);
     }
 
-    @DisplayName("should return only name attribute order by quantity")
+    @DisplayName("Retrieve only a String attribute and order by it")
     @Assertion(id = "458",
-            strategy = "Execute the query returning only the name attribute order by quantity")
+               strategy = "Invoke a Repository Query method returning only" +
+                          " a String attribute of the entity and ordering by" +
+                          " the same attribute.")
     void shouldReturnName() {
 
         try {
             var names = fruits.stream()
-                    .sorted(Comparator.comparingLong(Fruit::getQuantity))
-                    .map(Fruit::getName)
-                    .toArray(String[]::new);
-            var result = fruitRepository.findAllOnlyNameOrderByQuantity();
+                              .map(Fruit::getName)
+                              .sorted()
+                              .toArray(String[]::new);
+            var result = fruitRepository.findAllOnlyNameOrderByName();
 
             Assertions.assertThat(result).isNotEmpty().containsExactly(names);
         } catch (UnsupportedOperationException exp) {
