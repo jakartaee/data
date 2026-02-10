@@ -37,9 +37,10 @@ import java.util.logging.Logger;
 @Standalone
 @AnyEntity
 @DisplayName("Jakarta Data integration with Jakarta Common Query Language for delete operations")
-public class JakartaDeleteQueryTests {
+public class JakartaQueryDeleteTests {
 
-    public static final Logger log = Logger.getLogger(JakartaQueryTests.class.getCanonicalName());
+    public static final Logger log =
+            Logger.getLogger(JakartaQueryDeleteTests.class.getCanonicalName());
 
     protected final DatabaseType type = TestProperty.databaseType.getDatabaseType();
 
