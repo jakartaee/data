@@ -29,7 +29,6 @@ import org.junit.jupiter.api.DisplayName;
 import ee.jakarta.tck.data.framework.junit.anno.Assertion;
 import ee.jakarta.tck.data.framework.read.only.FruitPopulator;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
