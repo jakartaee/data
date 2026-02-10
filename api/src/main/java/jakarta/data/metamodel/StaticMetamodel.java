@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023,2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2023,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.util.UUID;
 
 import jakarta.data.Sort;
 
@@ -43,12 +44,15 @@ import jakarta.data.Sort;
  *     typically of type {@link String}.</li>
  * <li>{@link NumericAttribute} for entity attributes of numeric types, such as
  *     {@code int}, {@link Double}, and {@link java.math.BigInteger}.</li>
+ * <li>{@link BooleanAttribute} for entity attributes that represent
+ *     {@code true} or {@code false} values of type {@code boolean} or
+ *     {@link Boolean}.</li>
  * <li>{@link TemporalAttribute} for entity attributes of temporal types, such as
  *     {@link java.time.LocalDate}, {@link java.time.LocalTime}, and
  *     {@link java.time.Instant}.</li>
  * <li>{@link ComparableAttribute} for entity attributes that represent other
- *     sortable and comparable values, such as {@code boolean} and enumerations.
- *     </li>
+ *     sortable and comparable values, such as {@code char}, enumerations,
+ *     and {@link UUID}</li>
  * <li>{@link NavigableAttribute} for entity attributes that are embeddables
  *     or relations.</li>
  * <li>{@link BasicAttribute} for other types of entity attributes, such as

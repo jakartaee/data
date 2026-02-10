@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023,2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2023,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,6 +27,9 @@ import jakarta.data.messages.Messages;
  * <p>A {@code SortableAttribute} may be used to sort query results.
  * When an attribute type is a numeric type, {@link NumericAttribute} is
  * preferred. When an attribute type is {@link String}, {@link TextAttribute} is
+ * preferred. When an attribute type is {@code boolean} or {@link Boolean},
+ * {@link BooleanAttribute} is preferred. When an attribute type is a temporal
+ * type supported by {@link TemporalAttribute}, {@code TemporalAttribute} is
  * preferred. When an attribute type (or, if primitive, its wrapper class) is a
  * subtype of {@link java.lang.Comparable}, use of {@link ComparableAttribute}
  * is usually preferred, since a {@code SortableAttribute} cannot be used in
