@@ -79,7 +79,7 @@ public interface FruitRepository extends BasicRepository<Fruit, String> {
     @Query("SELECT name FROM Fruit ORDER BY name ASC")
     List<String> findAllOnlyNameOrderByName();
 
-    @Query("SELECT name, quantity FROM Fruit ORDER BY name ASC")
+    @Query("SELECT name, quantity FROM Fruit ORDER BY quantity ASC")
     List<Object[]> findAllNameAndQuantityOrderByQuantity();
 
     @Query("WHERE id(this) = :id")
