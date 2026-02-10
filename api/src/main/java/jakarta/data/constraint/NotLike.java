@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2025,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -301,7 +301,7 @@ public interface NotLike extends Constraint<String> {
      * is assigned an escape character even if the application did not supply
      * one when requesting the {@code NotLike} constraint.</p>
      *
-     * @return the escape character if defined, otherwise {@code null}.
+     * @return the escape character.
      */
     char escape();
 
