@@ -24,7 +24,10 @@ import jakarta.data.messages.Messages;
  * <p>Represents a {@linkplain Boolean boolean} entity attribute in the
  * {@link StaticMetamodel}.
  * Boolean entity attributes can be sorted on in query results and can be
- * compared in query restrictions. When sorted, 
+ * compared in query restrictions. When sorting in ascending direction,
+ * the value {@code false} is ordered before the value {@code true}.
+ * When sorting in descending direction, the value {@code true} is ordered
+ * before the value {@code false}.
  * </p>
  *
  * <p>Entity attribute types that are considered boolean include:</p>
