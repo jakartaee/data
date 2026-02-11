@@ -1067,7 +1067,7 @@ public class ConstraintTests {
             List<String> found = countries.excludingNames(
                     // intentionally reversed so that % is the single character
                     // wildcard and _ is the multiple character wildcard.
-                    NotLike.pattern("_%aa_\"", '%', '_', 'a'))
+                    NotLike.pattern("_%aa_", '%', '_', 'a'))
                             .stream()
                             .map(Country::getName)
                             .sorted()
