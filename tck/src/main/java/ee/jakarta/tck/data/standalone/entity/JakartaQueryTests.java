@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2025,2026 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -30,8 +30,11 @@ import ee.jakarta.tck.data.framework.junit.anno.Assertion;
 import ee.jakarta.tck.data.framework.read.only.FruitPopulator;
 
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.logging.Logger;
 
 @Standalone
@@ -47,7 +50,10 @@ public class JakartaQueryTests {
     public static WebArchive createDeployment() {
         return ShrinkWrap.create(WebArchive.class)
                 .addClasses(JakartaQueryTests.class,
-                            Fruit.class, FruitRepository.class);
+                            Fruit.class,
+                            FruitPopulator.class,
+                            FruitRepository.class,
+                            FruitSummary.class);
     }
 
     @Inject
@@ -434,17 +440,19 @@ public class JakartaQueryTests {
         Assertions.assertThat(result).isNotEmpty().get().isEqualTo(fruit);
     }
 
-    @DisplayName("should return only name attribute order by quantity")
+    @DisplayName("Retrieve only a String attribute and order by it")
     @Assertion(id = "458",
-            strategy = "Execute the query returning only the name attribute order by quantity")
+               strategy = "Invoke a Repository Query method returning only" +
+                          " a String attribute of the entity and ordering by" +
+                          " the same attribute.")
     void shouldReturnName() {
 
         try {
             var names = fruits.stream()
-                    .sorted(Comparator.comparingLong(Fruit::getQuantity))
-                    .map(Fruit::getName)
-                    .toArray(String[]::new);
-            var result = fruitRepository.findAllOnlyNameOrderByQuantity();
+                              .map(Fruit::getName)
+                              .sorted()
+                              .toArray(String[]::new);
+            var result = fruitRepository.findAllOnlyNameOrderByName();
 
             Assertions.assertThat(result).isNotEmpty().containsExactly(names);
         } catch (UnsupportedOperationException exp) {
@@ -456,27 +464,47 @@ public class JakartaQueryTests {
         }
     }
 
-    @DisplayName("should return only name and quantity attributes order by quantity")
+    @DisplayName("Retrieve only String and Long attributes and order by the latter")
     @Assertion(id = "458",
-            strategy = "Execute the query returning only the name and quantity attributes order by quantity")
+               strategy = "Invoke a Repository Query method returning only" +
+                          " a String attribute and a Long attribute of the" +
+                          " entity and ordering by the Long type attribute.")
     void shouldReturnNameAndQuantity() {
 
-        try {
-            var tuples = fruits.stream()
-                    .sorted(Comparator.comparing(Fruit::getName))
-                    .map(f -> new FruitTuple(f.getName(), f.getQuantity()))
-                    .toArray(FruitTuple[]::new);
-            var result = fruitRepository.findAllNameAndQuantityOrderByQuantity();
+        Map<Long, Set<String>> expectedQuantityToNames = new TreeMap<>();
+        for (Fruit fruit : FruitPopulator.FRUITS) {
+            expectedQuantityToNames
+                    .computeIfAbsent(fruit.getQuantity(),
+                                     quantity -> new HashSet<String>())
+                    .add(fruit.getName());
+        }
 
-            Assertions.assertThat(result.stream().map(FruitTuple::of))
-                    .isNotEmpty().containsExactly(tuples);
+        List<Object[]> results;
+        try {
+            results = fruitRepository.findAllNameAndQuantityOrderByQuantity();
         } catch (UnsupportedOperationException exp) {
             if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
                 // Column and Key-Value databases might not be capable of sorting.
+                return;
             } else {
                 throw exp;
             }
         }
+
+        // The resulting list must be ordered by quantity, but for a given
+        // quantity, the names might occur in any order
+        Assertions.assertThat(results.size()).isEqualTo(fruits.size());
+        long previousQuantity = Long.MIN_VALUE;
+        for (Object[] result : results) {
+            long quantity = (Long) result[1];
+            Assertions.assertThat(quantity)
+                      .isGreaterThanOrEqualTo(previousQuantity);
+            Assertions.assertThat(expectedQuantityToNames.get(quantity))
+                      .isNotEmpty()
+                      .contains((String) result[0]);
+            previousQuantity = quantity;
+        }
+
     }
 
     @DisplayName("should return id using id function order by id")

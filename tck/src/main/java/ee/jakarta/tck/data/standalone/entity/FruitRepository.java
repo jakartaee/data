@@ -64,7 +64,7 @@ public interface FruitRepository extends BasicRepository<Fruit, String> {
     @Query("FROM Fruit WHERE name IN (:name1, :name2)")
     List<Fruit> findNameIn(@Param("name1") String name1, @Param("name2")  String name2);
 
-    @Query("FROM Fruit WHERE name IN (:names)")
+    @Query("FROM Fruit WHERE name IN :names")
     List<Fruit> findNameIn(@Param("names") Set<String> names);
 
     @Query("FROM Fruit WHERE name = :name AND quantity = :quantity")
@@ -76,10 +76,10 @@ public interface FruitRepository extends BasicRepository<Fruit, String> {
     @Query("SELECT count(this) FROM Fruit")
     long countAll();
 
-    @Query("SELECT name FROM Fruit ORDER BY quantity ASC")
-    List<String> findAllOnlyNameOrderByQuantity();
+    @Query("SELECT name FROM Fruit ORDER BY name ASC")
+    List<String> findAllOnlyNameOrderByName();
 
-    @Query("SELECT name, quantity FROM Fruit ORDER BY name ASC")
+    @Query("SELECT name, quantity FROM Fruit ORDER BY quantity ASC")
     List<Object[]> findAllNameAndQuantityOrderByQuantity();
 
     @Query("WHERE id(this) = :id")
@@ -112,7 +112,7 @@ public interface FruitRepository extends BasicRepository<Fruit, String> {
     @Query("DELETE FROM Fruit WHERE quantity <= :quantity")
     void deleteQuantityLesserThanEquals(@Param("quantity") Long quantity);
 
-    @Query("DELETE FROM Fruit WHERE name IN (:names)")
+    @Query("DELETE FROM Fruit WHERE name IN :names")
     void deleteByNameIn(@Param("names") List<String> names);
 
     @Query("DELETE FROM Fruit WHERE name = :name AND quantity = :quantity")
@@ -150,11 +150,11 @@ public interface FruitRepository extends BasicRepository<Fruit, String> {
                                  @Param("start") Long start,
                                  @Param("end") Long end);
 
-    @Query("UPDATE Fruit SET name = :updated WHERE name IN (:names)")
+    @Query("UPDATE Fruit SET name = :updated WHERE name IN :names")
     void updateByNameIn(@Param("updated") String updated,
                         @Param("names") List<String> names);
 
-    @Query("UPDATE Fruit SET name = :updated WHERE name NOT IN (:names)")
+    @Query("UPDATE Fruit SET name = :updated WHERE name NOT IN :names")
     void updateByNameNotIn(@Param("updated") String updated,
                            @Param("names") List<String> names);
 
