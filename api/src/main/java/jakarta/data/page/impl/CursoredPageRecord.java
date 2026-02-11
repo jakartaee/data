@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024,2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2024,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,6 +49,21 @@ public record CursoredPageRecord<T>
          PageRequest nextPageRequest, PageRequest previousPageRequest)
         implements CursoredPage<T> {
 
+    // Disallow mutation of PageRequest and List fields after creation
+    public CursoredPageRecord(List<T> content,
+                      List<PageRequest.Cursor> cursors,
+                      long totalElements,
+                      PageRequest pageRequest,
+                      PageRequest nextPageRequest,
+                      PageRequest previousPageRequest) {
+        this.content = List.copyOf(content);
+        this.cursors = List.copyOf(cursors);
+        this.totalElements = totalElements;
+        this.pageRequest = pageRequest;
+        this.nextPageRequest = nextPageRequest;
+        this.previousPageRequest = previousPageRequest;
+    }
+
     /**
      * @param content       The page content, that is, the query results, in
      *                      order
@@ -76,6 +91,7 @@ public record CursoredPageRecord<T>
                         pageRequest.size(),
                         pageRequest.requestTotal()));
     }
+
 
     @Override
     public boolean hasContent() {

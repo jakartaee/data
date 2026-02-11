@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022,2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,15 +27,16 @@ import jakarta.data.messages.Messages;
  */
 class PageRequestCursor implements PageRequest.Cursor {
     /**
-     * Key values.
+     * Composite key that consists of one or more elements.
      */
     private final Object[] key;
 
     /**
-     * Constructs a cursor with the specified key values.
+     * Constructs a cursor with a composite key that is made up of the
+     * given elements.
      *
-     * @param key key values.
-     * @throws IllegalArgumentException if no key values are provided.
+     * @param key elements that together form a composite key.
+     * @throws IllegalArgumentException if no elements are provided.
      */
     @SuppressWarnings("PMD.ArrayIsStoredDirectly")
     PageRequestCursor(Object... key) {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024,2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2024,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,6 +42,17 @@ import java.util.NoSuchElementException;
 public record PageRecord<T>(PageRequest pageRequest, List<T> content,
                             long totalElements, boolean moreResults)
         implements Page<T> {
+
+    // Disallow mutation of PageRequest and List fields after creation
+    public PageRecord(PageRequest pageRequest,
+                      List<T> content,
+                      long totalElements,
+                      boolean moreResults) {
+        this.pageRequest = pageRequest;
+        this.content = List.copyOf(content);
+        this.totalElements = totalElements;
+        this.moreResults = moreResults;
+    }
 
     /**
      * Constructs a new instance, computing the {@link #moreResults} component
