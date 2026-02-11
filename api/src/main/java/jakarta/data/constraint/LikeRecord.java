@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2025,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,9 @@ package jakarta.data.constraint;
 import jakarta.data.expression.TextExpression;
 import jakarta.data.messages.Messages;
 
-record LikeRecord(TextExpression<?> pattern, char escape)
+record LikeRecord(TextExpression<?> pattern,
+                  char escape,
+                  TextExpression<?> unescapedPattern)
         implements Like {
 
     static final char CHAR_WILDCARD = '_';
@@ -29,7 +31,7 @@ record LikeRecord(TextExpression<?> pattern, char escape)
 
     @Override
     public NotLike negate() {
-        return new NotLikeRecord(pattern, escape);
+        return new NotLikeRecord(pattern, escape, unescapedPattern);
     }
 
     @Override

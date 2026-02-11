@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2025,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,12 +19,14 @@ package jakarta.data.constraint;
 
 import jakarta.data.expression.TextExpression;
 
-record NotLikeRecord(TextExpression<?> pattern, char escape)
+record NotLikeRecord(TextExpression<?> pattern,
+                     char escape,
+                     TextExpression<?> unescapedPattern)
         implements NotLike {
 
     @Override
     public Like negate() {
-        return new LikeRecord(pattern, escape);
+        return new LikeRecord(pattern, escape, unescapedPattern);
     }
 
     @Override
