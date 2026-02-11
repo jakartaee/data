@@ -17,8 +17,7 @@
  */
 package jakarta.data.expression;
 
-import jakarta.data.constraint.False;
-import jakarta.data.constraint.True;
+import jakarta.data.constraint.EqualTo;
 import jakarta.data.metamodel.Attribute;
 import jakarta.data.metamodel.BooleanAttribute;
 import jakarta.data.restrict.BasicRestriction;
@@ -51,13 +50,13 @@ public interface BooleanExpression<T>
      * @return the restriction.
      */
     default Restriction<T> isFalse() {
-        return BasicRestriction.of(this, False.instance());
+        return BasicRestriction.of(this, EqualTo.value(false));
     }
 
     /**
      * <p>Obtains a {@link Restriction} that requires that this expression
      * evaluate to a {@code true} value.</p>
-      *
+     *
      * <p>Example:</p>
      * <pre>{@code
      *     usedVehicles = cars.search(make,
@@ -68,7 +67,7 @@ public interface BooleanExpression<T>
      * @return the restriction.
      */
     default Restriction<T> isTrue() {
-        return BasicRestriction.of(this, True.instance());
+        return BasicRestriction.of(this, EqualTo.value(true));
     }
 
 }
