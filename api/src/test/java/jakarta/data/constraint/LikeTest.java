@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2025,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,6 +41,10 @@ class LikeTest {
         SoftAssertions.assertSoftly(soft -> soft.assertThat(
                 ((StringLiteral) like.pattern()).value())
                 .isEqualTo("100\\% first\\_item\\\\second\\_item\\\\third\\_item"));
+
+        SoftAssertions.assertSoftly(soft -> soft.assertThat(
+                ((StringLiteral) like.unescapedPattern()).value())
+                .isEqualTo("100% first_item\\second_item\\third_item"));
     }
 
     @Test
@@ -57,6 +61,10 @@ class LikeTest {
         SoftAssertions.assertSoftly(soft -> soft.assertThat(
                 ((StringLiteral) like.pattern()).value())
                 .isEqualTo("JHM___E%"));
+
+        SoftAssertions.assertSoftly(soft -> soft.assertThat(
+                ((StringLiteral) like.unescapedPattern()).value())
+                .isEqualTo("JHM___E%"));
     }
 
     @Test
@@ -72,6 +80,10 @@ class LikeTest {
 
         SoftAssertions.assertSoftly(soft -> soft.assertThat(
                 ((StringLiteral) like.pattern()).value())
+                .isEqualTo("JHM___F%"));
+
+        SoftAssertions.assertSoftly(soft -> soft.assertThat(
+                ((StringLiteral) like.unescapedPattern()).value())
                 .isEqualTo("JHM___F%"));
     }
 
@@ -90,6 +102,10 @@ class LikeTest {
                 ((StringLiteral) like1.pattern()).value())
                 .isEqualTo("JHM___C%"));
 
+        SoftAssertions.assertSoftly(soft -> soft.assertThat(
+                ((StringLiteral) like1.unescapedPattern()).value())
+                .isEqualTo("JHM___C%"));
+
         // Usage is from Javadoc example
         Like like2 = Like.pattern("is --.-*% of", '-', '*', '^');
 
@@ -102,6 +118,10 @@ class LikeTest {
         SoftAssertions.assertSoftly(soft -> soft.assertThat(
                 ((StringLiteral) like2.pattern()).value())
                 .isEqualTo("is __._%^% of"));
+
+        SoftAssertions.assertSoftly(soft ->
+                soft.assertThat(like2.unescapedPattern())
+                    .isNull());
     }
 
     @Test
@@ -117,6 +137,10 @@ class LikeTest {
         SoftAssertions.assertSoftly(soft -> soft.assertThat(
                 ((StringLiteral) like.pattern()).value())
                 .isEqualTo("__\\% of #_% \\\\ 1"));
+
+        SoftAssertions.assertSoftly(soft ->
+                soft.assertThat(like.unescapedPattern())
+                    .isNull());
     }
 
     @Test
@@ -132,5 +156,9 @@ class LikeTest {
         SoftAssertions.assertSoftly(soft -> soft.assertThat(
                 ((StringLiteral) like.pattern()).value())
                 .isEqualTo("__\\% of _._% \\\\\\\\ "));
+
+        SoftAssertions.assertSoftly(soft ->
+                soft.assertThat(like.unescapedPattern())
+                    .isNull());
     }
 }
