@@ -102,7 +102,7 @@
         <arquillian.version>1.10.0.Final</arquillian.version>
         <arquillian.jakarta.version>10.0.0.Final</arquillian.jakarta.version>
         <shrinkwrap.version>1.2.6</shrinkwrap.version>
-        <shrinkwrap.resolver.version>3.3.4</shrinkwrap.resolver.version>
+        <shrinkwrap.resolver.version>3.3.5</shrinkwrap.resolver.version>
         
         <exec.maven.plugin.version>3.6.3</exec.maven.plugin.version>
         <checkstyle.version>13.2.0</checkstyle.version>
