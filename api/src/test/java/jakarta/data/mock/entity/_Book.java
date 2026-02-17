@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024,2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2024,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 
 import jakarta.data.metamodel.BasicAttribute;
+import jakarta.data.metamodel.BooleanAttribute;
 import jakarta.data.metamodel.NumericAttribute;
 import jakarta.data.metamodel.TemporalAttribute;
 import jakarta.data.metamodel.TextAttribute;
@@ -31,6 +32,7 @@ import jakarta.data.metamodel.TextAttribute;
 public interface _Book {
     String AUTHOR = "author";
     String COPYRIGHTDATE = "copyrightDate";
+    String FICTION = "fiction";
     String ID = "id";
     String NUMCHAPTERS = "numChapters";
     String NUMPAGES = "numPages";
@@ -41,6 +43,8 @@ public interface _Book {
             Book.class, AUTHOR, String.class);
     TemporalAttribute<Book, Instant> copyrightDate = TemporalAttribute.of(
             Book.class, COPYRIGHTDATE, Instant.class);
+    BooleanAttribute<Book> fiction = BooleanAttribute.of(
+            Book.class, FICTION, boolean.class);
     TextAttribute<Book> id = TextAttribute.of(
             Book.class, ID);
     NumericAttribute<Book, Integer> numChapters = NumericAttribute.of(
