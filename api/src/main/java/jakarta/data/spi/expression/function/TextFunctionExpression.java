@@ -111,7 +111,7 @@ public interface TextFunctionExpression<T>
 
         return new TextFunctionExpressionRecord<>(
                 name,
-                List.of(left, NumericLiteral.of(literal)));
+                List.of(left, NumericLiteral.of(Integer.class, literal)));
     }
 
     @Override

@@ -19,7 +19,7 @@ package jakarta.data.spi.expression.literal;
 
 import jakarta.data.messages.Messages;
 
-record LiteralRecord<V>(V value) implements Literal<V> {
+record LiteralRecord<V>(Class<V> type, V value) implements Literal<V> {
 
     LiteralRecord {
         if (value == null) {
@@ -28,9 +28,8 @@ record LiteralRecord<V>(V value) implements Literal<V> {
         }
     }
 
-    @Override
-    public Class<V> type() {
-        return (Class<V>) value.getClass();
+    public static <V> Literal<V> of(Class<V> type, V value) {
+        return new LiteralRecord<>(type, value);
     }
 
     @Override

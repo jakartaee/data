@@ -32,12 +32,6 @@ import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import jakarta.data.spi.expression.literal.ComparableLiteral;
-import jakarta.data.spi.expression.literal.Literal;
-import jakarta.data.spi.expression.literal.NumericLiteral;
-import jakarta.data.spi.expression.literal.StringLiteral;
-import jakarta.data.spi.expression.literal.TemporalLiteral;
-
 class LiteralToStringTest {
 
     @Test
@@ -114,7 +108,7 @@ class LiteralToStringTest {
     @Test
     @DisplayName("Literal.toString must output expected value")
     void testObjectLiteralToString() {
-        Literal<ZoneId> literal = Literal.of(ZoneId.of("America/Chicago"));
+        Literal<ZoneId> literal = LiteralRecord.of(ZoneId.class, ZoneId.of("America/Chicago"));
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(literal.toString())

@@ -28,7 +28,7 @@ import java.time.temporal.Temporal;
 import jakarta.data.messages.Messages;
 
 record TemporalLiteralRecord<V extends Temporal & Comparable<? extends Temporal>>
-        (V value)
+        (Class<V> type, V value)
         implements TemporalLiteral<V> {
 
     TemporalLiteralRecord {
@@ -36,11 +36,6 @@ record TemporalLiteralRecord<V extends Temporal & Comparable<? extends Temporal>
             throw new NullPointerException(
                     Messages.get("001.arg.required", "value"));
         }
-    }
-
-    @Override
-    public Class<V> type() {
-        return (Class<V>) value.getClass();
     }
 
     @Override

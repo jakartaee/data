@@ -46,9 +46,9 @@ public interface Literal<V> extends Expression<Object, V> {
      * represents the given value.</p>
      *
      * <p>The most specific subtype of {@code Literal}, such as
-     * {@link NumericLiteral#of(Number) NumericLiteral},
+     * {@link NumericLiteral#of(Class, Number) NumericLiteral},
      * {@link StringLiteral#of(String) StringLiteral},
-     * {@link TemporalLiteral#of(java.time.temporal.Temporal) TemporalLiteral},
+     * {@link TemporalLiteral#of(Class, java.time.temporal.Temporal) TemporalLiteral},
      * or {@link ComparableLiteral#of(Comparable) ComparableLiteral},
      * should be used instead wherever possible.</p>
      *
@@ -63,8 +63,9 @@ public interface Literal<V> extends Expression<Object, V> {
     static <V> Literal<V> of(V value) {
         if (value instanceof Comparable<?> comparable) {
             return (Literal<V>) ComparableLiteral.of(comparable);
-        } else {
-            return new LiteralRecord<>(value);
+        }
+        else {
+            throw new IllegalArgumentException( "Unrecognized literal type" );
         }
     }
 

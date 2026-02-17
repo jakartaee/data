@@ -48,8 +48,43 @@ public interface TemporalLiteral<V extends Temporal & Comparable<? extends Tempo
      * @throws NullPointerException if the value is {@code null}.
      */
     static <V extends Temporal & Comparable<? extends Temporal>> TemporalLiteral<V>
-    of(V value) {
-        return new TemporalLiteralRecord<>(value);
+    of(Class<V> type, V value) {
+        return new TemporalLiteralRecord<>(type, value);
+    }
+
+    /**
+     * Create a {@code TemporalLiteral} representing the given {@link Instant}.
+     */
+    static TemporalLiteral<Instant> of(Instant value) {
+        return of(Instant.class, value);
+    }
+
+    /**
+     * Create a {@code TemporalLiteral} representing the given {@link LocalDateTime}.
+     */
+    static TemporalLiteral<LocalDateTime> of(LocalDateTime value) {
+        return of(LocalDateTime.class, value);
+    }
+
+    /**
+     * Create a {@code TemporalLiteral} representing the given {@link LocalDate}.
+     */
+    static TemporalLiteral<LocalDate> of(LocalDate value) {
+        return of(LocalDate.class, value);
+    }
+
+    /**
+     * Create a {@code TemporalLiteral} representing the given {@link LocalTime}.
+     */
+    static TemporalLiteral<LocalTime> of(LocalTime value) {
+        return of(LocalTime.class, value);
+    }
+
+    /**
+     * Create a {@code TemporalLiteral} representing the given {@link Year}.
+     */
+    static TemporalLiteral<Year> of(Year value) {
+        return of(Year.class, value);
     }
 
     // TODO Is there a possibility that other temporal types might be added in

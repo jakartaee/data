@@ -44,9 +44,9 @@ public interface ComparableLiteral<V extends Comparable<?>>
      * {@code ComparableLiteral} that represents the given value.</p>
      *
      * <p>The most specific subtype of {@code ComparableLiteral}, such as
-     * {@link NumericLiteral#of(Number) NumericLiteral},
+     * {@link NumericLiteral#of(Class, Number) NumericLiteral},
      * {@link StringLiteral#of(String) StringLiteral}, or
-     * {@link TemporalLiteral#of(java.time.temporal.Temporal) TemporalLiteral},
+     * {@link TemporalLiteral#of(Class, java.time.temporal.Temporal) TemporalLiteral},
      * should be used instead wherever possible.</p>
      *
      * @param <V>   entity attribute type.
@@ -55,6 +55,8 @@ public interface ComparableLiteral<V extends Comparable<?>>
      *              {@code null}.
      * @return a {@code ComparableLiteral} representing the value.
      * @throws NullPointerException if the value is {@code null}.
+     * @throws IllegalArgumentException if the value is not an instance of one
+     *         of the comparable types recognized by the specification.
      */
     @SuppressWarnings("unchecked")
     static <V extends Comparable<?>> ComparableLiteral<V> of(V value) {
@@ -77,8 +79,32 @@ public interface ComparableLiteral<V extends Comparable<?>>
             case LocalDateTime d -> (ComparableLiteral<V>) TemporalLiteral.of(d);
             case LocalTime t -> (ComparableLiteral<V>) TemporalLiteral.of(t);
             case Year y -> (ComparableLiteral<V>) TemporalLiteral.of(y);
-            case null, default -> new ComparableLiteralRecord<>(value);
+            case Boolean b -> (ComparableLiteral<V>) of(b);
+            case Character c -> (ComparableLiteral<V>) of(c);
+            case UUID u -> (ComparableLiteral<V>) of(u);
+            case null, default -> throw new IllegalArgumentException( "Unrecognized literal type" );
         };
+    }
+
+    /**
+     * Create a {@code ComparableLiteral} representing the given {@code boolean}.
+     */
+    static ComparableLiteral<Boolean> of(boolean value) {
+        return new ComparableLiteralRecord<>(Boolean.class, value);
+    }
+
+    /**
+     * Create a {@code ComparableLiteral} representing the given {@code char}.
+     */
+    static ComparableLiteral<Character> of(char value) {
+        return new ComparableLiteralRecord<>(Character.class, value);
+    }
+
+    /**
+     * Create a {@code ComparableLiteral} representing the given {@link UUID}.
+     */
+    static ComparableLiteral<UUID> of(UUID value) {
+        return new ComparableLiteralRecord<>(UUID.class, value);
     }
 
     /**

@@ -42,7 +42,7 @@ public interface NumericOperatorExpression<T, N extends Number & Comparable<N>>
                     Messages.get("001.arg.required", "left"));
         }
 
-        return new NumericOperatorExpressionRecord<>(operator, NumericLiteral.of(left), right);
+        return new NumericOperatorExpressionRecord<>(operator, NumericLiteral.of(right.type(), left), right);
     }
 
     static <T, N extends Number & Comparable<N>> NumericOperatorExpression<T, N> of(
@@ -54,7 +54,7 @@ public interface NumericOperatorExpression<T, N extends Number & Comparable<N>>
                     Messages.get("001.arg.required", "right"));
         }
 
-        return new NumericOperatorExpressionRecord<>(operator, left, NumericLiteral.of(right));
+        return new NumericOperatorExpressionRecord<>(operator, left, NumericLiteral.of(left.type(), right));
     }
 
     static <T, N extends Number & Comparable<N>> NumericOperatorExpression<T, N> of(

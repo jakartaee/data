@@ -23,7 +23,7 @@ import java.math.BigInteger;
 import jakarta.data.messages.Messages;
 
 record NumericLiteralRecord<N extends Number & Comparable<N>>
-        (N value)
+        (Class<N> type, N value)
         implements NumericLiteral<N> {
 
     NumericLiteralRecord {
@@ -31,11 +31,6 @@ record NumericLiteralRecord<N extends Number & Comparable<N>>
             throw new NullPointerException(
                     Messages.get("001.arg.required", "value"));
         }
-    }
-
-    @Override
-    public Class<N> type() {
-        return (Class<N>) value.getClass();
     }
 
     @Override
