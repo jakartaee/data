@@ -30,6 +30,11 @@ record ComparableLiteralRecord<T, V extends Comparable<?>>(V value)
     }
 
     @Override
+    public Class<V> type() {
+        return (Class<V>) value.getClass();
+    }
+
+    @Override
     public String toString() {
         return switch (value) {
             case Boolean b -> b ? "TRUE" : "FALSE";

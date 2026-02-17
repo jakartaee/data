@@ -34,6 +34,11 @@ record NumericLiteralRecord<N extends Number & Comparable<N>>
     }
 
     @Override
+    public Class<N> type() {
+        return (Class<N>) value.getClass();
+    }
+
+    @Override
     public String toString() {
         return switch (value) {
             case Integer i -> i.toString();

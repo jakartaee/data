@@ -209,7 +209,7 @@ public interface TextExpression<T> extends ComparableExpression<T, String> {
      *         textual value.
      */
     default NumericExpression<T, Integer> length() {
-        return NumericFunctionExpression.of(LENGTH, this);
+        return NumericFunctionExpression.of(LENGTH, Integer.class, this);
     }
 
     /**

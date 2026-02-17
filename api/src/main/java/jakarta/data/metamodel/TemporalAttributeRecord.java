@@ -24,6 +24,11 @@ record TemporalAttributeRecord<T, V extends Temporal & Comparable<? extends Temp
         implements TemporalAttribute<T, V> {
 
     @Override
+    public Class<V> type() {
+        return attributeType;
+    }
+
+    @Override
     public String toString() {
         return declaringType.getSimpleName().toLowerCase() + '.' + name;
     }

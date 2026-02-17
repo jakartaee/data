@@ -31,6 +31,11 @@ record TextPathRecord<T, U>
     }
 
     @Override
+    public Class<String> type() {
+        return String.class;
+    }
+
+    @Override
     public String toString() {
         String expr = expression.toString();
         String attrName = attribute.name();

@@ -29,6 +29,11 @@ record LiteralRecord<V>(V value) implements Literal<V> {
     }
 
     @Override
+    public Class<V> type() {
+        return (Class<V>) value.getClass();
+    }
+
+    @Override
     public String toString() {
         return "{Literal " + value.getClass().getName() + " '" + value + "'}";
     }

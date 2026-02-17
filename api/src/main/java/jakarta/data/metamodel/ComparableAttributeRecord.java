@@ -22,6 +22,11 @@ record ComparableAttributeRecord<T, V extends Comparable<?>>
         implements ComparableAttribute<T, V> {
 
     @Override
+    public Class<V> type() {
+        return attributeType;
+    }
+
+    @Override
     public String toString() {
         return declaringType.getSimpleName().toLowerCase() + '.' + name;
     }

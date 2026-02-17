@@ -22,6 +22,11 @@ record BasicAttributeRecord<T, V>
         implements BasicAttribute<T, V> {
 
     @Override
+    public Class<V> type() {
+        return attributeType;
+    }
+
+    @Override
     public String toString() {
         return declaringType.getSimpleName().toLowerCase() + '.' + name;
     }

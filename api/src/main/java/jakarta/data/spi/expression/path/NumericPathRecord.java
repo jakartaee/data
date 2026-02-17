@@ -31,6 +31,11 @@ record NumericPathRecord<T, U, N extends Number & Comparable<N>>
     }
 
     @Override
+    public Class<N> type() {
+        return attribute.type();
+    }
+
+    @Override
     public String toString() {
         String expr = expression.toString();
         String attrName = attribute.name();

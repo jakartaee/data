@@ -32,23 +32,23 @@ public interface NumericFunctionExpression<T, N extends Number & Comparable<N>>
     String LENGTH = "length";
 
     static <T, N extends Number & Comparable<N>> NumericFunctionExpression<T, N>
-    of(String name, TextExpression<? super T> expression) {
+    of(String name, Class<N> returnType, TextExpression<? super T> expression) {
         if (expression == null) {
             throw new NullPointerException(
                     Messages.get("001.arg.required", "expression"));
         }
 
-        return new NumericFunctionExpressionRecord<>(name, List.of(expression));
+        return new NumericFunctionExpressionRecord<>(name, returnType, List.of(expression));
     }
 
     static <T, N extends Number & Comparable<N>> NumericFunctionExpression<T, N>
-    of(String name, NumericExpression<? super T, N> expression) {
+    of(String name, Class<N> returnType, NumericExpression<? super T, N> expression) {
         if (expression == null) {
             throw new NullPointerException(
                     Messages.get("001.arg.required", "expression"));
         }
 
-        return new NumericFunctionExpressionRecord<>(name, List.of(expression));
+        return new NumericFunctionExpressionRecord<>(name, returnType, List.of(expression));
     }
 
     @Override

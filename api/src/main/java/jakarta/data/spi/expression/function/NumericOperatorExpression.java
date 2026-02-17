@@ -17,7 +17,6 @@
  */
 package jakarta.data.spi.expression.function;
 
-import jakarta.data.expression.Expression;
 import jakarta.data.expression.NumericExpression;
 import jakarta.data.messages.Messages;
 import jakarta.data.spi.expression.literal.NumericLiteral;
@@ -30,9 +29,9 @@ public interface NumericOperatorExpression<T, N extends Number & Comparable<N>>
 
     Operator operator();
 
-    Expression<? super T, N> left();
+    NumericExpression<? super T, N> left();
 
-    Expression<? super T, N> right();
+    NumericExpression<? super T, N> right();
 
     static <T, N extends Number & Comparable<N>> NumericOperatorExpression<T, N> of(
             Operator operator,

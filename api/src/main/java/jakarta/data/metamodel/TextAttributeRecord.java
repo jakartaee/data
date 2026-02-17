@@ -21,6 +21,11 @@ record TextAttributeRecord<T>(Class<T> declaringType, String name)
         implements TextAttribute<T> {
 
     @Override
+    public Class<String> type() {
+        return String.class;
+    }
+
+    @Override
     public String toString() {
         return declaringType.getSimpleName().toLowerCase() + '.' + name;
     }

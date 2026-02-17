@@ -39,6 +39,11 @@ record TemporalLiteralRecord<V extends Temporal & Comparable<? extends Temporal>
     }
 
     @Override
+    public Class<V> type() {
+        return (Class<V>) value.getClass();
+    }
+
+    @Override
     public String toString() {
         final Temporal temporal =
                 value instanceof Instant instant

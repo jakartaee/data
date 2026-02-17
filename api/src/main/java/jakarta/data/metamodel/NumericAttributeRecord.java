@@ -22,6 +22,11 @@ record NumericAttributeRecord<T, V extends Number & Comparable<V>>
         implements NumericAttribute<T, V> {
 
     @Override
+    public Class<V> type() {
+        return attributeType;
+    }
+
+    @Override
     public String toString() {
         return declaringType.getSimpleName().toLowerCase() + '.' + name;
     }

@@ -26,6 +26,11 @@ public interface CurrentDate<T> extends TemporalExpression<T, LocalDate> {
     static <T> CurrentDate<T> now() {
         return new CurrentDate<>() {
             @Override
+            public Class<LocalDate> type() {
+                return LocalDate.class;
+            }
+
+            @Override
             public String toString() {
                 return "LOCAL DATE";
             }

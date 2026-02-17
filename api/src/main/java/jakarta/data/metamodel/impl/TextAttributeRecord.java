@@ -28,4 +28,8 @@ import jakarta.data.metamodel.TextAttribute;
 @Deprecated(since = "1.1")
 public record TextAttributeRecord<T>(String name)
         implements TextAttribute<T> {
+    @Override
+    public Class<String> type() {
+        return String.class;
+    }
 }

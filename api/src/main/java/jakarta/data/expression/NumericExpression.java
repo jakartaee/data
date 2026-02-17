@@ -62,7 +62,7 @@ public interface NumericExpression<T, N extends Number & Comparable<N>>
      * @return an expression for the function that computes the absolute value.
      */
     default NumericExpression<T, N> abs() {
-        return NumericFunctionExpression.of(ABS, this);
+        return NumericFunctionExpression.of(ABS, type(), this);
     }
 
     /**
@@ -82,7 +82,7 @@ public interface NumericExpression<T, N extends Number & Comparable<N>>
      * @return an expression for the function that computes negation of value.
      */
     default NumericExpression<T, N> negated() {
-        return NumericFunctionExpression.of(NEG, this);
+        return NumericFunctionExpression.of(NEG, type(), this);
     }
 
     /**

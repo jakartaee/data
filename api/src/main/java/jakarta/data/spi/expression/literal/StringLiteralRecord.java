@@ -30,6 +30,11 @@ record StringLiteralRecord(String value)
     }
 
     @Override
+    public Class<String> type() {
+        return String.class;
+    }
+
+    @Override
     public String toString() {
         return '\'' + value.replace("'", "''") + '\'';
     }

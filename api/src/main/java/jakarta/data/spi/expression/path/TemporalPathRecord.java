@@ -33,6 +33,11 @@ record TemporalPathRecord<T, U, V extends Temporal & Comparable<? extends Tempor
     }
 
     @Override
+    public Class<V> type() {
+        return attribute().type();
+    }
+
+    @Override
     public String toString() {
         String expr = expression.toString();
         String attrName = attribute.name();
