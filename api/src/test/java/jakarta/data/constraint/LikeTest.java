@@ -35,11 +35,11 @@ class LikeTest {
         SoftAssertions.assertSoftly(soft -> soft.assertThat(like.escape())
                 .isEqualTo('\\'));
 
-        SoftAssertions.assertSoftly(soft -> soft.assertThat(like.pattern())
+        SoftAssertions.assertSoftly(soft -> soft.assertThat(like.escapedPattern())
                 .isInstanceOf(StringLiteral.class));
 
         SoftAssertions.assertSoftly(soft -> soft.assertThat(
-                ((StringLiteral) like.pattern()).value())
+                ((StringLiteral) like.escapedPattern()).value())
                 .isEqualTo("100\\% first\\_item\\\\second\\_item\\\\third\\_item"));
 
         SoftAssertions.assertSoftly(soft -> soft.assertThat(
@@ -55,11 +55,11 @@ class LikeTest {
         SoftAssertions.assertSoftly(soft -> soft.assertThat(like.escape())
                 .isEqualTo('\\'));
 
-        SoftAssertions.assertSoftly(soft -> soft.assertThat(like.pattern())
+        SoftAssertions.assertSoftly(soft -> soft.assertThat(like.escapedPattern())
                 .isInstanceOf(StringLiteral.class));
 
         SoftAssertions.assertSoftly(soft -> soft.assertThat(
-                ((StringLiteral) like.pattern()).value())
+                ((StringLiteral) like.escapedPattern()).value())
                 .isEqualTo("JHM___E%"));
 
         SoftAssertions.assertSoftly(soft -> soft.assertThat(
@@ -75,11 +75,11 @@ class LikeTest {
         SoftAssertions.assertSoftly(soft -> soft.assertThat(like.escape())
                 .isEqualTo('\\'));
 
-        SoftAssertions.assertSoftly(soft -> soft.assertThat(like.pattern())
+        SoftAssertions.assertSoftly(soft -> soft.assertThat(like.escapedPattern())
                 .isInstanceOf(StringLiteral.class));
 
         SoftAssertions.assertSoftly(soft -> soft.assertThat(
-                ((StringLiteral) like.pattern()).value())
+                ((StringLiteral) like.escapedPattern()).value())
                 .isEqualTo("JHM___F%"));
 
         SoftAssertions.assertSoftly(soft -> soft.assertThat(
@@ -95,11 +95,11 @@ class LikeTest {
         SoftAssertions.assertSoftly(soft -> soft.assertThat(like1.escape())
                 .isEqualTo('^'));
 
-        SoftAssertions.assertSoftly(soft -> soft.assertThat(like1.pattern())
+        SoftAssertions.assertSoftly(soft -> soft.assertThat(like1.escapedPattern())
                 .isInstanceOf(StringLiteral.class));
 
         SoftAssertions.assertSoftly(soft -> soft.assertThat(
-                ((StringLiteral) like1.pattern()).value())
+                ((StringLiteral) like1.escapedPattern()).value())
                 .isEqualTo("JHM___C%"));
 
         SoftAssertions.assertSoftly(soft -> soft.assertThat(
@@ -112,11 +112,11 @@ class LikeTest {
         SoftAssertions.assertSoftly(soft -> soft.assertThat(like2.escape())
                 .isEqualTo('^'));
 
-        SoftAssertions.assertSoftly(soft -> soft.assertThat(like2.pattern())
+        SoftAssertions.assertSoftly(soft -> soft.assertThat(like2.escapedPattern())
                 .isInstanceOf(StringLiteral.class));
 
         SoftAssertions.assertSoftly(soft -> soft.assertThat(
-                ((StringLiteral) like2.pattern()).value())
+                ((StringLiteral) like2.escapedPattern()).value())
                 .isEqualTo("is __._%^% of"));
 
         SoftAssertions.assertSoftly(soft ->
@@ -131,11 +131,11 @@ class LikeTest {
         SoftAssertions.assertSoftly(soft -> soft.assertThat(like.escape())
                 .isEqualTo('\\'));
 
-        SoftAssertions.assertSoftly(soft -> soft.assertThat(like.pattern())
+        SoftAssertions.assertSoftly(soft -> soft.assertThat(like.escapedPattern())
                 .isInstanceOf(StringLiteral.class));
 
         SoftAssertions.assertSoftly(soft -> soft.assertThat(
-                ((StringLiteral) like.pattern()).value())
+                ((StringLiteral) like.escapedPattern()).value())
                 .isEqualTo("__\\% of #_% \\\\ 1"));
 
         SoftAssertions.assertSoftly(soft ->
@@ -150,11 +150,11 @@ class LikeTest {
         SoftAssertions.assertSoftly(soft -> soft.assertThat(like.escape())
                 .isEqualTo('\\'));
 
-        SoftAssertions.assertSoftly(soft -> soft.assertThat(like.pattern())
+        SoftAssertions.assertSoftly(soft -> soft.assertThat(like.escapedPattern())
                 .isInstanceOf(StringLiteral.class));
 
         SoftAssertions.assertSoftly(soft -> soft.assertThat(
-                ((StringLiteral) like.pattern()).value())
+                ((StringLiteral) like.escapedPattern()).value())
                 .isEqualTo("__\\% of _._% \\\\\\\\ "));
 
         SoftAssertions.assertSoftly(soft ->
