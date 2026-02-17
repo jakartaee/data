@@ -17,9 +17,8 @@
  */
 package jakarta.data.constraint;
 
-import static jakarta.data.constraint.LikeRecord.CHAR_WILDCARD;
-import static jakarta.data.constraint.LikeRecord.ESCAPE;
-import static jakarta.data.constraint.LikeRecord.STRING_WILDCARD;
+import static jakarta.data.constraint.EscapeRule.ESCAPE;
+import static jakarta.data.constraint.EscapeRule.STRING_WILDCARD;
 import static jakarta.data.constraint.LikeRecord.translate;
 
 import jakarta.data.expression.TextExpression;
@@ -100,18 +99,9 @@ public interface NotLike extends Constraint<String> {
      * @throws NullPointerException if the pattern is {@code null}.
      */
     static NotLike pattern(String pattern) {
+        Messages.requireNonNull(pattern, "pattern");
 
-        StringLiteral escaped =
-                StringLiteral.of(translate(pattern,
-                                           CHAR_WILDCARD,
-                                           STRING_WILDCARD,
-                                           ESCAPE,
-                                           false));
-
-        StringLiteral unescaped =
-                StringLiteral.of(pattern);
-
-        return new NotLikeRecord(escaped, ESCAPE, unescaped);
+        return new NotLikeRecord(pattern, EscapeRule.BACKSLASH_ONLY);
     }
 
     /**
@@ -135,10 +125,7 @@ public interface NotLike extends Constraint<String> {
      * @throws NullPointerException if the pattern is {@code null}.
      */
     static NotLike pattern(String pattern, char charWildcard, char stringWildcard) {
-        if (pattern == null) {
-            throw new NullPointerException(
-                    Messages.get("001.arg.required", "pattern"));
-        }
+        Messages.requireNonNull(pattern, "pattern");
 
         StringLiteral escaped =
                 StringLiteral.of(translate(pattern,
@@ -152,7 +139,7 @@ public interface NotLike extends Constraint<String> {
                         ? escaped
                         : null;
 
-        return new NotLikeRecord(escaped, ESCAPE, unescaped);
+        return new NotLikeRecord(unescaped, escaped, ESCAPE);
     }
 
     /**
@@ -180,10 +167,7 @@ public interface NotLike extends Constraint<String> {
                            char charWildcard,
                            char stringWildcard,
                            char escape) {
-        if (pattern == null) {
-            throw new NullPointerException(
-                    Messages.get("001.arg.required", "pattern"));
-        }
+        Messages.requireNonNull(pattern, "pattern");
 
         StringLiteral escaped =
                 StringLiteral.of(translate(pattern,
@@ -196,7 +180,7 @@ public interface NotLike extends Constraint<String> {
                 ? escaped
                 : null;
 
-        return new NotLikeRecord(escaped, escape, unescaped);
+        return new NotLikeRecord(unescaped, escaped, escape);
     }
 
     /**
@@ -211,10 +195,7 @@ public interface NotLike extends Constraint<String> {
      * @throws NullPointerException if the pattern expression is {@code null}.
      */
     static NotLike pattern(TextExpression<?> pattern, char escape) {
-        if (pattern == null) {
-            throw new NullPointerException(
-                    Messages.get("001.arg.required", "pattern"));
-        }
+        Messages.requireNonNull(pattern, "pattern");
 
         StringLiteral unescaped =
                 pattern instanceof StringLiteral escaped &&
@@ -222,7 +203,7 @@ public interface NotLike extends Constraint<String> {
                         ? escaped
                         : null;
 
-        return new NotLikeRecord(pattern, escape, unescaped);
+        return new NotLikeRecord(unescaped, pattern, escape);
     }
 
     /**
@@ -242,19 +223,10 @@ public interface NotLike extends Constraint<String> {
      * @throws NullPointerException if the prefix is {@code null}.
      */
     static NotLike prefix(String prefix) {
-        if (prefix == null) {
-            throw new NullPointerException(
-                    Messages.get("001.arg.required", "prefix"));
-        }
+        Messages.requireNonNull(prefix, "prefix");
 
-        StringLiteral escaped =
-                StringLiteral.of(LikeRecord.escape(prefix) + STRING_WILDCARD);
-
-        StringLiteral unescaped = prefix.indexOf(STRING_WILDCARD) < 0
-                ? StringLiteral.of(prefix + STRING_WILDCARD)
-                : null;
-
-        return new NotLikeRecord(escaped, ESCAPE, unescaped);
+        return new NotLikeRecord(prefix + STRING_WILDCARD,
+                                 EscapeRule.SKIP_LAST);
     }
 
     /**
@@ -274,20 +246,10 @@ public interface NotLike extends Constraint<String> {
      * @throws NullPointerException if the substring is {@code null}.
      */
     static NotLike substring(String substring) {
-        if (substring == null) {
-            throw new NullPointerException(
-                    Messages.get("001.arg.required", "substring"));
-        }
+        Messages.requireNonNull(substring, "substring");
 
-        StringLiteral escaped =
-                StringLiteral.of(STRING_WILDCARD + LikeRecord.escape(substring) +
-                                 STRING_WILDCARD);
-
-        StringLiteral unescaped = substring.indexOf(STRING_WILDCARD) < 0
-                ? StringLiteral.of(STRING_WILDCARD + substring + STRING_WILDCARD)
-                : null;
-
-        return new NotLikeRecord(escaped, ESCAPE, unescaped);
+        return new NotLikeRecord(STRING_WILDCARD + substring + STRING_WILDCARD,
+                                 EscapeRule.SKIP_FIRST_AND_LAST);
     }
 
     /**
@@ -307,19 +269,11 @@ public interface NotLike extends Constraint<String> {
      * @throws NullPointerException if the suffix is {@code null}.
      */
     static NotLike suffix(String suffix) {
-        if (suffix == null) {
-            throw new NullPointerException(
-                    Messages.get("001.arg.required", "suffix"));
-        }
+        Messages.requireNonNull(suffix, "suffix");
 
-        StringLiteral escaped =
-                StringLiteral.of(STRING_WILDCARD + LikeRecord.escape(suffix));
+        return new NotLikeRecord(STRING_WILDCARD + suffix,
+                                 EscapeRule.SKIP_FIRST);
 
-        StringLiteral unescaped = suffix.indexOf(STRING_WILDCARD) < 0
-                ? StringLiteral.of(STRING_WILDCARD + suffix)
-                : null;
-
-        return new NotLikeRecord(escaped, ESCAPE, unescaped);
     }
 
     /**
@@ -340,17 +294,10 @@ public interface NotLike extends Constraint<String> {
      * @throws NullPointerException if the literal value is {@code null}.
      */
     static NotLike literal(String value) {
-        if (value == null) {
-            throw new NullPointerException(
-                    Messages.get("001.arg.required", "value"));
-        }
+        Messages.requireNonNull(value, "value");
 
-        StringLiteral escaped =
-                StringLiteral.of(LikeRecord.escape(value));
-
-        StringLiteral unescaped = StringLiteral.of(value);
-
-        return new NotLikeRecord(escaped, ESCAPE, unescaped);
+        return new NotLikeRecord(value,
+                                 EscapeRule.ALL);
     }
 
     /**
@@ -378,7 +325,7 @@ public interface NotLike extends Constraint<String> {
      *
      * @return an expression representing the pattern.
      */
-    TextExpression<?> pattern();
+    TextExpression<?> escapedPattern();
 
     /**
      * <p>An expression that evaluates to an unescaped variant of the
