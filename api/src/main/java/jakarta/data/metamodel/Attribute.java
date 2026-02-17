@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023,2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2023,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,8 @@
  */
 package jakarta.data.metamodel;
 
+import java.util.UUID;
+
 import jakarta.data.messages.Messages;
 
 /**
@@ -30,11 +32,15 @@ import jakarta.data.messages.Messages;
  * <li>{@link NumericAttribute} for entity attributes that represent numeric
  *     values, such as {@code int}, {@link Long}, and {@link java.math.BigDecimal}.
  *     </li>
+ * <li>{@link BooleanAttribute} for entity attributes that represent
+ *     {@code true} or {@code false} values of type {@code boolean} or
+ *     {@link Boolean}.</li>
  * <li>{@link TemporalAttribute} for entity attributes that represent temporal
  *     values, such as {@link java.time.LocalDateTime} and
  *     {@link java.time.Instant}.</li>
  * <li>{@link ComparableAttribute} for entity attributes that represent other
- *     sortable and comparable values, such as {@code boolean} and enumerations.</li>
+ *     sortable and comparable values, such as {@code char}, enumerations,
+ *     and {@link UUID}.</li>
  * <li>{@link SortableAttribute} for entity types that are sortable, but
  *     incapable of order-based comparison. Generally this subtype is unused
  *     but is applicable for databases that allow sorting on attributes of type
@@ -64,6 +70,7 @@ import jakarta.data.messages.Messages;
  *     public LocalDate listed;
  *     public String make;
  *     public String model;
+ *     public boolean previouslyOwned;
  *     public int price;
  *     public int year;
  * }
@@ -83,6 +90,7 @@ import jakarta.data.messages.Messages;
  *     String LISTED = "listed";
  *     String MAKE = "make";
  *     String MODEL = "model";
+ *     String PREVIOUSLYOWNED = "previouslyOwned";
  *     String PRICE = "price";
  *     String VIN = "vin";
  *     String YEAR = "year";
@@ -99,6 +107,8 @@ import jakarta.data.messages.Messages;
  *             Car.class, MAKE);
  *     TextAttribute<Car> model = TextAttribute.of(
  *             Car.class, MODEL);
+ *     BooleanAttribute<Car> previouslyOwned = BooleanAttribute.of(
+ *             Car.class, PREVIOUSLYOWNED, boolean.class);
  *     NumericAttribute<Car, Integer> price = NumericAttribute.of(
  *             Car.class, PRICE, int.class);
  *     TextAttribute<Car> vin = TextAttribute.of(
