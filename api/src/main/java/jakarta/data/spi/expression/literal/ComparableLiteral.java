@@ -56,8 +56,6 @@ public interface ComparableLiteral<V extends Comparable<?>>
      *              {@code null}.
      * @return a {@code ComparableLiteral} representing the value.
      * @throws NullPointerException if the value is {@code null}.
-     * @throws IllegalArgumentException if the value is not an instance of one
-     *         of the comparable types recognized by the specification.
      */
     @SuppressWarnings("unchecked")
     static <V extends Comparable<?>> ComparableLiteral<V> of(V value) {

@@ -46,10 +46,9 @@ import jakarta.data.spi.expression.function.TextFunctionExpression;
 public interface TextExpression<T> extends ComparableExpression<T, String> {
 
     /**
-     * Returns {@code String.class} as type of textual expressions.
+     * Returns {@code String.class} as type of the textual expression.
      *
      * @return {@code String.class}.
-     * @since 1.1
      */
     @Override
     default Class<String> type() {
