@@ -34,15 +34,12 @@ record TextFunctionExpressionRecord<T>(
                 Messages.get("001.arg.required", "name"));
         }
 
-        if (TextFunctionExpression.LEFT == name ||
-            TextFunctionExpression.RIGHT == name) {
-            ComparableExpression<? super T, ?> sizeExp = arguments.get(1);
-            if (sizeExp instanceof NumericLiteral sizeLiteral &&
-                sizeLiteral.value() instanceof Integer size &&
-                size < 0) {
-                throw new IllegalArgumentException(
-                        Messages.get("004.arg.negative", "length"));
-            }
+        if ((LEFT == name || RIGHT == name)
+                && arguments.get(1) instanceof NumericLiteral<?> sizeLiteral
+                && sizeLiteral.value() instanceof Integer size
+                && size < 0) {
+            throw new IllegalArgumentException(
+                    Messages.get("004.arg.negative", "length"));
         }
     }
 

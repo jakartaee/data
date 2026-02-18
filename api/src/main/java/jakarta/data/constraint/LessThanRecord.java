@@ -36,6 +36,6 @@ record LessThanRecord<V extends Comparable<?>>(ComparableExpression<?, V> bound)
 
     @Override
     public String toString() {
-        return "< " + bound.toString();
+        return "< " + bound;
     }
 }

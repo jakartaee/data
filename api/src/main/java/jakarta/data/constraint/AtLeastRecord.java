@@ -37,6 +37,6 @@ record AtLeastRecord<V extends Comparable<?>>(
 
     @Override
     public String toString() {
-        return ">= " + bound.toString();
+        return ">= " + bound;
     }
 }

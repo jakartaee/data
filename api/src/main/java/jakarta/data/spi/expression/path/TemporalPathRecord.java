@@ -34,11 +34,6 @@ record TemporalPathRecord<T, U, V extends Temporal & Comparable<? extends Tempor
 
     @Override
     public String toString() {
-        String expr = expression.toString();
-        String attrName = attribute.name();
-        StringBuilder path =
-                new StringBuilder(expr.length() + 1 + attrName.length());
-        path.append(expr).append('.').append(attrName);
-        return path.toString();
+        return expression + "." + attribute.name();
     }
 }
