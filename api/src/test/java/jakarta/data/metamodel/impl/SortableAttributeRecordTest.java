@@ -63,7 +63,7 @@ class SortableAttributeRecordTest {
                 .isEqualTo("book.numChapters");
             soft.assertThat(numChapters.declaringType())
                 .isEqualTo(Book.class);
-            soft.assertThat(numChapters.attributeType())
+            soft.assertThat(numChapters.type())
                 .isEqualTo(Integer.class);
         });
     }

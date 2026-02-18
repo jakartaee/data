@@ -47,11 +47,6 @@ record TextFunctionExpressionRecord<T>(
     }
 
     @Override
-    public Class<String> type() {
-        return String.class;
-    }
-
-    @Override
     public String toString() {
         StringBuilder function =
                 new StringBuilder(name.length() + 2 + 50 * arguments.size());

@@ -65,11 +65,6 @@ public class _AsciiCharacter {
         private TextAttr(String name) {
             this(name, Sort.asc(name), Sort.ascIgnoreCase(name), Sort.desc(name), Sort.descIgnoreCase(name));
         }
-
-        @Override
-        public Class<String> type() {
-            return String.class;
-        }
     }
 
 

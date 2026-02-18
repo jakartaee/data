@@ -63,7 +63,7 @@ class TextAttributeRecordTest {
                 .isEqualTo("book.title");
             soft.assertThat(title.declaringType())
                 .isEqualTo(Book.class);
-            soft.assertThat(title.attributeType())
+            soft.assertThat(title.type())
                 .isEqualTo(String.class);
         });
     }

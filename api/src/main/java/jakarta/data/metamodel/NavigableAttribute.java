@@ -34,7 +34,7 @@ public interface NavigableAttribute<T, U>
         extends Attribute<T>, NavigableExpression<T, U> {
 
     @Override
-    Class<U> attributeType();
+    Class<U> type();
 
     /**
      * <p>Creates a static metamodel {@code NavigableAttribute} representing

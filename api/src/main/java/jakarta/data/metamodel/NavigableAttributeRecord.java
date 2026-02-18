@@ -18,7 +18,7 @@
 package jakarta.data.metamodel;
 
 record NavigableAttributeRecord<T, U>
-        (Class<T> declaringType, String name, Class<U> attributeType)
+        (Class<T> declaringType, String name, Class<U> type)
         implements NavigableAttribute<T, U> {
 
     @Override

@@ -20,13 +20,8 @@ package jakarta.data.metamodel;
 import java.time.temporal.Temporal;
 
 record TemporalAttributeRecord<T, V extends Temporal & Comparable<? extends Temporal>>
-        (Class<T> declaringType, String name, Class<V> attributeType)
+        (Class<T> declaringType, String name, Class<V> type)
         implements TemporalAttribute<T, V> {
-
-    @Override
-    public Class<V> type() {
-        return attributeType;
-    }
 
     @Override
     public String toString() {

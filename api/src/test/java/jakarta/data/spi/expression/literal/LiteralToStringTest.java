@@ -108,7 +108,7 @@ class LiteralToStringTest {
     @Test
     @DisplayName("Literal.toString must output expected value")
     void testObjectLiteralToString() {
-        Literal<ZoneId> literal = LiteralRecord.of(ZoneId.class, ZoneId.of("America/Chicago"));
+        Literal<ZoneId> literal = Literal.of(ZoneId.of("America/Chicago"));
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(literal.toString())

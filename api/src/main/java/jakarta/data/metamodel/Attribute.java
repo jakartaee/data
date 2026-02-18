@@ -148,7 +148,7 @@ public interface Attribute<T> {
      *          was used to obtain the instance.
      * @since 1.1
      */
-    default Class<?> attributeType() {
+    default Class<?> type() {
         throw new UnsupportedOperationException(
                 Messages.get("011.unknown.attr.type", getClass().getName()));
     }

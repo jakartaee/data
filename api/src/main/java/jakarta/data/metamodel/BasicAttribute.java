@@ -32,6 +32,14 @@ import jakarta.data.messages.Messages;
 public interface BasicAttribute<T, V> extends Attribute<T>, Expression<T, V> {
 
     /**
+     * Obtain the Java class of the entity attribute.
+     *
+     * @return the type of the entity attribute.
+     */
+    @Override
+    Class<V> type();
+
+    /**
      * <p>Creates a static metamodel {@code BasicAttribute} representing the
      * entity attribute with the specified name.</p>
      *
