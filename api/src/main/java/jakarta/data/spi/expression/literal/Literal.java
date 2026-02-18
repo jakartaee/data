@@ -63,9 +63,8 @@ public interface Literal<V> extends Expression<Object, V> {
     static <V> Literal<V> of(V value) {
         if (value instanceof Comparable<?> comparable) {
             return (Literal<V>) ComparableLiteral.of(comparable);
-        }
-        else {
-            throw new IllegalArgumentException( "Unrecognized literal type" );
+        } else {
+            return new LiteralRecord<>((Class<? extends V>) value.getClass(), value);
         }
     }
 

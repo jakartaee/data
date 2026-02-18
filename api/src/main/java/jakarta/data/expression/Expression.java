@@ -104,7 +104,7 @@ public interface Expression<T, V> {
     /**
      * The type of the expression.
      */
-    Class<V> type();
+    Class<? extends V> type();
 
     /**
      * <p>Obtains a {@link Restriction} that requires that this expression

@@ -27,6 +27,7 @@ import java.time.Year;
 import java.util.UUID;
 
 import jakarta.data.expression.ComparableExpression;
+import jakarta.data.messages.Messages;
 
 /**
  * <p>A {@linkplain Literal literal} expression for a sortable value, such as a
@@ -65,6 +66,7 @@ public interface ComparableLiteral<V extends Comparable<?>>
         // and
         // TemporalExpression has V extends Temporal & Comparable<? extends Temporal>
         return switch (value) {
+            case null -> throw new NullPointerException(Messages.get("001.arg.required", "value"));
             case String s -> (ComparableLiteral<V>) StringLiteral.of(s);
             case Integer i -> (ComparableLiteral<V>) NumericLiteral.of(i);
             case Long l -> (ComparableLiteral<V>) NumericLiteral.of(l);
@@ -79,10 +81,7 @@ public interface ComparableLiteral<V extends Comparable<?>>
             case LocalDateTime d -> (ComparableLiteral<V>) TemporalLiteral.of(d);
             case LocalTime t -> (ComparableLiteral<V>) TemporalLiteral.of(t);
             case Year y -> (ComparableLiteral<V>) TemporalLiteral.of(y);
-            case Boolean b -> (ComparableLiteral<V>) of(b);
-            case Character c -> (ComparableLiteral<V>) of(c);
-            case UUID u -> (ComparableLiteral<V>) of(u);
-            case null, default -> throw new IllegalArgumentException( "Unrecognized literal type" );
+            default -> new ComparableLiteralRecord<>((Class<? extends V>) value.getClass(), value);
         };
     }
 

@@ -31,7 +31,7 @@ record NumericPathRecord<T, U, N extends Number & Comparable<N>>
     }
 
     @Override
-    public Class<N> type() {
+    public Class<? extends N> type() {
         return attribute.type();
     }
 

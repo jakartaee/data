@@ -19,7 +19,6 @@ package jakarta.data.spi.expression.literal;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.time.Instant;
 
 import jakarta.data.expression.NumericExpression;
 import jakarta.data.metamodel.NumericAttribute;
@@ -42,7 +41,7 @@ public interface NumericLiteral<N extends Number & Comparable<N>>
      * @return a {@code NumericLiteral} representing the value.
      * @throws NullPointerException if the value is {@code null}.
      */
-    static <N extends Number & Comparable<N>> NumericLiteral<N> of(Class<N> type, N value) {
+    static <N extends Number & Comparable<N>> NumericLiteral<N> of(Class<? extends N> type, N value) {
         return new NumericLiteralRecord<>(type, value);
     }
 

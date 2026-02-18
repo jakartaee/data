@@ -23,7 +23,7 @@ import java.math.BigInteger;
 import jakarta.data.messages.Messages;
 
 record NumericLiteralRecord<N extends Number & Comparable<N>>
-        (Class<N> type, N value)
+        (Class<? extends N> type, N value)
         implements NumericLiteral<N> {
 
     NumericLiteralRecord {

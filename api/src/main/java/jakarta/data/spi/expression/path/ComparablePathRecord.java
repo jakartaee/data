@@ -32,7 +32,7 @@ record ComparablePathRecord<T, U, C extends Comparable<?>>
     }
 
     @Override
-    public Class<C> type() {
+    public Class<? extends C> type() {
         return attribute.type();
     }
 

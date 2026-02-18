@@ -42,7 +42,7 @@ public interface NumericFunctionExpression<T, N extends Number & Comparable<N>>
     }
 
     static <T, N extends Number & Comparable<N>> NumericFunctionExpression<T, N>
-    of(String name, Class<N> returnType, NumericExpression<? super T, N> expression) {
+    of(String name, Class<? extends N> returnType, NumericExpression<? super T, N> expression) {
         if (expression == null) {
             throw new NullPointerException(
                     Messages.get("001.arg.required", "expression"));

@@ -19,7 +19,7 @@ package jakarta.data.spi.expression.literal;
 
 import jakarta.data.messages.Messages;
 
-record ComparableLiteralRecord<T, V extends Comparable<?>>(Class<V> type, V value)
+record ComparableLiteralRecord<V extends Comparable<?>>(Class<? extends V> type, V value)
         implements ComparableLiteral<V> {
 
     ComparableLiteralRecord {

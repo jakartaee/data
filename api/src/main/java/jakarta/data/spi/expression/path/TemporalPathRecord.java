@@ -33,7 +33,7 @@ record TemporalPathRecord<T, U, V extends Temporal & Comparable<? extends Tempor
     }
 
     @Override
-    public Class<V> type() {
+    public Class<? extends V> type() {
         return attribute().type();
     }
 
