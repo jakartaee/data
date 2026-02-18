@@ -17,104 +17,47 @@
  */
 package jakarta.data.constraint;
 
-import static jakarta.data.constraint.EscapeRule.CHAR_WILDCARD;
-import static jakarta.data.constraint.EscapeRule.ESCAPE;
-import static jakarta.data.constraint.EscapeRule.STRING_WILDCARD;
-
-import java.util.Objects;
-import java.util.concurrent.atomic.AtomicReference;
-
 import jakarta.data.expression.TextExpression;
 import jakarta.data.messages.Messages;
-import jakarta.data.spi.expression.literal.StringLiteral;
 
-record LikeRecord(StringLiteral unescapedPattern,
-                  EscapeRule escapeRule,
-                  AtomicReference<TextExpression<?>> escapedPatternRef,
+record LikeRecord(TextExpression<?> unescapedPattern,
+                  TextExpression<?> escapedPattern,
                   char escape)
         implements Like {
 
-    /**
-     * Constructor for when an unescaped pattern is available and the escaped
-     * pattern is lazily computed.
-     *
-     * @param unescaped  unescaped pattern.
-     * @param escapeRule rule for adding escapes to the unescaped pattern.
-     */
-    LikeRecord(String unescaped,
-               EscapeRule escapeRule) {
-        this(StringLiteral.of(unescaped),
-             escapeRule,
-             new AtomicReference<>(), 
-             ESCAPE);
-    }
-
-    /**
-     * Constructor for when an escaped pattern is available (or must be computed)
-     * in advance. An unescaped pattern might or might not be available.
-     *
-     * @param unescapedPattern unescaped pattern if available. Otherwise null.
-     * @param escapedPattern   escaped pattern.
-     * @param escape           escape character.
-     */
-    LikeRecord(StringLiteral unescapedPattern,
-               TextExpression<?> escapedPattern,
-               char escape) {
-        this(unescapedPattern,
-             null, // no EscapeRule needed because we already have escapedPattern
-             new AtomicReference<>(escapedPattern),
-             escape);
-    }
-
-    @Override
-    public boolean equals(Object other) {
-        if (other instanceof LikeRecord like &&
-            like.escape == escape &&
-            like.escapeRule == escapeRule) {
-            return like.unescapedPattern == null
-                    ? Objects.equals(like.escapedPatternRef.get(),
-                                     escapedPatternRef.get())
-                    : like.unescapedPattern.equals(unescapedPattern);
-        }
-        return false;
-    }
-
-    @Override
-    public TextExpression<?> escapedPattern() {
-        TextExpression<?> escapedPattern = escapedPatternRef.get();
-        if (escapedPattern == null) {
-            escapedPattern = StringLiteral.of(
-                    escapeRule.apply(unescapedPattern.value()));
-            escapedPatternRef.set(escapedPattern);
-        }
-        return escapedPattern;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(escape,
-                            escapeRule,
-                            unescapedPattern == null
-                                    ? escapedPatternRef.get()
-                                    : unescapedPattern);
-    }
+    static final char CHAR_WILDCARD = '_';
+    static final char STRING_WILDCARD = '%';
+    static final char ESCAPE = '\\';
 
     @Override
     public NotLike negate() {
         return new NotLikeRecord(unescapedPattern,
-                                 escapeRule,
-                                 escapedPatternRef,
+                                 escapedPattern,
                                  escape);
     }
 
     @Override
     public String toString() {
-        TextExpression<?> escapedPattern = escapedPatternRef.get();
-        if (escapedPattern == null) {
-            return "LIKE " + unescapedPattern;
-        } else {
+        if (unescapedPattern == null) {
             return "LIKE " + escapedPattern + " ESCAPE '" + escape + "'";
+        } else {
+            return "LIKE " + unescapedPattern;
         }
+    }
+
+    static String escape(String literal, boolean escapeWildcards) {
+        final var result = new StringBuilder();
+        for (int i = 0; i < literal.length(); i++) {
+            final char ch = literal.charAt(i);
+            if (ch == ESCAPE ||
+                escapeWildcards && (ch == STRING_WILDCARD || ch == CHAR_WILDCARD)) {
+                result.append(ESCAPE);
+            }
+            result.append(ch);
+        }
+        return result.length() == literal.length()
+                ? literal // no escape characters were added
+                : result.toString();
     }
 
     static String translate(String pattern,

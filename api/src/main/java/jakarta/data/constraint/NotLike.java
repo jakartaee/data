@@ -17,8 +17,8 @@
  */
 package jakarta.data.constraint;
 
-import static jakarta.data.constraint.EscapeRule.ESCAPE;
-import static jakarta.data.constraint.EscapeRule.STRING_WILDCARD;
+import static jakarta.data.constraint.LikeRecord.ESCAPE;
+import static jakarta.data.constraint.LikeRecord.STRING_WILDCARD;
 import static jakarta.data.constraint.LikeRecord.translate;
 
 import jakarta.data.expression.TextExpression;
@@ -101,7 +101,13 @@ public interface NotLike extends Constraint<String> {
     static NotLike pattern(String pattern) {
         Messages.requireNonNull(pattern, "pattern");
 
-        return new NotLikeRecord(pattern, EscapeRule.BACKSLASH_ONLY);
+        String patternEscaped = LikeRecord.escape(pattern, false);
+        StringLiteral escaped = StringLiteral.of(patternEscaped);
+        StringLiteral unescaped = pattern == patternEscaped
+                ? escaped
+                : StringLiteral.of(pattern);
+
+        return new NotLikeRecord(unescaped, escaped, ESCAPE);
     }
 
     /**
@@ -225,8 +231,15 @@ public interface NotLike extends Constraint<String> {
     static NotLike prefix(String prefix) {
         Messages.requireNonNull(prefix, "prefix");
 
-        return new NotLikeRecord(prefix + STRING_WILDCARD,
-                                 EscapeRule.SKIP_LAST);
+        String prefixEscaped = LikeRecord.escape(prefix, true);
+        StringLiteral escaped = StringLiteral.of(prefixEscaped + STRING_WILDCARD);
+        StringLiteral unescaped = prefix == prefixEscaped
+                ? escaped
+                : prefix.indexOf(STRING_WILDCARD) < 0
+                        ? StringLiteral.of(prefix + STRING_WILDCARD)
+                        : null;
+
+        return new NotLikeRecord(unescaped, escaped, ESCAPE);
     }
 
     /**
@@ -248,8 +261,19 @@ public interface NotLike extends Constraint<String> {
     static NotLike substring(String substring) {
         Messages.requireNonNull(substring, "substring");
 
-        return new NotLikeRecord(STRING_WILDCARD + substring + STRING_WILDCARD,
-                                 EscapeRule.SKIP_FIRST_AND_LAST);
+        String substringEscaped = LikeRecord.escape(substring, true);
+
+        StringLiteral escaped = StringLiteral.of(
+                STRING_WILDCARD + substringEscaped + STRING_WILDCARD);
+
+        StringLiteral unescaped = substring == substringEscaped
+                ? escaped
+                : substring.indexOf(STRING_WILDCARD) < 0
+                        ? StringLiteral.of(
+                                STRING_WILDCARD + substring + STRING_WILDCARD)
+                        : null;
+
+        return new NotLikeRecord(unescaped, escaped, ESCAPE);
     }
 
     /**
@@ -271,9 +295,15 @@ public interface NotLike extends Constraint<String> {
     static NotLike suffix(String suffix) {
         Messages.requireNonNull(suffix, "suffix");
 
-        return new NotLikeRecord(STRING_WILDCARD + suffix,
-                                 EscapeRule.SKIP_FIRST);
+        String suffixEscaped = LikeRecord.escape(suffix, true);
+        StringLiteral escaped = StringLiteral.of(STRING_WILDCARD + suffixEscaped);
+        StringLiteral unescaped = suffix == suffixEscaped
+                ? escaped
+                : suffix.indexOf(STRING_WILDCARD) < 0
+                        ? StringLiteral.of(STRING_WILDCARD + suffix)
+                        : null;
 
+        return new NotLikeRecord(unescaped, escaped, ESCAPE);
     }
 
     /**
@@ -296,14 +326,19 @@ public interface NotLike extends Constraint<String> {
     static NotLike literal(String value) {
         Messages.requireNonNull(value, "value");
 
-        return new NotLikeRecord(value,
-                                 EscapeRule.ALL);
+        String valueEscaped = LikeRecord.escape(value, true);
+        StringLiteral escaped = StringLiteral.of(valueEscaped);
+        StringLiteral unescaped = value == valueEscaped
+                ? escaped
+                : StringLiteral.of(value);
+
+        return new NotLikeRecord(unescaped, escaped, ESCAPE);
     }
 
     /**
-     * <p>The escape character to use for the {@link #pattern()}. The pattern
-     * is assigned an escape character even if the application did not supply
-     * one when requesting the {@code NotLike} constraint.</p>
+     * <p>The escape character to use for the {@link #escapedPattern()}.
+     * The pattern is assigned an escape character even if the application
+     * did not supply one when requesting the {@code NotLike} constraint.</p>
      *
      * @return the escape character.
      */
@@ -328,9 +363,8 @@ public interface NotLike extends Constraint<String> {
     TextExpression<?> escapedPattern();
 
     /**
-     * <p>An expression that evaluates to an unescaped variant of the
-     * {@link pattern()} against which the constraint target must not match.
-     * </p>
+     * <p>An expression that evaluates to an unescaped variant of the pattern
+     * against which the constraint target must not match.</p>
      *
      * <p>An unescaped pattern is not always available, in which case this
      * method returns {@code null}.

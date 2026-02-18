@@ -17,8 +17,8 @@
  */
 package jakarta.data.constraint;
 
-import static jakarta.data.constraint.EscapeRule.ESCAPE;
-import static jakarta.data.constraint.EscapeRule.STRING_WILDCARD;
+import static jakarta.data.constraint.LikeRecord.ESCAPE;
+import static jakarta.data.constraint.LikeRecord.STRING_WILDCARD;
 import static jakarta.data.constraint.LikeRecord.translate;
 
 import jakarta.data.expression.TextExpression;
@@ -106,7 +106,13 @@ public interface Like extends Constraint<String> {
     static Like pattern(String pattern) {
         Messages.requireNonNull(pattern, "pattern");
 
-        return new LikeRecord(pattern, EscapeRule.BACKSLASH_ONLY);
+        String patternEscaped = LikeRecord.escape(pattern, false);
+        StringLiteral escaped = StringLiteral.of(patternEscaped);
+        StringLiteral unescaped = pattern == patternEscaped
+                ? escaped
+                : StringLiteral.of(pattern);
+
+        return new LikeRecord(unescaped, escaped, ESCAPE);
     }
 
     /**
@@ -231,8 +237,15 @@ public interface Like extends Constraint<String> {
     static Like prefix(String prefix) {
         Messages.requireNonNull(prefix, "prefix");
 
-        return new LikeRecord(prefix + STRING_WILDCARD,
-                              EscapeRule.SKIP_LAST);
+        String prefixEscaped = LikeRecord.escape(prefix, true);
+        StringLiteral escaped = StringLiteral.of(prefixEscaped + STRING_WILDCARD);
+        StringLiteral unescaped = prefix == prefixEscaped
+                ? escaped
+                : prefix.indexOf(STRING_WILDCARD) < 0
+                        ? StringLiteral.of(prefix + STRING_WILDCARD)
+                        : null;
+
+        return new LikeRecord(unescaped, escaped, ESCAPE);
     }
 
     /**
@@ -254,8 +267,19 @@ public interface Like extends Constraint<String> {
     static Like substring(String substring) {
         Messages.requireNonNull(substring, "substring");
 
-        return new LikeRecord(STRING_WILDCARD + substring + STRING_WILDCARD,
-                              EscapeRule.SKIP_FIRST_AND_LAST);
+        String substringEscaped = LikeRecord.escape(substring, true);
+
+        StringLiteral escaped = StringLiteral.of(
+                STRING_WILDCARD + substringEscaped + STRING_WILDCARD);
+
+        StringLiteral unescaped = substring == substringEscaped
+                ? escaped
+                : substring.indexOf(STRING_WILDCARD) < 0
+                        ? StringLiteral.of(
+                                STRING_WILDCARD + substring + STRING_WILDCARD)
+                        : null;
+
+        return new LikeRecord(unescaped, escaped, ESCAPE);
     }
 
     /**
@@ -278,8 +302,15 @@ public interface Like extends Constraint<String> {
     static Like suffix(String suffix) {
         Messages.requireNonNull(suffix, "suffix");
 
-        return new LikeRecord(STRING_WILDCARD + suffix,
-                              EscapeRule.SKIP_FIRST);
+        String suffixEscaped = LikeRecord.escape(suffix, true);
+        StringLiteral escaped = StringLiteral.of(STRING_WILDCARD + suffixEscaped);
+        StringLiteral unescaped = suffix == suffixEscaped
+                ? escaped
+                : suffix.indexOf(STRING_WILDCARD) < 0
+                        ? StringLiteral.of(STRING_WILDCARD + suffix)
+                        : null;
+
+        return new LikeRecord(unescaped, escaped, ESCAPE);
     }
 
     /**
@@ -302,8 +333,13 @@ public interface Like extends Constraint<String> {
     static Like literal(String value) {
         Messages.requireNonNull(value, "value");
 
-        return new LikeRecord(value,
-                              EscapeRule.ALL);
+        String valueEscaped = LikeRecord.escape(value, true);
+        StringLiteral escaped = StringLiteral.of(valueEscaped);
+        StringLiteral unescaped = value == valueEscaped
+                ? escaped
+                : StringLiteral.of(value);
+
+        return new LikeRecord(unescaped, escaped, ESCAPE);
     }
 
     /**
