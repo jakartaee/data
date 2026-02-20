@@ -45,9 +45,9 @@ record NumericOperatorExpressionRecord<T, N extends Number & Comparable<N>>
                     Messages.get("001.arg.required", "right"));
         }
 
-        if (operator == Operator.DIVIDE &&
-            right instanceof NumericLiteral l &&
-            isZero((Number) l.value())) {
+        if (operator == Operator.DIVIDE
+                && right instanceof NumericLiteral<?> l
+                && isZero(l.value())) {
             throw new IllegalArgumentException(
                     Messages.get("005.zero.not.allowed", "divisor"));
         }
@@ -82,7 +82,6 @@ record NumericOperatorExpressionRecord<T, N extends Number & Comparable<N>>
             case MINUS  -> '-';
             case TIMES  -> '*';
             case DIVIDE -> '/';
-            default     -> throw new IllegalStateException();
         };
 
         String leftString = left.toString();

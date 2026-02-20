@@ -29,6 +29,6 @@ record EqualToRecord<V>(Expression<?, V> expression)
 
     @Override
     public String toString() {
-        return "= " + expression.toString();
+        return "= " + expression;
     }
 }
