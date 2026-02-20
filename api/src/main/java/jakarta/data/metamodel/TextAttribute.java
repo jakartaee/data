@@ -47,7 +47,7 @@ public interface TextAttribute<T> extends ComparableAttribute<T, String>, TextEx
      * @since 1.1
      */
     @Override
-    default Class<String> attributeType() {
+    default Class<String> type() {
         return String.class;
     }
 

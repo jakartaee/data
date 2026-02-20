@@ -19,7 +19,7 @@ package jakarta.data.spi.expression.literal;
 
 import jakarta.data.messages.Messages;
 
-record ComparableLiteralRecord<T, V extends Comparable<?>>(V value)
+record ComparableLiteralRecord<V extends Comparable<?>>(Class<? extends V> type, V value)
         implements ComparableLiteral<V> {
 
     ComparableLiteralRecord {
@@ -28,7 +28,6 @@ record ComparableLiteralRecord<T, V extends Comparable<?>>(V value)
                     Messages.get("001.arg.required", "value"));
         }
     }
-
     @Override
     public String toString() {
         return switch (value) {

@@ -24,8 +24,8 @@ import org.junit.jupiter.api.Test;
 class LiteralRecordTest {
     // Static metamodel using LiteralRecord
     interface _SimpleEntity {
-        Literal<String> name = new LiteralRecord<>("name");
-        Literal<Integer> age = new LiteralRecord<>(42);
+        Literal<String> name = new LiteralRecord<>(String.class, "name");
+        Literal<Integer> age = new LiteralRecord<>(Integer.class, 42);
     }
 
     // Simple mock entity
@@ -38,7 +38,7 @@ class LiteralRecordTest {
     @DisplayName("should create LiteralRecord and return its value")
     void shouldCreateLiteralRecord() {
         Literal<String> literal =
-                new LiteralRecord<>("literal-value");
+                new LiteralRecord<>(String.class, "literal-value");
 
         SoftAssertions.assertSoftly(soft -> soft.assertThat(literal.value()).isEqualTo("literal-value"));
     }
@@ -46,8 +46,8 @@ class LiteralRecordTest {
     @Test
     @DisplayName("should support equals and hashCode for identical values")
     void shouldSupportEqualsAndHashCode() {
-        var first = new LiteralRecord<>(10);
-        var second = new LiteralRecord<>(10);
+        var first = new LiteralRecord<>(Integer.class, 10);
+        var second = new LiteralRecord<>(Integer.class, 10);
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(first).isEqualTo(second);
@@ -58,8 +58,8 @@ class LiteralRecordTest {
     @Test
     @DisplayName("should not be equal for different values")
     void shouldNotEqualDifferentValues() {
-        var one = new LiteralRecord<>("one");
-        var two = new LiteralRecord<>("two");
+        var one = new LiteralRecord<>(String.class, "one");
+        var two = new LiteralRecord<>(String.class, "two");
 
         SoftAssertions.assertSoftly(soft -> soft.assertThat(one).isNotEqualTo(two));
     }
@@ -69,7 +69,7 @@ class LiteralRecordTest {
     void shouldThrowWhenValueIsNull() {
         org.junit.jupiter.api.Assertions.assertThrows(
                 NullPointerException.class,
-                () -> new LiteralRecord<>(null),
+                () -> new LiteralRecord<>(String.class, null),
                 "The value argument is required");
     }
 }

@@ -19,13 +19,17 @@ package jakarta.data.spi.expression.literal;
 
 import jakarta.data.messages.Messages;
 
-record LiteralRecord<V>(V value) implements Literal<V> {
+record LiteralRecord<V>(Class<? extends V> type, V value) implements Literal<V> {
 
     LiteralRecord {
         if (value == null) {
             throw new NullPointerException(
                 Messages.get("001.arg.required", "value"));
         }
+    }
+
+    public static <V> Literal<V> of(Class<V> type, V value) {
+        return new LiteralRecord<>(type, value);
     }
 
     @Override

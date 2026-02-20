@@ -46,6 +46,16 @@ import jakarta.data.spi.expression.function.TextFunctionExpression;
 public interface TextExpression<T> extends ComparableExpression<T, String> {
 
     /**
+     * Returns {@code String.class} as type of the textual expression.
+     *
+     * @return {@code String.class}.
+     */
+    @Override
+    default Class<String> type() {
+        return String.class;
+    }
+
+    /**
      * <p>Represents the function to obtain the {@link String} value that is
      * formed by prepending the specified prefix onto the beginning of the
      * value to which the current expression evaluates.</p>
@@ -209,7 +219,7 @@ public interface TextExpression<T> extends ComparableExpression<T, String> {
      *         textual value.
      */
     default NumericExpression<T, Integer> length() {
-        return NumericFunctionExpression.of(LENGTH, this);
+        return NumericFunctionExpression.of(LENGTH, Integer.class, this);
     }
 
     /**

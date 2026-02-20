@@ -18,7 +18,7 @@
 package jakarta.data.metamodel;
 
 record BasicAttributeRecord<T, V>
-        (Class<T> declaringType, String name, Class<V> attributeType)
+        (Class<T> declaringType, String name, Class<V> type)
         implements BasicAttribute<T, V> {
 
     @Override

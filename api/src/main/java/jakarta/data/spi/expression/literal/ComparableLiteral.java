@@ -27,6 +27,7 @@ import java.time.Year;
 import java.util.UUID;
 
 import jakarta.data.expression.ComparableExpression;
+import jakarta.data.messages.Messages;
 
 /**
  * <p>A {@linkplain Literal literal} expression for a sortable value, such as a
@@ -44,9 +45,9 @@ public interface ComparableLiteral<V extends Comparable<?>>
      * {@code ComparableLiteral} that represents the given value.</p>
      *
      * <p>The most specific subtype of {@code ComparableLiteral}, such as
-     * {@link NumericLiteral#of(Number) NumericLiteral},
+     * {@link NumericLiteral#of(Class, Number) NumericLiteral},
      * {@link StringLiteral#of(String) StringLiteral}, or
-     * {@link TemporalLiteral#of(java.time.temporal.Temporal) TemporalLiteral},
+     * {@link TemporalLiteral#of(Class, java.time.temporal.Temporal) TemporalLiteral},
      * should be used instead wherever possible.</p>
      *
      * @param <V>   entity attribute type.
@@ -63,6 +64,7 @@ public interface ComparableLiteral<V extends Comparable<?>>
         // and
         // TemporalExpression has V extends Temporal & Comparable<? extends Temporal>
         return switch (value) {
+            case null -> throw new NullPointerException(Messages.get("001.arg.required", "value"));
             case String s -> (ComparableLiteral<V>) StringLiteral.of(s);
             case Integer i -> (ComparableLiteral<V>) NumericLiteral.of(i);
             case Long l -> (ComparableLiteral<V>) NumericLiteral.of(l);
@@ -77,8 +79,29 @@ public interface ComparableLiteral<V extends Comparable<?>>
             case LocalDateTime d -> (ComparableLiteral<V>) TemporalLiteral.of(d);
             case LocalTime t -> (ComparableLiteral<V>) TemporalLiteral.of(t);
             case Year y -> (ComparableLiteral<V>) TemporalLiteral.of(y);
-            case null, default -> new ComparableLiteralRecord<>(value);
+            default -> new ComparableLiteralRecord<>((Class<? extends V>) value.getClass(), value);
         };
+    }
+
+    /**
+     * Create a {@code ComparableLiteral} representing the given {@code boolean}.
+     */
+    static ComparableLiteral<Boolean> of(boolean value) {
+        return new ComparableLiteralRecord<>(Boolean.class, value);
+    }
+
+    /**
+     * Create a {@code ComparableLiteral} representing the given {@code char}.
+     */
+    static ComparableLiteral<Character> of(char value) {
+        return new ComparableLiteralRecord<>(Character.class, value);
+    }
+
+    /**
+     * Create a {@code ComparableLiteral} representing the given {@link UUID}.
+     */
+    static ComparableLiteral<UUID> of(UUID value) {
+        return new ComparableLiteralRecord<>(UUID.class, value);
     }
 
     /**

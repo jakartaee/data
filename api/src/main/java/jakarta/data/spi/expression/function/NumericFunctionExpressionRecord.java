@@ -24,6 +24,7 @@ import java.util.List;
 
 record NumericFunctionExpressionRecord<T, N extends Number & Comparable<N>>(
         String name,
+        Class<? extends N> returnType,
         List<ComparableExpression<? super T, ?>> arguments)
         implements NumericFunctionExpression<T, N> {
 
@@ -32,6 +33,15 @@ record NumericFunctionExpressionRecord<T, N extends Number & Comparable<N>>(
             throw new NullPointerException(
                     Messages.get("001.arg.required", "name"));
         }
+        if (returnType == null) {
+            throw new NullPointerException(
+                    Messages.get("001.arg.required", "returnType"));
+        }
+    }
+
+    @Override
+    public Class<? extends N> type() {
+        return returnType;
     }
 
     @Override

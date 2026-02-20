@@ -119,7 +119,7 @@ public class Restrict {
      */
     public static <T> Restriction<T> all(
             List<? extends Restriction<? super T>> restrictions) {
-        return new CompositeRestrictionRecord<T>(
+        return new CompositeRestrictionRecord<>(
                 CompositeRestriction.Type.ALL,
                 List.copyOf(restrictions));
     }

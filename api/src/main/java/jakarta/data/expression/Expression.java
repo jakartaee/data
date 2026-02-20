@@ -102,6 +102,11 @@ import java.util.Collection;
 public interface Expression<T, V> {
 
     /**
+     * The type of the expression.
+     */
+    Class<? extends V> type();
+
+    /**
      * <p>Obtains a {@link Restriction} that requires that this expression
      * evaluate to a value that is equal to the specified value.</p>
      *

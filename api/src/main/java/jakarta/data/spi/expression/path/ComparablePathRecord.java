@@ -32,6 +32,11 @@ record ComparablePathRecord<T, U, C extends Comparable<?>>
     }
 
     @Override
+    public Class<? extends C> type() {
+        return attribute.type();
+    }
+
+    @Override
     public String toString() {
         return expression + "." + attribute.name();
     }

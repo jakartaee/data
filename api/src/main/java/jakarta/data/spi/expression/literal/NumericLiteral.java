@@ -41,8 +41,64 @@ public interface NumericLiteral<N extends Number & Comparable<N>>
      * @return a {@code NumericLiteral} representing the value.
      * @throws NullPointerException if the value is {@code null}.
      */
-    static <N extends Number & Comparable<N>> NumericLiteral<N> of(N value) {
-        return new NumericLiteralRecord<>(value);
+    static <N extends Number & Comparable<N>> NumericLiteral<N> of(Class<? extends N> type, N value) {
+        return new NumericLiteralRecord<>(type, value);
+    }
+
+    /**
+     * Create a {@code NumericLiteral} representing the given {@code int}.
+     */
+    static NumericLiteral<Integer> of(int value) {
+        return of(Integer.class, value);
+    }
+
+    /**
+     * Create a {@code NumericLiteral} representing the given {@code long}.
+     */
+    static NumericLiteral<Long> of(long value) {
+        return of(Long.class, value);
+    }
+
+    /**
+     * Create a {@code NumericLiteral} representing the given {@code float}.
+     */
+    static NumericLiteral<Float> of(float value) {
+        return of(Float.class, value);
+    }
+
+    /**
+     * Create a {@code NumericLiteral} representing the given {@code double}.
+     */
+    static NumericLiteral<Double> of(double value) {
+        return of(Double.class, value);
+    }
+
+    /**
+     * Create a {@code NumericLiteral} representing the given {@code byte}.
+     */
+    static NumericLiteral<Byte> of(byte value) {
+        return of(Byte.class, value);
+    }
+
+    /**
+     * Create a {@code NumericLiteral} representing the given {@code short}.
+     */
+    static NumericLiteral<Short> of(short value) {
+        return of(Short.class, value);
+    }
+
+    /**
+     * Create a {@code NumericLiteral} representing the given {@link BigInteger}.
+     */
+    static NumericLiteral<BigInteger> of(BigInteger value) {
+        return of(BigInteger.class, value);
+    }
+
+    /**
+     * Create a {@code NumericLiteral} representing the given {@link BigDecimal}.
+     */
+    static NumericLiteral<BigDecimal> of(BigDecimal value) {
+        return of(BigDecimal.class, value);
     }
 
     // TODO Is it a problem that toString for a NumericLiteral with an Integer

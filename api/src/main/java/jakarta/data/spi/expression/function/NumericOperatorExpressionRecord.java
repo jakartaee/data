@@ -53,6 +53,11 @@ record NumericOperatorExpressionRecord<T, N extends Number & Comparable<N>>
         }
     }
 
+    @Override
+    public Class<? extends N> type() {
+        return left.type();
+    }
+
     /**
      * Internal method that determines if a number is equal to 0.
      *
