@@ -18,12 +18,12 @@
 package jakarta.data.spi.expression.literal;
 
 import jakarta.data.expression.BooleanExpression;
+import jakarta.data.metamodel.BooleanAttribute;
 
 /**
  * <p>A {@linkplain Literal literal} for a
- * {@linkplain NumericAttribute numeric} value.</p>
+ * {@linkplain BooleanAttribute boolean} value.</p>
  *
- * @param <N> entity attribute type.
  * @since 1.1
  */
 public interface BooleanLiteral
@@ -33,7 +33,6 @@ public interface BooleanLiteral
     /**
      * <p>Creates a {@code BooleanLiteral} that represents the given value.</p>
      *
-     * @param <N>   entity attribute type.
      * @param value a {@code boolean} value.
      * @return a {@code BooleanLiteral} representing the value.
      */

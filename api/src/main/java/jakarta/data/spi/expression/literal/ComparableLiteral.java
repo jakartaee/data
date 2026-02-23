@@ -85,13 +85,6 @@ public interface ComparableLiteral<V extends Comparable<?>>
     }
 
     /**
-     * Create a {@code ComparableLiteral} representing the given {@code boolean}.
-     */
-    static ComparableLiteral<Boolean> of(boolean value) {
-        return new ComparableLiteralRecord<>(Boolean.class, value);
-    }
-
-    /**
      * Create a {@code ComparableLiteral} representing the given {@code char}.
      */
     static ComparableLiteral<Character> of(char value) {
