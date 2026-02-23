@@ -70,4 +70,14 @@ public interface BooleanExpression<T>
         return BasicRestriction.of(this, EqualTo.value(true));
     }
 
+    /**
+     * Returns {@code Boolean.class} as the type of the boolean expression.
+     *
+     * @return {@code Boolean.class}.
+     */
+    @Override
+    default Class<Boolean> type() {
+        return Boolean.class;
+    }
+
 }

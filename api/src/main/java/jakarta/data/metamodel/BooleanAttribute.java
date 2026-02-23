@@ -68,5 +68,13 @@ public interface BooleanAttribute<T>
         return new BooleanAttributeRecord<>(entityClass, name, attributeType);
     }
 
+    /**
+     * Returns {@code boolean.class} or {@code Boolean.class} as the entity
+     * attribute type for boolean attributes.
+     *
+     * @return {@code boolean.class} or {@code Boolean.class}.
+     */
+    @Override
+    Class<Boolean> type();
 }
 

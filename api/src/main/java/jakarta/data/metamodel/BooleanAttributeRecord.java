@@ -18,7 +18,7 @@
 package jakarta.data.metamodel;
 
 record BooleanAttributeRecord<T>
-        (Class<T> declaringType, String name, Class<Boolean> attributeType)
+        (Class<T> declaringType, String name, Class<Boolean> type)
         implements BooleanAttribute<T> {
 
     @Override

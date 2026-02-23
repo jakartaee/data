@@ -59,7 +59,7 @@ class BooleanAttributeTest {
                 BooleanAttribute.of(Book.class, "hardcover", Boolean.class);
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(hardcover.attributeType())
+            soft.assertThat(hardcover.type())
                 .isEqualTo(Boolean.class);
             soft.assertThat(hardcover.declaringType())
                 .isEqualTo(Book.class);
@@ -69,7 +69,7 @@ class BooleanAttributeTest {
 
         // Instance created by Mock metamodel class:
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(_Book.fiction.attributeType())
+            soft.assertThat(_Book.fiction.type())
                 .isEqualTo(boolean.class);
             soft.assertThat(_Book.fiction.declaringType())
                 .isEqualTo(Book.class);
