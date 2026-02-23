@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2025,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,7 +46,7 @@ import jakarta.data.spi.expression.function.TextFunctionExpression;
 public interface TextExpression<T> extends ComparableExpression<T, String> {
 
     /**
-     * Returns {@code String.class} as type of the textual expression.
+     * Returns {@code String.class} as the type of the textual expression.
      *
      * @return {@code String.class}.
      */
