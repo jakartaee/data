@@ -27,6 +27,7 @@ import java.util.Objects;
 public class Book implements Cloneable {
     String author;
     Instant copyrightDate;
+    boolean fiction;
     String id;
     int numChapters;
     int numPages;

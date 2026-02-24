@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2025,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,11 +19,13 @@ package jakarta.data.expression;
 
 import java.time.temporal.Temporal;
 
+import jakarta.data.metamodel.BooleanAttribute;
 import jakarta.data.metamodel.ComparableAttribute;
 import jakarta.data.metamodel.NavigableAttribute;
 import jakarta.data.metamodel.NumericAttribute;
 import jakarta.data.metamodel.TemporalAttribute;
 import jakarta.data.metamodel.TextAttribute;
+import jakarta.data.spi.expression.path.BooleanPath;
 import jakarta.data.spi.expression.path.ComparablePath;
 import jakarta.data.spi.expression.path.NavigablePath;
 import jakarta.data.spi.expression.path.NumericPath;
@@ -42,6 +44,10 @@ public interface NavigableExpression<T, U> {
 
     default <C extends Comparable<C>> ComparableExpression<T, C> navigate(ComparableAttribute<U, C> attribute) {
         return ComparablePath.of(this, attribute);
+    }
+
+    default BooleanExpression<T> navigate(BooleanAttribute<U> attribute) {
+        return BooleanPath.of(this, attribute);
     }
 
     default <N extends Number & Comparable<N>> NumericExpression<T, N> navigate(NumericAttribute<U, N> attribute) {

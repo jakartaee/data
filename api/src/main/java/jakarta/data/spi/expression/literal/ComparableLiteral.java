@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2025,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -74,6 +74,7 @@ public interface ComparableLiteral<V extends Comparable<?>>
             case Short s -> (ComparableLiteral<V>) NumericLiteral.of(s);
             case BigInteger i -> (ComparableLiteral<V>) NumericLiteral.of(i);
             case BigDecimal d -> (ComparableLiteral<V>) NumericLiteral.of(d);
+            case Boolean b -> (ComparableLiteral<V>) BooleanLiteral.of(b);
             case Instant i -> (ComparableLiteral<V>) TemporalLiteral.of(i);
             case LocalDate d -> (ComparableLiteral<V>) TemporalLiteral.of(d);
             case LocalDateTime d -> (ComparableLiteral<V>) TemporalLiteral.of(d);
@@ -81,13 +82,6 @@ public interface ComparableLiteral<V extends Comparable<?>>
             case Year y -> (ComparableLiteral<V>) TemporalLiteral.of(y);
             default -> new ComparableLiteralRecord<>((Class<? extends V>) value.getClass(), value);
         };
-    }
-
-    /**
-     * Create a {@code ComparableLiteral} representing the given {@code boolean}.
-     */
-    static ComparableLiteral<Boolean> of(boolean value) {
-        return new ComparableLiteralRecord<>(Boolean.class, value);
     }
 
     /**

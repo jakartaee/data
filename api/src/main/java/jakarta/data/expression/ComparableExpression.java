@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2025,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,9 +31,9 @@ import jakarta.data.restrict.Restriction;
  * <p>An {@linkplain Expression expression} that evaluates to a comparable
  * result that can be sorted.</p>
  *
- * <p>A more specific subtype, such as {@link NumericExpression},
- * {@link TemporalExpression}, or {@link TextExpression}, should be used
- * instead wherever it is possible.</p>
+ * <p>A more specific subtype, such as {@link BooleanExpression},
+ * {@link NumericExpression}, {@link TemporalExpression}, or
+ * {@link TextExpression}, should be used instead wherever it is possible.</p>
  *
  * <p>The {@linkplain Attribute entity and static metamodel} for the code
  * examples within this class are shown in the {@link Attribute} Javadoc.
