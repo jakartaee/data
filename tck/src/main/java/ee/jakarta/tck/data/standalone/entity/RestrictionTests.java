@@ -450,13 +450,13 @@ public class RestrictionTests {
                                  "LS: Lesotho",
                                  "LT: Lithuania"),
                          found);
-            } catch (UnsupportedOperationException x) {
-                if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
-                    // Key-Value databases might not be capable of BETWEEN
-                } else {
-                    throw x;
-                }
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
+                // Key-Value databases might not be capable of BETWEEN
+            } else {
+                throw x;
             }
+        }
     }
 
     @Assertion(id = "829", strategy = """
@@ -1121,6 +1121,35 @@ public class RestrictionTests {
         } catch (UnsupportedOperationException x) {
             if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
                 // NoSQL databases might not be capable of NOT LIKE.
+            } else {
+                throw x;
+            }
+        }
+    }
+
+    @Assertion(id = "829", strategy = """
+            Supply a restriction to a repository find method
+            where the restriction requires a BooleanAttribute
+            to match the isFalse condition.
+            """)
+    public void testRestrictBooleanAttribute() {
+        try {
+            List<String> found = countries
+                    .filter(Restrict.all(_Country.unitedNationsMember.isFalse(),
+                                         _Country.code.between("TO", "XO")))
+                    .stream()
+                    .map(c -> c.getCode() + ": " + c.getName())
+                    .sorted()
+                    .collect(Collectors.toList());
+            assertEquals(List.of("TW: Taiwan",
+                                 "VA: Vatican City State",
+                                 "XK: Kosovo"),
+                         found);
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Column and Key-Value databases might not be capable of AND.
+                // Column and Key-Value databases might be unable to query by non-keys.
+                // Key-Value databases might not be capable of BETWEEN
             } else {
                 throw x;
             }

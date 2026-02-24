@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2025,2026 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -62,6 +62,10 @@ public class Country {
     @jakarta.persistence.Enumerated(jakarta.persistence.EnumType.STRING)
     private Region region;
 
+    @jakarta.nosql.Column
+    @jakarta.persistence.Column(nullable = false)
+    private boolean unitedNationsMember;
+
     public Country() {
     }
 
@@ -105,10 +109,15 @@ public class Country {
         return region;
     }
 
+    public boolean isUnitedNationsMember() {
+        return unitedNationsMember;
+    }
+
     public static Country of(String code, String name, Region region,
                              long area, long population, long gdp, long debt,
                              LocalDate daylightTimeBegins,
                              LocalDate daylightTimeEnds,
+                             boolean unitedNationsMember,
                              City capital) {
         Country country = new Country();
         country.setCode(code);
@@ -120,6 +129,7 @@ public class Country {
         country.setDebt(debt);
         country.setDaylightTimeBegins(daylightTimeBegins);
         country.setDaylightTimeEnds(daylightTimeEnds);
+        country.setUnitedNationsMember(unitedNationsMember);
         country.setCapital(capital);
         return country;
     }
@@ -162,5 +172,9 @@ public class Country {
 
     public void setRegion(Region value) {
         region = value;
+    }
+
+    public void setUnitedNationsMember(boolean value) {
+        unitedNationsMember = value;
     }
 }
