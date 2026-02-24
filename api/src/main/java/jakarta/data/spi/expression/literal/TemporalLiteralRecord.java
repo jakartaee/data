@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2025,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,10 +32,8 @@ record TemporalLiteralRecord<V extends Temporal & Comparable<? extends Temporal>
         implements TemporalLiteral<V> {
 
     TemporalLiteralRecord {
-        if (value == null) {
-            throw new NullPointerException(
-                    Messages.get("001.arg.required", "value"));
-        }
+        Messages.requireNonNull(type, "type");
+        Messages.requireNonNull(type, "value");
     }
 
     @Override

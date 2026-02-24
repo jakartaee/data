@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2025,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,10 +26,6 @@ record LiteralRecord<V>(Class<? extends V> type, V value) implements Literal<V> 
             throw new NullPointerException(
                 Messages.get("001.arg.required", "value"));
         }
-    }
-
-    public static <V> Literal<V> of(Class<V> type, V value) {
-        return new LiteralRecord<>(type, value);
     }
 
     @Override

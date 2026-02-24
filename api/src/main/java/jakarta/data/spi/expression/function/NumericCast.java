@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2025,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ public interface NumericCast<T, N extends Number & Comparable<N>>
         extends NumericExpression<T, N> {
     NumericExpression<T, ?> expression();
 
+    @Override
     Class<N> type();
 
     static <T, N extends Number & Comparable<N>> NumericCast<T, N>
