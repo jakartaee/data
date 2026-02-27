@@ -42,6 +42,7 @@ import ee.jakarta.tck.data.framework.read.only.Region;
 import ee.jakarta.tck.data.framework.read.only._Country;
 import ee.jakarta.tck.data.framework.utilities.DatabaseType;
 import ee.jakarta.tck.data.framework.utilities.TestProperty;
+import jakarta.data.expression.TemporalExpression;
 import jakarta.data.restrict.Restrict;
 import jakarta.data.restrict.Restriction;
 import jakarta.inject.Inject;
@@ -1152,6 +1153,77 @@ public class RestrictionTests {
             } else {
                 throw x;
             }
+        }
+    }
+
+    @Assertion(id = "829", strategy = """
+            Supply to a repository find method a greaterThan Restriction
+            comparing two LocalDate attributes. Verity that the method
+            retrieves all matching entities.
+            """)
+    public void testTemporalGreaterThan() {
+        List<Country> found;
+        try {
+            found = countries.withDaylightTime(
+                    _Country.daylightTimeEnds.greaterThan(
+                            _Country.daylightTimeBegins));
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Key-Value databases might not be capable of NOT NULL.
+                // Key-Value databases might not be capable of >.
+                // Column and Key-Value databases might not be capable of AND.
+                // Column and Key-Value databases might not be capable of
+                //   restrictions on attributes that are not the Id.
+                return;
+            } else {
+                throw x;
+            }
+        }
+
+        // All data with non-null daylightTimeBegins/Ends has the end date
+        // greater than the begin date:
+        assertEquals(60,
+                     found.size());
+
+        for (Country country : found) {
+            assertEquals(true,
+                         country.getDaylightTimeEnds()
+                                 .isAfter(country.getDaylightTimeBegins()));
+        }
+    }
+
+    @Assertion(id = "829", strategy = """
+            Supply to a repository find method a lessThan Restriction
+            comparing a LocalDate attribute against the current date.
+            Verity that the method retrieves all matching entities.
+            """)
+    public void testTemporalLessThanLocalDate() {
+        List<Country> found;
+        try {
+            found = countries.withDaylightTime(
+                    _Country.daylightTimeBegins.lessThan(
+                            TemporalExpression.localDate()));
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+                // Key-Value databases might not be capable of NOT NULL.
+                // Key-Value databases might not be capable of <.
+                // Column and Key-Value databases might not be capable of AND.
+                // Column and Key-Value databases might not be capable of
+                //   restrictions on attributes that are not the Id.
+                return;
+            } else {
+                throw x;
+            }
+        }
+
+        // All data for daylightTimeBegins is from year 2025, so all entries
+        // with a non-null value must match:
+        assertEquals(60,
+                     found.size());
+
+        for (Country country : found) {
+            assertEquals(false,
+                         country.getDaylightTimeBegins() == null);
         }
     }
 

@@ -167,6 +167,15 @@ public interface Countries extends CrudRepository<Country, String> {
     List<Country> withDaylightTime(
             @By(_Country.DAYLIGHTTIMEBEGINS) NotNull<LocalDate> requireNonNull);
 
+    default List<Country> withDaylightTime(Restriction<Country> restrict) {
+        return withDaylightTimeRestricted(NotNull.instance(), restrict);
+    }
+
+    @Find
+    List<Country> withDaylightTimeRestricted(
+            NotNull<LocalDate> daylightTimeBegins,
+            Restriction<Country> restrict);
+
     @Find
     List<Country> withNameAfter(
             @Is(GreaterThan.class) String name);
