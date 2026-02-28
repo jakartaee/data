@@ -17,7 +17,6 @@
  */
 package jakarta.data.constraint;
 
-import static jakarta.data.constraint.LikeRecord.CHAR_WILDCARD;
 import static jakarta.data.constraint.LikeRecord.ESCAPE;
 import static jakarta.data.constraint.LikeRecord.STRING_WILDCARD;
 import static jakarta.data.constraint.LikeRecord.translate;
@@ -105,7 +104,15 @@ public interface Like extends Constraint<String> {
      * @throws NullPointerException if the pattern is {@code null}.
      */
     static Like pattern(String pattern) {
-        return pattern(pattern, CHAR_WILDCARD, STRING_WILDCARD);
+        Messages.requireNonNull(pattern, "pattern");
+
+        String patternEscaped = LikeRecord.escape(pattern, false);
+        StringLiteral escaped = StringLiteral.of(patternEscaped);
+        StringLiteral unescaped = pattern == patternEscaped
+                ? escaped
+                : StringLiteral.of(pattern);
+
+        return new LikeRecord(unescaped, escaped, ESCAPE);
     }
 
     /**
@@ -132,10 +139,19 @@ public interface Like extends Constraint<String> {
     static Like pattern(String pattern, char charWildcard, char stringWildcard) {
         Messages.requireNonNull(pattern, "pattern");
 
-        StringLiteral expression = StringLiteral.of(
-                translate(pattern, charWildcard, stringWildcard, ESCAPE, false));
+        StringLiteral escaped =
+                StringLiteral.of(translate(pattern,
+                                           charWildcard,
+                                           stringWildcard,
+                                           ESCAPE,
+                                           false));
 
-        return new LikeRecord(expression, ESCAPE);
+        StringLiteral unescaped =
+                escaped.value().indexOf(ESCAPE) < 0
+                        ? escaped
+                        : null;
+
+        return new LikeRecord(unescaped, escaped, ESCAPE);
     }
 
     /**
@@ -159,15 +175,24 @@ public interface Like extends Constraint<String> {
      * @return a {@code Like} constraint.
      * @throws NullPointerException if the pattern is {@code null}.
      */
-    static Like pattern(String pattern, char charWildcard, char stringWildcard, char escape) {
-        if (pattern == null) {
-            throw new NullPointerException(
-                    Messages.get("001.arg.required", "pattern"));
-        }
+    static Like pattern(String pattern,
+                        char charWildcard,
+                        char stringWildcard,
+                        char escape) {
+        Messages.requireNonNull(pattern, "pattern");
 
-        StringLiteral expression = StringLiteral.of(
-                translate(pattern, charWildcard, stringWildcard, escape, true));
-        return new LikeRecord(expression, escape);
+        StringLiteral escaped =
+                StringLiteral.of(translate(pattern,
+                                           charWildcard,
+                                           stringWildcard,
+                                           escape,
+                                           true));
+
+        StringLiteral unescaped = escaped.value().indexOf(escape) < 0
+                ? escaped
+                : null;
+
+        return new LikeRecord(unescaped, escaped, escape);
     }
 
     /**
@@ -182,12 +207,15 @@ public interface Like extends Constraint<String> {
      * @throws NullPointerException if the pattern expression is {@code null}.
      */
     static Like pattern(TextExpression<?> pattern, char escape) {
-        if (pattern == null) {
-            throw new NullPointerException(
-                    Messages.get("001.arg.required", "pattern"));
-        }
+        Messages.requireNonNull(pattern, "pattern");
 
-        return new LikeRecord(pattern, escape);
+        StringLiteral unescaped =
+                pattern instanceof StringLiteral escaped &&
+                escaped.value().indexOf(escape) < 0
+                        ? escaped
+                        : null;
+
+        return new LikeRecord(unescaped, pattern, escape);
     }
 
     /**
@@ -207,14 +235,17 @@ public interface Like extends Constraint<String> {
      * @throws NullPointerException if the prefix is {@code null}.
      */
     static Like prefix(String prefix) {
-        if (prefix == null) {
-            throw new NullPointerException(
-                    Messages.get("001.arg.required", "prefix"));
-        }
+        Messages.requireNonNull(prefix, "prefix");
 
-        StringLiteral expression = StringLiteral.of(
-                LikeRecord.escape(prefix) + STRING_WILDCARD);
-        return new LikeRecord(expression, ESCAPE);
+        String prefixEscaped = LikeRecord.escape(prefix, true);
+        StringLiteral escaped = StringLiteral.of(prefixEscaped + STRING_WILDCARD);
+        StringLiteral unescaped = prefix == prefixEscaped
+                ? escaped
+                : prefix.indexOf(STRING_WILDCARD) < 0
+                        ? StringLiteral.of(prefix + STRING_WILDCARD)
+                        : null;
+
+        return new LikeRecord(unescaped, escaped, ESCAPE);
     }
 
     /**
@@ -234,14 +265,21 @@ public interface Like extends Constraint<String> {
      * @throws NullPointerException if the substring is {@code null}.
      */
     static Like substring(String substring) {
-        if (substring == null) {
-            throw new NullPointerException(
-                    Messages.get("001.arg.required", "substring"));
-        }
+        Messages.requireNonNull(substring, "substring");
 
-        StringLiteral expression = StringLiteral.of(
-                STRING_WILDCARD + LikeRecord.escape(substring) + STRING_WILDCARD);
-        return new LikeRecord(expression, ESCAPE);
+        String substringEscaped = LikeRecord.escape(substring, true);
+
+        StringLiteral escaped = StringLiteral.of(
+                STRING_WILDCARD + substringEscaped + STRING_WILDCARD);
+
+        StringLiteral unescaped = substring == substringEscaped
+                ? escaped
+                : substring.indexOf(STRING_WILDCARD) < 0
+                        ? StringLiteral.of(
+                                STRING_WILDCARD + substring + STRING_WILDCARD)
+                        : null;
+
+        return new LikeRecord(unescaped, escaped, ESCAPE);
     }
 
     /**
@@ -262,14 +300,17 @@ public interface Like extends Constraint<String> {
      * @throws NullPointerException if the suffix is {@code null}.
      */
     static Like suffix(String suffix) {
-        if (suffix == null) {
-            throw new NullPointerException(
-                    Messages.get("001.arg.required", "suffix"));
-        }
+        Messages.requireNonNull(suffix, "suffix");
 
-        StringLiteral expression = StringLiteral.of(
-                STRING_WILDCARD + LikeRecord.escape(suffix));
-        return new LikeRecord(expression, ESCAPE);
+        String suffixEscaped = LikeRecord.escape(suffix, true);
+        StringLiteral escaped = StringLiteral.of(STRING_WILDCARD + suffixEscaped);
+        StringLiteral unescaped = suffix == suffixEscaped
+                ? escaped
+                : suffix.indexOf(STRING_WILDCARD) < 0
+                        ? StringLiteral.of(STRING_WILDCARD + suffix)
+                        : null;
+
+        return new LikeRecord(unescaped, escaped, ESCAPE);
     }
 
     /**
@@ -290,20 +331,21 @@ public interface Like extends Constraint<String> {
      * @throws NullPointerException if the literal value is {@code null}.
      */
     static Like literal(String value) {
-        if (value == null) {
-            throw new NullPointerException(
-                    Messages.get("001.arg.required", "value"));
-        }
+        Messages.requireNonNull(value, "value");
 
-        StringLiteral expression = StringLiteral.of(
-                LikeRecord.escape(value));
-        return new LikeRecord(expression, ESCAPE);
+        String valueEscaped = LikeRecord.escape(value, true);
+        StringLiteral escaped = StringLiteral.of(valueEscaped);
+        StringLiteral unescaped = value == valueEscaped
+                ? escaped
+                : StringLiteral.of(value);
+
+        return new LikeRecord(unescaped, escaped, ESCAPE);
     }
 
     /**
-     * <p>The escape character to use for the {@link #pattern()}. The pattern
-     * is assigned an escape character even if the application did not supply
-     * one when requesting the {@code Like} constraint.</p>
+     * <p>The escape character to use for the {@link #escapedPattern()}.
+     * The pattern is assigned an escape character even if the application
+     * did not supply one when requesting the {@code Like} constraint.</p>
      *
      * @return the escape character.
      */
@@ -325,5 +367,20 @@ public interface Like extends Constraint<String> {
      *
      * @return an expression representing the pattern.
      */
-    TextExpression<?> pattern();
+    TextExpression<?> escapedPattern();
+
+    /**
+     * <p>An expression that evaluates to an unescaped pattern against which
+     * the constraint target must match.</p>
+     *
+     * <p>Any {@linkplain #pattern(String, char, char) custom wildcards} that
+     * were supplied appear as {@code _} and {@code %} within the pattern.</p>
+     *
+     * <p>An unescaped pattern is not always available, in which case this
+     * method returns {@code null}.
+     *
+     * @return an expression representing an unescaped pattern, if available.
+     *         Otherwise {@code null}.
+     */
+    TextExpression<?> unescapedPattern();
 }
