@@ -97,7 +97,7 @@
         <jakarta.transaction.version>2.0.1</jakarta.transaction.version>
         <jakarta.validation.version>3.1.1</jakarta.validation.version>
 
-        <apache.rat.version>0.16.1</apache.rat.version>
+        <apache.rat.version>0.17</apache.rat.version>
 
         <arquillian.version>1.10.0.Final</arquillian.version>
         <arquillian.jakarta.version>10.0.0.Final</arquillian.jakarta.version>
