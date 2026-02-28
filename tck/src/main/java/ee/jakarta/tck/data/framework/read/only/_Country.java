@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2025,2026 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -17,6 +17,7 @@ package ee.jakarta.tck.data.framework.read.only;
 
 import java.time.LocalDate;
 
+import jakarta.data.metamodel.BooleanAttribute;
 import jakarta.data.metamodel.ComparableAttribute;
 import jakarta.data.metamodel.NavigableAttribute;
 import jakarta.data.metamodel.NumericAttribute;
@@ -42,6 +43,7 @@ public interface _Country {
     String NAME = "name";
     String POPULATION = "population";
     String REGION = "region";
+    String UNITEDNATIONSMEMBER = "unitedNationsMember";
 
     NumericAttribute<Country, Long> area = //
                     NumericAttribute.of(Country.class, AREA, long.class);
@@ -78,4 +80,7 @@ public interface _Country {
 
     ComparableAttribute<Country, Region> region = //
                     ComparableAttribute.of(Country.class, REGION, Region.class);
+
+    BooleanAttribute<Country> unitedNationsMember = //
+                    BooleanAttribute.of(Country.class, UNITEDNATIONSMEMBER, boolean.class);
 }
