@@ -81,9 +81,22 @@ public class ExpressionTests {
             """)
     public void testAppendExpression() {
         List<Country> found;
-        found = countries.filter(_Country.code.left(1)
-                                              .append(_Country.code.left(1))
-                                              .equalTo(_Country.code));
+        try {
+            found = countries.filter(_Country.code
+                                             .left(1)
+                                             .append(_Country.code.left(1))
+                                             .equalTo(_Country.code));
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.DOCUMENT)) {
+                // Document, Column, and Key-Value databases might not be
+                //  capable of ||.
+                // Document, Column, and Key-Value databases might not be
+                //  capable of LEFT.
+                return;
+            } else {
+                throw x;
+            }
+        }
 
         assertEquals(List.of("BB: Barbados",
                              "EE: Estonia",
@@ -104,8 +117,18 @@ public class ExpressionTests {
             """)
     public void testAppendValue() {
         List<Country> found;
-        found = countries.filter(_Country.code.append("STRALIA")
-                                              .equalTo("AUSTRALIA"));
+        try {
+            found = countries.filter(_Country.code.append("STRALIA")
+                                                  .equalTo("AUSTRALIA"));
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.DOCUMENT)) {
+                // Document, Column, and Key-Value databases might not be
+                //  capable of ||.
+                return;
+            } else {
+                throw x;
+            }
+        }
 
         assertEquals(List.of("AU: Australia"),
                      found.stream()
@@ -119,8 +142,18 @@ public class ExpressionTests {
             """)
     public void testLeft1() {
         List<Country> found;
-        found = countries.filter(_Country.code.left(1)
-                                              .equalTo("R"));
+        try {
+            found = countries.filter(_Country.code.left(1)
+                                                  .equalTo("R"));
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.DOCUMENT)) {
+                // Document, Column, and Key-Value databases might not be
+                //  capable of LEFT.
+                return;
+            } else {
+                throw x;
+            }
+        }
 
         assertEquals(List.of("RO: Romania",
                              "RS: Serbia",
@@ -143,7 +176,9 @@ public class ExpressionTests {
             found = countries.filter(_Country.name.left(3)
                                                   .equalTo("Gre"));
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.DOCUMENT)) {
+                // Document, Column, and Key-Value databases might not be
+                //  capable of LEFT.
                 // Column and Key-Value databases might not be capable of
                 //  restrictions on attributes that are not the Id.
                 return;
@@ -168,8 +203,18 @@ public class ExpressionTests {
             """)
     public void testLength2() {
         List<Country> found;
-        found = countries.filter(_Country.code.length()
-                                              .equalTo(2));
+        try {
+            found = countries.filter(_Country.code.length()
+                                                  .equalTo(2));
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.DOCUMENT)) {
+                // Document, Column, and Key-Value databases might not be
+                //  capable of LENGTH.
+                return;
+            } else {
+                throw x;
+            }
+        }
 
         assertEquals(CountryPopulator.EXPECTED_TOTAL,
                      found.size());
@@ -181,8 +226,18 @@ public class ExpressionTests {
             """)
     public void testLength5() {
         List<Country> found;
-        found = countries.filter(_Country.name.length()
-                                              .equalTo(5));
+        try {
+            found = countries.filter(_Country.name.length()
+                                                  .equalTo(5));
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.DOCUMENT)) {
+                // Document, Column, and Key-Value databases might not be
+                //  capable of LENGTH.
+                return;
+            } else {
+                throw x;
+            }
+        }
 
         assertEquals(List.of("AW: Aruba",
                              "BJ: Benin",
@@ -227,9 +282,9 @@ public class ExpressionTests {
             found = countries.filter(_Country.code.lower()
                                                   .equalTo("be"));
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
-                // TODO Otavio - which categories of NoSQL database must be excluded?
-                // ??? might not be capable of LOWER case comparison.
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.DOCUMENT)) {
+                // Document, Column, and Key-Value databases might not be
+                //  capable of LOWER.
                 return;
             } else {
                 throw x;
@@ -259,7 +314,11 @@ public class ExpressionTests {
                                       "EEgypt", // code EG doesn't end in E
                                       "FFiji")); // code FJ doesn't end in F
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.DOCUMENT)) {
+                // Document, Column, and Key-Value databases might not be
+                //  capable of ||.
+                // Document, Column, and Key-Value databases might not be
+                //  capable of RIGHT.
                 // Column and Key-Value databases might not be capable of
                 //  restrictions on attributes that are not the Id.
                 return;
@@ -285,8 +344,18 @@ public class ExpressionTests {
             """)
     public void testPrependValue() {
         List<Country> found;
-        found = countries.filter(_Country.code.prepend("Jakarta ")
-                                              .equalTo("Jakarta EE"));
+        try {
+            found = countries.filter(_Country.code.prepend("Jakarta ")
+                                                  .equalTo("Jakarta EE"));
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.DOCUMENT)) {
+                // Document, Column, and Key-Value databases might not be
+                //  capable of ||.
+                return;
+            } else {
+                throw x;
+            }
+        }
 
         assertEquals(List.of("EE: Estonia"),
                      found.stream()
@@ -300,8 +369,18 @@ public class ExpressionTests {
             """)
     public void testRight1() {
         List<Country> found;
-        found = countries.filter(_Country.code.right(1)
-                                              .equalTo("J"));
+        try {
+            found = countries.filter(_Country.code.right(1)
+                                                  .equalTo("J"));
+        } catch (UnsupportedOperationException x) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.DOCUMENT)) {
+                // Document, Column, and Key-Value databases might not be
+                //  capable of RIGHT.
+                return;
+            } else {
+                throw x;
+            }
+        }
 
         assertEquals(List.of("BJ: Benin",
                              "DJ: Djibouti",
@@ -325,7 +404,9 @@ public class ExpressionTests {
             found = countries.filter(_Country.name.right(3)
                                                   .equalTo("dan"));
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.DOCUMENT)) {
+                // Document, Column, and Key-Value databases might not be
+                //  capable of RIGHT.
                 // Column and Key-Value databases might not be capable of
                 //  restrictions on attributes that are not the Id.
                 return;
@@ -353,9 +434,9 @@ public class ExpressionTests {
             found = countries.filter(_Country.name.upper()
                                                   .equalTo("UZBEKISTAN"));
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
-                // TODO Otavio - which categories of NoSQL database must be excluded?
-                // ??? might not be capable of UPPER case comparison.
+            if (type.isKeywordSupportAtOrBelow(DatabaseType.DOCUMENT)) {
+                // Document, Column, and Key-Value databases might not be
+                //  capable of UPPER.
                 // Column and Key-Value databases might not be capable of
                 //  restrictions on attributes that are not the Id.
                 return;
