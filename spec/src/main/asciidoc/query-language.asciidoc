@@ -52,6 +52,16 @@ Wide-Column Databases:: Support for equality restriction and the inequality rest
 
 Graph and Document Databases:: Support for all equality and inequality operators is required when one of the operands is a value. Some Graph and Document databases might not be capable of comparisons when both of the operands are entity attributes.
 
+==== String functions and concatenation operator
+
+For NoSQL databases, availability of the `LEFT` and `RIGHT`, `LENGTH`, `LOWER` and `UPPER` functions and string concatenation (the `||` operator) varies by database.
+
+Key-value databases:: Might not be capable of string functions and concatenation.
+
+Wide-column databases:: Might not be capable of string functions and concatenation.
+
+Document databases:: Might not be capable of string functions and concatenation.
+
 ==== Sorting and ordering
 
 When using NoSQL databases, sorting support varies by database type:
