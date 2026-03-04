@@ -87,14 +87,11 @@ public class ExpressionTests {
                                              .append(_Country.code.left(1))
                                              .equalTo(_Country.code));
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.DOCUMENT)) {
-                // Document, Column, and Key-Value databases might not be
-                //  capable of ||.
-                // Document, Column, and Key-Value databases might not be
-                //  capable of LEFT.
-                return;
-            } else {
+            if (type.capableOfConcat() &&
+                type.capableOfLeft()) {
                 throw x;
+            } else {
+                return;
             }
         }
 
@@ -121,12 +118,10 @@ public class ExpressionTests {
             found = countries.filter(_Country.code.append("STRALIA")
                                                   .equalTo("AUSTRALIA"));
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.DOCUMENT)) {
-                // Document, Column, and Key-Value databases might not be
-                //  capable of ||.
-                return;
-            } else {
+            if (type.capableOfConcat()) {
                 throw x;
+            } else {
+                return;
             }
         }
 
@@ -146,12 +141,10 @@ public class ExpressionTests {
             found = countries.filter(_Country.code.left(1)
                                                   .equalTo("R"));
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.DOCUMENT)) {
-                // Document, Column, and Key-Value databases might not be
-                //  capable of LEFT.
-                return;
-            } else {
+            if (type.capableOfLeft()) {
                 throw x;
+            } else {
+                return;
             }
         }
 
@@ -176,14 +169,11 @@ public class ExpressionTests {
             found = countries.filter(_Country.name.left(3)
                                                   .equalTo("Gre"));
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.DOCUMENT)) {
-                // Document, Column, and Key-Value databases might not be
-                //  capable of LEFT.
-                // Column and Key-Value databases might not be capable of
-                //  restrictions on attributes that are not the Id.
-                return;
-            } else {
+            if (type.capableOfLeft() &&
+                type.capableOfConstraintsOnNonIdAttributes()) {
                 throw x;
+            } else {
+                return;
             }
         }
 
@@ -207,12 +197,10 @@ public class ExpressionTests {
             found = countries.filter(_Country.code.length()
                                                   .equalTo(2));
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.DOCUMENT)) {
-                // Document, Column, and Key-Value databases might not be
-                //  capable of LENGTH.
-                return;
-            } else {
+            if (type.capableOfLength()) {
                 throw x;
+            } else {
+                return;
             }
         }
 
@@ -230,14 +218,14 @@ public class ExpressionTests {
             found = countries.filter(_Country.name.length()
                                                   .equalTo(5));
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.DOCUMENT)) {
-                // Document, Column, and Key-Value databases might not be
-                //  capable of LENGTH.
-                return;
-            } else {
+            if (type.capableOfLeft() &&
+                type.capableOfConstraintsOnNonIdAttributes()) {
                 throw x;
+            } else {
+                return;
             }
         }
+
 
         assertEquals(List.of("AW: Aruba",
                              "BJ: Benin",
@@ -282,12 +270,10 @@ public class ExpressionTests {
             found = countries.filter(_Country.code.lower()
                                                   .equalTo("be"));
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.DOCUMENT)) {
-                // Document, Column, and Key-Value databases might not be
-                //  capable of LOWER.
-                return;
-            } else {
+            if (type.capableOfLower()) {
                 throw x;
+            } else {
+                return;
             }
         }
 
@@ -308,22 +294,18 @@ public class ExpressionTests {
             found = countries.filter(
                     _Country.name.prepend(_Country.code.right(1))
                                  .in("ACanada", // code CA ends in A
-                                      "BLebanon", // code LB ends in B
-                                      "CMonaco", // code MC ends in C
-                                      "DBangladesh", // code BD ends in D
-                                      "EEgypt", // code EG doesn't end in E
-                                      "FFiji")); // code FJ doesn't end in F
+                                     "BLebanon", // code LB ends in B
+                                     "CMonaco", // code MC ends in C
+                                     "DBangladesh", // code BD ends in D
+                                     "EEgypt", // code EG doesn't end in E
+                                     "FFiji")); // code FJ doesn't end in F
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.DOCUMENT)) {
-                // Document, Column, and Key-Value databases might not be
-                //  capable of ||.
-                // Document, Column, and Key-Value databases might not be
-                //  capable of RIGHT.
-                // Column and Key-Value databases might not be capable of
-                //  restrictions on attributes that are not the Id.
-                return;
-            } else {
+            if (type.capableOfConcat() &&
+                type.capableOfConstraintsOnNonIdAttributes() &&
+                type.capableOfRight()) {
                 throw x;
+            } else {
+                return;
             }
         }
 
@@ -348,12 +330,10 @@ public class ExpressionTests {
             found = countries.filter(_Country.code.prepend("Jakarta ")
                                                   .equalTo("Jakarta EE"));
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.DOCUMENT)) {
-                // Document, Column, and Key-Value databases might not be
-                //  capable of ||.
-                return;
-            } else {
+            if (type.capableOfConcat()) {
                 throw x;
+            } else {
+                return;
             }
         }
 
@@ -373,12 +353,10 @@ public class ExpressionTests {
             found = countries.filter(_Country.code.right(1)
                                                   .equalTo("J"));
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.DOCUMENT)) {
-                // Document, Column, and Key-Value databases might not be
-                //  capable of RIGHT.
-                return;
-            } else {
+            if (type.capableOfRight()) {
                 throw x;
+            } else {
+                return;
             }
         }
 
@@ -404,14 +382,11 @@ public class ExpressionTests {
             found = countries.filter(_Country.name.right(3)
                                                   .equalTo("dan"));
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.DOCUMENT)) {
-                // Document, Column, and Key-Value databases might not be
-                //  capable of RIGHT.
-                // Column and Key-Value databases might not be capable of
-                //  restrictions on attributes that are not the Id.
-                return;
-            } else {
+            if (type.capableOfConstraintsOnNonIdAttributes() &&
+                type.capableOfRight()) {
                 throw x;
+            } else {
+                return;
             }
         }
 
@@ -434,14 +409,11 @@ public class ExpressionTests {
             found = countries.filter(_Country.name.upper()
                                                   .equalTo("UZBEKISTAN"));
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.DOCUMENT)) {
-                // Document, Column, and Key-Value databases might not be
-                //  capable of UPPER.
-                // Column and Key-Value databases might not be capable of
-                //  restrictions on attributes that are not the Id.
-                return;
-            } else {
+            if (type.capableOfConstraintsOnNonIdAttributes() &&
+                type.capableOfUpper()) {
                 throw x;
+            } else {
+                return;
             }
         }
 

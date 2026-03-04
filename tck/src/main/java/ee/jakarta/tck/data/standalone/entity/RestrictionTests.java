@@ -131,13 +131,12 @@ public class RestrictionTests {
             found = countries.filter(Restrict.all(_Country.code.greaterThan("JM"),
                                                   _Country.code.lessThan("JR")));
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
-                // Column and Key-Value databases might not be capable of AND.
-                // Key-Value databases might not be capable of >.
-                // Key-Value databases might not be capable of <.
-                return;
-            } else {
+            if (type.capableOfAnd() &&
+                type.capableOfGreaterThan() &&
+                type.capableOfLessThan()) {
                 throw x;
+            } else {
+                return;
             }
         }
 
@@ -162,13 +161,12 @@ public class RestrictionTests {
                                                   _Country.code.in("FI", "FR", "GR"),
                                                   _Country.code.notEqualTo("FR")));
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
-                // Column and Key-Value databases might not be capable of AND.
-                // Key-Value databases might not be capable of NOT NULL.
-                // Key-Value databases might not be capable of <>.
-                return;
-            } else {
+            if (type.capableOfAnd() &&
+                type.capableOfNotEqual() &&
+                type.capableOfNotNull()) {
                 throw x;
+            } else {
+                return;
             }
         }
 
@@ -198,15 +196,14 @@ public class RestrictionTests {
         try {
             found = countries.filter(restriction);
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
-                // Key-Value databases might not be capable of <>.
-                // Key-Value databases might not be capable of NOT IN
-                // Column and Key-Value databases might not be capable of AND.
-                // Column and Key-Value databases might not be capable of OR.
-                // NoSQL databases might not be capable of ().
-                return;
-            } else {
+            if (type.capableOfAnd() &&
+                type.capableOfNotEqual() &&
+                type.capableOfNotIn() &&
+                type.capableOfOr() &&
+                type.capableOfParentheses()) {
                 throw x;
+            } else {
+                return;
             }
         }
 
@@ -269,11 +266,10 @@ public class RestrictionTests {
             found = countries.filter(Restrict.any(_Country.code.equalTo("CO"),
                                                   _Country.code.equalTo("MY")));
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
-                // Column and Key-Value databases might not be capable of Or.
-                return;
-            } else {
+            if (type.capableOfOr()) {
                 throw x;
+            } else {
+                return;
             }
         }
 
@@ -350,11 +346,10 @@ public class RestrictionTests {
                                                   _Country.code.equalTo("EH"), // no match
                                                   _Country.code.equalTo("TL")));
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
-                // Column and Key-Value databases might not be capable of Or.
-                return;
-            } else {
+            if (type.capableOfOr()) {
                 throw x;
+            } else {
+                return;
             }
         }
 
@@ -388,19 +383,17 @@ public class RestrictionTests {
         try {
             found = countries.filter(restriction);
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
-                // Key-Value databases might not be capable of NOT NULL.
-                // Key-Value databases might not be capable of >
-                // Key-Value databases might not be capable of >=
-                // Key-Value databases might not be capable of <
-                // Column and Key-Value databases might not be capable of AND.
-                // Column and Key-Value databases might not be capable of OR.
-                // Column and Key-Value databases might not be capable of
-                //   restrictions on attributes that are not the Id.
-                // NoSQL databases might not be capable of ().
-                return;
-            } else {
+            if (type.capableOfAnd() &&
+                type.capableOfConstraintsOnNonIdAttributes() &&
+                type.capableOfGreaterThan() &&
+                type.capableOfGreaterThanEqual() &&
+                type.capableOfLessThan() &&
+                type.capableOfNotNull() &&
+                type.capableOfOr() &&
+                type.capableOfParentheses()) {
                 throw x;
+            } else {
+                return;
             }
         }
 
@@ -452,10 +445,10 @@ public class RestrictionTests {
                                  "LT: Lithuania"),
                          found);
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
-                // Key-Value databases might not be capable of BETWEEN
-            } else {
+            if (type.capableOfBetween()) {
                 throw x;
+            } else {
+                return;
             }
         }
     }
@@ -476,13 +469,13 @@ public class RestrictionTests {
                                  "IQ: Iraq",
                                  "QA: Qatar"),
                          found);
-            } catch (UnsupportedOperationException x) {
-                if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
-                    // NoSQL databases might not be capable of LIKE.
-                } else {
-                    throw x;
-                }
+        } catch (UnsupportedOperationException x) {
+            if (type.capableOfLike()) {
+                throw x;
+            } else {
+                return;
             }
+        }
     }
 
     @Assertion(id = "829", strategy = """
@@ -490,25 +483,27 @@ public class RestrictionTests {
             find method.
             """)
     public void testEndsWithRestriction() {
+        List<String> found;
         try {
-            List<String> found = countries
+            found = countries
                     .filter(_Country.code.endsWith("J"))
                     .stream()
                     .map(c -> c.getCode() + ": " + c.getName())
                     .sorted()
                     .collect(Collectors.toList());
-            assertEquals(List.of("BJ: Benin",
-                                 "DJ: Djibouti",
-                                 "FJ: Fiji",
-                                 "TJ: Tajikistan"),
-                         found);
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
-                // NoSQL databases might not be capable of LIKE.
-            } else {
+            if (type.capableOfLike()) {
                 throw x;
+            } else {
+                return;
             }
         }
+
+        assertEquals(List.of("BJ: Benin",
+                             "DJ: Djibouti",
+                             "FJ: Fiji",
+                             "TJ: Tajikistan"),
+                     found);
     }
 
     @Assertion(id = "829", strategy = """
@@ -552,24 +547,26 @@ public class RestrictionTests {
             find method.
             """)
     public void testGreaterThanEqualRestriction() {
+        List<String> found;
         try {
-            List<String> found = countries
+            found = countries
                     .filter(_Country.code.greaterThanEqual("ZA"))
                             .stream()
                             .map(c -> c.getCode() + ": " + c.getName())
                             .sorted()
                             .collect(Collectors.toList());
-            assertEquals(List.of("ZA: South Africa",
-                                 "ZM: Zambia",
-                                 "ZW: Zimbabwe"),
-                         found);
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
-                // Key-Value databases might not be capable of >=
-            } else {
+            if (type.capableOfGreaterThanEqual()) {
                 throw x;
+            } else {
+                return;
             }
         }
+
+        assertEquals(List.of("ZA: South Africa",
+                             "ZM: Zambia",
+                             "ZW: Zimbabwe"),
+                     found);
     }
 
     @Assertion(id = "829", strategy = """
@@ -577,23 +574,25 @@ public class RestrictionTests {
                     find method.
                     """)
     public void testGreaterThanRestriction() {
+        List<String> found;
         try {
-            List<String> found = countries
+            found = countries
                     .filter(_Country.code.greaterThan("ZL"))
                             .stream()
                             .map(c -> c.getCode() + ": " + c.getName())
                             .sorted()
                             .collect(Collectors.toList());
-            assertEquals(List.of("ZM: Zambia",
-                                 "ZW: Zimbabwe"),
-                         found);
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
-                // Key-Value databases might not be capable of >
-            } else {
+            if (type.capableOfGreaterThan()) {
                 throw x;
+            } else {
+                return;
             }
         }
+
+        assertEquals(List.of("ZM: Zambia",
+                             "ZW: Zimbabwe"),
+                     found);
     }
 
     @Assertion(id = "829", strategy = """
@@ -696,19 +695,19 @@ public class RestrictionTests {
             match and are returned.
             """)
     public void testIsNullRestrictionNoneFound() {
+        List<Country> found;
         try {
-            List<Country> found = countries
-                            .filter(_Country.code.isNull());
-
-            assertEquals(0,
-                         found.size());
+            found = countries.filter(_Country.code.isNull());
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
-                // Key-Value databases might not be capable of IS NULL
-            } else {
+            if (type.capableOfNull()) {
                 throw x;
+            } else {
+                return;
             }
         }
+
+        assertEquals(0,
+                     found.size());
     }
 
     @Assertion(id = "829", strategy = """
@@ -717,29 +716,30 @@ public class RestrictionTests {
             match and are returned.
             """)
     public void testIsNullRestrictionSomeFound() {
+        List<String> found;
         try {
-            List<String> found = countries
+            found = countries
                             .filter(_Country.daylightTimeEnds.isNull())
                             .stream()
                             .map(Country::getName)
                             .collect(Collectors.toList());
-        
-            assertEquals(150,
-                         found.size());
-        
-            assertEquals(true,
-                         found.contains("Burundi"));
-            assertEquals(false,
-                         found.contains("Bulgaria"));
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
-                // Key-Value databases might not be capable of IS NULL.
-                // Column and Key-Value databases might not be capable of
-                // restrictions on attributes that are not the Id.
-            } else {
+            if (type.capableOfConstraintsOnNonIdAttributes() &&
+                type.capableOfNull()) {
                 throw x;
+            } else {
+                return;
             }
         }
+
+        assertEquals(150,
+                     found.size());
+
+        assertEquals(true,
+                     found.contains("Burundi"));
+        assertEquals(false,
+                     found.contains("Bulgaria"));
+
     }
 
     @Assertion(id = "829", strategy = """
@@ -747,26 +747,28 @@ public class RestrictionTests {
             find method.
             """)
     public void testLessThanEqualRestriction() {
+        List<String> found;
         try {
-            List<String> found = countries
+            found = countries
                     .filter(_Country.code.lessThanEqual("AL"))
                     .stream()
                     .map(c -> c.getCode() + ": " + c.getName())
                     .sorted()
                     .collect(Collectors.toList());
-            assertEquals(List.of("AD: Andorra",
-                                 "AE: United Arab Emirates",
-                                 "AF: Afghanistan",
-                                 "AG: Antigua and Barbuda",
-                                 "AL: Albania"),
-                         found);
-            } catch (UnsupportedOperationException x) {
-                if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
-                    // Key-Value databases might not be capable of <=
-                } else {
-                    throw x;
-                }
+        } catch (UnsupportedOperationException x) {
+            if (type.capableOfLessThanEqual()) {
+                throw x;
+            } else {
+                return;
             }
+        }
+
+        assertEquals(List.of("AD: Andorra",
+                             "AE: United Arab Emirates",
+                             "AF: Afghanistan",
+                             "AG: Antigua and Barbuda",
+                             "AL: Albania"),
+                     found);
     }
 
     @Assertion(id = "829", strategy = """
@@ -774,27 +776,29 @@ public class RestrictionTests {
             find method.
             """)
     public void testLessThanRestriction() {
+        List<String> found;
         try {
-            List<String> found = countries
+            found = countries
                     .filter(_Country.code.lessThan("AO"))
                     .stream()
                     .map(c -> c.getCode() + ": " + c.getName())
                     .sorted()
                     .collect(Collectors.toList());
-            assertEquals(List.of("AD: Andorra",
-                                 "AE: United Arab Emirates",
-                                 "AF: Afghanistan",
-                                 "AG: Antigua and Barbuda",
-                                 "AL: Albania",
-                                 "AM: Armenia"),
-                    found);
-            } catch (UnsupportedOperationException x) {
-                if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
-                    // Key-Value databases might not be capable of <
-                } else {
-                    throw x;
-                }
+        } catch (UnsupportedOperationException x) {
+            if (type.capableOfLessThan()) {
+                throw x;
+            } else {
+                return;
             }
+        }
+
+        assertEquals(List.of("AD: Andorra",
+                             "AE: United Arab Emirates",
+                             "AF: Afghanistan",
+                             "AG: Antigua and Barbuda",
+                             "AL: Albania",
+                             "AM: Armenia"),
+                     found);
     }
 
     @Assertion(id = "829", strategy = """
@@ -813,14 +817,12 @@ public class RestrictionTests {
         try {
             found = countries.filter(restriction);
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
-                // Key-Value databases might not be capable of >=.
-                // Column and Key-Value databases might not be capable of AND.
-                // Column and Key-Value databases might not be capable of
-                //   restrictions on attributes that are not the Id.
-                return;
-            } else {
+            if (type.capableOfAnd() &&
+                type.capableOfConstraintsOnNonIdAttributes() &&
+                type.capableOfGreaterThanEqual()) {
                 throw x;
+            } else {
+                return;
             }
         }
 
@@ -860,13 +862,12 @@ public class RestrictionTests {
         try {
             found = countries.filter(restriction);
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
-                // Key-Value databases might not be capable of <.
-                // Key-Value databases might not be capable of >.
-                // Column and Key-Value databases might not be capable of OR.
-                return;
-            } else {
+            if (type.capableOfGreaterThan() &&
+                type.capableOfLessThan() &&
+                type.capableOfOr()) {
                 throw x;
+            } else {
+                return;
             }
         }
 
@@ -895,25 +896,27 @@ public class RestrictionTests {
             find method.
             """)
     public void testNotBetweenRestriction() {
+        List<String> found;
         try {
-            List<String> found = countries
+            found = countries
                     .filter(_Country.code.notBetween("AF", "ZA"))
                     .stream()
                     .map(c -> c.getCode() + ": " + c.getName())
                     .sorted()
                     .collect(Collectors.toList());
-            assertEquals(List.of("AD: Andorra",
-                                 "AE: United Arab Emirates",
-                                 "ZM: Zambia",
-                                 "ZW: Zimbabwe"),
-                    found);
-            } catch (UnsupportedOperationException x) {
-                if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
-                    // Key-Value databases might not be capable of NOT BETWEEN
-                } else {
-                    throw x;
-                }
+        } catch (UnsupportedOperationException x) {
+            if (type.capableOfNotBetween()) {
+                throw x;
+            } else {
+                return;
             }
+        }
+
+        assertEquals(List.of("AD: Andorra",
+                             "AE: United Arab Emirates",
+                             "ZM: Zambia",
+                             "ZW: Zimbabwe"),
+                     found);
     }
 
     @Assertion(id = "829", strategy = """
@@ -921,32 +924,33 @@ public class RestrictionTests {
             find method.
             """)
     public void testNotContainsRestriction() {
+        List<String> found;
         try {
-            List<String> found = countries
+            found = countries
                     .filter(_Country.code.notContains("L"))
                     .stream()
                     .map(c -> c.getCode() + ": " + c.getName())
                     .sorted()
                     .collect(Collectors.toList());
-
-            assertEquals(CountryPopulator.EXPECTED_TOTAL - 20,
-                         found.size());
-
-            assertEquals(false,
-                         found.contains("LV: Latvia"));
-
-            assertEquals(false,
-                         found.contains("LS: Sierra Leone"));
-
-            assertEquals(true,
-                         found.contains("SK: Slovakia"));
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
-                // NoSQL databases might not be capable of NOT LIKE.
-            } else {
+            if (type.capableOfNotLike()) {
                 throw x;
+            } else {
+                return;
             }
         }
+
+        assertEquals(CountryPopulator.EXPECTED_TOTAL - 20,
+                     found.size());
+
+        assertEquals(false,
+                     found.contains("LV: Latvia"));
+
+        assertEquals(false,
+                     found.contains("LS: Sierra Leone"));
+
+        assertEquals(true,
+                     found.contains("SK: Slovakia"));
     }
 
     @Assertion(id = "829", strategy = """
@@ -954,29 +958,30 @@ public class RestrictionTests {
             find method.
             """)
     public void testNotEndsWithRestriction() {
+        List<String> found;
         try {
-            List<String> found = countries
+            found = countries
                     .filter(_Country.code.notEndsWith("N"))
                     .stream()
                     .map(c -> c.getCode() + ": " + c.getName())
                     .sorted()
                     .collect(Collectors.toList());
-
-            assertEquals(CountryPopulator.EXPECTED_TOTAL - 10,
-                         found.size());
-
-            assertEquals(false,
-                         found.contains("CN: China"));
-
-            assertEquals(true,
-                         found.contains("NA: Namibia"));
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
-                // NoSQL databases might not be capable of NOT LIKE.
-            } else {
+            if (type.capableOfNotLike()) {
                 throw x;
+            } else {
+                return;
             }
         }
+
+        assertEquals(CountryPopulator.EXPECTED_TOTAL - 10,
+                     found.size());
+
+        assertEquals(false,
+                     found.contains("CN: China"));
+
+        assertEquals(true,
+                     found.contains("NA: Namibia"));
     }
 
     @Assertion(id = "829", strategy = """
@@ -984,25 +989,26 @@ public class RestrictionTests {
             find method.
             """)
     public void testNotEqualToRestriction() {
+        List<String> found;
         try {
-            List<String> found = countries
+            found = countries
                     .filter(_Country.code.notEqualTo("US"))
                     .stream()
                     .map(Country::getName)
                     .collect(Collectors.toList());
-
-            assertEquals(CountryPopulator.EXPECTED_TOTAL - 1,
-                         found.size());
-
-            assertEquals(false,
-                         found.contains("United States of America"));
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
-                // Key-Value databases might not be capable of <>
-            } else {
+            if (type.capableOfNotEqual()) {
                 throw x;
+            } else {
+                return;
             }
         }
+
+        assertEquals(CountryPopulator.EXPECTED_TOTAL - 1,
+                     found.size());
+
+        assertEquals(false,
+                     found.contains("United States of America"));
     }
 
     @Assertion(id = "829", strategy = """
@@ -1010,33 +1016,34 @@ public class RestrictionTests {
             find method.
             """)
     public void testNotInRestriction() {
+        List<String> found;
         try {
-            List<String> found = countries
+            found = countries
                     .filter(_Country.code.notIn("MG", "IS", "ID", "LK", "CU"))
                     .stream()
                     .map(Country::getName)
                     .collect(Collectors.toList());
-
-            assertEquals(CountryPopulator.EXPECTED_TOTAL - 5,
-                         found.size());
-
-            assertEquals(false,
-                         found.contains("Cuba"));
-            assertEquals(false,
-                         found.contains("Iceland"));
-            assertEquals(false,
-                         found.contains("Indonesia"));
-            assertEquals(false,
-                         found.contains("Madagascar"));
-            assertEquals(false,
-                         found.contains("Sri Lanka"));
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
-                // Key-Value databases might not be capable of NOT IN
-            } else {
+            if (type.capableOfNotIn()) {
                 throw x;
+            } else {
+                return;
             }
         }
+
+        assertEquals(CountryPopulator.EXPECTED_TOTAL - 5,
+                     found.size());
+
+        assertEquals(false,
+                     found.contains("Cuba"));
+        assertEquals(false,
+                     found.contains("Iceland"));
+        assertEquals(false,
+                     found.contains("Indonesia"));
+        assertEquals(false,
+                     found.contains("Madagascar"));
+        assertEquals(false,
+                     found.contains("Sri Lanka"));
     }
 
     @Assertion(id = "829", strategy = """
@@ -1045,25 +1052,26 @@ public class RestrictionTests {
             match and are returned.
             """)
     public void testNotNullRestrictionAllFound() {
+        List<String> found;
         try {
-            List<String> found = countries
+            found = countries
                     .filter(_Country.code.notNull())
                     .stream()
                     .map(Country::getName)
                     .collect(Collectors.toList());
-
-            assertEquals(CountryPopulator.EXPECTED_TOTAL,
-                         found.size());
-
-            assertEquals(true,
-                         found.contains("France"));
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
-                // Key-Value databases might not be capable of NOT NULL
-            } else {
+            if (type.capableOfNotNull()) {
                 throw x;
+            } else {
+                return;
             }
         }
+
+        assertEquals(CountryPopulator.EXPECTED_TOTAL,
+                     found.size());
+
+        assertEquals(true,
+                     found.contains("France"));
     }
 
     @Assertion(id = "829", strategy = """
@@ -1072,30 +1080,29 @@ public class RestrictionTests {
             match and are returned.
             """)
     public void testNotNullRestrictionSomeFound() {
-
+        List<String> found;
         try {
-            List<String> found = countries
+            found = countries
                     .filter(_Country.daylightTimeEnds.notNull())
                     .stream()
                     .map(Country::getName)
                     .collect(Collectors.toList());
-
-            assertEquals(60,
-                         found.size());
-
-            assertEquals(true,
-                         found.contains("Chile"));
-            assertEquals(false,
-                         found.contains("Bangladesh"));
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
-                // Key-Value databases might not be capable of NOT NULL.
-                // Column and Key-Value databases might not be capable of
-                // restrictions on attributes that are not the Id.
-            } else {
+            if (type.capableOfConstraintsOnNonIdAttributes() &&
+                type.capableOfNotNull()) {
                 throw x;
+            } else {
+                return;
             }
         }
+
+        assertEquals(60,
+                     found.size());
+
+        assertEquals(true,
+                     found.contains("Chile"));
+        assertEquals(false,
+                     found.contains("Bangladesh"));
     }
 
     @Assertion(id = "829", strategy = """
@@ -1103,29 +1110,30 @@ public class RestrictionTests {
             find method.
             """)
     public void testNotStartsWithRestriction() {
+        List<String> found;
         try {
-            List<String> found = countries
+            found = countries
                     .filter(_Country.code.notStartsWith("B"))
                     .stream()
                     .map(c -> c.getCode() + ": " + c.getName())
                     .sorted()
                     .collect(Collectors.toList());
-
-            assertEquals(CountryPopulator.EXPECTED_TOTAL - 18,
-                         found.size());
-
-            assertEquals(false,
-                         found.contains("BS: Bahamas"));
-
-            assertEquals(true,
-                         found.contains("GB: United Kingdom"));
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
-                // NoSQL databases might not be capable of NOT LIKE.
-            } else {
+            if (type.capableOfNotLike()) {
                 throw x;
+            } else {
+                return;
             }
         }
+
+        assertEquals(CountryPopulator.EXPECTED_TOTAL - 18,
+                     found.size());
+
+        assertEquals(false,
+                     found.contains("BS: Bahamas"));
+
+        assertEquals(true,
+                     found.contains("GB: United Kingdom"));
     }
 
     @Assertion(id = "829", strategy = """
@@ -1134,27 +1142,29 @@ public class RestrictionTests {
             to match the isFalse condition.
             """)
     public void testRestrictBooleanAttribute() {
+        List<String> found;
         try {
-            List<String> found = countries
+            found = countries
                     .filter(Restrict.all(_Country.unitedNationsMember.isFalse(),
                                          _Country.code.between("TO", "XO")))
                     .stream()
                     .map(c -> c.getCode() + ": " + c.getName())
                     .sorted()
                     .collect(Collectors.toList());
-            assertEquals(List.of("TW: Taiwan",
-                                 "VA: Vatican City State",
-                                 "XK: Kosovo"),
-                         found);
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
-                // Column and Key-Value databases might not be capable of AND.
-                // Column and Key-Value databases might be unable to query by non-keys.
-                // Key-Value databases might not be capable of BETWEEN
-            } else {
+            if (type.capableOfAnd() &&
+                type.capableOfBetween() &&
+                type.capableOfConstraintsOnNonIdAttributes()) {
                 throw x;
+            } else {
+                return;
             }
         }
+
+        assertEquals(List.of("TW: Taiwan",
+                             "VA: Vatican City State",
+                             "XK: Kosovo"),
+                     found);
     }
 
     @Assertion(id = "829", strategy = """
@@ -1162,27 +1172,29 @@ public class RestrictionTests {
             find method.
             """)
     public void testStartsWithRestriction() {
+        List<String> found;
         try {
-            List<String> found = countries
+            found = countries
                     .filter(_Country.code.startsWith("E"))
                     .stream()
                     .map(c -> c.getCode() + ": " + c.getName())
                     .sorted()
                     .collect(Collectors.toList());
-            assertEquals(List.of("EC: Ecuador",
-                                 "EE: Estonia",
-                                 "EG: Egypt",
-                                 "ER: Eritrea",
-                                 "ES: Spain",
-                                 "ET: Ethiopia"),
-                         found);
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
-                // NoSQL databases might not be capable of LIKE.
-            } else {
+            if (type.capableOfLike()) {
                 throw x;
+            } else {
+                return;
             }
         }
+
+        assertEquals(List.of("EC: Ecuador",
+                             "EE: Estonia",
+                             "EG: Egypt",
+                             "ER: Eritrea",
+                             "ES: Spain",
+                             "ET: Ethiopia"),
+                     found);
     }
 
     @Assertion(id = "829", strategy = """
@@ -1197,15 +1209,13 @@ public class RestrictionTests {
                     _Country.daylightTimeEnds.greaterThan(
                             _Country.daylightTimeBegins));
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
-                // Key-Value databases might not be capable of NOT NULL.
-                // Key-Value databases might not be capable of >.
-                // Column and Key-Value databases might not be capable of AND.
-                // Column and Key-Value databases might not be capable of
-                //   restrictions on attributes that are not the Id.
-                return;
-            } else {
+            if (type.capableOfAnd() &&
+                type.capableOfConstraintsOnNonIdAttributes() &&
+                type.capableOfGreaterThan() &&
+                type.capableOfNotNull()) {
                 throw x;
+            } else {
+                return;
             }
         }
 
@@ -1233,15 +1243,13 @@ public class RestrictionTests {
                     _Country.daylightTimeBegins.lessThan(
                             TemporalExpression.localDate()));
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
-                // Key-Value databases might not be capable of NOT NULL.
-                // Key-Value databases might not be capable of <.
-                // Column and Key-Value databases might not be capable of AND.
-                // Column and Key-Value databases might not be capable of
-                //   restrictions on attributes that are not the Id.
-                return;
-            } else {
+            if (type.capableOfAnd() &&
+                type.capableOfConstraintsOnNonIdAttributes() &&
+                type.capableOfLessThan() &&
+                type.capableOfNotNull()) {
                 throw x;
+            } else {
+                return;
             }
         }
 
@@ -1273,19 +1281,19 @@ public class RestrictionTests {
             find method to retrieve all entities.
             """)
     public void testUnrestricted() {
+        List<Country> found;
         try {
-            List<Country> found = countries.filter(Restrict.unrestricted());
-
-            assertEquals(CountryPopulator.EXPECTED_TOTAL,
-                         found.size());
+            found = countries.filter(Restrict.unrestricted());
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
-                // Column and Key-Value databases might not be capable of find
-                // without restrictions.
-            } else {
+            if (type.capableOfQueryWithoutWhere()) {
                 throw x;
+            } else {
+                return;
             }
         }
+
+        assertEquals(CountryPopulator.EXPECTED_TOTAL,
+                     found.size());
     }
 
 }
