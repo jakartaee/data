@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 Contributors to the Eclipse Foundation
+ * Copyright (c) 2024,2026 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -34,6 +34,138 @@ public enum DatabaseType {
 
     private DatabaseType(int flexibility) {
         this.flexibility = flexibility;
+    }
+
+    public boolean capableOfAnd() {
+        return flexibility >= DOCUMENT.flexibility;
+    }
+
+    public boolean capableOfAssignmentToExpression() {
+        return flexibility >= RELATIONAL.flexibility;
+    }
+
+    public boolean capableOfBetween() {
+        return flexibility >= COLUMN.flexibility;
+    }
+
+    public boolean capableOfAttributeVsAttributeComparison() {
+        return flexibility >= RELATIONAL.flexibility;
+    }
+
+    public boolean capableOfConcat() {
+        return flexibility >= GRAPH.flexibility;
+    }
+
+    public boolean capableOfConditionalDelete() {
+        return flexibility >= RELATIONAL.flexibility;
+    }
+
+    public boolean capableOfConditionalUpdate() {
+        return flexibility >= RELATIONAL.flexibility;
+    }
+
+    public boolean capableOfConstraintsOnNonIdAttributes() {
+        return flexibility >= DOCUMENT.flexibility;
+    }
+
+    public boolean capableOfCount() {
+        return flexibility >= DOCUMENT.flexibility;
+    }
+
+    public boolean capableOfCountingDeletes() {
+        return flexibility >= RELATIONAL.flexibility;
+    }
+
+    public boolean capableOfCountingUpdates() {
+        return flexibility >= RELATIONAL.flexibility;
+    }
+
+    public boolean capableOfGreaterThan() {
+        return flexibility >= COLUMN.flexibility;
+    }
+
+    public boolean capableOfGreaterThanEqual() {
+        return flexibility >= COLUMN.flexibility;
+    }
+
+    public boolean capableOfIn() {
+        return flexibility >= COLUMN.flexibility;
+    }
+
+    public boolean capableOfLeft() {
+        return flexibility >= GRAPH.flexibility;
+    }
+
+    public boolean capableOfLength() {
+        return flexibility >= GRAPH.flexibility;
+    }
+
+    public boolean capableOfLessThan() {
+        return flexibility >= COLUMN.flexibility;
+    }
+
+    public boolean capableOfLessThanEqual() {
+        return flexibility >= COLUMN.flexibility;
+    }
+
+    public boolean capableOfLike() {
+        return flexibility >= RELATIONAL.flexibility;
+    }
+
+    public boolean capableOfLower() {
+        return flexibility >= GRAPH.flexibility;
+    }
+
+    public boolean capableOfMultipleSort() {
+        return flexibility >= RELATIONAL.flexibility;
+    }
+
+    public boolean capableOfNotBetween() {
+        return flexibility >= COLUMN.flexibility;
+    }
+
+    public boolean capableOfNotEqual() {
+        return flexibility >= COLUMN.flexibility;
+    }
+
+    public boolean capableOfNotIn() {
+        return flexibility >= COLUMN.flexibility;
+    }
+
+    public boolean capableOfNotLike() {
+        return flexibility >= RELATIONAL.flexibility;
+    }
+
+    public boolean capableOfNotNull() {
+        return flexibility >= COLUMN.flexibility;
+    }
+
+    public boolean capableOfNull() {
+        return flexibility >= COLUMN.flexibility;
+    }
+
+    public boolean capableOfOr() {
+        return flexibility >= DOCUMENT.flexibility;
+    }
+
+    public boolean capableOfParentheses() {
+        return flexibility >= RELATIONAL.flexibility;
+    }
+
+    public boolean capableOfQueryWithoutWhere() {
+        return flexibility >= DOCUMENT.flexibility;
+    }
+
+    public boolean capableOfRight() {
+        return flexibility >= GRAPH.flexibility;
+    }
+
+    public boolean capableOfSingleSort() {
+        return flexibility >= DOCUMENT.flexibility;
+    }
+
+    public boolean capableOfUpper() {
+        return flexibility >= GRAPH.flexibility;
     }
 
     public static DatabaseType valueOfIgnoreCase(String value) {
