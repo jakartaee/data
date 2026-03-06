@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022, 2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022, 2026 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -27,6 +27,7 @@ public class TCKLoadableExtension implements LoadableExtension {
     @Override
     public void register(ExtensionBuilder builder) {
         builder.service(ApplicationArchiveProcessor.class, TCKArchiveProcessor.class);
+        builder.service(ApplicationArchiveProcessor.class, TCKDependencyProcessor.class);
         builder.service(AuxiliaryArchiveAppender.class, TCKFrameworkAppender.class);
     }
 }
