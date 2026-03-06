@@ -81,9 +81,7 @@ public class JakartaQueryTests {
                     .hasSize(fruits.size())
                     .containsAll(fruits);
         } catch (UnsupportedOperationException exp) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
-                // Column and Key-Value databases might not be capable of find all elements.
-            } else {
+            if (type.capableOfQueryWithoutWhere()) {
                 throw exp;
             }
         }
@@ -112,9 +110,8 @@ public class JakartaQueryTests {
                     .hasSize(fruits.size())
                     .containsExactly(names.toArray(new String[0]));
         } catch (UnsupportedOperationException exp) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
-                // Column and Key-Value databases might not be capable of sorting.
-            } else {
+            if (type.capableOfQueryWithoutWhere() &&
+                type.capableOfSingleSort()) {
                 throw exp;
             }
         }
@@ -142,9 +139,8 @@ public class JakartaQueryTests {
                     .hasSize(fruits.size())
                     .containsExactly(names.toArray(new String[0]));
         } catch (UnsupportedOperationException exp) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
-                // Column and Key-Value databases might not be capable of sorting.
-            } else {
+            if (type.capableOfQueryWithoutWhere() &&
+                type.capableOfSingleSort()) {
                 throw exp;
             }
         }
@@ -168,9 +164,7 @@ public class JakartaQueryTests {
                     .hasSize(fruits.size())
                     .containsAll(expected);
         } catch (UnsupportedOperationException exp) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
-                // Column and Key-Value databases might not be capable of find all elements.
-            } else {
+            if (type.capableOfQueryWithoutWhere()) {
                 throw exp;
             }
         }
@@ -189,9 +183,7 @@ public class JakartaQueryTests {
                     .isNotEmpty()
                     .allMatch(fruit -> fruit.getName().equals(sample.getName()));
         } catch (UnsupportedOperationException exp) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
-                // Column and Key-Value databases might not be capable querying by attribute that is not a key.
-            } else {
+            if (type.capableOfConstraintsOnNonIdAttributes()) {
                 throw exp;
             }
         }
@@ -210,9 +202,7 @@ public class JakartaQueryTests {
                     .isNotEmpty()
                     .allMatch(fruit -> !fruit.getName().equals(sample.getName()));
         } catch (UnsupportedOperationException exp) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
-                // Column and Key-Value databases might not be capable querying by attribute that is not a key.
-            } else {
+            if (type.capableOfConstraintsOnNonIdAttributes()) {
                 throw exp;
             }
         }
@@ -231,10 +221,8 @@ public class JakartaQueryTests {
                     .isNotEmpty()
                     .allMatch(fruit -> fruit.getQuantity() > sample.getQuantity());
         } catch (UnsupportedOperationException exp) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
-                // Key-Value databases might not be capable of > and
-                // Column databases might not be capable querying by attribute that is not a key.
-            } else {
+            if (type.capableOfConstraintsOnNonIdAttributes() &&
+                type.capableOfGreaterThan()) {
                 throw exp;
             }
         }
@@ -253,10 +241,8 @@ public class JakartaQueryTests {
                     .isNotEmpty()
                     .allMatch(fruit -> fruit.getQuantity() >= sample.getQuantity());
         } catch (UnsupportedOperationException exp) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
-                // Key-Value databases might not be capable of >= and
-                // Column databases might not be capable querying by attribute that is not a key.
-            } else {
+            if (type.capableOfConstraintsOnNonIdAttributes() &&
+                type.capableOfGreaterThanEqual()) {
                 throw exp;
             }
         }
@@ -275,10 +261,8 @@ public class JakartaQueryTests {
                     .isNotEmpty()
                     .allMatch(fruit -> fruit.getQuantity() < sample.getQuantity());
         } catch (UnsupportedOperationException exp) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
-                // Key-Value databases might not be capable of < and
-                // Column databases might not be capable querying by attribute that is not a key.
-            } else {
+            if (type.capableOfConstraintsOnNonIdAttributes() &&
+                type.capableOfLessThan()) {
                 throw exp;
             }
         }
@@ -296,10 +280,8 @@ public class JakartaQueryTests {
                     .isNotEmpty()
                     .allMatch(fruit -> fruit.getQuantity() <= sample.getQuantity());
         } catch (UnsupportedOperationException exp) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
-                // Key-Value databases might not be capable of <= and
-                // Column databases might not be capable querying by attribute that is not a key.
-            } else {
+            if (type.capableOfConstraintsOnNonIdAttributes() &&
+                type.capableOfLessThanEqual()) {
                 throw exp;
             }
         }
@@ -321,10 +303,8 @@ public class JakartaQueryTests {
                             || fruit.getName().equals(sample2.getName()));
 
         } catch (UnsupportedOperationException exp) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
-                // Key-Value databases might not be capable of in and
-                // Column databases might not be capable querying by attribute that is not a key.
-            } else {
+            if (type.capableOfConstraintsOnNonIdAttributes() &&
+                type.capableOfIn()) {
                 throw exp;
             }
         }
@@ -347,10 +327,8 @@ public class JakartaQueryTests {
                             || fruit.getName().equals(sample2.getName()));
 
         } catch (UnsupportedOperationException exp) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
-                // Key-Value databases might not be capable of in and
-                // Column databases might not be capable querying by attribute that is not a key.
-            } else {
+            if (type.capableOfConstraintsOnNonIdAttributes() &&
+                type.capableOfIn()) {
                 throw exp;
             }
         }
@@ -373,9 +351,7 @@ public class JakartaQueryTests {
                     .allMatch(fruit -> fruit.getName().equals(sample.getName())
                             && fruit.getQuantity().equals(sample.getQuantity()));
         } catch (UnsupportedOperationException exp) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
-                // Column and Key-Value databases might not be capable of AND.
-            } else {
+            if (type.capableOfAnd()) {
                 throw exp;
             }
         }
@@ -398,9 +374,7 @@ public class JakartaQueryTests {
                             || fruit.getName().equals(sample2.getName()));
 
         } catch (UnsupportedOperationException exp) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
-                // Column and Key-Value databases might not be capable of OR.
-            } else {
+            if (type.capableOfOr()) {
                 throw exp;
             }
         }
@@ -420,9 +394,7 @@ public class JakartaQueryTests {
             Assertions.assertThat(result).isEqualTo(fruits.size());
 
         } catch (UnsupportedOperationException exp) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
-                // Column and Key-Value databases might not be capable of count.
-            } else {
+            if (type.capableOfCount()) {
                 throw exp;
             }
         }
@@ -456,9 +428,8 @@ public class JakartaQueryTests {
 
             Assertions.assertThat(result).isNotEmpty().containsExactly(names);
         } catch (UnsupportedOperationException exp) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
-                // Column and Key-Value databases might not be capable of sorting.
-            } else {
+            if (type.capableOfQueryWithoutWhere() &&
+                type.capableOfSingleSort()) {
                 throw exp;
             }
         }
@@ -483,11 +454,11 @@ public class JakartaQueryTests {
         try {
             results = fruitRepository.findAllNameAndQuantityOrderByQuantity();
         } catch (UnsupportedOperationException exp) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
-                // Column and Key-Value databases might not be capable of sorting.
-                return;
-            } else {
+            if (type.capableOfQueryWithoutWhere() &&
+                type.capableOfSingleSort()) {
                 throw exp;
+            } else {
+                return;
             }
         }
 
@@ -519,9 +490,7 @@ public class JakartaQueryTests {
 
             Assertions.assertThat(result).get().isEqualTo(fruit.getId());
         } catch (UnsupportedOperationException exp) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
-                // Column and Key-Value databases might not be capable of sorting.
-            } else {
+            if (type.capableOfSingleSort()) {
                 throw exp;
             }
         }
@@ -541,9 +510,7 @@ public class JakartaQueryTests {
                     .isEmpty();
 
         } catch (UnsupportedOperationException exp) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
-                // Column and Key-Value databases might not be capable querying by non-key attributes.
-            } else {
+            if (type.capableOfConstraintsOnNonIdAttributes()) {
                 throw exp;
             }
         }
@@ -576,9 +543,8 @@ public class JakartaQueryTests {
                     .containsExactlyElementsOf(expected);
 
         } catch (UnsupportedOperationException exp) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
-                // Column and Key-Value databases might not be capable of filtering + sorting on non-key attributes.
-            } else {
+            if (type.capableOfConstraintsOnNonIdAttributes() &&
+                type.capableOfSingleSort()) {
                 throw exp;
             }
         }

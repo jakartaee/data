@@ -101,25 +101,27 @@ public class ConstraintTests {
                     parameter of type AtLeast.
                     """)
     public void testAtLeastConstraint() {
+        List<String> found;
         try {
-            List<String> found = countries.whereDaylightTimeStartsOnOrAfter(
+            found = countries.whereDaylightTimeStartsOnOrAfter(
                     AtLeast.min(LocalDate.of(2025, Month.APRIL, 25)))
                             .stream()
                             .map(c -> c.getName() +
                                       " @" + c.getDaylightTimeBegins())
                             .collect(Collectors.toList());
-            assertEquals(List.of("Australia @2025-10-05",
-                                 "Chile @2025-09-06",
-                                 "Egypt @2025-04-25",
-                                 "New Zealand @2025-09-28"),
-                         found);
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
-                // Key-Value databases might not be capable of >=
-            } else {
+            if (type.capableOfConstraintsOnNonIdAttributes() &&
+                type.capableOfGreaterThanEqual()) {
                 throw x;
+            } else {
+                return;
             }
         }
+        assertEquals(List.of("Australia @2025-10-05",
+                             "Chile @2025-09-06",
+                             "Egypt @2025-04-25",
+                             "New Zealand @2025-09-28"),
+        found);
     }
 
     @Assertion(id = "965", strategy = """
@@ -127,25 +129,26 @@ public class ConstraintTests {
             parameter of type AtMost.
             """)
     public void testAtMostConstraint() {
+                List<String> found;
         try {
-            List<String> found = countries.countryCodesUpTo(AtMost.max("AM"))
+            found = countries.countryCodesUpTo(AtMost.max("AM"))
                             .stream()
                             .sorted()
                             .collect(Collectors.toList());
-            assertEquals(List.of("AD",
-                                 "AE",
-                                 "AF",
-                                 "AG",
-                                 "AL",
-                                 "AM"),
-                         found);
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
-                // Key-Value databases might not be capable of <=
-            } else {
+            if (type.capableOfLessThanEqual()) {
                 throw x;
+            } else {
+                return;
             }
         }
+        assertEquals(List.of("AD",
+                             "AE",
+                             "AF",
+                             "AG",
+                             "AL",
+                             "AM"),
+                     found);
     }
 
     @Assertion(id = "965", strategy = """
@@ -154,23 +157,25 @@ public class ConstraintTests {
                     """)
     public void testBetweenConstraint() {
 
+                List<String> found;
         try {
-            List<String> found = countries.populated(Between.bounds(80000000L,
+            found = countries.populated(Between.bounds(80000000L,
                                                                     90000000L))
                             .map(Country::getName)
                             .sorted()
                             .collect(Collectors.toList());
-            assertEquals(List.of("Germany",
-                                 "Iran",
-                                 "Turkey"),
-                         found);
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
-                // Key-Value databases might not be capable of Between.
-            } else {
+            if (type.capableOfBetween() &&
+                type.capableOfConstraintsOnNonIdAttributes()) {
                 throw x;
+            } else {
+                return;
             }
         }
+        assertEquals(List.of("Germany",
+                             "Iran",
+                             "Turkey"),
+        found);
     }
 
     @Assertion(id = "965", strategy = """
@@ -213,8 +218,9 @@ public class ConstraintTests {
                """)
     public void testGreaterThanConstraint() {
 
+                List<String> found;
         try {
-            List<String> found = countries
+            found = countries
                     .withCapitalBiggerThan(GreaterThan.bound(5000000))
                             .stream()
                             .map(Country::getCapital)
@@ -222,34 +228,35 @@ public class ConstraintTests {
                                             " population " +
                                             capital.getPopulation())
                             .collect(Collectors.toList());
-            assertEquals(List.of("Ankara population 5747325",
-                                 "Singapore population 5917600",
-                                 "Santiago population 6310000",
-                                 "Bogota population 7181469",
-                                 "Hong Kong population 7534200",
-                                 "Riyadh population 7676654",
-                                 "Baghdad population 7682136",
-                                 "Hanoi population 8053663",
-                                 "Bangkok population 8305218",
-                                 "Tehran population 8693706",
-                                 "Dhaka population 8906039",
-                                 "London population 9002488",
-                                 "Mexico City population 9209944",
-                                 "Seoul population 9508451",
-                                 "Cairo population 10107125",
-                                 "Lima population 10151000",
-                                 "Jakarta population 10562088",
-                                 "Moscow population 13104177",
-                                 "Tokyo population 14094034",
-                                 "Beijing population 21858000"),
-                         found);
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
-                // Key-Value databases might not be capable of >
-            } else {
+            if (type.capableOfConstraintsOnNonIdAttributes() &&
+                type.capableOfGreaterThanEqual()) {
                 throw x;
+            } else {
+                return;
             }
         }
+        assertEquals(List.of("Ankara population 5747325",
+                             "Singapore population 5917600",
+                             "Santiago population 6310000",
+                             "Bogota population 7181469",
+                             "Hong Kong population 7534200",
+                             "Riyadh population 7676654",
+                             "Baghdad population 7682136",
+                             "Hanoi population 8053663",
+                             "Bangkok population 8305218",
+                             "Tehran population 8693706",
+                             "Dhaka population 8906039",
+                             "London population 9002488",
+                             "Mexico City population 9209944",
+                             "Seoul population 9508451",
+                             "Cairo population 10107125",
+                             "Lima population 10151000",
+                             "Jakarta population 10562088",
+                             "Moscow population 13104177",
+                             "Tokyo population 14094034",
+                             "Beijing population 21858000"),
+                     found);
     }
 
     @Assertion(id = "965", strategy = """
@@ -292,22 +299,24 @@ public class ConstraintTests {
                     """)
     public void testIsAtLeast() {
 
+                List<String> found;
         try {
-            List<String> found = countries.asLargeOrBigger(9326410L)
+            found = countries.asLargeOrBigger(9326410L)
                             .stream()
                             .map(Country::getName)
                             .sorted()
                             .collect(Collectors.toList());
-            assertEquals(List.of("China",
-                                 "Russia"),
-                         found);
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
-                // Key-Value databases might not be capable of >=
-            } else {
+            if (type.capableOfConstraintsOnNonIdAttributes() &&
+                type.capableOfGreaterThanEqual()) {
                 throw x;
+            } else {
+                return;
             }
         }
+        assertEquals(List.of("China",
+                             "Russia"),
+                     found);
     }
 
     @Assertion(id = "965", strategy = """
@@ -316,23 +325,25 @@ public class ConstraintTests {
                     """)
     public void testIsAtMost() {
 
+                List<String> found;
         try {
-            List<String> found = countries.namedUpTo("Algeria")
+            found = countries.namedUpTo("Algeria")
                             .stream()
                             .map(Country::getName)
                             .sorted()
                             .collect(Collectors.toList());
-            assertEquals(List.of("Afghanistan",
-                                 "Albania",
-                                 "Algeria"),
-                         found);
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
-                // Key-Value databases might not be capable of <=
-            } else {
+            if (type.capableOfConstraintsOnNonIdAttributes() &&
+                type.capableOfLessThanEqual()) {
                 throw x;
+            } else {
+                return;
             }
         }
+        assertEquals(List.of("Afghanistan",
+                             "Albania",
+                             "Algeria"),
+                     found);
     }
 
     @Assertion(id = "965", strategy = """
@@ -368,29 +379,31 @@ public class ConstraintTests {
     public void testIsEqualTo() {
 
         LocalDate endDate = LocalDate.of(2025, Month.NOVEMBER, 2);
+                List<String> found;
         try {
-            List<String> found = countries.whereDaylightTimeEndsOn(endDate)
+            found = countries.whereDaylightTimeEndsOn(endDate)
                             .stream()
                             .map(Country::getName)
                             .collect(Collectors.toList());
-            assertEquals(List.of("Bahamas",
-                                 "Bermuda",
-                                 "Canada",
-                                 "Cuba",
-                                 "Greenland",
-                                 "Haiti",
-                                 "Mexico",
-                                 "Saint Pierre and Miquelon",
-                                 "Turks and Caicos Islands",
-                                 "United States of America"),
-                         found);
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
-                // Column and Key-Value databases might not be capable of sorting.
-            } else {
+            if (type.capableOfConstraintsOnNonIdAttributes() &&
+                type.capableOfSingleSort()) {
                 throw x;
+            } else {
+                return;
             }
         }
+        assertEquals(List.of("Bahamas",
+                             "Bermuda",
+                             "Canada",
+                             "Cuba",
+                             "Greenland",
+                             "Haiti",
+                             "Mexico",
+                             "Saint Pierre and Miquelon",
+                             "Turks and Caicos Islands",
+                             "United States of America"),
+                     found);
     }
 
     @Assertion(id = "965", strategy = """
@@ -399,24 +412,26 @@ public class ConstraintTests {
                     """)
     public void testIsGreaterThan() {
 
+                List<String> found;
         try {
-            List<String> found = countries.withNameAfter("Venezuela")
+            found = countries.withNameAfter("Venezuela")
                             .stream()
                             .map(Country::getName)
                             .sorted()
                             .collect(Collectors.toList());
-            assertEquals(List.of("Vietnam",
-                                 "Yemen",
-                                 "Zambia",
-                                 "Zimbabwe"),
-                         found);
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
-                // Key-Value databases might not be capable of >
-            } else {
+            if (type.capableOfConstraintsOnNonIdAttributes() &&
+                type.capableOfGreaterThan()) {
                 throw x;
+            } else {
+                return;
             }
         }
+        assertEquals(List.of("Vietnam",
+                             "Yemen",
+                             "Zambia",
+                             "Zimbabwe"),
+                     found);
     }
 
     @Assertion(id = "965", strategy = """
@@ -450,8 +465,9 @@ public class ConstraintTests {
                     """)
     public void testIsLessThan() {
 
+                List<String> found;
         try {
-            List<String> found = countries.smallerThan(180L)
+            found = countries.smallerThan(180L)
                             .map(Country::getName)
                             .sorted()
                             .collect(Collectors.toList());
@@ -467,10 +483,11 @@ public class ConstraintTests {
                                  "Vatican City State"),
                          found);
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
-                // Key-Value databases might not be capable of <
-            } else {
+            if (type.capableOfConstraintsOnNonIdAttributes() &&
+                type.capableOfLessThan()) {
                 throw x;
+            } else {
+                return;
             }
         }
     }
@@ -481,8 +498,9 @@ public class ConstraintTests {
                     """)
     public void testIsLike() {
 
+                List<String> found;
         try {
-            List<String> found = countries.namedLike("I_eland")
+            found = countries.namedLike("I_eland")
                             .stream()
                             .map(Country::getName)
                             .collect(Collectors.toList());
@@ -490,11 +508,12 @@ public class ConstraintTests {
                                  "Iceland"), // country code IS
                          found);
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
-                // NoSQL databases might not be capable of Like.
-                // Column and Key-Value databases might not be capable of sorting.
-            } else {
+            if (type.capableOfConstraintsOnNonIdAttributes() &&
+                type.capableOfLike() &&
+                type.capableOfSingleSort()) {
                 throw x;
+            } else {
+                return;
             }
         }
     }
@@ -532,10 +551,12 @@ public class ConstraintTests {
                                  "Iran"),
                          found);
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
-                // Column and Key-Value databases might not be capable of sorting.
-            } else {
+            if (type.capableOfConstraintsOnNonIdAttributes() &&
+                type.capableOfMultipleSort() &&
+                type.capableOfNotEqual()) {
                 throw x;
+            } else {
+                return;
             }
         }
     }
@@ -547,16 +568,26 @@ public class ConstraintTests {
     public void testIsNotIn() {
 
         List<String> found;
-        found = countries.outsideOfRegions(List.of(Region.AFRICA,
-                                                   Region.ASIA,
-                                                   Region.CARIBBEAN,
-                                                   Region.EUROPE,
-                                                   Region.NORTH_AMERICA,
-                                                   Region.SOUTH_AMERICA))
-                        .stream()
-                        .map(Country::getName)
-                        .sorted()
-                        .collect(Collectors.toList());
+        try {
+            found = countries.outsideOfRegions(List.of(Region.AFRICA,
+                                                       Region.ASIA,
+                                                       Region.CARIBBEAN,
+                                                       Region.EUROPE,
+                                                       Region.NORTH_AMERICA,
+                                                       Region.SOUTH_AMERICA))
+                            .stream()
+                            .map(Country::getName)
+                            .sorted()
+                            .collect(Collectors.toList());
+        } catch (UnsupportedOperationException x) {
+            if (type.capableOfConstraintsOnNonIdAttributes() &&
+                type.capableOfNotIn()) {
+                throw x;
+            } else {
+                return;
+            }
+        }
+
         assertEquals(List.of("American Samoa",
                              "Australia",
                              "Fiji",
@@ -582,8 +613,9 @@ public class ConstraintTests {
                     """)
     public void testIsNotLike() {
 
+                List<String> found;
         try {
-            List<String> found = countries.namedUnlike("%a%",
+            found = countries.namedUnlike("%a%",
                                                        "%i%",
                                                        "%n%")
                             .map(Country::getName)
@@ -603,12 +635,12 @@ public class ConstraintTests {
                                  "Turkey"),
                          found);
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
-                // NoSQL databases might not be capable of Like.
-                // Column and Key-Value databases might not be capable of And.
-                // Column and Key-Value databases might not be capable of sorting.
-            } else {
+            if (type.capableOfAnd() &&
+                type.capableOfConstraintsOnNonIdAttributes() &&
+                type.capableOfNotLike()) {
                 throw x;
+            } else {
+                return;
             }
         }
     }
@@ -618,8 +650,9 @@ public class ConstraintTests {
             parameter of type LessThan.
             """)
     public void testLessThanConstraint() {
+                List<String> found;
         try {
-            List<String> found = countries.lessPopulousThan(
+            found = countries.lessPopulousThan(
                     LessThan.bound(10000L))
                             .stream()
                             .map(c -> c.getName() +
@@ -631,10 +664,11 @@ public class ConstraintTests {
                                  "Vatican City State population 764"),
                          found);
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
-                // Key-Value databases might not be capable of <
-            } else {
+            if (type.capableOfConstraintsOnNonIdAttributes() &&
+                type.capableOfLessThanEqual()) {
                 throw x;
+            } else {
+                return;
             }
         }
     }
@@ -646,8 +680,9 @@ public class ConstraintTests {
             """)
     public void testLikeConstraintCustomWildcards() {
 
+                List<String> found;
         try {
-            List<String> found = countries.withCapitalNamed(
+            found = countries.withCapitalNamed(
                     Like.pattern("1akar#", '1', '#'))
                             .stream()
                             .map(Country::getCapital)
@@ -658,10 +693,11 @@ public class ConstraintTests {
                                  "Jakarta"),
                          found);
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
-                // NoSQL databases might not be capable of Like.
-            } else {
+            if (type.capableOfConstraintsOnNonIdAttributes() &&
+                type.capableOfLike()) {
                 throw x;
+            } else {
+                return;
             }
         }
     }
@@ -673,8 +709,9 @@ public class ConstraintTests {
             """)
     public void testLikeConstraintCustomWildcardsAndEscape() {
 
+                List<String> found;
         try {
-            List<String> found = countries.withCapitalNamed(
+            found = countries.withCapitalNamed(
                     Like.pattern("Port$--!$", '!', '$', '-'))
                             .stream()
                             .map(Country::getCapital)
@@ -685,10 +722,11 @@ public class ConstraintTests {
                                  "Porto-Novo"),
                          found);
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
-                // NoSQL databases might not be capable of Like.
-            } else {
+            if (type.capableOfConstraintsOnNonIdAttributes() &&
+                type.capableOfLike()) {
                 throw x;
+            } else {
+                return;
             }
         }
     }
@@ -699,8 +737,9 @@ public class ConstraintTests {
             """)
     public void testLikeConstraintLiteral() {
 
+                List<String> found;
         try {
-            List<String> found = countries.withCapitalNamed(
+            found = countries.withCapitalNamed(
                     Like.literal("Warsaw"))
                             .stream()
                             .map(Country::getName)
@@ -709,10 +748,11 @@ public class ConstraintTests {
             assertEquals(List.of("Poland"),
                          found);
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
-                // NoSQL databases might not be capable of Like.
-            } else {
+            if (type.capableOfConstraintsOnNonIdAttributes() &&
+                type.capableOfLike()) {
                 throw x;
+            } else {
+                return;
             }
         }
     }
@@ -724,8 +764,9 @@ public class ConstraintTests {
             """)
     public void testLikeConstraintPattern() {
 
+                List<String> found;
         try {
-            List<String> found = countries.withCapitalNamed(
+            found = countries.withCapitalNamed(
                     Like.pattern("_all%"))
                             .stream()
                             .map(Country::getCapital)
@@ -736,10 +777,11 @@ public class ConstraintTests {
                                  "Valletta"),
                          found);
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
-                // NoSQL databases might not be capable of Like.
-            } else {
+            if (type.capableOfConstraintsOnNonIdAttributes() &&
+                type.capableOfLike()) {
                 throw x;
+            } else {
+                return;
             }
         }
     }
@@ -750,8 +792,9 @@ public class ConstraintTests {
             """)
     public void testLikeConstraintPrefix() {
 
+                List<String> found;
         try {
-            List<String> found = countries.withCapitalNamed(
+            found = countries.withCapitalNamed(
                     Like.prefix("San"))
                             .stream()
                             .map(Country::getCapital)
@@ -766,10 +809,11 @@ public class ConstraintTests {
                                  "Santo Domingo"),
                          found);
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
-                // NoSQL databases might not be capable of Like.
-            } else {
+            if (type.capableOfConstraintsOnNonIdAttributes() &&
+                type.capableOfLike()) {
                 throw x;
+            } else {
+                return;
             }
         }
     }
@@ -780,8 +824,9 @@ public class ConstraintTests {
             """)
     public void testLikeConstraintSubstring() {
 
+                List<String> found;
         try {
-            List<String> found = countries.withCapitalNamed(
+            found = countries.withCapitalNamed(
                     Like.substring("ey"))
                             .stream()
                             .map(Country::getCapital)
@@ -792,10 +837,11 @@ public class ConstraintTests {
                                  "Reykjavík"),
                          found);
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
-                // NoSQL databases might not be capable of Like.
-            } else {
+            if (type.capableOfConstraintsOnNonIdAttributes() &&
+                type.capableOfLike()) {
                 throw x;
+            } else {
+                return;
             }
         }
     }
@@ -806,8 +852,9 @@ public class ConstraintTests {
             """)
     public void testLikeConstraintSuffix() {
 
+                List<String> found;
         try {
-            List<String> found = countries.withCapitalNamed(
+            found = countries.withCapitalNamed(
                     Like.suffix("ila"))
                             .stream()
                             .map(Country::getCapital)
@@ -818,10 +865,11 @@ public class ConstraintTests {
                                  "Port Vila"),
                          found);
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
-                // NoSQL databases might not be capable of Like.
-            } else {
+            if (type.capableOfConstraintsOnNonIdAttributes() &&
+                type.capableOfLike()) {
                 throw x;
+            } else {
+                return;
             }
         }
     }
@@ -832,8 +880,9 @@ public class ConstraintTests {
             """)
     public void testMultipleConstraintParameters() {
 
+        List<String> found;
         try {
-            List<String> found = countries.highlyPopulousInRegion(
+            found = countries.highlyPopulousInRegion(
                     EqualTo.value(Region.AFRICA),
                     AtLeast.min(100000000L),
                     Order.by(_Country.population.desc(),
@@ -841,20 +890,22 @@ public class ConstraintTests {
                             .stream()
                             .map(c -> c.getName() + ':' + c.getPopulation())
                             .collect(Collectors.toList());
-            assertEquals(List.of("Nigeria:242794751",
-                                 "Ethiopia:121372632",
-                                 "Congo:119038825",
-                                 "Egypt:112870457"),
-                         found);
+
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
-                // Column and Key-Value databases might not be capable of And.
-                // Column and Key-Value databases might not be capable of sorting.
-                // Key-Value databases might not be capable of <
-            } else {
+            if (type.capableOfAnd() &&
+                type.capableOfConstraintsOnNonIdAttributes() &&
+                type.capableOfLessThan() &&
+                type.capableOfMultipleSort()) {
                 throw x;
+            } else {
+                return;
             }
         }
+        assertEquals(List.of("Nigeria:242794751",
+                             "Ethiopia:121372632",
+                             "Congo:119038825",
+                             "Egypt:112870457"),
+                     found);
     }
 
     @Assertion(id = "965", strategy = """
@@ -863,37 +914,38 @@ public class ConstraintTests {
             """)
     public void testNotBetweenConstraint() {
 
+                List<String> found;
         try {
-            List<String> found = countries.excludingCountryCodeRange(
+            found = countries.excludingCountryCodeRange(
                     NotBetween.bounds("AG", "UY"))
                             .stream()
                             .map(Country::getCode)
                             .sorted()
                             .collect(Collectors.toList());
-            assertEquals(List.of("AD",
-                                 "AE",
-                                 "AF",
-                                 "UZ",
-                                 "VA",
-                                 "VC",
-                                 "VE",
-                                 "VN",
-                                 "VU",
-                                 "WS",
-                                 "XK",
-                                 "XW",
-                                 "YE",
-                                 "ZA",
-                                 "ZM",
-                                 "ZW"),
-                         found);
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.KEY_VALUE)) {
-                // Key-Value databases might not be capable of NotBetween.
-            } else {
+            if (type.capableOfNotBetween()) {
                 throw x;
+            } else {
+                return;
             }
         }
+        assertEquals(List.of("AD",
+                             "AE",
+                             "AF",
+                             "UZ",
+                             "VA",
+                             "VC",
+                             "VE",
+                             "VN",
+                             "VU",
+                             "WS",
+                             "XK",
+                             "XW",
+                             "YE",
+                             "ZA",
+                             "ZM",
+                             "ZW"),
+                     found);
     }
 
     @Assertion(id = "965", strategy = """
@@ -1027,33 +1079,36 @@ public class ConstraintTests {
             """)
     public void testNotLikeConstraintCustomWildcards() {
 
+                List<String> found;
         try {
-            List<String> found = countries.excludingNames(
+            found = countries.excludingNames(
                     // exclude names with 5 or more characters
                     NotLike.pattern("*-----*", '-', '*'))
                             .stream()
                             .map(Country::getName)
                             .sorted()
                             .collect(Collectors.toList());
-            assertEquals(List.of("Chad",
-                                 "Cuba",
-                                 "Fiji",
-                                 "Guam",
-                                 "Iran",
-                                 "Iraq",
-                                 "Laos",
-                                 "Mali",
-                                 "Oman",
-                                 "Peru",
-                                 "Togo"),
-                         found);
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
-                // NoSQL databases might not be capable of NotLike.
-            } else {
+            if (type.capableOfConstraintsOnNonIdAttributes() &&
+                type.capableOfNotLike()) {
                 throw x;
+            } else {
+                return;
             }
         }
+        assertEquals(List.of("Chad",
+                             "Cuba",
+                             "Fiji",
+                             "Guam",
+                             "Iran",
+                             "Iraq",
+                             "Laos",
+                             "Mali",
+                             "Oman",
+                             "Peru",
+                             "Togo"),
+                     found);
+
     }
 
     @Assertion(id = "965", strategy = """
@@ -1063,8 +1118,9 @@ public class ConstraintTests {
             """)
     public void testNotLikeConstraintCustomWildcardsAndEscape() {
 
+                List<String> found;
         try {
-            List<String> found = countries.excludingNames(
+            found = countries.excludingNames(
                     // intentionally reversed so that % is the single character
                     // wildcard and _ is the multiple character wildcard.
                     NotLike.pattern("_%aa_", '%', '_', 'a'))
@@ -1072,48 +1128,49 @@ public class ConstraintTests {
                             .map(Country::getName)
                             .sorted()
                             .collect(Collectors.toList());
-            assertEquals(List.of("Belgium",
-                                 "Belize",
-                                 "Benin",
-                                 "Brunei",
-                                 "Burundi",
-                                 "Chile",
-                                 "Comoros",
-                                 "Congo",
-                                 "Cyprus",
-                                 "Czech Republic",
-                                 "Djibouti",
-                                 "Egypt",
-                                 "Fiji",
-                                 "Greece",
-                                 "Guernsey",
-                                 "Hong Kong",
-                                 "Jersey",
-                                 "Kosovo",
-                                 "Lesotho",
-                                 "Liechtenstein",
-                                 "Luxembourg",
-                                 "Mexico",
-                                 "Montenegro",
-                                 "Morocco",
-                                 "Niger",
-                                 "Peru",
-                                 "Philippines",
-                                 "Puerto Rico",
-                                 "Seychelles",
-                                 "Sweden",
-                                 "Togo",
-                                 "Turkey",
-                                 "United Kingdom",
-                                 "Yemen"),
-                         found);
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
-                // NoSQL databases might not be capable of NotLike.
-            } else {
+            if (type.capableOfConstraintsOnNonIdAttributes() &&
+                type.capableOfNotLike()) {
                 throw x;
+            } else {
+                return;
             }
         }
+        assertEquals(List.of("Belgium",
+                             "Belize",                                 "Benin",
+                             "Brunei",
+                             "Burundi",
+                             "Chile",
+                             "Comoros",
+                             "Congo",
+                             "Cyprus",
+                             "Czech Republic",
+                             "Djibouti",
+                             "Egypt",
+                             "Fiji",
+                             "Greece",
+                             "Guernsey",
+                             "Hong Kong",
+                             "Jersey",
+                             "Kosovo",
+                             "Lesotho",
+                             "Liechtenstein",
+                             "Luxembourg",
+                             "Mexico",
+                             "Montenegro",
+                             "Morocco",
+                             "Niger",
+                             "Peru",
+                             "Philippines",
+                             "Puerto Rico",
+                             "Seychelles",
+                             "Sweden",
+                             "Togo",
+                             "Turkey",
+                             "United Kingdom",
+                             "Yemen"),
+                     found);
+
     }
 
     @Assertion(id = "965", strategy = """
@@ -1122,23 +1179,25 @@ public class ConstraintTests {
             """)
     public void testNotLikeConstraintLiteral() {
 
+                List<String> found;
         try {
-            List<String> found = countries.excludingNames(
+            found = countries.excludingNames(
                     NotLike.literal("Luxembourg"))
                     .stream()
                     .map(Country::getName)
                     .collect(Collectors.toList());
-
-            assertEquals(CountryPopulator.EXPECTED_TOTAL - 1,
-                         found.size());
-            assertEquals(false, found.contains("Luxembourg"));
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
-                // NoSQL databases might not be capable of NotLike.
-            } else {
+            if (type.capableOfConstraintsOnNonIdAttributes() &&
+                type.capableOfNotLike()) {
                 throw x;
+            } else {
+                return;
             }
         }
+
+        assertEquals(CountryPopulator.EXPECTED_TOTAL - 1,
+                     found.size());
+        assertEquals(false, found.contains("Luxembourg"));
     }
 
     @Assertion(id = "965", strategy = """
@@ -1148,23 +1207,25 @@ public class ConstraintTests {
             """)
     public void testNotLikeConstraintPattern() {
 
+                List<String> found;
         try {
-            List<String> found = countries.excludingNames(
+            found = countries.excludingNames(
                     // exclude names with 4 or more characters
                     NotLike.pattern("%____%"))
                             .stream()
                             .map(Country::getName)
                             .sorted()
                             .collect(Collectors.toList());
-            assertEquals(List.of(),
-                         found);
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
-                // NoSQL databases might not be capable of NotLike.
-            } else {
+            if (type.capableOfConstraintsOnNonIdAttributes() &&
+                type.capableOfNotLike()) {
                 throw x;
+            } else {
+                return;
             }
         }
+        assertEquals(List.of(),
+                     found);
     }
 
     @Assertion(id = "965", strategy = """
@@ -1173,31 +1234,33 @@ public class ConstraintTests {
             """)
     public void testNotLikeConstraintPrefix() {
 
+                List<String> found;
         try {
-            List<String> found = countries.excludingNames(
+            found = countries.excludingNames(
                     NotLike.prefix("Ma"))
                             .stream()
                             .map(Country::getName)
                             .collect(Collectors.toList());
-            assertEquals(CountryPopulator.EXPECTED_TOTAL - 10,
-                         found.size());
-            assertEquals(false, found.contains("Macau"));
-            assertEquals(false, found.contains("Madagascar"));
-            assertEquals(false, found.contains("Malawi"));
-            assertEquals(false, found.contains("Malaysia"));
-            assertEquals(false, found.contains("Maldives"));
-            assertEquals(false, found.contains("Mali"));
-            assertEquals(false, found.contains("Malta"));
-            assertEquals(false, found.contains("Marshall Islands"));
-            assertEquals(false, found.contains("Mauritania"));
-            assertEquals(false, found.contains("Mauritius"));
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
-                // NoSQL databases might not be capable of NotLike.
-            } else {
+            if (type.capableOfConstraintsOnNonIdAttributes() &&
+                type.capableOfNotLike()) {
                 throw x;
+            } else {
+                return;
             }
         }
+        assertEquals(CountryPopulator.EXPECTED_TOTAL - 10,
+                     found.size());
+        assertEquals(false, found.contains("Macau"));
+        assertEquals(false, found.contains("Madagascar"));
+        assertEquals(false, found.contains("Malawi"));
+        assertEquals(false, found.contains("Malaysia"));
+        assertEquals(false, found.contains("Maldives"));
+        assertEquals(false, found.contains("Mali"));
+        assertEquals(false, found.contains("Malta"));
+        assertEquals(false, found.contains("Marshall Islands"));
+        assertEquals(false, found.contains("Mauritania"));
+        assertEquals(false, found.contains("Mauritius"));
     }
 
     @Assertion(id = "965", strategy = """
@@ -1206,28 +1269,31 @@ public class ConstraintTests {
             """)
     public void testNotLikeConstraintSubstring() {
 
+                List<String> found;
         try {
-            List<String> found = countries.excludingNames(
+            found = countries.excludingNames(
                     NotLike.substring("an"))
                     .stream()
                     .map(Country::getName)
                     .collect(Collectors.toList());
-
-            assertEquals(CountryPopulator.EXPECTED_TOTAL - 60,
-                         found.size());
-            assertEquals(false, found.contains("Rwanda"));
-            assertEquals(false, found.contains("South Sudan"));
-            assertEquals(false, found.contains("Tanzania"));
-            assertEquals(false, found.contains("Uganda"));
-            assertEquals(false, found.contains("Vanuatu"));
-            // ... 55 more
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
-                // NoSQL databases might not be capable of NotLike.
-            } else {
+            if (type.capableOfConstraintsOnNonIdAttributes() &&
+                type.capableOfNotLike()) {
                 throw x;
+            } else {
+                return;
             }
         }
+
+        assertEquals(CountryPopulator.EXPECTED_TOTAL - 60,
+                     found.size());
+
+        assertEquals(false, found.contains("Rwanda"));
+        assertEquals(false, found.contains("South Sudan"));
+        assertEquals(false, found.contains("Tanzania"));
+        assertEquals(false, found.contains("Uganda"));
+        assertEquals(false, found.contains("Vanuatu"));
+        // ... 55 more
     }
 
     @Assertion(id = "965", strategy = """
@@ -1236,29 +1302,32 @@ public class ConstraintTests {
             """)
     public void testNotLikeConstraintSuffix() {
 
+        List<String> found;
         try {
-            List<String> found = countries.excludingNames(
+            found = countries.excludingNames(
                     NotLike.suffix("land"))
                             .stream()
                             .map(Country::getName)
                             .collect(Collectors.toList());
-            assertEquals(CountryPopulator.EXPECTED_TOTAL - 8,
-                         found.size());
-            assertEquals(false, found.contains("Finland"));
-            assertEquals(false, found.contains("Greenland"));
-            assertEquals(false, found.contains("Icland"));
-            assertEquals(false, found.contains("Ireland"));
-            assertEquals(false, found.contains("New Zealand"));
-            assertEquals(false, found.contains("Poland"));
-            assertEquals(false, found.contains("Switzerland"));
-            assertEquals(false, found.contains("Thailand"));
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
-                // NoSQL databases might not be capable of NotLike.
-            } else {
+            if (type.capableOfConstraintsOnNonIdAttributes() &&
+                type.capableOfNotLike()) {
                 throw x;
+            } else {
+                return;
             }
         }
+
+        assertEquals(CountryPopulator.EXPECTED_TOTAL - 8,
+                     found.size());
+        assertEquals(false, found.contains("Finland"));
+        assertEquals(false, found.contains("Greenland"));
+        assertEquals(false, found.contains("Icland"));
+        assertEquals(false, found.contains("Ireland"));
+        assertEquals(false, found.contains("New Zealand"));
+        assertEquals(false, found.contains("Poland"));
+        assertEquals(false, found.contains("Switzerland"));
+        assertEquals(false, found.contains("Thailand"));
     }
 
     @Assertion(id = "965", strategy = """
@@ -1267,22 +1336,24 @@ public class ConstraintTests {
             """)
     public void testNotNullConstraint() {
 
+        List<Country> found;
         try {
-            List<Country> found = countries.withDaylightTime(
+            found = countries.withDaylightTime(
                     NotNull.instance());
-
-            assertEquals(60,
-                         found.size());
-
-            for (Country country : found) {
-                assertEquals(false, country.getDaylightTimeBegins() == null);
-            }
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
-                // NoSQL databases might not be capable of the Null comparison
-            } else {
+            if (type.capableOfConstraintsOnNonIdAttributes() &&
+                type.capableOfNotNull()) {
                 throw x;
+            } else {
+                return;
             }
+        }
+
+        assertEquals(60,
+                     found.size());
+
+        for (Country country : found) {
+            assertEquals(false, country.getDaylightTimeBegins() == null);
         }
     }
 
@@ -1292,22 +1363,24 @@ public class ConstraintTests {
             """)
     public void testNullConstraint() {
 
+        List<Country> found;
         try {
-            List<Country> found = countries.withoutDaylightTime(
+            found = countries.withoutDaylightTime(
                     Null.instance());
-
-            assertEquals(150,
-                         found.size());
-
-            for (Country country : found) {
-                assertEquals(null, country.getDaylightTimeBegins());
-            }
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.GRAPH)) {
-                // NoSQL databases might not be capable of the Null comparison
-            } else {
+            if (type.capableOfConstraintsOnNonIdAttributes() &&
+                type.capableOfNull()) {
                 throw x;
+            } else {
+                return;
             }
+        }
+
+        assertEquals(150,
+                     found.size());
+
+        for (Country country : found) {
+            assertEquals(null, country.getDaylightTimeBegins());
         }
     }
 
@@ -1329,26 +1402,28 @@ public class ConstraintTests {
                     .map(Country::getCapital)
                     .map(c -> c.getPopulation() + ":" + c.getName())
                     .collect(Collectors.toList());
-            assertEquals(List.of("21858000:Beijing",
-                                 "14094034:Tokyo",
-                                 "13104177:Moscow",
-                                 "10562088:Jakarta",
-                                 "10151000:Lima",
-                                 "10107125:Cairo",
-                                 "9508451:Seoul",
-                                 "9209944:Mexico City",
-                                 "9002488:London",
-                                 "8906039:Dhaka",
-                                 "8693706:Tehran",
-                                 "8305218:Bangkok"),
-                    found);
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
-                // Column and Key-Value databases might not be capable of sorting.
-            } else {
+            if (type.capableOfConstraintsOnNonIdAttributes() &&
+                type.capableOfMultipleSort() &&
+                type.capableOfNotEqual()) {
                 throw x;
+            } else {
+                return;
             }
         }
+        assertEquals(List.of("21858000:Beijing",
+                             "14094034:Tokyo",
+                             "13104177:Moscow",
+                             "10562088:Jakarta",
+                             "10151000:Lima",
+                             "10107125:Cairo",
+                             "9508451:Seoul",
+                             "9209944:Mexico City",
+                             "9002488:London",
+                             "8906039:Dhaka",
+                             "8693706:Tehran",
+                             "8305218:Bangkok"),
+                     found);
     }
 
 }

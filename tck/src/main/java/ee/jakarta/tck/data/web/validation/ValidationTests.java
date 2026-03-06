@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023, 2024 Contributors to the Eclipse Foundation
+ * Copyright (c) 2023, 2026 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -273,11 +273,10 @@ public class ValidationTests {
         try {
             resultRects = rectangles.findEverythingIdSorted();
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
-                // Column and Key-Value databases might not be capable of sorting.
-                return;
-            } else {
+            if (type.capableOfSingleSort()) {
                 throw x;
+            } else {
+                return;
             }
         }
 
@@ -311,11 +310,10 @@ public class ValidationTests {
             fail("Rectangles.findEverythingIdSorted did not raise ConstraintViolationException.");
             return;
         } catch (UnsupportedOperationException x) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
-                // Column and Key-Value databases might not be capable of sorting.
-                return;
-            } else {
+            if (type.capableOfSingleSort()) {
                 throw x;
+            } else {
+                return;
             }
         } catch (Exception x) {
             if (x instanceof ConstraintViolationException) {

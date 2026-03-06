@@ -81,9 +81,7 @@ public class JakartaQueryDeleteTests {
 
             Assertions.assertThat(fruitRepository.findAll().toList()).isEmpty();
         } catch (UnsupportedOperationException exp) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
-                // Column and Key-Value databases might not be capable of querying without a WHERE clause
-            } else {
+            if (type.capableOfQueryWithoutWhere()) {
                 throw exp;
             }
         }
@@ -102,9 +100,7 @@ public class JakartaQueryDeleteTests {
             Assertions.assertThat(result)
                     .isEmpty();
         } catch (UnsupportedOperationException exp) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
-                // Column and Key-Value databases might not be capable deleting by attribute that is not a key.
-            } else {
+            if (type.capableOfConstraintsOnNonIdAttributes()) {
                 throw exp;
             }
         }
@@ -126,9 +122,7 @@ public class JakartaQueryDeleteTests {
             Assertions.assertThat(result2)
                     .isNotEmpty();
         } catch (UnsupportedOperationException exp) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
-                // Column and Key-Value databases might not be capable deleting by attribute that is not a key.
-            } else {
+            if (type.capableOfConstraintsOnNonIdAttributes()) {
                 throw exp;
             }
         }
@@ -150,9 +144,7 @@ public class JakartaQueryDeleteTests {
             Assertions.assertThat(result2)
                     .isNotEmpty();
         } catch (UnsupportedOperationException exp) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
-                // Column and Key-Value databases might not be capable deleting by attribute that is not a key.
-            } else {
+            if (type.capableOfConstraintsOnNonIdAttributes()) {
                 throw exp;
             }
         }
@@ -174,9 +166,7 @@ public class JakartaQueryDeleteTests {
             Assertions.assertThat(result2)
                     .isNotEmpty();
         } catch (UnsupportedOperationException exp) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
-                // Column and Key-Value databases might not be capable deleting by attribute that is not a key.
-            } else {
+            if (type.capableOfConstraintsOnNonIdAttributes()) {
                 throw exp;
             }
         }
@@ -198,9 +188,7 @@ public class JakartaQueryDeleteTests {
             Assertions.assertThat(result2)
                     .isNotEmpty();
         } catch (UnsupportedOperationException exp) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
-                // Column and Key-Value databases might not be capable deleting by attribute that is not a key.
-            } else {
+            if (type.capableOfConstraintsOnNonIdAttributes()) {
                 throw exp;
             }
         }
@@ -222,9 +210,7 @@ public class JakartaQueryDeleteTests {
             Assertions.assertThat(result2)
                     .isNotEmpty();
         } catch (UnsupportedOperationException exp) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
-                // Column and Key-Value databases might not be capable deleting by attribute that is not a key.
-            } else {
+            if (type.capableOfConstraintsOnNonIdAttributes()) {
                 throw exp;
             }
         }
@@ -245,9 +231,7 @@ public class JakartaQueryDeleteTests {
             Assertions.assertThat(result2)
                     .isEmpty();
         } catch (UnsupportedOperationException exp) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
-                // Column and Key-Value databases might not be capable deleting by attribute that is not a key.
-            } else {
+            if (type.capableOfConstraintsOnNonIdAttributes()) {
                 throw exp;
             }
         }
@@ -268,10 +252,8 @@ public class JakartaQueryDeleteTests {
             Assertions.assertThat(result)
                     .isEmpty();
         } catch (UnsupportedOperationException exp) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
-                // Column and Key-Value databases might not be capable of AND.
-                // Column and Key-Value databases might not be capable of querying by an attribute that is not the Id.
-            } else {
+            if (type.capableOfAnd() &&
+                type.capableOfConstraintsOnNonIdAttributes()) {
                 throw exp;
             }
         }
@@ -294,10 +276,8 @@ public class JakartaQueryDeleteTests {
             Assertions.assertThat(result2)
                     .isNotEmpty();
         } catch (UnsupportedOperationException exp) {
-            if (type.isKeywordSupportAtOrBelow(DatabaseType.COLUMN)) {
-                // Column and Key-Value databases might not be capable of OR.
-                // Column and Key-Value databases might not be capable querying by an attribute that is not the Id.
-            } else {
+            if (type.capableOfConstraintsOnNonIdAttributes() &&
+                type.capableOfOr()) {
                 throw exp;
             }
         }
