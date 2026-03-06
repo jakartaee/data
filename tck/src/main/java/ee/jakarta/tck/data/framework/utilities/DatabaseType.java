@@ -36,6 +36,10 @@ public enum DatabaseType {
         this.flexibility = flexibility;
     }
 
+    public boolean capableOfAddition() {
+        return flexibility >= RELATIONAL.flexibility;
+    }
+
     public boolean capableOfAnd() {
         return flexibility >= DOCUMENT.flexibility;
     }
@@ -80,6 +84,10 @@ public enum DatabaseType {
         return flexibility >= RELATIONAL.flexibility;
     }
 
+    public boolean capableOfDivision() {
+        return flexibility >= RELATIONAL.flexibility;
+    }
+
     public boolean capableOfGreaterThan() {
         return flexibility >= COLUMN.flexibility;
     }
@@ -119,6 +127,11 @@ public enum DatabaseType {
     public boolean capableOfMultipleSort() {
         return flexibility >= RELATIONAL.flexibility;
     }
+
+    public boolean capableOfMultiplication() {
+        return flexibility >= RELATIONAL.flexibility;
+    }
+
 
     public boolean capableOfNotBetween() {
         return flexibility >= COLUMN.flexibility;
@@ -162,6 +175,10 @@ public enum DatabaseType {
 
     public boolean capableOfSingleSort() {
         return flexibility >= DOCUMENT.flexibility;
+    }
+
+    public boolean capableOfSubtraction() {
+        return flexibility >= RELATIONAL.flexibility;
     }
 
     public boolean capableOfUpper() {

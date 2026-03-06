@@ -18,6 +18,9 @@ package ee.jakarta.tck.data.standalone.entity;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import java.util.function.Function;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -128,6 +131,54 @@ public class ExpressionTests {
         assertEquals(List.of("AU: Australia"),
                      found.stream()
                           .map(c -> c.getCode() + ": " + c.getName())
+                          .toList());
+    }
+
+    @Assertion(id = "829", strategy = """
+            Use the asDouble NumericCast expression to allow long-typed
+            values to be divided as doubles so that the result can be
+            compared against a double-typed value, supplied as a literal.
+            """)
+    public void testCastToDouble() {
+        List<Country> found;
+        try {
+            found = countries.filter(_Country.population.asDouble()
+                    .dividedBy(_Country.area.asDouble())
+                    .lessThan(8.75));
+        } catch (UnsupportedOperationException x) {
+            if (type.capableOfConstraintsOnNonIdAttributes() &&
+                type.capableOfDivision() &&
+                type.capableOfLessThan()) {
+                throw x;
+            } else {
+                return;
+            }
+        }
+
+        Function<Country, String> getPopulationDensityAndName = c ->
+            BigDecimal.valueOf(c.getPopulation())
+                    .divide(BigDecimal.valueOf(c.getArea()),
+                            2, // decimal digits
+                            RoundingMode.HALF_UP) +
+                    ": " +
+                    c.getName();
+
+        assertEquals(List.of("0.03: Greenland",
+                             "2.28: Mongolia",
+                             "3.47: Namibia",
+                             "3.52: Australia",
+                             "3.66: Iceland",
+                             "4.05: Guyana",
+                             "4.19: Suriname",
+                             "4.24: Libya",
+                             "4.31: Canada",
+                             "4.38: Botswana",
+                             "5.05: Mauritania",
+                             "7.57: Kazakhstan",
+                             "8.56: Russia"),
+                     found.stream()
+                          .map(getPopulationDensityAndName)
+                          .sorted()
                           .toList());
     }
 
