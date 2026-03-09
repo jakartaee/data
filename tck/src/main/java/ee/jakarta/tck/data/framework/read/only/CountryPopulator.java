@@ -34,10 +34,10 @@ import java.util.Objects;
 public class CountryPopulator implements Populator<Countries> {
     public static final int EXPECTED_TOTAL = 210;
     
-	private static CountryPopulator instance;
+    private static CountryPopulator instance;
 
     public static CountryPopulator get() {
-    	return instance = Objects.requireNonNullElseGet(instance, CountryPopulator::new);
+        return instance = Objects.requireNonNullElseGet(instance, CountryPopulator::new);
     }
     
     private CountryPopulator() {

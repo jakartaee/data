@@ -21,11 +21,11 @@ import java.util.Objects;
 import java.util.stream.IntStream;
 
 public class AsciiCharactersPopulator implements Populator<AsciiCharacters> {
-	
-	private static AsciiCharactersPopulator instance;
+    
+    private static AsciiCharactersPopulator instance;
 
     public static AsciiCharactersPopulator get() {
-    	return instance = Objects.requireNonNullElseGet(instance, AsciiCharactersPopulator::new);
+        return instance = Objects.requireNonNullElseGet(instance, AsciiCharactersPopulator::new);
     }
     
     private AsciiCharactersPopulator() {

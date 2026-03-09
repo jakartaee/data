@@ -16,7 +16,6 @@
 package ee.jakarta.tck.data.standalone.entity;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -65,7 +64,7 @@ public class RestrictionTests {
     // before each test
     @BeforeEach
     public void beforeEach() {
-    	CountryPopulator.get().populate(countries);
+        CountryPopulator.get().populate(countries);
     }
 
     @Deployment

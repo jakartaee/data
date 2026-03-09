@@ -24,10 +24,10 @@ import ee.jakarta.tck.data.framework.read.only.NaturalNumber.NumberType;
 
 public class NaturalNumbersPopulator implements Populator<NaturalNumbers> {
 
-	private static NaturalNumbersPopulator instance;
+    private static NaturalNumbersPopulator instance;
 
     public static NaturalNumbersPopulator get() {
-    	return instance = Objects.requireNonNullElseGet(instance, NaturalNumbersPopulator::new);
+        return instance = Objects.requireNonNullElseGet(instance, NaturalNumbersPopulator::new);
     }
     
     private NaturalNumbersPopulator() {

@@ -65,7 +65,7 @@ public class JakartaQueryTests {
     @BeforeEach
     //Inject doesn't happen until after BeforeClass so this is necessary before each test
     public void setup() {
-    	FruitPopulator.get().populate(fruitRepository);
+        FruitPopulator.get().populate(fruitRepository);
     }
 
     @DisplayName("should find all entities as stream")

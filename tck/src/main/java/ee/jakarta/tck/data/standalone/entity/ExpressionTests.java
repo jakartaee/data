@@ -16,7 +16,6 @@
 package ee.jakarta.tck.data.standalone.entity;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.function.Function;
 import java.math.BigDecimal;
@@ -60,7 +59,7 @@ public class ExpressionTests {
     // before each test
     @BeforeEach
     public void beforeEach() {
-    	CountryPopulator.get().populate(countries);
+        CountryPopulator.get().populate(countries);
     }
 
     @Deployment

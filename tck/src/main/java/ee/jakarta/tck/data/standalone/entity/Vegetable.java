@@ -19,7 +19,7 @@ import java.util.Objects;
 
 @jakarta.nosql.Entity
 @jakarta.persistence.Entity
-public class Vegitable {
+public class Vegetable {
 
     @jakarta.nosql.Id
     @jakarta.persistence.Id
@@ -60,7 +60,7 @@ public class Vegitable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Vegitable fruit = (Vegitable) o;
+        Vegetable fruit = (Vegetable) o;
         return Objects.equals(id, fruit.id) &&
                Objects.equals(name, fruit.name) &&
                Objects.equals(quantity, fruit.quantity);
@@ -73,7 +73,7 @@ public class Vegitable {
 
     @Override
     public String toString() {
-        return "Fruit{" +
+        return "Vegetable{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", quantity=" + quantity +

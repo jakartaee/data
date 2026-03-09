@@ -57,8 +57,8 @@ public interface Populator<T> {
      * @param repo - this repository
      */
     public default void populate(T repo) {
-    	Objects.requireNonNull(repo, "Repository passed to populate method was null.");
-    	
+        Objects.requireNonNull(repo, "Repository passed to populate method was null.");
+        
         if (isPopulated(repo)) {
             return;
         }

@@ -19,11 +19,11 @@ import java.util.List;
 import java.util.Objects;
 
 public class FruitPopulator implements Populator<FruitRepository> {
-	
-	private static FruitPopulator instance;
+    
+    private static FruitPopulator instance;
 
     public static FruitPopulator get() {
-    	return instance = Objects.requireNonNullElseGet(instance, FruitPopulator::new);
+        return instance = Objects.requireNonNullElseGet(instance, FruitPopulator::new);
     }
     
     private FruitPopulator() {
