@@ -81,7 +81,7 @@ public interface PageRequest {
      *
      * @param pageNumber The page number.
      * @return a new instance of {@code PageRequest}. This method never returns
-     * {@code null}.
+     *         {@code null}.
      * @throws IllegalArgumentException when the page number is negative or
      *                                  zero.
      */
@@ -98,7 +98,7 @@ public interface PageRequest {
      *                     {@linkplain Page#totalElements() total} number of
      *                     elements available across all pages.
      * @return a new instance of {@code PageRequest}. This method never returns
-     * {@code null}.
+     *         {@code null}.
      * @throws IllegalArgumentException when the page number is negative or
      *                                  zero.
      */
@@ -112,7 +112,7 @@ public interface PageRequest {
      *
      * @param maxPageSize The number of query results in a full page.
      * @return a new instance of {@code PageRequest}. This method never returns
-     * {@code null}.
+     *         {@code null}.
      * @throws IllegalArgumentException when maximum page size is negative or
      *                                  zero.
      */
@@ -135,7 +135,7 @@ public interface PageRequest {
      *                     {@linkplain Page#totalElements() total} number of
      *                     elements available across all pages.
      * @return a new instance of {@code PageRequest} with forward cursor-based
-     * pagination. This method never returns {@code null}.
+     *         pagination. This method never returns {@code null}.
      * @throws IllegalArgumentException if the cursor is null or has no values.
      */
     static PageRequest afterCursor(Cursor cursor, long pageNumber, int maxPageSize, boolean requestTotal) {
@@ -158,8 +158,8 @@ public interface PageRequest {
      *                     {@linkplain Page#totalElements() total} number of
      *                     elements available across all pages.
      * @return a new instance of {@code PageRequest} with cursor-based
-     * pagination in the previous page direction. This method never returns
-     * {@code null}.
+     *         pagination in the previous page direction. This method never
+     *         returns {@code null}.
      * @throws IllegalArgumentException if the cursor is null or has no values.
      */
     static PageRequest beforeCursor(Cursor cursor, long pageNumber, int maxPageSize, boolean requestTotal) {
@@ -176,15 +176,14 @@ public interface PageRequest {
      *               name pattern of the repository method to which this
      *               pagination will be supplied.
      * @return a new instance of {@code PageRequest} with forward cursor-based
-     * pagination. This method never returns {@code null}.
+     *         pagination. This method never returns {@code null}.
      * @throws IllegalArgumentException if no key values are provided.
      */
     PageRequest afterCursor(Cursor cursor);
 
     /**
      * <p>Requests {@linkplain CursoredPage cursor-based pagination} in the
-     * previous page
-     * direction relative to the specified key values.</p>
+     * previous page direction relative to the specified key values.</p>
      *
      * @param cursor cursor with key values, the order and number of which must
      *               match the {@link OrderBy} annotations,
@@ -192,8 +191,8 @@ public interface PageRequest {
      *               name pattern of the repository method to which this
      *               pagination will be supplied.
      * @return a new instance of {@code PageRequest} with cursor-based
-     * pagination in the previous page direction. This method never returns
-     * {@code null}.
+     *         pagination in the previous page direction. This method never
+     *         returns {@code null}.
      * @throws IllegalArgumentException if no key values are provided.
      */
     PageRequest beforeCursor(Cursor cursor);
