@@ -120,10 +120,7 @@ public class EntityTests {
     @BeforeEach
     //Inject doesn't happen until after BeforeClass so this is necessary before each test
     public void setup() {
-        assertNotNull(numbers);
         NaturalNumbersPopulator.get().populate(numbers);
-
-        assertNotNull(characters);
         AsciiCharactersPopulator.get().populate(characters);
     }
 

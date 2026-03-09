@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025,2026 Contributors to the Eclipse Foundation
+ * Copyright (c) 2025, 2026 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -26,15 +26,21 @@ import static ee.jakarta.tck.data.framework.read.only.Region.SOUTH_AMERICA;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Populator for the Country entity.
  */
 public class CountryPopulator implements Populator<Countries> {
     public static final int EXPECTED_TOTAL = 210;
+    
+	private static CountryPopulator instance;
 
     public static CountryPopulator get() {
-        return new CountryPopulator();
+    	return instance = Objects.requireNonNullElseGet(instance, CountryPopulator::new);
+    }
+    
+    private CountryPopulator() {
     }
 
     @Override

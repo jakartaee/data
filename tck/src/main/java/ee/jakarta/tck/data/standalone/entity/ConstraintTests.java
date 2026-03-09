@@ -75,17 +75,11 @@ public class ConstraintTests {
     @Inject
     Countries countries;
 
-    private boolean initialized = false;
-
     // Inject doesn't happen until after BeforeClass, so this is necessary
     // before each test
     @BeforeEach
     public void beforeEach() {
-        assertNotNull(countries);
-        if (!initialized) {
-            CountryPopulator.get().populate(countries);
-            initialized = true;
-        }
+    	CountryPopulator.get().populate(countries);
     }
 
     @Deployment
