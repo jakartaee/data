@@ -48,7 +48,7 @@ public interface NumericFunctionExpression<T, N extends Number & Comparable<N>>
      * of the same type as the argument. The resulting expression represents
      * a positive numeric value or 0.</p>
      */
-    String ABS = "abs";
+    String ABS = "ABS"; // exactly matches function name from JCQL
 
     /**
      * <p>Name of the function that computes the
@@ -65,7 +65,7 @@ public interface NumericFunctionExpression<T, N extends Number & Comparable<N>>
      * of characters in the {@link String} value to which the textual
      * expression evaluates.</p>
      */
-    String LENGTH = "length";
+    String LENGTH = "LENGTH"; // exactly matches function name from JCQL
 
     /**
      * <p>Name of the function that computes the

@@ -58,7 +58,7 @@ public interface TextFunctionExpression<T>
      * concatenation of the values to which the first and second expression
      * arguments evaluate.</p>
      */
-    String CONCAT = "concat";
+    String CONCAT = "CONCAT"; // exactly matches function name from JPQL
 
     /**
      * <p>Name of the function that computes the
@@ -82,7 +82,7 @@ public interface TextFunctionExpression<T>
      * beginning of the {@link String} to which the first expression argument
      * evaluates.</p>
      */
-    String LEFT = "left";
+    String LEFT = "LEFT"; // exactly matches function name from JCQL
 
     /**
      * <p>Name of the function that computes the
@@ -106,7 +106,7 @@ public interface TextFunctionExpression<T>
      * end of the {@link String} to which the first expression argument
      * evaluates.</p>
      */
-    String RIGHT = "right";
+    String RIGHT = "RIGHT"; // exactly matches function name from JCQL
 
     /**
      * <p>Name of the function that computes the
@@ -121,7 +121,7 @@ public interface TextFunctionExpression<T>
      * lower case form of the {@link String} value to which the expression
      * argument evaluates.</p>
      */
-    String LOWER = "lower";
+    String LOWER = "LOWER"; // exactly matches function name from JCQL
 
     /**
      * <p>Name of the function that computes the
@@ -136,7 +136,7 @@ public interface TextFunctionExpression<T>
      * upper case form of the {@link String} value to which the expression
      * argument evaluates.</p>
      */
-    String UPPER = "upper";
+    String UPPER = "UPPER"; // exactly matches function name from JCQL
 
     /**
      * Creates a {@code TextFunctionExpression} to represent a function with
