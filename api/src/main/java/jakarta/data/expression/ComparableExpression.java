@@ -40,7 +40,7 @@ import jakarta.data.restrict.Restriction;
  * </p>
  *
  * @param <T> entity type.
- * @param <V> entity attribute type.
+ * @param <V> expression type.
  * @since 1.1
  */
 public interface ComparableExpression<T, V extends Comparable<?>>
