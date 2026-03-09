@@ -29,9 +29,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import ee.jakarta.tck.data.framework.junit.anno.Assertion;
-import ee.jakarta.tck.data.framework.read.only.Fruit;
-import ee.jakarta.tck.data.framework.read.only.FruitPopulator;
-import ee.jakarta.tck.data.framework.read.only.FruitRepository;
 
 import java.util.List;
 import java.util.logging.Logger;
@@ -50,25 +47,23 @@ public class JakartaQueryDeleteTests {
     public static WebArchive createDeployment() {
         return ShrinkWrap.create(WebArchive.class)
                 .addClasses(JakartaQueryTests.class,
-                            Fruit.class,
-                            FruitPopulator.class,
-                            FruitRepository.class);
+                            Vegitable.class,
+                            VegitableRepository.class);
     }
 
     @Inject
-    protected FruitRepository fruitRepository;
+    protected VegitableRepository vegitableRepository;
 
-    protected List<Fruit> fruits = FruitPopulator.FRUITS;
+    protected List<Vegitable> vegitables = VegitableRepository.VEGGIES;
 
     @BeforeEach
     public void setup() {
-        var populator = new FruitPopulator();
-        populator.populate(fruitRepository);
+    	vegitableRepository.saveAll(vegitables);
     }
 
     @AfterEach
     public void cleanup() {
-        fruitRepository.deleteAll();
+        vegitableRepository.deleteAll();
         TestPropertyUtility.waitForEventualConsistency();
     }
 
@@ -78,10 +73,10 @@ public class JakartaQueryDeleteTests {
     void shouldDeleteAllEntities() {
 
         try {
-            fruitRepository.deleteAll();
+            vegitableRepository.deleteAll();
             TestPropertyUtility.waitForEventualConsistency();
 
-            Assertions.assertThat(fruitRepository.findAll().toList()).isEmpty();
+            Assertions.assertThat(vegitableRepository.findAll().toList()).isEmpty();
         } catch (UnsupportedOperationException exp) {
             if (type.capableOfQueryWithoutWhere()) {
                 throw exp;
@@ -94,11 +89,11 @@ public class JakartaQueryDeleteTests {
             strategy = "delete by name equals, verify if entity is deleted")
     void shouldDeleteEq() {
         try {
-            Fruit fruit = fruits.getFirst();
-            fruitRepository.deleteByName(fruit.getName());
+            Vegitable vegitable = vegitables.getFirst();
+            vegitableRepository.deleteByName(vegitable.getName());
             TestPropertyUtility.waitForEventualConsistency();
 
-            List<Fruit> result = fruitRepository.findNameEquals(fruit.getName());
+            List<Vegitable> result = vegitableRepository.findNameEquals(vegitable.getName());
             Assertions.assertThat(result)
                     .isEmpty();
         } catch (UnsupportedOperationException exp) {
@@ -113,14 +108,14 @@ public class JakartaQueryDeleteTests {
             strategy = "delete by name not equals, verify if entity is deleted")
     void shouldDeleteNeq() {
         try {
-            Fruit fruit = fruits.getFirst();
-            fruitRepository.deleteByNotEqualsName(fruit.getName());
+            Vegitable vegitable = vegitables.getFirst();
+            vegitableRepository.deleteByNotEqualsName(vegitable.getName());
             TestPropertyUtility.waitForEventualConsistency();
 
-            List<Fruit> result1 = fruitRepository.findNameNotEquals(fruit.getName());
+            List<Vegitable> result1 = vegitableRepository.findNameNotEquals(vegitable.getName());
             Assertions.assertThat(result1)
                     .isEmpty();
-            List<Fruit> result2 = fruitRepository.findNameEquals(fruit.getName());
+            List<Vegitable> result2 = vegitableRepository.findNameEquals(vegitable.getName());
             Assertions.assertThat(result2)
                     .isNotEmpty();
         } catch (UnsupportedOperationException exp) {
@@ -135,14 +130,14 @@ public class JakartaQueryDeleteTests {
             strategy = "delete by quantity greater than, verify if entity is deleted")
     void shouldGt() {
         try {
-            Fruit fruit = fruits.getFirst();
-            fruitRepository.deleteQuantityGreaterThan(fruit.getQuantity());
+            Vegitable vegitable = vegitables.getFirst();
+            vegitableRepository.deleteQuantityGreaterThan(vegitable.getQuantity());
             TestPropertyUtility.waitForEventualConsistency();
 
-            List<Fruit> result1 = fruitRepository.findQuantityGt(fruit.getQuantity());
+            List<Vegitable> result1 = vegitableRepository.findQuantityGt(vegitable.getQuantity());
             Assertions.assertThat(result1)
                     .isEmpty();
-            List<Fruit> result2 = fruitRepository.findQuantityLte(fruit.getQuantity());
+            List<Vegitable> result2 = vegitableRepository.findQuantityLte(vegitable.getQuantity());
             Assertions.assertThat(result2)
                     .isNotEmpty();
         } catch (UnsupportedOperationException exp) {
@@ -157,14 +152,14 @@ public class JakartaQueryDeleteTests {
             strategy = "delete by quantity greater than equals, verify if entity is deleted")
     void shouldGte() {
         try {
-            Fruit fruit = fruits.getFirst();
-            fruitRepository.deleteQuantityGreaterThanEquals(fruit.getQuantity());
+            Vegitable vegitable = vegitables.getFirst();
+            vegitableRepository.deleteQuantityGreaterThanEquals(vegitable.getQuantity());
             TestPropertyUtility.waitForEventualConsistency();
 
-            List<Fruit> result1 = fruitRepository.findQuantityGte(fruit.getQuantity());
+            List<Vegitable> result1 = vegitableRepository.findQuantityGte(vegitable.getQuantity());
             Assertions.assertThat(result1)
                     .isEmpty();
-            List<Fruit> result2 = fruitRepository.findQuantityLt(fruit.getQuantity());
+            List<Vegitable> result2 = vegitableRepository.findQuantityLt(vegitable.getQuantity());
             Assertions.assertThat(result2)
                     .isNotEmpty();
         } catch (UnsupportedOperationException exp) {
@@ -179,14 +174,14 @@ public class JakartaQueryDeleteTests {
             strategy = "delete by quantity lesser, verify if entity is deleted")
     void shouldLt() {
         try {
-            Fruit fruit = fruits.getFirst();
-            fruitRepository.deleteLesserThan(fruit.getQuantity());
+            Vegitable vegitable = vegitables.getFirst();
+            vegitableRepository.deleteLesserThan(vegitable.getQuantity());
             TestPropertyUtility.waitForEventualConsistency();
 
-            List<Fruit> result1 = fruitRepository.findQuantityLt(fruit.getQuantity());
+            List<Vegitable> result1 = vegitableRepository.findQuantityLt(vegitable.getQuantity());
             Assertions.assertThat(result1)
                     .isEmpty();
-            List<Fruit> result2 = fruitRepository.findQuantityGte(fruit.getQuantity());
+            List<Vegitable> result2 = vegitableRepository.findQuantityGte(vegitable.getQuantity());
             Assertions.assertThat(result2)
                     .isNotEmpty();
         } catch (UnsupportedOperationException exp) {
@@ -201,14 +196,14 @@ public class JakartaQueryDeleteTests {
             strategy = "delete by quantity lesser than equals, verify if entity is deleted")
     void shouldLte() {
         try {
-            Fruit fruit = fruits.getFirst();
-            fruitRepository.deleteQuantityLesserThanEquals(fruit.getQuantity());
+            Vegitable vegitable = vegitables.getFirst();
+            vegitableRepository.deleteQuantityLesserThanEquals(vegitable.getQuantity());
             TestPropertyUtility.waitForEventualConsistency();
 
-            List<Fruit> result1 = fruitRepository.findQuantityLte(fruit.getQuantity());
+            List<Vegitable> result1 = vegitableRepository.findQuantityLte(vegitable.getQuantity());
             Assertions.assertThat(result1)
                     .isEmpty();
-            List<Fruit> result2 = fruitRepository.findQuantityGt(fruit.getQuantity());
+            List<Vegitable> result2 = vegitableRepository.findQuantityGt(vegitable.getQuantity());
             Assertions.assertThat(result2)
                     .isNotEmpty();
         } catch (UnsupportedOperationException exp) {
@@ -223,13 +218,13 @@ public class JakartaQueryDeleteTests {
             strategy = "delete by name in, verify if entity is deleted")
     void shouldIn() {
         try {
-            Fruit fruit = fruits.getFirst();
-            fruitRepository.deleteByNameIn(List.of(fruit.getName(), fruits.get(1).getName()));
+            Vegitable vegitable = vegitables.getFirst();
+            vegitableRepository.deleteByNameIn(List.of(vegitable.getName(), vegitables.get(1).getName()));
             TestPropertyUtility.waitForEventualConsistency();
 
-            List<Fruit> result1 = fruitRepository.findNameNotEquals(fruit.getName());
+            List<Vegitable> result1 = vegitableRepository.findNameNotEquals(vegitable.getName());
             Assertions.assertThat(result1).isNotEmpty();
-            List<Fruit> result2 = fruitRepository.findNameEquals(fruits.get(1).getName());
+            List<Vegitable> result2 = vegitableRepository.findNameEquals(vegitables.get(1).getName());
             Assertions.assertThat(result2)
                     .isEmpty();
         } catch (UnsupportedOperationException exp) {
@@ -245,12 +240,12 @@ public class JakartaQueryDeleteTests {
     void shouldDeleteUsingAndCondition() {
 
         try {
-            Fruit fruit = fruits.getFirst();
-            fruitRepository.deleteByNameAndQuantity(fruit.getName(), fruit.getQuantity());
+            Vegitable vegitable = vegitables.getFirst();
+            vegitableRepository.deleteByNameAndQuantity(vegitable.getName(), vegitable.getQuantity());
             TestPropertyUtility.waitForEventualConsistency();
-            List<Fruit> result = fruitRepository.findNameEqualsAndQuantityEquals(
-                    fruit.getName(),
-                    fruit.getQuantity());
+            List<Vegitable> result = vegitableRepository.findNameEqualsAndQuantityEquals(
+                    vegitable.getName(),
+                    vegitable.getQuantity());
             Assertions.assertThat(result)
                     .isEmpty();
         } catch (UnsupportedOperationException exp) {
@@ -267,14 +262,14 @@ public class JakartaQueryDeleteTests {
     void shouldDeleteUsingOrCondition() {
 
         try {
-            Fruit fruit = fruits.getFirst();
-            fruitRepository.deleteByNameOrQuantity(fruit.getName(), fruit.getQuantity());
+            Vegitable vegitable = vegitables.getFirst();
+            vegitableRepository.deleteByNameOrQuantity(vegitable.getName(), vegitable.getQuantity());
             TestPropertyUtility.waitForEventualConsistency();
 
-            List<Fruit> result1 = fruitRepository.findNameEquals(fruit.getName());
+            List<Vegitable> result1 = vegitableRepository.findNameEquals(vegitable.getName());
             Assertions.assertThat(result1)
                     .isEmpty();
-            List<Fruit> result2 = fruitRepository.findQuantityGt(fruit.getQuantity());
+            List<Vegitable> result2 = vegitableRepository.findQuantityGt(vegitable.getQuantity());
             Assertions.assertThat(result2)
                     .isNotEmpty();
         } catch (UnsupportedOperationException exp) {

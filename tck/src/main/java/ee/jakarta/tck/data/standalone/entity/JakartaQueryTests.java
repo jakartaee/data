@@ -33,8 +33,6 @@ import ee.jakarta.tck.data.framework.read.only.FruitPopulator;
 import ee.jakarta.tck.data.framework.read.only.FruitRepository;
 import ee.jakarta.tck.data.framework.read.only.FruitSummary;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;

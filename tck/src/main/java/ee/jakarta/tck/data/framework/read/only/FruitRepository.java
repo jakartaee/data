@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2025, 2026 Contributors to the Eclipse Foundation
  * <p>
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -39,9 +39,6 @@ public interface FruitRepository extends BasicRepository<Fruit, String> {
 
     @Query("FROM Fruit ORDER BY name DESC")
     List<Fruit> findAllDesc();
-
-    @Query("DELETE FROM Fruit")
-    void deleteAll();
 
     @Query("FROM Fruit WHERE name = :name")
     List<Fruit> findNameEquals(@Param("name") String name);
@@ -93,79 +90,4 @@ public interface FruitRepository extends BasicRepository<Fruit, String> {
 
     @Query("FROM Fruit WHERE quantity > :quantity ORDER BY name ASC")
     List<Fruit> findByQuantityGreaterThanOrderByNameAsc(@Param("quantity") Long quantity);
-
-    @Query("DELETE FROM Fruit WHERE name = :name")
-    void deleteByName(@Param("name") String name);
-
-    @Query("DELETE FROM Fruit WHERE name <> :name")
-    void deleteByNotEqualsName(@Param("name") String name);
-
-    @Query("DELETE FROM Fruit WHERE quantity > :quantity")
-    void deleteQuantityGreaterThan(@Param("quantity") Long quantity);
-
-    @Query("DELETE FROM Fruit WHERE quantity >= :quantity")
-    void deleteQuantityGreaterThanEquals(@Param("quantity") Long quantity);
-
-    @Query("DELETE FROM Fruit WHERE quantity < :quantity")
-    void deleteLesserThan(@Param("quantity") Long quantity);
-
-    @Query("DELETE FROM Fruit WHERE quantity <= :quantity")
-    void deleteQuantityLesserThanEquals(@Param("quantity") Long quantity);
-
-    @Query("DELETE FROM Fruit WHERE name IN :names")
-    void deleteByNameIn(@Param("names") List<String> names);
-
-    @Query("DELETE FROM Fruit WHERE name = :name AND quantity = :quantity")
-    void deleteByNameAndQuantity(@Param("name") String name, @Param("quantity") Long quantity);
-
-    @Query("DELETE FROM Fruit WHERE name = :name OR quantity = :quantity")
-    void deleteByNameOrQuantity(@Param("name") String name, @Param("quantity") Long quantity);
-
-    @Query("UPDATE Fruit SET name = :updated WHERE name = :name")
-    void updateByNameEquals(@Param("updated") String updated,
-                            @Param("name") String name);
-
-    @Query("UPDATE Fruit SET name = :updated WHERE name <> :name")
-    void updateByNameNotEquals(@Param("updated") String updated,
-                               @Param("name") String name);
-
-    @Query("UPDATE Fruit SET name = :updated WHERE quantity > :quantity")
-    void updateByQuantityGreaterThan(@Param("updated") String updated,
-                                     @Param("quantity") Long quantity);
-
-    @Query("UPDATE Fruit SET name = :updated WHERE quantity < :quantity")
-    void updateByQuantityLessThan(@Param("updated") String updated,
-                                  @Param("quantity") Long quantity);
-
-    @Query("UPDATE Fruit SET name = :updated WHERE quantity >= :quantity")
-    void updateByQuantityGreaterThanEqual(@Param("updated") String updated,
-                                          @Param("quantity") Long quantity);
-
-    @Query("UPDATE Fruit SET name = :updated WHERE quantity <= :quantity")
-    void updateByQuantityLessThanEqual(@Param("updated") String updated,
-                                       @Param("quantity") Long quantity);
-
-    @Query("UPDATE Fruit SET name = :updated WHERE quantity BETWEEN :start AND :end")
-    void updateByQuantityBetween(@Param("updated") String updated,
-                                 @Param("start") Long start,
-                                 @Param("end") Long end);
-
-    @Query("UPDATE Fruit SET name = :updated WHERE name IN :names")
-    void updateByNameIn(@Param("updated") String updated,
-                        @Param("names") List<String> names);
-
-    @Query("UPDATE Fruit SET name = :updated WHERE name NOT IN :names")
-    void updateByNameNotIn(@Param("updated") String updated,
-                           @Param("names") List<String> names);
-
-    @Query("UPDATE Fruit SET name = :updated WHERE name = :name AND quantity = :quantity")
-    void updateByNameAndQuantity(@Param("updated") String updated,
-                                 @Param("name") String name,
-                                 @Param("quantity") Long quantity);
-
-    @Query("UPDATE Fruit SET name = :updated WHERE name = :name OR quantity = :quantity")
-    void updateByNameOrQuantity(@Param("updated") String updated,
-                                @Param("name") String name,
-                                @Param("quantity") Long quantity);
-
 }

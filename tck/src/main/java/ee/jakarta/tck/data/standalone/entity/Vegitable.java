@@ -13,13 +13,13 @@
  * <p>
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
-package ee.jakarta.tck.data.framework.read.only;
+package ee.jakarta.tck.data.standalone.entity;
 
 import java.util.Objects;
 
 @jakarta.nosql.Entity
 @jakarta.persistence.Entity
-public class Fruit {
+public class Vegitable {
 
     @jakarta.nosql.Id
     @jakarta.persistence.Id
@@ -60,7 +60,7 @@ public class Fruit {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Fruit fruit = (Fruit) o;
+        Vegitable fruit = (Vegitable) o;
         return Objects.equals(id, fruit.id) &&
                Objects.equals(name, fruit.name) &&
                Objects.equals(quantity, fruit.quantity);
