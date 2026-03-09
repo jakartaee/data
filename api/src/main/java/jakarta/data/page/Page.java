@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022,2024 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -85,22 +85,30 @@ public interface Page<T> extends Iterable<T> {
     int numberOfElements();
 
     /**
-     * Returns {@code true} if it is known that there are more results or that
+     * Returns {@code true} if more results are known to exist, or
      * it is necessary to request a next page to determine whether there are
-     * more results, so that {@link #nextPageRequest()} will definitely not
-     * return {@code null}.
+     * more results.
      *
-     * @return {@code false} if this is the last page of results.
+     * @return {@code false} if this is known to be the last page of results.
+     *         Otherwise {@code true}, indicating that
+     *         {@link #nextPageRequest()} can be safely invoked without raising
+     *         {@code NoSuchElementException}, although the content of the
+     *         next page might be empty if no additional results are later
+     *         found when attempting to retrieve the next page.
      */
     boolean hasNext();
 
     /**
-     * Returns {@code true} if it is known that there are previous results or
-     * that it is necessary to request the previous page to determine whether
-     * there are previous results, so that {@link #previousPageRequest()} will
-     * not return {@code null}.
+     * Returns {@code true} if previous results are known to exist, or
+     * it is necessary to request the previous page to determine whether
+     * there are previous results.
      *
-     * @return {@code false} if this is the first page of results.
+     * @return {@code false} if this is known to be the first page of results.
+     *         Otherwise {@code true}, indicating that
+     *         {@link #previousPageRequest()} can be safely invoked without
+     *         raising {@code NoSuchElementException}, although the content of
+     *         the previous page might be empty if no additional results are
+     *         later found when attempting to retrieve the previous page.
      */
     boolean hasPrevious();
 
