@@ -13,7 +13,7 @@
  * <p>
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
-package ee.jakarta.tck.data.standalone.entity;
+package ee.jakarta.tck.data.framework.read.only;
 
 import jakarta.nosql.Column;
 import jakarta.nosql.Entity;

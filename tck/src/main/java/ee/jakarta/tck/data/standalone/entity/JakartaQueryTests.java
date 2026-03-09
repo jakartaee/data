@@ -27,7 +27,10 @@ import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import ee.jakarta.tck.data.framework.junit.anno.Assertion;
+import ee.jakarta.tck.data.framework.read.only.Fruit;
 import ee.jakarta.tck.data.framework.read.only.FruitPopulator;
+import ee.jakarta.tck.data.framework.read.only.FruitRepository;
+import ee.jakarta.tck.data.framework.read.only.FruitSummary;
 
 import java.util.Comparator;
 import java.util.HashSet;
@@ -39,6 +42,7 @@ import java.util.logging.Logger;
 
 @Standalone
 @AnyEntity
+@ReadOnlyTests
 @DisplayName("Jakarta Data integration with Jakarta Common Query Language for select operations")
 public class JakartaQueryTests {
 

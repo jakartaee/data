@@ -29,7 +29,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import ee.jakarta.tck.data.framework.junit.anno.Assertion;
+import ee.jakarta.tck.data.framework.read.only.Fruit;
 import ee.jakarta.tck.data.framework.read.only.FruitPopulator;
+import ee.jakarta.tck.data.framework.read.only.FruitRepository;
 
 import java.util.List;
 import java.util.logging.Logger;
