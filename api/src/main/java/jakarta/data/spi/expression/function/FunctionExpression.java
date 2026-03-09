@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2025,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,9 +20,47 @@ package jakarta.data.spi.expression.function;
 import java.util.List;
 
 import jakarta.data.expression.Expression;
+import jakarta.data.expression.TextExpression;
 
+/**
+ * <p>An {@linkplain Expression expression} that represents applying a function
+ * to one or more expressions that are supplied as {@link #arguments()}.</p>
+ *
+ * <p>Wherever it is possible, a subtype that more preciesly fits the function
+ * result type, such as {@link NumericFunctionExpression} or
+ * {@link TextFunctionExpression}, should be used instead.</p>
+ *
+ * @param <T> entity type.
+ * @param <V> result type of the function.
+ * @since 1.1
+ */
 public interface FunctionExpression<T, V> extends Expression<T, V> {
+    /**
+     * <p>The name of the function.</p>
+     *
+     * <p>Valid function names are defined by constants in a subtype of this
+     * class or in vendor documentation. Function names should aim to match
+     * the names of equivalent functions in the query language wherever
+     * possible.</p>
+     *
+     * @return the name of the function.
+     */
     String name();
 
+    /**
+     * <p>An ordered list of inputs to the function.</p>
+     *
+     * <p>The constant or vendor documentation that defines the function name
+     * is responsible for defining the function arguments, including the
+     * meaning and data type of each argument and the order in which arguments
+     * must be supplied. By convention, when a method of an {@link Expression}
+     * subtype represents invocation of a function on a target expression, such
+     * as {@link TextExpression#left(int)}, the first element of the argument
+     * list should be the target expression, and subsequent elements should
+     * be the method arguments, in the same order, if present.</p>
+     *
+     * @return a list of expressions that represent the arguments to the
+     *         function.
+     */
     List<? extends Expression<? super T, ?>> arguments();
 }
