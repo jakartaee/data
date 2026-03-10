@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2025,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,9 @@ package jakarta.data.constraint;
 import jakarta.data.expression.TextExpression;
 import jakarta.data.messages.Messages;
 
-record LikeRecord(TextExpression<?> pattern, char escape)
+record LikeRecord(TextExpression<?> unescapedPattern,
+                  TextExpression<?> escapedPattern,
+                  char escape)
         implements Like {
 
     static final char CHAR_WILDCARD = '_';
@@ -29,24 +31,33 @@ record LikeRecord(TextExpression<?> pattern, char escape)
 
     @Override
     public NotLike negate() {
-        return new NotLikeRecord(pattern, escape);
+        return new NotLikeRecord(unescapedPattern,
+                                 escapedPattern,
+                                 escape);
     }
 
     @Override
     public String toString() {
-        return "LIKE " + pattern + " ESCAPE '" + escape + "'";
+        if (unescapedPattern == null) {
+            return "LIKE " + escapedPattern + " ESCAPE '" + escape + "'";
+        } else {
+            return "LIKE " + unescapedPattern;
+        }
     }
 
-    static String escape(String literal) {
+    static String escape(String literal, boolean escapeWildcards) {
         final var result = new StringBuilder();
         for (int i = 0; i < literal.length(); i++) {
             final char ch = literal.charAt(i);
-            if (ch == STRING_WILDCARD || ch == CHAR_WILDCARD || ch == ESCAPE) {
+            if (ch == ESCAPE ||
+                escapeWildcards && (ch == STRING_WILDCARD || ch == CHAR_WILDCARD)) {
                 result.append(ESCAPE);
             }
             result.append(ch);
         }
-        return result.toString();
+        return result.length() == literal.length()
+                ? literal // no escape characters were added
+                : result.toString();
     }
 
     static String translate(String pattern,
