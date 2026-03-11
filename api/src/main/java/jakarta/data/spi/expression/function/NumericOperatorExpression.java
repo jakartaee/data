@@ -83,7 +83,7 @@ public interface NumericOperatorExpression<T, N extends Number & Comparable<N>>
     NumericExpression<? super T, N> left();
 
     /**
-     * <p>The type of arithmetic {@linkplain Operator operation} represnted by
+     * <p>The type of arithmetic {@linkplain Operator operation} represented by
      * this expression.</p>
      *
      * @return one of the enumerated {@link Operator Operator} values.
