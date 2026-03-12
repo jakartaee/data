@@ -17,17 +17,17 @@
  */
 package jakarta.data.spi.expression.path;
 
-import jakarta.data.expression.BooleanExpression;
-import jakarta.data.expression.NavigableExpression;
 import jakarta.data.metamodel.BooleanAttribute;
+import jakarta.data.metamodel.NavigableAttribute;
 
 public interface BooleanPath<T, U>
         extends Path<T, U>,
-                BooleanExpression<T> {
+                BooleanAttribute<T> {
 
-    static <T, U> BooleanPath<T, U> of(NavigableExpression<T, U> expression,
+    static <T, U> BooleanPath<T, U> of(NavigableAttribute<T, U> expression,
                                        BooleanAttribute<U> attribute) {
 
-        return new BooleanPathRecord<>(expression, attribute);
+        String name = expression.name() + '.' + attribute.name();
+        return new BooleanPathRecord<>(name, expression, attribute);
     }
 }

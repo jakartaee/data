@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2025,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,17 +19,18 @@ package jakarta.data.spi.expression.path;
 
 import java.time.temporal.Temporal;
 
-import jakarta.data.expression.NavigableExpression;
-import jakarta.data.expression.TemporalExpression;
+import jakarta.data.metamodel.NavigableAttribute;
 import jakarta.data.metamodel.TemporalAttribute;
 
 public interface TemporalPath<T, U, V extends Temporal & Comparable<? extends Temporal>>
-        extends Path<T, U>, TemporalExpression<T, V> {
+        extends Path<T, U>, TemporalAttribute<T, V> {
 
-    static <T, U, V extends Temporal & Comparable<? extends Temporal>> TemporalPath<T, U, V> of(
-            NavigableExpression<T, U> expression,
-            TemporalAttribute<U, V> attribute) {
+    static <T, U, V extends Temporal & Comparable<? extends Temporal>>
+            TemporalPath<T, U, V> of(
+                    NavigableAttribute<T, U> expression,
+                    TemporalAttribute<U, V> attribute) {
 
-        return new TemporalPathRecord<>(expression, attribute);
+        String name = expression.name() + '.' + attribute.name();
+        return new TemporalPathRecord<>(name, expression, attribute);
     }
 }

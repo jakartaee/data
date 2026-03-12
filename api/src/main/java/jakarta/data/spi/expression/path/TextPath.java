@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2025,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,13 +17,14 @@
  */
 package jakarta.data.spi.expression.path;
 
-import jakarta.data.expression.NavigableExpression;
-import jakarta.data.expression.TextExpression;
+import jakarta.data.metamodel.NavigableAttribute;
 import jakarta.data.metamodel.TextAttribute;
 
 public interface TextPath<T, U>
-        extends Path<T, U>, TextExpression<T> {
-    static <T, U> TextPath<T, U> of(NavigableExpression<T, U> expression, TextAttribute<U> attribute) {
-        return new TextPathRecord<>(expression, attribute);
+        extends Path<T, U>, TextAttribute<T> {
+    static <T, U> TextPath<T, U> of(NavigableAttribute<T, U> expression,
+                                    TextAttribute<U> attribute) {
+        String name = expression.name() + '.' + attribute.name();
+        return new TextPathRecord<>(name, expression, attribute);
     }
 }

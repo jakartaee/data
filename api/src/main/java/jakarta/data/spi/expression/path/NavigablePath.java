@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2025,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,8 +22,10 @@ import jakarta.data.metamodel.NavigableAttribute;
 
 public interface NavigablePath<T, U, V>
         extends Path<T, U>, NavigableExpression<T, V> {
-    static <T, U, V> NavigablePath<T, U, V> of(NavigableExpression<T, U> expression,
-                                               NavigableAttribute<U, V> attribute) {
-        return new NavigablePathRecord<>(expression, attribute);
+    static <T, U, V> NavigablePath<T, U, V> of(
+            NavigableAttribute<T, U> expression,
+            NavigableAttribute<U, V> attribute) {
+        String name = expression.name() + '.' + attribute.name();
+        return new NavigablePathRecord<>(name, expression, attribute);
     }
 }
