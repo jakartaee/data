@@ -73,7 +73,11 @@ public interface NumericFunctionExpression<T, N extends Number & Comparable<N>>
      * {@linkplain NumericExpression numeric expression}. This is equivalent
      * to multiplication by {@code -1}, causing reversal of the sign on
      * positive numbers to become negative and on negative numbers to become
-     * positive. The value {@code 0} remains {@code 0}.</p>
+     * <p>Name of the function that computes the
+     * {@linkplain NumericExpression#negated() additive inverse} of a
+     * {@linkplain NumericExpression numeric expression}. This reverses the
+     * sign such that positive numbers become negative and negative numbers 
+     * become positive.</p>
      *
      * <p>This function accepts a numeric expression as its only argument.
      * </p>
