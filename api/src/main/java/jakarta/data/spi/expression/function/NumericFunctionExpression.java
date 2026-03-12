@@ -53,7 +53,11 @@ public interface NumericFunctionExpression<T, N extends Number & Comparable<N>>
     /**
      * <p>Name of the function that computes the
      * {@linkplain TextExpression#length() length} of a
-     * {@linkplain TextExpression textual expression}.</p>
+     * <p>Name of the function that computes the
+     * {@linkplain TextExpression#length() length} of a
+     * {@linkplain TextExpression textual expression}. The length is the number
+     * of characters, as determined by the database, in the value to which the
+     * textual expression evaluates.</p>
      *
      * <p>This function accepts a textual expression as its only argument.</p>
      *
