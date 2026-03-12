@@ -23,7 +23,7 @@ import jakarta.data.spi.expression.literal.NumericLiteral;
 
 /**
  * <p>A {@linkplain NumericExpression numeric expression} that represents
- * an operation, such as the {@linkplain Operator#PLUS addition} or
+ * a binary operation, such as the {@linkplain Operator#PLUS addition} or
  * {@linkplain Operator#TIMES multiplication} of two numeric expressions.</p>
  *
  * @param <T> entity type.
