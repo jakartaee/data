@@ -50,8 +50,10 @@ public interface FunctionExpression<T, V> extends Expression<T, V> {
     /**
      * <p>An ordered list of inputs to the function.</p>
      *
-     * <p>The constant or vendor documentation that defines the function name
-     * is responsible for defining the function arguments, including the
+     * <p>Valid function names and behavior are documented by the function name
+     * constants (such as {@link TextFunctionExpression#CONCAT}) in subtypes of
+     * this class or in vendor documentation. The respective documentation
+     * is also responsible for defining the function arguments, including the
      * meaning and data type of each argument and the order in which arguments
      * must be supplied. By convention, when a method of an {@link Expression}
      * subtype represents invocation of a function on a target expression, such
