@@ -23,8 +23,8 @@ import jakarta.data.expression.Expression;
 import jakarta.data.expression.TextExpression;
 
 /**
- * <p>An {@linkplain Expression expression} that represents applying a function
- * to one or more expressions that are supplied as {@link #arguments()}.</p>
+ * <p>An {@linkplain Expression expression} that represents application of a function
+ * to zero or more expressions supplied as {@link #arguments()}.</p>
  *
  * <p>Wherever reasonable, a subtype that more preciesly fits the function
  * result type, such as {@link NumericFunctionExpression} or

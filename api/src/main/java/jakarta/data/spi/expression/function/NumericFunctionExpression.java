@@ -26,8 +26,8 @@ import jakarta.data.messages.Messages;
 import java.util.List;
 
 /**
- * <p>An {@linkplain Expression expression} that represents applying a function
- * to one or more expressions that are supplied as {@link #arguments()} to
+ * <p>An {@linkplain Expression expression} that represents application of a function
+ * to zero or more expressions supplied as {@link #arguments()} to
  * compute a {@linkplain NumericExpression numeric} result.</p>
  *
  * @param <T> entity type.
