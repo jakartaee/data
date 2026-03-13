@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2025,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,13 +17,14 @@
  */
 package jakarta.data.spi.expression.path;
 
-import jakarta.data.expression.NavigableExpression;
 import jakarta.data.messages.Messages;
 import jakarta.data.metamodel.ComparableAttribute;
+import jakarta.data.metamodel.NavigableAttribute;
 
-record ComparablePathRecord<T, U, C extends Comparable<?>>
-        (NavigableExpression<T, U> expression,
-         ComparableAttribute<U, C> attribute)
+record ComparablePathRecord<T, U, C extends Comparable<?>>(
+        String name,
+        NavigableAttribute<T, U> expression,
+        ComparableAttribute<U, C> attribute)
         implements ComparablePath<T, U, C> {
 
     ComparablePathRecord {
@@ -32,7 +33,12 @@ record ComparablePathRecord<T, U, C extends Comparable<?>>
     }
 
     @Override
-    public Class<? extends C> type() {
+    public Class<T> declaringType() {
+        return expression.declaringType();
+    }
+
+    @Override
+    public Class<C> type() {
         return attribute.type();
     }
 

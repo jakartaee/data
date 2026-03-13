@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2025,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,10 +21,11 @@ import jakarta.data.expression.NavigableExpression;
 import jakarta.data.messages.Messages;
 import jakarta.data.metamodel.NavigableAttribute;
 
-record NavigablePathRecord<T, U, V>
-        (NavigableExpression<T, U> expression,
-         NavigableAttribute<U, V> attribute)
-        implements NavigablePath<T, U, V> {
+record NavigablePathRecord<T, U, V>(
+        String name,
+        NavigableExpression<T, U> expression,
+        NavigableAttribute<U, V> attribute)
+        implements NavigableAttribute<T, V>, NavigablePath<T, U, V> {
 
     NavigablePathRecord {
         Messages.requireNonNull(expression, "expression");
@@ -34,5 +35,10 @@ record NavigablePathRecord<T, U, V>
     @Override
     public String toString() {
         return expression + "." + attribute.name();
+    }
+
+    @Override
+    public Class<V> type() {
+        return attribute.type();
     }
 }

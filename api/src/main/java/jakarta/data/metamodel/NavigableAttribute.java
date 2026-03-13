@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2025,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,8 +17,16 @@
  */
 package jakarta.data.metamodel;
 
+import java.time.temporal.Temporal;
+
 import jakarta.data.expression.NavigableExpression;
 import jakarta.data.messages.Messages;
+import jakarta.data.spi.expression.path.BooleanPath;
+import jakarta.data.spi.expression.path.ComparablePath;
+import jakarta.data.spi.expression.path.NavigablePath;
+import jakarta.data.spi.expression.path.NumericPath;
+import jakarta.data.spi.expression.path.TemporalPath;
+import jakarta.data.spi.expression.path.TextPath;
 
 /**
  * <p>Represents an entity attribute that is an embeddable or association to
@@ -32,6 +40,41 @@ import jakarta.data.messages.Messages;
  */
 public interface NavigableAttribute<T, U>
         extends Attribute<T>, NavigableExpression<T, U> {
+
+    @Override
+    default BooleanAttribute<T> navigate(BooleanAttribute<U> attribute) {
+        return BooleanPath.of(this, attribute);
+    }
+
+    @Override
+    default <C extends Comparable<C>> ComparableAttribute<T, C> navigate(
+            ComparableAttribute<U, C> attribute) {
+        return ComparablePath.of(this, attribute);
+    }
+
+    @Override
+    default <V> NavigableExpression<T, V> navigate(
+            NavigableAttribute<U, V> attribute) {
+        return NavigablePath.of(this, attribute);
+    }
+
+    @Override
+    default <N extends Number & Comparable<N>> NumericAttribute<T, N> navigate(
+            NumericAttribute<U, N> attribute) {
+        return NumericPath.of(this, attribute);
+    }
+
+    @Override
+    default <V extends Temporal & Comparable<? extends Temporal>>
+            TemporalAttribute<T, V> navigate(
+                    TemporalAttribute<U, V> attribute) {
+        return TemporalPath.of(this, attribute);
+    }
+
+    @Override
+    default TextAttribute<T> navigate(TextAttribute<U> attribute) {
+        return TextPath.of(this, attribute);
+    }
 
     @Override
     Class<U> type();

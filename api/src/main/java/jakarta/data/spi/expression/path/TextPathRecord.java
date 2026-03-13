@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2025,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,17 +17,24 @@
  */
 package jakarta.data.spi.expression.path;
 
-import jakarta.data.expression.NavigableExpression;
 import jakarta.data.messages.Messages;
+import jakarta.data.metamodel.NavigableAttribute;
 import jakarta.data.metamodel.TextAttribute;
 
-record TextPathRecord<T, U>
-        (NavigableExpression<T, U> expression, TextAttribute<U> attribute)
+record TextPathRecord<T, U>(
+        String name,
+        NavigableAttribute<T, U> expression,
+        TextAttribute<U> attribute)
         implements TextPath<T, U> {
 
     TextPathRecord {
         Messages.requireNonNull(expression, "expression");
         Messages.requireNonNull(attribute, "attribute");
+    }
+
+    @Override
+    public Class<T> declaringType() {
+        return expression.declaringType();
     }
 
     @Override
