@@ -15,6 +15,7 @@
  */
 package ee.jakarta.tck.data.framework.read.only;
 
+import java.util.Objects;
 import java.util.logging.Logger;
 
 import ee.jakarta.tck.data.framework.utilities.TestPropertyUtility;
@@ -56,6 +57,8 @@ public interface Populator<T> {
      * @param repo - this repository
      */
     public default void populate(T repo) {
+        Objects.requireNonNull(repo, "Repository passed to populate method was null.");
+        
         if (isPopulated(repo)) {
             return;
         }
