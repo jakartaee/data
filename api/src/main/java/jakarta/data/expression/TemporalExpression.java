@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2025,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,7 +37,7 @@ import jakarta.data.spi.expression.function.CurrentTime;
  * </p>
  *
  * @param <T> entity type.
- * @param <V> entity attribute type.
+ * @param <V> expression type.
  * @since 1.1
  */
 public interface TemporalExpression<T, V extends Temporal & Comparable<? extends Temporal>>

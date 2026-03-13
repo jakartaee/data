@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2025,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,7 +42,7 @@ import jakarta.data.spi.expression.function.NumericOperatorExpression;
  * </p>
  *
  * @param <T> entity type.
- * @param <N> entity attribute type.
+ * @param <N> expression type.
  * @since 1.1
  */
 public interface NumericExpression<T, N extends Number & Comparable<N>>

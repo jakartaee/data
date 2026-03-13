@@ -26,6 +26,7 @@ import static jakarta.data.spi.expression.function.TextFunctionExpression.UPPER;
 
 import jakarta.data.constraint.Like;
 import jakarta.data.constraint.NotLike;
+import jakarta.data.messages.Messages;
 import jakarta.data.metamodel.Attribute;
 import jakarta.data.restrict.BasicRestriction;
 import jakarta.data.restrict.Restriction;
@@ -71,6 +72,7 @@ public interface TextExpression<T> extends ComparableExpression<T, String> {
      * @throws NullPointerException if the prefix is {@code null}.
      */
     default TextExpression<T> prepend(String prefix) {
+        Messages.requireNonNull(prefix, "prefix");
         return TextFunctionExpression.of(CONCAT, prefix, this);
     }
 
@@ -90,6 +92,7 @@ public interface TextExpression<T> extends ComparableExpression<T, String> {
      * @throws NullPointerException if the suffix is {@code null}.
      */
     default TextExpression<T> append(String suffix) {
+        Messages.requireNonNull(suffix, "suffix");
         return TextFunctionExpression.of(CONCAT, this, suffix);
     }
 
@@ -112,6 +115,7 @@ public interface TextExpression<T> extends ComparableExpression<T, String> {
      */
     default TextExpression<T> prepend(
             TextExpression<? super T> prefixExpression) {
+        Messages.requireNonNull(prefixExpression, "prefixExpression");
         return TextFunctionExpression.of(CONCAT, prefixExpression, this);
     }
 
@@ -133,6 +137,7 @@ public interface TextExpression<T> extends ComparableExpression<T, String> {
      */
     default TextExpression<T> append(
             TextExpression<? super T> suffixExpression) {
+        Messages.requireNonNull(suffixExpression, "suffixExpression");
         return TextFunctionExpression.of(CONCAT, suffixExpression, this);
     }
 
