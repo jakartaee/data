@@ -27,7 +27,11 @@ import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import ee.jakarta.tck.data.framework.junit.anno.Assertion;
+import ee.jakarta.tck.data.framework.junit.anno.ReadOnlyTest;
+import ee.jakarta.tck.data.framework.read.only.Fruit;
 import ee.jakarta.tck.data.framework.read.only.FruitPopulator;
+import ee.jakarta.tck.data.framework.read.only.FruitRepository;
+import ee.jakarta.tck.data.framework.read.only.FruitSummary;
 
 import java.util.Comparator;
 import java.util.HashSet;
@@ -39,6 +43,7 @@ import java.util.logging.Logger;
 
 @Standalone
 @AnyEntity
+@ReadOnlyTest
 @DisplayName("Jakarta Data integration with Jakarta Common Query Language for select operations")
 public class JakartaQueryTests {
 
@@ -49,11 +54,7 @@ public class JakartaQueryTests {
     @Deployment
     public static WebArchive createDeployment() {
         return ShrinkWrap.create(WebArchive.class)
-                .addClasses(JakartaQueryTests.class,
-                            Fruit.class,
-                            FruitPopulator.class,
-                            FruitRepository.class,
-                            FruitSummary.class);
+                .addClasses(JakartaQueryTests.class);
     }
 
     @Inject
@@ -62,9 +63,9 @@ public class JakartaQueryTests {
     protected List<Fruit> fruits = FruitPopulator.FRUITS;
 
     @BeforeEach
+    //Inject doesn't happen until after BeforeClass so this is necessary before each test
     public void setup() {
-        var populator = new FruitPopulator();
-        populator.populate(fruitRepository);
+        FruitPopulator.get().populate(fruitRepository);
     }
 
     @DisplayName("should find all entities as stream")

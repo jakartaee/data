@@ -16,7 +16,6 @@
 package ee.jakarta.tck.data.standalone.entity;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -75,17 +74,11 @@ public class ConstraintTests {
     @Inject
     Countries countries;
 
-    private boolean initialized = false;
-
     // Inject doesn't happen until after BeforeClass, so this is necessary
     // before each test
     @BeforeEach
     public void beforeEach() {
-        assertNotNull(countries);
-        if (!initialized) {
-            CountryPopulator.get().populate(countries);
-            initialized = true;
-        }
+        CountryPopulator.get().populate(countries);
     }
 
     @Deployment

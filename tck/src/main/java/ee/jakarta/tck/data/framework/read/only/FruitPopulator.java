@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2025, 2026 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -15,12 +15,19 @@
  */
 package ee.jakarta.tck.data.framework.read.only;
 
-import ee.jakarta.tck.data.standalone.entity.Fruit;
-import ee.jakarta.tck.data.standalone.entity.FruitRepository;
-
 import java.util.List;
+import java.util.Objects;
 
 public class FruitPopulator implements Populator<FruitRepository> {
+    
+    private static FruitPopulator instance;
+
+    public static FruitPopulator get() {
+        return instance = Objects.requireNonNullElseGet(instance, FruitPopulator::new);
+    }
+    
+    private FruitPopulator() {
+    }
 
     public static final List<Fruit> FRUITS = List.of(
             fruit("00000000-0000-0000-0000-000000000001", "Apple", 10L),

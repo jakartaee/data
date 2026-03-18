@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2025, 2026 Contributors to the Eclipse Foundation
  * <p>
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -13,26 +13,22 @@
  * <p>
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
-package ee.jakarta.tck.data.standalone.entity;
-
-import jakarta.nosql.Column;
-import jakarta.nosql.Entity;
-import jakarta.nosql.Id;
+package ee.jakarta.tck.data.framework.read.only;
 
 import java.util.Objects;
 
-@Entity
+@jakarta.nosql.Entity
 @jakarta.persistence.Entity
 public class Fruit {
 
-    @Id
+    @jakarta.nosql.Id
     @jakarta.persistence.Id
     private String id;
 
-    @Column
+    @jakarta.nosql.Column
     private String name;
 
-    @Column
+    @jakarta.nosql.Column
     private Long quantity;
 
     public String getId() {
