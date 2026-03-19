@@ -107,17 +107,6 @@ public @interface Repository {
      * and the entities accessed by the {@code Repository}, then the resource
      * becomes the data store for the {@code Repository}.</p>
      *
-     * <p>Jakarta Data providers that access a relational database via JDBC
-     * must accept the following as the {@code dataStore} value:
-     *  <ul>
-     *   <li>the JNDI name of a {@link javax.sql.DataSource}
-     *   </li>
-     *   <li>the name of a {@code jakarta.annotation.sql.DataSourceDefinition}
-     *   </li>
-     *   <li>the JNDI name of a resource reference to a {@code DataSource}
-     *   </li>
-     *  </ul>
-     * </p>
      * <p>Jakarta Data providers that access a relational database via
      * Jakarta Persistence must accept the following as the {@code dataStore}
      * value:
@@ -129,7 +118,18 @@ public @interface Repository {
      *       or {@code java:app/persistence/{unit-name}/EntityManagerFactory}.
      *   </li>
      *  </ul>
-     *  </p>
+     * </p>
+     * <p>Other Jakarta Data providers that access a relational database via
+     * JDBC must accept the following as the {@code dataStore} value:
+     *  <ul>
+     *   <li>the JNDI name of a {@link javax.sql.DataSource}
+     *   </li>
+     *   <li>the name of a {@code jakarta.annotation.sql.DataSourceDefinition}
+     *   </li>
+     *   <li>the JNDI name of a resource reference to a {@code DataSource}
+     *   </li>
+     *  </ul>
+     * </p>
      * </li>
      * <li>Otherwise, if the {@code Repository} uses Jakarta Persistence
      * entities and the {@code dataStore} value matches the name
