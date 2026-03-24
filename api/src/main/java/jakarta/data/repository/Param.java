@@ -47,9 +47,6 @@ import java.lang.annotation.Target;
  * {@code -parameters} compiler option making parameter names available at
  * runtime.</p>
  *
- * <p>Named parameters are not supported on repository methods annotated
- * {@code jakarta.persistence.query.StaticNativeQuery}.</p>
- *
  * @see Query
  */
 @Retention(RetentionPolicy.RUNTIME)
