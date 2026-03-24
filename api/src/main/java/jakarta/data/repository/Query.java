@@ -164,7 +164,7 @@ import java.lang.annotation.Target;
  *     {@link jakarta.data.exceptions.EmptyResultException}.</li>
  * </ul>
  *
- * <p>Annotations such as {@code @Find}, {@code @Query}, {@code @Insert}, {@code @Update}, {@code @Delete}, and
+ * <p>Annotations such as {@code @Find}, {@code @Query}, {@code @NativeQuery}, {@code @Update}, {@code @Delete}, and
  * {@code @Save} are mutually-exclusive. A given method of a repository interface may have at most one {@code @Find}
  * annotation, lifecycle annotation, or query annotation.
  *
