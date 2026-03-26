@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2025,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -80,7 +80,7 @@ class ExpressionTest {
 
         @SuppressWarnings("unchecked")
         TextFunctionExpression<Book> rightExpression =
-            (TextFunctionExpression<Book>) upperArgs.getFirst();
+            (TextFunctionExpression<Book>) upperArgs.get(0);
 
         List<? extends Expression<? super Book, ?>> rightArgs = rightExpression.arguments();
         assertEquals(2, rightArgs.size());
@@ -108,7 +108,7 @@ class ExpressionTest {
             soft.assertThat(leftExpression.name())
                 .isEqualTo(TextFunctionExpression.LEFT);
 
-            soft.assertThat(leftArgs.getFirst())
+            soft.assertThat(leftArgs.get(0))
                 .isEqualTo(_Book.title);
 
             soft.assertThat(leftArg1.value())
@@ -153,7 +153,7 @@ class ExpressionTest {
             soft.assertThat(lengthExpression.arguments().size())
                 .isEqualTo(1);
 
-            soft.assertThat(lengthExpression.arguments().getFirst())
+            soft.assertThat(lengthExpression.arguments().get(0))
                 .isEqualTo(_Book.title);
 
             soft.assertThat(literal.value())

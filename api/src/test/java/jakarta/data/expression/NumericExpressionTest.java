@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2025,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -92,7 +92,7 @@ class NumericExpressionTest {
             soft.assertThat(lengthExpression.name())
                 .isEqualTo(NumericFunctionExpression.LENGTH);
 
-            soft.assertThat(lengthExpression.arguments().getFirst())
+            soft.assertThat(lengthExpression.arguments().get(0))
                 .isEqualTo(_Book.title);
         });
     }

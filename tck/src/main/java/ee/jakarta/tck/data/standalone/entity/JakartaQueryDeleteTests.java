@@ -89,7 +89,7 @@ public class JakartaQueryDeleteTests {
             strategy = "delete by name equals, verify if entity is deleted")
     void shouldDeleteEq() {
         try {
-            Vegetable vegetable = vegetables.getFirst();
+            Vegetable vegetable = vegetables.get(0);
             vegetableRepository.deleteByName(vegetable.getName());
             TestPropertyUtility.waitForEventualConsistency();
 
@@ -108,7 +108,7 @@ public class JakartaQueryDeleteTests {
             strategy = "delete by name not equals, verify if entity is deleted")
     void shouldDeleteNeq() {
         try {
-            Vegetable vegetable = vegetables.getFirst();
+            Vegetable vegetable = vegetables.get(0);
             vegetableRepository.deleteByNotEqualsName(vegetable.getName());
             TestPropertyUtility.waitForEventualConsistency();
 
@@ -130,7 +130,7 @@ public class JakartaQueryDeleteTests {
             strategy = "delete by quantity greater than, verify if entity is deleted")
     void shouldGt() {
         try {
-            Vegetable vegetable = vegetables.getFirst();
+            Vegetable vegetable = vegetables.get(0);
             vegetableRepository.deleteQuantityGreaterThan(vegetable.getQuantity());
             TestPropertyUtility.waitForEventualConsistency();
 
@@ -152,7 +152,7 @@ public class JakartaQueryDeleteTests {
             strategy = "delete by quantity greater than equals, verify if entity is deleted")
     void shouldGte() {
         try {
-            Vegetable vegetable = vegetables.getFirst();
+            Vegetable vegetable = vegetables.get(0);
             vegetableRepository.deleteQuantityGreaterThanEquals(vegetable.getQuantity());
             TestPropertyUtility.waitForEventualConsistency();
 
@@ -174,7 +174,7 @@ public class JakartaQueryDeleteTests {
             strategy = "delete by quantity lesser, verify if entity is deleted")
     void shouldLt() {
         try {
-            Vegetable vegetable = vegetables.getFirst();
+            Vegetable vegetable = vegetables.get(0);
             vegetableRepository.deleteLesserThan(vegetable.getQuantity());
             TestPropertyUtility.waitForEventualConsistency();
 
@@ -196,7 +196,7 @@ public class JakartaQueryDeleteTests {
             strategy = "delete by quantity lesser than equals, verify if entity is deleted")
     void shouldLte() {
         try {
-            Vegetable vegetable = vegetables.getFirst();
+            Vegetable vegetable = vegetables.get(0);
             vegetableRepository.deleteQuantityLesserThanEquals(vegetable.getQuantity());
             TestPropertyUtility.waitForEventualConsistency();
 
@@ -218,7 +218,7 @@ public class JakartaQueryDeleteTests {
             strategy = "delete by name in, verify if entity is deleted")
     void shouldIn() {
         try {
-            Vegetable vegetable = vegetables.getFirst();
+            Vegetable vegetable = vegetables.get(0);
             vegetableRepository.deleteByNameIn(List.of(vegetable.getName(), vegetables.get(1).getName()));
             TestPropertyUtility.waitForEventualConsistency();
 
@@ -240,7 +240,7 @@ public class JakartaQueryDeleteTests {
     void shouldDeleteUsingAndCondition() {
 
         try {
-            Vegetable vegetable = vegetables.getFirst();
+            Vegetable vegetable = vegetables.get(0);
             vegetableRepository.deleteByNameAndQuantity(vegetable.getName(), vegetable.getQuantity());
             TestPropertyUtility.waitForEventualConsistency();
             List<Vegetable> result = vegetableRepository.findNameEqualsAndQuantityEquals(
@@ -262,7 +262,7 @@ public class JakartaQueryDeleteTests {
     void shouldDeleteUsingOrCondition() {
 
         try {
-            Vegetable vegetable = vegetables.getFirst();
+            Vegetable vegetable = vegetables.get(0);
             vegetableRepository.deleteByNameOrQuantity(vegetable.getName(), vegetable.getQuantity());
             TestPropertyUtility.waitForEventualConsistency();
 

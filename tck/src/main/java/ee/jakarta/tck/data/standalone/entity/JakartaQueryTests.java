@@ -177,7 +177,7 @@ public class JakartaQueryTests {
                     "returned entities have a name equal to the provided value, or accept UnsupportedOperationException if unsupported.")
     void shouldEq() {
         try {
-            Fruit sample = fruits.getFirst();
+            Fruit sample = fruits.get(0);
             List<Fruit> result = fruitRepository.findNameEquals(sample.getName());
 
             Assertions.assertThat(result)
@@ -196,7 +196,7 @@ public class JakartaQueryTests {
                     "returned entities have a different name, or accept UnsupportedOperationException if unsupported.")
     void shouldNEq() {
         try {
-            Fruit sample = fruits.getFirst();
+            Fruit sample = fruits.get(0);
             List<Fruit> result = fruitRepository.findNameNotEquals(sample.getName());
 
             Assertions.assertThat(result)
@@ -215,7 +215,7 @@ public class JakartaQueryTests {
                     "all returned entities have a quantity greater than the provided value, or accept UnsupportedOperationException.")
     void shouldGt() {
         try {
-            Fruit sample = fruits.getFirst();
+            Fruit sample = fruits.get(0);
             List<Fruit> result = fruitRepository.findQuantityGt(sample.getQuantity());
 
             Assertions.assertThat(result)
@@ -235,7 +235,7 @@ public class JakartaQueryTests {
                     "asserting compliant results or accepting UnsupportedOperationException if unsupported.")
     void shouldGte() {
         try {
-            Fruit sample = fruits.getFirst();
+            Fruit sample = fruits.get(0);
             List<Fruit> result = fruitRepository.findQuantityGte(sample.getQuantity());
 
             Assertions.assertThat(result)
@@ -255,7 +255,7 @@ public class JakartaQueryTests {
                     "all returned entities have a smaller quantity, or accept UnsupportedOperationException.")
     void shouldLt() {
         try {
-            Fruit sample = fruits.getFirst();
+            Fruit sample = fruits.get(0);
             List<Fruit> result = fruitRepository.findQuantityLt(sample.getQuantity());
 
             Assertions.assertThat(result)
@@ -275,7 +275,7 @@ public class JakartaQueryTests {
                     "asserting compliant results or accepting UnsupportedOperationException if unsupported.")
     void shouldLte() {
         try {
-            Fruit sample = fruits.getFirst();
+            Fruit sample = fruits.get(0);
             List<Fruit> result = fruitRepository.findQuantityLte(sample.getQuantity());
             Assertions.assertThat(result)
                     .isNotEmpty()
@@ -294,7 +294,7 @@ public class JakartaQueryTests {
                     "asserting membership in the provided set or accepting UnsupportedOperationException.")
     void shouldIn() {
         try {
-            var sample1 = fruits.getFirst();
+            var sample1 = fruits.get(0);
             var sample2 = fruits.get(1);
             List<Fruit> result = fruitRepository.findNameIn(sample1.getName(), sample2.getName());
 
@@ -318,7 +318,7 @@ public class JakartaQueryTests {
                     "in the provided set or accepting UnsupportedOperationException.")
     void shouldInUsingParameterCollection() {
         try {
-            var sample1 = fruits.getFirst();
+            var sample1 = fruits.get(0);
             var sample2 = fruits.get(1);
             List<Fruit> result = fruitRepository.findNameIn(Set.of(sample1.getName(), sample2.getName()));
 
@@ -343,7 +343,7 @@ public class JakartaQueryTests {
 
         try {
             fruitRepository.saveAll(fruits);
-            Fruit sample = fruits.getFirst();
+            Fruit sample = fruits.get(0);
 
             List<Fruit> result = fruitRepository.findNameEqualsAndQuantityEquals(sample.getName(), sample.getQuantity());
 
@@ -407,7 +407,7 @@ public class JakartaQueryTests {
                     "id attribute using the id function. Because it is an id attribute, all " +
                     "databases should support it")
     void shouldFindByIdUsingIdFunction() {
-        var fruit = fruits.getFirst();
+        var fruit = fruits.get(0);
         var result = fruitRepository.findByIdUsingIdFunction(fruit.getId());
 
         Assertions.assertThat(result).isNotEmpty().get().isEqualTo(fruit);
@@ -486,7 +486,7 @@ public class JakartaQueryTests {
 
         try {
 
-            var fruit = fruits.getFirst();
+            var fruit = fruits.get(0);
             var result = fruitRepository.findByIdUsingIdFunctionOrderById(fruit.getId());
 
             Assertions.assertThat(result).get().isEqualTo(fruit.getId());
@@ -524,7 +524,7 @@ public class JakartaQueryTests {
     void shouldFilterAndOrder() {
 
         try {
-            var threshold = fruits.getFirst().getQuantity();
+            var threshold = fruits.get(0).getQuantity();
 
             var expected = fruits.stream()
                     .filter(f -> f.getQuantity() > threshold)
