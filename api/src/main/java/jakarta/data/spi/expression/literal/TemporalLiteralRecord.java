@@ -43,20 +43,19 @@ record TemporalLiteralRecord<V extends Temporal & Comparable<? extends Temporal>
                         ? instant.atOffset(ZoneOffset.UTC).toLocalDateTime()
                         : value;
 
-        return switch (temporal) {
-            case LocalDateTime d ->
-                "{ts '" + d.toLocalDate() + ' ' + d.toLocalTime() + "'}";
-            case LocalDate d ->
-                "{d '" + value + "'}";
-            case LocalTime t ->
-                "{t '" + value + "'}";
-            case Year y ->
-                "{d '" + y.getValue() + "'}";
-            default ->
-                "{TemporalLiteral '"
-                        + value.getClass().getName() + " '"
-                        + value + "'}";
-        };
+        if (temporal instanceof Year y) {
+            return "{d '" + y.getValue() + "'}";
+        } else if (temporal instanceof LocalDate) {
+            return "{d '" + value + "'}";
+        } else if (temporal instanceof LocalDateTime d) {
+            return "{ts '" + d.toLocalDate() + ' ' + d.toLocalTime() + "'}";
+        } else if (temporal instanceof LocalTime) {
+            return "{t '" + value + "'}";
+        } else {
+            return "{TemporalLiteral '" +
+                   value.getClass().getName() + " '" +
+                   value + "'}";
+        }
     }
 
 }
