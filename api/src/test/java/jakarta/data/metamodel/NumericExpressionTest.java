@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2025,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,7 +54,8 @@ class NumericExpressionTest {
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(expression.name())
                 .isEqualTo(NumericFunctionExpression.ABS);
-            soft.assertThat(expression.arguments().getFirst()).isEqualTo(_Invoice.amount);
+            soft.assertThat(expression.arguments().get(0))
+                .isEqualTo(_Invoice.amount);
         });
     }
 
@@ -66,7 +67,8 @@ class NumericExpressionTest {
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(expression.name())
                 .isEqualTo(NumericFunctionExpression.NEG);
-            soft.assertThat(expression.arguments().getFirst()).isEqualTo(_Invoice.amount);
+            soft.assertThat(expression.arguments().get(0))
+                .isEqualTo(_Invoice.amount);
         });
     }
 

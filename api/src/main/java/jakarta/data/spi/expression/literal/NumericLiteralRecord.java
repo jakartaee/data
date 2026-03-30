@@ -33,16 +33,22 @@ record NumericLiteralRecord<N extends Number & Comparable<N>>
 
     @Override
     public String toString() {
-        return switch (value) {
-            case Integer i -> i.toString();
-            case Long l -> l + "L";
-            case Float f -> f + "F";
-            case Double d -> d + "D";
-            case BigInteger i -> i + "BI";
-            case BigDecimal d -> d + "BD";
-            default -> "{NumericLiteral "
-                          + value.getClass().getName()
-                          + " '" + value + "'}";
-        };
+        if (value instanceof Long l) {
+            return l + "L";
+        } else if (value instanceof Integer i) {
+            return i.toString();
+        } else if (value instanceof Double d) {
+            return d + "D";
+        } else if (value instanceof Float f) {
+            return f + "F";
+        } else if (value instanceof BigDecimal b) {
+            return b + "BD";
+        } else if (value instanceof BigInteger b) {
+            return b + "BI";
+        } else {
+            return "{NumericLiteral " +
+                   value.getClass().getName() +
+                   " '" + value + "'}";
+        }
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2025,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,7 +47,8 @@ class TextFunctionExpressionTest {
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(expression.name()).isEqualTo(TextFunctionExpression.CONCAT);
             soft.assertThat(expression.arguments()).hasSize(2);
-            soft.assertThat(expression.arguments().getFirst()).isEqualTo(_Author.name);
+            soft.assertThat(expression.arguments().get(0))
+                .isEqualTo(_Author.name);
         });
     }
 
@@ -87,7 +88,8 @@ class TextFunctionExpressionTest {
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(expression.name()).isEqualTo(TextFunctionExpression.LEFT);
             soft.assertThat(expression.arguments()).hasSize(2);
-            soft.assertThat(expression.arguments().getFirst()).isEqualTo(_Author.name);
+            soft.assertThat(expression.arguments().get(0))
+                .isEqualTo(_Author.name);
         });
     }
 
@@ -99,7 +101,8 @@ class TextFunctionExpressionTest {
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(expression.name()).isEqualTo(TextFunctionExpression.RIGHT);
             soft.assertThat(expression.arguments()).hasSize(2);
-            soft.assertThat(expression.arguments().getFirst()).isEqualTo(_Author.name);
+            soft.assertThat(expression.arguments().get(0))
+                .isEqualTo(_Author.name);
         });
     }
 

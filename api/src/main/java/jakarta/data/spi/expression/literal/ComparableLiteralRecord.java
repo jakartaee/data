@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2025,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,9 @@ package jakarta.data.spi.expression.literal;
 
 import jakarta.data.messages.Messages;
 
-record ComparableLiteralRecord<V extends Comparable<?>>(Class<? extends V> type, V value)
+record ComparableLiteralRecord<V extends Comparable<?>>(
+        Class<? extends V> type,
+        V value)
         implements ComparableLiteral<V> {
 
     ComparableLiteralRecord {
@@ -30,14 +32,17 @@ record ComparableLiteralRecord<V extends Comparable<?>>(Class<? extends V> type,
     }
     @Override
     public String toString() {
-        return switch (value) {
-            case Boolean b -> b ? "TRUE" : "FALSE";
-            case Character c -> c == '\'' ? "''''" : "'" + c + "'";
-            case Enum<?> e -> e.getClass().getName() + '.' + e.name();
-            default -> "{ComparableLiteral "
-                        + value.getClass().getName()
-                        + " '" + value + "'}";
-        };
+        if (value instanceof Enum e) {
+            return e.getClass().getName() + '.' + e.name();
+        } else if (value instanceof Character c) {
+            return c == '\'' ? "''''" : ("'" + c + "'");
+        } else if (value instanceof Boolean b) {
+            return b ? "TRUE" : "FALSE";
+        } else {
+            return "{ComparableLiteral " +
+                   value.getClass().getName() +
+                   " '" + value + "'}";
+        }
     }
 
 }
