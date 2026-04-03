@@ -231,8 +231,13 @@ public record Sort<T>(String property,
     }
 
     /**
-     * Create a {@link Sort} instance, indicating how {@code null} values are
-     * ordered.
+     * <p>Create a {@link Sort} instance, indicating how {@code null} values
+     * are ordered.</p>
+     *
+     * <p>If the data store is a non-relational database that is not capable
+     * of ordering {@code null} values according to the given
+     * {@code nullsFirst} argument, then repository methods to which this
+     * instance is supplied must raise {@link IllegalArgumentException}.</p>
      *
      * @param <T>        entity class of the sortable entity attribute.
      * @param attribute  name of the entity attribute to order by
@@ -315,11 +320,8 @@ public record Sort<T>(String property,
 
     /**
      * <p>Returns an otherwise-equivalent sort that orders {@code null} values
-     * first. If the data store is not capable of ordering {@code null} values
-     * first, then repository methods to which this instance is supplied must
-     * raise {@link UnsupportedOperationException}.</p>
+     * first. For example,</p>
      *
-     * <p>For example,</p>
      * <pre>{@code
      * page1 = customers.livingIn(country,
      *                            PageRequest.ofSize(50),
@@ -327,6 +329,11 @@ public record Sort<T>(String property,
      *                                     _Customer.cityName.asc().nullsFirst(),
      *                                     _Customer.id.asc()));
      * }</pre>
+     *
+     * <p>If the data store is a non-relational database that is not capable
+     * of ordering {@code null} values first, then repository methods to which
+     * this instance is supplied must raise {@link IllegalArgumentException}.
+     * </p>
      *
      * @return a sort with {@link #orderNullsFirst} set to {@code TRUE}.
      */
@@ -336,11 +343,8 @@ public record Sort<T>(String property,
 
     /**
      * <p>Returns an otherwise-equivalent sort that orders {@code null} values
-     * last. If the data store is not capable of ordering {@code null} values
-     * last, then repository methods to which this instance is supplied must
-     * raise {@link UnsupportedOperationException}.</p>
+     * last. For example,</p>
      *
-     * <p>For example,</p>
      * <pre>{@code
      * page1 = products.namedLike(namePattern,
      *                            PageRequest.ofSize(25),
@@ -348,6 +352,11 @@ public record Sort<T>(String property,
      *                                     _Product.name.asc(),
      *                                     _Product.id.asc()));
      * }</pre>
+     *
+     * <p>If the data store is a non-relational database that is not capable
+     * of ordering {@code null} values last, then repository methods to which
+     * this instance is supplied must raise {@link IllegalArgumentException}.
+     * </p>
      *
      * @return a sort with {@link #orderNullsFirst} set to {@code FALSE}.
      */
