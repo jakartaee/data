@@ -19,6 +19,7 @@ package jakarta.data;
 
 import jakarta.data.mock.entity._Book;
 import jakarta.data.mock.entity.Book;
+import jakarta.data.Sort.Nulls;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -39,11 +40,13 @@ class SortTest {
         assertThatNullPointerException().isThrownBy(() ->
                 Sort.of(null, Direction.ASC, false));
         assertThatNullPointerException().isThrownBy(() ->
-                Sort.of(null, null, false, true));
+                Sort.of(null, null, false, Sort.Nulls.FIRST));
         assertThatNullPointerException().isThrownBy(() ->
-                Sort.of(NAME, null, true, false));
+                Sort.of(NAME, null, true, Sort.Nulls.LAST));
         assertThatNullPointerException().isThrownBy(() ->
-                Sort.of(null, Direction.ASC, false, true));
+                Sort.of(null, Direction.ASC, false, Sort.Nulls.UNSPECIFIED));
+        assertThatNullPointerException().isThrownBy(() ->
+        Sort.of(NAME, Direction.ASC, false, null));
     }
 
     @Test
@@ -57,7 +60,7 @@ class SortTest {
             softly.assertThat(order.isAscending()).isTrue();
             softly.assertThat(order.isDescending()).isFalse();
             softly.assertThat(order.ignoreCase()).isFalse();
-            softly.assertThat(order.orderNullsFirst()).isNull();
+            softly.assertThat(order.nullOrdering()).isEqualTo(Nulls.UNSPECIFIED);
         });
     }
 
@@ -72,7 +75,7 @@ class SortTest {
             softly.assertThat(order.isAscending()).isFalse();
             softly.assertThat(order.isDescending()).isTrue();
             softly.assertThat(order.ignoreCase()).isTrue();
-            softly.assertThat(order.orderNullsFirst()).isNull();
+            softly.assertThat(order.nullOrdering()).isEqualTo(Nulls.UNSPECIFIED);
         });
     }
 
@@ -87,7 +90,7 @@ class SortTest {
             softly.assertThat(order.isAscending()).isTrue();
             softly.assertThat(order.isDescending()).isFalse();
             softly.assertThat(order.ignoreCase()).isFalse();
-            softly.assertThat(order.orderNullsFirst()).isNull();
+            softly.assertThat(order.nullOrdering()).isEqualTo(Nulls.UNSPECIFIED);
         });
     }
 
@@ -102,7 +105,7 @@ class SortTest {
             softly.assertThat(order.isAscending()).isTrue();
             softly.assertThat(order.isDescending()).isFalse();
             softly.assertThat(order.ignoreCase()).isTrue();
-            softly.assertThat(order.orderNullsFirst()).isNull();
+            softly.assertThat(order.nullOrdering()).isEqualTo(Nulls.UNSPECIFIED);
         });
     }
 
@@ -117,7 +120,7 @@ class SortTest {
             softly.assertThat(order.isAscending()).isFalse();
             softly.assertThat(order.isDescending()).isTrue();
             softly.assertThat(order.ignoreCase()).isFalse();
-            softly.assertThat(order.orderNullsFirst()).isNull();
+            softly.assertThat(order.nullOrdering()).isEqualTo(Nulls.UNSPECIFIED);
         });
     }
 
@@ -132,7 +135,7 @@ class SortTest {
             softly.assertThat(order.isAscending()).isFalse();
             softly.assertThat(order.isDescending()).isTrue();
             softly.assertThat(order.ignoreCase()).isTrue();
-            softly.assertThat(order.orderNullsFirst()).isNull();
+            softly.assertThat(order.nullOrdering()).isEqualTo(Nulls.UNSPECIFIED);
         });
     }
 
@@ -151,7 +154,7 @@ class SortTest {
             softly.assertThat(sort.isAscending()).isTrue();
             softly.assertThat(sort.isDescending()).isFalse();
             softly.assertThat(sort.ignoreCase()).isFalse();
-            softly.assertThat(sort.orderNullsFirst()).isEqualTo(Boolean.TRUE);
+            softly.assertThat(sort.nullOrdering()).isEqualTo(Nulls.FIRST);
         });
     }
 
@@ -170,7 +173,7 @@ class SortTest {
             softly.assertThat(sort.isAscending()).isFalse();
             softly.assertThat(sort.isDescending()).isTrue();
             softly.assertThat(sort.ignoreCase()).isTrue();
-            softly.assertThat(sort.orderNullsFirst()).isEqualTo(Boolean.FALSE);
+            softly.assertThat(sort.nullOrdering()).isEqualTo(Nulls.LAST);
         });
     }
 }
