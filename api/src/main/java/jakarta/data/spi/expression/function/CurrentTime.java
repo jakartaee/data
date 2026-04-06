@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2025,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,10 +19,24 @@ package jakarta.data.spi.expression.function;
 
 import java.time.LocalTime;
 
+import jakarta.data.expression.Expression;
 import jakarta.data.expression.TemporalExpression;
 
+/**
+ * <p>An {@linkplain Expression expression} that represents the current time.
+ * </p>
+ *
+ * @param <T> entity type.
+ * @since 1.1
+ */
 public interface CurrentTime<T> extends TemporalExpression<T, LocalTime> {
 
+    /**
+     * <p>Obtains an {@linkplain Expression expression} that represents the
+     * current time.</p>
+     *
+     * @return an expression representing the current time.
+     */
     static <T> CurrentTime<T> now() {
         return new CurrentTime<>() {
             @Override
