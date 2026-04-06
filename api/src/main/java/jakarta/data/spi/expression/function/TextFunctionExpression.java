@@ -32,6 +32,7 @@ import java.util.List;
  * compute a {@link String} result.</p>
  *
  * @param <T> entity type.
+ * @since 1.1
  */
 public interface TextFunctionExpression<T>
         extends FunctionExpression<T, String>, TextExpression<T> {
