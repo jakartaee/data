@@ -32,6 +32,7 @@ import java.util.List;
  *
  * @param <T> entity type.
  * @param <N> result type of the function.
+ * @since 1.1
  */
 public interface NumericFunctionExpression<T, N extends Number & Comparable<N>>
         extends FunctionExpression<T, N>, NumericExpression<T, N> {
