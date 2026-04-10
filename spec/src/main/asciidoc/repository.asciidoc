@@ -1020,9 +1020,13 @@ If an application program accesses an entity instance belonging to a persistence
 
 This specification does not define the lifecycle of a persistence context, nor how a persistence context is propagated across repositories.
 
+===== Persistence context within a transaction
+
+All operations performed on a given repository that participate in a given transaction must run under the same persistence context. The Jakarta Data provider must ensure that the persistence context is flushed prior to or during the before completion phase of transaction commit.
+
 [NOTE]
 ====
-Implementations of Jakarta Data are encouraged to propagate a single persistence context within a given transaction across repositories which share a given datasource.
+Implementations of Jakarta Data are encouraged to propagate a single persistence context within a given transaction across repositories which share a given data store.
 For example, a Jakarta Data provider backed by an implementation of Jakarta Persistence might take advantage of standard Jakarta EE transaction-scoped persistence context propagation.
 ====
 
@@ -1045,7 +1049,7 @@ Invocation of a lifecycle method or modification of the state of a managed entit
 Such changes to the database do not typically happen synchronously with invocation of the lifecycle method, or immediately after modification of the managed entity.
 Instead, such changes are made when the persistence context is periodically _flushed_.
 
-NOTE: This specification does not prescribe the timing of flush operations, but a flush typically happens before execution of a query or during the before completion phase of transaction commit.
+NOTE: This specification does not prescribe the timing of flush operations for persistence context that does not participate in a transaction.
 An implementation of Jakarta Data should flush as needed to ensure that query results are consistent with the current state of the persistence context.
 
 
