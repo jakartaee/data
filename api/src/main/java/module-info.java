@@ -310,9 +310,15 @@ import java.util.Set;
  * <h2>Lifecycle methods</h2>
  *
  * <p>A lifecycle method makes changes to persistent data in the data store.
- * A lifecycle method must be annotated with a lifecycle annotation such as
- * {@link Insert}, {@link Update}, {@link Save}, or {@link Delete}. The
- * method must accept a single parameter, whose type is either:</p>
+ * The lifecycle methods of a stateless repository must be annotated with a
+ * stateless lifecycle annotation such as {@link Insert}, {@link Update},
+ * {@link Save}, or {@link Delete}. The lifecycle methods of a
+ * <a href="../jakarta.data.stateful/">stateful repository</a>, which apply
+ * to a persistence context, must be annotated with one of the stateful
+ * lifecycle annotations: {@code Detach}, {@code Merge}, {@code Persist}.
+ * {@code Refresh}, or {@code Remove}. For both stateful as well as stateless
+ * lifecycle methods, the lifecycle method must accept a single parameter,
+ * whose type is either:</p>
  *
  * <ul>
  * <li>the class of the entity, or</li>
@@ -321,11 +327,15 @@ import java.util.Set;
  * </ul>
  *
  * <p>The annotated method must be declared {@code void}, or, except in the
- * case of {@code @Delete}, have a return type that is the same as the type
+ * case of {@code @Delete} and the stateful lifecycle annotations other than
+ * {@code @Merge}, have a return type that is the same as the type
  * of its parameter.</p>
  *
+ * <p>A repository without lifecycle methods is considered to be a
+ * stateless repository.</p>
+ *
  * <table style="width: 100%">
- * <caption><b>Lifecycle Annotations</b></caption>
+ * <caption><b>Stateless Lifecycle Annotations</b></caption>
  * <tr style="background-color:#ccc">
  * <td style="vertical-align: top; width: 10%"><b>Annotation</b></td>
  * <td style="vertical-align: top; width: 25%"><b>Description</b></td>
@@ -334,7 +344,7 @@ import java.util.Set;
  *
  * <tr style="vertical-align: top; background-color:#eee"><td>{@link Delete}</td>
  * <td>deletes entities</td>
- * <td>{@code @Delete}<br>{@code public void remove(person);}</td></tr>
+ * <td>{@code @Delete}<br>{@code public void delete(person);}</td></tr>
  *
  * <tr style="vertical-align: top"><td>{@link Insert}</td>
  * <td>creates new entities</td>
@@ -349,8 +359,13 @@ import java.util.Set;
  * <td>{@code @Update}<br>{@code public boolean modify(Product modifiedProduct);}</td></tr>
  * </table>
  *
- * <p>Refer to the API documentation for {@link Insert}, {@link Update}, {@link Delete},
- * and {@link Save} for further information about these annotations.</p>
+ * <p>Refer to the API documentation for {@link Insert}, {@link Update},
+ * {@link Delete}, and {@link Save} for further information about the
+ * stateless lifecycle annotations.</p>
+ *
+ * <p>Refer to the API documentation of the Jakarta Data
+ * <a href="../jakarta.data.stateful/">Stateful Repositories module</a>
+ * for additional information about the stateful lifecycle annotations.</p>
  *
  * <h2>Parameter-based {@code Find} and {@code Delete} methods</h2>
  *
