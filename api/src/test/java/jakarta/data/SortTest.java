@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022,2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,10 @@
  */
 package jakarta.data;
 
+import jakarta.data.mock.entity._Book;
+import jakarta.data.mock.entity.Book;
+import jakarta.data.Sort.Nulls;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -29,9 +33,20 @@ class SortTest {
     @Test
     @DisplayName("Should throw NullPointerException when one of the properties are null")
     void shouldReturnErrorWhenPropertyDirectionNull() {
-        assertThatNullPointerException().isThrownBy(() -> Sort.of(null, null, false));
-        assertThatNullPointerException().isThrownBy(() -> Sort.of(NAME, null, true));
-        assertThatNullPointerException().isThrownBy(() -> Sort.of(null, Direction.ASC, false));
+        assertThatNullPointerException().isThrownBy(() ->
+                Sort.of(null, null, false));
+        assertThatNullPointerException().isThrownBy(() ->
+                Sort.of(NAME, null, true));
+        assertThatNullPointerException().isThrownBy(() ->
+                Sort.of(null, Direction.ASC, false));
+        assertThatNullPointerException().isThrownBy(() ->
+                Sort.of(null, null, false, Sort.Nulls.FIRST));
+        assertThatNullPointerException().isThrownBy(() ->
+                Sort.of(NAME, null, true, Sort.Nulls.LAST));
+        assertThatNullPointerException().isThrownBy(() ->
+                Sort.of(null, Direction.ASC, false, Sort.Nulls.UNSPECIFIED));
+        assertThatNullPointerException().isThrownBy(() ->
+        Sort.of(NAME, Direction.ASC, false, null));
     }
 
     @Test
@@ -45,6 +60,7 @@ class SortTest {
             softly.assertThat(order.isAscending()).isTrue();
             softly.assertThat(order.isDescending()).isFalse();
             softly.assertThat(order.ignoreCase()).isFalse();
+            softly.assertThat(order.nullOrdering()).isEqualTo(Nulls.UNSPECIFIED);
         });
     }
 
@@ -59,6 +75,7 @@ class SortTest {
             softly.assertThat(order.isAscending()).isFalse();
             softly.assertThat(order.isDescending()).isTrue();
             softly.assertThat(order.ignoreCase()).isTrue();
+            softly.assertThat(order.nullOrdering()).isEqualTo(Nulls.UNSPECIFIED);
         });
     }
 
@@ -73,6 +90,7 @@ class SortTest {
             softly.assertThat(order.isAscending()).isTrue();
             softly.assertThat(order.isDescending()).isFalse();
             softly.assertThat(order.ignoreCase()).isFalse();
+            softly.assertThat(order.nullOrdering()).isEqualTo(Nulls.UNSPECIFIED);
         });
     }
 
@@ -87,6 +105,7 @@ class SortTest {
             softly.assertThat(order.isAscending()).isTrue();
             softly.assertThat(order.isDescending()).isFalse();
             softly.assertThat(order.ignoreCase()).isTrue();
+            softly.assertThat(order.nullOrdering()).isEqualTo(Nulls.UNSPECIFIED);
         });
     }
 
@@ -101,6 +120,7 @@ class SortTest {
             softly.assertThat(order.isAscending()).isFalse();
             softly.assertThat(order.isDescending()).isTrue();
             softly.assertThat(order.ignoreCase()).isFalse();
+            softly.assertThat(order.nullOrdering()).isEqualTo(Nulls.UNSPECIFIED);
         });
     }
 
@@ -115,6 +135,45 @@ class SortTest {
             softly.assertThat(order.isAscending()).isFalse();
             softly.assertThat(order.isDescending()).isTrue();
             softly.assertThat(order.ignoreCase()).isTrue();
+            softly.assertThat(order.nullOrdering()).isEqualTo(Nulls.UNSPECIFIED);
+        });
+    }
+
+    @DisplayName("""
+            The nullsFirst method must create a new instance of Sort in which
+            orderNullsFirst is TRUE and all other record component values
+            from the original instance are preserved.
+            """)
+    @Test
+    void testNullsFirst() {
+        Sort<Book> sort = _Book.numChapters.asc().nullsFirst();
+
+        assertSoftly(softly -> {
+            softly.assertThat(sort).isNotNull();
+            softly.assertThat(sort.property()).isEqualTo(_Book.NUMCHAPTERS);
+            softly.assertThat(sort.isAscending()).isTrue();
+            softly.assertThat(sort.isDescending()).isFalse();
+            softly.assertThat(sort.ignoreCase()).isFalse();
+            softly.assertThat(sort.nullOrdering()).isEqualTo(Nulls.FIRST);
+        });
+    }
+
+    @DisplayName("""
+            The nullsLast method must create a new instance of Sort in which
+            orderNullsFirst is FALSE and all other record component values
+            from the original instance are preserved.
+            """)
+    @Test
+    void testNullsLast() {
+        Sort<Book> sort = _Book.title.descIgnoreCase().nullsLast();
+
+        assertSoftly(softly -> {
+            softly.assertThat(sort).isNotNull();
+            softly.assertThat(sort.property()).isEqualTo(_Book.TITLE);
+            softly.assertThat(sort.isAscending()).isFalse();
+            softly.assertThat(sort.isDescending()).isTrue();
+            softly.assertThat(sort.ignoreCase()).isTrue();
+            softly.assertThat(sort.nullOrdering()).isEqualTo(Nulls.LAST);
         });
     }
 }

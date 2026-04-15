@@ -936,7 +936,7 @@ import java.util.Set;
  *
  * <p>When a page is requested with a {@code PageRequest}, dynamic sorting
  * criteria may be supplied by passing instances of {@link Sort} to an
- * {@link Order}. parameter. For example,</p>
+ * {@link Order} parameter. For example,</p>
  *
  * <pre>{@code
  * @Find
@@ -973,7 +973,7 @@ import java.util.Set;
  * found = products.nameLiked(namePattern,
  *                            Limit.of(25),
  *                            Order.by(Sort.desc("price"),
- *                                     Sort.desc("amountSold"),
+ *                                     Sort.desc("amountSold").nullsFirst(),
  *                                     Sort.asc("id")));
  * }</pre>
  *
