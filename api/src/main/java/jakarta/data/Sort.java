@@ -248,11 +248,11 @@ public record Sort<T>(String property,
      * Create a {@link Sort} instance.
      *
      * @param <T>        entity class of the sortable entity attribute.
-     * @param attribute  name of the entity attribute to order by
+     * @param attribute  name of the entity attribute to order by.
      * @param direction  the direction in which to order.
      * @param ignoreCase whether to request a case insensitive ordering.
      * @return a {@link Sort} instance. Never {@code null}.
-     * @throws NullPointerException when there is a null parameter
+     * @throws NullPointerException when there is a null parameter.
      */
     public static <T> Sort<T> of(String attribute,
                                  Direction direction,
@@ -272,8 +272,8 @@ public record Sort<T>(String property,
      * <p>Create a {@link Sort} instance, indicating how {@code null} values
      * are ordered.</p>
      *
-     * @param <T>         entity class of the sortable entity attribute.
-     * @param attribute    name of the entity attribute to order by
+     * @param <T>          entity class of the sortable entity attribute.
+     * @param attribute    name of the entity attribute to order by.
      * @param direction    the direction in which to order.
      * @param ignoreCase   whether to request a case insensitive ordering.
      * @param nullOrdering whether {@code null} values are ordered
@@ -304,9 +304,9 @@ public record Sort<T>(String property,
      * insensitive ordering.
      *
      * @param <T>       entity class of the sortable entity attribute.
-     * @param attribute name of the entity attribute to order by
+     * @param attribute name of the entity attribute to order by.
      * @return a {@link Sort} instance. Never {@code null}.
-     * @throws NullPointerException when the attribute name is null
+     * @throws NullPointerException when the attribute name is null.
      */
     public static <T> Sort<T> asc(String attribute) {
         return new Sort<>(attribute, true, false, Nulls.UNSPECIFIED);
@@ -331,9 +331,9 @@ public record Sort<T>(String property,
      * insensitive ordering.
      *
      * @param <T>       entity class of the sortable entity attribute.
-     * @param attribute name of the entity attribute to order by
+     * @param attribute name of the entity attribute to order by.
      * @return a {@link Sort} instance. Never {@code null}.
-     * @throws NullPointerException when the attribute name is null
+     * @throws NullPointerException when the attribute name is null.
      */
     public static <T> Sort<T> desc(String attribute) {
         return new Sort<>(attribute, false, false, Nulls.UNSPECIFIED);
