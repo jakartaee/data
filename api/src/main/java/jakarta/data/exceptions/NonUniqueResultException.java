@@ -19,6 +19,7 @@ package jakarta.data.exceptions;
 
 import jakarta.data.repository.Find;
 import jakarta.data.repository.First;
+import jakarta.data.repository.NativeQuery;
 import jakarta.data.repository.Query;
 
 /**
@@ -27,7 +28,8 @@ import jakarta.data.repository.Query;
  *
  * <p>This error can be circumvented by applying the {@link First @First}
  * annotation
- * to a repository {@link Find} or {@link Query} method to explicitly request
+ * to a repository {@link Find}, {@link Query} or {@link NativeQuery} method
+ * to explicitly request
  * that at most one result be returned. Alternatively, if using the Query by
  * Method Name pattern, the {@code findFirst...} method name pattern can be used
  * to explicitly request that at most one result be returned.</p>

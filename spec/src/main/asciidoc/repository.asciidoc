@@ -171,6 +171,28 @@ void deleteBook(String isbn);
 Programs which make use of annotated query methods are not in general portable between providers.
 However, when the `@Query` annotation specifies a query written in JCQL, the annotated query method is portable between providers to the extent to which its semantics can be implemented on the underlying data store.
 
+This specification also defines the built-in `@NativeQuery` annotation, which may be used to specify a query written in a native query language specific to the underlying datastore.
+The syntax and capabilities of the native query language are determined by the Jakarta Data provider and the target datastore technology.
+
+The Jakarta Data provider may decide to not support the `@NativeQuery` annotation at all.
+Repository methods using `@NativeQuery` are inherently non-portable between different Jakarta Data providers or different types of datastores, as they directly access datastore-specific query capabilities.
+
+For example:
+
+[source,java]
+----
+// Example: Native SQL query with positional parameter (syntax is implementation-specific)
+@NativeQuery("SELECT * FROM Product WHERE price > ?1 ORDER BY price DESC")
+List<Product> findExpensiveProducts(double minPrice);
+----
+
+[source,java]
+----
+// Example: Native query with named parameter (syntax is implementation-specific)
+@NativeQuery("SELECT * FROM Product WHERE name LIKE :pattern")
+List<Product> searchByName(@Param("pattern") String pattern);
+----
+
 [NOTE]
 ====
 A Jakarta Data provider might extend this specification to define its own query annotation types.
@@ -187,13 +209,13 @@ The Jakarta Persistence specification defines several annotations in the `jakart
 
 - `@StaticQuery`, which can annotate a Jakarta Data repository method in place of Jakarta Data's `@Query` to supply a JPQL query.
 
-- `@ReadQueryOptions`, which can annotate a Jakarta Data repository method annotated `@Query`, `@StaticQuery`, or `@StaticNativeQuery` that performs a `SELECT` operation. Alternatively, it can annotate a Jakarta Data repository method annotated `@Find`. The `ReadQueryOptions` annotation allows the application to supply additional options defined by Jakarta Persistence for queries that perform read operations.
+- `@ReadQueryOptions`, which can annotate a Jakarta Data repository method annotated `@Query`, `@NativeQuery`, `@StaticQuery`, or `@StaticNativeQuery` that performs a `SELECT` operation. Alternatively, it can annotate a Jakarta Data repository method annotated `@Find`. The `ReadQueryOptions` annotation allows the application to supply additional options defined by Jakarta Persistence for queries that perform read operations.
 
-- `@WriteQueryOptions`, which can annotate a Jakarta Data repository method annotated `@Query`, `@StaticQuery`, or `@StaticNativeQuery` that performs a `DELETE` or `UPDATE` operation. Alternatively, it can annotate a Jakarta Data repository method annotated `@Delete` when the latter is not used as a lifecycle annotation.  The `WriteQueryOptions` annotation allows the application to supply additional options defined by Jakarta Persistence for queries that perform write operations.
+- `@WriteQueryOptions`, which can annotate a Jakarta Data repository method annotated `@Query`, `@NativeQuery`, `@StaticQuery`, or `@StaticNativeQuery` that performs a `DELETE` or `UPDATE` operation. Alternatively, it can annotate a Jakarta Data repository method annotated `@Delete` when the latter is not used as a lifecycle annotation.  The `WriteQueryOptions` annotation allows the application to supply additional options defined by Jakarta Persistence for queries that perform write operations.
 
-==== Limitations of JPQL and native SQL queries
+==== Limitations of JPQL and native queries
 
-The Jakarta Data provider is not required to support JPQL or native SQL for repository query methods that require generating or modifying the query, including repository methods with any of the following:
+The Jakarta Data provider is not required to support JPQL or native queries for repository query methods that require generating or modifying the query, including repository methods with any of the following:
 
 - Projections
 - `Restriction` and `Constraint`-typed parameters
@@ -284,7 +306,7 @@ A resource accessor method with return type `jakarta.persistence.EntityManager` 
 
 === Conflicting repository method annotations
 
-Annotations like `@Find`, `@Query`, `@Insert`, `@Update`, `@Delete`, and `@Save` are mutually-exclusive. A given method of a repository interface may have at most one:
+Annotations like `@Find`, `@Query`, `@NativeQuery`, `@Insert`, `@Update`, `@Delete`, and `@Save` are mutually-exclusive. A given method of a repository interface may have at most one:
 
 - `@Find` annotation,
 - lifecycle annotation, or
@@ -420,7 +442,7 @@ List<User> findByNamePrefix(String namePrefix, Sort<User> sort);
 
 === Restrictions
 
-A method annotated `@Find`, `@Delete`, or `@Query` may have a <<special-parameters,special parameter>> of type `Restriction<T>`.
+A method annotated `@Find`, `@Delete`, `@Query`, or `@NativeQuery` may have a <<special-parameters,special parameter>> of type `Restriction<T>`.
 This parameter allows the caller of a repository method to programmatically express additional restrictions on the results returned by the repository method, often using a <<metamodel-java-processor,generated metamodel class>> for type safety.
 
 For example:

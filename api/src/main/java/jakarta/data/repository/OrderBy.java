@@ -74,7 +74,8 @@ import java.lang.annotation.Target;
  *     name,</li>
  * <li>a {@link Query} or {@code jakarta.persistence.query.StaticQuery}
  *     annotation specifying a query with an {@code ORDER BY} clause, nor</li>
- * <li>a {@code jakarta.persistence.query.StaticNativeQuery} annotation.</li>
+ * <li>a {@link NativeQuery} or {@code jakarta.persistence.query.StaticNativeQuery}
+ *     annotation.</li>
  * </ul>
  * <p>A Jakarta Data provider is permitted to reject such a repository
  * method declaration at compile time or to implement the method to
