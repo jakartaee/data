@@ -57,12 +57,13 @@ import jakarta.data.repository.stateful.Remove;
  *
  * <h2>Transactions</h2>
  *
- * <p>When using a stateful repository, all lifecycle methods and all updates
- * performed on entities obtained from query methods must run within a
- * transaction. A persistence context remains active for the duration of the
- * transaction, after which all updates must be committed or rolled back in the
- * data store, per the outcome of the transaction. In Jakarta EE environments,
- * a Jakarta Transactions (JTA) transaction is used.</p>
+ * <p>To ensure a boundary at which updates are persisted to the data store,
+ * the application should arrange to have lifecycle methods that cause updates,
+ * such as those annotated {@code @Merge}, {@code @Persist}, and
+ * {@code @Remove}, as well as other updates made directly to entities,
+ * participate in a transaction, the duration of which the same persistence
+ * context applies. In Jakarta EE environments where resources are capable of
+ * enlistment, a Jakarta Transactions (JTA) transaction can be used.</p>
  *
  * <h2>Examples</h2>
  *

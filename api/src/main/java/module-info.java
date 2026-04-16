@@ -310,15 +310,13 @@ import java.util.Set;
  * <h2>Lifecycle methods</h2>
  *
  * <p>A lifecycle method makes changes to persistent data in the data store.
- * The lifecycle methods of a stateless repository must be annotated with a
- * stateless lifecycle annotation such as {@link Insert}, {@link Update},
- * {@link Save}, or {@link Delete}. The lifecycle methods of a
- * <a href="../jakarta.data.stateful/">stateful repository</a>, which apply
- * to a persistence context, must be annotated with one of the stateful
- * lifecycle annotations: {@code Detach}, {@code Merge}, {@code Persist}.
- * {@code Refresh}, or {@code Remove}. For both stateful as well as stateless
- * lifecycle methods, the lifecycle method must accept a single parameter,
- * whose type is either:</p>
+ * Each lifecycle method of a stateless repository must be annotated with
+ * a stateless lifecycle annotation, such as {@link Insert}, {@link Update},
+ * {@link Save}, or {@link Delete}. Each lifecycle method of a
+ * <a href="../jakarta.data.stateful/">stateful repository</a>
+ * must be annotated with a stateful lifecycle annotation.
+ * A lifecycle method, whether stateful or stateless,
+ * must accept a single parameter, whose type is either:</p>
  *
  * <ul>
  * <li>the class of the entity, or</li>
@@ -326,10 +324,9 @@ import java.util.Set;
  *     entities.</li>
  * </ul>
  *
- * <p>The annotated method must be declared {@code void}, or, except in the
- * case of {@code @Delete} and the stateful lifecycle annotations other than
- * {@code @Merge}, have a return type that is the same as the type
- * of its parameter.</p>
+ * <p>The annotated method must be declared {@code void}, or, in cases where
+ * allowed by the lifecycle annotation, have a return type that is the same
+ * as the type of its parameter.</p>
  *
  * <p>A repository without lifecycle methods is considered to be a
  * stateless repository.</p>

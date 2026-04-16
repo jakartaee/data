@@ -36,8 +36,11 @@ import java.lang.annotation.Target;
  * database. This typically occurs later, when the persistence context is
  * flushed.
  * </p>
- * <p>A transaction must be active on the thread from which a repository
- * method annotated {@code @Merge} is invoked.
+ * <p>To ensure a boundary at which updates are persisted to the data store,
+ * the application should arrange to have repository methods annotated
+ * {@code @Merge}, as well as updates made directly to entities, participate
+ * in a transaction, the duration of which the same persistence context
+ * applies.
  * </p>
  * <p>A {@code Merge} method accepts an instance or instances of an entity
  * class. The method must have exactly one parameter whose type is either:
