@@ -19,6 +19,7 @@ package jakarta.data.repository;
 
 import jakarta.data.Order;
 import jakarta.data.Sort;
+import jakarta.data.Sort.Nulls;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Repeatable;
@@ -112,6 +113,21 @@ public @interface OrderBy {
      * attribute.
      */
     boolean ignoreCase() default false;
+
+    /**
+     * <p>Indicates whether {@code null} values are ordered
+     * {@link Nulls#FIRST FIRST}, {@link Nulls#LAST LAST}, or
+     * {@linkplain Nulls#UNSPECIFIED by the data store}.</p>
+     *
+     * <p>If the data store is a non-relational database that is not
+     * capable of ordering {@code null} values, then repository methods
+     * annotated to order nulls {@code FIRST} or {@code LAST} must raise
+     * {@link UnsupportedOperationException}.</p>
+     *
+     * @return indication of how {@code null} values are ordered.
+     * @since 1.1
+     */
+    Nulls nullOrdering() default Nulls.UNSPECIFIED;
 
     /**
      * <p>Entity attribute name to sort by.</p>
