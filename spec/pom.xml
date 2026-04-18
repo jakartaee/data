@@ -42,7 +42,7 @@
 
         <!-- default is the same for backward compatibility reason
         Easy to override when building with a system property -->
-        <spec.version>1.0</spec.version>
+        <spec.version>${parsedVersion.majorVersion}.${parsedVersion.minorVersion}</spec.version>
     </properties>
 
     <build>
@@ -133,6 +133,19 @@
                         <doctitle>Jakarta Data</doctitle>
                     </attributes>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.6.1</version>
+                <executions>
+                    <execution>
+                        <id>parse-version</id>
+                        <goals>
+                            <goal>parse-version</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
         <pluginManagement>
