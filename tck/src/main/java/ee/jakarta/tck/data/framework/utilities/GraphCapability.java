@@ -15,7 +15,7 @@
  */
 package ee.jakarta.tck.data.framework.utilities;
 
-public final class GraphCapability extends AbstractDatabaseCapability {
+public final class GraphCapability extends MinimalDatabaseCapability {
 
     @Override
     public boolean capableOfConcat() {

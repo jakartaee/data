@@ -28,7 +28,7 @@ package ee.jakarta.tck.data.framework.utilities;
  * implementation (e.g., wide-column vs analytical column stores), but this
  * profile reflects the conservative baseline defined in the current TCK behavior.</p>
  */
-public final class ColumnCapability extends AbstractDatabaseCapability {
+public final class ColumnCapability extends MinimalDatabaseCapability {
 
     @Override
     public boolean capableOfBetween() {

@@ -15,7 +15,7 @@
  */
 package ee.jakarta.tck.data.framework.utilities;
 
-public final class DocumentCapability extends AbstractDatabaseCapability {
+public final class DocumentCapability extends MinimalDatabaseCapability {
 
     @Override
     public boolean capableOfAnd() {
