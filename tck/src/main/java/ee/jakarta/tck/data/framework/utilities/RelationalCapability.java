@@ -15,21 +15,6 @@
  */
 package ee.jakarta.tck.data.framework.utilities;
 
-/**
- * Capability profile for Relational databases based on the current behavior model.
- *
- * <p>In the existing model, relational databases represent the highest level of
- * capability, supporting the full range of query operations, expressions, and
- * data manipulation features defined in the TCK.</p>
- *
- * <p>This includes arithmetic operations, logical composition, string functions,
- * sorting, aggregation, conditional updates and deletes, and complex expressions
- * involving multiple attributes.</p>
- *
- * <p><strong>Note:</strong> While relational databases generally provide the most
- * comprehensive feature set, specific behavior and edge cases may still vary
- * depending on the SQL dialect and vendor implementation.</p>
- */
 public final class RelationalCapability extends AbstractDatabaseCapability {
 
     @Override public boolean capableOfAddition() { return true; }

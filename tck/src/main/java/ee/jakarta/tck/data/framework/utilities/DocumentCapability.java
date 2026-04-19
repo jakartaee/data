@@ -15,22 +15,6 @@
  */
 package ee.jakarta.tck.data.framework.utilities;
 
-/**
- * Capability profile for Document databases based on the current behavior model.
- *
- * <p>In the existing model, document databases introduce logical composition,
- * basic aggregation, and query flexibility beyond simple comparisons. This
- * includes support for logical operators, counting, sorting (single field),
- * and filtering without requiring a strict schema.</p>
- *
- * <p>While document databases often provide rich querying capabilities,
- * support may vary significantly across vendors, especially for advanced
- * expressions, arithmetic operations, and string manipulation functions.</p>
- *
- * <p>This profile reflects a conservative baseline consistent with the current
- * TCK behavior, enabling capabilities expected at the document level while
- * leaving more advanced features to higher categories.</p>
- */
 public final class DocumentCapability extends AbstractDatabaseCapability {
 
     @Override

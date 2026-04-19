@@ -15,5 +15,5 @@
  */
 package ee.jakarta.tck.data.framework.utilities;
 
-public final class KeyValueCapability extends AbstractDatabaseCapability {
+public final class OtherCapability extends RelationalCapability {
 }

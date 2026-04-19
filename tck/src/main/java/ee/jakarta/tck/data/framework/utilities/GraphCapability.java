@@ -15,25 +15,6 @@
  */
 package ee.jakarta.tck.data.framework.utilities;
 
-/**
- * Capability profile for Graph databases based on the current behavior model.
- *
- * <p>In the existing model, graph databases extend document-level capabilities
- * by introducing support for string manipulation and function-based expressions,
- * such as substring operations and case transformations.</p>
- *
- * <p>This includes operations like LEFT, RIGHT, LENGTH, LOWER, and UPPER, which
- * are typically associated with query languages capable of traversing and
- * transforming data within relationships.</p>
- *
- * <p>While graph databases are often highly expressive in traversal and pattern
- * matching, this profile focuses only on the capabilities defined in the current
- * TCK behavior model.</p>
- *
- * <p><strong>Note:</strong> Actual support may vary by vendor and query language.
- * This implementation reflects a conservative baseline consistent with the
- * existing capability thresholds.</p>
- */
 public final class GraphCapability extends AbstractDatabaseCapability {
 
     @Override
