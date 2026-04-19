@@ -14,22 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 package ee.jakarta.tck.data.framework.utilities;
-/**
- * Base implementation for {@link DatabaseCapability}.
- *
- * <p>This class represents a conservative capability profile where no
- * database features are assumed to be supported by default.</p>
- *
- * <p>Concrete implementations should explicitly override only the
- * capabilities they are expected to support. This avoids implicit
- * assumptions and ensures that support is always intentional and
- * documented.</p>
- *
- * <p><strong>Design note:</strong> Capability support may vary not only
- * by database family but also by specific provider and configuration.
- * Therefore, this base class does not assume any capability, even if it
- * is commonly available in certain database categories.</p>
- */
+
 public abstract class MinimalDatabaseCapability implements DatabaseCapability {
 
     @Override public boolean capableOfAddition() { return false; }
