@@ -30,7 +30,7 @@ package ee.jakarta.tck.data.framework.utilities;
  * Therefore, this base class does not assume any capability, even if it
  * is commonly available in certain database categories.</p>
  */
-public abstract class AbstractDatabaseCapability implements DatabaseCapability {
+public abstract class MinimalDatabaseCapability implements DatabaseCapability {
 
     @Override public boolean capableOfAddition() { return false; }
 
