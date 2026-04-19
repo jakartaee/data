@@ -15,7 +15,7 @@
  */
 package ee.jakarta.tck.data.framework.utilities;
 
-public final class RelationalCapability extends AbstractDatabaseCapability {
+public final class RelationalCapability implements DatabaseCapability {
 
     @Override public boolean capableOfAddition() { return true; }
     @Override public boolean capableOfAnd() { return true; }
