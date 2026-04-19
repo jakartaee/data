@@ -30,16 +30,16 @@ public enum DatabaseType {
     COLUMN(20, new ColumnCapability()),
     KEY_VALUE(10, new KeyValueCapability());
 
-    private final int level;
+    private final int flexibility;
     private final DatabaseCapability capability;
 
-    DatabaseType(int level, DatabaseCapability capability) {
-        this.level = level;
+    DatabaseType(int flexibility, DatabaseCapability capability) {
+        this.flexibility = flexibility;
         this.capability = capability;
     }
 
-    public int level() {
-        return level;
+    public int flexibility() {
+        return flexibility;
     }
 
     public DatabaseCapability capability() {

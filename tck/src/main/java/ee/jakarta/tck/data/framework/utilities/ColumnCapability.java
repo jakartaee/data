@@ -14,19 +14,20 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 package ee.jakarta.tck.data.framework.utilities;
+
 /**
  * Capability profile for Column-oriented databases based on the current behavior model.
  *
  * <p>In the existing model, column databases introduce basic comparison and
- * filtering capabilities beyond simple key-based access. This includes support
- * for range queries, null checks, and inclusion-based filtering.</p>
+ * filtering capabilities beyond simple key-based access. This includes support for range queries, null checks, and
+ * inclusion-based filtering.</p>
  *
  * <p>More advanced features such as arithmetic operations, string manipulation,
  * sorting, and conditional updates are not assumed to be supported at this level.</p>
  *
  * <p><strong>Note:</strong> Actual support may vary depending on the specific
- * implementation (e.g., wide-column vs analytical column stores), but this
- * profile reflects the conservative baseline defined in the current TCK behavior.</p>
+ * implementation (e.g., wide-column vs analytical column stores), but this profile reflects the conservative baseline
+ * defined in the current TCK behavior.</p>
  */
 public final class ColumnCapability extends MinimalDatabaseCapability {
 
