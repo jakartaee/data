@@ -36,8 +36,6 @@ package ee.jakarta.tck.data.framework.utilities;
  */
 public final class GraphCapability extends AbstractDatabaseCapability {
 
-    // Graph-specific capabilities
-
     @Override
     public boolean capableOfConcat() {
         return true;
@@ -68,8 +66,6 @@ public final class GraphCapability extends AbstractDatabaseCapability {
         return true;
     }
 
-    // Inherited from DOCUMENT level
-
     @Override
     public boolean capableOfAnd() {
         return true;
@@ -99,8 +95,6 @@ public final class GraphCapability extends AbstractDatabaseCapability {
     public boolean capableOfSingleSort() {
         return true;
     }
-
-    // Inherited from COLUMN level
 
     @Override
     public boolean capableOfBetween() {
