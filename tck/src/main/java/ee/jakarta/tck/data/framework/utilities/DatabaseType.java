@@ -177,7 +177,11 @@ public enum DatabaseType {
         return flexibility >= DOCUMENT.flexibility;
     }
 
-    public boolean capableOfSortingNulls() {
+    public boolean capableOfSortingNullsFirst() {
+        return flexibility >= RELATIONAL.flexibility;
+    }
+
+    public boolean capableOfSortingNullsLast() {
         return flexibility >= RELATIONAL.flexibility;
     }
 

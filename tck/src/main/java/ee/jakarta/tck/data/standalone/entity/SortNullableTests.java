@@ -127,7 +127,7 @@ public class SortNullableTests {
                     50_000_000L,
                     Order.by(_Country.daylightTimeBegins.asc().nullsFirst()));
         } catch (IllegalArgumentException x) {
-            if (type.capableOfSortingNulls()) {
+            if (type.capableOfSortingNullsFirst()) {
                 throw x;
             } else {
                 return;
@@ -192,7 +192,7 @@ public class SortNullableTests {
                     50_000_000L,
                     Order.by(_Country.daylightTimeBegins.asc().nullsLast()));
         } catch (IllegalArgumentException x) {
-            if (type.capableOfSortingNulls()) {
+            if (type.capableOfSortingNullsLast()) {
                 throw x;
             } else {
                 return;
@@ -257,7 +257,7 @@ public class SortNullableTests {
                     50_000_000L,
                     Order.by(_Country.daylightTimeEnds.desc().nullsFirst()));
         } catch (IllegalArgumentException x) {
-            if (type.capableOfSortingNulls()) {
+            if (type.capableOfSortingNullsFirst()) {
                 throw x;
             } else {
                 return;
@@ -322,7 +322,7 @@ public class SortNullableTests {
                     50_000_000L,
                     Order.by(_Country.daylightTimeEnds.desc().nullsLast()));
         } catch (IllegalArgumentException x) {
-            if (type.capableOfSortingNulls()) {
+            if (type.capableOfSortingNullsLast()) {
                 throw x;
             } else {
                 return;
@@ -390,7 +390,7 @@ public class SortNullableTests {
                              _Country.population.desc(),
                              _Country.name.asc()));
         } catch (IllegalArgumentException x) {
-            if (type.capableOfSortingNulls()) {
+            if (type.capableOfSortingNullsLast()) {
                 throw x;
             } else {
                 return;
@@ -455,7 +455,7 @@ public class SortNullableTests {
                     Order.by(_Country.daylightTimeBegins.asc().nullsFirst(),
                              _Country.code.asc()));
         } catch (IllegalArgumentException x) {
-            if (type.capableOfSortingNulls()) {
+            if (type.capableOfSortingNullsFirst()) {
                 throw x;
             } else {
                 return;
@@ -520,7 +520,7 @@ public class SortNullableTests {
                     Order.by(_Country.daylightTimeEnds.desc().nullsLast(),
                              _Country.name.asc()));
         } catch (IllegalArgumentException x) {
-            if (type.capableOfSortingNulls()) {
+            if (type.capableOfSortingNullsLast()) {
                 throw x;
             } else {
                 return;
