@@ -132,6 +132,13 @@ public class SortNullableTests {
             } else {
                 return;
             }
+        } catch (UnsupportedOperationException x) {
+            if (type.capableOfConstraintsOnNonIdAttributes() &&
+                type.capableOfGreaterThanEqual()) {
+                throw x;
+            } else {
+                return;
+            }
         }
 
         assertEquals(List.of("BD: Bangladesh",
@@ -186,6 +193,13 @@ public class SortNullableTests {
                     Order.by(_Country.daylightTimeBegins.asc().nullsLast()));
         } catch (IllegalArgumentException x) {
             if (type.capableOfSortingNulls()) {
+                throw x;
+            } else {
+                return;
+            }
+        } catch (UnsupportedOperationException x) {
+            if (type.capableOfConstraintsOnNonIdAttributes() &&
+                type.capableOfGreaterThanEqual()) {
                 throw x;
             } else {
                 return;
@@ -248,6 +262,13 @@ public class SortNullableTests {
             } else {
                 return;
             }
+        } catch (UnsupportedOperationException x) {
+            if (type.capableOfConstraintsOnNonIdAttributes() &&
+                type.capableOfGreaterThanEqual()) {
+                throw x;
+            } else {
+                return;
+            }
         }
 
         assertEquals(List.of("BD: Bangladesh",
@@ -302,6 +323,13 @@ public class SortNullableTests {
                     Order.by(_Country.daylightTimeEnds.desc().nullsLast()));
         } catch (IllegalArgumentException x) {
             if (type.capableOfSortingNulls()) {
+                throw x;
+            } else {
+                return;
+            }
+        } catch (UnsupportedOperationException x) {
+            if (type.capableOfConstraintsOnNonIdAttributes() &&
+                type.capableOfGreaterThanEqual()) {
                 throw x;
             } else {
                 return;
@@ -367,6 +395,14 @@ public class SortNullableTests {
             } else {
                 return;
             }
+        } catch (UnsupportedOperationException x) {
+            if (type.capableOfConstraintsOnNonIdAttributes() &&
+                type.capableOfGreaterThanEqual() &&
+                type.capableOfMultipleSort()) {
+                throw x;
+            } else {
+                return;
+            }
         }
 
         assertEquals(List.of("US: United States of America",
@@ -420,6 +456,14 @@ public class SortNullableTests {
                              _Country.code.asc()));
         } catch (IllegalArgumentException x) {
             if (type.capableOfSortingNulls()) {
+                throw x;
+            } else {
+                return;
+            }
+        } catch (UnsupportedOperationException x) {
+            if (type.capableOfConstraintsOnNonIdAttributes() &&
+                type.capableOfGreaterThanEqual() &&
+                type.capableOfMultipleSort()) {
                 throw x;
             } else {
                 return;
@@ -481,6 +525,14 @@ public class SortNullableTests {
             } else {
                 return;
             }
+        } catch (UnsupportedOperationException x) {
+            if (type.capableOfConstraintsOnNonIdAttributes() &&
+                type.capableOfGreaterThanEqual() &&
+                type.capableOfMultipleSort()) {
+                throw x;
+            } else {
+                return;
+            }
         }
 
         assertEquals(List.of("MX: Mexico",
@@ -525,11 +577,21 @@ public class SortNullableTests {
             and results are returned without error.
             """)
     public void testUnspecifiedNullOrdering() {
-        List<Country> found = countries.findLargest(
-                50_000_000L,
-                Order.by(_Country.daylightTimeBegins.asc()));
+        List<Country> found;
 
-        assertEquals(30, found.size());
+        try {
+            found = countries.findLargest(
+                    50_000_000L,
+                    Order.by(_Country.daylightTimeBegins.asc()));
+            assertEquals(30, found.size());
+        } catch (UnsupportedOperationException x) {
+            if (type.capableOfConstraintsOnNonIdAttributes() &&
+                type.capableOfGreaterThanEqual()) {
+                throw x;
+            } else {
+                return;
+            }
+        }
 
         // When null ordering is unspecified, verify that non-null values
         // are in ascending order. The position of nulls is database-dependent.
