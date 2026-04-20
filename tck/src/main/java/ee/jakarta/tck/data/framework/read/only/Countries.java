@@ -81,6 +81,11 @@ public interface Countries extends CrudRepository<Country, String> {
     List<Country> filter(Restriction<Country> filter);
 
     @Find
+    List<Country> findLargest(
+            @By(_Country.POPULATION) @Is(AtLeast.class) long minPopulation,
+            Order<Country> order);
+
+    @Find
     List<Country> highlyPopulousInRegion(
             @By(_Country.REGION) EqualTo<Region> region,
             @By(_Country.POPULATION) AtLeast<Long> minPopulation,
