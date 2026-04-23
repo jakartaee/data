@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2025,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,6 +35,12 @@ import java.lang.annotation.Target;
  * entities and might cause that state to be inserted or updated in the
  * database. This typically occurs later, when the persistence context is
  * flushed.
+ * </p>
+ * <p>To ensure a boundary at which updates are persisted to the data store,
+ * the application should arrange to have repository methods annotated
+ * {@code @Merge}, as well as updates made directly to entities, participate
+ * in a transaction, the duration of which the same persistence context
+ * applies.
  * </p>
  * <p>A {@code Merge} method accepts an instance or instances of an entity
  * class. The method must have exactly one parameter whose type is either:

@@ -1007,7 +1007,7 @@ A stateful repository is backed by a _persistence context_, a set of managed ent
 
 - Multiple repositories might share a persistence context, especially if they share a datastore.
 
-- A persistence context is never shared across transactions.
+- A persistence context is never shared across transactions that are active at the same time.
 
 A query method of a stateful repository which returns an entity type always returns managed instances belonging to the persistence context associated with the repository.
 

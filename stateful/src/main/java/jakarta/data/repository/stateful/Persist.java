@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2025,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,6 +34,11 @@ import java.lang.annotation.Target;
  * entities for insertion in the database. Insertion might occur immediately,
  * when the annotated repository method is invoked, or it might occur later,
  * when the persistence context is flushed.
+ * </p>
+ * <p>To ensure a boundary at which updates are persisted to the data store,
+ * the application should arrange to have repository methods annotated
+ * {@code @Persist} participate in a transaction, the duration of which
+ * the same persistence context applies.
  * </p>
  * <p>A {@code Persist} method accepts an instance or instances of an entity
  * class. The method must have exactly one parameter whose type is either:
