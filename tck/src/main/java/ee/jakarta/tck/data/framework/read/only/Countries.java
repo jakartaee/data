@@ -23,6 +23,7 @@ import java.util.stream.Stream;
 
 import jakarta.data.Limit;
 import jakarta.data.Order;
+import jakarta.data.Sort.Nulls;
 import jakarta.data.constraint.AtLeast;
 import jakarta.data.constraint.AtMost;
 import jakarta.data.constraint.Between;
@@ -37,6 +38,8 @@ import jakarta.data.constraint.NotIn;
 import jakarta.data.constraint.NotLike;
 import jakarta.data.constraint.NotNull;
 import jakarta.data.constraint.Null;
+import jakarta.data.page.Page;
+import jakarta.data.page.PageRequest;
 import jakarta.data.repository.By;
 import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.Find;
@@ -54,7 +57,17 @@ import jakarta.data.restrict.Restriction;
 @Repository
 public interface Countries extends CrudRepository<Country, String> {
 
-    long count();
+    @Find
+    @OrderBy(value = _Country.DAYLIGHTTIMEENDS,
+             nullOrdering = Nulls.LAST)
+    List<Country> ascEndOfDaylightTime(
+            @By(_Country.CODE) Like countryCodePattern);
+
+    @Find
+    @OrderBy(value = _Country.DAYLIGHTTIMEBEGINS,
+             nullOrdering = Nulls.FIRST)
+    List<Country> ascStartOfDaylightTime(
+            @By(_Country.REGION) Region region);
 
     @Find
     List<Country> asLargeOrBigger(
@@ -64,10 +77,34 @@ public interface Countries extends CrudRepository<Country, String> {
     List<Country> byCountryCodes(
             @By(_Country.CODE) @Is(In.class) Collection<String> codes);
 
+    long count();
+
+    @Find
+    @OrderBy(value = _Country.DAYLIGHTTIMEENDS,
+             nullOrdering = Nulls.LAST)
+    Page<Country> countryCodeAtMost(
+            @By(_Country.CODE) @Is(AtMost.class) String atMost,
+            Order<Country> ordering,
+            PageRequest pageRequest);
+
     @Find
     @Select(_Country.CODE)
     List<String> countryCodesUpTo(
             @By(_Country.CODE) AtMost<String> maxCode);
+
+    @Find
+    @OrderBy(value = _Country.DAYLIGHTTIMEENDS,
+             descending = true,
+             nullOrdering = Nulls.LAST)
+    List<Country> descEndOfDaylightTime(
+            @By(_Country.REGION) Region region);
+
+    @Find
+    @OrderBy(value = _Country.DAYLIGHTTIMEBEGINS,
+             descending = true,
+             nullOrdering = Nulls.FIRST)
+    List<Country> descStartOfDaylightTime(
+            @By(_Country.CODE) Like countryCodePattern);
 
     @Find
     List<Country> excludingCountryCodeRange(
@@ -184,6 +221,16 @@ public interface Countries extends CrudRepository<Country, String> {
     @Find
     List<Country> withNameAfter(
             @Is(GreaterThan.class) String name);
+
+    @Find
+    @OrderBy(value = _Country.DAYLIGHTTIMEENDS,
+             descending = true,
+             nullOrdering = Nulls.LAST)
+    @OrderBy(value = _Country.DAYLIGHTTIMEBEGINS,
+             nullOrdering = Nulls.FIRST)
+    @OrderBy(value = _Country.CODE)
+    List<Country> withNamePattern(
+            @By(_Country.NAME) @Is(Like.class) String pattern);
 
     @Find
     List<Country> withoutDaylightTime(
