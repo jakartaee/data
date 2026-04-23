@@ -22,159 +22,168 @@ import java.util.Arrays;
  * {@link TestProperty} databaseType
  */
 public enum DatabaseType {
-    OTHER(Integer.MAX_VALUE), //No database type was configured
-    RELATIONAL(100),
-    GRAPH(50),
-    DOCUMENT(40),
-    TIME_SERIES(30),
-    COLUMN(20),
-    KEY_VALUE(10);
+    OTHER(Integer.MAX_VALUE, new OtherCapability()),// No database type was configured
+    RELATIONAL(100, new RelationalCapability()),
+    GRAPH(50, new GraphCapability()),
+    DOCUMENT(40, new DocumentCapability()),
+    TIME_SERIES(30, new TimeSeriesCapability()),
+    COLUMN(20, new ColumnCapability()),
+    KEY_VALUE(10, new KeyValueCapability());
 
-    private int flexibility;
+    private final int flexibility;
+    private final DatabaseCapability capability;
 
-    private DatabaseType(int flexibility) {
+    DatabaseType(int flexibility, DatabaseCapability capability) {
         this.flexibility = flexibility;
+        this.capability = capability;
+    }
+
+    public int flexibility() {
+        return flexibility;
+    }
+
+    public DatabaseCapability capability() {
+        return capability;
     }
 
     public boolean capableOfAddition() {
-        return flexibility >= RELATIONAL.flexibility;
+        return capability.capableOfAddition();
     }
 
     public boolean capableOfAnd() {
-        return flexibility >= DOCUMENT.flexibility;
+        return capability.capableOfAnd();
     }
 
     public boolean capableOfAssignmentToExpression() {
-        return flexibility >= RELATIONAL.flexibility;
+        return capability.capableOfAssignmentToExpression();
     }
 
     public boolean capableOfBetween() {
-        return flexibility >= COLUMN.flexibility;
+        return capability.capableOfBetween();
     }
 
     public boolean capableOfAttributeVsAttributeComparison() {
-        return flexibility >= RELATIONAL.flexibility;
+        return capability.capableOfAttributeVsAttributeComparison();
     }
 
     public boolean capableOfConcat() {
-        return flexibility >= GRAPH.flexibility;
+        return capability.capableOfConcat();
     }
 
     public boolean capableOfConditionalDelete() {
-        return flexibility >= RELATIONAL.flexibility;
+        return capability.capableOfConditionalDelete();
     }
 
     public boolean capableOfConditionalUpdate() {
-        return flexibility >= RELATIONAL.flexibility;
+        return capability.capableOfConditionalUpdate();
     }
 
     public boolean capableOfConstraintsOnNonIdAttributes() {
-        return flexibility >= DOCUMENT.flexibility;
+        return capability.capableOfConstraintsOnNonIdAttributes();
     }
 
     public boolean capableOfCount() {
-        return flexibility >= DOCUMENT.flexibility;
+        return capability.capableOfCount();
     }
 
     public boolean capableOfCountingDeletes() {
-        return flexibility >= RELATIONAL.flexibility;
+        return capability.capableOfCountingDeletes();
     }
 
     public boolean capableOfCountingUpdates() {
-        return flexibility >= RELATIONAL.flexibility;
+        return capability.capableOfCountingUpdates();
     }
 
     public boolean capableOfDivision() {
-        return flexibility >= RELATIONAL.flexibility;
+        return capability.capableOfDivision();
     }
 
     public boolean capableOfGreaterThan() {
-        return flexibility >= COLUMN.flexibility;
+        return capability.capableOfGreaterThan();
     }
 
     public boolean capableOfGreaterThanEqual() {
-        return flexibility >= COLUMN.flexibility;
+        return capability.capableOfGreaterThanEqual();
     }
 
     public boolean capableOfIn() {
-        return flexibility >= COLUMN.flexibility;
+        return capability.capableOfIn();
     }
 
     public boolean capableOfLeft() {
-        return flexibility >= GRAPH.flexibility;
+        return capability.capableOfLeft();
     }
 
     public boolean capableOfLength() {
-        return flexibility >= GRAPH.flexibility;
+        return capability.capableOfLength();
     }
 
     public boolean capableOfLessThan() {
-        return flexibility >= COLUMN.flexibility;
+        return capability.capableOfLessThan();
     }
 
     public boolean capableOfLessThanEqual() {
-        return flexibility >= COLUMN.flexibility;
+        return capability.capableOfLessThanEqual();
     }
 
     public boolean capableOfLike() {
-        return flexibility >= RELATIONAL.flexibility;
+        return capability.capableOfLike();
     }
 
     public boolean capableOfLower() {
-        return flexibility >= GRAPH.flexibility;
+        return capability.capableOfLower();
     }
 
     public boolean capableOfMultipleSort() {
-        return flexibility >= RELATIONAL.flexibility;
+        return capability.capableOfMultipleSort();
     }
 
     public boolean capableOfMultiplication() {
-        return flexibility >= RELATIONAL.flexibility;
+        return capability.capableOfMultiplication();
     }
 
-
     public boolean capableOfNotBetween() {
-        return flexibility >= COLUMN.flexibility;
+        return capability.capableOfNotBetween();
     }
 
     public boolean capableOfNotEqual() {
-        return flexibility >= COLUMN.flexibility;
+        return capability.capableOfNotEqual();
     }
 
     public boolean capableOfNotIn() {
-        return flexibility >= COLUMN.flexibility;
+        return capability.capableOfNotIn();
     }
 
     public boolean capableOfNotLike() {
-        return flexibility >= RELATIONAL.flexibility;
+        return capability.capableOfNotLike();
     }
 
     public boolean capableOfNotNull() {
-        return flexibility >= COLUMN.flexibility;
+        return capability.capableOfNotNull();
     }
 
     public boolean capableOfNull() {
-        return flexibility >= COLUMN.flexibility;
+        return capability.capableOfNull();
     }
 
     public boolean capableOfOr() {
-        return flexibility >= DOCUMENT.flexibility;
+        return capability.capableOfOr();
     }
 
     public boolean capableOfParentheses() {
-        return flexibility >= RELATIONAL.flexibility;
+        return capability.capableOfParentheses();
     }
 
     public boolean capableOfQueryWithoutWhere() {
-        return flexibility >= DOCUMENT.flexibility;
+        return capability.capableOfQueryWithoutWhere();
     }
 
     public boolean capableOfRight() {
-        return flexibility >= GRAPH.flexibility;
+        return capability.capableOfRight();
     }
 
     public boolean capableOfSingleSort() {
-        return flexibility >= DOCUMENT.flexibility;
+        return capability.capableOfSingleSort();
     }
 
     public boolean capableOfSortingNullsFirst() {
@@ -186,17 +195,22 @@ public enum DatabaseType {
     }
 
     public boolean capableOfSubtraction() {
-        return flexibility >= RELATIONAL.flexibility;
+        return capability.capableOfSubtraction();
     }
 
     public boolean capableOfUpper() {
-        return flexibility >= GRAPH.flexibility;
+        return capability.capableOfUpper();
     }
+
 
     public static DatabaseType valueOfIgnoreCase(String value) {
         return Arrays.stream(DatabaseType.values()).filter(type -> type.name().equalsIgnoreCase(value)).findAny().orElse(DatabaseType.OTHER);
     }
 
+    /**
+     * @deprecated Use explicit capability checks instead.
+     */
+    @Deprecated
     public boolean isKeywordSupportAtOrBelow(DatabaseType benchmark) {
         return this.flexibility <= benchmark.flexibility;
     }
