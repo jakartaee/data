@@ -17,11 +17,12 @@
  */
 package jakarta.data.spi.expression.path;
 
-import jakarta.data.expression.NavigableExpression;
 import jakarta.data.messages.Messages;
 import jakarta.data.metamodel.BooleanAttribute;
+import jakarta.data.metamodel.NavigableAttribute;
 
-record BooleanPathRecord<T, U>(NavigableExpression<T, U> expression,
+record BooleanPathRecord<T, U>(String name,
+                               NavigableAttribute<T, U> expression,
                                BooleanAttribute<U> attribute)
         implements BooleanPath<T, U> {
 
@@ -31,12 +32,18 @@ record BooleanPathRecord<T, U>(NavigableExpression<T, U> expression,
     }
 
     @Override
-    public String toString() {
-        String expr = expression.toString();
-        String attrName = attribute.name();
-        StringBuilder path =
-                new StringBuilder(expr.length() + 1 + attrName.length());
-        path.append(expr).append('.').append(attrName);
-        return path.toString();
+    public Class<T> declaringType() {
+        return expression.declaringType();
     }
+
+    @Override
+    public String toString() {
+        return expression + "." + attribute.name();
+    }
+
+    @Override
+    public Class<Boolean> type() {
+        return attribute.type();
+    }
+
 }

@@ -25,38 +25,23 @@ import jakarta.data.metamodel.NavigableAttribute;
 import jakarta.data.metamodel.NumericAttribute;
 import jakarta.data.metamodel.TemporalAttribute;
 import jakarta.data.metamodel.TextAttribute;
-import jakarta.data.spi.expression.path.BooleanPath;
-import jakarta.data.spi.expression.path.ComparablePath;
-import jakarta.data.spi.expression.path.NavigablePath;
-import jakarta.data.spi.expression.path.NumericPath;
-import jakarta.data.spi.expression.path.TemporalPath;
-import jakarta.data.spi.expression.path.TextPath;
 
 public interface NavigableExpression<T, U> {
 
-    default <V> NavigableExpression<T, V> navigate(NavigableAttribute<U, V> attribute) {
-        return NavigablePath.of(this, attribute);
-    }
+    <V> NavigableExpression<T, V> navigate(NavigableAttribute<U, V> attribute);
 
-    default TextExpression<T> navigate(TextAttribute<U> attribute) {
-        return TextPath.of(this, attribute);
-    }
+    TextAttribute<T> navigate(TextAttribute<U> attribute);
 
-    default <C extends Comparable<C>> ComparableExpression<T, C> navigate(ComparableAttribute<U, C> attribute) {
-        return ComparablePath.of(this, attribute);
-    }
+    <C extends Comparable<C>> ComparableAttribute<T, C> navigate(
+            ComparableAttribute<U, C> attribute);
 
-    default BooleanExpression<T> navigate(BooleanAttribute<U> attribute) {
-        return BooleanPath.of(this, attribute);
-    }
+    BooleanAttribute<T> navigate(BooleanAttribute<U> attribute);
 
-    default <N extends Number & Comparable<N>> NumericExpression<T, N> navigate(NumericAttribute<U, N> attribute) {
-        return NumericPath.of(this, attribute);
-    }
+    <N extends Number & Comparable<N>> NumericAttribute<T, N> navigate(
+            NumericAttribute<U, N> attribute);
 
-    default <V extends Temporal & Comparable<? extends Temporal>> TemporalExpression<T, V> navigate(
-            TemporalAttribute<U, V> attribute) {
-        return TemporalPath.of(this, attribute);
-    }
+    <V extends Temporal & Comparable<? extends Temporal>>
+            TemporalAttribute<T, V> navigate(
+                    TemporalAttribute<U, V> attribute);
 
 }

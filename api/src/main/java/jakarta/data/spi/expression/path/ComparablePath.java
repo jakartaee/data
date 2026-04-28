@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2025,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,14 +17,15 @@
  */
 package jakarta.data.spi.expression.path;
 
-import jakarta.data.expression.ComparableExpression;
-import jakarta.data.expression.NavigableExpression;
 import jakarta.data.metamodel.ComparableAttribute;
+import jakarta.data.metamodel.NavigableAttribute;
 
 public interface ComparablePath<T, U, C extends Comparable<?>>
-        extends Path<T, U>, ComparableExpression<T, C> {
-    static <T, U, C extends Comparable<C>> ComparablePath<T, U, C>
-    of(NavigableExpression<T, U> expression, ComparableAttribute<U, C> attribute) {
-        return new ComparablePathRecord<>(expression, attribute);
+        extends Path<T, U>, ComparableAttribute<T, C> {
+    static <T, U, C extends Comparable<C>> ComparablePath<T, U, C> of(
+            NavigableAttribute<T, U> expression,
+            ComparableAttribute<U, C> attribute) {
+        String name = expression.name() + '.' + attribute.name();
+        return new ComparablePathRecord<>(name, expression, attribute);
     }
 }

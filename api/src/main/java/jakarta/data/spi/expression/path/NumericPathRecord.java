@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2025,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,12 +17,14 @@
  */
 package jakarta.data.spi.expression.path;
 
-import jakarta.data.expression.NavigableExpression;
 import jakarta.data.messages.Messages;
+import jakarta.data.metamodel.NavigableAttribute;
 import jakarta.data.metamodel.NumericAttribute;
 
-record NumericPathRecord<T, U, N extends Number & Comparable<N>>
-        (NavigableExpression<T, U> expression, NumericAttribute<U, N> attribute)
+record NumericPathRecord<T, U, N extends Number & Comparable<N>>(
+        String name,
+        NavigableAttribute<T, U> expression,
+        NumericAttribute<U, N> attribute)
         implements NumericPath<T, U, N> {
 
     NumericPathRecord {
@@ -31,7 +33,12 @@ record NumericPathRecord<T, U, N extends Number & Comparable<N>>
     }
 
     @Override
-    public Class<? extends N> type() {
+    public Class<T> declaringType() {
+        return expression.declaringType();
+    }
+
+    @Override
+    public Class<N> type() {
         return attribute.type();
     }
 
