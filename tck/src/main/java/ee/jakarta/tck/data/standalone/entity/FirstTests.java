@@ -18,6 +18,7 @@ package ee.jakarta.tck.data.standalone.entity;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -218,6 +219,32 @@ public class FirstTests {
     }
 
     @Assertion(id = "532", strategy = """
+            Use @First annotation with value 4 on a @Find method, but
+            where only 2 results match. Verify that exactly 2 results are
+            returned in the correct sort order.
+            """)
+    public void testFindTwoOfFirstFourMax() {
+        List<Country> found;
+        try {
+            found = countries.fourMostPopulousOf(List.of("PA",
+                                                         "PH"));
+        } catch (UnsupportedOperationException x) {
+            if (type.capableOfIn() &&
+                type.capableOfSingleSort()) {
+                throw x;
+            } else {
+                return;
+            }
+        }
+
+        assertEquals(List.of("PH: Philippines",
+                             "PA: Panama"),
+                     found.stream()
+                          .map(c -> c.getCode() + ": " + c.getName())
+                          .toList());
+    }
+
+    @Assertion(id = "532", strategy = """
             Use @First annotation on a @Query method with ORDER BY clause
             to retrieve the first result. Verify that exactly one result is
             returned and it is the first according to the sort order.
@@ -266,6 +293,27 @@ public class FirstTests {
                      found.stream()
                           .map(c -> c.getCode() + ": " + c.getName())
                           .toList());
+    }
+
+    @Assertion(id = "532", strategy = """
+            Use @First annotation on a @Query method with  clause
+            to retrieve the first result. Verify that exactly one result is
+            returned and it is the first according to the sort order.
+            """)
+    public void testQueryFirstNoneFound() {
+        Optional<String> found;
+        try {
+            found = countries.nextCode("ZW");
+        } catch (UnsupportedOperationException x) {
+            if (type.capableOfGreaterThan() &&
+                type.capableOfSingleSort()) {
+                throw x;
+            } else {
+                return;
+            }
+        }
+
+        assertEquals(true, found.isEmpty());
     }
 
 }

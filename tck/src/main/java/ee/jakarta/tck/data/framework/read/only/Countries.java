@@ -197,6 +197,12 @@ public interface Countries extends CrudRepository<Country, String> {
     List<Country> namedUpTo(
             @Is(AtMost.class) String name);
 
+    @Query("FROM Country WHERE code > ?1")
+    @Select(_Country.CODE)
+    @First
+    @OrderBy(_Country.CODE)
+    Optional<String> nextCode(String currentCode);
+
     @Find
     List<Country> notInRegions(
             @By(_Country.REGION) NotIn<Region> excluded);
