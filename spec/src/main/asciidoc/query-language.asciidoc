@@ -106,7 +106,7 @@ It is advisable to review your NoSQL provider's documentation to confirm the sup
 
 If the Jakarta Data provider does not support `count(this)`, it must throw `UnsupportedOperationException` when this aggregate expression occurs in a query.  Alternatively, the Jakarta Data provider is permitted to reject a repository method declaration at compilation time if its `@Query` annotation uses the unsupported aggregate expression.
 
-==== WHERE clause
+==== Where clause
 
 When working with NoSQL databases, the `WHERE` clause behavior may vary depending on the database structure and capabilities:
 
