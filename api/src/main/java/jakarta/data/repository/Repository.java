@@ -24,13 +24,13 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * <p>Annotates a repository interface to be implemented by the
- * container/runtime.</p>
+ * <p>Annotates a repository interface with an implementation supplied
+ * automatically by the Jakarta Data provider.</p>
  *
  * <p>This class is a CDI bean-defining annotation when CDI is available.
  * Regardless of whether CDI or custom dependency injection is used, the
- * repository implementation must be made available to applications via the
- * {@code jakarta.inject.Inject} annotation.</p>
+ * repository implementation must be made available to applications via
+ * the {@code jakarta.inject.Inject} annotation.</p>
  *
  * <p>For example,</p>
  *
@@ -58,8 +58,8 @@ import java.lang.annotation.Target;
  * numUpdated = products.putOnSale(0.15f, 20.0f);
  * }</pre>
  *
- * <p>The module Javadoc provides an {@link jakarta.data/ overview} of Jakarta
- * Data.</p>
+ * <p>The module Javadoc provides an {@linkplain jakarta.data/ overview}
+ * of Jakarta Data.</p>
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)

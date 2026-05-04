@@ -300,8 +300,8 @@ public record Sort<T>(String property,
 
     /**
      * Create a {@link Sort} instance with
-     * {@link Direction#ASC ascending direction} that does not request case
-     * insensitive ordering.
+     * {@linkplain Direction#ASC ascending direction} that does not
+     * request case-insensitive ordering.
      *
      * @param <T>       entity class of the sortable entity attribute.
      * @param attribute name of the entity attribute to order by.
@@ -327,8 +327,8 @@ public record Sort<T>(String property,
 
     /**
      * Create a {@link Sort} instance with
-     * {@link Direction#DESC descending direction} that does not request case
-     * insensitive ordering.
+     * {@linkplain Direction#DESC descending direction} that does not
+     * request case-insensitive ordering.
      *
      * @param <T>       entity class of the sortable entity attribute.
      * @param attribute name of the entity attribute to order by.
