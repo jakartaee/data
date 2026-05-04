@@ -23,6 +23,7 @@ import java.util.stream.Stream;
 
 import jakarta.data.Limit;
 import jakarta.data.Order;
+import jakarta.data.Sort;
 import jakarta.data.Sort.Nulls;
 import jakarta.data.constraint.AtLeast;
 import jakarta.data.constraint.AtMost;
@@ -43,8 +44,10 @@ import jakarta.data.page.PageRequest;
 import jakarta.data.repository.By;
 import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.Find;
+import jakarta.data.repository.First;
 import jakarta.data.repository.Is;
 import jakarta.data.repository.OrderBy;
+import jakarta.data.repository.Query;
 import jakarta.data.repository.Repository;
 import jakarta.data.repository.Select;
 import jakarta.data.restrict.Restriction;
@@ -56,6 +59,12 @@ import jakarta.data.restrict.Restriction;
  */
 @Repository
 public interface Countries extends CrudRepository<Country, String> {
+
+    @Find
+    @First(3)
+    @OrderBy(value = _Country.NAME)
+    List<Country> alphabetizedAfter(
+            @By(_Country.NAME) @Is(GreaterThan.class) String startAfter);
 
     @Find
     @OrderBy(value = _Country.DAYLIGHTTIMEENDS,
@@ -123,6 +132,12 @@ public interface Countries extends CrudRepository<Country, String> {
             Order<Country> order);
 
     @Find
+    @First(4)
+    @OrderBy(value = _Country.POPULATION, descending = true)
+    List<Country> fourMostPopulousOf(
+            @By(_Country.CODE) @Is(In.class) List<String> codes);
+
+    @Find
     List<Country> highlyPopulousInRegion(
             @By(_Country.REGION) EqualTo<Region> region,
             @By(_Country.POPULATION) AtLeast<Long> minPopulation,
@@ -137,8 +152,30 @@ public interface Countries extends CrudRepository<Country, String> {
             @By(_Country.REGION) NotEqualTo<Region> exclude);
 
     @Find
+    @First(15)
+    List<Country> largest15Matching(@By(_Country.NAME) Like pattern,
+                                    Order<Country> order);
+
+    @First
+    @Query("WHERE code IS NOT NULL ORDER BY area DESC")
+    Optional<Country> largestByArea();
+
+    @Find
+    @First
+    Optional<Country> leastBy(Sort<Country> sort);
+
+    @Find
     List<Country> lessPopulousThan(
             @By(_Country.POPULATION) LessThan<Long> threshold);
+
+    @Find
+    @First
+    @OrderBy(value = _Country.POPULATION, descending = true)
+    Country mostPopulous();
+
+    @First(5)
+    @Query("WHERE region = ?1 ORDER BY population DESC")
+    List<Country> mostPopulousIn(Region region);
 
     @Find
     List<Country> namedAnyOf(
