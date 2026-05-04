@@ -24,8 +24,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * <p>Annotates a repository interface with an implementation supplied
- * automatically by the Jakarta Data provider.</p>
+ * <p>Annotates a repository interface for the Jakarta Data provider
+ * to implement.</p>
  *
  * <p>This class is a CDI bean-defining annotation when CDI is available.
  * Regardless of whether CDI or custom dependency injection is used, the
