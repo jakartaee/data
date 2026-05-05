@@ -48,7 +48,7 @@ import java.lang.annotation.Target;
  * runtime.</p>
  *
  * <p>Named parameters are not supported on repository methods annotated
- * {@code jakarta.persistence.query.StaticNativeQuery}.</p>
+ * {@code jakarta.persistence.query.NativeQuery}.</p>
  *
  * @see Query
  */
