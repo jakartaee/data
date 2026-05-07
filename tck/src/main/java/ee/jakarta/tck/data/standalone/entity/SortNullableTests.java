@@ -36,10 +36,14 @@ import ee.jakarta.tck.data.framework.junit.anno.Standalone;
 import ee.jakarta.tck.data.framework.read.only.Countries;
 import ee.jakarta.tck.data.framework.read.only.Country;
 import ee.jakarta.tck.data.framework.read.only.CountryPopulator;
+import ee.jakarta.tck.data.framework.read.only.Region;
 import ee.jakarta.tck.data.framework.read.only._Country;
 import ee.jakarta.tck.data.framework.utilities.DatabaseType;
 import ee.jakarta.tck.data.framework.utilities.TestProperty;
 import jakarta.data.Order;
+import jakarta.data.constraint.Like;
+import jakarta.data.page.Page;
+import jakarta.data.page.PageRequest;
 import jakarta.inject.Inject;
 
 /**
@@ -245,6 +249,90 @@ public class SortNullableTests {
     }
 
     @Assertion(id = "1416", strategy = """
+            Use a repository method with an OrderBy annotation that specifies
+            ascending order with nulls first on a nullable attribute.
+            Verify that null values are ordered first, followed by
+            non-null values in ascending order.
+            """)
+    public void testAscNullsFirstWithOrderByAnnotation() {
+        List<Country> found;
+        try {
+            found = countries.ascStartOfDaylightTime(Region.CARIBBEAN);
+        } catch (UnsupportedOperationException x) {
+            if (type.capableOfConstraintsOnNonIdAttributes() &&
+                type.capableOfSortingNullsFirst()) {
+                throw x;
+            } else {
+                return;
+            }
+        }
+
+        assertEquals(List.of("AG: Antigua and Barbuda",
+                             "AW: Aruba",
+                             "BB: Barbados",
+                             "DM: Dominica",
+                             "DO: Dominican Republic",
+                             "GD: Grenada",
+                             "JM: Jamaica",
+                             "KN: Saint Kitts and Nevis",
+                             "LC: Saint Lucia",
+                             "PR: Puerto Rico",
+                             "TT: Trinidad and Tobago",
+                             "VC: Saint Vincent and the Grenadines",
+                             "BS: Bahamas",
+                             "CU: Cuba",
+                             "HT: Haiti",
+                             "TC: Turks and Caicos Islands"),
+                     sortConsecutiveMatches(found,
+                                            Country::getDaylightTimeBegins,
+                                            Country::getCode)
+                             .stream()
+                             .map(c -> c.getCode() + ": " + c.getName())
+                             .toList());
+    }
+
+    @Assertion(id = "1416", strategy = """
+            Use a repository method with an OrderBy annotation that specifies
+            ascending order with nulls last on a nullable attribute.
+            Verify that non-null values are ordered first in ascending order,
+            followed by null values.
+            """)
+    public void testAscNullsLastWithOrderByAnnotation() {
+        List<Country> found;
+        try {
+            found = countries.ascEndOfDaylightTime(Like.prefix("C"));
+        } catch (UnsupportedOperationException x) {
+            if (type.capableOfLike() &&
+                type.capableOfSortingNullsLast()) {
+                throw x;
+            } else {
+                return;
+            }
+        }
+
+        assertEquals(List.of("CH: Switzerland",
+                             "CY: Cyprus",
+                             "CZ: Czech Republic",
+                             "CA: Canada",
+                             "CU: Cuba",
+                             "CL: Chile",
+                             "CD: Congo",
+                             "CF: Central African Republic",
+                             "CI: Ivory Coast",
+                             "CM: Cameroon",
+                             "CN: China",
+                             "CO: Colombia",
+                             "CR: Costa Rica",
+                             "CV: Cape Verde"),
+                     sortConsecutiveMatches(found,
+                                            Country::getDaylightTimeEnds,
+                                            Country::getCode)
+                             .stream()
+                             .map(c -> c.getCode() + ": " + c.getName())
+                             .toList());
+    }
+
+    @Assertion(id = "1416", strategy = """
             Sort by a nullable entity attribute in
             descending order with null values ordered first. Verify that
             all null values appear before non-null values, and that
@@ -375,6 +463,90 @@ public class SortNullableTests {
     }
 
     @Assertion(id = "1416", strategy = """
+            Use a repository method with an OrderBy annotation that specifies
+            descending order with nulls first on a nullable attribute.
+            Verify that null values are ordered first, followed by
+            non-null values in descending order.
+            """)
+    public void testDescNullsFirstWithOrderByAnnotation() {
+        List<Country> found;
+        try {
+            found = countries.descStartOfDaylightTime(Like.prefix("C"));
+        } catch (UnsupportedOperationException x) {
+            if (type.capableOfLike() &&
+                type.capableOfSortingNullsFirst()) {
+                throw x;
+            } else {
+                return;
+            }
+        }
+
+        assertEquals(List.of("CD: Congo",
+                             "CF: Central African Republic",
+                             "CI: Ivory Coast",
+                             "CM: Cameroon",
+                             "CN: China",
+                             "CO: Colombia",
+                             "CR: Costa Rica",
+                             "CV: Cape Verde",
+                             "CL: Chile",
+                             "CH: Switzerland",
+                             "CY: Cyprus",
+                             "CZ: Czech Republic",
+                             "CA: Canada",
+                             "CU: Cuba"),
+                     sortConsecutiveMatches(found,
+                                            Country::getDaylightTimeBegins,
+                                            Country::getCode)
+                             .stream()
+                             .map(c -> c.getCode() + ": " + c.getName())
+                             .toList());
+    }
+
+    @Assertion(id = "1416", strategy = """
+            Use a repository method with an OrderBy annotation that specifies
+            descending order with nulls last on a nullable attribute.
+            Verify that non-null values are ordered first in descending order,
+            followed by null values.
+            """)
+    public void testDescNullsLastWithOrderByAnnotation() {
+        List<Country> found;
+        try {
+            found = countries.descEndOfDaylightTime(Region.CARIBBEAN);
+        } catch (UnsupportedOperationException x) {
+            if (type.capableOfConstraintsOnNonIdAttributes() &&
+                type.capableOfSortingNullsLast()) {
+                throw x;
+            } else {
+                return;
+            }
+        }
+
+        assertEquals(List.of("BS: Bahamas",
+                             "CU: Cuba",
+                             "HT: Haiti",
+                             "TC: Turks and Caicos Islands",
+                             "AG: Antigua and Barbuda",
+                             "AW: Aruba",
+                             "BB: Barbados",
+                             "DM: Dominica",
+                             "DO: Dominican Republic",
+                             "GD: Grenada",
+                             "JM: Jamaica",
+                             "KN: Saint Kitts and Nevis",
+                             "LC: Saint Lucia",
+                             "PR: Puerto Rico",
+                             "TT: Trinidad and Tobago",
+                             "VC: Saint Vincent and the Grenadines"),
+                     sortConsecutiveMatches(found,
+                                            Country::getDaylightTimeEnds,
+                                            Country::getCode)
+                             .stream()
+                             .map(c -> c.getCode() + ": " + c.getName())
+                             .toList());
+    }
+
+    @Assertion(id = "1416", strategy = """
             Sort by multiple attributes including a nullable
             attribute with null ordering specified, followed by non-nullable
             attributes. Verify that the primary sort (with null ordering)
@@ -435,6 +607,103 @@ public class SortNullableTests {
                              "SD: Sudan",
                              "KR: South Korea",
                              "UG: Uganda"),
+                     found.stream()
+                          .map(c -> c.getCode() + ": " + c.getName())
+                          .toList());
+    }
+
+    @Assertion(id = "1418", strategy = """
+            Use a repository method that combines an OrderBy annotation and
+            an Order parameter, both specifying null ordering on nullable
+            attributes. Verify that both orderings are applied correctly
+            by validating a page of results.
+            """)
+    public void testMixedOrderByAndSortWithNullOrdering() {
+        Page<Country> page2;
+        try {
+            page2 = countries.countryCodeAtMost(
+                    "OZ",
+                    Order.by(_Country.daylightTimeBegins.desc().nullsFirst(),
+                             _Country.code.asc()),
+                    PageRequest.ofSize(25).page(2));
+        } catch (IllegalArgumentException x) {
+            if (type.capableOfSortingNullsFirst()) {
+                throw x;
+            } else {
+                return;
+            }
+        } catch (UnsupportedOperationException x) {
+            if (type.capableOfLessThanEqual() &&
+                type.capableOfSortingNullsLast()) {
+                throw x;
+            } else {
+                return;
+            }
+        }
+
+        assertEquals(List.of("LU: Luxembourg",
+                             "LV: Latvia",
+                             "MC: Monaco",
+                             "MD: Moldova",
+                             "ME: Montenegro",
+                             "MK: North Macedonia",
+                             "MT: Malta",
+                             "NL: Netherlands",
+                             "NO: Norway",
+                             "IL: Israel",
+                             "EG: Egypt",
+                             "BM: Bermuda",
+                             "BS: Bahamas",
+                             "CA: Canada",
+                             "CU: Cuba",
+                             "GL: Greenland",
+                             "HT: Haiti",
+                             "MX: Mexico",
+                             "CL: Chile",
+                             "AU: Australia",
+                             "NZ: New Zealand",
+                             "AE: United Arab Emirates",
+                             "AF: Afghanistan",
+                             "AG: Antigua and Barbuda",
+                             "AM: Armenia"),
+                     page2.content().stream()
+                          .map(c -> c.getCode() + ": " + c.getName())
+                          .toList());
+    }
+
+    @Assertion(id = "1418", strategy = """
+            Use a repository method with multiple OrderBy annotations including
+            null ordering on nullable attributes. Verify that the primary sort
+            with null ordering is applied first, followed by secondary sorts
+            within groups of matching primary values.
+            """)
+    public void testMultipleOrderByWithNullOrdering() {
+        List<Country> found;
+        try {
+            found = countries.withNamePattern("%_al%a%");
+        } catch (UnsupportedOperationException x) {
+            if (type.capableOfConstraintsOnNonIdAttributes() &&
+                type.capableOfLike() &&
+                type.capableOfSortingNullsFirst() &&
+                type.capableOfSortingNullsFirst()) {
+                throw x;
+            } else {
+                return;
+            }
+        }
+
+        assertEquals(List.of("NZ: New Zealand",
+                             "AU: Australia",
+                             "MT: Malta",
+                             "CF: Central African Republic",
+                             "GQ: Equatorial Guinea",
+                             "GT: Guatemala",
+                             "MH: Marshall Islands",
+                             "MW: Malawi",
+                             "MY: Malaysia",
+                             "NC: New Caledonia",
+                             "SO: Somalia",
+                             "SV: El Salvador"),
                      found.stream()
                           .map(c -> c.getCode() + ": " + c.getName())
                           .toList());
