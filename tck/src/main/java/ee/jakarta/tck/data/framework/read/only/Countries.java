@@ -63,7 +63,7 @@ public interface Countries extends CrudRepository<Country, String> {
     @Find
     @First(3)
     @OrderBy(value = _Country.NAME)
-    List<Country> alphabetizedAfter(
+    Country[] alphabetizedAfter(
             @By(_Country.NAME) @Is(GreaterThan.class) String startAfter);
 
     @Find
@@ -130,6 +130,10 @@ public interface Countries extends CrudRepository<Country, String> {
     List<Country> findLargest(
             @By(_Country.POPULATION) @Is(AtLeast.class) long minPopulation,
             Order<Country> order);
+
+    @Find
+    @First
+    List<Country> firstOf(Order<Country> order);
 
     @Find
     @First(4)

@@ -20,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -92,6 +93,32 @@ public class FirstTests {
 
         assertEquals("IN", found.getCode());
         assertEquals("India", found.getName());
+    }
+
+    @Assertion(id = "532", strategy = """
+            Use @First annotation defaulting to a value of 1 on a @Find method
+            with a given Order to retrieve the first result as a List. Verify
+            that the resulting List contains exactly one result and it is the
+            first according to the sort order.
+            """)
+    public void testFindFirstEntityAsList() {
+        List<Country> found;
+        try {
+            found = countries.firstOf(Order.by(_Country.region.asc(),
+                                               _Country.area.desc()));
+        } catch (UnsupportedOperationException x) {
+            if (type.capableOfQueryWithoutWhere() &&
+                type.capableOfMultipleSort()) {
+                throw x;
+            } else {
+                return;
+            }
+        }
+
+        assertEquals(List.of("DZ: Algeria"),
+        found.stream()
+             .map(c -> c.getCode() + ": " + c.getName())
+             .toList());
     }
 
     @Assertion(id = "532", strategy = """
@@ -197,7 +224,7 @@ public class FirstTests {
             returned in the correct sort order.
             """)
     public void testFindFirstThree() {
-        List<Country> found;
+        Country[] found;
         try {
             found = countries.alphabetizedAfter("Dominican Republic");
         } catch (UnsupportedOperationException x) {
@@ -213,7 +240,7 @@ public class FirstTests {
         assertEquals(List.of("TL: East Timor",
                              "EC: Ecuador",
                              "EG: Egypt"),
-                     found.stream()
+                     Stream.of(found)
                           .map(c -> c.getCode() + ": " + c.getName())
                           .toList());
     }
