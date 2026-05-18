@@ -68,6 +68,14 @@
         <scope>provided</scope>
     </dependency>
 
+    <!-- Data Stateful API -->
+    <dependency>
+        <groupId>jakarta.data</groupId>
+        <artifactId>jakarta.data.stateful-api</artifactId>
+        <version>${jakarta.data.version}</version>
+        <scope>provided</scope>
+    </dependency>
+
     <!-- EE Server Integration framework -->
     <dependency>
       <groupId>org.jboss.arquillian.junit5</groupId>
