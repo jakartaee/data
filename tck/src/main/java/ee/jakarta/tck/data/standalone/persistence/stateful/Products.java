@@ -13,51 +13,50 @@
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
-package ee.jakarta.tck.data.standalone.persistence;
+package ee.jakarta.tck.data.standalone.persistence.stateful;
 
+import static jakarta.data.repository.By.ID;
 
 import java.util.List;
-import java.util.stream.Stream;
+import java.util.Optional;
 
-import jakarta.data.Order;
+import ee.jakarta.tck.data.standalone.persistence.Product;
+import jakarta.data.repository.By;
+import jakarta.data.repository.DataRepository;
 import jakarta.data.repository.Find;
-import jakarta.data.repository.Query;
 import jakarta.data.repository.Repository;
+import jakarta.data.repository.stateful.Detach;
 import jakarta.data.repository.stateful.Merge;
 import jakarta.data.repository.stateful.Persist;
+import jakarta.data.repository.stateful.Refresh;
 import jakarta.data.repository.stateful.Remove;
-import jakarta.data.restrict.Restriction;
 import jakarta.transaction.Transactional;
 
 /**
  * A stateful repository for the Product entity.
+ * This repository interface inherits from the built-in DataRepository
+ * interface, which is compatible with stateful.
  */
 @Repository
-public interface Inventory {
-
-    @Query("DELETE FROM Product")
-    void erase();
+public interface Products extends DataRepository<Product, String> {
 
     @Find
-    Stream<Product> filter(Restriction<Product> restriction,
-                           Order<Product> sortBy);
+    Optional<Product> byNumber(@By(ID) String productNumber);
+
+    @Detach
+    void detachAll(List<Product> products);
 
     @Merge
-    Product merge(Product product);
+    Product[] mergeAll(Product... products);
 
     @Persist
     @Transactional
-    void persist(Product product);
+    void persistAll(Product... product);
 
     @Remove
     @Transactional
-    void remove(Product product);
+    void removeAll(Product... products);
 
-    @Query("""
-            FROM Product
-            WHERE price * (1.0 - :percentOff / 100.0) < :max
-            ORDER BY price DESC, name ASC, productNum DESC
-            """)
-    List<Product> withDiscountedPriceUpTo(double max,
-                                          int percentOff);
+    @Refresh
+    void refreshAll(Product... products);
 }

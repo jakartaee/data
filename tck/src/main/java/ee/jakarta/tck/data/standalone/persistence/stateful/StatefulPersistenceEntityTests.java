@@ -13,7 +13,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
-package ee.jakarta.tck.data.standalone.persistence;
+package ee.jakarta.tck.data.standalone.persistence.stateful;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -28,6 +28,8 @@ import org.jboss.shrinkwrap.api.spec.WebArchive;
 import ee.jakarta.tck.data.framework.junit.anno.Assertion;
 import ee.jakarta.tck.data.framework.junit.anno.Persistence;
 import ee.jakarta.tck.data.framework.junit.anno.Standalone;
+import ee.jakarta.tck.data.standalone.persistence.Product;
+import ee.jakarta.tck.data.standalone.persistence._Product;
 import ee.jakarta.tck.data.standalone.persistence.Product.Department;
 
 import jakarta.data.Order;

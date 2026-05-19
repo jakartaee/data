@@ -13,49 +13,51 @@
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
-package ee.jakarta.tck.data.standalone.persistence;
-
-import static jakarta.data.repository.By.ID;
+package ee.jakarta.tck.data.standalone.persistence.stateful;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Stream;
 
-import jakarta.data.repository.By;
-import jakarta.data.repository.DataRepository;
+import ee.jakarta.tck.data.standalone.persistence.Product;
+import jakarta.data.Order;
 import jakarta.data.repository.Find;
+import jakarta.data.repository.Query;
 import jakarta.data.repository.Repository;
-import jakarta.data.repository.stateful.Detach;
 import jakarta.data.repository.stateful.Merge;
 import jakarta.data.repository.stateful.Persist;
-import jakarta.data.repository.stateful.Refresh;
 import jakarta.data.repository.stateful.Remove;
+import jakarta.data.restrict.Restriction;
 import jakarta.transaction.Transactional;
 
 /**
  * A stateful repository for the Product entity.
- * This repository interface inherits from the built-in DataRepository
- * interface, which is compatible with stateful.
  */
 @Repository
-public interface Products extends DataRepository<Product, String> {
+public interface Inventory {
+
+    @Query("DELETE FROM Product")
+    void erase();
 
     @Find
-    Optional<Product> byNumber(@By(ID) String productNumber);
-
-    @Detach
-    void detachAll(List<Product> products);
+    Stream<Product> filter(Restriction<Product> restriction,
+                           Order<Product> sortBy);
 
     @Merge
-    Product[] mergeAll(Product... products);
+    Product merge(Product product);
 
     @Persist
     @Transactional
-    void persistAll(Product... product);
+    void persist(Product product);
 
     @Remove
     @Transactional
-    void removeAll(Product... products);
+    void remove(Product product);
 
-    @Refresh
-    void refreshAll(Product... products);
+    @Query("""
+            FROM Product
+            WHERE price * (1.0 - :percentOff / 100.0) < :max
+            ORDER BY price DESC, name ASC, productNum DESC
+            """)
+    List<Product> withDiscountedPriceUpTo(double max,
+                                          int percentOff);
 }
