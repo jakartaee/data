@@ -35,9 +35,7 @@ import jakarta.transaction.Transactional;
 @Repository
 public interface Inventory {
 
-    @Query("""
-            DELETE FROM Product
-            """)
+    @Query("DELETE FROM Product")
     void erase();
 
     @Find
