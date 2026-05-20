@@ -108,7 +108,7 @@
         <checkstyle.version>12.3.1</checkstyle.version>
         <jacoco.maven.version>0.8.14</jacoco.maven.version>
         
-        <junit.version>6.0.3</junit.version>
+        <junit.version>6.1.0</junit.version>
         
         <pi.test.version>1.24.0</pi.test.version>
         <pitest.junit5.plugin.version>1.2.3</pitest.junit5.plugin.version>
