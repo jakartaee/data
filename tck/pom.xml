@@ -89,8 +89,8 @@
     </dependency>
 
     <dependency>
-      <groupId>jakarta.concurrency</groupId>
-      <artifactId>jakarta.concurrency-api</artifactId>
+      <groupId>jakarta.enterprise.concurrent</groupId>
+      <artifactId>jakarta.enterprise.concurrent-api</artifactId>
       <version>${jakarta.concurrency.version}</version>
       <scope>provided</scope>
     </dependency>
