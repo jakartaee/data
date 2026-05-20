@@ -19,7 +19,12 @@ package jakarta.data.spi.expression.path;
 
 import java.time.LocalDate;
 
+import jakarta.data.expression.BooleanExpression;
+import jakarta.data.expression.ComparableExpression;
 import jakarta.data.expression.NavigableExpression;
+import jakarta.data.expression.NumericExpression;
+import jakarta.data.expression.TemporalExpression;
+import jakarta.data.expression.TextExpression;
 import jakarta.data.metamodel.BooleanAttribute;
 import jakarta.data.metamodel.ComparableAttribute;
 import jakarta.data.metamodel.NavigableAttribute;
@@ -88,17 +93,15 @@ class NavigablePathTest {
     @Test
     @DisplayName("should create BooleanPath from path and attribute")
     void shouldCreateBooleanPath() {
-        BooleanAttribute<Book> publisherInfoActive =
+        BooleanExpression<Book> publisherInfoActive =
                 _Book.publisher.navigate(_Publisher.info)
                                .navigate(_BusinessInfo.active);
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(publisherInfoActive.name())
-                .isEqualTo("publisher.info.active");
-            soft.assertThat(publisherInfoActive.asc().property())
-                .isEqualTo("publisher.info.active");
-            soft.assertThat(publisherInfoActive.desc().property())
-                .isEqualTo("publisher.info.active");
+            soft.assertThat(publisherInfoActive.asc().expression().toString())
+                .isEqualTo("book.publisher.info.active");
+            soft.assertThat(publisherInfoActive.desc().expression().toString())
+                .isEqualTo("book.publisher.info.active");
             soft.assertThat(publisherInfoActive.toString())
                 .isEqualTo("book.publisher.info.active");
         });
@@ -107,17 +110,17 @@ class NavigablePathTest {
     @Test
     @DisplayName("should create ComparablePath from path and attribute")
     void shouldCreateComparablePath() {
-        ComparableAttribute<Book, BusinessType> publisherBusinessInfoType =
+        ComparableExpression<Book, BusinessType> publisherBusinessInfoType =
                 _Book.publisher.navigate(_Publisher.info)
                                .navigate(_BusinessInfo.type);
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(publisherBusinessInfoType.name())
-                .isEqualTo("publisher.info.type");
-            soft.assertThat(publisherBusinessInfoType.asc().property())
-                .isEqualTo("publisher.info.type");
-            soft.assertThat(publisherBusinessInfoType.desc().property())
-                .isEqualTo("publisher.info.type");
+            soft.assertThat(publisherBusinessInfoType.asc().expression()
+                                                           .toString())
+                .isEqualTo("book.publisher.info.type");
+            soft.assertThat(publisherBusinessInfoType.desc().expression()
+                                                            .toString())
+                .isEqualTo("book.publisher.info.type");
             soft.assertThat(publisherBusinessInfoType.toString())
                 .isEqualTo("book.publisher.info.type");
         });
@@ -146,17 +149,15 @@ class NavigablePathTest {
     @Test
     @DisplayName("should create NumericPath from path and attribute")
     void shouldCreateNumericPath() {
-        NumericAttribute<Book, Integer> publisherInfoZipcode =
+        NumericExpression<Book, Integer> publisherInfoZipcode =
                 _Book.publisher.navigate(_Publisher.info)
                                .navigate(_BusinessInfo.zipcode);
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(publisherInfoZipcode.name())
-                .isEqualTo("publisher.info.zipcode");
-            soft.assertThat(publisherInfoZipcode.asc().property())
-                .isEqualTo("publisher.info.zipcode");
-            soft.assertThat(publisherInfoZipcode.desc().property())
-                .isEqualTo("publisher.info.zipcode");
+            soft.assertThat(publisherInfoZipcode.asc().expression().toString())
+                .isEqualTo("book.publisher.info.zipcode");
+            soft.assertThat(publisherInfoZipcode.desc().expression().toString())
+                .isEqualTo("book.publisher.info.zipcode");
             soft.assertThat(publisherInfoZipcode.toString())
                 .isEqualTo("book.publisher.info.zipcode");
         });
@@ -165,17 +166,15 @@ class NavigablePathTest {
     @Test
     @DisplayName("should create TemporalPath from path and attribute")
     void shouldCreateTemporalPath() {
-        TemporalAttribute<Book, LocalDate> publisherInfoFounded =
+        TemporalExpression<Book, LocalDate> publisherInfoFounded =
                 _Book.publisher.navigate(_Publisher.info)
                                .navigate(_BusinessInfo.founded);
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(publisherInfoFounded.name())
-                .isEqualTo("publisher.info.founded");
-            soft.assertThat(publisherInfoFounded.asc().property())
-                .isEqualTo("publisher.info.founded");
-            soft.assertThat(publisherInfoFounded.desc().property())
-                .isEqualTo("publisher.info.founded");
+            soft.assertThat(publisherInfoFounded.asc().expression().toString())
+                .isEqualTo("book.publisher.info.founded");
+            soft.assertThat(publisherInfoFounded.desc().expression().toString())
+                .isEqualTo("book.publisher.info.founded");
             soft.assertThat(publisherInfoFounded.toString())
                 .isEqualTo("book.publisher.info.founded");
         });
@@ -184,17 +183,21 @@ class NavigablePathTest {
     @Test
     @DisplayName("should create TextPath from path and attribute")
     void shouldCreateTextPath() {
-        TextAttribute<Book> publisherInfoName =
+        TextExpression<Book> publisherInfoName =
                 _Book.publisher.navigate(_Publisher.info)
                                .navigate(_BusinessInfo.name);
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(publisherInfoName.name())
-                .isEqualTo("publisher.info.name");
-            soft.assertThat(publisherInfoName.asc().property())
-                .isEqualTo("publisher.info.name");
-            soft.assertThat(publisherInfoName.descIgnoreCase().property())
-                .isEqualTo("publisher.info.name");
+            soft.assertThat(publisherInfoName.asc().expression().toString())
+                .isEqualTo("book.publisher.info.name");
+            soft.assertThat(publisherInfoName.desc().expression().toString())
+                .isEqualTo("book.publisher.info.name");
+            soft.assertThat(publisherInfoName.ascIgnoreCase().expression()
+                                                             .toString())
+                .isEqualTo("book.publisher.info.name");
+            soft.assertThat(publisherInfoName.descIgnoreCase().expression()
+                                                              .toString())
+                .isEqualTo("book.publisher.info.name");
             soft.assertThat(publisherInfoName.toString())
                 .isEqualTo("book.publisher.info.name");
         });
