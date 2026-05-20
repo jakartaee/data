@@ -13,7 +13,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
-package ee.jakarta.tck.data.standalone.persistence;
+package ee.jakarta.tck.data.standalone.persistence.stateless;
 
 import static jakarta.data.repository.By.ID;
 
@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import ee.jakarta.tck.data.standalone.persistence.Product;
 import jakarta.data.Order;
 import jakarta.data.repository.By;
 import jakarta.data.repository.DataRepository;

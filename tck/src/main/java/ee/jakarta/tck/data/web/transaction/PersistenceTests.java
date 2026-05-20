@@ -29,10 +29,9 @@ import org.jboss.shrinkwrap.api.spec.WebArchive;
 import ee.jakarta.tck.data.framework.junit.anno.Assertion;
 import ee.jakarta.tck.data.framework.junit.anno.Persistence;
 import ee.jakarta.tck.data.framework.junit.anno.Web;
-import ee.jakarta.tck.data.standalone.persistence.Catalog;
 import ee.jakarta.tck.data.standalone.persistence.Product;
 import ee.jakarta.tck.data.standalone.persistence.Product.Department;
-
+import ee.jakarta.tck.data.standalone.persistence.stateless.Catalog;
 import jakarta.inject.Inject;
 import jakarta.transaction.UserTransaction;
 
