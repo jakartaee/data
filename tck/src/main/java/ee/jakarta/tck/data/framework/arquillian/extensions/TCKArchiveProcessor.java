@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022, 2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022, 2026 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -15,7 +15,6 @@
  */
 package ee.jakarta.tck.data.framework.arquillian.extensions;
 
-import java.io.File;
 import java.util.Arrays;
 import java.util.logging.Logger;
 
@@ -25,7 +24,6 @@ import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.container.ClassContainer;
 import org.jboss.shrinkwrap.api.container.LibraryContainer;
 import org.jboss.shrinkwrap.api.container.ResourceContainer;
-import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 
 import ee.jakarta.tck.data.framework.junit.anno.Platform;
 import ee.jakarta.tck.data.framework.junit.anno.Signature;
@@ -95,9 +93,8 @@ public class TCKArchiveProcessor implements ApplicationArchiveProcessor {
             ((ClassContainer<?>) applicationArchive).addPackage(signaturePackage);
 
             // Add the sigtest plugin library
-            File sigTestDep = Maven.resolver().resolve("jakarta.tck:sigtest-maven-plugin:2.3").withoutTransitivity().asSingleFile();
-            log.info("Application Archive [" + applicationName + "] is being appended with library " + sigTestDep.getName());
-            ((LibraryContainer<?>) applicationArchive).addAsLibrary(sigTestDep);
+            log.info("Application Archive [" + applicationName + "] is being appended with library sigtest-maven-plugin.jar");
+            ((LibraryContainer<?>) applicationArchive).addAsLibrary(TCKDependencyProcessor.SigTestArchive.get());
 
             // Add signature resources
             log.info("Application Archive [" + applicationName + "] is being appended with resources "

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022, 2026 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -16,6 +16,7 @@
 package ee.jakarta.tck.data.framework.arquillian.extensions;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.jboss.arquillian.test.spi.TestClass;
@@ -67,6 +68,31 @@ public class TCKArchiveProcessorTest {
         
         // Should append signature packages
         assertTrue(testWAR.getContent().containsKey(new BasicPath("/WEB-INF/classes/ee/jakarta/tck/data/framework/signature")));
+        assertTrue(testWAR.getContent().containsKey(new BasicPath("/WEB-INF/lib/sigtest-maven-plugin.jar")));
+    }
+
+    @Test
+    public void assertJArchiveAppenderShouldBuildArchiveFromClasspath() {
+        TCKDependencyProcessor.AssertJArchiveAppender appender = new TCKDependencyProcessor.AssertJArchiveAppender();
+        
+        assertNotNull(appender.createAuxiliaryArchive());
+        assertTrue(appender.createAuxiliaryArchive()
+                .contains(new BasicPath("/org/assertj/core/api/Assertions.class")));
+        assertTrue(appender.createAuxiliaryArchive()
+                .contains(new BasicPath("/META-INF/MANIFEST.MF")));
+    }
+
+    @Test
+    public void sigTestArchiveShouldIncludePluginClassesAndSignatureResources() {
+        assertNotNull(TCKDependencyProcessor.SigTestArchive.get());
+        assertTrue(TCKDependencyProcessor.SigTestArchive.get()
+                .contains(new BasicPath("/com/sun/tdk/signaturetest/SigTest.class")));
+        assertTrue(TCKDependencyProcessor.SigTestArchive.get()
+                .contains(new BasicPath("/org/netbeans/apitest/Sigtest.class")));
+        assertTrue(TCKDependencyProcessor.SigTestArchive.get()
+                .contains(new BasicPath("/jakarta/tck/sigtest_maven_plugin/HelpMojo.class")));
+        assertTrue(TCKDependencyProcessor.SigTestArchive.get()
+                .contains(new BasicPath("/META-INF/MANIFEST.MF")));
     }
     
 }
