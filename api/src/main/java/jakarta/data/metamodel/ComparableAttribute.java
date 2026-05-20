@@ -17,6 +17,7 @@
  */
 package jakarta.data.metamodel;
 
+import jakarta.data.Sort;
 import jakarta.data.expression.ComparableExpression;
 import jakarta.data.messages.Messages;
 
@@ -85,6 +86,28 @@ public interface ComparableAttribute<T, V extends Comparable<?>>
         Messages.requireNonNull(attributeType, "attributeType");
 
         return new ComparableAttributeRecord<>(entityClass, name, attributeType);
+    }
+
+    /**
+     * Obtain a request for an ascending {@link Sort} based on the entity
+     * attribute.
+     *
+     * @return a request for an ascending sort on the entity attribute.
+     */
+    @Override
+    default Sort<T> asc() {
+        return Sort.asc(name());
+    }
+
+    /**
+     * Obtain a request for a descending {@link Sort} based on the entity
+     * attribute.
+     *
+     * @return a request for a descending sort on the entity attribute.
+     */
+    @Override
+    default Sort<T> desc() {
+        return Sort.desc(name());
     }
 }
 
