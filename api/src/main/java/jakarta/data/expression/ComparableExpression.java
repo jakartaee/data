@@ -17,6 +17,7 @@
  */
 package jakarta.data.expression;
 
+import jakarta.data.Sortable;
 import jakarta.data.constraint.Between;
 import jakarta.data.constraint.GreaterThan;
 import jakarta.data.constraint.AtLeast;
@@ -44,7 +45,7 @@ import jakarta.data.restrict.Restriction;
  * @since 1.1
  */
 public interface ComparableExpression<T, V extends Comparable<?>>
-        extends Expression<T, V> {
+        extends Expression<T, V>, Sortable<T> {
 
     /**
      * <p>Obtains a {@link Restriction} that requires that this expression

@@ -34,17 +34,17 @@ class SortTest {
     @DisplayName("Should throw NullPointerException when one of the properties are null")
     void shouldReturnErrorWhenPropertyDirectionNull() {
         assertThatNullPointerException().isThrownBy(() ->
-                Sort.of(null, null, false));
+                Sort.of((String) null, null, false));
         assertThatNullPointerException().isThrownBy(() ->
                 Sort.of(NAME, null, true));
         assertThatNullPointerException().isThrownBy(() ->
-                Sort.of(null, Direction.ASC, false));
+                Sort.of((String) null, Direction.ASC, false));
         assertThatNullPointerException().isThrownBy(() ->
-                Sort.of(null, null, false, Sort.Nulls.FIRST));
+                Sort.of((String) null, null, false, Sort.Nulls.FIRST));
         assertThatNullPointerException().isThrownBy(() ->
                 Sort.of(NAME, null, true, Sort.Nulls.LAST));
         assertThatNullPointerException().isThrownBy(() ->
-                Sort.of(null, Direction.ASC, false, Sort.Nulls.UNSPECIFIED));
+                Sort.of((String) null, Direction.ASC, false, Sort.Nulls.UNSPECIFIED));
         assertThatNullPointerException().isThrownBy(() ->
         Sort.of(NAME, Direction.ASC, false, null));
     }

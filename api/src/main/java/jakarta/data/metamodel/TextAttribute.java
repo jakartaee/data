@@ -29,17 +29,6 @@ import jakarta.data.messages.Messages;
 public interface TextAttribute<T> extends ComparableAttribute<T, String>, TextExpression<T> {
 
     /**
-     * Obtain a request for an ascending, case-insensitive {@link Sort} based on
-     * the entity attribute.
-     *
-     * @return a request for an ascending, case-insensitive sort on the entity
-     * attribute.
-     */
-    default Sort<T> ascIgnoreCase() {
-        return Sort.ascIgnoreCase(name());
-    }
-
-    /**
      * Returns {@code String.class} as the entity attribute type for text
      * attributes.
      *
@@ -52,6 +41,17 @@ public interface TextAttribute<T> extends ComparableAttribute<T, String>, TextEx
     }
 
     /**
+     * Obtain a request for an ascending, case-insensitive {@link Sort} based on
+     * the entity attribute.
+     *
+     * @return a request for an ascending, case-insensitive sort on the entity
+     * attribute.
+     */
+    default Sort<T> ascIgnoreCase() {
+        return Sort.ascIgnoreCase(this);
+    }
+
+    /**
      * Obtain a request for a descending, case insensitive {@link Sort} based on
      * the entity attribute.
      *
@@ -59,7 +59,7 @@ public interface TextAttribute<T> extends ComparableAttribute<T, String>, TextEx
      * attribute.
      */
     default Sort<T> descIgnoreCase() {
-        return Sort.descIgnoreCase(name());
+        return Sort.descIgnoreCase(this);
     }
 
     /**

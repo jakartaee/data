@@ -140,7 +140,7 @@ public class Order<T> implements Iterable<Sort<? super T>> {
     @Override
     public boolean equals(Object other) {
         return this == other
-                || other instanceof Order s && sorts.equals(s.sorts);
+            || other instanceof Order<?> s && sorts.equals(s.sorts);
     }
 
     /**
@@ -163,7 +163,6 @@ public class Order<T> implements Iterable<Sort<? super T>> {
     public Iterator<Sort<? super T>> iterator() {
         return sorts.iterator();
     }
-
 
     /**
      * Textual representation of this instance, including the result of invoking
