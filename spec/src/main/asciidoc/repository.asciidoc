@@ -183,13 +183,19 @@ The Jakarta Data implementation automatically recognizes the query annotations i
 
 The Jakarta Persistence specification defines several annotations in the `jakarta.persistence.query` package that can be used on Jakarta Data repositories.
 
-- `@StaticNativeQuery`, which can annotate a Jakarta Data repository method in place of Jakarta Data's `@Query` to supply a native SQL query.
+- `@NativeQuery`, which can annotate a Jakarta Data repository method in place of Jakarta Data's `@Query` to supply a native SQL query.
 
-- `@StaticQuery`, which can annotate a Jakarta Data repository method in place of Jakarta Data's `@Query` to supply a JPQL query.
+- `@JakartaQuery`, which can annotate a Jakarta Data repository method in place of Jakarta Data's `@Query` to supply a JPQL query.
 
-- `@ReadQueryOptions`, which can annotate a Jakarta Data repository method annotated `@Query`, `@StaticQuery`, or `@StaticNativeQuery` that performs a `SELECT` operation. Alternatively, it can annotate a Jakarta Data repository method annotated `@Find`. The `ReadQueryOptions` annotation allows the application to supply additional options defined by Jakarta Persistence for queries that perform read operations.
+- `@QueryOptions`, which can annotate a Jakarta Data repository method to supply additional options defined by Jakarta Persistence. The Jakarta Data repository method must also
 
-- `@WriteQueryOptions`, which can annotate a Jakarta Data repository method annotated `@Query`, `@StaticQuery`, or `@StaticNativeQuery` that performs a `DELETE` or `UPDATE` operation. Alternatively, it can annotate a Jakarta Data repository method annotated `@Delete` when the latter is not used as a lifecycle annotation.  The `WriteQueryOptions` annotation allows the application to supply additional options defined by Jakarta Persistence for queries that perform write operations.
+** be annotated `@Query`, `@JakartaQuery`, or `@NativeQuery` and perform a `SELECT` operation,
+
+** be annotated `@Find`,
+
+** be annotated `@Query`, `@JakartaQuery`, or `@NativeQuery` and perform a `DELETE` or `UPDATE` operation, or
+
+** be annotated `@Delete` and not define a lifecycle operation.
 
 ==== Limitations of JPQL and native SQL queries
 

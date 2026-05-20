@@ -494,10 +494,10 @@ import java.util.Set;
  * annotations that can annotate repository methods in place of {@link Query}:
  *
  * <ul>
- * <li>{@code jakarta.persistence.query.StaticNativeQuery} - supplies a native
+ * <li>{@code jakarta.persistence.query.NativeQuery} - supplies a native
  * SQL query instead of a query that is written in Jakarta Persistence Query
  * Language (JPQL) or the Jakarta Common Query Language (JCQL).</li>
- * <li>{@code jakarta.persistence.query.StaticQuery} - behaves identically to
+ * <li>{@code jakarta.persistence.query.JakartaQuery} - behaves identically to
  * Jakarta Data's {@code Query} annotation in allowing JPQL and JCQL to be
  * supplied.</li>
  * </ul>
@@ -521,8 +521,8 @@ import java.util.Set;
  * for native SQL queries. Use positional parameters instead. For example,</p>
 
  * <pre>{@code
- * @StaticNativeQuery("SELECT * FROM Person WHERE ssn = ? AND alive = ?")
- * @ReadQueryOptions(lockMode = LockModeType.PESSIMISTIC_WRITE)
+ * @NativeQuery("SELECT * FROM Person WHERE ssn = ? AND alive = ?")
+ * @QueryOptions(lockMode = LockModeType.PESSIMISTIC_WRITE)
  * Optional<Person> findIfLiving(String ssn, boolean isAlive);
  * }</pre>
  *

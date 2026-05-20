@@ -51,7 +51,7 @@ import java.lang.annotation.Target;
  *
  * <p>This annotation must not be used in other locations; in particular,
  * it must not be used on repository methods annotated
- * {@code jakarta.persistence.query.StaticNativeQuery}.</p>
+ * {@code jakarta.persistence.query.NativeQuery}.</p>
  *
  * <p>Sort criteria for a repository method that returns a projection
  * can include any of the returned entity attributes that are of sortable type.
