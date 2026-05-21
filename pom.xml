@@ -100,7 +100,7 @@
 
         <apache.rat.version>0.18</apache.rat.version>
 
-        <arquillian.version>1.10.1.Final</arquillian.version>
+        <arquillian.version>1.10.2.Final</arquillian.version>
         <arquillian.jakarta.version>10.0.0.Final</arquillian.jakarta.version>
         <shrinkwrap.version>1.2.6</shrinkwrap.version>
         <shrinkwrap.resolver.version>3.3.6</shrinkwrap.resolver.version>
