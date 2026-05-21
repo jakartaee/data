@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 @jakarta.nosql.Entity
 @jakarta.persistence.Entity
 public class Account {
+
     @jakarta.nosql.Id
     @jakarta.persistence.Id
     int accountId;
