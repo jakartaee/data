@@ -18,8 +18,10 @@
 package jakarta.data.exceptions;
 
 /**
- * Indicates that an entity cannot be inserted into the database because an
- * entity with same unique identifier already exists in the database.
+ * Indicates that an entity cannot be inserted into the database because
+ * insertion would violate a unique constraint. For example, this exception
+ * occurs when an entity with an identical unique identifier already exists
+ * in the database.
  */
 public class EntityExistsException extends DataException {
     private static final long serialVersionUID = -7275063477464065015L;
