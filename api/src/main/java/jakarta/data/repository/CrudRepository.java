@@ -97,12 +97,14 @@ import java.util.List;
 public interface CrudRepository<T, K> extends BasicRepository<T, K> {
 
     /**
-     * <p>Inserts an entity into the database. If an entity of this type with
-     * the same
-     * unique identifier already exists in the database and the database
-     * supports ACID transactions, then this method raises
-     * {@link EntityExistsException}. In databases that follow the BASE model or
-     * use an append model to write data, this exception is not thrown.</p>
+     * <p>Inserts an entity into the database.<p>
+     *
+     * <p>If the database supports ACID transactions and insertion of the given
+     * entity would violate a uniqueness constraint, for example, if an entity
+     * of this type with the same unique identifier already exists in the database,
+     * then this method raises {@link EntityExistsException}. In databases that
+     * follow the BASE model or use an append model to write data, this exception
+     * is not thrown.</p>
      *
      * <p>The entity instance returned as a result of this method must include
      * all values that were
@@ -117,21 +119,24 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
      * @return the inserted entity, which may or may not be a different instance
      * depending on whether the insert caused values to be generated or
      * automatically incremented.
-     * @throws EntityExistsException if the entity is already present in the
-     *                               database (in ACID-supported databases).
+     * @throws EntityExistsException (in ACID-supported databases) if the entity
+     *                               is already present in the database, or if
+     *                               its insertion would violate a uniqueness
+     *                               constraint
      * @throws NullPointerException  if the entity is null.
      */
     @Insert
     <S extends T> S insert(S entity);
 
     /**
-     * <p>Inserts multiple entities into the database. If any entity of this
-     * type with the same
-     * unique identifier as any of the given entities already exists in the
-     * database and the database supports ACID transactions, then this method
-     * raises {@link EntityExistsException}. In databases that follow the BASE
-     * model or use an append model to write data, this exception is not
-     * thrown.</p>
+     * <p>Inserts multiple entities into the database.</p>
+     *
+     * <p>If the database supports ACID transactions and insertion of one of the
+     * given entities would violate a uniqueness constraint, for example, if an
+     * entity of this type with the same unique identifier as one of the given
+     * entities already exists in the database, then this method raises
+     * {@link EntityExistsException}. In databases that follow the BASE model or
+     * use an append model to write data, this exception is not thrown.</p>
      *
      * <p>The entities within the returned {@link Iterable} must include all
      * values that were
@@ -149,9 +154,10 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
      * @return an iterable containing the inserted entities, which may or may
      * not be different instances depending on whether the insert caused values
      * to be generated or automatically incremented.
-     * @throws EntityExistsException if any of the entities are already present
-     *                               in the database (in ACID-supported
-     *                               databases).
+     * @throws EntityExistsException (in ACID-supported databases) if any of the
+     *                               entities are already present in the database,
+     *                               or if their insertion would violate a uniqueness
+     *                               constraint
      * @throws NullPointerException  if the iterable is null or any element is
      *                               null.
      */
