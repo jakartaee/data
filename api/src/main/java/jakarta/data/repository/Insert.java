@@ -64,7 +64,7 @@ import java.lang.annotation.Target;
  * of entities in the argument. After the annotated method returns, an original entity instance supplied as an argument
  * might not accurately reflect the inserted state.
  * </p>
- * <p>If the databases uses ACID (atomic, consistent, isolated, durable) transactions, and insertion of an entity would
+ * <p>If the database uses ACID (atomic, consistent, isolated, durable) transactions, and insertion of an entity would
  * result in a violation of a uniqueness constraint, for example, if an entity of the given type and with the same
  * unique identifier already exists in the database when the annotated method is called, then the annotated method must
  * raise {@link jakarta.data.exceptions.EntityExistsException}. If the database follows the BASE model, or uses an
