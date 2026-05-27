@@ -59,5 +59,5 @@ public interface Inventory {
             ORDER BY price DESC, name ASC, productNum DESC
             """)
     List<Product> withDiscountedPriceUpTo(double max,
-                                          int percentOff);
+                                          double percentOff);
 }
