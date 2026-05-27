@@ -50,7 +50,7 @@ public interface NaturalNumbers extends BasicRepository<NaturalNumber, Long>, Id
     CardinalNumber cardinalNumberOf(long id);
 
     @Find
-    Optional<CardinalNumber> cardinalNumberOptional(int id);
+    Optional<CardinalNumber> cardinalNumberOptional(long id);
 
     @Find
     @OrderBy(_NaturalNumber.NUMTYPEORDINAL)
@@ -164,13 +164,13 @@ public interface NaturalNumbers extends BasicRepository<NaturalNumber, Long>, Id
     @Select(_NaturalNumber.NUMTYPEORDINAL)
     @Select(_NaturalNumber.FLOOROFSQUAREROOT)
     @Select(_NaturalNumber.ID)
-    Optional<WholeNumber> wholeNumberOf(@By(ID) int id);
+    Optional<WholeNumber> wholeNumberOf(@By(ID) long id);
 
     @Find
     @Select(_NaturalNumber.NUMTYPEORDINAL)
     @Select(_NaturalNumber.FLOOROFSQUAREROOT)
     @Select(_NaturalNumber.ID)
-    WholeNumber[] wholeNumbers(@By(_NaturalNumber.FLOOROFSQUAREROOT) int floorOfSquareRoot,
+    WholeNumber[] wholeNumbers(@By(_NaturalNumber.FLOOROFSQUAREROOT) long floorOfSquareRoot,
                                Order<NaturalNumber> order);
 
     @Find
