@@ -242,7 +242,11 @@ public interface Countries extends CrudRepository<Country, String> {
     @Find
     @OrderBy(_Country.CAPITAL_POPULATION)
     List<Country> withCapitalBiggerThan(
-            GreaterThan<Integer> capitalPopulation);
+            // CHECKSTYLE:OFF
+            // using an underscore in the parameter name on purpose
+            // to test the specification feature:
+            GreaterThan<Integer> capital_population);
+            // CHECKSTYLE:ON
 
     @Find
     List<Country> withCapitalNamed(

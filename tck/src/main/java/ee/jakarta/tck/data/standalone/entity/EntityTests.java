@@ -2746,15 +2746,14 @@ public class EntityTests {
             """)
     public void testSelectEntityAttributeAsArrayOfLong() {
 
-        long[] found = positives.requiringBits((short) 4);
+        Long[] found = positives.requiringBits((short) 4);
 
         assertEquals(List.of(8L, 9L, 10L, 11L, 12L, 13L, 14L, 15L),
                 Arrays.stream(found)
                         .sorted()
-                        .boxed()
                         .collect(Collectors.toList()));
 
-        long[] notFound = positives.requiringBits((short) 0);
+        Long[] notFound = positives.requiringBits((short) 0);
 
         assertEquals(0, notFound.length);
     }

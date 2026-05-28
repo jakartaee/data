@@ -77,7 +77,7 @@ public interface PositiveIntegers extends BasicRepository<NaturalNumber, Long> {
 
     @Find
     @Select(_NaturalNumber.ID)
-    long[] requiringBits(Short numBitsRequired);
+    Long[] requiringBits(Short numBitsRequired);
 
     @Find
     @Select(_NaturalNumber.NUMTYPE)
