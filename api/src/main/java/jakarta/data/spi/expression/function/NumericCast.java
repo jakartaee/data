@@ -19,15 +19,55 @@ package jakarta.data.spi.expression.function;
 
 import jakarta.data.expression.NumericExpression;
 
+/**
+ * <p>An {@linkplain NumericExpression expression} that represents conversion
+ * from one numeric type to another.</p>
+ *
+ * <p>The methods {@link NumericExpression#asBigDecimal() asBigDecimal()},
+ * {@link NumericExpression#asBigInteger() asBigInteger()},
+ * {@link NumericExpression#asDouble() asDouble()}, and
+ * {@link NumericExpression#asLong() asLong()} allow conversion of numeric
+ * expressions to the respective types.</p>
+ *
+ * @param <T> entity type
+ * @param <N> the target numeric type to which the expression is cast
+ * @since 1.1
+ */
 public interface NumericCast<T, N extends Number & Comparable<N>>
         extends NumericExpression<T, N> {
+
+    /**
+     * <p>The numeric expression to cast to a different numeric type.</p>
+     *
+     * @return the numeric expression to cast
+     */
     NumericExpression<T, ?> expression();
 
+    /**
+     * <p>The target numeric type to which to cast the {@link #expression()}.
+     * </p>
+     *
+     * @return the target numeric type
+     */
     @Override
     Class<N> type();
 
-    static <T, N extends Number & Comparable<N>> NumericCast<T, N>
-    of(NumericExpression<T, ?> expression, Class<N> type) {
+    /**
+     * <p>Creates a {@code NumericCast} expression that represents casting
+     * the given numeric expression to the given target numeric type.</p>
+     *
+     * @param <T>        entity type
+     * @param <N>        target numeric type
+     * @param expression numeric expression to cast
+     * @param type       numeric type to which to cast
+     * @return expression representing the cast operation
+     * @throws NullPointerException if {@code expression} or {@code type} is
+     *                              {@code null}
+     */
+    static <T, N extends Number & Comparable<N>> NumericCast<T, N> of(
+            NumericExpression<T, ?> expression,
+            Class<N> type) {
+
         return new NumericCastRecord<>(expression, type);
     }
 }
