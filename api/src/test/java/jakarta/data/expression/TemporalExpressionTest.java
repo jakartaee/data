@@ -17,7 +17,7 @@
  */
 package jakarta.data.expression;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import jakarta.data.constraint.Between;
 import jakarta.data.constraint.LessThan;
@@ -105,19 +105,19 @@ class TemporalExpressionTest {
 
     @Test
     void testCurrentDateEqualsCurrentDate() {
-        assertEquals(CurrentDate.now(),
-                     CurrentDate.now());
+        assertThat(CurrentDate.now())
+            .isSameAs(CurrentDate.now());
     }
 
     @Test
     void testCurrentDateTimeEqualsCurrentDateTime() {
-        assertEquals(CurrentDateTime.now(),
-                     CurrentDateTime.now());
+        assertThat(CurrentDateTime.now())
+            .isSameAs(CurrentDateTime.now());
     }
 
     @Test
     void testCurrentTimeEqualsCurrentTime() {
-        assertEquals(CurrentTime.now(),
-                     CurrentTime.now());
+        assertThat(CurrentTime.now())
+            .isSameAs(CurrentTime.now());
     }
 }
