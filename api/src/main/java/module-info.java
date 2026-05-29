@@ -316,7 +316,7 @@ import java.util.Set;
  * <a href="../jakarta.data.stateful/">stateful repository</a>
  * must be annotated with a stateful lifecycle annotation.
  * A lifecycle method, whether stateful or stateless,
- * must accept a single parameter, whose type is either:</p>
+ * must declare a single parameter, whose type is either:</p>
  *
  * <ul>
  * <li>the class of the entity, or</li>
