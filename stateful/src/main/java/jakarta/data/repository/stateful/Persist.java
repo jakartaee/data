@@ -35,10 +35,9 @@ import java.lang.annotation.Target;
  * when the annotated repository method is invoked, or it might occur later,
  * when the persistence context is flushed.
  * </p>
- * <p>To ensure a boundary at which updates are persisted to the data store,
- * the application should arrange to have repository methods annotated
- * {@code @Persist} participate in a transaction, the duration of which
- * the same persistence context applies.
+ * <p>The application program may ensure that pending insertions of entities 
+ * associated with a persistence context are synchronized with the database by
+ * committing the transaction associated with the persistence context.
  * </p>
  * <p>A {@code Persist} method accepts an instance or instances of an entity
  * class. The method must have exactly one parameter whose type is either:
