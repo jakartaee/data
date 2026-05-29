@@ -37,7 +37,7 @@ public interface Accounts extends BasicRepository<Account, Integer> {
 
     @Asynchronous
     @Insert
-    void add(Account... accounts);
+    CompletionStage<Void> add(Account... accounts);
 
     @Asynchronous
     @Find
