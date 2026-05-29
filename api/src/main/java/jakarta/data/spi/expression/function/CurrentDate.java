@@ -47,6 +47,9 @@ public interface CurrentDate<T> extends TemporalExpression<T, LocalDate> {
 class CurrentDateInstance implements CurrentDate<Object> {
     static final CurrentDate<?> instance = new CurrentDateInstance();
 
+    private CurrentDateInstance() {
+    }
+
     @Override
     public Class<LocalDate> type() {
         return LocalDate.class;
