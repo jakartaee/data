@@ -47,7 +47,7 @@ import jakarta.data.repository.stateful.Remove;
  *
  * <p>Stateful repository interfaces can optionally inherit from the built-in
  * {@link DataRepository} interface to define a primary entity class and the
- * type of its Id attribute. Otherwise, if all life cycle methods specify the
+ * type of its Id attribute. Otherwise, if all lifecycle methods specify the
  * same entity class, then the primary entity class is that class.</p>
  *
  * <p>A stateful repository must not define or inherit any method annotated
