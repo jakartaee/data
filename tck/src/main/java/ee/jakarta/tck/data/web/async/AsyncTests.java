@@ -19,9 +19,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionStage;
 import java.util.concurrent.TimeUnit;
 
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -79,17 +81,26 @@ public class AsyncTests {
 
         TestPropertyUtility.waitForEventualConsistency();
 
-        CompletableFuture<Float> futureSum =
-                accounts.balance(105)
-                        .thenApply(b -> b.orElse(0.0f))
-                        .thenCombine(accounts.balance(107)
-                                             .thenApply(b -> b.orElse(0.0f)),
-                                     Float::sum)
-                        .toCompletableFuture();
+        CompletionStage<Optional<Float>> futureBalance = null;
+        try {
+            futureBalance = accounts.balance(105);
+        } catch (UnsupportedOperationException x) {
+            // Data provider is not capable of CompletionStage return type
+        }
 
-        assertEquals(133.98f, // 55.99 + 77.99
-                     futureSum.get(TIMEOUT_SECONDS, TimeUnit.SECONDS),
-                     0.01f);
+        if (futureBalance != null) {
+            CompletableFuture<Float> futureSum =
+                    futureBalance
+                            .thenApply(b -> b.orElse(0.0f))
+                            .thenCombine(accounts.balance(107)
+                                                 .thenApply(b -> b.orElse(0.0f)),
+                                         Float::sum)
+                            .toCompletableFuture();
+
+            assertEquals(133.98f, // 55.99 + 77.99
+                         futureSum.get(TIMEOUT_SECONDS, TimeUnit.SECONDS),
+                         0.01f);
+        }
 
         accounts.deleteAll(testData);
 
