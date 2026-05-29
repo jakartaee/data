@@ -328,8 +328,8 @@ import java.util.Set;
  * allowed by the lifecycle annotation, have a return type that is the same
  * as the type of its parameter.</p>
  *
- * <p>A repository without lifecycle methods is considered to be a
- * stateless repository.</p>
+ * <p>A repository with neither lifecycle methods nor a resource accessor method is 
+ * considered to be a stateless repository.</p>
  *
  * <table style="width: 100%">
  * <caption><b>Stateless Lifecycle Annotations</b></caption>
