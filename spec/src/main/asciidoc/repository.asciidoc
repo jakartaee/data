@@ -979,6 +979,14 @@ This method is an asynchronous lifecycle method that relies on the Jakarta Data 
 CompletionStage<Void> insertBook(Book book);
 ----
 
+A method annotated with the Jakarta Concurrency `@Asynchronous` and having a `void` return type is also an asynchronous repository method. For example:
+
+[source,java]
+----
+@Asynchronous
+@Insert
+void insertBook(Book book);
+----
 
 An _asynchronous repository_ is a repository which declares asynchronous repository methods.
 A repository may declare a mixture of synchronous and asynchronous repository methods if every asynchronous method is annotated with the `@Asynchronous` annotation, so that Jakarta Concurrency provides the asynchronous behavior. 
