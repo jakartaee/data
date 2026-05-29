@@ -20,8 +20,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-import java.util.TreeSet;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.TimeUnit;
@@ -111,7 +109,7 @@ public class AsyncTests {
             Tests an asynchronous repository method that performs
             an Insert operation.
             """)
-    public void testAsynchronousInsert() throws InterruptedException {
+    public void testAsynchronousInsert() throws Exception {
         try {
             Class.forName("jakarta.enterprise.concurrent.Asynchronous");
         } catch (ClassNotFoundException x) {
@@ -122,80 +120,69 @@ public class AsyncTests {
         assertEquals(false, accounts.findById(101).isPresent());
         assertEquals(false, accounts.findById(102).isPresent());
 
-        accounts.add(
-                Account.of(101, true, 10.99f,
-                           LocalDateTime.of(2026, 5, 19, 16, 25, 10),
-                           "asyncUser101@eclipse.org"),
-                Account.of(102, true, 20.99f,
-                           LocalDateTime.of(2026, 5, 19, 16, 22, 20),
-                           "asyncUser102@eclipse.org"),
-                Account.of(103, true, 13.99f,
-                           LocalDateTime.of(2026, 5, 19, 16, 23, 30),
-                           "asyncUser103@eclipse.org"));
+        CompletionStage<Void> stage;
+        try {
+            stage = accounts.add(
+                 Account.of(101, true, 10.99f,
+                            LocalDateTime.of(2026, 5, 19, 16, 25, 10),
+                            "asyncUser101@eclipse.org"),
+                 Account.of(102, true, 20.99f,
+                            LocalDateTime.of(2026, 5, 19, 16, 22, 20),
+                            "asyncUser102@eclipse.org"),
+                 Account.of(103, true, 13.99f,
+                            LocalDateTime.of(2026, 5, 19, 16, 23, 30),
+                            "asyncUser103@eclipse.org"));
+        } catch (UnsupportedOperationException x) {
+            // Data provider is not capable of CompletionStage return type
+            return;
+        }
+
+        stage.toCompletableFuture().get(TIMEOUT_SECONDS, TimeUnit.SECONDS);
 
         TestPropertyUtility.waitForEventualConsistency();
 
-        Set<Integer> idsFound = new TreeSet<>();
-        for (long startNS = System.nanoTime();
-             idsFound.size() < 3 && TIMEOUT_SECONDS >
-                 TimeUnit.NANOSECONDS.toSeconds(System.nanoTime() - startNS);
-             TimeUnit.SECONDS.sleep(1)) {
-            if (!idsFound.contains(101)) {
-                accounts.findById(101).ifPresent(account -> {
-                    assertEquals(101,
-                                 account.accountId);
-                    assertEquals(true,
-                                 account.active);
-                    assertEquals(10.99f,
-                                 account.balance,
-                                 0.001f);
-                    assertEquals(LocalDateTime.of(2026, 5, 19, 16, 25, 10),
-                                 account.created);
-                    assertEquals("asyncUser101@eclipse.org",
-                                 account.email);
-                    idsFound.add(101);
-                });
-            }
-            if (!idsFound.contains(102)) {
-                accounts.findById(102).ifPresent(account -> {
-                    assertEquals(102,
-                                 account.accountId);
-                    assertEquals(true,
-                                 account.active);
-                    assertEquals(20.99f,
-                                 account.balance,
-                                 0.001f);
-                    assertEquals(LocalDateTime.of(2026, 5, 19, 16, 22, 20),
-                                 account.created);
-                    assertEquals("asyncUser102@eclipse.org",
-                                 account.email);
-                    idsFound.add(102);
-                });
-            }
-            if (!idsFound.contains(103)) {
-                accounts.findById(103).ifPresent(account -> {
-                    assertEquals(103,
-                                 account.accountId);
-                    assertEquals(true,
-                                 account.active);
-                    assertEquals(13.99f,
-                                 account.balance,
-                                 0.001f);
-                    assertEquals(LocalDateTime.of(2026, 5, 19, 16, 23, 30),
-                                 account.created);
-                    assertEquals("asyncUser103@eclipse.org",
-                                 account.email);
-                    idsFound.add(103);
-                });
-            }
-        }
+        Account account1 = accounts.findById(101).orElseThrow();
+        assertEquals(101,
+                     account1.accountId);
+        assertEquals(true,
+                     account1.active);
+        assertEquals(10.99f,
+                     account1.balance,
+                     0.001f);
+        assertEquals(LocalDateTime.of(2026, 5, 19, 16, 25, 10),
+                     account1.created);
+        assertEquals("asyncUser101@eclipse.org",
+                     account1.email);
 
-        assertEquals(Set.of(101, 102, 103),
-                     idsFound);
+        Account account2 = accounts.findById(102).orElseThrow();
+        assertEquals(102,
+                     account2.accountId);
+        assertEquals(true,
+                     account2.active);
+        assertEquals(20.99f,
+                     account2.balance,
+                     0.001f);
+        assertEquals(LocalDateTime.of(2026, 5, 19, 16, 22, 20),
+                     account2.created);
+        assertEquals("asyncUser102@eclipse.org",
+                     account2.email);
 
-        accounts.deleteById(101);
-        accounts.deleteById(102);
-        accounts.deleteById(103);
+        Account account3 = accounts.findById(103).orElseThrow();
+        assertEquals(103,
+                     account3.accountId);
+        assertEquals(true,
+                     account3.active);
+        assertEquals(13.99f,
+                     account3.balance,
+                     0.001f);
+        assertEquals(LocalDateTime.of(2026, 5, 19, 16, 23, 30),
+                     account3.created);
+        assertEquals("asyncUser103@eclipse.org",
+                     account3.email);
+
+        accounts.delete(account1);
+        accounts.delete(account2);
+        accounts.delete(account3);
 
         TestPropertyUtility.waitForEventualConsistency();
     }
