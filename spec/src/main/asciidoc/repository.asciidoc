@@ -93,7 +93,7 @@ For example:
 
 [source,java]
 ----
-@Insert 
+@Insert
 void insertBook(Book book);
 ----
 
@@ -151,13 +151,13 @@ For example, using a named parameter:
 
 [source,java]
 ----
-@Query("where title like :title order by title asc, id asc")
+@Query("WHERE title LIKE :title ORDER BY title ASC, id ASC")
 Page<Book> booksByTitle(String title, PageRequest pageRequest);
 ----
 
 [source,java]
 ----
-@Query("where p.name = :prodname")
+@Query("WHERE p.name = :prodname")
 Optional<Product> findByName(@Param("prodname") String name);
 ----
 
@@ -165,7 +165,7 @@ Or, using a positional parameter:
 
 [source,java]
 ----
-@Query("delete from Book where isbn = ?1")
+@Query("DELETE FROM Book WHERE isbn = ?1")
 void deleteBook(String isbn);
 ----
 
@@ -357,7 +357,7 @@ public interface ProductRepository extends BasicRepository<Product, Long> {
     @Find
     Page<Product> findByName(String name, PageRequest pageRequest, Order<Product> order);
 
-    @Query("where name like :pattern")
+    @Query("WHERE name LIKE :pattern")
     List<Product> findByNameLike(String pattern, Limit max, Sort<Product> sort);
 
 }
@@ -760,7 +760,7 @@ In this example, the application uses a cursor to request pages in forward and p
 ----
 @Repository
 public interface Products extends CrudRepository<Product, Long> {
-    @Query("where name like ?1")
+    @Query("WHERE name LIKE ?1")
     CursoredPage<Product> findByNameLike(String namePattern,
                                          PageRequest pageRequest,
                                          Order<Product> sorts);
