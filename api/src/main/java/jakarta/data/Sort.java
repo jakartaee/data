@@ -17,16 +17,19 @@
  */
 package jakarta.data;
 
+import jakarta.data.expression.ComparableExpression;
 import jakarta.data.messages.Messages;
+import jakarta.data.metamodel.Attribute;
 import jakarta.data.metamodel.StaticMetamodel;
 import jakarta.data.repository.OrderBy;
 
 /**
- * <p>Requests sorting on a given entity attribute.</p>
+ * <p>Requests sorting on a given entity attribute or expression.</p>
  *
  * <p>An instance of {@code Sort} specifies a sorting criterion based
- * on an entity attribute, with a sorting {@linkplain Direction direction} and
- * well-defined case sensitivity.</p>
+ * on an entity attribute or an expression involving entity attributes,
+ * with a sorting {@linkplain Direction direction} and well-defined
+ * case sensitivity.</p>
  *
  * <p>A query method of a repository may have a parameter or parameters
  * of type {@code Sort} if its return type indicates that it may return multiple
@@ -78,8 +81,13 @@ import jakarta.data.repository.OrderBy;
  * if the database is incapable of ordering the query results using the given
  * sort criteria.</p>
  *
- * @param <T>          entity class of the entity attribute upon which to sort.
- * @param property     name of the entity attribute to order by.
+ * @param <T>          type of entity from which query results are obtained.
+ * @param expression   an expression that computes a value by which to
+ *                         order results. Alternatively, {@code null} if
+ *                         {@code property} is supplied instead.
+ * @param property     name of an entity attribute to order by.
+ *                         Alternatively, {@code null} if {@code expression}
+ *                         is supplied instead.
  * @param isAscending  whether ordering for this attribute is ascending
  *                     ({@code true}) or descending ({@code false}).
  * @param ignoreCase   whether or not to request case insensitive ordering
@@ -88,7 +96,8 @@ import jakarta.data.repository.OrderBy;
  *                     {@link Nulls#FIRST FIRST}, {@link Nulls#LAST LAST}, or
  *                     {@linkplain Nulls#UNSPECIFIED by the data store}.
  */
-public record Sort<T>(String property,
+public record Sort<T>(ComparableExpression<T, ? extends Comparable<?>> expression,
+                      String property,
                       boolean isAscending,
                       boolean ignoreCase,
                       Nulls nullOrdering) {
@@ -159,14 +168,20 @@ public record Sort<T>(String property,
      * @since 1.1
      */
     public Sort {
-        if (property == null) {
+        if (expression == null && property == null) {
             throw new NullPointerException(
-                Messages.get("001.arg.required", "attribute"));
+                Messages.get("001.arg.required", "expression"));
         }
 
         if (nullOrdering == null) {
             throw new NullPointerException(
                 Messages.get("001.arg.required", "nullOrdering"));
+        }
+
+        if (property != null && expression != null) {
+            // TODO add a message
+            throw new IllegalArgumentException(
+                    "property: " + property + ", expression: " + expression);
         }
     }
 
@@ -181,18 +196,39 @@ public record Sort<T>(String property,
      *                    from a database with case sensitive collation.
      */
     public Sort(String property, boolean isAscending, boolean ignoreCase) {
-        this(property, isAscending, ignoreCase, Nulls.UNSPECIFIED);
+        this(null,
+             property,
+             isAscending,
+             ignoreCase,
+             Nulls.UNSPECIFIED);
     }
 
     // Override to provide method documentation:
 
     /**
-     * Name of the entity attribute to order by.
+     * An expression to order by. The presence of a sort expression is
+     * mutually exclusive with the presence of a
+     * {@linkplain #property() sort attribute name}.
      *
-     * @return The attribute name to order by; will never be {@code null}.
+     * @return The attribute name to order by, or {@code null} if this
+     *         {@code Sort} instance pertains to a {@link #property()}
+     */
+    public ComparableExpression<T, ? extends Comparable<?>> expression() {
+        return expression;
+    }
+
+    /**
+     * Name of the entity attribute to order by The presence of a
+     * sort attribute name is mutually exclusive with the presence of a
+     * sort {@link #expression()}.
+     *
+     * @return The attribute name to order by, or {@code null} if this
+     *         {@code Sort} instance pertains to an {@link #expression()}
      */
     public String property() {
-        return property;
+        return expression instanceof Attribute<?> attr
+                ? attr.name()
+                : property;
     }
 
     // Override to provide method documentation:
@@ -262,7 +298,8 @@ public record Sort<T>(String property,
                     Messages.get("001.arg.required", "direction"));
         }
 
-        return new Sort<>(attribute,
+        return new Sort<>(null,
+                          attribute,
                           Direction.ASC.equals(direction),
                           ignoreCase,
                           Nulls.UNSPECIFIED);
@@ -292,7 +329,8 @@ public record Sort<T>(String property,
                     Messages.get("001.arg.required", "direction"));
         }
 
-        return new Sort<>(attribute,
+        return new Sort<>(null,
+                          attribute,
                           Direction.ASC.equals(direction),
                           ignoreCase,
                           nullOrdering);
@@ -309,7 +347,7 @@ public record Sort<T>(String property,
      * @throws NullPointerException when the attribute name is null.
      */
     public static <T> Sort<T> asc(String attribute) {
-        return new Sort<>(attribute, true, false, Nulls.UNSPECIFIED);
+        return new Sort<>(null, attribute, true, false, Nulls.UNSPECIFIED);
     }
 
     /**
@@ -322,7 +360,7 @@ public record Sort<T>(String property,
      * @throws NullPointerException when the attribute name is null.
      */
     public static <T> Sort<T> ascIgnoreCase(String attribute) {
-        return new Sort<>(attribute, true, true, Nulls.UNSPECIFIED);
+        return new Sort<>(null, attribute, true, true, Nulls.UNSPECIFIED);
     }
 
     /**
@@ -336,7 +374,7 @@ public record Sort<T>(String property,
      * @throws NullPointerException when the attribute name is null.
      */
     public static <T> Sort<T> desc(String attribute) {
-        return new Sort<>(attribute, false, false, Nulls.UNSPECIFIED);
+        return new Sort<>(null, attribute, false, false, Nulls.UNSPECIFIED);
     }
 
     /**
@@ -350,7 +388,7 @@ public record Sort<T>(String property,
      * @throws NullPointerException when the attribute name is null.
      */
     public static <T> Sort<T> descIgnoreCase(String attribute) {
-        return new Sort<>(attribute, false, true, Nulls.UNSPECIFIED);
+        return new Sort<>(null, attribute, false, true, Nulls.UNSPECIFIED);
     }
 
     /**
@@ -374,7 +412,11 @@ public record Sort<T>(String property,
      * @since 1.1
      */
     public Sort<T> nullsFirst() {
-        return new Sort<>(property, isAscending, ignoreCase, Nulls.FIRST);
+        return new Sort<>(expression,
+                          property,
+                          isAscending,
+                          ignoreCase,
+                          Nulls.FIRST);
     }
 
     /**
@@ -398,6 +440,10 @@ public record Sort<T>(String property,
      * @since 1.1
      */
     public Sort<T> nullsLast() {
-        return new Sort<>(property, isAscending, ignoreCase, Nulls.LAST);
+        return new Sort<>(expression,
+                          property,
+                          isAscending,
+                          ignoreCase,
+                          Nulls.LAST);
     }
 }

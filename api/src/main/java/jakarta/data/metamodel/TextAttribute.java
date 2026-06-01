@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023,2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2023,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,6 +35,7 @@ public interface TextAttribute<T> extends ComparableAttribute<T, String>, TextEx
      * @return a request for an ascending, case-insensitive sort on the entity
      * attribute.
      */
+    @Override
     default Sort<T> ascIgnoreCase() {
         return Sort.ascIgnoreCase(name());
     }
@@ -58,6 +59,7 @@ public interface TextAttribute<T> extends ComparableAttribute<T, String>, TextEx
      * @return a request for a descending, case insensitive sort on the entity
      * attribute.
      */
+    @Override
     default Sort<T> descIgnoreCase() {
         return Sort.descIgnoreCase(name());
     }

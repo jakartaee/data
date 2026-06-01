@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2025,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,6 @@ import jakarta.data.expression.ComparableExpression;
 import jakarta.data.expression.NavigableExpression;
 import jakarta.data.metamodel.ComparableAttribute;
 import jakarta.data.metamodel.NavigableAttribute;
-import jakarta.data.spi.expression.path.ComparablePath;
 
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
@@ -56,7 +55,7 @@ class ComparablePathTest {
         NavigableExpression<Author, Publisher> expr = _Author.publisher;
         ComparableAttribute<Publisher, Integer> attr = _Publisher.rating;
 
-        var path = ComparablePath.of(expr, attr);
+        var path = expr.navigate(attr);
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(path).isNotNull();
