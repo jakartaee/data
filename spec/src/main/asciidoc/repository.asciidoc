@@ -966,7 +966,7 @@ where:
 NOTE: Every Jakarta Data provider is encouraged, but not required, to support asynchronous repository methods returning `java.util.concurrent.CompletionStage`.
 
 NOTE: A repository method annotated with the `@Asynchronous` annotation from the Jakarta Concurrency specification is permitted to declare the return type `java.util.concurrent.CompletionStage`. 
-In this case, the Jakarta Data provider must synchronously return an already-completed `CompletionStage` so that the Jakarta Concurrency provider is able to control the asynchronous behavior.
+In this case, the Jakarta Data provider must synchronously return an already-completed `CompletionStage` so that the Jakarta Concurrency provider is able to control the asynchronous behavior. A Jakarta Data provider that does not offer `CompletionStage` as a return type raises `UnsupportedOperationException` when the operation is attempted and can reject the return type of `CompletionStage` by failing at compile time.
 
 For example, the following is an asynchronous parameter-based query method that relies on the Jakarta Concurrency `@Asynchronous` interceptor to control the asynchronous behavior:
 
@@ -985,6 +985,14 @@ This method is an asynchronous lifecycle method that relies on the Jakarta Data 
 CompletionStage<Void> insertBook(Book book);
 ----
 
+A method annotated with the Jakarta Concurrency `@Asynchronous` and having a `void` return type is also an asynchronous repository method. For example:
+
+[source,java]
+----
+@Asynchronous
+@Insert
+void insertBook(Book book);
+----
 
 An _asynchronous repository_ is a repository which declares asynchronous repository methods.
 A repository may declare a mixture of synchronous and asynchronous repository methods if every asynchronous method is annotated with the `@Asynchronous` annotation, so that Jakarta Concurrency provides the asynchronous behavior. 

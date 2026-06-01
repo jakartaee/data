@@ -87,6 +87,7 @@
         <lifecycle.mapping.version>1.0.0</lifecycle.mapping.version>
 
         <jakarta.annotation.version>3.0.0</jakarta.annotation.version>
+        <jakarta.concurrency.version>3.1.0</jakarta.concurrency.version>
         <jakarta.enterprise.cdi.version>4.1.0</jakarta.enterprise.cdi.version>   
         <jakarta.inject.version>2.0.1</jakarta.inject.version>     
         <jakarta.json.bind.version>3.0.0</jakarta.json.bind.version>
