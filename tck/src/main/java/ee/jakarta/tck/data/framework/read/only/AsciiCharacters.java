@@ -40,7 +40,14 @@ import jakarta.data.repository.Select;
  * from DataRepository in order to satisfy a TCK scenario.
  */
 @Repository
-public interface AsciiCharacters extends DataRepository<AsciiCharacter, Long>, IdOperations {
+public interface AsciiCharacters extends DataRepository<AsciiCharacter, Long> {
+
+    long countByIdBetween(long minimum, long maximum);
+
+    boolean existsById(long id);
+
+    @Query("SELECT id WHERE id >= :inclusiveMin ORDER BY id ASC")
+    List<Long> withIdEqualOrAbove(long inclusiveMin, Limit limit);
 
     @Query(" ")
         // it is valid to have a query with no clauses

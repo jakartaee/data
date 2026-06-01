@@ -44,7 +44,14 @@ import ee.jakarta.tck.data.framework.read.only.NaturalNumber.NumberType;
  * TODO figure out a way to make this a ReadOnlyRepository instead.
  */
 @Repository
-public interface NaturalNumbers extends BasicRepository<NaturalNumber, Long>, IdOperations {
+public interface NaturalNumbers extends BasicRepository<NaturalNumber, Long> {
+
+    long countByIdBetween(long minimum, long maximum);
+
+    boolean existsById(long id);
+
+    @Query("SELECT id WHERE id >= :inclusiveMin ORDER BY id ASC")
+    List<Long> withIdEqualOrAbove(long inclusiveMin, Limit limit);
 
     @Query("WHERE ID(THIS)=:id")
     CardinalNumber cardinalNumberOf(long id);
