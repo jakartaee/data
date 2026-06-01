@@ -280,7 +280,7 @@ Connection connection();
 
 default void cleanup() {
     try (Statement s = connection().createStatement()) {
-        s.executeUpdate("truncate table books");
+        s.executeUpdate("TRUNCATE TABLE books");
     }
 }
 ----
