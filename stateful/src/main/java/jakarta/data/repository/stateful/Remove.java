@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2025,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,6 +32,10 @@ import java.lang.annotation.Target;
  * method schedules one or more managed entities for deletion from the database.
  * Deletion might occur immediately, when the annotated repository method is
  * invoked, or it might occur later, when the persistence context is flushed.
+ * </p>
+ * <p>The application program may ensure that pending removals of entities 
+ * associated with a persistence context are synchronized with the database by
+ * committing the transaction associated with the persistence context.
  * </p>
  * <p>A {@code Remove} method accepts a managed instance or instances of an
  * entity class. The method must have exactly one parameter whose type is
