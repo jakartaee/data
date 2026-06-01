@@ -999,7 +999,9 @@ Support for stateful repositories is defined in the dedicated module `jakarta.da
 
 ==== Persistence contexts
 
-A stateful repository operation applies to a _persistence context_, a set of managed entity instances in which at most one instance represents a given record in the database. Persistence context can span multiple repository operations, such as all operations performed within a transaction.
+A stateful repository operation is always performed in a _persistence context_, operating on a set of managed entity instances in which at most one instance represents a given record in the database.
+A given persistence context might span multiple repository operations. 
+For example, a persistence context often spans the operations performed within a given transaction.
 
 - An entity instance never belongs to multiple persistence contexts.
 
