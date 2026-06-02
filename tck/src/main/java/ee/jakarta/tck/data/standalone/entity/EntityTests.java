@@ -389,7 +389,7 @@ public class EntityTests {
 
     @Assertion(id = "133", strategy = "Request a Page higher than the final Page, expecting an empty Page with 0 results.")
     public void testBeyondFinalPage() {
-        PageRequest sixth = PageRequest.ofPage(6).size(10);
+        PageRequest sixth = PageRequest.ofSize(10).atPageNumber(6).size(10);
         Page<AsciiCharacter> page;
         try {
             page = characters.findByNumericValueBetween(48, 90, sixth, Order.by(_AsciiCharacter.numericValue.asc()));
@@ -421,7 +421,7 @@ public class EntityTests {
 
     @Assertion(id = "133", strategy = "Request a Slice higher than the final Slice, expecting an empty Slice with 0 results.")
     public void testBeyondFinalSlice() {
-        PageRequest sixth = PageRequest.ofPage(6).size(5).withoutTotal();
+        PageRequest sixth = PageRequest.ofSize(10).atPageNumber(6).size(5).withoutTotal();
         Page<NaturalNumber> page;
         try {
             page = numbers.findByNumTypeAndFloorOfSquareRootLessThanEqual(
@@ -651,7 +651,7 @@ public class EntityTests {
 
     @Assertion(id = "133", strategy = "Request the last Page of up to 10 results, expecting to find the final 3.")
     public void testFinalPageOfUpTo10() {
-        PageRequest fifthPageRequest = PageRequest.ofPage(5).size(10);
+        PageRequest fifthPageRequest = PageRequest.ofSize(10).atPageNumber(5).size(10);
         Page<AsciiCharacter> page;
         try {
             page = characters.findByNumericValueBetween(48, 90, fifthPageRequest,
@@ -696,7 +696,7 @@ public class EntityTests {
 
         assertFalse(it.hasNext());
 
-        assertEquals(5, page.pageRequest().page());
+        assertEquals(5, page.pageRequest().pageNumber());
         assertTrue(page.hasContent());
         assertEquals(3, page.numberOfElements());
         try {
@@ -711,7 +711,7 @@ public class EntityTests {
 
     @Assertion(id = "133", strategy = "Request the last Slice of up to 5 results, expecting to find the final 2.")
     public void testFinalSliceOfUpTo5() {
-        PageRequest fifth = PageRequest.ofPage(5).size(5).withoutTotal();
+        PageRequest fifth = PageRequest.ofSize(10).atPageNumber(5).size(5).withoutTotal();
         Page<NaturalNumber> page;
         try {
             page = numbers.findByNumTypeAndFloorOfSquareRootLessThanEqual(
@@ -730,7 +730,7 @@ public class EntityTests {
             }
         }
         assertTrue(page.hasContent());
-        assertEquals(5, page.pageRequest().page());
+        assertEquals(5, page.pageRequest().pageNumber());
         assertEquals(2, page.numberOfElements());
 
         Iterator<NaturalNumber> it = page.iterator();
@@ -762,7 +762,7 @@ public class EntityTests {
                     "ascending and descending sort. Verify the page contains all 12 expected entities, " +
                     "sorted according to the mixture of ascending and descending sort orders specified.")
     public void testFindAllWithPagination() {
-        PageRequest page2request = PageRequest.ofPage(2).size(12);
+        PageRequest page2request = PageRequest.ofSize(10).atPageNumber(2).size(12);
         Page<NaturalNumber> page2;
         try {
             page2 = positives.findAll(page2request,
@@ -779,7 +779,7 @@ public class EntityTests {
         }
 
         assertEquals(12, page2.numberOfElements());
-        assertEquals(2, page2.pageRequest().page());
+        assertEquals(2, page2.pageRequest().pageNumber());
 
         assertEquals(List.of(11L, 10L, 9L, // square root rounds down to 3
                              24L, 23L, 22L, 21L, 20L, 19L, 18L, 17L, 16L), // square root rounds down to 4
@@ -832,7 +832,7 @@ public class EntityTests {
             the names of record components. Results are return as a Page of record.
             """)
     public void testFindEntityAsRecordReturnPage() {
-        PageRequest page8Request = PageRequest.ofPage(8).size(10);
+        PageRequest page8Request = PageRequest.ofSize(10).atPageNumber(8).size(10);
 
         @SuppressWarnings("unchecked")
         Sort<AsciiCharacter>[] numAscending =
@@ -1215,7 +1215,7 @@ public class EntityTests {
             }
         }
 
-        assertEquals(1, page.pageRequest().page());
+        assertEquals(1, page.pageRequest().pageNumber());
         assertTrue(page.hasContent());
         assertEquals(10, page.numberOfElements());
         try {
@@ -1472,7 +1472,7 @@ public class EntityTests {
         CursoredPage<NaturalNumber> page;
         try {
             // There are no positive integers less than 4 which have a square root that rounds down to something other than 1.
-            page = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByNumBitsRequiredDesc(1L, 4L, PageRequest.ofPage(1L), Order.by());
+            page = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByNumBitsRequiredDesc(1L, 4L, PageRequest.ofSize(10).atPageNumber(1L), Order.by());
         } catch (UnsupportedOperationException x) {
             if (type.capableOfAnd() &&
                 type.capableOfConstraintsOnNonIdAttributes() &&
@@ -2340,7 +2340,7 @@ public class EntityTests {
             and returns a Page of Java record results.
             """)
     public void testQueryWithSelectReturnsPageOfRecord() {
-        PageRequest page3Req = PageRequest.ofPage(3).size(6);
+        PageRequest page3Req = PageRequest.ofSize(10).atPageNumber(3).size(6);
         Page<WholeNumber> page3;
         try {
             page3 = numbers.numberPage(page3Req);
@@ -2495,7 +2495,7 @@ public class EntityTests {
             Page of records.
             """)
     public void testRecordComponentsChooseAttributeReturnPage() {
-        PageRequest page2Req = PageRequest.ofPage(2).size(5);
+        PageRequest page2Req = PageRequest.ofSize(10).atPageNumber(2).size(5);
         Page<NumberInfo> page2;
         try {
             page2 = numbers.infoPaginated(true, page2Req);
@@ -2815,7 +2815,7 @@ public class EntityTests {
     public void testSelectEntityAttributeAsPage() {
         final boolean odd = true;
 
-        PageRequest page4Request = PageRequest.ofPage(4).size(5);
+        PageRequest page4Request = PageRequest.ofSize(10).atPageNumber(4).size(5);
         Page<Long> page4;
         try {
             page4 = positives.withParity(odd, page4Request);
@@ -3022,7 +3022,7 @@ public class EntityTests {
             to retrieve as a Page of record.
             """)
     public void testSelectEntityAttributesAsPageOfRecord() {
-        PageRequest page3Req = PageRequest.ofPage(3).size(4);
+        PageRequest page3Req = PageRequest.ofSize(10).atPageNumber(3).size(4);
         Page<WholeNumber> page3;
         try {
             page3 = numbers.wholeNumberPage(NumberType.PRIME.ordinal(),
@@ -3304,7 +3304,7 @@ public class EntityTests {
                     "Request the next Page via nextPageRequest, expecting page number 4 and another 10 results.")
     public void testThirdAndFourthPagesOf10() {
         Order<AsciiCharacter> order = Order.by(_AsciiCharacter.numericValue.asc());
-        PageRequest third10 = PageRequest.ofPage(3).size(10);
+        PageRequest third10 = PageRequest.ofSize(10).atPageNumber(3).size(10);
         Page<AsciiCharacter> page;
         try {
             page = characters.findByNumericValueBetween(48, 90, third10, order); // 'D' to 'M'
@@ -3319,7 +3319,7 @@ public class EntityTests {
             }
         }
 
-        assertEquals(3, page.pageRequest().page());
+        assertEquals(3, page.pageRequest().pageNumber());
         assertTrue(page.hasContent());
         assertEquals(10, page.numberOfElements());
         try {
@@ -3342,7 +3342,7 @@ public class EntityTests {
         PageRequest fourth10 = page.nextPageRequest();
         page = characters.findByNumericValueBetween(48, 90, fourth10, order); // 'N' to 'W'
 
-        assertEquals(4, page.pageRequest().page());
+        assertEquals(4, page.pageRequest().pageNumber());
         assertTrue(page.hasContent());
         assertEquals(10, page.numberOfElements());
         try {
@@ -3366,7 +3366,7 @@ public class EntityTests {
             strategy = "Request the third Slice of 5 results, expecting to find all 5. "
                     + "Request the next Slice via nextPageRequest, expecting page number 4 and another 5 results.")
     public void testThirdAndFourthSlicesOf5() {
-        PageRequest third5 = PageRequest.ofPage(3).size(5).withoutTotal();
+        PageRequest third5 = PageRequest.ofSize(10).atPageNumber(3).size(5).withoutTotal();
         Sort<NaturalNumber> sort = Sort.desc("id");
         Page<NaturalNumber> page;
         try {
@@ -3382,7 +3382,7 @@ public class EntityTests {
             }
         }
 
-        assertEquals(3, page.pageRequest().page());
+        assertEquals(3, page.pageRequest().pageNumber());
         assertEquals(5, page.numberOfElements());
 
         assertEquals(Arrays.toString(new Long[]{37L, 31L, 29L, 23L, 19L}),
@@ -3395,7 +3395,7 @@ public class EntityTests {
 
         page = numbers.findByNumTypeAndFloorOfSquareRootLessThanEqual(NumberType.PRIME, 8L, fourth5, sort);
 
-        assertEquals(4, page.pageRequest().page());
+        assertEquals(4, page.pageRequest().pageNumber());
         assertEquals(5, page.numberOfElements());
 
         assertEquals(Arrays.toString(new Long[]{17L, 13L, 11L, 7L, 5L}),
