@@ -223,11 +223,26 @@ public interface PageRequest {
     Mode mode();
 
     /**
-     * Returns the page to be returned.
+     * Returns the page number of the page to be returned.
      *
      * @return the page to be returned.
+     * @apiNote Page <em>numbers</em> are indexed from one;
+     *          page {@linkplain #pageOffset offsets} are indexed from zero.
      */
     long page();
+
+    /**
+     * Returns the page offset of the page to be returned.
+     *
+     * @return the page to be returned.
+     * @since 1.1
+     *
+     * @apiNote Page <em>offsets</em> are indexed from zero;
+     *          page {@linkplain #pageNumber numbers} are indexed from one.
+     */
+    default long pageOffset() {
+        return pageNumber() - 1;
+    }
 
     /**
      * Returns the requested size of each page
@@ -266,8 +281,26 @@ public interface PageRequest {
      * @return a new instance of {@code PageRequest}. This method never returns
      * {@code null}.
      * @since 1.1
+     * @apiNote Page <em>numbers</em> are indexed from one;
+     *          page {@linkplain #atPageOffset offsets} are indexed from zero.
      */
     PageRequest page(long pageNumber);
+
+    /**
+     * <p>Creates a new page request with the same pagination information,
+     * but with the specified page offset.</p>
+     *
+     * @param pageOffset the page offset.
+     * @return a new instance of {@code PageRequest}. This method never returns
+     * {@code null}.
+     * @since 1.1
+     *
+     * @apiNote Page <em>offsets</em> are indexed from zero;
+     *          page {@linkplain #atPageNumber numbers} are indexed from one.
+     */
+    default PageRequest atPageOffset(long pageOffset) {
+        return atPageNumber(pageOffset + 1);
+    }
 
     /**
      * <p>Creates a new page request with the same pagination information,

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022,2024 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -104,10 +104,15 @@ public record Limit(int maxResults, long startAt) {
     // Override to provide method documentation:
 
     /**
-     * <p>Offset at which to start when returning query results.
-     * The first query result is position {@code 1}.</p>
+     * <p>The position at which to start when returning query results.</p>
+     * <p>The first query result is at position one. If the start position
+     * is greater than one, some results at the beginning of the result set
+     * are skipped.</p>
      *
-     * @return offset of the first result.
+     * @return position of the first result.
+     *
+     * @apiNote Positions are indexed from one;
+     *          {@linkplain #startOffset offsets} are indexed from zero.
      */
     public long startAt() {
         return startAt;
