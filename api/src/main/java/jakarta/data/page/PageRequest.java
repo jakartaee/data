@@ -20,6 +20,7 @@ package jakarta.data.page;
 import jakarta.data.Limit;
 import jakarta.data.Order;
 import jakarta.data.Sort;
+import jakarta.data.messages.Messages;
 import jakarta.data.repository.First;
 import jakarta.data.repository.OrderBy;
 
@@ -223,26 +224,13 @@ public interface PageRequest {
     Mode mode();
 
     /**
-     * Returns the page number of the page to be returned.
+     * Returns the requested page number. Page numbers begin with {@code 1}.
      *
-     * @return the page to be returned.
+     * @return the requested page number
      * @apiNote Page <em>numbers</em> are indexed from one;
      *          page {@linkplain #pageOffset offsets} are indexed from zero.
      */
     long page();
-
-    /**
-     * Returns the page offset of the page to be returned.
-     *
-     * @return the page to be returned.
-     * @since 1.1
-     *
-     * @apiNote Page <em>offsets</em> are indexed from zero;
-     *          page {@linkplain #pageNumber numbers} are indexed from one.
-     */
-    default long pageOffset() {
-        return pageNumber() - 1;
-    }
 
     /**
      * Returns the requested size of each page
@@ -274,32 +262,53 @@ public interface PageRequest {
     boolean requestTotal();
 
     /**
-     * <p>Creates a new page request with the same pagination information,
-     * but with the specified page number.</p>
+     * Creates a new page request with the same pagination information,
+     * but with the specified page number. The first page number is {@code 1}.
      *
      * @param pageNumber the page number.
      * @return a new instance of {@code PageRequest}. This method never returns
      * {@code null}.
      * @since 1.1
      * @apiNote Page <em>numbers</em> are indexed from one;
-     *          page {@linkplain #atPageOffset offsets} are indexed from zero.
+     *          page {@linkplain #pageOffset offsets} are indexed from zero.
      */
     PageRequest page(long pageNumber);
 
     /**
-     * <p>Creates a new page request with the same pagination information,
-     * but with the specified page offset.</p>
+     * Creates a new page request with the same pagination information,
+     * but with the given {@code offset}.
+     * <p>
+     * The offset is relative to the first page. An offset of {@code 0}
+     * requests the first page, and an offset of {@code 1} requests the
+     * second page.
      *
-     * @param pageOffset the page offset.
-     * @return a new instance of {@code PageRequest}. This method never returns
-     * {@code null}.
+     * @return the offset of the requested page
+     * @throws IllegalStateException if the {@link #mode()} is not
+     *         {@link Mode#OFFSET}
+     * @throws IllegalArgumentException if the {@code offset} is negative
+     *         or {@link Long#MAX_VALUE}
      * @since 1.1
      *
      * @apiNote Page <em>offsets</em> are indexed from zero;
-     *          page {@linkplain #atPageNumber numbers} are indexed from one.
+     *          page {@linkplain #page numbers} are indexed from one.
      */
-    default PageRequest atPageOffset(long pageOffset) {
-        return atPageNumber(pageOffset + 1);
+    default PageRequest pageOffset(long offset) {
+        if (mode() != Mode.OFFSET) {
+            throw new IllegalStateException(
+                    Messages.get("014.mode.disallows.offset", mode()));
+        }
+
+        if (offset < 0) {
+            throw new IllegalArgumentException(
+                    Messages.get("004.arg.negative", "offset"));
+        }
+
+        if (offset == Long.MAX_VALUE) {
+            throw new IllegalArgumentException(
+                    Messages.get("013.arg.invalid", "offset", offset));
+        }
+
+        return page(offset + 1);
     }
 
     /**
