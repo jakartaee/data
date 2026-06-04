@@ -565,7 +565,7 @@ public class CountryPopulator implements Populator<Countries> {
                                null,
                                null,
                                true,
-                               City.of("Reykjavík", 133262)),
+                               City.of("Reykjavik", 133262)),
                     Country.of("IN", "India", ASIA,
                                2973193L, 1419316933L, 13173000000000L, 6125445000000L,
                                null,
