@@ -31,7 +31,7 @@ import jakarta.data.repository.Query;
  * <li>a {@linkplain #of(int, long) maximum number of results relative to an
  *     offset}, or</li>
  * <li>a {@linkplain #range(long, long) positioned range} defined in terms of
- * a starting position and maximum number of results.</li>
+ * a starting position and an ending position.</li>
  * </ul></p>
  *
  * <p>A query method of a repository may have a parameter of type
