@@ -86,6 +86,7 @@ public interface Countries extends CrudRepository<Country, String> {
     List<Country> byCountryCodes(
             @By(_Country.CODE) @Is(In.class) Collection<String> codes);
 
+    @Query("SELECT COUNT(THIS)")
     long count();
 
     @Find

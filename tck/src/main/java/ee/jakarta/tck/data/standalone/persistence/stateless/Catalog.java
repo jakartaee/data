@@ -28,7 +28,6 @@ import jakarta.data.repository.DataRepository;
 import jakarta.data.repository.Delete;
 import jakarta.data.repository.Find;
 import jakarta.data.repository.Insert;
-import jakarta.data.repository.OrderBy;
 import jakarta.data.repository.Param;
 import jakarta.data.repository.Query;
 import jakarta.data.repository.Repository;
@@ -65,22 +64,28 @@ public interface Catalog extends DataRepository<Product, String> {
     @Delete
     void deleteById(@By(ID) String productNum);
 
+    @Query("DELETE FROM Product WHERE productNum LIKE ?1")
     long deleteByProductNumLike(String pattern);
 
+    @Query("SELECT COUNT(THIS) WHERE price >= ?1")
     long countByPriceGreaterThanEqual(Double price);
 
     @Query("WHERE LENGTH(name) = ?1 AND price < ?2 ORDER BY name")
     List<Product> findByNameLengthAndPriceBelow(int nameLength, double maxPrice);
 
+    @Query("WHERE name LIKE ?1")
     List<Product> findByNameLike(String name);
 
-    @OrderBy(value = "price", descending = true)
+    @Query("WHERE price IS NOT NULL AND price <= ?1 ORDER BY price DESC")
     Stream<Product> findByPriceNotNullAndPriceLessThanEqual(double maxPrice);
 
+    @Query("WHERE price IS NULL")
     List<Product> findByPriceNull();
 
+    @Query("WHERE productNum BETWEEN ?1 AND ?2")
     List<Product> findByProductNumBetween(String first, String last, Order<Product> sorts);
 
+    @Query("WHERE productNum LIKE ?1")
     List<Product> findByProductNumLike(String productNum);
 
 //    EntityManager getEntityManager();

@@ -17,14 +17,10 @@ package ee.jakarta.tck.data.framework.read.only;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Stream;
 
 import jakarta.data.Limit;
-import jakarta.data.Order;
 import jakarta.data.Sort;
-import jakarta.data.page.Page;
-import jakarta.data.page.PageRequest;
 import jakarta.data.repository.By;
 import jakarta.data.repository.DataRepository;
 import jakarta.data.repository.Find;
@@ -38,13 +34,10 @@ import jakarta.data.repository.Select;
  * from 0-256. This repository will be pre-populated at test startup and
  * verified prior to running tests. This interface is required to inherit only
  * from DataRepository in order to satisfy a TCK scenario.
+ * For query-by-method-name versions, see AsciiCharactersByName.
  */
 @Repository
 public interface AsciiCharacters extends DataRepository<AsciiCharacter, Long> {
-
-    long countByIdBetween(long minimum, long maximum);
-
-    boolean existsById(long id);
 
     @Query("SELECT id WHERE id >= :inclusiveMin ORDER BY id ASC")
     List<Long> withIdEqualOrAbove(long inclusiveMin, Limit limit);
@@ -62,9 +55,8 @@ public interface AsciiCharacters extends DataRepository<AsciiCharacter, Long> {
     @Find(NaturalNumber.class)
     Stream<CardinalNumber> cardinalNumberStream(long floorOfSquareRoot);
 
-    long countByHexadecimalNotNull();
-
-    boolean existsByThisCharacter(char ch);
+    @Query("SELECT COUNT(THIS) WHERE hexadecimal IS NOT NULL")
+    long countNonNullHex();
 
     @Find
     AsciiCharacter find(char thisCharacter);
@@ -72,29 +64,6 @@ public interface AsciiCharacters extends DataRepository<AsciiCharacter, Long> {
     @Find
     Optional<AsciiCharacter> find(@By("thisCharacter") char ch,
                                   @By("hexadecimal") String hex);
-
-    List<AsciiCharacter> findByHexadecimalContainsAndIsControlNot(String substring, boolean isPrintable);
-
-    Stream<AsciiCharacter> findByHexadecimalIgnoreCaseBetweenAndHexadecimalNotIn(String minHex,
-                                                                                 String maxHex,
-                                                                                 Set<String> excludeHex,
-                                                                                 Order<AsciiCharacter> sorts);
-
-    AsciiCharacter findByHexadecimalIgnoreCase(String hex);
-
-    Stream<AsciiCharacter> findByIdBetween(long minimum, long maximum, Sort<AsciiCharacter> sort);
-
-    AsciiCharacter findByIsControlTrueAndNumericValueBetween(int min, int max);
-
-    Optional<AsciiCharacter> findByNumericValue(int id);
-
-    Page<AsciiCharacter> findByNumericValueBetween(int min, int max, PageRequest pagination, Order<AsciiCharacter> order);
-
-    List<AsciiCharacter> findByNumericValueLessThanEqualAndNumericValueGreaterThanEqual(int max, int min);
-
-    AsciiCharacter[] findFirst3ByNumericValueGreaterThanEqualAndHexadecimalEndsWith(int minValue, String lastHexDigit, Sort<AsciiCharacter> sort);
-
-    Optional<AsciiCharacter> findFirstByHexadecimalStartsWithAndIsControlOrderByIdAsc(String firstHexDigit, boolean isControlChar);
 
     @Query("select thisCharacter where hexadecimal like '4_'" +
             " and hexadecimal not like '%0'" +
@@ -108,11 +77,6 @@ public interface AsciiCharacters extends DataRepository<AsciiCharacter, Long> {
 
     @Query("WHERE hexadecimal <> ' ORDER BY isn''t a keyword when inside a literal' AND hexadecimal IN ('4a', '4b', '4c', ?1)")
     Stream<AsciiCharacter> jklOr(String hex);
-
-    default Stream<AsciiCharacter> retrieveAlphaNumericIn(long minId, long maxId) {
-        return findByIdBetween(minId, maxId, Sort.asc("id"))
-                .filter(c -> Character.isLetterOrDigit(c.getThisCharacter()));
-    }
 
     @Query("SELECT thisCharacter ORDER BY id DESC")
     Character[] reverseAlphabetic(Limit limit);

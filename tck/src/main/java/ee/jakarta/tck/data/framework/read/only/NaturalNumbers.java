@@ -24,7 +24,6 @@ import java.util.stream.Stream;
 import jakarta.data.Limit;
 import jakarta.data.Order;
 import jakarta.data.Sort;
-import jakarta.data.page.CursoredPage;
 import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
 import jakarta.data.repository.BasicRepository;
@@ -35,20 +34,17 @@ import jakarta.data.repository.Param;
 import jakarta.data.repository.Query;
 import jakarta.data.repository.Repository;
 import jakarta.data.repository.Select;
-import ee.jakarta.tck.data.framework.read.only.NaturalNumber.NumberType;
 
 /**
  * This is a read only repository that represents the set of Natural Numbers from 1-100.
  * This repository will be pre-populated at test startup and verified prior to running tests.
  *
  * TODO figure out a way to make this a ReadOnlyRepository instead.
+ *
+ * For query-by-method-name versions, see NaturalNumbersByName.
  */
 @Repository
 public interface NaturalNumbers extends BasicRepository<NaturalNumber, Long> {
-
-    long countByIdBetween(long minimum, long maximum);
-
-    boolean existsById(long id);
 
     @Query("SELECT id WHERE id >= :inclusiveMin ORDER BY id ASC")
     List<Long> withIdEqualOrAbove(long inclusiveMin, Limit limit);
@@ -73,38 +69,8 @@ public interface NaturalNumbers extends BasicRepository<NaturalNumber, Long> {
     @Query("FROM NaturalNumber WHERE floorOfSquareRoot=?1")
     Stream<CardinalNumber> cardinalNumberStream(long sqrtFloor);
 
+    @Query("SELECT COUNT(THIS)")
     long countAll();
-
-    CursoredPage<NaturalNumber> findByFloorOfSquareRootOrderByIdAsc(long sqrtFloor,
-                                                                    PageRequest pagination);
-
-    Stream<NaturalNumber> findByIdBetweenOrderByNumTypeOrdinalAsc(long minimum,
-                                                                  long maximum,
-                                                                  Order<NaturalNumber> sorts);
-
-    List<NaturalNumber> findByIdGreaterThanEqual(long minimum,
-                                                 Limit limit,
-                                                 Order<NaturalNumber> sorts);
-
-    NaturalNumber[] findByIdLessThan(long exclusiveMax, Sort<NaturalNumber> primarySort, Sort<NaturalNumber> secondarySort);
-
-    List<NaturalNumber> findByIdLessThanEqual(long maximum, Sort<?>... sorts);
-
-    Page<NaturalNumber> findByIdLessThanOrderByFloorOfSquareRootDesc(long exclusiveMax,
-                                                                     PageRequest pagination,
-                                                                     Order<NaturalNumber> order);
-
-    CursoredPage<NaturalNumber> findByNumTypeAndNumBitsRequiredLessThan(NumberType type,
-                                                                        short bitsUnder,
-                                                                        Order<NaturalNumber> order,
-                                                                        PageRequest pagination);
-
-    NaturalNumber[] findByNumTypeNot(NumberType notThisType, Limit limit, Order<NaturalNumber> sorts);
-
-    Page<NaturalNumber> findByNumTypeAndFloorOfSquareRootLessThanEqual(NumberType type,
-                                                                       long maxSqrtFloor,
-                                                                       PageRequest pagination,
-                                                                       Sort<NaturalNumber> sort);
 
     @Find(AsciiCharacter.class)
         // this is not the primary entity type

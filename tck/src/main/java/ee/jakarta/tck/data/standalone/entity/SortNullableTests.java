@@ -29,6 +29,7 @@ import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.jupiter.api.BeforeEach;
 
+import ee.jakarta.tck.data.framework.junit.anno.Annotated;
 import ee.jakarta.tck.data.framework.junit.anno.AnyEntity;
 import ee.jakarta.tck.data.framework.junit.anno.Assertion;
 import ee.jakarta.tck.data.framework.junit.anno.ReadOnlyTest;
@@ -52,6 +53,7 @@ import jakarta.inject.Inject;
 @AnyEntity
 @ReadOnlyTest
 @Standalone
+@Annotated
 public class SortNullableTests {
 
     public static final Logger log =

@@ -28,6 +28,7 @@ import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 
+import ee.jakarta.tck.data.framework.junit.anno.Annotated;
 import ee.jakarta.tck.data.framework.junit.anno.AnyEntity;
 import ee.jakarta.tck.data.framework.junit.anno.Assertion;
 import ee.jakarta.tck.data.framework.junit.anno.Web;
@@ -36,6 +37,7 @@ import jakarta.inject.Inject;
 
 @Web
 @AnyEntity
+@Annotated
 public class AsyncTests {
     /**
      * Maximum amount of time to wait for asynchronous operations to complete.
