@@ -827,7 +827,7 @@ public class ConstraintTests {
                             .sorted()
                             .collect(Collectors.toList());
             assertEquals(List.of("Niamey",
-                                 "Reykjavík"),
+                                 "Reykjavik"),
                          found);
         } catch (UnsupportedOperationException x) {
             if (type.capableOfConstraintsOnNonIdAttributes() &&
