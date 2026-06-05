@@ -487,13 +487,13 @@ import java.util.Set;
  *
  * <pre>
  * // example using named parameters
- * &#64;Query("where age between :min and :max order by age")
+ * &#64;Query("WHERE age BETWEEN :min AND :max ORDER BY age")
  * List&lt;Person&gt; peopleInAgeRange(int min, int max);
  * </pre>
  *
  * <pre>
  * // example using an ordinal parameter
- * &#64;Query("where ssn = ?1 and deceased = false")
+ * &#64;Query("WHERE ssn = ?1 AND deceased = FALSE")
  * Optional&lt;Person&gt; person(String ssn);
  * </pre>
  *
