@@ -17,7 +17,7 @@
  */
 package jakarta.data.metamodel;
 
-import jakarta.data.Sort;
+import jakarta.data.Sortable;
 import jakarta.data.messages.Messages;
 
 /**
@@ -38,27 +38,7 @@ import jakarta.data.messages.Messages;
  *
  * @param <T> entity class of the static metamodel.
  */
-public interface SortableAttribute<T> extends Attribute<T> {
-
-    /**
-     * Obtain a request for an ascending {@link Sort} based on the entity
-     * attribute.
-     *
-     * @return a request for an ascending sort on the entity attribute.
-     */
-    default Sort<T> asc() {
-        return Sort.asc(name());
-    }
-
-    /**
-     * Obtain a request for a descending {@link Sort} based on the entity
-     * attribute.
-     *
-     * @return a request for a descending sort on the entity attribute.
-     */
-    default Sort<T> desc() {
-        return Sort.desc(name());
-    }
+public interface SortableAttribute<T> extends Attribute<T>, Sortable<T> {
 
     /**
      * <p>Creates a static metamodel {@code SortableAttribute} representing the
