@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2025,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,8 @@
  */
 package jakarta.data.expression;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import jakarta.data.constraint.Between;
 import jakarta.data.constraint.LessThan;
 import jakarta.data.mock.entity.Book;
@@ -24,6 +26,8 @@ import jakarta.data.mock.entity._Book;
 import jakarta.data.restrict.BasicRestriction;
 import jakarta.data.restrict.Restriction;
 import jakarta.data.spi.expression.function.CurrentDate;
+import jakarta.data.spi.expression.function.CurrentDateTime;
+import jakarta.data.spi.expression.function.CurrentTime;
 import jakarta.data.spi.expression.literal.TemporalLiteral;
 
 import java.time.LocalDate;
@@ -97,5 +101,23 @@ class TemporalExpressionTest {
             soft.assertThat(upperLiteral.value())
                 .isEqualTo(LocalDate.of(2025, Month.APRIL, 30));
         });
+    }
+
+    @Test
+    void testCurrentDateEqualsCurrentDate() {
+        assertThat(CurrentDate.now())
+            .isSameAs(CurrentDate.now());
+    }
+
+    @Test
+    void testCurrentDateTimeEqualsCurrentDateTime() {
+        assertThat(CurrentDateTime.now())
+            .isSameAs(CurrentDateTime.now());
+    }
+
+    @Test
+    void testCurrentTimeEqualsCurrentTime() {
+        assertThat(CurrentTime.now())
+            .isSameAs(CurrentTime.now());
     }
 }
