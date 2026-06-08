@@ -19,8 +19,6 @@ import static jakarta.data.repository.By.ID;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Stream;
 
 import ee.jakarta.tck.data.framework.read.only.NaturalNumber.NumberType;
 import jakarta.data.Limit;
@@ -39,28 +37,13 @@ import jakarta.data.repository.Repository;
 import jakarta.data.repository.Select;
 
 /**
- * This is a read only repository that shares the same data (and entity type)
- * as the NaturalNumbers repository: the positive integers 1-100.
- * This repository is pre-populated at test startup and verified prior to running tests.
+ * Annotation-based query repository for positive integers (1-100).
+ * Uses @Query and @Find annotations for query definitions.
+ * Shares the same data as NaturalNumbers repository.
+ * For query-by-method-name versions of these queries, see PositiveIntegersByName.
  */
 @Repository
 public interface PositiveIntegers extends BasicRepository<NaturalNumber, Long> {
-    long countByIdLessThan(long number);
-
-    boolean existsByIdGreaterThan(Long number);
-
-    CursoredPage<NaturalNumber> findByFloorOfSquareRootNotAndIdLessThanOrderByNumBitsRequiredDesc(long excludeSqrt,
-                                                                                                  long eclusiveMax,
-                                                                                                  PageRequest pagination,
-                                                                                                  Order<NaturalNumber> order);
-
-    List<NaturalNumber> findByIsOddTrueAndIdLessThanEqualOrderByIdDesc(long max);
-
-    List<NaturalNumber> findByIsOddFalseAndIdBetween(long min, long max);
-
-    Stream<NaturalNumber> findByNumTypeInOrderByIdAsc(Set<NumberType> types, Limit limit);
-
-    Stream<NaturalNumber> findByNumTypeOrFloorOfSquareRoot(NumberType type, long floor);
 
     @Find
     Page<NaturalNumber> findMatching(long floorOfSquareRoot, Short numBitsRequired, NumberType numType,
