@@ -104,13 +104,33 @@ public record Limit(int maxResults, long startAt) {
     // Override to provide method documentation:
 
     /**
-     * <p>Offset at which to start when returning query results.
-     * The first query result is position {@code 1}.</p>
+     * <p>The position at which to start when returning query results.</p>
+     * <p>The first query result is at position one. If the start position
+     * is greater than one, some results at the beginning of the result set
+     * are skipped.</p>
      *
-     * @return offset of the first result.
+     * @return position of the first result.
+     *
+     * @apiNote Positions are indexed from one;
+     *          {@linkplain #startOffset offsets} are indexed from zero.
      */
     public long startAt() {
         return startAt;
+    }
+
+    /**
+     * <p>The offset at which to start when returning query results.</p>
+     * <p>The first query result is at offset zero. If the start offset
+     * is strictly positive, some results at the beginning of the result
+     * set are skipped.</p>
+     *
+     * @return offset of the first result.
+     *
+     * @apiNote Offsets are indexed from zero;
+     *          {@linkplain #startAt positions} are indexed from one.
+     */
+    public long startOffset() {
+        return startAt() - 1;
     }
 
     /**
@@ -124,6 +144,36 @@ public record Limit(int maxResults, long startAt) {
      */
     public static Limit of(int maxResults) {
         return new Limit(maxResults, DEFAULT_START_AT);
+    }
+
+    /**
+     * <p>Specify the position at which to start returning query results.</p>
+     * <p>The first query result is at position one. If the start position
+     * is greater than one, some results at the beginning of the result set
+     * are skipped.</p>
+     *
+     * @param startAt position of the first result.
+     *
+     * @apiNote Positions are indexed from one;
+     *          {@linkplain #withStartOffset offsets} are indexed from zero.
+     */
+    public Limit withStartAt(int startAt) {
+        return new Limit(maxResults, startAt);
+    }
+
+    /**
+     * <p>Specify the offset at which to start returning query results.</p>
+     * <p>The first query result is at offset zero. If the start offset
+     * is strictly positive, some results at the beginning of the result
+     * set are skipped.</p>
+     *
+     * @param startOffset offset of the first result.
+     *
+     * @apiNote Offsets are indexed from zero;
+     *          {@linkplain #withStartAt positions} are indexed from one.
+     */
+    public Limit withStartOffset(long startOffset) {
+        return new Limit(maxResults, startOffset+1);
     }
 
     /**

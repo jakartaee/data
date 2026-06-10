@@ -42,10 +42,10 @@ class PageRecordTest {
     void shouldBeImmutable() {
 
         PageRequest page4Request =
-                PageRequest.ofPage(4).size(5).withTotal();
+                PageRequest.ofSize(10).atPageNumber(4).size(5).withTotal();
 
         PageRequest originalPage4Request =
-                PageRequest.ofPage(4).size(5).withTotal();
+                PageRequest.ofSize(10).atPageNumber(4).size(5).withTotal();
 
         List<Book> page4Content = BookSimulator.mock(5);
 
@@ -57,7 +57,7 @@ class PageRecordTest {
         Page<Book> page4 = new PageRecord<>(page4Request, page4Content, 44);
 
         // Modify the values that were supplied to the PageRecord constructor
-        page4Request.page(5);
+        page4Request.atPageNumber(5);
         page4Request.size(6);
         page4Request.withoutTotal();
         page4Request.afterCursor(Cursor.forKey("104"));
@@ -73,7 +73,7 @@ class PageRecordTest {
         });
 
         // Modify values returned by the PageRecord
-        page4.pageRequest().page(3);
+        page4.pageRequest().atPageNumber(3);
         page4.pageRequest().size(7);
         page4.pageRequest().withoutTotal();
         page4.pageRequest().beforeCursor(Cursor.forKey("100"));
@@ -96,7 +96,7 @@ class PageRecordTest {
     @DisplayName("The custom constructor can create instances where moreResults is inferred from the other record components.")
     void shouldCreateInstanceWithCustomConstructor() {
 
-        PageRequest page2Request = PageRequest.ofPage(2).size(4);
+        PageRequest page2Request = PageRequest.ofSize(10).atPageNumber(2).size(4);
         List<String> page2Content = List.of("E", "F", "G", "H");
         PageRecord<String> page2 = new PageRecord<>(page2Request, page2Content, -1L); // unknown total elements
 
@@ -107,14 +107,14 @@ class PageRecordTest {
             softly.assertThat(page2.hasPrevious()).isEqualTo(true);
             softly.assertThat(page2.hasTotals()).isEqualTo(false);
             softly.assertThat(page2.moreResults()).isEqualTo(true);
-            softly.assertThat(page2.nextPageRequest()).isEqualTo(PageRequest.ofPage(3).size(4));
+            softly.assertThat(page2.nextPageRequest()).isEqualTo(PageRequest.ofSize(10).atPageNumber(3).size(4));
             softly.assertThat(page2.numberOfElements()).isEqualTo(4);
-            softly.assertThat(page2.previousPageRequest()).isEqualTo(PageRequest.ofPage(1).size(4));
+            softly.assertThat(page2.previousPageRequest()).isEqualTo(PageRequest.ofSize(10).atPageNumber(1).size(4));
         });
         assertThatThrownBy(page2::totalElements).isInstanceOf(IllegalStateException.class);
         assertThatThrownBy(page2::totalPages).isInstanceOf(IllegalStateException.class);
 
-        PageRequest page5Request = PageRequest.ofPage(5).size(4);
+        PageRequest page5Request = PageRequest.ofSize(10).atPageNumber(5).size(4);
         List<String> page5Content = List.of("Q", "R");
         PageRecord<String> page5 = new PageRecord<>(page5Request, page5Content, -999L); // unknown total elements
 
@@ -126,7 +126,7 @@ class PageRecordTest {
             softly.assertThat(page5.hasTotals()).isEqualTo(false);
             softly.assertThat(page5.moreResults()).isEqualTo(false);
             softly.assertThat(page5.numberOfElements()).isEqualTo(2);
-            softly.assertThat(page5.previousPageRequest()).isEqualTo(PageRequest.ofPage(4).size(4));
+            softly.assertThat(page5.previousPageRequest()).isEqualTo(PageRequest.ofSize(10).atPageNumber(4).size(4));
         });
         assertThatThrownBy(page5::nextPageRequest).isInstanceOf(NoSuchElementException.class);
         assertThatThrownBy(page5::totalElements).isInstanceOf(IllegalStateException.class);
@@ -137,7 +137,7 @@ class PageRecordTest {
     @DisplayName("Instances created by the record constructor must adhere to the requirements of the Page interface.")
     void shouldCreateInstanceWithRecordConstructor() {
 
-        PageRequest page1Request = PageRequest.ofPage(1).size(5);
+        PageRequest page1Request = PageRequest.ofSize(10).atPageNumber(1).size(5);
         List<String> page1Content = List.of("A", "B", "C", "D", "E");
         PageRecord<String> page1 = new PageRecord<>(page1Request, page1Content, 18L, true);
 
@@ -148,14 +148,14 @@ class PageRecordTest {
             softly.assertThat(page1.hasPrevious()).isEqualTo(false);
             softly.assertThat(page1.hasTotals()).isEqualTo(true);
             softly.assertThat(page1.moreResults()).isEqualTo(true);
-            softly.assertThat(page1.nextPageRequest()).isEqualTo(PageRequest.ofPage(2).size(5));
+            softly.assertThat(page1.nextPageRequest()).isEqualTo(PageRequest.ofSize(10).atPageNumber(2).size(5));
             softly.assertThat(page1.numberOfElements()).isEqualTo(5);
             softly.assertThat(page1.totalElements()).isEqualTo(18L);
             softly.assertThat(page1.totalPages()).isEqualTo(4);
         });
         assertThatThrownBy(page1::previousPageRequest).isInstanceOf(NoSuchElementException.class);
 
-        PageRequest page3Request = PageRequest.ofPage(3).size(5);
+        PageRequest page3Request = PageRequest.ofSize(10).atPageNumber(3).size(5);
         List<String> page3Content = List.of("K", "L", "M", "N", "O");
         PageRecord<String> page3 = new PageRecord<>(page3Request, page3Content, 18L, true);
 
@@ -166,9 +166,9 @@ class PageRecordTest {
             softly.assertThat(page3.hasPrevious()).isEqualTo(true);
             softly.assertThat(page3.hasTotals()).isEqualTo(true);
             softly.assertThat(page3.moreResults()).isEqualTo(true);
-            softly.assertThat(page3.nextPageRequest()).isEqualTo(PageRequest.ofPage(4).size(5));
+            softly.assertThat(page3.nextPageRequest()).isEqualTo(PageRequest.ofSize(10).atPageNumber(4).size(5));
             softly.assertThat(page3.numberOfElements()).isEqualTo(5);
-            softly.assertThat(page3.previousPageRequest()).isEqualTo(PageRequest.ofPage(2).size(5));
+            softly.assertThat(page3.previousPageRequest()).isEqualTo(PageRequest.ofSize(10).atPageNumber(2).size(5));
             softly.assertThat(page3.totalElements()).isEqualTo(18L);
             softly.assertThat(page3.totalPages()).isEqualTo(4);
         });

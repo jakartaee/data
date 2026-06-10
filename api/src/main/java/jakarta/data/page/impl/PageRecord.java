@@ -59,7 +59,7 @@ public record PageRecord<T>(PageRequest pageRequest, List<T> content,
      * as {@code true} if the page {@code content} is a full page of results and
      * the {@code totalElements} is either unavailable (indicated by a negative
      * value) or it exceeds the current
-     * {@linkplain PageRequest#page() page number} multiplied by the
+     * {@linkplain PageRequest#pageNumber() page number} multiplied by the
      * {@link PageRequest#size() size} of a full page.
      *
      * @param pageRequest   The {@link PageRequest page request} for which this
@@ -74,7 +74,7 @@ public record PageRecord<T>(PageRequest pageRequest, List<T> content,
         this(pageRequest, content, totalElements,
                 content.size() == pageRequest.size()
                         && (totalElements < 0
-                        || totalElements > pageRequest.size() * pageRequest.page()));
+                        || totalElements > pageRequest.size() * pageRequest.pageNumber()));
     }
 
     @Override
@@ -98,14 +98,14 @@ public record PageRecord<T>(PageRequest pageRequest, List<T> content,
             throw new NoSuchElementException();
         }
 
-        return PageRequest.ofPage(pageRequest.page() + 1,
+        return PageRequest.ofPage(pageRequest.pageNumber() + 1,
                 pageRequest.size(),
                 pageRequest.requestTotal());
     }
 
     @Override
     public boolean hasPrevious() {
-        return pageRequest.page() > 1;
+        return pageRequest.pageNumber() > 1;
     }
 
     @Override
@@ -114,7 +114,7 @@ public record PageRecord<T>(PageRequest pageRequest, List<T> content,
             throw new NoSuchElementException();
         }
 
-        return PageRequest.ofPage(pageRequest.page() - 1,
+        return PageRequest.ofPage(pageRequest.pageNumber() - 1,
                 pageRequest.size(),
                 pageRequest.requestTotal());
     }
