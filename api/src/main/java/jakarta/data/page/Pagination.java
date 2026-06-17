@@ -83,7 +83,7 @@ record Pagination(long pageNumber, int size, Mode mode, Cursor type,
     }
 
     @Override
-    public PageRequest atPageNumber(long pageNumber) {
+    public PageRequest pageNumber(long pageNumber) {
         return new Pagination(pageNumber, size, mode, type, requestTotal);
     }
 

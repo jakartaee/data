@@ -83,7 +83,7 @@ class PageRequestCursorTest {
     @DisplayName("Should include key values in previous PageRequest from Cursor")
     void shouldCreatePageRequestBeforeKeysetCursor() {
         PageRequest.Cursor cursor = new PageRequestCursor(900L, 300, "testing", 120, 'T');
-        PageRequest pageRequest = PageRequest.ofSize(10).atPageNumber(8).beforeCursor(cursor);
+        PageRequest pageRequest = PageRequest.ofSize(10).pageNumber(8).beforeCursor(cursor);
 
         assertSoftly(softly -> {
             softly.assertThat(pageRequest.size()).isEqualTo(10);
@@ -144,7 +144,7 @@ class PageRequestCursorTest {
         PageRequest pageRequest25P1S0A1 = PageRequest.ofSize(25).afterCursor(PageRequest.Cursor.forKey("keyval1", '2', 3));
         PageRequest pageRequest25P1S0B1 = PageRequest.ofSize(25).beforeCursor(PageRequest.Cursor.forKey("keyval1", '2', 3));
         PageRequest pageRequest25P1S0A1Match = PageRequest.ofSize(25).afterCursor(new PageRequestCursor("keyval1", '2', 3));
-        PageRequest pageRequest25P2S0A1 = PageRequest.ofSize(10).atPageNumber(2).size(25).afterCursor(new PageRequestCursor("keyval1", '2', 3));
+        PageRequest pageRequest25P2S0A1 = PageRequest.ofSize(25).pageNumber(2).afterCursor(new PageRequestCursor("keyval1", '2', 3));
         PageRequest pageRequest25P1S0A2 = PageRequest.ofSize(25).afterCursor(PageRequest.Cursor.forKey("keyval2", '2', 3));
 
         PageRequest.Cursor cursor1 = new PageRequestCursor("keyval1", '2', 3);
@@ -201,7 +201,7 @@ class PageRequestCursorTest {
     @Test
     @DisplayName("Cursor should be replaced on new instance of PageRequest")
     void shouldReplaceCursor() {
-        PageRequest p1 = PageRequest.ofSize(10).atPageNumber(12).size(30).afterCursor(PageRequest.Cursor.forKey("last1", "fname1", 100));
+        PageRequest p1 = PageRequest.ofSize(30).pageNumber(12).afterCursor(PageRequest.Cursor.forKey("last1", "fname1", 100));
         PageRequest p2 = p1.beforeCursor(PageRequest.Cursor.forKey("lname2", "fname2", 200));
 
         assertSoftly(softly -> {

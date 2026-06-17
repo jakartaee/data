@@ -42,27 +42,27 @@ class CursoredPageRecordTest {
     void shouldBeImmutable() {
 
         PageRequest page2Request =
-                PageRequest.ofSize(10).atPageNumber(2).size(5).withoutTotal()
+                PageRequest.ofSize(5).pageNumber(2).withoutTotal()
                            .beforeCursor(Cursor.forKey("100"));
 
         PageRequest page3Request =
-                PageRequest.ofSize(10).atPageNumber(3).size(5).withoutTotal()
+                PageRequest.ofSize(5).pageNumber(3).withoutTotal()
                            .afterCursor(Cursor.forKey("99"));
 
         PageRequest page4Request =
-                PageRequest.ofSize(10).atPageNumber(4).size(5).withoutTotal()
+                PageRequest.ofSize(5).pageNumber(4).withoutTotal()
                            .afterCursor(Cursor.forKey("104"));
 
         PageRequest originalPage2Request =
-                PageRequest.ofSize(10).atPageNumber(2).size(5).withoutTotal()
+                PageRequest.ofSize(5).pageNumber(2).withoutTotal()
                            .beforeCursor(Cursor.forKey("100"));
 
         PageRequest originalPage3Request =
-                PageRequest.ofSize(10).atPageNumber(3).size(5).withoutTotal()
+                PageRequest.ofSize(5).pageNumber(3).withoutTotal()
                            .afterCursor(Cursor.forKey("99"));
 
         PageRequest originalPage4Request =
-                PageRequest.ofSize(10).atPageNumber(4).size(5).withoutTotal()
+                PageRequest.ofSize(5).pageNumber(4).withoutTotal()
                            .afterCursor(Cursor.forKey("104"));
 
         List<Book> page3Content = BookSimulator.mock(5);
@@ -85,9 +85,9 @@ class CursoredPageRecordTest {
 
         // Modify the values that were supplied to the CursoredPageRecord
         // constructor
-        page2Request.atPageNumber(5);
-        page3Request.atPageNumber(6);
-        page4Request.atPageNumber(7);
+        page2Request.pageNumber(5);
+        page3Request.pageNumber(6);
+        page4Request.pageNumber(7);
 
         page2Request.size(9);
         page3Request.size(6);
@@ -119,17 +119,17 @@ class CursoredPageRecordTest {
 
         // Modify (or attempt to modify) values returned by the
         // CursoredPageRecord
-        page3.previousPageRequest().atPageNumber(1);
+        page3.previousPageRequest().pageNumber(1);
         page3.previousPageRequest().size(8);
         page3.previousPageRequest().withTotal();
         page3.previousPageRequest().beforeCursor(Cursor.forKey("50"));
 
-        page3.pageRequest().atPageNumber(4);
+        page3.pageRequest().pageNumber(4);
         page3.pageRequest().size(7);
         page3.pageRequest().withTotal();
         page3.pageRequest().afterCursor(Cursor.forKey("101"));
 
-        page3.nextPageRequest().atPageNumber(5);
+        page3.nextPageRequest().pageNumber(5);
         page3.nextPageRequest().size(3);
         page3.nextPageRequest().withTotal();
         page3.nextPageRequest().afterCursor(Cursor.forKey("115"));
@@ -161,7 +161,7 @@ class CursoredPageRecordTest {
                 List.of("A", "B"),
                 List.of(PageRequest.Cursor.forKey("a"), PageRequest.Cursor.forKey("b")),
                 10,
-                PageRequest.ofSize(10).atPageNumber(1).size(2),
+                PageRequest.ofSize(2).pageNumber(1),
                 true,
                 false
         );
@@ -183,7 +183,7 @@ class CursoredPageRecordTest {
                 List.of("A", "B"),
                 List.of(cursorA, cursorB),
                 10,
-                PageRequest.ofSize(10).atPageNumber(1).size(2),
+                PageRequest.ofSize(2).pageNumber(1),
                 true,
                 false
         );
@@ -201,7 +201,7 @@ class CursoredPageRecordTest {
                 List.of("X"),
                 List.of(PageRequest.Cursor.forKey("x")),
                 10,
-                PageRequest.ofSize(10).atPageNumber(2).size(1),
+                PageRequest.ofSize(1).pageNumber(2),
                 false,
                 false
         );
@@ -219,7 +219,7 @@ class CursoredPageRecordTest {
                 List.of("X"),
                 List.of(PageRequest.Cursor.forKey("x")),
                 10,
-                PageRequest.ofSize(10).atPageNumber(1).size(1),
+                PageRequest.ofSize(1).pageNumber(1),
                 true,
                 true
         );
@@ -237,7 +237,7 @@ class CursoredPageRecordTest {
                 List.of("A", "B"),
                 List.of(PageRequest.Cursor.forKey("a"), PageRequest.Cursor.forKey("b")),
                 10,
-                PageRequest.ofSize(10).atPageNumber(1).size(3),
+                PageRequest.ofSize(3).pageNumber(1),
                 true,
                 false
         );
@@ -254,7 +254,7 @@ class CursoredPageRecordTest {
                 List.of("A"),
                 List.of(PageRequest.Cursor.forKey("a")),
                 -1,
-                PageRequest.ofSize(10).atPageNumber(1).size(1),
+                PageRequest.ofSize(1).pageNumber(1),
                 true,
                 true
         );

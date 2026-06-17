@@ -84,10 +84,9 @@ public interface PageRequest {
      *         {@code null}.
      * @throws IllegalArgumentException when the page number is negative or
      *                                  zero.
-     * @deprecated Use {@link #ofPage(long, int, boolean)}
-     *             or {@link #ofSize} and {@link #atPageNumber}.
+     * @apiNote It's usually better to use {@link #ofSize} and {@link #pageNumber}
+     *          or {@link #ofPage(long, int, boolean)}.
      */
-    @Deprecated(since = "1.1", forRemoval = true)
     static PageRequest ofPage(long pageNumber) {
         return new Pagination(pageNumber, 10, Mode.OFFSET, null, true);
     }
@@ -300,9 +299,9 @@ public interface PageRequest {
      * @since 1.1
      *
      * @apiNote Page <em>numbers</em> are indexed from one;
-     *          page {@linkplain #atPageOffset offsets} are indexed from zero.
+     *          page {@linkplain #pageOffset offsets} are indexed from zero.
      */
-    PageRequest atPageNumber(long pageNumber);
+    PageRequest pageNumber(long pageNumber);
 
     /**
      * <p>Creates a new page request with the same pagination information,
@@ -314,10 +313,10 @@ public interface PageRequest {
      * @since 1.1
      *
      * @apiNote Page <em>offsets</em> are indexed from zero;
-     *          page {@linkplain #atPageNumber numbers} are indexed from one.
+     *          page {@linkplain #pageNumber numbers} are indexed from one.
      */
-    default PageRequest atPageOffset(long pageOffset) {
-        return atPageNumber(pageOffset + 1);
+    default PageRequest pageOffset(long pageOffset) {
+        return pageNumber(pageOffset + 1);
     }
 
     /**

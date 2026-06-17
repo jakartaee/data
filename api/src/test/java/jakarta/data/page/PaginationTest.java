@@ -97,7 +97,7 @@ class PaginationTest {
     @DisplayName("should override page number")
     void shouldUpdatePageNumber() {
         var pagination = new Pagination(1, 10, PageRequest.Mode.OFFSET, null, false);
-        var updated = pagination.atPageNumber(5);
+        var updated = pagination.pageNumber(5);
 
         assertThat(updated).hasFieldOrPropertyWithValue("page", 5L);
     }
