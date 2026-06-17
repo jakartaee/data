@@ -18,6 +18,7 @@
 package jakarta.data.metamodel;
 
 import jakarta.data.Sort;
+import jakarta.data.Sort.Nulls;
 import jakarta.data.expression.TextExpression;
 import jakarta.data.messages.Messages;
 
@@ -37,7 +38,7 @@ public interface TextAttribute<T> extends ComparableAttribute<T, String>, TextEx
      */
     @Override
     default Sort<T> ascIgnoreCase() {
-        return Sort.ascIgnoreCase(name());
+        return new Sort<T>(this, null, true, true, Nulls.UNSPECIFIED);
     }
 
     /**
@@ -61,7 +62,7 @@ public interface TextAttribute<T> extends ComparableAttribute<T, String>, TextEx
      */
     @Override
     default Sort<T> descIgnoreCase() {
-        return Sort.descIgnoreCase(name());
+        return new Sort<T>(this, null, false, true, Nulls.UNSPECIFIED);
     }
 
     /**
