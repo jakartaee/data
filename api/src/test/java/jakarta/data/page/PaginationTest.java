@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023,2024 Contributors to the Eclipse Foundation
+ * Copyright (c) 2023,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -97,9 +97,10 @@ class PaginationTest {
     @DisplayName("should override page number")
     void shouldUpdatePageNumber() {
         var pagination = new Pagination(1, 10, PageRequest.Mode.OFFSET, null, false);
-        var updated = pagination.page(5);
+        var updated = pagination.pageNumber(5);
 
-        assertThat(updated).hasFieldOrPropertyWithValue("page", 5L);
+        assertThat(updated).hasFieldOrPropertyWithValue("page", 5L); // deprecated
+        assertThat(updated).hasFieldOrPropertyWithValue("pageNumber", 5L);
     }
 
     @Test
@@ -109,7 +110,7 @@ class PaginationTest {
         var pagination = new Pagination(2, 50, PageRequest.Mode.CURSOR_NEXT, cursor, true);
 
         assertThat(pagination.toString())
-                .contains("page=2", "size=50", "mode=CURSOR_NEXT", "cursor size=2");
+                .contains("pageNumber=2", "size=50", "mode=CURSOR_NEXT", "cursor size=2");
     }
 
 

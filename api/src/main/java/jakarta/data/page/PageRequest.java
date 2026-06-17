@@ -227,10 +227,21 @@ public interface PageRequest {
      * Returns the requested page number. Page numbers begin with {@code 1}.
      *
      * @return the requested page number
+     * @deprecated use {@link #pageNumber()} instead
+     */
+    @Deprecated(since = "1.1", forRemoval = true)
+    default long page() {
+        return pageNumber();
+    }
+
+    /**
+     * Returns the requested page number. Page numbers begin with {@code 1}.
+     *
+     * @return the requested page number
      * @apiNote Page <em>numbers</em> are indexed from one;
      *          page {@linkplain #pageOffset offsets} are indexed from zero.
      */
-    long page();
+    long pageNumber();
 
     /**
      * Returns the requested size of each page
@@ -272,7 +283,7 @@ public interface PageRequest {
      * @apiNote Page <em>numbers</em> are indexed from one;
      *          page {@linkplain #pageOffset offsets} are indexed from zero.
      */
-    PageRequest page(long pageNumber);
+    PageRequest pageNumber(long pageNumber);
 
     /**
      * Creates a new page request with the same pagination information,
@@ -290,7 +301,7 @@ public interface PageRequest {
      * @since 1.1
      *
      * @apiNote Page <em>offsets</em> are indexed from zero;
-     *          page {@linkplain #page numbers} are indexed from one.
+     *          page {@linkplain #pageNumber numbers} are indexed from one.
      */
     default PageRequest pageOffset(long offset) {
         if (mode() != Mode.OFFSET) {
@@ -308,7 +319,7 @@ public interface PageRequest {
                     Messages.get("013.arg.invalid", "offset", offset));
         }
 
-        return page(offset + 1);
+        return pageNumber(offset + 1);
     }
 
     /**
