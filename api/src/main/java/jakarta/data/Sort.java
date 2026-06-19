@@ -17,10 +17,10 @@
  */
 package jakarta.data;
 
+import jakarta.data.expression.TextExpression;
 import jakarta.data.messages.Messages;
 import jakarta.data.metamodel.Attribute;
 import jakarta.data.metamodel.StaticMetamodel;
-import jakarta.data.metamodel.TextAttribute;
 import jakarta.data.repository.OrderBy;
 
 import java.util.Objects;
@@ -446,7 +446,7 @@ public final class Sort<T> {
      * @throws NullPointerException when the attribute name is null.
      * @since 1.1
      */
-    public static <T> Sort<T> ascIgnoreCase(TextAttribute<T> sortable) {
+    public static <T> Sort<T> ascIgnoreCase(TextExpression<T> sortable) {
         return new Sort<>(sortable, true, true, Nulls.UNSPECIFIED);
     }
 
@@ -504,7 +504,7 @@ public final class Sort<T> {
      * @throws NullPointerException when the attribute name is null.
      * @since 1.1
      */
-    public static <T> Sort<T> descIgnoreCase(TextAttribute<T> sortable) {
+    public static <T> Sort<T> descIgnoreCase(TextExpression<T> sortable) {
         return new Sort<>(sortable, false, true, Nulls.UNSPECIFIED);
     }
 

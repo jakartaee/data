@@ -24,6 +24,7 @@ import static jakarta.data.spi.expression.function.TextFunctionExpression.LOWER;
 import static jakarta.data.spi.expression.function.TextFunctionExpression.RIGHT;
 import static jakarta.data.spi.expression.function.TextFunctionExpression.UPPER;
 
+import jakarta.data.Sort;
 import jakarta.data.constraint.Like;
 import jakarta.data.constraint.NotLike;
 import jakarta.data.messages.Messages;
@@ -516,4 +517,23 @@ public interface TextExpression<T> extends ComparableExpression<T, String> {
         return BasicRestriction.of(this, NotLike.suffix(suffix));
     }
 
+    /**
+     * Obtain a request for an ascending, case-insensitive {@link Sort} based on
+     * the expression.
+     *
+     * @return a request for an ascending, case-insensitive sort on the expression.
+     */
+    default Sort<T> ascIgnoreCase() {
+        return Sort.ascIgnoreCase(this);
+    }
+
+    /**
+     * Obtain a request for a descending, case-insensitive {@link Sort} based on
+     * the expression.
+     *
+     * @return a request for a descending, case-insensitive sort on the expression.
+     */
+    default Sort<T> descIgnoreCase() {
+        return Sort.descIgnoreCase(this);
+    }
 }
