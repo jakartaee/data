@@ -21,6 +21,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import jakarta.data.messages.Messages;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * Built-in implementation of Cursor for cursor-based pagination.
@@ -39,7 +41,7 @@ class PageRequestCursor implements PageRequest.Cursor {
      * @throws IllegalArgumentException if no elements are provided.
      */
     @SuppressWarnings("PMD.ArrayIsStoredDirectly")
-    PageRequestCursor(Object... key) {
+    PageRequestCursor(@Nonnull Object... key) {
         this.key = key;
         if (key == null || key.length == 0) {
             throw new IllegalArgumentException(
@@ -48,13 +50,14 @@ class PageRequestCursor implements PageRequest.Cursor {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(@Nullable Object o) {
         return this == o || o != null
                 && o.getClass() == getClass()
                 && Arrays.equals(key, ((PageRequestCursor) o).key);
     }
 
     @Override
+    @Nullable
     public Object get(int index) {
         return key[index];
     }
@@ -70,11 +73,13 @@ class PageRequestCursor implements PageRequest.Cursor {
     }
 
     @Override
+    @Nonnull
     public List<?> elements() {
         return List.of(key);
     }
 
     @Override
+    @Nonnull
     public String toString() {
         return "Cursor@" + Integer.toHexString(hashCode()) +
                 " with " + key.length + " values";

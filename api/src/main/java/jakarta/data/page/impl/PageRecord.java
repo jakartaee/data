@@ -24,6 +24,7 @@ import jakarta.data.page.PageRequest;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
+import jakarta.annotation.Nonnull;
 
 /**
  * Record type implementing {@link Page}. This may be used to simplify
@@ -39,13 +40,13 @@ import java.util.NoSuchElementException;
  * @param moreResults   whether there is a (nonempty) next page of results
  * @param <T>           The type of elements on the page
  */
-public record PageRecord<T>(PageRequest pageRequest, List<T> content,
+public record PageRecord<T>(@Nonnull PageRequest pageRequest, @Nonnull List<T> content,
                             long totalElements, boolean moreResults)
         implements Page<T> {
 
     // Disallow mutation of PageRequest and List fields after creation
-    public PageRecord(PageRequest pageRequest,
-                      List<T> content,
+    public PageRecord(@Nonnull PageRequest pageRequest,
+                      @Nonnull List<T> content,
                       long totalElements,
                       boolean moreResults) {
         this.pageRequest = pageRequest;
@@ -70,7 +71,7 @@ public record PageRecord<T>(PageRequest pageRequest, List<T> content,
      *                      indicates that a total count of elements and pages
      *                      is not available.
      */
-    public PageRecord(PageRequest pageRequest, List<T> content, long totalElements) {
+    public PageRecord(@Nonnull PageRequest pageRequest, @Nonnull List<T> content, long totalElements) {
         this(pageRequest, content, totalElements,
                 content.size() == pageRequest.size()
                         && (totalElements < 0
@@ -93,6 +94,7 @@ public record PageRecord<T>(PageRequest pageRequest, List<T> content,
     }
 
     @Override
+    @Nonnull
     public PageRequest nextPageRequest() {
         if (!hasNext()) {
             throw new NoSuchElementException();
@@ -109,6 +111,7 @@ public record PageRecord<T>(PageRequest pageRequest, List<T> content,
     }
 
     @Override
+    @Nonnull
     public PageRequest previousPageRequest() {
         if (!hasPrevious()) {
             throw new NoSuchElementException();
@@ -120,6 +123,7 @@ public record PageRecord<T>(PageRequest pageRequest, List<T> content,
     }
 
     @Override
+    @Nonnull
     public Iterator<T> iterator() {
         return content.iterator();
     }

@@ -20,6 +20,7 @@ package jakarta.data.metamodel;
 import jakarta.data.Sort;
 import jakarta.data.expression.ComparableExpression;
 import jakarta.data.messages.Messages;
+import jakarta.annotation.Nonnull;
 
 /**
  * <p>Represents a comparable entity attribute in the {@link StaticMetamodel}.
@@ -77,10 +78,11 @@ public interface ComparableAttribute<T, V extends Comparable<?>>
      * @param attributeType type of the entity attribute.
      * @return instance of {@code ComparableAttribute}.
      */
+    @Nonnull
     static <T, V extends Comparable<?>> ComparableAttribute<T, V> of(
-            Class<T> entityClass,
-            String name,
-            Class<V> attributeType) {
+            @Nonnull Class<T> entityClass,
+            @Nonnull String name,
+            @Nonnull Class<V> attributeType) {
         Messages.requireNonNull(entityClass, "entityClass");
         Messages.requireNonNull(name, "name");
         Messages.requireNonNull(attributeType, "attributeType");

@@ -21,6 +21,7 @@ import jakarta.data.constraint.Constraint;
 import jakarta.data.expression.Expression;
 import jakarta.data.metamodel.Attribute;
 import jakarta.data.metamodel.StaticMetamodel;
+import jakarta.annotation.Nonnull;
 
 /**
  * <p>A Jakarta Data provider's view of a restriction on a single
@@ -46,6 +47,7 @@ public interface BasicRestriction<T, V> extends Restriction<T> {
      *
      * @return the entity attribute or expression.
      */
+    @Nonnull
     Expression<T, V> expression();
 
     /**
@@ -56,6 +58,7 @@ public interface BasicRestriction<T, V> extends Restriction<T> {
      *
      * @return the constraint that is applied by this restriction.
      */
+    @Nonnull
     Constraint<V> constraint();
 
     /**
@@ -77,8 +80,9 @@ public interface BasicRestriction<T, V> extends Restriction<T> {
      * @throws NullPointerException if the expression or constraint is 
      *                              {@code null}.
      */
-    static <T, V> Restriction<T> of(Expression<T, V> expression,
-                                    Constraint<V> constraint) {
+    @Nonnull
+    static <T, V> Restriction<T> of(@Nonnull Expression<T, V> expression,
+                                    @Nonnull Constraint<V> constraint) {
         return new BasicRestrictionRecord<>(expression, constraint);
     }
 }

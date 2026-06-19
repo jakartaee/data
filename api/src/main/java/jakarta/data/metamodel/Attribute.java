@@ -20,6 +20,7 @@ package jakarta.data.metamodel;
 import java.util.UUID;
 
 import jakarta.data.messages.Messages;
+import jakarta.annotation.Nonnull;
 
 /**
  * <p>Supertype for {@link StaticMetamodel} fields representing entity
@@ -129,6 +130,7 @@ public interface Attribute<T> {
      *
      * @return the entity attribute name.
      */
+    @Nonnull
     String name();
 
     /**
@@ -142,6 +144,7 @@ public interface Attribute<T> {
      *          was used to obtain the instance.
      * @since 1.1
      */
+    @Nonnull
     default Class<T> declaringType() {
         throw new UnsupportedOperationException(
                 Messages.get("012.unknown.decl.type", getClass().getName()));
@@ -158,6 +161,7 @@ public interface Attribute<T> {
      *          was used to obtain the instance.
      * @since 1.1
      */
+    @Nonnull
     default Class<?> type() {
         throw new UnsupportedOperationException(
                 Messages.get("011.unknown.attr.type", getClass().getName()));

@@ -27,6 +27,7 @@ import java.time.temporal.Temporal;
 
 import jakarta.data.expression.TemporalExpression;
 import jakarta.data.metamodel.TemporalAttribute;
+import jakarta.annotation.Nonnull;
 
 /**
  * <p>A {@linkplain Literal literal} for a
@@ -47,43 +48,49 @@ public interface TemporalLiteral<V extends Temporal & Comparable<? extends Tempo
      * @return a {@code TemporalLiteral} representing the value.
      * @throws NullPointerException if the value is {@code null}.
      */
+    @Nonnull
     static <V extends Temporal & Comparable<? extends Temporal>> TemporalLiteral<V>
-    of(Class<V> type, V value) {
+    of(@Nonnull Class<V> type, @Nonnull V value) {
         return new TemporalLiteralRecord<>(type, value);
     }
 
     /**
      * Create a {@code TemporalLiteral} representing the given {@link Instant}.
      */
-    static TemporalLiteral<Instant> of(Instant value) {
+    @Nonnull
+    static TemporalLiteral<Instant> of(@Nonnull Instant value) {
         return of(Instant.class, value);
     }
 
     /**
      * Create a {@code TemporalLiteral} representing the given {@link LocalDateTime}.
      */
-    static TemporalLiteral<LocalDateTime> of(LocalDateTime value) {
+    @Nonnull
+    static TemporalLiteral<LocalDateTime> of(@Nonnull LocalDateTime value) {
         return of(LocalDateTime.class, value);
     }
 
     /**
      * Create a {@code TemporalLiteral} representing the given {@link LocalDate}.
      */
-    static TemporalLiteral<LocalDate> of(LocalDate value) {
+    @Nonnull
+    static TemporalLiteral<LocalDate> of(@Nonnull LocalDate value) {
         return of(LocalDate.class, value);
     }
 
     /**
      * Create a {@code TemporalLiteral} representing the given {@link LocalTime}.
      */
-    static TemporalLiteral<LocalTime> of(LocalTime value) {
+    @Nonnull
+    static TemporalLiteral<LocalTime> of(@Nonnull LocalTime value) {
         return of(LocalTime.class, value);
     }
 
     /**
      * Create a {@code TemporalLiteral} representing the given {@link Year}.
      */
-    static TemporalLiteral<Year> of(Year value) {
+    @Nonnull
+    static TemporalLiteral<Year> of(@Nonnull Year value) {
         return of(Year.class, value);
     }
 
@@ -136,5 +143,6 @@ public interface TemporalLiteral<V extends Temporal & Comparable<? extends Tempo
      * @return a {@code String} representing the literal temporal value.
      */
     @Override
+    @Nonnull
     String toString();
 }

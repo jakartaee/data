@@ -22,6 +22,7 @@ import jakarta.data.metamodel.Attribute;
 import jakarta.data.repository.Is;
 import jakarta.data.restrict.Restriction;
 import jakarta.data.spi.expression.literal.ComparableLiteral;
+import jakarta.annotation.Nonnull;
 
 /**
  * <p>A constraint that imposes a maximum value.</p>
@@ -87,8 +88,9 @@ public interface AtMost<V extends Comparable<?>> extends Constraint<V> {
      * @return an {@code AtMost} constraint.
      * @throws NullPointerException if the maximum is {@code null}.
      */
+    @Nonnull
     static <V extends Comparable<?>> AtMost<V> max(
-            V maximum) {
+            @Nonnull V maximum) {
         return new AtMostRecord<>(ComparableLiteral.of(maximum));
     }
 
@@ -107,8 +109,9 @@ public interface AtMost<V extends Comparable<?>> extends Constraint<V> {
      * @return an {@code AtMost} constraint.
      * @throws NullPointerException if the maximum is {@code null}.
      */
+    @Nonnull
     static <V extends Comparable<?>> AtMost<V> max(
-            ComparableExpression<?, V> maximum) {
+            @Nonnull ComparableExpression<?, V> maximum) {
         return new AtMostRecord<>(maximum);
     }
 
@@ -118,5 +121,6 @@ public interface AtMost<V extends Comparable<?>> extends Constraint<V> {
      *
      * @return an expression representing the maximum value.
      */
+    @Nonnull
     ComparableExpression<?, V> bound();
 }

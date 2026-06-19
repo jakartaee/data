@@ -28,6 +28,7 @@ import jakarta.data.metamodel.Attribute;
 import jakarta.data.repository.Is;
 import jakarta.data.restrict.Restriction;
 import jakarta.data.spi.expression.literal.StringLiteral;
+import jakarta.annotation.Nonnull;
 
 /**
  * <p>A constraint that requires matching a pattern.</p>
@@ -104,7 +105,8 @@ public interface Like extends Constraint<String> {
      * @return a {@code Like} constraint.
      * @throws NullPointerException if the pattern is {@code null}.
      */
-    static Like pattern(String pattern) {
+    @Nonnull
+    static Like pattern(@Nonnull String pattern) {
         return pattern(pattern, CHAR_WILDCARD, STRING_WILDCARD);
     }
 
@@ -129,7 +131,8 @@ public interface Like extends Constraint<String> {
      * @return a {@code Like} constraint.
      * @throws NullPointerException if the pattern is {@code null}.
      */
-    static Like pattern(String pattern, char charWildcard, char stringWildcard) {
+    @Nonnull
+    static Like pattern(@Nonnull String pattern, char charWildcard, char stringWildcard) {
         Messages.requireNonNull(pattern, "pattern");
 
         StringLiteral expression = StringLiteral.of(
@@ -159,7 +162,8 @@ public interface Like extends Constraint<String> {
      * @return a {@code Like} constraint.
      * @throws NullPointerException if the pattern is {@code null}.
      */
-    static Like pattern(String pattern, char charWildcard, char stringWildcard, char escape) {
+    @Nonnull
+    static Like pattern(@Nonnull String pattern, char charWildcard, char stringWildcard, char escape) {
         if (pattern == null) {
             throw new NullPointerException(
                     Messages.get("001.arg.required", "pattern"));
@@ -181,7 +185,8 @@ public interface Like extends Constraint<String> {
      * @return a {@code Like} constraint.
      * @throws NullPointerException if the pattern expression is {@code null}.
      */
-    static Like pattern(TextExpression<?> pattern, char escape) {
+    @Nonnull
+    static Like pattern(@Nonnull TextExpression<?> pattern, char escape) {
         if (pattern == null) {
             throw new NullPointerException(
                     Messages.get("001.arg.required", "pattern"));
@@ -206,7 +211,8 @@ public interface Like extends Constraint<String> {
      * @return a {@code Like} constraint.
      * @throws NullPointerException if the prefix is {@code null}.
      */
-    static Like prefix(String prefix) {
+    @Nonnull
+    static Like prefix(@Nonnull String prefix) {
         if (prefix == null) {
             throw new NullPointerException(
                     Messages.get("001.arg.required", "prefix"));
@@ -233,7 +239,8 @@ public interface Like extends Constraint<String> {
      * @return a {@code Like} constraint.
      * @throws NullPointerException if the substring is {@code null}.
      */
-    static Like substring(String substring) {
+    @Nonnull
+    static Like substring(@Nonnull String substring) {
         if (substring == null) {
             throw new NullPointerException(
                     Messages.get("001.arg.required", "substring"));
@@ -261,7 +268,8 @@ public interface Like extends Constraint<String> {
      * @return a {@code Like} constraint.
      * @throws NullPointerException if the suffix is {@code null}.
      */
-    static Like suffix(String suffix) {
+    @Nonnull
+    static Like suffix(@Nonnull String suffix) {
         if (suffix == null) {
             throw new NullPointerException(
                     Messages.get("001.arg.required", "suffix"));
@@ -289,7 +297,8 @@ public interface Like extends Constraint<String> {
      * @return a {@code Like} constraint.
      * @throws NullPointerException if the literal value is {@code null}.
      */
-    static Like literal(String value) {
+    @Nonnull
+    static Like literal(@Nonnull String value) {
         if (value == null) {
             throw new NullPointerException(
                     Messages.get("001.arg.required", "value"));
@@ -325,5 +334,6 @@ public interface Like extends Constraint<String> {
      *
      * @return an expression representing the pattern.
      */
+    @Nonnull
     TextExpression<?> pattern();
 }

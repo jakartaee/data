@@ -73,9 +73,9 @@ import java.lang.annotation.Target;
  * <ul>
  * <li>the <em>Query by Method Name</em> {@code OrderBy} keyword in its
  *     name,</li>
- * <li>a {@link Query} or {@code jakarta.persistence.query.JakartaQuery}
+ * <li>a {@link Query} or {@link jakarta.persistence.query.JakartaQuery}
  *     annotation specifying a query with an {@code ORDER BY} clause, nor</li>
- * <li>a {@code jakarta.persistence.query.NativeQuery} annotation.</li>
+ * <li>a {@link jakarta.persistence.query.NativeQuery} annotation.</li>
  * </ul>
  * <p>A Jakarta Data provider is permitted to reject such a repository
  * method declaration at compile time or to implement the method to
@@ -86,7 +86,6 @@ import java.lang.annotation.Target;
  * or a more specific subclass if the database is incapable of
  * ordering with the requested sort criteria.</p>
  */
-// TODO replace @code with @link to JakartaQuery/NativeQuery once Persistence 4.0 M3 is available
 @Repeatable(OrderBy.List.class)
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)

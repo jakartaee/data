@@ -28,6 +28,7 @@ import java.util.UUID;
 
 import jakarta.data.expression.ComparableExpression;
 import jakarta.data.messages.Messages;
+import jakarta.annotation.Nonnull;
 
 /**
  * <p>A {@linkplain Literal literal} expression for a sortable value, such as a
@@ -58,7 +59,8 @@ public interface ComparableLiteral<V extends Comparable<?>>
      * @throws NullPointerException if the value is {@code null}.
      */
     @SuppressWarnings("unchecked")
-    static <V extends Comparable<?>> ComparableLiteral<V> of(V value) {
+    @Nonnull
+    static <V extends Comparable<?>> ComparableLiteral<V> of(@Nonnull V value) {
         // Subtypes of Number and Temporal are needed here because
         // NumericExpression has N extends Number & Comparable<N>
         // and
@@ -106,6 +108,7 @@ public interface ComparableLiteral<V extends Comparable<?>>
     /**
      * Create a {@code ComparableLiteral} representing the given {@code char}.
      */
+    @Nonnull
     static ComparableLiteral<Character> of(char value) {
         return new ComparableLiteralRecord<>(Character.class, value);
     }
@@ -113,7 +116,8 @@ public interface ComparableLiteral<V extends Comparable<?>>
     /**
      * Create a {@code ComparableLiteral} representing the given {@link UUID}.
      */
-    static ComparableLiteral<UUID> of(UUID value) {
+    @Nonnull
+    static ComparableLiteral<UUID> of(@Nonnull UUID value) {
         return new ComparableLiteralRecord<>(UUID.class, value);
     }
 
@@ -166,5 +170,6 @@ public interface ComparableLiteral<V extends Comparable<?>>
      * @return a {@code String} representing the literal value.
      */
     @Override
+    @Nonnull
     String toString();
 }

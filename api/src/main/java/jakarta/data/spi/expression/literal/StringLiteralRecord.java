@@ -18,8 +18,9 @@
 package jakarta.data.spi.expression.literal;
 
 import jakarta.data.messages.Messages;
+import jakarta.annotation.Nonnull;
 
-record StringLiteralRecord(String value)
+record StringLiteralRecord(@Nonnull String value)
         implements StringLiteral {
 
     StringLiteralRecord {
@@ -30,6 +31,7 @@ record StringLiteralRecord(String value)
     }
 
     @Override
+    @Nonnull
     public String toString() {
         return '\'' + value.replace("'", "''") + '\'';
     }

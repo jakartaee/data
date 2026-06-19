@@ -22,6 +22,7 @@ import jakarta.data.metamodel.Attribute;
 import jakarta.data.repository.Is;
 import jakarta.data.restrict.Restriction;
 import jakarta.data.spi.expression.literal.ComparableLiteral;
+import jakarta.annotation.Nonnull;
 
 /**
  * <p>A constraint that imposes a minimum value.</p>
@@ -86,8 +87,9 @@ public interface AtLeast<V extends Comparable<?>> extends Constraint<V> {
      * @return an {@code AtLeast} constraint.
      * @throws NullPointerException if the minimum is {@code null}.
      */
+    @Nonnull
     static <V extends Comparable<?>> AtLeast<V> min(
-            V minimum) {
+            @Nonnull V minimum) {
         return new AtLeastRecord<>(ComparableLiteral.of(minimum));
     }
 
@@ -106,8 +108,9 @@ public interface AtLeast<V extends Comparable<?>> extends Constraint<V> {
      * @return an {@code AtLeast} constraint.
      * @throws NullPointerException if the minimum is {@code null}.
      */
+    @Nonnull
     static <V extends Comparable<?>> AtLeast<V> min(
-            ComparableExpression<?, V> minimum) {
+            @Nonnull ComparableExpression<?, V> minimum) {
         return new AtLeastRecord<>(minimum);
     }
 
@@ -117,5 +120,6 @@ public interface AtLeast<V extends Comparable<?>> extends Constraint<V> {
      *
      * @return an expression representing the minimum value.
      */
+    @Nonnull
     ComparableExpression<?, V> bound();
 }

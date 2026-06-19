@@ -26,9 +26,10 @@ import java.time.ZoneOffset;
 import java.time.temporal.Temporal;
 
 import jakarta.data.messages.Messages;
+import jakarta.annotation.Nonnull;
 
 record TemporalLiteralRecord<V extends Temporal & Comparable<? extends Temporal>>
-        (Class<V> type, V value)
+        (@Nonnull Class<V> type, @Nonnull V value)
         implements TemporalLiteral<V> {
 
     TemporalLiteralRecord {
@@ -37,6 +38,7 @@ record TemporalLiteralRecord<V extends Temporal & Comparable<? extends Temporal>
     }
 
     @Override
+    @Nonnull
     public String toString() {
         final Temporal temporal =
                 value instanceof Instant instant

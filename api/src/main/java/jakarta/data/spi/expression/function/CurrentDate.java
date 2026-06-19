@@ -19,6 +19,7 @@ package jakarta.data.spi.expression.function;
 
 import java.time.LocalDate;
 
+import jakarta.annotation.Nonnull;
 import jakarta.data.expression.Expression;
 import jakarta.data.expression.TemporalExpression;
 
@@ -38,6 +39,7 @@ public interface CurrentDate<T> extends TemporalExpression<T, LocalDate> {
      * @return an expression representing the current date.
      */
     @SuppressWarnings("unchecked")
+    @Nonnull
     static <T> CurrentDate<T> now() {
         return (CurrentDate<T>) CurrentDateInstance.instance;
     }
@@ -51,11 +53,13 @@ class CurrentDateInstance implements CurrentDate<Object> {
     }
 
     @Override
+    @Nonnull
     public Class<LocalDate> type() {
         return LocalDate.class;
     }
 
     @Override
+    @Nonnull
     public String toString() {
         return "LOCAL DATE";
     }

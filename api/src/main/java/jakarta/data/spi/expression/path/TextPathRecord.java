@@ -20,9 +20,10 @@ package jakarta.data.spi.expression.path;
 import jakarta.data.expression.NavigableExpression;
 import jakarta.data.messages.Messages;
 import jakarta.data.metamodel.TextAttribute;
+import jakarta.annotation.Nonnull;
 
 record TextPathRecord<T, U>
-        (NavigableExpression<T, U> expression, TextAttribute<U> attribute)
+        (@Nonnull NavigableExpression<T, U> expression, @Nonnull TextAttribute<U> attribute)
         implements TextPath<T, U> {
 
     TextPathRecord {
@@ -31,6 +32,7 @@ record TextPathRecord<T, U>
     }
 
     @Override
+    @Nonnull
     public String toString() {
         return expression + "." + attribute.name();
     }

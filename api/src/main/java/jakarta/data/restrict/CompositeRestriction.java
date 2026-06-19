@@ -18,6 +18,7 @@
 package jakarta.data.restrict;
 
 import java.util.List;
+import jakarta.annotation.Nonnull;
 
 /**
  * <p>A Jakarta Data provider's view of a restriction that combines other
@@ -56,6 +57,7 @@ public interface CompositeRestriction<T> extends Restriction<T> {
      *
      * @return the ordered list of restriction.
      */
+    @Nonnull
     List<Restriction<? super T>> restrictions();
 
     /**
@@ -63,6 +65,7 @@ public interface CompositeRestriction<T> extends Restriction<T> {
      *
      * @return how to combine the list of restrictions.
      */
+    @Nonnull
     Type type();
 
     /**
@@ -101,6 +104,7 @@ public interface CompositeRestriction<T> extends Restriction<T> {
          *
          * @return the representation as a logical operator in query language.
          */
+        @Nonnull
         String asQueryLanguage() {
             return switch (this) {
                 case ALL -> "AND";

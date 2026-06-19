@@ -19,6 +19,7 @@ package jakarta.data.metamodel;
 
 import jakarta.data.expression.NavigableExpression;
 import jakarta.data.messages.Messages;
+import jakarta.annotation.Nonnull;
 
 /**
  * <p>Represents an entity attribute that is an embeddable or association to
@@ -34,6 +35,7 @@ public interface NavigableAttribute<T, U>
         extends Attribute<T>, NavigableExpression<T, U> {
 
     @Override
+    @Nonnull
     Class<U> type();
 
     /**
@@ -47,9 +49,10 @@ public interface NavigableAttribute<T, U>
      * @param attributeType type of the entity attribute.
      * @return instance of {@code NavigableAttribute}.
      */
-    static <T, U> NavigableAttribute<T, U> of(Class<T> entityClass,
-                                              String name,
-                                              Class<U> attributeType) {
+    @Nonnull
+    static <T, U> NavigableAttribute<T, U> of(@Nonnull Class<T> entityClass,
+                                              @Nonnull String name,
+                                              @Nonnull Class<U> attributeType) {
         Messages.requireNonNull(entityClass, "entityClass");
         Messages.requireNonNull(name, "name");
         Messages.requireNonNull(attributeType, "attributeType");

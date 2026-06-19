@@ -19,8 +19,9 @@ package jakarta.data.constraint;
 
 import jakarta.data.expression.TextExpression;
 import jakarta.data.messages.Messages;
+import jakarta.annotation.Nonnull;
 
-record LikeRecord(TextExpression<?> pattern, char escape)
+record LikeRecord(@Nonnull TextExpression<?> pattern, char escape)
         implements Like {
 
     static final char CHAR_WILDCARD = '_';
@@ -28,16 +29,19 @@ record LikeRecord(TextExpression<?> pattern, char escape)
     static final char ESCAPE = '\\';
 
     @Override
+    @Nonnull
     public NotLike negate() {
         return new NotLikeRecord(pattern, escape);
     }
 
     @Override
+    @Nonnull
     public String toString() {
         return "LIKE " + pattern + " ESCAPE '" + escape + "'";
     }
 
-    static String escape(String literal) {
+    @Nonnull
+    static String escape(@Nonnull String literal) {
         final var result = new StringBuilder();
         for (int i = 0; i < literal.length(); i++) {
             final char ch = literal.charAt(i);
@@ -49,7 +53,8 @@ record LikeRecord(TextExpression<?> pattern, char escape)
         return result.toString();
     }
 
-    static String translate(String pattern,
+    @Nonnull
+    static String translate(@Nonnull String pattern,
                             char charWildcard,
                             char stringWildcard,
                             char escape,

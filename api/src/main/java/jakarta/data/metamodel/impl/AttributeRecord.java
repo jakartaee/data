@@ -20,6 +20,7 @@ package jakarta.data.metamodel.impl;
 import jakarta.data.metamodel.Attribute;
 import jakarta.data.metamodel.NumericAttribute;
 import jakarta.data.metamodel.TextAttribute;
+import jakarta.annotation.Nonnull;
 
 /**
  * @param name the name of the attribute
@@ -29,7 +30,7 @@ import jakarta.data.metamodel.TextAttribute;
  * {@link NumericAttribute#of(Class, String, Class) NumericAttribute}.
  */
 @Deprecated(since = "1.1")
-public record AttributeRecord<T>(String name)
+public record AttributeRecord<T>(@Nonnull String name)
         implements Attribute<T> {
 }
 

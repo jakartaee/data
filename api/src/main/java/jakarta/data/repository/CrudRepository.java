@@ -21,6 +21,7 @@ import jakarta.data.exceptions.EntityExistsException;
 import jakarta.data.exceptions.OptimisticLockingFailureException;
 
 import java.util.List;
+import jakarta.annotation.Nonnull;
 
 /**
  * <p>A built-in repository supertype for performing Create, Read, Update, and
@@ -126,7 +127,8 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
      * @throws NullPointerException  if the entity is null.
      */
     @Insert
-    <S extends T> S insert(S entity);
+    @Nonnull
+    <S extends T> S insert(@Nonnull S entity);
 
     /**
      * <p>Inserts multiple entities into the database.</p>
@@ -162,7 +164,8 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
      *                               null.
      */
     @Insert
-    <S extends T> List<S> insertAll(List<S> entities);
+    @Nonnull
+    <S extends T> List<S> insertAll(@Nonnull List<S> entities);
 
     /**
      * <p>Modifies an entity that already exists in the database.</p>
@@ -191,7 +194,8 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
      * @throws NullPointerException              if the entity is null.
      */
     @Update
-    <S extends T> S update(S entity);
+    @Nonnull
+    <S extends T> S update(@Nonnull S entity);
 
     /**
      * <p>Modifies entities that already exist in the database.</p>
@@ -223,6 +227,7 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
      *                                           element is null.
      */
     @Update
-    <S extends T> List<S> updateAll(List<S> entities);
+    @Nonnull
+    <S extends T> List<S> updateAll(@Nonnull List<S> entities);
 
 }

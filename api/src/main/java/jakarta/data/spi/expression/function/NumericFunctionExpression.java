@@ -24,6 +24,7 @@ import jakarta.data.expression.TextExpression;
 import jakarta.data.messages.Messages;
 
 import java.util.List;
+import jakarta.annotation.Nonnull;
 
 /**
  * <p>An {@linkplain Expression expression} that represents application of a function
@@ -107,11 +108,12 @@ public interface NumericFunctionExpression<T, N extends Number & Comparable<N>>
      * @param expression an expression that evaluates to a numeric value.
      * @return a {@code NumericFunctionExpression} representing the function.
      */
+    @Nonnull
     static <T, N extends Number & Comparable<N>>
         NumericFunctionExpression<T, N> of(
-                String name,
-                Class<? extends N> returnType,
-                NumericExpression<? super T, N> expression) {
+                @Nonnull String name,
+                @Nonnull Class<? extends N> returnType,
+                @Nonnull NumericExpression<? super T, N> expression) {
 
         Messages.requireNonNull(expression, "expression");
 
@@ -136,11 +138,12 @@ public interface NumericFunctionExpression<T, N extends Number & Comparable<N>>
      *                   value.
      * @return a {@code NumericFunctionExpression} representing the function.
      */
+    @Nonnull
     static <T, N extends Number & Comparable<N>>
         NumericFunctionExpression<T, N> of(
-                String name,
-                Class<N> returnType,
-                TextExpression<? super T> expression) {
+                @Nonnull String name,
+                @Nonnull Class<N> returnType,
+                @Nonnull TextExpression<? super T> expression) {
 
         Messages.requireNonNull(expression, "expression");
 
@@ -166,5 +169,6 @@ public interface NumericFunctionExpression<T, N extends Number & Comparable<N>>
      *         function.
      */
     @Override
+    @Nonnull
     List<? extends ComparableExpression<? super T, ?>> arguments();
 }

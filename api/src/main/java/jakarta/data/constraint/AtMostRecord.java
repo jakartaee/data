@@ -19,9 +19,10 @@ package jakarta.data.constraint;
 
 import jakarta.data.expression.ComparableExpression;
 import jakarta.data.messages.Messages;
+import jakarta.annotation.Nonnull;
 
 record AtMostRecord<V extends Comparable<?>>(
-        ComparableExpression<?, V> bound)
+        @Nonnull ComparableExpression<?, V> bound)
         implements AtMost<V> {
     public AtMostRecord {
         if (bound == null) {
@@ -31,11 +32,13 @@ record AtMostRecord<V extends Comparable<?>>(
     }
 
     @Override
+    @Nonnull
     public GreaterThan<V> negate() {
         return GreaterThan.bound(bound);
     }
 
     @Override
+    @Nonnull
     public String toString() {
         return "<= " + bound;
     }

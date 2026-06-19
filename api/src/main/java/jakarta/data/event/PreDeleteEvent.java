@@ -17,6 +17,8 @@
  */
 package jakarta.data.event;
 
+import jakarta.annotation.Nonnull;
+
 /**
  * An event that occurs when a {@link jakarta.data.repository.Delete} lifecycle
  * method is called, but before each record is deleted from the datastore.
@@ -24,7 +26,7 @@ package jakarta.data.event;
  * @param <E> the entity type
  */
 public class PreDeleteEvent<E> extends LifecycleEvent<E> {
-    public PreDeleteEvent(E entity) {
+    public PreDeleteEvent(@Nonnull E entity) {
         super(entity);
     }
 }

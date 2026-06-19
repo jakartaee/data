@@ -30,6 +30,7 @@ import jakarta.data.restrict.BasicRestriction;
 import jakarta.data.restrict.Restriction;
 
 import java.util.Collection;
+import jakarta.annotation.Nonnull;
 
 /**
  * <p>An expression represents an {@linkplain Attribute entity attribute},
@@ -104,6 +105,7 @@ public interface Expression<T, V> {
     /**
      * The type of the expression.
      */
+    @Nonnull
     Class<? extends V> type();
 
     /**
@@ -119,7 +121,8 @@ public interface Expression<T, V> {
      * @return the restriction.
      * @throws NullPointerException if the value is {@code null}.
      */
-    default Restriction<T> equalTo(V value) {
+    @Nonnull
+    default Restriction<T> equalTo(@Nonnull V value) {
         return BasicRestriction.of(this, EqualTo.value(value));
     }
 
@@ -137,7 +140,8 @@ public interface Expression<T, V> {
      * @return the restriction.
      * @throws NullPointerException if the expression is {@code null}.
      */
-    default Restriction<T> equalTo(Expression<? super T, V> expression) {
+    @Nonnull
+    default Restriction<T> equalTo(@Nonnull Expression<? super T, V> expression) {
         return BasicRestriction.of(this, EqualTo.expression(expression));
     }
 
@@ -161,7 +165,8 @@ public interface Expression<T, V> {
      *                                  {@code null} or contains a {@code null}
      *                                  element.
      */
-    default Restriction<T> in(Collection<V> values) {
+    @Nonnull
+    default Restriction<T> in(@Nonnull Collection<V> values) {
         return BasicRestriction.of(this, In.values(values));
     }
 
@@ -184,7 +189,8 @@ public interface Expression<T, V> {
      *                                  contains a {@code null} element.
      */
     @SuppressWarnings("unchecked")
-    default Restriction<T> in(V... values) {
+    @Nonnull
+    default Restriction<T> in(@Nonnull V... values) {
         return BasicRestriction.of(this, In.values(values));
     }
 
@@ -212,7 +218,8 @@ public interface Expression<T, V> {
      *                                  element.
      */
     @SuppressWarnings("unchecked")
-    default Restriction<T> in(Expression<? super T, V>... expressions) {
+    @Nonnull
+    default Restriction<T> in(@Nonnull Expression<? super T, V>... expressions) {
         return BasicRestriction.of(this, In.expressions(expressions));
     }
 
@@ -227,6 +234,7 @@ public interface Expression<T, V> {
      *
      * @return the restriction.
      */
+    @Nonnull
     default Restriction<T> isNull() {
         return BasicRestriction.of(this, Null.instance());
     }
@@ -244,7 +252,8 @@ public interface Expression<T, V> {
      * @return the restriction.
      * @throws NullPointerException if the value is {@code null}.
      */
-    default Restriction<T> notEqualTo(V value) {
+    @Nonnull
+    default Restriction<T> notEqualTo(@Nonnull V value) {
         return BasicRestriction.of(this, NotEqualTo.value(value));
     }
 
@@ -263,7 +272,8 @@ public interface Expression<T, V> {
      * @return the restriction.
      * @throws NullPointerException if the expression is {@code null}.
      */
-    default Restriction<T> notEqualTo(Expression<? super T, V> expression) {
+    @Nonnull
+    default Restriction<T> notEqualTo(@Nonnull Expression<? super T, V> expression) {
         return BasicRestriction.of(this, NotEqualTo.expression(expression));
     }
 
@@ -287,7 +297,8 @@ public interface Expression<T, V> {
      *                                  {@code null} or contains a {@code null}
      *                                  element.
      */
-    default Restriction<T> notIn(Collection<V> values) {
+    @Nonnull
+    default Restriction<T> notIn(@Nonnull Collection<V> values) {
         return BasicRestriction.of(this, NotIn.values(values));
     }
 
@@ -311,7 +322,8 @@ public interface Expression<T, V> {
      *                                  contains a {@code null} element.
      */
     @SuppressWarnings("unchecked")
-    default Restriction<T> notIn(V... values) {
+    @Nonnull
+    default Restriction<T> notIn(@Nonnull V... values) {
         return BasicRestriction.of(this, NotIn.values(values));
     }
 
@@ -338,7 +350,8 @@ public interface Expression<T, V> {
      *                                  element.
      */
     @SuppressWarnings("unchecked")
-    default Restriction<T> notIn(Expression<? super T, V>... expressions) {
+    @Nonnull
+    default Restriction<T> notIn(@Nonnull Expression<? super T, V>... expressions) {
         return BasicRestriction.of(this, NotIn.expressions(expressions));
     }
 
@@ -353,6 +366,7 @@ public interface Expression<T, V> {
      *
      * @return the restriction.
      */
+    @Nonnull
     default Restriction<T> notNull() {
         return BasicRestriction.of(this, NotNull.instance());
     }
@@ -374,7 +388,8 @@ public interface Expression<T, V> {
      * @throws NullPointerException if the constraint is {@code null}.
      */
     // TODO: should this be called restrict() ?
-    default Restriction<T> satisfies(Constraint<V> constraint) {
+    @Nonnull
+    default Restriction<T> satisfies(@Nonnull Constraint<V> constraint) {
         return BasicRestriction.of(this, constraint);
     }
 }

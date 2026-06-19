@@ -17,6 +17,8 @@
  */
 package jakarta.data.event;
 
+import jakarta.annotation.Nonnull;
+
 /**
  * An event that occurs when a {@link jakarta.data.repository.Save} lifecycle
  * method is called, but before each entity is inserted or updated in the datastore.
@@ -26,7 +28,7 @@ package jakarta.data.event;
  * @param <E> the entity type
  */
 public class PreUpsertEvent<E> extends LifecycleEvent<E> {
-    public PreUpsertEvent(E entity) {
+    public PreUpsertEvent(@Nonnull E entity) {
         super(entity);
     }
 }

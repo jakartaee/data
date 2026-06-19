@@ -18,16 +18,19 @@
 package jakarta.data.constraint;
 
 import jakarta.data.expression.TextExpression;
+import jakarta.annotation.Nonnull;
 
-record NotLikeRecord(TextExpression<?> pattern, char escape)
+record NotLikeRecord(@Nonnull TextExpression<?> pattern, char escape)
         implements NotLike {
 
     @Override
+    @Nonnull
     public Like negate() {
         return new LikeRecord(pattern, escape);
     }
 
     @Override
+    @Nonnull
     public String toString() {
         return "NOT LIKE " + pattern + " ESCAPE '" + escape + "'";
     }

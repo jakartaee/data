@@ -20,6 +20,7 @@ package jakarta.data.constraint;
 import jakarta.data.expression.Expression;
 import jakarta.data.metamodel.Attribute;
 import jakarta.data.restrict.Restriction;
+import jakarta.annotation.Nonnull;
 
 /**
  * <p>A constraint that requires a {@code null} value.</p>
@@ -78,6 +79,7 @@ public interface Null<V> extends Constraint<V> {
      * @return a {@code Null} constraint.
      */
     @SuppressWarnings("unchecked")
+    @Nonnull
     static <V> Null<V> instance() {
         return (Null<V>) NullRecord.INSTANCE;
     }

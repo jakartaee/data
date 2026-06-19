@@ -17,6 +17,8 @@
  */
 package jakarta.data.exceptions;
 
+import jakarta.annotation.Nullable;
+
 /**
  * Indicates a connection-related failure that might be intermittent in nature.
  * The operation might succeed if reattempted by the application. If the data
@@ -33,7 +35,7 @@ public class DataConnectionException extends DataException {
      *
      * @param message the detail message.
      */
-    public DataConnectionException(String message) {
+    public DataConnectionException(@Nullable String message) {
         super(message);
     }
 
@@ -45,7 +47,7 @@ public class DataConnectionException extends DataException {
      * @param cause   another exception or error that caused this exception.
      *                Null indicates that no other cause is specified.
      */
-    public DataConnectionException(String message, Throwable cause) {
+    public DataConnectionException(@Nullable String message, @Nullable Throwable cause) {
         super(message, cause);
     }
 
@@ -55,7 +57,7 @@ public class DataConnectionException extends DataException {
      *
      * @param cause the cause.
      */
-    public DataConnectionException(Throwable cause) {
+    public DataConnectionException(@Nullable Throwable cause) {
         super(cause);
     }
 }

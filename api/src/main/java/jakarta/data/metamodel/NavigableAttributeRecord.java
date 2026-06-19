@@ -17,11 +17,15 @@
  */
 package jakarta.data.metamodel;
 
+import jakarta.annotation.Nonnull;
+
+
 record NavigableAttributeRecord<T, U>
-        (Class<T> declaringType, String name, Class<U> type)
+        (@Nonnull Class<T> declaringType, @Nonnull String name, @Nonnull Class<U> type)
         implements NavigableAttribute<T, U> {
 
     @Override
+    @Nonnull
     public String toString() {
         return declaringType.getSimpleName().toLowerCase() + '.' + name;
     }

@@ -22,13 +22,15 @@ import java.time.temporal.Temporal;
 import jakarta.data.expression.NavigableExpression;
 import jakarta.data.expression.TemporalExpression;
 import jakarta.data.metamodel.TemporalAttribute;
+import jakarta.annotation.Nonnull;
 
 public interface TemporalPath<T, U, V extends Temporal & Comparable<? extends Temporal>>
         extends Path<T, U>, TemporalExpression<T, V> {
 
+    @Nonnull
     static <T, U, V extends Temporal & Comparable<? extends Temporal>> TemporalPath<T, U, V> of(
-            NavigableExpression<T, U> expression,
-            TemporalAttribute<U, V> attribute) {
+            @Nonnull NavigableExpression<T, U> expression,
+            @Nonnull TemporalAttribute<U, V> attribute) {
 
         return new TemporalPathRecord<>(expression, attribute);
     }

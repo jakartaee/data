@@ -18,6 +18,8 @@
 
 package jakarta.data.exceptions;
 
+import jakarta.annotation.Nullable;
+
 /**
  * Thrown by the data provider when a problem occurs.
  */
@@ -30,7 +32,7 @@ public class DataException extends RuntimeException {
      *
      * @param message the detail message.
      */
-    public DataException(String message) {
+    public DataException(@Nullable String message) {
         super(message);
     }
 
@@ -41,7 +43,7 @@ public class DataException extends RuntimeException {
      * @param message the detail message.
      * @param cause   the cause.
      */
-    public DataException(String message, Throwable cause) {
+    public DataException(@Nullable String message, @Nullable Throwable cause) {
         super(message, cause);
     }
 
@@ -50,7 +52,7 @@ public class DataException extends RuntimeException {
      *
      * @param cause the cause.
      */
-    public DataException(Throwable cause) {
+    public DataException(@Nullable Throwable cause) {
         super(cause);
     }
 }

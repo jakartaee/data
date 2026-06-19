@@ -17,6 +17,8 @@
  */
 package jakarta.data.exceptions;
 
+import jakarta.annotation.Nullable;
+
 /**
  * Data access exception thrown when a result was expected to have at least one
  * row (or element) but zero rows (or elements) were actually returned.
@@ -30,7 +32,7 @@ public class EmptyResultException extends DataException {
      *
      * @param message the detail message.
      */
-    public EmptyResultException(String message) {
+    public EmptyResultException(@Nullable String message) {
         super(message);
     }
 
@@ -42,7 +44,7 @@ public class EmptyResultException extends DataException {
      * @param cause   another exception or error that caused this exception.
      *                Null indicates that no other cause is specified.
      */
-    public EmptyResultException(String message, Throwable cause) {
+    public EmptyResultException(@Nullable String message, @Nullable Throwable cause) {
         super(message, cause);
     }
 
@@ -52,7 +54,7 @@ public class EmptyResultException extends DataException {
      *
      * @param cause the cause.
      */
-    public EmptyResultException(Throwable cause) {
+    public EmptyResultException(@Nullable Throwable cause) {
         super(cause);
     }
 }

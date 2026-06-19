@@ -20,15 +20,18 @@ package jakarta.data.constraint;
 import java.util.List;
 
 import jakarta.data.expression.Expression;
+import jakarta.annotation.Nonnull;
 
-record NotInRecord<V>(List<Expression<?, V>> expressions) implements NotIn<V> {
+record NotInRecord<V>(@Nonnull List<Expression<?, V>> expressions) implements NotIn<V> {
 
     @Override
+    @Nonnull
     public In<V> negate() {
         return new InRecord<>(expressions);
     }
 
     @Override
+    @Nonnull
     public String toString() {
         return "NOT IN " + expressions;
     }

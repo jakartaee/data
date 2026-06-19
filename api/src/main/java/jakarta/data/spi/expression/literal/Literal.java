@@ -19,6 +19,7 @@ package jakarta.data.spi.expression.literal;
 
 import jakarta.data.expression.Expression;
 import jakarta.data.metamodel.Attribute;
+import jakarta.annotation.Nonnull;
 
 /**
  * <p>{@code Literal} represents an immutable value within an
@@ -39,6 +40,7 @@ public interface Literal<V> extends Expression<Object, V> {
      *
      * @return the value.
      */
+    @Nonnull
     V value();
 
     /**
@@ -60,7 +62,8 @@ public interface Literal<V> extends Expression<Object, V> {
      * @throws NullPointerException if the value is {@code null}.
      */
     @SuppressWarnings("unchecked")
-    static <V> Literal<V> of(V value) {
+    @Nonnull
+    static <V> Literal<V> of(@Nonnull V value) {
         if (value instanceof Comparable<?> comparable) {
             return (Literal<V>) ComparableLiteral.of(comparable);
         } else {
@@ -90,5 +93,6 @@ public interface Literal<V> extends Expression<Object, V> {
      * @return a {@code String} representing the literal value.
      */
     @Override
+    @Nonnull
     String toString();
 }

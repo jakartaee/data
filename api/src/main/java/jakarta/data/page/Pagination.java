@@ -19,12 +19,14 @@ package jakarta.data.page;
 
 import java.util.Optional;
 
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import jakarta.data.messages.Messages;
 
 /**
  * Built-in implementation of PageRequest.
  */
-record Pagination(long pageNumber, int size, Mode mode, Cursor type,
+record Pagination(long pageNumber, int size, @Nonnull Mode mode, @Nullable Cursor type,
                   boolean requestTotal) implements PageRequest {
 
     Pagination {
@@ -41,17 +43,20 @@ record Pagination(long pageNumber, int size, Mode mode, Cursor type,
     }
 
     @Override
+    @Nonnull
     public PageRequest withoutTotal() {
         return new Pagination(pageNumber, size, mode, type, false);
     }
 
     @Override
+    @Nonnull
     public PageRequest withTotal() {
         return new Pagination(pageNumber, size, mode, type, true);
     }
 
     @Override
-    public PageRequest afterCursor(Cursor cursor) {
+    @Nonnull
+    public PageRequest afterCursor(@Nonnull Cursor cursor) {
         return new Pagination(pageNumber,
                               size,
                               Mode.CURSOR_NEXT,
@@ -60,7 +65,8 @@ record Pagination(long pageNumber, int size, Mode mode, Cursor type,
     }
 
     @Override
-    public PageRequest beforeCursor(Cursor cursor) {
+    @Nonnull
+    public PageRequest beforeCursor(@Nonnull Cursor cursor) {
         return new Pagination(pageNumber,
                               size,
                               Mode.CURSOR_PREVIOUS,
@@ -69,13 +75,15 @@ record Pagination(long pageNumber, int size, Mode mode, Cursor type,
     }
 
     @Override
+    @Nonnull
     public Optional<Cursor> cursor() {
         return Optional.ofNullable(type);
     }
 
     @Override
+    @Nonnull
     public String toString() {
-        StringBuilder s = new StringBuilder(mode == Mode.OFFSET ? 100 : 150)
+        var s = new StringBuilder(mode == Mode.OFFSET ? 100 : 150)
                 .append("PageRequest{pageNumber=").append(pageNumber)
                 .append(", size=").append(size)
                 .append(", mode=").append(mode);
@@ -86,11 +94,13 @@ record Pagination(long pageNumber, int size, Mode mode, Cursor type,
     }
 
     @Override
+    @Nonnull
     public PageRequest size(int maxPageSize) {
         return new Pagination(pageNumber, maxPageSize, mode, type, requestTotal);
     }
 
     @Override
+    @Nonnull
     public PageRequest pageNumber(long pageNumber) {
         return new Pagination(pageNumber, size, mode, type, requestTotal);
     }

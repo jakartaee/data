@@ -18,6 +18,7 @@
 package jakarta.data.spi.expression.literal;
 
 import jakarta.data.expression.TextExpression;
+import jakarta.annotation.Nonnull;
 
 /**
  * <p>A {@linkplain Literal literal} for a {@link String} value.</p>
@@ -34,7 +35,8 @@ public interface StringLiteral
      * @return a {@code StringLiteral} representing the value.
      * @throws NullPointerException if the value is {@code null}.
      */
-    static StringLiteral of(String value) {
+    @Nonnull
+    static StringLiteral of(@Nonnull String value) {
         return new StringLiteralRecord(value);
     }
 
@@ -53,5 +55,6 @@ public interface StringLiteral
      * @return the {@code String} value escaped and enclosed in single quotes.
      */
     @Override
+    @Nonnull
     String toString();
 }

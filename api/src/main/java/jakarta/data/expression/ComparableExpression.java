@@ -27,6 +27,7 @@ import jakarta.data.constraint.NotBetween;
 import jakarta.data.metamodel.Attribute;
 import jakarta.data.restrict.BasicRestriction;
 import jakarta.data.restrict.Restriction;
+import jakarta.annotation.Nonnull;
 
 /**
  * <p>An {@linkplain Expression expression} that evaluates to a comparable
@@ -73,7 +74,8 @@ public interface ComparableExpression<T, V extends Comparable<?>>
      * @return the restriction.
      * @throws NullPointerException if the value is {@code null}.
      */
-    default Restriction<T> between(V min, V max) {
+    @Nonnull
+    default Restriction<T> between(@Nonnull V min, @Nonnull V max) {
         return BasicRestriction.of(this, Between.bounds(min, max));
     }
 
@@ -98,9 +100,10 @@ public interface ComparableExpression<T, V extends Comparable<?>>
      * @return the restriction.
      * @throws NullPointerException if the expression is {@code null}.
      */
+    @Nonnull
     default <U extends ComparableExpression<? super T, V>> Restriction<T> between(
-            U minExpression,
-            U maxExpression) {
+            @Nonnull U minExpression,
+            @Nonnull U maxExpression) {
         return BasicRestriction.of(
                 this,
                 Between.bounds(minExpression, maxExpression));
@@ -129,7 +132,8 @@ public interface ComparableExpression<T, V extends Comparable<?>>
      * @return the restriction.
      * @throws NullPointerException if the value is {@code null}.
      */
-    default Restriction<T> greaterThan(V value) {
+    @Nonnull
+    default Restriction<T> greaterThan(@Nonnull V value) {
         return BasicRestriction.of(this, GreaterThan.bound(value));
     }
 
@@ -150,7 +154,8 @@ public interface ComparableExpression<T, V extends Comparable<?>>
      * @return the restriction.
      * @throws NullPointerException if the expression is {@code null}.
      */
-    default Restriction<T> greaterThan(ComparableExpression<? super T, V> expression) {
+    @Nonnull
+    default Restriction<T> greaterThan(@Nonnull ComparableExpression<? super T, V> expression) {
         return BasicRestriction.of(this, GreaterThan.bound(expression));
     }
 
@@ -168,7 +173,8 @@ public interface ComparableExpression<T, V extends Comparable<?>>
      * @return the restriction.
      * @throws NullPointerException if the value is {@code null}.
      */
-    default Restriction<T> greaterThanEqual(V value) {
+    @Nonnull
+    default Restriction<T> greaterThanEqual(@Nonnull V value) {
         return BasicRestriction.of(this, AtLeast.min(value));
     }
 
@@ -189,7 +195,8 @@ public interface ComparableExpression<T, V extends Comparable<?>>
      * @return the restriction.
      * @throws NullPointerException if the expression is {@code null}.
      */
-    default Restriction<T> greaterThanEqual(ComparableExpression<? super T, V> expression) {
+    @Nonnull
+    default Restriction<T> greaterThanEqual(@Nonnull ComparableExpression<? super T, V> expression) {
         return BasicRestriction.of(this, AtLeast.min(expression));
     }
 
@@ -206,7 +213,8 @@ public interface ComparableExpression<T, V extends Comparable<?>>
      * @return the restriction.
      * @throws NullPointerException if the value is {@code null}.
      */
-    default Restriction<T> lessThan(V value) {
+    @Nonnull
+    default Restriction<T> lessThan(@Nonnull V value) {
         return BasicRestriction.of(this, LessThan.bound(value));
     }
 
@@ -227,7 +235,8 @@ public interface ComparableExpression<T, V extends Comparable<?>>
      * @return the restriction.
      * @throws NullPointerException if the expression is {@code null}.
      */
-    default Restriction<T> lessThan(ComparableExpression<? super T, V> expression) {
+    @Nonnull
+    default Restriction<T> lessThan(@Nonnull ComparableExpression<? super T, V> expression) {
         return BasicRestriction.of(this, LessThan.bound(expression));
     }
 
@@ -245,7 +254,8 @@ public interface ComparableExpression<T, V extends Comparable<?>>
      * @return the restriction.
      * @throws NullPointerException if the value is {@code null}.
      */
-    default Restriction<T> lessThanEqual(V value) {
+    @Nonnull
+    default Restriction<T> lessThanEqual(@Nonnull V value) {
         return BasicRestriction.of(this, AtMost.max(value));
     }
 
@@ -266,7 +276,8 @@ public interface ComparableExpression<T, V extends Comparable<?>>
      * @return the restriction.
      * @throws NullPointerException if the expression is {@code null}.
      */
-    default Restriction<T> lessThanEqual(ComparableExpression<? super T, V> expression) {
+    @Nonnull
+    default Restriction<T> lessThanEqual(@Nonnull ComparableExpression<? super T, V> expression) {
         return BasicRestriction.of(this, AtMost.max(expression));
     }
 
@@ -284,7 +295,8 @@ public interface ComparableExpression<T, V extends Comparable<?>>
      * @return the restriction.
      * @throws NullPointerException if the value is {@code null}.
      */
-    default Restriction<T> notBetween(V min, V max) {
+    @Nonnull
+    default Restriction<T> notBetween(@Nonnull V min, @Nonnull V max) {
         return BasicRestriction.of(this, NotBetween.bounds(min, max));
     }
 
@@ -308,9 +320,10 @@ public interface ComparableExpression<T, V extends Comparable<?>>
      * @return the restriction.
      * @throws NullPointerException if the expression is {@code null}.
      */
+    @Nonnull
     default <U extends ComparableExpression<? super T, V>> Restriction<T> notBetween(
-            U minExpression,
-            U maxExpression) {
+            @Nonnull U minExpression,
+            @Nonnull U maxExpression) {
         return BasicRestriction.of(
                 this,
                 NotBetween.bounds(minExpression, maxExpression));

@@ -27,6 +27,7 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import static jakarta.data.repository.By.ID;
+import jakarta.annotation.Nonnull;
 
 /**
  * <p>A built-in repository supertype for performing basic operations on
@@ -125,7 +126,8 @@ public interface BasicRepository<T, K> extends DataRepository<T, K> {
      *                                           {@code null}.
      */
     @Save
-    <S extends T> S save(S entity);
+    @Nonnull
+    <S extends T> S save(@Nonnull S entity);
 
     /**
      * Saves all given entities to the database. If an entity has a non-null Id
@@ -156,7 +158,8 @@ public interface BasicRepository<T, K> extends DataRepository<T, K> {
      *                                           or any element is null.
      */
     @Save
-    <S extends T> List<S> saveAll(List<S> entities);
+    @Nonnull
+    <S extends T> List<S> saveAll(@Nonnull List<S> entities);
 
     /**
      * Retrieves an entity by its Id.
@@ -167,7 +170,8 @@ public interface BasicRepository<T, K> extends DataRepository<T, K> {
      * @throws NullPointerException when the Id is {@code null}.
      */
     @Find
-    Optional<T> findById(@By(ID) K id);
+    @Nonnull
+    Optional<T> findById(@By(ID) @Nonnull K id);
 
     /**
      * Retrieves all persistent entities of the specified type from the
@@ -179,6 +183,7 @@ public interface BasicRepository<T, K> extends DataRepository<T, K> {
      *                                       the {@code findAll} operation.
      */
     @Find
+    @Nonnull
     Stream<T> findAll();
 
     /**
@@ -195,7 +200,8 @@ public interface BasicRepository<T, K> extends DataRepository<T, K> {
      * @see PageRequest.Mode
      */
     @Find
-    Page<T> findAll(PageRequest pageRequest, Order<T> sortBy);
+    @Nonnull
+    Page<T> findAll(@Nonnull PageRequest pageRequest, @Nonnull Order<T> sortBy);
 
     /**
      * Deletes the entity with the given Id.
@@ -207,7 +213,7 @@ public interface BasicRepository<T, K> extends DataRepository<T, K> {
      * @throws NullPointerException when the Id is {@code null}.
      */
     @Delete
-    void deleteById(@By(ID) K id);
+    void deleteById(@By(ID) @Nonnull K id);
 
     /**
      * Deletes a given entity. Deletion is performed by matching the Id, and if
@@ -225,7 +231,7 @@ public interface BasicRepository<T, K> extends DataRepository<T, K> {
      * @throws NullPointerException              when the entity is null
      */
     @Delete
-    void delete(T entity);
+    void delete(@Nonnull T entity);
 
     /**
      * Deletes the given entities. Deletion of each entity is performed by
@@ -246,6 +252,6 @@ public interface BasicRepository<T, K> extends DataRepository<T, K> {
      *                                           elements.
      */
     @Delete
-    void deleteAll(List<? extends T> entities);
+    void deleteAll(@Nonnull List<? extends T> entities);
 
 }

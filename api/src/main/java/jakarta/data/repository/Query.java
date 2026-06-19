@@ -190,4 +190,3 @@ public @interface Query {
      */
     String value();
 }
-

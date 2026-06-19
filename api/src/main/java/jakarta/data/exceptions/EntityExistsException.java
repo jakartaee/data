@@ -17,6 +17,8 @@
  */
 package jakarta.data.exceptions;
 
+import jakarta.annotation.Nullable;
+
 /**
  * Indicates that an entity cannot be inserted into the database because
  * insertion would violate a unique constraint. For example, this exception
@@ -32,7 +34,7 @@ public class EntityExistsException extends DataException {
      *
      * @param message the detail message.
      */
-    public EntityExistsException(String message) {
+    public EntityExistsException(@Nullable String message) {
         super(message);
     }
 
@@ -44,7 +46,7 @@ public class EntityExistsException extends DataException {
      * @param cause   another exception or error that caused this exception.
      *                Null indicates that no other cause is specified.
      */
-    public EntityExistsException(String message, Throwable cause) {
+    public EntityExistsException(@Nullable String message, @Nullable Throwable cause) {
         super(message, cause);
     }
 
@@ -53,7 +55,7 @@ public class EntityExistsException extends DataException {
      *
      * @param cause the cause.
      */
-    public EntityExistsException(Throwable cause) {
+    public EntityExistsException(@Nullable Throwable cause) {
         super(cause);
     }
 }

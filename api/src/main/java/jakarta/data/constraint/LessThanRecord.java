@@ -19,8 +19,9 @@ package jakarta.data.constraint;
 
 import jakarta.data.expression.ComparableExpression;
 import jakarta.data.messages.Messages;
+import jakarta.annotation.Nonnull;
 
-record LessThanRecord<V extends Comparable<?>>(ComparableExpression<?, V> bound)
+record LessThanRecord<V extends Comparable<?>>(@Nonnull ComparableExpression<?, V> bound)
         implements LessThan<V> {
     public LessThanRecord {
         if (bound == null) {
@@ -30,11 +31,13 @@ record LessThanRecord<V extends Comparable<?>>(ComparableExpression<?, V> bound)
     }
 
     @Override
+    @Nonnull
     public AtLeast<V> negate() {
         return AtLeast.min(bound);
     }
 
     @Override
+    @Nonnull
     public String toString() {
         return "< " + bound;
     }

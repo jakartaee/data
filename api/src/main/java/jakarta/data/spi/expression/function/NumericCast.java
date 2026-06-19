@@ -18,6 +18,7 @@
 package jakarta.data.spi.expression.function;
 
 import jakarta.data.expression.NumericExpression;
+import jakarta.annotation.Nonnull;
 
 /**
  * <p>An {@linkplain NumericExpression expression} that represents conversion
@@ -41,6 +42,7 @@ public interface NumericCast<T, N extends Number & Comparable<N>>
      *
      * @return the numeric expression to cast
      */
+    @Nonnull
     NumericExpression<T, ?> expression();
 
     /**
@@ -50,6 +52,7 @@ public interface NumericCast<T, N extends Number & Comparable<N>>
      * @return the target numeric type
      */
     @Override
+    @Nonnull
     Class<N> type();
 
     /**
@@ -64,9 +67,10 @@ public interface NumericCast<T, N extends Number & Comparable<N>>
      * @throws NullPointerException if {@code expression} or {@code type} is
      *                              {@code null}
      */
+    @Nonnull
     static <T, N extends Number & Comparable<N>> NumericCast<T, N> of(
-            NumericExpression<T, ?> expression,
-            Class<N> type) {
+            @Nonnull NumericExpression<T, ?> expression,
+            @Nonnull Class<N> type) {
 
         return new NumericCastRecord<>(expression, type);
     }

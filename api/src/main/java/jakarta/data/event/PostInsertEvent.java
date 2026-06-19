@@ -17,6 +17,8 @@
  */
 package jakarta.data.event;
 
+import jakarta.annotation.Nonnull;
+
 /**
  * An event that occurs when an {@link jakarta.data.repository.Insert} lifecycle
  * method is called, after each record is inserted into the datastore.
@@ -24,7 +26,7 @@ package jakarta.data.event;
  * @param <E> the entity type
  */
 public class PostInsertEvent<E> extends LifecycleEvent<E> {
-    public PostInsertEvent(E entity) {
+    public PostInsertEvent(@Nonnull E entity) {
         super(entity);
     }
 }

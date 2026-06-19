@@ -1437,6 +1437,7 @@ module jakarta.data {
     // The above is not working for Javadoc links to Jakarta API, even though
     // the following does work for Javadoc links to JDBC API,
     requires static java.sql; // compile time dependency for Javadoc
+    requires static jakarta.annotation; // compile time dependency for nullness annotations
     exports jakarta.data;
     exports jakarta.data.constraint;
     exports jakarta.data.event;

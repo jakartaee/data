@@ -32,6 +32,7 @@ import jakarta.data.metamodel.NumericAttribute;
 import jakarta.data.spi.expression.function.NumericCast;
 import jakarta.data.spi.expression.function.NumericFunctionExpression;
 import jakarta.data.spi.expression.function.NumericOperatorExpression;
+import jakarta.annotation.Nonnull;
 
 /**
  * <p>An {@linkplain Expression expression} that evaluates to a
@@ -61,6 +62,7 @@ public interface NumericExpression<T, N extends Number & Comparable<N>>
      *
      * @return an expression for the function that computes the absolute value.
      */
+    @Nonnull
     default NumericExpression<T, N> abs() {
         return NumericFunctionExpression.of(ABS, type(), this);
     }
@@ -81,6 +83,7 @@ public interface NumericExpression<T, N extends Number & Comparable<N>>
      *
      * @return an expression for the function that computes negation of value.
      */
+    @Nonnull
     default NumericExpression<T, N> negated() {
         return NumericFunctionExpression.of(NEG, type(), this);
     }
@@ -100,7 +103,8 @@ public interface NumericExpression<T, N extends Number & Comparable<N>>
      * @return an expression for the function that computes the sum.
      * @throws NullPointerException if the supplied value is null.
      */
-    default NumericExpression<T, N> plus(N value) {
+    @Nonnull
+    default NumericExpression<T, N> plus(@Nonnull N value) {
         return NumericOperatorExpression.of(PLUS, this, value);
     }
 
@@ -120,7 +124,8 @@ public interface NumericExpression<T, N extends Number & Comparable<N>>
      * @return an expression for the function that computes the difference.
      * @throws NullPointerException if the supplied value is null.
      */
-    default NumericExpression<T, N> minus(N value) {
+    @Nonnull
+    default NumericExpression<T, N> minus(@Nonnull N value) {
         return NumericOperatorExpression.of(MINUS, this, value);
     }
 
@@ -142,7 +147,8 @@ public interface NumericExpression<T, N extends Number & Comparable<N>>
      * @return an expression for the function that computes the difference.
      * @throws NullPointerException if the supplied value is null.
      */
-    default NumericExpression<T, N> subtractedFrom(N value) {
+    @Nonnull
+    default NumericExpression<T, N> subtractedFrom(@Nonnull N value) {
         return NumericOperatorExpression.of(MINUS, value, this);
     }
 
@@ -155,7 +161,8 @@ public interface NumericExpression<T, N extends Number & Comparable<N>>
      * @return an expression for the function that computes the quotient.
      * @throws NullPointerException if the supplied value is null.
      */
-    default NumericExpression<T, N> dividedInto(N value) {
+    @Nonnull
+    default NumericExpression<T, N> dividedInto(@Nonnull N value) {
         return NumericOperatorExpression.of(DIVIDE, value, this);
     }
 
@@ -177,7 +184,8 @@ public interface NumericExpression<T, N extends Number & Comparable<N>>
      * @return an expression for the function that computes the product.
      * @throws NullPointerException if the supplied factor value is null.
      */
-    default NumericExpression<T, N> times(N factor) {
+    @Nonnull
+    default NumericExpression<T, N> times(@Nonnull N factor) {
         return NumericOperatorExpression.of(TIMES, this, factor);
     }
 
@@ -199,7 +207,8 @@ public interface NumericExpression<T, N extends Number & Comparable<N>>
      * @return an expression for the function that computes the quotient.
      * @throws NullPointerException if the supplied divisor value is null.
      */
-    default NumericExpression<T, N> dividedBy(N divisor) {
+    @Nonnull
+    default NumericExpression<T, N> dividedBy(@Nonnull N divisor) {
         return NumericOperatorExpression.of(DIVIDE, this, divisor);
     }
 
@@ -221,8 +230,9 @@ public interface NumericExpression<T, N extends Number & Comparable<N>>
      * @return an expression for the function that computes the sum.
      * @throws NullPointerException if the supplied value is null.
      */
+    @Nonnull
     default NumericExpression<T, N> plus(
-            NumericExpression<? super T, N> expression) {
+            @Nonnull NumericExpression<? super T, N> expression) {
         return NumericOperatorExpression.of(PLUS, this, expression);
     }
 
@@ -243,8 +253,9 @@ public interface NumericExpression<T, N extends Number & Comparable<N>>
      * @return an expression for the function that computes the difference.
      * @throws NullPointerException if the supplied expression is null.
      */
+    @Nonnull
     default NumericExpression<T, N> minus(
-            NumericExpression<? super T, N> expression) {
+            @Nonnull NumericExpression<? super T, N> expression) {
         return NumericOperatorExpression.of(MINUS, this, expression);
     }
 
@@ -266,8 +277,9 @@ public interface NumericExpression<T, N extends Number & Comparable<N>>
      * @return an expression for the function that computes the product.
      * @throws NullPointerException if the supplied factor expression is null.
      */
+    @Nonnull
     default NumericExpression<T, N> times(
-            NumericExpression<? super T, N> factorExpression) {
+            @Nonnull NumericExpression<? super T, N> factorExpression) {
         return NumericOperatorExpression.of(TIMES, this, factorExpression);
     }
 
@@ -289,8 +301,9 @@ public interface NumericExpression<T, N extends Number & Comparable<N>>
      * @return an expression for the function that computes the quotient.
      * @throws NullPointerException if the supplied divisor expression is null.
      */
+    @Nonnull
     default NumericExpression<T, N> dividedBy(
-            NumericExpression<? super T, N> divisorExpression) {
+            @Nonnull NumericExpression<? super T, N> divisorExpression) {
         return NumericOperatorExpression.of(DIVIDE, this, divisorExpression);
     }
 
@@ -307,6 +320,7 @@ public interface NumericExpression<T, N extends Number & Comparable<N>>
      *
      * @return an expression for the function that casts to {@code Long}.
      */
+    @Nonnull
     default NumericExpression<T, Long> asLong() {
         return NumericCast.of(this, Long.class);
     }
@@ -324,6 +338,7 @@ public interface NumericExpression<T, N extends Number & Comparable<N>>
      *
      * @return an expression for the function that casts to {@code Double}.
      */
+    @Nonnull
     default NumericExpression<T, Double> asDouble() {
         return NumericCast.of(this, Double.class);
     }
@@ -341,6 +356,7 @@ public interface NumericExpression<T, N extends Number & Comparable<N>>
      *
      * @return an expression for the function that casts to {@code BigInteger}.
      */
+    @Nonnull
     default NumericExpression<T, BigInteger> asBigInteger() {
         return NumericCast.of(this, BigInteger.class);
     }
@@ -358,6 +374,7 @@ public interface NumericExpression<T, N extends Number & Comparable<N>>
      *
      * @return an expression for the function that casts to {@code BigDecimal}.
      */
+    @Nonnull
     default NumericExpression<T, BigDecimal> asBigDecimal() {
         return NumericCast.of(this, BigDecimal.class);
     }

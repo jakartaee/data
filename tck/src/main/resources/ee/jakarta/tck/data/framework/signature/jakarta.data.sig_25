@@ -1,5 +1,5 @@
 #Signature file v4.1
-#Version 1.0
+#Version 1.0.0-SNAPSHOT
 
 CLSS public final !enum jakarta.data.Direction
 fld public final static jakarta.data.Direction ASC
@@ -16,211 +16,470 @@ meth public final java.lang.String toString()
 meth public int maxResults()
 meth public long startAt()
 meth public static jakarta.data.Limit of(int)
+ anno 0 jakarta.annotation.Nonnull()
 meth public static jakarta.data.Limit range(long,long)
+ anno 0 jakarta.annotation.Nonnull()
 supr java.lang.Record
 hfds DEFAULT_START_AT,maxResults,startAt
 
 CLSS public jakarta.data.Order<%0 extends java.lang.Object>
 intf java.lang.Iterable<jakarta.data.Sort<? super {jakarta.data.Order%0}>>
 meth public !varargs static <%0 extends java.lang.Object> jakarta.data.Order<{%%0}> by(jakarta.data.Sort<? super {%%0}>[])
+ anno 0 jakarta.annotation.Nonnull()
  anno 0 java.lang.SafeVarargs()
+ anno 1 jakarta.annotation.Nonnull()
 meth public boolean equals(java.lang.Object)
+ anno 1 jakarta.annotation.Nullable()
 meth public int hashCode()
 meth public java.lang.String toString()
+ anno 0 jakarta.annotation.Nonnull()
 meth public java.util.Iterator<jakarta.data.Sort<? super {jakarta.data.Order%0}>> iterator()
+ anno 0 jakarta.annotation.Nonnull()
 meth public java.util.List<jakarta.data.Sort<? super {jakarta.data.Order%0}>> sorts()
-meth public static <%0 extends java.lang.Object> jakarta.data.Order<{%%0}> by(java.util.List<jakarta.data.Sort<? super {%%0}>>)
+ anno 0 jakarta.annotation.Nonnull()
+meth public static <%0 extends java.lang.Object> jakarta.data.Order<{%%0}> by(java.util.List<? extends jakarta.data.Sort<? super {%%0}>>)
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
 supr java.lang.Object
 hfds sorts
 
 CLSS public final jakarta.data.Sort<%0 extends java.lang.Object>
 cons public init(java.lang.String,boolean,boolean)
+ anno 1 jakarta.annotation.Nonnull()
+cons public init(java.lang.String,boolean,boolean,jakarta.data.Sort$Nulls)
+ anno 1 jakarta.annotation.Nonnull()
+ anno 4 jakarta.annotation.Nonnull()
+innr public final static !enum Nulls
 meth public boolean ignoreCase()
 meth public boolean isAscending()
 meth public boolean isDescending()
 meth public final boolean equals(java.lang.Object)
 meth public final int hashCode()
 meth public final java.lang.String toString()
+meth public jakarta.data.Sort$Nulls nullOrdering()
+ anno 0 jakarta.annotation.Nonnull()
+meth public jakarta.data.Sort<{jakarta.data.Sort%0}> nullsFirst()
+ anno 0 jakarta.annotation.Nonnull()
+meth public jakarta.data.Sort<{jakarta.data.Sort%0}> nullsLast()
+ anno 0 jakarta.annotation.Nonnull()
 meth public java.lang.String property()
+ anno 0 jakarta.annotation.Nonnull()
 meth public static <%0 extends java.lang.Object> jakarta.data.Sort<{%%0}> asc(java.lang.String)
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
 meth public static <%0 extends java.lang.Object> jakarta.data.Sort<{%%0}> ascIgnoreCase(java.lang.String)
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
 meth public static <%0 extends java.lang.Object> jakarta.data.Sort<{%%0}> desc(java.lang.String)
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
 meth public static <%0 extends java.lang.Object> jakarta.data.Sort<{%%0}> descIgnoreCase(java.lang.String)
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
 meth public static <%0 extends java.lang.Object> jakarta.data.Sort<{%%0}> of(java.lang.String,jakarta.data.Direction,boolean)
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
+ anno 2 jakarta.annotation.Nonnull()
+meth public static <%0 extends java.lang.Object> jakarta.data.Sort<{%%0}> of(java.lang.String,jakarta.data.Direction,boolean,jakarta.data.Sort$Nulls)
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
+ anno 2 jakarta.annotation.Nonnull()
+ anno 4 jakarta.annotation.Nonnull()
 supr java.lang.Record
-hfds ignoreCase,isAscending,property
+hfds ignoreCase,isAscending,nullOrdering,property
+
+CLSS public final static !enum jakarta.data.Sort$Nulls
+ outer jakarta.data.Sort
+fld public final static jakarta.data.Sort$Nulls FIRST
+fld public final static jakarta.data.Sort$Nulls LAST
+fld public final static jakarta.data.Sort$Nulls UNSPECIFIED
+meth public static jakarta.data.Sort$Nulls valueOf(java.lang.String)
+meth public static jakarta.data.Sort$Nulls[] values()
+supr java.lang.Enum<jakarta.data.Sort$Nulls>
 
 CLSS public jakarta.data.exceptions.DataConnectionException
 cons public init(java.lang.String)
+ anno 1 jakarta.annotation.Nullable()
 cons public init(java.lang.String,java.lang.Throwable)
+ anno 1 jakarta.annotation.Nullable()
+ anno 2 jakarta.annotation.Nullable()
 cons public init(java.lang.Throwable)
+ anno 1 jakarta.annotation.Nullable()
 supr jakarta.data.exceptions.DataException
 hfds serialVersionUID
 
 CLSS public jakarta.data.exceptions.DataException
 cons public init(java.lang.String)
+ anno 1 jakarta.annotation.Nullable()
 cons public init(java.lang.String,java.lang.Throwable)
+ anno 1 jakarta.annotation.Nullable()
+ anno 2 jakarta.annotation.Nullable()
 cons public init(java.lang.Throwable)
+ anno 1 jakarta.annotation.Nullable()
 supr java.lang.RuntimeException
 hfds serialVersionUID
 
 CLSS public jakarta.data.exceptions.EmptyResultException
 cons public init(java.lang.String)
+ anno 1 jakarta.annotation.Nullable()
 cons public init(java.lang.String,java.lang.Throwable)
+ anno 1 jakarta.annotation.Nullable()
+ anno 2 jakarta.annotation.Nullable()
 cons public init(java.lang.Throwable)
+ anno 1 jakarta.annotation.Nullable()
 supr jakarta.data.exceptions.DataException
 hfds serialVersionUID
 
 CLSS public jakarta.data.exceptions.EntityExistsException
 cons public init(java.lang.String)
+ anno 1 jakarta.annotation.Nullable()
 cons public init(java.lang.String,java.lang.Throwable)
+ anno 1 jakarta.annotation.Nullable()
+ anno 2 jakarta.annotation.Nullable()
 cons public init(java.lang.Throwable)
+ anno 1 jakarta.annotation.Nullable()
 supr jakarta.data.exceptions.DataException
 hfds serialVersionUID
 
 CLSS public jakarta.data.exceptions.MappingException
 cons public init(java.lang.String)
+ anno 1 jakarta.annotation.Nullable()
 cons public init(java.lang.String,java.lang.Throwable)
+ anno 1 jakarta.annotation.Nullable()
+ anno 2 jakarta.annotation.Nullable()
 cons public init(java.lang.Throwable)
+ anno 1 jakarta.annotation.Nullable()
 supr jakarta.data.exceptions.DataException
 hfds serialVersionUID
 
 CLSS public jakarta.data.exceptions.NonUniqueResultException
 cons public init(java.lang.String)
+ anno 1 jakarta.annotation.Nullable()
 cons public init(java.lang.String,java.lang.Throwable)
+ anno 1 jakarta.annotation.Nullable()
+ anno 2 jakarta.annotation.Nullable()
 cons public init(java.lang.Throwable)
+ anno 1 jakarta.annotation.Nullable()
 supr jakarta.data.exceptions.DataException
 hfds serialVersionUID
 
 CLSS public jakarta.data.exceptions.OptimisticLockingFailureException
 cons public init(java.lang.String)
+ anno 1 jakarta.annotation.Nullable()
 cons public init(java.lang.String,java.lang.Throwable)
+ anno 1 jakarta.annotation.Nullable()
+ anno 2 jakarta.annotation.Nullable()
 cons public init(java.lang.Throwable)
+ anno 1 jakarta.annotation.Nullable()
 supr jakarta.data.exceptions.DataException
 hfds serialVersionUID
 
 CLSS abstract interface jakarta.data.exceptions.package-info
 
+CLSS public abstract interface jakarta.data.expression.BooleanExpression<%0 extends java.lang.Object>
+intf jakarta.data.expression.ComparableExpression<{jakarta.data.expression.BooleanExpression%0},java.lang.Boolean>
+meth public jakarta.data.restrict.Restriction<{jakarta.data.expression.BooleanExpression%0}> isFalse()
+ anno 0 jakarta.annotation.Nonnull()
+meth public jakarta.data.restrict.Restriction<{jakarta.data.expression.BooleanExpression%0}> isTrue()
+ anno 0 jakarta.annotation.Nonnull()
+meth public java.lang.Class<java.lang.Boolean> type()
+ anno 0 jakarta.annotation.Nonnull()
+
 CLSS public abstract interface jakarta.data.expression.ComparableExpression<%0 extends java.lang.Object, %1 extends java.lang.Comparable<?>>
 intf jakarta.data.expression.Expression<{jakarta.data.expression.ComparableExpression%0},{jakarta.data.expression.ComparableExpression%1}>
 meth public <%0 extends jakarta.data.expression.ComparableExpression<? super {jakarta.data.expression.ComparableExpression%0},{jakarta.data.expression.ComparableExpression%1}>> jakarta.data.restrict.Restriction<{jakarta.data.expression.ComparableExpression%0}> between({%%0},{%%0})
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
+ anno 2 jakarta.annotation.Nonnull()
 meth public <%0 extends jakarta.data.expression.ComparableExpression<? super {jakarta.data.expression.ComparableExpression%0},{jakarta.data.expression.ComparableExpression%1}>> jakarta.data.restrict.Restriction<{jakarta.data.expression.ComparableExpression%0}> notBetween({%%0},{%%0})
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
+ anno 2 jakarta.annotation.Nonnull()
 meth public jakarta.data.restrict.Restriction<{jakarta.data.expression.ComparableExpression%0}> between({jakarta.data.expression.ComparableExpression%1},{jakarta.data.expression.ComparableExpression%1})
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
+ anno 2 jakarta.annotation.Nonnull()
 meth public jakarta.data.restrict.Restriction<{jakarta.data.expression.ComparableExpression%0}> greaterThan(jakarta.data.expression.ComparableExpression<? super {jakarta.data.expression.ComparableExpression%0},{jakarta.data.expression.ComparableExpression%1}>)
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
 meth public jakarta.data.restrict.Restriction<{jakarta.data.expression.ComparableExpression%0}> greaterThan({jakarta.data.expression.ComparableExpression%1})
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
 meth public jakarta.data.restrict.Restriction<{jakarta.data.expression.ComparableExpression%0}> greaterThanEqual(jakarta.data.expression.ComparableExpression<? super {jakarta.data.expression.ComparableExpression%0},{jakarta.data.expression.ComparableExpression%1}>)
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
 meth public jakarta.data.restrict.Restriction<{jakarta.data.expression.ComparableExpression%0}> greaterThanEqual({jakarta.data.expression.ComparableExpression%1})
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
 meth public jakarta.data.restrict.Restriction<{jakarta.data.expression.ComparableExpression%0}> lessThan(jakarta.data.expression.ComparableExpression<? super {jakarta.data.expression.ComparableExpression%0},{jakarta.data.expression.ComparableExpression%1}>)
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
 meth public jakarta.data.restrict.Restriction<{jakarta.data.expression.ComparableExpression%0}> lessThan({jakarta.data.expression.ComparableExpression%1})
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
 meth public jakarta.data.restrict.Restriction<{jakarta.data.expression.ComparableExpression%0}> lessThanEqual(jakarta.data.expression.ComparableExpression<? super {jakarta.data.expression.ComparableExpression%0},{jakarta.data.expression.ComparableExpression%1}>)
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
 meth public jakarta.data.restrict.Restriction<{jakarta.data.expression.ComparableExpression%0}> lessThanEqual({jakarta.data.expression.ComparableExpression%1})
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
 meth public jakarta.data.restrict.Restriction<{jakarta.data.expression.ComparableExpression%0}> notBetween({jakarta.data.expression.ComparableExpression%1},{jakarta.data.expression.ComparableExpression%1})
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
+ anno 2 jakarta.annotation.Nonnull()
 
 CLSS public abstract interface jakarta.data.expression.Expression<%0 extends java.lang.Object, %1 extends java.lang.Object>
 meth public !varargs jakarta.data.restrict.Restriction<{jakarta.data.expression.Expression%0}> in(jakarta.data.expression.Expression<? super {jakarta.data.expression.Expression%0},{jakarta.data.expression.Expression%1}>[])
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
 meth public !varargs jakarta.data.restrict.Restriction<{jakarta.data.expression.Expression%0}> in({jakarta.data.expression.Expression%1}[])
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
 meth public !varargs jakarta.data.restrict.Restriction<{jakarta.data.expression.Expression%0}> notIn(jakarta.data.expression.Expression<? super {jakarta.data.expression.Expression%0},{jakarta.data.expression.Expression%1}>[])
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
 meth public !varargs jakarta.data.restrict.Restriction<{jakarta.data.expression.Expression%0}> notIn({jakarta.data.expression.Expression%1}[])
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
+meth public abstract java.lang.Class<? extends {jakarta.data.expression.Expression%1}> type()
+ anno 0 jakarta.annotation.Nonnull()
 meth public jakarta.data.restrict.Restriction<{jakarta.data.expression.Expression%0}> equalTo(jakarta.data.expression.Expression<? super {jakarta.data.expression.Expression%0},{jakarta.data.expression.Expression%1}>)
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
 meth public jakarta.data.restrict.Restriction<{jakarta.data.expression.Expression%0}> equalTo({jakarta.data.expression.Expression%1})
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
 meth public jakarta.data.restrict.Restriction<{jakarta.data.expression.Expression%0}> in(java.util.Collection<{jakarta.data.expression.Expression%1}>)
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
 meth public jakarta.data.restrict.Restriction<{jakarta.data.expression.Expression%0}> isNull()
+ anno 0 jakarta.annotation.Nonnull()
 meth public jakarta.data.restrict.Restriction<{jakarta.data.expression.Expression%0}> notEqualTo(jakarta.data.expression.Expression<? super {jakarta.data.expression.Expression%0},{jakarta.data.expression.Expression%1}>)
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
 meth public jakarta.data.restrict.Restriction<{jakarta.data.expression.Expression%0}> notEqualTo({jakarta.data.expression.Expression%1})
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
 meth public jakarta.data.restrict.Restriction<{jakarta.data.expression.Expression%0}> notIn(java.util.Collection<{jakarta.data.expression.Expression%1}>)
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
 meth public jakarta.data.restrict.Restriction<{jakarta.data.expression.Expression%0}> notNull()
+ anno 0 jakarta.annotation.Nonnull()
 meth public jakarta.data.restrict.Restriction<{jakarta.data.expression.Expression%0}> satisfies(jakarta.data.constraint.Constraint<{jakarta.data.expression.Expression%1}>)
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
 
 CLSS public abstract interface jakarta.data.expression.NavigableExpression<%0 extends java.lang.Object, %1 extends java.lang.Object>
 meth public <%0 extends java.lang.Comparable<{%%0}>> jakarta.data.expression.ComparableExpression<{jakarta.data.expression.NavigableExpression%0},{%%0}> navigate(jakarta.data.metamodel.ComparableAttribute<{jakarta.data.expression.NavigableExpression%1},{%%0}>)
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
 meth public <%0 extends java.lang.Number & java.lang.Comparable<{%%0}>> jakarta.data.expression.NumericExpression<{jakarta.data.expression.NavigableExpression%0},{%%0}> navigate(jakarta.data.metamodel.NumericAttribute<{jakarta.data.expression.NavigableExpression%1},{%%0}>)
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
 meth public <%0 extends java.lang.Object> jakarta.data.expression.NavigableExpression<{jakarta.data.expression.NavigableExpression%0},{%%0}> navigate(jakarta.data.metamodel.NavigableAttribute<{jakarta.data.expression.NavigableExpression%1},{%%0}>)
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
 meth public <%0 extends java.time.temporal.Temporal & java.lang.Comparable<? extends java.time.temporal.Temporal>> jakarta.data.expression.TemporalExpression<{jakarta.data.expression.NavigableExpression%0},{%%0}> navigate(jakarta.data.metamodel.TemporalAttribute<{jakarta.data.expression.NavigableExpression%1},{%%0}>)
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
+meth public jakarta.data.expression.BooleanExpression<{jakarta.data.expression.NavigableExpression%0}> navigate(jakarta.data.metamodel.BooleanAttribute<{jakarta.data.expression.NavigableExpression%1}>)
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
 meth public jakarta.data.expression.TextExpression<{jakarta.data.expression.NavigableExpression%0}> navigate(jakarta.data.metamodel.TextAttribute<{jakarta.data.expression.NavigableExpression%1}>)
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
 
 CLSS public abstract interface jakarta.data.expression.NumericExpression<%0 extends java.lang.Object, %1 extends java.lang.Number & java.lang.Comparable<{jakarta.data.expression.NumericExpression%1}>>
 intf jakarta.data.expression.ComparableExpression<{jakarta.data.expression.NumericExpression%0},{jakarta.data.expression.NumericExpression%1}>
 meth public jakarta.data.expression.NumericExpression<{jakarta.data.expression.NumericExpression%0},java.lang.Double> asDouble()
+ anno 0 jakarta.annotation.Nonnull()
 meth public jakarta.data.expression.NumericExpression<{jakarta.data.expression.NumericExpression%0},java.lang.Long> asLong()
+ anno 0 jakarta.annotation.Nonnull()
 meth public jakarta.data.expression.NumericExpression<{jakarta.data.expression.NumericExpression%0},java.math.BigDecimal> asBigDecimal()
+ anno 0 jakarta.annotation.Nonnull()
 meth public jakarta.data.expression.NumericExpression<{jakarta.data.expression.NumericExpression%0},java.math.BigInteger> asBigInteger()
+ anno 0 jakarta.annotation.Nonnull()
 meth public jakarta.data.expression.NumericExpression<{jakarta.data.expression.NumericExpression%0},{jakarta.data.expression.NumericExpression%1}> abs()
-meth public jakarta.data.expression.NumericExpression<{jakarta.data.expression.NumericExpression%0},{jakarta.data.expression.NumericExpression%1}> dividedBy(jakarta.data.expression.NumericExpression<{jakarta.data.expression.NumericExpression%0},{jakarta.data.expression.NumericExpression%1}>)
+ anno 0 jakarta.annotation.Nonnull()
+meth public jakarta.data.expression.NumericExpression<{jakarta.data.expression.NumericExpression%0},{jakarta.data.expression.NumericExpression%1}> dividedBy(jakarta.data.expression.NumericExpression<? super {jakarta.data.expression.NumericExpression%0},{jakarta.data.expression.NumericExpression%1}>)
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
 meth public jakarta.data.expression.NumericExpression<{jakarta.data.expression.NumericExpression%0},{jakarta.data.expression.NumericExpression%1}> dividedBy({jakarta.data.expression.NumericExpression%1})
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
 meth public jakarta.data.expression.NumericExpression<{jakarta.data.expression.NumericExpression%0},{jakarta.data.expression.NumericExpression%1}> dividedInto({jakarta.data.expression.NumericExpression%1})
-meth public jakarta.data.expression.NumericExpression<{jakarta.data.expression.NumericExpression%0},{jakarta.data.expression.NumericExpression%1}> minus(jakarta.data.expression.NumericExpression<{jakarta.data.expression.NumericExpression%0},{jakarta.data.expression.NumericExpression%1}>)
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
+meth public jakarta.data.expression.NumericExpression<{jakarta.data.expression.NumericExpression%0},{jakarta.data.expression.NumericExpression%1}> minus(jakarta.data.expression.NumericExpression<? super {jakarta.data.expression.NumericExpression%0},{jakarta.data.expression.NumericExpression%1}>)
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
 meth public jakarta.data.expression.NumericExpression<{jakarta.data.expression.NumericExpression%0},{jakarta.data.expression.NumericExpression%1}> minus({jakarta.data.expression.NumericExpression%1})
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
 meth public jakarta.data.expression.NumericExpression<{jakarta.data.expression.NumericExpression%0},{jakarta.data.expression.NumericExpression%1}> negated()
-meth public jakarta.data.expression.NumericExpression<{jakarta.data.expression.NumericExpression%0},{jakarta.data.expression.NumericExpression%1}> plus(jakarta.data.expression.NumericExpression<{jakarta.data.expression.NumericExpression%0},{jakarta.data.expression.NumericExpression%1}>)
+ anno 0 jakarta.annotation.Nonnull()
+meth public jakarta.data.expression.NumericExpression<{jakarta.data.expression.NumericExpression%0},{jakarta.data.expression.NumericExpression%1}> plus(jakarta.data.expression.NumericExpression<? super {jakarta.data.expression.NumericExpression%0},{jakarta.data.expression.NumericExpression%1}>)
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
 meth public jakarta.data.expression.NumericExpression<{jakarta.data.expression.NumericExpression%0},{jakarta.data.expression.NumericExpression%1}> plus({jakarta.data.expression.NumericExpression%1})
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
 meth public jakarta.data.expression.NumericExpression<{jakarta.data.expression.NumericExpression%0},{jakarta.data.expression.NumericExpression%1}> subtractedFrom({jakarta.data.expression.NumericExpression%1})
-meth public jakarta.data.expression.NumericExpression<{jakarta.data.expression.NumericExpression%0},{jakarta.data.expression.NumericExpression%1}> times(jakarta.data.expression.NumericExpression<{jakarta.data.expression.NumericExpression%0},{jakarta.data.expression.NumericExpression%1}>)
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
+meth public jakarta.data.expression.NumericExpression<{jakarta.data.expression.NumericExpression%0},{jakarta.data.expression.NumericExpression%1}> times(jakarta.data.expression.NumericExpression<? super {jakarta.data.expression.NumericExpression%0},{jakarta.data.expression.NumericExpression%1}>)
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
 meth public jakarta.data.expression.NumericExpression<{jakarta.data.expression.NumericExpression%0},{jakarta.data.expression.NumericExpression%1}> times({jakarta.data.expression.NumericExpression%1})
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
 
 CLSS public abstract interface jakarta.data.expression.TemporalExpression<%0 extends java.lang.Object, %1 extends java.time.temporal.Temporal & java.lang.Comparable<? extends java.time.temporal.Temporal>>
 intf jakarta.data.expression.ComparableExpression<{jakarta.data.expression.TemporalExpression%0},{jakarta.data.expression.TemporalExpression%1}>
 meth public static jakarta.data.expression.TemporalExpression<java.lang.Object,java.time.LocalDate> localDate()
+ anno 0 jakarta.annotation.Nonnull()
 meth public static jakarta.data.expression.TemporalExpression<java.lang.Object,java.time.LocalDateTime> localDateTime()
+ anno 0 jakarta.annotation.Nonnull()
 meth public static jakarta.data.expression.TemporalExpression<java.lang.Object,java.time.LocalTime> localTime()
+ anno 0 jakarta.annotation.Nonnull()
 
 CLSS public abstract interface jakarta.data.expression.TextExpression<%0 extends java.lang.Object>
 intf jakarta.data.expression.ComparableExpression<{jakarta.data.expression.TextExpression%0},java.lang.String>
 meth public jakarta.data.expression.NumericExpression<{jakarta.data.expression.TextExpression%0},java.lang.Integer> length()
+ anno 0 jakarta.annotation.Nonnull()
 meth public jakarta.data.expression.TextExpression<{jakarta.data.expression.TextExpression%0}> append(jakarta.data.expression.TextExpression<? super {jakarta.data.expression.TextExpression%0}>)
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
 meth public jakarta.data.expression.TextExpression<{jakarta.data.expression.TextExpression%0}> append(java.lang.String)
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
 meth public jakarta.data.expression.TextExpression<{jakarta.data.expression.TextExpression%0}> left(int)
+ anno 0 jakarta.annotation.Nonnull()
 meth public jakarta.data.expression.TextExpression<{jakarta.data.expression.TextExpression%0}> lower()
+ anno 0 jakarta.annotation.Nonnull()
 meth public jakarta.data.expression.TextExpression<{jakarta.data.expression.TextExpression%0}> prepend(jakarta.data.expression.TextExpression<? super {jakarta.data.expression.TextExpression%0}>)
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
 meth public jakarta.data.expression.TextExpression<{jakarta.data.expression.TextExpression%0}> prepend(java.lang.String)
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
 meth public jakarta.data.expression.TextExpression<{jakarta.data.expression.TextExpression%0}> right(int)
+ anno 0 jakarta.annotation.Nonnull()
 meth public jakarta.data.expression.TextExpression<{jakarta.data.expression.TextExpression%0}> upper()
+ anno 0 jakarta.annotation.Nonnull()
 meth public jakarta.data.restrict.Restriction<{jakarta.data.expression.TextExpression%0}> contains(java.lang.String)
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
 meth public jakarta.data.restrict.Restriction<{jakarta.data.expression.TextExpression%0}> endsWith(java.lang.String)
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
 meth public jakarta.data.restrict.Restriction<{jakarta.data.expression.TextExpression%0}> like(jakarta.data.constraint.Like)
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
 meth public jakarta.data.restrict.Restriction<{jakarta.data.expression.TextExpression%0}> like(java.lang.String)
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
 meth public jakarta.data.restrict.Restriction<{jakarta.data.expression.TextExpression%0}> like(java.lang.String,char,char)
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
 meth public jakarta.data.restrict.Restriction<{jakarta.data.expression.TextExpression%0}> like(java.lang.String,char,char,char)
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
 meth public jakarta.data.restrict.Restriction<{jakarta.data.expression.TextExpression%0}> notContains(java.lang.String)
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
 meth public jakarta.data.restrict.Restriction<{jakarta.data.expression.TextExpression%0}> notEndsWith(java.lang.String)
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
 meth public jakarta.data.restrict.Restriction<{jakarta.data.expression.TextExpression%0}> notLike(java.lang.String)
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
 meth public jakarta.data.restrict.Restriction<{jakarta.data.expression.TextExpression%0}> notLike(java.lang.String,char,char)
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
 meth public jakarta.data.restrict.Restriction<{jakarta.data.expression.TextExpression%0}> notLike(java.lang.String,char,char,char)
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
 meth public jakarta.data.restrict.Restriction<{jakarta.data.expression.TextExpression%0}> notStartsWith(java.lang.String)
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
 meth public jakarta.data.restrict.Restriction<{jakarta.data.expression.TextExpression%0}> startsWith(java.lang.String)
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
+meth public java.lang.Class<java.lang.String> type()
+ anno 0 jakarta.annotation.Nonnull()
 
 CLSS public abstract interface jakarta.data.metamodel.Attribute<%0 extends java.lang.Object>
 meth public abstract java.lang.String name()
-meth public java.lang.Class<?> attributeType()
+ anno 0 jakarta.annotation.Nonnull()
+meth public java.lang.Class<?> type()
+ anno 0 jakarta.annotation.Nonnull()
 meth public java.lang.Class<{jakarta.data.metamodel.Attribute%0}> declaringType()
+ anno 0 jakarta.annotation.Nonnull()
 
 CLSS public abstract interface jakarta.data.metamodel.BasicAttribute<%0 extends java.lang.Object, %1 extends java.lang.Object>
 intf jakarta.data.expression.Expression<{jakarta.data.metamodel.BasicAttribute%0},{jakarta.data.metamodel.BasicAttribute%1}>
 intf jakarta.data.metamodel.Attribute<{jakarta.data.metamodel.BasicAttribute%0}>
-meth public java.lang.Class<{jakarta.data.metamodel.BasicAttribute%1}> attributeType()
+meth public abstract java.lang.Class<{jakarta.data.metamodel.BasicAttribute%1}> type()
+ anno 0 jakarta.annotation.Nonnull()
 meth public static <%0 extends java.lang.Object, %1 extends java.lang.Object> jakarta.data.metamodel.BasicAttribute<{%%0},{%%1}> of(java.lang.Class<{%%0}>,java.lang.String,java.lang.Class<{%%1}>)
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
+ anno 2 jakarta.annotation.Nonnull()
+ anno 3 jakarta.annotation.Nonnull()
+
+CLSS public abstract interface jakarta.data.metamodel.BooleanAttribute<%0 extends java.lang.Object>
+intf jakarta.data.expression.BooleanExpression<{jakarta.data.metamodel.BooleanAttribute%0}>
+intf jakarta.data.metamodel.ComparableAttribute<{jakarta.data.metamodel.BooleanAttribute%0},java.lang.Boolean>
+meth public abstract java.lang.Class<java.lang.Boolean> type()
+ anno 0 jakarta.annotation.Nonnull()
+meth public static <%0 extends java.lang.Object> jakarta.data.metamodel.BooleanAttribute<{%%0}> of(java.lang.Class<{%%0}>,java.lang.String,java.lang.Class<java.lang.Boolean>)
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
+ anno 2 jakarta.annotation.Nonnull()
+ anno 3 jakarta.annotation.Nonnull()
 
 CLSS public abstract interface jakarta.data.metamodel.ComparableAttribute<%0 extends java.lang.Object, %1 extends java.lang.Comparable<?>>
 intf jakarta.data.expression.ComparableExpression<{jakarta.data.metamodel.ComparableAttribute%0},{jakarta.data.metamodel.ComparableAttribute%1}>
 intf jakarta.data.metamodel.BasicAttribute<{jakarta.data.metamodel.ComparableAttribute%0},{jakarta.data.metamodel.ComparableAttribute%1}>
 intf jakarta.data.metamodel.SortableAttribute<{jakarta.data.metamodel.ComparableAttribute%0}>
 meth public static <%0 extends java.lang.Object, %1 extends java.lang.Comparable<?>> jakarta.data.metamodel.ComparableAttribute<{%%0},{%%1}> of(java.lang.Class<{%%0}>,java.lang.String,java.lang.Class<{%%1}>)
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
+ anno 2 jakarta.annotation.Nonnull()
+ anno 3 jakarta.annotation.Nonnull()
 
 CLSS public abstract interface jakarta.data.metamodel.NavigableAttribute<%0 extends java.lang.Object, %1 extends java.lang.Object>
 intf jakarta.data.expression.NavigableExpression<{jakarta.data.metamodel.NavigableAttribute%0},{jakarta.data.metamodel.NavigableAttribute%1}>
 intf jakarta.data.metamodel.Attribute<{jakarta.data.metamodel.NavigableAttribute%0}>
-meth public abstract java.lang.Class<{jakarta.data.metamodel.NavigableAttribute%1}> attributeType()
+meth public abstract java.lang.Class<{jakarta.data.metamodel.NavigableAttribute%1}> type()
+ anno 0 jakarta.annotation.Nonnull()
 meth public static <%0 extends java.lang.Object, %1 extends java.lang.Object> jakarta.data.metamodel.NavigableAttribute<{%%0},{%%1}> of(java.lang.Class<{%%0}>,java.lang.String,java.lang.Class<{%%1}>)
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
+ anno 2 jakarta.annotation.Nonnull()
+ anno 3 jakarta.annotation.Nonnull()
 
 CLSS public abstract interface jakarta.data.metamodel.NumericAttribute<%0 extends java.lang.Object, %1 extends java.lang.Number & java.lang.Comparable<{jakarta.data.metamodel.NumericAttribute%1}>>
 intf jakarta.data.expression.NumericExpression<{jakarta.data.metamodel.NumericAttribute%0},{jakarta.data.metamodel.NumericAttribute%1}>
 intf jakarta.data.metamodel.ComparableAttribute<{jakarta.data.metamodel.NumericAttribute%0},{jakarta.data.metamodel.NumericAttribute%1}>
 meth public static <%0 extends java.lang.Object, %1 extends java.lang.Number & java.lang.Comparable<{%%1}>> jakarta.data.metamodel.NumericAttribute<{%%0},{%%1}> of(java.lang.Class<{%%0}>,java.lang.String,java.lang.Class<{%%1}>)
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
+ anno 2 jakarta.annotation.Nonnull()
+ anno 3 jakarta.annotation.Nonnull()
 
 CLSS public abstract interface jakarta.data.metamodel.SortableAttribute<%0 extends java.lang.Object>
 intf jakarta.data.metamodel.Attribute<{jakarta.data.metamodel.SortableAttribute%0}>
 meth public jakarta.data.Sort<{jakarta.data.metamodel.SortableAttribute%0}> asc()
+ anno 0 jakarta.annotation.Nonnull()
 meth public jakarta.data.Sort<{jakarta.data.metamodel.SortableAttribute%0}> desc()
+ anno 0 jakarta.annotation.Nonnull()
 meth public static <%0 extends java.lang.Object, %1 extends java.lang.Object> jakarta.data.metamodel.SortableAttribute<{%%0}> of(java.lang.Class<{%%0}>,java.lang.String,java.lang.Class<{%%1}>)
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
+ anno 2 jakarta.annotation.Nonnull()
+ anno 3 jakarta.annotation.Nonnull()
 
 CLSS public abstract interface !annotation jakarta.data.metamodel.StaticMetamodel
  anno 0 java.lang.annotation.Documented()
@@ -233,44 +492,61 @@ CLSS public abstract interface jakarta.data.metamodel.TemporalAttribute<%0 exten
 intf jakarta.data.expression.TemporalExpression<{jakarta.data.metamodel.TemporalAttribute%0},{jakarta.data.metamodel.TemporalAttribute%1}>
 intf jakarta.data.metamodel.ComparableAttribute<{jakarta.data.metamodel.TemporalAttribute%0},{jakarta.data.metamodel.TemporalAttribute%1}>
 meth public static <%0 extends java.lang.Object, %1 extends java.time.temporal.Temporal & java.lang.Comparable<? extends java.time.temporal.Temporal>> jakarta.data.metamodel.TemporalAttribute<{%%0},{%%1}> of(java.lang.Class<{%%0}>,java.lang.String,java.lang.Class<{%%1}>)
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
+ anno 2 jakarta.annotation.Nonnull()
+ anno 3 jakarta.annotation.Nonnull()
 
 CLSS public abstract interface jakarta.data.metamodel.TextAttribute<%0 extends java.lang.Object>
 intf jakarta.data.expression.TextExpression<{jakarta.data.metamodel.TextAttribute%0}>
 intf jakarta.data.metamodel.ComparableAttribute<{jakarta.data.metamodel.TextAttribute%0},java.lang.String>
 meth public jakarta.data.Sort<{jakarta.data.metamodel.TextAttribute%0}> ascIgnoreCase()
+ anno 0 jakarta.annotation.Nonnull()
 meth public jakarta.data.Sort<{jakarta.data.metamodel.TextAttribute%0}> descIgnoreCase()
+ anno 0 jakarta.annotation.Nonnull()
+meth public java.lang.Class<java.lang.String> type()
+ anno 0 jakarta.annotation.Nonnull()
 meth public static <%0 extends java.lang.Object> jakarta.data.metamodel.TextAttribute<{%%0}> of(java.lang.Class<{%%0}>,java.lang.String)
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
+ anno 2 jakarta.annotation.Nonnull()
 
 CLSS public final jakarta.data.metamodel.impl.AttributeRecord<%0 extends java.lang.Object>
  anno 0 java.lang.Deprecated(boolean forRemoval=false, java.lang.String since="1.1")
 cons public init(java.lang.String)
+ anno 1 jakarta.annotation.Nonnull()
 intf jakarta.data.metamodel.Attribute<{jakarta.data.metamodel.impl.AttributeRecord%0}>
 meth public final boolean equals(java.lang.Object)
 meth public final int hashCode()
 meth public final java.lang.String toString()
 meth public java.lang.String name()
+ anno 0 jakarta.annotation.Nonnull()
 supr java.lang.Record
 hfds name
 
 CLSS public final jakarta.data.metamodel.impl.SortableAttributeRecord<%0 extends java.lang.Object>
  anno 0 java.lang.Deprecated(boolean forRemoval=false, java.lang.String since="1.1")
 cons public init(java.lang.String)
+ anno 1 jakarta.annotation.Nonnull()
 intf jakarta.data.metamodel.SortableAttribute<{jakarta.data.metamodel.impl.SortableAttributeRecord%0}>
 meth public final boolean equals(java.lang.Object)
 meth public final int hashCode()
 meth public final java.lang.String toString()
 meth public java.lang.String name()
+ anno 0 jakarta.annotation.Nonnull()
 supr java.lang.Record
 hfds name
 
 CLSS public final jakarta.data.metamodel.impl.TextAttributeRecord<%0 extends java.lang.Object>
  anno 0 java.lang.Deprecated(boolean forRemoval=false, java.lang.String since="1.1")
 cons public init(java.lang.String)
+ anno 1 jakarta.annotation.Nonnull()
 intf jakarta.data.metamodel.TextAttribute<{jakarta.data.metamodel.impl.TextAttributeRecord%0}>
 meth public final boolean equals(java.lang.Object)
 meth public final int hashCode()
 meth public final java.lang.String toString()
 meth public java.lang.String name()
+ anno 0 jakarta.annotation.Nonnull()
 supr java.lang.Record
 hfds name
 
@@ -285,8 +561,11 @@ CLSS public abstract interface jakarta.data.page.CursoredPage<%0 extends java.la
 intf jakarta.data.page.Page<{jakarta.data.page.CursoredPage%0}>
 meth public abstract boolean hasPrevious()
 meth public abstract jakarta.data.page.PageRequest nextPageRequest()
+ anno 0 jakarta.annotation.Nonnull()
 meth public abstract jakarta.data.page.PageRequest previousPageRequest()
+ anno 0 jakarta.annotation.Nonnull()
 meth public abstract jakarta.data.page.PageRequest$Cursor cursor(int)
+ anno 0 jakarta.annotation.Nonnull()
 
 CLSS public abstract interface jakarta.data.page.Page<%0 extends java.lang.Object>
 intf java.lang.Iterable<{jakarta.data.page.Page%0}>
@@ -296,43 +575,72 @@ meth public abstract boolean hasPrevious()
 meth public abstract boolean hasTotals()
 meth public abstract int numberOfElements()
 meth public abstract jakarta.data.page.PageRequest nextPageRequest()
+ anno 0 jakarta.annotation.Nonnull()
 meth public abstract jakarta.data.page.PageRequest pageRequest()
+ anno 0 jakarta.annotation.Nonnull()
 meth public abstract jakarta.data.page.PageRequest previousPageRequest()
+ anno 0 jakarta.annotation.Nonnull()
 meth public abstract java.util.List<{jakarta.data.page.Page%0}> content()
+ anno 0 jakarta.annotation.Nonnull()
 meth public abstract long totalElements()
 meth public abstract long totalPages()
 meth public java.util.stream.Stream<{jakarta.data.page.Page%0}> stream()
+ anno 0 jakarta.annotation.Nonnull()
 
 CLSS public abstract interface jakarta.data.page.PageRequest
 innr public abstract interface static Cursor
 innr public final static !enum Mode
 meth public abstract boolean equals(java.lang.Object)
+ anno 1 jakarta.annotation.Nullable()
 meth public abstract boolean requestTotal()
 meth public abstract int size()
 meth public abstract jakarta.data.page.PageRequest afterCursor(jakarta.data.page.PageRequest$Cursor)
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
 meth public abstract jakarta.data.page.PageRequest beforeCursor(jakarta.data.page.PageRequest$Cursor)
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
 meth public abstract jakarta.data.page.PageRequest page(long)
+ anno 0 jakarta.annotation.Nonnull()
 meth public abstract jakarta.data.page.PageRequest size(int)
+ anno 0 jakarta.annotation.Nonnull()
 meth public abstract jakarta.data.page.PageRequest withTotal()
+ anno 0 jakarta.annotation.Nonnull()
 meth public abstract jakarta.data.page.PageRequest withoutTotal()
+ anno 0 jakarta.annotation.Nonnull()
 meth public abstract jakarta.data.page.PageRequest$Mode mode()
+ anno 0 jakarta.annotation.Nonnull()
 meth public abstract java.util.Optional<jakarta.data.page.PageRequest$Cursor> cursor()
+ anno 0 jakarta.annotation.Nonnull()
 meth public abstract long page()
 meth public static jakarta.data.page.PageRequest afterCursor(jakarta.data.page.PageRequest$Cursor,long,int,boolean)
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
 meth public static jakarta.data.page.PageRequest beforeCursor(jakarta.data.page.PageRequest$Cursor,long,int,boolean)
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
 meth public static jakarta.data.page.PageRequest ofPage(long)
+ anno 0 jakarta.annotation.Nonnull()
 meth public static jakarta.data.page.PageRequest ofPage(long,int,boolean)
+ anno 0 jakarta.annotation.Nonnull()
 meth public static jakarta.data.page.PageRequest ofSize(int)
+ anno 0 jakarta.annotation.Nonnull()
 
 CLSS public abstract interface static jakarta.data.page.PageRequest$Cursor
  outer jakarta.data.page.PageRequest
 meth public !varargs static jakarta.data.page.PageRequest$Cursor forKey(java.lang.Object[])
+ anno 0 jakarta.annotation.Nonnull()
+ anno 1 jakarta.annotation.Nonnull()
 meth public abstract boolean equals(java.lang.Object)
+ anno 1 jakarta.annotation.Nullable()
 meth public abstract int hashCode()
 meth public abstract int size()
 meth public abstract java.lang.Object get(int)
+ anno 0 jakarta.annotation.Nullable()
 meth public abstract java.lang.String toString()
+ anno 0 jakarta.annotation.Nonnull()
 meth public abstract java.util.List<?> elements()
+ anno 0 jakarta.annotation.Nonnull()
 
 CLSS public final static !enum jakarta.data.page.PageRequest$Mode
  outer jakarta.data.page.PageRequest
@@ -345,7 +653,15 @@ supr java.lang.Enum<jakarta.data.page.PageRequest$Mode>
 
 CLSS public final jakarta.data.page.impl.CursoredPageRecord<%0 extends java.lang.Object>
 cons public init(java.util.List<{jakarta.data.page.impl.CursoredPageRecord%0}>,java.util.List<jakarta.data.page.PageRequest$Cursor>,long,jakarta.data.page.PageRequest,boolean,boolean)
+ anno 1 jakarta.annotation.Nonnull()
+ anno 2 jakarta.annotation.Nonnull()
+ anno 4 jakarta.annotation.Nonnull()
 cons public init(java.util.List<{jakarta.data.page.impl.CursoredPageRecord%0}>,java.util.List<jakarta.data.page.PageRequest$Cursor>,long,jakarta.data.page.PageRequest,jakarta.data.page.PageRequest,jakarta.data.page.PageRequest)
+ anno 1 jakarta.annotation.Nonnull()
+ anno 2 jakarta.annotation.Nonnull()
+ anno 4 jakarta.annotation.Nonnull()
+ anno 5 jakarta.annotation.Nullable()
+ anno 6 jakarta.annotation.Nullable()
 intf jakarta.data.page.CursoredPage<{jakarta.data.page.impl.CursoredPageRecord%0}>
 meth public boolean hasContent()
 meth public boolean hasNext()
@@ -356,12 +672,19 @@ meth public final int hashCode()
 meth public final java.lang.String toString()
 meth public int numberOfElements()
 meth public jakarta.data.page.PageRequest nextPageRequest()
+ anno 0 jakarta.annotation.Nonnull()
 meth public jakarta.data.page.PageRequest pageRequest()
+ anno 0 jakarta.annotation.Nonnull()
 meth public jakarta.data.page.PageRequest previousPageRequest()
+ anno 0 jakarta.annotation.Nonnull()
 meth public jakarta.data.page.PageRequest$Cursor cursor(int)
+ anno 0 jakarta.annotation.Nonnull()
 meth public java.util.Iterator<{jakarta.data.page.impl.CursoredPageRecord%0}> iterator()
+ anno 0 jakarta.annotation.Nonnull()
 meth public java.util.List<jakarta.data.page.PageRequest$Cursor> cursors()
+ anno 0 jakarta.annotation.Nonnull()
 meth public java.util.List<{jakarta.data.page.impl.CursoredPageRecord%0}> content()
+ anno 0 jakarta.annotation.Nonnull()
 meth public long totalElements()
 meth public long totalPages()
 supr java.lang.Record
@@ -369,7 +692,11 @@ hfds content,cursors,nextPageRequest,pageRequest,previousPageRequest,totalElemen
 
 CLSS public final jakarta.data.page.impl.PageRecord<%0 extends java.lang.Object>
 cons public init(jakarta.data.page.PageRequest,java.util.List<{jakarta.data.page.impl.PageRecord%0}>,long)
+ anno 1 jakarta.annotation.Nonnull()
+ anno 2 jakarta.annotation.Nonnull()
 cons public init(jakarta.data.page.PageRequest,java.util.List<{jakarta.data.page.impl.PageRecord%0}>,long,boolean)
+ anno 1 jakarta.annotation.Nonnull()
+ anno 2 jakarta.annotation.Nonnull()
 intf jakarta.data.page.Page<{jakarta.data.page.impl.PageRecord%0}>
 meth public boolean hasContent()
 meth public boolean hasNext()
@@ -381,10 +708,15 @@ meth public final int hashCode()
 meth public final java.lang.String toString()
 meth public int numberOfElements()
 meth public jakarta.data.page.PageRequest nextPageRequest()
+ anno 0 jakarta.annotation.Nonnull()
 meth public jakarta.data.page.PageRequest pageRequest()
+ anno 0 jakarta.annotation.Nonnull()
 meth public jakarta.data.page.PageRequest previousPageRequest()
+ anno 0 jakarta.annotation.Nonnull()
 meth public java.util.Iterator<{jakarta.data.page.impl.PageRecord%0}> iterator()
+ anno 0 jakarta.annotation.Nonnull()
 meth public java.util.List<{jakarta.data.page.impl.PageRecord%0}> content()
+ anno 0 jakarta.annotation.Nonnull()
 meth public long totalElements()
 meth public long totalPages()
 supr java.lang.Record
@@ -395,21 +727,34 @@ CLSS abstract interface jakarta.data.page.package-info
 CLSS public abstract interface jakarta.data.repository.BasicRepository<%0 extends java.lang.Object, %1 extends java.lang.Object>
 intf jakarta.data.repository.DataRepository<{jakarta.data.repository.BasicRepository%0},{jakarta.data.repository.BasicRepository%1}>
 meth public abstract <%0 extends {jakarta.data.repository.BasicRepository%0}> java.util.List<{%%0}> saveAll(java.util.List<{%%0}>)
+ anno 0 jakarta.annotation.Nonnull()
  anno 0 jakarta.data.repository.Save()
+ anno 1 jakarta.annotation.Nonnull()
 meth public abstract <%0 extends {jakarta.data.repository.BasicRepository%0}> {%%0} save({%%0})
+ anno 0 jakarta.annotation.Nonnull()
  anno 0 jakarta.data.repository.Save()
+ anno 1 jakarta.annotation.Nonnull()
 meth public abstract jakarta.data.page.Page<{jakarta.data.repository.BasicRepository%0}> findAll(jakarta.data.page.PageRequest,jakarta.data.Order<{jakarta.data.repository.BasicRepository%0}>)
+ anno 0 jakarta.annotation.Nonnull()
  anno 0 jakarta.data.repository.Find(java.lang.Class<?> value=class void)
+ anno 1 jakarta.annotation.Nonnull()
+ anno 2 jakarta.annotation.Nonnull()
 meth public abstract java.util.Optional<{jakarta.data.repository.BasicRepository%0}> findById({jakarta.data.repository.BasicRepository%1})
+ anno 0 jakarta.annotation.Nonnull()
  anno 0 jakarta.data.repository.Find(java.lang.Class<?> value=class void)
+ anno 1 jakarta.annotation.Nonnull()
 meth public abstract java.util.stream.Stream<{jakarta.data.repository.BasicRepository%0}> findAll()
+ anno 0 jakarta.annotation.Nonnull()
  anno 0 jakarta.data.repository.Find(java.lang.Class<?> value=class void)
 meth public abstract void delete({jakarta.data.repository.BasicRepository%0})
  anno 0 jakarta.data.repository.Delete()
+ anno 1 jakarta.annotation.Nonnull()
 meth public abstract void deleteAll(java.util.List<? extends {jakarta.data.repository.BasicRepository%0}>)
  anno 0 jakarta.data.repository.Delete()
+ anno 1 jakarta.annotation.Nonnull()
 meth public abstract void deleteById({jakarta.data.repository.BasicRepository%1})
  anno 0 jakarta.data.repository.Delete()
+ anno 1 jakarta.annotation.Nonnull()
 
 CLSS public abstract interface !annotation jakarta.data.repository.By
  anno 0 java.lang.annotation.Retention(java.lang.annotation.RetentionPolicy value=RUNTIME)
@@ -421,13 +766,21 @@ meth public abstract java.lang.String value()
 CLSS public abstract interface jakarta.data.repository.CrudRepository<%0 extends java.lang.Object, %1 extends java.lang.Object>
 intf jakarta.data.repository.BasicRepository<{jakarta.data.repository.CrudRepository%0},{jakarta.data.repository.CrudRepository%1}>
 meth public abstract <%0 extends {jakarta.data.repository.CrudRepository%0}> java.util.List<{%%0}> insertAll(java.util.List<{%%0}>)
+ anno 0 jakarta.annotation.Nonnull()
  anno 0 jakarta.data.repository.Insert()
+ anno 1 jakarta.annotation.Nonnull()
 meth public abstract <%0 extends {jakarta.data.repository.CrudRepository%0}> java.util.List<{%%0}> updateAll(java.util.List<{%%0}>)
+ anno 0 jakarta.annotation.Nonnull()
  anno 0 jakarta.data.repository.Update()
+ anno 1 jakarta.annotation.Nonnull()
 meth public abstract <%0 extends {jakarta.data.repository.CrudRepository%0}> {%%0} insert({%%0})
+ anno 0 jakarta.annotation.Nonnull()
  anno 0 jakarta.data.repository.Insert()
+ anno 1 jakarta.annotation.Nonnull()
 meth public abstract <%0 extends {jakarta.data.repository.CrudRepository%0}> {%%0} update({%%0})
+ anno 0 jakarta.annotation.Nonnull()
  anno 0 jakarta.data.repository.Update()
+ anno 1 jakarta.annotation.Nonnull()
 
 CLSS public abstract interface jakarta.data.repository.DataRepository<%0 extends java.lang.Object, %1 extends java.lang.Object>
 
@@ -456,6 +809,12 @@ CLSS public abstract interface !annotation jakarta.data.repository.Insert
  anno 0 java.lang.annotation.Target(java.lang.annotation.ElementType[] value=[METHOD])
 intf java.lang.annotation.Annotation
 
+CLSS public abstract interface !annotation jakarta.data.repository.Is
+ anno 0 java.lang.annotation.Retention(java.lang.annotation.RetentionPolicy value=RUNTIME)
+ anno 0 java.lang.annotation.Target(java.lang.annotation.ElementType[] value=[PARAMETER])
+intf java.lang.annotation.Annotation
+meth public abstract !hasdefault java.lang.Class<? extends jakarta.data.constraint.Constraint> value()
+
 CLSS public abstract interface !annotation jakarta.data.repository.OrderBy
  anno 0 java.lang.annotation.Repeatable(java.lang.Class<? extends java.lang.annotation.Annotation> value=class jakarta.data.repository.OrderBy$List)
  anno 0 java.lang.annotation.Retention(java.lang.annotation.RetentionPolicy value=RUNTIME)
@@ -464,6 +823,7 @@ innr public abstract interface static !annotation List
 intf java.lang.annotation.Annotation
 meth public abstract !hasdefault boolean descending()
 meth public abstract !hasdefault boolean ignoreCase()
+meth public abstract !hasdefault jakarta.data.Sort$Nulls nullOrdering()
 meth public abstract java.lang.String value()
 
 CLSS public abstract interface static !annotation jakarta.data.repository.OrderBy$List
