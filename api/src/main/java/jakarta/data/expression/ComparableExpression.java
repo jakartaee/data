@@ -20,7 +20,6 @@ package jakarta.data.expression;
 import jakarta.data.constraint.Between;
 import jakarta.data.constraint.GreaterThan;
 import jakarta.data.Sort;
-import jakarta.data.Sort.Nulls;
 import jakarta.data.constraint.AtLeast;
 import jakarta.data.constraint.LessThan;
 import jakarta.data.constraint.AtMost;
@@ -55,7 +54,7 @@ public interface ComparableExpression<T, V extends Comparable<?>>
      * @return a request for an ascending sort.
      */
     default Sort<T> asc() {
-        return new Sort<T>(this, null, true, false, Nulls.UNSPECIFIED);
+        return Sort.asc(this);
     }
 
     /**
@@ -114,7 +113,7 @@ public interface ComparableExpression<T, V extends Comparable<?>>
      * @return a request for a descending sort.
      */
     default Sort<T> desc() {
-        return new Sort<>(this, null, false, false, Nulls.UNSPECIFIED);
+        return Sort.desc(this);
     }
 
     /**

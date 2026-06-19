@@ -18,9 +18,12 @@
 package jakarta.data;
 
 import jakarta.data.expression.ComparableExpression;
+import jakarta.data.expression.TextExpression;
 import jakarta.data.messages.Messages;
 import jakarta.data.metamodel.Attribute;
+import jakarta.data.metamodel.ComparableAttribute;
 import jakarta.data.metamodel.StaticMetamodel;
+import jakarta.data.metamodel.TextAttribute;
 import jakarta.data.repository.OrderBy;
 
 /**
@@ -337,6 +340,32 @@ public record Sort<T>(ComparableExpression<T, ? extends Comparable<?>> expressio
     }
 
     /**
+     * Create a {@link Sort} instance with {@link Direction#ASC ascending
+     * direction} that does not request case-insensitive ordering.
+     * <p>
+     * The {@code expression} can be obtained from the
+     * {@linkplain StaticMetamodel static metamodel}, which also allows a
+     * more concise way to sort on an attribute or expression,
+     *
+     * <pre>{@code
+     * _Person.ssn.asc()
+     * }</pre>
+     *
+     * @param <T>        entity class of the expression
+     * @param <V>        type of the expression
+     * @param expression the {@linkplain ComparableAttribute entity attribute}
+     *                   or {@linkplain ComparableExpression expression} by
+     *                   which to order
+     * @return a {@link Sort} instance. Never {@code null}
+     * @throws NullPointerException if the {@code expression} is {@code null}
+     * @since 1.1
+     */
+    public static <T, V extends Comparable<?>> Sort<T> asc(
+            ComparableExpression<T, V> expression) {
+        return new Sort<>(expression, null, true, false, Nulls.UNSPECIFIED);
+    }
+
+    /**
      * Create a {@link Sort} instance with
      * {@linkplain Direction#ASC ascending direction} that does not
      * request case-insensitive ordering.
@@ -361,6 +390,56 @@ public record Sort<T>(ComparableExpression<T, ? extends Comparable<?>> expressio
      */
     public static <T> Sort<T> ascIgnoreCase(String attribute) {
         return new Sort<>(null, attribute, true, true, Nulls.UNSPECIFIED);
+    }
+
+    /**
+     * Create a {@link Sort} instance with {@link Direction#ASC ascending
+     * direction} and case insensitive ordering.
+     * <p>
+     * The {@code expression} can be obtained from the
+     * {@linkplain StaticMetamodel static metamodel}, which also allows a
+     * more concise way to sort on an attribute or expression,
+     *
+     * <pre>{@code
+     * _Product.name.ascIgnoreCase()
+     * }</pre>
+     *
+     * @param <T>        entity class of the expression
+     * @param expression the {@linkplain TextAttribute entity attribute}
+     *                   or {@linkplain TextExpression expression} by
+     *                   which to order
+     * @return a {@link Sort} instance. Never {@code null}
+     * @throws NullPointerException if the {@code expression} is {@code null}
+     * @since 1.1
+     */
+    public static <T> Sort<T> ascIgnoreCase(TextExpression<T> expression) {
+        return new Sort<>(expression, null, true, true, Nulls.UNSPECIFIED);
+    }
+
+    /**
+     * Create a {@link Sort} instance with {@link Direction#DESC descending
+     * direction} that does not request case-insensitive ordering.
+     * <p>
+     * The {@code expression} can be obtained from the
+     * {@linkplain StaticMetamodel static metamodel}, which also allows a
+     * more concise way to sort on an attribute or expression,
+     *
+     * <pre>{@code
+     * _Person.ssn.desc()
+     * }</pre>
+     *
+     * @param <T>        entity class of the expression
+     * @param <V>        type of the expression
+     * @param expression the {@linkplain ComparableAttribute entity attribute}
+     *                   or {@linkplain ComparableExpression expression} by
+     *                   which to order
+     * @return a {@link Sort} instance. Never {@code null}
+     * @throws NullPointerException if the {@code expression} is {@code null}
+     * @since 1.1
+     */
+    public static <T, V extends Comparable<?>> Sort<T> desc(
+            ComparableExpression<T, V> expression) {
+        return new Sort<>(expression, null, false, false, Nulls.UNSPECIFIED);
     }
 
     /**
@@ -389,6 +468,30 @@ public record Sort<T>(ComparableExpression<T, ? extends Comparable<?>> expressio
      */
     public static <T> Sort<T> descIgnoreCase(String attribute) {
         return new Sort<>(null, attribute, false, true, Nulls.UNSPECIFIED);
+    }
+
+    /**
+     * Create a {@link Sort} instance with {@link Direction#DESC descending
+     * direction} and case insensitive ordering.
+     * <p>
+     * The {@code expression} can be obtained from the
+     * {@linkplain StaticMetamodel static metamodel}, which also allows a
+     * more concise way to sort on an attribute or expression,
+     *
+     * <pre>{@code
+     * _Product.name.descIgnoreCase()
+     * }</pre>
+     *
+     * @param <T>        entity class of the expression
+     * @param expression the {@linkplain TextAttribute entity attribute}
+     *                   or {@linkplain TextExpression expression} by
+     *                   which to order
+     * @return a {@link Sort} instance. Never {@code null}
+     * @throws NullPointerException if the {@code expression} is {@code null}
+     * @since 1.1
+     */
+    public static <T> Sort<T> descIgnoreCase(TextExpression<T> expression) {
+        return new Sort<>(expression, null, false, true, Nulls.UNSPECIFIED);
     }
 
     /**

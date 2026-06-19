@@ -18,7 +18,6 @@
 package jakarta.data.metamodel;
 
 import jakarta.data.Sort;
-import jakarta.data.Sort.Nulls;
 import jakarta.data.expression.ComparableExpression;
 import jakarta.data.messages.Messages;
 
@@ -97,7 +96,7 @@ public interface ComparableAttribute<T, V extends Comparable<?>>
      */
     @Override
     default Sort<T> asc() {
-        return new Sort<T>(this, null, true, false, Nulls.UNSPECIFIED);
+        return Sort.asc(this);
     }
 
     /**
@@ -108,7 +107,7 @@ public interface ComparableAttribute<T, V extends Comparable<?>>
      */
     @Override
     default Sort<T> desc() {
-        return new Sort<T>(this, null, false, false, Nulls.UNSPECIFIED);
+        return Sort.desc(this);
     }
 }
 
