@@ -186,6 +186,10 @@ public record Sort<T>(ComparableExpression<T, ? extends Comparable<?>> expressio
             throw new IllegalArgumentException(
                     "property: " + property + ", expression: " + expression);
         }
+
+        property = expression instanceof Attribute<?> attr
+                ? attr.name()
+                : property;
     }
 
     /**
@@ -229,9 +233,7 @@ public record Sort<T>(ComparableExpression<T, ? extends Comparable<?>> expressio
      *         {@code Sort} instance pertains to an {@link #expression()}
      */
     public String property() {
-        return expression instanceof Attribute<?> attr
-                ? attr.name()
-                : property;
+        return property;
     }
 
     // Override to provide method documentation:
@@ -516,7 +518,7 @@ public record Sort<T>(ComparableExpression<T, ? extends Comparable<?>> expressio
      */
     public Sort<T> nullsFirst() {
         return new Sort<>(expression,
-                          property,
+                          expression == null ? property : null,
                           isAscending,
                           ignoreCase,
                           Nulls.FIRST);
@@ -544,7 +546,7 @@ public record Sort<T>(ComparableExpression<T, ? extends Comparable<?>> expressio
      */
     public Sort<T> nullsLast() {
         return new Sort<>(expression,
-                          property,
+                          expression == null ? property : null,
                           isAscending,
                           ignoreCase,
                           Nulls.LAST);
