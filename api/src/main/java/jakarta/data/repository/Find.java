@@ -142,7 +142,7 @@ import java.lang.annotation.Target;
  *
  * <p>If the Jakarta Data provider is backed by a Jakarta Persistence provider,
  * an automatic query method annotated {@code Find} can also be annotated
- * {@code jakarta.persistence.query.QueryOptions} to supply additional
+ * {@link jakarta.persistence.query.QueryOptions} to supply additional
  * query options that are specific to Jakarta Persistence.</p>
  *
  * <p>Annotations such as {@code @Find}, {@code @Query}, {@code @Insert}, {@code @Update}, {@code @Delete}, and
@@ -154,7 +154,6 @@ import java.lang.annotation.Target;
  * @see First
  * @see Select
  */
-//TODO switch @code to @link for jakarta.persistence.query.* once Persistence 4.0 M3 is available
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)

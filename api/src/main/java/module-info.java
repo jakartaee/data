@@ -1428,16 +1428,12 @@ import java.util.Set;
  * }
  * }</pre>
  */
-//TODO switch @code to @link for jakarta.persistence.query.* once it is determined
-// why Javadoc links to API from other Jakarta spec modules are not working
 module jakarta.data {
     // requires static jakarta.inject;      // compile time dependency for Javadoc
-    // requires static jakarta.persistence; // compile time dependency for Javadoc
     // requires static jakarta.transaction; // compile time dependency for Javadoc
-    // The above is not working for Javadoc links to Jakarta API, even though
-    // the following does work for Javadoc links to JDBC API,
     requires static java.sql; // compile time dependency for Javadoc
     requires static jakarta.annotation; // compile time dependency for nullness annotations
+    requires static jakarta.persistence; // compile time dependency for Javadoc
     exports jakarta.data;
     exports jakarta.data.constraint;
     exports jakarta.data.event;
