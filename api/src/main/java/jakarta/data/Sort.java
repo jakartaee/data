@@ -86,11 +86,11 @@ import jakarta.data.repository.OrderBy;
  *
  * @param <T>          type of entity from which query results are obtained.
  * @param expression   an expression that computes a value by which to
- *                         order results. Alternatively, {@code null} if
- *                         {@code property} is supplied instead.
+ *                     order results. Alternatively, {@code null} if
+ *                     {@code property} is supplied instead.
  * @param property     name of an entity attribute to order by.
- *                         Alternatively, {@code null} if {@code expression}
- *                         is supplied instead.
+ *                     Alternatively, {@code null} if {@code expression}
+ *                     is supplied instead.
  * @param isAscending  whether ordering for this attribute is ascending
  *                     ({@code true}) or descending ({@code false}).
  * @param ignoreCase   whether or not to request case insensitive ordering
