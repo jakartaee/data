@@ -20,6 +20,7 @@ package jakarta.data.expression;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
+import jakarta.data.Sort;
 import jakarta.data.constraint.EqualTo;
 import jakarta.data.constraint.AtMost;
 import jakarta.data.mock.entity.Book;
@@ -160,4 +161,53 @@ class ExpressionTest {
                 .isEqualTo(50);
         });
     }
+
+    @Test
+    void testSortOnLeft3() {
+        TextExpression<Book> first3LettersOfTitle = _Book.title.right(3);
+        Sort<Book> first3LettersOfTitleAsc =
+                first3LettersOfTitle.ascIgnoreCase();
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(first3LettersOfTitleAsc.expression())
+                .isEqualTo(first3LettersOfTitle);
+
+            soft.assertThat(first3LettersOfTitleAsc.isAscending())
+                .isTrue();
+
+            soft.assertThat(first3LettersOfTitleAsc.isDescending())
+                .isFalse();
+
+            soft.assertThat(first3LettersOfTitleAsc.ignoreCase())
+                .isEqualTo(true);
+
+            soft.assertThat(first3LettersOfTitleAsc.property())
+                .isNull();
+        });
+    }
+
+    @Test
+    void testSortOnDivisionExpression() {
+        NumericExpression<Book, Integer> pagesPerChapter =
+                _Book.numPages.dividedBy(_Book.numChapters);
+        Sort<Book> pagesPerChapterDesc = pagesPerChapter.desc();
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(pagesPerChapterDesc.expression())
+                .isEqualTo(pagesPerChapter);
+
+            soft.assertThat(pagesPerChapterDesc.isAscending())
+                .isFalse();
+
+            soft.assertThat(pagesPerChapterDesc.isDescending())
+                .isTrue();
+
+            soft.assertThat(pagesPerChapterDesc.ignoreCase())
+                .isEqualTo(false);
+
+            soft.assertThat(pagesPerChapterDesc.property())
+                .isNull();
+        });
+    }
+
 }
