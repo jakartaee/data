@@ -13,11 +13,12 @@
  * <p>
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
-package ee.jakarta.tck.data.framework.read.only;
+package ee.jakarta.tck.data.framework.read.only.qbmn;
 
 import java.util.List;
 import java.util.Set;
 
+import ee.jakarta.tck.data.framework.read.only.NaturalNumber;
 import jakarta.data.repository.Delete;
 import jakarta.data.repository.Insert;
 import jakarta.data.repository.Repository;

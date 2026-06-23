@@ -15,6 +15,7 @@
  */
 package ee.jakarta.tck.data.standalone.entity;
 
+import ee.jakarta.tck.data.framework.junit.anno.Annotated;
 import ee.jakarta.tck.data.framework.junit.anno.AnyEntity;
 import ee.jakarta.tck.data.framework.junit.anno.Standalone;
 import ee.jakarta.tck.data.framework.utilities.DatabaseType;
@@ -45,6 +46,7 @@ import java.util.logging.Logger;
 @AnyEntity
 @ReadOnlyTest
 @DisplayName("Jakarta Data integration with Jakarta Common Query Language for select operations")
+@Annotated
 public class JakartaQueryTests {
 
     public static final Logger log = Logger.getLogger(JakartaQueryTests.class.getCanonicalName());
