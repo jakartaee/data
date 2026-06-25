@@ -126,6 +126,13 @@ public class EntityTests {
 
     private final DatabaseType type = TestProperty.databaseType.getDatabaseType();
 
+    private static void assertSortEqualsIgnoreExpression(Sort<?> expected, Sort<?> actual) {
+        assertEquals(expected.property(), actual.property(), "Sort property");
+        assertEquals(expected.isAscending(), actual.isAscending(), "Sort isAscending");
+        assertEquals(expected.ignoreCase(), actual.ignoreCase(), "Sort ignoreCase");
+        assertEquals(expected.nullOrdering(), actual.nullOrdering(), "Sort nullOrdering");
+    }
+
     @Assertion(id = "136", strategy = "Ensures that the prepopulation step for readonly entities was successful")
     public void ensureNaturalNumberPrepopulation() {
         assertEquals(100L, numbers.countAll());
@@ -3134,9 +3141,9 @@ public class EntityTests {
 
     @Assertion(id = "133", strategy = "Use the StaticMetamodel to obtain ascending Sorts for an entity attribute in a type-safe manner.")
     public void testStaticMetamodelAscendingSorts() {
-        assertEquals(Sort.asc("id"), _AsciiChar.id.asc());
-        assertEquals(Sort.ascIgnoreCase(_AsciiChar.HEXADECIMAL), _AsciiChar.hexadecimal.ascIgnoreCase());
-        assertEquals(Sort.ascIgnoreCase("thisCharacter"), _AsciiChar.thisCharacter.ascIgnoreCase());
+        assertSortEqualsIgnoreExpression(Sort.asc("id"), _AsciiChar.id.asc());
+        assertSortEqualsIgnoreExpression(Sort.ascIgnoreCase(_AsciiChar.HEXADECIMAL), _AsciiChar.hexadecimal.ascIgnoreCase());
+        assertSortEqualsIgnoreExpression(Sort.ascIgnoreCase("thisCharacter"), _AsciiChar.thisCharacter.ascIgnoreCase());
 
         PageRequest pageRequest = PageRequest.ofSize(6);
         Page<AsciiCharacter> page1;
@@ -3209,9 +3216,9 @@ public class EntityTests {
 
     @Assertion(id = "133", strategy = "Use the StaticMetamodel to obtain descending Sorts for an entity attribute a type-safe manner.")
     public void testStaticMetamodelDescendingSorts() {
-        assertEquals(Sort.desc(_AsciiChar.ID), _AsciiChar.id.desc());
-        assertEquals(Sort.descIgnoreCase("hexadecimal"), _AsciiChar.hexadecimal.descIgnoreCase());
-        assertEquals(Sort.descIgnoreCase("thisCharacter"), _AsciiChar.thisCharacter.descIgnoreCase());
+        assertSortEqualsIgnoreExpression(Sort.desc(_AsciiChar.ID), _AsciiChar.id.desc());
+        assertSortEqualsIgnoreExpression(Sort.descIgnoreCase("hexadecimal"), _AsciiChar.hexadecimal.descIgnoreCase());
+        assertSortEqualsIgnoreExpression(Sort.descIgnoreCase("thisCharacter"), _AsciiChar.thisCharacter.descIgnoreCase());
 
         Sort<AsciiCharacter> sort = _AsciiChar.numericValue.desc();
         AsciiCharacter[] found;
