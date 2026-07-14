@@ -59,8 +59,8 @@ class CurrentDateTimeTest {
         @Test
         @DisplayName("should create a new expression for each invocation")
         void shouldCreateNewExpressionForEachInvocation() {
-            CurrentDateTime<TestEntity> firstExpression = CurrentDateTime.now();
-            CurrentDateTime<TestEntity> secondExpression = CurrentDateTime.now();
+            var firstExpression = CurrentDateTime.now();
+            var secondExpression = CurrentDateTime.now();
             assertThat(firstExpression).isNotSameAs(secondExpression);
         }
     }
