@@ -17,8 +17,70 @@
  */
 package jakarta.data.spi.expression.function;
 
-import static org.junit.jupiter.api.Assertions.*;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.time.LocalDate;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+
+@DisplayName("CurrentDate")
 class CurrentDateTest {
 
+    @Nested
+    @DisplayName("When creating the current date expression")
+    class WhenCreatingCurrentDateExpression {
+
+        @Test
+        @DisplayName("should create a current date expression")
+        void shouldCreateCurrentDateExpression() {
+            // when
+            CurrentDate<TestEntity> expression = CurrentDate.now();
+
+            // then
+            assertThat(expression).isNotNull();
+        }
+
+        @Test
+        @DisplayName("should expose LocalDate as the expression type")
+        void shouldExposeLocalDateAsExpressionType() {
+            // given
+            CurrentDate<TestEntity> expression = CurrentDate.now();
+
+            // when
+            var type = expression.type();
+
+            // then
+            assertThat(type).isEqualTo(LocalDate.class);
+        }
+
+        @Test
+        @DisplayName("should represent the expression as LOCAL DATE")
+        void shouldRepresentExpressionAsLocalDate() {
+            // given
+            CurrentDate<TestEntity> expression = CurrentDate.now();
+
+            // when
+            String representation = expression.toString();
+
+            // then
+            assertThat(representation).isEqualTo("LOCAL DATE");
+        }
+
+        @Test
+        @DisplayName("should create an independent expression for each invocation")
+        void shouldCreateIndependentExpressionForEachInvocation() {
+            // when
+            CurrentDate<TestEntity> firstExpression = CurrentDate.now();
+            CurrentDate<TestEntity> secondExpression = CurrentDate.now();
+
+            // then
+            assertThat(firstExpression).isNotSameAs(secondExpression);
+        }
+    }
+
+    private static final class TestEntity {
+    }
 }
