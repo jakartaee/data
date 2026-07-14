@@ -17,8 +17,54 @@
  */
 package jakarta.data.spi.expression.function;
 
-import static org.junit.jupiter.api.Assertions.*;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.time.LocalDateTime;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+
+@DisplayName("CurrentDateTime")
 class CurrentDateTimeTest {
 
+    @Nested
+    @DisplayName("When creating the current date and time expression")
+    class WhenCreatingCurrentDateTimeExpression {
+
+        @Test
+        @DisplayName("should create a current date and time expression")
+        void shouldCreateCurrentDateTimeExpression() {
+            var expression = CurrentDateTime.now();
+            assertThat(expression).isNotNull();
+        }
+
+        @Test
+        @DisplayName("should expose LocalDateTime as the expression type")
+        void shouldExposeLocalDateTimeAsExpressionType() {
+            var expression = CurrentDateTime.now();
+            var type = expression.type();
+            assertThat(type).isEqualTo(LocalDateTime.class);
+        }
+
+        @Test
+        @DisplayName("should represent the expression as LOCAL DATETIME")
+        void shouldRepresentExpressionAsLocalDateTime() {
+            var expression = CurrentDateTime.now();
+            String representation = expression.toString();
+            assertThat(representation).isEqualTo("LOCAL DATETIME");
+        }
+
+        @Test
+        @DisplayName("should create a new expression for each invocation")
+        void shouldCreateNewExpressionForEachInvocation() {
+            CurrentDateTime<TestEntity> firstExpression = CurrentDateTime.now();
+            CurrentDateTime<TestEntity> secondExpression = CurrentDateTime.now();
+            assertThat(firstExpression).isNotSameAs(secondExpression);
+        }
+    }
+
+    private static final class TestEntity {
+    }
 }
