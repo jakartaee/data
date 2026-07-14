@@ -46,37 +46,24 @@ class CurrentDateTest {
         @Test
         @DisplayName("should expose LocalDate as the expression type")
         void shouldExposeLocalDateAsExpressionType() {
-            // given
             CurrentDate<TestEntity> expression = CurrentDate.now();
-
-            // when
             var type = expression.type();
-
-            // then
             assertThat(type).isEqualTo(LocalDate.class);
         }
 
         @Test
         @DisplayName("should represent the expression as LOCAL DATE")
         void shouldRepresentExpressionAsLocalDate() {
-            // given
             CurrentDate<TestEntity> expression = CurrentDate.now();
-
-            // when
             String representation = expression.toString();
-
-            // then
             assertThat(representation).isEqualTo("LOCAL DATE");
         }
 
         @Test
         @DisplayName("should create an independent expression for each invocation")
         void shouldCreateIndependentExpressionForEachInvocation() {
-            // when
             CurrentDate<TestEntity> firstExpression = CurrentDate.now();
             CurrentDate<TestEntity> secondExpression = CurrentDate.now();
-
-            // then
             assertThat(firstExpression).isNotSameAs(secondExpression);
         }
     }
