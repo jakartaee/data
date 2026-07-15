@@ -381,7 +381,7 @@ This `PageRequest` specifies a starting page and maximum page size:
 
 [source,java]
 ----
-PageRequest pageRequest = PageRequest.ofPage(1).size(20);
+PageRequest pageRequest = PageRequest.ofSize(20).pageNumber(1);
 List<Product> first20 = products.findByName(name, pageRequest,
                             Order.by(_Product.price.desc(),
                                      _Product.id.asc()));
@@ -581,7 +581,7 @@ Code Execution:
 People people;
 
 Page<Person> page =
-        people.findAll(PageRequest.ofPage(1).size(2),
+        people.findAll(PageRequest.ofSize(2).pageNumber(1),
                        Order.by(Sort.asc("id")));
 ----
 
@@ -660,8 +660,8 @@ Or you can obtain the next (or previous) page relative to a known entity,
 [source,java]
 ----
 Customer c = ...
-PageRequest p = PageRequest.ofPage(10)
-                           .size(50)
+PageRequest p = PageRequest.ofSize(50)
+                           .pageNumber(10)
                            .afterCursor(Cursor.forKey(c.lastName, c.firstName, c.id));
 page = customers.findByZipcode(55902, p);
 ----
@@ -776,8 +776,8 @@ Order<Product> order =
         Order.by(_Product.price.asc(),
                  _Product.id.asc());
 PageRequest pageRequest =
-        PageRequest.ofPage(5)
-                   .size(10)
+        PageRequest.ofSize(10)
+                   .pageNumber(5)
                    .afterCursor(Cursor.forKey(priceMidpoint, 0L));
 CursoredPage<Product> moreExpensive =
         products.findByNameLike(pattern, pageRequest, order);
@@ -828,8 +828,8 @@ The query results are ordered first by vehicle condition. All resulting entities
 [source,java]
 ----
 PageRequest page2Request = PageRequest
-             .ofPage(2) // cosmetic when using a cursor
-             .size(25)
+             .ofSize(25)
+             .pageNumber(2) // cosmetic when using a cursor
              .afterCursor(Cursor.forKey(lastCar.vehicleCondition,
                                         lastCar.price,
                                         lastCar.vin));

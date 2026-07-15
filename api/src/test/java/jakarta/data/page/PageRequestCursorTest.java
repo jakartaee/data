@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022,2024 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,7 +36,7 @@ class PageRequestCursorTest {
 
         assertSoftly(softly -> {
             softly.assertThat(pageRequest.size()).isEqualTo(20);
-            softly.assertThat(pageRequest.page()).isEqualTo(1L);
+            softly.assertThat(pageRequest.pageNumber()).isEqualTo(1L);
             softly.assertThat(pageRequest.requestTotal()).isEqualTo(false);
             softly.assertThat(pageRequest.mode()).isEqualTo(PageRequest.Mode.CURSOR_NEXT);
             softly.assertThat(pageRequest.cursor()).get().extracting(PageRequest.Cursor::size).isEqualTo(3);
@@ -54,7 +54,7 @@ class PageRequestCursorTest {
 
         assertSoftly(softly -> {
             softly.assertThat(pageRequest.size()).isEqualTo(35);
-            softly.assertThat(pageRequest.page()).isEqualTo(1L);
+            softly.assertThat(pageRequest.pageNumber()).isEqualTo(1L);
             softly.assertThat(pageRequest.mode()).isEqualTo(PageRequest.Mode.CURSOR_NEXT);
             softly.assertThat(pageRequest.cursor()).get().extracting(PageRequest.Cursor::size).isEqualTo(2);
             softly.assertThat(pageRequest.cursor()).get().extracting(c -> c.get(0)).isEqualTo("me");
@@ -70,7 +70,7 @@ class PageRequestCursorTest {
 
         assertSoftly(softly -> {
             softly.assertThat(pageRequest.size()).isEqualTo(30);
-            softly.assertThat(pageRequest.page()).isEqualTo(10L);
+            softly.assertThat(pageRequest.pageNumber()).isEqualTo(10L);
             softly.assertThat(pageRequest.requestTotal()).isEqualTo(false);            
             softly.assertThat(pageRequest.mode()).isEqualTo(PageRequest.Mode.CURSOR_PREVIOUS);
             softly.assertThat(pageRequest.cursor()).get().extracting(PageRequest.Cursor::size).isEqualTo(2);
@@ -87,7 +87,7 @@ class PageRequestCursorTest {
 
         assertSoftly(softly -> {
             softly.assertThat(pageRequest.size()).isEqualTo(10);
-            softly.assertThat(pageRequest.page()).isEqualTo(8L);
+            softly.assertThat(pageRequest.pageNumber()).isEqualTo(8L);
             softly.assertThat(pageRequest.mode()).isEqualTo(PageRequest.Mode.CURSOR_PREVIOUS);
             softly.assertThat(pageRequest.cursor()).get().extracting(PageRequest.Cursor::size).isEqualTo(5);
             softly.assertThat(pageRequest.cursor()).get().extracting(c -> c.get(0)).isEqualTo(900L);
@@ -130,10 +130,10 @@ class PageRequestCursorTest {
         assertSoftly(softly -> {
 
             softly.assertThat(afterKeySet.toString())
-              .isEqualTo("PageRequest{page=1, size=200, mode=CURSOR_NEXT, cursor size=2}");
+              .isEqualTo("PageRequest{pageNumber=1, size=200, mode=CURSOR_NEXT, cursor size=2}");
 
             softly.assertThat(beforeKeySet.toString())
-                    .isEqualTo("PageRequest{page=1, size=100, mode=CURSOR_PREVIOUS, cursor size=2}");
+                    .isEqualTo("PageRequest{pageNumber=1, size=100, mode=CURSOR_PREVIOUS, cursor size=2}");
 
         });
     }
@@ -215,8 +215,8 @@ class PageRequestCursorTest {
             softly.assertThat(p2.cursor()).get().extracting(c -> c.get(1)).isEqualTo("fname2");
             softly.assertThat(p2.cursor()).get().extracting(c -> c.get(2)).isEqualTo(200);
 
-            softly.assertThat(p1.page()).isEqualTo(12L);
-            softly.assertThat(p2.page()).isEqualTo(12L);
+            softly.assertThat(p1.pageNumber()).isEqualTo(12L);
+            softly.assertThat(p2.pageNumber()).isEqualTo(12L);
             softly.assertThat(p1.size()).isEqualTo(30);
             softly.assertThat(p2.size()).isEqualTo(30);
         });

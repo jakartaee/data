@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022,2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,12 +24,12 @@ import jakarta.data.messages.Messages;
 /**
  * Built-in implementation of PageRequest.
  */
-record Pagination(long page, int size, Mode mode, Cursor type,
+record Pagination(long pageNumber, int size, Mode mode, Cursor type,
                   boolean requestTotal) implements PageRequest {
 
     Pagination {
-        if (page < 1) {
-            throw new IllegalArgumentException("pageNumber: " + page);
+        if (pageNumber < 1) {
+            throw new IllegalArgumentException("pageNumber: " + pageNumber);
         } else if (size < 1) {
             throw new IllegalArgumentException("maxPageSize: " + size);
         }
@@ -42,22 +42,30 @@ record Pagination(long page, int size, Mode mode, Cursor type,
 
     @Override
     public PageRequest withoutTotal() {
-        return new Pagination(page, size, mode, type, false);
+        return new Pagination(pageNumber, size, mode, type, false);
     }
 
     @Override
     public PageRequest withTotal() {
-        return new Pagination(page, size, mode, type, true);
+        return new Pagination(pageNumber, size, mode, type, true);
     }
 
     @Override
     public PageRequest afterCursor(Cursor cursor) {
-        return new Pagination(page, size, Mode.CURSOR_NEXT, cursor, requestTotal);
+        return new Pagination(pageNumber,
+                              size,
+                              Mode.CURSOR_NEXT,
+                              cursor,
+                              requestTotal);
     }
 
     @Override
     public PageRequest beforeCursor(Cursor cursor) {
-        return new Pagination(page, size, Mode.CURSOR_PREVIOUS, cursor, requestTotal);
+        return new Pagination(pageNumber,
+                              size,
+                              Mode.CURSOR_PREVIOUS,
+                              cursor,
+                              requestTotal);
     }
 
     @Override
@@ -68,7 +76,7 @@ record Pagination(long page, int size, Mode mode, Cursor type,
     @Override
     public String toString() {
         StringBuilder s = new StringBuilder(mode == Mode.OFFSET ? 100 : 150)
-                .append("PageRequest{page=").append(page)
+                .append("PageRequest{pageNumber=").append(pageNumber)
                 .append(", size=").append(size)
                 .append(", mode=").append(mode);
         if (type != null) {
@@ -79,11 +87,11 @@ record Pagination(long page, int size, Mode mode, Cursor type,
 
     @Override
     public PageRequest size(int maxPageSize) {
-        return new Pagination(page, maxPageSize, mode, type, requestTotal);
+        return new Pagination(pageNumber, maxPageSize, mode, type, requestTotal);
     }
 
     @Override
-    public PageRequest page(long pageNumber) {
+    public PageRequest pageNumber(long pageNumber) {
         return new Pagination(pageNumber, size, mode, type, requestTotal);
     }
 

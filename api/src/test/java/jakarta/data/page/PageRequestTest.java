@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022,2024 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@ class PageRequestTest {
         PageRequest pageRequest = PageRequest.ofPage(2).size(6);
 
         assertSoftly(softly -> {
-            softly.assertThat(pageRequest.page()).isEqualTo(2L);
+            softly.assertThat(pageRequest.pageNumber()).isEqualTo(2L);
             softly.assertThat(pageRequest.size()).isEqualTo(6);
         });
     }
@@ -42,7 +42,7 @@ class PageRequestTest {
         PageRequest pageRequest = PageRequest.ofSize(50);
 
         assertSoftly(softly -> {
-            softly.assertThat(pageRequest.page()).isEqualTo(1L);
+            softly.assertThat(pageRequest.pageNumber()).isEqualTo(1L);
             softly.assertThat(pageRequest.size()).isEqualTo(50);
         });
     }
@@ -53,7 +53,7 @@ class PageRequestTest {
         PageRequest pageRequest = PageRequest.ofPage(5);
 
         assertSoftly(softly -> {
-            softly.assertThat(pageRequest.page()).isEqualTo(5L);
+            softly.assertThat(pageRequest.pageNumber()).isEqualTo(5L);
             softly.assertThat(pageRequest.size()).isEqualTo(10);
         });
     }
@@ -63,10 +63,10 @@ class PageRequestTest {
     void shouldPageRequestDisplayAsString() {
         assertSoftly(softly -> {
             softly.assertThat(PageRequest.ofSize(60).toString())
-              .isEqualTo("PageRequest{page=1, size=60, mode=OFFSET}");
+              .isEqualTo("PageRequest{pageNumber=1, size=60, mode=OFFSET}");
 
             softly.assertThat(PageRequest.ofSize(80).toString())
-                    .isEqualTo("PageRequest{page=1, size=80, mode=OFFSET}");
+                    .isEqualTo("PageRequest{pageNumber=1, size=80, mode=OFFSET}");
         });
     }
 
@@ -76,7 +76,7 @@ class PageRequestTest {
         PageRequest pageRequest1 = PageRequest.ofPage(1).withTotal().size(70);
 
         assertSoftly(softly -> {
-            softly.assertThat(pageRequest1.page()).isEqualTo(1L);
+            softly.assertThat(pageRequest1.pageNumber()).isEqualTo(1L);
             softly.assertThat(pageRequest1.size()).isEqualTo(70);
             softly.assertThat(pageRequest1.requestTotal()).isEqualTo(true);
         });
@@ -84,7 +84,7 @@ class PageRequestTest {
         PageRequest pageRequest2 = PageRequest.ofPage(2).size(80).withoutTotal();
 
         assertSoftly(softly -> {
-            softly.assertThat(pageRequest2.page()).isEqualTo(2L);
+            softly.assertThat(pageRequest2.pageNumber()).isEqualTo(2L);
             softly.assertThat(pageRequest2.size()).isEqualTo(80);
             softly.assertThat(pageRequest2.requestTotal()).isEqualTo(false);
         });
@@ -112,8 +112,8 @@ class PageRequestTest {
         assertSoftly(softly -> {
             softly.assertThat(s80.size()).isEqualTo(80);
             softly.assertThat(s90.size()).isEqualTo(90);
-            softly.assertThat(s90.page()).isEqualTo(4L);
-            softly.assertThat(s80.page()).isEqualTo(4L);
+            softly.assertThat(s90.pageNumber()).isEqualTo(4L);
+            softly.assertThat(s80.pageNumber()).isEqualTo(4L);
         });
     }
 

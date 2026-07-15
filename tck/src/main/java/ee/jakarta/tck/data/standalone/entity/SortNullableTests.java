@@ -625,7 +625,7 @@ public class SortNullableTests {
                     "OZ",
                     Order.by(_Country.daylightTimeBegins.desc().nullsFirst(),
                              _Country.code.asc()),
-                    PageRequest.ofSize(25).page(2));
+                    PageRequest.ofSize(25).pageNumber(2));
         } catch (IllegalArgumentException x) {
             if (type.capableOfSortingNullsFirst()) {
                 throw x;

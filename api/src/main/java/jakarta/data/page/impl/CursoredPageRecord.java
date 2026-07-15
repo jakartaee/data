@@ -87,12 +87,14 @@ public record CursoredPageRecord<T>
         this(content, cursors, totalElements, pageRequest,
                 lastPage ? null : PageRequest.afterCursor(
                         cursors.get(cursors.size() - 1),
-                        pageRequest.page() + 1,
+                        pageRequest.pageNumber() + 1,
                         pageRequest.size(),
                         pageRequest.requestTotal()),
                 firstPage ? null : PageRequest.beforeCursor(
                         cursors.get(0),
-                        pageRequest.page() == 1 ? 1 : pageRequest.page() - 1,
+                        pageRequest.pageNumber() == 1
+                                ? 1
+                                : pageRequest.pageNumber() - 1,
                         pageRequest.size(),
                         pageRequest.requestTotal()));
     }
@@ -123,7 +125,7 @@ public record CursoredPageRecord<T>
     public PageRequest nextPageRequest() {
         if (cursors.isEmpty())
             throw new UnsupportedOperationException(
-                    Messages.get("013.cursor.uncomputable"));
+                    Messages.get("015.cursor.uncomputable"));
         if (nextPageRequest == null)
             throw new NoSuchElementException();
         return nextPageRequest;
@@ -133,7 +135,7 @@ public record CursoredPageRecord<T>
     public PageRequest previousPageRequest() {
         if (cursors.isEmpty())
             throw new UnsupportedOperationException(
-                    Messages.get("013.cursor.uncomputable"));
+                    Messages.get("015.cursor.uncomputable"));
         if (previousPageRequest == null)
             throw new NoSuchElementException();
         return previousPageRequest;
@@ -148,7 +150,7 @@ public record CursoredPageRecord<T>
     public PageRequest.Cursor cursor(int index) {
         if (cursors.isEmpty())
             throw new UnsupportedOperationException(
-                    Messages.get("013.cursor.uncomputable"));
+                    Messages.get("015.cursor.uncomputable"));
         return cursors.get(index);
     }
 
