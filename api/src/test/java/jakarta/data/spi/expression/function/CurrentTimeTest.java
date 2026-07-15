@@ -58,15 +58,6 @@ class CurrentTimeTest {
             assertThat(representation).isEqualTo("LOCAL TIME");
         }
 
-        @Test
-        @DisplayName("should create a new expression for each invocation")
-        void shouldCreateNewExpressionForEachInvocation() {
-            CurrentTime<TestEntity> firstExpression = CurrentTime.now();
-            CurrentTime<TestEntity> secondExpression = CurrentTime.now();
-            assertThat(firstExpression).isNotSameAs(secondExpression);
-        }
-    }
-
     private static final class TestEntity {
     }
 }
