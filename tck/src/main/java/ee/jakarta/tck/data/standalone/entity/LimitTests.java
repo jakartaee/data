@@ -20,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.logging.Logger;
 
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -109,6 +110,64 @@ public class LimitTests {
                      Arrays.toString(nums.stream()
                                          .map(NaturalNumber::getId)
                                          .toArray()));
+    }
+
+    @Assertion(id = "133", strategy = """
+            Create a Limit that is relative to a 0-based offset.
+            Supply the Limit to a repository method and verify
+            that the Limit caps the number of results, starting
+            from the offset, and orders according to the sort
+            criteria.
+            """)
+    public void testLimitFromOffset() {
+        Collection<NaturalNumber> nums;
+        try {
+            nums = numbers.atLeast(
+                    20L,
+                    Limit.of(8, 24),
+                    Order.by(_NaturalNumber.id.asc()));
+        } catch (UnsupportedOperationException x) {
+            if (type.capableOfGreaterThanEqual() &&
+                type.capableOfSingleSort()) {
+                throw x;
+            } else {
+                return;
+            }
+        }
+
+        assertEquals(List.of(44L, 45L, 46L, 47L, 48L, 49L, 50L, 51L),
+                     nums.stream()
+                         .map(NaturalNumber::getId)
+                         .toList());
+    }
+
+    @Assertion(id = "133", strategy = """
+            Create a Limit that is relative an offset of zero.
+            Supply the Limit to a repository method and verify
+            that the Limit caps the number of results, starting
+            from the beginning, and orders according to the sort
+            criteria.
+            """)
+    public void testLimitFromZeroOffset() {
+        Collection<NaturalNumber> nums;
+        try {
+            nums = numbers.atLeast(
+                    10L,
+                    Limit.of(6, 0),
+                    Order.by(_NaturalNumber.id.asc()));
+        } catch (UnsupportedOperationException x) {
+            if (type.capableOfGreaterThanEqual() &&
+                type.capableOfSingleSort()) {
+                throw x;
+            } else {
+                return;
+            }
+        }
+
+        assertEquals(List.of(10L, 11L, 12L, 13L, 14L, 15L),
+                     nums.stream()
+                         .map(NaturalNumber::getId)
+                         .toList());
     }
 
     @Assertion(id = "133", strategy = """
