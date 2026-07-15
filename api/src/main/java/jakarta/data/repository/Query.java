@@ -121,20 +121,20 @@ import java.lang.annotation.Target;
  * public interface People extends CrudRepository<Person, Long> {
  *
  *     // JCQL with positional parameters
- *     @Query("where firstName = ?1 and lastName = ?2")
+ *     @Query("WHERE firstName = ?1 AND lastName = ?2")
  *     List<Person> byName(String first, String last);
  *
  *     // JCQL with a named parameter
- *     @Query("where firstName || ' ' || lastName like :pattern")
+ *     @Query("WHERE firstName || ' ' || lastName LIKE :pattern")
  *     List<Person> byName(String pattern);
  *
  *     // JPQL using a positional parameter
- *     @Query("from Person where extract(year from birthdate) = ?1")
+ *     @Query("FROM Person WHERE EXTRACT(year FROM birthdate) = ?1")
  *     List<Person> bornIn(int year);
  *
  *     // JPQL using named parameters
- *     @Query("select distinct name from Person " +
- *            "where length(name) >= :min and length(name) <= :max")
+ *     @Query("SELECT DISTINCT name FROM Person " +
+ *            "WHERE LENGTH(name) >= :min AND LENGTH(name) <= :max")
  *     Page<String> namesOfLength(@Param("min") int minLength,
  *                                @Param("max") int maxLength,
  *                                PageRequest pageRequest,
