@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023,2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2023,2026 Contributors to the Eclipse Foundation
  * <p>
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -24,12 +24,14 @@ import java.util.stream.Stream;
 import jakarta.data.Limit;
 import jakarta.data.Order;
 import jakarta.data.Sort;
+import jakarta.data.constraint.AtLeast;
 import jakarta.data.page.CursoredPage;
 import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
 import jakarta.data.repository.BasicRepository;
 import jakarta.data.repository.By;
 import jakarta.data.repository.Find;
+import jakarta.data.repository.Is;
 import jakarta.data.repository.OrderBy;
 import jakarta.data.repository.Param;
 import jakarta.data.repository.Query;
@@ -45,6 +47,11 @@ import ee.jakarta.tck.data.framework.read.only.NaturalNumber.NumberType;
  */
 @Repository
 public interface NaturalNumbers extends BasicRepository<NaturalNumber, Long> {
+
+    @Find
+    List<NaturalNumber> atLeast(@By(ID) @Is(AtLeast.class) long minimum,
+                                Limit limit,
+                                Order<NaturalNumber> sorts);
 
     long countByIdBetween(long minimum, long maximum);
 
@@ -81,10 +88,6 @@ public interface NaturalNumbers extends BasicRepository<NaturalNumber, Long> {
     Stream<NaturalNumber> findByIdBetweenOrderByNumTypeOrdinalAsc(long minimum,
                                                                   long maximum,
                                                                   Order<NaturalNumber> sorts);
-
-    List<NaturalNumber> findByIdGreaterThanEqual(long minimum,
-                                                 Limit limit,
-                                                 Order<NaturalNumber> sorts);
 
     NaturalNumber[] findByIdLessThan(long exclusiveMax, Sort<NaturalNumber> primarySort, Sort<NaturalNumber> secondarySort);
 
