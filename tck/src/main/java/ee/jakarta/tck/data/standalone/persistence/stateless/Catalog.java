@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023,2024 Contributors to the Eclipse Foundation
+ * Copyright (c) 2023,2026 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -22,18 +22,22 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import ee.jakarta.tck.data.standalone.persistence.Product;
+import ee.jakarta.tck.data.standalone.persistence._Product;
 import jakarta.data.Order;
+import jakarta.data.constraint.Like;
 import jakarta.data.repository.By;
 import jakarta.data.repository.DataRepository;
 import jakarta.data.repository.Delete;
 import jakarta.data.repository.Find;
 import jakarta.data.repository.Insert;
+import jakarta.data.repository.Is;
 import jakarta.data.repository.OrderBy;
 import jakarta.data.repository.Param;
 import jakarta.data.repository.Query;
 import jakarta.data.repository.Repository;
 import jakarta.data.repository.Save;
 import jakarta.data.repository.Update;
+import jakarta.persistence.query.NativeQuery;
 
 @Repository
 public interface Catalog extends DataRepository<Product, String> {
@@ -44,6 +48,15 @@ public interface Catalog extends DataRepository<Product, String> {
     @Insert
     Product[] addMultiple(Product... products);
 
+    @NativeQuery("""
+            DELETE FROM Product
+             WHERE UPPER(name) = UPPER(?) AND versionNum = ?
+            """)
+    int deleteIfNamed(String productName, long version);
+
+    @Delete
+    long discardAllMatching(@By(ID) @Is(Like.class) String productIdPattern);
+
     @Find
     Optional<Product> get(String productNum);
 
@@ -53,11 +66,36 @@ public interface Catalog extends DataRepository<Product, String> {
     @Update
     Product[] modifyMultiple(Product... products);
 
+    @Find
+    @OrderBy(_Product.NAME)
+    @OrderBy(_Product.PRODUCTNUM)
+    List<Product> named(@By(_Product.NAME) Like namePattern);
+
+    @NativeQuery("SELECT name FROM Product WHERE productNum = ?")
+    Optional<String> nameOf(String prodNum);
+
+    @NativeQuery("SELECT COUNT(*) FROM Product WHERE price > ?")
+    long numPricedAbove(double minPrice);
+
+    @NativeQuery("""
+            SELECT * FROM Product
+             WHERE price >= ? AND price <= ?
+             ORDER BY price ASC
+            """)
+    List<Product> pricedWithin(double minPrice, double maxPrice);
+
     @Delete
     void remove(Product product);
 
     @Delete
     void removeMultiple(Product... products);
+
+    @NativeQuery("""
+            UPDATE Product
+               SET price = ?
+             WHERE productNum = ?
+            """)
+    int reprice(double newPrice, String productNumber);
 
     @Save
     void save(Product product);
