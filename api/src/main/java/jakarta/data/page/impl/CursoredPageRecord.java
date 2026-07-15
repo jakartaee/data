@@ -125,7 +125,7 @@ public record CursoredPageRecord<T>
     public PageRequest nextPageRequest() {
         if (cursors.isEmpty())
             throw new UnsupportedOperationException(
-                    Messages.get("013.cursor.uncomputable"));
+                    Messages.get("015.cursor.uncomputable"));
         if (nextPageRequest == null)
             throw new NoSuchElementException();
         return nextPageRequest;
@@ -135,7 +135,7 @@ public record CursoredPageRecord<T>
     public PageRequest previousPageRequest() {
         if (cursors.isEmpty())
             throw new UnsupportedOperationException(
-                    Messages.get("013.cursor.uncomputable"));
+                    Messages.get("015.cursor.uncomputable"));
         if (previousPageRequest == null)
             throw new NoSuchElementException();
         return previousPageRequest;
@@ -150,7 +150,7 @@ public record CursoredPageRecord<T>
     public PageRequest.Cursor cursor(int index) {
         if (cursors.isEmpty())
             throw new UnsupportedOperationException(
-                    Messages.get("013.cursor.uncomputable"));
+                    Messages.get("015.cursor.uncomputable"));
         return cursors.get(index);
     }
 
