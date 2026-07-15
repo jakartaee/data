@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024,2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2024,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
  */
 package jakarta.data.metamodel.impl;
 
+import jakarta.data.Sort;
 import jakarta.data.metamodel.TextAttribute;
 
 /**
@@ -28,4 +29,28 @@ import jakarta.data.metamodel.TextAttribute;
 @Deprecated(since = "1.1")
 public record TextAttributeRecord<T>(String name)
         implements TextAttribute<T> {
+
+    // The following overrides preserve the Data 1.0 behavior where
+    // static metamodels for different entities that have an identically named
+    // entity attribute can create Sort instances that are equal.
+
+    @Override
+    public Sort<T> asc() {
+        return Sort.asc(name);
+    }
+
+    @Override
+    public Sort<T> ascIgnoreCase() {
+        return Sort.ascIgnoreCase(name);
+    }
+
+    @Override
+    public Sort<T> desc() {
+        return Sort.desc(name);
+    }
+
+    @Override
+    public Sort<T> descIgnoreCase() {
+        return Sort.descIgnoreCase(name);
+    }
 }
