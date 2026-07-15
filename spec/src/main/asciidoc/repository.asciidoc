@@ -1014,7 +1014,9 @@ Support for stateful repositories is defined in the dedicated module `jakarta.da
 
 ==== Persistence contexts
 
-A stateful repository is backed by a _persistence context_, a set of managed entity instances in which at most one instance represents a given record in the database.
+A stateful repository operation is always performed in a _persistence context_, operating on a set of managed entity instances in which at most one instance represents a given record in the database.
+A given persistence context might span multiple repository operations. 
+For example, a persistence context often spans the operations performed within a given transaction.
 
 - An entity instance never belongs to multiple persistence contexts.
 
@@ -1024,7 +1026,7 @@ A stateful repository is backed by a _persistence context_, a set of managed ent
 
 - A persistence context is never shared across concurrent transactions.
 
-A query method of a stateful repository which returns an entity type always returns managed instances belonging to the persistence context associated with the repository.
+A query method of a stateful repository which returns an entity type always returns managed instances belonging to the persistence context in which the repository operation is performed.
 
 [WARNING]
 ====
@@ -1035,7 +1037,7 @@ This specification does not define the lifecycle of a persistence context, nor h
 
 [NOTE]
 ====
-Implementations of Jakarta Data are encouraged to propagate a single persistence context within a given transaction across repositories which share a given datasource.
+Implementations of Jakarta Data are encouraged to propagate a single persistence context within a given transaction across repositories which share a given data store.
 For example, a Jakarta Data provider backed by an implementation of Jakarta Persistence might take advantage of standard Jakarta EE transaction-scoped persistence context propagation.
 ====
 
@@ -1046,7 +1048,7 @@ A <<Lifecycle methods, lifecycle method>> of a stateful repository must be annot
 The annotations `@Save`, `@Insert`, `@Update`, `@Delete` are used to define stateless repositories and must not be used to declare lifecycle methods of a stateful repository.
 Instead, this specification defines the special lifecycle annotations `@Persist`, `@Merge`, `@Refresh`, `@Remove`, and `@Detach` for declaring lifecycle methods of stateful repositories.
 
-A lifecycle method annotated `@Remove` or `@Refresh` only accepts managed entities associated with the persistence context underlying the repository.
+A lifecycle method annotated `@Remove` or `@Refresh` only accepts managed entities associated with the persistence context in which the repository method is performed.
 On the other hand, a method annotated `@Persist`, `@Merge`, or `@Detach` also accepts unmanaged entities.
 
 ==== Automatic change detection
