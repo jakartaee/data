@@ -32,7 +32,12 @@ import java.util.NoSuchElementException;
  * @param content             The page content, that is, the query results, in
  *                            order
  * @param cursors             A list of {@link PageRequest.Cursor} instances for
- *                            result, in order
+ *                            result, in order. An empty list indicates cursors
+ *                            cannot be computed, causing the following methods
+ *                            to raise {@link UnsupportedOperationException}:
+ *                            {@link #cursor(int)},
+ *                            {@link #nextPageRequest()},
+ *                            {@link #previousPageRequest()}
  * @param totalElements       The total number of elements across all pages that
  *                            can be requested for the query
  * @param pageRequest         The {@link PageRequest page request} for which
@@ -116,6 +121,9 @@ public record CursoredPageRecord<T>
 
     @Override
     public PageRequest nextPageRequest() {
+        if (cursors.isEmpty())
+            throw new UnsupportedOperationException(
+                    Messages.get("013.cursor.uncomputable"));
         if (nextPageRequest == null)
             throw new NoSuchElementException();
         return nextPageRequest;
@@ -123,6 +131,9 @@ public record CursoredPageRecord<T>
 
     @Override
     public PageRequest previousPageRequest() {
+        if (cursors.isEmpty())
+            throw new UnsupportedOperationException(
+                    Messages.get("013.cursor.uncomputable"));
         if (previousPageRequest == null)
             throw new NoSuchElementException();
         return previousPageRequest;
@@ -135,6 +146,9 @@ public record CursoredPageRecord<T>
 
     @Override
     public PageRequest.Cursor cursor(int index) {
+        if (cursors.isEmpty())
+            throw new UnsupportedOperationException(
+                    Messages.get("013.cursor.uncomputable"));
         return cursors.get(index);
     }
 
