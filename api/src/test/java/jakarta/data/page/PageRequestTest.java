@@ -28,10 +28,10 @@ class PageRequestTest {
     @Test
     @DisplayName("Should correctly paginate")
     void shouldCreatePageRequest() {
-        PageRequest pageRequest = PageRequest.ofPage(2).size(6);
+        PageRequest pageRequest = PageRequest.ofSize(6).pageNumber(2);
 
         assertSoftly(softly -> {
-            softly.assertThat(pageRequest.page()).isEqualTo(2L);
+            softly.assertThat(pageRequest.pageNumber()).isEqualTo(2L);
             softly.assertThat(pageRequest.size()).isEqualTo(6);
         });
     }
@@ -42,7 +42,7 @@ class PageRequestTest {
         PageRequest pageRequest = PageRequest.ofSize(50);
 
         assertSoftly(softly -> {
-            softly.assertThat(pageRequest.page()).isEqualTo(1L);
+            softly.assertThat(pageRequest.pageNumber()).isEqualTo(1L);
             softly.assertThat(pageRequest.size()).isEqualTo(50);
         });
     }
@@ -50,10 +50,10 @@ class PageRequestTest {
     @Test
     @DisplayName("Should create a new PageRequest at the given page with a default size of 10")
     void shouldCreatePage() {
-        PageRequest pageRequest = PageRequest.ofPage(5);
+        PageRequest pageRequest = PageRequest.ofSize(10).pageNumber(5);
 
         assertSoftly(softly -> {
-            softly.assertThat(pageRequest.page()).isEqualTo(5L);
+            softly.assertThat(pageRequest.pageNumber()).isEqualTo(5L);
             softly.assertThat(pageRequest.size()).isEqualTo(10);
         });
     }
@@ -63,28 +63,28 @@ class PageRequestTest {
     void shouldPageRequestDisplayAsString() {
         assertSoftly(softly -> {
             softly.assertThat(PageRequest.ofSize(60).toString())
-              .isEqualTo("PageRequest{page=1, size=60, mode=OFFSET}");
+              .isEqualTo("PageRequest{pageNumber=1, size=60, mode=OFFSET}");
 
             softly.assertThat(PageRequest.ofSize(80).toString())
-                    .isEqualTo("PageRequest{page=1, size=80, mode=OFFSET}");
+                    .isEqualTo("PageRequest{pageNumber=1, size=80, mode=OFFSET}");
         });
     }
 
     @Test
     @DisplayName("The requestTotal configuration must be preserved when adding subsequent configuration.")
     void shouldRequestTotalConfigBePreserved() {
-        PageRequest pageRequest1 = PageRequest.ofPage(1).withTotal().size(70);
+        PageRequest pageRequest1 = PageRequest.ofSize(10).pageNumber(1).withTotal().size(70);
 
         assertSoftly(softly -> {
-            softly.assertThat(pageRequest1.page()).isEqualTo(1L);
+            softly.assertThat(pageRequest1.pageNumber()).isEqualTo(1L);
             softly.assertThat(pageRequest1.size()).isEqualTo(70);
             softly.assertThat(pageRequest1.requestTotal()).isEqualTo(true);
         });
 
-        PageRequest pageRequest2 = PageRequest.ofPage(2).size(80).withoutTotal();
+        PageRequest pageRequest2 = PageRequest.ofSize(10).pageNumber(2).size(80).withoutTotal();
 
         assertSoftly(softly -> {
-            softly.assertThat(pageRequest2.page()).isEqualTo(2L);
+            softly.assertThat(pageRequest2.pageNumber()).isEqualTo(2L);
             softly.assertThat(pageRequest2.size()).isEqualTo(80);
             softly.assertThat(pageRequest2.requestTotal()).isEqualTo(false);
         });
@@ -93,10 +93,10 @@ class PageRequestTest {
     @Test
     @DisplayName("Should throw IllegalArgumentException when page is not present")
     void shouldReturnErrorWhenThereIsIllegalArgument() {
-        PageRequest p1 = PageRequest.ofPage(1);
+        PageRequest p1 = PageRequest.ofSize(10).pageNumber(1);
 
-        assertThatIllegalArgumentException().isThrownBy(() -> PageRequest.ofPage(0));
-        assertThatIllegalArgumentException().isThrownBy(() -> PageRequest.ofPage(-1));
+        assertThatIllegalArgumentException().isThrownBy(() -> PageRequest.ofSize(10).pageNumber(0));
+        assertThatIllegalArgumentException().isThrownBy(() -> PageRequest.ofSize(10).pageNumber(-1));
         assertThatIllegalArgumentException().isThrownBy(() -> p1.size(-1));
         assertThatIllegalArgumentException().isThrownBy(() -> p1.size(0));
         assertThatIllegalArgumentException().isThrownBy(() -> PageRequest.ofSize(0));
@@ -106,14 +106,14 @@ class PageRequestTest {
     @Test
     @DisplayName("Size should be replaced on new instance of PageRequest")
     void shouldReplaceSize() {
-        PageRequest s90 = PageRequest.ofPage(4).size(90);
+        PageRequest s90 = PageRequest.ofSize(10).pageNumber(4).size(90);
         PageRequest s80 = s90.size(80);
 
         assertSoftly(softly -> {
             softly.assertThat(s80.size()).isEqualTo(80);
             softly.assertThat(s90.size()).isEqualTo(90);
-            softly.assertThat(s90.page()).isEqualTo(4L);
-            softly.assertThat(s80.page()).isEqualTo(4L);
+            softly.assertThat(s90.pageNumber()).isEqualTo(4L);
+            softly.assertThat(s80.pageNumber()).isEqualTo(4L);
         });
     }
 

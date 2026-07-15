@@ -36,7 +36,7 @@ class PageRequestCursorTest {
 
         assertSoftly(softly -> {
             softly.assertThat(pageRequest.size()).isEqualTo(20);
-            softly.assertThat(pageRequest.page()).isEqualTo(1L);
+            softly.assertThat(pageRequest.pageNumber()).isEqualTo(1L);
             softly.assertThat(pageRequest.requestTotal()).isEqualTo(false);
             softly.assertThat(pageRequest.mode()).isEqualTo(PageRequest.Mode.CURSOR_NEXT);
             softly.assertThat(pageRequest.cursor()).get().extracting(PageRequest.Cursor::size).isEqualTo(3);
@@ -54,7 +54,7 @@ class PageRequestCursorTest {
 
         assertSoftly(softly -> {
             softly.assertThat(pageRequest.size()).isEqualTo(35);
-            softly.assertThat(pageRequest.page()).isEqualTo(1L);
+            softly.assertThat(pageRequest.pageNumber()).isEqualTo(1L);
             softly.assertThat(pageRequest.mode()).isEqualTo(PageRequest.Mode.CURSOR_NEXT);
             softly.assertThat(pageRequest.cursor()).get().extracting(PageRequest.Cursor::size).isEqualTo(2);
             softly.assertThat(pageRequest.cursor()).get().extracting(c -> c.get(0)).isEqualTo("me");
@@ -70,7 +70,7 @@ class PageRequestCursorTest {
 
         assertSoftly(softly -> {
             softly.assertThat(pageRequest.size()).isEqualTo(30);
-            softly.assertThat(pageRequest.page()).isEqualTo(10L);
+            softly.assertThat(pageRequest.pageNumber()).isEqualTo(10L);
             softly.assertThat(pageRequest.requestTotal()).isEqualTo(false);            
             softly.assertThat(pageRequest.mode()).isEqualTo(PageRequest.Mode.CURSOR_PREVIOUS);
             softly.assertThat(pageRequest.cursor()).get().extracting(PageRequest.Cursor::size).isEqualTo(2);
@@ -83,11 +83,11 @@ class PageRequestCursorTest {
     @DisplayName("Should include key values in previous PageRequest from Cursor")
     void shouldCreatePageRequestBeforeKeysetCursor() {
         PageRequest.Cursor cursor = new PageRequestCursor(900L, 300, "testing", 120, 'T');
-        PageRequest pageRequest = PageRequest.ofPage(8).beforeCursor(cursor);
+        PageRequest pageRequest = PageRequest.ofSize(10).pageNumber(8).beforeCursor(cursor);
 
         assertSoftly(softly -> {
             softly.assertThat(pageRequest.size()).isEqualTo(10);
-            softly.assertThat(pageRequest.page()).isEqualTo(8L);
+            softly.assertThat(pageRequest.pageNumber()).isEqualTo(8L);
             softly.assertThat(pageRequest.mode()).isEqualTo(PageRequest.Mode.CURSOR_PREVIOUS);
             softly.assertThat(pageRequest.cursor()).get().extracting(PageRequest.Cursor::size).isEqualTo(5);
             softly.assertThat(pageRequest.cursor()).get().extracting(c -> c.get(0)).isEqualTo(900L);
@@ -130,10 +130,10 @@ class PageRequestCursorTest {
         assertSoftly(softly -> {
 
             softly.assertThat(afterKeySet.toString())
-              .isEqualTo("PageRequest{page=1, size=200, mode=CURSOR_NEXT, cursor size=2}");
+              .isEqualTo("PageRequest{pageNumber=1, size=200, mode=CURSOR_NEXT, cursor size=2}");
 
             softly.assertThat(beforeKeySet.toString())
-                    .isEqualTo("PageRequest{page=1, size=100, mode=CURSOR_PREVIOUS, cursor size=2}");
+                    .isEqualTo("PageRequest{pageNumber=1, size=100, mode=CURSOR_PREVIOUS, cursor size=2}");
 
         });
     }
@@ -144,7 +144,7 @@ class PageRequestCursorTest {
         PageRequest pageRequest25P1S0A1 = PageRequest.ofSize(25).afterCursor(PageRequest.Cursor.forKey("keyval1", '2', 3));
         PageRequest pageRequest25P1S0B1 = PageRequest.ofSize(25).beforeCursor(PageRequest.Cursor.forKey("keyval1", '2', 3));
         PageRequest pageRequest25P1S0A1Match = PageRequest.ofSize(25).afterCursor(new PageRequestCursor("keyval1", '2', 3));
-        PageRequest pageRequest25P2S0A1 = PageRequest.ofPage(2).size(25).afterCursor(new PageRequestCursor("keyval1", '2', 3));
+        PageRequest pageRequest25P2S0A1 = PageRequest.ofSize(25).pageNumber(2).afterCursor(new PageRequestCursor("keyval1", '2', 3));
         PageRequest pageRequest25P1S0A2 = PageRequest.ofSize(25).afterCursor(PageRequest.Cursor.forKey("keyval2", '2', 3));
 
         PageRequest.Cursor cursor1 = new PageRequestCursor("keyval1", '2', 3);
@@ -201,7 +201,7 @@ class PageRequestCursorTest {
     @Test
     @DisplayName("Cursor should be replaced on new instance of PageRequest")
     void shouldReplaceCursor() {
-        PageRequest p1 = PageRequest.ofPage(12).size(30).afterCursor(PageRequest.Cursor.forKey("last1", "fname1", 100));
+        PageRequest p1 = PageRequest.ofSize(30).pageNumber(12).afterCursor(PageRequest.Cursor.forKey("last1", "fname1", 100));
         PageRequest p2 = p1.beforeCursor(PageRequest.Cursor.forKey("lname2", "fname2", 200));
 
         assertSoftly(softly -> {
@@ -215,8 +215,8 @@ class PageRequestCursorTest {
             softly.assertThat(p2.cursor()).get().extracting(c -> c.get(1)).isEqualTo("fname2");
             softly.assertThat(p2.cursor()).get().extracting(c -> c.get(2)).isEqualTo(200);
 
-            softly.assertThat(p1.page()).isEqualTo(12L);
-            softly.assertThat(p2.page()).isEqualTo(12L);
+            softly.assertThat(p1.pageNumber()).isEqualTo(12L);
+            softly.assertThat(p2.pageNumber()).isEqualTo(12L);
             softly.assertThat(p1.size()).isEqualTo(30);
             softly.assertThat(p2.size()).isEqualTo(30);
         });

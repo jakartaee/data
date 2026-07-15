@@ -84,6 +84,8 @@ public interface PageRequest {
      *         {@code null}.
      * @throws IllegalArgumentException when the page number is negative or
      *                                  zero.
+     * @apiNote It's usually better to use {@link #ofSize} and {@link #pageNumber}
+     *          or {@link #ofPage(long, int, boolean)}.
      */
     static PageRequest ofPage(long pageNumber) {
         return new Pagination(pageNumber, 10, Mode.OFFSET, null, true);
@@ -223,11 +225,40 @@ public interface PageRequest {
     Mode mode();
 
     /**
-     * Returns the page to be returned.
+     * Returns the page number of the page to be returned.
      *
      * @return the page to be returned.
+     * @since 1.1
+     *
+     * @apiNote Page <em>numbers</em> are indexed from one;
+     *          page {@linkplain #pageOffset offsets} are indexed from zero.
      */
-    long page();
+    long pageNumber();
+
+    /**
+     * Returns the page offset of the page to be returned.
+     *
+     * @return the page to be returned.
+     * @since 1.1
+     *
+     * @apiNote Page <em>offsets</em> are indexed from zero;
+     *          page {@linkplain #pageNumber numbers} are indexed from one.
+     */
+    default long pageOffset() {
+        return pageNumber() - 1;
+    }
+
+    /**
+     * Returns the page number of the page to be returned.
+     *
+     * @return the page to be returned.
+     *
+     * @deprecated Use {@link #pageNumber}
+     */
+    @Deprecated(since = "1.1", forRemoval = true)
+    default long page() {
+        return pageNumber();
+    }
 
     /**
      * Returns the requested size of each page
@@ -266,8 +297,27 @@ public interface PageRequest {
      * @return a new instance of {@code PageRequest}. This method never returns
      * {@code null}.
      * @since 1.1
+     *
+     * @apiNote Page <em>numbers</em> are indexed from one;
+     *          page {@linkplain #pageOffset offsets} are indexed from zero.
      */
-    PageRequest page(long pageNumber);
+    PageRequest pageNumber(long pageNumber);
+
+    /**
+     * <p>Creates a new page request with the same pagination information,
+     * but with the specified page offset.</p>
+     *
+     * @param pageOffset the page offset.
+     * @return a new instance of {@code PageRequest}. This method never returns
+     * {@code null}.
+     * @since 1.1
+     *
+     * @apiNote Page <em>offsets</em> are indexed from zero;
+     *          page {@linkplain #pageNumber numbers} are indexed from one.
+     */
+    default PageRequest pageOffset(long pageOffset) {
+        return pageNumber(pageOffset + 1);
+    }
 
     /**
      * <p>Creates a new page request with the same pagination information,

@@ -93,8 +93,8 @@ import java.util.NoSuchElementException;
  * <pre>{@code
  * Employee emp = ...
  * PageRequest pageRequest =
- *         PageRequest.ofPage(5)
- *                    .size(50)
+ *         PageRequest.ofSize(10)
+ *                    .pageNumber(5)
  *                    .afterCursor(Cursor.forKey(emp.lastName, emp.firstName, emp.id));
  * page = employees.withHoursOver(40, pageRequest);
  * }</pre>

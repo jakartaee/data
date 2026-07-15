@@ -97,7 +97,7 @@ class PaginationTest {
     @DisplayName("should override page number")
     void shouldUpdatePageNumber() {
         var pagination = new Pagination(1, 10, PageRequest.Mode.OFFSET, null, false);
-        var updated = pagination.page(5);
+        var updated = pagination.pageNumber(5);
 
         assertThat(updated).hasFieldOrPropertyWithValue("page", 5L);
     }
@@ -109,7 +109,7 @@ class PaginationTest {
         var pagination = new Pagination(2, 50, PageRequest.Mode.CURSOR_NEXT, cursor, true);
 
         assertThat(pagination.toString())
-                .contains("page=2", "size=50", "mode=CURSOR_NEXT", "cursor size=2");
+                .contains("pageNumber=2", "size=50", "mode=CURSOR_NEXT", "cursor size=2");
     }
 
 
