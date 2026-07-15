@@ -113,7 +113,7 @@ public class LimitTests {
                          .toList());
     }
 
-    @Assertion(id = "133", strategy = """
+    @Assertion(id = "1447", strategy = """
             Create a Limit that is relative to a 0-based offset.
             Supply the Limit to a repository method and verify
             that the Limit caps the number of results, starting
@@ -142,7 +142,7 @@ public class LimitTests {
                          .toList());
     }
 
-    @Assertion(id = "133", strategy = """
+    @Assertion(id = "1447", strategy = """
             Create a Limit that is relative an offset of zero.
             Supply the Limit to a repository method and verify
             that the Limit caps the number of results, starting
@@ -231,7 +231,7 @@ public class LimitTests {
         assertEquals(false, it.hasNext());
     }
 
-    @Assertion(id = "133", strategy = """
+    @Assertion(id = "1447", strategy = """
             Create a Limit that is relative an offset of zero.
             Supply the Limit to a repository Query method and
             verify that the Limit caps the number of results,
@@ -263,7 +263,7 @@ public class LimitTests {
                              .toList());
     }
 
-    @Assertion(id = "133", strategy = """
+    @Assertion(id = "1447", strategy = """
             Create a Limit that is relative an offset of zero.
             Supply the Limit to a repository Query method and
             verify that the Limit caps the number of results,
