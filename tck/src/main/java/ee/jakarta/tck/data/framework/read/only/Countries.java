@@ -86,6 +86,11 @@ public interface Countries extends CrudRepository<Country, String> {
     List<Country> byCountryCodes(
             @By(_Country.CODE) @Is(In.class) Collection<String> codes);
 
+    @Find
+    List<Country> byCountryCodeUpTo(
+            @By(_Country.CODE) @Is(AtMost.class) String maxCode,
+            Order<Country> ordering);
+
     long count();
 
     @Find

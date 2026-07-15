@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2025,2026 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -28,9 +28,9 @@ public interface _City {
     String NAME = "name";
     String POPULATION = "population";
 
-    TextAttribute<Country> name = //
-                    TextAttribute.of(Country.class, NAME);
+    TextAttribute<City> name = //
+                    TextAttribute.of(City.class, NAME);
 
-    NumericAttribute<Country, Integer> poulation = //
-                    NumericAttribute.of(Country.class, POPULATION, int.class);
+    NumericAttribute<City, Integer> population = //
+                    NumericAttribute.of(City.class, POPULATION, int.class);
 }

@@ -17,10 +17,10 @@ package ee.jakarta.tck.data.standalone.entity;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.util.function.Function;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
+import java.util.function.Function;
 import java.util.logging.Logger;
 
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -41,8 +41,8 @@ import ee.jakarta.tck.data.framework.utilities.TestProperty;
 import jakarta.inject.Inject;
 
 /**
- * Tests for various Expressions used within Restrictions that are
- * supplied to Repository methods.
+ * Tests for various Expressions used within Restrictions and Sorts
+ * that are supplied to Repository methods.
  */
 @AnyEntity
 @ReadOnlyTest
