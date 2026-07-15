@@ -17,7 +17,6 @@ package ee.jakarta.tck.data.standalone.entity;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -105,13 +104,13 @@ public class LimitTests {
             }
         }
 
-        assertEquals(Arrays.toString(new Long[]{
+        assertEquals(List.of(
                         63L, 62L, 61L, 60L, // √ rounds down to 7
                         80L, 79L, 78L, 77L, 76L, 75L // √ rounds down to 8
-                     }),
-                     Arrays.toString(nums.stream()
-                                         .map(NaturalNumber::getId)
-                                         .toArray()));
+                     ),
+                     nums.stream()
+                         .map(NaturalNumber::getId)
+                         .toList());
     }
 
     @Assertion(id = "133", strategy = """
@@ -202,10 +201,10 @@ public class LimitTests {
             }
         }
 
-        assertEquals(Arrays.toString(new Long[] { 61L, 67L, 71L, 73L, 79L }),
-                     Arrays.toString(nums.stream()
-                                         .map(NaturalNumber::getId)
-                                         .toArray()));
+        assertEquals(List.of(61L, 67L, 71L, 73L, 79L),
+                     nums.stream()
+                         .map(NaturalNumber::getId)
+                         .toList());
     }
 
     @Assertion(id = "133", strategy = """
