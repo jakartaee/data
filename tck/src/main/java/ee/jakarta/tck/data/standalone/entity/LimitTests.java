@@ -22,6 +22,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -33,6 +34,7 @@ import ee.jakarta.tck.data.framework.junit.anno.Assertion;
 import ee.jakarta.tck.data.framework.junit.anno.ReadOnlyTest;
 import ee.jakarta.tck.data.framework.junit.anno.Standalone;
 import ee.jakarta.tck.data.framework.read.only.Countries;
+import ee.jakarta.tck.data.framework.read.only.Country;
 import ee.jakarta.tck.data.framework.read.only.CountryPopulator;
 import ee.jakarta.tck.data.framework.read.only.NaturalNumber;
 import ee.jakarta.tck.data.framework.read.only.NaturalNumbers;
@@ -230,4 +232,64 @@ public class LimitTests {
         assertEquals(false, it.hasNext());
     }
 
+    @Assertion(id = "133", strategy = """
+            Create a Limit that is relative an offset of zero.
+            Supply the Limit to a repository Query method and
+            verify that the Limit caps the number of results,
+            starting from the beginning, and orders according
+            to the sort criteria.
+            """)
+    public void testQueryWithLimitFromOffset() {
+        Stream<Country> found;
+        try {
+            found = countries.excludingCode("VC",
+                                            Limit.of(6, 7));
+        } catch (UnsupportedOperationException x) {
+            if (type.capableOfNotIn() &&
+                type.capableOfSingleSort()) {
+                throw x;
+            } else {
+                return;
+            }
+        }
+
+        assertEquals(List.of("VU: Vanuatu",
+                             "VN: Vietnam",
+                             "VE: Venezuela",
+                             "VA: Vatican City State",
+                             "UZ: Uzbekistan",
+                             "UY: Uruguay"),
+                     found
+                             .map(c -> c.getCode() + ": " + c.getName())
+                             .toList());
+    }
+
+    @Assertion(id = "133", strategy = """
+            Create a Limit that is relative an offset of zero.
+            Supply the Limit to a repository Query method and
+            verify that the Limit caps the number of results,
+            starting from the beginning, and orders according
+            to the sort criteria.
+            """)
+    public void testQueryWithLimitFromZeroOffset() {
+        Stream<Country> found;
+        try {
+            found = countries.excludingCode("ZA",
+                                            Limit.of(3, 0));
+        } catch (UnsupportedOperationException x) {
+            if (type.capableOfNotIn() &&
+                type.capableOfSingleSort()) {
+                throw x;
+            } else {
+                return;
+            }
+        }
+
+        assertEquals(List.of("ZW: Zimbabwe",
+                             "ZM: Zambia",
+                             "YE: Yemen"),
+                     found
+                             .map(c -> c.getCode() + ": " + c.getName())
+                             .toList());
+    }
 }
