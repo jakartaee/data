@@ -67,7 +67,6 @@ class CurrentDateTest {
             assertThat(firstExpression).isNotSameAs(secondExpression);
         }
     }
-
     private static final class TestEntity {
     }
 }
