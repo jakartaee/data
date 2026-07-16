@@ -56,8 +56,8 @@ class PageRecordTest {
 
         Page<Book> page4 = new PageRecord<>(page4Request, page4Content, 44);
 
-        // Modify the values that were supplied to the PageRecord constructor
-        page4Request.page(5);
+        // Verify that these methods do not modify the values of the original
+        page4Request.pageNumber(5);
         page4Request.size(6);
         page4Request.withoutTotal();
         page4Request.afterCursor(Cursor.forKey("104"));
@@ -72,8 +72,8 @@ class PageRecordTest {
                 .containsSequence(originalPage4Content);
         });
 
-        // Modify values returned by the PageRecord
-        page4.pageRequest().page(3);
+        // Verify that these methods do not modify values of the original
+        page4.pageRequest().pageNumber(3);
         page4.pageRequest().size(7);
         page4.pageRequest().withoutTotal();
         page4.pageRequest().beforeCursor(Cursor.forKey("100"));

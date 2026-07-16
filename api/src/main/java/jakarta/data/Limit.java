@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022,2024 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,14 +17,22 @@
  */
 package jakarta.data;
 
+import jakarta.data.messages.Messages;
 import jakarta.data.page.PageRequest;
+import jakarta.data.repository.Find;
+import jakarta.data.repository.Query;
 
 /**
  * <p>Specifies a limit on the number of results retrieved by a repository
  * method. The results of a single invocation of a repository method may be
- * limited to a given {@linkplain #of(int) maximum number of results} or to a
- * given {@linkplain #range(long, long) positioned range} defined in terms of an
- * offset and maximum number of results.</p>
+ * limited to
+ * <ul>
+ * <li>a {@linkplain #of(int) maximum number of results},</li>
+ * <li>a {@linkplain #of(int, long) maximum number of results relative to an
+ *     offset}, or</li>
+ * <li>a {@linkplain #range(long, long) positioned range} defined in terms of
+ * a starting position and an ending position.</li>
+ * </ul></p>
  *
  * <p>A query method of a repository may have a parameter of type
  * {@code Limit} if its return type indicates that it may return multiple
@@ -104,10 +112,15 @@ public record Limit(int maxResults, long startAt) {
     // Override to provide method documentation:
 
     /**
-     * <p>Offset at which to start when returning query results.
-     * The first query result is position {@code 1}.</p>
+     * <p>The position at which to start when returning query results.</p>
+     * <p>The first query result is at position {@code 1}. If the start position
+     * is greater than one, some results at the beginning of the result set
+     * are skipped.</p>
      *
-     * @return offset of the first result.
+     * @return position of the first result.
+     *
+     * @apiNote Positions are indexed from one;
+     *          offsets are indexed from zero.
      */
     public long startAt() {
         return startAt;
@@ -124,6 +137,37 @@ public record Limit(int maxResults, long startAt) {
      */
     public static Limit of(int maxResults) {
         return new Limit(maxResults, DEFAULT_START_AT);
+    }
+
+    /**
+     * Create a limit that caps the number of results at the given maximum,
+     * starting at the given {@code offset} from the first result.
+     * <p>
+     * An {@code offset} of zero includes the first result. A positive
+     * {@code offset} skips the respective number of results.
+     *
+     * @param maxResults maximum number of results
+     * @param offset offset at which to start
+     * @return limit that can be supplied to a {@link Find} method or
+     *         {@link Query} method that performs a find operation;
+     *         will never be {@code null}
+     * @throws IllegalArgumentException if {@code maxResults} or
+     *         {@code offset} is negative or the {@code offset} is
+     *         {@link Long#MAX_VALUE}
+     * @since 1.1
+     */
+    public static Limit of(int maxResults, long offset) {
+        if (offset < 0) {
+            throw new IllegalArgumentException(
+                    Messages.get("004.arg.negative", "offset"));
+        }
+
+        if (offset == Long.MAX_VALUE) {
+            throw new IllegalArgumentException(
+                    Messages.get("013.arg.invalid", "offset", offset));
+        }
+
+        return new Limit(maxResults, offset + 1);
     }
 
     /**

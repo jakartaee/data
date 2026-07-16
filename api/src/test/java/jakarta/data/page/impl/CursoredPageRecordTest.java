@@ -83,11 +83,10 @@ class CursoredPageRecordTest {
                 page4Request,
                 page2Request);
 
-        // Modify the values that were supplied to the CursoredPageRecord
-        // constructor
-        page2Request.page(5);
-        page3Request.page(6);
-        page4Request.page(7);
+        // Verify that these methods do not modify the original instances
+        page2Request.pageNumber(5);
+        page3Request.pageNumber(6);
+        page4Request.pageNumber(7);
 
         page2Request.size(9);
         page3Request.size(6);
@@ -117,19 +116,18 @@ class CursoredPageRecordTest {
                 .containsSequence(originalPage3Content);
         });
 
-        // Modify (or attempt to modify) values returned by the
-        // CursoredPageRecord
-        page3.previousPageRequest().page(1);
+        // Verify that these methods do not modify the original CursoredPageRecord
+        page3.previousPageRequest().pageNumber(1);
         page3.previousPageRequest().size(8);
         page3.previousPageRequest().withTotal();
         page3.previousPageRequest().beforeCursor(Cursor.forKey("50"));
 
-        page3.pageRequest().page(4);
+        page3.pageRequest().pageNumber(4);
         page3.pageRequest().size(7);
         page3.pageRequest().withTotal();
         page3.pageRequest().afterCursor(Cursor.forKey("101"));
 
-        page3.nextPageRequest().page(5);
+        page3.nextPageRequest().pageNumber(5);
         page3.nextPageRequest().size(3);
         page3.nextPageRequest().withTotal();
         page3.nextPageRequest().afterCursor(Cursor.forKey("115"));

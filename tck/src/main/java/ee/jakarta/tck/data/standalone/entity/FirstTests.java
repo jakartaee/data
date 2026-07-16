@@ -323,7 +323,7 @@ public class FirstTests {
     }
 
     @Assertion(id = "532", strategy = """
-            Use @First annotation on a @Query method with  clause
+            Use the @First annotation on a @Query method with @OrderBy
             to retrieve the first result. Verify that exactly one result is
             returned and it is the first according to the sort order.
             """)

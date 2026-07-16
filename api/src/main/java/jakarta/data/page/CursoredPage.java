@@ -93,8 +93,8 @@ import java.util.NoSuchElementException;
  * <pre>{@code
  * Employee emp = ...
  * PageRequest pageRequest =
- *         PageRequest.ofPage(5)
- *                    .size(50)
+ *         PageRequest.ofSize(50)
+ *                    .pageNumber(5)
  *                    .afterCursor(Cursor.forKey(emp.lastName, emp.firstName, emp.id));
  * page = employees.withHoursOver(40, pageRequest);
  * }</pre>
@@ -162,6 +162,10 @@ public interface CursoredPage<T> extends Page<T> {
      *
      * @param index position (0 is first) of a result on the page.
      * @return cursor for key values at the specified position.
+     * @throws UnsupportedOperationException if the sort criteria includes an
+     *                                       {@linkplain Sort#expression()
+     *                                       expression} that is not an
+     *                                       entity attribute
      */
     PageRequest.Cursor cursor(int index);
 
@@ -189,6 +193,10 @@ public interface CursoredPage<T> extends Page<T> {
      *                                this exception, check for a {@code true}
      *                                result of {@link #hasNext()} before
      *                                invoking this method.
+     * @throws UnsupportedOperationException if the sort criteria includes an
+     *                                       {@linkplain Sort#expression()
+     *                                       expression} that is not an
+     *                                       entity attribute
      */
     @Override
     PageRequest nextPageRequest();
@@ -220,6 +228,10 @@ public interface CursoredPage<T> extends Page<T> {
      *                                {@code true} result of
      *                                {@link #hasPrevious()} before invoking
      *                                this method.
+     * @throws UnsupportedOperationException if the sort criteria includes an
+     *                                       {@linkplain Sort#expression()
+     *                                       expression} that is not an
+     *                                       entity attribute
      */
     @Override
     PageRequest previousPageRequest();

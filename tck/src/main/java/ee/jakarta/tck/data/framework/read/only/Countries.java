@@ -86,6 +86,11 @@ public interface Countries extends CrudRepository<Country, String> {
     List<Country> byCountryCodes(
             @By(_Country.CODE) @Is(In.class) Collection<String> codes);
 
+    @Find
+    List<Country> byCountryCodeUpTo(
+            @By(_Country.CODE) @Is(AtMost.class) String maxCode,
+            Order<Country> ordering);
+
     long count();
 
     @Find
@@ -114,6 +119,9 @@ public interface Countries extends CrudRepository<Country, String> {
              nullOrdering = Nulls.FIRST)
     List<Country> descStartOfDaylightTime(
             @By(_Country.CODE) Like countryCodePattern);
+
+    @Query("WHERE code <> :excluded ORDER BY code DESC")
+    Stream<Country> excludingCode(String excluded, Limit limit);
 
     @Find
     List<Country> excludingCountryCodeRange(

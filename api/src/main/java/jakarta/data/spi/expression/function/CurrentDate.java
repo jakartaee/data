@@ -37,17 +37,26 @@ public interface CurrentDate<T> extends TemporalExpression<T, LocalDate> {
      *
      * @return an expression representing the current date.
      */
+    @SuppressWarnings("unchecked")
     static <T> CurrentDate<T> now() {
-        return new CurrentDate<>() {
-            @Override
-            public Class<LocalDate> type() {
-                return LocalDate.class;
-            }
+        return (CurrentDate<T>) CurrentDateInstance.instance;
+    }
+}
 
-            @Override
-            public String toString() {
-                return "LOCAL DATE";
-            }
-        };
+// Internal implementation of single instance obtained from CurrentDate.now()
+class CurrentDateInstance implements CurrentDate<Object> {
+    static final CurrentDate<?> instance = new CurrentDateInstance();
+
+    private CurrentDateInstance() {
+    }
+
+    @Override
+    public Class<LocalDate> type() {
+        return LocalDate.class;
+    }
+
+    @Override
+    public String toString() {
+        return "LOCAL DATE";
     }
 }
