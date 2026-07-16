@@ -57,6 +57,7 @@ class CurrentTimeTest {
             String representation = expression.toString();
             assertThat(representation).isEqualTo("LOCAL TIME");
         }
+    }
 
     private static final class TestEntity {
     }
