@@ -120,6 +120,9 @@ public interface Countries extends CrudRepository<Country, String> {
     List<Country> descStartOfDaylightTime(
             @By(_Country.CODE) Like countryCodePattern);
 
+    @Query("WHERE code <> :excluded ORDER BY code DESC")
+    Stream<Country> excludingCode(String excluded, Limit limit);
+
     @Find
     List<Country> excludingCountryCodeRange(
             @By(_Country.CODE) NotBetween<String> excluded);
