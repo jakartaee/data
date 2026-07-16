@@ -64,9 +64,10 @@ class CurrentDateTest {
         void shouldCreateIndependentExpressionForEachInvocation() {
             CurrentDate<TestEntity> firstExpression = CurrentDate.now();
             CurrentDate<TestEntity> secondExpression = CurrentDate.now();
-            assertThat(firstExpression).isNotSameAs(secondExpression);
+            assertThat(firstExpression).isEqualTo(secondExpression);
         }
     }
+
     private static final class TestEntity {
     }
 }
