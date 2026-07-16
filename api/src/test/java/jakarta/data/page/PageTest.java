@@ -31,17 +31,14 @@ class PageTest {
     @Test
     @DisplayName("should stream page content in iteration order")
     void shouldStreamPageContentInIterationOrder() {
-        // given
         Page<String> page = new PageRecord<>(
                 PageRequest.ofPage(1, 3, false),
                 List.of("Java", "Jakarta Data", "NoSQL"),
                 3,
                 false);
 
-        // when
         List<String> result = page.stream().toList();
 
-        // then
         assertThat(result)
                 .containsExactly(
                         "Java",
@@ -52,34 +49,26 @@ class PageTest {
     @Test
     @DisplayName("should create a sequential stream")
     void shouldCreateSequentialStream() {
-        // given
         Page<String> page = new PageRecord<>(
                 PageRequest.ofPage(1L, 1, false),
                 List.of("Jakarta Data"),
                 1,
                 false);
 
-        // when
         boolean parallel = page.stream().isParallel();
-
-        // then
         assertThat(parallel).isFalse();
     }
 
     @Test
     @DisplayName("should stream no elements when page content is empty")
     void shouldStreamNoElementsWhenPageContentIsEmpty() {
-        // given
         Page<String> page = new PageRecord<>(
                 PageRequest.ofPage(1L, 1, false),
                 List.of(),
                 0,
                 false);
 
-        // when
         List<String> result = page.stream().toList();
-
-        // then
         assertThat(result).isEmpty();
     }
 }
