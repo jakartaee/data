@@ -445,17 +445,9 @@ class PageRequestTest {
         @Test
         @DisplayName("Should reject an empty cursor")
         void shouldRejectEmptyCursor() {
-            // given
-            PageRequest.Cursor cursor = PageRequest.Cursor.forKey();
-
-            // when and then
-            assertThatIllegalArgumentException()
-                    .isThrownBy(() ->
-                            PageRequest.afterCursor(cursor, 1, 10, true));
 
             assertThatIllegalArgumentException()
-                    .isThrownBy(() ->
-                            PageRequest.beforeCursor(cursor, 1, 10, true));
+                    .isThrownBy(() -> PageRequest.Cursor.forKey());
         }
     }
 
