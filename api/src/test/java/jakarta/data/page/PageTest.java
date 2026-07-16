@@ -17,11 +17,10 @@
  */
 package jakarta.data.page;
 
+import jakarta.data.page.impl.PageRecord;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import java.util.Iterator;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -29,122 +28,58 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DisplayName("Page")
 class PageTest {
 
-    @Nested
-    @DisplayName("When streaming page elements")
-    class WhenStreamingPageElements {
+    @Test
+    @DisplayName("should stream page content in iteration order")
+    void shouldStreamPageContentInIterationOrder() {
+        // given
+        Page<String> page = new PageRecord<>(
+                PageRequest.ofPage(1, 3, false),
+                List.of("Java", "Jakarta Data", "NoSQL"),
+                3,
+                false);
 
-        @Test
-        @DisplayName("should stream elements in iteration order")
-        void shouldStreamElementsInIterationOrder() {
-            // given
-            Page<String> page = pageOf(
-                    "Java",
-                    "Jakarta Data",
-                    "NoSQL");
+        // when
+        List<String> result = page.stream().toList();
 
-            // when
-            List<String> result = page.stream().toList();
-
-            // then
-            assertThat(result)
-                    .containsExactly(
-                            "Java",
-                            "Jakarta Data",
-                            "NoSQL");
-        }
-
-        @Test
-        @DisplayName("should create a sequential stream")
-        void shouldCreateSequentialStream() {
-            // given
-            Page<String> page = pageOf("Java");
-
-            // when
-            boolean parallel = page.stream().isParallel();
-
-            // then
-            assertThat(parallel).isFalse();
-        }
-
-        @Test
-        @DisplayName("should create an empty stream when the iterator is empty")
-        void shouldCreateEmptyStreamWhenIteratorIsEmpty() {
-            // given
-            Page<String> page = pageOf();
-
-            // when
-            List<String> result = page.stream().toList();
-
-            // then
-            assertThat(result).isEmpty();
-        }
+        // then
+        assertThat(result)
+                .containsExactly(
+                        "Java",
+                        "Jakarta Data",
+                        "NoSQL");
     }
 
-    @SafeVarargs
-    private static <T> Page<T> pageOf(T... elements) {
-        List<T> content = List.of(elements);
+    @Test
+    @DisplayName("should create a sequential stream")
+    void shouldCreateSequentialStream() {
+        // given
+        Page<String> page = new PageRecord<>(
+                PageRequest.ofPage(1L, 1, false),
+                List.of("Jakarta Data"),
+                1,
+                false);
 
-        return new Page<>() {
+        // when
+        boolean parallel = page.stream().isParallel();
 
-            @Override
-            public Iterator<T> iterator() {
-                return content.iterator();
-            }
+        // then
+        assertThat(parallel).isFalse();
+    }
 
-            @Override
-            public List<T> content() {
-                throw new UnsupportedOperationException();
-            }
+    @Test
+    @DisplayName("should stream no elements when page content is empty")
+    void shouldStreamNoElementsWhenPageContentIsEmpty() {
+        // given
+        Page<String> page = new PageRecord<>(
+                PageRequest.ofPage(1L, 1, false),
+                List.of(),
+                0,
+                false);
 
-            @Override
-            public boolean hasContent() {
-                throw new UnsupportedOperationException();
-            }
+        // when
+        List<String> result = page.stream().toList();
 
-            @Override
-            public int numberOfElements() {
-                throw new UnsupportedOperationException();
-            }
-
-            @Override
-            public boolean hasNext() {
-                throw new UnsupportedOperationException();
-            }
-
-            @Override
-            public boolean hasPrevious() {
-                throw new UnsupportedOperationException();
-            }
-
-            @Override
-            public PageRequest pageRequest() {
-                throw new UnsupportedOperationException();
-            }
-
-            @Override
-            public PageRequest nextPageRequest() {
-                throw new UnsupportedOperationException();
-            }
-
-            @Override
-            public PageRequest previousPageRequest() {
-                throw new UnsupportedOperationException();
-            }
-
-            @Override
-            public boolean hasTotals() {
-                throw new UnsupportedOperationException();
-            }
-
-            @Override
-            public long totalElements() {
-                throw new UnsupportedOperationException();
-            }
-
-            @Override
-            public long totalPages() {
-                throw new UnsupportedOperationException();
-            }
-        };
+        // then
+        assertThat(result).isEmpty();
     }
 }
