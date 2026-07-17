@@ -15,9 +15,10 @@
  */
 package ee.jakarta.tck.data.web.annotations;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
 
@@ -59,7 +60,7 @@ public class AnnotationsSecurityTests {
     TestSecurityContext securityContext;
 
     @AfterEach
-    public void clearSecurityContext() {
+    public void tearDown() {
         securityContext.clearCallerRoles();
     }
 
@@ -85,21 +86,34 @@ public class AnnotationsSecurityTests {
     @Assertion(id = "1293", strategy = """
             Verify that a repository method annotated with @RolesAllowed
             rejects access when the caller does not have a matching role.
+            The insert must be rejected, and findAll must confirm
+            that no product was added.
             """)
     public void testRolesAllowedRejectsWithoutMatchingRole() {
+        int before = products.findAll().size();
+
         securityContext.setCallerRoles("user");
         assertThrows(SecurityException.class,
-                     () -> products.remove(
-                             new SecuredProduct("P999", "any")));
+                     () -> products.add(
+                             new SecuredProduct("P999", "Gadget")));
+
+        securityContext.clearCallerRoles();
+        assertEquals(before, products.findAll().size());
     }
 
     @Assertion(id = "1293", strategy = """
             Verify that a repository method annotated with @RolesAllowed
             allows access when the caller has one of the required roles.
+            The insert must succeed, and findAll must confirm
+            that the product was added.
             """)
     public void testRolesAllowedAllowsWithMatchingRole() {
+        int before = products.findAll().size();
+
         securityContext.setCallerRoles("admin");
-        assertDoesNotThrow(() -> products.remove(
-                new SecuredProduct("P999", "any")));
+        products.add(new SecuredProduct("P888", "Gizmo"));
+
+        securityContext.clearCallerRoles();
+        assertTrue(products.findAll().size() > before);
     }
 }

@@ -20,8 +20,8 @@ import java.util.List;
 import jakarta.annotation.security.DenyAll;
 import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
-import jakarta.data.repository.Delete;
 import jakarta.data.repository.Find;
+import jakarta.data.repository.Insert;
 import jakarta.data.repository.Repository;
 
 @Repository
@@ -35,7 +35,7 @@ public interface SecuredProducts {
     @PermitAll
     List<SecuredProduct> findAll();
 
-    @Delete
+    @Insert
     @RolesAllowed({"manager", "admin"})
-    void remove(SecuredProduct product);
+    void add(SecuredProduct product);
 }
