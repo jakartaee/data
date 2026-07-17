@@ -22,6 +22,7 @@ import java.math.BigInteger;
 
 import jakarta.data.expression.NumericExpression;
 import jakarta.data.metamodel.NumericAttribute;
+import jakarta.annotation.Nonnull;
 
 /**
  * <p>A {@linkplain Literal literal} for a
@@ -41,13 +42,15 @@ public interface NumericLiteral<N extends Number & Comparable<N>>
      * @return a {@code NumericLiteral} representing the value.
      * @throws NullPointerException if the value is {@code null}.
      */
-    static <N extends Number & Comparable<N>> NumericLiteral<N> of(Class<? extends N> type, N value) {
+    @Nonnull
+    static <N extends Number & Comparable<N>> NumericLiteral<N> of(@Nonnull Class<? extends N> type, @Nonnull N value) {
         return new NumericLiteralRecord<>(type, value);
     }
 
     /**
      * Create a {@code NumericLiteral} representing the given {@code int}.
      */
+    @Nonnull
     static NumericLiteral<Integer> of(int value) {
         return of(Integer.class, value);
     }
@@ -55,6 +58,7 @@ public interface NumericLiteral<N extends Number & Comparable<N>>
     /**
      * Create a {@code NumericLiteral} representing the given {@code long}.
      */
+    @Nonnull
     static NumericLiteral<Long> of(long value) {
         return of(Long.class, value);
     }
@@ -62,6 +66,7 @@ public interface NumericLiteral<N extends Number & Comparable<N>>
     /**
      * Create a {@code NumericLiteral} representing the given {@code float}.
      */
+    @Nonnull
     static NumericLiteral<Float> of(float value) {
         return of(Float.class, value);
     }
@@ -69,6 +74,7 @@ public interface NumericLiteral<N extends Number & Comparable<N>>
     /**
      * Create a {@code NumericLiteral} representing the given {@code double}.
      */
+    @Nonnull
     static NumericLiteral<Double> of(double value) {
         return of(Double.class, value);
     }
@@ -76,6 +82,7 @@ public interface NumericLiteral<N extends Number & Comparable<N>>
     /**
      * Create a {@code NumericLiteral} representing the given {@code byte}.
      */
+    @Nonnull
     static NumericLiteral<Byte> of(byte value) {
         return of(Byte.class, value);
     }
@@ -83,6 +90,7 @@ public interface NumericLiteral<N extends Number & Comparable<N>>
     /**
      * Create a {@code NumericLiteral} representing the given {@code short}.
      */
+    @Nonnull
     static NumericLiteral<Short> of(short value) {
         return of(Short.class, value);
     }
@@ -90,14 +98,16 @@ public interface NumericLiteral<N extends Number & Comparable<N>>
     /**
      * Create a {@code NumericLiteral} representing the given {@link BigInteger}.
      */
-    static NumericLiteral<BigInteger> of(BigInteger value) {
+    @Nonnull
+    static NumericLiteral<BigInteger> of(@Nonnull BigInteger value) {
         return of(BigInteger.class, value);
     }
 
     /**
      * Create a {@code NumericLiteral} representing the given {@link BigDecimal}.
      */
-    static NumericLiteral<BigDecimal> of(BigDecimal value) {
+    @Nonnull
+    static NumericLiteral<BigDecimal> of(@Nonnull BigDecimal value) {
         return of(BigDecimal.class, value);
     }
 
@@ -142,5 +152,6 @@ public interface NumericLiteral<N extends Number & Comparable<N>>
      * @return a {@code String} representing the literal numeric value.
      */
     @Override
+    @Nonnull
     String toString();
 }

@@ -19,6 +19,8 @@ package jakarta.data.messages;
 
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 // This class is for internal use only and is not documented as API
 // and its package is not exported by the module.
@@ -37,7 +39,8 @@ public class Messages {
      * @param args arguments corresponding to {0}, {1}, ... in the message.
      * @return the message.
      */
-    public static String get(String key, Object... args) {
+    @Nonnull
+    public static String get(@Nonnull String key, @Nonnull Object... args) {
         return MessageFormat.format(MESSAGES.getString(key),
                                     args);
     }
@@ -49,7 +52,7 @@ public class Messages {
      * @param argName name of the argument.
      * @throws NullPointerException if the value is null.
      */
-    public static void requireNonNull(Object value, String argName) {
+    public static void requireNonNull(@Nullable Object value, @Nonnull String argName) {
         if (value == null) {
             throw new NullPointerException(
                     Messages.get("001.arg.required", argName));

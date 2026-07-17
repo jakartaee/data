@@ -21,6 +21,7 @@ import java.time.temporal.Temporal;
 
 import jakarta.data.expression.TemporalExpression;
 import jakarta.data.messages.Messages;
+import jakarta.annotation.Nonnull;
 
 /**
  * <p>Represents a {@linkplain Temporal temporal} entity attribute in the
@@ -60,8 +61,9 @@ public interface TemporalAttribute<T, V extends Temporal & Comparable<? extends 
      * @param attributeType type of the entity attribute.
      * @return instance of {@code TemporalAttribute}.
      */
+    @Nonnull
     static <T, V extends Temporal & Comparable<? extends Temporal>> TemporalAttribute<T, V> of(
-            Class<T> entityClass, String name, Class<V> attributeType) {
+            @Nonnull Class<T> entityClass, @Nonnull String name, @Nonnull Class<V> attributeType) {
         Messages.requireNonNull(entityClass, "entityClass");
         Messages.requireNonNull(name, "name");
         Messages.requireNonNull(attributeType, "attributeType");

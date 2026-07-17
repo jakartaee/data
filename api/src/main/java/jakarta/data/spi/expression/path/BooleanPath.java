@@ -20,13 +20,15 @@ package jakarta.data.spi.expression.path;
 import jakarta.data.expression.BooleanExpression;
 import jakarta.data.expression.NavigableExpression;
 import jakarta.data.metamodel.BooleanAttribute;
+import jakarta.annotation.Nonnull;
 
 public interface BooleanPath<T, U>
         extends Path<T, U>,
                 BooleanExpression<T> {
 
-    static <T, U> BooleanPath<T, U> of(NavigableExpression<T, U> expression,
-                                       BooleanAttribute<U> attribute) {
+    @Nonnull
+    static <T, U> BooleanPath<T, U> of(@Nonnull NavigableExpression<T, U> expression,
+                                       @Nonnull BooleanAttribute<U> attribute) {
 
         return new BooleanPathRecord<>(expression, attribute);
     }

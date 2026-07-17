@@ -17,6 +17,8 @@
  */
 package jakarta.data.event;
 
+import jakarta.annotation.Nonnull;
+
 /**
  * <p>Abstract supertype of events relating to lifecycle methods.</p>
  * <p>In Jakarta EE, a bean may observe such events via CDI:</p>
@@ -49,7 +51,7 @@ package jakarta.data.event;
 public abstract class LifecycleEvent<E> {
     private final E entity;
 
-    public LifecycleEvent(E entity) {
+    public LifecycleEvent(@Nonnull E entity) {
         this.entity = entity;
     }
 
@@ -81,6 +83,7 @@ public abstract class LifecycleEvent<E> {
      * are being notified, the resulting behavior is undefined
      * and unportable.
      */
+    @Nonnull
     public E entity() {
         return entity;
     }

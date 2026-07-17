@@ -25,6 +25,7 @@ import jakarta.data.constraint.NotLike;
 import jakarta.data.metamodel.Attribute;
 import jakarta.data.metamodel.StaticMetamodel;
 import jakarta.data.repository.Find;
+import jakarta.annotation.Nonnull;
 
 /**
  * <p>A restriction imposes constraints on entity attribute values or
@@ -114,5 +115,6 @@ public interface Restriction<T> {
      *
      * @return the negated restriction.
      */
+    @Nonnull
     Restriction<T> negate();
 }

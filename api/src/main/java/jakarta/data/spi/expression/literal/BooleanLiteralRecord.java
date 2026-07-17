@@ -17,10 +17,14 @@
  */
 package jakarta.data.spi.expression.literal;
 
-record BooleanLiteralRecord(Boolean value)
+import jakarta.annotation.Nonnull;
+
+
+record BooleanLiteralRecord(@Nonnull Boolean value)
         implements BooleanLiteral {
 
     @Override
+    @Nonnull
     public String toString() {
         return value ? "TRUE" : "FALSE";
     }

@@ -22,6 +22,7 @@ import jakarta.data.metamodel.Attribute;
 import jakarta.data.repository.Is;
 import jakarta.data.restrict.Restriction;
 import jakarta.data.spi.expression.literal.ComparableLiteral;
+import jakarta.annotation.Nonnull;
 
 /**
  * <p>A constraint that requires exceeding a lower bound.</p>
@@ -86,8 +87,9 @@ public interface GreaterThan<V extends Comparable<?>> extends Constraint<V> {
      * @return a {@code GreaterThan} constraint.
      * @throws NullPointerException if the lower bound is {@code null}.
      */
+    @Nonnull
     static <V extends Comparable<?>> GreaterThan<V> bound(
-            V lowerBound) {
+            @Nonnull V lowerBound) {
         return new GreaterThanRecord<>(ComparableLiteral.of(lowerBound));
     }
 
@@ -107,8 +109,9 @@ public interface GreaterThan<V extends Comparable<?>> extends Constraint<V> {
      * @return a {@code GreaterThan} constraint.
      * @throws NullPointerException if the lower bound is {@code null}.
      */
+    @Nonnull
     static <V extends Comparable<?>> GreaterThan<V> bound(
-            ComparableExpression<?, V> lowerBound) {
+            @Nonnull ComparableExpression<?, V> lowerBound) {
         return new GreaterThanRecord<>(lowerBound);
     }
 
@@ -118,5 +121,6 @@ public interface GreaterThan<V extends Comparable<?>> extends Constraint<V> {
      *
      * @return an expression representing the lower bound.
      */
+    @Nonnull
     ComparableExpression<?, V> bound();
 }

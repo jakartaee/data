@@ -21,11 +21,12 @@ import jakarta.data.expression.ComparableExpression;
 import jakarta.data.messages.Messages;
 
 import java.util.List;
+import jakarta.annotation.Nonnull;
 
 record NumericFunctionExpressionRecord<T, N extends Number & Comparable<N>>(
-        String name,
-        Class<? extends N> returnType,
-        List<ComparableExpression<? super T, ?>> arguments)
+        @Nonnull String name,
+        @Nonnull Class<? extends N> returnType,
+        @Nonnull List<ComparableExpression<? super T, ?>> arguments)
         implements NumericFunctionExpression<T, N> {
 
     NumericFunctionExpressionRecord {
@@ -40,11 +41,13 @@ record NumericFunctionExpressionRecord<T, N extends Number & Comparable<N>>(
     }
 
     @Override
+    @Nonnull
     public Class<? extends N> type() {
         return returnType;
     }
 
     @Override
+    @Nonnull
     public String toString() {
         StringBuilder function =
                 new StringBuilder(name.length() + 2 + 50 * arguments.size());

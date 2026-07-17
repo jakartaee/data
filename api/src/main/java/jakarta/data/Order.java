@@ -22,6 +22,8 @@ import java.util.List;
 
 import jakarta.data.metamodel.StaticMetamodel;
 import jakarta.data.repository.OrderBy;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * <p>Requests sorting on various entity attributes.</p>
@@ -83,7 +85,7 @@ public class Order<T> implements Iterable<Sort<? super T>> {
      * @param sorts unmodifiable list of Sort instances, from highest precedence
      *              to lowest.
      */
-    private Order(List<Sort<? super T>> sorts) {
+    private Order(@Nonnull List<Sort<? super T>> sorts) {
         this.sorts = sorts;
     }
 
@@ -99,7 +101,8 @@ public class Order<T> implements Iterable<Sort<? super T>> {
      * criteria. This method never returns {@code null}.
      */
     @SafeVarargs
-    public static <T> Order<T> by(Sort<? super T>... sorts) {
+    @Nonnull
+    public static <T> Order<T> by(@Nonnull Sort<? super T>... sorts) {
         return new Order<T>(List.of(sorts));
     }
 
@@ -116,7 +119,8 @@ public class Order<T> implements Iterable<Sort<? super T>> {
      * @return a new instance indicating the order of precedence for sort
      * criteria. This method never returns {@code null}.
      */
-    public static <T> Order<T> by(List<? extends Sort<? super T>> sorts) {
+    @Nonnull
+    public static <T> Order<T> by(@Nonnull List<? extends Sort<? super T>> sorts) {
         return new Order<T>(List.copyOf(sorts));
     }
 
@@ -126,6 +130,7 @@ public class Order<T> implements Iterable<Sort<? super T>> {
      * @return the instances of {@link Sort}, from highest precedence to lowest
      * precedence.
      */
+    @Nonnull
     public List<Sort<? super T>> sorts() {
         return sorts;
     }
@@ -138,7 +143,7 @@ public class Order<T> implements Iterable<Sort<? super T>> {
      * same ordering of sort criteria as this instance.
      */
     @Override
-    public boolean equals(Object other) {
+    public boolean equals(@Nullable Object other) {
         return this == other
                 || other instanceof Order s && sorts.equals(s.sorts);
     }
@@ -160,6 +165,7 @@ public class Order<T> implements Iterable<Sort<? super T>> {
      * @return iterator over the sort criteria.
      */
     @Override
+    @Nonnull
     public Iterator<Sort<? super T>> iterator() {
         return sorts.iterator();
     }
@@ -173,6 +179,7 @@ public class Order<T> implements Iterable<Sort<? super T>> {
      * @return textual representation of this instance.
      */
     @Override
+    @Nonnull
     public String toString() {
         return sorts.toString();
     }

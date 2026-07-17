@@ -22,10 +22,11 @@ import jakarta.data.messages.Messages;
 import jakarta.data.spi.expression.literal.NumericLiteral;
 
 import java.util.List;
+import jakarta.annotation.Nonnull;
 
 record TextFunctionExpressionRecord<T>(
-        String name,
-        List<ComparableExpression<? super T, ?>> arguments)
+        @Nonnull String name,
+        @Nonnull List<ComparableExpression<? super T, ?>> arguments)
         implements TextFunctionExpression<T> {
 
     TextFunctionExpressionRecord {
@@ -44,6 +45,7 @@ record TextFunctionExpressionRecord<T>(
     }
 
     @Override
+    @Nonnull
     public String toString() {
         StringBuilder function =
                 new StringBuilder(name.length() + 2 + 50 * arguments.size());

@@ -28,6 +28,7 @@ import jakarta.data.restrict.Restriction;
 import jakarta.data.spi.expression.literal.Literal;
 
 import static java.util.Collections.unmodifiableList;
+import jakarta.annotation.Nonnull;
 
 /**
  * <p>A constraint that requires inequality with every member of a collection.</p>
@@ -89,7 +90,8 @@ public interface NotIn<V> extends Constraint<V> {
      *                                  it is {@code null}.
      */
     @SafeVarargs
-    static <V> NotIn<V> values(V... values) {
+    @Nonnull
+    static <V> NotIn<V> values(@Nonnull V... values) {
         if (values == null) {
             throw new NullPointerException(
                     Messages.get("001.arg.required", "values"));
@@ -130,7 +132,8 @@ public interface NotIn<V> extends Constraint<V> {
      * @throws NullPointerException     if the collection of values or any
      *                                  value within it is {@code null}.
      */
-    static <V> NotIn<V> values(Collection<V> values) {
+    @Nonnull
+    static <V> NotIn<V> values(@Nonnull Collection<V> values) {
         if (values == null) {
             throw new NullPointerException(
                     Messages.get("001.arg.required", "values"));
@@ -173,7 +176,8 @@ public interface NotIn<V> extends Constraint<V> {
      * @throws NullPointerException     if the list of expressions or any value
      *                                  within it is {@code null}.
      */
-    static <V> NotIn<V> expressions(List<Expression<?, V>> expressions) {
+    @Nonnull
+    static <V> NotIn<V> expressions(@Nonnull List<Expression<?, V>> expressions) {
         if (expressions == null) {
             throw new NullPointerException(
                     Messages.get("001.arg.required", "expressions"));
@@ -214,7 +218,8 @@ public interface NotIn<V> extends Constraint<V> {
      *                                  within it is {@code null}.
      */
     @SafeVarargs
-    static <V> NotIn<V> expressions(Expression<?, V>... expressions) {
+    @Nonnull
+    static <V> NotIn<V> expressions(@Nonnull Expression<?, V>... expressions) {
         if (expressions == null) {
             throw new NullPointerException(
                     Messages.get("001.arg.required", "expressions"));
@@ -244,5 +249,6 @@ public interface NotIn<V> extends Constraint<V> {
      *
      * @return expressions representing the values.
      */
+    @Nonnull
     List<Expression<?, V>> expressions();
 }

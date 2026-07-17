@@ -33,6 +33,7 @@ import jakarta.data.restrict.BasicRestriction;
 import jakarta.data.restrict.Restriction;
 import jakarta.data.spi.expression.function.NumericFunctionExpression;
 import jakarta.data.spi.expression.function.TextFunctionExpression;
+import jakarta.annotation.Nonnull;
 
 /**
  * <p>An {@linkplain Expression expression} that evaluates to a {@link String}
@@ -53,6 +54,7 @@ public interface TextExpression<T> extends ComparableExpression<T, String> {
      *
      * @return a request for an ascending, case-insensitive sort.
      */
+    @Nonnull
     default Sort<T> ascIgnoreCase() {
         return Sort.ascIgnoreCase(this);
     }
@@ -63,6 +65,7 @@ public interface TextExpression<T> extends ComparableExpression<T, String> {
      *
      * @return a request for a descending, case insensitive sort.
      */
+    @Nonnull
     default Sort<T> descIgnoreCase() {
         return Sort.descIgnoreCase(this);
     }
@@ -73,6 +76,7 @@ public interface TextExpression<T> extends ComparableExpression<T, String> {
      * @return {@code String.class}.
      */
     @Override
+    @Nonnull
     default Class<String> type() {
         return String.class;
     }
@@ -92,7 +96,8 @@ public interface TextExpression<T> extends ComparableExpression<T, String> {
      *         value.
      * @throws NullPointerException if the prefix is {@code null}.
      */
-    default TextExpression<T> prepend(String prefix) {
+    @Nonnull
+    default TextExpression<T> prepend(@Nonnull String prefix) {
         Messages.requireNonNull(prefix, "prefix");
         return TextFunctionExpression.of(CONCAT, prefix, this);
     }
@@ -112,7 +117,8 @@ public interface TextExpression<T> extends ComparableExpression<T, String> {
      *         value.
      * @throws NullPointerException if the suffix is {@code null}.
      */
-    default TextExpression<T> append(String suffix) {
+    @Nonnull
+    default TextExpression<T> append(@Nonnull String suffix) {
         Messages.requireNonNull(suffix, "suffix");
         return TextFunctionExpression.of(CONCAT, this, suffix);
     }
@@ -134,8 +140,9 @@ public interface TextExpression<T> extends ComparableExpression<T, String> {
      *         value.
      * @throws NullPointerException if the prefix expression is {@code null}.
      */
+    @Nonnull
     default TextExpression<T> prepend(
-            TextExpression<? super T> prefixExpression) {
+            @Nonnull TextExpression<? super T> prefixExpression) {
         Messages.requireNonNull(prefixExpression, "prefixExpression");
         return TextFunctionExpression.of(CONCAT, prefixExpression, this);
     }
@@ -156,8 +163,9 @@ public interface TextExpression<T> extends ComparableExpression<T, String> {
      *         value.
      * @throws NullPointerException if the suffix expression is {@code null}.
      */
+    @Nonnull
     default TextExpression<T> append(
-            TextExpression<? super T> suffixExpression) {
+            @Nonnull TextExpression<? super T> suffixExpression) {
         Messages.requireNonNull(suffixExpression, "suffixExpression");
         return TextFunctionExpression.of(CONCAT, suffixExpression, this);
     }
@@ -174,6 +182,7 @@ public interface TextExpression<T> extends ComparableExpression<T, String> {
      * @return an expression for the function that computes the upper case form
      *         of the value.
      */
+    @Nonnull
     default TextExpression<T> upper() {
         return TextFunctionExpression.of(UPPER, this);
     }
@@ -191,6 +200,7 @@ public interface TextExpression<T> extends ComparableExpression<T, String> {
      * @return an expression for the function that computes the lower case form
      *         of the value.
      */
+    @Nonnull
     default TextExpression<T> lower() {
         return TextFunctionExpression.of(LOWER, this);
     }
@@ -209,6 +219,7 @@ public interface TextExpression<T> extends ComparableExpression<T, String> {
      * @return an expression for the function that obtains the leftmost
      *         characters.
      */
+    @Nonnull
     default TextExpression<T> left(int length) {
         return TextFunctionExpression.of(LEFT, this, length);
     }
@@ -227,6 +238,7 @@ public interface TextExpression<T> extends ComparableExpression<T, String> {
      * @return an expression for the function that obtains the rightmost
      *         characters.
      */
+    @Nonnull
     default TextExpression<T> right(int length) {
         return TextFunctionExpression.of(RIGHT, this, length);
     }
@@ -244,6 +256,7 @@ public interface TextExpression<T> extends ComparableExpression<T, String> {
      * @return an expression for the function that obtains the length of the
      *         textual value.
      */
+    @Nonnull
     default NumericExpression<T, Integer> length() {
         return NumericFunctionExpression.of(LENGTH, Integer.class, this);
     }
@@ -263,7 +276,8 @@ public interface TextExpression<T> extends ComparableExpression<T, String> {
      * @return the restriction.
      * @throws NullPointerException if the pattern value is {@code null}.
      */
-    default Restriction<T> like(Like pattern) {
+    @Nonnull
+    default Restriction<T> like(@Nonnull Like pattern) {
         return BasicRestriction.of(this, pattern);
     }
 
@@ -282,7 +296,8 @@ public interface TextExpression<T> extends ComparableExpression<T, String> {
      * @return the restriction.
      * @throws NullPointerException if the pattern is {@code null}.
      */
-    default Restriction<T> like(String pattern) {
+    @Nonnull
+    default Restriction<T> like(@Nonnull String pattern) {
         return BasicRestriction.of(this, Like.pattern(pattern));
     }
 
@@ -308,8 +323,9 @@ public interface TextExpression<T> extends ComparableExpression<T, String> {
      * @return the restriction.
      * @throws NullPointerException if the pattern value is {@code null}.
      */
+    @Nonnull
     default Restriction<T> like(
-            String pattern, char charWildcard, char stringWildcard) {
+            @Nonnull String pattern, char charWildcard, char stringWildcard) {
         Like constraint = Like.pattern(pattern, charWildcard, stringWildcard);
         return BasicRestriction.of(this, constraint);
     }
@@ -340,8 +356,9 @@ public interface TextExpression<T> extends ComparableExpression<T, String> {
      * @return the restriction.
      * @throws NullPointerException if the pattern value is {@code null}.
      */
+    @Nonnull
     default Restriction<T> like(
-            String pattern, char charWildcard, char stringWildcard, char escape) {
+            @Nonnull String pattern, char charWildcard, char stringWildcard, char escape) {
         Like constraint = Like.pattern(pattern, charWildcard, stringWildcard, escape);
         return BasicRestriction.of(this, constraint);
     }
@@ -361,7 +378,8 @@ public interface TextExpression<T> extends ComparableExpression<T, String> {
      * @return the restriction.
      * @throws NullPointerException if the pattern value is {@code null}.
      */
-    default Restriction<T> notLike(String pattern) {
+    @Nonnull
+    default Restriction<T> notLike(@Nonnull String pattern) {
         return BasicRestriction.of(this, NotLike.pattern(pattern));
     }
 
@@ -386,8 +404,9 @@ public interface TextExpression<T> extends ComparableExpression<T, String> {
      *                       0) are considered to match.
      * @throws NullPointerException if the pattern value is {@code null}.
      */
+    @Nonnull
     default Restriction<T> notLike(
-            String pattern, char charWildcard, char stringWildcard) {
+            @Nonnull String pattern, char charWildcard, char stringWildcard) {
         NotLike constraint = NotLike.pattern(pattern, charWildcard, stringWildcard);
         return BasicRestriction.of(this, constraint);
     }
@@ -418,8 +437,9 @@ public interface TextExpression<T> extends ComparableExpression<T, String> {
      * @return the restriction.
      * @throws NullPointerException if the pattern value is {@code null}.
      */
+    @Nonnull
     default Restriction<T> notLike(
-            String pattern, char charWildcard, char stringWildcard, char escape) {
+            @Nonnull String pattern, char charWildcard, char stringWildcard, char escape) {
         NotLike constraint = NotLike.pattern(pattern, charWildcard, stringWildcard, escape);
         return BasicRestriction.of(this, constraint);
     }
@@ -439,7 +459,8 @@ public interface TextExpression<T> extends ComparableExpression<T, String> {
      * @return the restriction.
      * @throws NullPointerException if the substring value is {@code null}.
      */
-    default Restriction<T> contains(String substring) {
+    @Nonnull
+    default Restriction<T> contains(@Nonnull String substring) {
         return BasicRestriction.of(this, Like.substring(substring));
     }
 
@@ -459,7 +480,8 @@ public interface TextExpression<T> extends ComparableExpression<T, String> {
      * @return the restriction.
      * @throws NullPointerException if the substring value is {@code null}.
      */
-    default Restriction<T> notContains(String substring) {
+    @Nonnull
+    default Restriction<T> notContains(@Nonnull String substring) {
         return BasicRestriction.of(this, NotLike.substring(substring));
     }
 
@@ -477,7 +499,8 @@ public interface TextExpression<T> extends ComparableExpression<T, String> {
      * @return the restriction.
      * @throws NullPointerException if the prefix value is {@code null}.
      */
-    default Restriction<T> startsWith(String prefix) {
+    @Nonnull
+    default Restriction<T> startsWith(@Nonnull String prefix) {
         return BasicRestriction.of(this, Like.prefix(prefix));
     }
 
@@ -496,7 +519,8 @@ public interface TextExpression<T> extends ComparableExpression<T, String> {
      * @return the restriction.
      * @throws NullPointerException if the prefix value is {@code null}.
      */
-    default Restriction<T> notStartsWith(String prefix) {
+    @Nonnull
+    default Restriction<T> notStartsWith(@Nonnull String prefix) {
         return BasicRestriction.of(this, NotLike.prefix(prefix));
     }
 
@@ -514,7 +538,8 @@ public interface TextExpression<T> extends ComparableExpression<T, String> {
      * @return the restriction.
      * @throws NullPointerException if the suffix value is {@code null}.
      */
-    default Restriction<T> endsWith(String suffix) {
+    @Nonnull
+    default Restriction<T> endsWith(@Nonnull String suffix) {
         return BasicRestriction.of(this, Like.suffix(suffix));
     }
 
@@ -533,7 +558,8 @@ public interface TextExpression<T> extends ComparableExpression<T, String> {
      * @return the restriction.
      * @throws NullPointerException if the suffix value is {@code null}.
      */
-    default Restriction<T> notEndsWith(String suffix) {
+    @Nonnull
+    default Restriction<T> notEndsWith(@Nonnull String suffix) {
         return BasicRestriction.of(this, NotLike.suffix(suffix));
     }
 

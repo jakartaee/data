@@ -23,6 +23,7 @@ import jakarta.data.metamodel.Attribute;
 import jakarta.data.repository.Is;
 import jakarta.data.restrict.Restriction;
 import jakarta.data.spi.expression.literal.Literal;
+import jakarta.annotation.Nonnull;
 
 /**
  * <p>A constraint that requires inequality.</p>
@@ -90,7 +91,8 @@ public interface NotEqualTo<V> extends Constraint<V> {
      * @return a {@code NotEqualTo} constraint.
      * @throws NullPointerException if the expression is {@code null}.
      */
-    static <V> NotEqualTo<V> expression(Expression<?, V> expression) {
+    @Nonnull
+    static <V> NotEqualTo<V> expression(@Nonnull Expression<?, V> expression) {
         if (expression == null) {
             throw new NullPointerException(
                     Messages.get("001.arg.required", "expression"));
@@ -113,7 +115,8 @@ public interface NotEqualTo<V> extends Constraint<V> {
      * @return a {@code NotEqualTo} constraint.
      * @throws NullPointerException if the value is {@code null}.
      */
-    static <V> NotEqualTo<V> value(V value) {
+    @Nonnull
+    static <V> NotEqualTo<V> value(@Nonnull V value) {
         if (value == null) {
             throw new NullPointerException(
                     Messages.get("001.arg.required", "value"));
@@ -128,5 +131,6 @@ public interface NotEqualTo<V> extends Constraint<V> {
      *
      * @return an expression representing the value.
      */
+    @Nonnull
     Expression<?, V> expression();
 }

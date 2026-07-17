@@ -17,6 +17,7 @@
  */
 package jakarta.data;
 
+import jakarta.annotation.Nullable;
 import jakarta.data.expression.ComparableExpression;
 import jakarta.data.expression.TextExpression;
 import jakarta.data.messages.Messages;
@@ -25,6 +26,7 @@ import jakarta.data.metamodel.ComparableAttribute;
 import jakarta.data.metamodel.StaticMetamodel;
 import jakarta.data.metamodel.TextAttribute;
 import jakarta.data.repository.OrderBy;
+import jakarta.annotation.Nonnull;
 
 /**
  * <p>Requests sorting on a given entity attribute or expression.</p>
@@ -99,11 +101,11 @@ import jakarta.data.repository.OrderBy;
  *                     {@link Nulls#FIRST FIRST}, {@link Nulls#LAST LAST}, or
  *                     {@linkplain Nulls#UNSPECIFIED by the data store}.
  */
-public record Sort<T>(ComparableExpression<T, ? extends Comparable<?>> expression,
-                      String property,
+public record Sort<T>(@Nullable ComparableExpression<T, ? extends Comparable<?>> expression,
+                      @Nullable String property,
                       boolean isAscending,
                       boolean ignoreCase,
-                      Nulls nullOrdering) {
+                      @Nonnull Nulls nullOrdering) {
 
     /**
      * Indicates how {@code null} values are ordered.
@@ -202,7 +204,7 @@ public record Sort<T>(ComparableExpression<T, ? extends Comparable<?>> expressio
      * @param ignoreCase  whether or not to request case insensitive ordering
      *                    from a database with case sensitive collation.
      */
-    public Sort(String property, boolean isAscending, boolean ignoreCase) {
+    public Sort(@Nonnull String property, boolean isAscending, boolean ignoreCase) {
         this(null,
              property,
              isAscending,
@@ -213,25 +215,29 @@ public record Sort<T>(ComparableExpression<T, ? extends Comparable<?>> expressio
     // Override to provide method documentation:
 
     /**
-     * An expression to order by. The presence of a sort expression is
-     * mutually exclusive with the presence of a
-     * {@linkplain #property() sort attribute name}.
+     * An expression to order by, or {@code null} if this {@code Sort}
+     * instance was constructed without an expression.
      *
      * @return The attribute name to order by, or {@code null} if this
-     *         {@code Sort} instance pertains to a {@link #property()}
+     *         {@code Sort} instance was constructed without an expression.
      */
+    @Nonnull
     public ComparableExpression<T, ? extends Comparable<?>> expression() {
+        if ( expression == null ) {
+            throw new IllegalStateException(
+                    Messages.get("013.no-expression"));
+        }
         return expression;
     }
 
     /**
-     * Name of the entity attribute to order by The presence of a
-     * sort attribute name is mutually exclusive with the presence of a
-     * sort {@link #expression()}.
+     * Name of the entity attribute to order by.
      *
      * @return The attribute name to order by, or {@code null} if this
-     *         {@code Sort} instance pertains to an {@link #expression()}
+     *         {@code Sort} instance pertains to an {@linkplain #expression}
+     *         which is not an {@linkplain Attribute attribute}.
      */
+    @Nullable
     public String property() {
         return property;
     }
@@ -281,6 +287,7 @@ public record Sort<T>(ComparableExpression<T, ? extends Comparable<?>> expressio
      * @return indication of how {@code null} values are ordered.
      * @since 1.1
      */
+    @Nonnull
     public Nulls nullOrdering() {
         return nullOrdering;
     }
@@ -295,8 +302,9 @@ public record Sort<T>(ComparableExpression<T, ? extends Comparable<?>> expressio
      * @return a {@link Sort} instance. Never {@code null}.
      * @throws NullPointerException when there is a null parameter.
      */
-    public static <T> Sort<T> of(String attribute,
-                                 Direction direction,
+    @Nonnull
+    public static <T> Sort<T> of(@Nonnull String attribute,
+                                 @Nonnull Direction direction,
                                  boolean ignoreCase) {
         if (direction == null) {
             throw new NullPointerException(
@@ -325,10 +333,11 @@ public record Sort<T>(ComparableExpression<T, ? extends Comparable<?>> expressio
      * @throws NullPointerException when there is a {@code null} parameter.
      * @since 1.1
      */
-    public static <T> Sort<T> of(String attribute,
-                                 Direction direction,
+    @Nonnull
+    public static <T> Sort<T> of(@Nonnull String attribute,
+                                 @Nonnull Direction direction,
                                  boolean ignoreCase,
-                                 Nulls nullOrdering) {
+                                 @Nonnull Nulls nullOrdering) {
         if (direction == null) {
             throw new NullPointerException(
                     Messages.get("001.arg.required", "direction"));
@@ -362,8 +371,9 @@ public record Sort<T>(ComparableExpression<T, ? extends Comparable<?>> expressio
      * @throws NullPointerException if the {@code expression} is {@code null}
      * @since 1.1
      */
+    @Nonnull
     public static <T, V extends Comparable<?>> Sort<T> asc(
-            ComparableExpression<T, V> expression) {
+            @Nonnull ComparableExpression<T, V> expression) {
         return new Sort<>(expression, null, true, false, Nulls.UNSPECIFIED);
     }
 
@@ -377,7 +387,8 @@ public record Sort<T>(ComparableExpression<T, ? extends Comparable<?>> expressio
      * @return a {@link Sort} instance. Never {@code null}.
      * @throws NullPointerException when the attribute name is null.
      */
-    public static <T> Sort<T> asc(String attribute) {
+    @Nonnull
+    public static <T> Sort<T> asc(@Nonnull String attribute) {
         return new Sort<>(null, attribute, true, false, Nulls.UNSPECIFIED);
     }
 
@@ -390,7 +401,8 @@ public record Sort<T>(ComparableExpression<T, ? extends Comparable<?>> expressio
      * @return a {@link Sort} instance. Never {@code null}.
      * @throws NullPointerException when the attribute name is null.
      */
-    public static <T> Sort<T> ascIgnoreCase(String attribute) {
+    @Nonnull
+    public static <T> Sort<T> ascIgnoreCase(@Nonnull String attribute) {
         return new Sort<>(null, attribute, true, true, Nulls.UNSPECIFIED);
     }
 
@@ -414,7 +426,8 @@ public record Sort<T>(ComparableExpression<T, ? extends Comparable<?>> expressio
      * @throws NullPointerException if the {@code expression} is {@code null}
      * @since 1.1
      */
-    public static <T> Sort<T> ascIgnoreCase(TextExpression<T> expression) {
+    @Nonnull
+    public static <T> Sort<T> ascIgnoreCase(@Nonnull TextExpression<T> expression) {
         return new Sort<>(expression, null, true, true, Nulls.UNSPECIFIED);
     }
 
@@ -439,8 +452,9 @@ public record Sort<T>(ComparableExpression<T, ? extends Comparable<?>> expressio
      * @throws NullPointerException if the {@code expression} is {@code null}
      * @since 1.1
      */
+    @Nonnull
     public static <T, V extends Comparable<?>> Sort<T> desc(
-            ComparableExpression<T, V> expression) {
+            @Nonnull ComparableExpression<T, V> expression) {
         return new Sort<>(expression, null, false, false, Nulls.UNSPECIFIED);
     }
 
@@ -454,7 +468,8 @@ public record Sort<T>(ComparableExpression<T, ? extends Comparable<?>> expressio
      * @return a {@link Sort} instance. Never {@code null}.
      * @throws NullPointerException when the attribute name is null.
      */
-    public static <T> Sort<T> desc(String attribute) {
+    @Nonnull
+    public static <T> Sort<T> desc(@Nonnull String attribute) {
         return new Sort<>(null, attribute, false, false, Nulls.UNSPECIFIED);
     }
 
@@ -468,7 +483,8 @@ public record Sort<T>(ComparableExpression<T, ? extends Comparable<?>> expressio
      * @return a {@link Sort} instance. Never {@code null}.
      * @throws NullPointerException when the attribute name is null.
      */
-    public static <T> Sort<T> descIgnoreCase(String attribute) {
+    @Nonnull
+    public static <T> Sort<T> descIgnoreCase(@Nonnull String attribute) {
         return new Sort<>(null, attribute, false, true, Nulls.UNSPECIFIED);
     }
 
@@ -492,7 +508,8 @@ public record Sort<T>(ComparableExpression<T, ? extends Comparable<?>> expressio
      * @throws NullPointerException if the {@code expression} is {@code null}
      * @since 1.1
      */
-    public static <T> Sort<T> descIgnoreCase(TextExpression<T> expression) {
+    @Nonnull
+    public static <T> Sort<T> descIgnoreCase(@Nonnull TextExpression<T> expression) {
         return new Sort<>(expression, null, false, true, Nulls.UNSPECIFIED);
     }
 
@@ -516,6 +533,7 @@ public record Sort<T>(ComparableExpression<T, ? extends Comparable<?>> expressio
      * @return a sort with {@link #nullOrdering} set to {@link Nulls#FIRST}.
      * @since 1.1
      */
+    @Nonnull
     public Sort<T> nullsFirst() {
         return new Sort<>(expression,
                           expression == null ? property : null,
@@ -544,6 +562,7 @@ public record Sort<T>(ComparableExpression<T, ? extends Comparable<?>> expressio
      * @return a sort with {@link #nullOrdering} set to {@link Nulls#LAST}.
      * @since 1.1
      */
+    @Nonnull
     public Sort<T> nullsLast() {
         return new Sort<>(expression,
                           expression == null ? property : null,

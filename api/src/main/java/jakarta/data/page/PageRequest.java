@@ -17,6 +17,8 @@
  */
 package jakarta.data.page;
 
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import jakarta.data.Limit;
 import jakarta.data.Order;
 import jakarta.data.Sort;
@@ -86,6 +88,7 @@ public interface PageRequest {
      * @throws IllegalArgumentException when the page number is negative or
      *                                  zero.
      */
+    @Nonnull
     static PageRequest ofPage(long pageNumber) {
         return new Pagination(pageNumber, 10, Mode.OFFSET, null, true);
     }
@@ -103,6 +106,7 @@ public interface PageRequest {
      * @throws IllegalArgumentException when the page number is negative or
      *                                  zero.
      */
+    @Nonnull
     static PageRequest ofPage(long pageNumber, int maxPageSize, boolean requestTotal) {
         return new Pagination(pageNumber, maxPageSize, Mode.OFFSET, null, requestTotal);
     }
@@ -117,6 +121,7 @@ public interface PageRequest {
      * @throws IllegalArgumentException when maximum page size is negative or
      *                                  zero.
      */
+    @Nonnull
     static PageRequest ofSize(int maxPageSize) {
         return new Pagination(1, maxPageSize, Mode.OFFSET, null, true);
     }
@@ -139,7 +144,8 @@ public interface PageRequest {
      *         pagination. This method never returns {@code null}.
      * @throws IllegalArgumentException if the cursor is null or has no values.
      */
-    static PageRequest afterCursor(Cursor cursor, long pageNumber, int maxPageSize, boolean requestTotal) {
+    @Nonnull
+    static PageRequest afterCursor(@Nonnull Cursor cursor, long pageNumber, int maxPageSize, boolean requestTotal) {
         return new Pagination(pageNumber, maxPageSize, Mode.CURSOR_NEXT, cursor, requestTotal);
     }
 
@@ -163,7 +169,8 @@ public interface PageRequest {
      *         returns {@code null}.
      * @throws IllegalArgumentException if the cursor is null or has no values.
      */
-    static PageRequest beforeCursor(Cursor cursor, long pageNumber, int maxPageSize, boolean requestTotal) {
+    @Nonnull
+    static PageRequest beforeCursor(@Nonnull Cursor cursor, long pageNumber, int maxPageSize, boolean requestTotal) {
         return new Pagination(pageNumber, maxPageSize, Mode.CURSOR_PREVIOUS, cursor, requestTotal);
     }
 
@@ -180,7 +187,8 @@ public interface PageRequest {
      *         pagination. This method never returns {@code null}.
      * @throws IllegalArgumentException if no key values are provided.
      */
-    PageRequest afterCursor(Cursor cursor);
+    @Nonnull
+    PageRequest afterCursor(@Nonnull Cursor cursor);
 
     /**
      * <p>Requests {@linkplain CursoredPage cursor-based pagination} in the
@@ -196,7 +204,8 @@ public interface PageRequest {
      *         returns {@code null}.
      * @throws IllegalArgumentException if no key values are provided.
      */
-    PageRequest beforeCursor(Cursor cursor);
+    @Nonnull
+    PageRequest beforeCursor(@Nonnull Cursor cursor);
 
     /**
      * Compares with another instance to determine if both represent the same
@@ -206,7 +215,7 @@ public interface PageRequest {
      * same pagination information. Otherwise false.
      */
     @Override
-    boolean equals(Object o);
+    boolean equals(@Nullable Object o);
 
     /**
      * Returns the key values which are the starting point for cursor-based
@@ -214,6 +223,7 @@ public interface PageRequest {
      *
      * @return the cursor; {@link Optional#empty()} if using offset pagination.
      */
+    @Nonnull
     Optional<Cursor> cursor();
 
     /**
@@ -221,6 +231,7 @@ public interface PageRequest {
      *
      * @return the type of pagination.
      */
+    @Nonnull
     Mode mode();
 
     /**
@@ -283,6 +294,7 @@ public interface PageRequest {
      * @apiNote Page <em>numbers</em> are indexed from one;
      *          page {@linkplain #pageOffset offsets} are indexed from zero.
      */
+    @Nonnull
     PageRequest pageNumber(long pageNumber);
 
     /**
@@ -303,6 +315,7 @@ public interface PageRequest {
      * @apiNote Page <em>offsets</em> are indexed from zero;
      *          page {@linkplain #pageNumber numbers} are indexed from one.
      */
+    @Nonnull
     default PageRequest pageOffset(long offset) {
         if (mode() != Mode.OFFSET) {
             throw new IllegalStateException(
@@ -333,6 +346,7 @@ public interface PageRequest {
      * @return a new instance of {@code PageRequest}. This method never returns
      * {@code null}.
      */
+    @Nonnull
     PageRequest size(int maxPageSize);
 
     /**
@@ -345,6 +359,7 @@ public interface PageRequest {
      *
      * @return a page request with {@link #requestTotal()} set to {@code false}.
      */
+    @Nonnull
     PageRequest withoutTotal();
 
     /**
@@ -353,6 +368,7 @@ public interface PageRequest {
      *
      * @return a page request with {@link #requestTotal()} set to {@code true}.
      */
+    @Nonnull
     PageRequest withTotal();
 
     /**
@@ -399,7 +415,7 @@ public interface PageRequest {
          * @return true or false.
          */
         @Override
-        boolean equals(Object cursor);
+        boolean equals(@Nullable Object cursor);
 
         /**
          * Returns the key value at the specified position.
@@ -407,8 +423,7 @@ public interface PageRequest {
          * @param index position (0 is first) of the key value to obtain.
          * @return the key value at the specified position.
          * @throws IndexOutOfBoundsException if the index is negative or greater
-         *                                   than or equal to the
-         *                                   {@link #size}.
+         *                                   than or equal to the {@link #size}.
          */
         Object get(int index);
 
@@ -432,6 +447,7 @@ public interface PageRequest {
          *
          * @return an unmodifiable list containing the ordered values
          */
+        @Nonnull
         List<?> elements();
 
         /**
@@ -441,6 +457,7 @@ public interface PageRequest {
          * @return String representation of the cursor.
          */
         @Override
+        @Nonnull
         String toString();
 
         /**
@@ -455,7 +472,8 @@ public interface PageRequest {
          * @param key the composite key to use for the {@code Cursor}.
          * @return a new instance of {@code Cursor}
          */
-        static Cursor forKey(Object... key) {
+        @Nonnull
+        static Cursor forKey(@Nonnull Object... key) {
             return new PageRequestCursor(key);
         }
     }

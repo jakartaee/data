@@ -20,14 +20,15 @@ package jakarta.data.restrict;
 import java.util.List;
 
 import jakarta.data.messages.Messages;
+import jakarta.annotation.Nonnull;
 
 // Internal implementation class.
 // The proper way for users to obtain instances is via
 // the Restrict.any(...) or Restrict.all(...) methods
 
 record CompositeRestrictionRecord<T>(
-        Type type,
-        List<Restriction<? super T>> restrictions,
+        @Nonnull Type type,
+        @Nonnull List<Restriction<? super T>> restrictions,
         boolean isNegated) implements CompositeRestriction<T> {
 
     /**
@@ -52,11 +53,12 @@ record CompositeRestrictionRecord<T>(
         });
     }
 
-    CompositeRestrictionRecord(Type type, List<Restriction<? super T>> restrictions) {
+    CompositeRestrictionRecord(@Nonnull Type type, @Nonnull List<Restriction<? super T>> restrictions) {
         this(type, restrictions, false);
     }
 
     @Override
+    @Nonnull
     public CompositeRestriction<T> negate() {
         return new CompositeRestrictionRecord<>(type, restrictions, !isNegated);
     }
@@ -68,6 +70,7 @@ record CompositeRestrictionRecord<T>(
      * @return textual representation of a composite restriction.
      */
     @Override
+    @Nonnull
     public String toString() {
         String logicalOperator = type.asQueryLanguage();
         StringBuilder builder = new StringBuilder(

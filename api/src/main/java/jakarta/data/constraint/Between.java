@@ -21,6 +21,7 @@ import jakarta.data.expression.ComparableExpression;
 import jakarta.data.metamodel.Attribute;
 import jakarta.data.restrict.Restriction;
 import jakarta.data.spi.expression.literal.ComparableLiteral;
+import jakarta.annotation.Nonnull;
 
 /**
  * <p>A constraint that imposes minimum and maximum values.</p>
@@ -82,9 +83,10 @@ public interface Between<V extends Comparable<?>> extends Constraint<V> {
      * @return a {@code Between} constraint.
      * @throws NullPointerException if the minimum or maximum is {@code null}.
      */
+    @Nonnull
     static <V extends Comparable<?>> Between<V> bounds(
-            V minimum,
-            V maximum) {
+            @Nonnull V minimum,
+            @Nonnull V maximum) {
         return new BetweenRecord<>(ComparableLiteral.of(minimum),
                                    ComparableLiteral.of(maximum));
     }
@@ -107,9 +109,10 @@ public interface Between<V extends Comparable<?>> extends Constraint<V> {
      * @return a {@code Between} constraint.
      * @throws NullPointerException if the minimum or maximum is {@code null}.
      */
+    @Nonnull
     static <V extends Comparable<?>> Between<V> bounds(
-            V minimum,
-            ComparableExpression<?, V> maximum) {
+            @Nonnull V minimum,
+            @Nonnull ComparableExpression<?, V> maximum) {
         return new BetweenRecord<>(ComparableLiteral.of(minimum),
                                    maximum);
     }
@@ -132,9 +135,10 @@ public interface Between<V extends Comparable<?>> extends Constraint<V> {
      * @return a {@code Between} constraint.
      * @throws NullPointerException if the minimum or maximum is {@code null}.
      */
+    @Nonnull
     static <V extends Comparable<?>> Between<V> bounds(
-            ComparableExpression<?, V> minimum,
-            V maximum) {
+            @Nonnull ComparableExpression<?, V> minimum,
+            @Nonnull V maximum) {
         return new BetweenRecord<>(minimum,
                                    ComparableLiteral.of(maximum));
     }
@@ -160,9 +164,10 @@ public interface Between<V extends Comparable<?>> extends Constraint<V> {
      * @return a {@code Between} constraint.
      * @throws NullPointerException if the minimum or maximum is {@code null}.
      */
+    @Nonnull
     static <V extends Comparable<?>> Between<V> bounds(
-            ComparableExpression<?, V> minimum,
-            ComparableExpression<?, V> maximum) {
+            @Nonnull ComparableExpression<?, V> minimum,
+            @Nonnull ComparableExpression<?, V> maximum) {
         return new BetweenRecord<>(minimum,
                                    maximum);
     }
@@ -173,6 +178,7 @@ public interface Between<V extends Comparable<?>> extends Constraint<V> {
      *
      * @return an expression representing the minimum value.
      */
+    @Nonnull
     ComparableExpression<?, V> lowerBound();
 
     /**
@@ -181,5 +187,6 @@ public interface Between<V extends Comparable<?>> extends Constraint<V> {
      *
      * @return an expression representing the maximum value.
      */
+    @Nonnull
     ComparableExpression<?, V> upperBound();
 }

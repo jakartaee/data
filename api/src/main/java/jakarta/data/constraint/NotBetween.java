@@ -21,6 +21,7 @@ import jakarta.data.expression.ComparableExpression;
 import jakarta.data.metamodel.Attribute;
 import jakarta.data.restrict.Restriction;
 import jakarta.data.spi.expression.literal.ComparableLiteral;
+import jakarta.annotation.Nonnull;
 
 /**
  * <p>A constraint that excludes values within a range.</p>
@@ -81,7 +82,8 @@ public interface NotBetween<V extends Comparable<?>> extends Constraint<V> {
      * @return a {@code NotBetween} constraint.
      * @throws NullPointerException if the lower or upper bound is {@code null}.
      */
-    static <V extends Comparable<?>> NotBetween<V> bounds(V lower, V upper) {
+    @Nonnull
+    static <V extends Comparable<?>> NotBetween<V> bounds(@Nonnull V lower, @Nonnull V upper) {
         return new NotBetweenRecord<>(ComparableLiteral.of(lower),
                 ComparableLiteral.of(upper));
     }
@@ -104,9 +106,10 @@ public interface NotBetween<V extends Comparable<?>> extends Constraint<V> {
      * @return a {@code NotBetween} constraint.
      * @throws NullPointerException if lower or upper is {@code null}.
      */
+    @Nonnull
     static <V extends Comparable<?>> NotBetween<V> bounds(
-            V lower,
-            ComparableExpression<?, V> upper) {
+            @Nonnull V lower,
+            @Nonnull ComparableExpression<?, V> upper) {
         return new NotBetweenRecord<>(ComparableLiteral.of(lower),
                 upper);
     }
@@ -129,9 +132,10 @@ public interface NotBetween<V extends Comparable<?>> extends Constraint<V> {
      * @return a {@code NotBetween} constraint.
      * @throws NullPointerException if lower or upper is {@code null}.
      */
+    @Nonnull
     static <V extends Comparable<?>> NotBetween<V> bounds(
-            ComparableExpression<?, V> lower,
-            V upper) {
+            @Nonnull ComparableExpression<?, V> lower,
+            @Nonnull V upper) {
         return new NotBetweenRecord<>(lower,
                 ComparableLiteral.of(upper));
     }
@@ -156,9 +160,10 @@ public interface NotBetween<V extends Comparable<?>> extends Constraint<V> {
      * @return a {@code NotBetween} constraint.
      * @throws NullPointerException if lower or upper is {@code null}.
      */
+    @Nonnull
     static <V extends Comparable<?>> NotBetween<V> bounds(
-            ComparableExpression<?, V> lower,
-            ComparableExpression<?, V> upper) {
+            @Nonnull ComparableExpression<?, V> lower,
+            @Nonnull ComparableExpression<?, V> upper) {
         return new NotBetweenRecord<>(lower,
                 upper);
     }
@@ -169,6 +174,7 @@ public interface NotBetween<V extends Comparable<?>> extends Constraint<V> {
      *
      * @return an expression representing the minimum value excluded.
      */
+    @Nonnull
     ComparableExpression<?, V> lowerBound();
 
     /**
@@ -177,5 +183,6 @@ public interface NotBetween<V extends Comparable<?>> extends Constraint<V> {
      *
      * @return an expression representing the maximum value excluded.
      */
+    @Nonnull
     ComparableExpression<?, V> upperBound();
 }

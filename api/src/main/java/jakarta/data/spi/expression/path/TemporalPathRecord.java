@@ -22,10 +22,11 @@ import java.time.temporal.Temporal;
 import jakarta.data.expression.NavigableExpression;
 import jakarta.data.messages.Messages;
 import jakarta.data.metamodel.TemporalAttribute;
+import jakarta.annotation.Nonnull;
 
 record TemporalPathRecord<T, U, V extends Temporal & Comparable<? extends Temporal>>(
-        NavigableExpression<T, U> expression,
-        TemporalAttribute<U, V> attribute) implements TemporalPath<T, U, V> {
+        @Nonnull NavigableExpression<T, U> expression,
+        @Nonnull TemporalAttribute<U, V> attribute) implements TemporalPath<T, U, V> {
 
     TemporalPathRecord {
         Messages.requireNonNull(expression, "expression");
@@ -33,11 +34,13 @@ record TemporalPathRecord<T, U, V extends Temporal & Comparable<? extends Tempor
     }
 
     @Override
+    @Nonnull
     public Class<? extends V> type() {
         return attribute().type();
     }
 
     @Override
+    @Nonnull
     public String toString() {
         return expression + "." + attribute.name();
     }

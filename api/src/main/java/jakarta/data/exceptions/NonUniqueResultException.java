@@ -20,6 +20,7 @@ package jakarta.data.exceptions;
 import jakarta.data.repository.Find;
 import jakarta.data.repository.First;
 import jakarta.data.repository.Query;
+import jakarta.annotation.Nullable;
 
 /**
  * <p>This exception is raised when execution of a repository method with a
@@ -41,7 +42,7 @@ public class NonUniqueResultException extends DataException {
      *
      * @param message the detail message.
      */
-    public NonUniqueResultException(String message) {
+    public NonUniqueResultException(@Nullable String message) {
         super(message);
     }
 
@@ -53,7 +54,7 @@ public class NonUniqueResultException extends DataException {
      * @param cause   another exception or error that caused this exception.
      *                Null indicates that no other cause is specified.
      */
-    public NonUniqueResultException(String message, Throwable cause) {
+    public NonUniqueResultException(@Nullable String message, @Nullable Throwable cause) {
         super(message, cause);
     }
 
@@ -63,7 +64,7 @@ public class NonUniqueResultException extends DataException {
      *
      * @param cause the cause.
      */
-    public NonUniqueResultException(Throwable cause) {
+    public NonUniqueResultException(@Nullable Throwable cause) {
         super(cause);
     }
 }

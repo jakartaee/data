@@ -20,6 +20,7 @@ package jakarta.data.spi.expression.function;
 import jakarta.data.expression.NumericExpression;
 import jakarta.data.messages.Messages;
 import jakarta.data.spi.expression.literal.NumericLiteral;
+import jakarta.annotation.Nonnull;
 
 /**
  * <p>A {@linkplain NumericExpression numeric expression} that represents
@@ -80,6 +81,7 @@ public interface NumericOperatorExpression<T, N extends Number & Comparable<N>>
      *
      * @return the numeric expression to which the operator is applied.
      */
+    @Nonnull
     NumericExpression<? super T, N> left();
 
     /**
@@ -88,6 +90,7 @@ public interface NumericOperatorExpression<T, N extends Number & Comparable<N>>
      *
      * @return one of the enumerated {@link Operator Operator} values.
      */
+    @Nonnull
     Operator operator();
 
     /**
@@ -107,6 +110,7 @@ public interface NumericOperatorExpression<T, N extends Number & Comparable<N>>
      * @return the numeric expression applied to the {@code left()} expression
      *         by the arithmetic operator.
      */
+    @Nonnull
     NumericExpression<? super T, N> right();
 
     /**
@@ -125,10 +129,11 @@ public interface NumericOperatorExpression<T, N extends Number & Comparable<N>>
      * @throws NullPointerException if any of the method arguments are
      *                              {@code null}.
      */
+    @Nonnull
     static <T, N extends Number & Comparable<N>> NumericOperatorExpression<T, N> of(
-            Operator operator,
-            N left,
-            NumericExpression<T, N> right) {
+            @Nonnull Operator operator,
+            @Nonnull N left,
+            @Nonnull NumericExpression<T, N> right) {
         if (left == null) {
             throw new NullPointerException(
                     Messages.get("001.arg.required", "left"));
@@ -153,10 +158,11 @@ public interface NumericOperatorExpression<T, N extends Number & Comparable<N>>
      * @throws NullPointerException if any of the method arguments are
      *                              {@code null}.
      */
+    @Nonnull
     static <T, N extends Number & Comparable<N>> NumericOperatorExpression<T, N> of(
-            Operator operator,
-            NumericExpression<T, N> left,
-            N right) {
+            @Nonnull Operator operator,
+            @Nonnull NumericExpression<T, N> left,
+            @Nonnull N right) {
         if (right == null) {
             throw new NullPointerException(
                     Messages.get("001.arg.required", "right"));
@@ -182,10 +188,11 @@ public interface NumericOperatorExpression<T, N extends Number & Comparable<N>>
      * @throws NullPointerException if any of the method arguments are
      *                              {@code null}.
      */
+    @Nonnull
     static <T, N extends Number & Comparable<N>> NumericOperatorExpression<T, N> of(
-            Operator operator,
-            NumericExpression<T, N> left,
-            NumericExpression<? super T, N> right) {
+            @Nonnull Operator operator,
+            @Nonnull NumericExpression<T, N> left,
+            @Nonnull NumericExpression<? super T, N> right) {
         return new NumericOperatorExpressionRecord<>(operator, left, right);
     }
 }

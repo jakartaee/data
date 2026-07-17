@@ -19,6 +19,7 @@ package jakarta.data.metamodel;
 
 import jakarta.data.expression.TextExpression;
 import jakarta.data.messages.Messages;
+import jakarta.annotation.Nonnull;
 
 /**
  * Represents an textual entity attribute in the {@link StaticMetamodel}.
@@ -35,6 +36,7 @@ public interface TextAttribute<T> extends ComparableAttribute<T, String>, TextEx
      * @since 1.1
      */
     @Override
+    @Nonnull
     default Class<String> type() {
         return String.class;
     }
@@ -49,7 +51,8 @@ public interface TextAttribute<T> extends ComparableAttribute<T, String>, TextEx
      * @return instance of {@code TextAttribute}.
      * @since 1.1
      */
-    static <T> TextAttribute<T> of(Class<T> entityClass, String name) {
+    @Nonnull
+    static <T> TextAttribute<T> of(@Nonnull Class<T> entityClass, @Nonnull String name) {
         Messages.requireNonNull(entityClass, "entityClass");
         Messages.requireNonNull(name, "name");
 

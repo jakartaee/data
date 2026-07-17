@@ -130,6 +130,9 @@ Copyright &#169; 2024 Eclipse Foundation. All rights reserved.<br>
 Use is subject to <a href="{@docRoot}/doc-files/speclicense.html" target="_top">license terms</a>.]]>
                             </bottom>
                             <docfilessubdirs>true</docfilessubdirs>
+                            <links>
+                                <link>https://jakarta.ee/specifications/persistence/4.0/apidocs/</link>
+                            </links>
                             <groups>
                                 <group>
                                     <title>Jakarta Data API Documentation</title>
@@ -239,6 +242,9 @@ Use is subject to <a href="{@docRoot}/doc-files/speclicense.html" target="_top">
                                     <goal>jar</goal>
                                 </goals>
                                 <configuration>
+                                    <links>
+                                        <link>https://jakarta.ee/specifications/persistence/4.0/apidocs/</link>
+                                    </links>
                                     <tags>
                                         <tag>
                                             <name>apiNote</name>

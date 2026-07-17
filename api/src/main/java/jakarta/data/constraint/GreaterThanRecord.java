@@ -19,9 +19,10 @@ package jakarta.data.constraint;
 
 import jakarta.data.expression.ComparableExpression;
 import jakarta.data.messages.Messages;
+import jakarta.annotation.Nonnull;
 
 record GreaterThanRecord<V extends Comparable<?>>(
-        ComparableExpression<?, V> bound)
+        @Nonnull ComparableExpression<?, V> bound)
         implements GreaterThan<V> {
     public GreaterThanRecord {
         if (bound == null) {
@@ -31,11 +32,13 @@ record GreaterThanRecord<V extends Comparable<?>>(
     }
 
     @Override
+    @Nonnull
     public AtMost<V> negate() {
         return AtMost.max(bound);
     }
 
     @Override
+    @Nonnull
     public String toString() {
         return "> " + bound;
     }

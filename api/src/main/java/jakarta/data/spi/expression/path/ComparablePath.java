@@ -20,11 +20,13 @@ package jakarta.data.spi.expression.path;
 import jakarta.data.expression.ComparableExpression;
 import jakarta.data.expression.NavigableExpression;
 import jakarta.data.metamodel.ComparableAttribute;
+import jakarta.annotation.Nonnull;
 
 public interface ComparablePath<T, U, C extends Comparable<?>>
         extends Path<T, U>, ComparableExpression<T, C> {
+    @Nonnull
     static <T, U, C extends Comparable<C>> ComparablePath<T, U, C>
-    of(NavigableExpression<T, U> expression, ComparableAttribute<U, C> attribute) {
+    of(@Nonnull NavigableExpression<T, U> expression, @Nonnull ComparableAttribute<U, C> attribute) {
         return new ComparablePathRecord<>(expression, attribute);
     }
 }

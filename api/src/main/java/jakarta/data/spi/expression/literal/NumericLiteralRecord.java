@@ -21,9 +21,10 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 import jakarta.data.messages.Messages;
+import jakarta.annotation.Nonnull;
 
 record NumericLiteralRecord<N extends Number & Comparable<N>>
-        (Class<? extends N> type, N value)
+        (@Nonnull Class<? extends N> type, @Nonnull N value)
         implements NumericLiteral<N> {
 
     NumericLiteralRecord {
@@ -32,6 +33,7 @@ record NumericLiteralRecord<N extends Number & Comparable<N>>
     }
 
     @Override
+    @Nonnull
     public String toString() {
         if (value instanceof Long l) {
             return l + "L";

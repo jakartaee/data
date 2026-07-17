@@ -19,6 +19,7 @@ package jakarta.data.metamodel;
 
 import jakarta.data.expression.BooleanExpression;
 import jakarta.data.messages.Messages;
+import jakarta.annotation.Nonnull;
 
 /**
  * <p>Represents a {@linkplain Boolean boolean} entity attribute in the
@@ -59,8 +60,9 @@ public interface BooleanAttribute<T>
      *                      or {@code Boolean.class}.
      * @return instance of {@code BooleanAttribute}.
      */
+    @Nonnull
     static <T> BooleanAttribute<T> of(
-            Class<T> entityClass, String name, Class<Boolean> attributeType) {
+            @Nonnull Class<T> entityClass, @Nonnull String name, @Nonnull Class<Boolean> attributeType) {
         Messages.requireNonNull(entityClass, "entityClass");
         Messages.requireNonNull(name, "name");
         Messages.requireNonNull(attributeType, "attributeType");
@@ -75,6 +77,7 @@ public interface BooleanAttribute<T>
      * @return {@code boolean.class} or {@code Boolean.class}.
      */
     @Override
+    @Nonnull
     Class<Boolean> type();
 }
 

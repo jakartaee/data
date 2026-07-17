@@ -19,6 +19,7 @@ package jakarta.data.metamodel;
 
 import jakarta.data.Sort;
 import jakarta.data.messages.Messages;
+import jakarta.annotation.Nonnull;
 
 /**
  * <p>Represents a entity attribute in the {@link StaticMetamodel}
@@ -46,6 +47,7 @@ public interface SortableAttribute<T> extends Attribute<T> {
      *
      * @return a request for an ascending sort on the entity attribute.
      */
+    @Nonnull
     default Sort<T> asc() {
         return Sort.asc(name());
     }
@@ -56,6 +58,7 @@ public interface SortableAttribute<T> extends Attribute<T> {
      *
      * @return a request for a descending sort on the entity attribute.
      */
+    @Nonnull
     default Sort<T> desc() {
         return Sort.desc(name());
     }
@@ -73,9 +76,10 @@ public interface SortableAttribute<T> extends Attribute<T> {
      * @return instance of {@code SortableAttribute}.
      * @since 1.1
      */
-    static <T, V> SortableAttribute<T> of(Class<T> entityClass,
-                                          String name,
-                                          Class<V> attributeType) {
+    @Nonnull
+    static <T, V> SortableAttribute<T> of(@Nonnull Class<T> entityClass,
+                                          @Nonnull String name,
+                                          @Nonnull Class<V> attributeType) {
         Messages.requireNonNull(entityClass, "entityClass");
         Messages.requireNonNull(name, "name");
         Messages.requireNonNull(attributeType, "attributeType");

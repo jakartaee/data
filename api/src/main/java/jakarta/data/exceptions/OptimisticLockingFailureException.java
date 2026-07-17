@@ -18,6 +18,7 @@
 package jakarta.data.exceptions;
 
 import jakarta.data.repository.BasicRepository;
+import jakarta.annotation.Nullable;
 
 /**
  * Indicates a failure that is due to inconsistent state between the entity and
@@ -36,7 +37,7 @@ public class OptimisticLockingFailureException extends DataException {
      *
      * @param message the detail message.
      */
-    public OptimisticLockingFailureException(String message) {
+    public OptimisticLockingFailureException(@Nullable String message) {
         super(message);
     }
 
@@ -48,7 +49,7 @@ public class OptimisticLockingFailureException extends DataException {
      * @param cause   another exception or error that caused this exception.
      *                Null indicates that no other cause is specified.
      */
-    public OptimisticLockingFailureException(String message, Throwable cause) {
+    public OptimisticLockingFailureException(@Nullable String message, @Nullable Throwable cause) {
         super(message, cause);
     }
 
@@ -58,7 +59,7 @@ public class OptimisticLockingFailureException extends DataException {
      *
      * @param cause the cause.
      */
-    public OptimisticLockingFailureException(Throwable cause) {
+    public OptimisticLockingFailureException(@Nullable Throwable cause) {
         super(cause);
     }
 }

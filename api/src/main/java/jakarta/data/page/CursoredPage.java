@@ -23,6 +23,7 @@ import jakarta.data.Order;
 import jakarta.data.Sort;
 
 import java.util.NoSuchElementException;
+import jakarta.annotation.Nonnull;
 
 /**
  * <p>A page of data retrieved to satisfy a given page request, with a
@@ -167,6 +168,7 @@ public interface CursoredPage<T> extends Page<T> {
      *                                       expression} that is not an
      *                                       entity attribute
      */
+    @Nonnull
     PageRequest.Cursor cursor(int index);
 
     /**
@@ -199,6 +201,7 @@ public interface CursoredPage<T> extends Page<T> {
      *                                       entity attribute
      */
     @Override
+    @Nonnull
     PageRequest nextPageRequest();
 
     /**
@@ -234,5 +237,6 @@ public interface CursoredPage<T> extends Page<T> {
      *                                       entity attribute
      */
     @Override
+    @Nonnull
     PageRequest previousPageRequest();
 }

@@ -20,11 +20,13 @@ package jakarta.data.spi.expression.path;
 import jakarta.data.expression.NavigableExpression;
 import jakarta.data.expression.NumericExpression;
 import jakarta.data.metamodel.NumericAttribute;
+import jakarta.annotation.Nonnull;
 
 public interface NumericPath<T, U, N extends Number & Comparable<N>>
         extends Path<T, U>, NumericExpression<T, N> {
+    @Nonnull
     static <T, U, N extends Number & Comparable<N>> NumericPath<T, U, N>
-    of(NavigableExpression<T, U> expression, NumericAttribute<U, N> attribute) {
+    of(@Nonnull NavigableExpression<T, U> expression, @Nonnull NumericAttribute<U, N> attribute) {
         return new NumericPathRecord<>(expression, attribute);
     }
 }

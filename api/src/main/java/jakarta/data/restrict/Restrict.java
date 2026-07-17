@@ -21,6 +21,7 @@ import jakarta.data.messages.Messages;
 import jakarta.data.metamodel.Attribute;
 
 import java.util.List;
+import jakarta.annotation.Nonnull;
 
 /**
  * <p>Creates composite restrictions.</p>
@@ -78,8 +79,9 @@ public class Restrict {
      *                                  includes a {@code null} value.
      */
     @SafeVarargs
+    @Nonnull
     public static <T> Restriction<T> all(
-            Restriction<? super T>... restrictions) {
+            @Nonnull Restriction<? super T>... restrictions) {
         return new CompositeRestrictionRecord<T>(
                 CompositeRestriction.Type.ALL,
                 List.of(restrictions));
@@ -117,8 +119,9 @@ public class Restrict {
      * @throws NullPointerException     if the supplied restrictions list
      *                                  includes a {@code null} value.
      */
+    @Nonnull
     public static <T> Restriction<T> all(
-            List<? extends Restriction<? super T>> restrictions) {
+            @Nonnull List<? extends Restriction<? super T>> restrictions) {
         return new CompositeRestrictionRecord<>(
                 CompositeRestriction.Type.ALL,
                 List.copyOf(restrictions));
@@ -148,8 +151,9 @@ public class Restrict {
      *                                  includes a {@code null} value.
      */
     @SafeVarargs
+    @Nonnull
     public static <T> Restriction<T> any(
-            Restriction<? super T>... restrictions) {
+            @Nonnull Restriction<? super T>... restrictions) {
         return new CompositeRestrictionRecord<T>(
                 CompositeRestriction.Type.ANY,
                 List.of(restrictions));
@@ -192,8 +196,9 @@ public class Restrict {
      * @throws NullPointerException     if the supplied restrictions array
      *                                  includes a {@code null} value.
      */
+    @Nonnull
     public static <T> Restriction<T>any(
-            List<? extends Restriction<? super T>> restrictions) {
+            @Nonnull List<? extends Restriction<? super T>> restrictions) {
         return new CompositeRestrictionRecord<T>(
                 CompositeRestriction.Type.ANY,
                 List.copyOf(restrictions));
@@ -209,7 +214,8 @@ public class Restrict {
      * @throws NullPointerException if the supplied restriction is
      *                              {@code null}.
      */
-    public static <T> Restriction<T> not(Restriction<T> restriction) {
+    @Nonnull
+    public static <T> Restriction<T> not(@Nonnull Restriction<T> restriction) {
         if (restriction == null) {
             throw new NullPointerException(Messages.get("001.arg.required",
                                            "restriction"));
@@ -227,6 +233,7 @@ public class Restrict {
      * @return a restriction that is always considered to be satisfied.
      */
     @SuppressWarnings("unchecked")
+    @Nonnull
     public static <T> Restriction<T> unrestricted() {
         return (Restriction<T>) Unrestricted.INSTANCE;
     }

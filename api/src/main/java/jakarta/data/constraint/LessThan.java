@@ -22,6 +22,7 @@ import jakarta.data.metamodel.Attribute;
 import jakarta.data.repository.Is;
 import jakarta.data.restrict.Restriction;
 import jakarta.data.spi.expression.literal.ComparableLiteral;
+import jakarta.annotation.Nonnull;
 
 /**
  * <p>A constraint that requires being below an upper bound.</p>
@@ -86,8 +87,9 @@ public interface LessThan<V extends Comparable<?>> extends Constraint<V> {
      * @return a {@code LessThan} constraint.
      * @throws NullPointerException if the upper bound is {@code null}.
      */
+    @Nonnull
     static <V extends Comparable<?>> LessThan<V> bound(
-            V upperBound) {
+            @Nonnull V upperBound) {
         return new LessThanRecord<>(ComparableLiteral.of(upperBound));
     }
 
@@ -107,8 +109,9 @@ public interface LessThan<V extends Comparable<?>> extends Constraint<V> {
      * @return a {@code LessThan} constraint.
      * @throws NullPointerException if the upper bound is {@code null}.
      */
+    @Nonnull
     static <V extends Comparable<?>> LessThan<V> bound(
-            ComparableExpression<?, V> upperBound) {
+            @Nonnull ComparableExpression<?, V> upperBound) {
         return new LessThanRecord<>(upperBound);
     }
 
@@ -118,5 +121,6 @@ public interface LessThan<V extends Comparable<?>> extends Constraint<V> {
      *
      * @return an expression representing the upper bound.
      */
+    @Nonnull
     ComparableExpression<?, V> bound();
 }

@@ -17,6 +17,7 @@
  */
 package jakarta.data;
 
+import jakarta.annotation.Nonnull;
 import jakarta.data.messages.Messages;
 import jakarta.data.page.PageRequest;
 import jakarta.data.repository.Find;
@@ -135,6 +136,7 @@ public record Limit(int maxResults, long startAt) {
      * method that performs a find operation; will never be {@code null}.
      * @throws IllegalArgumentException if maxResults is less than 1.
      */
+    @Nonnull
     public static Limit of(int maxResults) {
         return new Limit(maxResults, DEFAULT_START_AT);
     }
@@ -156,6 +158,7 @@ public record Limit(int maxResults, long startAt) {
      *         {@link Long#MAX_VALUE}
      * @since 1.1
      */
+    @Nonnull
     public static Limit of(int maxResults, long offset) {
         if (offset < 0) {
             throw new IllegalArgumentException(
@@ -188,6 +191,7 @@ public record Limit(int maxResults, long startAt) {
      *                                  {@code startAt} to {@code endAt} exceeds
      *                                  {@link Integer#MAX_VALUE}.
      */
+    @Nonnull
     public static Limit range(long startAt, long endAt) {
         if (endAt < startAt)
             throw new IllegalArgumentException("startAt: " + startAt + ", endAt: " + endAt);

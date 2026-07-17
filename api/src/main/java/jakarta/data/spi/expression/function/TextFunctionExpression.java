@@ -25,6 +25,7 @@ import jakarta.data.spi.expression.literal.NumericLiteral;
 import jakarta.data.spi.expression.literal.StringLiteral;
 
 import java.util.List;
+import jakarta.annotation.Nonnull;
 
 /**
  * <p>An {@linkplain Expression expression} that represents applying a function
@@ -152,9 +153,10 @@ public interface TextFunctionExpression<T>
      *                   expression that evaluates to a {@link String} value.
      * @return a {@code TextFunctionExpression} representing the function.
      */
+    @Nonnull
     static <T> TextFunctionExpression<T> of(
-            String name,
-            TextExpression<? super T> expression) {
+            @Nonnull String name,
+            @Nonnull TextExpression<? super T> expression) {
 
         Messages.requireNonNull(expression, "expression");
 
@@ -175,10 +177,11 @@ public interface TextFunctionExpression<T>
      * @param right the function's second argument.
      * @return a {@code TextFunctionExpression} representing the function.
      */
+    @Nonnull
     static <T> TextFunctionExpression<T> of(
-            String name,
-            TextExpression<? super T> left,
-            String right) {
+            @Nonnull String name,
+            @Nonnull TextExpression<? super T> left,
+            @Nonnull String right) {
 
         Messages.requireNonNull(left, "left");
         Messages.requireNonNull(right, "right");
@@ -202,10 +205,11 @@ public interface TextFunctionExpression<T>
      *              expression that evaluates to a {@link String} value.
      * @return a {@code TextFunctionExpression} representing the function.
      */
+    @Nonnull
     static <T> TextFunctionExpression<T> of(
-            String name,
-            String left,
-            TextExpression<? super T> right) {
+            @Nonnull String name,
+            @Nonnull String left,
+            @Nonnull TextExpression<? super T> right) {
 
         Messages.requireNonNull(left, "left");
         Messages.requireNonNull(right, "right");
@@ -230,10 +234,11 @@ public interface TextFunctionExpression<T>
      *              expression that evaluates to a {@link String} value.
      * @return a {@code TextFunctionExpression} representing the function.
      */
+    @Nonnull
     static <T> TextFunctionExpression<T> of(
-            String name,
-            TextExpression<? super T> left,
-            TextExpression<? super T> right) {
+            @Nonnull String name,
+            @Nonnull TextExpression<? super T> left,
+            @Nonnull TextExpression<? super T> right) {
 
         Messages.requireNonNull(left, "left");
         Messages.requireNonNull(right, "right");
@@ -256,9 +261,10 @@ public interface TextFunctionExpression<T>
      *                   numeric value.
      * @return a {@code TextFunctionExpression} representing the function.
      */
+    @Nonnull
     static <T> TextFunctionExpression<T> of(
-            String name,
-            TextExpression<? super T> expression,
+            @Nonnull String name,
+            @Nonnull TextExpression<? super T> expression,
             int literal) {
 
         Messages.requireNonNull(expression, "expression");
@@ -286,5 +292,6 @@ public interface TextFunctionExpression<T>
      *         function.
      */
     @Override
+    @Nonnull
     List<? extends ComparableExpression<? super T, ?>> arguments();
 }

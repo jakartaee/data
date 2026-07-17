@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+import jakarta.annotation.Nonnull;
 
 /**
  * <p>A page contains the data that is retrieved to satisfy a given page
@@ -55,6 +56,7 @@ public interface Page<T> extends Iterable<T> {
      *
      * @return the page content as a {@link List}; will never be {@code null}.
      */
+    @Nonnull
     List<T> content();
 
     /**
@@ -70,6 +72,7 @@ public interface Page<T> extends Iterable<T> {
      *
      * @return a stream of results.
      */
+    @Nonnull
     default Stream<T> stream() {
         return StreamSupport.stream(spliterator(), false);
     }
@@ -118,6 +121,7 @@ public interface Page<T> extends Iterable<T> {
      *
      * @return the request for the current page; will never be {@code null}.
      */
+    @Nonnull
     PageRequest pageRequest();
 
 
@@ -131,6 +135,7 @@ public interface Page<T> extends Iterable<T> {
      *                                {@code true} result of {@link #hasNext()}
      *                                before invoking this method.
      */
+    @Nonnull
     PageRequest nextPageRequest();
 
 
@@ -145,6 +150,7 @@ public interface Page<T> extends Iterable<T> {
      *                                {@link #hasPrevious()} before invoking
      *                                this method.
      */
+    @Nonnull
     PageRequest previousPageRequest();
 
 

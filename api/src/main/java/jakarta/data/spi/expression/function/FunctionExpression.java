@@ -21,6 +21,7 @@ import java.util.List;
 
 import jakarta.data.expression.Expression;
 import jakarta.data.expression.TextExpression;
+import jakarta.annotation.Nonnull;
 
 /**
  * <p>An {@linkplain Expression expression} that represents application of a function
@@ -45,6 +46,7 @@ public interface FunctionExpression<T, V> extends Expression<T, V> {
      *
      * @return the name of the function.
      */
+    @Nonnull
     String name();
 
     /**
@@ -64,5 +66,6 @@ public interface FunctionExpression<T, V> extends Expression<T, V> {
      * @return a list of expressions that represent the arguments to the
      *         function.
      */
+    @Nonnull
     List<? extends Expression<? super T, ?>> arguments();
 }

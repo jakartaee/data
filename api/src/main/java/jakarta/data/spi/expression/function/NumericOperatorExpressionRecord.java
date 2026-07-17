@@ -23,10 +23,11 @@ import jakarta.data.spi.expression.literal.NumericLiteral;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import jakarta.annotation.Nonnull;
 
 record NumericOperatorExpressionRecord<T, N extends Number & Comparable<N>>
-        (Operator operator, NumericExpression<? super T, N> left,
-         NumericExpression<? super T, N> right)
+        (@Nonnull Operator operator, @Nonnull NumericExpression<? super T, N> left,
+         @Nonnull NumericExpression<? super T, N> right)
         implements NumericOperatorExpression<T, N> {
 
     NumericOperatorExpressionRecord {
@@ -54,6 +55,7 @@ record NumericOperatorExpressionRecord<T, N extends Number & Comparable<N>>
     }
 
     @Override
+    @Nonnull
     public Class<? extends N> type() {
         return left.type();
     }
@@ -64,7 +66,7 @@ record NumericOperatorExpressionRecord<T, N extends Number & Comparable<N>>
      * @param number a Number that is also Comparable.
      * @return true if the number is equal to 0. Otherwise false.
      */
-    private static boolean isZero(Number number) {
+    private static boolean isZero(@Nonnull Number number) {
         if (number instanceof Integer i)
             return i == 0;
         if (number instanceof Long l)
@@ -88,6 +90,7 @@ record NumericOperatorExpressionRecord<T, N extends Number & Comparable<N>>
     }
 
     @Override
+    @Nonnull
     public String toString() {
         char symbol = switch (operator) {
             case PLUS   -> '+';

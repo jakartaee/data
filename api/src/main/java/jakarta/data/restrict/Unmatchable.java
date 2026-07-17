@@ -18,6 +18,7 @@
 package jakarta.data.restrict;
 
 import java.util.List;
+import jakarta.annotation.Nonnull;
 
 class Unmatchable<T> implements CompositeRestriction<T> {
     static final Unmatchable<?> INSTANCE = new Unmatchable<>();
@@ -33,11 +34,13 @@ class Unmatchable<T> implements CompositeRestriction<T> {
 
     @Override
     @SuppressWarnings("unchecked")
+    @Nonnull
     public CompositeRestriction<T> negate() {
         return (CompositeRestriction<T>) Unrestricted.INSTANCE;
     }
 
     @Override
+    @Nonnull
     public List<Restriction<? super T>> restrictions() {
         return List.of();
     }
@@ -48,11 +51,13 @@ class Unmatchable<T> implements CompositeRestriction<T> {
      * @return textual representation of the unmatchable restriction.
      */
     @Override
+    @Nonnull
     public String toString() {
         return "UNMATCHABLE";
     }
 
     @Override
+    @Nonnull
     public Type type() {
         return Type.ANY;
     }

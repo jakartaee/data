@@ -27,6 +27,7 @@ import jakarta.data.metamodel.TemporalAttribute;
 import jakarta.data.spi.expression.function.CurrentDate;
 import jakarta.data.spi.expression.function.CurrentDateTime;
 import jakarta.data.spi.expression.function.CurrentTime;
+import jakarta.annotation.Nonnull;
 
 /**
  * <p>An {@linkplain Expression expression} that evaluates to a
@@ -56,6 +57,7 @@ public interface TemporalExpression<T, V extends Temporal & Comparable<? extends
      * @return a {@code TemporalExpression} representing the function to obtain
      *         the current date as known to the data store.
      */
+    @Nonnull
     static TemporalExpression<Object, LocalDate> localDate() {
         return CurrentDate.now();
     }
@@ -66,6 +68,7 @@ public interface TemporalExpression<T, V extends Temporal & Comparable<? extends
      * @return a {@code TemporalExpression} representing the function to obtain
      *         the current date and time as known to the data store.
      */
+    @Nonnull
     static TemporalExpression<Object, LocalDateTime> localDateTime() {
         return CurrentDateTime.now();
     }
@@ -76,6 +79,7 @@ public interface TemporalExpression<T, V extends Temporal & Comparable<? extends
      * @return a {@code TemporalExpression} representing the function to obtain
      *         the current time as known to the data store.
      */
+    @Nonnull
     static TemporalExpression<Object, LocalTime> localTime() {
         return CurrentTime.now();
     }

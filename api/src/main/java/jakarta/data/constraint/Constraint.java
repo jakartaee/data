@@ -25,6 +25,7 @@ import jakarta.data.repository.Delete;
 import jakarta.data.repository.Find;
 import jakarta.data.repository.Is;
 import jakarta.data.restrict.Restriction;
+import jakarta.annotation.Nonnull;
 
 /**
  * <p>Supertype of interfaces that define constraints on entity attributes.</p>
@@ -97,6 +98,7 @@ public interface Constraint<V> {
      *
      * @return the opposite {@code Constraint} subtype.
      */
+    @Nonnull
     Constraint<V> negate();
 
     /**
@@ -109,7 +111,8 @@ public interface Constraint<V> {
      * @throws NullPointerException if the value is {@code null}.
      * @see EqualTo#value(Object)
      */
-    static <V> EqualTo<V> equalTo(V value) {
+    @Nonnull
+    static <V> EqualTo<V> equalTo(@Nonnull V value) {
         return EqualTo.value(value);
     }
 
@@ -123,7 +126,8 @@ public interface Constraint<V> {
      * @throws NullPointerException if the value is {@code null}.
      * @see NotEqualTo#value(Object)
      */
-    static <V> NotEqualTo<V> notEqualTo(V value) {
+    @Nonnull
+    static <V> NotEqualTo<V> notEqualTo(@Nonnull V value) {
         return NotEqualTo.value(value);
     }
 
@@ -140,7 +144,8 @@ public interface Constraint<V> {
      * @see In#values(Object...)
      */
     @SafeVarargs
-    static <V> In<V> in(V... values) {
+    @Nonnull
+    static <V> In<V> in(@Nonnull V... values) {
         return In.values(values);
     }
 
@@ -156,7 +161,8 @@ public interface Constraint<V> {
      *         within the collection is {@code null}.
      * @see In#values(java.util.Collection)
      */
-    static <V> In<V> in(Set<V> values) {
+    @Nonnull
+    static <V> In<V> in(@Nonnull Set<V> values) {
         return In.values(values);
     }
 
@@ -173,7 +179,8 @@ public interface Constraint<V> {
      * @see NotIn#values(Object...)
      */
     @SafeVarargs
-    static <V> NotIn<V> notIn(V... values) {
+    @Nonnull
+    static <V> NotIn<V> notIn(@Nonnull V... values) {
         return NotIn.values(values);
     }
 
@@ -189,7 +196,8 @@ public interface Constraint<V> {
      *         within the collection is {@code null}.
      * @see NotIn#values(java.util.Collection)
      */
-    static <V> NotIn<V> notIn(Set<V> values) {
+    @Nonnull
+    static <V> NotIn<V> notIn(@Nonnull Set<V> values) {
         return NotIn.values(values);
     }
 
@@ -204,7 +212,8 @@ public interface Constraint<V> {
      * @throws NullPointerException if the pattern is {@code null}.
      * @see Like#pattern(String)
      */
-    static Like like(String pattern) {
+    @Nonnull
+    static Like like(@Nonnull String pattern) {
         return Like.pattern(pattern);
     }
 
@@ -221,7 +230,8 @@ public interface Constraint<V> {
      * @throws NullPointerException if the pattern is {@code null}.
      * @see Like#pattern(String, char, char)
      */
-    static Like like(String pattern, char charWildcard, char stringWildcard) {
+    @Nonnull
+    static Like like(@Nonnull String pattern, char charWildcard, char stringWildcard) {
         return Like.pattern(pattern, charWildcard, stringWildcard);
     }
 
@@ -238,7 +248,8 @@ public interface Constraint<V> {
      * @throws NullPointerException if the pattern is {@code null}.
      * @see Like#pattern(String, char, char, char)
      */
-    static Like like(String pattern, char charWildcard, char stringWildcard, char escape) {
+    @Nonnull
+    static Like like(@Nonnull String pattern, char charWildcard, char stringWildcard, char escape) {
         return Like.pattern(pattern, charWildcard, stringWildcard, escape);
     }
 
@@ -253,7 +264,8 @@ public interface Constraint<V> {
      * @throws NullPointerException if the pattern is {@code null}.
      * @see NotLike#pattern(String)
      */
-    static NotLike notLike(String pattern) {
+    @Nonnull
+    static NotLike notLike(@Nonnull String pattern) {
         return NotLike.pattern(pattern);
     }
 
@@ -270,7 +282,8 @@ public interface Constraint<V> {
      * @throws NullPointerException if the pattern is {@code null}.
      * @see NotLike#pattern(String, char, char)
      */
-    static NotLike notLike(String pattern, char charWildcard, char stringWildcard) {
+    @Nonnull
+    static NotLike notLike(@Nonnull String pattern, char charWildcard, char stringWildcard) {
         return NotLike.pattern(pattern, charWildcard, stringWildcard);
     }
 
@@ -288,7 +301,8 @@ public interface Constraint<V> {
      * @throws NullPointerException if the pattern is {@code null}.
      * @see NotLike#pattern(String, char, char, char)
      */
-    static NotLike notLike(String pattern,
+    @Nonnull
+    static NotLike notLike(@Nonnull String pattern,
                            char charWildcard,
                            char stringWildcard,
                            char escape) {
@@ -302,6 +316,7 @@ public interface Constraint<V> {
      * @return a {@link Null} constraint.
      * @see Null#instance()
      */
+    @Nonnull
     static <V> Null<V> isNull() {
         return Null.instance();
     }
@@ -314,6 +329,7 @@ public interface Constraint<V> {
      * @return a {@link NotNull} constraint.
      * @see NotNull#instance()
      */
+    @Nonnull
     static <V> NotNull<V> notNull() {
         return NotNull.instance();
     }
@@ -328,7 +344,8 @@ public interface Constraint<V> {
      * @throws NullPointerException if the bound is {@code null}.
      * @see GreaterThan#bound(Comparable)
      */
-    static <V extends Comparable<?>> GreaterThan<V> greaterThan(V bound) {
+    @Nonnull
+    static <V extends Comparable<?>> GreaterThan<V> greaterThan(@Nonnull V bound) {
         return GreaterThan.bound(bound);
     }
 
@@ -342,7 +359,8 @@ public interface Constraint<V> {
      * @throws NullPointerException if the bound is {@code null}.
      * @see LessThan#bound(Comparable)
      */
-    static <V extends Comparable<?>> LessThan<V> lessThan(V bound) {
+    @Nonnull
+    static <V extends Comparable<?>> LessThan<V> lessThan(@Nonnull V bound) {
         return LessThan.bound(bound);
     }
 
@@ -356,7 +374,8 @@ public interface Constraint<V> {
      * @throws NullPointerException if the minimum is {@code null}.
      * @see AtLeast#min(Comparable)
      */
-    static <V extends Comparable<?>> AtLeast<V> greaterThanEqual(V minimum) {
+    @Nonnull
+    static <V extends Comparable<?>> AtLeast<V> greaterThanEqual(@Nonnull V minimum) {
         return AtLeast.min(minimum);
     }
 
@@ -370,7 +389,8 @@ public interface Constraint<V> {
      * @throws NullPointerException if the maximum is {@code null}.
      * @see AtMost#max(Comparable)
      */
-    static <V extends Comparable<?>> AtMost<V> lessThanEqual(V maximum) {
+    @Nonnull
+    static <V extends Comparable<?>> AtMost<V> lessThanEqual(@Nonnull V maximum) {
         return AtMost.max(maximum);
     }
 
@@ -386,7 +406,8 @@ public interface Constraint<V> {
      * @throws NullPointerException if the minimum or maximum is {@code null}.
      * @see Between#bounds(Comparable, Comparable)
      */
-    static <V extends Comparable<?>> Between<V> between(V minimum, V maximum) {
+    @Nonnull
+    static <V extends Comparable<?>> Between<V> between(@Nonnull V minimum, @Nonnull V maximum) {
         return Between.bounds(minimum, maximum);
     }
 
@@ -403,7 +424,8 @@ public interface Constraint<V> {
      *         {@code null}.
      * @see NotBetween#bounds(Comparable, Comparable)
      */
-    static <V extends Comparable<?>> NotBetween<V> notBetween(V lowerBound, V upperBound) {
+    @Nonnull
+    static <V extends Comparable<?>> NotBetween<V> notBetween(@Nonnull V lowerBound, @Nonnull V upperBound) {
         return NotBetween.bounds(lowerBound, upperBound);
     }
 }

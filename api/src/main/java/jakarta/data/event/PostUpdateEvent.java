@@ -17,6 +17,8 @@
  */
 package jakarta.data.event;
 
+import jakarta.annotation.Nonnull;
+
 /**
  * An event that occurs when an {@link jakarta.data.repository.Update} lifecycle
  * method is called, after each entity is updated in the datastore.
@@ -24,7 +26,7 @@ package jakarta.data.event;
  * @param <E> the entity type
  */
 public class PostUpdateEvent<E> extends LifecycleEvent<E> {
-    public PostUpdateEvent(E entity) {
+    public PostUpdateEvent(@Nonnull E entity) {
         super(entity);
     }
 }

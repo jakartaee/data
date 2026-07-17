@@ -19,6 +19,7 @@ package jakarta.data.metamodel;
 
 import jakarta.data.expression.Expression;
 import jakarta.data.messages.Messages;
+import jakarta.annotation.Nonnull;
 
 /**
  * <p>Represents an entity attribute in the {@link StaticMetamodel} that is
@@ -37,6 +38,7 @@ public interface BasicAttribute<T, V> extends Attribute<T>, Expression<T, V> {
      * @return the type of the entity attribute.
      */
     @Override
+    @Nonnull
     Class<V> type();
 
     /**
@@ -51,9 +53,10 @@ public interface BasicAttribute<T, V> extends Attribute<T>, Expression<T, V> {
      * @param attributeType type of the entity attribute.
      * @return instance of {@code BasicAttribute}.
      */
-    static <T, V> BasicAttribute<T, V> of(Class<T> entityClass,
-                                          String name,
-                                          Class<V> attributeType) {
+    @Nonnull
+    static <T, V> BasicAttribute<T, V> of(@Nonnull Class<T> entityClass,
+                                          @Nonnull String name,
+                                          @Nonnull Class<V> attributeType) {
         Messages.requireNonNull(entityClass, "entityClass");
         Messages.requireNonNull(name, "name");
         Messages.requireNonNull(attributeType, "attributeType");

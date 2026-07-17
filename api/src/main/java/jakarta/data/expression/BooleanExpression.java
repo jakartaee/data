@@ -22,6 +22,7 @@ import jakarta.data.metamodel.Attribute;
 import jakarta.data.metamodel.BooleanAttribute;
 import jakarta.data.restrict.BasicRestriction;
 import jakarta.data.restrict.Restriction;
+import jakarta.annotation.Nonnull;
 
 /**
  * <p>An {@linkplain Expression expression} that evaluates to a
@@ -49,6 +50,7 @@ public interface BooleanExpression<T>
      *
      * @return the restriction.
      */
+    @Nonnull
     default Restriction<T> isFalse() {
         return BasicRestriction.of(this, EqualTo.value(false));
     }
@@ -66,6 +68,7 @@ public interface BooleanExpression<T>
      *
      * @return the restriction.
      */
+    @Nonnull
     default Restriction<T> isTrue() {
         return BasicRestriction.of(this, EqualTo.value(true));
     }
@@ -76,6 +79,7 @@ public interface BooleanExpression<T>
      * @return {@code Boolean.class}.
      */
     @Override
+    @Nonnull
     default Class<Boolean> type() {
         return Boolean.class;
     }

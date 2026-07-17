@@ -18,16 +18,19 @@
 package jakarta.data.constraint;
 
 import jakarta.data.expression.Expression;
+import jakarta.annotation.Nonnull;
 
-record EqualToRecord<V>(Expression<?, V> expression)
+record EqualToRecord<V>(@Nonnull Expression<?, V> expression)
         implements EqualTo<V> {
 
     @Override
+    @Nonnull
     public NotEqualTo<V> negate() {
         return NotEqualTo.expression(expression);
     }
 
     @Override
+    @Nonnull
     public String toString() {
         return "= " + expression;
     }

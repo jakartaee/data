@@ -26,9 +26,10 @@ import jakarta.data.messages.Messages;
 // the static metamodel or Restrict.* methods 
 
 import jakarta.data.metamodel.Attribute;
+import jakarta.annotation.Nonnull;
 
-record BasicRestrictionRecord<T, V>(Expression<T, V> expression,
-                                    Constraint<V> constraint)
+record BasicRestrictionRecord<T, V>(@Nonnull Expression<T, V> expression,
+                                    @Nonnull Constraint<V> constraint)
         implements BasicRestriction<T, V> {
 
     BasicRestrictionRecord {
@@ -44,6 +45,7 @@ record BasicRestrictionRecord<T, V>(Expression<T, V> expression,
     }
 
     @Override
+    @Nonnull
     public Restriction<T> negate() {
         return BasicRestriction.of(expression, constraint.negate());
     }
@@ -55,6 +57,7 @@ record BasicRestrictionRecord<T, V>(Expression<T, V> expression,
      * @return textual representation of a basic restriction.
      */
     @Override
+    @Nonnull
     public String toString() {
         return (expression instanceof Attribute<?> att ? att.name() : expression.toString())
                 + " " + constraint;

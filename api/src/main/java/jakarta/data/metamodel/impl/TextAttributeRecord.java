@@ -19,6 +19,7 @@ package jakarta.data.metamodel.impl;
 
 import jakarta.data.Sort;
 import jakarta.data.metamodel.TextAttribute;
+import jakarta.annotation.Nonnull;
 
 /**
  * @param name the name of the attribute
@@ -27,7 +28,7 @@ import jakarta.data.metamodel.TextAttribute;
  * obtain instances of {@link TextAttribute}.
  */
 @Deprecated(since = "1.1")
-public record TextAttributeRecord<T>(String name)
+public record TextAttributeRecord<T>(@Nonnull String name)
         implements TextAttribute<T> {
 
     // The following overrides preserve the Data 1.0 behavior where
@@ -35,21 +36,25 @@ public record TextAttributeRecord<T>(String name)
     // entity attribute can create Sort instances that are equal.
 
     @Override
+    @Nonnull
     public Sort<T> asc() {
         return Sort.asc(name);
     }
 
     @Override
+    @Nonnull
     public Sort<T> ascIgnoreCase() {
         return Sort.ascIgnoreCase(name);
     }
 
     @Override
+    @Nonnull
     public Sort<T> desc() {
         return Sort.desc(name);
     }
 
     @Override
+    @Nonnull
     public Sort<T> descIgnoreCase() {
         return Sort.descIgnoreCase(name);
     }

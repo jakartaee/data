@@ -28,6 +28,7 @@ import jakarta.data.metamodel.Attribute;
 import jakarta.data.repository.Is;
 import jakarta.data.restrict.Restriction;
 import jakarta.data.spi.expression.literal.StringLiteral;
+import jakarta.annotation.Nonnull;
 
 /**
  * <p>A constraint that requires not matching a pattern.</p>
@@ -99,7 +100,8 @@ public interface NotLike extends Constraint<String> {
      * @return a {@code NotLike} constraint.
      * @throws NullPointerException if the pattern is {@code null}.
      */
-    static NotLike pattern(String pattern) {
+    @Nonnull
+    static NotLike pattern(@Nonnull String pattern) {
         return pattern(pattern, CHAR_WILDCARD, STRING_WILDCARD);
     }
 
@@ -123,7 +125,8 @@ public interface NotLike extends Constraint<String> {
      * @return a {@code NotLike} constraint.
      * @throws NullPointerException if the pattern is {@code null}.
      */
-    static NotLike pattern(String pattern, char charWildcard, char stringWildcard) {
+    @Nonnull
+    static NotLike pattern(@Nonnull String pattern, char charWildcard, char stringWildcard) {
         if (pattern == null) {
             throw new NullPointerException(
                     Messages.get("001.arg.required", "pattern"));
@@ -156,7 +159,8 @@ public interface NotLike extends Constraint<String> {
      * @return a {@code NotLike} constraint.
      * @throws NullPointerException if the pattern is {@code null}.
      */
-    static NotLike pattern(String pattern, char charWildcard, char stringWildcard, char escape) {
+    @Nonnull
+    static NotLike pattern(@Nonnull String pattern, char charWildcard, char stringWildcard, char escape) {
         if (pattern == null) {
             throw new NullPointerException(
                     Messages.get("001.arg.required", "pattern"));
@@ -178,7 +182,8 @@ public interface NotLike extends Constraint<String> {
      * @return a {@code NotLike} constraint.
      * @throws NullPointerException if the pattern expression is {@code null}.
      */
-    static NotLike pattern(TextExpression<?> pattern, char escape) {
+    @Nonnull
+    static NotLike pattern(@Nonnull TextExpression<?> pattern, char escape) {
         if (pattern == null) {
             throw new NullPointerException(
                     Messages.get("001.arg.required", "pattern"));
@@ -203,7 +208,8 @@ public interface NotLike extends Constraint<String> {
      * @return a {@code NotLike} constraint.
      * @throws NullPointerException if the prefix is {@code null}.
      */
-    static NotLike prefix(String prefix) {
+    @Nonnull
+    static NotLike prefix(@Nonnull String prefix) {
         if (prefix == null) {
             throw new NullPointerException(
                     Messages.get("001.arg.required", "prefix"));
@@ -230,7 +236,8 @@ public interface NotLike extends Constraint<String> {
      * @return a {@code NotLike} constraint.
      * @throws NullPointerException if the substring is {@code null}.
      */
-    static NotLike substring(String substring) {
+    @Nonnull
+    static NotLike substring(@Nonnull String substring) {
         if (substring == null) {
             throw new NullPointerException(
                     Messages.get("001.arg.required", "substring"));
@@ -257,7 +264,8 @@ public interface NotLike extends Constraint<String> {
      * @return a {@code NotLike} constraint.
      * @throws NullPointerException if the suffix is {@code null}.
      */
-    static NotLike suffix(String suffix) {
+    @Nonnull
+    static NotLike suffix(@Nonnull String suffix) {
         if (suffix == null) {
             throw new NullPointerException(
                     Messages.get("001.arg.required", "suffix"));
@@ -285,7 +293,8 @@ public interface NotLike extends Constraint<String> {
      * @return a {@code NotLike} constraint.
      * @throws NullPointerException if the literal value is {@code null}.
      */
-    static NotLike literal(String value) {
+    @Nonnull
+    static NotLike literal(@Nonnull String value) {
         if (value == null) {
             throw new NullPointerException(
                     Messages.get("001.arg.required", "value"));
@@ -321,5 +330,6 @@ public interface NotLike extends Constraint<String> {
      *
      * @return an expression representing the pattern.
      */
+    @Nonnull
     TextExpression<?> pattern();
 }

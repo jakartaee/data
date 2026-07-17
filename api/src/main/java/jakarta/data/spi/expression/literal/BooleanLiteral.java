@@ -19,6 +19,7 @@ package jakarta.data.spi.expression.literal;
 
 import jakarta.data.expression.BooleanExpression;
 import jakarta.data.metamodel.BooleanAttribute;
+import jakarta.annotation.Nonnull;
 
 /**
  * <p>A {@linkplain Literal literal} for a
@@ -36,6 +37,7 @@ public interface BooleanLiteral
      * @param value a {@code boolean} value.
      * @return a {@code BooleanLiteral} representing the value.
      */
+    @Nonnull
     static BooleanLiteral of(boolean value) {
         return new BooleanLiteralRecord(value);
     }
@@ -47,5 +49,6 @@ public interface BooleanLiteral
      * @return {@code TRUE} or {@code FALSE}.
      */
     @Override
+    @Nonnull
     String toString();
 }

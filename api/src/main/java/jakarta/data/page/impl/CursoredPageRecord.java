@@ -24,6 +24,8 @@ import jakarta.data.page.PageRequest;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  * Record type implementing {@link CursoredPage}. This may be used to simplify
@@ -49,18 +51,18 @@ import java.util.NoSuchElementException;
  * @param <T>                 The type of elements on the page
  */
 public record CursoredPageRecord<T>
-        (List<T> content, List<PageRequest.Cursor> cursors, long totalElements,
-         PageRequest pageRequest,
-         PageRequest nextPageRequest, PageRequest previousPageRequest)
+        (@Nonnull List<T> content, @Nonnull List<PageRequest.Cursor> cursors, long totalElements,
+         @Nonnull PageRequest pageRequest,
+         @Nullable PageRequest nextPageRequest, @Nullable PageRequest previousPageRequest)
         implements CursoredPage<T> {
 
     // Disallow mutation of PageRequest and List fields after creation
-    public CursoredPageRecord(List<T> content,
-                      List<PageRequest.Cursor> cursors,
+    public CursoredPageRecord(@Nonnull List<T> content,
+                      @Nonnull List<PageRequest.Cursor> cursors,
                       long totalElements,
-                      PageRequest pageRequest,
-                      PageRequest nextPageRequest,
-                      PageRequest previousPageRequest) {
+                      @Nonnull PageRequest pageRequest,
+                      @Nullable PageRequest nextPageRequest,
+                      @Nullable PageRequest previousPageRequest) {
         this.content = List.copyOf(content);
         this.cursors = List.copyOf(cursors);
         this.totalElements = totalElements;
@@ -82,7 +84,7 @@ public record CursoredPageRecord<T>
      * @param lastPage      True, if this is the last page of results
      */
     public CursoredPageRecord
-    (List<T> content, List<PageRequest.Cursor> cursors, long totalElements, PageRequest pageRequest,
+    (@Nonnull List<T> content, @Nonnull List<PageRequest.Cursor> cursors, long totalElements, @Nonnull PageRequest pageRequest,
      boolean firstPage, boolean lastPage) {
         this(content, cursors, totalElements, pageRequest,
                 lastPage ? null : PageRequest.afterCursor(
@@ -122,6 +124,7 @@ public record CursoredPageRecord<T>
 
 
     @Override
+    @Nonnull
     public PageRequest nextPageRequest() {
         if (nextPageRequest == null)
             throw new NoSuchElementException();
@@ -132,6 +135,7 @@ public record CursoredPageRecord<T>
     }
 
     @Override
+    @Nonnull
     public PageRequest previousPageRequest() {
         if (previousPageRequest == null)
             throw new NoSuchElementException();
@@ -142,11 +146,13 @@ public record CursoredPageRecord<T>
     }
 
     @Override
+    @Nonnull
     public Iterator<T> iterator() {
         return content.iterator();
     }
 
     @Override
+    @Nonnull
     public PageRequest.Cursor cursor(int index) {
         if (cursors.isEmpty())
             throw new UnsupportedOperationException(
