@@ -218,15 +218,11 @@ public record Sort<T>(@Nullable ComparableExpression<T, ? extends Comparable<?>>
      * An expression to order by, or {@code null} if this {@code Sort}
      * instance was constructed without an expression.
      *
-     * @return The attribute name to order by, or {@code null} if this
+     * @return The expression to order by, or {@code null} if this
      *         {@code Sort} instance was constructed without an expression.
      */
-    @Nonnull
+    @Nullable
     public ComparableExpression<T, ? extends Comparable<?>> expression() {
-        if ( expression == null ) {
-            throw new IllegalStateException(
-                    Messages.get("013.no-expression"));
-        }
         return expression;
     }
 
