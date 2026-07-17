@@ -21,6 +21,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -154,6 +156,7 @@ class PageRequestCursorTest {
             private final Object[] keyset = new Object[] { "keyval1", '2', 3 };
 
             @Override
+            @Nullable
             public Object get(int index) {
                 return keyset[index];
             }
@@ -164,6 +167,7 @@ class PageRequestCursorTest {
             }
 
             @Override
+            @Nonnull
             public List<?> elements() {
                 return List.of(keyset);
             }

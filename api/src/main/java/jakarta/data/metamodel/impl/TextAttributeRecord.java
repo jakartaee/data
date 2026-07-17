@@ -36,21 +36,25 @@ public record TextAttributeRecord<T>(@Nonnull String name)
     // entity attribute can create Sort instances that are equal.
 
     @Override
+    @Nonnull
     public Sort<T> asc() {
         return Sort.asc(name);
     }
 
     @Override
+    @Nonnull
     public Sort<T> ascIgnoreCase() {
         return Sort.ascIgnoreCase(name);
     }
 
     @Override
+    @Nonnull
     public Sort<T> desc() {
         return Sort.desc(name);
     }
 
     @Override
+    @Nonnull
     public Sort<T> descIgnoreCase() {
         return Sort.descIgnoreCase(name);
     }

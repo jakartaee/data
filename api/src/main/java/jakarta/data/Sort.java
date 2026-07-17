@@ -452,6 +452,7 @@ public record Sort<T>(@Nullable ComparableExpression<T, ? extends Comparable<?>>
      * @throws NullPointerException if the {@code expression} is {@code null}
      * @since 1.1
      */
+    @Nonnull
     public static <T, V extends Comparable<?>> Sort<T> desc(
             @Nonnull ComparableExpression<T, V> expression) {
         return new Sort<>(expression, null, false, false, Nulls.UNSPECIFIED);

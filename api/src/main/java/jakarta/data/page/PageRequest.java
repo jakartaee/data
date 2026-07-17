@@ -231,6 +231,7 @@ public interface PageRequest {
      *
      * @return the type of pagination.
      */
+    @Nonnull
     Mode mode();
 
     /**
@@ -414,7 +415,7 @@ public interface PageRequest {
          * @return true or false.
          */
         @Override
-        boolean equals(Object cursor);
+        boolean equals(@Nullable Object cursor);
 
         /**
          * Returns the key value at the specified position.
@@ -422,8 +423,7 @@ public interface PageRequest {
          * @param index position (0 is first) of the key value to obtain.
          * @return the key value at the specified position.
          * @throws IndexOutOfBoundsException if the index is negative or greater
-         *                                   than or equal to the
-         *                                   {@link #size}.
+         *                                   than or equal to the {@link #size}.
          */
         Object get(int index);
 
@@ -447,6 +447,7 @@ public interface PageRequest {
          *
          * @return an unmodifiable list containing the ordered values
          */
+        @Nonnull
         List<?> elements();
 
         /**
@@ -456,6 +457,7 @@ public interface PageRequest {
          * @return String representation of the cursor.
          */
         @Override
+        @Nonnull
         String toString();
 
         /**
@@ -470,7 +472,8 @@ public interface PageRequest {
          * @param key the composite key to use for the {@code Cursor}.
          * @return a new instance of {@code Cursor}
          */
-        static Cursor forKey(Object... key) {
+        @Nonnull
+        static Cursor forKey(@Nonnull Object... key) {
             return new PageRequestCursor(key);
         }
     }

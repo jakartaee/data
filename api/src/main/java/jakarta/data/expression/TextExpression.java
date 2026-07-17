@@ -54,6 +54,7 @@ public interface TextExpression<T> extends ComparableExpression<T, String> {
      *
      * @return a request for an ascending, case-insensitive sort.
      */
+    @Nonnull
     default Sort<T> ascIgnoreCase() {
         return Sort.ascIgnoreCase(this);
     }
@@ -64,6 +65,7 @@ public interface TextExpression<T> extends ComparableExpression<T, String> {
      *
      * @return a request for a descending, case insensitive sort.
      */
+    @Nonnull
     default Sort<T> descIgnoreCase() {
         return Sort.descIgnoreCase(this);
     }
