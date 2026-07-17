@@ -1432,7 +1432,8 @@ import java.util.Set;
  *
  * <p>A repository interface or method of a repository interface may be annotated with a
  * security annotation defined in the {@code jakarta.annotation.security} package:
- * {@code @DenyAll}, {@code @PermitAll}, or {@code @RolesAllowed}.
+ * {@code @DeclareRoles}, {@code @DenyAll}, {@code @PermitAll}, {@code @RolesAllowed},
+ * or {@code @RunAs}.
  * In the Jakarta EE environment, or in any other environment where Jakarta Annotations
  * is available and integrated with Jakarta CDI, the security annotation is inherited
  * by the repository implementation. That is, the security annotation must be treated
@@ -1440,9 +1441,11 @@ import java.util.Set;
  * constraints declared by the annotation are enforced automatically by the Jakarta EE
  * container.</p>
  *
- * <p>The behavior of {@code @DeclareRoles} and {@code @RunAs} on a repository interface
- * is not defined by this specification, and is not portable between Jakarta Data
- * providers.</p>
+ * <p>The {@code jakarta.annotation.security} annotations are defined by the Jakarta
+ * Annotations specification, but their processing semantics are defined by other
+ * specifications such as Jakarta Enterprise Beans and Jakarta Servlet. Depending on
+ * the Jakarta EE container, some of these annotations—in particular
+ * {@code @DeclareRoles} and {@code @RunAs}—may not be supported on CDI beans.</p>
  */
 //TODO switch @code to @link for jakarta.persistence.query.* once it is determined
 // why Javadoc links to API from other Jakarta spec modules are not working
