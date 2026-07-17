@@ -30,6 +30,7 @@ import ee.jakarta.tck.data.framework.junit.anno.Assertion;
 import ee.jakarta.tck.data.framework.junit.anno.AnyEntity;
 import ee.jakarta.tck.data.framework.junit.anno.Web;
 import ee.jakarta.tck.data.framework.security.TestSecurityContext;
+import ee.jakarta.tck.data.framework.utilities.TestPropertyUtility;
 
 import jakarta.inject.Inject;
 
@@ -97,6 +98,8 @@ public class AnnotationsSecurityTests {
                      () -> products.add(
                              new SecuredProduct("P999", "Gadget")));
 
+        TestPropertyUtility.waitForEventualConsistency();
+
         securityContext.clearCallerRoles();
         assertEquals(before, products.findAll().size());
     }
@@ -113,7 +116,9 @@ public class AnnotationsSecurityTests {
         securityContext.setCallerRoles("admin");
         products.add(new SecuredProduct("P888", "Gizmo"));
 
+        TestPropertyUtility.waitForEventualConsistency();
+
         securityContext.clearCallerRoles();
-        assertTrue(products.findAll().size() > before);
+        assertEquals(before + 1, products.findAll().size());
     }
 }
