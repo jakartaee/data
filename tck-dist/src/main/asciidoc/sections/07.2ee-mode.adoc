@@ -118,3 +118,24 @@ Example META-INF/services/org.jboss.arquillian.core.spi.LoadableExtension:
 ----
 include::{starterLoc}/src/main/resources/META-INF/services/org.jboss.arquillian.core.spi.LoadableExtension[]
 ----
+
+==== Configure Security for Annotation Tests
+
+The `@Web` tests in the `ee.jakarta.tck.data.web.annotations` package verify that security annotations
+(`@DenyAll`, `@PermitAll`, `@RolesAllowed`) on repository interfaces are enforced by the repository implementation.
+
+These tests require a CDI bean implementing `ee.jakarta.tck.data.framework.security.TestSecurityContext`.
+This interface defines two methods:
+
+- `setCallerRoles(String... roles)` -- configures the security roles for the current caller.
+- `clearCallerRoles()` -- removes all security roles from the current caller.
+
+The implementation is container-specific.
+For example, on a Jakarta EE server the implementation might programmatically update the caller's identity
+using the container's security SPI so that subsequent repository method calls are subject to the configured roles.
+
+To provide the implementation:
+
+1. Create a class implementing `TestSecurityContext` and annotate it as a CDI bean (e.g. `@ApplicationScoped`).
+2. Include the class in the test deployment. This can be done using an Arquillian `ApplicationArchiveProcessor`
+   as described in <<Advanced Arquillian Configuration>>.

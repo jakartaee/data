@@ -218,3 +218,28 @@ public interface School extends DataRepository<Student, String> {
     List<Student> findByAgeLessThanEqual(@Min(18) int age);
 }
 ----
+
+=== Jakarta Annotations
+
+A repository interface or method of a repository interface may be annotated with one of the following annotations defined in the `jakarta.annotation.security` package: `@DeclareRoles`, `@DenyAll`, `@PermitAll`, `@RolesAllowed`, or `@RunAs`.footnote:[Jakarta Annotations 3.1, https://jakarta.ee/specifications/annotations/3.1/]
+In the Jakarta EE environment--or in any other environment where Jakarta Annotations is available and integrated with Jakarta CDI--the security annotation is inherited by the repository implementation. That is, the security annotation must be treated as if it were placed directly on the repository implementation bean. The security constraints declared by the annotation are enforced automatically by the Jakarta EE container.
+
+NOTE: The `jakarta.annotation.security` annotations are defined by the Jakarta Annotations specification, but their processing semantics are defined by other specifications such as Jakarta Enterprise Beans and Jakarta Servlet.footnote:[See also https://github.com/jakartaee/security/issues/295[Jakarta Security issue #295\].] Depending on the Jakarta EE container, some of these annotations--in particular `@DeclareRoles` and `@RunAs`--may not be supported on CDI beans.
+
+The following example illustrates how security annotations might be applied to a repository:
+
+[source,java]
+----
+@Repository
+@RolesAllowed("user")
+public interface BookRepository {
+
+    @Find
+    @PermitAll
+    List<Book> findAll();
+
+    @Insert
+    @RolesAllowed({"manager", "admin"})
+    void add(Book book);
+}
+----

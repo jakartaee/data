@@ -1427,6 +1427,20 @@ import java.util.Set;
  *     CompletionStage<Integer> setPriceAsync(float newPrice, Long productId);
  * }
  * }</pre>
+ *
+ * <h2>Jakarta Annotations</h2>
+ *
+ * <p>A repository interface or method of a repository interface may be
+ * annotated with one of the following annotations defined in the
+ * {@code jakarta.annotation.security} package:
+ * {@code @DeclareRoles}, {@code @DenyAll}, {@code @PermitAll}, {@code @RolesAllowed},
+ * or {@code @RunAs}.
+ * In the Jakarta EE environment, or in any other environment where Jakarta Annotations
+ * is available and integrated with Jakarta CDI, the security annotation is inherited
+ * by the repository implementation. That is, the security annotation must be treated
+ * as if it were placed directly on the repository implementation bean. The security
+ * constraints declared by the annotation are enforced automatically by the Jakarta EE
+ * container.</p>
  */
 module jakarta.data {
     // requires static jakarta.inject;      // compile time dependency for Javadoc

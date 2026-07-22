@@ -76,3 +76,4 @@ EE Mode:
 - The {APILongName} API, Arquillian SPI, and JUnit5 libraries available to the `Test Client` | <<Test Client Dependencies>>
 - An Arquillian SPI implementation for your Application Server | <<Configure Arquillian>>
 - A logging configuration for TCK logging on `Test Client` and `Test Server` | <<Configure Client and Server Logging>>
+- A `TestSecurityContext` CDI bean for security annotation tests | <<Configure Security for Annotation Tests>>
