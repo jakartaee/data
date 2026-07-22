@@ -39,7 +39,7 @@
   <arquillian.version>1.10.2.Final</arquillian.version>
   <junit.version>6.1.2</junit.version>
   <shrinkwrap.version>1.2.6</shrinkwrap.version>
-  <sigtest.version>2.6</sigtest.version>
+  <sigtest.version>2.7</sigtest.version>
   
   <maven.dep.plugin.version>3.3.0</maven.dep.plugin.version>
   <maven.comp.plugin.version>3.15.0</maven.comp.plugin.version>
