@@ -59,11 +59,11 @@ public class _AsciiCharacter {
 
 
 
-    private record TextAttr(String name,
+    private record TextAttr(@Nonnull String name,
                             @Nonnull Sort<AsciiCharacter> asc,
-                            Sort<AsciiCharacter> ascIgnoreCase,
+                            @Nonnull Sort<AsciiCharacter> ascIgnoreCase,
                             @Nonnull Sort<AsciiCharacter> desc,
-                            Sort<AsciiCharacter> descIgnoreCase)
+                            @Nonnull Sort<AsciiCharacter> descIgnoreCase)
             implements TextAttribute<AsciiCharacter> {
         private TextAttr(String name) {
             this(name, Sort.asc(name), Sort.ascIgnoreCase(name), Sort.desc(name), Sort.descIgnoreCase(name));
