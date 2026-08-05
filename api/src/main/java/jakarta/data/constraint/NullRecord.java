@@ -21,6 +21,7 @@ import jakarta.annotation.Nonnull;
 
 
 record NullRecord<V>() implements Null<V> {
+    @Nonnull
     static final NullRecord<?> INSTANCE = new NullRecord<>();
 
     @Override

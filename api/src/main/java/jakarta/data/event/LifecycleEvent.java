@@ -49,6 +49,7 @@ import jakarta.annotation.Nonnull;
  * @param <E> the entity type
  */
 public abstract class LifecycleEvent<E> {
+    @Nonnull
     private final E entity;
 
     public LifecycleEvent(@Nonnull E entity) {

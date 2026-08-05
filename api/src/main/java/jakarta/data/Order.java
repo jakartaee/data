@@ -77,6 +77,7 @@ public class Order<T> implements Iterable<Sort<? super T>> {
     /**
      * Unmodifiable list of Sort instances, from highest precedence to lowest.
      */
+    @Nonnull
     private final List<Sort<? super T>> sorts;
 
     /**
