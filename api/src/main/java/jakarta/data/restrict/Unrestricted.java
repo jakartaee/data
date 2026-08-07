@@ -21,6 +21,7 @@ import java.util.List;
 import jakarta.annotation.Nonnull;
 
 class Unrestricted<T> implements CompositeRestriction<T> {
+    @Nonnull
     static final Unrestricted<?> INSTANCE = new Unrestricted<>();
 
     // prevent instantiation by others

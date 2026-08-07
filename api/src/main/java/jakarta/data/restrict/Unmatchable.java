@@ -21,6 +21,7 @@ import java.util.List;
 import jakarta.annotation.Nonnull;
 
 class Unmatchable<T> implements CompositeRestriction<T> {
+    @Nonnull
     static final Unmatchable<?> INSTANCE = new Unmatchable<>();
 
     // prevent instantiation by others

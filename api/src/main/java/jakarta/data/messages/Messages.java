@@ -25,6 +25,7 @@ import jakarta.annotation.Nullable;
 // This class is for internal use only and is not documented as API
 // and its package is not exported by the module.
 public class Messages {
+    @Nonnull
     private static final ResourceBundle MESSAGES =
             ResourceBundle.getBundle("jakarta.data.messages.DataMessages");
 

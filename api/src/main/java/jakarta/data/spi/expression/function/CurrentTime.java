@@ -47,6 +47,7 @@ public interface CurrentTime<T> extends TemporalExpression<T, LocalTime> {
 
 // Internal implementation of single instance obtained from CurrentTime.now()
 class CurrentTimeInstance implements CurrentTime<Object> {
+    @Nonnull
     static final CurrentTime<?> instance = new CurrentTimeInstance();
 
     private CurrentTimeInstance() {

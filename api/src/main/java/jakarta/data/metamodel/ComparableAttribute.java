@@ -97,6 +97,7 @@ public interface ComparableAttribute<T, V extends Comparable<?>>
      * @return a request for an ascending sort on the entity attribute.
      */
     @Override
+    @Nonnull
     default Sort<T> asc() {
         return Sort.asc(this);
     }
@@ -108,6 +109,7 @@ public interface ComparableAttribute<T, V extends Comparable<?>>
      * @return a request for a descending sort on the entity attribute.
      */
     @Override
+    @Nonnull
     default Sort<T> desc() {
         return Sort.desc(this);
     }

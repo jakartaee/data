@@ -54,6 +54,7 @@ public interface ComparableExpression<T, V extends Comparable<?>>
      *
      * @return a request for an ascending sort.
      */
+    @Nonnull
     default Sort<T> asc() {
         return Sort.asc(this);
     }
@@ -115,6 +116,7 @@ public interface ComparableExpression<T, V extends Comparable<?>>
      *
      * @return a request for a descending sort.
      */
+    @Nonnull
     default Sort<T> desc() {
         return Sort.desc(this);
     }

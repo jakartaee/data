@@ -16,6 +16,7 @@
 package ee.jakarta.tck.data.framework.read.only;
 
 import jakarta.annotation.Generated;
+import jakarta.annotation.Nonnull;
 import jakarta.data.Sort;
 import jakarta.data.metamodel.SortableAttribute;
 import jakarta.data.metamodel.StaticMetamodel;
@@ -58,10 +59,12 @@ public class _AsciiCharacter {
 
 
 
-    private record TextAttr(String name, Sort<AsciiCharacter> asc,
-                                   Sort<AsciiCharacter> ascIgnoreCase,
-                                   Sort<AsciiCharacter> desc,
-                                   Sort<AsciiCharacter> descIgnoreCase) implements TextAttribute<AsciiCharacter> {
+    private record TextAttr(@Nonnull String name,
+                            @Nonnull Sort<AsciiCharacter> asc,
+                            @Nonnull Sort<AsciiCharacter> ascIgnoreCase,
+                            @Nonnull Sort<AsciiCharacter> desc,
+                            @Nonnull Sort<AsciiCharacter> descIgnoreCase)
+            implements TextAttribute<AsciiCharacter> {
         private TextAttr(String name) {
             this(name, Sort.asc(name), Sort.ascIgnoreCase(name), Sort.desc(name), Sort.descIgnoreCase(name));
         }

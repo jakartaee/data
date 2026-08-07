@@ -31,6 +31,7 @@ class PageRequestCursor implements PageRequest.Cursor {
     /**
      * Composite key that consists of one or more elements.
      */
+    @Nonnull
     private final Object[] key;
 
     /**
