@@ -24,7 +24,7 @@ import jakarta.data.repository.Update;
 import java.util.List;
 
 @Repository
-public interface CDStore {
+public interface MusicStore {
 
     @Insert
     void insert(MusicRecord musicRecord);
