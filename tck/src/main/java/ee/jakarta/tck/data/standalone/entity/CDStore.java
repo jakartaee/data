@@ -26,7 +26,6 @@ import java.util.List;
 @Repository
 public interface CDStore {
 
-
     @Insert
     void insert(MusicRecord musicRecord);
     @Insert
