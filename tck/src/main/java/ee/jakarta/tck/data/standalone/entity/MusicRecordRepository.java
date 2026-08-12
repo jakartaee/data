@@ -17,6 +17,7 @@ package ee.jakarta.tck.data.standalone.entity;
 
 import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.Repository;
+import jakarta.data.repository.Query;
 
 @Repository
 public interface MusicRecordRepository extends CrudRepository<MusicRecord, String> {
