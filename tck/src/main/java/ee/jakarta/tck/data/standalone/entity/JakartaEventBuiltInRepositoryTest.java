@@ -23,6 +23,7 @@ import org.jboss.arquillian.container.test.api.Deployment;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
 import java.util.logging.Logger;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
@@ -49,6 +50,12 @@ public class JakartaEventBuiltInRepositoryTest {
 
     @Inject
     protected MusicRecordRepository repository;
+
+    @BeforeEach
+    void setUp() {
+        this.repository.deleteAll();
+        this.observer.reset();
+    }
 
     @Nested
     @DisplayName("When inserting an entity")
