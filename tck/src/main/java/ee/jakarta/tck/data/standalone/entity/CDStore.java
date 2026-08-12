@@ -15,5 +15,43 @@
  */
 package ee.jakarta.tck.data.standalone.entity;
 
+import jakarta.data.repository.Delete;
+import jakarta.data.repository.Insert;
+import jakarta.data.repository.Repository;
+import jakarta.data.repository.Save;
+import jakarta.data.repository.Update;
+
+import java.util.List;
+
+@Repository
 public interface CDStore {
+
+
+    @Insert
+    void insert(MusicRecord musicRecord);
+    @Insert
+    void insert(List<MusicRecord> musicRecords);
+    @Insert
+    void insert(MusicRecord[] musicRecords);
+
+    @Update
+    void update(MusicRecord musicRecord);
+    @Update
+    void update(List<MusicRecord> musicRecords);
+    @Update
+    void update(MusicRecord[] vinylRecords);
+
+    @Save
+    void save(MusicRecord musicRecord);
+    @Save
+    void save(List<MusicRecord> musicRecords);
+    @Save
+    void save(MusicRecord[] musicRecords);
+
+    @Delete
+    void delete(MusicRecord musicRecord);
+    @Delete
+    void delete(List<MusicRecord> musicRecords);
+    @Delete
+    void delete(MusicRecord[] musicRecords);
 }
