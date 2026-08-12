@@ -15,9 +15,9 @@
  */
 package ee.jakarta.tck.data.standalone.entity;
 
-import jakarta.data.repository.BasicRepository;
+import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.Repository;
 
 @Repository
-public interface MusicRecordRepository extends BasicRepository<MusicRecord, String> {
+public interface MusicRecordRepository extends CrudRepository<MusicRecord, String> {
 }
