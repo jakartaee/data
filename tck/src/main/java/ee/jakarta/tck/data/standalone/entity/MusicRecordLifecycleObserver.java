@@ -29,8 +29,8 @@ import jakarta.enterprise.event.Observes;
 import java.util.ArrayList;
 import java.util.List;
 
-public @ApplicationScoped
-class VinylRecordLifecycleObserver {
+ @ApplicationScoped
+ public class MusicRecordLifecycleObserver {
 
     private final List<ObservedEvent> events = new ArrayList<>();
 
