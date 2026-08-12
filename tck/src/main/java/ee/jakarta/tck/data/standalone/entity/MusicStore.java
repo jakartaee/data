@@ -20,6 +20,7 @@ import jakarta.data.repository.Insert;
 import jakarta.data.repository.Repository;
 import jakarta.data.repository.Save;
 import jakarta.data.repository.Update;
+import jakarta.data.repository.Query;
 
 import java.util.List;
 
@@ -53,4 +54,7 @@ public interface MusicStore {
     void delete(List<MusicRecord> musicRecords);
     @Delete
     void delete(MusicRecord[] musicRecords);
+
+    @Query("DELETE FROM MusicRecord")
+    void deleteAll();
 }
