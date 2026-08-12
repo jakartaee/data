@@ -16,4 +16,12 @@
 package ee.jakarta.tck.data.standalone.entity;
 
 public enum LifecycleEventType {
+    PRE_INSERT,
+    POST_INSERT,
+    PRE_UPDATE,
+    POST_UPDATE,
+    PRE_UPSERT,
+    POST_UPSERT,
+    PRE_DELETE,
+    POST_DELETE
 }
