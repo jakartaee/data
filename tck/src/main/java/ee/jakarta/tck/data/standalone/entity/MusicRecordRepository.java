@@ -20,4 +20,7 @@ import jakarta.data.repository.Repository;
 
 @Repository
 public interface MusicRecordRepository extends CrudRepository<MusicRecord, String> {
+
+    @Query("DELETE FROM MusicRecord")
+    void deleteAll();
 }
