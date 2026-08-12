@@ -50,7 +50,6 @@ public class JakartaEventBuiltInRepositoryTest {
     @Inject
     protected MusicRecordRepository repository;
 
-
     @Nested
     @DisplayName("When inserting an entity")
     class WhenInsert {
