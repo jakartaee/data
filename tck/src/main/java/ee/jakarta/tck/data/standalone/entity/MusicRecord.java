@@ -15,8 +15,6 @@
  */
 package ee.jakarta.tck.data.standalone.entity;
 
-import jakarta.nosql.Id;
-
 import java.util.Objects;
 
 @jakarta.nosql.Entity
