@@ -29,6 +29,7 @@ import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import jakarta.inject.Inject;
 import static org.assertj.core.api.Assertions.assertThat;
+import java.util.List;
 
 @Standalone
 @AnyEntity
