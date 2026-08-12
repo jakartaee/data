@@ -48,7 +48,7 @@ public class JakartaEventBuiltInRepositoryTest {
     protected MusicRecordLifecycleObserver observer;
 
     @Inject
-    private MusicRecordRepository repository;
+    protected MusicRecordRepository repository;
 
 
     @Nested
