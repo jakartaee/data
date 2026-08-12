@@ -15,6 +15,20 @@
  */
 package ee.jakarta.tck.data.standalone.entity;
 
+import ee.jakarta.tck.data.framework.junit.anno.AnyEntity;
+import ee.jakarta.tck.data.framework.junit.anno.Standalone;
+import ee.jakarta.tck.data.framework.utilities.DatabaseType;
+import ee.jakarta.tck.data.framework.utilities.TestProperty;
+import org.jboss.arquillian.container.test.api.Deployment;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+import java.util.logging.Logger;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.spec.WebArchive;
+import jakarta.inject.Inject;
+import static org.assertj.core.api.Assertions.assertThat;
+
 @Standalone
 @AnyEntity
 @DisplayName("Built-in repository lifecycle events")
@@ -47,9 +61,6 @@ public class JakartaEventBuiltInRepositoryTest {
             // given
             MusicRecord entity = entity();
 
-            when(template.insert(entity))
-                    .thenReturn(entity);
-
             // when
             MusicRecord result = repository.insert(entity);
 
@@ -76,9 +87,8 @@ public class JakartaEventBuiltInRepositoryTest {
         void shouldFireUpdateEvents() {
             // given
             MusicRecord entity = entity();
-
-            when(template.update(entity))
-                    .thenReturn(entity);
+            repository.insert(entity);
+            observer.reset();
 
             // when
             MusicRecord result = repository.update(entity);
@@ -107,14 +117,6 @@ public class JakartaEventBuiltInRepositoryTest {
             // given
             MusicRecord entity = entity();
 
-            when(template.find(
-                    MusicRecord.class,
-                    entity.catalogNumber()))
-                    .thenReturn(Optional.empty());
-
-            when(template.insert(entity))
-                    .thenReturn(entity);
-
             // when
             MusicRecord result = repository.save(entity);
 
@@ -142,10 +144,8 @@ public class JakartaEventBuiltInRepositoryTest {
             // given
             MusicRecord entity = entity();
 
-            when(template.find(MusicRecord.class, entity.catalogNumber())).thenReturn(Optional.of(entity));
-
-            when(template.update(entity)).thenReturn(entity);
-
+            repository.insert(entity);
+            observer.reset();
             // when
             MusicRecord result = repository.save(entity);
 
