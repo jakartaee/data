@@ -15,5 +15,184 @@
  */
 package ee.jakarta.tck.data.standalone.entity;
 
+@Standalone
+@AnyEntity
+@DisplayName("Built-in repository lifecycle events")
 public class JakartaEventBuiltInRepositoryTest {
+
+    public static final Logger log = Logger.getLogger(JakartaEventBuiltInRepositoryTest.class.getCanonicalName());
+
+    protected final DatabaseType type = TestProperty.databaseType.getDatabaseType();
+
+    @Deployment
+    public static WebArchive createDeployment() {
+        return ShrinkWrap.create(WebArchive.class)
+                .addClasses(JakartaEventBuiltInRepositoryTest.class);
+    }
+
+    @Inject
+    protected MusicRecordLifecycleObserver observer;
+
+    @Inject
+    private VinylRecordRepository repository;
+
+
+    @Nested
+    @DisplayName("When inserting an entity")
+    class WhenInsert {
+
+        @Test
+        @DisplayName("Should fire pre-insert and post-insert events with the inserted entity")
+        void shouldFireInsertEvents() {
+            // given
+            VinylRecord entity = entity();
+
+            when(template.insert(entity))
+                    .thenReturn(entity);
+
+            // when
+            VinylRecord result = repository.insert(entity);
+
+            // then
+            assertThat(result).isSameAs(entity);
+
+            assertThat(observer.events())
+                    .containsExactly(
+                            new ObservedEvent(
+                                    LifecycleEventType.PRE_INSERT,
+                                    entity),
+                            new ObservedEvent(
+                                    LifecycleEventType.POST_INSERT,
+                                    result));
+        }
+    }
+
+    @Nested
+    @DisplayName("When updating an entity")
+    class WhenUpdate {
+
+        @Test
+        @DisplayName("Should fire pre-update and post-update events with the updated entity")
+        void shouldFireUpdateEvents() {
+            // given
+            VinylRecord entity = entity();
+
+            when(template.update(entity))
+                    .thenReturn(entity);
+
+            // when
+            VinylRecord result = repository.update(entity);
+
+            // then
+            assertThat(result).isSameAs(entity);
+
+            assertThat(observer.events())
+                    .containsExactly(
+                            new ObservedEvent(
+                                    LifecycleEventType.PRE_UPDATE,
+                                    entity),
+                            new ObservedEvent(
+                                    LifecycleEventType.POST_UPDATE,
+                                    result));
+        }
+    }
+
+    @Nested
+    @DisplayName("When saving a new entity")
+    class WhenSaveNewEntity {
+
+        @Test
+        @DisplayName("Should fire pre-upsert and post-upsert events when inserting a missing entity")
+        void shouldFireUpsertEventsWhenInserting() {
+            // given
+            VinylRecord entity = entity();
+
+            when(template.find(
+                    VinylRecord.class,
+                    entity.catalogNumber()))
+                    .thenReturn(Optional.empty());
+
+            when(template.insert(entity))
+                    .thenReturn(entity);
+
+            // when
+            VinylRecord result = repository.save(entity);
+
+            // then
+            assertThat(result).isSameAs(entity);
+
+            assertThat(observer.events())
+                    .containsExactly(
+                            new ObservedEvent(
+                                    LifecycleEventType.PRE_UPSERT,
+                                    entity),
+                            new ObservedEvent(
+                                    LifecycleEventType.POST_UPSERT,
+                                    result));
+        }
+    }
+
+    @Nested
+    @DisplayName("When saving an existing entity")
+    class WhenSaveExistingEntity {
+
+        @Test
+        @DisplayName("Should fire pre-upsert and post-upsert events when updating an existing entity")
+        void shouldFireUpsertEventsWhenUpdating() {
+            // given
+            VinylRecord entity = entity();
+
+            when(template.find(VinylRecord.class, entity.catalogNumber())).thenReturn(Optional.of(entity));
+
+            when(template.update(entity)).thenReturn(entity);
+
+            // when
+            VinylRecord result = repository.save(entity);
+
+            // then
+            assertThat(result).isSameAs(entity);
+
+            assertThat(observer.events())
+                    .containsExactly(
+                            new ObservedEvent(
+                                    LifecycleEventType.PRE_UPSERT,
+                                    entity),
+                            new ObservedEvent(
+                                    LifecycleEventType.POST_UPSERT,
+                                    result));
+        }
+    }
+
+    @Nested
+    @DisplayName("When deleting an entity")
+    class WhenDelete {
+
+        @Test
+        @DisplayName("Should fire pre-delete and post-delete events with the deleted entity")
+        void shouldFireDeleteEvents() {
+            // given
+            VinylRecord entity = entity();
+
+            // when
+            repository.delete(entity);
+
+            // then
+            assertThat(observer.events())
+                    .containsExactly(
+                            new ObservedEvent(
+                                    LifecycleEventType.PRE_DELETE,
+                                    entity),
+                            new ObservedEvent(
+                                    LifecycleEventType.POST_DELETE,
+                                    entity));
+        }
+    }
+
+    private VinylRecord entity() {
+        return new VinylRecord(
+                "BLUE-1959",
+                "Kind of Blue",
+                "Miles Davis",
+                Year.of(1959));
+    }
 }
