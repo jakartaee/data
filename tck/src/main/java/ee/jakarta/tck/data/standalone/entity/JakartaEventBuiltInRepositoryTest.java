@@ -34,7 +34,7 @@ public class JakartaEventBuiltInRepositoryTest {
     protected MusicRecordLifecycleObserver observer;
 
     @Inject
-    private VinylRecordRepository repository;
+    private MusicRecordRepository repository;
 
 
     @Nested
@@ -45,13 +45,13 @@ public class JakartaEventBuiltInRepositoryTest {
         @DisplayName("Should fire pre-insert and post-insert events with the inserted entity")
         void shouldFireInsertEvents() {
             // given
-            VinylRecord entity = entity();
+            MusicRecord entity = entity();
 
             when(template.insert(entity))
                     .thenReturn(entity);
 
             // when
-            VinylRecord result = repository.insert(entity);
+            MusicRecord result = repository.insert(entity);
 
             // then
             assertThat(result).isSameAs(entity);
@@ -75,13 +75,13 @@ public class JakartaEventBuiltInRepositoryTest {
         @DisplayName("Should fire pre-update and post-update events with the updated entity")
         void shouldFireUpdateEvents() {
             // given
-            VinylRecord entity = entity();
+            MusicRecord entity = entity();
 
             when(template.update(entity))
                     .thenReturn(entity);
 
             // when
-            VinylRecord result = repository.update(entity);
+            MusicRecord result = repository.update(entity);
 
             // then
             assertThat(result).isSameAs(entity);
@@ -105,10 +105,10 @@ public class JakartaEventBuiltInRepositoryTest {
         @DisplayName("Should fire pre-upsert and post-upsert events when inserting a missing entity")
         void shouldFireUpsertEventsWhenInserting() {
             // given
-            VinylRecord entity = entity();
+            MusicRecord entity = entity();
 
             when(template.find(
-                    VinylRecord.class,
+                    MusicRecord.class,
                     entity.catalogNumber()))
                     .thenReturn(Optional.empty());
 
@@ -116,7 +116,7 @@ public class JakartaEventBuiltInRepositoryTest {
                     .thenReturn(entity);
 
             // when
-            VinylRecord result = repository.save(entity);
+            MusicRecord result = repository.save(entity);
 
             // then
             assertThat(result).isSameAs(entity);
@@ -140,14 +140,14 @@ public class JakartaEventBuiltInRepositoryTest {
         @DisplayName("Should fire pre-upsert and post-upsert events when updating an existing entity")
         void shouldFireUpsertEventsWhenUpdating() {
             // given
-            VinylRecord entity = entity();
+            MusicRecord entity = entity();
 
-            when(template.find(VinylRecord.class, entity.catalogNumber())).thenReturn(Optional.of(entity));
+            when(template.find(MusicRecord.class, entity.catalogNumber())).thenReturn(Optional.of(entity));
 
             when(template.update(entity)).thenReturn(entity);
 
             // when
-            VinylRecord result = repository.save(entity);
+            MusicRecord result = repository.save(entity);
 
             // then
             assertThat(result).isSameAs(entity);
@@ -171,7 +171,7 @@ public class JakartaEventBuiltInRepositoryTest {
         @DisplayName("Should fire pre-delete and post-delete events with the deleted entity")
         void shouldFireDeleteEvents() {
             // given
-            VinylRecord entity = entity();
+            MusicRecord entity = entity();
 
             // when
             repository.delete(entity);
@@ -188,11 +188,11 @@ public class JakartaEventBuiltInRepositoryTest {
         }
     }
 
-    private VinylRecord entity() {
-        return new VinylRecord(
+    private MusicRecord entity() {
+        return new MusicRecord(
                 "BLUE-1959",
                 "Kind of Blue",
                 "Miles Davis",
-                Year.of(1959));
+                1959);
     }
 }
