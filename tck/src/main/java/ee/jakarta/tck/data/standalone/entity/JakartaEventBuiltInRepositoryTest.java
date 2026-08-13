@@ -20,6 +20,7 @@ import ee.jakarta.tck.data.framework.junit.anno.Standalone;
 import ee.jakarta.tck.data.framework.utilities.DatabaseType;
 import ee.jakarta.tck.data.framework.utilities.TestProperty;
 import org.jboss.arquillian.container.test.api.Deployment;
+import org.assertj.core.groups.Tuple;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -29,6 +30,8 @@ import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import jakarta.inject.Inject;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.tuple;
+import java.util.List;
 
 @Standalone
 @AnyEntity
@@ -68,17 +71,13 @@ public class JakartaEventBuiltInRepositoryTest {
             MusicRecord entity = entity();
 
             // when
-            MusicRecord result = repository.insert(entity);
+            repository.insert(entity);
 
             // then
-            assertThat(observer.events())
+            assertThat(events())
                     .containsExactly(
-                            new ObservedEvent(
-                                    LifecycleEventType.PRE_INSERT,
-                                    entity),
-                            new ObservedEvent(
-                                    LifecycleEventType.POST_INSERT,
-                                    result));
+                            event(LifecycleEventType.PRE_INSERT, entity),
+                            event(LifecycleEventType.POST_INSERT, entity));
         }
     }
 
@@ -95,17 +94,13 @@ public class JakartaEventBuiltInRepositoryTest {
             observer.reset();
 
             // when
-            MusicRecord result = repository.update(entity);
+            repository.update(entity);
 
             // then
-            assertThat(observer.events())
+            assertThat(events())
                     .containsExactly(
-                            new ObservedEvent(
-                                    LifecycleEventType.PRE_UPDATE,
-                                    entity),
-                            new ObservedEvent(
-                                    LifecycleEventType.POST_UPDATE,
-                                    result));
+                            event(LifecycleEventType.PRE_UPDATE, entity),
+                            event(LifecycleEventType.POST_UPDATE, entity));
         }
     }
 
@@ -120,17 +115,13 @@ public class JakartaEventBuiltInRepositoryTest {
             MusicRecord entity = entity();
 
             // when
-            MusicRecord result = repository.save(entity);
+            repository.save(entity);
 
             // then
-            assertThat(observer.events())
+            assertThat(events())
                     .containsExactly(
-                            new ObservedEvent(
-                                    LifecycleEventType.PRE_UPSERT,
-                                    entity),
-                            new ObservedEvent(
-                                    LifecycleEventType.POST_UPSERT,
-                                    result));
+                            event(LifecycleEventType.PRE_UPSERT, entity),
+                            event(LifecycleEventType.POST_UPSERT, entity));
         }
     }
 
@@ -147,17 +138,13 @@ public class JakartaEventBuiltInRepositoryTest {
             repository.insert(entity);
             observer.reset();
             // when
-            MusicRecord result = repository.save(entity);
+            repository.save(entity);
 
             // then
-            assertThat(observer.events())
+            assertThat(events())
                     .containsExactly(
-                            new ObservedEvent(
-                                    LifecycleEventType.PRE_UPSERT,
-                                    entity),
-                            new ObservedEvent(
-                                    LifecycleEventType.POST_UPSERT,
-                                    result));
+                            event(LifecycleEventType.PRE_UPSERT, entity),
+                            event(LifecycleEventType.POST_UPSERT, entity));
         }
     }
 
@@ -175,15 +162,36 @@ public class JakartaEventBuiltInRepositoryTest {
             repository.delete(entity);
 
             // then
-            assertThat(observer.events())
+            assertThat(events())
                     .containsExactly(
-                            new ObservedEvent(
-                                    LifecycleEventType.PRE_DELETE,
-                                    entity),
-                            new ObservedEvent(
-                                    LifecycleEventType.POST_DELETE,
-                                    entity));
+                            event(LifecycleEventType.PRE_DELETE, entity),
+                            event(LifecycleEventType.POST_DELETE, entity));
         }
+    }
+
+    private List<Tuple> events() {
+        return observer.events().stream()
+                .map(this::event)
+                .toList();
+    }
+
+    private Tuple event(ObservedEvent event) {
+        assertThat(event.entity())
+                .as("entity for %s", event.type())
+                .isInstanceOf(MusicRecord.class);
+
+        return event(event.type(), event.entity());
+    }
+
+    private Tuple event(
+            LifecycleEventType type,
+            MusicRecord entity) {
+        return tuple(
+                type,
+                entity.getCatalogNumber(),
+                entity.getTitle(),
+                entity.getArtist(),
+                entity.getReleaseYear());
     }
 
     private MusicRecord entity() {
