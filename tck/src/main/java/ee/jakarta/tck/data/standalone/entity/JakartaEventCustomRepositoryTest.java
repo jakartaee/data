@@ -43,7 +43,7 @@ public class JakartaEventCustomRepositoryTest {
     @Deployment
     public static WebArchive createDeployment() {
         return ShrinkWrap.create(WebArchive.class)
-                .addClasses(JakartaEventBuiltInRepositoryTest.class);
+                .addClasses(JakartaEventCustomRepositoryTest.class);
     }
 
     @Inject
