@@ -283,6 +283,9 @@ public class JakartaEventCustomRepositoryTest {
         void shouldFireEventsForOneEntity() {
             // given
             var entity = firstEntity();
+            repository.insert(entity);
+            observer.reset();
+            TestPropertyUtility.waitForEventualConsistency();
 
             // when
             repository.delete(entity);
