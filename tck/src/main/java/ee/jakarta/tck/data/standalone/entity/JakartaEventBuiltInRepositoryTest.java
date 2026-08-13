@@ -94,6 +94,7 @@ public class JakartaEventBuiltInRepositoryTest {
             MusicRecord entity = entity();
             repository.insert(entity);
             observer.reset();
+            TestPropertyUtility.waitForEventualConsistency();
 
             // when
             repository.update(entity);
