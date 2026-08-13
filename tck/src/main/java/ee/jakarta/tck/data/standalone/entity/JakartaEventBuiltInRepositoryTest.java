@@ -58,6 +58,7 @@ public class JakartaEventBuiltInRepositoryTest {
     void setUp() {
         this.repository.deleteAll();
         this.observer.reset();
+        TestPropertyUtility.waitForEventualConsistency();
     }
 
     @Nested
