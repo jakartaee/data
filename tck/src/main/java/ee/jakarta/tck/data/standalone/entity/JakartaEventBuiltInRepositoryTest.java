@@ -19,6 +19,7 @@ import ee.jakarta.tck.data.framework.junit.anno.AnyEntity;
 import ee.jakarta.tck.data.framework.junit.anno.Standalone;
 import ee.jakarta.tck.data.framework.utilities.DatabaseType;
 import ee.jakarta.tck.data.framework.utilities.TestProperty;
+import ee.jakarta.tck.data.framework.utilities.TestPropertyUtility;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.assertj.core.groups.Tuple;
 import org.junit.jupiter.api.DisplayName;
