@@ -305,6 +305,12 @@ public class JakartaEventCustomRepositoryTest {
             var second = secondEntity();
 
             // when
+            repository.insert(first);
+            repository.insert(second);
+            observer.reset();
+            TestPropertyUtility.waitForEventualConsistency();
+
+            // when
             repository.delete(List.of(first, second));
 
             // then
