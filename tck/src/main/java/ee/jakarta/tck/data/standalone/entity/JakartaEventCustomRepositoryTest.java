@@ -328,6 +328,10 @@ public class JakartaEventCustomRepositoryTest {
             // given
             var first = firstEntity();
             var second = secondEntity();
+            repository.insert(first);
+            repository.insert(second);
+            observer.reset();
+            TestPropertyUtility.waitForEventualConsistency();
 
             // when
             repository.delete(new MusicRecord[]{first, second});
