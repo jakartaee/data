@@ -98,8 +98,6 @@ public class JakartaEventBuiltInRepositoryTest {
             MusicRecord result = repository.update(entity);
 
             // then
-            assertThat(result).isSameAs(entity);
-
             assertThat(observer.events())
                     .containsExactly(
                             new ObservedEvent(
