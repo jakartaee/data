@@ -93,6 +93,7 @@ public class JakartaEventCustomRepositoryTest {
 
             // when
             repository.insert(entities);
+            TestPropertyUtility.waitForEventualConsistency();
 
             // then
             assertThat(events())
