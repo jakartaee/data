@@ -185,7 +185,13 @@ public class JakartaEventCustomRepositoryTest {
             observer.reset();
 
             // when
+            repository.insert(entities);
+            observer.reset();
+            TestPropertyUtility.waitForEventualConsistency();
+
+            // when
             repository.update(new MusicRecord[]{first, second});
+            TestPropertyUtility.waitForEventualConsistency();
 
             // then
             assertThat(events())
