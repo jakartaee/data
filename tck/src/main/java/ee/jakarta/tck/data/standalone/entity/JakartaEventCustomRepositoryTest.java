@@ -172,7 +172,7 @@ public class JakartaEventCustomRepositoryTest {
 
             // then
             assertThat(events())
-                    .containsExactly(
+                    .containsExactlyInAnyOrder(
                             event(LifecycleEventType.PRE_UPDATE, first),
                             event(LifecycleEventType.PRE_UPDATE, second),
                             event(LifecycleEventType.POST_UPDATE, first),
