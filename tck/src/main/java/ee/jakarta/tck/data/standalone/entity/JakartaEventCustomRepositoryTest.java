@@ -222,6 +222,7 @@ public class JakartaEventCustomRepositoryTest {
 
             // when
             repository.save(entity);
+            TestPropertyUtility.waitForEventualConsistency();
 
             // then
             assertThat(events())
