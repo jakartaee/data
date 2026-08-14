@@ -143,8 +143,11 @@ public class JakartaEventBuiltInRepositoryTest {
 
             repository.insert(entity);
             observer.reset();
+            TestPropertyUtility.waitForEventualConsistency();
+
             // when
             repository.save(entity);
+            TestPropertyUtility.waitForEventualConsistency();
 
             // then
             assertThat(events())
