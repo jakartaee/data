@@ -60,6 +60,7 @@ public class JakartaEventCustomRepositoryTest {
         this.repository.deleteAll();
         this.observer.reset();
         TestPropertyUtility.waitForEventualConsistency();
+        TestPropertyUtility.waitForEventualConsistency();
     }
 
     @Nested
