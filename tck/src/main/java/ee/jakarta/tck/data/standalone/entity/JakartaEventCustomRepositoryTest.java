@@ -140,8 +140,11 @@ public class JakartaEventCustomRepositoryTest {
 
             repository.insert(entity);
             observer.reset();
+            TestPropertyUtility.waitForEventualConsistency();
+
             // when
             repository.update(entity);
+            TestPropertyUtility.waitForEventualConsistency();
 
             // then
             assertThat(events())
