@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2025,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,6 +28,12 @@ import jakarta.annotation.Nonnull;
  * @param <E> the entity type
  */
 public class PostUpsertEvent<E> extends LifecycleEvent<E> {
+    /**
+     * Constructs a {@code PostUpsertEvent} for the given {@code entity}.
+     *
+     * @param entity entity instance
+     * @throws NullPointerException if the given entity is {@code null}
+     */
     public PostUpsertEvent(@Nonnull E entity) {
         super(entity);
     }
