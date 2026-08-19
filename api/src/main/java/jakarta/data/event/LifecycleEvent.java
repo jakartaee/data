@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 Contributors to the Eclipse Foundation
+ * Copyright (c) 2024,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@
 package jakarta.data.event;
 
 import jakarta.annotation.Nonnull;
+import jakarta.data.messages.Messages;
 
 /**
  * <p>Abstract supertype of events relating to lifecycle methods.</p>
@@ -52,7 +53,15 @@ public abstract class LifecycleEvent<E> {
     @Nonnull
     private final E entity;
 
+    /**
+     * Abstract constructor for {@code LifeCycleEvent} that populates the
+     * {@link #entity() value}.
+     *
+     * @param entity entity instance
+     * @throws NullPointerException if the given entity is {@code null}
+     */
     public LifecycleEvent(@Nonnull E entity) {
+        Messages.requireNonNull(entity, "entity");
         this.entity = entity;
     }
 
