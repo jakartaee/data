@@ -190,10 +190,6 @@ public class JakartaEventCustomRepositoryTest {
             var entities = List.of(first, second);
             repository.insert(entities);
             observer.reset();
-
-            // when
-            repository.insert(entities);
-            observer.reset();
             TestPropertyUtility.waitForEventualConsistency();
 
             // when
