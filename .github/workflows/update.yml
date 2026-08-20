@@ -1,8 +1,18 @@
-# This workflow automates the deployment of generated files
+# This workflow automates the deployment of signature files
+# Run on_push when any API is updated
+# Or manually using workflow_dispatch
 
-name: Update generated files
+name: Update signature files
 
-on: workflow_dispatch
+on:
+  push:
+    branches:
+      - 'main'
+      - 'RELEASE-*'
+    paths:
+      - 'api/src/**'
+      - 'stateful/src/**'
+  workflow_dispatch: # For manual testing
 
 jobs:
   update:
@@ -11,7 +21,7 @@ jobs:
     strategy:
       max-parallel: 1
       matrix:
-        java-version: [ '17', '21' ] # TODO add 25
+        java-version: [ '17', '21', '25' ]
 
     steps:
     - name: Checkout source
@@ -28,8 +38,8 @@ jobs:
     - name: Generate signatures
       run: |
         mvn install --file api/pom.xml
+        mvn install --file stateful/pom.xml
         mvn package -Psignature-generation --file tck/pom.xml
-    ## Add any other automated update steps here
     - name: Needs updates
       id: update
       run: echo "update_count=$(git status -s -uno | wc -l)" >> $GITHUB_OUTPUT
