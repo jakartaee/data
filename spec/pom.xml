@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ Copyright (c) 2022, 2023 Contributors to the Eclipse Foundation
+  ~ Copyright (c) 2022, 2026 Contributors to the Eclipse Foundation
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -31,9 +31,9 @@
     <name>Jakarta Data Specification</name>
 
     <properties>
-        <asciidoctor-maven.version>3.0.0</asciidoctor-maven.version>
-        <asciidoctorj-pdf.version>2.3.18</asciidoctorj-pdf.version>
-        <asciidoctorj.diagram.version>2.3.1</asciidoctorj.diagram.version>
+        <asciidoctor-maven.version>3.2.0</asciidoctor-maven.version>
+        <asciidoctorj-pdf.version>2.3.23</asciidoctorj-pdf.version>
+        <asciidoctorj.diagram.version>3.2.1</asciidoctorj.diagram.version>
 
         <maven.build.timestamp.format>MMMM dd, yyyy</maven.build.timestamp.format>
         <revisiondate>${maven.build.timestamp}</revisiondate>
