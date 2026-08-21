@@ -257,7 +257,8 @@ public interface PageRequest {
     long pageNumber();
 
     /**
-     * Returns the requested page offset. Page numbers begin with {@code 0}.
+     * Returns the offset of the requested page relative to the first page.
+     * Page offsets begin with {@code 0}.
      *
      * @return the requested page offset
      * @apiNote Page <em>offsets</em> are indexed from zero;
