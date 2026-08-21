@@ -263,7 +263,9 @@ public interface PageRequest {
      *          page {@linkplain #pageNumber() numbers} are indexed from one.
      * @see #pageOffset(long)
      */
-    long pageOffset();
+    default long pageOffset() {
+        return pageNumber() - 1;
+    }
 
     /**
      * Returns the requested size of each page
