@@ -37,8 +37,7 @@ jobs:
       run: .github/scripts/checkout.sh update-generated-files-${{ github.sha }}
     - name: Generate signatures
       run: |
-        mvn install --file api/pom.xml
-        mvn install --file stateful/pom.xml
+        mvn install -DskipTests -Dmaven.javadoc.skip=true -projects ".,api,stateful"
         mvn package -Psignature-generation --file tck/pom.xml
     - name: Needs updates
       id: update
