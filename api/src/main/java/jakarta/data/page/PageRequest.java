@@ -251,6 +251,7 @@ public interface PageRequest {
      * @return the requested page number
      * @apiNote Page <em>numbers</em> are indexed from one;
      *          page {@linkplain #pageOffset() offsets} are indexed from zero.
+     * @since 1.1
      * @see #pageNumber(long)
      */
     long pageNumber();
@@ -261,6 +262,7 @@ public interface PageRequest {
      * @return the requested page offset
      * @apiNote Page <em>offsets</em> are indexed from zero;
      *          page {@linkplain #pageNumber() numbers} are indexed from one.
+     * @since 1.1
      * @see #pageOffset(long)
      */
     default long pageOffset() {
