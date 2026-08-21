@@ -250,9 +250,25 @@ public interface PageRequest {
      *
      * @return the requested page number
      * @apiNote Page <em>numbers</em> are indexed from one;
-     *          page {@linkplain #pageOffset offsets} are indexed from zero.
+     *          page {@linkplain #pageOffset() offsets} are indexed from zero.
+     * @since 1.1
+     * @see #pageNumber(long)
      */
     long pageNumber();
+
+    /**
+     * Returns the offset of the requested page relative to the first page.
+     * Page offsets begin with {@code 0}.
+     *
+     * @return the requested page offset
+     * @apiNote Page <em>offsets</em> are indexed from zero;
+     *          page {@linkplain #pageNumber() numbers} are indexed from one.
+     * @since 1.1
+     * @see #pageOffset(long)
+     */
+    default long pageOffset() {
+        return pageNumber() - 1;
+    }
 
     /**
      * Returns the requested size of each page
@@ -293,6 +309,7 @@ public interface PageRequest {
      * @since 1.1
      * @apiNote Page <em>numbers</em> are indexed from one;
      *          page {@linkplain #pageOffset offsets} are indexed from zero.
+     * @see #pageNumber()
      */
     @Nonnull
     PageRequest pageNumber(long pageNumber);
@@ -314,6 +331,7 @@ public interface PageRequest {
      *
      * @apiNote Page <em>offsets</em> are indexed from zero;
      *          page {@linkplain #pageNumber numbers} are indexed from one.
+     * @see #pageOffset()
      */
     @Nonnull
     default PageRequest pageOffset(long offset) {
