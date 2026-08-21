@@ -347,6 +347,7 @@
                       jakarta.data.repository,
                       jakarta.data.spi
                   </packages>
+                  <version>${project.version}</version>
                   <attach>false</attach>
                   <sigfile>${project.build.directory}/jakarta.data.sig_${java.version}</sigfile>
                 </configuration>
@@ -363,6 +364,7 @@
                   <packages>
                       jakarta.data.repository.stateful
                   </packages>
+                  <version>${project.version}</version>
                   <attach>false</attach>
                   <sigfile>${project.build.directory}/jakarta.data.stateful.sig_${java.version}</sigfile>
                 </configuration>

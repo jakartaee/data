@@ -202,7 +202,7 @@ public class DataStatefulSignatureTestRunner extends SigTestEE {
     // comment or the one below it depending on which properties your
     // signature tests need. Please do not use both comments.
     public void signatureTest() throws Fault {
-        log.info("DataSignatureTestRunner.signatureTest() called");
+        log.info("DataStatefulSignatureTestRunner.signatureTest() called");
         SigTestResult results = null;
         String mapFile = null;
         String packageListFile = null;
@@ -297,13 +297,13 @@ public class DataStatefulSignatureTestRunner extends SigTestEE {
                 throw new Exception();
             }
 
-            log.info("$$$ DataSignatureTestRunner.signatureTest() returning");
+            log.info("$$$ DataStatefulSignatureTestRunner.signatureTest() returning");
         } catch (Exception e) {
             if (results != null && !results.passed()) {
-                throw new Fault("DataSignatureTestRunner.signatureTest() failed!, diffs found");
+                throw new Fault("DataStatefulSignatureTestRunner.signatureTest() failed!, diffs found");
             } else {
                 log.info("Unexpected exception " + e.getMessage());
-                throw new Fault("DataSignatureTestRunner.signatureTest() failed with an unexpected exception", e);
+                throw new Fault("DataStatefulSignatureTestRunner.signatureTest() failed with an unexpected exception", e);
             }
         }
     }

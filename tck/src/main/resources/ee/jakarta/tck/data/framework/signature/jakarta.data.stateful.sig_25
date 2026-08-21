@@ -1,5 +1,5 @@
 #Signature file v4.1
-#Version 1.0
+#Version 1.1.0-SNAPSHOT
 
 CLSS public abstract interface !annotation jakarta.data.repository.stateful.Detach
  anno 0 java.lang.annotation.Documented()
