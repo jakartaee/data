@@ -25,7 +25,7 @@ public interface NavigablePath<T, U, V>
         extends Path<T, U>, NavigableExpression<T, V> {
     @Nonnull
     static <T, U, V> NavigablePath<T, U, V> of(@Nonnull NavigableExpression<T, U> expression,
-                                               @Nonnull NavigableAttribute<U, V> attribute) {
+                                               @Nonnull NavigableAttribute<? super U, V> attribute) {
         return new NavigablePathRecord<>(expression, attribute);
     }
 }

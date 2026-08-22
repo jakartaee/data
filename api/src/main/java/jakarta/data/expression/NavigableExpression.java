@@ -173,7 +173,7 @@ public interface NavigableExpression<T, U> {
      */
     @Nonnull
     default <V> NavigableExpression<T, V> navigate(
-            @Nonnull NavigableAttribute<U, V> attribute) {
+            @Nonnull NavigableAttribute<? super U, V> attribute) {
         return NavigablePath.of(this, attribute);
     }
 
@@ -197,7 +197,7 @@ public interface NavigableExpression<T, U> {
      * @throws NullPointerException if the attribute is {@code null}
      */
     @Nonnull
-    default TextExpression<T> navigate(@Nonnull TextAttribute<U> attribute) {
+    default TextExpression<T> navigate(@Nonnull TextAttribute<? super U> attribute) {
         return TextPath.of(this, attribute);
     }
 
@@ -225,7 +225,7 @@ public interface NavigableExpression<T, U> {
      */
     @Nonnull
     default <C extends Comparable<C>> ComparableExpression<T, C> navigate(
-            @Nonnull ComparableAttribute<U, C> attribute) {
+            @Nonnull ComparableAttribute<? super U, C> attribute) {
         return ComparablePath.of(this, attribute);
     }
 
@@ -250,7 +250,7 @@ public interface NavigableExpression<T, U> {
      */
     @Nonnull
     default BooleanExpression<T> navigate(
-            @Nonnull BooleanAttribute<U> attribute) {
+            @Nonnull BooleanAttribute<? super U> attribute) {
         return BooleanPath.of(this, attribute);
     }
 
@@ -277,7 +277,7 @@ public interface NavigableExpression<T, U> {
     @Nonnull
     default <N extends Number & Comparable<N>>
             NumericExpression<T, N> navigate(
-                    @Nonnull NumericAttribute<U, N> attribute) {
+                    @Nonnull NumericAttribute<? super U, N> attribute) {
         return NumericPath.of(this, attribute);
     }
 
@@ -305,7 +305,7 @@ public interface NavigableExpression<T, U> {
     @Nonnull
     default <V extends Temporal & Comparable<? extends Temporal>>
             TemporalExpression<T, V> navigate(
-                    @Nonnull TemporalAttribute<U, V> attribute) {
+                    @Nonnull TemporalAttribute<? super U, V> attribute) {
         return TemporalPath.of(this, attribute);
     }
 

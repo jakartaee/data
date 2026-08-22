@@ -24,7 +24,7 @@ import jakarta.annotation.Nonnull;
 
 record NavigablePathRecord<T, U, V>
         (@Nonnull NavigableExpression<T, U> expression,
-         @Nonnull NavigableAttribute<U, V> attribute)
+         @Nonnull NavigableAttribute<? super U, V> attribute)
         implements NavigablePath<T, U, V> {
 
     NavigablePathRecord {

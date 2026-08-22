@@ -60,7 +60,7 @@ public interface NumericPath<T, U, N extends Number & Comparable<N>>
     static <T, U, N extends Number & Comparable<N>>
             NumericPath<T, U, N> of(
                     @Nonnull NavigableExpression<T, U> expression,
-                    @Nonnull NumericAttribute<U, N> attribute) {
+                    @Nonnull NumericAttribute<? super U, N> attribute) {
 
         return new NumericPathRecord<>(expression, attribute);
     }

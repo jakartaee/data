@@ -26,7 +26,7 @@ import jakarta.annotation.Nonnull;
 
 record TemporalPathRecord<T, U, V extends Temporal & Comparable<? extends Temporal>>(
         @Nonnull NavigableExpression<T, U> expression,
-        @Nonnull TemporalAttribute<U, V> attribute) implements TemporalPath<T, U, V> {
+        @Nonnull TemporalAttribute<? super U, V> attribute) implements TemporalPath<T, U, V> {
 
     TemporalPathRecord {
         Messages.requireNonNull(expression, "expression");

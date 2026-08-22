@@ -28,7 +28,7 @@ public interface BooleanPath<T, U>
 
     @Nonnull
     static <T, U> BooleanPath<T, U> of(@Nonnull NavigableExpression<T, U> expression,
-                                       @Nonnull BooleanAttribute<U> attribute) {
+                                       @Nonnull BooleanAttribute<? super U> attribute) {
 
         return new BooleanPathRecord<>(expression, attribute);
     }
