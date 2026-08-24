@@ -26,5 +26,5 @@ public interface Path<T, U> {
     NavigableExpression<T, U> expression();
 
     @Nonnull
-    Attribute<U> attribute();
+    Attribute<? super U> attribute();
 }

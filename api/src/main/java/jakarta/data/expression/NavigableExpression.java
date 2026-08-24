@@ -36,33 +36,35 @@ import jakarta.annotation.Nonnull;
 public interface NavigableExpression<T, U> {
 
     @Nonnull
-    default <V> NavigableExpression<T, V> navigate(@Nonnull NavigableAttribute<U, V> attribute) {
+    default <V> NavigableExpression<T, V> navigate(@Nonnull NavigableAttribute<? super U, V> attribute) {
         return NavigablePath.of(this, attribute);
     }
 
     @Nonnull
-    default TextExpression<T> navigate(@Nonnull TextAttribute<U> attribute) {
+    default TextExpression<T> navigate(@Nonnull TextAttribute<? super U> attribute) {
         return TextPath.of(this, attribute);
     }
 
     @Nonnull
-    default <C extends Comparable<C>> ComparableExpression<T, C> navigate(@Nonnull ComparableAttribute<U, C> attribute) {
+    default <C extends Comparable<C>> ComparableExpression<T, C> navigate(
+            @Nonnull ComparableAttribute<? super U, C> attribute) {
         return ComparablePath.of(this, attribute);
     }
 
     @Nonnull
-    default BooleanExpression<T> navigate(@Nonnull BooleanAttribute<U> attribute) {
+    default BooleanExpression<T> navigate(@Nonnull BooleanAttribute<? super U> attribute) {
         return BooleanPath.of(this, attribute);
     }
 
     @Nonnull
-    default <N extends Number & Comparable<N>> NumericExpression<T, N> navigate(@Nonnull NumericAttribute<U, N> attribute) {
+    default <N extends Number & Comparable<N>> NumericExpression<T, N> navigate(
+            @Nonnull NumericAttribute<? super U, N> attribute) {
         return NumericPath.of(this, attribute);
     }
 
     @Nonnull
     default <V extends Temporal & Comparable<? extends Temporal>> TemporalExpression<T, V> navigate(
-            @Nonnull TemporalAttribute<U, V> attribute) {
+            @Nonnull TemporalAttribute<? super U, V> attribute) {
         return TemporalPath.of(this, attribute);
     }
 

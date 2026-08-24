@@ -24,7 +24,7 @@ import jakarta.annotation.Nonnull;
 
 record ComparablePathRecord<T, U, C extends Comparable<?>>
         (@Nonnull NavigableExpression<T, U> expression,
-         @Nonnull ComparableAttribute<U, C> attribute)
+         @Nonnull ComparableAttribute<? super U, C> attribute)
         implements ComparablePath<T, U, C> {
 
     ComparablePathRecord {

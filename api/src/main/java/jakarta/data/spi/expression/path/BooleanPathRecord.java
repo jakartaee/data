@@ -23,7 +23,7 @@ import jakarta.data.metamodel.BooleanAttribute;
 import jakarta.annotation.Nonnull;
 
 record BooleanPathRecord<T, U>(@Nonnull NavigableExpression<T, U> expression,
-                               @Nonnull BooleanAttribute<U> attribute)
+                               @Nonnull BooleanAttribute<? super U> attribute)
         implements BooleanPath<T, U> {
 
     BooleanPathRecord {
