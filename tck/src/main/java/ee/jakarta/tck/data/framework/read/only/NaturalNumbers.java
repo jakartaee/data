@@ -25,6 +25,9 @@ import jakarta.data.Limit;
 import jakarta.data.Order;
 import jakarta.data.Sort;
 import jakarta.data.constraint.AtLeast;
+import jakarta.data.constraint.EqualTo;
+import jakarta.data.constraint.AtMost;
+import jakarta.data.constraint.LessThan;
 import jakarta.data.page.CursoredPage;
 import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
@@ -52,6 +55,19 @@ public interface NaturalNumbers extends BasicRepository<NaturalNumber, Long> {
     List<NaturalNumber> atLeast(@By(ID) @Is(AtLeast.class) long minimum,
                                 Limit limit,
                                 Order<NaturalNumber> sorts);
+
+    @Find
+    Page<NaturalNumber> byTypeAndSquareRootUpTo(NumberType numType,
+                                                AtMost<Long> floorOfSquareRoot,
+                                                PageRequest pagination,
+                                                Sort<NaturalNumber> sort);
+
+    @Find
+    CursoredPage<NaturalNumber> byTypeRequiringFewerBitsThan(
+            @Is(EqualTo.class) NumberType numType,
+            @Is(LessThan.class) short numBitsRequired,
+            Order<NaturalNumber> order,
+            PageRequest pagination);
 
     long countByIdBetween(long minimum, long maximum);
 
@@ -82,9 +98,6 @@ public interface NaturalNumbers extends BasicRepository<NaturalNumber, Long> {
 
     long countAll();
 
-    CursoredPage<NaturalNumber> findByFloorOfSquareRootOrderByIdAsc(long sqrtFloor,
-                                                                    PageRequest pagination);
-
     Stream<NaturalNumber> findByIdBetweenOrderByNumTypeOrdinalAsc(long minimum,
                                                                   long maximum,
                                                                   Order<NaturalNumber> sorts);
@@ -97,17 +110,7 @@ public interface NaturalNumbers extends BasicRepository<NaturalNumber, Long> {
                                                                      PageRequest pagination,
                                                                      Order<NaturalNumber> order);
 
-    CursoredPage<NaturalNumber> findByNumTypeAndNumBitsRequiredLessThan(NumberType type,
-                                                                        short bitsUnder,
-                                                                        Order<NaturalNumber> order,
-                                                                        PageRequest pagination);
-
     NaturalNumber[] findByNumTypeNot(NumberType notThisType, Limit limit, Order<NaturalNumber> sorts);
-
-    Page<NaturalNumber> findByNumTypeAndFloorOfSquareRootLessThanEqual(NumberType type,
-                                                                       long maxSqrtFloor,
-                                                                       PageRequest pagination,
-                                                                       Sort<NaturalNumber> sort);
 
     @Find(AsciiCharacter.class)
         // this is not the primary entity type
@@ -190,4 +193,9 @@ public interface NaturalNumbers extends BasicRepository<NaturalNumber, Long> {
     Page<WholeNumber> wholeNumberPage(@By(_NaturalNumber.NUMTYPEORDINAL) int numType,
                                       PageRequest pageReq,
                                       Order<NaturalNumber> order);
+
+    @Find
+    CursoredPage<NaturalNumber> withTruncatedSquareRoot(long floorOfSquareRoot,
+                                                        PageRequest pagination);
+
 }

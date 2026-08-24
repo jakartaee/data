@@ -42,6 +42,8 @@ import ee.jakarta.tck.data.framework.utilities.DatabaseType;
 import ee.jakarta.tck.data.framework.utilities.TestProperty;
 import jakarta.data.Order;
 import jakarta.data.Sort;
+import jakarta.data.constraint.LessThan;
+import jakarta.data.constraint.NotEqualTo;
 import jakarta.data.page.CursoredPage;
 import jakarta.data.page.PageRequest;
 import jakarta.data.page.PageRequest.Cursor;
@@ -105,7 +107,7 @@ public class CursorPaginationTests {
 
         CursoredPage<NaturalNumber> page;
         try {
-            page = numbers.findByNumTypeAndNumBitsRequiredLessThan(
+            page = numbers.byTypeRequiringFewerBitsThan(
                    NumberType.COMPOSITE,
                    (short) 7,
                    order,
@@ -133,7 +135,7 @@ public class CursorPaginationTests {
         assertTrue(page.hasPrevious());
         CursoredPage<NaturalNumber> previousPage;
         try {
-            previousPage = numbers.findByNumTypeAndNumBitsRequiredLessThan(
+            previousPage = numbers.byTypeRequiringFewerBitsThan(
                     NumberType.COMPOSITE,
                     (short) 7,
                     order,
@@ -155,7 +157,7 @@ public class CursorPaginationTests {
 
         CursoredPage<NaturalNumber> nextPage;
         try {
-            nextPage = numbers.findByNumTypeAndNumBitsRequiredLessThan(
+            nextPage = numbers.byTypeRequiringFewerBitsThan(
                     NumberType.COMPOSITE,
                     (short) 7,
                     order,
@@ -203,9 +205,9 @@ public class CursorPaginationTests {
 
         CursoredPage<NaturalNumber> page;
         try {
-            page = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByNumBitsRequiredDesc(
-                    6L,
-                    50L,
+            page = positives.squareRootDoesNotTruncateToWhereIdBelow(
+                    NotEqualTo.value(6L),
+                    LessThan.bound(50L),
                     middle7,
                     order);
         } catch (UnsupportedOperationException x) {
@@ -238,9 +240,9 @@ public class CursorPaginationTests {
 
         CursoredPage<NaturalNumber> previousPage;
         try {
-            previousPage = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByNumBitsRequiredDesc(
-                    6L,
-                    50L,
+            previousPage = positives.squareRootDoesNotTruncateToWhereIdBelow(
+                    NotEqualTo.value(6L),
+                    LessThan.bound(50L),
                     page.previousPageRequest(),
                     order);
         } catch (UnsupportedOperationException x) {
@@ -264,9 +266,9 @@ public class CursorPaginationTests {
 
         CursoredPage<NaturalNumber> nextPage;
         try {
-            nextPage = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByNumBitsRequiredDesc(
-                    6L,
-                    50L,
+            nextPage = positives.squareRootDoesNotTruncateToWhereIdBelow(
+                    NotEqualTo.value(6L),
+                    LessThan.bound(50L),
                     page.nextPageRequest(),
                     order);
         } catch (UnsupportedOperationException x) {
@@ -303,7 +305,7 @@ public class CursorPaginationTests {
 
         CursoredPage<NaturalNumber> page;
         try {
-            page = numbers.findByFloorOfSquareRootOrderByIdAsc(3L, pagination);
+            page = numbers.withTruncatedSquareRoot(3L, pagination);
         } catch (UnsupportedOperationException x) {
             if (type.capableOfAnd() &&
                 type.capableOfConstraintsOnNonIdAttributes() &&
@@ -331,9 +333,9 @@ public class CursorPaginationTests {
         try {
             // There are no positive integers less than 4 which have a
             // square root that rounds down to something other than 1.
-            page = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByNumBitsRequiredDesc(
-                    1L,
-                    4L,
+            page = positives.squareRootDoesNotTruncateToWhereIdBelow(
+                    NotEqualTo.value(1L),
+                    LessThan.bound(4L),
                     PageRequest.ofPage(1L),
                     Order.by());
         } catch (UnsupportedOperationException x) {
@@ -382,7 +384,7 @@ public class CursorPaginationTests {
         CursoredPage<NaturalNumber> page;
 
         try {
-            page = numbers.findByFloorOfSquareRootOrderByIdAsc(7L, first6);
+            page = numbers.withTruncatedSquareRoot(7L, first6);
         } catch (UnsupportedOperationException x) {
             if (type.capableOfAnd() &&
                 type.capableOfConstraintsOnNonIdAttributes() &&
@@ -401,7 +403,7 @@ public class CursorPaginationTests {
         assertEquals(6, page.numberOfElements());
 
         try {
-            page = numbers.findByFloorOfSquareRootOrderByIdAsc(
+            page = numbers.withTruncatedSquareRoot(
                    7L,
                    page.nextPageRequest());
         } catch (UnsupportedOperationException x) {
@@ -419,7 +421,7 @@ public class CursorPaginationTests {
                          .map(NaturalNumber::getId)
                          .toList());
 
-        page = numbers.findByFloorOfSquareRootOrderByIdAsc(
+        page = numbers.withTruncatedSquareRoot(
                 7L,
                 page.nextPageRequest());
 
@@ -452,9 +454,9 @@ public class CursorPaginationTests {
         CursoredPage<NaturalNumber> page;
 
         try {
-            page = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByNumBitsRequiredDesc(
-                    4L,
-                    33L,
+            page = positives.squareRootDoesNotTruncateToWhereIdBelow(
+                    NotEqualTo.value(4L),
+                    LessThan.bound(33L),
                     first8,
                     order);
         } catch (UnsupportedOperationException x) {
@@ -479,9 +481,9 @@ public class CursorPaginationTests {
                          .toList());
 
         try {
-            page = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByNumBitsRequiredDesc(
-                    4L,
-                    33L,
+            page = positives.squareRootDoesNotTruncateToWhereIdBelow(
+                    NotEqualTo.value(4L),
+                    LessThan.bound(33L),
                     page.nextPageRequest(),
                     order);
         } catch (UnsupportedOperationException x) {
@@ -499,9 +501,9 @@ public class CursorPaginationTests {
 
         assertEquals(8, page.numberOfElements());
 
-        page = positives.findByFloorOfSquareRootNotAndIdLessThanOrderByNumBitsRequiredDesc(
-                4L,
-                33L,
+        page = positives.squareRootDoesNotTruncateToWhereIdBelow(
+                NotEqualTo.value(4L),
+                LessThan.bound(33L),
                 page.nextPageRequest(),
                 order);
 

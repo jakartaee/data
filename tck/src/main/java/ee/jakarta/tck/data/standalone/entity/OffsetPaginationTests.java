@@ -47,6 +47,7 @@ import ee.jakarta.tck.data.framework.utilities.DatabaseType;
 import ee.jakarta.tck.data.framework.utilities.TestProperty;
 import jakarta.data.Order;
 import jakarta.data.Sort;
+import jakarta.data.constraint.AtMost;
 import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
 import jakarta.inject.Inject;
@@ -95,7 +96,7 @@ public class OffsetPaginationTests {
         PageRequest sixth = PageRequest.ofPage(6).size(10);
         Page<AsciiCharacter> page;
         try {
-            page = characters.findByNumericValueBetween(
+            page = characters.fromRange(
                     48,
                     90,
                     sixth,
@@ -135,11 +136,10 @@ public class OffsetPaginationTests {
         PageRequest sixth = PageRequest.ofPage(6).size(5).withoutTotal();
         Page<NaturalNumber> page;
         try {
-            page = numbers.findByNumTypeAndFloorOfSquareRootLessThanEqual(
-                    NumberType.PRIME,
-                    8L,
-                    sixth,
-                    Sort.desc("id"));
+            page = numbers.byTypeAndSquareRootUpTo(NumberType.PRIME,
+                                                   AtMost.max(8L),
+                                                   sixth,
+                                                   Sort.desc("id"));
         } catch (UnsupportedOperationException x) {
             if (type.capableOfAnd() &&
                 type.capableOfConstraintsOnNonIdAttributes() &&
@@ -165,7 +165,10 @@ public class OffsetPaginationTests {
         PageRequest fifthPageRequest = PageRequest.ofPage(5).size(10);
         Page<AsciiCharacter> page;
         try {
-            page = characters.findByNumericValueBetween(48, 90, fifthPageRequest,
+            page = characters.fromRange(
+                    48,
+                    90,
+                    fifthPageRequest,
                     Order.by(_AsciiCharacter.numericValue.asc())); // 'X' to 'Z'
         } catch (UnsupportedOperationException x) {
             if (type.capableOfBetween() &&
@@ -229,11 +232,10 @@ public class OffsetPaginationTests {
         PageRequest fifth = PageRequest.ofPage(5).size(5).withoutTotal();
         Page<NaturalNumber> page;
         try {
-            page = numbers.findByNumTypeAndFloorOfSquareRootLessThanEqual(
-                    NumberType.PRIME,
-                    8L,
-                    fifth,
-                    Sort.desc("id"));
+            page = numbers.byTypeAndSquareRootUpTo(NumberType.PRIME,
+                                                   AtMost.max(8L),
+                                                   fifth,
+                                                   Sort.desc("id"));
         } catch (UnsupportedOperationException x) {
             if (type.capableOfAnd() &&
                 type.capableOfConstraintsOnNonIdAttributes() &&
@@ -378,7 +380,10 @@ public class OffsetPaginationTests {
         PageRequest first10 = PageRequest.ofSize(10);
         Page<AsciiCharacter> page;
         try {
-            page = characters.findByNumericValueBetween(48, 90, first10,
+            page = characters.fromRange(
+                    48,
+                    90,
+                    first10,
                     Order.by(_AsciiCharacter.numericValue.asc())); // '0' to 'Z'
         } catch (UnsupportedOperationException x) {
             if (type.capableOfBetween() &&
@@ -420,11 +425,10 @@ public class OffsetPaginationTests {
         PageRequest first5 = PageRequest.ofSize(5).withoutTotal();
         Page<NaturalNumber> page;
         try {
-            page = numbers.findByNumTypeAndFloorOfSquareRootLessThanEqual(
-                    NumberType.PRIME,
-                    8L,
-                    first5,
-                    Sort.desc("id"));
+            page = numbers.byTypeAndSquareRootUpTo(NumberType.PRIME,
+                                                   AtMost.max(8L),
+                                                   first5,
+                                                   Sort.desc("id"));
         } catch (UnsupportedOperationException x) {
             if (type.capableOfAnd() &&
                 type.capableOfConstraintsOnNonIdAttributes() &&
@@ -480,7 +484,10 @@ public class OffsetPaginationTests {
         PageRequest pagination = PageRequest.ofSize(6);
         Page<AsciiCharacter> page;
         try {
-            page = characters.findByNumericValueBetween(150, 160, pagination,
+            page = characters.fromRange(
+                    150,
+                    160,
+                    pagination,
                     Order.by(_AsciiCharacter.id.asc()));
         } catch (UnsupportedOperationException x) {
             if (type.capableOfBetween() &&
@@ -519,8 +526,10 @@ public class OffsetPaginationTests {
         PageRequest pagination = PageRequest.ofSize(5).withoutTotal();
         Page<NaturalNumber> page;
         try {
-            page = numbers.findByNumTypeAndFloorOfSquareRootLessThanEqual(
-                    NumberType.COMPOSITE, 1L, pagination, Sort.desc("id"));
+            page = numbers.byTypeAndSquareRootUpTo(NumberType.COMPOSITE,
+                                                   AtMost.max(1L),
+                                                   pagination,
+                                                   Sort.desc("id"));
         } catch (UnsupportedOperationException x) {
             if (type.capableOfConstraintsOnNonIdAttributes() &&
                 type.capableOfLessThanEqual() &&
@@ -553,8 +562,10 @@ public class OffsetPaginationTests {
         PageRequest pageRequest = PageRequest.ofSize(6);
         Page<AsciiCharacter> page1;
         try {
-            page1 = characters.findByNumericValueBetween(
-                    68, 90, pageRequest,
+            page1 = characters.fromRange(
+                    68,
+                    90,
+                    pageRequest,
                     Order.by(_AsciiChar.numericValue.asc()));
         } catch (UnsupportedOperationException x) {
             if (type.capableOfBetween() &&
@@ -593,8 +604,10 @@ public class OffsetPaginationTests {
         PageRequest pageRequest = PageRequest.ofSize(7);
         Page<AsciiCharacter> page1;
         try {
-            page1 = characters.findByNumericValueBetween(
-                    100, 122, pageRequest,
+            page1 = characters.fromRange(
+                    100,
+                    122,
+                    pageRequest,
                     Order.by(_AsciiCharacter.numericValue.asc()));
         } catch (UnsupportedOperationException x) {
             if (type.capableOfBetween() &&
@@ -623,7 +636,7 @@ public class OffsetPaginationTests {
         PageRequest third10 = PageRequest.ofPage(3).size(10);
         Page<AsciiCharacter> page;
         try {
-            page = characters.findByNumericValueBetween(
+            page = characters.fromRange(
                     48,
                     90,
                     third10,
@@ -660,7 +673,7 @@ public class OffsetPaginationTests {
 
         assertTrue(page.hasNext());
         PageRequest fourth10 = page.nextPageRequest();
-        page = characters.findByNumericValueBetween(
+        page = characters.fromRange(
                 48,
                 90,
                 fourth10,
@@ -698,8 +711,10 @@ public class OffsetPaginationTests {
         Sort<NaturalNumber> sort = Sort.desc("id");
         Page<NaturalNumber> page;
         try {
-            page = numbers.findByNumTypeAndFloorOfSquareRootLessThanEqual(
-                    NumberType.PRIME, 8L, third5, sort);
+            page = numbers.byTypeAndSquareRootUpTo(NumberType.PRIME,
+                                                   AtMost.max(8L),
+                                                   third5,
+                                                   sort);
         } catch (UnsupportedOperationException x) {
             if (type.capableOfConstraintsOnNonIdAttributes() &&
                 type.capableOfLessThanEqual() &&
@@ -721,11 +736,10 @@ public class OffsetPaginationTests {
         assertTrue(page.hasNext());
         PageRequest fourth5 = page.nextPageRequest();
 
-        page = numbers.findByNumTypeAndFloorOfSquareRootLessThanEqual(
-                NumberType.PRIME,
-                8L,
-                fourth5,
-                sort);
+        page = numbers.byTypeAndSquareRootUpTo(NumberType.PRIME,
+                                               AtMost.max(8L),
+                                               fourth5,
+                                               sort);
 
         assertEquals(4, page.pageRequest().pageNumber());
         assertEquals(5, page.numberOfElements());
