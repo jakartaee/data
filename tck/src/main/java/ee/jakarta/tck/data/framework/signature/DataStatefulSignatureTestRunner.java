@@ -48,7 +48,7 @@ public class DataStatefulSignatureTestRunner extends SigTestEE {
     private Logger log = Logger.getLogger(getClass().getCanonicalName());
 
     public static final String SIG_RESOURCE_PACKAGE = "ee.jakarta.tck.data.framework.signature";
-    public static final String SIG_FILE_NAME = "jakarta.data.stateful.sig";
+    public static final String SIG_FILE_NAME = "jakarta.data.repository.stateful.sig";
     public static final String SIG_MAP_NAME = "sig-test.map";
     public static final String SIG_PKG_NAME = "sig-test-stateful-pkg-list.txt";
 
@@ -230,6 +230,11 @@ public class DataStatefulSignatureTestRunner extends SigTestEE {
                 // If we can't find a signature file for the current JDK version, use the plain name
                 inStreamSigFile = DataStatefulSignatureTestRunner.class.getClassLoader()
                         .getResourceAsStream(SIG_RESOURCE_PACKAGE.replace(".", "/") + "/" + SIG_FILE_NAME);
+            }
+            if (inStreamSigFile == null) {
+                throw new IOException("Could not find signature file resource for JDK version " + javaVersion
+                        + ". Looked for '" + SIG_FILE_NAME + "_" + javaVersion + "' and '" + SIG_FILE_NAME + "' "
+                        + "in package " + SIG_RESOURCE_PACKAGE + ".");
             }
             File sigFile = writeStreamToSigFile(inStreamSigFile);
             log.info("signature File location is :" + sigFile.getCanonicalPath());

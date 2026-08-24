@@ -238,6 +238,11 @@ public class DataSignatureTestRunner extends SigTestEE {
                 inStreamSigFile = DataSignatureTestRunner.class.getClassLoader()
                         .getResourceAsStream(SIG_RESOURCE_PACKAGE.replace(".", "/") + "/" + SIG_FILE_NAME);
             }
+            if (inStreamSigFile == null) {
+                throw new IOException("Could not find signature file resource for JDK version " + javaVersion
+                        + ". Looked for '" + SIG_FILE_NAME + "_" + javaVersion + "' and '" + SIG_FILE_NAME + "' "
+                        + "in package " + SIG_RESOURCE_PACKAGE + ".");
+            }
             File sigFile = writeStreamToSigFile(inStreamSigFile);
             log.info("signature File location is :" + sigFile.getCanonicalPath());
             signatureRepositoryDir = System.getProperty("java.io.tmpdir");

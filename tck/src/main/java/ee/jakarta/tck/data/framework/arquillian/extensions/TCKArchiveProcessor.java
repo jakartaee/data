@@ -107,13 +107,15 @@ public class TCKArchiveProcessor implements ApplicationArchiveProcessor {
                                          isJava21orAbove ? DataStatefulSignatureTestRunner.SIG_FILE_NAME + "_21" :
                                          DataStatefulSignatureTestRunner.SIG_FILE_NAME + "_17";
 
+            String targetLocation = signaturePackage.getName().replace(".", "/") + "/";
+
             // Add API signature resources
             log.info("Application Archive [" + applicationName + "] is being appended with resources "
                     + Arrays.asList(DataSignatureTestRunner.SIG_RESOURCES));
             ((ResourceContainer<?>) applicationArchive).addAsResources(signaturePackage,
                     DataSignatureTestRunner.SIG_MAP_NAME, DataSignatureTestRunner.SIG_PKG_NAME);
             ((ResourceContainer<?>) applicationArchive).addAsResource(signaturePackage,
-                    apiSigFileName, DataSignatureTestRunner.SIG_FILE_NAME);
+                    apiSigFileName, targetLocation + DataSignatureTestRunner.SIG_FILE_NAME);
 
             // Add Stateful signature resources
             log.info("Application Archive [" + applicationName + "] is being appended with resources "
@@ -121,7 +123,7 @@ public class TCKArchiveProcessor implements ApplicationArchiveProcessor {
             ((ResourceContainer<?>) applicationArchive).addAsResources(signaturePackage,
                     DataStatefulSignatureTestRunner.SIG_MAP_NAME, DataStatefulSignatureTestRunner.SIG_PKG_NAME);
             ((ResourceContainer<?>) applicationArchive).addAsResource(signaturePackage,
-                    statefulSigFileName, DataStatefulSignatureTestRunner.SIG_FILE_NAME);
+                    statefulSigFileName, targetLocation + DataStatefulSignatureTestRunner.SIG_FILE_NAME);
         }
     }
 }

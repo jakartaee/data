@@ -366,7 +366,7 @@
                   </packages>
                   <version>${project.version}</version>
                   <attach>false</attach>
-                  <sigfile>${project.build.directory}/jakarta.data.stateful.sig_${java.version}</sigfile>
+                  <sigfile>${project.build.directory}/jakarta.data.repository.stateful.sig_${java.version}</sigfile>
                 </configuration>
               </execution>
             </executions>
@@ -392,8 +392,8 @@
                       <mapper from="^(jakarta.data.sig_[0-9]+)" to="\1" type="regexp"/>
                     </copy>
                     <copy todir="${project.basedir}/src/main/resources/ee/jakarta/tck/data/framework/signature/">
-                      <fileset dir="${project.build.directory}" includes="jakarta.data.stateful.sig_${java.version}"/>
-                      <mapper from="^(jakarta.data.stateful.sig_[0-9]+)" to="\1" type="regexp"/>
+                      <fileset dir="${project.build.directory}" includes="jakarta.data.repository.stateful.sig_${java.version}"/>
+                      <mapper from="^(jakarta.data.repository.stateful.sig_[0-9]+)" to="\1" type="regexp"/>
                     </copy>
                   </target>
                 </configuration>

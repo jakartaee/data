@@ -18,3 +18,4 @@
 # The signature test mapping file for the Data TCK.
 ###############################################################
 jakarta.data=
+jakarta.data.repository.stateful=
