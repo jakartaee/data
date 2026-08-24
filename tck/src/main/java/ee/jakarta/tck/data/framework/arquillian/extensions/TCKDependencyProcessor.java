@@ -56,7 +56,7 @@ public class TCKDependencyProcessor {
             final JavaArchive archive = ShrinkWrap.create(JavaArchive.class, "assertj-core.jar");
             archive.addPackages(true, "org.assertj.core");
             
-            addManifestDirectoryResources(archive, "org.assertj.core.api.Assertions");
+            addJarResources(archive, "org.assertj.core.api.Assertions");
             
             log.info("Recreated assertj-core.jar archive with contents: " + archive.toString(true));
             
@@ -82,7 +82,7 @@ public class TCKDependencyProcessor {
             archive.addPackages(true, "org.netbeans.apitest");
             archive.addPackages(true, "jakarta.tck.sigtest_maven_plugin");
             
-            addManifestDirectoryResources(archive, "com.sun.tdk.signaturetest.Version");
+            addJarResources(archive, "com.sun.tdk.signaturetest.Version");
             
             log.info("Recreated sigtest-maven-plugin.jar archive with contents: " + archive.toString(true));
             
@@ -97,47 +97,49 @@ public class TCKDependencyProcessor {
 
 
     /**
-     * Adds all META-INF directory resources from the JAR file containing the specified
-     * reference class to the provided archive. This is used to preserve manifest and
-     * service provider configuration files when recreating dependency archives.
+     * Adds all non-class resources from the JAR file containing the specified
+     * reference class to the provided archive. This preserves both META-INF
+     * service provider configuration files and package-level resources such as
+     * i18n.properties files that are required at runtime but not copied by
+     * {@link JavaArchive#addPackages}.
      *
-     * @param archive the JavaArchive to add META-INF resources to
+     * @param archive the JavaArchive to add resources to
      * @param refClass the fully qualified name of a class within the source JAR
      * @throws RuntimeException if the reference class cannot be found, is not loaded
      *         from a JAR file, or if an I/O error occurs while copying resources
      */
-    private static void addManifestDirectoryResources(final JavaArchive archive, final String refClass) {
+    private static void addJarResources(final JavaArchive archive, final String refClass) {
 
        // Get classloader to reference class
        ClassLoader artifactClassloader;
        try {
           artifactClassloader = Class.forName(refClass).getClassLoader();
        } catch (ClassNotFoundException e) {
-            throw new RuntimeException("Could not find reference class for assertj", e);
+            throw new RuntimeException("Could not find reference class for " + refClass, e);
         }
        
        // Construct reference resource
-       String refResrouce = refClass.replace('.', '/') + ".class";
+       String refResource = refClass.replace('.', '/') + ".class";
        
         try {
            
            // Find artifact's location on the file system and verify it's a JAR
-            URL classUrl = artifactClassloader.getResource(refResrouce);
+            URL classUrl = artifactClassloader.getResource(refResource);
             if (classUrl == null) {
                 throw new RuntimeException("Could not locate reference class resource for " + refClass);
             }
             if (!"jar".equals(classUrl.getProtocol())) {
-                throw new RuntimeException("Expected "+ archive.getName() + 
+                throw new RuntimeException("Expected "+ archive.getName() +
                       " classes to be loaded from a jar but found protocol: " + classUrl.getProtocol());
             }
 
-            // Add all META-INF/ resources to the re-create archive
+            // Add all non-class resources (META-INF/ and package-level e.g. i18n.properties)
             JarURLConnection connection = (JarURLConnection) classUrl.openConnection();
             try (JarFile jarFile = connection.getJarFile()) {
                 Enumeration<JarEntry> entries = jarFile.entries();
                 while (entries.hasMoreElements()) {
                     JarEntry entry = entries.nextElement();
-                    if (!entry.isDirectory() && entry.getName().startsWith("META-INF/")) {
+                    if (!entry.isDirectory() && !entry.getName().endsWith(".class")) {
                         try (InputStream input = jarFile.getInputStream(entry)) {
                             archive.add(new ByteArrayAsset(input.readAllBytes()), entry.getName());
                         }
@@ -146,7 +148,7 @@ public class TCKDependencyProcessor {
             }
             
         } catch (IOException e) {
-            throw new RuntimeException("Failed to copy META-INF resources into recreated archive", e);
+            throw new RuntimeException("Failed to copy resources into recreated archive", e);
         }
     }
 }
