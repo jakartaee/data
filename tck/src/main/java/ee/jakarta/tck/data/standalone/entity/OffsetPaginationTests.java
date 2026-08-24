@@ -476,6 +476,191 @@ public class OffsetPaginationTests {
         assertFalse(it.hasNext());
     }
 
+    @Assertion(id = "1447", strategy = """
+            Request a page that has offset of 3 from the first
+            page. The fourth page of results must be retrieved,
+            and the previous and next pages must be successfully
+            retrieved, with results matching the query prior to
+            and subsequent to the fourth page.
+            """)
+    public void testPageOffsetThreeIsFourthPage() {
+        PageRequest fourthPageRequest = PageRequest.ofSize(5)
+                                                   .pageOffset(3)
+                                                   .withoutTotal();
+
+        Page<AsciiCharacter> page3;
+        try {
+            page3 = characters.fromRange(
+                    97, // 'a'
+                    122, // 'z'
+                    fourthPageRequest,
+                    Order.by(_AsciiCharacter.numericValue.asc()));
+        } catch (UnsupportedOperationException x) {
+            if (type.capableOfBetween() &&
+                type.capableOfConstraintsOnNonIdAttributes() &&
+                type.capableOfCount() &&
+                type.capableOfSingleSort()) {
+                throw x;
+            } else {
+                return;
+            }
+        }
+
+        assertEquals(List.of('p', 'q', 'r', 's', 't'),
+                     page3.stream()
+                          .map(AsciiCharacter::getThisCharacter)
+                          .toList());
+
+        assertEquals(3,
+                     page3.pageRequest().pageOffset());
+
+        assertEquals(true,
+                     page3.hasNext());
+
+        assertEquals(4,
+                     page3.nextPageRequest().pageOffset());
+
+        assertEquals(true,
+                     page3.hasPrevious());
+
+        assertEquals(2,
+                     page3.previousPageRequest().pageOffset());
+
+
+        Page<AsciiCharacter> page2;
+        try {
+            page2 = characters.fromRange(
+                    97, // 'a'
+                    122, // 'z'
+                    page3.previousPageRequest(),
+                    Order.by(_AsciiCharacter.numericValue.asc()));
+        } catch (UnsupportedOperationException x) {
+            if (type.capableOfBetween() &&
+                type.capableOfConstraintsOnNonIdAttributes() &&
+                type.capableOfCount() &&
+                type.capableOfSingleSort()) {
+                throw x;
+            } else {
+                return;
+            }
+        }
+
+        assertEquals(List.of('k', 'l', 'm', 'n', 'o'),
+                     page2.stream()
+                          .map(AsciiCharacter::getThisCharacter)
+                          .toList());
+
+        assertEquals(2,
+                     page2.pageRequest().pageOffset());
+
+        assertEquals(true,
+                     page2.hasNext());
+
+        assertEquals(3,
+                     page2.nextPageRequest().pageOffset());
+
+        assertEquals(true,
+                     page2.hasPrevious());
+
+        assertEquals(1,
+                     page2.previousPageRequest().pageOffset());
+
+
+        Page<AsciiCharacter> page4;
+        try {
+            page4 = characters.fromRange(
+                    97, // 'a'
+                    122, // 'z'
+                    page3.nextPageRequest(),
+                    Order.by(_AsciiCharacter.numericValue.asc()));
+        } catch (UnsupportedOperationException x) {
+            if (type.capableOfBetween() &&
+                type.capableOfConstraintsOnNonIdAttributes() &&
+                type.capableOfCount() &&
+                type.capableOfSingleSort()) {
+                throw x;
+            } else {
+                return;
+            }
+        }
+
+        assertEquals(List.of('u', 'v', 'w', 'x', 'y'),
+                     page4.stream()
+                          .map(AsciiCharacter::getThisCharacter)
+                          .toList());
+
+        assertEquals(4,
+                     page4.pageRequest().pageOffset());
+
+        assertEquals(true,
+                     page4.hasNext());
+
+        assertEquals(5,
+                     page4.nextPageRequest().pageOffset());
+
+        assertEquals(true,
+                     page4.hasPrevious());
+
+        assertEquals(3,
+                     page4.previousPageRequest().pageOffset());
+
+    }
+
+    @Assertion(id = "1447", strategy = """
+            Request a page that has offset of zero from the first
+            page. The first page of results must be retrieved,
+            starting with the first matching result.
+            """)
+    public void testPageOffsetZeroIsFirstPage() {
+        PageRequest firstPageRequest = PageRequest.ofSize(9).pageOffset(0);
+
+        Page<AsciiCharacter> page0;
+        try {
+            page0 = characters.fromRange(
+                    65, // 'A'
+                    90, // 'Z'
+                    firstPageRequest,
+                    Order.by(_AsciiCharacter.numericValue.desc()));
+        } catch (UnsupportedOperationException x) {
+            if (type.capableOfBetween() &&
+                type.capableOfConstraintsOnNonIdAttributes() &&
+                type.capableOfCount() &&
+                type.capableOfSingleSort()) {
+                throw x;
+            } else {
+                return;
+            }
+        }
+
+        assertEquals(List.of('Z', 'Y', 'X', 'W', 'V', 'U', 'T', 'S', 'R'),
+                     page0.stream()
+                          .map(AsciiCharacter::getThisCharacter)
+                          .toList());
+
+        assertEquals(0,
+                     page0.pageRequest().pageOffset());
+
+        assertEquals(true,
+                     page0.hasNext());
+
+        assertEquals(1,
+                     page0.nextPageRequest().pageOffset());
+
+        assertEquals(false,
+                     page0.hasPrevious());
+
+        try {
+            assertEquals(26L, page0.totalElements());
+            assertEquals(3L, page0.totalPages());
+        } catch (UnsupportedOperationException x) {
+            if (type.capableOfCount()) {
+                throw x;
+            } else {
+                return;
+            }
+        }
+    }
+
     @Assertion(id = "133", strategy = """
             Request a Page of results where none match the query,
             expecting an empty Page with 0 results.
