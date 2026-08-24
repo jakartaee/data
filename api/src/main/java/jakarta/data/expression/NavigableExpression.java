@@ -39,9 +39,9 @@ import jakarta.annotation.Nonnull;
  *
  * <p>
  * The {@code navigate} methods accept a metamodel attribute of an intermediate
- * type {@code U} and return a new expression of a more specific subtype,
- * rooted at the entity type {@code T}, that represents the path from the
- * current expression to the given attribute.
+ * type {@code U} and return a path expression rooted at the entity type
+ * {@code T}. The type of the returned expression is determined by the type
+ * of the attribute argument.
  *
  * <p>
  * For example, given a {@code Customer} entity with an embeddable,
