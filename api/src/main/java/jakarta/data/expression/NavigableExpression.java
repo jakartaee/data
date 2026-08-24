@@ -34,8 +34,8 @@ import jakarta.data.spi.expression.path.TextPath;
 import jakarta.annotation.Nonnull;
 
 /**
- * An {@linkplain Expression expression} that navigates to an attribute of an
- * embeddable or association.
+ * An {@linkplain Expression expression} whose type has attributes of its own
+ * that can be navigated.
  *
  * <p>
  * The {@code navigate} methods accept a metamodel attribute of an intermediate

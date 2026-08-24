@@ -44,8 +44,8 @@ public interface NumericPath<T, U, N extends Number & Comparable<N>>
      * This class is part of the Jakarta Data SPI for Jakarta Data providers.
      * Applications must not use the SPI directly and can instead invoke
      * {@link NavigableExpression#navigate(NumericAttribute)} starting from a
-     * {@linkplain NavigableAttribute metamodel attribute for an embeddable or
-     * association} to access a numeric path expression.
+     * {@linkplain NavigableAttribute navigable metamodel attribute}
+     * to access a numeric path expression.
      *
      * @param <T>        entity type
      * @param <U>        type of the intermediate object that owns the
