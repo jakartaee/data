@@ -83,18 +83,18 @@ public class CursorPaginationTests {
             Request a CursoredPage of 9 results after the cursor
             of the 20th result, expecting to find the next 9 results.
             Then request the CursoredPage before the cursor of the
-            first entry of the slice, expecting to find the previous
+            first entry of the page, expecting to find the previous
             9 results. Then request the CursoredPage after the last
-            entry of the original slice, expecting to find the next 9.
+            entry of the original page, expecting to find the next 9.
             """)
-    public void testCursoredPageWithoutTotalOf9FromCursor() {
+    public void testAfterCursorNoTotals() {
         // The query for this test returns composite natural numbers under 64
         // in the following order:
         //
         // 49 50 51 52 54 55 56 57 58 60 62 63 36 38 39 40 42 44 45 46 48 25 26 27 28 30 32 33 34 35 16 18 20 21 22 24 09 10 12 14 15 04 06 08
-        //                                                             ^^^^^^^^ slice 1 ^^^^^^^^^
-        //                                  ^^^^^^^^ slice 2 ^^^^^^^^^
-        //                                                                                        ^^^^^^^^ slice 3 ^^^^^^^^^
+        //                                                             ^^^^^^^^^ page 1 ^^^^^^^^^
+        //                                  ^^^^^^^^^ page 2 ^^^^^^^^^
+        //                                                                                        ^^^^^^^^^ page 3 ^^^^^^^^^
 
         PageRequest middle9 = PageRequest.afterCursor(
                 Cursor.forKey(6L,
@@ -103,13 +103,13 @@ public class CursorPaginationTests {
         Order<NaturalNumber> order = Order.by(Sort.desc("floorOfSquareRoot"),
                                               Sort.asc("id"));
 
-        CursoredPage<NaturalNumber> slice;
+        CursoredPage<NaturalNumber> page;
         try {
-            slice = numbers.findByNumTypeAndNumBitsRequiredLessThan(
-                    NumberType.COMPOSITE,
-                    (short) 7,
-                    order,
-                    middle9);
+            page = numbers.findByNumTypeAndNumBitsRequiredLessThan(
+                   NumberType.COMPOSITE,
+                   (short) 7,
+                   order,
+                   middle9);
         } catch (UnsupportedOperationException x) {
             if (type.capableOfAnd() &&
                 type.capableOfConstraintsOnNonIdAttributes() &&
@@ -124,20 +124,20 @@ public class CursorPaginationTests {
         }
 
         assertEquals(List.of(48L, 25L, 26L, 27L, 28L, 30L, 32L, 33L, 34L),
-                     slice.stream()
-                          .map(NaturalNumber::getId)
-                          .toList());
+                     page.stream()
+                         .map(NaturalNumber::getId)
+                         .toList());
 
-        assertEquals(9, slice.numberOfElements());
+        assertEquals(9, page.numberOfElements());
 
-        assertTrue(slice.hasPrevious());
-        CursoredPage<NaturalNumber> previousSlice;
+        assertTrue(page.hasPrevious());
+        CursoredPage<NaturalNumber> previousPage;
         try {
-            previousSlice = numbers.findByNumTypeAndNumBitsRequiredLessThan(
+            previousPage = numbers.findByNumTypeAndNumBitsRequiredLessThan(
                     NumberType.COMPOSITE,
                     (short) 7,
                     order,
-                    slice.previousPageRequest());
+                    page.previousPageRequest());
         } catch (UnsupportedOperationException x) {
             if (type.capableOfOr()) {
                 throw x;
@@ -147,19 +147,19 @@ public class CursorPaginationTests {
         }
 
         assertEquals(List.of(63L, 36L, 38L, 39L, 40L, 42L, 44L, 45L, 46L),
-                     previousSlice.stream()
-                                  .map(NaturalNumber::getId)
-                                  .toList());
+                     previousPage.stream()
+                                 .map(NaturalNumber::getId)
+                                 .toList());
 
-        assertEquals(9, previousSlice.numberOfElements());
+        assertEquals(9, previousPage.numberOfElements());
 
-        CursoredPage<NaturalNumber> nextSlice;
+        CursoredPage<NaturalNumber> nextPage;
         try {
-            nextSlice = numbers.findByNumTypeAndNumBitsRequiredLessThan(
+            nextPage = numbers.findByNumTypeAndNumBitsRequiredLessThan(
                     NumberType.COMPOSITE,
                     (short) 7,
                     order,
-                    slice.nextPageRequest());
+                    page.nextPageRequest());
         } catch (UnsupportedOperationException x) {
             if (type.capableOfOr()) {
                 throw x;
@@ -169,11 +169,11 @@ public class CursorPaginationTests {
         }
 
         assertEquals(List.of(35L, 16L, 18L, 20L, 21L, 22L, 24L, 9L, 10L),
-                     nextSlice.stream()
-                              .map(NaturalNumber::getId)
-                              .toList());
+                     nextPage.stream()
+                             .map(NaturalNumber::getId)
+                             .toList());
 
-        assertEquals(9, nextSlice.numberOfElements());
+        assertEquals(9, nextPage.numberOfElements());
     }
 
     @Assertion(id = "133", strategy = """
@@ -183,9 +183,9 @@ public class CursorPaginationTests {
             before the cursor of the first entry of the page,
             expecting to find the previous 7 results.
             Then request the CursoredPage after the last entry
-            of the original slice, expecting to find the next 7.
+            of the original page, expecting to find the next 7.
             """)
-    public void testCursoredPageOf7FromCursor() {
+    public void testAfterCursorWithTotals() {
         // The query for this test returns 1-35 and 49 in the following order:
         //
         // 35 34 33 32 49 24 23 22 21 20 19 18 17 16 31 30 29 28 27 26 25 08 15 14 13 12 11 10 09 07 06 05 04 03 02 01
@@ -294,16 +294,16 @@ public class CursorPaginationTests {
             the query, expecting an empty CursoredPage with
             0 results.
             """)
-    public void testCursoredPageWithoutTotalOfNothing() {
+    public void testCursoredPageOfNothingNoTotals() {
         // There are no numbers larger than 30 which have a square root
         // that rounds down to 3.
         PageRequest pagination = PageRequest.ofSize(33)
                                             .afterCursor(Cursor.forKey(30L))
                                             .withoutTotal();
 
-        CursoredPage<NaturalNumber> slice;
+        CursoredPage<NaturalNumber> page;
         try {
-            slice = numbers.findByFloorOfSquareRootOrderByIdAsc(3L, pagination);
+            page = numbers.findByFloorOfSquareRootOrderByIdAsc(3L, pagination);
         } catch (UnsupportedOperationException x) {
             if (type.capableOfAnd() &&
                 type.capableOfConstraintsOnNonIdAttributes() &&
@@ -315,9 +315,9 @@ public class CursorPaginationTests {
             }
         }
 
-        assertFalse(slice.hasContent());
-        assertEquals(0, slice.content().size());
-        assertEquals(0, slice.numberOfElements());
+        assertFalse(page.hasContent());
+        assertEquals(0, page.content().size());
+        assertEquals(0, page.numberOfElements());
     }
 
     @Assertion(id = "133", strategy = """
@@ -325,7 +325,7 @@ public class CursorPaginationTests {
             match the query, expecting an empty CursoredPage
             with 0 results.
             """)
-    public void testCursoredPageOfNothing() {
+    public void testCursoredPageOfNothingWithTotals() {
 
         CursoredPage<NaturalNumber> page;
         try {
@@ -377,12 +377,12 @@ public class CursorPaginationTests {
             to find all 6, then request the next CursoredPage and
             the CursoredPage after that, expecting to find all results.
             """)
-    public void testFirstCursoredPageWithoutTotalOf6AndNextPages() {
+    public void testInitialPageOf6AndNextPagesNoTotals() {
         PageRequest first6 = PageRequest.ofSize(6).withoutTotal();
-        CursoredPage<NaturalNumber> slice;
+        CursoredPage<NaturalNumber> page;
 
         try {
-            slice = numbers.findByFloorOfSquareRootOrderByIdAsc(7L, first6);
+            page = numbers.findByFloorOfSquareRootOrderByIdAsc(7L, first6);
         } catch (UnsupportedOperationException x) {
             if (type.capableOfAnd() &&
                 type.capableOfConstraintsOnNonIdAttributes() &&
@@ -394,16 +394,16 @@ public class CursorPaginationTests {
         }
 
         assertEquals(List.of(49L, 50L, 51L, 52L, 53L, 54L),
-                     slice.stream()
-                          .map(NaturalNumber::getId)
-                          .toList());
+                     page.stream()
+                         .map(NaturalNumber::getId)
+                         .toList());
 
-        assertEquals(6, slice.numberOfElements());
+        assertEquals(6, page.numberOfElements());
 
         try {
-            slice = numbers.findByFloorOfSquareRootOrderByIdAsc(
-                    7L,
-                    slice.nextPageRequest());
+            page = numbers.findByFloorOfSquareRootOrderByIdAsc(
+                   7L,
+                   page.nextPageRequest());
         } catch (UnsupportedOperationException x) {
             if (type.capableOfAnd()) {
                 throw x;
@@ -412,24 +412,24 @@ public class CursorPaginationTests {
             }
         }
 
-        assertEquals(6, slice.numberOfElements());
+        assertEquals(6, page.numberOfElements());
 
         assertEquals(List.of(55L, 56L, 57L, 58L, 59L, 60L),
-                     slice.stream()
-                          .map(NaturalNumber::getId)
-                          .toList());
+                     page.stream()
+                         .map(NaturalNumber::getId)
+                         .toList());
 
-        slice = numbers.findByFloorOfSquareRootOrderByIdAsc(
+        page = numbers.findByFloorOfSquareRootOrderByIdAsc(
                 7L,
-                slice.nextPageRequest());
+                page.nextPageRequest());
 
 
         assertEquals(List.of(61L, 62L, 63L),
-                     slice.stream()
-                          .map(NaturalNumber::getId)
-                          .toList());
+                     page.stream()
+                         .map(NaturalNumber::getId)
+                         .toList());
 
-        assertEquals(3, slice.numberOfElements());
+        assertEquals(3, page.numberOfElements());
     }
 
     @Assertion(id = "133", strategy = """
@@ -437,7 +437,7 @@ public class CursorPaginationTests {
             to find all 8, then request the next CursoredPage and
             the CursoredPage after that, expecting to find all results.
             """)
-    public void testFirstCursoredPageOf8AndNextPages() {
+    public void testInitialPageOf8AndNextPagesWithTotals() {
         // The query for this test returns 1-15,25-32 in the following order:
 
         // 32 requires 6 bits

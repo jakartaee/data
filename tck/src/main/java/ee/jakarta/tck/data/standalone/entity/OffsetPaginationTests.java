@@ -127,10 +127,11 @@ public class OffsetPaginationTests {
     }
 
     @Assertion(id = "133", strategy = """
-            Request a Slice higher than the final Slice,
-            expecting an empty Slice with 0 results.
+            Request a page without a total count of results,
+            requesting a page number higher than the final page,
+            and expecting an empty page with 0 results.
             """)
-    public void testBeyondFinalSlice() {
+    public void testBeyondFinalPageWithoutTotal() {
         PageRequest sixth = PageRequest.ofPage(6).size(5).withoutTotal();
         Page<NaturalNumber> page;
         try {
@@ -220,10 +221,11 @@ public class OffsetPaginationTests {
     }
 
     @Assertion(id = "133", strategy = """
-            Request the last Slice of up to 5 results,
-            expecting to find the final 2.
+            Request the last page of up to 5 results,
+            expecting to find the final 2. Request the page
+            without requesting a total count of results.
             """)
-    public void testFinalSliceOfUpTo5() {
+    public void testFinalPageOfUpTo5WithoutTotal() {
         PageRequest fifth = PageRequest.ofPage(5).size(5).withoutTotal();
         Page<NaturalNumber> page;
         try {
@@ -410,10 +412,11 @@ public class OffsetPaginationTests {
     }
 
     @Assertion(id = "133", strategy = """
-            Request the first Slice of 5 results,
-            expecting to find all 5.
+            Request the first page of 5 results,
+            expecting to find all 5. Request the page
+            without requesting a total count of results.
             """)
-    public void testFirstSliceOf5() {
+    public void testFirstPageOf5WithoutTotal() {
         PageRequest first5 = PageRequest.ofSize(5).withoutTotal();
         Page<NaturalNumber> page;
         try {
@@ -508,10 +511,11 @@ public class OffsetPaginationTests {
     }
 
     @Assertion(id = "133", strategy = """
-            Request a Slice of results where none match the query,
-            expecting an empty Slice with 0 results.
+            Request a page of results without a total count
+            of results, where none match the query,
+            expecting an empty page with 0 results.
             """)
-    public void testSliceOfNothing() {
+    public void testPageOfNothingWithoutTotal() {
         PageRequest pagination = PageRequest.ofSize(5).withoutTotal();
         Page<NaturalNumber> page;
         try {
@@ -683,11 +687,13 @@ public class OffsetPaginationTests {
     }
 
     @Assertion(id = "133", strategy = """
-            Request the third Slice of 5 results, expecting to
-            find all 5. Request the next Slice via nextPageRequest,
+            Request the third page of 5 results, expecting to
+            find all 5. Request the next page via nextPageRequest,
             expecting page number 4 and another 5 results.
+            Request the pages without requesting a total count
+            of results.
             """)
-    public void testThirdAndFourthSlicesOf5() {
+    public void testThirdAndFourthPageOf5WithoutTotal() {
         PageRequest third5 = PageRequest.ofPage(3).size(5).withoutTotal();
         Sort<NaturalNumber> sort = Sort.desc("id");
         Page<NaturalNumber> page;
