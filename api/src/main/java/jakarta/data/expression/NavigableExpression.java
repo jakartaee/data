@@ -56,8 +56,8 @@ import jakarta.annotation.Nonnull;
  * }</pre>
  *
  * <p>
- * The following entity and embeddables are used in examples throughout the
- * documentation of this class.
+ * The following Jakarta Persistence entity and embeddable types are used in examples 
+ * throughout the documentation of this class.
  *
  * <pre>{@code
  * @Entity
