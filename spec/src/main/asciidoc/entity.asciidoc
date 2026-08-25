@@ -382,12 +382,14 @@ NOTE: Application programmers are strongly encouraged to follow Java's camel cas
 
 Jakarta Data provides a static metamodel that allows entity attributes to be accessed by applications in a type-safe manner.
 
-For each entity class, the application developer or a compile-time annotation processor can define a corresponding metamodel class following a prescribed set of conventions.
+A static metamodel class represents the declared attributes of an entity class, an association (such as a Jakarta Persistence embeddable class), or a superclass of an entity or association.
+For each such class, the application developer or a compile-time annotation processor can define a corresponding metamodel class following a prescribed set of conventions.
 
 - The metamodel class can be an interface or concrete class.
-- The metamodel class must be annotated with `@StaticMetamodel`, specifying the entity class as its `value`.
-- The metamodel class contains one or more `public static` fields corresponding to persistent attributes of the entity class.
+- The metamodel class must be annotated with `@StaticMetamodel`, specifying the modeled class as its `value`.
+- The metamodel class contains one or more `public static` fields corresponding to persistent attributes declared by the modeled class.
 - Each field must be either of type `java.lang.String` (used primarily for annotation-based configurations) or `jakarta.data.metamodel.Attribute`, including any of its subinterfaces.
+- The metamodel class does not include fields for inherited attributes, but instead inherits the fields by inheriting a static metamodel class for the superclass.
 
 The application can use the field values of the metamodel class to obtain artifacts relating to the entity attribute in a type-safe manner, for example, `_Book.title.asc()` or `Sort.asc(_Book.title.name())` or `Sort.asc(_Book.TITLE)` rather than `Sort.asc("title")`.
 
@@ -416,7 +418,8 @@ The fields may be statically initialized, or they may be initialized by the prov
 
 The following are conventions for static metamodel classes:
 
-- The name of the static metamodel class should consist of underscore (`_`) followed by the entity class name.
+- The name of the static metamodel class should consist of underscore (`_`) followed by the name of the modeled class.
+- Static metamodel classes should have the same package as the modeled class.
 - Fields of type `String` should be named with all upper case.
 - Fields of type `Attribute` (or a subinterface of `Attribute`) should be named in lower case or mixed case.
 - Uninitialized fields should have modifiers `public`, `static`, and `volatile`.
@@ -425,12 +428,12 @@ The following are conventions for static metamodel classes:
 
 The following subinterfaces of `Attribute` are recommended to obtain the full benefit of the static metamodel:
 
-- `TextAttribute` for entity attributes that represent text, typically of type `String`.
-- `NumericAttribute` for entity attributes of numeric types, such as `long`, `Integer`, and `BigDecimal`.
-- `TemporalAttribute` for entity attributes of temporal types, such as `LocalDateTime`, and `Instant`.
-- `ComparableAttribute` for entity attributes that represent other comparable values, such as `boolean` and enumerations.
-- `NavigableAttribute` for entity attributes that are embeddables or associations.
-- `BasicAttribute` for other types of entity attributes, such as collections.
+- `TextAttribute` for attributes that represent text, typically of type `String`.
+- `NumericAttribute` for attributes of numeric types, such as `long`, `Integer`, and `BigDecimal`.
+- `BooleanAttribute` for attributes that represent `true` or `false` values of type `boolean` or `Boolean`.
+- `ComparableAttribute` for attributes that represent other comparable values, such as `char`, enumerations, and `UUID`.
+- `NavigableAttribute` for attributes that are associations, such as Jakarta Persistence embeddables.
+- `BasicAttribute` for other types of attributes, such as collections.
 
 To assist developers in selecting the appropriate subinterface of `Attribute` when declaring static metamodel fields, the following table maps common Java types to the corresponding attribute interface. While multiple Java types may be compatible with the same subinterface, this guidance ensures consistent and type-safe usage across different entity models.
 
