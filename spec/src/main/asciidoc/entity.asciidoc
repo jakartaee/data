@@ -431,6 +431,7 @@ The following subinterfaces of `Attribute` are recommended to obtain the full be
 - `TextAttribute` for attributes that represent text, typically of type `String`.
 - `NumericAttribute` for attributes of numeric types, such as `long`, `Integer`, and `BigDecimal`.
 - `BooleanAttribute` for attributes that represent `true` or `false` values of type `boolean` or `Boolean`.
+- `TemporalAttribute` for attributes of temporal types, such as `LocalDateTime`, and `Instant`.
 - `ComparableAttribute` for attributes that represent other comparable values, such as `char`, enumerations, and `UUID`.
 - `NavigableAttribute` for attributes that are associations, such as Jakarta Persistence embeddables.
 - `BasicAttribute` for other types of attributes, such as collections.
