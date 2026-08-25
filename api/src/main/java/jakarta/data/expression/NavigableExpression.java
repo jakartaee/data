@@ -148,7 +148,7 @@ import jakarta.annotation.Nonnull;
 public interface NavigableExpression<T, U> {
 
     /**
-     * Represents navigation to an attribute that can be further navigated.
+     * Allows navigation to an attribute that can be further navigated.
      *
      * <p>The resulting {@link NavigableExpression} represents the path formed
      * by navigating from this expression to the given
