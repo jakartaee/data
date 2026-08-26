@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022, 2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2026 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -43,18 +43,18 @@ import ee.jakarta.tck.data.framework.utilities.TestProperty;
  * This class performs the interactions between the test client (EE Application
  * or Standalone Test class) and the signature test framework.
  */
-public class DataSignatureTestRunner extends SigTestEE {
+public class DataStatefulSignatureTestRunner extends SigTestEE {
 
     private Logger log = Logger.getLogger(getClass().getCanonicalName());
 
     public static final String SIG_RESOURCE_PACKAGE = "ee.jakarta.tck.data.framework.signature";
-    public static final String SIG_FILE_NAME = "jakarta.data.sig";
+    public static final String SIG_FILE_NAME = "jakarta.data.repository.stateful.sig";
     public static final String SIG_MAP_NAME = "sig-test.map";
-    public static final String SIG_PKG_NAME = "sig-test-pkg-list.txt";
+    public static final String SIG_PKG_NAME = "sig-test-stateful-pkg-list.txt";
 
     public static final String[] SIG_RESOURCES = {SIG_FILE_NAME, SIG_MAP_NAME, SIG_PKG_NAME};
 
-    public DataSignatureTestRunner() {
+    public DataStatefulSignatureTestRunner() {
         setup();
     }
 
@@ -73,14 +73,7 @@ public class DataSignatureTestRunner extends SigTestEE {
     @Override
     protected String[] getPackages() {
         return new String[]{
-                "jakarta.data",
-                "jakarta.data.exceptions",
-                "jakarta.data.metamodel",
-                "jakarta.data.metamodel.impl",
-                "jakarta.data.page",
-                "jakarta.data.page.impl",
-                "jakarta.data.repository",
-                "jakarta.data.spi"
+                "jakarta.data.repository.stateful"
         };
     }
 
@@ -96,7 +89,7 @@ public class DataSignatureTestRunner extends SigTestEE {
         }
 
         // The Jakarta artifacts we want added to our classpath
-        String[] classes = new String[]{"jakarta.data.repository.Repository", // For jakarta-data-api.jar
+        String[] classes = new String[]{"jakarta.data.repository.stateful.Detach", // For jakarta-data-stateful-api.jar
         };
 
         // The JDK modules we want added to our classpath
@@ -209,19 +202,19 @@ public class DataSignatureTestRunner extends SigTestEE {
     // comment or the one below it depending on which properties your
     // signature tests need. Please do not use both comments.
     public void signatureTest() throws Fault {
-        log.info("DataSignatureTestRunner.signatureTest() called");
+        log.info("DataStatefulSignatureTestRunner.signatureTest() called");
         SigTestResult results = null;
         String mapFile = null;
         String packageListFile = null;
         String signatureRepositoryDir = null;
         try {
-            InputStream inStreamMapfile = DataSignatureTestRunner.class.getClassLoader()
+            InputStream inStreamMapfile = DataStatefulSignatureTestRunner.class.getClassLoader()
                     .getResourceAsStream(SIG_RESOURCE_PACKAGE.replace(".", "/") + "/" + SIG_MAP_NAME);
             File mFile = writeStreamToTempFile(inStreamMapfile, "sig-test", ".map");
             mapFile = mFile.getCanonicalPath();
             log.info("mapFile location is :" + mapFile);
 
-            InputStream inStreamPackageFile = DataSignatureTestRunner.class.getClassLoader()
+            InputStream inStreamPackageFile = DataStatefulSignatureTestRunner.class.getClassLoader()
                     .getResourceAsStream(SIG_RESOURCE_PACKAGE.replace(".", "/") + "/" + SIG_PKG_NAME);
             File pFile = writeStreamToTempFile(inStreamPackageFile, "sig-test-pkg-list", ".txt");
             packageListFile = pFile.getCanonicalPath();
@@ -231,11 +224,11 @@ public class DataSignatureTestRunner extends SigTestEE {
             String javaVersion = System.getProperty("java.specification.version");
             String sigRsrc = SIG_RESOURCE_PACKAGE.replace(".", "/") + "/" + SIG_FILE_NAME;
             sigRsrc += "_" + javaVersion;
-            InputStream inStreamSigFile = DataSignatureTestRunner.class.getClassLoader()
+            InputStream inStreamSigFile = DataStatefulSignatureTestRunner.class.getClassLoader()
                     .getResourceAsStream(sigRsrc);
             if (inStreamSigFile == null) {
                 // If we can't find a signature file for the current JDK version, use the plain name
-                inStreamSigFile = DataSignatureTestRunner.class.getClassLoader()
+                inStreamSigFile = DataStatefulSignatureTestRunner.class.getClassLoader()
                         .getResourceAsStream(SIG_RESOURCE_PACKAGE.replace(".", "/") + "/" + SIG_FILE_NAME);
             }
             if (inStreamSigFile == null) {
@@ -309,13 +302,13 @@ public class DataSignatureTestRunner extends SigTestEE {
                 throw new Exception();
             }
 
-            log.info("$$$ DataSignatureTestRunner.signatureTest() returning");
+            log.info("$$$ DataStatefulSignatureTestRunner.signatureTest() returning");
         } catch (Exception e) {
             if (results != null && !results.passed()) {
-                throw new Fault("DataSignatureTestRunner.signatureTest() failed!, diffs found");
+                throw new Fault("DataStatefulSignatureTestRunner.signatureTest() failed!, diffs found");
             } else {
                 log.info("Unexpected exception " + e.getMessage());
-                throw new Fault("DataSignatureTestRunner.signatureTest() failed with an unexpected exception", e);
+                throw new Fault("DataStatefulSignatureTestRunner.signatureTest() failed with an unexpected exception", e);
             }
         }
     }

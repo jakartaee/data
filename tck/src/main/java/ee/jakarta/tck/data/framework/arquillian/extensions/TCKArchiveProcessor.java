@@ -32,6 +32,7 @@ import ee.jakarta.tck.data.framework.junit.anno.ReadOnlyTest;
 import ee.jakarta.tck.data.framework.read.only.Populator;
 import ee.jakarta.tck.data.framework.servlet.TestServlet;
 import ee.jakarta.tck.data.framework.signature.DataSignatureTestRunner;
+import ee.jakarta.tck.data.framework.signature.DataStatefulSignatureTestRunner;
 
 
 /**
@@ -84,11 +85,12 @@ public class TCKArchiveProcessor implements ApplicationArchiveProcessor {
         }
 
         final boolean isJava25orAbove = Integer.parseInt(System.getProperty("java.specification.version")) >= 25;
+        final boolean isJava21orAbove = Integer.parseInt(System.getProperty("java.specification.version")) >= 21;
         final Package signaturePackage = DataSignatureTestRunner.class.getPackage();
 
         if (applicationArchive instanceof ClassContainer) {
 
-            // Add the Concurrency runner
+            // Add the runner package
             log.info("Application Archive [" + applicationName + "] is being appended with packages [" + signaturePackage + "]");
             ((ClassContainer<?>) applicationArchive).addPackage(signaturePackage);
 
@@ -96,17 +98,32 @@ public class TCKArchiveProcessor implements ApplicationArchiveProcessor {
             log.info("Application Archive [" + applicationName + "] is being appended with library sigtest-maven-plugin.jar");
             ((LibraryContainer<?>) applicationArchive).addAsLibrary(TCKDependencyProcessor.SigTestArchive.get());
 
-            // Add signature resources
+            String apiSigFileName = isJava25orAbove ? DataSignatureTestRunner.SIG_FILE_NAME + "_25" :
+                                    isJava21orAbove ? DataSignatureTestRunner.SIG_FILE_NAME + "_21" :
+                                    DataSignatureTestRunner.SIG_FILE_NAME + "_17";
+
+
+            String statefulSigFileName = isJava25orAbove ? DataStatefulSignatureTestRunner.SIG_FILE_NAME + "_25" :
+                                         isJava21orAbove ? DataStatefulSignatureTestRunner.SIG_FILE_NAME + "_21" :
+                                         DataStatefulSignatureTestRunner.SIG_FILE_NAME + "_17";
+
+            String targetLocation = signaturePackage.getName().replace(".", "/") + "/";
+
+            // Add API signature resources
             log.info("Application Archive [" + applicationName + "] is being appended with resources "
                     + Arrays.asList(DataSignatureTestRunner.SIG_RESOURCES));
             ((ResourceContainer<?>) applicationArchive).addAsResources(signaturePackage,
                     DataSignatureTestRunner.SIG_MAP_NAME, DataSignatureTestRunner.SIG_PKG_NAME);
             ((ResourceContainer<?>) applicationArchive).addAsResource(signaturePackage,
-                    // Get local resource based on JDK level
-                    isJava25orAbove ? DataSignatureTestRunner.SIG_FILE_NAME + "_25"
-                            : DataSignatureTestRunner.SIG_FILE_NAME + "_21",
-                    // Target same package as test
-                    signaturePackage.getName().replace(".", "/") + "/" + DataSignatureTestRunner.SIG_FILE_NAME);
+                    apiSigFileName, targetLocation + DataSignatureTestRunner.SIG_FILE_NAME);
+
+            // Add Stateful signature resources
+            log.info("Application Archive [" + applicationName + "] is being appended with resources "
+                    + Arrays.asList(DataStatefulSignatureTestRunner.SIG_RESOURCES));
+            ((ResourceContainer<?>) applicationArchive).addAsResources(signaturePackage,
+                    DataStatefulSignatureTestRunner.SIG_MAP_NAME, DataStatefulSignatureTestRunner.SIG_PKG_NAME);
+            ((ResourceContainer<?>) applicationArchive).addAsResource(signaturePackage,
+                    statefulSigFileName, targetLocation + DataStatefulSignatureTestRunner.SIG_FILE_NAME);
         }
     }
 }

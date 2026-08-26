@@ -38,10 +38,10 @@ jobs:
     - name: Generate signatures
       run: |
         mvn install -DskipTests -Dmaven.javadoc.skip=true -projects ".,api,stateful"
-        mvn package -Psignature-generation --file tck/pom.xml
+        mvn package -DskipTests -Psignature-generation --file tck/pom.xml
     - name: Needs updates
       id: update
-      run: echo "update_count=$(git status -s -uno | wc -l)" >> $GITHUB_OUTPUT
+      run: echo "update_count=$(git status -s | wc -l)" >> $GITHUB_OUTPUT
     - name: Create commit
       if: steps.update.outputs.update_count > 0
       env:
