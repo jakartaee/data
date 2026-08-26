@@ -382,7 +382,7 @@ NOTE: Application programmers are strongly encouraged to follow Java's camel cas
 
 Jakarta Data provides a static metamodel that allows entity attributes to be accessed by applications in a type-safe manner.
 
-A static metamodel class represents the declared attributes of an entity class, an association (such as a Jakarta Persistence embeddable class), or a superclass of an entity or association.
+A static metamodel class holds a representation of the declared attributes of an entity class, an associated class (such as a Jakarta Persistence embeddable class), or a superclass of an entity or associated class.
 For each such class, the application developer or a compile-time annotation processor can define a corresponding metamodel class following a prescribed set of conventions.
 
 - The metamodel class can be an interface or concrete class.
