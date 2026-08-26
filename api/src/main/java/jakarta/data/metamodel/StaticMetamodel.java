@@ -83,8 +83,8 @@ import jakarta.data.restrict.Restriction;
  * classes:
  * <ul>
  * <li>The metamodel class can be an interface or concrete class.</li>
- * <li>The name of the static metamodel class should consist of underscore
- *     ({@code _}) followed by the name of the modeled class.</li>
+ * <li>The name of the static metamodel class is formed by prefixing
+ *     the name of the modeled class with an underscore ({@code _}).</li>
  * <li>Static metamodel classes should have the same package as the modeled
  *     class.</li>
  * <li>Fields of type {@code String} should be named with all upper case.</li>
