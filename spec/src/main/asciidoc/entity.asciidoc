@@ -418,7 +418,7 @@ The fields may be statically initialized, or they may be initialized by the prov
 
 The following are conventions for static metamodel classes:
 
-- The name of the static metamodel class is formed by prefising the name of the modeled class with an underscore (`_`).
+- The name of the static metamodel class is formed by prefixing the name of the modeled class with an underscore (`_`).
 - Static metamodel classes should have the same package as the modeled class.
 - Fields of type `String` should be named with all upper case.
 - Fields of type `Attribute` (or a subinterface of `Attribute`) should be named in lower case or mixed case.

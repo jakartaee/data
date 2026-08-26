@@ -35,7 +35,7 @@ import jakarta.data.restrict.Restriction;
  * A static metamodel class holds a representation of the declared attributes of an entity
  * class, an associated class (such as a Jakarta Persistence Embeddable class),
  * or a superclass of an entity or associated class. The static metamodel enables
- * type-safe access to attribute names as well as an {@code *Attribute} object
+ * type-safe access to attribute names as well as an {@code Attribute} subclass
  * from which is obtained {@link Expression}s, {@link Restriction}s, and
  * {@link Sort}s on the attribute. A metamodel class contains one or more
  * {@code public static} fields, all corresponding to attributes declared by
