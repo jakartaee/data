@@ -33,10 +33,6 @@
     <name>Jakarta Data Core API</name>
     <description>Jakarta Data :: Core API</description>
 
-    <properties>
-        <assertj.version>3.27.7</assertj.version>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -51,38 +47,32 @@
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
-            <version>${assertj.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>jakarta.annotation</groupId>
             <artifactId>jakarta.annotation-api</artifactId>
-            <version>${jakarta.annotation.version}</version>
             <scope>provided</scope>
         </dependency>
         <!-- For Javadoc references only: -->
         <dependency>
             <groupId>jakarta.enterprise</groupId>
             <artifactId>jakarta.enterprise.cdi-api</artifactId>
-            <version>${jakarta.enterprise.cdi.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>jakarta.inject</groupId>
             <artifactId>jakarta.inject-api</artifactId>
-            <version>${jakarta.inject.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>jakarta.persistence</groupId>
             <artifactId>jakarta.persistence-api</artifactId>
-            <version>${jakarta.persistence.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>jakarta.transaction</groupId>
             <artifactId>jakarta.transaction-api</artifactId>
-            <version>${jakarta.transaction.version}</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
@@ -231,7 +221,6 @@ Use is subject to <a href="{@docRoot}/doc-files/speclicense.html" target="_top">
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
-                        <version>${maven.javadoc.plugin.version}</version>
                         <executions>
                             <execution>
                                 <id>attach-javadocs</id>
@@ -240,7 +229,8 @@ Use is subject to <a href="{@docRoot}/doc-files/speclicense.html" target="_top">
                                 </goals>
                                 <configuration>
                                     <links>
-                                        <link>https://jakarta.ee/specifications/persistence/4.0/apidocs/</link>
+                                        <link>
+                                            https://jakarta.ee/specifications/persistence/4.0/apidocs/</link>
                                     </links>
                                     <tags>
                                         <tag>

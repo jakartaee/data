@@ -14,389 +14,373 @@
  ~
  ~ SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
   -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <groupId>jakarta.data</groupId>
-    <artifactId>jakarta.data-parent</artifactId>
-    <version>1.1.0-SNAPSHOT</version>
-  </parent>
-
-  <artifactId>jakarta.data-tck</artifactId>
-  <name>Jakarta Data Technology Compatibility Kit</name>
-  <description>Jakarta Data :: TCK</description>
-
-  <licenses>
-    <license>
-      <name>Eclipse Public License 2.0</name>
-      <url>https://projects.eclipse.org/license/epl-2.0</url>
-      <distribution>repo</distribution>
-    </license>
-    <license>
-      <name>GNU General Public License, version 2 with the GNU Classpath Exception</name>
-      <url>https://projects.eclipse.org/license/secondary-gpl-2.0-cp</url>
-      <distribution>repo</distribution>
-    </license>
-  </licenses>
-
-  <properties>
-    <assertj.version>3.27.7</assertj.version>
-  </properties>
-
-  <dependencies>
-    <!-- Test framework -->
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.junit.platform</groupId>
-      <artifactId>junit-platform-launcher</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.assertj</groupId>
-      <artifactId>assertj-core</artifactId>
-      <version>${assertj.version}</version>
-    </dependency>
-    
-    <!-- Data API -->
-    <dependency>
+    <parent>
         <groupId>jakarta.data</groupId>
-        <artifactId>jakarta.data-api</artifactId>
-        <version>${jakarta.data.version}</version>
-        <scope>provided</scope>
-    </dependency>
+        <artifactId>jakarta.data-parent</artifactId>
+        <version>1.1.0-SNAPSHOT</version>
+    </parent>
 
-    <!-- Data Stateful API -->
-    <dependency>
-        <groupId>jakarta.data</groupId>
-        <artifactId>jakarta.data.stateful-api</artifactId>
-        <version>${jakarta.data.version}</version>
-        <scope>provided</scope>
-    </dependency>
+    <artifactId>jakarta.data-tck</artifactId>
+    <name>Jakarta Data Technology Compatibility Kit</name>
+    <description>Jakarta Data :: TCK</description>
 
-    <!-- EE Server Integration framework -->
-    <dependency>
-      <groupId>org.jboss.arquillian.junit5</groupId>
-      <artifactId>arquillian-junit5-container</artifactId>
-    </dependency>
+    <licenses>
+        <license>
+            <name>Eclipse Public License 2.0</name>
+            <url>https://projects.eclipse.org/license/epl-2.0</url>
+            <distribution>repo</distribution>
+        </license>
+        <license>
+            <name>GNU General Public License, version 2 with the GNU Classpath Exception</name>
+            <url>https://projects.eclipse.org/license/secondary-gpl-2.0-cp</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
 
-    <!-- EE Servlet Integration framework -->
-    <dependency>
-      <groupId>org.jboss.arquillian.protocol</groupId>
-      <artifactId>arquillian-protocol-servlet-jakarta</artifactId>
-    </dependency>
+    <dependencies>
+        <!-- Test framework -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-launcher</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+        </dependency>
 
-    <!-- Provided Jakarta APIs -->
-    <dependency>
-      <groupId>jakarta.annotation</groupId>
-      <artifactId>jakarta.annotation-api</artifactId>
-      <version>${jakarta.annotation.version}</version>
-      <scope>provided</scope>
-    </dependency>
+        <!-- Data API -->
+        <dependency>
+            <groupId>jakarta.data</groupId>
+            <artifactId>jakarta.data-api</artifactId>
+            <version>${jakarta.data.version}</version>
+            <scope>provided</scope>
+        </dependency>
 
-    <dependency>
-      <groupId>jakarta.enterprise.concurrent</groupId>
-      <artifactId>jakarta.enterprise.concurrent-api</artifactId>
-      <version>${jakarta.concurrency.version}</version>
-      <scope>provided</scope>
-    </dependency>
+        <!-- Data Stateful API -->
+        <dependency>
+            <groupId>jakarta.data</groupId>
+            <artifactId>jakarta.data.stateful-api</artifactId>
+            <version>${jakarta.data.version}</version>
+            <scope>provided</scope>
+        </dependency>
 
-    <dependency>
-      <groupId>jakarta.servlet</groupId>
-      <artifactId>jakarta.servlet-api</artifactId>
-      <version>${jakarta.servlet.version}</version>
-      <scope>provided</scope>
-    </dependency>
+        <!-- EE Server Integration framework -->
+        <dependency>
+            <groupId>org.jboss.arquillian.junit5</groupId>
+            <artifactId>arquillian-junit5-container</artifactId>
+        </dependency>
 
-    <dependency>
-      <groupId>jakarta.inject</groupId>
-      <artifactId>jakarta.inject-api</artifactId>
-      <version>${jakarta.inject.version}</version>
-      <scope>provided</scope>
-    </dependency>
-    
-    <dependency>
-      <groupId>jakarta.enterprise</groupId>
-      <artifactId>jakarta.enterprise.cdi-api</artifactId>
-      <version>${jakarta.enterprise.cdi.version}</version>
-      <scope>provided</scope>
-    </dependency>
-    
-    <dependency>
-      <groupId>jakarta.transaction</groupId>
-      <artifactId>jakarta.transaction-api</artifactId>
-      <version>${jakarta.transaction.version}</version>
-      <scope>provided</scope>
-    </dependency>
-    
-    <dependency>
-      <groupId>jakarta.validation</groupId>
-      <artifactId>jakarta.validation-api</artifactId>
-      <version>${jakarta.validation.version}</version>
-      <scope>provided</scope>
-    </dependency>
-    
-    <!-- Provided Entity APIs -->
-    <dependency>
-      <groupId>jakarta.nosql</groupId>
-      <artifactId>jakarta.nosql-api</artifactId>
-      <version>${jakarta.nosql.version}</version>
-    </dependency>
+        <!-- EE Servlet Integration framework -->
+        <dependency>
+            <groupId>org.jboss.arquillian.protocol</groupId>
+            <artifactId>arquillian-protocol-servlet-jakarta</artifactId>
+        </dependency>
 
-    <dependency>
-      <groupId>jakarta.persistence</groupId>
-      <artifactId>jakarta.persistence-api</artifactId>
-      <version>${jakarta.persistence.version}</version>
-      <scope>provided</scope>
-    </dependency>
-    
-    <!-- Test Dependencies -->
-    <dependency>
-      <groupId>jakarta.tck</groupId>
-      <artifactId>sigtest-maven-plugin</artifactId>
-      <version>${sigtest.version}</version>
-    </dependency>
-  </dependencies>
+        <!-- Provided Jakarta APIs -->
+        <dependency>
+            <groupId>jakarta.annotation</groupId>
+            <artifactId>jakarta.annotation-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
 
-  <build>
-    <resources>
-      <!-- The default resource location -->
-      <resource>
-        <directory>src/main/resources</directory>
-        <includes>
-          <include>**/*.*</include>
-        </includes>
-      </resource>
+        <dependency>
+            <groupId>jakarta.enterprise.concurrent</groupId>
+            <artifactId>jakarta.enterprise.concurrent-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
 
-      <!-- Additional resources kept inside packages for ease of development -->
-      <resource>
-        <directory>src/main/java</directory>
-        <includes>
-          <include>**/*.xml</include>
-          <include>**/*.jsp</include>
-        </includes>
-      </resource>
-    </resources>
+        <dependency>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
 
-    <plugins>
-      <plugin>
-        <groupId>org.apache.rat</groupId>
-        <artifactId>apache-rat-plugin</artifactId>
-        <version>${apache.rat.version}</version>
-        <!-- Skip checking for Apache license in this sub-module since it needs to use EPL/GPL -->
-        <configuration>
-          <skip>true</skip>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>${maven.compile.version}</version>
-        <configuration>
-          <source>17</source>
-          <target>17</target>
-          <compilerArgs>
-            <arg>-parameters</arg>
-          </compilerArgs>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-source-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>attach-sources</id>
-            <phase>verify</phase>
-            <goals>
-              <goal>jar-no-fork</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>attach-tck-javadocs</id>
-            <goals>
-              <goal>jar</goal>
-            </goals>
-            <configuration>
-              <source>17</source>
-              <quiet>true</quiet>
-              <additionalJOption>-Xdoclint:none</additionalJOption>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
+        <dependency>
+            <groupId>jakarta.inject</groupId>
+            <artifactId>jakarta.inject-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
 
-  <profiles>
-    <profile>
-      <!-- 
-      ~ This profile can be used to (re)generate signatures of Data API.
-      ~ Note that they differ based on JDK used to build them 
-      ~ All .sig files should be included in the generated jar files! 
-      -->
-      <id>signature-generation</id>
-      <activation>
-        <property>
-          <name>signature</name>
-        </property>
-      </activation>
-      <properties>
-        <!--Default assumed JDK version, can be overriden via -Dmajor.jdk.version=X -->
-        <jdk.major.version>17</jdk.major.version>
-      </properties>
-      <build>
-        <plugins>
-          <!-- Extract apis into output directory for use by signature plugin -->
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-dependency-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>unpack</id>
-                <phase>generate-sources</phase>
-                <goals>
-                  <goal>unpack</goal>
-                </goals>
-                <configuration>
-                  <artifactItems>
-                    <artifactItem>
-                      <groupId>jakarta.data</groupId>
-                      <artifactId>jakarta.data-api</artifactId>
-                      <version>${project.version}</version>
-                      <type>jar</type>
-                      <overWrite>false</overWrite>
-                      <outputDirectory>${project.build.directory}/jakarta.data-api</outputDirectory>
-                      <includes>**/*.class,**/*.xml</includes>
-                    </artifactItem>
-                    <artifactItem>
-                      <groupId>jakarta.data</groupId>
-                      <artifactId>jakarta.data.stateful-api</artifactId>
-                      <version>${project.version}</version>
-                      <type>jar</type>
-                      <overWrite>false</overWrite>
-                      <outputDirectory>${project.build.directory}/jakarta.data-stateful-api</outputDirectory>
-                      <includes>**/*.class,**/*.xml</includes>
-                    </artifactItem>
-                  </artifactItems>
-                  <includes>**/*.java</includes>
-                  <excludes>**/*.properties</excludes>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
+        <dependency>
+            <groupId>jakarta.enterprise</groupId>
+            <artifactId>jakarta.enterprise.cdi-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
 
-          <!-- Extract JDK modules into output directory for use by signature plugin -->
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>exec-maven-plugin</artifactId>
-            <version>${exec.maven.plugin.version}</version>
-            <executions>
-                <execution>
-                    <id>extractModules</id>
-                    <phase>generate-sources</phase>
-                    <goals>
-                        <goal>exec</goal>
-                    </goals>
-                </execution>
-            </executions>
-            <configuration>
-                <executable>jimage</executable>
-                <arguments>
-                    <argument>extract</argument>
-                    <argument>--dir=${project.build.directory}/jimage</argument>
-                    <argument>${java.home}/lib/modules</argument>
-                </arguments>
-            </configuration>
-          </plugin>
-          
-          <!-- Run signature plugin to generate base and stateful signature files -->
-          <plugin>
+        <dependency>
+            <groupId>jakarta.transaction</groupId>
+            <artifactId>jakarta.transaction-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>jakarta.validation</groupId>
+            <artifactId>jakarta.validation-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Provided Entity APIs -->
+        <dependency>
+            <groupId>jakarta.nosql</groupId>
+            <artifactId>jakarta.nosql-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>jakarta.persistence</groupId>
+            <artifactId>jakarta.persistence-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Test Dependencies -->
+        <dependency>
             <groupId>jakarta.tck</groupId>
             <artifactId>sigtest-maven-plugin</artifactId>
-            <version>${sigtest.version}</version>
-            <executions>
-              <execution>
-                <id>createSigFile</id>
-                <phase>generate-resources</phase>
-                <goals>
-                  <goal>generate</goal>
-                </goals>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <resources>
+            <!-- The default resource location -->
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/*.*</include>
+                </includes>
+            </resource>
+
+            <!-- Additional resources kept inside packages for ease of development -->
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                    <include>**/*.jsp</include>
+                </includes>
+            </resource>
+        </resources>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.rat</groupId>
+                <artifactId>apache-rat-plugin</artifactId>
+                <!-- Skip checking for Apache license in this sub-module since it needs to use EPL/GPL -->
                 <configuration>
-                  <classes>${project.build.directory}/jakarta.data-api</classes>
-                  <classes>${project.build.directory}/jimage/java.base</classes>
-                  <packages>
-                      jakarta.data,
-                      jakarta.data.exceptions,
-                      jakarta.data.metamodel,
-                      jakarta.data.metamodel.impl,
-                      jakarta.data.page,
-                      jakarta.data.page.impl,
-                      jakarta.data.repository,
-                      jakarta.data.spi
-                  </packages>
-                  <version>${project.version}</version>
-                  <attach>false</attach>
-                  <sigfile>${project.build.directory}/jakarta.data.sig_${java.version}</sigfile>
+                    <skip>true</skip>
                 </configuration>
-              </execution>
-              <execution>
-                <id>createStatefulSigFile</id>
-                <phase>generate-resources</phase>
-                <goals>
-                  <goal>generate</goal>
-                </goals>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                  <classes>${project.build.directory}/jakarta.data-stateful-api</classes>
-                  <classes>${project.build.directory}/jimage/java.base</classes>
-                  <packages>
-                      jakarta.data.repository.stateful
-                  </packages>
-                  <version>${project.version}</version>
-                  <attach>false</attach>
-                  <sigfile>${project.build.directory}/jakarta.data.repository.stateful.sig_${java.version}</sigfile>
+                    <source>17</source>
+                    <target>17</target>
+                    <compilerArgs>
+                        <arg>-parameters</arg>
+                    </compilerArgs>
                 </configuration>
-              </execution>
-            </executions>
-          </plugin>
-          
-          <!-- Copy signature file to tck resources with major java version -->
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-antrun-plugin</artifactId>
-            <version>${maven.antrun.plugin.version}</version>
-            <executions>
-              <execution>
-                <id>copySigFile</id>
-                <phase>process-resources</phase>
-                <goals>
-                  <goal>run</goal>
-                </goals>
-                <configuration>
-                  <target>
-                    <mkdir dir="${project.basedir}/src/main/resources/ee/jakarta/tck/data/framework/signature/"/>
-                    <copy todir="${project.basedir}/src/main/resources/ee/jakarta/tck/data/framework/signature/">
-                      <fileset dir="${project.build.directory}" includes="jakarta.data.sig_${java.version}"/>
-                      <mapper from="^(jakarta.data.sig_[0-9]+)" to="\1" type="regexp"/>
-                    </copy>
-                    <copy todir="${project.basedir}/src/main/resources/ee/jakarta/tck/data/framework/signature/">
-                      <fileset dir="${project.build.directory}" includes="jakarta.data.repository.stateful.sig_${java.version}"/>
-                      <mapper from="^(jakarta.data.repository.stateful.sig_[0-9]+)" to="\1" type="regexp"/>
-                    </copy>
-                  </target>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-tck-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <configuration>
+                            <source>17</source>
+                            <quiet>true</quiet>
+                            <additionalJOption>-Xdoclint:none</additionalJOption>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
-      </build>
-    </profile>
-  </profiles>
+    </build>
+
+    <profiles>
+        <profile>
+            <!--
+            ~ This profile can be used to (re)generate signatures of Data API.
+            ~ Note that they differ based on JDK used to build them
+            ~ All .sig files should be included in the generated jar files!
+            -->
+            <id>signature-generation</id>
+            <activation>
+                <property>
+                    <name>signature</name>
+                </property>
+            </activation>
+            <properties>
+                <!--Default assumed JDK version, can be overriden via -Dmajor.jdk.version=X -->
+                <jdk.major.version>17</jdk.major.version>
+            </properties>
+            <build>
+                <plugins>
+                    <!-- Extract apis into output directory for use by signature plugin -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-dependency-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>unpack</id>
+                                <phase>generate-sources</phase>
+                                <goals>
+                                    <goal>unpack</goal>
+                                </goals>
+                                <configuration>
+                                    <artifactItems>
+                                        <artifactItem>
+                                            <groupId>jakarta.data</groupId>
+                                            <artifactId>jakarta.data-api</artifactId>
+                                            <version>${project.version}</version>
+                                            <type>jar</type>
+                                            <overWrite>false</overWrite>
+                                            <outputDirectory>${project.build.directory}/jakarta.data-api</outputDirectory>
+                                            <includes>**/*.class,**/*.xml</includes>
+                                        </artifactItem>
+                                        <artifactItem>
+                                            <groupId>jakarta.data</groupId>
+                                            <artifactId>jakarta.data.stateful-api</artifactId>
+                                            <version>${project.version}</version>
+                                            <type>jar</type>
+                                            <overWrite>false</overWrite>
+                                            <outputDirectory>${project.build.directory}/jakarta.data-stateful-api</outputDirectory>
+                                            <includes>**/*.class,**/*.xml</includes>
+                                        </artifactItem>
+                                    </artifactItems>
+                                    <includes>**/*.java</includes>
+                                    <excludes>**/*.properties</excludes>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <!-- Extract JDK modules into output directory for use by signature plugin -->
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>extractModules</id>
+                                <phase>generate-sources</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <executable>jimage</executable>
+                            <arguments>
+                                <argument>extract</argument>
+                                <argument>--dir=${project.build.directory}/jimage</argument>
+                                <argument>${java.home}/lib/modules</argument>
+                            </arguments>
+                        </configuration>
+                    </plugin>
+
+                    <!-- Run signature plugin to generate base and stateful signature files -->
+                    <plugin>
+                        <groupId>jakarta.tck</groupId>
+                        <artifactId>sigtest-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>createSigFile</id>
+                                <phase>generate-resources</phase>
+                                <goals>
+                                    <goal>generate</goal>
+                                </goals>
+                                <configuration>
+                                    <classes>${project.build.directory}/jakarta.data-api</classes>
+                                    <classes>${project.build.directory}/jimage/java.base</classes>
+                                    <packages>
+                                        jakarta.data,
+                                        jakarta.data.exceptions,
+                                        jakarta.data.metamodel,
+                                        jakarta.data.metamodel.impl,
+                                        jakarta.data.page,
+                                        jakarta.data.page.impl,
+                                        jakarta.data.repository,
+                                        jakarta.data.spi
+                                    </packages>
+                                    <version>${project.version}</version>
+                                    <attach>false</attach>
+                                    <sigfile>${project.build.directory}/jakarta.data.sig_${java.version}</sigfile>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>createStatefulSigFile</id>
+                                <phase>generate-resources</phase>
+                                <goals>
+                                    <goal>generate</goal>
+                                </goals>
+                                <configuration>
+                                    <classes>${project.build.directory}/jakarta.data-stateful-api</classes>
+                                    <classes>${project.build.directory}/jimage/java.base</classes>
+                                    <packages>
+                                        jakarta.data.repository.stateful
+                                    </packages>
+                                    <version>${project.version}</version>
+                                    <attach>false</attach>
+                                    <sigfile>${project.build.directory}/jakarta.data.repository.stateful.sig_${java.version}</sigfile>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <!-- Copy signature file to tck resources with major java version -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>copySigFile</id>
+                                <phase>process-resources</phase>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <configuration>
+                                    <target>
+                                        <mkdir dir="${project.basedir}/src/main/resources/ee/jakarta/tck/data/framework/signature/" />
+                                        <copy todir="${project.basedir}/src/main/resources/ee/jakarta/tck/data/framework/signature/">
+                                            <fileset dir="${project.build.directory}"
+                                                includes="jakarta.data.sig_${java.version}" />
+                                            <mapper from="^(jakarta.data.sig_[0-9]+)" to="\1" type="regexp" />
+                                        </copy>
+                                        <copy todir="${project.basedir}/src/main/resources/ee/jakarta/tck/data/framework/signature/">
+                                            <fileset dir="${project.build.directory}"
+                                                includes="jakarta.data.repository.stateful.sig_${java.version}" />
+                                            <mapper from="^(jakarta.data.repository.stateful.sig_[0-9]+)" to="\1" type="regexp" />
+                                        </copy>
+                                    </target>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
