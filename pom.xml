@@ -73,6 +73,7 @@
         <maven.compiler.source>17</maven.compiler.source>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
+        <build.helper.maven.plugin.version>3.6.0</build.helper.maven.plugin.version>
         <maven.antrun.plugin.version>3.2.0</maven.antrun.plugin.version>
         <maven.compile.version>3.15.0</maven.compile.version>
         <maven.dependency.plugin.version>3.11.0</maven.dependency.plugin.version>
@@ -179,6 +180,80 @@
             </plugins>
         </pluginManagement>
         <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.5.0</version> <!-- Use the latest stable version -->
+                <executions>
+                    
+                    <!-- 1. Parse spec.version (Takes the first two parts, e.g., 3.0 from 3.0.0-SNAPSHOT) -->
+                    <execution>
+                        <id>parse-spec-version</id>
+                        <goals>
+                            <goal>regex-property</goal>
+                        </goals>
+                        <phase>validate</phase>
+                        <configuration>
+                            <name>spec.version</name>
+                            <value>${project.version}</value>
+                            <!-- Matches major.minor and captures it -->
+                            <regex>^([0-9]+\.[0-9]+)\..*</regex>
+                            <replacement>$1</replacement>
+                            <failIfNoMatch>true</failIfNoMatch>
+                        </configuration>
+                    </execution>
+
+                    <!-- 2. Parse minor.version (Takes the third digit, e.g., 1 from 3.0.1-M1) -->
+                    <execution>
+                        <id>parse-minor-version</id>
+                        <goals>
+                            <goal>regex-property</goal>
+                        </goals>
+                        <phase>validate</phase>
+                        <configuration>
+                            <name>minor.version</name>
+                            <value>${project.version}</value>
+                            <!-- Skips major.minor, captures the incremental digit, ignores suffixes -->
+                            <regex>^[0-9]+\.[0-9]+\.([0-9]+).*</regex>
+                            <replacement>$1</replacement>
+                            <failIfNoMatch>true</failIfNoMatch>
+                        </configuration>
+                    </execution>
+
+                    <!-- 3. Parse doc.mark for DRAFT versions (-SNAPSHOT, -M*, -RC*) -->
+                    <execution>
+                        <id>parse-doc-mark-draft</id>
+                        <goals>
+                            <goal>regex-property</goal>
+                        </goals>
+                        <phase>validate</phase>
+                        <configuration>
+                            <name>doc.mark</name>
+                            <value>${project.version}</value>
+                            <!-- Matches if version contains -SNAPSHOT, -M, or -RC -->
+                            <regex>.*-(SNAPSHOT|M[0-9]+|RC[0-9]+).*</regex>
+                            <replacement>DRAFT</replacement>
+                            <failIfNoMatch>false</failIfNoMatch>
+                        </configuration>
+                    </execution>
+
+                    <!-- 4. Parse doc.mark for FINAL versions (Fallback if no DRAFT suffix matches) -->
+                    <execution>
+                        <id>parse-doc-mark-final</id>
+                        <goals>
+                            <goal>regex-property</goal>
+                        </goals>
+                        <phase>validate</phase>
+                        <configuration>
+                            <name>doc.mark</name>
+                            <value>${doc.mark}</value>
+                            <regex>^(?!DRAFT$).*$</regex>
+                            <replacement>FINAL</replacement>
+                            <failIfNoMatch>false</failIfNoMatch>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>

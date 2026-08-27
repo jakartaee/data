@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
- ~ Copyright (c) 2022, 2024 Contributors to the Eclipse Foundation
+ ~ Copyright (c) 2022, 2026 Contributors to the Eclipse Foundation
  ~
  ~ This program and the accompanying materials are made available under the
  ~ terms of the Eclipse Public License v. 2.0, which is available at
@@ -171,7 +171,7 @@
       </goals>
       <configuration>
        <backend>html5</backend>
-       <outputFile>${project.build.directory}/generated-docs/data-tck-reference-guide-${jakarta.data.tck.version}.html</outputFile>
+       <outputFile>${project.build.directory}/generated-docs/data-tck-reference-guide-${spec.version}.html</outputFile>
       </configuration>
      </execution>
      <execution>
@@ -182,7 +182,7 @@
       </goals>
       <configuration>
        <backend>pdf</backend>
-       <outputFile>${project.build.directory}/generated-docs/data-tck-reference-guide-${jakarta.data.tck.version}.pdf</outputFile>
+       <outputFile>${project.build.directory}/generated-docs/data-tck-reference-guide-${spec.version}.pdf</outputFile>
       </configuration>
      </execution>
     </executions>
@@ -208,7 +208,7 @@
        <descriptors>
         <descriptor>src/main/assembly/assembly.xml</descriptor>
        </descriptors>
-       <finalName>data-tck-${jakarta.data.tck.version}</finalName>
+       <finalName>data-tck-${spec.version}</finalName>
       </configuration>
      </execution>
     </executions>
