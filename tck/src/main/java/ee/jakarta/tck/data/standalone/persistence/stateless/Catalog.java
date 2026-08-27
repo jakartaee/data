@@ -22,6 +22,7 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import ee.jakarta.tck.data.standalone.persistence.Product;
+import ee.jakarta.tck.data.standalone.persistence.Product.Department;
 import ee.jakarta.tck.data.standalone.persistence._Product;
 import jakarta.data.Order;
 import jakarta.data.constraint.Like;
@@ -37,6 +38,7 @@ import jakarta.data.repository.Query;
 import jakarta.data.repository.Repository;
 import jakarta.data.repository.Save;
 import jakarta.data.repository.Update;
+import jakarta.persistence.query.JakartaQuery;
 import jakarta.persistence.query.NativeQuery;
 
 @Repository
@@ -48,11 +50,35 @@ public interface Catalog extends DataRepository<Product, String> {
     @Insert
     Product[] addMultiple(Product... products);
 
+    @JakartaQuery("""
+            SELECT AVG(p.price)
+              FROM Product p
+             WHERE ?1 MEMBER OF p.departments
+            """)
+    double averagePrice(Department department);
+
     @NativeQuery("""
             DELETE FROM Product
              WHERE UPPER(name) = UPPER(?) AND versionNum = ?
             """)
     int deleteIfNamed(String productName, long version);
+
+    @JakartaQuery("""
+            DELETE FROM Product p
+             WHERE p.productNum LIKE ?1
+               AND LENGTH(p.name) > ?2
+            """)
+    int deleteLongNamed(String productNumPattern, int maxNameLength);
+
+    @JakartaQuery("""
+            SELECT d
+              FROM Product p
+              JOIN p.departments d
+             GROUP BY d
+            HAVING AVG(p.price) > ?1
+             ORDER BY d
+            """)
+    List<Department> departmentsWithPriceAverageAbove(double minAverage);
 
     @Delete
     long discardAllMatching(@By(ID) @Is(Like.class) String productIdPattern);
