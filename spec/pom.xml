@@ -35,8 +35,6 @@
         <asciidoctorj-pdf.version>2.3.23</asciidoctorj-pdf.version>
         <asciidoctorj.diagram.version>3.2.1</asciidoctorj.diagram.version>
 
-        <maven.build.timestamp.format>MMMM dd, yyyy</maven.build.timestamp.format>
-        <revisiondate>${maven.build.timestamp}</revisiondate>
         <gen-doc-dir>${project.build.directory}/generated-docs</gen-doc-dir>
     </properties>
 
@@ -69,7 +67,7 @@
                         <configuration>
                             <sourceDocumentName>jakarta-data.adoc</sourceDocumentName>
                             <backend>pdf</backend>
-                            <outputFile>${gen-doc-dir}/jakarta-data-${spec.version}.pdf</outputFile>
+                            <outputFile>${gen-doc-dir}/jakarta-data.pdf</outputFile>
                         </configuration>
                     </execution>
                     <execution>
@@ -81,7 +79,7 @@
                         <configuration>
                             <sourceDocumentName>method-query.asciidoc</sourceDocumentName>
                             <backend>pdf</backend>
-                            <outputFile>${gen-doc-dir}/jakarta-method-name-query-${spec.version}.pdf</outputFile>
+                            <outputFile>${gen-doc-dir}/jakarta-method-name-query.pdf</outputFile>
                         </configuration>
                     </execution>
                     <execution>
@@ -93,7 +91,7 @@
                         <configuration>
                             <sourceDocumentName>jakarta-data.adoc</sourceDocumentName>
                             <backend>html5</backend>
-                            <outputFile>${gen-doc-dir}/jakarta-data-${spec.version}.html</outputFile>
+                            <outputFile>${gen-doc-dir}/jakarta-data.html</outputFile>
                         </configuration>
                     </execution>
                     <execution>
@@ -105,7 +103,7 @@
                         <configuration>
                             <sourceDocumentName>method-query.asciidoc</sourceDocumentName>
                             <backend>html5</backend>
-                            <outputFile>${gen-doc-dir}/jakarta-method-name-query-${spec.version}.html</outputFile>
+                            <outputFile>${gen-doc-dir}/jakarta-method-name-query.html</outputFile>
                             <attributes>
                                 <doctitle>Jakarta Data: Query by Method Name Extension</doctitle>
                             </attributes>

@@ -5,10 +5,6 @@ name: Generate specification documentation
 
 on: 
     workflow_dispatch:
-        inputs:
-            specVersion:
-                description: 'Major and Minor level of release. Example: 1.0'
-                required: true
 
 jobs:
   generate:
@@ -25,18 +21,28 @@ jobs:
         cache: maven
     - name: Generate specification docs
       run: |
-        mvn package --file api/pom.xml -Dspec.version=${{ github.event.inputs.specVersion }}
-        mvn package --file spec/pom.xml -Drevremark=FINAL -Dspec.version=${{ github.event.inputs.specVersion }}
+        mvn package --file api/pom.xml
+        mvn package --file stateful/pom.xml
+        mvn package --file spec/pom.xml
     - name: Assemble documentation
       run: |
         mkdir documentation/
-        cp spec/target/generated-docs/jakarta-data-${{ github.event.inputs.specVersion }}.pdf   documentation/jakarta-data-${{ github.event.inputs.specVersion }}.pdf
-        cp spec/target/generated-docs/jakarta-method-name-query-${{ github.event.inputs.specVersion }}.pdf   documentation/jakarta-method-name-query-${{ github.event.inputs.specVersion }}.pdf
 
-        cp spec/target/generated-docs/jakarta-data-${{ github.event.inputs.specVersion }}.html  documentation/jakarta-data-${{ github.event.inputs.specVersion }}.html
-        cp spec/target/generated-docs/jakarta-method-name-query-${{ github.event.inputs.specVersion }}.html  documentation/jakarta-method-name-query-${{ github.event.inputs.specVersion }}.html
+        cp spec/target/generated-docs/jakarta-data.pdf \
+          documentation/jakarta-data.pdf
+        cp spec/target/generated-docs/jakarta-method-name-query.pdf \
+           documentation/jakarta-method-name-query.pdf
 
-        cp -r api/target/reports/apidocs/ documentation/apidocs
+        cp spec/target/generated-docs/jakarta-data.html \
+           documentation/jakarta-data.html
+        cp spec/target/generated-docs/jakarta-method-name-query.html \
+           documentation/jakarta-method-name-query.html
+
+        cp -r api/target/reports/apidocs/ \ 
+              documentation/api/apidocs
+        
+        cp -r stateful/target/reports/apidocs/ \ 
+              documentation/stateful/apidocs
     - name: Upload documentation
       uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
       with:

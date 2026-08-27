@@ -166,7 +166,7 @@
                         </goals>
                         <configuration>
                             <backend>html5</backend>
-                            <outputFile>${project.build.directory}/generated-docs/data-tck-reference-guide-${spec.version}.html</outputFile>
+                            <outputFile>${project.build.directory}/generated-docs/data-tck-reference-guide.html</outputFile>
                         </configuration>
                     </execution>
                     <execution>
@@ -177,14 +177,19 @@
                         </goals>
                         <configuration>
                             <backend>pdf</backend>
-                            <outputFile>${project.build.directory}/generated-docs/data-tck-reference-guide-${spec.version}.pdf</outputFile>
+                            <outputFile>${project.build.directory}/generated-docs/data-tck-reference-guide.pdf</outputFile>
                         </configuration>
                     </execution>
                 </executions>
                 <configuration>
                     <toc>left</toc>
                     <sourceDocumentName>data-tck-reference-guide.adoc</sourceDocumentName>
-                    <sourceHighlighter>coderay</sourceHighlighter>
+                    <attributes>
+                        <revnumber>${spec.version}</revnumber>
+                        <revremark>${doc.mark}</revremark>
+                        <revdate>${revisiondate}</revdate>
+                        <sourceHighlighter>coderay</sourceHighlighter>
+                    </attributes>
                     <skip>${maven.adoc.skip}</skip>
                 </configuration>
             </plugin>
@@ -203,7 +208,7 @@
                             <descriptors>
                                 <descriptor>src/main/assembly/assembly.xml</descriptor>
                             </descriptors>
-                            <finalName>data-tck-${spec.version}</finalName>
+                            <finalName>data-tck</finalName>
                         </configuration>
                     </execution>
                 </executions>

@@ -1,13 +1,12 @@
 = Jakarta Data TCK Reference Guide
 :author: Kyle Aure
 :email: data-dev@eclipse.org
-:revnumber: 1.0
 :toc:
 :sectnums:
 
 :APIShortName: Data
 :APILongName: Jakarta Data
-:APIVersion: 1.0.0
+:APIVersion: {revnumber}
 
 :APISpecSite: https://jakarta.ee/specifications/data/
 :APIEclipseSite: https://projects.eclipse.org/projects/ee4j.data

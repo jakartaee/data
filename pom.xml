@@ -122,6 +122,9 @@
         <sonar.maven.version>5.7.0.6970</sonar.maven.version>
 
         <nexus.staging.repository>data-maven2-staging</nexus.staging.repository>
+
+        <maven.build.timestamp.format>MMMM dd, yyyy</maven.build.timestamp.format>
+        <revisiondate>${maven.build.timestamp}</revisiondate>
         
         <!-- Allow TCK populator classes to exceed max MethodLength -->
         <!-- Allow static metamodel constants -->
