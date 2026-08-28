@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
- ~ Copyright (c) 2022, 2024 Contributors to the Eclipse Foundation
+ ~ Copyright (c) 2022, 2026 Contributors to the Eclipse Foundation
  ~
  ~ This program and the accompanying materials are made available under the
  ~ terms of the Eclipse Public License v. 2.0, which is available at
@@ -15,204 +15,204 @@
  ~ SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
   -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
- xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
- <modelVersion>4.0.0</modelVersion>
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
- <parent>
-  <groupId>jakarta.data</groupId>
-  <artifactId>jakarta.data-parent</artifactId>
-  <version>1.1.0-SNAPSHOT</version>
- </parent>
+    <parent>
+        <groupId>jakarta.data</groupId>
+        <artifactId>jakarta.data-parent</artifactId>
+        <version>1.1.0-SNAPSHOT</version>
+    </parent>
 
- <artifactId>jakarta.data-tck-dist</artifactId>
- <name>Jakarta Data Technology Compatibility Kit Distribution</name>
- <description>Jakarta Data :: TCK Distribution</description>
+    <artifactId>jakarta.data-tck-dist</artifactId>
+    <name>Jakarta Data Technology Compatibility Kit Distribution</name>
+    <description>Jakarta Data :: TCK Distribution</description>
 
- <licenses>
-  <license>
-   <name>Eclipse Public License 2.0</name>
-   <url>https://projects.eclipse.org/license/epl-2.0</url>
-   <distribution>repo</distribution>
-  </license>
-  <license>
-   <name>GNU General Public License, version 2 with the GNU Classpath Exception</name>
-   <url>https://projects.eclipse.org/license/secondary-gpl-2.0-cp</url>
-   <distribution>repo</distribution>
-  </license>
- </licenses>
+    <licenses>
+        <license>
+            <name>Eclipse Public License 2.0</name>
+            <url>https://projects.eclipse.org/license/epl-2.0</url>
+            <distribution>repo</distribution>
+        </license>
+        <license>
+            <name>GNU General Public License, version 2 with the GNU Classpath Exception</name>
+            <url>https://projects.eclipse.org/license/secondary-gpl-2.0-cp</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
 
- <properties>
-  <jakarta.data.tck.version>${project.version}</jakarta.data.tck.version>
-  <jakarta.data.api.version>${project.version}</jakarta.data.api.version>
+    <properties>
+        <jakarta.data.tck.version>${project.version}</jakarta.data.tck.version>
+        <jakarta.data.api.version>${project.version}</jakarta.data.api.version>
 
-  <maven.site.skip>true</maven.site.skip>
-  <asciidoctor.maven.plugin.version>3.2.0</asciidoctor.maven.plugin.version>
-  <asciidoctorj.version>3.0.1</asciidoctorj.version>
-  <asciidoctorj.pdf.version>2.3.23</asciidoctorj.pdf.version>
-  <jruby.version>9.4.15.0</jruby.version>
- </properties>
+        <maven.site.skip>true</maven.site.skip>
+        <asciidoctor.maven.plugin.version>3.2.0</asciidoctor.maven.plugin.version>
+        <asciidoctorj.version>3.0.1</asciidoctorj.version>
+        <asciidoctorj.pdf.version>2.3.23</asciidoctorj.pdf.version>
+        <jruby.version>9.4.15.0</jruby.version>
+    </properties>
 
- <dependencies>
-  <!-- The TCK, used to auto generate docs -->
-  <dependency>
-   <groupId>jakarta.data</groupId>
-   <artifactId>jakarta.data-tck</artifactId>
-   <version>${jakarta.data.tck.version}</version>
-  </dependency>
-  <!-- Provided dependencies for the TCK -->
-  <dependency>
-    <groupId>jakarta.servlet</groupId>
-    <artifactId>jakarta.servlet-api</artifactId>
-    <version>${jakarta.servlet.version}</version>
-  </dependency>
-
-  <dependency>
-    <groupId>jakarta.data</groupId>
-    <artifactId>jakarta.data-api</artifactId>
-    <version>${jakarta.data.api.version}</version>
-  </dependency>
- </dependencies>
-
- <build>
-  <plugins>
-   <!-- Skip checking for Apache license in this sub-module since it needs 
-    to use EPL/GPL -->
-   <plugin>
-    <groupId>org.apache.rat</groupId>
-    <artifactId>apache-rat-plugin</artifactId>
-    <version>${apache.rat.version}</version>
-    <configuration>
-     <skip>true</skip>
-    </configuration>
-   </plugin>
-
-   <plugin>
-    <groupId>org.apache.maven.plugins</groupId>
-    <artifactId>maven-dependency-plugin</artifactId>
-    <version>${maven.dependency.plugin.version}</version>
-    <executions>
-    <!-- Load TCK dependency location as variable -->
-     <execution>
-      <phase>initialize</phase>
-      <goals>
-       <goal>properties</goal>
-      </goals>
-     </execution>
-     <!-- Copy tck sources to a known location -->
-     <execution>
-       <id>get-dependency-sources</id>
-       <phase>package</phase>
-       <goals>
-         <goal>copy-dependencies</goal>
-       </goals>
-       <configuration>
-         <includeArtifactIds>jakarta.data-tck</includeArtifactIds>
-         <classifier>sources</classifier>
-         <prependGroupId>true</prependGroupId>
-         <outputDirectory>${project.build.directory}/copied-sources/</outputDirectory>
-       </configuration>
-     </execution>
-    </executions>
-   </plugin>
-
-   <!-- Automatically generate a list of excluded tests and test counts -->
-   <plugin>
-    <groupId>org.codehaus.mojo</groupId>
-    <artifactId>exec-maven-plugin</artifactId>
-    <version>${exec.maven.plugin.version}</version>
-    <executions>
-     <execution>
-      <id>generate-asciidoc</id>
-      <phase>process-classes</phase>
-      <goals>
-       <goal>java</goal>
-      </goals>
-     </execution>
-    </executions>
-    <configuration>
-     <mainClass>ee.jakarta.tck.data.metadata.CollectMetaData</mainClass>
-     <arguments>
-      <argument>false</argument> <!-- debug -->
-      <argument>${jakarta.data:jakarta.data-tck:jar}</argument>
-      <argument>${project.basedir}/src/main/asciidoc/sections/generated</argument>
-     </arguments>
-    </configuration>
-   </plugin>
-
-   <!-- Aciidoctor will create the html and pdf distributions of the user-guide -->
-   <plugin>
-    <groupId>org.asciidoctor</groupId>
-    <artifactId>asciidoctor-maven-plugin</artifactId>
-    <version>${asciidoctor.maven.plugin.version}</version>
     <dependencies>
-     <dependency>
-      <groupId>org.jruby</groupId>
-      <artifactId>jruby</artifactId>
-      <version>${jruby.version}</version>
-     </dependency>
-     <dependency>
-      <groupId>org.asciidoctor</groupId>
-      <artifactId>asciidoctorj</artifactId>
-      <version>${asciidoctorj.version}</version>
-     </dependency>
-     <dependency>
-      <groupId>org.asciidoctor</groupId>
-      <artifactId>asciidoctorj-pdf</artifactId>
-      <version>${asciidoctorj.pdf.version}</version>
-     </dependency>
-    </dependencies>
-    <executions>
-     <execution>
-      <id>asciidoc-to-html</id>
-      <phase>prepare-package</phase>
-      <goals>
-       <goal>process-asciidoc</goal>
-      </goals>
-      <configuration>
-       <backend>html5</backend>
-       <outputFile>${project.build.directory}/generated-docs/data-tck-reference-guide-${jakarta.data.tck.version}.html</outputFile>
-      </configuration>
-     </execution>
-     <execution>
-      <id>asciidoc-to-pdf</id>
-      <phase>prepare-package</phase>
-      <goals>
-       <goal>process-asciidoc</goal>
-      </goals>
-      <configuration>
-       <backend>pdf</backend>
-       <outputFile>${project.build.directory}/generated-docs/data-tck-reference-guide-${jakarta.data.tck.version}.pdf</outputFile>
-      </configuration>
-     </execution>
-    </executions>
-    <configuration>
-     <toc>left</toc>
-     <sourceDocumentName>data-tck-reference-guide.adoc</sourceDocumentName>
-     <sourceHighlighter>coderay</sourceHighlighter>
-     <skip>${maven.adoc.skip}</skip>
-    </configuration>
-   </plugin>
+        <!-- The TCK, used to auto generate docs -->
+        <dependency>
+            <groupId>jakarta.data</groupId>
+            <artifactId>jakarta.data-tck</artifactId>
+            <version>${jakarta.data.tck.version}</version>
+        </dependency>
+        <!-- Provided dependencies for the TCK -->
+        <dependency>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+        </dependency>
 
-   <!-- Assembly plugin to collect everything into a single distribution -->
-   <plugin>
-    <artifactId>maven-assembly-plugin</artifactId>
-    <executions>
-     <execution>
-      <id>distribution</id>
-      <phase>package</phase>
-      <goals>
-       <goal>single</goal>
-      </goals>
-      <configuration>
-       <descriptors>
-        <descriptor>src/main/assembly/assembly.xml</descriptor>
-       </descriptors>
-       <finalName>data-tck-${jakarta.data.tck.version}</finalName>
-      </configuration>
-     </execution>
-    </executions>
-   </plugin>
-  </plugins>
- </build>
+        <dependency>
+            <groupId>jakarta.data</groupId>
+            <artifactId>jakarta.data-api</artifactId>
+            <version>${jakarta.data.api.version}</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!-- Skip checking for Apache license in this sub-module since it needs to use EPL/GPL -->
+            <plugin>
+                <groupId>org.apache.rat</groupId>
+                <artifactId>apache-rat-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <!-- Load TCK dependency location as variable -->
+                    <execution>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>properties</goal>
+                        </goals>
+                    </execution>
+                    <!-- Copy tck sources to a known location -->
+                    <execution>
+                        <id>get-dependency-sources</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <includeArtifactIds>jakarta.data-tck</includeArtifactIds>
+                            <classifier>sources</classifier>
+                            <prependGroupId>true</prependGroupId>
+                            <outputDirectory>${project.build.directory}/copied-sources/</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Automatically generate a list of excluded tests and test counts -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>generate-asciidoc</id>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <mainClass>ee.jakarta.tck.data.metadata.CollectMetaData</mainClass>
+                    <arguments>
+                        <argument>false</argument> <!-- debug -->
+                        <argument>${jakarta.data:jakarta.data-tck:jar}</argument>
+                        <argument>${project.basedir}/src/main/asciidoc/sections/generated</argument>
+                    </arguments>
+                </configuration>
+            </plugin>
+
+            <!-- Asciidoctor will create the html and pdf distributions of the user-guide -->
+            <plugin>
+                <groupId>org.asciidoctor</groupId>
+                <artifactId>asciidoctor-maven-plugin</artifactId>
+                <version>${asciidoctor.maven.plugin.version}</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.jruby</groupId>
+                        <artifactId>jruby</artifactId>
+                        <version>${jruby.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.asciidoctor</groupId>
+                        <artifactId>asciidoctorj</artifactId>
+                        <version>${asciidoctorj.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.asciidoctor</groupId>
+                        <artifactId>asciidoctorj-pdf</artifactId>
+                        <version>${asciidoctorj.pdf.version}</version>
+                    </dependency>
+                </dependencies>
+                <executions>
+                    <execution>
+                        <id>asciidoc-to-html</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>process-asciidoc</goal>
+                        </goals>
+                        <configuration>
+                            <backend>html5</backend>
+                            <outputFile>${project.build.directory}/generated-docs/data-tck-reference-guide.html</outputFile>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>asciidoc-to-pdf</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>process-asciidoc</goal>
+                        </goals>
+                        <configuration>
+                            <backend>pdf</backend>
+                            <outputFile>${project.build.directory}/generated-docs/data-tck-reference-guide.pdf</outputFile>
+                        </configuration>
+                    </execution>
+                </executions>
+                <configuration>
+                    <toc>left</toc>
+                    <sourceDocumentName>data-tck-reference-guide.adoc</sourceDocumentName>
+                    <attributes>
+                        <revnumber>${spec.version}</revnumber>
+                        <revremark>${doc.mark}</revremark>
+                        <revdate>${revisiondate}</revdate>
+                        <sourceHighlighter>coderay</sourceHighlighter>
+                    </attributes>
+                    <skip>${maven.adoc.skip}</skip>
+                </configuration>
+            </plugin>
+
+            <!-- Assembly plugin to collect everything into a single distribution -->
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>distribution</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <descriptors>
+                                <descriptor>src/main/assembly/assembly.xml</descriptor>
+                            </descriptors>
+                            <finalName>data-tck</finalName>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>
