@@ -218,6 +218,8 @@ public class AsyncTests {
             insert.toCompletableFuture()
                     .get(TIMEOUT_SECONDS, TimeUnit.SECONDS);
 
+            TestPropertyUtility.waitForEventualConsistency();
+
             CompletionStage<Void> duplicateInsert = accounts.add(account);
 
             try {
