@@ -207,13 +207,13 @@ public class AsyncTests {
                 LocalDateTime.of(2026, 7, 28, 10, 30, 00),
                 "asyncUser108@eclipse.org");
 
+        CompletionStage<Void> insert;
         try {
-            CompletionStage<Void> insert;
-            try {
-                insert = accounts.add(account);
-            } catch (UnsupportedOperationException x) {
-                return; // Data provider is not capable of CompletionStage return type
-            }
+            insert = accounts.add(account);
+        } catch (UnsupportedOperationException x) {
+            return; // Data provider is not capable of CompletionStage return type
+        }
+        try {
 
             insert.toCompletableFuture()
                     .get(TIMEOUT_SECONDS, TimeUnit.SECONDS);
