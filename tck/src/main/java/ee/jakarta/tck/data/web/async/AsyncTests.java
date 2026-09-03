@@ -32,6 +32,8 @@ import ee.jakarta.tck.data.framework.junit.anno.AnyEntity;
 import ee.jakarta.tck.data.framework.junit.anno.Assertion;
 import ee.jakarta.tck.data.framework.junit.anno.Web;
 import ee.jakarta.tck.data.framework.utilities.TestPropertyUtility;
+
+import jakarta.data.exceptions.EntityExistsException;
 import jakarta.inject.Inject;
 
 @Web
@@ -185,6 +187,51 @@ public class AsyncTests {
         accounts.delete(account3);
 
         TestPropertyUtility.waitForEventualConsistency();
+    }
+
+    @Assertion(id = "19", strategy = """
+    Tests that an asynchronous repository method completes
+    exceptionally when the operation fails.
+    """)
+    public void testAsynchronousInsertExceptionalCompletion() throws Exception {
+        try {
+            Class.forName("jakarta.enterprise.concurrent.Asynchronous");
+        } catch (ClassNotFoundException x) {
+            return; // Jakarta Concurrency API is not present
+        }
+
+        Account account = Account.of(
+                108,
+                true,
+                25.99f,
+                LocalDateTime.of(2026, 7, 28, 10, 30, 00),
+                "asyncUser108@eclipse.org");
+
+        try {
+            CompletionStage<Void> insert;
+            try {
+                insert = accounts.add(account);
+            } catch (UnsupportedOperationException x) {
+                return; // Data provider is not capable of CompletionStage return type
+            }
+
+            insert.toCompletableFuture()
+                    .get(TIMEOUT_SECONDS, TimeUnit.SECONDS);
+
+            CompletionStage<Void> duplicateInsert = accounts.add(account);
+
+            try {
+                duplicateInsert.toCompletableFuture()
+                        .get(TIMEOUT_SECONDS, TimeUnit.SECONDS);
+                throw new AssertionError(
+                        "Expected CompletionStage to complete exceptionally");
+            } catch (java.util.concurrent.ExecutionException x) {
+                assertEquals(EntityExistsException.class, x.getCause().getClass());
+            }
+        } finally {
+            accounts.delete(account);
+            TestPropertyUtility.waitForEventualConsistency();
+        }
     }
 
 }
