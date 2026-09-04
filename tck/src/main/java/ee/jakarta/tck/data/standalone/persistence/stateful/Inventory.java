@@ -27,6 +27,9 @@ import jakarta.data.repository.stateful.Merge;
 import jakarta.data.repository.stateful.Persist;
 import jakarta.data.repository.stateful.Remove;
 import jakarta.data.restrict.Restriction;
+import jakarta.persistence.QueryFlushMode;
+import jakarta.persistence.query.JakartaQuery;
+import jakarta.persistence.query.QueryOptions;
 import jakarta.transaction.Transactional;
 
 /**
@@ -60,4 +63,12 @@ public interface Inventory {
             """)
     List<Product> withDiscountedPriceUpTo(double max,
                                           double percentOff);
+
+    @JakartaQuery("""
+        SELECT AVG(p.price)
+          FROM Product p
+         WHERE p.productNum = ?1
+        """)
+    @QueryOptions(flush = QueryFlushMode.FLUSH)
+    double averagePrice(String productNumber);
 }

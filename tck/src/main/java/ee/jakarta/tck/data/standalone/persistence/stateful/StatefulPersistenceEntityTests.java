@@ -34,6 +34,9 @@ import ee.jakarta.tck.data.standalone.persistence.Product.Department;
 
 import jakarta.data.Order;
 import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.FlushModeType;
+import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.UserTransaction;
 
 /**
@@ -61,6 +64,9 @@ public class StatefulPersistenceEntityTests {
 
     @Inject
     UserTransaction tran;
+
+    @PersistenceContext
+    EntityManager entityManager;
 
     @Assertion(id = "471", strategy = """
             Use the Detach annotation to detach entities from the persistence context.
@@ -472,5 +478,36 @@ public class StatefulPersistenceEntityTests {
 
         assertEquals(false,
                      products.byNumber("TEST-PROD-1015").isPresent());
+    }
+
+    @Assertion(id = "965", strategy = """
+    Use a repository method annotated with JakartaQuery and QueryOptions
+    with QueryFlushMode.FLUSH. Set the persistence context flush mode to
+    EXPLICIT, modify a managed entity without explicitly flushing, and
+    verify that the query sees the modification.
+    """)
+    public void testJakartaQueryWithQueryOptions() throws Exception {
+        inventory.erase();
+
+        Product product = Product.of("tennis racket",
+                82.99,
+                "TEST-PROD-1017",
+                Department.SPORTING_GOODS);
+
+        tran.begin();
+        inventory.persist(product);
+        product.setPrice(84.98);
+
+        entityManager.setFlushMode(FlushModeType.EXPLICIT);
+
+        assertEquals(84.98,
+                inventory.averagePrice("TEST-PROD-1017"),
+                0.01);
+
+        entityManager.setFlushMode(FlushModeType.AUTO);
+
+        tran.commit();
+
+        inventory.remove(product);
     }
 }
