@@ -474,4 +474,31 @@ public class StatefulPersistenceEntityTests {
         assertEquals(false,
                      products.byNumber("TEST-PROD-1015").isPresent());
     }
+
+    @Assertion(id = "965", strategy = """
+    Within an active transaction, persist an entity and modify it without
+    explicitly flushing, then verify that a repository method annotated
+    @JakartaQuery and @QueryOptions(flush = QueryFlushMode.FLUSH) returns
+    a result that reflects the pending modification.
+    """)
+    public void testJakartaQueryWithQueryOptions() throws Exception {
+        inventory.erase();
+
+        Product product = Product.of("tennis racket",
+                82.99,
+                "TEST-PROD-1017",
+                Department.SPORTING_GOODS);
+
+        inventory.persist(product);
+        tran.begin();
+        product.setPrice(84.98);
+
+        assertEquals(84.98,
+                inventory.averagePrice("TEST-PROD-1017"),
+                0.01);
+
+        tran.commit();
+
+        inventory.remove(product);
+    }
 }
