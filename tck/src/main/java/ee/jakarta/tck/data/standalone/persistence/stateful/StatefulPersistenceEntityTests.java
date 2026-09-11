@@ -489,8 +489,8 @@ public class StatefulPersistenceEntityTests {
                 "TEST-PROD-1017",
                 Department.SPORTING_GOODS);
 
-        tran.begin();
         inventory.persist(product);
+        tran.begin();
         product.setPrice(84.98);
 
         assertEquals(84.98,
