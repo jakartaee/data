@@ -100,8 +100,8 @@ public interface AsciiCharacters extends DataRepository<AsciiCharacter, Long> {
     Optional<AsciiCharacter> findFirstByHexadecimalStartsWithAndIsControlOrderByIdAsc(String firstHexDigit, boolean isControlChar);
 
     @Find
-    Page<AsciiCharacter> fromRange(@By(ID) @Is(AtLeast.class) int min,
-                                   @By(ID) @Is(AtMost.class) int max,
+    Page<AsciiCharacter> fromRange(@By(ID) @Is(AtLeast.class) long min,
+                                   @By(ID) @Is(AtMost.class) long max,
                                    PageRequest pagination,
                                    Order<AsciiCharacter> order);
 

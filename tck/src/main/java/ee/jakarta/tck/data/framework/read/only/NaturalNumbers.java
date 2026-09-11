@@ -194,6 +194,7 @@ public interface NaturalNumbers extends BasicRepository<NaturalNumber, Long> {
                                       PageRequest pageReq,
                                       Order<NaturalNumber> order);
 
+    @OrderBy(ID)
     @Find
     CursoredPage<NaturalNumber> withTruncatedSquareRoot(long floorOfSquareRoot,
                                                         PageRequest pagination);
