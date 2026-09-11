@@ -26,6 +26,8 @@ import ee.jakarta.tck.data.framework.read.only.NaturalNumber.NumberType;
 import jakarta.data.Limit;
 import jakarta.data.Order;
 import jakarta.data.Sort;
+import jakarta.data.constraint.LessThan;
+import jakarta.data.constraint.NotEqualTo;
 import jakarta.data.page.CursoredPage;
 import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
@@ -48,11 +50,6 @@ public interface PositiveIntegers extends BasicRepository<NaturalNumber, Long> {
     long countByIdLessThan(long number);
 
     boolean existsByIdGreaterThan(Long number);
-
-    CursoredPage<NaturalNumber> findByFloorOfSquareRootNotAndIdLessThanOrderByNumBitsRequiredDesc(long excludeSqrt,
-                                                                                                  long eclusiveMax,
-                                                                                                  PageRequest pagination,
-                                                                                                  Order<NaturalNumber> order);
 
     List<NaturalNumber> findByIsOddTrueAndIdLessThanEqualOrderByIdDesc(long max);
 
@@ -78,6 +75,14 @@ public interface PositiveIntegers extends BasicRepository<NaturalNumber, Long> {
     @Find
     @Select(_NaturalNumber.ID)
     Long[] requiringBits(Short numBitsRequired);
+
+    @Find
+    @OrderBy(value = _NaturalNumber.NUMBITSREQUIRED, descending = true)
+    CursoredPage<NaturalNumber> squareRootDoesNotTruncateToWhereIdBelow(
+            @By(_NaturalNumber.FLOOROFSQUAREROOT) NotEqualTo<Long> excludeSqrt,
+            @By(_NaturalNumber.ID) LessThan<Long> exclusiveMax,
+            PageRequest pagination,
+            Order<NaturalNumber> order);
 
     @Find
     @Select(_NaturalNumber.NUMTYPE)

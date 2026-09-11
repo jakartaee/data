@@ -15,45 +15,49 @@
  */
 package ee.jakarta.tck.data.standalone.entity;
 
-import ee.jakarta.tck.data.framework.junit.anno.AnyEntity;
-import ee.jakarta.tck.data.framework.junit.anno.Standalone;
-import ee.jakarta.tck.data.framework.utilities.DatabaseType;
-import ee.jakarta.tck.data.framework.utilities.TestProperty;
-import ee.jakarta.tck.data.framework.utilities.TestPropertyUtility;
-import org.jboss.arquillian.container.test.api.Deployment;
-import org.assertj.core.groups.Tuple;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.BeforeEach;
-import java.util.logging.Logger;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.spec.WebArchive;
-import jakarta.inject.Inject;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
+
+import ee.jakarta.tck.data.framework.junit.anno.AnyEntity;
+import ee.jakarta.tck.data.framework.junit.anno.Assertion;
+import ee.jakarta.tck.data.framework.junit.anno.Standalone;
+import ee.jakarta.tck.data.framework.utilities.TestPropertyUtility;
+
+import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.spec.WebArchive;
+
+import org.assertj.core.groups.Tuple;
+
+import org.junit.jupiter.api.BeforeEach;
+
+import jakarta.inject.Inject;
+
 import java.util.List;
 
 @Standalone
 @AnyEntity
-@DisplayName("Custom repository lifecycle events")
 public class JakartaEventCustomRepositoryTest {
-
-    public static final Logger log = Logger.getLogger(JakartaEventCustomRepositoryTest.class.getCanonicalName());
-
-    protected final DatabaseType type = TestProperty.databaseType.getDatabaseType();
 
     @Deployment
     public static WebArchive createDeployment() {
         return ShrinkWrap.create(WebArchive.class)
-                .addClasses(JakartaEventCustomRepositoryTest.class);
+                .addClasses(
+                    JakartaEventBuiltInRepositoryTest.class,
+                    LifecycleEventType.class,
+                    MusicRecordLifecycleObserver.class,
+                    MusicRecordRepository.class,
+                    MusicRecord.class,
+                    MusicStore.class,
+                    ObservedEvent.class
+                );
     }
 
     @Inject
-    private MusicRecordLifecycleObserver observer;
+    MusicRecordLifecycleObserver observer;
 
     @Inject
-    private MusicStore repository;
+    MusicStore repository;
 
     @BeforeEach
     void setUp() {
@@ -63,302 +67,277 @@ public class JakartaEventCustomRepositoryTest {
         TestPropertyUtility.waitForEventualConsistency();
     }
 
-    @Nested
-    @DisplayName("When inserting entities")
-    class WhenInsert {
+    @Assertion(id = "1530", 
+               strategy = "Insert one entity via a custom insert method and verify that pre-insert and post-insert lifecycle events are fired.")
+    void shouldFireEventsForOneEntity() {
+        // given
+        var entity = firstEntity();
 
-        @Test
-        @DisplayName("Should fire pre-insert and post-insert events when inserting one entity")
-        void shouldFireEventsForOneEntity() {
-            // given
-            var entity = firstEntity();
+        // when
+        repository.insert(entity);
+        TestPropertyUtility.waitForEventualConsistency();
 
-            // when
-            repository.insert(entity);
-            TestPropertyUtility.waitForEventualConsistency();
-
-            // then
-            assertThat(events())
-                    .containsExactly(
-                            event(LifecycleEventType.PRE_INSERT, entity),
-                            event(LifecycleEventType.POST_INSERT, entity));
-        }
-
-        @SuppressWarnings("unchecked")
-        @Test
-        @DisplayName("Should fire pre-insert and post-insert events for each entity in a list")
-        void shouldFireEventsForEntityList() {
-            // given
-            var first = firstEntity();
-            var second = secondEntity();
-            var entities = List.of(first, second);
-
-            // when
-            repository.insert(entities);
-            TestPropertyUtility.waitForEventualConsistency();
-
-            // then
-            assertThat(events())
-                    .containsExactlyInAnyOrder(
-                            event(LifecycleEventType.PRE_INSERT, first),
-                            event(LifecycleEventType.PRE_INSERT, second),
-                            event(LifecycleEventType.POST_INSERT, first),
-                            event(LifecycleEventType.POST_INSERT, second));
-        }
-
-        @SuppressWarnings("unchecked")
-        @Test
-        @DisplayName("Should fire pre-insert and post-insert events for each entity in an array")
-        void shouldFireEventsForEntityArray() {
-            // given
-            var first = firstEntity();
-            var second = secondEntity();
-
-            // when
-            repository.insert(new MusicRecord[]{first, second});
-            TestPropertyUtility.waitForEventualConsistency();
-
-            // then
-            assertThat(events())
-                    .containsExactlyInAnyOrder(
-                            event(LifecycleEventType.PRE_INSERT, first),
-                            event(LifecycleEventType.PRE_INSERT, second),
-                            event(LifecycleEventType.POST_INSERT, first),
-                            event(LifecycleEventType.POST_INSERT, second));
-        }
+        // then
+        assertThat(events())
+                .containsExactly(
+                        event(LifecycleEventType.PRE_INSERT, entity),
+                        event(LifecycleEventType.POST_INSERT, entity));
     }
 
-    @Nested
-    @DisplayName("When updating entities")
-    class WhenUpdate {
+    @Assertion(id = "1530", 
+               strategy = "Insert a list of entities via a custom insert method and verify that pre-insert and post-insert lifecycle events are fired for each entity.")
+    void shouldFireEventsForEntityList() {
+        // given
+        var first = firstEntity();
+        var second = secondEntity();
+        var entities = List.of(first, second);
 
-        @Test
-        @DisplayName("Should fire pre-update and post-update events when updating one entity")
-        void shouldFireEventsForOneEntity() {
-            // given
-            var entity = firstEntity();
+        // when
+        repository.insert(entities);
+        TestPropertyUtility.waitForEventualConsistency();
 
-            repository.insert(entity);
-            observer.reset();
-            TestPropertyUtility.waitForEventualConsistency();
-
-            // when
-            repository.update(entity);
-            TestPropertyUtility.waitForEventualConsistency();
-
-            // then
-            assertThat(events())
-                    .containsExactly(
-                            event(LifecycleEventType.PRE_UPDATE, entity),
-                            event(LifecycleEventType.POST_UPDATE, entity));
-        }
-
-        @SuppressWarnings("unchecked")
-        @Test
-        @DisplayName("Should fire pre-update and post-update events for each entity in a list")
-        void shouldFireEventsForEntityList() {
-            // given
-            var first = firstEntity();
-            var second = secondEntity();
-            var entities = List.of(first, second);
-
-            repository.insert(entities);
-            observer.reset();
-            TestPropertyUtility.waitForEventualConsistency();
-
-            // when
-            repository.update(entities);
-            TestPropertyUtility.waitForEventualConsistency();
-
-            // then
-            assertThat(events())
-                    .containsExactlyInAnyOrder(
-                            event(LifecycleEventType.PRE_UPDATE, first),
-                            event(LifecycleEventType.PRE_UPDATE, second),
-                            event(LifecycleEventType.POST_UPDATE, first),
-                            event(LifecycleEventType.POST_UPDATE, second));
-        }
-
-        @SuppressWarnings("unchecked")
-        @Test
-        @DisplayName("Should fire pre-update and post-update events for each entity in an array")
-        void shouldFireEventsForEntityArray() {
-            // given
-            var first = firstEntity();
-            var second = secondEntity();
-
-            var entities = List.of(first, second);
-            repository.insert(entities);
-            observer.reset();
-            TestPropertyUtility.waitForEventualConsistency();
-
-            // when
-            repository.update(new MusicRecord[]{first, second});
-            TestPropertyUtility.waitForEventualConsistency();
-
-            // then
-            assertThat(events())
-                    .containsExactlyInAnyOrder(
-                            event(LifecycleEventType.PRE_UPDATE, first),
-                            event(LifecycleEventType.PRE_UPDATE, second),
-                            event(LifecycleEventType.POST_UPDATE, first),
-                            event(LifecycleEventType.POST_UPDATE, second));
-        }
+        // then
+        assertThat(events())
+                .containsExactlyInAnyOrder(
+                        event(LifecycleEventType.PRE_INSERT, first),
+                        event(LifecycleEventType.PRE_INSERT, second),
+                        event(LifecycleEventType.POST_INSERT, first),
+                        event(LifecycleEventType.POST_INSERT, second));
     }
 
-    @Nested
-    @DisplayName("When saving entities")
-    class WhenSave {
+    @Assertion(id = "1530", 
+               strategy = "Insert an array of entities via a custom insert method and verify that pre-insert and post-insert lifecycle events are fired for each entity.")
+    void shouldFireEventsForEntityArray() {
+        // given
+        var first = firstEntity();
+        var second = secondEntity();
 
-        @Test
-        @DisplayName("Should fire pre-upsert and post-upsert events when saving one new entity")
-        void shouldFireEventsForOneNewEntity() {
-            // given
-            var entity = firstEntity();
+        // when
+        repository.insert(new MusicRecord[]{first, second});
+        TestPropertyUtility.waitForEventualConsistency();
 
-            // when
-            repository.save(entity);
-            TestPropertyUtility.waitForEventualConsistency();
-
-            // then
-            assertThat(events())
-                    .containsExactly(
-                            event(LifecycleEventType.PRE_UPSERT, entity),
-                            event(LifecycleEventType.POST_UPSERT, entity));
-        }
-
-        @Test
-        @DisplayName("Should fire pre-upsert and post-upsert events when saving one existing entity")
-        void shouldFireEventsForOneExistingEntity() {
-            // given
-            var entity = firstEntity();
-
-            repository.insert(entity);
-            observer.reset();
-            TestPropertyUtility.waitForEventualConsistency();
-
-            // when
-            repository.save(entity);
-            TestPropertyUtility.waitForEventualConsistency();
-
-            // then
-            assertThat(events())
-                    .containsExactly(
-                            event(LifecycleEventType.PRE_UPSERT, entity),
-                            event(LifecycleEventType.POST_UPSERT, entity));
-        }
-
-        @Test
-        @DisplayName("Should fire pre-upsert and post-upsert events for each entity in a list")
-        void shouldFireEventsForEntityList() {
-            // given
-            var first = firstEntity();
-            var second = secondEntity();
-
-            // when
-            repository.save(List.of(first, second));
-            TestPropertyUtility.waitForEventualConsistency();
-
-            // then
-            assertThat(events())
-                    .containsExactlyInAnyOrder(
-                            event(LifecycleEventType.PRE_UPSERT, first),
-                            event(LifecycleEventType.POST_UPSERT, first),
-                            event(LifecycleEventType.PRE_UPSERT, second),
-                            event(LifecycleEventType.POST_UPSERT, second));
-        }
-
-        @Test
-        @DisplayName("Should fire pre-upsert and post-upsert events for each entity in an array")
-        void shouldFireEventsForEntityArray() {
-            // given
-            var first = firstEntity();
-            var second = secondEntity();
-
-            // when
-            repository.save(new MusicRecord[]{first, second});
-            TestPropertyUtility.waitForEventualConsistency();
-
-            // then
-            assertThat(events())
-                    .containsExactlyInAnyOrder(
-                            event(LifecycleEventType.PRE_UPSERT, first),
-                            event(LifecycleEventType.POST_UPSERT, first),
-                            event(LifecycleEventType.PRE_UPSERT, second),
-                            event(LifecycleEventType.POST_UPSERT, second));
-        }
+        // then
+        assertThat(events())
+                .containsExactlyInAnyOrder(
+                        event(LifecycleEventType.PRE_INSERT, first),
+                        event(LifecycleEventType.PRE_INSERT, second),
+                        event(LifecycleEventType.POST_INSERT, first),
+                        event(LifecycleEventType.POST_INSERT, second));
     }
 
-    @Nested
-    @DisplayName("When deleting entities")
-    class WhenDelete {
+    @Assertion(id = "1530", 
+               strategy = "Update one entity via a custom update method and verify that pre-update and post-update lifecycle events are fired.")
+    void shouldFireUpdateEventsForOneEntity() {
+        // given
+        var entity = firstEntity();
 
-        @Test
-        @DisplayName("Should fire pre-delete and post-delete events when deleting one entity")
-        void shouldFireEventsForOneEntity() {
-            // given
-            var entity = firstEntity();
-            repository.insert(entity);
-            observer.reset();
-            TestPropertyUtility.waitForEventualConsistency();
+        repository.insert(entity);
+        observer.reset();
+        TestPropertyUtility.waitForEventualConsistency();
 
-            // when
-            repository.delete(entity);
+        // when
+        repository.update(entity);
+        TestPropertyUtility.waitForEventualConsistency();
 
-            // then
-            assertThat(events())
-                    .containsExactly(
-                            event(LifecycleEventType.PRE_DELETE, entity),
-                            event(LifecycleEventType.POST_DELETE, entity));
-        }
+        // then
+        assertThat(events())
+                .containsExactly(
+                        event(LifecycleEventType.PRE_UPDATE, entity),
+                        event(LifecycleEventType.POST_UPDATE, entity));
+    }
 
-        @Test
-        @DisplayName("Should fire pre-delete and post-delete events for each entity in a list")
-        void shouldFireEventsForEntityList() {
-            // given
-            var first = firstEntity();
-            var second = secondEntity();
+    @Assertion(id = "1530", 
+               strategy = "Update a list of entities via a custom update method and verify that pre-update and post-update lifecycle events are fired for each entity.")
+    void shouldFireUpdateEventsForEntityList() {
+        // given
+        var first = firstEntity();
+        var second = secondEntity();
+        var entities = List.of(first, second);
 
-            // when
-            repository.insert(first);
-            repository.insert(second);
-            observer.reset();
-            TestPropertyUtility.waitForEventualConsistency();
+        repository.insert(entities);
+        observer.reset();
+        TestPropertyUtility.waitForEventualConsistency();
 
-            // when
-            repository.delete(List.of(first, second));
+        // when
+        repository.update(entities);
+        TestPropertyUtility.waitForEventualConsistency();
 
-            // then
-            assertThat(events())
-                    .containsExactlyInAnyOrder(
-                            event(LifecycleEventType.PRE_DELETE, first),
-                            event(LifecycleEventType.PRE_DELETE, second),
-                            event(LifecycleEventType.POST_DELETE, first),
-                            event(LifecycleEventType.POST_DELETE, second));
-        }
+        // then
+        assertThat(events())
+                .containsExactlyInAnyOrder(
+                        event(LifecycleEventType.PRE_UPDATE, first),
+                        event(LifecycleEventType.PRE_UPDATE, second),
+                        event(LifecycleEventType.POST_UPDATE, first),
+                        event(LifecycleEventType.POST_UPDATE, second));
+    }
 
-        @Test
-        @DisplayName("Should fire pre-delete and post-delete events for each entity in an array")
-        void shouldFireEventsForEntityArray() {
-            // given
-            var first = firstEntity();
-            var second = secondEntity();
-            repository.insert(first);
-            repository.insert(second);
-            observer.reset();
-            TestPropertyUtility.waitForEventualConsistency();
+    @Assertion(id = "1530", 
+               strategy = "Update an array of entities via a custom update method and verify that pre-update " + 
+                          "and post-update lifecycle events are fired for each entity.")
+    void shouldFireUpdateEventsForEntityArray() {
+        // given
+        var first = firstEntity();
+        var second = secondEntity();
 
-            // when
-            repository.delete(new MusicRecord[]{first, second});
+        var entities = List.of(first, second);
+        repository.insert(entities);
+        observer.reset();
+        TestPropertyUtility.waitForEventualConsistency();
 
-            // then
-            assertThat(events())
-                    .containsExactlyInAnyOrder(
-                            event(LifecycleEventType.PRE_DELETE, first),
-                            event(LifecycleEventType.PRE_DELETE, second),
-                            event(LifecycleEventType.POST_DELETE, first),
-                            event(LifecycleEventType.POST_DELETE, second));
-        }
+        // when
+        repository.update(new MusicRecord[]{first, second});
+        TestPropertyUtility.waitForEventualConsistency();
+
+        // then
+        assertThat(events())
+                .containsExactlyInAnyOrder(
+                        event(LifecycleEventType.PRE_UPDATE, first),
+                        event(LifecycleEventType.PRE_UPDATE, second),
+                        event(LifecycleEventType.POST_UPDATE, first),
+                        event(LifecycleEventType.POST_UPDATE, second));
+    }
+
+    @Assertion(id = "1530", 
+               strategy = "Save a new entity via a custom save method and verify that pre-upsert and post-upsert lifecycle events are fired.")
+    void shouldFireUpsertEventsForOneNewEntity() {
+        // given
+        var entity = firstEntity();
+
+        // when
+        repository.save(entity);
+        TestPropertyUtility.waitForEventualConsistency();
+
+        // then
+        assertThat(events())
+                .containsExactly(
+                        event(LifecycleEventType.PRE_UPSERT, entity),
+                        event(LifecycleEventType.POST_UPSERT, entity));
+    }
+
+    @Assertion(id = "1530", strategy = "Save an existing entity via a custom save method and verify that pre-upsert and post-upsert lifecycle events are fired.")
+    void shouldFireUpsertEventsForOneExistingEntity() {
+        // given
+        var entity = firstEntity();
+
+        repository.insert(entity);
+        observer.reset();
+        TestPropertyUtility.waitForEventualConsistency();
+
+        // when
+        repository.save(entity);
+        TestPropertyUtility.waitForEventualConsistency();
+
+        // then
+        assertThat(events())
+                .containsExactly(
+                        event(LifecycleEventType.PRE_UPSERT, entity),
+                        event(LifecycleEventType.POST_UPSERT, entity));
+    }
+
+    @Assertion(id = "1530", 
+               strategy = "Save a list of entities via a custom save method and verify that pre-upsert and post-upsert lifecycle events are fired for each entity.")
+    void shouldFireUpsertEventsForEntityList() {
+        // given
+        var first = firstEntity();
+        var second = secondEntity();
+
+        // when
+        repository.save(List.of(first, second));
+        TestPropertyUtility.waitForEventualConsistency();
+
+        // then
+        assertThat(events())
+                .containsExactlyInAnyOrder(
+                        event(LifecycleEventType.PRE_UPSERT, first),
+                        event(LifecycleEventType.POST_UPSERT, first),
+                        event(LifecycleEventType.PRE_UPSERT, second),
+                        event(LifecycleEventType.POST_UPSERT, second));
+    }
+
+    @Assertion(id = "1530", 
+               strategy = "Save an array of entities via a custom save method and verify that pre-upsert and post-upsert lifecycle events are fired for each entity.")
+    void shouldFireUpsertEventsForEntityArray() {
+        // given
+        var first = firstEntity();
+        var second = secondEntity();
+
+        // when
+        repository.save(new MusicRecord[]{first, second});
+        TestPropertyUtility.waitForEventualConsistency();
+
+        // then
+        assertThat(events())
+                .containsExactlyInAnyOrder(
+                        event(LifecycleEventType.PRE_UPSERT, first),
+                        event(LifecycleEventType.POST_UPSERT, first),
+                        event(LifecycleEventType.PRE_UPSERT, second),
+                        event(LifecycleEventType.POST_UPSERT, second));
+    }
+
+    @Assertion(id = "1530", 
+               strategy = "Delete one entity via a custom delete method and verify that pre-delete and post-delete lifecycle events are fired.")
+    void shouldFireDeleteEventsForOneEntity() {
+        // given
+        var entity = firstEntity();
+        repository.insert(entity);
+        observer.reset();
+        TestPropertyUtility.waitForEventualConsistency();
+
+        // when
+        repository.delete(entity);
+
+        // then
+        assertThat(events())
+                .containsExactly(
+                        event(LifecycleEventType.PRE_DELETE, entity),
+                        event(LifecycleEventType.POST_DELETE, entity));
+    }
+
+    @Assertion(id = "1530", 
+               strategy = "Delete a list of entities via a custom delete method and verify that pre-delete and post-delete lifecycle events are fired for each entity.")
+    void shouldFireDeleteEventsForEntityList() {
+        // given
+        var first = firstEntity();
+        var second = secondEntity();
+
+        repository.insert(first);
+        repository.insert(second);
+        observer.reset();
+        TestPropertyUtility.waitForEventualConsistency();
+
+        // when
+        repository.delete(List.of(first, second));
+
+        // then
+        assertThat(events())
+                .containsExactlyInAnyOrder(
+                        event(LifecycleEventType.PRE_DELETE, first),
+                        event(LifecycleEventType.PRE_DELETE, second),
+                        event(LifecycleEventType.POST_DELETE, first),
+                        event(LifecycleEventType.POST_DELETE, second));
+    }
+
+    @Assertion(id = "1530", 
+               strategy = "Delete an array of entities via a custom delete method and verify that pre-delete and post-delete lifecycle events are fired for each entity.")
+    void shouldFireDeleteEventsForEntityArray() {
+        // given
+        var first = firstEntity();
+        var second = secondEntity();
+        repository.insert(first);
+        repository.insert(second);
+        observer.reset();
+        TestPropertyUtility.waitForEventualConsistency();
+
+        // when
+        repository.delete(new MusicRecord[]{first, second});
+
+        // then
+        assertThat(events())
+                .containsExactlyInAnyOrder(
+                        event(LifecycleEventType.PRE_DELETE, first),
+                        event(LifecycleEventType.PRE_DELETE, second),
+                        event(LifecycleEventType.POST_DELETE, first),
+                        event(LifecycleEventType.POST_DELETE, second));
     }
 
     private List<Tuple> events() {

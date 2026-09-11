@@ -173,6 +173,8 @@ Use is subject to <a href="{@docRoot}/doc-files/speclicense.html" target="_top">
                     </archive>
                     <excludes>
                         <exclude>**/*.java</exclude>
+                        <exclude>checkstyle.xml</exclude>
+                        <exclude>rules.xml</exclude>
                     </excludes>
                 </configuration>
             </plugin>

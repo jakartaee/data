@@ -75,14 +75,14 @@
 
         <build.helper.maven.plugin.version>3.6.1</build.helper.maven.plugin.version>
         <maven.antrun.plugin.version>3.2.0</maven.antrun.plugin.version>
-        <maven.compile.version>3.15.0</maven.compile.version>
+        <maven.compile.version>3.16.0</maven.compile.version>
         <maven.dependency.plugin.version>3.11.0</maven.dependency.plugin.version>
-        <maven.surefire.plugin.version>3.5.6</maven.surefire.plugin.version>
+        <maven.surefire.plugin.version>3.6.0</maven.surefire.plugin.version>
         <maven.javadoc.plugin.version>3.12.0</maven.javadoc.plugin.version>
         <maven.source.plugin.version>3.4.0</maven.source.plugin.version>
         <maven.checkstyle.plugin.version>3.6.0</maven.checkstyle.plugin.version>
         <maven.pmd.plugin.version>3.28.0</maven.pmd.plugin.version>
-        <maven.bundle.plugin.version>6.1.0</maven.bundle.plugin.version>
+        <maven.bundle.plugin.version>6.1.2</maven.bundle.plugin.version>
         <maven.jar.plugin.version>3.5.1</maven.jar.plugin.version>
 
         <lifecycle.mapping.version>1.0.0</lifecycle.mapping.version>
@@ -119,7 +119,7 @@
         <sigtest.version>2.7</sigtest.version>
 
         <sonar.jacoco.reportPath>../target/jacoco.exec</sonar.jacoco.reportPath>
-        <sonar.maven.version>5.7.0.6970</sonar.maven.version>
+        <sonar.maven.version>5.8.0.7211</sonar.maven.version>
 
         <nexus.staging.repository>data-maven2-staging</nexus.staging.repository>
 

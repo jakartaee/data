@@ -50,7 +50,7 @@ public class ValidationTests {
     }
 
     @Inject
-    private Rectangles rectangles;
+    Rectangles rectangles;
 
     private DatabaseType type = TestProperty.databaseType.getDatabaseType();
 

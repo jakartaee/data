@@ -20,10 +20,7 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Generate specification docs
-      run: |
-        mvn package --file api/pom.xml
-        mvn package --file stateful/pom.xml
-        mvn package --file spec/pom.xml
+      run: mvn package -DskipTests -projects 'api,stateful,spec'
     - name: Assemble documentation
       run: |
         mkdir documentation/

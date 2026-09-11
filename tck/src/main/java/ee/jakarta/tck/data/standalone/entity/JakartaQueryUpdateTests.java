@@ -17,8 +17,6 @@ package ee.jakarta.tck.data.standalone.entity;
 
 import ee.jakarta.tck.data.framework.junit.anno.AnyEntity;
 import ee.jakarta.tck.data.framework.junit.anno.Standalone;
-import ee.jakarta.tck.data.framework.utilities.DatabaseType;
-import ee.jakarta.tck.data.framework.utilities.TestProperty;
 import ee.jakarta.tck.data.framework.utilities.TestPropertyUtility;
 import jakarta.inject.Inject;
 import org.assertj.core.api.Assertions;
@@ -31,15 +29,11 @@ import org.junit.jupiter.api.DisplayName;
 import ee.jakarta.tck.data.framework.junit.anno.Assertion;
 
 import java.util.List;
-import java.util.logging.Logger;
 
 @Standalone
 @AnyEntity
 @DisplayName("Jakarta Data integration with Jakarta Common Query Language for update operations")
 public class JakartaQueryUpdateTests {
-
-    public static final Logger log = Logger.getLogger(JakartaQueryUpdateTests.class.getCanonicalName());
-
 
     @Deployment
     public static WebArchive createDeployment() {
@@ -50,11 +44,9 @@ public class JakartaQueryUpdateTests {
     }
 
     @Inject
-    protected VegetableRepository vegetableRepository;
+    VegetableRepository vegetableRepository;
 
-    protected final DatabaseType type = TestProperty.databaseType.getDatabaseType();
-
-    protected List<Vegetable> vegetables = VegetableRepository.VEGGIES;
+    private final List<Vegetable> vegetables = VegetableRepository.VEGGIES;
 
     private static final String UPDATED = "updated";
 

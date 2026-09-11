@@ -19,13 +19,6 @@ import ee.jakarta.tck.data.framework.junit.anno.AnyEntity;
 import ee.jakarta.tck.data.framework.junit.anno.Standalone;
 import ee.jakarta.tck.data.framework.utilities.DatabaseType;
 import ee.jakarta.tck.data.framework.utilities.TestProperty;
-import jakarta.inject.Inject;
-import org.assertj.core.api.Assertions;
-import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import ee.jakarta.tck.data.framework.junit.anno.Assertion;
 import ee.jakarta.tck.data.framework.junit.anno.ReadOnlyTest;
 import ee.jakarta.tck.data.framework.read.only.Fruit;
@@ -33,13 +26,23 @@ import ee.jakarta.tck.data.framework.read.only.FruitPopulator;
 import ee.jakarta.tck.data.framework.read.only.FruitRepository;
 import ee.jakarta.tck.data.framework.read.only.FruitSummary;
 
+import jakarta.inject.Inject;
+
+import org.assertj.core.api.Assertions;
+
+import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.spec.WebArchive;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.logging.Logger;
 
 @Standalone
 @AnyEntity
@@ -47,9 +50,7 @@ import java.util.logging.Logger;
 @DisplayName("Jakarta Data integration with Jakarta Common Query Language for select operations")
 public class JakartaQueryTests {
 
-    public static final Logger log = Logger.getLogger(JakartaQueryTests.class.getCanonicalName());
-
-    protected final DatabaseType type = TestProperty.databaseType.getDatabaseType();
+    private final DatabaseType type = TestProperty.databaseType.getDatabaseType();
 
     @Deployment
     public static WebArchive createDeployment() {
@@ -58,9 +59,9 @@ public class JakartaQueryTests {
     }
 
     @Inject
-    protected FruitRepository fruitRepository;
+    FruitRepository fruitRepository;
 
-    protected List<Fruit> fruits = FruitPopulator.FRUITS;
+    private final List<Fruit> fruits = FruitPopulator.FRUITS;
 
     @BeforeEach
     //Inject doesn't happen until after BeforeClass so this is necessary before each test

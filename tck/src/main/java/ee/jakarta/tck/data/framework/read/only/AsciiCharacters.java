@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023,2024 Contributors to the Eclipse Foundation
+ * Copyright (c) 2023,2026 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -15,6 +15,8 @@
  */
 package ee.jakarta.tck.data.framework.read.only;
 
+import static jakarta.data.repository.By.ID;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -23,11 +25,14 @@ import java.util.stream.Stream;
 import jakarta.data.Limit;
 import jakarta.data.Order;
 import jakarta.data.Sort;
+import jakarta.data.constraint.AtLeast;
+import jakarta.data.constraint.AtMost;
 import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
 import jakarta.data.repository.By;
 import jakarta.data.repository.DataRepository;
 import jakarta.data.repository.Find;
+import jakarta.data.repository.Is;
 import jakarta.data.repository.Query;
 import jakarta.data.repository.Repository;
 import jakarta.data.repository.Save;
@@ -88,13 +93,17 @@ public interface AsciiCharacters extends DataRepository<AsciiCharacter, Long> {
 
     Optional<AsciiCharacter> findByNumericValue(int id);
 
-    Page<AsciiCharacter> findByNumericValueBetween(int min, int max, PageRequest pagination, Order<AsciiCharacter> order);
-
     List<AsciiCharacter> findByNumericValueLessThanEqualAndNumericValueGreaterThanEqual(int max, int min);
 
     AsciiCharacter[] findFirst3ByNumericValueGreaterThanEqualAndHexadecimalEndsWith(int minValue, String lastHexDigit, Sort<AsciiCharacter> sort);
 
     Optional<AsciiCharacter> findFirstByHexadecimalStartsWithAndIsControlOrderByIdAsc(String firstHexDigit, boolean isControlChar);
+
+    @Find
+    Page<AsciiCharacter> fromRange(@By(ID) @Is(AtLeast.class) int min,
+                                   @By(ID) @Is(AtMost.class) int max,
+                                   PageRequest pagination,
+                                   Order<AsciiCharacter> order);
 
     @Query("select thisCharacter where hexadecimal like '4_'" +
             " and hexadecimal not like '%0'" +

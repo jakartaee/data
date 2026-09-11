@@ -20,28 +20,28 @@ import ee.jakarta.tck.data.framework.junit.anno.Standalone;
 import ee.jakarta.tck.data.framework.utilities.DatabaseType;
 import ee.jakarta.tck.data.framework.utilities.TestProperty;
 import ee.jakarta.tck.data.framework.utilities.TestPropertyUtility;
+import ee.jakarta.tck.data.framework.junit.anno.Assertion;
+
 import jakarta.inject.Inject;
+
 import org.assertj.core.api.Assertions;
+
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import ee.jakarta.tck.data.framework.junit.anno.Assertion;
 
 import java.util.List;
-import java.util.logging.Logger;
 
 @Standalone
 @AnyEntity
 @DisplayName("Jakarta Data integration with Jakarta Common Query Language for delete operations")
 public class JakartaQueryDeleteTests {
 
-    public static final Logger log =
-            Logger.getLogger(JakartaQueryDeleteTests.class.getCanonicalName());
-
-    protected final DatabaseType type = TestProperty.databaseType.getDatabaseType();
+    private final DatabaseType type = TestProperty.databaseType.getDatabaseType();
 
     @Deployment
     public static WebArchive createDeployment() {
@@ -52,9 +52,9 @@ public class JakartaQueryDeleteTests {
     }
 
     @Inject
-    protected VegetableRepository vegetableRepository;
+    VegetableRepository vegetableRepository;
 
-    protected List<Vegetable> vegetables = VegetableRepository.VEGGIES;
+    List<Vegetable> vegetables = VegetableRepository.VEGGIES;
 
     @BeforeEach
     public void setup() {

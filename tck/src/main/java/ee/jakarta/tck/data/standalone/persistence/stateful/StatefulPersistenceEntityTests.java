@@ -49,9 +49,9 @@ public class StatefulPersistenceEntityTests {
         return ShrinkWrap
                 .create(WebArchive.class)
                 .addClasses(Inventory.class,
-                        Product.class,
-                        Products.class,
-                        _Product.class);
+                            Product.class,
+                            _Product.class,
+                            Products.class);
     }
 
     @Inject
