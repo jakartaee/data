@@ -298,6 +298,31 @@ public class StatefulPersistenceEntityTests {
     }
 
     @Assertion(id = "965", strategy = """
+    Within an active transaction, modify a persisted entity without
+    explicitly flushing, then verify that a repository method annotated
+    @Delete and @QueryOptions(flush = QueryFlushMode.FLUSH) deletes the
+    entity based on the modified state.
+    """)
+    public void testDeleteWithQueryOptions() throws Exception {
+        inventory.erase();
+
+        Product product = Product.of("tennis racket",
+                82.99,
+                "TEST-PROD-1020",
+                Department.SPORTING_GOODS);
+
+        inventory.persist(product);
+
+        tran.begin();
+        product.setPrice(84.98);
+
+        assertEquals(1L,
+                inventory.deleteByPrice(84.98));
+
+        tran.commit();
+    }
+
+    @Assertion(id = "965", strategy = """
         Within an active transaction, modify a persisted entity without
         explicitly flushing, then verify that a repository method annotated
         @Query and @QueryOptions(flush = QueryFlushMode.FLUSH) returns a
