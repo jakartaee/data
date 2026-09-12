@@ -31,6 +31,7 @@ import jakarta.data.repository.stateful.Remove;
 import jakarta.data.restrict.Restriction;
 import jakarta.persistence.QueryFlushMode;
 import jakarta.persistence.query.JakartaQuery;
+import jakarta.persistence.query.NativeQuery;
 import jakarta.persistence.query.QueryOptions;
 import jakarta.transaction.Transactional;
 
@@ -74,6 +75,14 @@ public interface Inventory {
         """)
     @QueryOptions(flush = QueryFlushMode.FLUSH)
     double priceOf(String productNumber);
+
+    @NativeQuery("""
+        SELECT price
+          FROM Product
+         WHERE productNum = ?
+        """)
+    @QueryOptions(flush = QueryFlushMode.FLUSH)
+    double nativePriceOf(String productNumber);
 
     @JakartaQuery("""
         SELECT AVG(p.price)

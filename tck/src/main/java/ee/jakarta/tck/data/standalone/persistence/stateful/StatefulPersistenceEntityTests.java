@@ -350,6 +350,34 @@ public class StatefulPersistenceEntityTests {
         inventory.remove(product);
     }
 
+    @Assertion(id = "965", strategy = """
+    Within an active transaction, modify a persisted entity without
+    explicitly flushing, then verify that a repository method annotated
+    @NativeQuery and @QueryOptions(flush = QueryFlushMode.FLUSH) returns
+    a result that reflects the pending modification.
+    """)
+    public void testNativeQueryWithQueryOptions() throws Exception {
+        inventory.erase();
+
+        Product product = Product.of("tennis racket",
+                82.99,
+                "TEST-PROD-1021",
+                Department.SPORTING_GOODS);
+
+        inventory.persist(product);
+
+        tran.begin();
+        product.setPrice(84.98);
+
+        assertEquals(84.98,
+                inventory.nativePriceOf("TEST-PROD-1021"),
+                0.01);
+
+        tran.commit();
+
+        inventory.remove(product);
+    }
+
     @Assertion(id = "474", strategy = """
             Use the Persist annotation to persist new entities to the database.
             Verify that the entities are successfully stored and can be retrieved.
