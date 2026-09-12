@@ -20,6 +20,8 @@ import java.util.stream.Stream;
 
 import ee.jakarta.tck.data.standalone.persistence.Product;
 import jakarta.data.Order;
+import jakarta.data.repository.By;
+import jakarta.data.repository.Delete;
 import jakarta.data.repository.Find;
 import jakarta.data.repository.Query;
 import jakarta.data.repository.Repository;
@@ -29,6 +31,7 @@ import jakarta.data.repository.stateful.Remove;
 import jakarta.data.restrict.Restriction;
 import jakarta.persistence.QueryFlushMode;
 import jakarta.persistence.query.JakartaQuery;
+import jakarta.persistence.query.NativeQuery;
 import jakarta.persistence.query.QueryOptions;
 import jakarta.transaction.Transactional;
 
@@ -42,6 +45,7 @@ public interface Inventory {
     void erase();
 
     @Find
+    @QueryOptions(flush = QueryFlushMode.FLUSH)
     Stream<Product> filter(Restriction<Product> restriction,
                            Order<Product> sortBy);
 
@@ -64,6 +68,22 @@ public interface Inventory {
     List<Product> withDiscountedPriceUpTo(double max,
                                           double percentOff);
 
+    @Query("""
+        SELECT price
+          FROM Product
+         WHERE productNum = ?1
+        """)
+    @QueryOptions(flush = QueryFlushMode.FLUSH)
+    double priceOf(String productNumber);
+
+    @NativeQuery("""
+        SELECT price
+          FROM Product
+         WHERE productNum = ?
+        """)
+    @QueryOptions(flush = QueryFlushMode.FLUSH)
+    double nativePriceOf(String productNumber);
+
     @JakartaQuery("""
         SELECT AVG(p.price)
           FROM Product p
@@ -71,4 +91,8 @@ public interface Inventory {
         """)
     @QueryOptions(flush = QueryFlushMode.FLUSH)
     double averagePrice(String productNumber);
+
+    @Delete
+    @QueryOptions(flush = QueryFlushMode.FLUSH)
+    long deleteByPrice(@By("price") double price);
 }
