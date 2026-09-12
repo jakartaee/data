@@ -42,6 +42,7 @@ public interface Inventory {
     void erase();
 
     @Find
+    @QueryOptions(flush = QueryFlushMode.FLUSH)
     Stream<Product> filter(Restriction<Product> restriction,
                            Order<Product> sortBy);
 
@@ -63,6 +64,14 @@ public interface Inventory {
             """)
     List<Product> withDiscountedPriceUpTo(double max,
                                           double percentOff);
+
+    @Query("""
+        SELECT price
+          FROM Product
+         WHERE productNum = ?1
+        """)
+    @QueryOptions(flush = QueryFlushMode.FLUSH)
+    double priceOf(String productNumber);
 
     @JakartaQuery("""
         SELECT AVG(p.price)
