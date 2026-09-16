@@ -228,7 +228,7 @@ An implementation of Query by Method Name must support the following types of op
 |Returns entity instances representing the records which satisfy the restriction, or representing all records if there is no restriction.
 
 |`delete`
-|Deletes every record which satisfy the restriction, or all records if there is no restriction, and returns either no result (`void`) or the number of records deleted.
+|Deletes every record which satisfy the restriction, or all records if there is no restriction, and returns either no result (`void`), the number of records deleted, or a `boolean` indicator of whether at least one record is deleted.
 
 |`count`
 |Returns the number of records which satisfy the restriction, or the total number of records if there is no restriction.
@@ -391,7 +391,7 @@ The return type of a Query by Method Name is determined as indicated in the foll
 | Operation | Return type | Notes
 
 | `count` | `long` |
-| `delete`| `void`,`long`,`int` |
+| `delete`| `void`,`long`,`int`,`boolean` |
 | `exists`| `boolean` |
 | `find` | `E` or `Optional<E>` | For queries returning a single item (or none)
 | `find` | `E[]` or `List<E>`| For queries where it is possible to return more than one item
