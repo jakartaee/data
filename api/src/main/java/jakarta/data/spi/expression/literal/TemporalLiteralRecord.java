@@ -34,7 +34,7 @@ record TemporalLiteralRecord<V extends Temporal & Comparable<? extends Temporal>
 
     TemporalLiteralRecord {
         Messages.requireNonNull(type, "type");
-        Messages.requireNonNull(type, "value");
+        Messages.requireNonNull(value, "value");
     }
 
     @Override
@@ -45,18 +45,21 @@ record TemporalLiteralRecord<V extends Temporal & Comparable<? extends Temporal>
                         ? instant.atOffset(ZoneOffset.UTC).toLocalDateTime()
                         : value;
 
-        if (temporal instanceof Year y) {
-            return "{d '" + y.getValue() + "'}";
-        } else if (temporal instanceof LocalDate) {
-            return "{d '" + value + "'}";
-        } else if (temporal instanceof LocalDateTime d) {
-            return "{ts '" + d.toLocalDate() + ' ' + d.toLocalTime() + "'}";
+        if (temporal instanceof LocalDateTime d) {
+            String dateString = d.getYear() >= 10000
+                    ? d.toLocalDate().toString().substring(1) // omit leading +
+                    : d.toLocalDate().toString();
+            return "DATETIME " + dateString + ' ' + d.toLocalTime().toString();
+        } else if (temporal instanceof LocalDate d) {
+            return "DATE " + (d.getYear() >= 10000
+                                ? d.toString().substring(1) // omit leading +
+                                : d.toString());
         } else if (temporal instanceof LocalTime) {
-            return "{t '" + value + "'}";
+            return "TIME " + temporal.toString();
+        } else if (temporal instanceof Year y) {
+            return "YEAR " + y.getValue();
         } else {
-            return "{TemporalLiteral '" +
-                   value.getClass().getName() + " '" +
-                   value + "'}";
+            return "TEMPORAL " + temporal.getClass().getName() + " " + temporal;
         }
     }
 
