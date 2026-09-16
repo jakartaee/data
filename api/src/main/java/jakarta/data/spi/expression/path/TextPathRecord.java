@@ -23,7 +23,7 @@ import jakarta.data.metamodel.TextAttribute;
 import jakarta.annotation.Nonnull;
 
 record TextPathRecord<T, U>
-        (@Nonnull NavigableExpression<T, U> expression, @Nonnull TextAttribute<U> attribute)
+        (@Nonnull NavigableExpression<T, U> expression, @Nonnull TextAttribute<? super U> attribute)
         implements TextPath<T, U> {
 
     TextPathRecord {

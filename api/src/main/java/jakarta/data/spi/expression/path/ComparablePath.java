@@ -26,7 +26,7 @@ public interface ComparablePath<T, U, C extends Comparable<?>>
         extends Path<T, U>, ComparableExpression<T, C> {
     @Nonnull
     static <T, U, C extends Comparable<C>> ComparablePath<T, U, C>
-    of(@Nonnull NavigableExpression<T, U> expression, @Nonnull ComparableAttribute<U, C> attribute) {
+    of(@Nonnull NavigableExpression<T, U> expression, @Nonnull ComparableAttribute<? super U, C> attribute) {
         return new ComparablePathRecord<>(expression, attribute);
     }
 }

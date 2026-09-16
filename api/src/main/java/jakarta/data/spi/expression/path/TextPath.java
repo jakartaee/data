@@ -25,7 +25,9 @@ import jakarta.annotation.Nonnull;
 public interface TextPath<T, U>
         extends Path<T, U>, TextExpression<T> {
     @Nonnull
-    static <T, U> TextPath<T, U> of(@Nonnull NavigableExpression<T, U> expression, @Nonnull TextAttribute<U> attribute) {
+    static <T, U> TextPath<T, U> of(
+            @Nonnull NavigableExpression<T, U> expression,
+            @Nonnull TextAttribute<? super U> attribute) {
         return new TextPathRecord<>(expression, attribute);
     }
 }

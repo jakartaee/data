@@ -113,5 +113,5 @@ public interface Path<T, U> {
      * @return the attribute to which this path navigates
      */
     @Nonnull
-    Attribute<U> attribute();
+    Attribute<? super U> attribute();
 }

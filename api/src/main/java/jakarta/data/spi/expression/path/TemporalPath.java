@@ -30,7 +30,7 @@ public interface TemporalPath<T, U, V extends Temporal & Comparable<? extends Te
     @Nonnull
     static <T, U, V extends Temporal & Comparable<? extends Temporal>> TemporalPath<T, U, V> of(
             @Nonnull NavigableExpression<T, U> expression,
-            @Nonnull TemporalAttribute<U, V> attribute) {
+            @Nonnull TemporalAttribute<? super U, V> attribute) {
 
         return new TemporalPathRecord<>(expression, attribute);
     }

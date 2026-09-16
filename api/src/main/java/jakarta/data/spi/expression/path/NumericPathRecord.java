@@ -23,7 +23,7 @@ import jakarta.data.metamodel.NumericAttribute;
 import jakarta.annotation.Nonnull;
 
 record NumericPathRecord<T, U, N extends Number & Comparable<N>>
-        (@Nonnull NavigableExpression<T, U> expression, @Nonnull NumericAttribute<U, N> attribute)
+        (@Nonnull NavigableExpression<T, U> expression, @Nonnull NumericAttribute<? super U, N> attribute)
         implements NumericPath<T, U, N> {
 
     NumericPathRecord {
