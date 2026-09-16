@@ -25,48 +25,71 @@ import java.lang.annotation.Target;
 import java.util.UUID;
 
 import jakarta.data.Sort;
+import jakarta.data.expression.Expression;
+import jakarta.data.restrict.Restriction;
 
 /**
- * <p>Annotates a class which serves as a static metamodel for an entity,
- * enabling
- * type-safe access to entity attribute names and related objects such as
- * instances of {@link Sort}s for an attribute. A metamodel class contains one
- * or more {@code public static} fields corresponding to attributes of the
- * entity class. The type of each of these fields must be either {@link String},
- * {@link Attribute}, or a subinterface of {@code Attribute} defined in this
- * package.</p>
+ * Annotates a static metamodel class.
  *
- * <p>The following subinterfaces of {@code Attribute} are recommended to
- * obtain
- * the full benefit of the static metamodel:</p>
+ * <p>
+ * A static metamodel class holds a representation of the declared attributes of an entity
+ * class, an associated class (such as a Jakarta Persistence Embeddable class),
+ * or a superclass of an entity or associated class. The static metamodel enables
+ * type-safe access to attribute names as well as an {@code Attribute} subclass
+ * from which is obtained {@link Expression}s, {@link Restriction}s, and
+ * {@link Sort}s on the attribute. A metamodel class contains one or more
+ * {@code public static} fields, all corresponding to attributes declared by
+ * the class. The type of each of these fields must be either {@link String}
+ * (for attribute names) or the most specific subinterface of {@link Attribute}
+ * defined in this package or by vendor API.
+ *
+ * <p>Jakarta Data static metamodel classes must follow the entity model for
+ * the respective entity (usually Jakarta Persistence or Jakarta NoSQL)
+ * regarding what is and is not an attribute.
+ *
+ * <p>Some entity models allow inheritance of attributes from a superclass.
+ * For example, Jakarta Persistence entity classes inherit attributes of a
+ * superclass annotated {@link jakarta.persistence.MappedSuperclass}
+ * (from the Jakarta Persistence API) and Jakarta NoSQL entity classes
+ * inherit superclass attributes that have a Jakarta NoSQL annotation.
+ * In cases where attributes are inherited, the static metamodel class for
+ * the entity or association does not include fields for the inherited
+ * attributes, but instead inherits the fields by inheriting a static
+ * metamodel class for the superclass.
+ *
+ * <p>The following subinterfaces of {@code Attribute} are provided to
+ * obtain the full benefit of the static metamodel:
  * <ul>
- * <li>{@link TextAttribute} for entity attributes that represent text,
+ * <li>{@link TextAttribute} for attributes that represent text,
  *     typically of type {@link String}.</li>
- * <li>{@link NumericAttribute} for entity attributes of numeric types, such as
+ * <li>{@link NumericAttribute} for attributes of numeric types, such as
  *     {@code int}, {@link Double}, and {@link java.math.BigInteger}.</li>
- * <li>{@link BooleanAttribute} for entity attributes that represent
+ * <li>{@link BooleanAttribute} for attributes that represent
  *     {@code true} or {@code false} values of type {@code boolean} or
  *     {@link Boolean}.</li>
- * <li>{@link TemporalAttribute} for entity attributes of temporal types, such as
+ * <li>{@link TemporalAttribute} for attributes of temporal types, such as
  *     {@link java.time.LocalDate}, {@link java.time.LocalTime}, and
  *     {@link java.time.Instant}.</li>
- * <li>{@link ComparableAttribute} for entity attributes that represent other
+ * <li>{@link ComparableAttribute} for attributes that represent other
  *     sortable and comparable values, such as {@code char}, enumerations,
  *     and {@link UUID}</li>
- * <li>{@link NavigableAttribute} for entity attributes that are embeddables
- *     or relations.</li>
- * <li>{@link BasicAttribute} for other types of entity attributes, such as
+ * <li>{@link NavigableAttribute} for attributes that are associations,
+ *     such as Jakarta Persistence embeddables.</li>
+ * <li>{@link BasicAttribute} for other types of attributes, such as
  *     collections.</li>
  * </ul>
  *
- * <p>Jakarta Data defines the following conventions for static metamodel classes:</p>
+ * <p>Jakarta Data defines the following conventions for static metamodel
+ * classes:
  * <ul>
  * <li>The metamodel class can be an interface or concrete class.</li>
- * <li>The name of the static metamodel class should consist of underscore ({@code _})
- *     followed by the entity class name.</li>
+ * <li>The name of the static metamodel class is formed by prefixing
+ *     the name of the modeled class with an underscore ({@code _}).</li>
+ * <li>Static metamodel classes should have the same package as the modeled
+ *     class.</li>
  * <li>Fields of type {@code String} should be named with all upper case.</li>
- * <li>Fields that are subtypes of {@code Attribute} should be named in lower case
- *     or mixed case.</li>
+ * <li>Fields that are subtypes of {@code Attribute} should be named in lower
+ *     case or mixed case, matching the name of the modeled attribute.</li>
  * </ul>
  *
  * <p>For example, for the following entity,</p>
