@@ -37,6 +37,21 @@ record TemporalLiteralRecord<V extends Temporal & Comparable<? extends Temporal>
         Messages.requireNonNull(value, "value");
     }
 
+    /**
+     * Formats the given date as a String, copying from LocalDate.toString,
+     * but without the leading + character that is included for dates beyond
+     * 9999.
+     *
+     * @param date a date to convert to a String
+     * @return textual representation of the date
+     */
+    @Nonnull
+    private static String toDateString(@Nonnull LocalDate date) {
+        return date.getYear() >= 10000
+                ? date.toString().substring(1) // omit leading +
+                : date.toString();
+    }
+
     @Override
     @Nonnull
     public String toString() {
@@ -46,14 +61,10 @@ record TemporalLiteralRecord<V extends Temporal & Comparable<? extends Temporal>
                         : value;
 
         if (temporal instanceof LocalDateTime d) {
-            String dateString = d.getYear() >= 10000
-                    ? d.toLocalDate().toString().substring(1) // omit leading +
-                    : d.toLocalDate().toString();
-            return "DATETIME " + dateString + ' ' + d.toLocalTime().toString();
+            return "DATETIME " + toDateString(d.toLocalDate()) +
+                    ' ' + d.toLocalTime().toString();
         } else if (temporal instanceof LocalDate d) {
-            return "DATE " + (d.getYear() >= 10000
-                                ? d.toString().substring(1) // omit leading +
-                                : d.toString());
+            return "DATE " + toDateString(d);
         } else if (temporal instanceof LocalTime) {
             return "TIME " + temporal.toString();
         } else if (temporal instanceof Year y) {

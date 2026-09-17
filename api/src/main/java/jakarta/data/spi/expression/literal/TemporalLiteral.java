@@ -101,7 +101,7 @@ public interface TemporalLiteral<V extends Temporal & Comparable<? extends Tempo
      * <h2>Instant</h2>
      * <p>
      * An {@link Instant}-typed value is converted to a {@link LocalDateTime}
-     * value in {@link ZoneOffset#UTC UTC}, and subsequently follows the
+     * value in {@link ZoneOffset#UTC UTC} and subsequently follows the
      * pattern for {@code LocalDateTime}.
      *
      * <h2>LocalDateTime</h2>
