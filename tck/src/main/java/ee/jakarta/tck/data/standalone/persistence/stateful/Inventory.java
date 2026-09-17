@@ -20,8 +20,6 @@ import java.util.stream.Stream;
 
 import ee.jakarta.tck.data.standalone.persistence.Product;
 import jakarta.data.Order;
-import jakarta.data.repository.By;
-import jakarta.data.repository.Delete;
 import jakarta.data.repository.Find;
 import jakarta.data.repository.Query;
 import jakarta.data.repository.Repository;
@@ -92,7 +90,4 @@ public interface Inventory {
     @QueryOptions(flush = QueryFlushMode.FLUSH)
     double averagePrice(String productNumber);
 
-    @Delete
-    @QueryOptions(flush = QueryFlushMode.FLUSH)
-    long deleteByPrice(@By("price") double price);
 }

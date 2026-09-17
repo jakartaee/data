@@ -38,8 +38,10 @@ import jakarta.data.repository.Query;
 import jakarta.data.repository.Repository;
 import jakarta.data.repository.Save;
 import jakarta.data.repository.Update;
+import jakarta.persistence.QueryFlushMode;
 import jakarta.persistence.query.JakartaQuery;
 import jakarta.persistence.query.NativeQuery;
+import jakarta.persistence.query.QueryOptions;
 
 @Repository
 public interface Catalog extends DataRepository<Product, String> {
@@ -82,6 +84,10 @@ public interface Catalog extends DataRepository<Product, String> {
 
     @Delete
     long discardAllMatching(@By(ID) @Is(Like.class) String productIdPattern);
+
+    @Delete
+    @QueryOptions(flush = QueryFlushMode.FLUSH)
+    long deleteByPrice(@By("price") double price);
 
     @Find
     Optional<Product> get(String productNum);
