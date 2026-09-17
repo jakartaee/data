@@ -322,7 +322,7 @@ public class StatefulPersistenceEntityTests {
         tran.commit();
     }
 
-    @Assertion(id = "965", strategy = """
+    @Assertion(id = "1312", strategy = """
         Within an active transaction, modify a persisted entity without
         explicitly flushing, then verify that a repository method annotated
         @Query and @QueryOptions(flush = QueryFlushMode.FLUSH) returns a
