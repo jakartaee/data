@@ -350,7 +350,7 @@ public class StatefulPersistenceEntityTests {
         inventory.remove(product);
     }
 
-    @Assertion(id = "965", strategy = """
+    @Assertion(id = "1312", strategy = """
     Within an active transaction, modify a persisted entity without
     explicitly flushing, then verify that a repository method annotated
     @NativeQuery and @QueryOptions(flush = QueryFlushMode.FLUSH) returns
