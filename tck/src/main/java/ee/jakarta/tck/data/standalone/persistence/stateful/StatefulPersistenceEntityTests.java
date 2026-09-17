@@ -31,7 +31,6 @@ import ee.jakarta.tck.data.framework.junit.anno.Standalone;
 import ee.jakarta.tck.data.standalone.persistence.Product;
 import ee.jakarta.tck.data.standalone.persistence._Product;
 import ee.jakarta.tck.data.standalone.persistence.Product.Department;
-import ee.jakarta.tck.data.standalone.persistence.stateless.Catalog;
 
 import jakarta.data.Order;
 import jakarta.inject.Inject;
@@ -50,7 +49,6 @@ public class StatefulPersistenceEntityTests {
         return ShrinkWrap
                 .create(WebArchive.class)
                 .addClasses(Inventory.class,
-                            Catalog.class,
                             Product.class,
                             _Product.class,
                             Products.class);
@@ -58,9 +56,6 @@ public class StatefulPersistenceEntityTests {
 
     @Inject
     Inventory inventory;
-
-    @Inject
-    Catalog catalog;
 
     @Inject
     Products products;
@@ -301,32 +296,6 @@ public class StatefulPersistenceEntityTests {
         tran.commit();
 
         inventory.remove(found);
-    }
-
-    @Assertion(id = "1312", strategy = """
-        Within an active transaction, modify a persisted entity without
-        explicitly flushing, then verify that a repository method annotated
-        @Delete and @QueryOptions(flush = QueryFlushMode.FLUSH) deletes the
-        entity based on the modified state.
-        """)
-    public void testDeleteWithQueryOptions() throws Exception {
-        inventory.erase();
-
-        Product product = Product.of("tennis racket",
-                82.99,
-                "TEST-PROD-1020",
-                Department.SPORTING_GOODS);
-
-        inventory.persist(product);
-
-        tran.begin();
-        product = inventory.merge(product);
-        product.setPrice(84.98);
-
-        assertEquals(1L,
-                catalog.deleteByPrice(84.98));
-
-        tran.commit();
     }
 
     @Assertion(id = "1312", strategy = """
