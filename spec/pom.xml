@@ -32,7 +32,7 @@
 
     <properties>
         <asciidoctor-maven.version>3.2.0</asciidoctor-maven.version>
-        <asciidoctorj-pdf.version>2.3.23</asciidoctorj-pdf.version>
+        <asciidoctorj-pdf.version>2.3.27</asciidoctorj-pdf.version>
         <asciidoctorj.diagram.version>3.2.1</asciidoctorj.diagram.version>
 
         <gen-doc-dir>${project.build.directory}/generated-docs</gen-doc-dir>
