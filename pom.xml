@@ -84,6 +84,7 @@
         <maven.pmd.plugin.version>3.28.0</maven.pmd.plugin.version>
         <maven.bundle.plugin.version>6.1.2</maven.bundle.plugin.version>
         <maven.jar.plugin.version>3.5.1</maven.jar.plugin.version>
+        <maven.resources.plugin.version>3.3.1</maven.resources.plugin.version>
 
         <lifecycle.mapping.version>1.0.0</lifecycle.mapping.version>
 
@@ -96,6 +97,7 @@
         <jakarta.data.version>${project.version}</jakarta.data.version>
         <jakarta.persistence.version>4.0.0-M6</jakarta.persistence.version>
         <jakarta.nosql.version>1.0.1</jakarta.nosql.version>
+        <jakarta.query.spec.url>https://jakarta.ee/specifications/query/1.0/jakarta-query-1.0-m2</jakarta.query.spec.url>
         <jakarta.servlet.version>6.1.0</jakarta.servlet.version>
         <jakarta.transaction.version>2.0.1</jakarta.transaction.version>
         <jakarta.validation.version>3.1.1</jakarta.validation.version>
