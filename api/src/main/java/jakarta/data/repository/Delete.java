@@ -27,22 +27,23 @@ import java.lang.annotation.Target;
 import jakarta.data.Limit;
 import jakarta.data.Order;
 import jakarta.data.Sort;
+import jakarta.data.constraint.Constraint;
 import jakarta.data.page.PageRequest;
 import jakarta.data.restrict.Restriction;
 
 /**
- * <p>Lifecycle annotation for repository methods which perform delete
- * operations; alternatively, annotates a repository
- * method as a parameter-based automatic query method which deletes
- * entities.</p>
+ * <p>Annotates a repository method that deletes the state of one or more
+ * entities from the database.
  *
- * <p>The {@code Delete} annotation indicates that the annotated repository
- * method deletes the state of one or more
- * entities from the database. It may be used in one of two ways: as a lifecycle
- * annotation, to delete a given entity instance or instances, or as an
- * automatic query annotation, to delete all entities satisfying parameter-based
- * conditions.
- * </p>
+ * <p>The {@code Delete} annotation may be used in one of two ways: as a
+ * <a href="#LifecycleDelete">lifecycle annotation</a>,
+ * to delete a given entity instance or instances, or as an
+ * <a href="#ConstraintQueryDelete">automatic query annotation</a>,
+ * to delete all entities satisfying parameter-based conditions.
+ *
+ * <a id="LifecycleDelete">
+ * <h2>Lifecycle method {@code Delete}</h2>
+ * </a>
  *
  * <p>A {@code Delete} method might accept an instance or instances of an entity
  * class. In this case, the method must
@@ -50,11 +51,13 @@ import jakarta.data.restrict.Restriction;
  * </p>
  * <ul>
  *     <li>the class of the entity to be deleted, or</li>
- *     <li>{@code List<E>} or {@code E[]} where {@code E} is the class of the entities to be deleted.</li>
+ *     <li>{@code List<E>} or {@code E[]} where {@code E} is the class of the
+ *         entities to be deleted.</li>
  * </ul>
  * <p>The annotated method must be declared {@code void}.
  * </p>
- * <p>All Jakarta Data providers are required to accept a {@code Delete} method which conforms to this signature.
+ * <p>All Jakarta Data providers are required to accept a {@code Delete} method
+ * which conforms to this signature.
  * </p>
  * <p>For example, consider an interface representing a garage:</p>
  * <pre>{@code
@@ -64,45 +67,83 @@ import jakarta.data.restrict.Restriction;
  *     void unpark(Car car);
  * }
  * }</pre>
- * <p>Deletes are performed by matching the unique identifier of the entity. If the entity is versioned, for example,
- * with {@code jakarta.persistence.Version}, the version is also checked for consistency. Attributes other than the
- * identifier and version do not need to match. If no entity with a matching identifier is found in the database, or
- * if the entity with a matching identifier does not have a matching version, the annotated method must raise
+ * <p>Deletes are performed by matching the unique identifier of the entity.
+ * If the entity is versioned, for example, with
+ * {@link jakarta.persistence.Version}, the version is also checked for
+ * consistency. Attributes other than the identifier and version do not need
+ * to match. If no entity with a matching identifier is found in the database,
+ * or if the entity with a matching identifier does not have a matching
+ * version, the annotated method must raise
  * {@link jakarta.data.exceptions.OptimisticLockingFailureException}.
  * </p>
  * <p>
- * An event of type {@link jakarta.data.event.PreDeleteEvent} must be raised by the annotated lifecycle
- * method before each record is deleted. An event of type {@link jakarta.data.event.PostDeleteEvent}
- * must be raised by the annotated lifecycle method after each record is successfully deleted.
+ * An event of type {@link jakarta.data.event.PreDeleteEvent} must be raised
+ * by the annotated lifecycle method before each record is deleted. An event
+ * of type {@link jakarta.data.event.PostDeleteEvent} must be raised by the
+ * annotated lifecycle method after each record is successfully deleted.
  * </p>
  *
- * <p>Alternatively, the {@code Delete} annotation may be used to annotate a repository method with no parameter of an
- * entity type. Then the repository method is interpreted as a parameter-based automatic query method. The entity type
- * to be deleted is the primary entity type of the repository. The method return type must be {@code void}, {@code int},
- * or {@code long}. Every parameter of the annotated method must have exactly the same type and name (the parameter name
- * in the Java source, or a name assigned by {@link By @By}) as an attribute of
- * the entity class. A single parameter of type {@link Restriction} is allowed
- * after the other parameters. Parameters of type {@link Limit}, {@link Order},
+ * <p>Alternatively, the {@code Delete} annotation may annotate a repository
+ * method that has no entity-typed parameter. The repository method is
+ * interpreted as a parameter-based automatic query method.</p>
+ *
+ * <a id="ConstraintQueryDelete">
+ * <h2>Parameter-based constraint {@code Delete}</h2>
+ * </a>
+ *
+ * <p>
+ * An automatic query method annotated {@code Delete} removes every record
+ * which satisfies the parameter-based conditions from the database. The type
+ * of entity to delete is the primary entity type of the repository.
+ *
+ * <p>
+ * The method return type must be one of:
+ * <ul>
+ * <li>{@code void}</li>
+ * <li>{@code int} or {@code long}, where the value is the number of matching
+ *     entities. The value might not be precise on databases that provide
+ *     eventual consistency, in which case some Jakarta Data providers might
+ *     choose to raise {@link UnsupportedOperationException} instead of
+ *     returning an imprecise value.
+ *     </li>
+ * <li>{@code boolean}, where the value is {@code true} if there is at least
+ *     one matching entity and {@code false} otherwise.</li>
+ * </ul>
+ *
+ * <p>
+ * The last parameter of the annotated method can optionally be a
+ * {@link Restriction}. Every other parameter of the annotated method must
+ * correspond to an attribute of the entity class, such that
+ * <ul>
+ * <li>the method parameter's name (the parameter name in the Java source,
+ *     or a name assigned by {@link By @By}) matches an entity attribute name,
+ *     and </li>
+ * <li>the method parameter's type has exactly the same type as the entity
+ *     attribute, or the method parameter's type is a {@link Constraint}
+ *     subtype that matches the entity attribute type.</li>
+ * </ul>
+ * Parameters of type {@link Limit}, {@link Order},
  * {@link PageRequest}, and {@link Sort} are prohibited.
- * </p>
+ *
  * <p>For example, consider an interface representing a garage:</p>
  * <pre>{@code
  * @Repository
  * interface Garage
  *         extends DataRepository<Car, String> {
  *     @Delete
- *     void unparkAll();
+ *     void scrapAll();
  *
  *     @Delete
- *     void unpark(String registration);
+ *     int scrap(Restriction filter);
+ *
+ *     @Delete
+ *     boolean scrap(String vehicleIdNum);
  * }
  * }</pre>
- * <p>Here,{@code unparkAll()} deletes every {@code Car}, while {@code unpark(String)} deletes any {@code Car} with a
- * matching value of its {@code registration} attribute.
- * </p>
- * <p>An automatic query method annotated {@code Delete} removes every record which satisfies the parameter-based
- * conditions from the database. If the method return type is {@code int} or {@code long}, the method must return the
- * number of deleted records.
+ * <p>Here, {@code scrapAll()} deletes every {@code Car}, while
+ * {@code scrap(Restriction)} deletes any {@code Car} matching the given
+ * {@code filter}, and {@code scrap(String)} deletes any {@code Car} with a
+ * matching value of its {@code vehicleIdNum} attribute.
  * </p>
  *
  * <p>If the Jakarta Data provider is backed by a Jakarta Persistence provider,
@@ -110,8 +151,9 @@ import jakarta.data.restrict.Restriction;
  * {@link jakarta.persistence.query.QueryOptions} to supply additional
  * query options that are specific to Jakarta Persistence.</p>
  *
- * <p>Annotations such as {@code @Find}, {@code @Query}, {@code @Insert}, {@code @Update}, {@code @Delete}, and
- * {@code @Save} are mutually-exclusive. A given method of a repository interface may have at most one {@code @Find}
+ * <p>Annotations such as {@code @Find}, {@code @Query}, {@code @Insert},
+ * {@code @Update}, {@code @Delete}, and {@code @Save} are mutually-exclusive.
+ * A given method of a repository interface may have at most one {@code @Find}
  * annotation, lifecycle annotation, or query annotation.
  * </p>
  *
