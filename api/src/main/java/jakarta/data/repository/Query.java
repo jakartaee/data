@@ -20,6 +20,8 @@ package jakarta.data.repository;
 import jakarta.data.Limit;
 import jakarta.data.Order;
 import jakarta.data.Sort;
+import jakarta.data.page.CursoredPage;
+import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
 import jakarta.data.restrict.Restriction;
 
@@ -27,13 +29,22 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 /**
- * <p>Annotates a repository method as a query method, specifying a query
- * written in Jakarta Common Query Language (JCQL) or in Jakarta Persistence
- * Query Language (JPQL). JCQL and JPQL are defined by the Jakarta Query
- * specification. A Jakarta Data provider is not required to support
- * the complete JPQL language, which targets relational data stores. However,
+ * Annotates a repository method that performs a query written in a
+ * Jakarta Query language.
+ *
+ * <p>The <a href="${jakarta.query.spec.url}">
+ * Jakarta Query Specification</a> defines the
+ * <a href="${jakarta.query.spec.url}#_common_language_grammar">
+ * Jakarta Common Query Language</a> (JCQL) and
+ * <a href="${jakarta.query.spec.url}#_persistence_language_grammar">
+ * Jakarta Persistence Query Language</a> (JPQL).
+ * A Jakarta Data provider is not required to support the complete
+ * JPQL language, which targets relational data stores. However,
  * a given provider might offer features of JPQL which go beyond the subset
  * required by JCQL, or might even offer vendor-specific extensions to JCQL
  * which target particular capabilities of the target data store technology.
@@ -43,25 +54,80 @@ import java.lang.annotation.Target;
  * <p>The required {@link #value} member specifies the JCQL or JPQL query as
  * a string.</p>
  *
- * <p>For {@code select} statements, the return type of the query method must
- * be
- * consistent with the type returned by the query. An explicit {@code SELECT}
- * clause can be omitted when the query returns the entity or a Java record
- * for which the record component names all map to entity attribute names,
+ * <h2>Overview of JCQL</h2>
+ *
+ * <p>Compared to SQL, JCQL allows an abbreviated syntax for {@code SELECT}
+ * statements:</p>
+ * <ul>
+ * <li>The {@code FROM} clause is optional in JCQL. When it is missing, the
+ *     queried entity is determined by the return type of the repository
+ *     method, or, if the return type is not an entity type, by the primary
+ *     entity type of the repository.</li>
+ * <li>The {@code SELECT} clause is optional when the method return type
+ *     identifies the entity or record that maps to the primary entity type
+ *     of the repository.</li>
+ * </ul>
+ *
+ * <p>A query might involve:</p>
+ * <ul>
+ * <li>named parameters of form {@code :name} where the labels {@code name}
+ *     are legal Java identifiers, or </li>
+ * <li>ordinal parameters of form {@code ?n} where the labels {@code n} are
+ *     sequential positive integers starting from {@code 1}.</li>
+ * </ul>
+ *
+ * <p>Refer to the <a href="${jakarta.query.spec.url}">Jakarta Query specification</a>
+ * for more information on JCQL and JPQL.</p>
+ *
+ * <h2>Return types</h2>
+ *
+ * <h3>Return type for {@code SELECT}</h3>
+ *
+ * <p>For {@code SELECT} statements, the return type of the query method must
+ * be consistent with the type returned by the query. A method annotated
+ * {@code @Query} must return one of the following types:
+ * <ul>
+ *     <li>the query result type {@code R}, when the query returns a single
+ *         result,</li>
+ *     <li>{@link Optional Optional<R>}, when the query returns at most a
+ *          single result,</li>
+ *     <li>an array type {@code R[]},</li>
+ *     <li>{@link List List<R>},</li>
+ *     <li>{@link Stream Stream<R>}, or</li>
+ *     <li>{@link Page Page<R>} or {@link CursoredPage CursoredPage<R>}.</li>
+ * </ul>
+ * <p>The method returns an object for every query result.</p>
+ * <p>To limit the number of results, use the {@link First} annotation or
+ *    declare the method to return {@code Page} or {@code CursoredPage}.
+ * <ul>
+ *     <li>If the return type of the annotated method is {@code R} or
+ *         {@code Optional<R>} and more than one record satisfies the
+ *         query restriction, the method must throw
+ *         {@link jakarta.data.exceptions.NonUniqueResultException}.</li>
+ *     <li>If the return type of the annotated method is {@code R} and
+ *         no record satisfies the query restriction, the method must throw
+ *         {@link jakarta.data.exceptions.EmptyResultException}.</li>
+ * </ul>
+ *
+ * <p>An explicit {@code SELECT} clause can be omitted when the query returns
+ * the entity or a Java record for which the record component names all
+ * map to names of attributes of the primary entity for the repository,
  * either by having the same name as the entity attribute or via the record
  * component being annotated with the {@link Select} annotation. For queries
- * with an explicit {@code select} clause:</p>
+ * with an explicit {@code SELECT} clause:</p>
  * <ul>
- * <li>if the {@code select} list contains more than one item, the query
+ * <li>if the {@code SELECT} list contains more than one item, the query
  *     return type must be a Java record type, and the elements of the tuple
  *     are repackaged as an instance of the query return type by calling a
  *     constructor of the record, passing the elements in the same order they
- *     occur in the {@code select} list, or,
- * <li>otherwise, when the {@code select} list contains only one path expression,
+ *     occur in the {@code SELECT} list, or,
+ * <li>otherwise, when the {@code SELECT} list contains only one path expression,
  *     the query directly returns the values of the path expression.
  * </ul>
  *
- * <p>For {@code update} or {@code delete} statements, the return value must
+ * <h3>Return type for {@code UPDATE} and {@code DELETE}</h3>
+ *
+ * <p>For {@code UPDATE} or {@code DELETE} statements, the return value must
  * be one of:</p>
  * <ul>
  * <li>{@code void}</li>
@@ -73,36 +139,24 @@ import java.lang.annotation.Target;
  *     </li>
  * </ul>
  *
- * <p>Compared to SQL, JCQL allows an abbreviated syntax for {@code select}
- * statements:</p>
- * <ul>
- * <li>The {@code from} clause is optional in JCQL. When it is missing, the
- *     queried entity is determined by the return type of the repository
- *     method, or, if the return type is not an entity type, by the primary
- *     entity type of the repository.</li>
- * <li>The {@code select} clause is optional in both JCQL and JPQL. When it
- *     is missing, the query returns the queried entity.</li>
- * </ul>
+ * <h2>Method parameters</h2>
  *
- * <p>A query might involve:</p>
- * <ul>
- * <li>named parameters of form {@code :name} where the labels {@code name}
- *     are legal Java identifiers, or </li>
- * <li>ordinal parameters of form {@code ?n} where the labels {@code n} are
- *     sequential positive integers starting from {@code 1}.</li>
- * </ul>
- * <p>A given query must not mix named and ordinal parameters.</p>
- *
- * <p>Each parameter of an annotated query method must either:</p>
+ * <p>Each parameter of an annotated {@code Query} method must either:</p>
  * <ul>
  * <li>have exactly the same name (the parameter name in the Java source, or
  *     a name assigned by {@link Param @Param}) and type as a named parameter
  *     of the query,</li>
  * <li>have exactly the same type and position within the parameter list of
  *     the method as a positional parameter of the query, or</li>
- * <li>be of type {@link Restriction}, {@link Sort}, {@link Order}, {@link Limit},
- *     or {@link PageRequest}.</li>
+ * <li>be of type {@link Restriction}, {@link Sort}, {@link Order},
+ *     {@link Limit}, or {@link PageRequest}.</li>
  * </ul>
+ *
+ * <p>A given query must not mix named and ordinal parameters. Within the
+ * method declaration, the named or ordinal parameters ust always be declared
+ * before parameters of other types.
+ *
+ * <h3>Named parameters</h3>
  *
  * <p>The {@link Param} annotation associates a method parameter with a named
  * parameter. The {@code Param} annotation is unnecessary when the method
@@ -110,11 +164,15 @@ import java.lang.annotation.Target;
  * compiled with the {@code -parameters} compiler option making parameter names
  * available at runtime.</p>
  *
+ * <h3>Ordinal parameters</h3>
+ *
  * <p>A method parameter is associated with an ordinal parameter by its position
  * in the method parameter list. The first parameter of the method is associated
  * with the ordinal parameter {@code ?1}.</p>
  *
- * <p>For example,</p>
+ * <h3>Parameter examples</h3>
+ *
+ * <p>Examples of named and ordinal parameters:</p>
  *
  * <pre>{@code
  * @Repository
@@ -144,33 +202,17 @@ import java.lang.annotation.Target;
  * }
  * }</pre>
  *
- * <p>A method annotated with {@code @Query} must return one of the following types:</p>
- * <ul>
- *     <li>the query result type {@code R}, when the query returns a single result,</li>
- *     <li>{@code Optional<R>}, when the query returns at most a single result,</li>
- *     <li>an array type {@code R[]},
- *     <li>{@code List<R>},</li>
- *     <li>{@code Stream<R>}, or</li>
- *     <li>{@code Page<R>} or {@code CursoredPage<R>}.</li>
- * </ul>
- * <p>The method returns an object for every query result.</p>
- * <p>The number of query results may be limited using the {@link First} annotation.</p>
- * <ul>
- * <li>If the return type of the annotated method is {@code R} or {@code Optional<R>}
- *     and more than one record satisfies the query restriction, the method must throw
- *     {@link jakarta.data.exceptions.NonUniqueResultException}.</li>
- * <li>If the return type of the annotated method is {@code R} and no record satisfies
- *     the query restriction, the method must throw
- *     {@link jakarta.data.exceptions.EmptyResultException}.</li>
- * </ul>
- *
- * <p>Annotations such as {@code @Find}, {@code @Query}, {@code @Insert}, {@code @Update}, {@code @Delete}, and
- * {@code @Save} are mutually-exclusive. A given method of a repository interface may have at most one {@code @Find}
+ * <p>Annotations such as {@code @Find}, {@code @Query}, {@code @Insert},
+ * {@code @Update}, {@code @Delete}, and {@code @Save} are mutually-exclusive.
+ * A given method of a repository interface may have at most one {@code @Find}
  * annotation, lifecycle annotation, or query annotation.
  *
  * @see Param
  * @see First
  * @see Select
+ * @see <a href="${jakarta.query.spec.url}">Jakarta Query Specification</a>
+ * @see <a href="${jakarta.query.spec.url}#_common_language_grammar">JCQL Grammar</a>
+ * @see <a href="${jakarta.query.spec.url}#_persistence_language_grammar">JPQL Grammar</a>
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
