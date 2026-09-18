@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2025,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -140,33 +140,63 @@ class LiteralToStringTest {
         TemporalLiteral<Instant> instantLiteral =
                 TemporalLiteral.of(Instant.ofEpochMilli(1746825482575L));
 
-        TemporalLiteral<LocalDate> dateLiteral =
-                TemporalLiteral.of(LocalDate.of(2025, 5, 8));
+        TemporalLiteral<LocalDate> dateLiteral1 =
+                TemporalLiteral.of(LocalDate.of(1, 2, 28));
+
+        TemporalLiteral<LocalDate> dateLiteral2 =
+                TemporalLiteral.of(LocalDate.of(-2, 4, 20));
+
+        TemporalLiteral<LocalDate> dateLiteral3 =
+                TemporalLiteral.of(LocalDate.of(787, 10, 23));
 
         TemporalLiteral<LocalDateTime> datetimeLiteral =
-                TemporalLiteral.of(LocalDateTime.of(2025, 5, 9, 16, 15, 42));
+                TemporalLiteral.of(LocalDateTime.of(12022, 9, 16, 8, 45, 0));
 
-        TemporalLiteral<LocalTime> timeLiteral =
+        TemporalLiteral<LocalTime> timeLiteral1 =
+                TemporalLiteral.of(LocalTime.of(7, 0));
+
+        TemporalLiteral<LocalTime> timeLiteral2 =
+                TemporalLiteral.of(LocalTime.of(9, 7));
+
+        TemporalLiteral<LocalTime> timeLiteral3 =
                 TemporalLiteral.of(LocalTime.of(18, 8, 30));
+
+        TemporalLiteral<LocalTime> timeLiteral4 =
+                TemporalLiteral.of(LocalTime.of(15, 44, 0, 321654000));
 
         TemporalLiteral<Year> yearLiteral =
                 TemporalLiteral.of(Year.of(2025));
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(instantLiteral.toString())
-                    .isEqualTo("{ts '2025-05-09 21:18:02.575'}");
+                    .isEqualTo("DATETIME 2025-05-09 21:18:02.575");
 
-            soft.assertThat(dateLiteral.toString())
-                    .isEqualTo("{d '2025-05-08'}");
+            soft.assertThat(dateLiteral1.toString())
+                    .isEqualTo("DATE 0001-02-28");
+
+            soft.assertThat(dateLiteral2.toString())
+                    .isEqualTo("DATE -0002-04-20");
+
+            soft.assertThat(dateLiteral3.toString())
+                    .isEqualTo("DATE 0787-10-23");
 
             soft.assertThat(datetimeLiteral.toString())
-                    .isEqualTo("{ts '2025-05-09 16:15:42'}");
+                    .isEqualTo("DATETIME 12022-09-16 08:45");
 
-            soft.assertThat(timeLiteral.toString())
-                    .isEqualTo("{t '18:08:30'}");
+            soft.assertThat(timeLiteral1.toString())
+                    .isEqualTo("TIME 07:00");
+
+            soft.assertThat(timeLiteral2.toString())
+                    .isEqualTo("TIME 09:07");
+
+            soft.assertThat(timeLiteral3.toString())
+                    .isEqualTo("TIME 18:08:30");
+
+            soft.assertThat(timeLiteral4.toString())
+                    .isEqualTo("TIME 15:44:00.321654");
 
             soft.assertThat(yearLiteral.toString())
-                    .isEqualTo("{d '2025'}");
+                    .isEqualTo("YEAR 2025");
         });
     }
 }

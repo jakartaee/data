@@ -34,7 +34,22 @@ record TemporalLiteralRecord<V extends Temporal & Comparable<? extends Temporal>
 
     TemporalLiteralRecord {
         Messages.requireNonNull(type, "type");
-        Messages.requireNonNull(type, "value");
+        Messages.requireNonNull(value, "value");
+    }
+
+    /**
+     * Formats the given date as a String, copying from LocalDate.toString,
+     * but without the leading + character that is included for dates beyond
+     * 9999.
+     *
+     * @param date a date to convert to a String
+     * @return textual representation of the date
+     */
+    @Nonnull
+    private static String toDateString(@Nonnull LocalDate date) {
+        return date.getYear() >= 10000
+                ? date.toString().substring(1) // omit leading +
+                : date.toString();
     }
 
     @Override
@@ -45,18 +60,17 @@ record TemporalLiteralRecord<V extends Temporal & Comparable<? extends Temporal>
                         ? instant.atOffset(ZoneOffset.UTC).toLocalDateTime()
                         : value;
 
-        if (temporal instanceof Year y) {
-            return "{d '" + y.getValue() + "'}";
-        } else if (temporal instanceof LocalDate) {
-            return "{d '" + value + "'}";
-        } else if (temporal instanceof LocalDateTime d) {
-            return "{ts '" + d.toLocalDate() + ' ' + d.toLocalTime() + "'}";
+        if (temporal instanceof LocalDateTime d) {
+            return "DATETIME " + toDateString(d.toLocalDate()) +
+                    ' ' + d.toLocalTime().toString();
+        } else if (temporal instanceof LocalDate d) {
+            return "DATE " + toDateString(d);
         } else if (temporal instanceof LocalTime) {
-            return "{t '" + value + "'}";
+            return "TIME " + temporal.toString();
+        } else if (temporal instanceof Year y) {
+            return "YEAR " + y.getValue();
         } else {
-            return "{TemporalLiteral '" +
-                   value.getClass().getName() + " '" +
-                   value + "'}";
+            return "TEMPORAL " + temporal.getClass().getName() + " " + temporal;
         }
     }
 
