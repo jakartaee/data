@@ -50,9 +50,10 @@ import jakarta.data.repository.stateful.Remove;
  * type of its Id attribute. Otherwise, if all lifecycle methods specify the
  * same entity class, then the primary entity class is that class.</p>
  *
- * <p>A stateful repository must not define or inherit any method annotated
- * {@link Delete @Delete}, {@link Insert @Insert}, {@link Save @Save}, or
- * {@link Update @Update}, which are to be used only on stateless repositories.
+ * <p>A stateful repository must not define or inherit any lifecycle method
+ * annotated {@link Delete @Delete}, {@link Insert @Insert},
+ * {@link Save @Save}, or {@link Update @Update}, which are to be used only
+ * on stateless repositories.
  * </p>
  *
  * <h2>Transactions</h2>
