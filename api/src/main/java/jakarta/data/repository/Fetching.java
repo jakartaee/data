@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022,2026 Contributors to the Eclipse Foundation
+ * Copyright (c) 2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,7 +47,7 @@ public @interface Fetching {
     String value();
 
     /**
-     * Enables multiple {@code Fetch} annotations on the method.
+     * Enables multiple {@code Fetching} annotations on the method.
      */
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.METHOD)
