@@ -353,7 +353,7 @@ import java.util.Set;
  *
  * <tr style="vertical-align: top"><td>{@link Update}</td>
  * <td>updates an existing entity</td>
- * <td>{@code @Update}<br>{@code public boolean modify(Product modifiedProduct);}</td></tr>
+ * <td>{@code @Update}<br>{@code public Product modify(Product modifiedProduct);}</td></tr>
  * </table>
  *
  * <p>Refer to the API documentation for {@link Insert}, {@link Update},
