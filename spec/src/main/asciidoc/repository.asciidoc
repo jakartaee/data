@@ -305,7 +305,7 @@ reject such a method declaration at compile time.
 [[special-parameters]]
 === Special parameters for additional filtering, limits, sorting, and pagination
 
-An <<Annotated query methods,annotated>>, <<Parameter-based automatic query methods,parameter-based>>, or Query by Method Name query method may have _special parameters_ of type `Sort`, `Order`, `Limit`, or `PageRequest` if the method return type indicates that the method may return multiple entities, that is, if the return type is:
+An <<Annotated query methods,annotated>>, <<Parameter-based automatic query methods,parameter-based>>, or Query by Method Name query method may have _special parameters_ of type `Sort`, `Order`, or `Limit` if the method return type indicates that the method may return multiple entities, that is, if the return type is:
 
 - an array type,
 - `List` or `Stream`, or

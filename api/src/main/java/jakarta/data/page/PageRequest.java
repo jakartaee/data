@@ -33,9 +33,8 @@ import java.util.Optional;
  * <p>A request for a single well-specified page of query results.</p>
  *
  * <p>A query method of a repository may have a parameter of type
- * {@code PageRequest} if its return type indicates that it may return multiple
- * entities, that is, if its return type is an array type, {@link List},
- * {@code Stream}, {@link Page}, or {@link CursoredPage}. The parameter of type
+ * {@code PageRequest} if the method returns {@link Page}
+ * or {@link CursoredPage}. The parameter of type
  * {@code PageRequest} must occur after the method parameters representing
  * regular parameters of the query itself. For example:</p>
  *
