@@ -103,7 +103,9 @@ import java.util.stream.Stream;
  *     <li>If the return type of the annotated method is {@code R} or
  *         {@code Optional<R>} and more than one record satisfies the
  *         query restriction, the method must throw
- *         {@link jakarta.data.exceptions.NonUniqueResultException}.</li>
+ *         {@link jakarta.data.exceptions.NonUniqueResultException} unless a
+ *         {@link First} annotation or {@link Limit} parameter limits the
+ *         number of results to {@code 1}.</li>
  *     <li>If the return type of the annotated method is {@code R} and
  *         no record satisfies the query restriction, the method must throw
  *         {@link jakarta.data.exceptions.EmptyResultException}.</li>

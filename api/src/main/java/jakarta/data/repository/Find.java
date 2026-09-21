@@ -133,7 +133,9 @@ import java.lang.annotation.Target;
  * <li>If the return type of the annotated method is {@code E} (the entity type,
  *     entity attribute type, or record type) or {@code Optional<E>}, and more
  *     than one database record satisfies the query conditions, the method must
- *     throw {@link jakarta.data.exceptions.NonUniqueResultException}.</li>
+ *     throw {@link jakarta.data.exceptions.NonUniqueResultException} unless a
+ *     {@link First} annotation or {@link Limit} parameter limits the number of
+ *     results to {@code 1}.</li>
  * <li>If the return type of the annotated method is {@code E} (the entity type,
  *     entity attribute type, or record type), and no database record satisfies
  *     the query conditions, the method must throw
