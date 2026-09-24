@@ -347,6 +347,7 @@ public class StatefulPersistenceEntityTests {
 
         tran.begin();
         product = inventory.merge(product);
+        product = inventory.merge(product);
         product.setPrice(84.98);
 
         assertEquals(84.98,
