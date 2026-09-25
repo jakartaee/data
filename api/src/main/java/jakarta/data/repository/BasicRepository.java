@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022,2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -61,7 +61,8 @@ import jakarta.annotation.Nonnull;
  * @Repository
  * public interface Employees extends BasicRepository<Employee, Integer> {
  *
- *     boolean deleteByBadgeNumber(int badgeNum);
+ *     @Delete
+ *     boolean terminate(@By("badgeNumber") int badge);
  *
  *     ...
  * }
@@ -78,7 +79,7 @@ import jakarta.annotation.Nonnull;
  * Employee emp = ...
  * emp = employees.save(emp);
  *
- * boolean deleted = employees.deleteByBadgeNumber(emp.badgeNum);
+ * boolean terminated = employees.terminate(emp.badgeNum);
  *
  * PageRequest pageRequest = PageRequest.ofSize(25);
  * Order<Employee> sorts = Order.by(Sort.asc("name"));
