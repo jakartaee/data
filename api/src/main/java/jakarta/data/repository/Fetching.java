@@ -41,8 +41,8 @@ import java.lang.annotation.*;
 public @interface Fetching {
     /**
      * An attribute of the entity returned by the parameter-based
-     * automatic query method which will be accessed by the
-     * application program.
+     * automatic query method. This attribute will be accessed by
+     * the application program.
      */
     String value();
 
