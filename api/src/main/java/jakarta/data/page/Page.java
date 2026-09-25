@@ -49,10 +49,7 @@ public interface Page<T> extends Iterable<T> {
 
     /**
      * Returns the page content as a {@link List}. The list is sorted according
-     * to the combined sort criteria of the repository method and the sort
-     * criteria of the page request that is supplied to the repository method,
-     * sorting first by the sort criteria of the repository method, and then by
-     * the sort criteria of the page request.
+     * to the combined sort criteria of the repository method.
      *
      * @return the page content as a {@link List}; will never be {@code null}.
      */
