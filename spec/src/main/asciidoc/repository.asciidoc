@@ -265,7 +265,7 @@ A _resource accessor method_ is a method with no parameters which returns a type
 The purpose of this method is to provide the program with direct access to the data store.
 
 For example, if the Jakarta Data provider is based on JDBC, the return type might be `java.sql.Connection` or `javax.sql.DataSource`.
-Or, if the Jakarta Data provider is backed by Jakarta Persistence, the return type might be `jakarta.persistence.EntityManager`.
+Or, if the Jakarta Data provider is backed by Jakarta Persistence, the return type might be `jakarta.persistence.EntityAgent` (for a stateless repository) or `jakarta.persistence.EntityManager`.
 
 The Jakarta Data provider recognizes the connection types it supports and implements the method such that it returns an instance of the type of resource. If the resource type implements `java.lang.AutoCloseable` and the resource is obtained within the scope of a default method of the repository, then the Jakarta Data provider automatically closes the resource upon completion of the default method. If the method for obtaining the resource is invoked outside the scope of a default method of the repository, then the user is responsible for closing the resource instance.
 
@@ -286,6 +286,8 @@ default void cleanup() {
 ----
 
 A repository may have at most one resource accessor method.
+
+A resource accessor method with return type `jakarta.persistence.EntityAgent` can only be declared by a stateless repository.
 
 A resource accessor method with return type `jakarta.persistence.EntityManager` should only be declared by a <<Stateful repositories,stateful repository>>.
 
