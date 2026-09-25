@@ -1194,6 +1194,10 @@ import java.util.Set;
  * <p>A resource accessor method that returns {@code EntityAgent} can only
  * be declared on a <a href="#StatelessRepository">stateless repository</a>.
  *
+ * <p>A resource accessor method that returns {@code EntityManager} should
+ * only be declared on a <a href="../jakarta.data.stateful/">stateful
+ * repository</a>.
+ *
  * <p>For example, the following repository inherits stateless lifecycle
  * methods &mdash; {@link BasicRepository#delete(Object) delete(T)},
  * {@link BasicRepository#deleteAll(List) delete(List<T>)},
