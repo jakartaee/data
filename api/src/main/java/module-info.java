@@ -48,6 +48,7 @@ import jakarta.data.restrict.Restriction;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -332,7 +333,9 @@ import java.util.Set;
  * considered to be a stateless repository.</p>
  *
  * <table style="width: 100%">
+ * <a id="StatelessRepository">
  * <caption><b>Stateless Lifecycle Annotations</b></caption>
+ * </a>
  * <tr style="background-color:#ccc">
  * <td style="vertical-align: top; width: 10%"><b>Annotation</b></td>
  * <td style="vertical-align: top; width: 25%"><b>Description</b></td>
@@ -1179,7 +1182,8 @@ import java.util.Set;
  * <p>In advanced scenarios, the application program might make direct use of
  * some underlying resource acquired by the Jakarta Data provider, such as a
  * {@link javax.sql.DataSource}, {@link java.sql.Connection}, or even an
- * {@code jakarta.persistence.EntityManager}.</p>
+ * {@link jakarta.persistence.EntityAgent} or
+ * {@link jakarta.persistence.EntityManager}.</p>
  *
  * <p>To expose access to an instance of such a resource, the repository
  * interface may declare an accessor method, a method with no parameters
@@ -1187,18 +1191,28 @@ import java.util.Set;
  * types listed above. When this method is called, the Jakarta Data provider
  * supplies an instance of the requested type of resource.</p>
  *
- * <p>For example,</p>
+ * <p>A resource accessor method that returns {@code EntityAgent} can only
+ * be declared on a <a href="#StatelessRepository">stateless repository</a>.
+ *
+ * <p>For example, the following repository inherits stateless lifecycle
+ * methods &mdash; {@link BasicRepository#delete(Object) delete(T)},
+ * {@link BasicRepository#deleteAll(List) delete(List<T>)},
+ * {@link BasicRepository#save(Object) save(T)}, and
+ * {@link BasicRepository#saveAll(List) saveAll(List<T>)} &mdash; from
+ * {@link BasicRepository} and is targeted to a Jakarta Data provider
+ * that uses Jakarta Persistence, so the repository can declare a resource
+ * accessor method that returns {@code EntityAgent}:
  *
  * <pre>{@code
- * @Repository
+ * @Repository(dataStore = "MyPersistenceUnit")
  * public interface Cars extends BasicRepository<Car, Long> {
  *     ...
  *
- *     EntityManager getEntityManager();
+ *     EntityAgent getEntityAgent();
  *
  *     default Car[] advancedSearch(SearchOptions filter) {
- *         EntityManager em = getEntityManager();
- *         // use entity manager
+ *         EntityAgent agent = getEntityAgent();
+ *         // use entity agent
  *         return results;
  *     }
  * }
