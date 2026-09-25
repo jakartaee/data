@@ -34,8 +34,8 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 /**
- * Annotates a repository method that performs a query written in a
- * Jakarta Query language.
+ * Annotates a repository method as a query method, specifying a query
+ * written in a Jakarta Query language.
  *
  * <p>The <a href="${jakarta.query.spec.url}">
  * Jakarta Query Specification</a> defines the
