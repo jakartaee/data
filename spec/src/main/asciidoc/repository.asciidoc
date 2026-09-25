@@ -305,7 +305,7 @@ reject such a method declaration at compile time.
 [[special-parameters]]
 === Special parameters for additional filtering, limits, sorting, and pagination
 
-An <<Annotated query methods,annotated>>, <<Parameter-based automatic query methods,parameter-based>>, or Query by Method Name query method may have _special parameters_ of type `Sort`, `Order`, or `Limit` if the method return type indicates that the method may return multiple entities, that is, if the return type is:
+An <<Annotated query methods,annotated>>, <<Parameter-based automatic query methods,parameter-based>>, or Query by Method Name query method may have _special parameters_ of type `Sort`, `Order`, `Limit`, or `PageRequest` if the method return type indicates that the method may return multiple entities, that is, if the return type is:
 
 - an array type,
 - `List` or `Stream`, or
@@ -525,8 +525,9 @@ Offset pagination offers several key features that make it a valuable approach f
 
 The following requirements must be met when using offset-based pagination:
 
-* The repository method signature must return `Page`. A repository method with return type of `Page` must raise `UnsupportedOperationException` if the database is incapable of offset pagination.
 * The repository method signature must accept a `PageRequest` parameter.
+* The repository method signature must return `Page` (or alternatively, an array type, `List`, or `Stream`).
+* A repository method with a signature that matches the above criteria must raise `UnsupportedOperationException` if the database is incapable of offset pagination.
 * Sort criteria must be provided and should be minimal.
 * The combination of provided sort criteria must define a deterministic ordering of entities.
 * The entities within each page must be ordered according to the provided sort criteria.
