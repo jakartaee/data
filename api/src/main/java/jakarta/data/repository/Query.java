@@ -71,6 +71,8 @@ import java.lang.annotation.Target;
  *     choose to raise {@link UnsupportedOperationException} instead of
  *     returning an imprecise value.
  *     </li>
+ * <li>{@code boolean}, where the value is {@code true} if there is at least
+ *     one matching entity and {@code false} otherwise.</li>
  * </ul>
  *
  * <p>Compared to SQL, JCQL allows an abbreviated syntax for {@code select}
