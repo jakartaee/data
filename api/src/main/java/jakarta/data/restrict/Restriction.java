@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024,2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2024,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -92,8 +92,8 @@ public interface Restriction<T> {
      * <p>Returns the negation of this restriction.</p>
      *
      * <p>For example, a basic restriction that represents an
-     * {@linkplain GreaterThan exclusive upper bound} on a value is negated
-     * as an {@linkplain AtMost inclusive lower bound} on the value.
+     * {@linkplain GreaterThan exclusive lower bound} on a value is negated
+     * as an {@linkplain AtMost inclusive upper bound} on the value.
      * </p>
      *
      * <p>A basic restriction that represents {@linkplain Like matching} a
