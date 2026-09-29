@@ -244,6 +244,12 @@ You don't need to build from source to use the project, but you can do so with M
 ----
 mvn package
 ----
+
+== How to publish a new release
+
+Open a new issue using the link:https://github.com/jakartaee/data/issues/new?template=release.yml[release issue template]
+which has a checklist of pipelines and updates that need to happen in order to publish a new release.
+
 == Meetings
 
 === Calendar
