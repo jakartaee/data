@@ -666,11 +666,11 @@ import java.util.Set;
  *
  * <tr style="vertical-align: "><td>{@code IgnoreCase}</td>
  * <td>strings</td>
- * <td>Requires case insensitive comparison. For query conditions
- * as well as ordering, the {@code IgnoreCase} keyword can be
- * specified immediately following the entity attribute name.</td>
+ * <td>Requires case insensitive comparison. For query conditions,
+ * the {@code IgnoreCase} keyword can be specified immediately
+ * following the entity attribute name.</td>
  * <td>{@code countByStatusIgnoreCaseNotLike("%Delivered%")}
- * <br>{@code findByZipcodeOrderByStreetIgnoreCaseAscHouseNumAsc(55904)}</td>
+ * <br>{@code findByZipcodeAndStreetIgnoreCase(55904, "4th St SE")}</td>
  * <td style="font-family:sans-serif; font-size:0.8em">Key-value<br>Wide-Column<br>Document<br>Graph</td></tr>
  *
  * <tr style="vertical-align: top; background-color:#eee"><td>{@code In}</td>

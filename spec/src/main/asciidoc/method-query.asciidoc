@@ -261,7 +261,7 @@ An implementation of Query by Method Name must support the following keywords.
 |`findFirst10By`
 
 |`OrderBy`
-|Specify a static sorting order followed by one or more ordered pairings of an entity attribute name and direction (`Asc` or `Desc`). The direction `Asc` can be omitted from the final attribute listed, in which case ascending order is implied for that attribute.
+|Specify a static sorting order followed by one or more ordered pairings of an entity attribute name and direction (`Asc` or `Desc`). The direction `Asc` can be omitted if only one attribute is listed, in which case ascending order is implied for that attribute.
 |`findByAgeOrderByHeightDescIdAsc` `findByAgeOrderById`
 
 |`Desc`
@@ -320,7 +320,7 @@ In addition to equality conditions, Query by Method Name defines the following k
 |`findByTitleLike`
 
 |`IgnoreCase` | `String` |
-|Requests that string values be compared independent of case for query conditions and ordering.
+|Requests that string values be compared independent of case for the respective query condition.
 |`findByStreetNameIgnoreCaseLike`
 
 |`In` | Any type | 1 `Set`
