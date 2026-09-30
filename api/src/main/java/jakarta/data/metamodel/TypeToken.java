@@ -29,7 +29,7 @@ import jakarta.data.messages.Messages;
  * collections. For example,
  *
  * <pre>{@code
- * TemporalAttribute<Car, List<String>> repairs = BasicAttribute.of(
+ * BasicAttribute<Car, List<String>> repairs = BasicAttribute.of(
  *         Car.class, REPAIRS, new TypeToken<List<String>>(){});
  * }</pre>
  *
