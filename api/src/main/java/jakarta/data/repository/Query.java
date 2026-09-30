@@ -139,6 +139,8 @@ import java.util.stream.Stream;
  *     choose to raise {@link UnsupportedOperationException} instead of
  *     returning an imprecise value.
  *     </li>
+ * <li>{@code boolean}, where the value is {@code true} if there is at least
+ *     one matching entity and {@code false} otherwise.</li>
  * </ul>
  *
  * <h2>Method parameters</h2>
