@@ -19,18 +19,21 @@ package jakarta.data.mock.entity;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.List;
 
 import jakarta.data.metamodel.BasicAttribute;
 import jakarta.data.metamodel.BooleanAttribute;
 import jakarta.data.metamodel.NumericAttribute;
 import jakarta.data.metamodel.TemporalAttribute;
 import jakarta.data.metamodel.TextAttribute;
+import jakarta.data.metamodel.TypeToken;
 
 /**
  * A mock static metamodel class for tests
  */
 public interface _Book {
     String AUTHOR = "author";
+    String CHAPTERTITLES = "chapterTitles";
     String COPYRIGHTDATE = "copyrightDate";
     String FICTION = "fiction";
     String ID = "id";
@@ -41,6 +44,8 @@ public interface _Book {
 
     BasicAttribute<Book, String> author = BasicAttribute.of(
             Book.class, AUTHOR, String.class);
+    BasicAttribute<Book, List<String>> chapterTitles = BasicAttribute.of(
+            Book.class, CHAPTERTITLES, new TypeToken<List<String>>() {});
     TemporalAttribute<Book, Instant> copyrightDate = TemporalAttribute.of(
             Book.class, COPYRIGHTDATE, Instant.class);
     BooleanAttribute<Book> fiction = BooleanAttribute.of(
