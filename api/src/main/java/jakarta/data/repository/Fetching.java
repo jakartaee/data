@@ -17,6 +17,8 @@
  */
 package jakarta.data.repository;
 
+import jakarta.persistence.query.QueryOptions;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;
@@ -35,6 +37,12 @@ import java.lang.annotation.Target;
  * @Fetching(_Book.PUBLISHER)
  * Book bookWithAuthorsAndPublisher(String isbn);
  * }</pre>
+ *
+ * <p>A repository method that is annotated both {@code @Fetching} and
+ * {@link QueryOptions @QueryOptions} and specifies an entity graph via
+ * {@link QueryOptions#entityGraph()} or {@link QueryOptions#hints()}
+ * raises {@link UnsupportedOperationException} and can be rejected by
+ * the Jakarta Data provider at compile time.
  *
  * @see Find
  * @since 1.1
