@@ -38,11 +38,10 @@ import java.lang.annotation.Target;
  * Book bookWithAuthorsAndPublisher(String isbn);
  * }</pre>
  *
- * <p>A repository method that is annotated both {@code @Fetching} and
- * {@link QueryOptions @QueryOptions} and specifies conflicting entity graphs
- * via {@link QueryOptions#entityGraph()} or {@link QueryOptions#hints()}
- * raises {@link UnsupportedOperationException} and can be rejected by
- * the Jakarta Data provider at compile time.
+ * <p>If the repository method is annotated {@link QueryOptions @QueryOptions},
+ * the request for eager fetching consists of the union of entity attributes
+ * requested as eager by {@code Fetching} annotations, the
+ * {@link QueryOptions#entityGraph()}, and the entity definition.
  *
  * @see Find
  * @since 1.1
