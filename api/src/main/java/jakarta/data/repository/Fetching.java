@@ -39,8 +39,8 @@ import java.lang.annotation.Target;
  * }</pre>
  *
  * <p>A repository method that is annotated both {@code @Fetching} and
- * {@link QueryOptions @QueryOptions} and specifies an entity graph via
- * {@link QueryOptions#entityGraph()} or {@link QueryOptions#hints()}
+ * {@link QueryOptions @QueryOptions} and specifies conflicting entity graphs
+ * via {@link QueryOptions#entityGraph()} or {@link QueryOptions#hints()}
  * raises {@link UnsupportedOperationException} and can be rejected by
  * the Jakarta Data provider at compile time.
  *
