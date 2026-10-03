@@ -17,6 +17,8 @@
  */
 package jakarta.data.repository;
 
+import jakarta.persistence.query.QueryOptions;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;
@@ -35,6 +37,11 @@ import java.lang.annotation.Target;
  * @Fetching(_Book.PUBLISHER)
  * Book bookWithAuthorsAndPublisher(String isbn);
  * }</pre>
+ *
+ * <p>If the repository method is annotated {@link QueryOptions @QueryOptions},
+ * the request for eager fetching consists of the union of entity attributes
+ * requested as eager by {@code Fetching} annotations, the
+ * {@link QueryOptions#entityGraph()}, and the entity definition.
  *
  * @see Find
  * @since 1.1
