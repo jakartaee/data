@@ -70,7 +70,6 @@
 
     <properties>
         <maven.compiler.release>17</maven.compiler.release>
-        <maven.compiler.source>17</maven.compiler.source>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <build.helper.maven.plugin.version>3.6.2</build.helper.maven.plugin.version>
