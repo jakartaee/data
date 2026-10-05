@@ -86,11 +86,11 @@ public interface TextExpression<T> extends ComparableExpression<T, String> {
      * formed by prepending the specified prefix onto the beginning of the
      * value to which the current expression evaluates.</p>
      *
-     * <p>Example:</p>
-     * <pre>{@code
+     * <p>Example:
+     * {@snippet lang="java":
      *     found = cars.search(make,
      *                         _Car.model.prepend("Model ").equalTo(model));
-     * }</pre>
+     * }
      *
      * @return an expression for the function that computes the concatenated
      *         value.
@@ -107,11 +107,11 @@ public interface TextExpression<T> extends ComparableExpression<T, String> {
      * formed by appending the specified suffix onto the end of the value to
      * which the current expression evaluates.</p>
      *
-     * <p>Example:</p>
-     * <pre>{@code
+     * <p>Example:
+     * {@snippet lang="java":
      *     found = cars.search(make,
      *                         _Car.model.append(" Hybrid").equalTo(hybridModel));
-     * }</pre>
+     * }
      *
      * @return an expression for the function that computes the concatenated
      *         value.
@@ -129,12 +129,12 @@ public interface TextExpression<T> extends ComparableExpression<T, String> {
      * evaluates onto the beginning of the value to which the current
      * expression evaluates.</p>
      *
-     * <p>Example:</p>
-     * <pre>TODO {@code
+     * <p>Example:
+     * {@snippet lang="java":
      *     found = cars.search(
      *             make,
      *             _Car.model.prepend(_Car.year.append(" ")).equalTo(yearAndModel));
-     * }</pre>
+     * }
      *
      * @return an expression for the function that computes the concatenated
      *         value.
@@ -153,10 +153,10 @@ public interface TextExpression<T> extends ComparableExpression<T, String> {
      * evaluates onto the end of the value to which the current expression
      * evaluates.</p>
      *
-     * <p>Example:</p>
-     * <pre>{@code
+     * <p>Example:
+     * {@snippet lang="java":
      *     found = cars.search(_Car.make.append(' ').append(_Car.model).equalTo(makeAndModel));
-     * }</pre>
+     * }
 
      *
      * @return an expression for the function that computes the concatenated
@@ -174,10 +174,10 @@ public interface TextExpression<T> extends ComparableExpression<T, String> {
      * <p>Represents the function to obtain the upper case form of the value to
      * which the current expression evaluates.</p>
      *
-     * <p>Example:</p>
-     * <pre>{@code
+     * <p>Example:
+     * {@snippet lang="java":
      *     found = cars.search(_Car.make.upper().startsWith("CHEV"));
-     * }</pre>
+     * }
      *
      * @return an expression for the function that computes the upper case form
      *         of the value.
@@ -191,11 +191,11 @@ public interface TextExpression<T> extends ComparableExpression<T, String> {
      * <p>Represents the function to obtain the lower case form of the value to
      * which the current expression evaluates.</p>
      *
-     * <p>Example:</p>
-     * <pre>{@code
+     * <p>Example:
+     * {@snippet lang="java":
      *     found = cars.search(make,
      *                         _Car.model.lower().startsWith("f-"));
-     * }</pre>
+     * }
      *
      * @return an expression for the function that computes the lower case form
      *         of the value.
@@ -210,11 +210,11 @@ public interface TextExpression<T> extends ComparableExpression<T, String> {
      * at the beginning of the textual value to which the current expression
      * evaluates.</p>
      *
-     * <p>Example:</p>
-     * <pre>{@code
+     * <p>Example:
+     * {@snippet lang="java":
      *     startsWithCX = cars.search(make,
      *                                _Car.model.left(2).equalTo("CX"));
-     * }</pre>
+     * }
      *
      * @return an expression for the function that obtains the leftmost
      *         characters.
@@ -229,11 +229,11 @@ public interface TextExpression<T> extends ComparableExpression<T, String> {
      * at the end of the textual value to which the current expression
      * evaluates.</p>
      *
-     * <p>Example:</p>
-     * <pre>{@code
+     * <p>Example:
+     * {@snippet lang="java":
      *     endsWithHybrid = cars.search(make,
      *                                  _Car.model.right(6).equalTo("Hybrid"));
-     * }</pre>
+     * }
      *
      * @return an expression for the function that obtains the rightmost
      *         characters.
@@ -247,11 +247,11 @@ public interface TextExpression<T> extends ComparableExpression<T, String> {
      * <p>Represents the function to obtain the length of the textual value to
      * which the current expression evaluates.</p>
      *
-     * <p>Example:</p>
-     * <pre>{@code
+     * <p>Example:
+     * {@snippet lang="java":
      *     withModelNamesUpTo10Chars = cars.search(make,
      *                                             _Car.model.length().lessThanEqual(10));
-     * }</pre>
+     * }
      *
      * @return an expression for the function that obtains the length of the
      *         textual value.
@@ -266,10 +266,10 @@ public interface TextExpression<T> extends ComparableExpression<T, String> {
      * evaluate to a value that is {@linkplain Like like} the specified
      * pattern.</p>
      *
-     * <p>Example:</p>
-     * <pre>{@code
+     * <p>Example:
+     * {@snippet lang="java":
      *     found = cars.search(make, _Car.model.like(Like.pattern("% Hybrid")));
-     * }</pre>
+     * }
      *
      * @param pattern pattern against which to compare. Must not be
      *        {@code null}.
@@ -286,10 +286,10 @@ public interface TextExpression<T> extends ComparableExpression<T, String> {
      * evaluate to a value that is {@linkplain Like#pattern(String) like} the
      * specified pattern.</p>
      *
-     * <p>Example:</p>
-     * <pre>{@code
+     * <p>Example:
+     * {@snippet lang="java":
      *     found = cars.search(_Car.make.like("Chev%"));
-     * }</pre>
+     * }
      *
      * @param pattern pattern against which to compare. Must not be
      *        {@code null}.
@@ -307,10 +307,10 @@ public interface TextExpression<T> extends ComparableExpression<T, String> {
      * {@linkplain Like#pattern(String, char, char) like} the specified
      * pattern.</p>
      *
-     * <p>Example:</p>
-     * <pre>{@code
+     * <p>Example:
+     * {@snippet lang="java":
      *     found = cars.search(make, _Car.model.like("F-_50%", '_', '%'));
-     * }</pre>
+     * }
      *
      * @param pattern        pattern against which to compare. Must not be
      *                       {@code null}.
@@ -336,10 +336,10 @@ public interface TextExpression<T> extends ComparableExpression<T, String> {
      * {@linkplain Like#pattern(String, char, char, char) like} the specified
      * pattern.</p>
      *
-     * <p>Example:</p>
-     * <pre>{@code
+     * <p>Example:
+     * {@snippet lang="java":
      *     found = cars.search(make, _Car.model.like("_R-V%", '_', '%', '^'));
-     * }</pre>
+     * }
      *
      * @param pattern        pattern against which to compare. Must not be
      *                       {@code null}.
@@ -368,10 +368,10 @@ public interface TextExpression<T> extends ComparableExpression<T, String> {
      * evaluate to a value that is
      * {@linkplain NotLike#pattern(String) not like} the specified pattern.</p>
      *
-     * <p>Example:</p>
-     * <pre>{@code
+     * <p>Example:
+     * {@snippet lang="java":
      *     found = cars.search(make, _Car.model.notLike("% EV"));
-     * }</pre>
+     * }
      *
      * @param pattern pattern against which to compare. Must not be
      *        {@code null}.
@@ -389,10 +389,10 @@ public interface TextExpression<T> extends ComparableExpression<T, String> {
      * {@linkplain NotLike#pattern(String, char, char) not like} the specified
      * pattern.</p>
      *
-     * <p>Example:</p>
-     * <pre>{@code
+     * <p>Example:
+     * {@snippet lang="java":
      *     found = cars.search(make, _Car.model.notLike("CX-_0 *", '_', '*'));
-     * }</pre>
+     * }
      *
      * @param pattern        pattern against which to compare. Must not be
      *                       {@code null}.
@@ -417,10 +417,10 @@ public interface TextExpression<T> extends ComparableExpression<T, String> {
      * {@linkplain NotLike#pattern(String, char, char, char) not like} the
      * specified pattern.</p>
      *
-     * <p>Example:</p>
-     * <pre>{@code
+     * <p>Example:
+     * {@snippet lang="java":
      *     found = cars.search(make, _Car.model.notLike("* EV*", '_', '*', '^'));
-     * }</pre>
+     * }
      *
      * @param pattern        pattern against which to compare. Must not be
      *                       {@code null}.
@@ -449,10 +449,10 @@ public interface TextExpression<T> extends ComparableExpression<T, String> {
      * evaluate to a value that {@linkplain Like#substring(String) contains}
      * the specified substring.</p>
      *
-     * <p>Example:</p>
-     * <pre>{@code
+     * <p>Example:
+     * {@snippet lang="java":
      *     found = cars.search(make, _Car.model.contains("Hybrid"));
-     * }</pre>
+     * }
      *
      * @param substring substring against which to compare. Must not be
      *        {@code null}.
@@ -470,10 +470,10 @@ public interface TextExpression<T> extends ComparableExpression<T, String> {
      * {@linkplain NotLike#substring(String) does not contain} the specified
      * substring.</p>
      *
-     * <p>Example:</p>
-     * <pre>{@code
+     * <p>Example:
+     * {@snippet lang="java":
      *     found = cars.search(make, _Car.model.notContains(" EV"));
-     * }</pre>
+     * }
      *
      * @param substring substring against which to compare. Must not be
      *                  {@code null}.
@@ -490,10 +490,10 @@ public interface TextExpression<T> extends ComparableExpression<T, String> {
      * evaluate to a value that {@linkplain Like#prefix(String) begins with}
      * the specified prefix.</p>
      *
-     * <p>Example:</p>
-     * <pre>{@code
+     * <p>Example:
+     * {@snippet lang="java":
      *     found = cars.search(_Car.make.startsWith("Chev"));
-     * }</pre>
+     * }
      *
      * @param prefix prefix against which to compare. Must not be {@code null}.
      * @return the restriction.
@@ -510,10 +510,10 @@ public interface TextExpression<T> extends ComparableExpression<T, String> {
      * {@linkplain NotLike#prefix(String) does not begin with} the specified
      * prefix.</p>
      *
-     * <p>Example:</p>
-     * <pre>{@code
+     * <p>Example:
+     * {@snippet lang="java":
      *     found = cars.search(make, _Car.model.notStartsWith("CR-"));
-     * }</pre>
+     * }
      *
      * @param prefix prefix against which to compare. Must not be {@code null}.
      * @return the restriction.
@@ -529,10 +529,10 @@ public interface TextExpression<T> extends ComparableExpression<T, String> {
      * evaluate to a value that {@linkplain NotLike#suffix(String) ends with}
      * the specified suffix.</p>
      *
-     * <p>Example:</p>
-     * <pre>{@code
+     * <p>Example:
+     * {@snippet lang="java":
      *     found = cars.search(make, _Car.model.endsWith(" EV"));
-     * }</pre>
+     * }
      *
      * @param suffix suffix against which to compare. Must not be {@code null}.
      * @return the restriction.
@@ -549,10 +549,10 @@ public interface TextExpression<T> extends ComparableExpression<T, String> {
      * {@linkplain NotLike#suffix(String) does not end with} the specified
      * suffix.</p>
      *
-     * <p>Example:</p>
-     * <pre>{@code
+     * <p>Example:
+     * {@snippet lang="java":
      *     found = cars.search(make, _Car.model.notEndsWith(" Hybrid"));
-     * }</pre>
+     * }
      *
      * @param suffix suffix against which to compare. Must not be {@code null}.
      * @return the restriction.

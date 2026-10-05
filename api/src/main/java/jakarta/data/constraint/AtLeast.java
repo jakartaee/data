@@ -30,38 +30,38 @@ import jakarta.annotation.Nonnull;
  * <p>A parameter-based repository method can impose a constraint on an
  * entity attribute by defining a method parameter that is of type
  * {@code AtLeast} or is annotated {@link Is @Is(AtLeast.class)} and is
- * of the same type or a subtype of the entity attribute. For example,</p>
+ * of the same type or a subtype of the entity attribute. For example,
  *
- * <pre>{@code
- * @Find
- * List<Car> ofYearOrHigher(@By(_Car.YEAR) AtLeast<Integer> minYear);
+ * {@snippet lang="java":
+ *     @Find
+ *     List<Car> ofYearOrHigher(@By(_Car.YEAR) AtLeast<Integer> minYear);
  *
- * @Find
- * List<Car> yearAtLeast(@By(_Car.YEAR) @Is(AtLeast.class) int minimum,
- *                       Order<Car> sorts);
+ *     @Find
+ *     List<Car> yearAtLeast(@By(_Car.YEAR) @Is(AtLeast.class) int minimum,
+ *                           Order<Car> sorts);
  *
- * ...
+ *     ...
  *
- * found = cars.ofYearOrHigher(AtLeast.min(2022));
+ *     found = cars.ofYearOrHigher(AtLeast.min(2022));
  *
- * found = cars.yearAtLeast(2023,
- *                          Order.by(_Car.price.desc()));
- * }</pre>
+ *     found = cars.yearAtLeast(2023,
+ *                              Order.by(_Car.price.desc()));
+ * }
  *
  * <p>Repository methods can also accept {@code AtLeast} constraints at
  * run time in the form of a {@link Restriction} on a
- * {@link ComparableExpression}. For example,</p>
+ * {@link ComparableExpression}. For example,
  *
- * <pre>{@code
- * @Find
- * List<Car> searchAll(Restriction<Car> restrict, Order<Car> sorts);
+ * {@snippet lang="java":
+ *     @Find
+ *     List<Car> searchAll(Restriction<Car> restrict, Order<Car> sorts);
  *
- * ...
+ *     ...
  *
- * found = cars.searchAll(_Car.year.greaterThanEqual(2024),
- *                        Order.by(_Car.year.desc(),
- *                                 _Car.price.asc()));
- * }</pre>
+ *     found = cars.searchAll(_Car.year.greaterThanEqual(2024),
+ *                            Order.by(_Car.year.desc(),
+ *                                     _Car.price.asc()));
+ * }
  *
  * <p>The {@linkplain Attribute entity and static metamodel} for the code
  * examples within this class are shown in the {@link Attribute} Javadoc.
@@ -75,11 +75,11 @@ public interface AtLeast<V extends Comparable<?>> extends Constraint<V> {
 
     /**
      * <p>Requires that the constraint target evaluates to a value that is
-     * greater than or equal to the given {@code minimum}. For example,</p>
+     * greater than or equal to the given {@code minimum}. For example,
      *
-     * <pre>{@code
+     * {@snippet lang="java":
      *     found = cars.ofYearOrHigher(AtLeast.min(2021));
-     * }</pre>
+     * }
      *
      * @param <V>     type of the entity attribute or a subtype or primitive
      *                wrapper type for the entity attribute.
@@ -96,11 +96,11 @@ public interface AtLeast<V extends Comparable<?>> extends Constraint<V> {
     /**
      * <p>Requires that the constraint target evaluates to a value that is
      * greater than or equal the value to which the the given {@code minimum}
-     * expression evaluates. For example,</p>
+     * expression evaluates. For example,
      *
-     * <pre>{@code
+     * {@snippet lang="java":
      *     found = cars.ofYearOrHigher(AtLeast.min(_Car.firstModelYear.plus(2)));
-     * }</pre>
+     * }
      *
      * @param <V>     type of the entity attribute or a subtype or primitive
      *                wrapper type for the entity attribute.

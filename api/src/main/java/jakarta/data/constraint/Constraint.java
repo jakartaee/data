@@ -40,45 +40,45 @@ import jakarta.annotation.Nonnull;
  * <p>Constraint parameters can be of type {@code C<T>} or {@code C<? super T>}
  * where {@code C} is {@code Constraint} or any subtype of {@code Constraint},
  * such as {@link Like} or {@link LessThan}, and {@code T} is the entity
- * attribute type. For example,</p>
+ * attribute type. For example,
  *
- * <pre>
- * &#64;Find
- * List&lt;Car&gt; withinYears(&#64;By(_Car.YEAR) Between&lt;Integer&gt; year,
- *                       &#64;By(_Car.MAKE) Like makePattern,
- *                       &#64;By(_Car.MODEL) Like modelPattern,
- *                       Order&lt;Car&gt; sorts);
+ * {@snippet lang="java":
+ *     @Find
+ *     List<Car> withinYears(@By(_Car.YEAR) Between<Integer> year,
+ *                           @By(_Car.MAKE) Like makePattern,
+ *                           @By(_Car.MODEL) Like modelPattern,
+ *                           Order<Car> sorts);
  *
- * ...
+ *     ...
  *
- * found = cars.withinYears(Between.bounds(2021, 2025),
- *                          Like.prefix(makePrefix),
- *                          Like.contains(modelSubstring),
- *                          Order.by(_Car.year.desc(),
- *                                   _Car.price.desc(),
- *                                   _Car.vin.asc()));
- * </pre>
+ *     found = cars.withinYears(Between.bounds(2021, 2025),
+ *                              Like.prefix(makePrefix),
+ *                              Like.contains(modelSubstring),
+ *                              Order.by(_Car.year.desc(),
+ *                                       _Car.price.desc(),
+ *                                       _Car.vin.asc()));
+ * }
  *
  * <h2>Annotation value</h2>
  *
  * <p>Constraint parameters of repository methods can be annotated with the
  * {@link Is @Is} annotation to indicate the subtype of {@code Constraint}.
  * The type of the method parameter must be the entity attribute type.
- * For example,</p>
+ . For example,
  *
- * <pre>
- * &#64;Find
- * List&lt;Car&gt; pricedAtMost(&#64;By(_Car.PRICE) &#64;Is(AtMost.class) int maxPrice,
- *                        &#64;By(_Car.MAKE) &#64;Is(Like.class) String makePattern,
- *                        &#64;By(_Car.MODEL) &#64;Is(Like.class) Sting modelPattern,
- *                        Order&lt;Car&gt; sorts);
+ * {@snippet lang="java":
+ *     @Find
+ *     List<Car> pricedAtMost(@By(_Car.PRICE) @Is(AtMost.class) int maxPrice,
+ *                            @By(_Car.MAKE) @Is(Like.class) String makePattern,
+ *                            @By(_Car.MODEL) @Is(Like.class) Sting modelPattern,
+ *                            Order<Car> sorts);
  *
- * ...
+ *     ...
  *
- * found = cars.pricedAtMost(35000, "Chev%", "% SUV",
- *                           Order.by(_Car.price.desc(),
- *                                    _Car.vin.asc()));
- * </pre>
+ *     found = cars.pricedAtMost(35000, "Chev%", "% SUV",
+ *                               Order.by(_Car.price.desc(),
+ *                                        _Car.vin.asc()));
+ * }
  *
  * <p>The {@linkplain Attribute entity and static metamodel} for the code
  * examples within this class are shown in the {@link Attribute} Javadoc.

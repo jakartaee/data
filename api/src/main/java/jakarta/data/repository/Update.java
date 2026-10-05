@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023,2024 Contributors to the Eclipse Foundation
+ * Copyright (c) 2023,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,14 +44,15 @@ import java.lang.annotation.Target;
  * <p>
  * All Jakarta Data providers are required to accept an {@code Update} method which conforms to this signature.
  * </p>
- * <p>For example, consider an interface representing a garage:</p>
- * <pre>{@code
+ * <p>For example, consider an interface representing a garage:
+ *
+ * {@snippet lang="java":
  * @Repository
  * interface Garage {
  *     @Update
  *     Car update(Car car);
  * }
- * }</pre>
+ * }
  * <p>When the annotated method is non-{@code void}, it must return an updated entity instance for each entity instance
  * passed as an argument. Instances returned by the annotated method must include all values that were written to the
  * database, including all automatically generated values, updated versions, and incremented values which changed as a

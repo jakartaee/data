@@ -176,9 +176,9 @@ import java.util.stream.Stream;
  *
  * <h3>Parameter examples</h3>
  *
- * <p>Examples of named and ordinal parameters:</p>
+ * <p>Examples of named and ordinal parameters:
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * @Repository
  * public interface People extends CrudRepository<Person, Long> {
  *
@@ -204,7 +204,7 @@ import java.util.stream.Stream;
  *
  *     ...
  * }
- * }</pre>
+ * }
  *
  * <p>Annotations such as {@code @Find}, {@code @Query}, {@code @Insert},
  * {@code @Update}, {@code @Delete}, and {@code @Save} are mutually-exclusive.

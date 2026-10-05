@@ -26,19 +26,19 @@ import java.lang.annotation.Target;
  * <p>Specifies a static limit on the number of results retrieved by a
  * repository method. The results of a single invocation of a repository method
  * may be limited to a given {@linkplain #value maximum number of results}. For
- * example,</p>
+ * example,
  *
- * <pre>{@code
- * @Find @First
- * @OrderBy(value = _Employee.SALARY, descending = true)
- * Employee highestPaid(String jobTitle);
- * }</pre>
+ * {@snippet lang="java":
+ *     @Find @First
+ *     @OrderBy(value = _Employee.SALARY, descending = true)
+ *     Employee highestPaid(String jobTitle);
+ * }
  *
- * <pre>{@code
- * @First(10)
- * @Query("ORDER BY playCount DESC")
- * List<Song> topTen();
- * }</pre>
+ * {@snippet lang="java":
+ *     @First(10)
+ *     @Query("ORDER BY playCount DESC")
+ *     List<Song> topTen();
+ * }
  *
  * <p>A repository method may not be declared with:
  * <ul>

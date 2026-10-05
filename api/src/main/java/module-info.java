@@ -58,39 +58,41 @@ import java.util.Set;
  *
  * <p>The application defines simple Java objects called entities to represent
  * data in the database. Fields or accessor methods designate each entity attribute.
- * For example,</p>
+ * For example,
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * @Entity
  * public class Product {
  *     @Id
  *     public long id;
+ *     public Department department; // enumeration
  *     public String name;
  *     public float price;
  *     public LocalDate producedOn;
  *     ...
  * }
- * }</pre>
+ * }
  *
  * <p>A repository is an interface annotated with the {@link Repository} annotation.
  * A repository declares methods which perform queries and other operations on entities.
- * For example,</p>
+ * For example,
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * @Repository
  * public interface Products extends BasicRepository<Product, Long> {
  *
  *     @Insert
  *     void create(Product prod);
  *
- *     @OrderBy("price")
- *     List<Product> findByNameIgnoreCaseLikeAndPriceLessThan(String namePattern, float max);
- *
  *     @Find
  *     List<Product> search(
- *             @By(_Product.NAME) @Is(Like.class) String namePattern,
+ *             @By(_Product.DEPARTMENT) @Is(In.class) Set<Department> departments,
+ *             @By(_Product.PRICE) @Is(AtMost.class) float maxPrice,
  *             Restriction<Product> restriction,
  *             Order<Product> sortBy);
+ *
+ *     @OrderBy("price")
+ *     List<Product> findByNameIgnoreCaseLike(String namePattern);
  *
  *     @Query("""
  *             UPDATE Product SET price = price * (1.0 - ?1)
@@ -100,30 +102,31 @@ import java.util.Set;
  *
  *     ...
  * }
- * }</pre>
+ * }
  *
  * <p>Repository interfaces are implemented by the container/runtime and are made
  * available to applications via the {@code jakarta.inject.Inject} annotation. For
- * example,</p>
+ * example,
  *
- * <pre>{@code
- * @Inject
- * Products products;
+ * {@snippet lang="java":
+ *     @Inject
+ *     Products products;
  *
- * ...
- * products.create(newProduct);
+ *     ...
+ *     products.create(newProduct);
  *
- * phones = products.findByNameIgnoreCaseLikeAndPriceLessThan("%cell%phone%", 900.0f);
+ *     chargers = products.search(Set.of(Department.ELECTRONICS, Department.OFFICE),
+ *                                30.0f,
+ *                                Restrict.all(_Product.name.notNull(),
+ *                                             _Product.name.lower().contains("%charger%")),
+ *                                Order.by(_Product.price.desc(),
+ *                                         _Product.id.asc()));
  *
- * chargers = products.search("%charger%",
- *                            Restrict.all(_Product.description.contains("USB-C"),
- *                                         _Product.price.lessThan(30.0f)),
- *                            Order.by(_Product.price.desc(),
- *                                     _Product.id.asc()));
+ *     phones = products.findByNameIgnoreCaseLike("%cell%phone%");
  *
- * numDiscounted = products.discountOldInventory(0.15f,
- *                                               LocalDate.now().minusYears(1));
- * }</pre>
+ *     numDiscounted = products.discountOldInventory(0.15f,
+ *                                                   LocalDate.now().minusYears(1));
+ * }
  *
  * <p>Jakarta Persistence and Jakarta NoSQL define programming models for entity
  * classes that may be used with Jakarta Data:</p>
@@ -159,9 +162,10 @@ import java.util.Set;
  * is possible because the methods of the built-in repository superinterfaces
  * respect the conventions defined for custom repository methods.</p>
  *
-* <p>The following example shows an entity class, an embeddable class, and
- * a repository interface:</p>
- * <pre>{@code
+ * <p>The following example shows an entity class, an embeddable class, and
+ * a repository interface:
+ * 
+ * {@snippet lang="java":
  * @Entity
  * public class Purchase {
  *     @Id
@@ -190,7 +194,7 @@ import java.util.Set;
  *     @Save
  *     Purchase checkout(Purchase purchase);
  * }
- * }</pre>
+ * }
  *
  * <h2>Entities</h2>
  *
@@ -388,19 +392,19 @@ import java.util.Set;
  *     match the name of an entity attribute and the repository must be compiled
  *     with the {@code -parameters} compiler option so that parameter names are
  *     available at runtime. For example,
- *     <pre>{@code
- *     @Find
- *     Optional<Product> get(@By("id") long productId);
+ *     {@snippet lang="java":
+ *         @Find
+ *         Optional<Product> get(@By("id") long productId);
  *
- *     @Find
- *     @OrderBy("price")
- *     List<Product> discounted(
- *             @By("discount") @Is(AtLeast.class) float minAmount);
+ *         @Find
+ *         @OrderBy("price")
+ *         List<Product> discounted(
+ *                 @By("discount") @Is(AtLeast.class) float minAmount);
  *
- *     @Find
- *     @OrderBy("price")
- *     Product[] named(String name);
- *     }</pre>
+ *         @Find
+ *         @OrderBy("price")
+ *         Product[] named(String name);
+ *     }
  * </li>
  * <li>The parameter is a {@link Constraint} or a
  *     {@linkplain jakarta.data.constraint subtype} of {@code Constraint} and
@@ -408,31 +412,31 @@ import java.util.Set;
  *     of the entity class. The constraint must be parameterized with the same
  *     type (or if primitive, the corresponding wrapper type) as the attribute.
  *     For example,
- * <pre>{@code
- *     @Delete
- *     int discontinue(@By("id") In<Long> productIds);
+ *     {@snippet lang="java":
+ *         @Delete
+ *         int discontinue(@By("id") In<Long> productIds);
  *
- *     @Find
- *     @OrderBy("price")
- *     @OrderBy("name")
- *     Stream<Product> pricedUnder(LessThan<Float> price);
- * }</pre>
+ *         @Find
+ *         @OrderBy("price")
+ *         @OrderBy("name")
+ *         Stream<Product> pricedUnder(LessThan<Float> price);
+ *     }
  * </li>
  * <li>The parameter is a {@link Restriction} and its type parameter is the
  *     entity class. For example,
- * <pre>{@code
- *     @Find
- *     List<Product> search(Restriction<Product> restrict);
- * }</pre>
+ *     {@snippet lang="java":
+ *         @Find
+ *         List<Product> search(Restriction<Product> restrict);
+ *     }
  * </li>
  * <li>The parameter is a {@link Limit}, {@link Sort}, {@link Order}, or
  *     {@link PageRequest} (discussed under the section titled
  *     <em>Special parameters</em>) and the repository method is annotated with
  *     {@link Find}. For example,
- *     <pre>{@code
- *     @Find
- *     Page<Product> getPage(PageRequest pageRequest, Order<Product> sortBy);
- *     }</pre>
+ *     {@snippet lang="java":
+ *         @Find
+ *         Page<Product> getPage(PageRequest pageRequest, Order<Product> sortBy);
+ *     }
  * </li>
  * </ol>
  *
@@ -451,20 +455,20 @@ import java.util.Set;
  * <h3>Method parameters for embedded attributes</h3>
  *
  * <p>The {@code .} character may be used in the {@link By} annotation value
- * to reference an embedded attribute.</p>
+ * to reference an embedded attribute.
  *
- * <pre>
- * &#64;Find
- * Stream&lt;Person&gt; livingInZipCode(&#64;By("address.zipCode") int zip);
- * </pre>
+ * {@snippet lang="java":
+ *     @Find
+ *     Stream<Person> livingInZipCode(@By("address.zipCode") int zip);
+ * }
  *
  * <p>The {@code _} character may be used in a method parameter name to
- * reference an embedded attribute.</p>
+ * reference an embedded attribute.
  *
- * <pre>
- * &#64;Find
- * Stream&lt;Person&gt; livingInCity(String address_city);
- * </pre>
+ * {@snippet lang="java":
+ *     @Find
+ *     Stream<Person> livingInCity(String address_city);
+ * }
  *
  * <h2>Methods annotated {@code @Query}</h2>
  *
@@ -486,19 +490,19 @@ import java.util.Set;
  * <p>The {@link Param} annotation associates a method parameter with a named parameter.
  * The {@code Param} annotation is unnecessary when the method parameter name matches the
  * name of a named parameter and the application is compiled with the {@code -parameters}
- * compiler option making parameter names available at runtime.</p>
+ * compiler option making parameter names available at runtime.
  *
- * <pre>
- * // example using named parameters
- * &#64;Query("WHERE age BETWEEN :min AND :max ORDER BY age")
- * List&lt;Person&gt; peopleInAgeRange(int min, int max);
- * </pre>
+ * {@snippet lang="java":
+ *     // example using named parameters
+ *     @Query("WHERE age BETWEEN :min AND :max ORDER BY age")
+ *     List<Person> peopleInAgeRange(int min, int max);
+ * }
  *
- * <pre>
- * // example using an ordinal parameter
- * &#64;Query("WHERE ssn = ?1 AND deceased = FALSE")
- * Optional&lt;Person&gt; person(String ssn);
- * </pre>
+ * {@snippet lang="java":
+ *     // example using an ordinal parameter
+ *     @Query("WHERE ssn = ?1 AND deceased = FALSE")
+ *     Optional<Person> person(String ssn);
+ * }
  *
  * <p>Refer to the {@linkplain Query API documentation} for {@code @Query} for further
  * information.</p>
@@ -533,13 +537,13 @@ import java.util.Set;
  * </ul>
  *
  * <p>{@linkplain Param Named parameters} can be used for JPQL queries, but not
- * for native SQL queries. Use positional parameters instead. For example,</p>
-
- * <pre>{@code
- * @NativeQuery("SELECT * FROM Person WHERE ssn = ? AND alive = ?")
- * @QueryOptions(lockMode = LockModeType.PESSIMISTIC_WRITE)
- * Optional<Person> findIfLiving(String ssn, boolean isAlive);
- * }</pre>
+ * for native SQL queries. Use positional parameters instead. For example,
+ *
+ * {@snippet lang="java":
+ *     @NativeQuery("SELECT * FROM Person WHERE ssn = ? AND alive = ?")
+ *     @QueryOptions(lockMode = LockModeType.PESSIMISTIC_WRITE)
+ *     Optional<Person> findIfLiving(String ssn, boolean isAlive);
+ * }
  *
  * <p>Refer to the Jakarta Persistence query annotations in the
  * {@code jakarta.persistence.query} package and the API documentation for
@@ -874,26 +878,25 @@ import java.util.Set;
  *
  * <p>The following examples illustrate the difference between Query By Method
  * Name and parameter-based automatic query methods. Both methods accept the
- * same parameters and have the same behavior.</p>
+ * same parameters and have the same behavior.
  *
- * <pre>{@code
- * // Query by Method Name
- * Vehicle[] findFirst50ByMakeAndModelAndYearBetween(String makerName,
- *                                                   String model,
- *                                                   int minYear,
- *                                                   int maxYear,
- *                                                   Order<Vehicle> sorts);
+ * {@snippet lang="java":
+ *     // Query by Method Name
+ *     Vehicle[] findFirst50ByMakeAndModelAndYearBetween(String makerName,
+ *                                                       String model,
+ *                                                       int minYear,
+ *                                                       int maxYear,
+ *                                                       Order<Vehicle> sorts);
  *
- * // parameter-based conditions
- * @Find
- * @First(50)
- * Vehicle[] search(String make,
- *                  String model,
- *                  @By(_Vehicle.YEAR) @Is(AtLeast.class) int minYear,
- *                  @By(_Vehicle.YEAR) @Is(AtMost.class) int maxYear,
- *                  Order<Vehicle> sorts);
- * }</pre>
-
+ *     // parameter-based conditions
+ *     @Find
+ *     @First(50)
+ *     Vehicle[] search(String make,
+ *                      String model,
+ *                      @By(_Vehicle.YEAR) @Is(AtLeast.class) int minYear,
+ *                      @By(_Vehicle.YEAR) @Is(AtMost.class) int maxYear,
+ *                      Order<Vehicle> sorts);
+ * }
  *
  * <h2>Special parameters</h2>
  *
@@ -915,33 +918,33 @@ import java.util.Set;
  *
  * <p>The number of results returned by a single invocation of a repository
  * find method may be limited by adding a parameter of type {@link Limit}.
- * The results may even be limited to a positioned range. For example,</p>
+ * The results may even be limited to a positioned range. For example,
  *
- * <pre>{@code
- * @Query("WHERE (fullPrice - salePrice) / fullPrice >= ?1 ORDER BY salePrice DESC, id ASC")
- * Product[] highlyDiscounted(float minPercentOff, Limit limit);
+ * {@snippet lang="java":
+ *     @Query("WHERE (fullPrice - salePrice) / fullPrice >= ?1 ORDER BY salePrice DESC, id ASC")
+ *     Product[] highlyDiscounted(float minPercentOff, Limit limit);
  *
- * ...
- * first50 = products.highlyDiscounted(0.30, Limit.of(50));
- * ...
- * second50 = products.highlyDiscounted(0.30, Limit.range(51, 100));
- * }</pre>
+ *     ...
+ *     first50 = products.highlyDiscounted(0.30, Limit.of(50));
+ *     ...
+ *     second50 = products.highlyDiscounted(0.30, Limit.range(51, 100));
+ * }
  *
  * <h3>Pagination</h3>
  *
  * <p>A repository find method with a parameter of type {@link PageRequest}
- * allows its results to be split and retrieved in pages. For example,</p>
+ * allows its results to be split and retrieved in pages. For example,
  *
- * <pre>{@code
- * @OrderBy("amountSold")
- * @OrderBy("id")
- * Page<Product> findByNameLike(String pattern,
- *                              PageRequest pageRequest);
+ * {@snippet lang="java":
+ *     @OrderBy("amountSold")
+ *     @OrderBy("id")
+ *     Page<Product> findByNameLike(String pattern,
+ *                                  PageRequest pageRequest);
  *
- * ...
- * page1 = products.findByNameLike("%phone%",
- *                                 PageRequest.ofSize(20));
- * }</pre>
+ *     ...
+ *     page1 = products.findByNameLike("%phone%",
+ *                                     PageRequest.ofSize(20));
+ * }
  *
  * <p>When using pagination, always ensure that the ordering is consistent
  * across invocations. One way to achieve this is to include the unique
@@ -951,46 +954,45 @@ import java.util.Set;
  *
  * <p>When a page is requested with a {@code PageRequest}, dynamic sorting
  * criteria may be supplied by passing instances of {@link Sort} to an
- * {@link Order} parameter. For example,</p>
+ * {@link Order} parameter. For example,
  *
- * <pre>{@code
- * @Find
- * Page<Product> pricedWithin(@By("name") @Is(Like.class) String pattern,
- *                            @By("price") @Is(AtLeast.class) float minPrice,
- *                            @By("price") @Is(AtMost.class) float maxPrice,
- *                            PageRequest pageRequest,
- *                            Order<Product> order);
+ * {@snippet lang="java":
+ *     @Find
+ *     Page<Product> pricedWithin(@By("name") @Is(Like.class) String pattern,
+ *                                @By("price") @Is(AtLeast.class) float minPrice,
+ *                                @By("price") @Is(AtMost.class) float maxPrice,
+ *                                PageRequest pageRequest,
+ *                                Order<Product> order);
  *
- * ...
- * PageRequest page1Request = PageRequest.ofSize(25);
+ *     ...
+ *     PageRequest page1Request = PageRequest.ofSize(25);
  *
- * page1 = products.pricedWithin(
- *                 namePattern,
- *                 minPrice,
- *                 maxPrice,
- *                 page1Request,
- *                 Order.by(Sort.desc("price"),
- *                          Sort.asc("id")));
- * }</pre>
-
+ *     page1 = products.pricedWithin(
+ *                     namePattern,
+ *                     minPrice,
+ *                     maxPrice,
+ *                     page1Request,
+ *                     Order.by(Sort.desc("price"),
+ *                              Sort.asc("id")));
+ * }
  *
  * <p>The same pattern of supplying instances of {@link Sort} to an
  * {@link Order} parameter can be applied without using pagination.
- * For example,</p>
+ * For example,
  *
- * <pre>{@code
- * @Find
- * Product[] named(@By("name") @Is(Like.class) String pattern,
- *                 Limit max,
- *                 Order<Product> sortBy);
+ * {@snippet lang="java":
+ *     @Find
+ *     Product[] named(@By("name") @Is(Like.class) String pattern,
+ *                     Limit max,
+ *                     Order<Product> sortBy);
  *
- * ...
- * found = products.nameLiked(namePattern,
- *                            Limit.of(25),
- *                            Order.by(Sort.desc("price"),
- *                                     Sort.desc("amountSold").nullsFirst(),
- *                                     Sort.asc("id")));
- * }</pre>
+ *.    ...
+ *     found = products.nameLiked(namePattern,
+ *                                Limit.of(25),
+ *                                Order.by(Sort.desc("price"),
+ *                                         Sort.desc("amountSold").nullsFirst(),
+ *                                         Sort.asc("id")));
+ * }
  *
  * <h3>Restrictions</h3>
  *
@@ -998,14 +1000,14 @@ import java.util.Set;
  * {@link Delete @Delete} and {@link Query @Query} methods that include a
  * parameter of type {@link Restriction} in their method signature. The
  * type parameter of the method parameter must be the entity class.
- * For example,</p>
+ * For example,
  *
- * <pre>{@code
+ * {@snippet lang="java":
  *     @Find
  *     List<Product> namedLike(@By(_Product.NAME) Like pattern,
  *                             Restriction<Product> restrict,
  *                             Order<Product> sorts);
- * }</pre>
+ * }
  *
  * <h4>Static metamodel</h4>
  *
@@ -1023,35 +1025,35 @@ import java.util.Set;
  * that has the same name as the entity attribute and whose type is an
  * {@link Attribute} subtype. The subtype, which is also a type of
  * {@link Expression}, exposes a method for each available restriction.
- * Some examples of singular restrictions are:</p>
+ * Some examples of singular restrictions are:
  *
- * <pre>{@code
+ * {@snippet lang="java":
  *     _Product.name.startsWith(prefix)
  *     _Product.price.lessThanEqual(maxPrice)
  *     _Product.producedOn.notNull()
- * }</pre>
+ * }
  *
  * <p>The static metamodel expression/attribute also exposes methods that
  * obtain other {@code Expression}s, from which additional restrictions can
  * be formed. An example is following casse insensitive comparison that
- * utilizes the {@code lower} expression,</p>
+ * utilizes the {@code lower} expression,
  *
- * <pre>{@code
+ * {@snippet lang="java":
  *     _Product.name.lower().startsWith(prefix.toLowerCase());
- * }</pre>
+ * }
  *
  * <p>The following example obtains a singular restriction on the price of a
  * product being less than an amount and supplies this restriction to the
  * {@code namedLike} repository method from the beginning of this section on
- * <em>Restrictions</em>.</p>
+ * <em>Restrictions</em>.
  *
- * <pre>{@code
+ * {@snippet lang="java":
  *     found = products.namedLike(
  *                 Like.pattern("%keyboard%"),
  *                 _Product.price.lessThan(100.0f),
  *                 Order.by(_Product.price.desc(),
  *                          _Product.name.asc()));
- * }</pre>
+ * }
  *
  * <h4>Composite restrictions</h4>
  *
@@ -1065,16 +1067,16 @@ import java.util.Set;
  * a product (between $700 and $1500) and its production date (within the past
  * 2 years). It supplies the composite restriction to the {@code namedLike}
  * repository method from the beginning of this section on
- * <em>Restrictions</em>.</p>
+ * <em>Restrictions</em>.
  *
- * <pre>{@code
+ * {@snippet lang="java":
  *     found = products.namedLike(
  *                 Like.pattern("%computer%"),
  *                 Restrict.all(_Product.price.between(700.0f, 1500.0f),
  *                              _Product.producedOn.greaterThan(LocalDate.now().minusYears(2))),
  *                 Order.by(_Product.price.desc(),
  *                          _Product.id.asc()));
- * }</pre>
+ * }
  *
  * <h2>Maximum number of results</h2>
  *
@@ -1083,14 +1085,14 @@ import java.util.Set;
  * usage of the method. The default value of 1 allows you to avoid the
  * {@link NonUniqueResultException} that would normally occurs when multiple
  * entities match a query that is performed by a repository method that has a
- * singular result type. For example,</p>
+ * singular result type. For example,
  *
- * <pre>{@code
- * @Find
- * @First
- * @OrderBy("hourlyWage")
- * Optional<Employee> withLowestWage(String jobRole);
- * }</pre>
+ * {@snippet lang="java":
+ *     @Find
+ *     @First
+ *     @OrderBy("hourlyWage")
+ *     Optional<Employee> withLowestWage(String jobRole);
+ * }
  *
  * <h2>Returning subsets of entity attributes</h2>
  *
@@ -1105,25 +1107,27 @@ import java.util.Set;
  * The result type within the repository method return type must be consistent
  * with the entity attribute type. For example, if a {@code Weather} entity
  * has attributes including {@code year}, {@code month}, {@code day}, and
- * {@code precipitation}, of which the latter is of type {@code float},</p>
+ * {@code precipitation}, of which the latter is of type {@code float},
  *
- * <pre>{@code
- * @Find(Weather.class)
- * @Select("precipitation")
- * @OrderBy("precipitation")
- * List<Float> precipitationIn(@By("month") Month monthOfYear,
- *                             @By("year") int year);
- * }</pre>
+ * {@snippet lang="java":
+ *     @Find(Weather.class)
+ *     @Select("precipitation")
+ *     @OrderBy("precipitation")
+ *     List<Float> precipitationIn(@By("month") Month monthOfYear,
+ *                                 @By("year") int year);
+ * }
  *
  * <p>For {@link Query} methods, the {@code SELECT} clause specifies a single
- * entity attribute. For example,</p>
+ * entity attribute. For example,
  *
- * <pre>{@code
- * @Query("SELECT precipitation FROM Weather " +
- *        " WHERE month=?1 AND year=?2" +
- *        " ORDER BY precipitation ASC")
- * List<Float> precipitationIn(Month monthOfYear, int year);
- * }</pre>
+ * {@snippet lang="java":
+ *     @Query("""
+ *             SELECT precipitation FROM Weather
+ *              WHERE month=?1 AND year=?2
+ *              ORDER BY precipitation ASC
+ *             """)
+ *     List<Float> precipitationIn(Month monthOfYear, int year);
+ * }
  *
  * <h3>Multiple entity attributes result type</h3>
  *
@@ -1131,16 +1135,16 @@ import java.util.Set;
  * subset of entity attributes. If the record component names do not match the
  * entity attribute names, use the {@link Select} annotation to indicate the
  * entity attribute name. For example, if a {@code Person} entity has attributes
- * {@code ssn}, {@code firstName}, {@code middleName}, and {@code lastName},</p>
+ * {@code ssn}, {@code firstName}, {@code middleName}, and {@code lastName},
  *
- * <pre>{@code
- * public record Name(String firstName,
- *                    String middleName,
- *                    @Select("lastName") String surname) {}
+ * {@snippet lang="java":
+ *     public record Name(String firstName,
+ *                        String middleName,
+ *                        @Select("lastName") String surname) {}
  *
- * @Find(Person.class)
- * Optional<Name> getName(@By("ssn") long socialSecurityNum);
- * }</pre>
+ *     @Find(Person.class)
+ *     Optional<Name> getName(@By("ssn") long socialSecurityNum);
+ * }
  *
  * <p>The entity class value that is supplied to the {@link Find} annotation can
  * be omitted if it is the same as the primary entity type of the repository.</p>
@@ -1148,29 +1152,29 @@ import java.util.Set;
  * <p>For {@link Query} methods, the {@code SELECT} clause lists the entity
  * attributes and the method returns a Java record, which must have a constructor
  * accepting the entity attributes in the order listed within the {@code SELECT}
- * clause. For example,</p>
+ * clause. For example,
  *
- * <pre>{@code
- * public record Name(String firstName,
- *                    String middleName,
- *                    String surname) {}
+ * {@snippet lang="java":
+ *     public record Name(String firstName,
+ *                        String middleName,
+ *                        String surname) {}
  *
- * @Query("SELECT firstName, middleName, lastName FROM Person WHERE ssn=?1")
- * Optional<Name> getName(long socialSecurityNum);
- * }</pre>
+ *     @Query("SELECT firstName, middleName, lastName FROM Person WHERE ssn=?1")
+ *     Optional<Name> getName(long socialSecurityNum);
+ * }
  *
  * <p>If all record components have names that match the entity attributes or
  * map to a valid entity attribute name via the {@link Select} annotation,
- * then the {@code SELECT} clause can be omitted. For example,</p>
+ * then the {@code SELECT} clause can be omitted. For example,
  *
- * <pre>{@code
- * public record Name(String firstName,
- *                    String middleName,
- *                    @Select("lastName") String surname) {}
+ * {@snippet lang="java":
+ *     public record Name(String firstName,
+ *                        String middleName,
+ *                        @Select("lastName") String surname) {}
  *
- * @Query("FROM Person WHERE ssn=?1")
- * Optional<Name> getName(long socialSecurityNum);
- * }</pre>
+ *     @Query("FROM Person WHERE ssn=?1")
+ *     Optional<Name> getName(long socialSecurityNum);
+ * }
  *
  * <h2>Repository default methods</h2>
  *
@@ -1207,7 +1211,7 @@ import java.util.Set;
  * that uses Jakarta Persistence, so the repository can declare a resource
  * accessor method that returns {@code EntityAgent}:
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * @Repository(dataStore = "MyPersistenceUnit")
  * public interface Cars extends BasicRepository<Car, Long> {
  *     ...
@@ -1220,7 +1224,7 @@ import java.util.Set;
  *         return results;
  *     }
  * }
- * }</pre>
+ * }
  *
  * <p>If the resource type inherits from {@link AutoCloseable} and the
  * accessor method is called from within an invocation of a default method
@@ -1302,13 +1306,14 @@ import java.util.Set;
  * like {@link CrudRepository}, where the primary entity type is the argument
  * to the first type parameter of the superinterface. For example,
  * {@code Product}, in,
- * <pre>{@code
+ *
+ * {@snippet lang="java":
  * @Repository
  * public interface Products extends CrudRepository<Product, Long> {
  *     // applies to the primary entity type: Product
  *     long countByPriceLessThan(float max);
  * }
- * }</pre>
+ * }
  * </li>
  * <li>Otherwise, if the repository declares lifecycle methods&mdash;that is,
  * has methods annotated with a lifecycle annotation like {@link Insert},
@@ -1317,7 +1322,8 @@ import java.util.Set;
  * type annotated as an entity&mdash;and all of these methods share the same
  * entity type, then the primary entity type for the repository is that entity
  * type. For example,
- * <pre>{@code
+ *
+ * {@snippet lang="java":
  * @Repository
  * public interface Products {
  *     @Insert
@@ -1332,7 +1338,7 @@ import java.util.Set;
  *     // applies to the primary entity type: Product
  *     boolean existsByName(String name);
  * }
- * }</pre>
+ * }
  * </li>
  * </ol>
  *
@@ -1352,9 +1358,9 @@ import java.util.Set;
  * <p>The following is an example of method validation, where the
  * parameter to {@code findByEmailIn} must not be the empty set,
  * and cascading validation, where the {@code Email} and {@code NotNull} constraints
- * on the entity that is supplied to {@code save} are validated,</p>
+ * on the entity that is supplied to {@code save} are validated,
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * import jakarta.validation.Valid;
  * import jakarta.validation.constraints.Email;
  * import jakarta.validation.constraints.NotEmpty;
@@ -1379,7 +1385,7 @@ import java.util.Set;
  *     public long id;
  *     ...
  * }
- * }</pre>
+ * }
  *
  *
  * <h2>Jakarta Interceptors</h2>
@@ -1427,9 +1433,9 @@ import java.util.Set;
  * with a value of {@code 1} or {@code 0} depending on whether a matching record
  * is found in the database. If an error occurs, the {@code CompletionStage}
  * {@linkplain CompletableFuture#completeExceptionally completes exceptionally}
- * with the error.</p>
+ * with the error.
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * import jakarta.data.*;
  * import jakarta.enterprise.concurrent.Asynchronous;
  * import jakarta.transaction.Transactional;
@@ -1444,7 +1450,7 @@ import java.util.Set;
  *     @Query("UPDATE Product SET price=?1 WHERE id=?2")
  *     CompletionStage<Integer> setPriceAsync(float newPrice, Long productId);
  * }
- * }</pre>
+ * }
  */
 module jakarta.data {
     // requires static jakarta.inject;      // compile time dependency for Javadoc

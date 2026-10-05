@@ -26,9 +26,9 @@ import java.lang.annotation.Target;
  * <p>Annotates a parameter of a repository method to bind it to a named
  * parameter of a {@link Query}.</p>
  *
- * <p>For example,</p>
+ * <p>For example,
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * @Repository
  * public interface Products extends BasicRepository<Product, String> {
  *
@@ -38,7 +38,7 @@ import java.lang.annotation.Target;
  *
  *     ...
  * }
- * }</pre>
+ * }
  *
  * <p>The {@code Param} annotation is unnecessary when the method parameter name
  * matches the query language

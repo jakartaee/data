@@ -48,24 +48,24 @@ import jakarta.annotation.Nonnull;
  * {@code shippingAddress}, of type {@code Address},
  *
  * <p>
- * <pre>{@code
- * Restrict.all(_Customer.shippingAddress.navigate(_Address.city)
- *                                       .equalTo("Rochester"),
- *              _Customer.shippingAddress.navigate(_Address.state)
- *                                       .equalTo(StateCode.MN));
- * }</pre>
+ * {@snippet lang="java":
+ *     Restrict.all(_Customer.shippingAddress.navigate(_Address.city)
+ *                                           .equalTo("Rochester"),
+ *                  _Customer.shippingAddress.navigate(_Address.state)
+ *                                           .equalTo(StateCode.MN));
+ * }
  *
  * <p>
  * The following Jakarta Persistence entity and embeddable types are used in examples 
  * throughout the documentation of this class.
  *
- * <pre>{@code
- * @Entity
- * public class Customer {
- *     @Id
- *     long id;
- *     @Embedded
- *     Address shippingAddress;
+ * {@snippet lang="java":
+ *     @Entity
+ *     public class Customer {
+ *         @Id
+ *         long id;
+ *         @Embedded
+ *         Address shippingAddress;
  * }
  *
  * @Embeddable
@@ -85,21 +85,21 @@ import jakarta.annotation.Nonnull;
  *     int floor;
  *     String officeNum;
  * }
- * }</pre>
+ * }
  *
  * <p>
  * The static metamodel would include,
  *
- * <pre>{@code
- * @StaticMetamodel(Customer.class)
- * public interface _Customer {
- *     String ID = "id";
- *     String SHIPPING_ADDRESS = "shippingAddress";
+ * {@snippet lang="java":
+ *     @StaticMetamodel(Customer.class)
+ *     public interface _Customer {
+ *         String ID = "id";
+ *         String SHIPPING_ADDRESS = "shippingAddress";
  *
- *     NumericAttribute<Customer, Long> id =
- *             NumericAttribute.of(Customer.class, ID, long.class);
- *     NavigableAttribute<Customer, Address> shippingAddress =
- *             NavigableAttribute.of(Customer.class, SHIPPING_ADDRESS, Address.class);
+ *         NumericAttribute<Customer, Long> id =
+ *                 NumericAttribute.of(Customer.class, ID, long.class);
+ *         NavigableAttribute<Customer, Address> shippingAddress =
+ *                 NavigableAttribute.of(Customer.class, SHIPPING_ADDRESS, Address.class);
  * }
  *
  * @StaticMetamodel(Address.class)
@@ -138,7 +138,7 @@ import jakarta.annotation.Nonnull;
  *     TextAttribute<BuildingInfo> officeNum =
  *             TextAttribute.of(BuildingInfo.class, OFFICE_NUM);
  * }
- * }</pre>
+ * }
  *
  * @param <T> entity type
  * @param <U> type of the intermediate object whose attributes can be
@@ -158,12 +158,12 @@ public interface NavigableExpression<T, U> {
      *
      * <p>
      * Example:
-     * <pre>{@code
-     * List<Customer> notOnFirstFloor = customers.search(
+     * {@snippet lang="java":
+     *     List<Customer> notOnFirstFloor = customers.search(
      *         _Customer.shippingAddress.navigate(_Address.building)
      *                                  .navigate(_BuildingInfo.floor)
      *                                  .notEqualTo(1));
-     * }</pre>
+     * }
      *
      * @param <V>       type of the attribute, which must itself be navigable
      * @param attribute the navigable attribute to which to navigate
@@ -185,11 +185,11 @@ public interface NavigableExpression<T, U> {
      * navigating from this expression to the given text {@code attribute}.
      *
      * <p>Example:
-     * <pre>{@code
-     * List<Customer> found = customers.search(
+     * {@snippet lang="java":
+     *     List<Customer> found = customers.search(
      *         _Customer.shippingAddress.navigate(_Address.city)
      *                                  .equalTo("Minneapolis"));
-     * }</pre>
+     * }
      *
      * @param attribute the text attribute to which to navigate
      * @return a {@link TextExpression} representing the path to the given
@@ -211,11 +211,11 @@ public interface NavigableExpression<T, U> {
      *
      * <p>
      * Example:
-     * <pre>{@code
-     * List<Customer> found = customers.search(
+     * {@snippet lang="java":
+     *     List<Customer> found = customers.search(
      *         _Customer.shippingAddress.navigate(_Address.state)
      *                                  .equalTo(StateCode.MN));
-     * }</pre>
+     * }
      *
      * @param <C>       type of the comparable attribute.
      * @param attribute the comparable attribute to which to navigate
@@ -237,11 +237,11 @@ public interface NavigableExpression<T, U> {
      *
      * <p>
      * Example:
-     * <pre>{@code
-     * List<Customer> found = customers.search(
+     * {@snippet lang="java":
+     *     List<Customer> found = customers.search(
      *         _Customer.shippingAddress.navigate(_Address.verified)
      *                                  .isTrue());
-     * }</pre>
+     * }
      *
      * @param attribute the boolean attribute to which to navigate
      * @return a {@link BooleanExpression} representing the path to the given
@@ -262,11 +262,11 @@ public interface NavigableExpression<T, U> {
      *
      * <p>
      * Example:
-     * <pre>{@code
-     * List<Customer> found = customers.search(
+     * {@snippet lang="java":
+     *     List<Customer> found = customers.search(
      *         _Customer.shippingAddress.navigate(_Address.zip)
      *                                  .between(55901, 55906));
-     * }</pre>
+     * }
      *
      * @param <N>       type of the numeric attribute
      * @param attribute the numeric attribute to which to navigate
@@ -290,11 +290,11 @@ public interface NavigableExpression<T, U> {
      *
      * <p>
      * Example:
-     * <pre>{@code
-     * List<Customer> found = customers.search(
+     * {@snippet lang="java":
+     *     List<Customer> found = customers.search(
      *         _Customer.shippingAddress.navigate(_Address.validFrom)
      *                                  .lessThanEqual(CurrentDate.now()));
-     * }</pre>
+     * }
      *
      * @param <V>       type of the temporal attribute
      * @param attribute the temporal attribute to which to navigate

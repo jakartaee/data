@@ -59,14 +59,15 @@ import jakarta.data.restrict.Restriction;
  * <p>All Jakarta Data providers are required to accept a {@code Delete} method
  * which conforms to this signature.
  * </p>
- * <p>For example, consider an interface representing a garage:</p>
- * <pre>{@code
+ * <p>For example, consider an interface representing a garage:
+ *
+ * {@snippet lang="java":
  * @Repository
  * interface Garage {
  *     @Delete
  *     void unpark(Car car);
  * }
- * }</pre>
+ * }
  * <p>Deletes are performed by matching the unique identifier of the entity.
  * If the entity is versioned, for example, with
  * {@link jakarta.persistence.Version}, the version is also checked for
@@ -125,8 +126,9 @@ import jakarta.data.restrict.Restriction;
  * Parameters of type {@link Limit}, {@link Order},
  * {@link PageRequest}, and {@link Sort} are prohibited.
  *
- * <p>For example, consider an interface representing a garage:</p>
- * <pre>{@code
+ * <p>For example, consider an interface representing a garage:
+ *
+ * {@snippet lang="java":
  * @Repository
  * interface Garage
  *         extends DataRepository<Car, String> {
@@ -139,7 +141,7 @@ import jakarta.data.restrict.Restriction;
  *     @Delete
  *     boolean scrap(String vehicleIdNum);
  * }
- * }</pre>
+ * }
  * <p>Here, {@code scrapAll()} deletes every {@code Car}, while
  * {@code scrap(Restriction)} deletes any {@code Car} matching the given
  * {@code filter}, and {@code scrap(String)} deletes any {@code Car} with a

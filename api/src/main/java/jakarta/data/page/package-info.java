@@ -27,14 +27,14 @@
  * order. This is often done by having the final sort criterion be the unique
  * identifier, but it can be achieved by other means as long as the order is
  * guaranteed to be deterministic. Here is an example of sort criteria to allow
- * data to be read in pages,</p>
+ * data to be read in pages,
  *
- * <pre>
- * Order&lt;Person&gt; sorts = Order.by(Sort.asc("lastName"),
- *                                Sort.asc("firstName"),
- *                                Sort.asc("id")); // unique identifier
- * Page&lt;Person&gt; page1 = people.findByAge(50, sorts, PageRequest.ofSize(25));
- * </pre>
+ * {@snippet lang="java":
+ *     Order<Person> sorts = Order.by(Sort.asc("lastName"),
+ *                                    Sort.asc("firstName"),
+ *                                    Sort.asc("id")); // unique identifier
+ *     Page<Person> page1 = people.findByAge(50, sorts, PageRequest.ofSize(25));
+ * }
  *
  * <p>In the example above, even if multiple people have the same last names
  * and same first names, the results will always be in the same order due to the

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2025,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -82,16 +82,16 @@ public @interface Select {
      *
      * <p>For example, to return only the {@code price} attribute of the
      * {@code Car} entity that has the supplied {@code vin} attribute
-     * value,</p>
+     * value,
      *
-     * <pre>{@code
-     * @Repository
-     * public interface Cars extends BasicRepository<Car, String> {
+     * {@snippet lang="java":
+     *     @Repository
+     *     public interface Cars extends BasicRepository<Car, String> {
      *     @Find
      *     @Select(_Car.PRICE)
      *     Optional<Float> getPrice(@By(_Car.VIN) String vehicleIdNum);
      * }
-     * }</pre>
+     * }
      *
      * <h4>Method that returns Java Records</h4>
      *
@@ -108,11 +108,11 @@ public @interface Select {
      *
      * <p>For example, to return only the {@code model}, {@code make}, and
      * {@code year} attributes of a {@code Car} entity that has the supplied
-     * {@code vin} attribute value,</p>
+     * {@code vin} attribute value,
      *
-     * <pre>{@code
-     * @Repository
-     * public interface Cars extends BasicRepository<Car, String> {
+     * {@snippet lang="java":
+     *     @Repository
+     *     public interface Cars extends BasicRepository<Car, String> {
      *     record ModelInfo(String model,
      *                      String manufacturer,
      *                      int designYear) {}
@@ -123,7 +123,7 @@ public @interface Select {
      *     @Select(_Car.YEAR)
      *     Optional<ModelInfo> getModelInfo(@By(_Car.VIN) String vehicleIdNum);
      * }
-     * }</pre>
+     * }
      *
      * <h5>Annotating a Record Component</h5>
      *
@@ -132,9 +132,9 @@ public @interface Select {
      * Assign the annotation value to be the name of an entity attribute that
      * has the same type as the record component.</p>
      *
-     * <pre>{@code
-     * @Repository
-     * public interface Cars extends BasicRepository<Car, String> {
+     * {@snippet lang="java":
+     *     @Repository
+     *     public interface Cars extends BasicRepository<Car, String> {
      *     record ModelInfo(@Select(_Car.MODEL) String model,
      *                      @Select(_Car.MAKE) String manufacturer,
      *                      @Select(_Car.YEAR) int designYear) {}
@@ -142,7 +142,7 @@ public @interface Select {
      *     @Find
      *     Optional<ModelInfo> getModelInfo(@By(_Car.VIN) String vehicleIdNum);
      * }
-     * }</pre>
+     * }
      *
      * <p>For more concise code, the {@code Select} annotation can be omitted
      * from a record component that has the same name as the entity attribute,

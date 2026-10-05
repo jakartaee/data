@@ -39,25 +39,25 @@ import jakarta.data.repository.Query;
  * {@code Limit} if its return type indicates that it may return multiple
  * entities. The parameter of type {@code Limit} must occur after the method
  * parameters representing regular parameters of the query itself. For
- * example,</p>
+ * example,
  *
- * <pre>{@code
- * @Find
- * Product[] namedLike(@By(_Product.NAME) @Is(Like.class) String namePattern,
- *                     Limit limit,
- *                     Order<Product> sorts);
+ * {@snippet lang="java":
+ *     @Find
+ *     Product[] namedLike(@By(_Product.NAME) @Is(Like.class) String namePattern,
+ *                         Limit limit,
+ *                         Order<Product> sorts);
  *
- * ...
- * mostExpensive50 = products.namedLike(pattern,
- *                                      Limit.of(50),
- *                                      Order.by(Sort.desc(_Product.PRICE),
- *                                               Sort.asc(_Product.NAME)));
- * ...
- * secondMostExpensive50 = products.namedLike(pattern,
- *                                            Limit.range(51, 100),
- *                                            Order.by(Sort.desc(_Product.PRICE),
- *                                                     Sort.asc(_Product.NAME)));
- * }</pre>
+ *     ...
+ *     mostExpensive50 = products.namedLike(pattern,
+ *                                          Limit.of(50),
+ *                                          Order.by(Sort.desc(_Product.PRICE),
+ *                                                   Sort.asc(_Product.NAME)));
+ *     ...
+ *     secondMostExpensive50 = products.namedLike(pattern,
+ *                                                Limit.range(51, 100),
+ *                                                Order.by(Sort.desc(_Product.PRICE),
+ *                                                         Sort.asc(_Product.NAME)));
+ * }
  *
  * <p>A repository method may not be declared with:
  * <ul>

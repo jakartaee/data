@@ -33,18 +33,18 @@ import jakarta.annotation.Nonnull;
  * <p>For example, the following constructs a composite restriction (from a
  * basic restriction and another composite restriction) that matches cars that
  * either cost less than $35000 or have newer model years than 2023 and cost
- * less than $40000.</p>
+ * less than $40000.
  *
- * <pre>
- * List&lt;Car&gt; found =
- *         cars.search(make,
- *                     model,
- *                     Restrict.any(_Car.price.lessThan(35000),
- *                                  Restrict.all(_Car.year.greaterThan(2023),
- *                                               _Car.price.lessThan(40000))),
- *                     Order.by(_Car.year.desc(),
- *                              _Car.price.desc()));
- * </pre>
+ * {@snippet lang="java":
+ *     List<Car> found =
+ *             cars.search(make,
+ *                         model,
+ *                         Restrict.any(_Car.price.lessThan(35000),
+ *                                      Restrict.all(_Car.year.greaterThan(2023),
+ *                                                   _Car.price.lessThan(40000))),
+ *                         Order.by(_Car.year.desc(),
+ *                                  _Car.price.desc()));
+ * }
  *
  * @since 1.1
  */
@@ -59,14 +59,14 @@ public class Restrict {
      * supplied restrictions are satisfied. The order of the restrictions is
      * preserved in the composite restriction.</p>
      *
-     * <p>For example,</p>
-     * <pre>
-     * List&lt;Book&gt; jakartaEEBooksByAuthor =
+     * <p>For example,
+     * {@snippet lang="java":
+     *     List<Book> jakartaEEBooksByAuthor =
      *         books.writtenBy(author,
      *                         Restrict.all(_Book.title.notNull(),
      *                                      _Book.title.upper().contains("JAKARTA EE")),
      *                         Order.by(_Book.title.asc()));
-     * </pre>
+     * }
      *
      * @param <T>          entity type.
      * @param restrictions one or more restrictions obtained from a method of
@@ -94,20 +94,20 @@ public class Restrict {
      * {@link List#copyOf(java.util.Collection) copy} of the supplied
      * {@code List} rather than the original if the list is modifiable.</p>
      *
-     * <p>For example,</p>
-     * <pre>
-     * List&lt;Restriction&lt;Book&gt;&gt; restrictions = new ArrayList&lt;&gt;();
-     * restrictions.add(_Book.price.lessThanEqual(10.0f));
-     * restrictions.add(_Book.numPages.greaterThanEqual(200));
+     * <p>For example,
+     * {@snippet lang="java":
+     *     List<Restriction<Book>> restrictions = new ArrayList<>();
+     *     restrictions.add(_Book.price.lessThanEqual(10.0f));
+     *     restrictions.add(_Book.numPages.greaterThanEqual(200));
      *
-     * List&lt;Sort&lt;Book&gt;&gt; sorts = new ArrayList&lt;&gt;();
-     * sorts.add(_Book.price.desc());
-     * sorts.add(_Book.title.asc());
+     *     List<Sort<Book>> sorts = new ArrayList<>();
+     *     sorts.add(_Book.price.desc());
+     *     sorts.add(_Book.title.asc());
      *
-     * List&lt;Book&gt; inexpensiveLongBooks =
+     *     List<Book> inexpensiveLongBooks =
      *         books.search(Restrict.all(restrictions),
      *                      Order.by(sorts));
-     * </pre>
+     * }
      *
      * @param <T>          entity type.
      * @param restrictions one or more restrictions obtained from a method of
@@ -132,13 +132,13 @@ public class Restrict {
      * of the supplied restrictions is satisfied. The order of the restrictions
      * is preserved in the composite restriction.</p>
      *
-     * <p>For example,</p>
-     * <pre>
-     * List&lt;Product&gt; found =
+     * <p>For example,
+     * {@snippet lang="java":
+     *     List<Product> found =
      *         products.search(productName,
      *                         Restrict.any(_Product.color.equalTo(Color.BLUE),
      *                                      _Product.color.equalTo(Color.GREEN)));
-     * </pre>
+     * }
      *
      * @param <T>          entity type.
      * @param restrictions one or more restrictions obtained from a method of
@@ -167,21 +167,21 @@ public class Restrict {
      * {@link List#copyOf(java.util.Collection) copy} of the supplied
      * {@code List} rather than the original if the list is modifiable.</p>
      *
-     * <p>For example,</p>
-     * <pre>
-     * List&lt;Restriction&lt;Book&gt;&gt; restrictions = new ArrayList&lt;&gt;();
-     * restrictions.add(_Book.price.lessThan(15.0f));
-     * restrictions.add(_Book.hardcovered.isEqualTo(true));
+     * <p>For example,
+     * {@snippet lang="java":
+     *     List<Restriction<Book>> restrictions = new ArrayList<>();
+     *     restrictions.add(_Book.price.lessThan(15.0f));
+     *     restrictions.add(_Book.hardcovered.isEqualTo(true));
      *
-     * List&lt;Sort&lt;Book&gt;&gt; sorts = new ArrayList&lt;&gt;();
-     * sorts.add(_Book.price.desc());
-     * sorts.add(_Book.isbn.asc());
+     *     List<Sort<Book>> sorts = new ArrayList<>();
+     *     sorts.add(_Book.price.desc());
+     *     sorts.add(_Book.isbn.asc());
      *
-     * List&lt;Book&gt; found =
+     *     List<Book> found =
      *         books.titled(title,
      *                      Restrict.any(restrictions),
      *                      Order.by(sorts));
-     * </pre>
+     * }
      *
      * <p>The example method above requires the book's title to always match
      * and the book to either be priced under $15 or have a hard cover.</p>

@@ -42,30 +42,30 @@ import jakarta.annotation.Nonnull;
  * parameters representing regular parameters of the query itself.</p>
  *
  * <p>A repository method parameter of type {@link Order} allows a variable
- * number of {@code Sort} criteria. For example,</p>
+ * number of {@code Sort} criteria. For example,
  *
- * <pre>{@code
- * Employee[] findByYearHired(int yearHired, Limit maxResults, Order<Employee> sortBy);
+ * {@snippet lang="java":
+ *     Employee[] findByYearHired(int yearHired, Limit maxResults, Order<Employee> sortBy);
  *
- * ...
- * highestPaidNewHires = employees.findByYearHired(Year.now().getValue(),
- *                                                 Limit.of(10),
- *                                                 Order.by(Sort.desc("salary"),
- *                                                          Sort.asc("lastName"),
- *                                                          Sort.asc("firstName")));
- * }</pre>
+ *     ...
+ *     highestPaidNewHires = employees.findByYearHired(Year.now().getValue(),
+ *                                                     Limit.of(10),
+ *                                                     Order.by(Sort.desc("salary"),
+ *                                                              Sort.asc("lastName"),
+ *                                                              Sort.asc("firstName")));
+ * }
  *
  * <p>Alternatively, {@link Order} may be used in combination with
  * the {@linkplain StaticMetamodel static metamodel} to allow a variable number
- * of typed {@code Sort} criteria. For example,</p>
+ * of typed {@code Sort} criteria. For example,
  *
- * <pre>{@code
- * highestPaidNewHires = employees.findByYearHired(Year.now().getValue(),
- *                                                 Limit.of(10),
- *                                                 Order.by(_Employee.salary.desc(),
- *                                                          _Employee.lastName.asc(),
- *                                                          _Employee.firstName.asc()));
- * }</pre>
+ * {@snippet lang="java":
+ *     highestPaidNewHires = employees.findByYearHired(Year.now().getValue(),
+ *                                                     Limit.of(10),
+ *                                                     Order.by(_Employee.salary.desc(),
+ *                                                              _Employee.lastName.asc(),
+ *                                                              _Employee.firstName.asc()));
+ * }
  *
  * <p>When multiple sorting criteria are provided, sorting is
  * lexicographic, with the precedence of a criterion depending on its position
@@ -354,9 +354,9 @@ public record Sort<T>(@Nullable ComparableExpression<T, ? extends Comparable<?>>
      * {@linkplain StaticMetamodel static metamodel}, which also allows a
      * more concise way to sort on an attribute or expression,
      *
-     * <pre>{@code
-     * _Person.ssn.asc()
-     * }</pre>
+     * {@snippet lang="java":
+     *     _Person.ssn.asc()
+     * }
      *
      * @param <T>        entity class of the expression
      * @param <V>        type of the expression
@@ -410,9 +410,9 @@ public record Sort<T>(@Nullable ComparableExpression<T, ? extends Comparable<?>>
      * {@linkplain StaticMetamodel static metamodel}, which also allows a
      * more concise way to sort on an attribute or expression,
      *
-     * <pre>{@code
-     * _Product.name.ascIgnoreCase()
-     * }</pre>
+     * {@snippet lang="java":
+     *     _Product.name.ascIgnoreCase()
+     * }
      *
      * @param <T>        entity class of the expression
      * @param expression the {@linkplain TextAttribute entity attribute}
@@ -435,9 +435,9 @@ public record Sort<T>(@Nullable ComparableExpression<T, ? extends Comparable<?>>
      * {@linkplain StaticMetamodel static metamodel}, which also allows a
      * more concise way to sort on an attribute or expression,
      *
-     * <pre>{@code
-     * _Person.ssn.desc()
-     * }</pre>
+     * {@snippet lang="java":
+     *     _Person.ssn.desc()
+     * }
      *
      * @param <T>        entity class of the expression
      * @param <V>        type of the expression
@@ -492,9 +492,9 @@ public record Sort<T>(@Nullable ComparableExpression<T, ? extends Comparable<?>>
      * {@linkplain StaticMetamodel static metamodel}, which also allows a
      * more concise way to sort on an attribute or expression,
      *
-     * <pre>{@code
-     * _Product.name.descIgnoreCase()
-     * }</pre>
+     * {@snippet lang="java":
+     *     _Product.name.descIgnoreCase()
+     * }
      *
      * @param <T>        entity class of the expression
      * @param expression the {@linkplain TextAttribute entity attribute}
@@ -511,15 +511,15 @@ public record Sort<T>(@Nullable ComparableExpression<T, ? extends Comparable<?>>
 
     /**
      * <p>Returns an otherwise-equivalent sort that orders {@code null} values
-     * first. For example,</p>
+     * first. For example,
      *
-     * <pre>{@code
-     * page1 = customers.livingIn(country,
-     *                            PageRequest.ofSize(50),
-     *                            Order.by(_Customer.stateName.asc().nullsFirst(),
-     *                                     _Customer.cityName.asc().nullsFirst(),
-     *                                     _Customer.id.asc()));
-     * }</pre>
+     * {@snippet lang="java":
+     *     page1 = customers.livingIn(country,
+     *                                PageRequest.ofSize(50),
+     *                                Order.by(_Customer.stateName.asc().nullsFirst(),
+     *                                         _Customer.cityName.asc().nullsFirst(),
+     *                                         _Customer.id.asc()));
+     * }
      *
      * <p>If the data store is a non-relational database that is not capable
      * of ordering {@code null} values first, then repository methods to which
@@ -540,15 +540,15 @@ public record Sort<T>(@Nullable ComparableExpression<T, ? extends Comparable<?>>
 
     /**
      * <p>Returns an otherwise-equivalent sort that orders {@code null} values
-     * last. For example,</p>
+     * last. For example,
      *
-     * <pre>{@code
-     * page1 = products.namedLike(namePattern,
-     *                            PageRequest.ofSize(25),
-     *                            Order.by(_Product.price.desc().nullsLast(),
-     *                                     _Product.name.asc(),
-     *                                     _Product.id.asc()));
-     * }</pre>
+     * {@snippet lang="java":
+     *     page1 = products.namedLike(namePattern,
+     *                                PageRequest.ofSize(25),
+     *                                Order.by(_Product.price.desc().nullsLast(),
+     *                                         _Product.name.asc(),
+     *                                         _Product.id.asc()));
+     * }
      *
      * <p>If the data store is a non-relational database that is not capable
      * of ordering {@code null} values last, then repository methods to which

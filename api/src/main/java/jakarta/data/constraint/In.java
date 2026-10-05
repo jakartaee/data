@@ -35,33 +35,33 @@ import jakarta.annotation.Nonnull;
  *
  * <p>A parameter-based repository method can impose a constraint on an
  * entity attribute by defining a method parameter that is of type {@code In}.
- * For example,</p>
+ . For example,
  *
- * <pre>
- * &#64;Find
- * List&lt;Car&gt; manufacturedByAnyOf(&#64;By(_Car.MAKE) In&lt;String&gt; manufactures);
- * ...
+ * {@snippet lang="java":
+ *     @Find
+ *     List<Car> manufacturedByAnyOf(@By(_Car.MAKE) In<String> manufactures);
+ *     ...
  *
- * found = cars.manufacturedByAnyOf(In.values("Jakarta Motors",
- *                                            "JEE Motors"));
- * </pre>
+ *     found = cars.manufacturedByAnyOf(In.values("Jakarta Motors",
+ *                                                "JEE Motors"));
+ * }
  *
  * <p>Repository methods can also accept {@code In} constraints at runtime
  * in the form of a {@link Restriction} on an {@link Expression}. For example,
  * </p>
  *
- * <pre>
- * &#64;Find
- * List&lt;Car&gt; searchAll(Restriction&lt;Car&gt; restrict, Order&lt;Car&gt; sorts);
+ * {@snippet lang="java":
+ *     @Find
+ *     List<Car> searchAll(Restriction<Car> restrict, Order<Car> sorts);
  *
- * ...
+ *     ...
  *
- * found = cars.searchAll(_Car.make.in("Jakarta Motors",
- *                                     "JEE Motors"),
- *                        Order.by(_Car.model.asc(),
- *                                 _Car.year.desc(),
- *                                 _Car.price.asc()));
- * </pre>
+ *     found = cars.searchAll(_Car.make.in("Jakarta Motors",
+ *                                         "JEE Motors"),
+ *                            Order.by(_Car.model.asc(),
+ *                                     _Car.year.desc(),
+ *                                     _Car.price.asc()));
+ * }
  *
  * <p>The {@linkplain Attribute entity and static metamodel} for the code
  * examples within this class are shown in the {@link Attribute} Javadoc.
@@ -75,12 +75,12 @@ public interface In<V> extends Constraint<V> {
 
     /**
      * <p>Requires that the constraint target equal one of the given
-     * {@code values}. For example,</p>
+     * {@code values}. For example,
      *
-     * <pre>
-     * found = cars.manufacturedByAnyOf(In.values("Jakarta Motors",
+     * {@snippet lang="java":
+     *     found = cars.manufacturedByAnyOf(In.values("Jakarta Motors",
      *                                            "JEE Motors"));
-     * </pre>
+     * }
      *
      * @param <V>    type of the entity attribute or a subtype or primitive
      *               wrapper type for the entity attribute.
@@ -118,12 +118,12 @@ public interface In<V> extends Constraint<V> {
 
     /**
      * <p>Requires that the constraint target equal one of the given
-     * {@code values}. For example,</p>
+     * {@code values}. For example,
      *
-     * <pre>
-     * found = cars.manufacturedByAnyOf(In.values(Set.of("Jakarta Motors",
+     * {@snippet lang="java":
+     *     found = cars.manufacturedByAnyOf(In.values(Set.of("Jakarta Motors",
      *                                                   "JEE Motors")));
-     * </pre>
+     * }
      *
      * @param <V>    type of the entity attribute or a subtype or primitive
      *               wrapper type for the entity attribute.
@@ -160,13 +160,13 @@ public interface In<V> extends Constraint<V> {
 
     /**
      * <p>Requires that the constraint target equal one of the values to
-     * which the given {@code expressions} evaluate. For example,</p>
+     * which the given {@code expressions} evaluate. For example,
      *
-     * <pre>
-     * found = cars.manufacturedByAnyOf(
+     * {@snippet lang="java":
+     *     found = cars.manufacturedByAnyOf(
      *                 In.expressions(List.of(_Car.model.left(_Car.make.length()),
      *                                        _Car.model.right(_Car.make.length()))));
-     * </pre>
+     * }
      *
      * @param <V>         type of the entity attribute or a subtype or
      *                    primitive wrapper type for the entity attribute.
@@ -201,13 +201,13 @@ public interface In<V> extends Constraint<V> {
 
     /**
      * <p>Requires that the constraint target equal one of the values to
-     * which the given {@code expressions} evaluate. For example,</p>
+     * which the given {@code expressions} evaluate. For example,
      *
-     * <pre>
-     * found = cars.manufacturedByAnyOf(
+     * {@snippet lang="java":
+     *     found = cars.manufacturedByAnyOf(
      *                 In.expressions(_Car.model.left(_Car.make.length()),
      *                                _Car.model.right(_Car.make.length())));
-     * </pre>
+     * }
      *
      * @param <V>         type of the entity attribute or a subtype or
      *                    primitive wrapper type for the entity attribute.

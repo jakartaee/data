@@ -47,12 +47,12 @@ public interface TemporalExpression<T, V extends Temporal & Comparable<? extends
     /**
      * <p>Represents the function to obtain the current date.</p>
      *
-     * <p>Example:</p>
-     * <pre>{@code
+     * <p>Example:
+     * {@snippet lang="java":
      *     listedToday = cars.search(make,
      *                               model,
      *                               _Car.listed.equalTo(TemporalExpression.localDate()));
-     * }</pre>
+     * }
      *
      * @return a {@code TemporalExpression} representing the function to obtain
      *         the current date as known to the data store.

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023,2024 Contributors to the Eclipse Foundation
+ * Copyright (c) 2023,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,14 +47,15 @@ import java.lang.annotation.Target;
  * Application of the {@code Save} annotation to a method with any other signature is not portable between Jakarta Data
  * providers.
  * </p>
- * <p>For example, consider an interface representing a garage:</p>
- * <pre>{@code
+ * <p>For example, consider an interface representing a garage:
+ *
+ * {@snippet lang="java":
  * @Repository
  * interface Garage {
  *     @Save
  *     Car park(Car car);
  * }
- * }</pre>
+ * }
  * <p>The operation performed by the annotated method depends on whether the database already holds an entity with the
  * unique identifier of an entity passed as an argument. From the point of view of the caller:
  * </p>

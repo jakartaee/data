@@ -31,12 +31,12 @@ import java.lang.annotation.Target;
  * automatic query method will be accessed by the application
  * program. The repository implementation should ensure that
  * access to the value of the specified attribute is efficient.
- * <pre>{@code
- * @Find
- * @Fetching(_Book.AUTHORS)
- * @Fetching(_Book.PUBLISHER)
- * Book bookWithAuthorsAndPublisher(String isbn);
- * }</pre>
+ * {@snippet lang="java":
+ *     @Find
+ *     @Fetching(_Book.AUTHORS)
+ *     @Fetching(_Book.PUBLISHER)
+ *     Book bookWithAuthorsAndPublisher(String isbn);
+ * }
  *
  * <p>If the repository method is annotated {@link QueryOptions @QueryOptions},
  * the request for eager fetching consists of the union of entity attributes

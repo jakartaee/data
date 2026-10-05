@@ -149,23 +149,23 @@ public interface ComparableLiteral<V extends Comparable<?>>
      * output of the value, enclosed in single quotes.</p>
      *
      * <p>For example, the output of
-     * {@code ComparableLiteral.of(Month.MAY).toString()} is</p>
-     * <pre>
-     * java.time.Month.MAY
-     * </pre>
+     * {@code ComparableLiteral.of(Month.MAY).toString()} is
+     * {@snippet lang="java":
+     *     java.time.Month.MAY
+     * }
      *
      * <p>For example, the output of
-     * {@code ComparableLiteral.of('D').toString()} is</p>
-     * <pre>
-     * 'D'
-     * </pre>
+     * {@code ComparableLiteral.of('D').toString()} is
+     * {@snippet lang="java":
+     *     'D'
+     * }
      *
      * <p>The output of
      * {@code ComparableLiteral.of(UUID.fromString("73d518c4-b7f6-4c3b-9f63-60a045a43bb8")).toString()}
-     * is</p>
-     * <pre>
-     * {ComparableLiteral java.util.UUID '73d518c4-b7f6-4c3b-9f63-60a045a43bb8'}
-     * </pre>
+     * is
+     * {@snippet lang="java":
+     *     {ComparableLiteral java.util.UUID '73d518c4-b7f6-4c3b-9f63-60a045a43bb8'}
+     * }
      *
      * @return a {@code String} representing the literal value.
      */

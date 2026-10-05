@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022,2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,9 +43,9 @@ import jakarta.annotation.Nonnull;
  * {@code countBy...} and {@code deleteBy...}, which
  * do not explicitly specify an entity type.</p>
  *
- * <p>Example entity:</p>
+ * <p>Example entity:
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * @Entity
  * public class Car {
  *     @Id
@@ -55,11 +55,11 @@ import jakarta.annotation.Nonnull;
  *     public int year;
  *     ...
  * }
- * }</pre>
+ * }
  *
- * <p>Example repository:</p>
+ * <p>Example repository:
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * @Repository
  * public interface Cars extends CrudRepository<Car, Long> {
  *
@@ -67,24 +67,24 @@ import jakarta.annotation.Nonnull;
  *
  *     ...
  * }
- * }</pre>
+ * }
  *
- * <p>Example usage:</p>
+ * <p>Example usage:
  *
- * <pre>{@code
- * @Inject
- * Cars cars;
+ * {@snippet lang="java":
+ *     @Inject
+ *     Cars cars;
  *
- * ...
+ *     ...
  *
- * Car car1 = ...
- * car1 = cars.insert(car1);
+ *     Car car1 = ...
+ *     car1 = cars.insert(car1);
  *
- * List<Car> found = findByMakeAndModel(car1.make,
- *                                      car1.model,
- *                                      Order.by(Sort.desc("year"),
- *                                               Sort.asc("vin")));
- * }</pre>
+ *     List<Car> found = findByMakeAndModel(car1.make,
+ *                                          car1.model,
+ *                                          Order.by(Sort.desc("year"),
+ *                                                   Sort.asc("vin")));
+ * }
  *
  * <p>The module Javadoc provides an {@link jakarta.data/ overview} of Jakarta
  * Data.</p>

@@ -47,10 +47,10 @@ public interface StringLiteral
      *
      * <p>For example, the output of
      * {@code StringLiteral.of("Jakarta Data's second release").toString()} is
-     * </p>
-     * <pre>
-     * 'Jakarta Data''s second release'
-     * </pre>
+     * 
+     * {@snippet lang="java":
+     *     'Jakarta Data''s second release'
+     * }
      *
      * @return the {@code String} value escaped and enclosed in single quotes.
      */

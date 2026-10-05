@@ -32,9 +32,9 @@ import java.lang.annotation.Target;
  * repository implementation must be made available to applications via
  * the {@code jakarta.inject.Inject} annotation.</p>
  *
- * <p>For example,</p>
+ * <p>For example,
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * @Repository
  * public interface Products extends DataRepository<Product, Long> {
  *
@@ -47,16 +47,16 @@ import java.lang.annotation.Target;
  *
  *     ...
  * }
- * }</pre>
+ * }
  *
- * <pre>{@code
- * @Inject
- * Products products;
+ * {@snippet lang="java":
+ *     @Inject
+ *     Products products;
  *
- * ...
- * found = products.namedLike("%Printer%");
- * numUpdated = products.putOnSale(0.15f, 20.0f);
- * }</pre>
+ *     ...
+ *     found = products.namedLike("%Printer%");
+ *     numUpdated = products.putOnSale(0.15f, 20.0f);
+ * }
  *
  * <p>The module Javadoc provides an {@linkplain jakarta.data/ overview}
  * of Jakarta Data.</p>
