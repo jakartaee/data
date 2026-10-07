@@ -70,7 +70,7 @@ import jakarta.annotation.Nonnull;
  *     @Find
  *     List<Car> pricedAtMost(@By(_Car.PRICE) @Is(AtMost.class) int maxPrice,
  *                            @By(_Car.MAKE) @Is(Like.class) String makePattern,
- *                            @By(_Car.MODEL) @Is(Like.class) Sting modelPattern,
+ *                            @By(_Car.MODEL) @Is(Like.class) String modelPattern,
  *                            Order<Car> sorts);
  *
  *     ...
