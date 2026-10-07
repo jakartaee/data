@@ -35,7 +35,7 @@ import jakarta.annotation.Nonnull;
  *
  * <p>A parameter-based repository method can impose a constraint on an
  * entity attribute by defining a method parameter that is of type {@code In}.
- . For example,
+ * For example,
  *
  * {@snippet lang="java":
  *     @Find

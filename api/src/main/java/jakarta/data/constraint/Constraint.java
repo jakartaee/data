@@ -64,7 +64,7 @@ import jakarta.annotation.Nonnull;
  * <p>Constraint parameters of repository methods can be annotated with the
  * {@link Is @Is} annotation to indicate the subtype of {@code Constraint}.
  * The type of the method parameter must be the entity attribute type.
- . For example,
+ * For example,
  *
  * {@snippet lang="java":
  *     @Find

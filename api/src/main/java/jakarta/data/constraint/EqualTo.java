@@ -33,7 +33,7 @@ import jakarta.annotation.Nonnull;
  * {@code EqualTo} or is annotated {@link Is @Is(EqualTo.class)} and is
  * of the same type or a subtype of the entity attribute. The equality
  * constraint is also the default when the {@code @Is} annotation is omitted.
- . For example,
+ * For example,
  *
  * {@snippet lang="java":
  *     @Find
@@ -65,7 +65,7 @@ import jakarta.annotation.Nonnull;
  *
  * <p>Repository methods can also accept {@code EqualTo} constraints at
  * runtime in the form of a {@link Restriction} on an {@link Expression}.
- . For example,
+ * For example,
  *
  * {@snippet lang="java":
  *     @Find

@@ -64,7 +64,7 @@ import jakarta.annotation.Nonnull;
  *
  * <p>Repository methods can also accept {@code Like} constraints at run time
  * in the form of a {@link Restriction} on a {@link TextExpression}.
- . For example,
+ * For example,
  *
  * {@snippet lang="java":
  *     @Find
