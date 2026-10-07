@@ -986,7 +986,7 @@ import java.util.Set;
  *                     Limit max,
  *                     Order<Product> sortBy);
  *
- *.    ...
+ * ...
  *     found = products.nameLiked(namePattern,
  *                                Limit.of(25),
  *                                Order.by(Sort.desc("price"),
