@@ -17,6 +17,8 @@
  */
 package jakarta.data.repository;
 
+import jakarta.inject.Inject;
+
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -30,7 +32,7 @@ import java.lang.annotation.Target;
  * <p>This class is a CDI bean-defining annotation when CDI is available.
  * Regardless of whether CDI or custom dependency injection is used, the
  * repository implementation must be made available to applications via
- * the {@code jakarta.inject.Inject} annotation.</p>
+ * the {@link Inject} annotation.</p>
  *
  * <p>For example,
  *

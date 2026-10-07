@@ -45,19 +45,34 @@ import jakarta.data.repository.Select;
 import jakarta.data.repository.Update;
 import jakarta.data.restrict.Restrict;
 import jakarta.data.restrict.Restriction;
+import jakarta.enterprise.concurrent.Asynchronous;
+import jakarta.inject.Inject;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.query.JakartaQuery;
+import jakarta.persistence.query.NativeQuery;
+import jakarta.transaction.Status;
+import jakarta.transaction.Transactional;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
 
+import java.lang.annotation.Inherited;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 import java.util.List;
 import java.util.Set;
 
 /**
- * <p>Jakarta Data standardizes a programming model where data is represented by
- * simple Java classes and where operations on data are represented by interface
- * methods.</p>
+ * <p>Jakarta Data standardizes a programming model in which data is
+ * represented by simple Java classes and operations on data are
+ * represented by <a href="#RepositoryMethods">interface methods</a>.
  *
- * <p>The application defines simple Java objects called entities to represent
- * data in the database. Fields or accessor methods designate each entity attribute.
+ * <p>The application defines simple Java objects called
+ * <a href="#Entities">entities</a> to represent data in the database.
+ * Fields or accessor methods designate each entity attribute.
  * For example,
  *
  * {@snippet lang="java":
@@ -105,8 +120,7 @@ import java.util.Set;
  * }
  *
  * <p>Repository interfaces are implemented by the container/runtime and are made
- * available to applications via the {@code jakarta.inject.Inject} annotation. For
- * example,
+ * available to applications via the {@link Inject} annotation. For example,
  *
  * {@snippet lang="java":
  *     @Inject
@@ -128,18 +142,26 @@ import java.util.Set;
  *                                                   LocalDate.now().minusYears(1));
  * }
  *
+ * <h2>Entity models</h2>
+ * 
  * <p>Jakarta Persistence and Jakarta NoSQL define programming models for entity
  * classes that may be used with Jakarta Data:</p>
  * <ul>
- * <li>{@code jakarta.persistence.Entity} and the corresponding entity-related
- *    annotations of the Jakarta Persistence specification may be used to
- *    define entities stored in a relational database, or</li>
- * <li>{@code jakarta.nosql.Entity} and the corresponding entity-related
- *     annotations of the Jakarta NoSQL specification may be used to define
- *     entities stored in a NoSQL database.
+ * <li>{@link Entity jakarta.persistence.Entity} and the corresponding
+ *     entity-related annotations</a> of the
+ *     <a href="${jakarta.persistence.spec.url}">Jakarta Persistence specification</a>
+ *     may be used to define entities stored in a relational database, or</li>
+ * <li>{@link jakarta.nosql.Entity jakarta.nosql.Entity} and the corresponding
+ *     entity-related annotations of the
+ *     <a href="${jakarta.nosql.spec.url}">Jakarta NoSQL specification</a>
+ *     may be used to define entities stored in a NoSQL database.
  * </ul>
  * <p>A Jakarta Data provider may define its own programming model for entity
  *    classes representing some other arbitrary kind of data.</p>
+ *
+ * <a id="RepositoryMethods">
+ * <h2>Repository methods</h2>
+ * </a>
  *
  * <p>Methods of repository interfaces must be styled according to a
  * well-defined set of conventions, which instruct the container/runtime
@@ -148,6 +170,86 @@ import java.util.Set;
  * parameters with special meaning, method return types, and annotations
  * placed upon the method and its parameters.</p>
  *
+ * <table style="width: 100%">
+ * <caption><b>Conventions for repository methods</b></caption>
+ * <tr style="background-color:#ccc">
+ * <td style="vertical-align: top; width:25%"><b>Category</b></td>
+ * <td style="vertical-align: top; width:*"><b>Description</b></td>
+ * </tr>
+ *
+ * <tr style="vertical-align: top">
+ * <td><a href="#ConstraintQuery">Constraint Query</a></td>
+ * <td>A repository method is annotated {@link Find @Find} or {@link Delete
+ *     @Delete} and follows the <a href="#ConstraintQuery">parameter-based
+ *     constraint query pattern</a>.
+ *     {@snippet lang="java":
+ *         @Find
+ *         @OrderBy(_Product.NAME)
+ *         List<Product> latestInDepartment(
+ *                 @By(_Product.DEPARTMENT) Department dept,
+ *                 @By(_Product.PRODUCEDON) @Is(AtLeast.class) LocalDate minDateProduced);
+ *     }</td></tr>
+ *
+ * <tr style="vertical-align: top">
+ * <td><a href="#LifecycleMethod">Lifecycle Method</a></td>
+ * <td>A repository method is annotated with a
+ *     <a href="../jakarta.data.stateful/">stateful</a> or
+ *     <a href="#StatelessRepository">stateless</a> lifecycle annotation.
+ *     {@snippet lang="java":
+ *         @Update
+ *         Product replace(Product updates);
+ *     }
+ *     </td></tr>
+ *
+ * <tr style="vertical-align: top">
+ * <td><a href="#MethodNameQuery">Method Name Query</a></td>
+ * <td>A repository method is named according to the
+ *     <a href="#MethodNameQuery">Query by Method Name pattern</a>.
+ *     {@snippet lang="java":
+ *         List<Product> findByPriceBetweenOrderByPrice(float minPrice, float maxPrice);
+ *     }</td></tr>
+ *
+ * <tr style="vertical-align: top">
+ * <td><a href="#QueryLanguageMethod">Query Language Method</a></td>
+ * <td>A repository method is annotated {@link Query @Query},
+ *     {@link JakartaQuery @JakartaQuery}, or {@link NativeQuery @NativeQuery}
+ *     to supply a query string.
+ *     {@snippet lang="java":
+ *         @Query("SELECT COUNT(THIS) FROM Product WHERE department = ?1")
+ *         int totalIn(Department department);
+ *     }</td></tr>
+ *
+ * <tr style="vertical-align: top">
+ * <td><a href="#ResourceAccess">Resource Accessor Method</a></td>
+ * <td>A repository method returns a <a href="#ResourceAccess">resource type</a>
+ *     used by the Jakarta Data provider.
+ *     {@snippet lang="java":
+ *         EntityAgent getAgent();
+ *     }</td></tr>
+ *
+ * <tr style="vertical-align: top">
+ * <td><a href="#DefaultMethod">Default Method</a></td>
+ * <td>A repository method is implemented by the application as a Java
+ *     <a href="#DefaultMethod">default method</a>.
+ *     {@snippet lang="java":
+ *         default Product writeLock(long productId) {
+ *             return getAgent().get(Product.class,
+ *                                   productId,
+ *                                   LockModeType.PESSIMISTIC_WRITE);
+ *         }
+ *     }</td></tr>
+ * </table>
+ *
+ * <h3>Return types</h3>
+ * <p>Depending on the annotations used, repository methods may be able to
+ * return <a href="#Entities">entities</a>,
+ * <a href="#Projections">projections</a>, or other values, with various ways
+ * to <a href="#MaxResults">cap the number of results</a> or split larger
+ * quantities of results into <a href="#Pagination">pages</a>, and the ability
+ * to optionally add <a href="#Restrictions">restrictions</a> and
+ * <a href="#Sorting">sorting</a> at runtime.
+ *
+ * <h3>Built-in interfaces</h3>
  * <p>Built-in repository superinterfaces, such as {@link DataRepository},
  * are provided as a convenient way to inherit commonly used methods and
  * are parameterized by the entity type and by its id type. Other built-in
@@ -196,22 +298,24 @@ import java.util.Set;
  * }
  * }
  *
+ * <a id="Entities">
  * <h2>Entities</h2>
+ * </a>
  *
  * <p>An entity programming model typically specifies an entity-defining
  * annotation that is used to identify entity classes. For Jakarta Persistence,
- * this is {@code jakarta.persistence.Entity}. For Jakarta NoSQL, it is
- * {@code jakarta.nosql.Entity}. A provider may even have no entity-defining
- * annotation and feature a programming model for entity classes where the
- * entity classes are unannotated.</p>
+ * this is {@link Entity jakarta.persistence.Entity}. For Jakarta NoSQL, it is
+ * {@link jakarta.nosql.Entity jakarta.nosql.Entity}. A provider may even have
+ * no entity-defining annotation and feature a programming model for entity
+ * classes where the entity classes are unannotated.
  *
  * <p>Furthermore, an entity programming model must define an annotation which
  * identifies the attribute holding the unique identifier of an entity.
- * For Jakarta Persistence, it is {@code jakarta.persistence.Id} or
- * {@code jakarta.persistence.EmbeddedId}. For Jakarta NoSQL, it is
- * {@code jakarta.nosql.Id}. Alternatively, an entity programming model might
- * allow the identifier attribute to be identified via some convention.
- * Every entity has a unique identifier.</p>
+ * For Jakarta Persistence, it is {@link Id jakarta.persistence.Id} or
+ * {@link EmbeddedId jakarta.persistence.EmbeddedId}. For Jakarta NoSQL, it is
+ * {@link jakarta.nosql.Id jakarta.nosql.Id}. Alternatively, an entity
+ * programming model might allow the identifier attribute to be identified
+ * via some convention. Every entity has a unique identifier.
  *
  * <p>An entity has an arbitrary number of attributes.</p>
  *
@@ -234,22 +338,28 @@ import java.util.Set;
  * to the attribute of the embedded class, optionally joined by a
  * delimiter.</p>
  * <ul>
- * <li>For parameters of a {@link Find} method, the delimiter is {@code _}.
- * <li>For path expressions within a {@linkplain Query query}, the delimiter
- *     is {@code .}.
- * <li>For method names in <em>Query by Method Name</em>, the delimiter is
- *     {@code _} and it is optional. For example, {@code findByAddress_ZipCode}
- *     or {@code findByAddressZipCode} are both legal.
+ * <li>For parameter names of a {@link Find} or {@link Delete} method,
+ *     the delimiter is {@code _}.
+ * <li>For path expressions within a <a href="#QueryLanguageMethod">query</a>,
+ *     the delimiter is {@code .}.
+ * <li>For method names in <a href="#MethodNameQuery">Query by Method Name</a>,
+ *     the delimiter is {@code _}, and it is optional. For example,
+ *     {@code findByAddress_ZipCode} or {@code findByAddressZipCode} are both
+ *     legal.
  * <li>For arguments to constructor methods of {@link Sort}, the delimiter
  *     is {@code _} or {@code .}.
  * <li>For the {@code value} member of the {@link OrderBy} or {@link By}
  *     annotation the delimiter is {@code _} or {@code .}.
  * </ul>
  *
- * <p>A entity attribute name used in a Query by Method Name must not contain
- * a keyword reserved by Query by Method Name.</p>
+ * <p>A entity attribute name used in <a href="#MethodNameQuery">
+ * Query by Method Name</a> must not contain a keyword
+ * <a href="#MethodNameQueryReserved">reserved</a> by Query by Method
+ * Name.</p>
  *
+ * <a id="EntityAttributeTypes">
  * <h3>Entity attribute types (basic types)</h3>
+ * </a>
  *
  * <p>The following is a list of valid basic entity attribute types.
  * These can be used as the types of repository method parameters
@@ -312,7 +422,9 @@ import java.util.Set;
  * <p>All of the basic types are sortable except for {@code byte[]}.
  * A Jakarta Data provider might allow additional entity attribute types.</p>
  *
+ * <a id="LifecycleMethod">
  * <h2>Lifecycle methods</h2>
+ * </a>
  *
  * <p>A lifecycle method makes changes to persistent data in the data store.
  * Each lifecycle method of a stateless repository must be annotated with
@@ -367,19 +479,34 @@ import java.util.Set;
  * {@link Delete}, and {@link Save} for further information about the
  * stateless lifecycle annotations.</p>
  *
- * <p>Refer to the API documentation of the Jakarta Data
- * <a href="../jakarta.data.stateful/">Stateful Repositories module</a>
+ * <p>Refer to the API documentation for
+ * <a href="../jakarta.data.stateful/jakarta/data/repository/stateful/Persist.html">
+ * {@code Persist}</a>,
+ * <a href="../jakarta.data.stateful/jakarta/data/repository/stateful/Merge.html">
+ * {@code Merge}</a>,
+ * <a href="../jakarta.data.stateful/jakarta/data/repository/stateful/Refresh.html">
+ * {@code Refresh}</a>,
+ * <a href="../jakarta.data.stateful/jakarta/data/repository/stateful/Remove.html">
+ * {@code Remove}</a>, and
+ * <a href="../jakarta.data.stateful/jakarta/data/repository/stateful/Detach.html">
+ * {@code Detach}</a>
  * for additional information about the stateful lifecycle annotations.</p>
  *
- * <h2>Parameter-based {@code Find} and {@code Delete} methods</h2>
+ * <a id="ConstraintQuery">
+ * <h2>{@code Find} and {@code Delete} constraint query methods</h2>
+ * </a>
  *
  * <p>The {@link Find} annotation always indicates a parameter-based automatic
- * query method. The {@link Delete} annotation indicates a parameter-based
- * automatic query method when the method has no entity type parameters.
- * The method parameters determine the query conditions. The method name does
- * not determine the semantics of the method.</p>
+ * query method.
+ *
+ * <p>The {@link Delete} annotation indicates a parameter-based automatic
+ * query method when the method has no entity type parameters.
  *
  * <h3>Method parameters</h3>
+ *
+ * <p>The method parameters impose {@link jakarta.data.constraint constraints}
+ * on the query or are <a href="#SpecialParameters">special parameters</a>.
+ * The method name does not determine the semantics of the method.
  *
  * <p>Each parameter of the annotated method must fit into one of the following
  * categories:</p>
@@ -470,13 +597,18 @@ import java.util.Set;
  *     Stream<Person> livingInCity(String address_city);
  * }
  *
+ * <a id="QueryLanguageMethod">
  * <h2>Methods annotated {@code @Query}</h2>
+ * </a>
  *
  * <p>The {@link Query} annotation specifies that a method executes a query
- * written in Jakarta Common Query Language (JCQL) or Jakarta Persistence
- * Query Language (JPQL), which are defined by the Jakarta Query specification.
- * A Jakarta Data provider is not required to support the complete JPQL language,
- * which targets relational data stores.</p>
+ * written in <a href="${jakarta.query.spec.url}#_common_language_grammar">
+ * Jakarta Common Query Language</a> (JCQL) or
+ * <a href="${jakarta.query.spec.url}#_persistence_language_grammar">
+ * Jakarta Persistence Query Language</a> (JPQL), which are defined by the
+ * <a href="${jakarta.query.spec.url}">Jakarta Query specification</a>.
+ * A Jakarta Data provider is not required to support the complete JPQL
+ * language, which targets relational data stores.
  *
  * <p>Each parameter of the annotated method must either:</p>
  * <ul>
@@ -513,10 +645,10 @@ import java.util.Set;
  * annotations that can annotate repository methods in place of {@link Query}:
  *
  * <ul>
- * <li>{@code jakarta.persistence.query.NativeQuery} - supplies a native
+ * <li>{@link NativeQuery} - supplies a native
  * SQL query instead of a query that is written in Jakarta Persistence Query
  * Language (JPQL) or the Jakarta Common Query Language (JCQL).</li>
- * <li>{@code jakarta.persistence.query.JakartaQuery} - behaves identically to
+ * <li>{@link JakartaQuery} - behaves identically to
  * Jakarta Data's {@code Query} annotation in allowing JPQL and JCQL to be
  * supplied.</li>
  * </ul>
@@ -549,7 +681,9 @@ import java.util.Set;
  * {@code jakarta.persistence.query} package and the API documentation for
  * {@link Query} for further information.</p>
  *
+ * <a id="MethodNameQuery">
  * <h2>Query by Method Name</h2>
+ * </a>
  *
  * <p>The <em>Query by Method Name</em> pattern translates the name of the
  * repository method into a query. The repository method must not include the
@@ -614,7 +748,9 @@ import java.util.Set;
  * <p>Key-value and Wide-Column databases raise {@link UnsupportedOperationException}
  * for queries on attributes other than the identifier/key.</p>
  *
+ * <a id="MethodNameQueryReserved">
  * <h3>Reserved keywords for Query by Method Name</h3>
+ * </a>
  *
  * <table style="width: 100%">
  * <caption><b>Reserved for Predicate</b></caption>
@@ -794,11 +930,11 @@ import java.util.Set;
  *
  * <h3>Reserved for future use</h3>
  * <p>
- * The specification does not define behavior for the following keywords, but reserves
- * them as keywords that must not be used as entity attribute names when using
- * Query by Method Name. This gives the specification the flexibility to add them in
- * future releases without introducing breaking changes to applications.
- * </p>
+ * The specification does not define behavior for the following keywords, but
+ * reserves them as keywords that must not be used as entity attribute names
+ * when using <em>Query by Method Name</em>. This gives the specification the
+ * flexibility to add them in future releases without introducing breaking
+ * changes to applications.
  * <p>
  * Reserved for query conditions: {@code AbsoluteValue}, {@code CharCount},
  * {@code ElementCount}, {@code Empty},
@@ -831,7 +967,8 @@ import java.util.Set;
  * <h3>Return types for Query by Method Name</h3>
  *
  * <p>The following is a table of valid return types.
- * The <b>Method</b> column shows name patterns for Query by Method Name.</p>
+ * The <b>Method</b> column shows name patterns for <em>Query by Method Name
+ * </em>.
  *
  * <table style="width: 100%">
  * <caption><b>Return Types for Query by Method Name</b></caption>
@@ -872,12 +1009,12 @@ import java.util.Set;
  *
  * <tr style="vertical-align: top; background-color:#eee"><td>{@code find} accepting {@link PageRequest}</td>
  * <td>{@code Page<E>}, {@code CursoredPage<E>}</td>
- * <td>For use with pagination</td></tr>
+ * <td>For use with <a href="#Pagination">pagination</a></td></tr>
  *
  * </table>
  *
  * <p>The following examples illustrate the difference between Query By Method
- * Name and parameter-based automatic query methods. Both methods accept the
+ * Name and parameter-based constraint query methods. Both methods accept the
  * same parameters and have the same behavior.
  *
  * {@snippet lang="java":
@@ -888,7 +1025,7 @@ import java.util.Set;
  *                                                       int maxYear,
  *                                                       Order<Vehicle> sorts);
  *
- *     // parameter-based conditions
+ *     // parameter-based constraint query
  *     @Find
  *     @First(50)
  *     Vehicle[] search(String make,
@@ -898,23 +1035,30 @@ import java.util.Set;
  *                      Order<Vehicle> sorts);
  * }
  *
+ * <a id="SpecialParameters">
  * <h2>Special parameters</h2>
+ * </a>
  *
  * <p>A repository method annotated {@link Query @Query}, {@link Find @Find} or
- * following the <em>Query by Method Name</em> pattern may have <em>special
- * parameters</em> of type {@link Limit}, {@link Order}, {@link Sort}, or
- * {@link PageRequest} if the method return type indicates that the method may
- * return multiple entities.</p>
+ * following the <a href="#MethodNameQuery">Query by Method Name</a> pattern
+ * may have <em>special parameters</em> of type {@link Limit}, {@link Order},
+ * {@link Sort}, or {@link PageRequest} if the method return type indicates
+ * that the method may return multiple entities.
  *
  * <p>A repository method annotated {@link Query @Query}, {@link Find @Find} or
- * {@link Delete @Delete} (except when defined as a lifecycle method) can have
- * a <em>special parameter</em> of type {@link Restriction}.</p>
+ * {@link Delete @Delete} (except when defined as a <a href="#LifecycleMethod">
+ * lifecycle method</a>) can have a <em>special parameter</em> of type
+ * {@link Restriction}.
  *
- * <p>Special parameters occur after parameters related to query conditions
- * and JCQL query parameters. Special parameters enable limits, pagination,
- * sorting, and restrictions to be determined at runtime.</p>
+ * <p>Special parameters occur after parameters related to query constraints
+ * and JCQL query parameters. Repository method special parameters enable
+ * <a href="#Limits">limits</a>, <a href="#Pagination">pagination</a>,
+ * <a href="#Sorting">sorting</a>, and <a href="#Restrictions">restrictions</a>
+ * to be determined at runtime.
  *
+ * <a id="Limits">
  * <h3>Limits</h3>
+ * </a>
  *
  * <p>The number of results returned by a single invocation of a repository
  * find method may be limited by adding a parameter of type {@link Limit}.
@@ -930,7 +1074,9 @@ import java.util.Set;
  *     second50 = products.highlyDiscounted(0.30, Limit.range(51, 100));
  * }
  *
+ * <a id="Pagination">
  * <h3>Pagination</h3>
+ * </a>
  *
  * <p>A repository find method with a parameter of type {@link PageRequest}
  * allows its results to be split and retrieved in pages. For example,
@@ -950,7 +1096,9 @@ import java.util.Set;
  * across invocations. One way to achieve this is to include the unique
  * identifier in the sort criteria.</p>
  *
+ * <a id="Sorting">
  * <h3>Programmatic sorting</h3>
+ * </a>
  *
  * <p>When a page is requested with a {@code PageRequest}, dynamic sorting
  * criteria may be supplied by passing instances of {@link Sort} to an
@@ -994,7 +1142,9 @@ import java.util.Set;
  *                                         Sort.asc("id")));
  * }
  *
+ * <a id="Restrictions">
  * <h3>Restrictions</h3>
+ * </a>
  *
  * <p>Restrictions can be supplied at runtime to {@link Find @Find} and
  * {@link Delete @Delete} and {@link Query @Query} methods that include a
@@ -1078,7 +1228,9 @@ import java.util.Set;
  *                          _Product.id.asc()));
  * }
  *
+ * <a id="MaxResults">
  * <h2>Maximum number of results</h2>
+ * </a>
  *
  * <p>Apply the {@link First @First} annotation to a repository {@link Find} or
  * {@link Query} method to establish a maximum number of results across all
@@ -1094,7 +1246,9 @@ import java.util.Set;
  *     Optional<Employee> withLowestWage(String jobRole);
  * }
  *
+ * <a id="Projections">
  * <h2>Returning subsets of entity attributes</h2>
+ * </a>
  *
  * <p>In addition to retrieving results that are entities, repository find methods
  * can be written to retrieve single entity attribute results, as well as
@@ -1176,12 +1330,16 @@ import java.util.Set;
  *     Optional<Name> getName(long socialSecurityNum);
  * }
  *
+ * <a id="DefaultMethod">
  * <h2>Repository default methods</h2>
+ * </a>
  *
  * <p>A repository interface may declare any number of {@code default} methods
  * with user-written implementations.</p>
  *
+ * <a id="ResourceAccess">
  * <h2>Resource accessor methods</h2>
+ * </a>
  *
  * <p>In advanced scenarios, the application program might make direct use of
  * some underlying resource acquired by the Jakarta Data provider, such as a
@@ -1235,30 +1393,35 @@ import java.util.Set;
  * the application programmer is responsible for closing the resource
  * instance.</p>
  *
+ * <a id="MethodPrecedence">
  * <h2>Precedence of repository methods</h2>
+ * </a>
  *
  * <p>The following order, with the lower number having higher precedence,
  * is used to interpret the meaning of repository methods.</p>
  *
  * <ol>
- * <li>If the method is a Java {@code default} method, then the provided
- *     implementation is used.</li>
+ * <li>If the method is a Java <a href="#DefaultMethod">default method</a>,
+ *     then the provided implementation is used.</li>
  * <li>If a method has a <em>resource accessor method</em> return type
  *     recognized by the Jakarta Data provider, then the method is
- *     implemented as a resource accessor method.</li>
- * <li>If a method is annotated with a <em>query annotation</em>
- *     recognized by the Jakarta Data provider, such as {@link Query},
- *     then the method is implemented to execute the query specified by
- *     the query annotation.</li>
- * <li>If the method is annotated with an automatic query annotation,
- *     such as {@link Find}, or with a lifecycle annotation declaring
- *     the type of operation, for example, with {@link Insert},
- *     {@link Update}, {@link Save}, or {@link Delete}, and the provider
- *     recognizes the annotation, then the annotation determines how the
- *     method is implemented.</li>
+ *     implemented as a <a href="#ResourceAccess">resource accessor method</a>.
+ *     </li>
+ * <li>If a method is annotated with a <a href="#QueryLanguageMethod">query
+ *     annotation</a> recognized by the Jakarta Data provider, such as
+ *     {@link Query}, then the method is implemented to execute the query
+ *     specified by the query annotation.</li>
+ * <li>If the method is annotated with a <a href="#ConstraintQuery">
+ *     constraint query annotation</a>, such as {@link Find}, or with a
+ *     <a href="#LifecycleMethod">lifecycle annotation</a> declaring
+ *     the type of operation, for example, with the stateless lifecycle
+ *     annotation {@link Insert} or the stateful lifecycle annotation
+ *     <a href="../jakarta.data.stateful/jakarta/data/repository/stateful/Merge.html">
+ *     {@code Merge}</a>, and the provider recognizes the annotation,
+ *     then the annotation determines how the method is implemented.</li>
  * <li>If a method is named according to the conventions of <em>Query by
- *     Method Name</em>, then the implementation follows the Query by
- *     Method Name pattern.</li>
+ *     Method Name</em>, then the implementation follows the
+ *     <a href="#MethodNameQuery">Query by Method Name</a> pattern.</li>
  * </ol>
  *
  * <p>A repository method which does not fit any of the listed patterns
@@ -1295,7 +1458,9 @@ import java.util.Set;
  *     return type.</li>
  * </ul>
  *
+ * <a id="PrimaryEntity">
  * <h3>Identifying a primary entity type:</h3>
+ * </a>
  *
  * <p>The following precedence, from highest to lowest, is used to determine
  * a primary entity type for a repository.</p>
@@ -1342,23 +1507,25 @@ import java.util.Set;
  * </li>
  * </ol>
  *
+ * <a id="Validation">
  * <h2>Jakarta Validation</h2>
+ * </a>
  *
  * <p>When a Jakarta Validation provider is present, constraints that are defined on
  * repository method parameters and return values are validated according to the section,
  * "Method and constructor validation", of the Jakarta Validation specification.</p>
  *
- * <p>The {@code jakarta.validation.Valid} annotation opts in to cascading validation,
+ * <p>The {@link Valid} annotation opts in to cascading validation,
  * causing constraints within the objects that are supplied as parameters
- * or returned as results to also be validated.</p>
+ * or returned as results to also be validated.
  *
- * <p>Repository methods raise {@code jakarta.validation.ConstraintViolationException}
- * if validation fails.</p>
+ * <p>Repository methods raise {@link ConstraintViolationException}
+ * if validation fails.
  *
  * <p>The following is an example of method validation, where the
  * parameter to {@code findByEmailIn} must not be the empty set,
- * and cascading validation, where the {@code Email} and {@code NotNull} constraints
- * on the entity that is supplied to {@code save} are validated,
+ * and cascading validation, where the {@link Email} and {@link NotNull}
+ * constraints on the entity that is supplied to {@code save} are validated,
  *
  * {@snippet lang="java":
  * import jakarta.validation.Valid;
@@ -1388,17 +1555,23 @@ import java.util.Set;
  * }
  *
  *
+ * <a id="Interceptors">
  * <h2>Jakarta Interceptors</h2>
+ * </a>
  *
- * <p>A repository interface or method of a repository interface may be annotated with an
- * interceptor binding annotation. In the Jakarta EE environment, or in any other environment
- * where Jakarta Interceptors is available and integrated with Jakarta CDI, the repository
- * implementation is instantiated by the CDI bean container, and the interceptor binding type
- * is declared {@code @Inherited}, the interceptor binding annotation is inherited by the
- * repository implementation, and the interceptors bound to the annotation are applied
+ * <p>A repository interface or method of a repository interface may be
+ * annotated with an interceptor binding annotation. In the Jakarta EE
+ * environment, or in any other environment where Jakarta Interceptors is
+ * available and integrated with Jakarta CDI, the repository implementation
+ * is instantiated by the CDI bean container, and the interceptor binding type
+ * is declared {@link java.lang.annotation.Inherited @Inherited}, the
+ * interceptor binding annotation is inherited by the repository
+ * implementation, and the interceptors bound to the annotation are applied
  * automatically by the implementation of Jakarta Interceptors.</p>
  *
+ * <a id="Transactions">
  * <h2>Jakarta Transactions</h2>
+ * </a>
  *
  * <p>When Jakarta Transactions is available, repository methods can participate in global
  * transactions. If a global transaction is active on the thread of execution in which a
@@ -1409,23 +1582,26 @@ import java.util.Set;
  * <p>The repository operation must not commit or roll back a transaction which was
  * already associated with the thread in which the repository operation was called, but it
  * might cause the transaction to be marked for rollback if the repository operation fails,
- * that is, it may set the transaction status to {@code Status.STATUS_MARKED_ROLLBACK}.</p>
+ * that is, it may set the transaction status to {@link Status#STATUS_MARKED_ROLLBACK}.</p>
  *
- * <p>A repository interface or method of a repository interface may be marked with the
- * annotation {@code jakarta.transaction.Transactional}. When a repository operation marked
+ * <p>A repository interface or method of a repository interface may be marked
+ * with the annotation {@link Transactional}. When a repository operation marked
  * {@code @Transactional} is called in an environment where both Jakarta Transactions and
  * Jakarta CDI are available, the semantics of this annotation are observed during execution
  * of the repository operation.</p>
  *
+ * <a id="Concurrency">
  * <h2>Jakarta Concurrency</h2>
+ * </a>
  *
- * <p>When Jakarta Concurrency is available, an asynchronous repository method may be
- * annotated with {@code jakarta.enterprise.concurrent.Asynchronous} to cause the
- * method to run asynchronously to the method invoker, as outlined by the section
- * titled <em>Asynchronous Methods</em> in the Jakarta Concurrency specification.
- * The return type must be {@code void} or {@code CompletionStage<R>} where
- * {@code R} is a type that would be a valid return type for a non-asynchronous
- * repository method.</p>
+ * <p>When Jakarta Concurrency is available, an asynchronous repository method
+ * may be annotated {@link Asynchronous
+ * jakarta.enterprise.concurrent.Asynchronous} to cause the method to run
+ * asynchronously to the method invoker, as outlined by the section titled
+ * <em>Asynchronous Methods</em> in the Jakarta Concurrency specification.
+ * The return type must be {@code void} or {@link CompletionStage
+ * CompletionStage<R>} where {@code R} is a type that would be a valid return
+ * type for a non-asynchronous repository method.</p>
  *
  * <p>In the following example, the method {@code setPriceAsync()}
  * immediately returns a {@code CompletionStage<Integer>} to the caller.
@@ -1453,11 +1629,14 @@ import java.util.Set;
  * }
  */
 module jakarta.data {
-    // requires static jakarta.inject;      // compile time dependency for Javadoc
-    // requires static jakarta.transaction; // compile time dependency for Javadoc
-    requires static java.sql; // compile time dependency for Javadoc
-    requires static jakarta.annotation; // compile time dependency for nullness annotations
-    requires static jakarta.persistence; // compile time dependency for Javadoc
+    requires static jakarta.annotation;    // compile time dependency for nullness annotations
+    requires static jakarta.concurrency;   // Javadoc compile time dependency
+    requires static jakarta.inject;        // Javadoc compile time dependency
+    requires static jakarta.nosql.core;    // Javadoc compile time dependency
+    requires static jakarta.persistence;   // Javadoc compile time dependency
+    requires static jakarta.transaction;   // Javadoc compile time dependency
+    requires static jakarta.validation;    // Javadoc compile time dependency
+    requires static java.sql;              // Javadoc compile time dependency
     exports jakarta.data;
     exports jakarta.data.constraint;
     exports jakarta.data.event;
