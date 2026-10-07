@@ -65,7 +65,7 @@ import java.lang.annotation.Target;
  * {@snippet lang="java":
  *     @Find
  *     @OrderBy(value = _Product.PRICE, descending = true)
- *     {@code Stream<Product>} pricedBelow(@By(_Product.PRICE) @Is(AtMost.class) double maxPrice);
+ *     Stream<Product> pricedBelow(@By(_Product.PRICE) @Is(AtMost.class) double maxPrice);
  * }
  *
  * <p>A repository method with an {@code @OrderBy} annotation must not
