@@ -61,8 +61,18 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>jakarta.enterprise.concurrent</groupId>
+            <artifactId>jakarta.enterprise.concurrent-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>jakarta.inject</groupId>
             <artifactId>jakarta.inject-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.nosql</groupId>
+            <artifactId>jakarta.nosql-api</artifactId>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -73,6 +83,11 @@
         <dependency>
             <groupId>jakarta.transaction</groupId>
             <artifactId>jakarta.transaction-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.validation</groupId>
+            <artifactId>jakarta.validation-api</artifactId>
             <scope>provided</scope>
         </dependency>
     </dependencies>
@@ -136,7 +151,12 @@ Use is subject to <a href="{@docRoot}/doc-files/speclicense.html" target="_top">
                     </bottom>
                     <docfilessubdirs>true</docfilessubdirs>
                     <links>
+                        <link>https://jakarta.ee/specifications/bean-validation/4.0/apidocs/</link>
+                        <link>https://jakarta.ee/specifications/concurrency/3.2/apidocs/</link>
+                        <link>https://jakarta.ee/specifications/dependency-injection/2.0/apidocs/</link>
+                        <link>https://jakarta.ee/specifications/nosql/1.1/apidocs/</link>
                         <link>https://jakarta.ee/specifications/persistence/4.0/apidocs/</link>
+                        <link>https://jakarta.ee/specifications/transactions/2.0/apidocs/</link>
                     </links>
                     <groups>
                         <group>
@@ -256,8 +276,12 @@ Use is subject to <a href="{@docRoot}/doc-files/speclicense.html" target="_top">
                                 <configuration>
                                     <sourcepath>${project.build.directory}/filtered-sources</sourcepath>
                                     <links>
-                                        <link>
-                                            https://jakarta.ee/specifications/persistence/4.0/apidocs/</link>
+                                        <link>https://jakarta.ee/specifications/bean-validation/4.0/apidocs/</link>
+                                        <link>https://jakarta.ee/specifications/concurrency/3.2/apidocs/</link>
+                                        <link>https://jakarta.ee/specifications/dependency-injection/2.0/apidocs/</link>
+                                        <link>https://jakarta.ee/specifications/nosql/1.1/apidocs/</link>
+                                        <link>https://jakarta.ee/specifications/persistence/4.0/apidocs/</link>
+                                        <link>https://jakarta.ee/specifications/transactions/2.0/apidocs/</link>
                                     </links>
                                     <tags>
                                         <tag>
