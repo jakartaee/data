@@ -15,17 +15,43 @@ on:
   workflow_dispatch: # For manual testing
 
 jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout source
+      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+    - name: Set up JDK 21
+      uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6.0.1
+      with:
+        java-version: '21'
+        distribution: 'temurin'
+        cache: maven
+    - name: Build project
+      run: mvn install -DskipTests -Dmaven.javadoc.skip=true -projects ".,api,stateful"
+    - name: Cache local Maven repository
+      uses: actions/cache/save@v4
+      with:
+        path: ~/.m2/repository
+        key: maven-${{ github.sha }}
+
   update:
+    needs: [build]
     runs-on: ubuntu-latest
 
     strategy:
       max-parallel: 1
       matrix:
-        java-version: [ '21', '25' ]
+        java-version: [ '17', '21', '25' ]
 
     steps:
     - name: Checkout source
       uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+    - name: Restore local Maven repository
+      uses: actions/cache/restore@v4
+      with:
+        path: ~/.m2/repository
+        key: maven-${{ github.sha }}
     - name: Set up JDK ${{ matrix.java-version }}
       uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6.0.1
       with:
@@ -36,9 +62,7 @@ jobs:
       id: checkout
       run: .github/scripts/checkout.sh update-generated-files-${{ github.sha }}
     - name: Generate signatures
-      run: |
-        mvn install -DskipTests -Dmaven.javadoc.skip=true -projects ".,api,stateful"
-        mvn package -DskipTests -Psignature-generation --file tck/pom.xml
+      run: mvn package -DskipTests -Psignature-generation --file tck/pom.xml
     - name: Needs updates
       id: update
       run: echo "update_count=$(git status -s | wc -l)" >> $GITHUB_OUTPUT
