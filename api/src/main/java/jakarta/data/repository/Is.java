@@ -109,7 +109,7 @@ public @interface Is {
      *     @Find
      *     @OrderBy(_Person.BIRTHYEAR)
      *     List<Person> bornWithin(@By(_Person.BIRTHYEAR) @Is(AtLeast.class) int minYear,
-     *                         @By(_Person.BIRTHYEAR) @Is(AtMost.class) int maxYear);
+     *                             @By(_Person.BIRTHYEAR) @Is(AtMost.class) int maxYear);
      * }
      *
      * <p>The default constraint is the
