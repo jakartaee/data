@@ -41,12 +41,12 @@ public interface BooleanExpression<T>
      * <p>Obtains a {@link Restriction} that requires that this expression
      * evaluate to a {@code false} value.</p>
      *
-     * <p>Example:</p>
-     * <pre>{@code
+     * <p>Example:
+     * {@snippet lang="java":
      *     newVehicles = cars.search(make,
      *                               model,
      *                               _Car.previouslyOwned.isFalse());
-     * }</pre>
+     * }
      *
      * @return the restriction.
      */
@@ -59,12 +59,12 @@ public interface BooleanExpression<T>
      * <p>Obtains a {@link Restriction} that requires that this expression
      * evaluate to a {@code true} value.</p>
      *
-     * <p>Example:</p>
-     * <pre>{@code
+     * <p>Example:
+     * {@snippet lang="java":
      *     usedVehicles = cars.search(make,
      *                                model,
      *                                _Car.previouslyOwned.isTrue());
-     * }</pre>
+     * }
      *
      * @return the restriction.
      */

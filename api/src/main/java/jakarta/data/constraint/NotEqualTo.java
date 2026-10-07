@@ -31,39 +31,39 @@ import jakarta.annotation.Nonnull;
  * <p>A parameter-based repository method can impose a constraint on an
  * entity attribute by defining a method parameter that is of type
  * {@code NotEqualTo} or is annotated {@link Is @Is(NotEqualTo.class)} and is
- * of the same type or a subtype of the entity attribute. For example,</p>
+ * of the same type or a subtype of the entity attribute. For example,
  *
- * <pre>{@code
- * @Find
- * List<Car> excludingManufacturer(@By(_Car.MAKE) NotEqualTo<String> excludedManufacturer);
+ * {@snippet lang="java":
+ *     @Find
+ *     List<Car> excludingManufacturer(@By(_Car.MAKE) NotEqualTo<String> excludedManufacturer);
  *
- * @Find
- * List<Car> ofMakeNotModel(@By(_Car.MAKE) @Is(EqualTo.class) String manufacturer,
- *                          @By(_Car.MODEL) @Is(NotEqualTo.class) String excludedModel,
- *                          Order<Car> sorts);
- * ...
+ *     @Find
+ *     List<Car> ofMakeNotModel(@By(_Car.MAKE) @Is(EqualTo.class) String manufacturer,
+ *                              @By(_Car.MODEL) @Is(NotEqualTo.class) String excludedModel,
+ *                              Order<Car> sorts);
+ *     ...
  *
- * found = cars.excludingManufacturer(NotEqualTo.value("Stallmore Motors"));
+ *     found = cars.excludingManufacturer(NotEqualTo.value("Stallmore Motors"));
  *
- * found = cars.ofMakeNotModel("Jakarta Motors",
- *                             "J-150",
- *                             Order.by(_Car.price.desc()));
- * }</pre>
+ *     found = cars.ofMakeNotModel("Jakarta Motors",
+ *                                 "J-150",
+ *                                 Order.by(_Car.price.desc()));
+ * }
  *
  * <p>Repository methods can also accept {@code NotEqualTo} constraints at
  * run time in the form of a {@link Restriction} on an {@link Expression}.
- * For example,</p>
+ * For example,
  *
- * <pre>{@code
- * @Find
- * List<Car> searchAll(Restriction<Car> restrict, Order<Car> sorts);
+ * {@snippet lang="java":
+ *     @Find
+ *     List<Car> searchAll(Restriction<Car> restrict, Order<Car> sorts);
  *
- * ...
+ *     ...
  *
- * found = cars.searchAll(_Car.make.notEqualTo("Coalback Motors"),
- *                        Order.by(_Car.year.desc(),
- *                                 _Car.price.asc()));
- * }</pre>
+ *     found = cars.searchAll(_Car.make.notEqualTo("Coalback Motors"),
+ *                            Order.by(_Car.year.desc(),
+ *                                     _Car.price.asc()));
+ * }
  *
  * <p>The {@linkplain Attribute entity and static metamodel} for the code
  * examples within this class are shown in the {@link Attribute} Javadoc.
@@ -77,12 +77,12 @@ public interface NotEqualTo<V> extends Constraint<V> {
 
     /**
      * <p>Requires that the constraint target not equal the value to which the
-     * given {@code expression} evaluates. For example,</p>
+     * given {@code expression} evaluates. For example,
      *
-     * <pre>{@code
+     * {@snippet lang="java":
      *     found = cars.excludingManufacturer(
      *                 NotEqualTo.expression(_Car.model.left(_Car.make.length())));
-     * }</pre>
+     * }
      *
      * @param <V>        type of the entity attribute or a subtype or primitive
      *                   wrapper type for the entity attribute.
@@ -103,11 +103,11 @@ public interface NotEqualTo<V> extends Constraint<V> {
 
     /**
      * <p>Requires that the constraint target not equal the given value.
-     * For example,</p>
+     * For example,
      *
-     * <pre>{@code
+     * {@snippet lang="java":
      *     found = cars.excludingManufacturer(NotEqualTo.value("Leakoil Motors"));
-     * }</pre>
+     * }
      *
      * @param <V>   type of the entity attribute or a subtype or primitive
      *              wrapper type for the entity attribute.

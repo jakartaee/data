@@ -30,38 +30,38 @@ import jakarta.annotation.Nonnull;
  * <p>A parameter-based repository method can impose a constraint on an
  * entity attribute by defining a method parameter that is of type
  * {@code GreaterThan} or is annotated {@link Is @Is(GreaterThan.class)} and is
- * of the same type or a subtype of the entity attribute. For example,</p>
+ * of the same type or a subtype of the entity attribute. For example,
  *
- * <pre>
- * &#64;Find
- * List&lt;Car&gt; ofYearMoreThan(&#64;By(_Car.YEAR) GreaterThan&lt;Integer&gt; bound);
+ * {@snippet lang="java":
+ *     @Find
+ *     List<Car> ofYearMoreThan(@By(_Car.YEAR) GreaterThan<Integer> bound);
  *
- * &#64;Find
- * List&lt;Car&gt; newerThan(&#64;By(_Car.YEAR) &#64;Is(GreaterThan.class) int bound,
- *                     Order&lt;Car&gt; sorts);
+ *     @Find
+ *     List<Car> newerThan(@By(_Car.YEAR) @Is(GreaterThan.class) int bound,
+ *                         Order<Car> sorts);
  *
- * ...
+ *     ...
  *
- * found = cars.ofYearMoreThan(GreaterThan.bound(2021));
+ *     found = cars.ofYearMoreThan(GreaterThan.bound(2021));
  *
- * found = cars.newerThan(2022,
- *                        Order.by(_Car.price.desc()));
- * </pre>
+ *     found = cars.newerThan(2022,
+ *                            Order.by(_Car.price.desc()));
+ * }
  *
  * <p>Repository methods can also accept {@code GreaterThan} constraints at
  * run time in the form of a {@link Restriction} on a
- * {@link ComparableExpression}. For example,</p>
+ * {@link ComparableExpression}. For example,
  *
- * <pre>
- * &#64;Find
- * List&lt;Car&gt; searchAll(Restriction&lt;Car&gt; restrict, Order&lt;Car&gt; sorts);
+ * {@snippet lang="java":
+ *     @Find
+ *     List<Car> searchAll(Restriction<Car> restrict, Order<Car> sorts);
  *
- * ...
+ *     ...
  *
- * found = cars.searchAll(_Car.year.greaterThan(2023),
- *                        Order.by(_Car.year.desc(),
- *                                 _Car.price.asc());
- * </pre>
+ *     found = cars.searchAll(_Car.year.greaterThan(2023),
+ *                            Order.by(_Car.year.desc(),
+ *                                     _Car.price.asc());
+ * }
  *
  * <p>The {@linkplain Attribute entity and static metamodel} for the code
  * examples within this class are shown in the {@link Attribute} Javadoc.
@@ -75,11 +75,11 @@ public interface GreaterThan<V extends Comparable<?>> extends Constraint<V> {
 
     /**
      * <p>Requires that the constraint target evaluates to a value that is
-     * greater than or equal to the given {@code lowerBound}. For example,</p>
+     * greater than or equal to the given {@code lowerBound}. For example,
      *
-     * <pre>
-     * found = cars.ofYearMoreThan(GreaterThan.bound(2020));
-     * </pre>
+     * {@snippet lang="java":
+     *     found = cars.ofYearMoreThan(GreaterThan.bound(2020));
+     * }
      *
      * @param <V>        type of the entity attribute or a subtype or primitive
      *                   wrapper type for the entity attribute.
@@ -96,11 +96,11 @@ public interface GreaterThan<V extends Comparable<?>> extends Constraint<V> {
     /**
      * <p>Requires that the constraint target evaluates to a value that is
      * greater than the value to which the the given {@code lowerBound}
-     * expression evaluates. For example,</p>
+     * expression evaluates. For example,
      *
-     * <pre>
-     * found = cars.ofYearMoreThan(GreaterThan.bound(_Car.firstModelYear.plus(1)));
-     * </pre>
+     * {@snippet lang="java":
+     *     found = cars.ofYearMoreThan(GreaterThan.bound(_Car.firstModelYear.plus(1)));
+     * }
      *
      * @param <V>        type of the entity attribute or a subtype or primitive
      *                   wrapper type for the entity attribute.

@@ -58,9 +58,9 @@ import jakarta.annotation.Nonnull;
  * most precise subtype of {@code Attribute} that describes the entity
  * attribute type.</p>
  *
- * <p>For example, given the following entity class,</p>
+ * <p>For example, given the following entity class,
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * @Entity
  * public class Car {
  *     @Id
@@ -77,12 +77,12 @@ import jakarta.annotation.Nonnull;
  * }
  *
  * public enum Color { BLACK, BLUE, GRAY, RED, WHITE }
- * }</pre>
+ * }
  *
  * <p>The static metamodel class (typically generated from the entity class)
- * would be,</p>
+ * would be,
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * @StaticMetamodel(Car.class)
  * public interface _Car {
  *     String COLOR = "color";
@@ -117,7 +117,7 @@ import jakarta.annotation.Nonnull;
  *     NumericAttribute<Car, Integer> year = NumericAttribute.of(
  *             Car.class, YEAR, int.class);
  * }
- * }</pre>
+ * }
  *
  * @param <T> entity class of the static metamodel.
  */

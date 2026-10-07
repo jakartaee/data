@@ -54,30 +54,30 @@ import jakarta.annotation.Nonnull;
  *
  * <p>To use cursor-based pagination, declare a repository method with return
  * type {@code CursoredPage} and with a special parameter (after the normal
- * query parameters) of type {@link PageRequest}, for example:</p>
+ * query parameters) of type {@link PageRequest}, for example:
  *
- * <pre>{@code
- * @Find
- * @OrderBy(_Employee.LASTNAME)
- * @OrderBy(_Employee.FIRSTNAME)
- * @OrderBy(_Employee.ID)
- * CursoredPage<Employee> withHoursOver(
- *         @By(_Employee.HOURSWORKED) @Is(GreaterThan.class) int fullTimeHours,
- *         PageRequest pageRequest);
- * }</pre>
+ * {@snippet lang="java":
+ *     @Find
+ *     @OrderBy(_Employee.LASTNAME)
+ *     @OrderBy(_Employee.FIRSTNAME)
+ *     @OrderBy(_Employee.ID)
+ *     CursoredPage<Employee> withHoursOver(
+ *             @By(_Employee.HOURSWORKED) @Is(GreaterThan.class) int fullTimeHours,
+ *             PageRequest pageRequest);
+ * }
  *
- * <p>In initial page may be requested using an offset-based page request:</p>
+ * <p>In initial page may be requested using an offset-based page request:
  *
- * <pre>{@code
- * page = employees.withHoursOver(40, PageRequest.ofSize(50));
- * }</pre>
+ * {@snippet lang="java":
+ *     page = employees.withHoursOver(40, PageRequest.ofSize(50));
+ * }
  *
  * <p>The next page may be requested relative to the end of the current page,
- * as follows:</p>
+ * as follows:
  *
- * <pre>{@code
- * page = employees.withHoursOver(40, page.nextPageRequest());
- * }</pre>
+ * {@snippet lang="java":
+ *     page = employees.withHoursOver(40, page.nextPageRequest());
+ * }
  *
  * <p>Here, the instance of {@link PageRequest} returned by
  * {@link CursoredPage#nextPageRequest()} is based on a key value encapsulated
@@ -89,16 +89,16 @@ import jakarta.annotation.Nonnull;
  * component values of the cursor supplied to this method must match the list of
  * sorting criteria specified by {@link OrderBy} annotations or {@code OrderBy}
  * name pattern of the repository method and the {@link Sort} and {@link Order}
- * parameters of the repository method. For example:</p>
+ * parameters of the repository method. For example:
  *
- * <pre>{@code
- * Employee emp = ...
- * PageRequest pageRequest =
- *         PageRequest.ofSize(50)
- *                    .pageNumber(5)
- *                    .afterCursor(Cursor.forKey(emp.lastName, emp.firstName, emp.id));
- * page = employees.withHoursOver(40, pageRequest);
- * }</pre>
+ * {@snippet lang="java":
+ *     Employee emp = ...
+ *     PageRequest pageRequest =
+ *             PageRequest.ofSize(50)
+ *                        .pageNumber(5)
+ *                        .afterCursor(Cursor.forKey(emp.lastName, emp.firstName, emp.id));
+ *     page = employees.withHoursOver(40, pageRequest);
+ * }
  *
  * <p>By making the query for the next page relative to observed values,
  * instead of to a numerical position, cursor-based pagination is less
@@ -126,16 +126,16 @@ import jakarta.annotation.Nonnull;
  *
  * <p>Sorting criteria must be specified independently of the user-provided
  * query, either via the {@link OrderBy} annotation or, or by passing
- * {@link Sort} or {@link jakarta.data.Order}. For example:</p>
+ * {@link Sort} or {@link jakarta.data.Order}. For example:
  *
- * <pre>{@code
- * @Query("WHERE ordersPlaced >= ?1 OR totalSpent >= ?2")
- * @OrderBy("zipcode")
- * @OrderBy("birthYear")
- * @OrderBy("id")
- * CursoredPage<Customer> getTopBuyers(int minOrders, float minSpent,
- *                                     PageRequest pageRequest);
- * }</pre>
+ * {@snippet lang="java":
+ *     @Query("WHERE ordersPlaced >= ?1 OR totalSpent >= ?2")
+ *     @OrderBy("zipcode")
+ *     @OrderBy("birthYear")
+ *     @OrderBy("id")
+ *     CursoredPage<Customer> getTopBuyers(int minOrders, float minSpent,
+ *                                         PageRequest pageRequest);
+ * }
  *
  * <p>Only queries which return entities may be used with cursor-based
  * pagination

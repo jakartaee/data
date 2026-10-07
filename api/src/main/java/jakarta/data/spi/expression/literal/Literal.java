@@ -85,10 +85,10 @@ public interface Literal<V> extends Expression<Object, V> {
      * value, enclosed in single quotes.</p>
      *
      * <p>For example, the output of
-     * {@code Literal.of(ZoneId.of("America/Chicago")).toString()} is</p>
-     * <pre>
-     * {Literal java.time.ZoneId 'America/Chicago'}
-     * </pre>
+     * {@code Literal.of(ZoneId.of("America/Chicago")).toString()} is
+     * {@snippet lang="java":
+     *     {Literal java.time.ZoneId 'America/Chicago'}
+     * }
      *
      * @return a {@code String} representing the literal value.
      */

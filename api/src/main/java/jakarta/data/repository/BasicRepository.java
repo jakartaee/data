@@ -42,9 +42,9 @@ import jakarta.annotation.Nonnull;
  * {@code countBy...} and {@code deleteBy...}, which
  * do not explicitly specify an entity type.</p>
  *
- * <p>Example entity:</p>
+ * <p>Example entity:
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * @Entity
  * public class Employee {
  *     @Id
@@ -53,11 +53,11 @@ import jakarta.annotation.Nonnull;
  *     public String lastName;
  *     ...
  * }
- * }</pre>
+ * }
  *
- * <p>Example repository:</p>
+ * <p>Example repository:
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * @Repository
  * public interface Employees extends BasicRepository<Employee, Integer> {
  *
@@ -66,25 +66,25 @@ import jakarta.annotation.Nonnull;
  *
  *     ...
  * }
- * }</pre>
+ * }
  *
- * <p>Example usage:</p>
+ * <p>Example usage:
  *
- * <pre>{@code
- * @Inject
- * Employees employees;
+ * {@snippet lang="java":
+ *     @Inject
+ *     Employees employees;
  *
- * ...
+ *     ...
  *
- * Employee emp = ...
- * emp = employees.save(emp);
+ *     Employee emp = ...
+ *     emp = employees.save(emp);
  *
- * boolean terminated = employees.terminate(emp.badgeNum);
+ *     boolean terminated = employees.terminate(emp.badgeNum);
  *
- * PageRequest pageRequest = PageRequest.ofSize(25);
- * Order<Employee> sorts = Order.by(Sort.asc("name"));
- * Page<Employee> page = people.findAll(pageRequest, sorts);
- * }</pre>
+ *     PageRequest pageRequest = PageRequest.ofSize(25);
+ *     Order<Employee> sorts = Order.by(Sort.asc("name"));
+ *     Page<Employee> page = people.findAll(pageRequest, sorts);
+ * }
  *
  * <p>The module Javadoc provides an {@link jakarta.data/ overview} of Jakarta
  * Data.</p>

@@ -27,16 +27,16 @@ import jakarta.annotation.Nonnull;
  * <p>A page contains the data that is retrieved to satisfy a given page
  * request.
  * An instance of {@code Page} is obtained by supplying a {@link PageRequest} as
- * an argument of a repository method. For example,</p>
+ * an argument of a repository method. For example,
  *
- * <pre>{@code
- * @Find
- * Page<Vehicle> search(@By("make") String make,
- *                      @By("model") String model,
- *                      @By("year") int designYear,
- *                      PageRequest pageRequest,
- *                      Order<Vehicle> order);
- * }</pre>
+ * {@snippet lang="java":
+ *     @Find
+ *     Page<Vehicle> search(@By("make") String make,
+ *                          @By("model") String model,
+ *                          @By("year") int designYear,
+ *                          PageRequest pageRequest,
+ *                          Order<Vehicle> order);
+ * }
  *
  * <p>If {@link PageRequest#requestTotal()} is enabled, the {@link Page} also
  * contains information about the {@linkplain #totalPages total number of pages}

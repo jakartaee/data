@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 Contributors to the Eclipse Foundation
+ * Copyright (c) 2024,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,20 +42,23 @@ import java.lang.annotation.Target;
  * </p>
  * <p>
  * Example of defining a custom entity annotation by a provider:
- * <pre>{@code
+ *
+ * {@snippet lang="java":
  * @EntityDefining
  * @Target(ElementType.TYPE)
  * @Retention(RetentionPolicy.RUNTIME)
  * public @interface CustomEntity {
  * }
- * }</pre>
+ * }
+ *
  * Example usage of a provider-defined custom entity annotation:
- * <pre>{@code
+ *
+ * {@snippet lang="java":
  * @CustomEntity
  * public class Book {
  *     // Implementation details here
  * }
- * }</pre>
+ * }
  */
 @Target(ElementType.ANNOTATION_TYPE)
 @Retention(RetentionPolicy.RUNTIME)

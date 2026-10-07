@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023,2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2023,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,12 +22,12 @@
  *
  * <p>The {@link jakarta.data.metamodel.StaticMetamodel} allows for type-safe
  * operations that avoid the
- * need to hard-code entity attribute names as Strings. For example,</p>
+ * need to hard-code entity attribute names as Strings. For example,
  *
- * <pre>
- * &#64;Entity
+ * {@snippet lang="java":
+ * @Entity
  * public class Product {
- *     &#64;Id
+ *     @Id
  *     public long id;
  *
  *     public String name;
@@ -36,38 +36,40 @@
  *
  *     public LocalDate producedOn;
  * }
+ * }
  *
- * &#64;StaticMetamodel(Product.class)
+ * {@snippet lang="java":
+ * @StaticMetamodel(Product.class)
  * public interface _Product {
  *     String ID = "id";
  *     String NAME = "name";
  *     String PRICE = "price";
  *     String PRODUCEDON = "producedOn";
  *
- *     NumericAttribute&lt;Product,Long&gt; id = NumericAttribute.of(
+ *     NumericAttribute<Product,Long> id = NumericAttribute.of(
  *             Product.class, ID, long.class);
- *     TextAttribute&lt;Product&gt; name = TextAttribute.of(
+ *     TextAttribute<Product> name = TextAttribute.of(
  *             Product.class, NAME);
- *     NumericAttribute&lt;Product,Float&gt; price = NumericAttribute.of(
+ *     NumericAttribute<Product,Float> price = NumericAttribute.of(
  *             Product.class, PRICE, float.class);
- *     TemporalAttribute&lt;Product,LocalDate&gt; producedOn = TemporalAttribute.of(
+ *     TemporalAttribute<Product,LocalDate> producedOn = TemporalAttribute.of(
  *             Product.class, PRODUCEDON, LocalDate.class);
  * }
+ * }
  *
- * ...
+ * {@snippet lang="java":
+ *     @Inject
+ *     Products products;
  *
- * &#64;Repository
- * Products products;
+ *     ...
  *
- * ...
+ *     Order<Product> order =
+ *             Order.by(_Product.price.desc(),
+ *                      _Product.name.asc(),
+ *                      _Product.id.asc());
  *
- * Order&lt;Product&gt; order =
- *         Order.by(_Product.price.desc(),
- *                  _Product.name.asc(),
- *                  _Product.id.asc());
- *
- * page1 = products.findByNameLike(namePattern, pageRequest);
- * </pre>
+ *     page1 = products.findByNameLike(namePattern, pageRequest);
+ * }
  *
  * <p>The module Javadoc provides an {@link jakarta.data/ overview} of Jakarta
  * Data.</p>

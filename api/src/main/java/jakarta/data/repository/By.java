@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023,2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2023,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,9 +42,9 @@ import jakarta.data.constraint.EqualTo;
  * <p>The attribute name may be a compound name like {@code address.city}.</p>
  *
  * <p>For example, for a {@code Person} entity with attributes {@code ssn},
- * {@code firstName}, {@code lastName}, and {@code address} we might have:</p>
+ * {@code firstName}, {@code lastName}, and {@code address} we might have:
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * @Repository
  * public interface People {
  *
@@ -58,17 +58,17 @@ import jakarta.data.constraint.EqualTo;
  *     @Find
  *     List<Person> findByCity(@By("address.city") String city);
  * }
- * }</pre>
+ * }
  *
  * <p>The {@code By} annotation is unnecessary when the method parameter name
  * matches the entity attribute name and the application is compiled with the
  * {@code -parameters} compiler option that makes parameter names available
- * at runtime.</p>
+ * at runtime.
  *
  * <p>Thus, when this compiler option is enabled, the previous example may be
- * written without the use of {@code By}:</p>
+ * written without the use of {@code By}:
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * @Repository
  * public interface People {
  *
@@ -82,7 +82,7 @@ import jakarta.data.constraint.EqualTo;
  *     @Find
  *     List<Person> findByCity(String address_city);
  * }
- * }</pre>
+ * }
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.PARAMETER)

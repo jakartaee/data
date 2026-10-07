@@ -40,14 +40,14 @@ import java.lang.annotation.Target;
  * {@code lastName} attribute in ascending order, and secondly, for entities
  * with the same {@code lastName}, it then sorts by the {@code firstName}
  * attribute, also in ascending order. For entities with the same
- * {@code lastName} and {@code firstName}.</p>
+ * {@code lastName} and {@code firstName}.
  *
- * <pre>{@code
- * @OrderBy("lastName")
- * @OrderBy("firstName")
- * @OrderBy("id")
- * Person[] findByZipCode(int zipCode, PageRequest pageRequest);
- * }</pre>
+ * {@snippet lang="java":
+ *     @OrderBy("lastName")
+ *     @OrderBy("firstName")
+ *     @OrderBy("id")
+ *     Person[] findByZipCode(int zipCode, PageRequest pageRequest);
+ * }
  *
  * <p>The interpretation of ascending and descending order is determined
  * by the database, but, in general:</p>
@@ -61,12 +61,12 @@ import java.lang.annotation.Target;
  * </ul>
  *
  * <p>The default sort order is ascending. The {@code descending} member can be
- * used to specify the sort direction.</p>
- * <pre>
- * &#64;Find
- * &#64;OrderBy(value = _Product.PRICE, descending = true)
- * {@code Stream<Product>} pricedBelow(&#64;By(_Product.PRICE) &#64;Is(AtMost.class) double maxPrice);
- * </pre>
+ * used to specify the sort direction.
+ * {@snippet lang="java":
+ *     @Find
+ *     @OrderBy(value = _Product.PRICE, descending = true)
+ *     Stream<Product> pricedBelow(@By(_Product.PRICE) @Is(AtMost.class) double maxPrice);
+ * }
  *
  * <p>A repository method with an {@code @OrderBy} annotation must not
  * have:</p>
@@ -131,13 +131,13 @@ public @interface OrderBy {
     /**
      * <p>Entity attribute name to sort by.</p>
      *
-     * <p>For example,</p>
+     * <p>For example,
      *
-     * <pre>
-     * &#64;Find
-     * &#64;OrderBy("age")
-     * Stream&lt;Person&gt; withLastName(&#64;By("lastName") String surname);
-     * </pre>
+     * {@snippet lang="java":
+     *     @Find
+     *     @OrderBy("age")
+     *     Stream<Person> withLastName(@By("lastName") String surname);
+     * }
      *
      * @return entity attribute name.
      */

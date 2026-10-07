@@ -144,10 +144,10 @@ public interface NumericLiteral<N extends Number & Comparable<N>>
      * output of the value, enclosed in single quotes.</p>
      *
      * <p>For example, the output of
-     * {@code NumericLiteral.of(BigDecimal.valueOf(123456789, 2)).toString()} is</p>
-     * <pre>
-     * 1234567.89BD
-     * </pre>
+     * {@code NumericLiteral.of(BigDecimal.valueOf(123456789, 2)).toString()} is
+     * {@snippet lang="java":
+     *     1234567.89BD
+     * }
      *
      * @return a {@code String} representing the literal numeric value.
      */

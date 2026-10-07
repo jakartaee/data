@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 Contributors to the Eclipse Foundation
+ * Copyright (c) 2024,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,18 +35,18 @@ import jakarta.annotation.Nullable;
  *
  * <p>The {@code Order} class is useful in combination with the
  * {@link StaticMetamodel} for helping to enforce type safety of sort criteria
- * during development. For example,</p>
+ * during development. For example,
  *
- * <pre>{@code
- * Page<Employee> findByYearHired(int year, PageRequest pageRequest, Order<Employee>);
+ * {@snippet lang="java":
+ *     Page<Employee> findByYearHired(int year, PageRequest pageRequest, Order<Employee>);
  *
- * ...
- * page1 = employees.findByYearHired(Year.now(),
- *                                   PageRequest.ofSize(10),
- *                                   Order.by(_Employee.salary.desc(),
- *                                            _Employee.lastName.asc(),
- *                                            _Employee.firstName.asc()));
- * }</pre>
+ *     ...
+ *     page1 = employees.findByYearHired(Year.now(),
+ *                                       PageRequest.ofSize(10),
+ *                                       Order.by(_Employee.salary.desc(),
+ *                                                _Employee.lastName.asc(),
+ *                                                _Employee.firstName.asc()));
+ * }
  *
  * <p>The relative precedence of an instance of {@link Sort} belonging
  * to an {@code Order} is determined by its position within the

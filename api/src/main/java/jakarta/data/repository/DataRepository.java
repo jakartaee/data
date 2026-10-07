@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022,2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,9 +30,9 @@ package jakarta.data.repository;
  * {@code countBy...}
  * and {@code deleteBy...}, which do not explicitly specify an entity type.</p>
  *
- * <p>Example entity:</p>
+ * <p>Example entity:
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * @Entity
  * public class DriverLicense {
  *     @Id
@@ -40,11 +40,11 @@ package jakarta.data.repository;
  *     public LocalDate expiry;
  *     ...
  * }
- * }</pre>
+ * }
  *
- * <p>Example repository:</p>
+ * <p>Example repository:
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * @Repository
  * public interface DriverLicenses extends DataRepository<DriverLicense, String> {
  *
@@ -58,22 +58,22 @@ package jakarta.data.repository;
  *
  *     ...
  * }
- * }</pre>
+ * }
  *
- * <p>Example usage:</p>
+ * <p>Example usage:
  *
- * <pre>{@code
- * @Inject
- * DriverLicenses licenses;
+ * {@snippet lang="java":
+ *     @Inject
+ *     DriverLicenses licenses;
  *
- * ...
+ *     ...
  *
- * DriverLicense license = ...
- * license = licenses.register(license);
+ *     DriverLicense license = ...
+ *     license = licenses.register(license);
  *
- * boolean isValid = licenses.existsByLicenseNumAndExpiryGreaterThan(license.licenseNum,
- *                                                                   LocalDate.now());
- * }</pre>
+ *     boolean isValid = licenses.existsByLicenseNumAndExpiryGreaterThan(license.licenseNum,
+ *                                                                       LocalDate.now());
+ * }
  *
  * <p>The module Javadoc provides an {@link jakarta.data/ overview} of Jakarta
  * Data.</p>

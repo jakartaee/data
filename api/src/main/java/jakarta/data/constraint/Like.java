@@ -36,47 +36,47 @@ import jakarta.annotation.Nonnull;
  * <p>A parameter-based repository method can impose a constraint on an
  * entity attribute by defining a method parameter that is of type
  * {@code Like} or is annotated {@link Is @Is(Like.class)} and is of type
- * {@link String}. For example,</p>
+ * {@link String}. For example,
  *
- * <pre>
- * &#64;Find
- * List&lt;Car&gt; matchVIN(&#64;By(_Car.VIN) Like vinPattern);
+ * {@snippet lang="java":
+ *     @Find
+ *     List<Car> matchVIN(@By(_Car.VIN) Like vinPattern);
  *
- * &#64;Find // requires the -parameters compiler option to preserve parameter names
- * List&lt;Car&gt; makeAndModel(Like make, Like model);
+ *     @Find // requires the -parameters compiler option to preserve parameter names
+ *     List<Car> makeAndModel(Like make, Like model);
  *
- * &#64;Find
- * List&lt;Car&gt; search(&#64;By(_Car.MAKE) &#64;Is(Like.class) String makePattern,
- *                  &#64;By(_Car.MODEL) &#64;Is(Like.class) String modelPattern,
- *                  Order&lt;Car&gt; sorts);
+ *     @Find
+ *     List<Car> search(@By(_Car.MAKE) @Is(Like.class) String makePattern,
+ *                      @By(_Car.MODEL) @Is(Like.class) String modelPattern,
+ *                      Order<Car> sorts);
  *
- * ...
+ *     ...
  *
- * found = cars.matchVIN(Like.prefix("1GM"));
+ *     found = cars.matchVIN(Like.prefix("1GM"));
  *
- * found = cars.makeAndModel(Like.contains(makeSubstring),
- *                           Like.contains(modelSubstring));
+ *     found = cars.makeAndModel(Like.contains(makeSubstring),
+ *                               Like.contains(modelSubstring));
  *
- * found = cars.search("Chev%",
- *                     "% EV",
- *                     Order.by(_Car.price.desc()));
- * </pre>
+ *     found = cars.search("Chev%",
+ *                         "% EV",
+ *                         Order.by(_Car.price.desc()));
+ * }
  *
  * <p>Repository methods can also accept {@code Like} constraints at run time
  * in the form of a {@link Restriction} on a {@link TextExpression}.
- * For example,</p>
+ * For example,
  *
- * <pre>
- * &#64;Find
- * List&lt;Car&gt; searchAll(Restriction&lt;Car&gt; restrict, Order&lt;Car&gt; sorts);
+ * {@snippet lang="java":
+ *     @Find
+ *     List<Car> searchAll(Restriction<Car> restrict, Order<Car> sorts);
  *
- * ...
+ *     ...
  *
- * found = cars.searchAll(_Car.make.startsWith("Chev"),
- *                        Order.by(_Car.model.asc(),
- *                                 _Car.year.desc(),
- *                                 _Car.price.asc());
- * </pre>
+ *     found = cars.searchAll(_Car.make.startsWith("Chev"),
+ *                            Order.by(_Car.model.asc(),
+ *                                     _Car.year.desc(),
+ *                                     _Car.price.asc());
+ * }
  *
  * <p>The {@linkplain Attribute entity and static metamodel} for the code
  * examples within this class are shown in the {@link Attribute} Javadoc.
@@ -96,9 +96,9 @@ public interface Like extends Constraint<String> {
      * position 7 is {@code E}, and the remaining positions are any characters,
      * </p>
      *
-     * <pre>
-     * found = cars.matchVIN(Like.pattern("JHM___E%"));
-     * </pre>
+     * {@snippet lang="java":
+     *     found = cars.matchVIN(Like.pattern("JHM___E%"));
+     * }
      *
      * @param pattern a pattern in which {@code _} matches a single character
      *                and {@code %} matches 0 or more characters.
@@ -120,9 +120,9 @@ public interface Like extends Constraint<String> {
      * position 7 is {@code F}, and the remaining positions are any characters,
      * </p>
      *
-     * <pre>
-     * found = cars.matchVIN(Like.pattern("JHM???F*", '?', '*'));
-     * </pre>
+     * {@snippet lang="java":
+     *     found = cars.matchVIN(Like.pattern("JHM???F*", '?', '*'));
+     * }
      *
      * @param pattern        a pattern that can include the given wildcard
      *                       characters.
@@ -150,9 +150,9 @@ public interface Like extends Constraint<String> {
      * position 7 is {@code C}, and the remaining positions are any characters,
      * </p>
      *
-     * <pre>
-     * found = cars.matchVIN(Like.pattern("JHM---^CC", '-', 'C', '^'));
-     * </pre>
+     * {@snippet lang="java":
+     *     found = cars.matchVIN(Like.pattern("JHM---^CC", '-', 'C', '^'));
+     * }
      *
      * @param pattern        a pattern that can include the given wildcard
      *                       characters and escape character.
@@ -200,11 +200,11 @@ public interface Like extends Constraint<String> {
      * {@code prefix}.</p>
      *
      * <p>For example, the following requires that the first 3 positions of a
-     * VIN number are the characters {@code JTP}.</p>
+     * VIN number are the characters {@code JTP}.
      *
-     * <pre>
-     * found = cars.matchVIN(Like.prefix("JTP"));
-     * </pre>
+     * {@snippet lang="java":
+     *     found = cars.matchVIN(Like.prefix("JTP"));
+     * }
      *
      * @param prefix text that the beginning characters of the constraint
      *               target must exactly match.
@@ -228,12 +228,12 @@ public interface Like extends Constraint<String> {
      * {@code substring}.</p>
      *
      * <p>For example, the following requires that the entity attribute value
-     * contain the character string {@code Hybrid},</p>
+     * contain the character string {@code Hybrid},
      *
-     * <pre>
-     * found = cars.makeAndModel(Like.literal(make),
+     * {@snippet lang="java":
+     *     found = cars.makeAndModel(Like.literal(make),
      *                           Like.substring("Hybrid"));
-     * </pre>
+     * }
      *
      * @param substring text that must be contained in the constraint target.
      * @return a {@code Like} constraint.
@@ -256,12 +256,12 @@ public interface Like extends Constraint<String> {
      * {@code suffix}.</p>
      *
      * <p>For example, the following requires that the entity attribute value
-     * end with the characters {@code EV},</p>
+     * end with the characters {@code EV},
      *
-     * <pre>
-     * found = cars.makeAndModel(Like.literal(make),
+     * {@snippet lang="java":
+     *     found = cars.makeAndModel(Like.literal(make),
      *                           Like.suffix("EV"));
-     * </pre>
+     * }
      *
      * @param suffix text that the ending characters of the constraint
      *               target must exactly match.
@@ -289,9 +289,9 @@ public interface Like extends Constraint<String> {
      * <p>For example, the following requires a VIN number to exactly match,
      * </p>
      *
-     * <pre>
-     * found = cars.matchVIN(Like.literal(vin));
-     * </pre>
+     * {@snippet lang="java":
+     *     found = cars.matchVIN(Like.literal(vin));
+     * }
      *
      * @param value a value that must exactly match.
      * @return a {@code Like} constraint.

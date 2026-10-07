@@ -84,14 +84,15 @@ import java.lang.annotation.Target;
  * they may be named arbitrarily, and their names do not carry any semantic meaning
  * defined by the Jakarta Data specification.</p>
  *
- * <p>For example, consider an interface representing a garage:</p>
- * <pre>{@code
+ * <p>For example, consider an interface representing a garage:
+ *
+ * {@snippet lang="java":
  * @Repository
  * interface Garage {
  *     @Find
  *     List<Car> getCarsWithModel(@By("model") String model);
  * }
- * }</pre>
+ * }
  * <p>The {@code @Find} annotation indicates that the {@code getCarsWithModel(model)}
  * method retrieves {@code Car} instances with the given value of the {@code model}
  * attribute.</p>
@@ -113,8 +114,9 @@ import java.lang.annotation.Target;
  *
  * <p>For example, if a {@code Car} entity has attribute names including {@code make},
  * {@code model}, {@code year}, and {@code vin}, a repository can use a Java record
- * to request that only a subset of entity attributes be retrieved,</p>
- * <pre>{@code
+ * to request that only a subset of entity attributes be retrieved,
+ *
+ * {@snippet lang="java":
  * @Repository
  * public interface Cars extends BasicRepository<Car, String> {
  *     record ModelInfo(String make,
@@ -124,7 +126,7 @@ import java.lang.annotation.Target;
  *     @Find
  *     Optional<ModelInfo> getModelInfo(@By("vin") String vehicleIdNum);
  * }
- * }</pre>
+ * }
  *
  * <p>An automatic query method annotated {@code Find} returns an entity instance,
  * Java record instance, or entity attribute instance for every database record
@@ -172,18 +174,18 @@ public @interface Find {
      * valid entity class as the value if the method does not return entities
      * and the repository does not otherwise define a primary entity type.</p>
      *
-     * <p>For example,</p>
+     * <p>For example,
      *
-     * <pre>{@code
-     * @Repository
-     * public interface Vehicles {
+     * {@snippet lang="java":
+     *     @Repository
+     *     public interface Vehicles {
      *     @Find(Car.class)
      *     @Select(_Car.PRICE)
      *     Optional<Float> getPrice(@By(_Car.VIN) String vehicleIdNum);
      *
      *     ...
      * }
-     * }</pre>
+     * }
      */
     Class<?> value() default void.class;
 }

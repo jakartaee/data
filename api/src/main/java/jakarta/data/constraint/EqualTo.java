@@ -33,51 +33,51 @@ import jakarta.annotation.Nonnull;
  * {@code EqualTo} or is annotated {@link Is @Is(EqualTo.class)} and is
  * of the same type or a subtype of the entity attribute. The equality
  * constraint is also the default when the {@code @Is} annotation is omitted.
- * For example,</p>
+ * For example,
  *
- * <pre>
- * &#64;Find
- * List&lt;Car&gt; fromManufacturer(&#64;By(_Car.MAKE) EqualTo&lt;String&gt; manufacturer);
+ * {@snippet lang="java":
+ *     @Find
+ *     List<Car> fromManufacturer(@By(_Car.MAKE) EqualTo<String> manufacturer);
  *
- * &#64;Find
- * List&lt;Car&gt; ofMakeAndModel(&#64;By(_Car.MAKE) &#64;Is(EqualTo.class) String manufacturer,
- *                          &#64;By(_Car.MODEL) &#64;Is(EqualTo.class) String model,
- *                          Order&lt;Car&gt; sorts);
+ *     @Find
+ *     List<Car> ofMakeAndModel(@By(_Car.MAKE) @Is(EqualTo.class) String manufacturer,
+ *                              @By(_Car.MODEL) @Is(EqualTo.class) String model,
+ *                              Order<Car> sorts);
  *
- * &#64;Find
- * List&lt;Car&gt; ofMakeAndModelAndYear(&#64;By(_Car.MAKE) String manufacturer,
- *                                 &#64;By(_Car.MODEL) String model,
- *                                 &#64;By(_Car.YEAR) int modelYear,
- *                                 Order&lt;Car&gt; sorts);
- * ...
+ *     @Find
+ *     List<Car> ofMakeAndModelAndYear(@By(_Car.MAKE) String manufacturer,
+ *                                     @By(_Car.MODEL) String model,
+ *                                     @By(_Car.YEAR) int modelYear,
+ *                                     Order<Car> sorts);
+ *     ...
  *
- * found = cars.fromManufacturer(EqualTo.value("Jakarta Motors"));
+ *     found = cars.fromManufacturer(EqualTo.value("Jakarta Motors"));
  *
- * found = cars.ofMakeAndModel("Jakarta Motors",
- *                             "J-150",
- *                             Order.by(_Car.price.desc()));
+ *     found = cars.ofMakeAndModel("Jakarta Motors",
+ *                                 "J-150",
+ *                                 Order.by(_Car.price.desc()));
  *
- * found = cars.ofMakeAndModelAndYear("Jakarta Motors",
- *                                    "J-150",
- *                                    2025,
- *                                    Order.by(_Car.price.desc()));
- * </pre>
+ *     found = cars.ofMakeAndModelAndYear("Jakarta Motors",
+ *                                        "J-150",
+ *                                        2025,
+ *                                        Order.by(_Car.price.desc()));
+ * }
  *
  * <p>Repository methods can also accept {@code EqualTo} constraints at
  * runtime in the form of a {@link Restriction} on an {@link Expression}.
- * For example,</p>
+ * For example,
  *
- * <pre>
- * &#64;Find
- * List&lt;Car&gt; searchAll(Restriction&lt;Car&gt; restrict, Order&lt;Car&gt; sorts);
+ * {@snippet lang="java":
+ *     @Find
+ *     List<Car> searchAll(Restriction<Car> restrict, Order<Car> sorts);
  *
- * ...
+ *     ...
  *
- * found = cars.searchAll(Restrict.all(_Car.make.equalTo("Jakarta Motors"),
- *                                     _Car.model.equalTo("J-150")),
- *                        Order.by(_Car.year.desc(),
- *                                 _Car.price.asc());
- * </pre>
+ *     found = cars.searchAll(Restrict.all(_Car.make.equalTo("Jakarta Motors"),
+ *                                         _Car.model.equalTo("J-150")),
+ *                            Order.by(_Car.year.desc(),
+ *                                     _Car.price.asc());
+ * }
  *
  * <p>The {@linkplain Attribute entity and static metamodel} for the code
  * examples within this class are shown in the {@link Attribute} Javadoc.
@@ -91,12 +91,12 @@ public interface EqualTo<V> extends Constraint<V> {
 
     /**
      * <p>Requires that the constraint target equal the value to which the
-     * given {@code expression} evaluates. For example,</p>
+     * given {@code expression} evaluates. For example,
      *
-     * <pre>
-     * found = cars.fromManufacturer(
+     * {@snippet lang="java":
+     *     found = cars.fromManufacturer(
      *                 EqualTo.expression(_Car.model.left(_Car.make.length())));
-     * </pre>
+     * }
      *
      * @param <V>        type of the entity attribute or a subtype or primitive
      *                   wrapper type for the entity attribute.
@@ -117,11 +117,11 @@ public interface EqualTo<V> extends Constraint<V> {
 
     /**
      * <p>Requires that the constraint target equal the given value. For
-     * example,</p>
+     * example,
      *
-     * <pre>
-     * found = cars.fromManufacturer(EqualTo.value("Jakarta Motors"));
-     * </pre>
+     * {@snippet lang="java":
+     *     found = cars.fromManufacturer(EqualTo.value("Jakarta Motors"));
+     * }
      *
      * @param <V>   type of the entity attribute or a subtype or primitive
      *              wrapper type for the entity attribute.

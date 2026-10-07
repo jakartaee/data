@@ -29,32 +29,32 @@ import jakarta.annotation.Nonnull;
  * <p>A parameter-based repository method can impose a constraint on an
  * entity attribute by defining a method parameter that is of type
  * {@code Between} and is of the same type or a subtype of the entity
- * attribute. For example,</p>
+ * attribute. For example,
  *
- * <pre>{@code
- * @Find
- * List<Car> byModelYear(@By(_Car.YEAR) Between<Integer> yearRange,
- *                       Order<Car> sorts);
+ * {@snippet lang="java":
+ *     @Find
+ *     List<Car> byModelYear(@By(_Car.YEAR) Between<Integer> yearRange,
+ *                           Order<Car> sorts);
  *
- * ...
+ *     ...
  *
- * found = cars.byModelYear(Between.bounds(2021, 2024));
- * }</pre>
+ *     found = cars.byModelYear(Between.bounds(2021, 2024));
+ * }
  *
  * <p>Repository methods can also accept {@code Between} constraints at
  * run time in the form of a {@link Restriction} on a
- * {@link ComparableExpression}. For example,</p>
+ * {@link ComparableExpression}. For example,
  *
- * <pre>{@code
- * @Find
- * List<Car> searchAll(Restriction<Car> restrict, Order<Car> sorts);
+ * {@snippet lang="java":
+ *     @Find
+ *     List<Car> searchAll(Restriction<Car> restrict, Order<Car> sorts);
  *
- * ...
+ *     ...
  *
- * found = cars.searchAll(_Car.price.between(25000, 35000),
- *                        Order.by(_Car.price.desc(),
- *                                 _Car.year.desc()));
- * }</pre>
+ *     found = cars.searchAll(_Car.price.between(25000, 35000),
+ *                            Order.by(_Car.price.desc(),
+ *                                     _Car.year.desc()));
+ * }
  *
  * <p>The {@linkplain Attribute entity and static metamodel} for the code
  * examples within this class are shown in the {@link Attribute} Javadoc.
@@ -69,12 +69,12 @@ public interface Between<V extends Comparable<?>> extends Constraint<V> {
     /**
      * <p>Requires that the constraint target evaluates to a value that is
      * greater than or equal to the given {@code minimum} and less than or
-     * equals to the given {@code maximum}. For example,</p>
+     * equals to the given {@code maximum}. For example,
      *
-     * <pre>{@code
+     * {@snippet lang="java":
      *     found = cars.byPrice(Between.bounds(27000, 37000),
      *                          Order.by(_Car.price.desc()));
-     * }</pre>
+     * }
      *
      * @param <V>     type of the entity attribute or a subtype or primitive
      *                wrapper type for the entity attribute.
@@ -95,12 +95,12 @@ public interface Between<V extends Comparable<?>> extends Constraint<V> {
      * <p>Requires that the constraint target evaluates to a value that is
      * greater than or equal to the given {@code minimum} and less than or
      * equal to the value to which the given {@code maximum} expression
-     * evaluates. For example,</p>
+     * evaluates. For example,
      *
-     * <pre>{@code
+     * {@snippet lang="java":
      *     found = cars.byModelYear(Between.bounds(2020, _Car.firstModelYear.plus(5)),
      *                              Order.by(_Car.price.desc()));
-     * }</pre>
+     * }
      *
      * @param <V>     type of the entity attribute or a subtype or primitive
      *                wrapper type for the entity attribute.
@@ -121,12 +121,12 @@ public interface Between<V extends Comparable<?>> extends Constraint<V> {
      * <p>Requires that the constraint target evaluates to a value that is
      * greater than or equal to the value to which the given {@code minimum}
      * expression evaluates and less than or equal to the given
-     * {@code maximum}. For example,</p>
+     * {@code maximum}. For example,
      *
-     * <pre>{@code
+     * {@snippet lang="java":
      *     found = cars.byModelYear(Between.bounds(_Car.firstModelYear.plus(2), 2024),
      *                              Order.by(_Car.year.desc()));
-     * }</pre>
+     * }
      *
      * @param <V>     type of the entity attribute or a subtype or primitive
      *                wrapper type for the entity attribute.
@@ -147,15 +147,15 @@ public interface Between<V extends Comparable<?>> extends Constraint<V> {
      * <p>Requires that the constraint target evaluates to a value that is
      * greater than or equal to the value to which the given {@code minimum}
      * expression evaluates and less than or equal to the value to which the
-     * given {@code maximum} expression evaluates. For example,</p>
+     * given {@code maximum} expression evaluates. For example,
      *
-     * <pre>{@code
+     * {@snippet lang="java":
      *     found = cars.byModelYear(Between.bounds(_Car.firstModelYear.plus(1),
      *                                             _Car.firstModelYear.plus(4)),
      *                              Order.by(_Car.price.desc(),
      *                                       _Car.year.desc(),
      *                                       _Car.vin.asc()));
-     * }</pre>
+     * }
      *
      * @param <V>     type of the entity attribute or a subtype or primitive
      *                wrapper type for the entity attribute.

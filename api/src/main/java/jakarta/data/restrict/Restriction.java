@@ -41,8 +41,9 @@ import jakarta.annotation.Nonnull;
  * {@link Restrict#any(Restriction...)} methods.</p>
  *
  * <p>A repository {@link Find} method can optionally accept a parameter of
- * type {@code Restriction}. For example,</p>
- * <pre>{@code
+ * type {@code Restriction}. For example,
+ *
+ * {@snippet lang="java":
  * @Repository
  * public interface Cars extends CrudRepository<Car, String> {
  *
@@ -52,31 +53,32 @@ import jakarta.annotation.Nonnull;
  *                      Restriction<Car> restriction,
  *                      Order<Car>... sort);
  * }
- * }</pre>
+ * }
  *
  * <p>Instances of restriction obtained from the static metamodel or the
  * {@link Restrict} class can be supplied as the parameter when invoking the
- * respository method. For example,</p>
- * <pre>{@code
- * List<Car> withinPriceRange =
- *         cars.search(make,
- *                     model,
- *                     _Car.price.between(20000, 30000),
- *                     Order.by(_Car.price.desc()));
+ * respository method. For example,
  *
- * List<Car> pricedUnder30kWhenDiscounted =
- *         cars.search(make,
- *                     model,
- *                     _Car.price.minus(discount).lessThan(30000),
- *                     Order.by(_Car.price.desc()));
+ * {@snippet lang="java":
+ *     List<Car> withinPriceRange =
+ *             cars.search(make,
+ *                         model,
+ *                         _Car.price.between(20000, 30000),
+ *                         Order.by(_Car.price.desc()));
  *
- * List<Car> atLeast2020AndPricedBelow30k =
- *         cars.search(make,
- *                     model,
- *                     Restrict.all(_Car.year.greaterThanEqual(2020),
- *                                  _Car.price.lessThan(30000)),
- *                     Order.by(_Car.price.desc()));
- * }</pre>
+ *     List<Car> pricedUnder30kWhenDiscounted =
+ *             cars.search(make,
+ *                         model,
+ *                         _Car.price.minus(discount).lessThan(30000),
+ *                         Order.by(_Car.price.desc()));
+ *
+ *     List<Car> atLeast2020AndPricedBelow30k =
+ *             cars.search(make,
+ *                         model,
+ *                         Restrict.all(_Car.year.greaterThanEqual(2020),
+ *                                      _Car.price.lessThan(30000)),
+ *                         Order.by(_Car.price.desc()));
+ * }
  *
  * <p>The {@linkplain Attribute example entity and static metamodel} for the
  * above are provided in the {@link Attribute} Javadoc.</p>

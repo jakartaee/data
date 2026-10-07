@@ -30,39 +30,39 @@ import jakarta.annotation.Nonnull;
  * <p>A parameter-based repository method can impose a constraint on an
  * entity attribute by defining a method parameter that is of type
  * {@code AtMost} or is annotated {@link Is @Is(AtMost.class)} and is
- * of the same type or a subtype of the entity attribute. For example,</p>
+ * of the same type or a subtype of the entity attribute. For example,
  *
- * <pre>{@code
- * @Find
- * List<Car> withMaximumPrice(@By(_Car.PRICE) AtMost<Integer> maxPrice);
+ * {@snippet lang="java":
+ *     @Find
+ *     List<Car> withMaximumPrice(@By(_Car.PRICE) AtMost<Integer> maxPrice);
  *
- * @Find
- * List<Car> pricedAtMost(@By(_Car.PRICE) @Is(AtMost.class) int maximum,
- *                        Order<Car> sorts);
+ *     @Find
+ *     List<Car> pricedAtMost(@By(_Car.PRICE) @Is(AtMost.class) int maximum,
+ *                            Order<Car> sorts);
  *
- * ...
+ *     ...
  *
- * found = cars.withMaximumPrice(AtMost.max(40000));
+ *     found = cars.withMaximumPrice(AtMost.max(40000));
  *
- * found = cars.pricedAtMost(36000,
- *                           Order.by(_Car.price.desc(),
- *                                    _Car.vin.asc()));
- * }</pre>
+ *     found = cars.pricedAtMost(36000,
+ *                               Order.by(_Car.price.desc(),
+ *                                        _Car.vin.asc()));
+ * }
  *
  * <p>Repository methods can also accept {@code AtMost} constraints at
  * run time in the form of a {@link Restriction} on a
- * {@link ComparableExpression}. For example,</p>
+ * {@link ComparableExpression}. For example,
  *
- * <pre>{@code
- * @Find
- * List<Car> searchAll(Restriction<Car> restrict, Order<Car> sorts);
+ * {@snippet lang="java":
+ *     @Find
+ *     List<Car> searchAll(Restriction<Car> restrict, Order<Car> sorts);
  *
- * ...
+ *     ...
  *
- * found = cars.searchAll(_Car.price.lessThanEqual(35000),
- *                        Order.by(_Car.price.desc(),
- *                                 _Car.year.desc()));
- * }</pre>
+ *     found = cars.searchAll(_Car.price.lessThanEqual(35000),
+ *                            Order.by(_Car.price.desc(),
+ *                                     _Car.year.desc()));
+ * }
  *
  * <p>The {@linkplain Attribute entity and static metamodel} for the code
  * examples within this class are shown in the {@link Attribute} Javadoc.
@@ -76,11 +76,11 @@ public interface AtMost<V extends Comparable<?>> extends Constraint<V> {
 
     /**
      * <p>Requires that the constraint target evaluates to a value that is
-     * less than or equal to the given {@code maximum}. For example,</p>
+     * less than or equal to the given {@code maximum}. For example,
      *
-     * <pre>{@code
+     * {@snippet lang="java":
      *     found = cars.withMaximumPrice(AtMost.max(33000));
-     * }</pre>
+     * }
      *
      * @param <V>     type of the entity attribute or a subtype or primitive
      *                wrapper type for the entity attribute.
@@ -97,11 +97,11 @@ public interface AtMost<V extends Comparable<?>> extends Constraint<V> {
     /**
      * <p>Requires that the constraint target evaluates to a value that is
      * less than or equal the value to which the the given {@code maximum}
-     * expression evaluates. For example,</p>
+     * expression evaluates. For example,
      *
-     * <pre>{@code
+     * {@snippet lang="java":
      *     found = cars.withMaxFirstYear(AtMost.max(_Car.year.minus(2)));
-     * }</pre>
+     * }
      *
      * @param <V>     type of the entity attribute or a subtype or primitive
      *                wrapper type for the entity attribute.

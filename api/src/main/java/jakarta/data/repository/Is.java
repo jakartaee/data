@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024,2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2024,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,9 +47,9 @@ import jakarta.data.constraint.NotLike;
  * option is enabled, the persistent field is inferred by matching the name of
  * the method parameter.</p>
  *
- * <p>For example,</p>
+ * <p>For example,
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * @Repository
  * public interface Products extends CrudRepository<Product, Long> {
  *
@@ -67,7 +67,7 @@ import jakarta.data.constraint.NotLike;
  *     @Delete
  *     void remove(@By(ID) @Is(In.class) List<Long> productIds);
  * }
- * }</pre>
+ * }
  *
  * @since 1.1
  */
@@ -105,12 +105,12 @@ public @interface Is {
      * which a person was born against a minimum and maximum year that are
      * supplied as parameters to a repository method:</p>
      *
-     * <pre>
-     * &#64;Find
-     * &#64;OrderBy(_Person.BIRTHYEAR)
-     * List&lt;Person&gt; bornWithin(&#64;By(_Person.BIRTHYEAR) &#64;Is(AtLeast.class) int minYear,
-     *                         &#64;By(_Person.BIRTHYEAR) &#64;Is(AtMost.class) int maxYear);
-     * </pre>
+     * {@snippet lang="java":
+     *     @Find
+     *     @OrderBy(_Person.BIRTHYEAR)
+     *     List<Person> bornWithin(@By(_Person.BIRTHYEAR) @Is(AtLeast.class) int minYear,
+     *                             @By(_Person.BIRTHYEAR) @Is(AtMost.class) int maxYear);
+     * }
      *
      * <p>The default constraint is the
      * {@linkplain EqualTo#value(Object) equality} comparison.</p>

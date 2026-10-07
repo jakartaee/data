@@ -35,32 +35,32 @@ import jakarta.annotation.Nonnull;
  *
  * <p>A parameter-based repository method can impose a constraint on an
  * entity attribute by defining a method parameter that is of type
- * {@code NotIn}. For example,</p>
+ * {@code NotIn}. For example,
  *
- * <pre>{@code
- * @Find
- * List<Car> excludingManufacturers(@By(_Car.MAKE) NotIn<String> excluded);
- * ...
+ * {@snippet lang="java":
+ *     @Find
+ *     List<Car> excludingManufacturers(@By(_Car.MAKE) NotIn<String> excluded);
+ *     ...
  *
- * found = cars.excludingManufacturers(NotIn.values("Leakoil Motors",
- *                                                  "Stallmore Motors"));
- * }</pre>
+ *     found = cars.excludingManufacturers(NotIn.values("Leakoil Motors",
+ *                                                      "Stallmore Motors"));
+ * }
  *
  * <p>Repository methods can also accept {@code NotIn} constraints at run time
  * in the form of a {@link Restriction} on an {@link Expression}. For example,
  * </p>
  *
- * <pre>{@code
- * @Find
- * List<Car> searchAll(Restriction<Car> restrict, Order<Car> sorts);
+ * {@snippet lang="java":
+ *     @Find
+ *     List<Car> searchAll(Restriction<Car> restrict, Order<Car> sorts);
  *
- * ...
+ *     ...
  *
- * found = cars.searchAll(_Car.make.notIn("Leakoil Motors",
- *                                        "Stallmore Motors"),
- *                        Order.by(_Car.make.asc(),
- *                                 _Car.model.asc()));
- * }</pre>
+ *     found = cars.searchAll(_Car.make.notIn("Leakoil Motors",
+ *                                            "Stallmore Motors"),
+ *                            Order.by(_Car.make.asc(),
+ *                                     _Car.model.asc()));
+ * }
  *
  * <p>The {@linkplain Attribute entity and static metamodel} for the code
  * examples within this class are shown in the {@link Attribute} Javadoc.
@@ -74,12 +74,12 @@ public interface NotIn<V> extends Constraint<V> {
 
     /**
      * <p>Requires that the constraint target not equal any of the given
-     * {@code values}. For example,</p>
+     * {@code values}. For example,
      *
-     * <pre>{@code
+     * {@snippet lang="java":
      *     found = cars.excludingManufacturers(NotIn.values("Stallmore Motors",
      *                                                      "Knockhard Motors"));
-     * }</pre>
+     * }
      *
      * @param <V>    type of the entity attribute or a subtype or primitive
      *               wrapper type for the entity attribute.
@@ -117,12 +117,12 @@ public interface NotIn<V> extends Constraint<V> {
 
     /**
      * <p>Requires that the constraint target not equal any of the given
-     * {@code values}. For example,</p>
+     * {@code values}. For example,
      *
-     * <pre>{@code
+     * {@snippet lang="java":
      *     found = cars.excludingManufacturers(NotIn.values(Set.of("Leakoil Motors",
      *                                                             "Knockhard Motors")));
-     * }</pre>
+     * }
      *
      * @param <V>    type of the entity attribute or a subtype or primitive
      *               wrapper type for the entity attribute.
@@ -159,13 +159,13 @@ public interface NotIn<V> extends Constraint<V> {
 
     /**
      * <p>Requires that the constraint target not equal any of the values to
-     * which the given {@code expressions} evaluate. For example,</p>
+     * which the given {@code expressions} evaluate. For example,
      *
-     * <pre>{@code
+     * {@snippet lang="java":
      *     found = cars.excludingManufacturers(
      *                 NotIn.expressions(List.of(_Car.model.left(_Car.make.length()),
      *                                           _Car.model.right(_Car.make.length()))));
-     * }</pre>
+     * }
      *
      * @param <V>         type of the entity attribute or a subtype or
      *                    primitive wrapper type for the entity attribute.
@@ -200,13 +200,13 @@ public interface NotIn<V> extends Constraint<V> {
 
     /**
      * <p>Requires that the constraint target not equal any of the values to
-     * which the given {@code expressions} evaluate. For example,</p>
+     * which the given {@code expressions} evaluate. For example,
      *
-     * <pre>{@code
+     * {@snippet lang="java":
      *     found = cars.excludingManufacturers(
      *                 NotIn.expressions(_Car.model.left(_Car.make.length()),
      *                                   _Car.model.right(_Car.make.length())));
-     * }</pre>
+     * }
      *
      * @param <V>         type of the entity attribute or a subtype or
      *                    primitive wrapper type for the entity attribute.

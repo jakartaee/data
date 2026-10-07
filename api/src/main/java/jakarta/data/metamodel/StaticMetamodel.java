@@ -92,9 +92,9 @@ import jakarta.data.restrict.Restriction;
  *     case or mixed case, matching the name of the modeled attribute.</li>
  * </ul>
  *
- * <p>For example, for the following entity,</p>
+ * <p>For example, for the following entity,
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * @Entity
  * public class Person {
  *     public LocalDate dateOfBirth;
@@ -111,11 +111,11 @@ import jakarta.data.restrict.Restriction;
  *     public String first;
  *     public String last;
  * }
- * }</pre>
+ * }
  *
- * <p>An application programmer may define a static metamodel as follows,</p>
+ * <p>An application programmer may define a static metamodel as follows,
  *
- * <pre>{@code
+ * {@snippet lang="java":
  * @StaticMetamodel(Person.class)
  * public interface _Person {
  *     String DATEOFBIRTH = "dateOfBirth";
@@ -135,17 +135,17 @@ import jakarta.data.restrict.Restriction;
  *     NumericAttribute<Person, Long> ssn = NumericAttribute.of(
  *             Person.class, SSN, long.class);
  * }
- * }</pre>
+ * }
  *
- * <p>And use it to refer to entity attributes in a type-safe manner,</p>
+ * <p>And use it to refer to entity attributes in a type-safe manner,
  *
- * <pre>{@code
- * Order<Person> order =
- *         Order.by(_Person.dateOfBirth.desc(),
- *                  _Person.name_last.asc(),
- *                  _Person.name_first.asc(),
- *                  _Person.ssn.asc());
- * }</pre>
+ * {@snippet lang="java":
+ *     Order<Person> order =
+ *             Order.by(_Person.dateOfBirth.desc(),
+ *                      _Person.name_last.asc(),
+ *                      _Person.name_first.asc(),
+ *                      _Person.ssn.asc());
+ * }
  *
  * <p>Alternatively, an annotation processor might generate static metamodel classes
  * for entities at compile time. The generated classes must be annotated with the

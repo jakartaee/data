@@ -65,10 +65,10 @@ public interface ComparableExpression<T, V extends Comparable<?>>
      * the specified values.
      * </p>
      *
-     * <p>Example:</p>
-     * <pre>{@code
+     * <p>Example:
+     * {@snippet lang="java":
      *     found = cars.search(make, model, _Car.year.between(2022, 2025));
-     * }</pre>
+     * }
      *
      * @param min the lower bound on the range. Must not be {@code null}.
      * @param max the upper bound on the range. Must not be {@code null}.
@@ -85,14 +85,14 @@ public interface ComparableExpression<T, V extends Comparable<?>>
      * evaluate to a value falling within the range between (and inclusive of) 
      * the values to which the given expressions evaluate.</p>
      *
-     * <p>Example:</p>
-     * <pre>{@code
+     * <p>Example:
+     * {@snippet lang="java":
      *     preOwnedInRangeOfModelYears = cars.search(
      *         make,
      *         model,
      *         _Car.year.between(_Car.firstModelYear.plus(2),
      *                           _Car.firstModelYear.plus(5)));
-     * }</pre>
+     * }
      *
      * @param minExpression expression that evaluates to the lower bound
      *                      on the range. Must not be {@code null}.
@@ -125,10 +125,10 @@ public interface ComparableExpression<T, V extends Comparable<?>>
      * <p>Obtains a {@link Restriction} that requires that this expression
      * evaluate to a value greater than the given value.</p>
      *
-     * <p>Example:</p>
-     * <pre>{@code
+     * <p>Example:
+     * {@snippet lang="java":
      *     found = cars.search(make, model, _Car.price.greaterThan(25000));
-     * }</pre>
+     * }
      *
      * @param value value against which to compare. Must not be {@code null}.
      * @return the restriction.
@@ -144,12 +144,12 @@ public interface ComparableExpression<T, V extends Comparable<?>>
      * evaluate to a value greater than the value to which the given
      * expression evaluates.</p>
      *
-     * <p>Example:</p>
-     * <pre>{@code
+     * <p>Example:
+     * {@snippet lang="java":
      *     found = cars.search(make,
      *                         model,
      *                         _Car.year.greaterThan(_Car.firstModelYear));
-     * }</pre>
+     * }
      *
      * @param expression expression against which to compare. Must not be
      *                   {@code null}.
@@ -166,10 +166,10 @@ public interface ComparableExpression<T, V extends Comparable<?>>
      * evaluate to a value greater than or equal to the given
      * value.</p>
      *
-     * <p>Example:</p>
-     * <pre>{@code
+     * <p>Example:
+     * {@snippet lang="java":
      *     atLeast2024 = cars.search(make, model, _Car.year.greaterThanEqual(2024));
-     * }</pre>
+     * }
      *
      * @param value value against which to compare. Must not be {@code null}.
      * @return the restriction.
@@ -185,12 +185,12 @@ public interface ComparableExpression<T, V extends Comparable<?>>
      * evaluate to a value greater than or equal to the value to which the
      * given expression evaluates.</p>
      *
-     * <p>Example:</p>
-     * <pre>{@code
+     * <p>Example:
+     * {@snippet lang="java":
      *     found = cars.search(make,
      *                         model,
      *                         _Car.year.greaterThanEqual(_Car.firstModelYear.plus(2)));
-     * }</pre>
+     * }
      *
      * @param expression expression against which to compare. Must not be
      *                   {@code null}.
@@ -206,10 +206,10 @@ public interface ComparableExpression<T, V extends Comparable<?>>
      * <p>Obtains a {@link Restriction} that requires that this expression
      * evaluate to a value smaller than the given value.</p>
      *
-     * <p>Example:</p>
-     * <pre>{@code
+     * <p>Example:
+     * {@snippet lang="java":
      *     found = cars.search(make, model, _Car.price.lessThan(35000));
-     * }</pre>
+     * }
      *
      * @param value value against which to compare. Must not be {@code null}.
      * @return the restriction.
@@ -225,12 +225,12 @@ public interface ComparableExpression<T, V extends Comparable<?>>
      * evaluate to a value smaller than the value to which the given
      * expression evaluates.</p>
      *
-     * <p>Example:</p>
-     * <pre>{@code
+     * <p>Example:
+     * {@snippet lang="java":
      *     listedBeforeToday = cars.search(make,
      *                                     model,
      *                                     _Car.listed.lessThan(CurrentDate.now()));
-     * }</pre>
+     * }
      *
      * @param expression expression against which to compare. Must not be
      *                   {@code null}.
@@ -247,10 +247,10 @@ public interface ComparableExpression<T, V extends Comparable<?>>
      * evaluate to a value less than or equal to the given value.
      * </p>
      *
-     * <p>Example:</p>
-     * <pre>{@code
+     * <p>Example:
+     * {@snippet lang="java":
      *     found = cars.search(make, model, _Car.price.lessThanEqual(25000));
-     * }</pre>
+     * }
      *
      * @param value value against which to compare. Must not be {@code null}.
      * @return the restriction.
@@ -266,12 +266,12 @@ public interface ComparableExpression<T, V extends Comparable<?>>
      * evaluate to a value less than or equal to the value to which the
      * given expression evaluates.</p>
      *
-     * <p>Example:</p>
-     * <pre>{@code
+     * <p>Example:
+     * {@snippet lang="java":
      *     found = cars.search(make,
      *                         model,
      *                         _Car.firstModelYear.lessThanEqual(_Car.year.minus(2)));
-     * }</pre>
+     * }
      *
      * @param expression expression against which to compare. Must not be
      *                   {@code null}.
@@ -287,10 +287,10 @@ public interface ComparableExpression<T, V extends Comparable<?>>
      * <p>Obtains a {@link Restriction} that requires that this expression
      * evaluate to a value falling outside the range between given values.</p>
      *
-     * <p>Example:</p>
-     * <pre>{@code
+     * <p>Example:
+     * {@snippet lang="java":
      *     found = cars.search(make, model, _Car.year.notBetween(2021, 2023));
-     * }</pre>
+     * }
      *
      * @param min the lower bound on the range. Must not be {@code null}.
      * @param max the upper bound on the range. Must not be {@code null}.
@@ -307,13 +307,13 @@ public interface ComparableExpression<T, V extends Comparable<?>>
      * evaluate to a value falling outside the range between the values to 
      * which the given expressions evaluate.</p>
      *
-     * <p>Example:</p>
-     * <pre>{@code
+     * <p>Example:
+     * {@snippet lang="java":
      *     found = cars.search(make,
      *                         model,
      *                         _Car.year.notBetween(_Car.firstModelYear,
      *                                              _Car.firstModelYear.plus(2)));
-     * }</pre>
+     * }
      *
      * @param minExpression expression that evaluates to the lower bound
      *                      on the range. Must not be {@code null}.

@@ -37,33 +37,33 @@ import java.util.Optional;
  * entities, that is, if its return type is an array type, {@link List},
  * {@code Stream}, {@link Page}, or {@link CursoredPage}. The parameter of type
  * {@code PageRequest} must occur after the method parameters representing
- * regular parameters of the query itself. For example:</p>
+ * regular parameters of the query itself. For example:
  *
- * <pre>{@code
- * @Find
- * @OrderBy("age")
- * @OrderBy("ssn")
- * Page<Person> agedBetween(@By("age") @Is(AtLeast.class) int minAge,
- *                          @By("age") @Is(AtMost.class) int maxAge,
- *                          PageRequest pageRequest);
- * }</pre>
- *
- * <p>This method might be called as follows:</p>
- *
- * <pre>{@code
- * Page<Person> page = people.agedBetween(
- *                35, 59,
- *                PageRequest.ofSize(100));
- * List<Person> results = page.content();
- * ...
- * while (page.hasNext()) {
- *     page = people.agedBetween(
- *                35, 59,
- *                page.nextPageRequest().withoutTotal());
- *     results = page.content();
- *     ...
+ * {@snippet lang="java":
+ *     @Find
+ *     @OrderBy("age")
+ *     @OrderBy("ssn")
+ *     Page<Person> agedBetween(@By("age") @Is(AtLeast.class) int minAge,
+ *                              @By("age") @Is(AtMost.class) int maxAge,
+ *                              PageRequest pageRequest);
  * }
- * }</pre>
+ *
+ * <p>This method might be called as follows:
+ *
+ * {@snippet lang="java":
+ *     Page<Person> page = people.agedBetween(
+ *                    35, 59,
+ *                    PageRequest.ofSize(100));
+ *     List<Person> results = page.content();
+ *     ...
+ *     while (page.hasNext()) {
+ *         page = people.agedBetween(
+ *                    35, 59,
+ *                    page.nextPageRequest().withoutTotal());
+ *         results = page.content();
+ *         ...
+ *     }
+ * }
  *
  * <p>A repository method may not be declared with:</p>
  * <ul>

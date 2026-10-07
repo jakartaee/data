@@ -27,36 +27,36 @@ import jakarta.annotation.Nonnull;
  *
  * <p>A parameter-based repository method can impose a constraint on an
  * entity attribute by defining a method parameter that is of type
- * {@code NotNull}. For example,</p>
+ * {@code NotNull}. For example,
  *
- * <pre>{@code
- * @Find
- * List<Car> listedRecently(@By(_Car.LISTED) NotNull<LocalDate> nonNull,
- *                          @By(_Car.LISTED) @Is(AtLeast.class) LocalDate oldestListDate,
- *                          Order<Car> sorts);
- * ...
+ * {@snippet lang="java":
+ *     @Find
+ *     List<Car> listedRecently(@By(_Car.LISTED) NotNull<LocalDate> nonNull,
+ *                              @By(_Car.LISTED) @Is(AtLeast.class) LocalDate oldestListDate,
+ *                              Order<Car> sorts);
+ *     ...
  *
- * found = cars.listedRecently(NotNull.instance(),
- *                             LocalDate.now().minusDays(15),
- *                             Order.by(_Car.listed.desc()));
- * }</pre>
+ *     found = cars.listedRecently(NotNull.instance(),
+ *                                 LocalDate.now().minusDays(15),
+ *                                 Order.by(_Car.listed.desc()));
+ * }
  *
  * <p>Repository methods can also accept {@code NotNull} constraints at
  * run time in the form of a {@link Restriction} on an {@link Expression}.
- * For example,</p>
+ * For example,
  *
- * <pre>{@code
- * @Find
- * List<Car> searchAll(Restriction<Car> restrict, Order<Car> sorts);
+ * {@snippet lang="java":
+ *     @Find
+ *     List<Car> searchAll(Restriction<Car> restrict, Order<Car> sorts);
  *
- * ...
+ *     ...
  *
- * found = cars.searchAll(Restrict.all(_Car.make.equalTo("Jakarta Motors"),
- *                                     _Car.listed.notNull(),
- *                                     _Car.listed.greaterThan(LocalDate.now().minusDays(20))),
- *                        Order.by(_Car.listed.desc(),
- *                                 _Car.vin.asc()));
- * }</pre>
+ *     found = cars.searchAll(Restrict.all(_Car.make.equalTo("Jakarta Motors"),
+ *                                         _Car.listed.notNull(),
+ *                                         _Car.listed.greaterThan(LocalDate.now().minusDays(20))),
+ *                            Order.by(_Car.listed.desc(),
+ *                                     _Car.vin.asc()));
+ * }
  *
  * <p>The {@linkplain Attribute entity and static metamodel} for the code
  * examples within this class are shown in the {@link Attribute} Javadoc.
@@ -70,12 +70,12 @@ public interface NotNull<V> extends Constraint<V> {
 
     /**
      * <p>Requires that the constraint target not have a {@code null} value.
-     * For example,</p>
+     * For example,
      *
-     * <pre>{@code
+     * {@snippet lang="java":
      *     found = cars.listedRecently(NotNull.instance(),
      *                                 LocalDate.now().minusDays(10));
-     * }</pre>
+     * }
      *
      * @param <V> type of the entity attribute or a subtype or primitive
      *            wrapper type for the entity attribute.
