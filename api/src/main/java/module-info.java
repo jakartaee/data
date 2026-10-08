@@ -347,9 +347,9 @@ import java.util.Set;
  *     {@code findByAddress_ZipCode} or {@code findByAddressZipCode} are both
  *     legal.</li>
  * <li>For arguments to constructor methods of {@link Sort}, the delimiter
- *     is {@code _} or {@code .}.
+ *     is {@code _} or {@code .}.</li>
  * <li>For the {@code value} member of the {@link OrderBy} or {@link By}
- *     annotation the delimiter is {@code _} or {@code .}.
+ *     annotation the delimiter is {@code _} or {@code .}.</li>
  * </ul>
  *
  * <p>A entity attribute name used in <a href="#MethodNameQuery">
