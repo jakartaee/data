@@ -154,7 +154,7 @@ import java.util.Set;
  * <li>{@link jakarta.nosql.Entity jakarta.nosql.Entity} and the corresponding
  *     entity-related annotations of the
  *     <a href="${jakarta.nosql.spec.url}">Jakarta NoSQL specification</a>
- *     may be used to define entities stored in a NoSQL database.
+ *     may be used to define entities stored in a NoSQL database.</li>
  * </ul>
  * <p>A Jakarta Data provider may define its own programming model for entity
  *    classes representing some other arbitrary kind of data.</p>
@@ -339,13 +339,13 @@ import java.util.Set;
  * delimiter.</p>
  * <ul>
  * <li>For parameter names of a {@link Find} or {@link Delete} method,
- *     the delimiter is {@code _}.
+ *     the delimiter is {@code _}.</li>
  * <li>For path expressions within a <a href="#QueryLanguageMethod">query</a>,
- *     the delimiter is {@code .}.
+ *     the delimiter is {@code .}.</li>
  * <li>For method names in <a href="#MethodNameQuery">Query by Method Name</a>,
  *     the delimiter is {@code _}, and it is optional. For example,
  *     {@code findByAddress_ZipCode} or {@code findByAddressZipCode} are both
- *     legal.
+ *     legal.</li>
  * <li>For arguments to constructor methods of {@link Sort}, the delimiter
  *     is {@code _} or {@code .}.
  * <li>For the {@code value} member of the {@link OrderBy} or {@link By}
