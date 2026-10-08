@@ -196,15 +196,15 @@ Use is subject to <a href="{@docRoot}/doc-files/speclicense.html" target="_top">
                             Jakarta Data ${spec.version} API jar
                         </Bundle-Description>
                         <Bundle-Name>Jakarta Data API jar</Bundle-Name>
-                        <Bundle-SymbolicName>jakarta.data-api</Bundle-SymbolicName>
-                        <Bundle-Version>${project.version}</Bundle-Version>
-                        <Extension-Name>jakarta.data</Extension-Name>
-                        <Implementation-Version>${project.version}</Implementation-Version>
+                        <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+                        <Bundle-Version>${bundle.version}</Bundle-Version>
+                        <Extension-Name>${project.groupId}</Extension-Name>
+                        <Implementation-Version>${bundle.version}</Implementation-Version>
                         <Specification-Vendor>Eclipse Foundation</Specification-Vendor>
                         <Specification-Version>${spec.version}</Specification-Version>
                         <Export-Package>
                             !jakarta.data.messages,
-                            jakarta.data.*;version=${project.version}
+                            jakarta.data.*;version=${bundle.version}
                         </Export-Package>
                     </instructions>
                 </configuration>

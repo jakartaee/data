@@ -4,7 +4,9 @@
 name: Generate specification documentation
 
 on: 
-    workflow_dispatch:
+    release:
+        types: [published]
+    workflow_dispatch: # For testing purposes
 
 jobs:
   generate:
