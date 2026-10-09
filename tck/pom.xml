@@ -132,6 +132,7 @@
         <dependency>
             <groupId>jakarta.nosql</groupId>
             <artifactId>jakarta.nosql-api</artifactId>
+            <version>${jakarta.nosql.tck.version}</version>
         </dependency>
 
         <dependency>
