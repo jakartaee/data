@@ -95,8 +95,10 @@
         <jakarta.json.bind.version>3.0.0</jakarta.json.bind.version>
         <jakarta.json.version>2.1.3</jakarta.json.version>
         <jakarta.data.version>${project.version}</jakarta.data.version>
+        <jakarta.nosql.spec.url>https://jakarta.ee/specifications/nosql/1.1/jakarta-nosql-1.1.0-M3</jakarta.nosql.spec.url>
+        <jakarta.nosql.version>1.1.0-M3</jakarta.nosql.version>
+        <jakarta.persistence.spec.url>https://jakarta.ee/specifications/persistence/4.0/jakarta-persistence-spec-4.0-M4</jakarta.persistence.spec.url>
         <jakarta.persistence.version>4.0.0-M7</jakarta.persistence.version>
-        <jakarta.nosql.version>1.0.1</jakarta.nosql.version>
         <jakarta.query.spec.url>https://jakarta.ee/specifications/query/1.0/jakarta-query-1.0-m2</jakarta.query.spec.url>
         <jakarta.servlet.version>6.1.0</jakarta.servlet.version>
         <jakarta.transaction.version>2.0.1</jakarta.transaction.version>
