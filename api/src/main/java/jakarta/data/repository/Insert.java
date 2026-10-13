@@ -76,9 +76,10 @@ import java.lang.annotation.Target;
  * method before each record is inserted. An event of type {@link jakarta.data.event.PostInsertEvent}
  * must be raised by the annotated lifecycle method after each record is successfully inserted.
  * </p>
- * <p>Annotations such as {@code @Find}, {@code @Query}, {@code @Insert}, {@code @Update}, {@code @Delete}, and
- * {@code @Save} are mutually-exclusive. A given method of a repository interface may have at most one {@code @Find}
- * annotation, lifecycle annotation, or query annotation.
+ * <p>Annotations such as {@code @Find}, {@code @Count}, {@code @Exists}, {@code @Query}, {@code @Insert},
+ * {@code @Update}, {@code @Delete}, and {@code @Save} are mutually-exclusive. A given method of a repository interface
+ * may have at most one {@code @Find}, {@code @Count}, or {@code @Exists} annotation, lifecycle annotation, or query
+ * annotation.
  * </p>
  */
 @Documented

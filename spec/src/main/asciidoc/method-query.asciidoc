@@ -65,7 +65,7 @@ public interface ProductRepository extends BasicRepository<Product, Long> {
 
 The functionality described here overlaps significantly with both:
 
-- parameter-based automatic query methods, that is, `@Find` and `@Delete`, and
+- parameter-based automatic query methods, that is, `@Find`, `@Count`, `@Exists`, and `@Delete`, and
 - annotated query methods, that is `@Query` and Jakarta Common Query Language or Jakarta Persistence Query Language.
 
 Therefore, these alternative approaches are strongly preferred for newly-written code.

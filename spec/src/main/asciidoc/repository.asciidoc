@@ -40,7 +40,7 @@ A superinterface of a repository interface must either:
 
 A Jakarta Data implementation must treat abstract methods inherited by a repository interface as if they were directly declared by the repository interface.
 
-Repositories perform operations on entities. For repository methods that are annotated with `@Insert`, `@Update`, `@Save`, or `@Delete`, the entity type is determined from the method parameter type. For repository methods that are annotated with `@Find`, the entity type is determined by the annotation `value` member, if an entity type is explicitly specified. Otherwise, for `find` and `delete` methods where the return type is an entity, array of entity, or parameterized type such as `List<MyEntity>` or `Page<MyEntity>`, the entity type is determined from the method return type.  For `count`, `exists`, and other `find` and `delete` methods that do not return the entity or accept the entity as a parameter, the entity type cannot be determined from the method signature and a _primary entity type_ must be defined for the repository.
+Repositories perform operations on entities. For repository methods that are annotated with `@Insert`, `@Update`, `@Save`, or `@Delete`, the entity type is determined from the method parameter type. For repository methods that are annotated with `@Find`, `@Count`, or `@Exists`, the entity type is determined by the annotation `value` member, if an entity type is explicitly specified. Otherwise, for `find` and `delete` methods where the return type is an entity, array of entity, or parameterized type such as `List<MyEntity>` or `Page<MyEntity>`, the entity type is determined from the method return type.  For `count`, `exists`, and other `find` and `delete` methods that do not return the entity or accept the entity as a parameter, the entity type cannot be determined from the method signature and a _primary entity type_ must be defined for the repository.
 
 Users of Jakarta Data declare a primary entity type for a repository by inheriting a built-in repository superinterface, such as `BasicRepository`, and specifying the primary entity type as the first type variable. For repositories that do not inherit a superinterface with a type parameter to indicate the primary entity type, lifecycle methods of the repository determine the primary entity type. To do so, every lifecycle method where the method parameter is a type, an array of a type, or is parameterized with a type that is annotated as an entity, must correspond to the same entity type. The primary entity type is assumed for methods that do not otherwise specify an entity type, such as `countByPriceLessThan`. Methods that require a primary entity type raise `MappingException` if a primary entity type is not provided.
 
@@ -231,7 +231,7 @@ Parameter names map parameters to persistent attributes. A repository with param
 
 The attribute name specified using `@By` may be a compound name, as specified below in <<Persistent attribute names>>.
 
-This specification defines the built-in automatic query annotations `@Find` and `@Delete`. The semantics of these annotations are specified in their Javadoc. Note that `@Delete` is _both_ a lifecycle annotation _and_ an automatic query annotation. The signature of a repository method annotated `@Delete` must be used to disambiguate the interpretation of the `@Delete` annotation.
+This specification defines the built-in automatic query annotations `@Find`, `@Count`, `@Exists`, and `@Delete`. The semantics of these annotations are specified in their Javadoc. Note that `@Delete` is _both_ a lifecycle annotation _and_ an automatic query annotation. The signature of a repository method annotated `@Delete` must be used to disambiguate the interpretation of the `@Delete` annotation.
 
 For example:
 
@@ -249,9 +249,15 @@ Page<Book> find(@By("year") Year publishedIn,
                 @By("genre") Category type,
                 Order<Book> sortBy,
                 PageRequest pageRequest);
+
+@Count
+long numberOfBooks(Year year);
+
+@Exists
+boolean exists(String isbn);
 ----
 
-Automatic query methods annotated with `@Find` or `@Delete` _are_ portable between providers.
+Automatic query methods annotated with `@Find`, `@Count`, `@Exists`, or `@Delete` _are_ portable between providers.
 
 [NOTE]
 ====
@@ -293,9 +299,9 @@ A resource accessor method with return type `jakarta.persistence.EntityManager` 
 
 === Conflicting repository method annotations
 
-Annotations like `@Find`, `@Query`, `@Insert`, `@Update`, `@Delete`, and `@Save` are mutually-exclusive. A given method of a repository interface may have at most one:
+Annotations like `@Find`, `@Count`, `@Exists`, `@Query`, `@Insert`, `@Update`, `@Delete`, and `@Save` are mutually-exclusive. A given method of a repository interface may have at most one:
 
-- `@Find` annotation,
+- `@Find`, `@Count`, or `@Exists` annotation,
 - lifecycle annotation, or
 - query annotation.
 
@@ -429,7 +435,7 @@ List<User> findByNamePrefix(String namePrefix, Sort<User> sort);
 
 === Restrictions
 
-A method annotated `@Find`, `@Delete`, or `@Query` may have a <<special-parameters,special parameter>> of type `Restriction<T>`.
+A method annotated `@Find`, `@Count`, `@Exists`, `@Delete`, or `@Query` may have a <<special-parameters,special parameter>> of type `Restriction<T>`.
 This parameter allows the caller of a repository method to programmatically express additional restrictions on the results returned by the repository method, often using a <<metamodel-java-processor,generated metamodel class>> for type safety.
 
 For example:
