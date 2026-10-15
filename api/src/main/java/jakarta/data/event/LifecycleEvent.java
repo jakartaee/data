@@ -19,6 +19,7 @@ package jakarta.data.event;
 
 import jakarta.annotation.Nonnull;
 import jakarta.data.messages.Messages;
+import jakarta.enterprise.event.TransactionPhase;
 
 /**
  * <p>Abstract supertype of events relating to lifecycle methods.</p>
@@ -27,12 +28,12 @@ import jakarta.data.messages.Messages;
  *     void onInsertBook(@Observes PostInsertEvent<Book> bookInsertion) {
  *         Book book = bookInsertion.entity();
  *         ...
- * }
+ *     }
  * }
  * <p>As usual for a CDI event, an observer of a {@code LifecycleEvent}
  * is notified synchronously and immediately by default. An observer may elect
  * to receive notifications during a phase of the transaction completion cycle
- * by explicitly specifying a {@code TransactionPhase}, for example:</p>
+ * by explicitly specifying a {@link TransactionPhase}, for example:</p>
  * <ul>
  * <li>{@code @Observes(during=BEFORE_COMPLETION)} to be notified just
  *     before transaction completion, or</li>

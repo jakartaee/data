@@ -21,7 +21,6 @@ import java.util.Set;
 
 import jakarta.data.Order;
 import jakarta.data.metamodel.Attribute;
-import jakarta.data.repository.Delete;
 import jakarta.data.repository.Find;
 import jakarta.data.repository.Is;
 import jakarta.data.restrict.Restriction;
@@ -30,14 +29,22 @@ import jakarta.annotation.Nonnull;
 /**
  * <p>Supertype of interfaces that define constraints on entity attributes.</p>
  *
- * <p>Constraints are used on parameter-based {@link Find} and
- * {@link Delete} methods. Constraint parameters must be positioned before
- * special parameters (such as {@link Restriction} and {@link Order}) in the
- * method signature.</p>
+ * <p>Repository methods annotated {@link Find} and
+ * <a href="../../repository/Delete.html#ConstraintQueryDelete">
+ * {@code Delete}</a> can define a query constraint by declaring the
+ * <a href="#MethodParamType">type of a method parameter</a> or the
+ * <a href="#IsAnnoValue">value of a method parameter's {@code Is} annotation
+ * </a> to be a subtype of {@code Constraint}. These method parameters must be
+ * positioned before <a href="../../../module-summary.html#SpecialParameters">
+ * special parameters</a> (such as {@link Restriction} and {@link Order})
+ * in the method signature.
  *
- * <h2>Method parameter</h2>
+ * <a id="MethodParamType">
+ * <h2>Type of method parameter</h2>
+ * </a>
  *
- * <p>Constraint parameters can be of type {@code C<T>} or {@code C<? super T>}
+ * <p>Repository method constraint parameters can be of type
+ * {@code C<T>} or {@code C<? super T>}
  * where {@code C} is {@code Constraint} or any subtype of {@code Constraint},
  * such as {@link Like} or {@link LessThan}, and {@code T} is the entity
  * attribute type. For example,
@@ -59,9 +66,11 @@ import jakarta.annotation.Nonnull;
  *                                       _Car.vin.asc()));
  * }
  *
- * <h2>Annotation value</h2>
+ * <a id="IsAnnoValue">
+ * <h2>Value of {@code @Is} Annotation</h2>
+ * </a>
  *
- * <p>Constraint parameters of repository methods can be annotated with the
+ * <p>Repository method constraint parameters can be annotated with the
  * {@link Is @Is} annotation to indicate the subtype of {@code Constraint}.
  * The type of the method parameter must be the entity attribute type.
  * For example,
