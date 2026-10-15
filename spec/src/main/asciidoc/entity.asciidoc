@@ -353,9 +353,10 @@ The rule for concatenating compound names depends on the context, and is specifi
 |===
 | Context | Type | Delimiter | Example
 
-| `@Find` | Parameter name
+| `@Find` or `@Delete` | Parameter name
 |`_`
-|`@Find List<Person> find(int address_zipCode);`
+|`@Find` +
+`List<Person> find(int address_zipCode);`
 
 |`@Query` | Path expression within query
 |`.`
@@ -367,11 +368,12 @@ The rule for concatenating compound names depends on the context, and is specifi
 
 |`Sort` | String argument
 |`.` or `_`
-|`Sort.asc("address_zipCode")`
+|`Sort.asc("address.zipCode")`
 
-|`@By` or `@OrderBy` | Annotation value
+|`@By`, `@Fetching`, `@OrderBy`, or `@Select` | Annotation value
 |`.` or `_`
-|`@Find List<Person> find(@By("address.zipCode") int zip);`
+|`@Find` +
+`List<Person> find(@By("address.zipCode") int zip);`
 |===
 
 NOTE: Application programmers are strongly encouraged to follow Java's camel case naming standard for attributes of entities, relations, and embeddable classes, avoiding underscores in attribute names. The resolution algorithm for persistent attribute identification relies on the use of underscore as a delimiter. Adhering to the camel case naming convention ensures consistency and eliminates ambiguity.
