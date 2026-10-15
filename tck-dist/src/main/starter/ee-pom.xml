@@ -41,7 +41,7 @@
   <arquillian.jakarta.version>10.0.0.Final</arquillian.jakarta.version>
   <junit.version>6.1.3</junit.version>
   <sigtest.version>2.7</sigtest.version>
-  <shrinkwrap.version>1.2.6</shrinkwrap.version>
+  <shrinkwrap.version>2.0.0.Final</shrinkwrap.version>
   <shrinkwrap.resolver.version>3.3.7</shrinkwrap.resolver.version>
 
   <maven.dep.plugin.version>3.3.0</maven.dep.plugin.version>
