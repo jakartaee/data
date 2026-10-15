@@ -206,10 +206,11 @@ import java.util.stream.Stream;
  * }
  * }
  *
- * <p>Annotations such as {@code @Find}, {@code @Query}, {@code @Insert},
- * {@code @Update}, {@code @Delete}, and {@code @Save} are mutually-exclusive.
- * A given method of a repository interface may have at most one {@code @Find}
- * annotation, lifecycle annotation, or query annotation.
+ * <p>Annotations such as {@code @Find}, {@code @Count}, {@code @Exists},
+ * {@code @Query}, {@code @Insert}, {@code @Update}, {@code @Delete}, and
+ * {@code @Save} are mutually-exclusive. A given method of a repository
+ * interface may have at most one {@code @Find}, {@code @Count}, or
+ * {@code @Exists} annotation, lifecycle annotation, or query annotation.
  *
  * @see Param
  * @see First

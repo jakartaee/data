@@ -17,8 +17,8 @@
  */
 
 /**
- * <p>Constraints for parameter-based {@link Find} and {@link Delete} methods.
- * </p>
+ * <p>Constraints for parameter-based {@link Find}, {@link Count},
+ * {@link Exists}, and {@link Delete} methods.</p>
  *
  * <p>The {@link Is @Is} annotation and the constraint classes listed below
  * describe how to use constraints with repository methods.</p>
@@ -27,6 +27,8 @@
  */
 package jakarta.data.constraint;
 
+import jakarta.data.repository.Count;
 import jakarta.data.repository.Delete;
+import jakarta.data.repository.Exists;
 import jakarta.data.repository.Find;
 import jakarta.data.repository.Is;

@@ -29,9 +29,11 @@ import jakarta.data.page.PageRequest;
 import jakarta.data.constraint.Constraint;
 import jakarta.data.repository.BasicRepository;
 import jakarta.data.repository.By;
+import jakarta.data.repository.Count;
 import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.DataRepository;
 import jakarta.data.repository.Delete;
+import jakarta.data.repository.Exists;
 import jakarta.data.repository.Find;
 import jakarta.data.repository.First;
 import jakarta.data.repository.Insert;
@@ -179,7 +181,8 @@ import java.util.Set;
  *
  * <tr style="vertical-align: top">
  * <td><a href="#ConstraintQuery">Constraint Query</a></td>
- * <td>A repository method is annotated {@link Find @Find} or {@link Delete
+ * <td>A repository method is annotated {@link Find @Find},
+ *     {@link Count @Count}, {@link Exists @Exists}, or {@link Delete
  *     @Delete} and follows the <a href="#ConstraintQuery">parameter-based
  *     constraint query pattern</a>.
  *     {@snippet lang="java":
@@ -493,11 +496,15 @@ import java.util.Set;
  * for additional information about the stateful lifecycle annotations.</p>
  *
  * <a id="ConstraintQuery">
- * <h2>{@code Find} and {@code Delete} constraint query methods</h2>
+ * <h2>{@code Find}, {@code Count}, {@code Exists}, and {@code Delete}
+ * constraint query methods</h2>
  * </a>
  *
  * <p>The {@link Find} annotation always indicates a parameter-based automatic
  * query method.
+ *
+ * <p>The {@link Count} and {@link Exists} annotations always indicate a
+ * parameter-based automatic query method.
  *
  * <p>The {@link Delete} annotation indicates a parameter-based automatic
  * query method when the method has no entity type parameters.
@@ -687,8 +694,8 @@ import java.util.Set;
  *
  * <p>The <em>Query by Method Name</em> pattern translates the name of the
  * repository method into a query. The repository method must not include the
- * {@code @Find} annotation, {@code @Query} annotation, or any life cycle
- * annotations on the method, and it must not include any data access related
+ * {@code @Find}, {@code @Count}, or {@code @Exists} annotation, {@code @Query}
+ * annotation, or any life cycle annotations on the method, and it must not include any data access related
  * annotations on the method parameters. The method name must be composed of
  * one or more clauses that specify the query's action and optionally any
  * restrictions for matching and ordering of results. The following table lists
@@ -1451,6 +1458,9 @@ import java.util.Set;
  *     parameter type.</li>
  * <li>For repository methods annotated with {@link Find} where the
  *     {@link Find#value value} is a valid entity class.</li>
+ * <li>For repository methods annotated with {@link Count} or {@link Exists}
+ *     where the {@link Count#value value} or {@link Exists#value value} is a
+ *     valid entity class.</li>
  * <li>For {@code find} and {@code delete} methods where the return type is
  *     a type, an array of a type, or is parameterized with a type annotated
  *     as an entity, such as {@code MyEntity}, {@code MyEntity[]}, or
