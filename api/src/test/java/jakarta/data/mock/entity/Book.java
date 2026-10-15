@@ -19,6 +19,7 @@ package jakarta.data.mock.entity;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -26,6 +27,7 @@ import java.util.Objects;
  */
 public class Book implements Cloneable {
     String author;
+    List<String> chapterTitles;
     Instant copyrightDate;
     boolean fiction;
     String id;
@@ -40,11 +42,13 @@ public class Book implements Cloneable {
                           int numChapters,
                           int numPages,
                           Instant copyrightDate,
-                          LocalDate publicationDate) {
+                          LocalDate publicationDate,
+                          String... chapterTitles) {
         Book book = new Book();
         book.id = id;
         book.title = title;
         book.author = author;
+        book.chapterTitles = List.of(chapterTitles);
         book.numChapters = numChapters;
         book.numPages = numPages;
         book.copyrightDate = copyrightDate;
@@ -60,7 +64,8 @@ public class Book implements Cloneable {
                 numChapters,
                 numPages,
                 copyrightDate,
-                publicationDate);
+                publicationDate,
+                chapterTitles.toArray(new String[chapterTitles.size()]));
     }
 
     @Override
@@ -72,6 +77,7 @@ public class Book implements Cloneable {
                Objects.equals(book.author, author) &&
                book.numChapters == numChapters &&
                book.numPages == numPages &&
+               Objects.equals(book.chapterTitles, chapterTitles) &&
                Objects.equals(book.copyrightDate, copyrightDate) &&
                Objects.equals(book.publicationDate, publicationDate);
     }
