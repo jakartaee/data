@@ -70,7 +70,7 @@ import jakarta.annotation.Nonnull;
  * <h2>Value of {@code @Is} Annotation</h2>
  * </a>
  *
- * <p>Repository method constraint parameters can be annotated with the
+ * <p>A repository method constraint parameter can be annotated with the
  * {@link Is @Is} annotation to indicate the subtype of {@code Constraint}.
  * The type of the method parameter must be the entity attribute type.
  * For example,
