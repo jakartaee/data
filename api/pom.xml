@@ -152,6 +152,7 @@ Use is subject to <a href="{@docRoot}/doc-files/speclicense.html" target="_top">
                     <docfilessubdirs>true</docfilessubdirs>
                     <links>
                         <link>https://jakarta.ee/specifications/bean-validation/4.0/apidocs/</link>
+                        <link>https://jakarta.ee/specifications/cdi/5.0/apidocs/</link>
                         <link>https://jakarta.ee/specifications/concurrency/3.2/apidocs/</link>
                         <link>https://jakarta.ee/specifications/dependency-injection/2.0/apidocs/</link>
                         <link>https://jakarta.ee/specifications/nosql/1.1/apidocs/</link>
