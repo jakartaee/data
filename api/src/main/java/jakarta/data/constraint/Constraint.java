@@ -29,7 +29,7 @@ import jakarta.annotation.Nonnull;
 /**
  * <p>Supertype of interfaces that define constraints on entity attributes.</p>
  *
- * <p>Repository methods annotated {@link Find} and
+ * <p>A repository methods annotated {@link Find} or
  * <a href="../../repository/Delete.html#ConstraintQueryDelete">
  * {@code Delete}</a> can define a query constraint by declaring the
  * <a href="#MethodParamType">type of a method parameter</a> or the
