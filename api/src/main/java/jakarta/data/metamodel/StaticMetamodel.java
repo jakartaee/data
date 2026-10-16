@@ -140,6 +140,12 @@ import jakarta.data.restrict.Restriction;
  * <p>And use it to refer to entity attributes in a type-safe manner,
  *
  * {@snippet lang="java":
+ *     Restriction<Person> childrenEToH =
+ *             Restrict.all(_Person.dateOfBirth.greaterThan(LocalDate.now().minusYears(12)),
+ *                          _Person.name_last.left(1).upper().in("E", "F", "G", "H"));
+ * }
+ *
+ * {@snippet lang="java":
  *     Order<Person> order =
  *             Order.by(_Person.dateOfBirth.desc(),
  *                      _Person.name_last.asc(),

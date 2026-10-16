@@ -24,9 +24,8 @@ import jakarta.data.repository.Find;
 import jakarta.data.repository.Query;
 
 /**
- * <p>Specifies a limit on the number of results retrieved by a repository
- * method. The results of a single invocation of a repository method may be
- * limited to
+ * <p>Limits the number of results retrieved by a repository method.
+ * The results of a repository method invocation can be limited to
  * <ul>
  * <li>a {@linkplain #of(int) maximum number of results},</li>
  * <li>a {@linkplain #of(int, long) maximum number of results relative to an

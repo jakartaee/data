@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Contributors to the Eclipse Foundation
+ * Copyright (c) 2022,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,5 +18,8 @@
 
 /**
  * Common data access exceptions.
+ *
+ * <p>The module Javadoc provides an {@linkplain jakarta.data/ overview} of
+ * Jakarta Data.
  */
 package jakarta.data.exceptions;
