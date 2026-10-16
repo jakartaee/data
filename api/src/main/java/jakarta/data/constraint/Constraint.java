@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2025,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ import jakarta.annotation.Nonnull;
 /**
  * <p>Supertype of interfaces that define constraints on entity attributes.</p>
  *
- * <p>A repository methods annotated {@link Find} or
+ * <p>A repository method annotated {@link Find} or
  * <a href="../../repository/Delete.html#ConstraintQueryDelete">
  * {@code Delete}</a> can define a query constraint by declaring the
  * <a href="#MethodParamType">type of a method parameter</a> or the
