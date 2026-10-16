@@ -17,9 +17,10 @@
  */
 
 /**
- * SPI for navigable expressions. Jakarta Data providers can use the
- * interfaces within this package to identify the type of navigable
- * expression and the attribute to which its path navigates.
+ * SPI for navigable expressions. This package forms part of the
+ * Jakarta Data Service Provider Interface (SPI). Jakarta Data providers
+ * can use the interfaces within this package to identify the type of
+ * navigable expression and the attribute to which its path navigates.
  * Applications must not use this package directly.
  *
  * <p>The module Javadoc provides an {@linkplain jakarta.data/ overview} of

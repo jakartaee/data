@@ -17,8 +17,9 @@
  */
 
 /**
- * SPI for Jakarta Data providers. Applications must not use this package
- * directly.
+ * SPI for Jakarta Data providers. This package forms part of the
+ * Jakarta Data Service Provider Interface (SPI). Applications must not
+ * use this package directly.
  *
  * <p>The module Javadoc provides an {@linkplain jakarta.data/ overview} of
  * Jakarta Data.

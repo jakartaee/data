@@ -17,10 +17,11 @@
  */
 
 /**
- * SPI for literal expressions. Jakarta Data providers can use the
- * interfaces within this package to identify the type of literal
- * expression and its value. Applications must not use this package
- * directly.
+ * SPI for literal expressions. This package forms part of the
+ * Jakarta Data Service Provider Interface (SPI). Jakarta Data providers
+ * can use the interfaces within this package to identify the type of
+ * literal expression and its value. Applications must not use this
+ * package directly.
  *
  * <p>The module Javadoc provides an {@linkplain jakarta.data/ overview} of
  * Jakarta Data.

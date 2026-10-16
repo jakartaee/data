@@ -17,8 +17,9 @@
  */
 
 /**
- * <p>SPI related to pagination. Jakarta Data providers can use the
- * implementations of {@link jakarta.data.page.Page} and
+ * <p>SPI related to pagination. This package forms part of the
+ * Jakarta Data Service Provider Interface (SPI). Jakarta Data providers
+ * can use the implementations of {@link jakarta.data.page.Page} and
  * {@link jakarta.data.page.CursoredPage} found in this package.
  * Applications must not use this package directly.
  *

@@ -17,10 +17,11 @@
  */
 
 /**
- * SPI for function expressions. Jakarta Data providers can use the
- * interfaces within this package to identify the type of function
- * expression and the arguments supplied to it. Applications must not
- * use this package directly.
+ * SPI for function expressions. This package forms part of the
+ * Jakarta Data Service Provider Interface (SPI). Jakarta Data providers
+ * can use the interfaces within this package to identify the type of
+ * function expression and the arguments supplied to it. Applications
+ * must not use this package directly.
  *
  * <p>The module Javadoc provides an {@linkplain jakarta.data/ overview} of
  * Jakarta Data.
