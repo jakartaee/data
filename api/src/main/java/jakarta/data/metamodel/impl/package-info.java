@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2025,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,5 +16,13 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+/**
+ * Deprecated - do not use. For more complete access to the static metamodel,
+ * use the most specific subtype of {@link jakarta.data.metamodel.Attribute}
+ * that applies to the entity attribute, such as
+ * {@link jakarta.data.metamodel.TextAttribute#of(Class, String) TextAttribute}
+ * or {@link jakarta.data.metamodel.NumericAttribute#of(Class, String, Class)
+ * NumericAttribute}.
+ */
 @Deprecated(since = "1.1")
 package jakarta.data.metamodel.impl;

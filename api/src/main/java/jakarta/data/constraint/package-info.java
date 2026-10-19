@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2025,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,10 +18,12 @@
 
 /**
  * <p>Constraints for parameter-based {@link Find} and {@link Delete} methods.
- * </p>
  *
  * <p>The {@link Is @Is} annotation and the constraint classes listed below
- * describe how to use constraints with repository methods.</p>
+ * describe how to use constraints with repository methods.
+ *
+ * <p>The module Javadoc provides an {@linkplain jakarta.data/ overview} of
+ * Jakarta Data.
  *
  * @since 1.1
  */

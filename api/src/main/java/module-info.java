@@ -1630,6 +1630,7 @@ import java.util.Set;
  */
 module jakarta.data {
     requires static jakarta.annotation;    // compile time dependency for nullness annotations
+    requires static jakarta.cdi;           // Javadoc compile time dependency
     requires static jakarta.concurrency;   // Javadoc compile time dependency
     requires static jakarta.inject;        // Javadoc compile time dependency
     requires static jakarta.nosql.core;    // Javadoc compile time dependency

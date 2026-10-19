@@ -22,7 +22,7 @@
  *
  * <p>The {@link jakarta.data.metamodel.StaticMetamodel} allows for type-safe
  * operations that avoid the
- * need to hard-code entity attribute names as Strings. For example,
+ * need to hard-code entity attribute names as {@code String}s. For example,
  *
  * {@snippet lang="java":
  * @Entity
@@ -71,7 +71,7 @@
  *     page1 = products.findByNameLike(namePattern, pageRequest);
  * }
  *
- * <p>The module Javadoc provides an {@link jakarta.data/ overview} of Jakarta
- * Data.</p>
+ * <p>The module Javadoc provides an {@linkplain jakarta.data/ overview} of
+ * Jakarta Data.
  */
 package jakarta.data.metamodel;

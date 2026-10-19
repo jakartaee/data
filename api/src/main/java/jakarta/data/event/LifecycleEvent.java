@@ -19,6 +19,9 @@ package jakarta.data.event;
 
 import jakarta.annotation.Nonnull;
 import jakarta.data.messages.Messages;
+import jakarta.enterprise.event.Observes;
+import jakarta.enterprise.event.ObservesAsync;
+import jakarta.enterprise.event.TransactionPhase;
 
 /**
  * <p>Abstract supertype of events relating to lifecycle methods.</p>
@@ -27,21 +30,21 @@ import jakarta.data.messages.Messages;
  *     void onInsertBook(@Observes PostInsertEvent<Book> bookInsertion) {
  *         Book book = bookInsertion.entity();
  *         ...
- * }
+ *     }
  * }
  * <p>As usual for a CDI event, an observer of a {@code LifecycleEvent}
  * is notified synchronously and immediately by default. An observer may elect
  * to receive notifications during a phase of the transaction completion cycle
- * by explicitly specifying a {@code TransactionPhase}, for example:</p>
+ * by explicitly specifying a {@link TransactionPhase}, for example:</p>
  * <ul>
- * <li>{@code @Observes(during=BEFORE_COMPLETION)} to be notified just
- *     before transaction completion, or</li>
- * <li>{@code @Observes(during=AFTER_SUCCESS)} to be notified after
- *     successful completion of the transaction.</li>
+ * <li>{@link Observes @Observes(during=BEFORE_COMPLETION)}
+ *     to be notified just before transaction completion, or</li>
+ * <li>{@link Observes @Observes(during=AFTER_SUCCESS)}
+ *     to be notified after successful completion of the transaction.</li>
  * </ul>
  * <p>An observer may choose to be notified asynchronously using
- * {@code @ObservesAsync}. However, the mutable state held by the
- * {@link #entity} is not in general safe for concurrent access,
+ * {@link ObservesAsync @ObservesAsync}. However, the mutable state held
+ * by the {@link #entity} is not in general safe for concurrent access,
  * and so portable applications must not use {@code @ObservesAsync}
  * to observe a {@code LifecycleEvent}. If the state of an entity is
  * accessed from an asynchronous observer method for a lifecycle
