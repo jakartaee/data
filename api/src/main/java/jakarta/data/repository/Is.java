@@ -35,9 +35,9 @@ import jakarta.data.constraint.NotIn;
 import jakarta.data.constraint.NotLike;
 
 /**
- * <p>Annotates a parameter of a repository {@link Find} or {@link Delete}
- * method, indicating how an entity attribute is compared with the parameter's
- * value.</p>
+ * <p>Annotates a parameter of a repository {@link Find}, {@link Count},
+ * {@link Exists}, or {@link Delete} method, indicating how an entity attribute
+ * is compared with the parameter's value.</p>
  *
  * <p>The {@code @Is} annotation's {@link #value()} supplies the type of
  * comparison as a subtype of {@link jakarta.data.constraint Constraint}.</p>

@@ -153,10 +153,11 @@ import jakarta.data.restrict.Restriction;
  * {@link jakarta.persistence.query.QueryOptions} to supply additional
  * query options that are specific to Jakarta Persistence.</p>
  *
- * <p>Annotations such as {@code @Find}, {@code @Query}, {@code @Insert},
- * {@code @Update}, {@code @Delete}, and {@code @Save} are mutually-exclusive.
- * A given method of a repository interface may have at most one {@code @Find}
- * annotation, lifecycle annotation, or query annotation.
+ * <p>Annotations such as {@code @Find}, {@code @Count}, {@code @Exists},
+ * {@code @Query}, {@code @Insert}, {@code @Update}, {@code @Delete}, and
+ * {@code @Save} are mutually-exclusive. A given method of a repository
+ * interface may have at most one {@code @Find}, {@code @Count}, or
+ * {@code @Exists} annotation, lifecycle annotation, or query annotation.
  * </p>
  *
  * @see By

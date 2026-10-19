@@ -158,7 +158,7 @@ The previous example illustrates the design of a repository interface which capt
 
 Jakarta Data provides two core ways to express queries:
 
-- <<Parameter-based automatic query methods,parameter-based automatic query methods>>, that is, `@Find` and `@Delete`, and
+- <<Parameter-based automatic query methods,parameter-based automatic query methods>>, that is, `@Find`, `@Count`, `@Exists`, and `@Delete`, and
 - <<Annotated query methods,annotated query methods>>, that is `@Query` and <<Jakarta Common Query Language>> or Jakarta Persistence Query Language.
 
 Newly written code should use these approaches.
