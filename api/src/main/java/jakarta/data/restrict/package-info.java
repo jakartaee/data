@@ -40,7 +40,7 @@
  * For example,
  *
  * {@snippet lang="java":
- *     Page<Car> page1 = cars.listedAfter(
+ *     Page<Car> firstPage = cars.listedAfter(
  *             LocalDate.now().minusDays(100),
  *             Restrict.all(_Car.make.upper().equalTo("JAKARTA MOTORS"),
  *                          _Car.model.upper().in("JILVERADO", "JIERRA", "JUKON"),
