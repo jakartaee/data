@@ -66,9 +66,8 @@ import java.lang.annotation.Target;
  *     or a name assigned by {@link By @By}) as an attribute of the entity class,
  *     or</li>
  * <li>have exactly the same name as a persistent attribute of the entity class
- *     and be of type {@code C<T>}, where {@code C} is {@link Constraint} or any
- *     interface which extends {@link Constraint} and {@code T} is the type of
- *     the persistent attribute,
+ *     and be of type {@code C<T>}, where {@code C} is an interface which extends
+ *     {@link Constraint} and {@code T} is the type of the persistent attribute,
  * <li>have exactly the same name as a persistent attribute of the entity class,
  *     be annotated {@link Is @Is(C.class)}, where {@code C} is an interface
  *     which extends {@link Constraint}, and be of the same type as the parameter
