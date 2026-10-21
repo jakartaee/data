@@ -533,11 +533,12 @@ import java.util.Set;
  *         Product[] named(String name);
  *     }
  * </li>
- * <li>The parameter is a {@linkplain jakarta.data.constraint subtype} of
- *     {@code Constraint} and has exactly the same name (per the rule from
- *     category 1) as an attribute of the entity class. The constraint must be
- *     parameterized with the same type (or if primitive, the corresponding
- *     wrapper type) as the attribute. For example,
+ * <li>The parameter is a {@link Constraint} or a
+ *     {@linkplain jakarta.data.constraint subtype} of {@code Constraint} and
+ *     has exactly the same name (per the rule from category 1) as an attribute
+ *     of the entity class. The constraint must be parameterized with the same
+ *     type (or if primitive, the corresponding wrapper type) as the attribute.
+ *     For example,
  *     {@snippet lang="java":
  *         @Delete
  *         int discontinue(@By("id") In<Long> productIds);

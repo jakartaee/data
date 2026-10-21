@@ -220,7 +220,7 @@ Each automatic query method must be assigned an entity type. The rules for infer
 Jakarta Data infers a query based on the parameters of the method. Each parameter must either:
 
 - have exactly the same type and name as a persistent attribute of the entity class,
-- have exactly the same name as a persistent attribute of the entity class and be of type `C<T>`, where `C` is an interface which extends `Constraint` and `T` is the type of the persistent attribute,
+- have exactly the same name as a persistent attribute of the entity class and be of type `C<T>`, where `C` is `Constraint` or any interface which extends `Constraint` and `T` is the type of the persistent attribute,
 - have exactly the same name as a persistent attribute of the entity class, be annotated `@Is(C.class)`, where `C` is an interface which extends `Constraint`, and be of the same type as the parameter of a unary static method of `C` returning `C<T>` where `T` is the type of the persistent attribute, or
 - be of type `Restriction`, `Sort`, `Order`, `Limit`, or `PageRequest`.
 

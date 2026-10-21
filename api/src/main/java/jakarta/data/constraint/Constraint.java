@@ -43,8 +43,8 @@ import jakarta.annotation.Nonnull;
  * <h2>Type of method parameter</h2>
  * </a>
  *
- * <p>A repository method constraint parameter can be of type
- * {@code C<T>} where {@code C} is a subtype of {@code Constraint},
+ * <p>A repository method constraint parameter can be of type {@code C<T>}
+ * where {@code C} is {@code Constraint} or any subtype of {@code Constraint},
  * such as {@link Like} or {@link LessThan}, and {@code T} is the entity
  * attribute type. For example,
  *
