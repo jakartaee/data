@@ -26,9 +26,10 @@ import jakarta.annotation.Nonnull;
 /**
  * <p>Creates composite restrictions.
  *
- * <p>Composite restrictions are created by combining multiple
- * {@link Restriction}s, which might themselves be composite restrictions or
- * can be obtained from static metamodel {@link Attribute} subtypes.
+ * <p>Composite restrictions ({@link #all(List) all} or {@link #any(List) any})
+ * are created by combining multiple {@link Restriction}s, which might
+ * themselves be composite restrictions or can be obtained from static
+ * metamodel {@link Attribute} subtypes.
  *
  * <p>For example, the following constructs a composite restriction (from a
  * basic restriction and another composite restriction) that matches cars that
