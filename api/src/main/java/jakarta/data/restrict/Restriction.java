@@ -51,7 +51,7 @@ import jakarta.annotation.Nonnull;
  *     List<Car> search(@By(_Car.MAKE) String manufacturer,
  *                      @By(_Car.MODEL) String model,
  *                      Restriction<Car> restriction,
- *                      Order<Car>... sort);
+ *                      Order<Car> sort);
  * }
  * }
  *

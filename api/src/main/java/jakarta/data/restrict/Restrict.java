@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024,2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2024,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,11 +24,12 @@ import java.util.List;
 import jakarta.annotation.Nonnull;
 
 /**
- * <p>Creates composite restrictions.</p>
+ * <p>Creates composite restrictions.
  *
- * <p>Composite restrictions are created by combining multiple restrictions,
- * which might themselves be composite restrictions or can be obtained from
- * static metamodel {@link Attribute} subtypes.</p>
+ * <p>Composite restrictions ({@link #all(List) all} or {@link #any(List) any})
+ * are created by combining multiple {@link Restriction}s, which might
+ * themselves be composite restrictions or can be obtained from static
+ * metamodel {@link Attribute} subtypes.
  *
  * <p>For example, the following constructs a composite restriction (from a
  * basic restriction and another composite restriction) that matches cars that
