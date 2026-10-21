@@ -37,6 +37,9 @@ import java.lang.annotation.Target;
  *     @Fetching(_Book.PUBLISHER)
  *     Book bookWithAuthorsAndPublisher(String isbn);
  * }
+ * <p>Any implementation of Jakarta Data backed by a Jakarta
+ * Persistence provider is required to treat the hint as a
+ * request for eager fetching.
  *
  * <p>If the repository method is annotated {@link QueryOptions @QueryOptions},
  * the request for eager fetching consists of the union of entity attributes
