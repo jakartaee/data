@@ -134,14 +134,11 @@ import java.util.stream.Stream;
  * <ul>
  * <li>{@code void}</li>
  * <li>{@code int} or {@code long}, where the value is the number of matching
- *     entities. If the database cannot determine the number of affected
- *     entities, the provider must raise
- *     {@link UnsupportedOperationException}. If the database provides the
- *     count, the provider may return it, and its interpretation is subject to
- *     the consistency guarantees of the database. Eventual consistency alone
- *     does not require raising {@link UnsupportedOperationException}, but the
- *     provider must not return an arbitrary estimate unrelated to the actual
- *     operation.
+ *     entities, as reported by the database. Its interpretation is subject to
+ *     the consistency guarantees of the database. If the database cannot
+ *     determine or does not report the number of affected entities, the
+ *     repository method must raise {@link UnsupportedOperationException}
+ *     at run time or fail at build time.
  *     </li>
  * <li>{@code boolean}, where the value is {@code true} if there is at least
  *     one matching entity and {@code false} otherwise.</li>
