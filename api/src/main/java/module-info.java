@@ -549,8 +549,8 @@ import java.util.Set;
  *         Stream<Product> pricedUnder(LessThan<Float> price);
  *     }
  * </li>
- * <li>The parameter is a {@link Restriction} and its type parameter is the
- *     entity class. For example,
+ * <li>The parameter is a <a href="#Restrictions">{@code Restriction}</a>.
+ *     For example,
  *     {@snippet lang="java":
  *         @Find
  *         List<Product> search(Restriction<Product> restrict);
@@ -558,8 +558,8 @@ import java.util.Set;
  * </li>
  * <li>The parameter is a {@link Limit}, {@link Sort}, {@link Order}, or
  *     {@link PageRequest} (discussed under the section titled
- *     <em>Special parameters</em>) and the repository method is annotated with
- *     {@link Find}. For example,
+ *     <a href="#SpecialParameters">Special parameters</a>) and the repository
+ *     method is annotated {@link Find}. For example,
  *     {@snippet lang="java":
  *         @Find
  *         Page<Product> getPage(PageRequest pageRequest, Order<Product> sortBy);
@@ -1158,6 +1158,10 @@ import java.util.Set;
  *                             Restriction<Product> restrict,
  *                             Order<Product> sorts);
  * }
+ *
+ * <p>Alternatively, the type can be {@code Restriction<? super E>},
+ * where {@code E} is the entity class. This allows for shared restrictions
+ * against the static metamodel of a common supertype of two entities.
  *
  * <h4>Static metamodel</h4>
  *
