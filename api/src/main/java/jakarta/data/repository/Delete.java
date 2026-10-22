@@ -102,10 +102,14 @@ import jakarta.data.restrict.Restriction;
  * <ul>
  * <li>{@code void}</li>
  * <li>{@code int} or {@code long}, where the value is the number of matching
- *     entities. The value might not be precise on databases that provide
- *     eventual consistency, in which case some Jakarta Data providers might
- *     choose to raise {@link UnsupportedOperationException} instead of
- *     returning an imprecise value.
+ *     entities. If the database cannot determine the number of affected
+ *     entities, the provider must raise
+ *     {@link UnsupportedOperationException}. If the database provides the
+ *     count, the provider may return it, and its interpretation is subject to
+ *     the consistency guarantees of the database. Eventual consistency alone
+ *     does not require raising {@link UnsupportedOperationException}, but the
+ *     provider must not return an arbitrary estimate unrelated to the actual
+ *     operation.
  *     </li>
  * <li>{@code boolean}, where the value is {@code true} if there is at least
  *     one matching entity and {@code false} otherwise.</li>
