@@ -19,7 +19,9 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import ee.jakarta.tck.data.standalone.persistence.Product;
+import ee.jakarta.tck.data.standalone.persistence._Product;
 import jakarta.data.Order;
+import jakarta.data.repository.Fetching;
 import jakarta.data.repository.Find;
 import jakarta.data.repository.Query;
 import jakarta.data.repository.Repository;
@@ -41,6 +43,11 @@ public interface Inventory {
 
     @Query("DELETE FROM Product")
     void erase();
+
+    @Find
+    @Fetching(_Product.DEPARTMENTS)
+    List<Product> fetchWithDepartments(Restriction<Product> restriction,
+                                       Order<Product> sortBy);
 
     @Find
     @QueryOptions(flush = QueryFlushMode.FLUSH)
