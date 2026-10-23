@@ -29,6 +29,7 @@ import jakarta.data.constraint.Like;
 import jakarta.data.repository.By;
 import jakarta.data.repository.DataRepository;
 import jakarta.data.repository.Delete;
+import jakarta.data.repository.Fetching;
 import jakarta.data.repository.Find;
 import jakarta.data.repository.Insert;
 import jakarta.data.repository.Is;
@@ -85,6 +86,11 @@ public interface Catalog extends DataRepository<Product, String> {
 
     @Find
     Optional<Product> get(String productNum);
+
+    @Find
+    @Fetching(_Product.DEPARTMENTS)
+    List<Product> matchesProductNumPattern(
+             @By(_Product.PRODUCTNUM) @Is(Like.class) String pattern);
 
     @Update
     Product modify(Product product);
@@ -144,8 +150,6 @@ public interface Catalog extends DataRepository<Product, String> {
     List<Product> findByPriceNull();
 
     List<Product> findByProductNumBetween(String first, String last, Order<Product> sorts);
-
-    List<Product> findByProductNumLike(String productNum);
 
 //    EntityManager getEntityManager();
 //

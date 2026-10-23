@@ -62,6 +62,50 @@ public class PersistenceEntityTests {
     @Inject
     Catalog catalog;
 
+    @Assertion(id = "1185", strategy = """
+            Use a repository method annotated Fetching to eagerly obtain
+            the respective entity attribute.
+            """)
+    public void testEagerFetchStateless() {
+        catalog.deleteByProductNumLike("TEST-PROD-%");
+
+        catalog.addMultiple(Product.of("shoe laces", 2.89, "TEST-PROD-08",
+                                       Department.CLOTHING,
+                                       Department.SPORTING_GOODS),
+                            Product.of("torque wrench", 34.99, "TEST-PROD-09",
+                                       Department.AUTOMOTIVE,
+                                       Department.TOOLS),
+                            Product.of("multivitamin", 5.29, "TEST-PROD-10",
+                                       Department.PHARMACY,
+                                       Department.GROCERY));
+
+        List<Product> found = catalog.matchesProductNumPattern("TEST-PROD-0_");
+
+        assertEquals(List.of("TEST-PROD-08", "TEST-PROD-09"),
+                     found.stream()
+                          .map(Product::getProductNum)
+                          .sorted()
+                          .toList());
+
+        Product prod08 = "TEST-PROD-08".equals(found.get(0).getProductNum())
+                                        ? found.get(0)
+                                        : found.get(1);
+        Product prod09 = "TEST-PROD-09".equals(found.get(0).getProductNum())
+                                        ? found.get(0)
+                                        : found.get(1);
+
+        assertEquals(Set.of(Department.CLOTHING,
+                            Department.SPORTING_GOODS),
+                     prod08.getDepartments());
+
+        assertEquals(Set.of(Department.AUTOMOTIVE,
+                            Department.TOOLS),
+                     prod09.getDepartments());
+
+        assertEquals(3L,
+                     catalog.deleteByProductNumLike("TEST-PROD-%"));
+    }
+
     @Assertion(id = "133", strategy = "Use a repository method that obtains the Entity Manager.")
     public void testEntityManager() {
         catalog.deleteByProductNumLike("TEST-PROD-%");

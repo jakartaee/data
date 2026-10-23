@@ -70,7 +70,7 @@ public class JakartaQueryTests {
                      catalog.deleteLongNamed("TEST-PROD-301%", 8));
 
         assertEquals(List.of("lug nuts"),
-                     catalog.findByProductNumLike("TEST-PROD-301%")
+                     catalog.matchesProductNumPattern("TEST-PROD-301%")
                             .stream()
                             .map(Product::getName)
                             .toList());

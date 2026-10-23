@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2023,2026 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -65,7 +65,7 @@ public class PersistenceTests {
 
         tran.commit();
 
-        yarns = catalog.findByProductNumLike("TEST-PROD-10_");
+        yarns = catalog.matchesProductNumPattern("TEST-PROD-10_");
         assertFalse(yarns.isEmpty(), "Commit should have persisted data");
         assertEquals(3, yarns.size());
 
@@ -90,7 +90,7 @@ public class PersistenceTests {
 
         tran.rollback();
 
-        paints = catalog.findByProductNumLike("TEST-PROD-11_");
+        paints = catalog.matchesProductNumPattern("TEST-PROD-11_");
         assertTrue(paints.isEmpty(), "Save should not have persisted data after transaction rollback.");
     }
 
