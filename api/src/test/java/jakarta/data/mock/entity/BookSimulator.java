@@ -51,22 +51,37 @@ public class BookSimulator {
         if (amount > 0) {
             books.add(Book.of(
                     "100", "Discovering Jakarta Data", "Someone",
-                    8, 160, copyright1, published2));
+                    8, 160, copyright1, published2,
+                    "Introduction",
+                    "Entity Model",
+                    "Repositories"));
         }
         if (amount > 1) {
             books.add(Book.of(
                     "101", "Exploring Jakarta Persistence", "Someone Else",
-                    19, 317, copyright1, published1));
+                    19, 317, copyright1, published1,
+                    "Introduction to Persistence",
+                    "Entities",
+                    "Entity Management",
+                    "Appendix"));
         }
         if (amount > 2) {
             books.add(Book.of(
                     "102", "Knowing Jakarta NoSQL", "Another Author",
-                    12, 202, copyright2, published2));
+                    12, 202, copyright2, published2,
+                    "Key-value databases",
+                    "Wide column databases",
+                    "Document databases",
+                    "Graph databases",
+                    "Time series databases"));
         }
         if (amount > 3) {
             books.add(Book.of(
                     "103", "Learning Jakarta Transactions", "Other Author",
-                    13, 133, copyright2, published1));
+                    13, 133, copyright2, published1,
+                    "Introduction",
+                    "The XA protocol",
+                    "Transaction management"));
         }
         if (amount > 4) {
             books.add(Book.of(
