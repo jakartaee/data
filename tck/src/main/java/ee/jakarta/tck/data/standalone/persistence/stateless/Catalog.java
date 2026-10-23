@@ -84,6 +84,9 @@ public interface Catalog extends DataRepository<Product, String> {
     @Delete
     long discardAllMatching(@By(ID) @Is(Like.class) String productIdPattern);
 
+    @Fetching(_Product.DEPARTMENTS)
+    List<Product> findByProductNumLike(String productNum);
+
     @Find
     Optional<Product> get(String productNum);
 

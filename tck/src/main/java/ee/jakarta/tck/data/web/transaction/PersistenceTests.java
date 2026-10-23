@@ -65,15 +65,20 @@ public class PersistenceTests {
 
         tran.commit();
 
-        yarns = catalog.matchesProductNumPattern("TEST-PROD-10_");
+        yarns = catalog.findByProductNumLike("TEST-PROD-10_");
         assertFalse(yarns.isEmpty(), "Commit should have persisted data");
         assertEquals(3, yarns.size());
 
-        Product woolYarn = yarns.stream().filter(p -> p.getProductNum().equals("TEST-PROD-100")).findFirst().orElse(null);
-        assertNotNull(woolYarn, "Result set did not contain the expected product");
+        Product woolYarn = yarns
+                .stream()
+                .filter(p -> p.getProductNum().equals("TEST-PROD-100"))
+                .findFirst()
+                .orElse(null);
+        assertNotNull(woolYarn, "Result did not contain the expected product");
         assertEquals("wool-yarn", woolYarn.getName());
         assertEquals(7.99, woolYarn.getPrice());
-        assertTrue(woolYarn.getDepartments().contains(Department.CRAFTS), "Result was did not have the correct department.");
+        assertEquals(true,
+                     woolYarn.getDepartments().contains(Department.CRAFTS));
     }
 
     @Assertion(id = "133", strategy = "Verify that data is not persisted to repository when a transaction is rolled back")
@@ -90,7 +95,7 @@ public class PersistenceTests {
 
         tran.rollback();
 
-        paints = catalog.matchesProductNumPattern("TEST-PROD-11_");
+        paints = catalog.findByProductNumLike("TEST-PROD-11_");
         assertTrue(paints.isEmpty(), "Save should not have persisted data after transaction rollback.");
     }
 
