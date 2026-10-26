@@ -116,7 +116,7 @@ Wide-Column Databases:: Support for a `WHERE` clause with an equality restrictio
 
 ==== Update statements
 
-If a NoSQL database is not capable of conditional updates, the `update` operation must throw an `UnsupportedOperationException`. Alternatively, the implementation is permitted to reject the 
+If a NoSQL database is not capable of conditional updates, the repository method which executes the `update` operation must throw `UnsupportedOperationException`. Alternatively, the implementation is permitted to reject the 
 repository method declaration at compile time.
 
 If the database cannot determine the number of matching entities for an `update` operation and the repository method has return type `int` or `long`, the method must throw an `UnsupportedOperationException` at runtime.
