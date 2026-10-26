@@ -129,7 +129,7 @@ Additionally, in databases with **append-only semantics**—such as many time-se
 
 ==== Delete statements
 
-If a NoSQL database is not capable of the execution of conditional deletes, the `delete` operation must throw an `UnsupportedOperationException`. Alternatively, the implementation is permitted to reject the 
+If a NoSQL database is not capable of conditional deletes, the repository method which executes the `delete` operation must throw `UnsupportedOperationException`. Alternatively, the implementation is permitted to reject the 
 repository method declaration at compile time.
 
 If the database cannot determine the number of deleted entities for a `delete` operation that returns an `int` or `long`, the `delete` operation must throw an `UnsupportedOperationException` at runtime. 
