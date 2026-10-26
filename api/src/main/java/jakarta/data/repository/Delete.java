@@ -106,7 +106,8 @@ import jakarta.data.restrict.Restriction;
  *     the consistency guarantees of the database. If the database cannot
  *     determine or does not report the number of affected entities, the
  *     repository method must raise {@link UnsupportedOperationException}
- *     at run time or fail at build time.
+ *     at runtime. Alternatively, the implementation is permitted to 
+ *     reject the repository method declaration at compile time.
  *     </li>
  * <li>{@code boolean}, where the value is {@code true} if there is at least
  *     one matching entity and {@code false} otherwise.</li>
