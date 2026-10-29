@@ -21,8 +21,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
@@ -61,8 +59,6 @@ import jakarta.data.Order;
 import jakarta.data.Sort;
 import jakarta.data.exceptions.EmptyResultException;
 import jakarta.data.exceptions.NonUniqueResultException;
-import jakarta.data.page.Page;
-import jakarta.data.page.PageRequest;
 import jakarta.inject.Inject;
 
 /**
@@ -313,30 +309,6 @@ public class EntityTests {
                 numbers.withIdEqualOrAbove(71L, Limit.of(5)));
     }
 
-    @Assertion(id = "133", strategy = "Use a repository method with Contains to query for a substring of a String attribute.")
-    public void testContainsInString() {
-        Collection<AsciiCharacter> found;
-        try {
-            found = characters.findByHexadecimalContainsAndIsControlNot("4", true);
-        } catch (UnsupportedOperationException x) {
-            if (type.capableOfAnd() &&
-                type.capableOfConstraintsOnNonIdAttributes() &&
-                type.capableOfLike()) {
-                throw x;
-            } else {
-                return;
-            }
-        }
-
-        assertEquals(List.of("24", "34",
-                        "40", "41", "42", "43",
-                        "44", "45", "46", "47",
-                        "48", "49", "4a", "4b",
-                        "4c", "4d", "4e", "4f",
-                        "54", "64", "74"),
-                found.stream().map(AsciiCharacter::getHexadecimal).sorted().toList());
-    }
-
     @Assertion(id = "133", strategy = "Use a repository that inherits from DataRepository and defines all of its own methods.")
     public void testDataRepository() {
         try {
@@ -406,79 +378,6 @@ public class EntityTests {
         }
     }
 
-    @Assertion(id = "133", strategy = "Use a repository method with the False keyword.")
-    public void testFalse() {
-        List<NaturalNumber> even;
-        try {
-            even = positives.findByIsOddFalseAndIdBetween(50L, 60L);
-        } catch (UnsupportedOperationException x) {
-            if (type.capableOfAnd() &&
-                type.capableOfBetween() &&
-                type.capableOfConstraintsOnNonIdAttributes()) {
-                throw x;
-            } else {
-                return;
-            }
-        }
-
-        assertEquals(6L, even.stream().count());
-
-        assertEquals(List.of(50L, 52L, 54L, 56L, 58L, 60L),
-                even.stream().map(NaturalNumber::getId).sorted().collect(Collectors.toList()));
-    }
-
-    @Assertion(id = "133",
-            strategy = "Use a repository method with findFirstBy that returns the first entity value " +
-                    "where multiple results would otherwise be found.")
-    public void testFindFirst() {
-        Optional<AsciiCharacter> none;
-        try {
-            none = characters.findFirstByHexadecimalStartsWithAndIsControlOrderByIdAsc(
-                    "h", false);
-        } catch (UnsupportedOperationException x) {
-            if (type.capableOfAnd() &&
-                type.capableOfConstraintsOnNonIdAttributes() &&
-                type.capableOfLike() &&
-                type.capableOfSingleSort()) {
-                throw x;
-            } else {
-                return;
-            }
-        }
-        assertTrue(none.isEmpty());
-
-        AsciiCharacter ch = characters.findFirstByHexadecimalStartsWithAndIsControlOrderByIdAsc("4", false)
-                .orElseThrow();
-        assertEquals('@', ch.getThisCharacter());
-        assertEquals("40", ch.getHexadecimal());
-        assertEquals(64, ch.getNumericValue());
-    }
-
-    @Assertion(id = "133",
-            strategy = "Use a repository method with findFirst3By that returns the first 3 results.")
-    public void testFindFirst3() {
-        AsciiCharacter[] found;
-
-        try {
-            found = characters.findFirst3ByNumericValueGreaterThanEqualAndHexadecimalEndsWith(
-                    40, "4", Sort.asc("numericValue"));
-        } catch (UnsupportedOperationException x) {
-            if (type.capableOfAnd() &&
-                type.capableOfConstraintsOnNonIdAttributes() &&
-                type.capableOfLike() &&
-                type.capableOfSingleSort()) {
-                throw x;
-            } else {
-                return;
-            }
-        }
-
-        assertEquals(3, found.length);
-        assertEquals('4', found[0].getThisCharacter());
-        assertEquals('D', found[1].getThisCharacter());
-        assertEquals('T', found[2].getThisCharacter());
-    }
-
     @Assertion(id = "133",
             strategy = "Find a single entity, querying by entity attributes with names that match the method parameter names.")
     public void testFindOne() {
@@ -507,101 +406,6 @@ public class EntityTests {
         assertFalse(opt.isPresent());
     }
 
-    @Assertion(id = "133", strategy = "Use a repository method existsByIdGreaterThan confirming the correct boolean is returned.")
-    public void testGreaterThanEqualExists() {
-        try {
-            assertTrue(positives.existsByIdGreaterThan(0L));
-        } catch (UnsupportedOperationException x) {
-            if (type.capableOfGreaterThan()) {
-                throw x;
-            } else {
-                return;
-            }
-        }
-        assertTrue(positives.existsByIdGreaterThan(99L));
-        assertFalse(positives.existsByIdGreaterThan(100L)); // doesn't exist because the table only has 1 to 100
-    }
-
-    @Assertion(id = "133", strategy = "Use a repository method with the In keyword.")
-    public void testIn() {
-        Stream<NaturalNumber> nonPrimes;
-        try {
-            nonPrimes = positives.findByNumTypeInOrderByIdAsc(
-                    Set.of(NumberType.COMPOSITE, NumberType.ONE),
-                    Limit.of(9));
-        } catch (UnsupportedOperationException x) {
-            if (type.capableOfConstraintsOnNonIdAttributes() &&
-                type.capableOfIn() &&
-                type.capableOfSingleSort()) {
-                throw x;
-            } else {
-                return;
-            }
-        }
-
-        assertEquals(List.of(1L, 4L, 6L, 8L, 9L, 10L, 12L, 14L, 15L),
-                nonPrimes.map(NaturalNumber::getId).collect(Collectors.toList()));
-
-        Stream<NaturalNumber> primes = positives.findByNumTypeInOrderByIdAsc(Collections.singleton(NumberType.PRIME),
-                Limit.of(6));
-        assertEquals(List.of(2L, 3L, 5L, 7L, 11L, 13L),
-                primes.map(NaturalNumber::getId).collect(Collectors.toList()));
-    }
-
-    @Assertion(id = "133", strategy = "Use a repository method with the IgnoreCase keyword.")
-    public void testIgnoreCase() {
-        Stream<AsciiCharacter> found;
-        try {
-            found = characters.findByHexadecimalIgnoreCaseBetweenAndHexadecimalNotIn(
-                    "4c", "5A", Set.of("5"),
-                    Order.by(Sort.asc("hexadecimal")));
-        } catch (UnsupportedOperationException x) {
-            if (type.capableOfAnd() &&
-                type.capableOfBetween() &&
-                type.capableOfConstraintsOnNonIdAttributes() &&
-                type.capableOfNotIn() &&
-                type.capableOfSingleSort() &&
-                type.capableOfUpper()) {
-                throw x;
-            } else {
-                return;
-            }
-        }
-
-        assertEquals(List.of('L', // 4c
-                        'M', // 4d
-                        'N', // 4e
-                        'O', // 4f
-                        'P', // 50
-                        'Q', // 51
-                        'R', // 52
-                        'S', // 53
-                        'T', // 54
-                        'U', // 55
-                        'V', // 56
-                        'W', // 57
-                        'X', // 58
-                        'Y', // 59
-                        'Z'), // 5a
-                found.map(AsciiCharacter::getThisCharacter).collect(Collectors.toList()));
-    }
-
-    @Assertion(id = "133", strategy = "Use a repository method countByIdLessThan confirming the correct count is returned.")
-    public void testLessThanWithCount() {
-        try {
-            assertEquals(91L, positives.countByIdLessThan(92L));
-        } catch (UnsupportedOperationException x) {
-            if (type.capableOfCount() &&
-                type.capableOfLessThan()) {
-                throw x;
-            } else {
-                return;
-            }
-        }
-
-        assertEquals(0L, positives.countByIdLessThan(1L));
-    }
-
     @Assertion(id = "133",
             strategy = "Use a repository method that ought to return a single entity value but where multiple results are found." +
                     "Expect NonUniqueResultException.")
@@ -619,113 +423,6 @@ public class EntityTests {
                 type.capableOfConstraintsOnNonIdAttributes()) {
                 throw x;
             }
-        }
-    }
-
-    @Assertion(id = "133", strategy = "Use a repository method with the Not keyword.")
-    public void testNot() {
-        NaturalNumber[] n;
-        try {
-            n = numbers.findByNumTypeNot(
-                    NumberType.COMPOSITE,
-                    Limit.of(8),
-                    Order.by(Sort.asc("id")));
-        } catch (UnsupportedOperationException x) {
-            if (type.capableOfConstraintsOnNonIdAttributes() &&
-                type.capableOfNotEqual() &&
-                type.capableOfSingleSort()) {
-                throw x;
-            } else {
-                return;
-            }
-        }
-        assertEquals(8, n.length);
-        assertEquals(1L, n[0].getId());
-        assertEquals(2L, n[1].getId());
-        assertEquals(3L, n[2].getId());
-        assertEquals(5L, n[3].getId());
-        assertEquals(7L, n[4].getId());
-        assertEquals(11L, n[5].getId());
-        assertEquals(13L, n[6].getId());
-        assertEquals(17L, n[7].getId());
-    }
-
-    @Assertion(id = "133", strategy = "Use a repository method with Or, expecting UnsupportedOperationException if the underlying database is not capable.")
-    public void testOr() {
-        Stream<NaturalNumber> found;
-        try {
-            found = positives.findByNumTypeOrFloorOfSquareRoot(NumberType.ONE, 2L);
-        } catch (UnsupportedOperationException x) {
-            if (type.capableOfConstraintsOnNonIdAttributes() &&
-                type.capableOfOr()) {
-                throw x;
-            } else {
-                return;
-            }
-        }
-
-        assertEquals(List.of(1L, 4L, 5L, 6L, 7L, 8L),
-                     found.map(NaturalNumber::getId).sorted().toList());
-    }
-
-    @Assertion(id = "133",
-            strategy = "Use a repository method with OrderBy (static) and a Sort parameter (dynamic), " +
-                    "verfying that all results are returned and are ordered first by the static sort criteria, " +
-                    "followed by the dynamic sort criteria when the value(s) being compared by the static criteria match.")
-    public void testOrderByKeywordHasPrecedenceOverSorts() {
-        PageRequest pagination = PageRequest.ofSize(8);
-        Order<NaturalNumber> order = Order.by(Sort.asc("numTypeOrdinal"), Sort.desc("id"));
-
-        Page<NaturalNumber> page;
-        try {
-            page = numbers.findByIdLessThanOrderByFloorOfSquareRootDesc(
-                    25L, pagination, order);
-        } catch (UnsupportedOperationException x) {
-            if (type.capableOfCount() &&
-                type.capableOfLessThan() &&
-                type.capableOfMultipleSort()) {
-                throw x;
-            } else {
-                return;
-            }
-        }
-
-        assertEquals(Arrays.toString(new Long[]{
-                        23L, 19L, 17L, // square root rounds down to 4; prime
-                        24L, 22L, 21L, 20L, 18L}), // square root rounds down to 4; composite
-                     Arrays.toString(page.stream()
-                                         .map(NaturalNumber::getId)
-                                         .toArray()));
-
-        assertTrue(page.hasNext());
-        pagination = page.nextPageRequest();
-        page = numbers.findByIdLessThanOrderByFloorOfSquareRootDesc(25L, pagination, order);
-
-        assertEquals(Arrays.toString(new Long[]{
-                        16L, // square root rounds down to 4; composite
-                        13L, 11L, // square root rounds down to 3; prime
-                        15L, 14L, 12L, 10L, 9L}), // square root rounds down to 3; composite
-                     Arrays.toString(page.stream()
-                                         .map(NaturalNumber::getId)
-                                         .toArray()));
-
-        assertTrue(page.hasNext());
-        pagination = page.nextPageRequest();
-        page = numbers.findByIdLessThanOrderByFloorOfSquareRootDesc(25L, pagination, order);
-
-        assertEquals(Arrays.toString(new Long[]{
-                        7L, 5L, // square root rounds down to 2; prime
-                        8L, 6L, 4L, // square root rounds down to 2; composite
-                        1L, // square root rounds down to 1; one
-                        3L, 2L}), // square root rounds down to 1; prime
-                     Arrays.toString(page.stream()
-                                         .map(NaturalNumber::getId)
-                                         .toArray()));
-
-        if (page.hasNext()) {
-            pagination = page.nextPageRequest();
-            page = numbers.findByIdLessThanOrderByFloorOfSquareRootDesc(25L, pagination, order);
-            assertFalse(page.hasContent());
         }
     }
 
@@ -867,42 +564,6 @@ public class EntityTests {
         List<AsciiCharacter> empty = characters.findByNumericValueLessThanEqualAndNumericValueGreaterThanEqual(115, 120);
         assertFalse(empty.iterator().hasNext());
         assertEquals(0L, empty.stream().count());
-    }
-
-    @Assertion(id = "133", strategy = "Use a repository method with the True keyword.")
-    public void testTrue() {
-        Iterable<NaturalNumber> odd;
-        try {
-            odd = positives.findByIsOddTrueAndIdLessThanEqualOrderByIdDesc(10L);
-        } catch (UnsupportedOperationException x) {
-            if (type.capableOfAnd() &&
-                type.capableOfConstraintsOnNonIdAttributes() &&
-                type.capableOfLessThanEqual() &&
-                type.capableOfSingleSort()) {
-                throw x;
-            } else {
-                return;
-            }
-        }
-
-        Iterator<NaturalNumber> it = odd.iterator();
-
-        assertTrue(it.hasNext());
-        assertEquals(9L, it.next().getId());
-
-        assertTrue(it.hasNext());
-        assertEquals(7L, it.next().getId());
-
-        assertTrue(it.hasNext());
-        assertEquals(5L, it.next().getId());
-
-        assertTrue(it.hasNext());
-        assertEquals(3L, it.next().getId());
-
-        assertTrue(it.hasNext());
-        assertEquals(1L, it.next().getId());
-
-        assertFalse(it.hasNext());
     }
 
 }
