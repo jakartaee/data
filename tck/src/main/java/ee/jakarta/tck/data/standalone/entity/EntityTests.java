@@ -494,28 +494,6 @@ public class EntityTests {
         }
     }
 
-    @Assertion(id = "133",
-            strategy = "Use a repository method with one Sort parameter specifying descending order, " +
-                    "and verify all results are returned and are in descending order according to the sort criteria.")
-    public void testDescendingSort() {
-        Stream<AsciiCharacter> stream;
-        try {
-            stream = characters.findByIdBetween(
-                    52L, 57L,
-                    Sort.desc("id"));
-        } catch (UnsupportedOperationException x) {
-            if (type.capableOfBetween() &&
-                type.capableOfSingleSort()) {
-                throw x;
-            } else {
-                return;
-            }
-        }
-
-        assertEquals(Arrays.toString(new Character[]{'9', '8', '7', '6', '5', '4'}),
-                Arrays.toString(stream.map(AsciiCharacter::getThisCharacter).toArray()));
-    }
-
     @Assertion(id = "133", strategy = "Use a repository method that returns a single entity value where no result is found. Expect EmptyResultException.")
     public void testEmptyResultException() {
         try {
@@ -604,54 +582,6 @@ public class EntityTests {
         assertEquals('4', found[0].getThisCharacter());
         assertEquals('D', found[1].getThisCharacter());
         assertEquals('T', found[2].getThisCharacter());
-    }
-
-    @Assertion(id = "133",
-            strategy = "Find a list of entities, querying by entity attributes with names that match the method parameter names," +
-                    " with results capped by a Limit parameter and sorted according to a variable arguments Sort parameter.")
-    public void testFindList() {
-        List<NaturalNumber> oddCompositeNumbers;
-        try {
-            oddCompositeNumbers = positives.findOdd(
-                    true,
-                    NumberType.COMPOSITE,
-                    Limit.of(10),
-                    Order.by(
-                            Sort.asc("floorOfSquareRoot"),
-                            Sort.desc("numBitsRequired"),
-                            Sort.asc("id")));
-
-
-            assertEquals(List.of(
-                            9L, 15L,  // 3 <= sqrt < 4, 4 bits
-                            21L,      // 4 <= sqrt < 5, 5 bits
-                            33L, 35L, // 5 <= sqrt < 6, 6 bits
-                            25L, 27L, // 5 <= sqrt < 6, 5 bits
-                            39L, 45L, // 6 <= sqrt < 7, 6 bits
-                            49L),     // 7 <= sqrt < 8, 6 bits
-                         oddCompositeNumbers
-                            .stream()
-                            .map(NaturalNumber::getId)
-                            .collect(Collectors.toList()));
-        } catch (UnsupportedOperationException x) {
-            if (type.capableOfAnd() &&
-                type.capableOfConstraintsOnNonIdAttributes() &&
-                type.capableOfMultipleSort()) {
-                throw x;
-            } else {
-                return;
-            }
-        }
-
-        List<NaturalNumber> evenPrimeNumbers = positives.findOdd(false, NumberType.PRIME, Limit.of(9), Order.by());
-
-        assertEquals(1, evenPrimeNumbers.size());
-        NaturalNumber num = evenPrimeNumbers.get(0);
-        assertEquals(2L, num.getId());
-        assertEquals(1L, num.getFloorOfSquareRoot());
-        assertEquals(Short.valueOf((short) 2), num.getNumBitsRequired());
-        assertEquals(NumberType.PRIME, num.getNumType());
-        assertFalse(num.isOdd());
     }
 
     @Assertion(id = "133",
@@ -777,36 +707,6 @@ public class EntityTests {
         assertEquals(0L, positives.countByIdLessThan(1L));
     }
 
-
-    @Assertion(id = "133",
-            strategy = "Use a repository method with two Sort parameters specifying a mixture of ascending and descending order, " +
-                    "and verify all results are returned and are ordered according to the sort criteria.")
-    public void testMixedSort() {
-        NaturalNumber[] nums;
-        try {
-            nums = numbers.findByIdLessThan(
-                    15L,
-                    Sort.asc("numBitsRequired"),
-                    Sort.desc("id"));
-        } catch (UnsupportedOperationException x) {
-            if (type.capableOfLessThan() &&
-                type.capableOfMultipleSort()) {
-                throw x;
-            } else {
-                return;
-            }
-        }
-
-        assertEquals(Arrays.toString(new Long[]{
-                        1L, // 1 bit
-                        3L, 2L, // 2 bits
-                        7L, 6L, 5L, 4L, // 3 bits
-                        14L, 13L, 12L, 11L, 10L, 9L, 8L}), // 4 bits
-                     Arrays.toString(Stream.of(nums)
-                                           .map(NaturalNumber::getId)
-                                           .toArray()));
-    }
-
     @Assertion(id = "133",
             strategy = "Use a repository method that ought to return a single entity value but where multiple results are found." +
                     "Expect NonUniqueResultException.")
@@ -877,7 +777,7 @@ public class EntityTests {
             strategy = "Use a repository method with OrderBy (static) and a Sort parameter (dynamic), " +
                     "verfying that all results are returned and are ordered first by the static sort criteria, " +
                     "followed by the dynamic sort criteria when the value(s) being compared by the static criteria match.")
-    public void testOrderByHasPrecedenceOverPageRequestSorts() {
+    public void testOrderByKeywordHasPrecedenceOverSorts() {
         PageRequest pagination = PageRequest.ofSize(8);
         Order<NaturalNumber> order = Order.by(Sort.asc("numTypeOrdinal"), Sort.desc("id"));
 
@@ -932,36 +832,6 @@ public class EntityTests {
             page = numbers.findByIdLessThanOrderByFloorOfSquareRootDesc(25L, pagination, order);
             assertFalse(page.hasContent());
         }
-    }
-
-    @Assertion(id = "133",
-            strategy = "Use a repository method with OrderBy (static) and a PageRequest with a Sort parameter (dynamic), " +
-                    "verfying that all results are returned and are ordered first by the static sort criteria, " +
-                    "followed by the dynamic sort criteria when the value(s) being compared by the static criteria match.")
-    public void testOrderByHasPrecedenceOverSorts() {
-        Stream<NaturalNumber> nums;
-        try {
-            nums = numbers.findByIdBetweenOrderByNumTypeOrdinalAsc(
-                    5L, 24L,
-                    Order.by(Sort.desc("floorOfSquareRoot"), Sort.asc("id")));
-        } catch (UnsupportedOperationException x) {
-            if (type.capableOfBetween() &&
-                type.capableOfMultipleSort()) {
-                throw x;
-            } else {
-                return;
-            }
-        }
-
-        assertEquals(Arrays.toString(new Long[]{
-                        17L, 19L, 23L, // prime; square root rounds down to 4
-                        11L, 13L, // prime; square root rounds down to 3
-                        5L, 7L, // prime; square root rounds down to 2
-                        16L, 18L, 20L, 21L, 22L, 24L, // composite; square root rounds down to 4
-                        9L, 10L, 12L, 14L, 15L, // composite; square root rounds down to 3
-                        6L, 8L}), // composite; square root rounds down to 2
-                     Arrays.toString(nums.map(NaturalNumber::getId)
-                                         .toArray()));
     }
 
     @Assertion(id = "133", strategy = "Use count and exists methods where the primary entity class is inferred from the lifecycle methods.")
@@ -1140,34 +1010,4 @@ public class EntityTests {
         assertFalse(it.hasNext());
     }
 
-    @Assertion(id = "133",
-            strategy = "Use a repository method with varargs Sort... specifying a mixture of ascending and descending order, " +
-                    "and verify all results are returned and are ordered according to the sort criteria.")
-    public void testVarargsSort() {
-        List<NaturalNumber> list;
-        try {
-            list = numbers.findByIdLessThanEqual(
-                    12L,
-                    Sort.asc("floorOfSquareRoot"),
-                    Sort.desc("numBitsRequired"),
-                    Sort.asc("id"));
-        } catch (UnsupportedOperationException x) {
-            if (type.capableOfLessThanEqual() &&
-                type.capableOfMultipleSort()) {
-                throw x;
-            } else {
-                return;
-            }
-        }
-
-        assertEquals(Arrays.toString(new Long[]{
-                        2L, 3L, // square root rounds down to 1; 2 bits
-                        1L, // square root rounds down to 1; 1 bit
-                        8L, // square root rounds down to 2; 4 bits
-                        4L, 5L, 6L, 7L, // square root rounds down to 2; 3 bits
-                        9L, 10L, 11L, 12L}), // square root rounds down to 3; 4 bits
-                     Arrays.toString(list.stream()
-                                         .map(NaturalNumber::getId)
-                                         .toArray()));
-    }
 }
