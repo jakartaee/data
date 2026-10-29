@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2025,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -62,6 +62,45 @@ public interface BasicAttribute<T, V> extends Attribute<T>, Expression<T, V> {
         Messages.requireNonNull(attributeType, "attributeType");
 
         return new BasicAttributeRecord<>(entityClass, name, attributeType);
+    }
+
+    /**
+     * <p>Creates a static metamodel {@code BasicAttribute} representing an
+     * entity attribute of a parameterized type. For example,
+     * {@code List<String>} or {@code Map<String, Integer>}.</p>
+     *
+     * <p>Provide an anonymous {@link TypeToken} subclass to capture the
+     * complete type. The compiler enforces consistency between the field
+     * declaration and the type arguments:</p>
+     *
+     * <pre>{@code
+     * BasicAttribute<Country, List<String>> cityNames = BasicAttribute.of(
+     *         Country.class, CITYNAMES, new TypeToken<List<String>>(){});
+     * }</pre>
+     *
+     * <p>The {@link #type()} method returns the raw container class
+     * (for example, {@code List.class}).</p>
+     *
+     * @param <T>         entity class of the static metamodel
+     * @param <V>         type of entity attribute, parameterized. For example,
+     *                    {@code List<String>}
+     * @param entityClass the entity class
+     * @param name        the name of the entity attribute
+     * @param token       type token capturing the full generic attribute type
+     * @return instance of {@code BasicAttribute}
+     */
+    @Nonnull
+    static <T, V> BasicAttribute<T, V> of(@Nonnull Class<T> entityClass,
+                                          @Nonnull String name,
+                                          @Nonnull TypeToken<V> token) {
+        Messages.requireNonNull(entityClass, "entityClass");
+        Messages.requireNonNull(name, "name");
+        Messages.requireNonNull(token, "token");
+
+        // TODO should we make token.type() available? If so, it might be
+        // better to create a new Attribute subclass instead of reusing
+        // BasicAttribute
+        return new BasicAttributeRecord<>(entityClass, name, token.rawType());
     }
 }
 
