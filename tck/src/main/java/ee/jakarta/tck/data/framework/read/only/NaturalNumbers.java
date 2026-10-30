@@ -25,6 +25,7 @@ import jakarta.data.Limit;
 import jakarta.data.Order;
 import jakarta.data.Sort;
 import jakarta.data.constraint.AtLeast;
+import jakarta.data.constraint.Between;
 import jakarta.data.constraint.EqualTo;
 import jakarta.data.constraint.AtMost;
 import jakarta.data.constraint.LessThan;
@@ -97,6 +98,12 @@ public interface NaturalNumbers extends BasicRepository<NaturalNumber, Long> {
     Stream<CardinalNumber> cardinalNumberStream(long sqrtFloor);
 
     long countAll();
+
+    @Find
+    @OrderBy(_NaturalNumber.NUMTYPEORDINAL)
+    Stream<NaturalNumber> findBetween(
+            @By(_NaturalNumber.ID) Between<Long> range,
+            Order<NaturalNumber> sorts);
 
     Stream<NaturalNumber> findByIdBetweenOrderByNumTypeOrdinalAsc(long minimum,
                                                                   long maximum,
