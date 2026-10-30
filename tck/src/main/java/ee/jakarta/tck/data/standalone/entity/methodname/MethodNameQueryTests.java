@@ -93,7 +93,7 @@ public class MethodNameQueryTests {
             Use a repository method that includes the Contains keyword in
             its method name to query for a substring of a String attribute.
             """)
-    public void testContainsInString() {
+    public void testContainsKeyword() {
         Collection<AsciiCharacter> found;
         try {
             found = characters.findByHexadecimalContainsAndIsControlNot(
@@ -125,7 +125,7 @@ public class MethodNameQueryTests {
             Use a repository method that includes the False keyword in
             its method name.
             """)
-    public void testFalse() {
+    public void testFalseKeyword() {
         List<NaturalNumber> even;
         try {
             even = positives.findByIsOddFalseAndIdBetween(50L, 60L);
@@ -214,7 +214,7 @@ public class MethodNameQueryTests {
             Use a repository method existsByIdGreaterThan confirming the
             correct boolean is returned.
             """)
-    public void testGreaterThanExists() {
+    public void testGreaterThanKeywordOnExistsMethod() {
         try {
             assertEquals(true, positives.existsByIdGreaterThan(0L));
         } catch (UnsupportedOperationException x) {
@@ -233,7 +233,7 @@ public class MethodNameQueryTests {
     @Assertion(id = "133", strategy = """
             Use a repository method with the In keyword.
             """)
-    public void testIn() {
+    public void testInKeyword() {
         Stream<NaturalNumber> nonPrimes;
         try {
             nonPrimes = positives.findByNumTypeInOrderByIdAsc(
@@ -262,7 +262,7 @@ public class MethodNameQueryTests {
     @Assertion(id = "133", strategy = """
             Use a repository method with the IgnoreCase keyword.
             """)
-    public void testIgnoreCase() {
+    public void testIgnoreCaseKeyword() {
         Stream<AsciiCharacter> found;
         try {
             found = characters
@@ -307,7 +307,7 @@ public class MethodNameQueryTests {
             Use a repository method countByIdLessThan confirming the correct
             count is returned.
             """)
-    public void testLessThanWithCount() {
+    public void testLessThanKeywordOnCountMethod() {
         try {
             assertEquals(91L, positives.countByIdLessThan(92L));
         } catch (UnsupportedOperationException x) {
@@ -325,7 +325,7 @@ public class MethodNameQueryTests {
     @Assertion(id = "133", strategy = """
             Use a repository method with the Not keyword.
             """)
-    public void testNot() {
+    public void testNotKeyword() {
         NaturalNumber[] n;
         try {
             n = numbers.findByNumTypeNot(
@@ -357,7 +357,7 @@ public class MethodNameQueryTests {
             UnsupportedOperationException if the underlying database
             is not capable.
             """)
-    public void testOr() {
+    public void testOrKeyword() {
         Stream<NaturalNumber> found;
         try {
             found = positives.findByNumTypeOrFloorOfSquareRoot(NumberType.ONE,
@@ -449,7 +449,7 @@ public class MethodNameQueryTests {
     @Assertion(id = "133", strategy = """
             Use a repository method with the True keyword.
             """)
-    public void testTrue() {
+    public void testTrueKeyword() {
         Iterable<NaturalNumber> odd;
         try {
             odd = positives.findByIsOddTrueAndIdLessThanEqualOrderByIdDesc(
