@@ -229,6 +229,27 @@ class CursoredPageRecordTest {
     }
 
     @Test
+    @DisplayName("should not compute next/previous page requests for an empty page")
+    void shouldAllowEmptyPageWithoutCursors() {
+        var page = new CursoredPageRecord<String>(
+                List.of(),
+                List.of(),
+                -1,
+                PageRequest.afterCursor(Cursor.forKey("x"), 2, 10, false),
+                false,
+                false
+        );
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(page.hasContent()).isFalse();
+            soft.assertThat(page.hasNext()).isFalse();
+            soft.assertThat(page.hasPrevious()).isFalse();
+            soft.assertThatThrownBy(page::nextPageRequest).isInstanceOf(NoSuchElementException.class);
+            soft.assertThatThrownBy(page::previousPageRequest).isInstanceOf(NoSuchElementException.class);
+        });
+    }
+
+    @Test
     @DisplayName("should compute totalPages correctly")
     void shouldComputeTotalPages() {
         var page = new CursoredPageRecord<>(
