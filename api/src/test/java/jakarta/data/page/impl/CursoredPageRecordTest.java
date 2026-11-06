@@ -229,6 +229,52 @@ class CursoredPageRecordTest {
     }
 
     @Test
+    @DisplayName("should not compute a previous page request for an empty next page")
+    void shouldAllowEmptyNextPage() {
+        // The provider requests the page after the last result of page 1,
+        // but that result's successor was deleted in the meantime.
+        var page = new CursoredPageRecord<String>(
+                List.of(),
+                List.of(),
+                -1,
+                PageRequest.afterCursor(Cursor.forKey("x"), 2, 10, false),
+                false,
+                true
+        );
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(page.hasContent()).isFalse();
+            soft.assertThat(page.hasNext()).isFalse();
+            soft.assertThat(page.hasPrevious()).isFalse();
+            soft.assertThatThrownBy(page::nextPageRequest).isInstanceOf(NoSuchElementException.class);
+            soft.assertThatThrownBy(page::previousPageRequest).isInstanceOf(NoSuchElementException.class);
+        });
+    }
+
+    @Test
+    @DisplayName("should not compute a next page request for an empty previous page")
+    void shouldAllowEmptyPreviousPage() {
+        // The provider requests the page before the first result of page 2,
+        // but the results that came before it were deleted in the meantime.
+        var page = new CursoredPageRecord<String>(
+                List.of(),
+                List.of(),
+                -1,
+                PageRequest.beforeCursor(Cursor.forKey("x"), 1, 10, false),
+                true,
+                false
+        );
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(page.hasContent()).isFalse();
+            soft.assertThat(page.hasNext()).isFalse();
+            soft.assertThat(page.hasPrevious()).isFalse();
+            soft.assertThatThrownBy(page::nextPageRequest).isInstanceOf(NoSuchElementException.class);
+            soft.assertThatThrownBy(page::previousPageRequest).isInstanceOf(NoSuchElementException.class);
+        });
+    }
+
+    @Test
     @DisplayName("should compute totalPages correctly")
     void shouldComputeTotalPages() {
         var page = new CursoredPageRecord<>(
