@@ -40,8 +40,10 @@ import jakarta.annotation.Nonnull;
  * @param moreResults   whether there is a (nonempty) next page of results
  * @param <T>           The type of elements on the page
  */
-public record PageRecord<T>(@Nonnull PageRequest pageRequest, @Nonnull List<T> content,
-                            long totalElements, boolean moreResults)
+public record PageRecord<T>(@Nonnull PageRequest pageRequest,
+                            @Nonnull List<T> content,
+                            long totalElements,
+                            boolean moreResults)
         implements Page<T> {
 
     // Disallow mutation of PageRequest and List fields after creation
@@ -71,11 +73,19 @@ public record PageRecord<T>(@Nonnull PageRequest pageRequest, @Nonnull List<T> c
      *                      indicates that a total count of elements and pages
      *                      is not available.
      */
-    public PageRecord(@Nonnull PageRequest pageRequest, @Nonnull List<T> content, long totalElements) {
+    public PageRecord(@Nonnull PageRequest pageRequest,
+                      @Nonnull List<T> content,
+                      long totalElements) {
         this(pageRequest, content, totalElements,
-                content.size() == pageRequest.size()
-                        && (totalElements < 0
-                        || totalElements > pageRequest.size() * pageRequest.pageNumber()));
+                hasMoreResults(pageRequest, content, totalElements));
+    }
+
+    private static boolean hasMoreResults(
+            @Nonnull PageRequest pageRequest,
+            @Nonnull List<?> content,
+            long totalElements) {
+        return content.size() == pageRequest.size()
+            && (totalElements < 0 || totalElements > pageRequest.size() * pageRequest.pageNumber());
     }
 
     @Override
@@ -96,13 +106,13 @@ public record PageRecord<T>(@Nonnull PageRequest pageRequest, @Nonnull List<T> c
     @Override
     @Nonnull
     public PageRequest nextPageRequest() {
-        if (!hasNext()) {
+        if (hasNext()) {
+            return PageRequest.ofPage(pageRequest.pageNumber() + 1,
+                    pageRequest.size(),
+                    pageRequest.requestTotal());
+        } else {
             throw new NoSuchElementException();
         }
-
-        return PageRequest.ofPage(pageRequest.pageNumber() + 1,
-                pageRequest.size(),
-                pageRequest.requestTotal());
     }
 
     @Override
@@ -113,13 +123,13 @@ public record PageRecord<T>(@Nonnull PageRequest pageRequest, @Nonnull List<T> c
     @Override
     @Nonnull
     public PageRequest previousPageRequest() {
-        if (!hasPrevious()) {
+        if (hasPrevious()) {
+            return PageRequest.ofPage(pageRequest.pageNumber() - 1,
+                    pageRequest.size(),
+                    pageRequest.requestTotal());
+        } else {
             throw new NoSuchElementException();
         }
-
-        return PageRequest.ofPage(pageRequest.pageNumber() - 1,
-                pageRequest.size(),
-                pageRequest.requestTotal());
     }
 
     @Override
@@ -137,16 +147,18 @@ public record PageRecord<T>(@Nonnull PageRequest pageRequest, @Nonnull List<T> c
     public long totalElements() {
         if (totalElements < 0) {
             throw new IllegalStateException(Messages.get("010.unknown.total"));
+        } else {
+            return totalElements;
         }
-        return totalElements;
     }
 
     @Override
     public long totalPages() {
         if (totalElements < 0) {
             throw new IllegalStateException(Messages.get("010.unknown.total"));
+        } else {
+            int size = pageRequest.size();
+            return (totalElements + size - 1) / size;
         }
-        int size = pageRequest.size();
-        return (totalElements + size - 1) / size;
     }
 }
