@@ -231,13 +231,25 @@ class CursoredPageRecordTest {
     @Test
     @DisplayName("should not compute a previous page request for an empty next page")
     void shouldAllowEmptyNextPage() {
-        // The provider requests the page after the last result of page 1,
-        // but that result's successor was deleted in the meantime.
+        // Page 1 holds results A and B. The provider also found result C,
+        // so page 1 is not the last page and has a next page request.
+        var page1 = new CursoredPageRecord<>(
+                List.of("A", "B"),
+                List.of(Cursor.forKey("a"), Cursor.forKey("b")),
+                -1,
+                PageRequest.ofSize(2).withoutTotal(),
+                true,
+                false
+        );
+
+        // Result C is deleted before the application requests the next page,
+        // so the query after the cursor of B returns no results. The provider
+        // knows that this page is the last page, but not that it is the first.
         var page = new CursoredPageRecord<String>(
                 List.of(),
                 List.of(),
                 -1,
-                PageRequest.afterCursor(Cursor.forKey("x"), 2, 10, false),
+                page1.nextPageRequest(),
                 false,
                 true
         );
@@ -254,13 +266,26 @@ class CursoredPageRecordTest {
     @Test
     @DisplayName("should not compute a next page request for an empty previous page")
     void shouldAllowEmptyPreviousPage() {
-        // The provider requests the page before the first result of page 2,
-        // but the results that came before it were deleted in the meantime.
+        // Page 2 holds results C and D. It was requested after the cursor
+        // of B, so it is not the first page and has a previous page request.
+        var page2 = new CursoredPageRecord<>(
+                List.of("C", "D"),
+                List.of(Cursor.forKey("c"), Cursor.forKey("d")),
+                -1,
+                PageRequest.afterCursor(Cursor.forKey("b"), 2, 2, false),
+                false,
+                false
+        );
+
+        // Results A and B are deleted before the application requests the
+        // previous page, so the query before the cursor of C returns no
+        // results. The provider knows that this page is the first page, but
+        // not that it is the last.
         var page = new CursoredPageRecord<String>(
                 List.of(),
                 List.of(),
                 -1,
-                PageRequest.beforeCursor(Cursor.forKey("x"), 1, 10, false),
+                page2.previousPageRequest(),
                 true,
                 false
         );
