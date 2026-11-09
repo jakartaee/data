@@ -516,11 +516,8 @@ public class CursorPaginationTests {
     }
 
     @Assertion(id = "133", strategy = """
-            Request a CursoredPage after the cursor of the last result,
-            which is the next page request that a page obtains when the
-            Jakarta Data provider expects more results, but the results
-            are removed before the next page is requested. Expect an
-            empty CursoredPage that has neither a next page nor a
+            Request a CursoredPage after the cursor of the last result.
+            Expect an empty CursoredPage that has neither a next page nor a
             previous page.
             """)
     public void testEmptyPageAfterCursorOfLastResult() {
@@ -573,10 +570,7 @@ public class CursorPaginationTests {
     }
 
     @Assertion(id = "133", strategy = """
-            Request a CursoredPage before the cursor of the first result,
-            which is the previous page request that a page obtains when
-            the Jakarta Data provider expects earlier results, but the
-            results are removed before the previous page is requested.
+            Request a CursoredPage before the cursor of the first result.
             Expect an empty CursoredPage that has neither a next page
             nor a previous page.
             """)
@@ -593,8 +587,7 @@ public class CursorPaginationTests {
                     7L,
                     PageRequest.ofSize(3).withoutTotal());
         } catch (UnsupportedOperationException x) {
-            if (type.capableOfAnd() &&
-                type.capableOfConstraintsOnNonIdAttributes() &&
+            if (type.capableOfConstraintsOnNonIdAttributes() &&
                 type.capableOfSingleSort()) {
                 throw x;
             } else {
