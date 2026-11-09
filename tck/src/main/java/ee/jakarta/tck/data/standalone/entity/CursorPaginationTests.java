@@ -515,4 +515,142 @@ public class CursorPaginationTests {
                          .toList());
     }
 
+    @Assertion(id = "133", strategy = """
+            Request a CursoredPage after the cursor of the last result.
+            Expect an empty CursoredPage that has neither a next page nor a
+            previous page.
+            """)
+    public void testEmptyPageAfterCursorOfLastResult() {
+        // The query for this test returns 49-63 in ascending order:
+        //
+        // 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63
+        //                                     ^^ p5 ^^ (page 6 is empty)
+
+        CursoredPage<NaturalNumber> page;
+        try {
+            page = numbers.withTruncatedSquareRoot(
+                    7L,
+                    PageRequest.afterCursor(Cursor.forKey(60L), 5L, 3, false));
+        } catch (UnsupportedOperationException x) {
+            if (type.capableOfAnd() &&
+                type.capableOfConstraintsOnNonIdAttributes() &&
+                type.capableOfSingleSort()) {
+                throw x;
+            } else {
+                return;
+            }
+        }
+
+        assertEquals(List.of(61L, 62L, 63L),
+                     page.stream()
+                         .map(NaturalNumber::getId)
+                         .toList());
+
+        // Request the page after the cursor of 63, as the next page request
+        // of page 5 would if the provider had found a 64th result that was
+        // removed before the request.
+        PageRequest afterLast = PageRequest.afterCursor(
+                page.cursor(2),
+                page.pageRequest().pageNumber() + 1,
+                3,
+                false);
+
+        CursoredPage<NaturalNumber> emptyPage;
+        try {
+            emptyPage = numbers.withTruncatedSquareRoot(7L, afterLast);
+        } catch (UnsupportedOperationException x) {
+            if (type.capableOfAnd()) {
+                throw x;
+            } else {
+                return;
+            }
+        }
+
+        assertEmptyCursoredPage(emptyPage);
+    }
+
+    @Assertion(id = "133", strategy = """
+            Request a CursoredPage before the cursor of the first result.
+            Expect an empty CursoredPage that has neither a next page
+            nor a previous page.
+            """)
+    public void testEmptyPageBeforeCursorOfFirstResult() {
+        // The query for this test returns 49-63 in ascending order:
+        //
+        //       49 50 51 52 53 54 55 56 57 58 59 60 61 62 63
+        //       ^^ p1 ^^
+        // ^ the page before page 1 is empty
+
+        CursoredPage<NaturalNumber> page;
+        try {
+            page = numbers.withTruncatedSquareRoot(
+                    7L,
+                    PageRequest.ofSize(3).withoutTotal());
+        } catch (UnsupportedOperationException x) {
+            if (type.capableOfConstraintsOnNonIdAttributes() &&
+                type.capableOfSingleSort()) {
+                throw x;
+            } else {
+                return;
+            }
+        }
+
+        assertEquals(List.of(49L, 50L, 51L),
+                     page.stream()
+                         .map(NaturalNumber::getId)
+                         .toList());
+
+        // Request the page before the cursor of 49, as the previous page
+        // request of a later page would if the provider had found results
+        // before 49 that were removed before the request.
+        PageRequest beforeFirst = PageRequest.beforeCursor(
+                page.cursor(0),
+                1L,
+                3,
+                false);
+
+        CursoredPage<NaturalNumber> emptyPage;
+        try {
+            emptyPage = numbers.withTruncatedSquareRoot(7L, beforeFirst);
+        } catch (UnsupportedOperationException x) {
+            if (type.capableOfAnd()) {
+                throw x;
+            } else {
+                return;
+            }
+        }
+
+        assertEmptyCursoredPage(emptyPage);
+    }
+
+    /**
+     * Asserts that a cursored page is empty and that, because it has no
+     * cursor to compute them from, it has neither a next page request nor
+     * a previous page request.
+     */
+    private static void assertEmptyCursoredPage(
+            CursoredPage<NaturalNumber> page) {
+        assertFalse(page.hasContent());
+        assertEquals(0, page.numberOfElements());
+        assertEquals(List.of(), page.content());
+        assertFalse(page.hasNext());
+        assertFalse(page.hasPrevious());
+
+        try {
+            page.nextPageRequest();
+            fail("nextPageRequest must raise NoSuchElementException when" +
+                 " current page is empty.");
+        } catch (NoSuchElementException x) {
+            // expected
+        }
+
+        try {
+            page.previousPageRequest();
+            fail("previousPageRequest must raise NoSuchElementException" +
+                 " when current page is empty.");
+        } catch (NoSuchElementException x) {
+            // expected
+        }
+    }
+
 }
