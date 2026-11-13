@@ -89,6 +89,124 @@ public class MethodNameQueryTests {
                          .addClasses(MethodNameQueryTests.class);
     }
 
+    @Assertion(id = "136", strategy = """
+            Ensures that the prepopulation step for read-only entities was
+            successful by performing a countAll method name query.
+            """)
+    public void ensureNaturalNumberPrepopulation() {
+        assertEquals(100L,
+                     numbers.countAll());
+        assertEquals(true,
+                     numbers.findById(0L).isEmpty());
+        assertEquals(false,
+                     numbers.findById(10L).get().isOdd());
+    }
+
+    @Assertion(id = "136", strategy = """
+            Ensures that multiple read-only entities will be prepopulated
+            before testing by performing a custom countBy method name query.
+            """)
+    public void ensureCharacterPrepopulation() {
+        try {
+            assertEquals(127L,
+                         characters.countByHexadecimalNotNull());
+        } catch (UnsupportedOperationException x) {
+            if (type.capableOfConstraintsOnNonIdAttributes() &&
+                type.capableOfCount() &&
+                type.capableOfNotNull()) {
+                throw x;
+            } else {
+                return;
+            }
+        }
+
+        assertEquals('0',
+                     characters.findByNumericValue(48)
+                             .orElseThrow()
+                             .getThisCharacter());
+        assertEquals(true,
+                     characters.findByNumericValue(1)
+                             .orElseThrow()
+                             .isControl());
+    }
+
+    @Assertion(id = "133", strategy = """
+            Use a repository that inherits from BasicRepository and
+            adds a method that follows the Query by Method Name pattern.
+            Use a built-in method and the additional method.
+            """)
+    public void testBasicRepository() {
+
+        // custom method from NaturalNumbers:
+        try {
+            Stream<NaturalNumber> found =
+                    numbers.findByIdBetweenOrderByNumTypeOrdinalAsc(
+                            50L,
+                            59L,
+                            Order.by(Sort.asc("id")));
+            List<Long> list = found
+                    .map(NaturalNumber::getId)
+                    .toList();
+            assertEquals(List.of(53L, 59L, // first 2 must be primes
+                                 // the remaining 8 are composite numbers
+                                 50L, 51L, 52L, 54L, 55L, 56L, 57L, 58L),
+                    list);
+        } catch (UnsupportedOperationException x) {
+            if (type.capableOfBetween() &&
+                type.capableOfMultipleSort()) {
+                throw x;
+            }
+        }
+
+        // built-in method from BasicRepository:
+        assertEquals(60L,
+                     numbers.findById(60L).orElseThrow().getId());
+    }
+
+    @Assertion(id = "133", strategy = """
+            Use a repository that inherits method name query countBy and
+            existsBy methods from another interface.
+            """)
+    public void testCommonInterfaceQueries() {
+
+        try {
+            assertEquals(4L, numbers.countByIdBetween(87L, 90L));
+
+            assertEquals(5L, characters.countByIdBetween(86L, 90L));
+        } catch (UnsupportedOperationException x) {
+            if (type.capableOfBetween() &&
+                type.capableOfCount()) {
+                throw x;
+            }
+        }
+
+        assertEquals(true,
+                     numbers.existsById(73L));
+
+        assertEquals(true,
+                     characters.existsById(74L));
+
+        assertEquals(false,
+                     numbers.existsById(-1L));
+
+        assertEquals(false,
+                     characters.existsById(-2L));
+
+        try {
+            assertEquals(List.of(68L, 69L, 70L, 71L, 72L),
+                         characters.withIdEqualOrAbove(68L, Limit.of(5)));
+        } catch (UnsupportedOperationException x) {
+            if (type.capableOfGreaterThanEqual()) {
+                throw x;
+            } else {
+                return;
+            }
+        }
+
+        assertEquals(List.of(71L, 72L, 73L, 74L, 75L),
+                     numbers.withIdEqualOrAbove(71L, Limit.of(5)));
+    }
+
     @Assertion(id = "133", strategy = """
             Use a repository method that includes the Contains keyword in
             its method name to query for a substring of a String attribute.
@@ -119,6 +237,50 @@ public class MethodNameQueryTests {
                      .map(AsciiCharacter::getHexadecimal)
                      .sorted()
                      .toList());
+    }
+
+    @Assertion(id = "133", strategy = """
+            Use a method name query methods on a repository that inherits from
+            DataRepository and defines all of its own methods.
+            """)
+    public void testDataRepository() {
+        try {
+            AsciiCharacter del =
+                    characters.findByIsControlTrueAndNumericValueBetween(33, 127);
+            assertEquals(127, del.getNumericValue());
+            assertEquals("7f", del.getHexadecimal());
+            assertEquals(true, del.isControl());
+        } catch (UnsupportedOperationException x) {
+            if (type.capableOfAnd() &&
+                type.capableOfBetween() &&
+                type.capableOfConstraintsOnNonIdAttributes()) {
+                throw x;
+            }
+        }
+
+        try {
+            AsciiCharacter j =
+                    characters.findByHexadecimalIgnoreCase("6A");
+            assertEquals("6a", j.getHexadecimal());
+            assertEquals('j', j.getThisCharacter());
+            assertEquals(106, j.getNumericValue());
+            assertEquals(false, j.isControl());
+        } catch (UnsupportedOperationException x) {
+            if (type.capableOfConstraintsOnNonIdAttributes() &&
+                type.capableOfUpper()) {
+                throw x;
+            }
+        }
+
+        AsciiCharacter d =
+                characters.findByNumericValue(100)
+                .orElseThrow();
+        assertEquals(100, d.getNumericValue());
+        assertEquals('d', d.getThisCharacter());
+        assertEquals("64", d.getHexadecimal());
+        assertEquals(false, d.isControl());
+
+        assertEquals(true, characters.existsByThisCharacter('D'));
     }
 
     @Assertion(id = "133", strategy = """
@@ -444,6 +606,30 @@ public class MethodNameQueryTests {
                     order);
             assertEquals(false, page.hasContent());
         }
+    }
+
+    @Assertion(id = "133", strategy = """
+            Use a method name query repository method that returns a single
+            entity value where a single result is found.
+            """)
+    public void testSingleEntity() {
+        AsciiCharacter ch;
+        try {
+            ch = characters.findByHexadecimalIgnoreCase("2B");
+        } catch (UnsupportedOperationException x) {
+            if (type.capableOfConstraintsOnNonIdAttributes() &&
+                type.capableOfLower() &&
+                type.capableOfUpper()) {
+                throw x;
+            } else {
+                return;
+            }
+        }
+
+        assertEquals('+', ch.getThisCharacter());
+        assertEquals("2b", ch.getHexadecimal());
+        assertEquals(43, ch.getNumericValue());
+        assertEquals(false, ch.isControl());
     }
 
     @Assertion(id = "133", strategy = """
