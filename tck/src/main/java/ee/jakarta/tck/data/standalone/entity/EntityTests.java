@@ -229,18 +229,21 @@ public class EntityTests {
         // MethodNameQueryTest.testDefaultMethodInvokesMethodNameQuery
     }
 
-    @Assertion(id = "133", strategy = "Use a repository method that returns a single entity value where no result is found. Expect EmptyResultException.")
+    @Assertion(id = "133", strategy = """
+            Use a repository method that returns a single entity value
+            where no result is found. Expect EmptyResultException.
+            """)
     public void testEmptyResultException() {
         try {
-            AsciiCharacter ch = characters.findByHexadecimalIgnoreCase("2g");
-            fail("Unexpected result of findByHexadecimalIgnoreCase(2g): " + ch.getHexadecimal());
+            AsciiCharacter ch = characters.find('\u00FF'); // data has only 1 to 127
+            fail("Unexpected result of find('\u00FF'): " + ch.getHexadecimal());
         } catch (EmptyResultException x) {
-            log.info("testEmptyResultException expected to catch exception " + x + ". Printing its stack trace:");
+            log.info("testEmptyResultException expected to catch exception " + x +
+                     ". Printing its stack trace:");
             x.printStackTrace(System.out);
             // test passes
         } catch (UnsupportedOperationException x) {
-            if (type.capableOfConstraintsOnNonIdAttributes() &&
-                type.capableOfUpper()) {
+            if (type.capableOfConstraintsOnNonIdAttributes()) {
                 throw x;
             }
         }
@@ -274,21 +277,22 @@ public class EntityTests {
         assertFalse(opt.isPresent());
     }
 
-    @Assertion(id = "133",
-            strategy = "Use a repository method that ought to return a single entity value but where multiple results are found." +
-                    "Expect NonUniqueResultException.")
+    @Assertion(id = "133", strategy = """
+            Use a repository method that ought to return a single entity value
+            but where multiple results are found. Expect NonUniqueResultException.")
+            """)
     public void testNonUniqueResultException() {
         try {
-            AsciiCharacter ch = characters.findByIsControlTrueAndNumericValueBetween(10, 15);
-            fail("Unexpected result of findByIsControlTrueAndNumericValueBetween(10, 15): " + ch.getHexadecimal());
+            AsciiCharacter ch = characters.eitherOf(In.values(12L, 13L));
+            fail("Unexpected result of eitherOf(In.values(12L, 13L)): " +
+                 ch.getHexadecimal());
         } catch (NonUniqueResultException x) {
-            log.info("testNonUniqueResultException expected to catch exception " + x + ". Printing its stack trace:");
+            log.info("testNonUniqueResultException expected to catch exception " +
+                     x + ". Printing its stack trace:");
             x.printStackTrace(System.out);
             // test passes
         } catch (UnsupportedOperationException x) {
-            if (type.capableOfAnd() &&
-                type.capableOfBetween() &&
-                type.capableOfConstraintsOnNonIdAttributes()) {
+            if (type.capableOfIn()) {
                 throw x;
             }
         }

@@ -79,6 +79,10 @@ public interface AsciiCharacters extends DataRepository<AsciiCharacter, Long> {
 
     long countByHexadecimalNotNull();
 
+    @Find
+    AsciiCharacter eitherOf(
+            @By(_AsciiCharacter.ID) In<Long> ids);
+
     boolean existsByThisCharacter(char ch);
 
     @Find
