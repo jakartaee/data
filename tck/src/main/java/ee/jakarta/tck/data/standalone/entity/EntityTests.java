@@ -54,6 +54,7 @@ import ee.jakarta.tck.data.framework.utilities.DatabaseType;
 import ee.jakarta.tck.data.framework.utilities.TestProperty;
 import ee.jakarta.tck.data.framework.utilities.TestPropertyUtility;
 import jakarta.data.Sort;
+import jakarta.data.constraint.In;
 import jakarta.data.exceptions.EmptyResultException;
 import jakarta.data.exceptions.NonUniqueResultException;
 import jakarta.inject.Inject;
@@ -327,21 +328,30 @@ public class EntityTests {
         assertEquals("thisCharacter", _AsciiCharacter.thisCharacter.name());
     }
 
-    @Assertion(id = "133", strategy = "Use the StaticMetamodel to obtain descending Sorts for an entity attribute a type-safe manner.")
+    @Assertion(id = "133", strategy = """
+            Use the StaticMetamodel to obtain descending Sorts for an
+            entity attribute in a type-safe manner. Use one of the Sort
+            instances in a repository method query.
+            """)
     public void testStaticMetamodelDescendingSorts() {
-        assertEquals(Sort.desc(_AsciiChar.ID), _AsciiChar.id.desc());
-        assertEquals(Sort.descIgnoreCase("hexadecimal"), _AsciiChar.hexadecimal.descIgnoreCase());
-        assertEquals(Sort.descIgnoreCase("thisCharacter"), _AsciiChar.thisCharacter.descIgnoreCase());
+        assertEquals(Sort.desc(_AsciiChar.ID),
+                               _AsciiChar.id.desc());
+        assertEquals(Sort.descIgnoreCase("hexadecimal"),
+                     _AsciiChar.hexadecimal.descIgnoreCase());
+        assertEquals(Sort.descIgnoreCase("thisCharacter"),
+                     _AsciiChar.thisCharacter.descIgnoreCase());
 
         Sort<AsciiCharacter> sort = _AsciiChar.numericValue.desc();
         AsciiCharacter[] found;
         try {
-            found = characters.findFirst3ByNumericValueGreaterThanEqualAndHexadecimalEndsWith(
-                    30, "1", sort);
+            found = characters.sorted(In.values(-3L, // not found
+                                                97L, // 'a'
+                                                113L, // 'q'
+                                                1003L, // not found
+                                                81L), // 'Q'
+                                      sort);
         } catch (UnsupportedOperationException x) {
-            if (type.capableOfConstraintsOnNonIdAttributes() &&
-                type.capableOfGreaterThanEqual() &&
-                type.capableOfLike() &&
+            if (type.capableOfIn() &&
                 type.capableOfSingleSort()) {
                 throw x;
             } else {
@@ -354,22 +364,30 @@ public class EntityTests {
         assertEquals('Q', found[2].getThisCharacter());
     }
 
-    @Assertion(id = "133", strategy = "Use a pre-generated StaticMetamodel to obtain descending Sorts for an entity attribute a type-safe manner.")
+    @Assertion(id = "133", strategy = """
+            Use a pre-generated StaticMetamodel to obtain descending Sorts
+            for an entity attribute in a type-safe manner.
+            """)
     public void testStaticMetamodelDescendingSortsPreGenerated() {
-        assertEquals(Sort.desc(_AsciiCharacter.ID), _AsciiCharacter.id.desc());
-        assertEquals(Sort.desc("isControl"), _AsciiCharacter.isControl.desc());
-        assertEquals(Sort.descIgnoreCase("hexadecimal"), _AsciiCharacter.hexadecimal.descIgnoreCase());
-        assertEquals(Sort.descIgnoreCase("thisCharacter"), _AsciiCharacter.thisCharacter.descIgnoreCase());
+        assertEquals(Sort.desc(_AsciiCharacter.ID),
+                     _AsciiCharacter.id.desc());
+        assertEquals(Sort.desc("isControl"),
+                     _AsciiCharacter.isControl.desc());
+        assertEquals(Sort.descIgnoreCase("hexadecimal"),
+                     _AsciiCharacter.hexadecimal.descIgnoreCase());
+        assertEquals(Sort.descIgnoreCase("thisCharacter"),
+                     _AsciiCharacter.thisCharacter.descIgnoreCase());
 
         Sort<AsciiCharacter> sort = _AsciiCharacter.numericValue.desc();
         AsciiCharacter[] found;
         try {
-            found = characters.findFirst3ByNumericValueGreaterThanEqualAndHexadecimalEndsWith(
-                    30, "4", sort);
+            found = characters.sorted(In.values(100L, // 'd'
+                                                116L, // 't'
+                                                84L, // 'T'
+                                                -4L), // not found
+                                      sort);
         } catch (UnsupportedOperationException x) {
-            if (type.capableOfConstraintsOnNonIdAttributes() &&
-                type.capableOfGreaterThanEqual() &&
-                type.capableOfLike() &&
+            if (type.capableOfIn() &&
                 type.capableOfSingleSort()) {
                 throw x;
             } else {

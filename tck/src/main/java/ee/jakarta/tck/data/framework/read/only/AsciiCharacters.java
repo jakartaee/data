@@ -150,6 +150,11 @@ public interface AsciiCharacters extends DataRepository<AsciiCharacter, Long> {
     @Save
     List<AsciiCharacter> saveAll(List<AsciiCharacter> characters);
 
+    @Find
+    AsciiCharacter[] sorted(
+            @By(_NaturalNumber.ID) In<Long> ids,
+            Sort<AsciiCharacter> sort);
+
     @Query("SELECT COUNT(THIS) WHERE numericValue <= 97 AND numericValue >= 74")
     long twentyFour();
 
