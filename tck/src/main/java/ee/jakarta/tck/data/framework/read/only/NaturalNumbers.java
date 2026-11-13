@@ -19,6 +19,7 @@ import static jakarta.data.repository.By.ID;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Stream;
 
 import jakarta.data.Limit;
@@ -72,7 +73,11 @@ public interface NaturalNumbers extends BasicRepository<NaturalNumber, Long> {
 
     long countByIdBetween(long minimum, long maximum);
 
+    long countByIdIn(Set<Long> ids);
+
     boolean existsById(long id);
+
+    boolean existsByIdIn(Set<Long> ids);
 
     @Query("SELECT id WHERE id >= :inclusiveMin ORDER BY id ASC")
     List<Long> withIdEqualOrAbove(long inclusiveMin, Limit limit);
