@@ -17,6 +17,7 @@ package ee.jakarta.tck.data.framework.read.only;
 
 import static jakarta.data.repository.By.ID;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -60,6 +61,10 @@ public interface AsciiCharacters extends DataRepository<AsciiCharacter, Long> {
 
     @Query("ORDER BY id ASC")
     Stream<AsciiCharacter> alphabetic(Limit limit);
+
+    @Find
+    Optional<AsciiCharacter> byDecimalValue(
+            @By(_AsciiCharacter.ID) @Is long decimalValue);
 
     @Find(NaturalNumber.class)
     CardinalNumber cardinalNumberOf(@By(_NaturalNumber.ID) long value);
@@ -121,6 +126,17 @@ public interface AsciiCharacters extends DataRepository<AsciiCharacter, Long> {
     default Stream<AsciiCharacter> retrieveAlphaNumericIn(long minId, long maxId) {
         return findByIdBetween(minId, maxId, Sort.asc("id"))
                 .filter(c -> Character.isLetterOrDigit(c.getThisCharacter()));
+    }
+
+    default List<Character> retrieveAlphaNumerics(long min, long max) {
+        List<Character> found = new ArrayList<>();
+        for (long val = min; val <= max; val++) {
+            byDecimalValue(val)
+                   .map(AsciiCharacter::getThisCharacter)
+                   .filter(Character::isLetterOrDigit)
+                   .ifPresent(found::add);
+        }
+        return found;
     }
 
     @Query("SELECT thisCharacter ORDER BY id DESC")

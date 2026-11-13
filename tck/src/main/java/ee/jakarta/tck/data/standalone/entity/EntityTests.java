@@ -28,7 +28,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -217,19 +216,16 @@ public class EntityTests {
         assertTrue(characters.find('M', "4b").isEmpty());
     }
 
-    @Assertion(id = "133", strategy = "Use a default method from a repository interface where the default method invokes other repository methods.")
+    @Assertion(id = "133", strategy = """
+            Use a default method from a repository interface where the
+            default method invokes a constraint query Find method.
+            """)
     public void testDefaultMethod() {
-        try {
-            assertEquals(List.of('W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd'),
-                    characters.retrieveAlphaNumericIn(87L, 100L)
-                            .map(AsciiCharacter::getThisCharacter)
-                            .collect(Collectors.toList()));
-        } catch (UnsupportedOperationException x) {
-            if (type.capableOfBetween() &&
-                type.capableOfSingleSort()) {
-                throw x;
-            }
-        }
+        assertEquals(List.of('W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd'),
+                     characters.retrieveAlphaNumerics(87L, 100L));
+
+        // A similar test using method name queries is found in
+        // MethodNameQueryTest.testDefaultMethodInvokesMethodNameQuery
     }
 
     @Assertion(id = "133", strategy = "Use a repository method that returns a single entity value where no result is found. Expect EmptyResultException.")

@@ -284,6 +284,24 @@ public class MethodNameQueryTests {
     }
 
     @Assertion(id = "133", strategy = """
+            Use a default method from a repository interface where the
+            default method invokes a method name query method.
+            """)
+    public void testDefaultMethodInvokesMethodNameQuery() {
+        try {
+            assertEquals(List.of('W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd'),
+                         characters.retrieveAlphaNumericIn(87L, 100L)
+                                .map(AsciiCharacter::getThisCharacter)
+                                .toList());
+        } catch (UnsupportedOperationException x) {
+            if (type.capableOfBetween() &&
+                type.capableOfSingleSort()) {
+                throw x;
+            }
+        }
+    }
+
+    @Assertion(id = "133", strategy = """
             Use a repository method that includes the False keyword in
             its method name.
             """)
