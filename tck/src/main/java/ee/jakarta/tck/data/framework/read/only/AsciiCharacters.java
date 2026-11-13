@@ -28,6 +28,7 @@ import jakarta.data.Order;
 import jakarta.data.Sort;
 import jakarta.data.constraint.AtLeast;
 import jakarta.data.constraint.AtMost;
+import jakarta.data.constraint.In;
 import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
 import jakarta.data.repository.By;
@@ -65,6 +66,10 @@ public interface AsciiCharacters extends DataRepository<AsciiCharacter, Long> {
     @Find
     Optional<AsciiCharacter> byDecimalValue(
             @By(_AsciiCharacter.ID) @Is long decimalValue);
+
+    @Find
+    List<AsciiCharacter> byIds(
+            @By(_AsciiCharacter.ID) @Is(In.class) Set<Long> ids);
 
     @Find(NaturalNumber.class)
     CardinalNumber cardinalNumberOf(@By(_NaturalNumber.ID) long value);

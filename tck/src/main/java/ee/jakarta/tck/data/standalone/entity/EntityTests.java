@@ -375,16 +375,17 @@ public class EntityTests {
         assertEquals('T', found[2].getThisCharacter());
     }
 
-    @Assertion(id = "133", strategy = "Obtain multiple streams from the same List result of a repository method.")
+    @Assertion(id = "133", strategy = """
+            Obtain multiple streams from the same List result of a
+            repository method.
+            """)
     public void testStreamsFromList() {
         List<AsciiCharacter> chars;
         try {
-            chars = characters.findByNumericValueLessThanEqualAndNumericValueGreaterThanEqual(
-                    109, 101);
+            chars = characters.byIds(
+                    Set.of(101L, 102L, 103L, 104L, 105L, 106L, 107L, 108L, 109L));
         } catch (UnsupportedOperationException x) {
-            if (type.capableOfConstraintsOnNonIdAttributes() &&
-                type.capableOfGreaterThanEqual() &&
-                type.capableOfLessThanEqual()) {
+            if (type.capableOfIn()) {
                 throw x;
             } else {
                 return;
@@ -407,7 +408,7 @@ public class EntityTests {
         assertEquals(new TreeSet<>(Set.of("65", "66", "67", "68", "69", "6a", "6b", "6c", "6d")),
                      sorted);
 
-        List<AsciiCharacter> empty = characters.findByNumericValueLessThanEqualAndNumericValueGreaterThanEqual(115, 120);
+        List<AsciiCharacter> empty = characters.byIds(Set.of(200L, 201L));
         assertFalse(empty.iterator().hasNext());
         assertEquals(0L, empty.stream().count());
     }

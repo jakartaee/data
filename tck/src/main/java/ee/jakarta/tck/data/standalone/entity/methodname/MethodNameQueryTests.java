@@ -131,6 +131,35 @@ public class MethodNameQueryTests {
     }
 
     @Assertion(id = "133", strategy = """
+            Use a repository method that includes the And keyword in
+            its method name.
+            """)
+    public void testAndKeyword() {
+        List<AsciiCharacter> chars;
+        try {
+            chars = characters
+                    .findByNumericValueLessThanEqualAndNumericValueGreaterThanEqual(
+                        109,
+                        101);
+        } catch (UnsupportedOperationException x) {
+            if (type.capableOfAnd() &&
+                type.capableOfConstraintsOnNonIdAttributes() &&
+                type.capableOfGreaterThanEqual() &&
+                type.capableOfLessThanEqual()) {
+                throw x;
+            } else {
+                return;
+            }
+        }
+
+        assertEquals(List.of('e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm'),
+                     chars.stream()
+                          .map(AsciiCharacter::getThisCharacter)
+                          .sorted()
+                          .toList());
+    }
+
+    @Assertion(id = "133", strategy = """
             Use a repository that inherits from BasicRepository and
             adds a method that follows the Query by Method Name pattern.
             Use a built-in method and the additional method.
