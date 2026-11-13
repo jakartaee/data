@@ -269,6 +269,16 @@ public class MethodNameQueryTests {
     }
 
     @Assertion(id = "133", strategy = """
+            Use a repository method that includes the count keyword in
+            its method name and the primary entity class is inferred from
+            the lifecycle methods.
+            """)
+    public void testCountKeyword() {
+        assertEquals(4L,
+                     numbers.countByIdIn(Set.of(2L, 15L, 37L, -5L, 60L)));
+    }
+
+    @Assertion(id = "133", strategy = """
             Use a method name query methods on a repository that inherits from
             DataRepository and defines all of its own methods.
             """)
@@ -328,6 +338,19 @@ public class MethodNameQueryTests {
                 throw x;
             }
         }
+    }
+
+    @Assertion(id = "133", strategy = """
+            Use a repository method that includes the exists keyword in
+            its method name and the primary entity class is inferred from
+            the lifecycle methods.
+            """)
+    public void testExistsKeyword() {
+        assertEquals(true,
+                     numbers.existsByIdIn(Set.of(17L, 14L, -1L)));
+
+        assertEquals(false,
+                     numbers.existsByIdIn(Set.of(-10L, -12L, -14L)));
     }
 
     @Assertion(id = "133", strategy = """

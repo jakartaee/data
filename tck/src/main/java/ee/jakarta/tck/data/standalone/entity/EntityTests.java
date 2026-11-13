@@ -293,13 +293,20 @@ public class EntityTests {
         }
     }
 
-    @Assertion(id = "133", strategy = "Use count and exists methods where the primary entity class is inferred from the lifecycle methods.")
+    @Assertion(id = "133", strategy = """
+            Use a repository methods where the primary entity class is
+            inferred from the lifecycle methods.
+            """)
     public void testPrimaryEntityClassDeterminedByLifeCycleMethods() {
-        assertEquals(4L, customRepo.countByIdIn(Set.of(2L, 15L, 37L, -5L, 60L)));
+        // NaturalNumber is the entity class of the lifecycle methods of
+        // CustomRepository. Its data consists of the values 1 to 100.
+        assertEquals(Long.valueOf(57L),
+                     customRepo.idIfPresent(57L)
+                               .orElseThrow());
 
-        assertTrue(customRepo.existsByIdIn(Set.of(17L, 14L, -1L)));
-
-        assertFalse(customRepo.existsByIdIn(Set.of(-10L, -12L, -14L)));
+        assertEquals(false,
+                     customRepo.idIfPresent(-5L)
+                               .isPresent());
     }
 
     @Assertion(id = "133", strategy = "Use the StaticMetamodel to refer to entity attribute names in a type-safe manner.")
