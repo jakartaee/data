@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2023,2026 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -29,10 +29,12 @@ import jakarta.persistence.Version;
 @Entity
 public class Product {
     public static enum Department {
-        APPLIANCES, AUTOMOTIVE, CLOTHING, CRAFTS, ELECTRONICS, FURNITURE, GARDEN, GROCERY, OFFICE, PHARMACY, SPORTING_GOODS, TOOLS
+        APPLIANCES, AUTOMOTIVE, CLOTHING, CRAFTS, ELECTRONICS, FURNITURE,
+        GARDEN, GROCERY, OFFICE, PHARMACY, SPORTING_GOODS, TOOLS
     }
 
-    @ElementCollection(fetch = FetchType.EAGER)
+    // keep this set to its default of LAZY to test Fetching
+    @ElementCollection(fetch = FetchType.LAZY)
     private Set<Department> departments;
 
     @Basic(optional = false)

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Contributors to the Eclipse Foundation
+ * Copyright (c) 2023,2026 Contributors to the Eclipse Foundation
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -69,11 +69,16 @@ public class PersistenceTests {
         assertFalse(yarns.isEmpty(), "Commit should have persisted data");
         assertEquals(3, yarns.size());
 
-        Product woolYarn = yarns.stream().filter(p -> p.getProductNum().equals("TEST-PROD-100")).findFirst().orElse(null);
-        assertNotNull(woolYarn, "Result set did not contain the expected product");
+        Product woolYarn = yarns
+                .stream()
+                .filter(p -> p.getProductNum().equals("TEST-PROD-100"))
+                .findFirst()
+                .orElse(null);
+        assertNotNull(woolYarn, "Result did not contain the expected product");
         assertEquals("wool-yarn", woolYarn.getName());
         assertEquals(7.99, woolYarn.getPrice());
-        assertTrue(woolYarn.getDepartments().contains(Department.CRAFTS), "Result was did not have the correct department.");
+        assertEquals(true,
+                     woolYarn.getDepartments().contains(Department.CRAFTS));
     }
 
     @Assertion(id = "133", strategy = "Verify that data is not persisted to repository when a transaction is rolled back")

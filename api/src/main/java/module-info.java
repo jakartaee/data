@@ -32,6 +32,7 @@ import jakarta.data.repository.By;
 import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.DataRepository;
 import jakarta.data.repository.Delete;
+import jakarta.data.repository.Fetching;
 import jakarta.data.repository.Find;
 import jakarta.data.repository.First;
 import jakarta.data.repository.Insert;
@@ -1248,6 +1249,27 @@ import java.util.Set;
  *     @First
  *     @OrderBy("hourlyWage")
  *     Optional<Employee> withLowestWage(String jobRole);
+ * }
+ *
+ * <a id="EagerFetch">
+ * <h2>Eager fetching</h2>
+ * </a>
+ *
+ * <p>Some Jakarta Data implementations, including implementations backed by 
+ * Jakarta Persistence, allow an attribute of an entity to be fetched lazily from the 
+ * database. A lazily-fetched attribute which is never read within a given persistence 
+ * context is never fetched and its value cannot be obtained after the persistence
+ * context is destroyed.
+ *
+ * <p>Apply the {@link Fetching @Fetching} annotation to a repository
+ * {@link Find} or <a href="#QueryLanguageMethod">Query method</a> to
+ * explicitly request eager fetching of the respective entity attribute.
+ * For example,
+ *
+ * {@snippet lang="java":
+ *     @Find
+ *     @Fetching(_Employee.WAGEHISTORY)
+ *     Optional<Employee> includingWageHistory(@By(_Employee.ID) long badgeNum);
  * }
  *
  * <a id="Projections">
