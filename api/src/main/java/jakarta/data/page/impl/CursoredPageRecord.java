@@ -50,19 +50,21 @@ import jakarta.annotation.Nullable;
  *                            previous page of results
  * @param <T>                 The type of elements on the page
  */
-public record CursoredPageRecord<T>
-        (@Nonnull List<T> content, @Nonnull List<PageRequest.Cursor> cursors, long totalElements,
-         @Nonnull PageRequest pageRequest,
-         @Nullable PageRequest nextPageRequest, @Nullable PageRequest previousPageRequest)
+public record CursoredPageRecord<T>(@Nonnull List<T> content,
+                                    @Nonnull List<PageRequest.Cursor> cursors,
+                                    long totalElements,
+                                    @Nonnull PageRequest pageRequest,
+                                    @Nullable PageRequest nextPageRequest,
+                                    @Nullable PageRequest previousPageRequest)
         implements CursoredPage<T> {
 
     // Disallow mutation of PageRequest and List fields after creation
     public CursoredPageRecord(@Nonnull List<T> content,
-                      @Nonnull List<PageRequest.Cursor> cursors,
-                      long totalElements,
-                      @Nonnull PageRequest pageRequest,
-                      @Nullable PageRequest nextPageRequest,
-                      @Nullable PageRequest previousPageRequest) {
+                              @Nonnull List<PageRequest.Cursor> cursors,
+                              long totalElements,
+                              @Nonnull PageRequest pageRequest,
+                              @Nullable PageRequest nextPageRequest,
+                              @Nullable PageRequest previousPageRequest) {
         this.content = List.copyOf(content);
         this.cursors = List.copyOf(cursors);
         this.totalElements = totalElements;
@@ -83,9 +85,11 @@ public record CursoredPageRecord<T>
      * @param firstPage     True, if this is the first page of results
      * @param lastPage      True, if this is the last page of results
      */
-    public CursoredPageRecord
-    (@Nonnull List<T> content, @Nonnull List<PageRequest.Cursor> cursors, long totalElements, @Nonnull PageRequest pageRequest,
-     boolean firstPage, boolean lastPage) {
+    public CursoredPageRecord(@Nonnull List<T> content,
+                              @Nonnull List<PageRequest.Cursor> cursors,
+                              long totalElements,
+                              @Nonnull PageRequest pageRequest,
+                              boolean firstPage, boolean lastPage) {
         this(content, cursors, totalElements, pageRequest,
                 lastPage ? null : PageRequest.afterCursor(
                         cursors.get(cursors.size() - 1),
@@ -126,23 +130,27 @@ public record CursoredPageRecord<T>
     @Override
     @Nonnull
     public PageRequest nextPageRequest() {
-        if (nextPageRequest == null)
+        if (nextPageRequest == null) {
             throw new NoSuchElementException();
-        if (cursors.isEmpty())
+        } else if (cursors.isEmpty()) {
             throw new UnsupportedOperationException(
                     Messages.get("015.cursor.uncomputable"));
-        return nextPageRequest;
+        } else {
+            return nextPageRequest;
+        }
     }
 
     @Override
     @Nonnull
     public PageRequest previousPageRequest() {
-        if (previousPageRequest == null)
+        if (previousPageRequest == null) {
             throw new NoSuchElementException();
-        if (cursors.isEmpty())
+        } else if (cursors.isEmpty()) {
             throw new UnsupportedOperationException(
                     Messages.get("015.cursor.uncomputable"));
-        return previousPageRequest;
+        } else {
+            return previousPageRequest;
+        }
     }
 
     @Override
@@ -154,10 +162,12 @@ public record CursoredPageRecord<T>
     @Override
     @Nonnull
     public PageRequest.Cursor cursor(int index) {
-        if (cursors.isEmpty())
+        if (cursors.isEmpty()) {
             throw new UnsupportedOperationException(
                     Messages.get("015.cursor.uncomputable"));
-        return cursors.get(index);
+        } else {
+            return cursors.get(index);
+        }
     }
 
     @Override
@@ -169,16 +179,18 @@ public record CursoredPageRecord<T>
     public long totalElements() {
         if (totalElements < 0) {
             throw new IllegalStateException(Messages.get("010.unknown.total"));
+        } else {
+            return totalElements;
         }
-        return totalElements;
     }
 
     @Override
     public long totalPages() {
         if (totalElements < 0) {
             throw new IllegalStateException(Messages.get("010.unknown.total"));
+        } else {
+            int size = pageRequest.size();
+            return (totalElements + size - 1) / size;
         }
-        int size = pageRequest.size();
-        return (totalElements + size - 1) / size;
     }
 }
