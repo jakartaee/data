@@ -1255,10 +1255,11 @@ import java.util.Set;
  * <h2>Eager fetching</h2>
  * </a>
  *
- * <p>Some entity models, such as Jakarta Persistence, default to lazily
- * fetching some entity attributes (such as associations and collections),
- * causing the entity attribute to be inaccessible outside of a persistence
- * context.
+ * <p>Some Jakarta Data implementations, including implementations backed by 
+ * Jakarta Persistence, allow an attribute of an entity to be fetched lazily from the 
+ * database. A lazily-fetched attribute which is never read within a given persistence 
+ * context is never fetched and its value cannot be obtained after the persistence
+ * context is destroyed.
  *
  * <p>Apply the {@link Fetching @Fetching} annotation to a repository
  * {@link Find} or <a href="#QueryLanguageMethod">Query method</a> to
