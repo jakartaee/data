@@ -75,7 +75,8 @@ public record CursoredPageRecord<T>(@Nonnull List<T> content,
 
     /**
      * @param content       The page content, that is, the query results, in
-     *                      order
+     *                      order. If the content is empty, no next or previous
+     *                      page request is computed.
      * @param cursors       A list of {@link PageRequest.Cursor} instances for
      *                      result, in order
      * @param totalElements The total number of elements across all pages that
@@ -91,12 +92,12 @@ public record CursoredPageRecord<T>(@Nonnull List<T> content,
                               @Nonnull PageRequest pageRequest,
                               boolean firstPage, boolean lastPage) {
         this(content, cursors, totalElements, pageRequest,
-                lastPage ? null : PageRequest.afterCursor(
+                lastPage || content.isEmpty() ? null : PageRequest.afterCursor(
                         cursors.get(cursors.size() - 1),
                         pageRequest.pageNumber() + 1,
                         pageRequest.size(),
                         pageRequest.requestTotal()),
-                firstPage ? null : PageRequest.beforeCursor(
+                firstPage || content.isEmpty() ? null : PageRequest.beforeCursor(
                         cursors.get(0),
                         pageRequest.pageNumber() == 1
                                 ? 1
