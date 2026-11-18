@@ -25,7 +25,6 @@ public class Country {
     @jakarta.persistence.Column(nullable = false)
     private long area; // square kilometers
 
-    @jakarta.persistence.Column(nullable = false)
     @jakarta.persistence.Embedded
     @jakarta.nosql.Column
     private City capital;
