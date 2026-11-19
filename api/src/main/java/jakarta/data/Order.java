@@ -111,14 +111,19 @@ public class Order<T> implements Iterable<Sort<? super T>> {
      * <p>Defines a list of {@link Sort} criteria, ordered from highest
      * precedence to lowest precedence. The instance returned by this method
      * keeps a {@link List#copyOf(java.util.Collection) copy} of the supplied
-     * {@code List} rather than the original if the list is modifiable.</p>
+     * {@code List} rather than the original if the list is modifiable.
+     *
+     * <p>An empty list indicates that sorting is not requested, which is
+     * valid for some repository methods. However, note that any repository
+     * method that performs {@linkplain jakarta.data.page pagination}
+     * requires sorting that deterministcally orders query results.
      *
      * @param <T>   entity class of the attributes that are used as sort
      *              criteria.
      * @param sorts sort criteria to use, ordered from highest precedence to
      *              lowest precedence.
      * @return a new instance indicating the order of precedence for sort
-     * criteria. This method never returns {@code null}.
+     *         criteria. This method never returns {@code null}.
      */
     @Nonnull
     public static <T> Order<T> by(@Nonnull List<? extends Sort<? super T>> sorts) {

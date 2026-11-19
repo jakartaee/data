@@ -73,7 +73,7 @@ public class Restrict {
      * @param restrictions one or more restrictions obtained from a method of
      *                     {@code Restrict} or from a static metamodel
      *                     {@link Attribute} subtype.
-     * @return
+     * @return the composite restriction
      * @throws IllegalArgumentException if the supplied restrictions array is
      *                                  empty or {@code null}.
      * @throws NullPointerException     if the supplied restrictions array
@@ -93,7 +93,7 @@ public class Restrict {
      * supplied restrictions are satisfied. The order of the restrictions is
      * preserved in the composite restriction, which keeps a
      * {@link List#copyOf(java.util.Collection) copy} of the supplied
-     * {@code List} rather than the original if the list is modifiable.</p>
+     * {@code List} rather than the original if the list is modifiable.
      *
      * <p>For example,
      * {@snippet lang="java":
@@ -110,22 +110,33 @@ public class Restrict {
      *                      Order.by(sorts));
      * }
      *
+     * <p>An empty list of restrictions is considered to be satisfied
+     * and provides no additional filtering to the query represented
+     * by the repository method.
+     *
      * @param <T>          entity type.
-     * @param restrictions one or more restrictions obtained from a method of
+     * @param restrictions zero or more restrictions obtained from a method of
      *                     {@code Restrict} or from a static metamodel
      *                     {@link Attribute} subtype.
-     * @return
+     * @return the composite restriction
      * @throws IllegalArgumentException if the supplied restrictions list is
-     *                                  empty or {@code null}.
+     *                                  {@code null}.
      * @throws NullPointerException     if the supplied restrictions list
      *                                  includes a {@code null} value.
      */
     @Nonnull
     public static <T> Restriction<T> all(
             @Nonnull List<? extends Restriction<? super T>> restrictions) {
-        return new CompositeRestrictionRecord<>(
-                CompositeRestriction.Type.ALL,
-                List.copyOf(restrictions));
+        if (restrictions == null) {
+            throw new IllegalArgumentException(
+                    Messages.get("001.arg.required", "restrictions"));
+        }
+
+        return restrictions.isEmpty()
+                ? unrestricted()
+                : new CompositeRestrictionRecord<>(
+                        CompositeRestriction.Type.ALL,
+                        List.copyOf(restrictions));
     }
 
     /**
@@ -145,7 +156,7 @@ public class Restrict {
      * @param restrictions one or more restrictions obtained from a method of
      *                     {@code Restrict} or from a static metamodel
      *                     {@link Attribute} subtype.
-     * @return
+     * @return the composite restriction
      * @throws IllegalArgumentException if the supplied restrictions array is
      *                                  empty or {@code null}.
      * @throws NullPointerException     if the supplied restrictions array
@@ -191,7 +202,7 @@ public class Restrict {
      * @param restrictions one or more restrictions obtained from a method of
      *                     {@code Restrict} or from a static metamodel
      *                     {@link Attribute} subtype.
-     * @return
+     * @return the composite restriction
      * @throws IllegalArgumentException if the supplied restrictions array is
      *                                  empty or {@code null}.
      * @throws NullPointerException     if the supplied restrictions array
