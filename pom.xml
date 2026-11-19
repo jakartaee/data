@@ -124,7 +124,7 @@
         <sigtest.version>2.7</sigtest.version>
 
         <sonar.jacoco.reportPath>../target/jacoco.exec</sonar.jacoco.reportPath>
-        <sonar.maven.version>5.8.0.7211</sonar.maven.version>
+        <sonar.maven.version>5.9.0.7382</sonar.maven.version>
 
         <nexus.staging.repository>data-maven2-staging</nexus.staging.repository>
 
