@@ -28,7 +28,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -54,9 +53,8 @@ import ee.jakarta.tck.data.framework.read.only.NaturalNumber.NumberType;
 import ee.jakarta.tck.data.framework.utilities.DatabaseType;
 import ee.jakarta.tck.data.framework.utilities.TestProperty;
 import ee.jakarta.tck.data.framework.utilities.TestPropertyUtility;
-import jakarta.data.Limit;
-import jakarta.data.Order;
 import jakarta.data.Sort;
+import jakarta.data.constraint.In;
 import jakarta.data.exceptions.EmptyResultException;
 import jakarta.data.exceptions.NonUniqueResultException;
 import jakarta.inject.Inject;
@@ -103,58 +101,6 @@ public class EntityTests {
     }
 
     private final DatabaseType type = TestProperty.databaseType.getDatabaseType();
-
-    @Assertion(id = "136", strategy = "Ensures that the prepopulation step for readonly entities was successful")
-    public void ensureNaturalNumberPrepopulation() {
-        assertEquals(100L, numbers.countAll());
-        assertTrue(numbers.findById(0L).isEmpty(), "Zero should not have been in the set of natural numbers.");
-        assertFalse(numbers.findById(10L).get().isOdd());
-    }
-
-    @Assertion(id = "136", strategy = "Ensures that multiple readonly entities will be prepopulated before testing")
-    public void ensureCharacterPrepopulation() {
-        try {
-            assertEquals(127L, characters.countByHexadecimalNotNull());
-        } catch (UnsupportedOperationException x) {
-            if (type.capableOfConstraintsOnNonIdAttributes() &&
-                type.capableOfCount() &&
-                type.capableOfNotNull()) {
-                throw x;
-            } else {
-                return;
-            }
-        }
-
-        assertEquals('0', characters.findByNumericValue(48).get().getThisCharacter());
-        assertTrue(characters.findByNumericValue(1).get().isControl());
-    }
-
-    @Assertion(id = "133",
-            strategy = "Use a repository that inherits from BasicRepository and adds some methods of its own. " +
-                    "Use both built-in methods and the additional methods.")
-    public void testBasicRepository() {
-
-        // custom method from NaturalNumbers:
-        try {
-            Stream<NaturalNumber> found = numbers.findByIdBetweenOrderByNumTypeOrdinalAsc(
-                    50L, 59L,
-                    Order.by(Sort.asc("id")));
-            List<Long> list = found
-                    .map(NaturalNumber::getId)
-                    .collect(Collectors.toList());
-            assertEquals(List.of(53L, 59L, // first 2 must be primes
-                            50L, 51L, 52L, 54L, 55L, 56L, 57L, 58L), // the remaining 8 are composite numbers
-                    list);
-        } catch (UnsupportedOperationException x) {
-            if (type.capableOfBetween() &&
-                type.capableOfMultipleSort()) {
-                throw x;
-            }
-        }
-
-        // built-in method from BasicRepository:
-        assertEquals(60L, numbers.findById(60L).orElseThrow().getId());
-    }
 
     @Assertion(id = "133", strategy = "Use a repository that inherits from BasicRepository and defines no additional methods of its own. Use all of the built-in methods.")
     public void testBasicRepositoryMethods() {
@@ -271,108 +217,33 @@ public class EntityTests {
         assertTrue(characters.find('M', "4b").isEmpty());
     }
 
-    @Assertion(id = "133", strategy = "Use a repository that inherits some if its methods from another interface.")
-    public void testCommonInterfaceQueries() {
-
-        try {
-            assertEquals(4L, numbers.countByIdBetween(87L, 90L));
-
-            assertEquals(5L, characters.countByIdBetween(86L, 90L));
-        } catch (UnsupportedOperationException x) {
-            if (type.capableOfBetween() &&
-                type.capableOfCount()) {
-                throw x;
-            }
-        }
-
-        assertTrue(numbers.existsById(73L));
-
-        assertTrue(characters.existsById(74L));
-
-        assertFalse(numbers.existsById(-1L));
-
-        assertFalse(characters.existsById(-2L));
-
-        try {
-            assertEquals(
-                    List.of(68L, 69L, 70L, 71L, 72L),
-                    characters.withIdEqualOrAbove(68L, Limit.of(5)));
-        } catch (UnsupportedOperationException x) {
-            if (type.capableOfGreaterThanEqual()) {
-                throw x;
-            } else {
-                return;
-            }
-        }
-
-        assertEquals(List.of(71L, 72L, 73L, 74L, 75L),
-                numbers.withIdEqualOrAbove(71L, Limit.of(5)));
-    }
-
-    @Assertion(id = "133", strategy = "Use a repository that inherits from DataRepository and defines all of its own methods.")
-    public void testDataRepository() {
-        try {
-            AsciiCharacter del = characters.findByIsControlTrueAndNumericValueBetween(33, 127);
-            assertEquals(127, del.getNumericValue());
-            assertEquals("7f", del.getHexadecimal());
-            assertTrue(del.isControl());
-        } catch (UnsupportedOperationException x) {
-            if (type.capableOfAnd() &&
-                type.capableOfBetween() &&
-                type.capableOfConstraintsOnNonIdAttributes()) {
-                throw x;
-            }
-        }
-
-        try {
-            AsciiCharacter j = characters.findByHexadecimalIgnoreCase("6A");
-            assertEquals("6a", j.getHexadecimal());
-            assertEquals('j', j.getThisCharacter());
-            assertEquals(106, j.getNumericValue());
-            assertFalse(j.isControl());
-        } catch (UnsupportedOperationException x) {
-            if (type.capableOfConstraintsOnNonIdAttributes() &&
-                type.capableOfUpper()) {
-                throw x;
-            }
-        }
-
-        AsciiCharacter d = characters.findByNumericValue(100).orElseThrow();
-        assertEquals(100, d.getNumericValue());
-        assertEquals('d', d.getThisCharacter());
-        assertEquals("64", d.getHexadecimal());
-        assertFalse(d.isControl());
-
-        assertTrue(characters.existsByThisCharacter('D'));
-    }
-
-    @Assertion(id = "133", strategy = "Use a default method from a repository interface where the default method invokes other repository methods.")
+    @Assertion(id = "133", strategy = """
+            Use a default method from a repository interface where the
+            default method invokes a constraint query Find method.
+            """)
     public void testDefaultMethod() {
-        try {
-            assertEquals(List.of('W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd'),
-                    characters.retrieveAlphaNumericIn(87L, 100L)
-                            .map(AsciiCharacter::getThisCharacter)
-                            .collect(Collectors.toList()));
-        } catch (UnsupportedOperationException x) {
-            if (type.capableOfBetween() &&
-                type.capableOfSingleSort()) {
-                throw x;
-            }
-        }
+        assertEquals(List.of('W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd'),
+                     characters.retrieveAlphaNumerics(87L, 100L));
+
+        // A similar test using method name queries is found in
+        // MethodNameQueryTest.testDefaultMethodInvokesMethodNameQuery
     }
 
-    @Assertion(id = "133", strategy = "Use a repository method that returns a single entity value where no result is found. Expect EmptyResultException.")
+    @Assertion(id = "133", strategy = """
+            Use a repository method that returns a single entity value
+            where no result is found. Expect EmptyResultException.
+            """)
     public void testEmptyResultException() {
         try {
-            AsciiCharacter ch = characters.findByHexadecimalIgnoreCase("2g");
-            fail("Unexpected result of findByHexadecimalIgnoreCase(2g): " + ch.getHexadecimal());
+            AsciiCharacter ch = characters.find('\u00FF'); // data has only 1 to 127
+            fail("Unexpected result of find('\u00FF'): " + ch.getHexadecimal());
         } catch (EmptyResultException x) {
-            log.info("testEmptyResultException expected to catch exception " + x + ". Printing its stack trace:");
+            log.info("testEmptyResultException expected to catch exception " + x +
+                     ". Printing its stack trace:");
             x.printStackTrace(System.out);
             // test passes
         } catch (UnsupportedOperationException x) {
-            if (type.capableOfConstraintsOnNonIdAttributes() &&
-                type.capableOfUpper()) {
+            if (type.capableOfConstraintsOnNonIdAttributes()) {
                 throw x;
             }
         }
@@ -406,54 +277,41 @@ public class EntityTests {
         assertFalse(opt.isPresent());
     }
 
-    @Assertion(id = "133",
-            strategy = "Use a repository method that ought to return a single entity value but where multiple results are found." +
-                    "Expect NonUniqueResultException.")
+    @Assertion(id = "133", strategy = """
+            Use a repository method that ought to return a single entity value
+            but where multiple results are found. Expect NonUniqueResultException.")
+            """)
     public void testNonUniqueResultException() {
         try {
-            AsciiCharacter ch = characters.findByIsControlTrueAndNumericValueBetween(10, 15);
-            fail("Unexpected result of findByIsControlTrueAndNumericValueBetween(10, 15): " + ch.getHexadecimal());
+            AsciiCharacter ch = characters.eitherOf(In.values(12L, 13L));
+            fail("Unexpected result of eitherOf(In.values(12L, 13L)): " +
+                 ch.getHexadecimal());
         } catch (NonUniqueResultException x) {
-            log.info("testNonUniqueResultException expected to catch exception " + x + ". Printing its stack trace:");
+            log.info("testNonUniqueResultException expected to catch exception " +
+                     x + ". Printing its stack trace:");
             x.printStackTrace(System.out);
             // test passes
         } catch (UnsupportedOperationException x) {
-            if (type.capableOfAnd() &&
-                type.capableOfBetween() &&
-                type.capableOfConstraintsOnNonIdAttributes()) {
+            if (type.capableOfIn()) {
                 throw x;
             }
         }
     }
 
-    @Assertion(id = "133", strategy = "Use count and exists methods where the primary entity class is inferred from the lifecycle methods.")
+    @Assertion(id = "133", strategy = """
+            Use a repository methods where the primary entity class is
+            inferred from the lifecycle methods.
+            """)
     public void testPrimaryEntityClassDeterminedByLifeCycleMethods() {
-        assertEquals(4L, customRepo.countByIdIn(Set.of(2L, 15L, 37L, -5L, 60L)));
+        // NaturalNumber is the entity class of the lifecycle methods of
+        // CustomRepository. Its data consists of the values 1 to 100.
+        assertEquals(Long.valueOf(57L),
+                     customRepo.idIfPresent(57L)
+                               .orElseThrow());
 
-        assertTrue(customRepo.existsByIdIn(Set.of(17L, 14L, -1L)));
-
-        assertFalse(customRepo.existsByIdIn(Set.of(-10L, -12L, -14L)));
-    }
-
-    @Assertion(id = "133", strategy = "Use a repository method that returns a single entity value where a single result is found.")
-    public void testSingleEntity() {
-        AsciiCharacter ch;
-        try {
-            ch = characters.findByHexadecimalIgnoreCase("2B");
-        } catch (UnsupportedOperationException x) {
-            if (type.capableOfConstraintsOnNonIdAttributes() &&
-                type.capableOfLower() &&
-                type.capableOfUpper()) {
-                throw x;
-            } else {
-                return;
-            }
-        }
-
-        assertEquals('+', ch.getThisCharacter());
-        assertEquals("2b", ch.getHexadecimal());
-        assertEquals(43, ch.getNumericValue());
-        assertFalse(ch.isControl());
+        assertEquals(false,
+                     customRepo.idIfPresent(-5L)
+                               .isPresent());
     }
 
     @Assertion(id = "133", strategy = "Use the StaticMetamodel to refer to entity attribute names in a type-safe manner.")
@@ -474,21 +332,30 @@ public class EntityTests {
         assertEquals("thisCharacter", _AsciiCharacter.thisCharacter.name());
     }
 
-    @Assertion(id = "133", strategy = "Use the StaticMetamodel to obtain descending Sorts for an entity attribute a type-safe manner.")
+    @Assertion(id = "133", strategy = """
+            Use the StaticMetamodel to obtain descending Sorts for an
+            entity attribute in a type-safe manner. Use one of the Sort
+            instances in a repository method query.
+            """)
     public void testStaticMetamodelDescendingSorts() {
-        assertEquals(Sort.desc(_AsciiChar.ID), _AsciiChar.id.desc());
-        assertEquals(Sort.descIgnoreCase("hexadecimal"), _AsciiChar.hexadecimal.descIgnoreCase());
-        assertEquals(Sort.descIgnoreCase("thisCharacter"), _AsciiChar.thisCharacter.descIgnoreCase());
+        assertEquals(Sort.desc(_AsciiChar.ID),
+                               _AsciiChar.id.desc());
+        assertEquals(Sort.descIgnoreCase("hexadecimal"),
+                     _AsciiChar.hexadecimal.descIgnoreCase());
+        assertEquals(Sort.descIgnoreCase("thisCharacter"),
+                     _AsciiChar.thisCharacter.descIgnoreCase());
 
         Sort<AsciiCharacter> sort = _AsciiChar.numericValue.desc();
         AsciiCharacter[] found;
         try {
-            found = characters.findFirst3ByNumericValueGreaterThanEqualAndHexadecimalEndsWith(
-                    30, "1", sort);
+            found = characters.sorted(In.values(-3L, // not found
+                                                97L, // 'a'
+                                                113L, // 'q'
+                                                1003L, // not found
+                                                81L), // 'Q'
+                                      sort);
         } catch (UnsupportedOperationException x) {
-            if (type.capableOfConstraintsOnNonIdAttributes() &&
-                type.capableOfGreaterThanEqual() &&
-                type.capableOfLike() &&
+            if (type.capableOfIn() &&
                 type.capableOfSingleSort()) {
                 throw x;
             } else {
@@ -501,22 +368,30 @@ public class EntityTests {
         assertEquals('Q', found[2].getThisCharacter());
     }
 
-    @Assertion(id = "133", strategy = "Use a pre-generated StaticMetamodel to obtain descending Sorts for an entity attribute a type-safe manner.")
+    @Assertion(id = "133", strategy = """
+            Use a pre-generated StaticMetamodel to obtain descending Sorts
+            for an entity attribute in a type-safe manner.
+            """)
     public void testStaticMetamodelDescendingSortsPreGenerated() {
-        assertEquals(Sort.desc(_AsciiCharacter.ID), _AsciiCharacter.id.desc());
-        assertEquals(Sort.desc("isControl"), _AsciiCharacter.isControl.desc());
-        assertEquals(Sort.descIgnoreCase("hexadecimal"), _AsciiCharacter.hexadecimal.descIgnoreCase());
-        assertEquals(Sort.descIgnoreCase("thisCharacter"), _AsciiCharacter.thisCharacter.descIgnoreCase());
+        assertEquals(Sort.desc(_AsciiCharacter.ID),
+                     _AsciiCharacter.id.desc());
+        assertEquals(Sort.desc("isControl"),
+                     _AsciiCharacter.isControl.desc());
+        assertEquals(Sort.descIgnoreCase("hexadecimal"),
+                     _AsciiCharacter.hexadecimal.descIgnoreCase());
+        assertEquals(Sort.descIgnoreCase("thisCharacter"),
+                     _AsciiCharacter.thisCharacter.descIgnoreCase());
 
         Sort<AsciiCharacter> sort = _AsciiCharacter.numericValue.desc();
         AsciiCharacter[] found;
         try {
-            found = characters.findFirst3ByNumericValueGreaterThanEqualAndHexadecimalEndsWith(
-                    30, "4", sort);
+            found = characters.sorted(In.values(100L, // 'd'
+                                                116L, // 't'
+                                                84L, // 'T'
+                                                -4L), // not found
+                                      sort);
         } catch (UnsupportedOperationException x) {
-            if (type.capableOfConstraintsOnNonIdAttributes() &&
-                type.capableOfGreaterThanEqual() &&
-                type.capableOfLike() &&
+            if (type.capableOfIn() &&
                 type.capableOfSingleSort()) {
                 throw x;
             } else {
@@ -529,16 +404,17 @@ public class EntityTests {
         assertEquals('T', found[2].getThisCharacter());
     }
 
-    @Assertion(id = "133", strategy = "Obtain multiple streams from the same List result of a repository method.")
+    @Assertion(id = "133", strategy = """
+            Obtain multiple streams from the same List result of a
+            repository method.
+            """)
     public void testStreamsFromList() {
         List<AsciiCharacter> chars;
         try {
-            chars = characters.findByNumericValueLessThanEqualAndNumericValueGreaterThanEqual(
-                    109, 101);
+            chars = characters.byIds(
+                    Set.of(101L, 102L, 103L, 104L, 105L, 106L, 107L, 108L, 109L));
         } catch (UnsupportedOperationException x) {
-            if (type.capableOfConstraintsOnNonIdAttributes() &&
-                type.capableOfGreaterThanEqual() &&
-                type.capableOfLessThanEqual()) {
+            if (type.capableOfIn()) {
                 throw x;
             } else {
                 return;
@@ -561,7 +437,7 @@ public class EntityTests {
         assertEquals(new TreeSet<>(Set.of("65", "66", "67", "68", "69", "6a", "6b", "6c", "6d")),
                      sorted);
 
-        List<AsciiCharacter> empty = characters.findByNumericValueLessThanEqualAndNumericValueGreaterThanEqual(115, 120);
+        List<AsciiCharacter> empty = characters.byIds(Set.of(200L, 201L));
         assertFalse(empty.iterator().hasNext());
         assertEquals(0L, empty.stream().count());
     }

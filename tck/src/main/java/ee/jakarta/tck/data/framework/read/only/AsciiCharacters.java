@@ -17,6 +17,7 @@ package ee.jakarta.tck.data.framework.read.only;
 
 import static jakarta.data.repository.By.ID;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -27,6 +28,7 @@ import jakarta.data.Order;
 import jakarta.data.Sort;
 import jakarta.data.constraint.AtLeast;
 import jakarta.data.constraint.AtMost;
+import jakarta.data.constraint.In;
 import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
 import jakarta.data.repository.By;
@@ -61,6 +63,14 @@ public interface AsciiCharacters extends DataRepository<AsciiCharacter, Long> {
     @Query("ORDER BY id ASC")
     Stream<AsciiCharacter> alphabetic(Limit limit);
 
+    @Find
+    Optional<AsciiCharacter> byDecimalValue(
+            @By(_AsciiCharacter.ID) @Is long decimalValue);
+
+    @Find
+    List<AsciiCharacter> byIds(
+            @By(_AsciiCharacter.ID) @Is(In.class) Set<Long> ids);
+
     @Find(NaturalNumber.class)
     CardinalNumber cardinalNumberOf(@By(_NaturalNumber.ID) long value);
 
@@ -68,6 +78,10 @@ public interface AsciiCharacters extends DataRepository<AsciiCharacter, Long> {
     Stream<CardinalNumber> cardinalNumberStream(long floorOfSquareRoot);
 
     long countByHexadecimalNotNull();
+
+    @Find
+    AsciiCharacter eitherOf(
+            @By(_AsciiCharacter.ID) In<Long> ids);
 
     boolean existsByThisCharacter(char ch);
 
@@ -123,11 +137,27 @@ public interface AsciiCharacters extends DataRepository<AsciiCharacter, Long> {
                 .filter(c -> Character.isLetterOrDigit(c.getThisCharacter()));
     }
 
+    default List<Character> retrieveAlphaNumerics(long min, long max) {
+        List<Character> found = new ArrayList<>();
+        for (long val = min; val <= max; val++) {
+            byDecimalValue(val)
+                   .map(AsciiCharacter::getThisCharacter)
+                   .filter(Character::isLetterOrDigit)
+                   .ifPresent(found::add);
+        }
+        return found;
+    }
+
     @Query("SELECT thisCharacter ORDER BY id DESC")
     Character[] reverseAlphabetic(Limit limit);
 
     @Save
     List<AsciiCharacter> saveAll(List<AsciiCharacter> characters);
+
+    @Find
+    AsciiCharacter[] sorted(
+            @By(_NaturalNumber.ID) In<Long> ids,
+            Sort<AsciiCharacter> sort);
 
     @Query("SELECT COUNT(THIS) WHERE numericValue <= 97 AND numericValue >= 74")
     long twentyFour();
