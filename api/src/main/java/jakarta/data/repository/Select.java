@@ -51,7 +51,8 @@ import java.lang.annotation.Target;
  *
  * <p>This annotation must not be used in other locations; in particular,
  * it must not be used on repository methods annotated
- * {@code jakarta.persistence.query.NativeQuery}.</p>
+ * {@link jakarta.persistence.query.NativeQuery} or
+ * {@code jakarta.persistence.query.NativeStatement}.
  *
  * <p>Sort criteria for a repository method that returns a projection
  * can include any of the returned entity attributes that are of sortable type.
@@ -60,6 +61,7 @@ import java.lang.annotation.Target;
  * @see Find
  * @since 1.1
  */
+// TODO after Persistence milestone, switch @code to @link
 @Documented
 @Repeatable(Select.List.class)
 @Retention(RetentionPolicy.RUNTIME)

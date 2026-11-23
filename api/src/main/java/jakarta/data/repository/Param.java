@@ -47,10 +47,12 @@ import java.lang.annotation.Target;
  * runtime.</p>
  *
  * <p>Named parameters are not supported on repository methods annotated
- * {@code jakarta.persistence.query.NativeQuery}.</p>
+ * {@link jakarta.persistence.query.NativeQuery} or
+ * {@code jakarta.persistence.query.NativeStatement}.
  *
  * @see Query
  */
+// TODO after Persistence milestone, switch @code to @link above
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.PARAMETER)
 public @interface Param {
