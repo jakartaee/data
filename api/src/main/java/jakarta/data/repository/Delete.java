@@ -152,7 +152,7 @@ import jakarta.data.restrict.Restriction;
  *
  * <p>If the Jakarta Data provider is backed by a Jakarta Persistence provider,
  * an automatic query method annotated {@code Delete} can also be annotated
- * {@link jakarta.persistence.query.QueryOptions} to supply additional
+ * {@code jakarta.persistence.query.StatementOptions} to supply additional
  * query options that are specific to Jakarta Persistence.</p>
  *
  * <p>Annotations such as {@code @Find}, {@code @Query}, {@code @Insert},
@@ -163,6 +163,7 @@ import jakarta.data.restrict.Restriction;
  *
  * @see By
  */
+// TODO after Persistence milestone, switch @code to @link
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
