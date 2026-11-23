@@ -17,6 +17,7 @@
  */
 package jakarta.data.repository;
 
+import jakarta.annotation.sql.DataSourceDefinition;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManagerFactory;
 
@@ -126,7 +127,7 @@ public @interface Repository {
      *  <ul>
      *   <li>the JNDI name of a {@link javax.sql.DataSource}
      *   </li>
-     *   <li>the name of a {@code jakarta.annotation.sql.DataSourceDefinition}
+     *   <li>the name of a {@link DataSourceDefinition}
      *   </li>
      *   <li>the JNDI name of a resource reference to a {@code DataSource}
      *   </li>
