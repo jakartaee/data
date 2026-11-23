@@ -64,6 +64,8 @@ public interface Catalog extends DataRepository<Product, String> {
             """)
     int deleteIfNamed(String productName, long version);
 
+    // TODO must switch to @JakartaStatement after a milestone release of the
+    // Jakarta Persistence API with JakartaStatement is available
     @JakartaQuery("""
             DELETE FROM Product p
              WHERE p.productNum LIKE ?1
@@ -125,6 +127,8 @@ public interface Catalog extends DataRepository<Product, String> {
     @Delete
     void removeMultiple(Product... products);
 
+    // TODO must switch to @NativeStatement after a milestone release of the
+    // Jakarta Persistence API in which NativeStatement is available
     @NativeQuery("""
             UPDATE Product
                SET price = ?

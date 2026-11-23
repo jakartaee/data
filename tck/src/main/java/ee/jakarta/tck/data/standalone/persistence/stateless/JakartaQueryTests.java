@@ -49,7 +49,7 @@ public class JakartaQueryTests {
     Catalog catalog;
 
     @Assertion(id = "1218", strategy = """
-            Use a repository method annotated JakartaQuery to run a JPQL
+            Use a repository method annotated JakartaStatement to run a JPQL
             DELETE operation.
             """)
     public void testJPQLDelete() {
