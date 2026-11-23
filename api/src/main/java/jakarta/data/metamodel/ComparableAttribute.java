@@ -17,10 +17,16 @@
  */
 package jakarta.data.metamodel;
 
+import jakarta.annotation.Nonnull;
 import jakarta.data.Sort;
 import jakarta.data.expression.ComparableExpression;
 import jakarta.data.messages.Messages;
-import jakarta.annotation.Nonnull;
+import jakarta.persistence.Enumerated;
+
+import java.math.BigInteger;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.util.UUID;
 
 /**
  * <p>Represents a comparable entity attribute in the {@link StaticMetamodel}.
@@ -35,12 +41,12 @@ import jakarta.annotation.Nonnull;
  *     typically of type {@link String}.</li>
  * <li>{@link NumericAttribute} for entity attributes that represent numeric
  *     values, such as {@code long}, {@link Float}, and
- *     {@link java.math.BigInteger}.</li>
+ *     {@link BigInteger}.</li>
  * <li>{@link BooleanAttribute} for entity attributes that represent
  *     {@code true} or {@code false} values of type {@code boolean} or
  *     {@link Boolean}.</li>
  * <li>{@link TemporalAttribute} for entity attributes that represent temporal
- *     values, such as {@link java.time.LocalDate} and {@link java.time.Instant}.
+ *     values, such as {@link LocalDate} and {@link Instant}.
  *     </li>
  * </ul>
  *
@@ -52,8 +58,8 @@ import jakarta.annotation.Nonnull;
  * <li>enum attributes - Note that it is provider-specific whether order is
  *     based on {@link Enum#ordinal()} or {@link Enum#name()}.
  *     The Jakarta Persistence default of {@code ordinal} can be overridden
- *     with the {@code jakarta.persistence.Enumerated} annotation.</li>
- * <li>{@link java.util.UUID} attributes</li>
+ *     with the {@link Enumerated} annotation.</li>
+ * <li>{@link UUID} attributes</li>
  * </ul>
  *
  * <p>In the above cases, {@code ComparableAttribute}, which provides more

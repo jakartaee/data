@@ -31,15 +31,15 @@ import java.lang.annotation.Target;
  * processors, CDI extensions, and other components of the Jakarta Data
  * framework as declaring entity types. Jakarta Data providers and persistence
  * models that provide custom entity-defining annotations (entity annotations
- * other than {@code jakarta.persistence.Entity} and
- * {@code jakarta.nosql.Entity}) must annotate each custom entity-defining
- * annotation with this annotation. Applications must not use this annotation
- * directly.
- * </p>
+ * other than {@link jakarta.persistence.Entity jakarta.persistence.Entity} and
+ * {@link jakarta.nosql.Entity jakarta.nosql.Entity}) must annotate each custom
+ * entity-defining annotation with this annotation. Applications must not use
+ * this annotation directly.
+ *
  * <p>
  * This allows other Jakarta Data providers and tools to recognize and process
  * entities declared with custom entity-defining annotations.
- * </p>
+ *
  * <p>
  * Example of defining a custom entity annotation by a provider:
  *

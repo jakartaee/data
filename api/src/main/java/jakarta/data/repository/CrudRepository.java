@@ -19,6 +19,7 @@ package jakarta.data.repository;
 
 import jakarta.data.exceptions.EntityExistsException;
 import jakarta.data.exceptions.OptimisticLockingFailureException;
+import jakarta.persistence.Version;
 
 import java.util.List;
 import jakarta.annotation.Nonnull;
@@ -177,7 +178,7 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
      * {@link #insert} method.</p>
      *
      * <p>If the entity is versioned (for example, with
-     * {@code jakarta.persistence.Version} or by
+     * {@link Version jakarta.persistence.Version} or by
      * another convention from the entity model such as having an attribute
      * named {@code version}), then the version must also match. The version is
      * automatically incremented when making the update.</p>
@@ -207,7 +208,7 @@ public interface CrudRepository<T, K> extends BasicRepository<T, K> {
      * {@link #insertAll} method.</p>
      *
      * <p>If the entity is versioned (for example, with
-     * {@code jakarta.persistence.Version} or by
+     * {@link Version jakarta.persistence.Version} or by
      * another convention from the entity model such as having an attribute
      * named {@code version}), then the version must also match. The version is
      * automatically incremented when making the update.</p>
