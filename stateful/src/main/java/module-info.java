@@ -27,6 +27,7 @@ import jakarta.data.repository.stateful.Merge;
 import jakarta.data.repository.stateful.Persist;
 import jakarta.data.repository.stateful.Refresh;
 import jakarta.data.repository.stateful.Remove;
+import jakarta.transaction.Transactional;
 
 /**
  * <p>API for Stateful Repositories in Jakarta Data</p>
@@ -89,11 +90,10 @@ import jakarta.data.repository.stateful.Remove;
  *     @Find
  *     List<Car> search(Restriction<Car> filter);
  * }}</pre>
- * </p>
  *
- * <p>Application code relying on the
- * {@code jakarta.transaction.Transactional} annotation on the example
- * {@code persist} method for container-provided transaction management:
+ * <p>Application code relying on the {@link Transactional @Transactional}
+ * annotation on the example {@code persist} method for container-provided
+ * transaction management:
  *
  * <pre>{@code
  *     @Inject
@@ -103,7 +103,6 @@ import jakarta.data.repository.stateful.Remove;
  *
  *     vehicles.persist(car1, car2, car3);
  * }</pre>
- * </p>
  *
  * <p>Application code explicitly managing a transaction covering multiple
  * repository operations and updates to entities:
@@ -134,7 +133,6 @@ import jakarta.data.repository.stateful.Remove;
  *             tx.commit();
  *     }
  * }</pre>
- * </p>
  *
  * <p>The Javadoc of the Jakarta Data module provides an
  * <a href="../jakarta.data/">overview</a> of Jakarta Data.</p>
@@ -142,8 +140,9 @@ import jakarta.data.repository.stateful.Remove;
  * @since 1.1
  */
 module jakarta.data.stateful {
-
-    exports jakarta.data.repository.stateful;
-    requires jakarta.data;
     requires static jakarta.annotation;
+    requires static jakarta.persistence;   // Javadoc compile time dependency
+    requires static jakarta.transaction;   // Javadoc compile time dependency
+    requires jakarta.data;
+    exports jakarta.data.repository.stateful;
 }

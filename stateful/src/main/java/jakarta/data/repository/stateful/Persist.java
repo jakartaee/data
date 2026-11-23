@@ -17,6 +17,8 @@
  */
 package jakarta.data.repository.stateful;
 
+import jakarta.persistence.EntityManager;
+
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -56,7 +58,7 @@ import java.lang.annotation.Target;
  * of the {@code Remove} method.
  * </p>
  * <p>A Jakarta Data provider that is capable of returning
- * {@code jakarta.persistence.EntityManager} from a resource accessor method is
+ * {@link EntityManager} from a resource accessor method is
  * required to accept a {@code Persist} method which conforms to this signature.
  * A {@code Persist} method that is not accepted must raise
  * {@link UnsupportedOperationException} or be rejected at compile time.

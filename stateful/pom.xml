@@ -57,6 +57,22 @@
             <artifactId>jakarta.annotation-api</artifactId>
             <scope>provided</scope>
         </dependency>
+        <!-- For Javadoc references only: -->
+        <dependency>
+            <groupId>jakarta.enterprise</groupId>
+            <artifactId>jakarta.enterprise.cdi-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.persistence</groupId>
+            <artifactId>jakarta.persistence-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.transaction</groupId>
+            <artifactId>jakarta.transaction-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -99,6 +115,18 @@ Copyright &#169; 2025 Eclipse Foundation. All rights reserved.<br>
 Use is subject to <a href="{@docRoot}/doc-files/speclicense.html" target="_top">license terms</a>.]]>
                             </bottom>
                             <docfilessubdirs>true</docfilessubdirs>
+                            <links>
+                                <link>https://jakarta.ee/specifications/annotations/3.0/apidocs/</link>
+                                <link>https://jakarta.ee/specifications/persistence/4.0/apidocs/</link>
+                                <link>https://jakarta.ee/specifications/transactions/2.0/apidocs/</link>
+                            </links>
+                            <detectOfflineLinks>false</detectOfflineLinks>
+                            <offlineLinks>
+                                <offlineLink>
+                                    <url>..</url>
+                                    <location>${project.basedir}/../api/target/reports/apidocs</location>
+                                </offlineLink>
+                            </offlineLinks>
                             <groups>
                                 <group>
                                     <title>Jakarta Data API Documentation</title>
