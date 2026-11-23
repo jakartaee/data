@@ -677,8 +677,9 @@ import java.util.Set;
  * <li>{@linkplain PageRequest#requestTotal() Total pages or results}</li>
  * </ul>
  *
- * <p>{@linkplain Param Named parameters} can be used for JPQL queries, but not
- * for native SQL queries. Use positional parameters instead. For example,
+ * <p>{@linkplain Param Named parameters} can be used for JPQL queries and
+ * statements, but not for native SQL queries and statements. Use positional
+ * parameters instead. For example,
  *
  * {@snippet lang="java":
  *     @NativeQuery("SELECT * FROM Person WHERE ssn = ? AND alive = ?")

@@ -58,6 +58,8 @@ public interface Catalog extends DataRepository<Product, String> {
             """)
     double averagePrice(Department department);
 
+    // TODO must switch to @NativeStatement after a milestone release of the
+    // Jakarta Persistence API with NativeStatement is available
     @NativeQuery("""
             DELETE FROM Product
              WHERE UPPER(name) = UPPER(?) AND versionNum = ?
