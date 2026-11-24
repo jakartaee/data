@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024,2025 Contributors to the Eclipse Foundation
+ * Copyright (c) 2024,2026 Contributors to the Eclipse Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -133,9 +133,36 @@ class CompositeRestrictionRecordTest {
     }
 
     @Test
-    @DisplayName("should throw exception when composite restriction is created without restrictions")
-    void shouldFailIfEmptyRestrictions() {
-        assertThatThrownBy(() -> new CompositeRestrictionRecord<>(CompositeRestriction.Type.ALL, List.of()))
+    @DisplayName("""
+            A composite ALL restriction can be created from an empty
+            list of restrictions. This is a valid pattern and indicates
+            that no additional filtering is required.
+            """)
+    void shouldCreateEmptyAllRestriction() {
+        CompositeRestriction<?> all =
+                (CompositeRestriction<?>) Restrict.all(List.of());
+
+        SoftAssertions.assertSoftly(soft -> {
+            soft.assertThat(all.restrictions())
+                .isEmpty();
+            soft.assertThat(all.isNegated())
+                .isFalse();
+            soft.assertThat(all.negate())
+                .isEqualTo(Restrict.unrestricted().negate());
+            soft.assertThat(all.type())
+                .isEqualTo(CompositeRestriction.Type.ALL);
+            soft.assertThat(all)
+                .isEqualTo(Restrict.unrestricted());
+        });
+    }
+
+    @Test
+    @DisplayName("""
+            Must throw an exception when a composite ANY restriction is
+            created without supplying any restrictions
+            """)
+    void shouldFailIfEmptyAnyRestriction() {
+        assertThatThrownBy(() -> Restrict.any(List.of()))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("The restrictions list cannot be empty");
     }
