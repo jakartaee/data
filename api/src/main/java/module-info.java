@@ -52,7 +52,10 @@ import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.query.JakartaQuery;
+// TODO after Persistence milestone, add these and switch @code to @link:
+// import jakarta.persistence.query.JakartaStatement;
 import jakarta.persistence.query.NativeQuery;
+// import jakarta.persistence.query.NativeStatement;
 import jakarta.transaction.Status;
 import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolationException;
@@ -213,8 +216,9 @@ import java.util.Set;
  * <tr style="vertical-align: top">
  * <td><a href="#QueryLanguageMethod">Query Language Method</a></td>
  * <td>A repository method is annotated {@link Query @Query},
- *     {@link JakartaQuery @JakartaQuery}, or {@link NativeQuery @NativeQuery}
- *     to supply a query string.
+ *     {@link JakartaQuery @JakartaQuery}, {@code @JakartaStatement},
+ *     {@link NativeQuery @NativeQuery}, or {@code @NativeStatement}
+ *     to supply a query or statement.
  *     {@snippet lang="java":
  *         @Query("SELECT COUNT(THIS) FROM Product WHERE department = ?1")
  *         int totalIn(Department department);
@@ -642,22 +646,26 @@ import java.util.Set;
  *
  * <h2>Jakarta Persistence query methods</h2>
  *
- * <p>The Jakarta Persistence specification offers two additional query
- * annotations that can annotate repository methods in place of {@link Query}:
+ * <p>The Jakarta Persistence specification offers additional annotations
+ * that can annotate repository methods in place of {@link Query} to
+ * distinguish between queries and statements and allow for additional
+ * query languages:
  *
  * <ul>
- * <li>{@link NativeQuery} - supplies a native
- * SQL query instead of a query that is written in Jakarta Persistence Query
- * Language (JPQL) or the Jakarta Common Query Language (JCQL).</li>
- * <li>{@link JakartaQuery} - behaves identically to
- * Jakarta Data's {@code Query} annotation in allowing JPQL and JCQL to be
- * supplied.</li>
+ * <li>{@link NativeQuery} - supplies a native SQL query that returns a
+ * result set or aggregate result.</li>
+ * <li>{@code NativeStatement} - supplies a native SQL statement that
+ * returns a row count.</li>
+ * <li>{@link JakartaQuery} - supplies a Jakarta Persistence Query Language
+ * (JPQL) or Jakarta Common Query Language (JCQL) {@code SELECT} query.</li>
+ * <li>{@code JakartaStatement} - supplies a JPQL or JCQL {@code DELETE} or
+ * {@code UPDATE} statement.</li>
  * </ul>
  *
  * <p>A Jakarta Data provider is not required to support JPQL or native SQL
- * for repository query methods that require generating or modifying the query,
- * including repository methods with any of the following:
- * </p>
+ * for repository methods that require generating or modifying the given
+ * query or statement value, including repository methods with any of the
+ * following:
  *
  * <ul>
  * <li>{@linkplain Select Projections}</li>
@@ -669,8 +677,9 @@ import java.util.Set;
  * <li>{@linkplain PageRequest#requestTotal() Total pages or results}</li>
  * </ul>
  *
- * <p>{@linkplain Param Named parameters} can be used for JPQL queries, but not
- * for native SQL queries. Use positional parameters instead. For example,
+ * <p>{@linkplain Param Named parameters} can be used for JPQL queries and
+ * statements, but not for native SQL queries and statements. Use positional
+ * parameters instead. For example,
  *
  * {@snippet lang="java":
  *     @NativeQuery("SELECT * FROM Person WHERE ssn = ? AND alive = ?")

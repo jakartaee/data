@@ -111,7 +111,7 @@ public class NativeQueryTests {
     }
 
     @Assertion(id = "1218", strategy = """
-            Use a repository method annotated NativeQuery to run a SQL
+            Use a repository method annotated NativeStatement to run a SQL
             UPDATE statement.
             """)
     public void testSQLUpdate() {

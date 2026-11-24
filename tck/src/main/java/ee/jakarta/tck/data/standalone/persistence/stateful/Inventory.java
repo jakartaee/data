@@ -99,6 +99,7 @@ public interface Inventory {
     @QueryOptions(flush = QueryFlushMode.FLUSH)
     double averagePrice(String productNumber);
 
+    // TODO after Persistence milestone, switch to StatementOptions
     @Delete
     @QueryOptions(flush = QueryFlushMode.FLUSH)
     long deleteByPrice(@By("price") double price);
