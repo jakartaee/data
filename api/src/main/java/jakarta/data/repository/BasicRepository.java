@@ -17,17 +17,18 @@
  */
 package jakarta.data.repository;
 
+import static jakarta.data.repository.By.ID;
+
+import jakarta.annotation.Nonnull;
 import jakarta.data.Order;
 import jakarta.data.exceptions.OptimisticLockingFailureException;
 import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
+import jakarta.persistence.Version;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
-
-import static jakarta.data.repository.By.ID;
-import jakarta.annotation.Nonnull;
 
 /**
  * <p>A built-in repository supertype for performing basic operations on
@@ -219,8 +220,8 @@ public interface BasicRepository<T, K> extends DataRepository<T, K> {
     /**
      * Deletes a given entity. Deletion is performed by matching the Id, and if
      * the entity is versioned (for example, with
-     * {@code jakarta.persistence.Version}), then also the version. Other
-     * attributes of the entity do not need to match.
+     * {@link Version jakarta.persistence.Version}), then also the version.
+     * Other attributes of the entity do not need to match.
      *
      * @param entity must not be {@code null}.
      * @throws OptimisticLockingFailureException if the entity is not found in
@@ -237,8 +238,8 @@ public interface BasicRepository<T, K> extends DataRepository<T, K> {
     /**
      * Deletes the given entities. Deletion of each entity is performed by
      * matching the unique identifier, and if the entity is versioned (for
-     * example, with {@code jakarta.persistence.Version}), then also the
-     * version. Other attributes of the entity do not need to match.
+     * example, with {@link Version jakarta.persistence.Version}), then also
+     * the version. Other attributes of the entity do not need to match.
      *
      * @param entities Must not be {@code null}. Must not contain {@code null}
      *                 elements.

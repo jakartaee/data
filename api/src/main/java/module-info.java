@@ -50,6 +50,7 @@ import jakarta.enterprise.concurrent.Asynchronous;
 import jakarta.inject.Inject;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.query.JakartaQuery;
 // TODO after Persistence milestone, add these and switch @code to @link:
@@ -398,8 +399,7 @@ import java.util.Set;
  * <td>It is provider-specific whether sorting is based on
  * {@link Enum#ordinal()} or {@link Enum#name()}.
  * The Jakarta Persistence default of {@code ordinal} can be
- * overridden with the {@code jakarta.persistence.Enumerated}
- * annotation.</td></tr>
+ * overridden with the {@link Enumerated} annotation.</td></tr>
  *
  * <tr style="vertical-align: top"><td>Large numbers</td>
  * <td>{@link java.math.BigDecimal}
@@ -688,7 +688,7 @@ import java.util.Set;
  * }
  *
  * <p>Refer to the Jakarta Persistence query annotations in the
- * {@code jakarta.persistence.query} package and the API documentation for
+ * {@link jakarta.persistence.query} package and the API documentation for
  * {@link Query} for further information.</p>
  *
  * <a id="MethodNameQuery">

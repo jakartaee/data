@@ -17,7 +17,9 @@
  */
 package jakarta.data.repository;
 
+import jakarta.annotation.sql.DataSourceDefinition;
 import jakarta.inject.Inject;
+import jakarta.persistence.EntityManagerFactory;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -114,8 +116,7 @@ public @interface Repository {
      * value:
      *  <ul>
      *   <li>the JNDI name of a persistence unit reference</li>
-     *   <li>the {@code jakarta.persistence.EntityManagerFactory} default
-     *       JNDI name of the form
+     *   <li>the {@link EntityManagerFactory} default JNDI name of the form
      *       {@code java:module/persistence/{unit-name}/EntityManagerFactory}
      *       or {@code java:app/persistence/{unit-name}/EntityManagerFactory}.
      *   </li>
@@ -126,7 +127,7 @@ public @interface Repository {
      *  <ul>
      *   <li>the JNDI name of a {@link javax.sql.DataSource}
      *   </li>
-     *   <li>the name of a {@code jakarta.annotation.sql.DataSourceDefinition}
+     *   <li>the name of a {@link DataSourceDefinition}
      *   </li>
      *   <li>the JNDI name of a resource reference to a {@code DataSource}
      *   </li>
@@ -136,7 +137,7 @@ public @interface Repository {
      * <li>Otherwise, if the {@code Repository} uses Jakarta Persistence
      * entities and the {@code dataStore} value matches the name
      * of a persistence unit, then the corresponding
-     * {@code jakarta.peristence.EntityManagerFactory} becomes the data store
+     * {@link EntityManagerFactory} becomes the data store
      * for the {@code Repository}. Precedence for matching a persistence unit
      * name is as follows, from higher precedence to lower precedence:
      *  <ul>
